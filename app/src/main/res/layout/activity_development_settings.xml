@@ -100,6 +100,16 @@
                         android:textColor="@color/white"
                         android:layout_marginBottom="8dp" />
 
+                    <!-- Repair Blacklist Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRepairBlacklist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="🛠️ Repair Word Blacklist"
+                        android:backgroundTint="@color/brand_primary"
+                        android:textColor="@color/white"
+                        android:layout_marginBottom="8dp" />
+
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -423,44 +433,48 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnPauseLogs"
                             style="@style/Widget.Material3.Button.TonalButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:layout_marginEnd="8dp"
-                            android:text="⏸️"
-                            android:textSize="12sp"
-                            android:minWidth="40dp"
+                            android:icon="@drawable/ic_pause_24"
+                            android:iconTint="@color/white"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
                             android:backgroundTint="@color/brand_primary_light" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnRefreshLogs"
                             style="@style/Widget.Material3.Button.TonalButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:layout_marginEnd="8dp"
-                            android:text="🔄"
-                            android:textSize="12sp"
-                            android:minWidth="40dp"
+                            android:icon="@drawable/ic_refresh_24"
+                            android:iconTint="@color/white"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
                             android:backgroundTint="@color/brand_primary_light" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnClearLogs"
                             style="@style/Widget.Material3.Button.TonalButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:layout_marginEnd="8dp"
-                            android:text="🗑️"
-                            android:textSize="12sp"
-                            android:minWidth="40dp"
+                            android:icon="@drawable/ic_delete_24"
+                            android:iconTint="@color/white"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
                             android:backgroundTint="@color/brand_primary_light" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnExportLogs"
                             style="@style/Widget.Material3.Button.TonalButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:text="📤"
-                            android:textSize="12sp"
-                            android:minWidth="40dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:icon="@drawable/ic_file_upload_24"
+                            android:iconTint="@color/white"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
                             android:backgroundTint="@color/brand_primary_light" />
 
                     </LinearLayout>
@@ -550,10 +564,11 @@
                         android:textColor="@color/white"
                         android:textSize="11sp"
                         android:fontFamily="monospace"
-                        android:padding="8dp"
                         android:scrollbars="vertical"
                         android:text="Starting log display...\nLogs will appear here in real-time.\n"
-                        android:gravity="top" />
+                        android:gravity="top|start"
+                        android:lineSpacingExtra="2dp"
+                        android:breakStrategy="simple" />
 
                 </LinearLayout>
 

@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 public class FilterSettingsActivity extends AppCompatActivity {
     private ActivityFilterSettingsBinding binding;
@@ -75,6 +76,9 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private List<WordFilterItem> wordBlacklistItems = new ArrayList<>();
     private List<WordReplacementItem> wordReplacementItems = new ArrayList<>();
 
+    private LocalBroadcastManager localBroadcastManager;
+    private android.content.BroadcastReceiver repairBlacklistReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Apply saved theme FIRST before anything else
@@ -98,6 +102,18 @@ public class FilterSettingsActivity extends AppCompatActivity {
         
         initializeViews();
         initializeAppSelector();
+
+        localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        repairBlacklistReceiver = new android.content.BroadcastReceiver() {
+            @Override
+            public void onReceive(android.content.Context context, Intent intent) {
+                if ("com.micoyc.speakthat.ACTION_REPAIR_BLACKLIST".equals(intent.getAction())) {
+                    loadSettings();
+                    Toast.makeText(FilterSettingsActivity.this, "Word blacklist reloaded after repair", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        localBroadcastManager.registerReceiver(repairBlacklistReceiver, new android.content.IntentFilter("com.micoyc.speakthat.ACTION_REPAIR_BLACKLIST"));
     }
 
     private void applySavedTheme() {
@@ -267,19 +283,29 @@ public class FilterSettingsActivity extends AppCompatActivity {
         int selectedType = binding.spinnerBlacklistType.getSelectedItemPosition();
         boolean isPrivate = selectedType == 1; // 0 = Block, 1 = Private
 
-        // Check for duplicates
+        // Check for duplicates in UI list
         for (WordFilterItem item : wordBlacklistItems) {
             if (item.word.equals(word)) {
                 Toast.makeText(this, "Word already in blacklist", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
+        // Check for duplicates in SharedPreferences sets (defensive)
+        Set<String> blockWords = sharedPreferences.getStringSet(KEY_WORD_BLACKLIST, new HashSet<>());
+        Set<String> privateWords = sharedPreferences.getStringSet(KEY_WORD_BLACKLIST_PRIVATE, new HashSet<>());
+        if (blockWords.contains(word) || privateWords.contains(word)) {
+            Toast.makeText(this, "Word already in blacklist (storage)", Toast.LENGTH_SHORT).show();
+            // Optionally, reload the list to repair UI
+            loadSettings();
+            return;
+        }
 
         wordBlacklistItems.add(new WordFilterItem(word, isPrivate));
         wordBlacklistAdapter.notifyDataSetChanged();
         binding.editBlacklistWord.setText("");
-        
         saveWordBlacklist();
+        // Always reload from storage to ensure UI and storage are in sync
+        loadSettings();
     }
 
     private void removeBlacklistWord(int position) {
@@ -570,6 +596,9 @@ public class FilterSettingsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (localBroadcastManager != null && repairBlacklistReceiver != null) {
+            localBroadcastManager.unregisterReceiver(repairBlacklistReceiver);
+        }
         binding = null;
     }
 

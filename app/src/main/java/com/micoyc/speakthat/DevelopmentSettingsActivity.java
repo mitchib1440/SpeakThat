@@ -112,6 +112,53 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         binding.btnRefreshLogs.setOnClickListener(v -> refreshLogs());
         binding.btnPauseLogs.setOnClickListener(v -> toggleLogPause());
         
+        // Ensure icons are set in code to fix invisible icon bug
+        binding.btnRefreshLogs.setIconResource(R.drawable.ic_refresh_24);
+        binding.btnClearLogs.setIconResource(R.drawable.ic_delete_24);
+        binding.btnExportLogs.setIconResource(R.drawable.ic_file_upload_24);
+        
+        // Try additional fixes for icon visibility
+        binding.btnRefreshLogs.setIconTint(ColorStateList.valueOf(Color.WHITE));
+        binding.btnClearLogs.setIconTint(ColorStateList.valueOf(Color.WHITE));
+        binding.btnExportLogs.setIconTint(ColorStateList.valueOf(Color.WHITE));
+        
+        // Set icon size programmatically (24dp converted to pixels)
+        int iconSizePx = (int) (24 * getResources().getDisplayMetrics().density);
+        binding.btnRefreshLogs.setIconSize(iconSizePx);
+        binding.btnClearLogs.setIconSize(iconSizePx);
+        binding.btnExportLogs.setIconSize(iconSizePx);
+        binding.btnPauseLogs.setIconSize(iconSizePx);
+        
+        // For icon-only buttons, we need to center them properly
+        // Remove text and use appropriate gravity
+        binding.btnRefreshLogs.setText("");
+        binding.btnClearLogs.setText("");
+        binding.btnExportLogs.setText("");
+        binding.btnPauseLogs.setText("");
+        
+        // Try different approach for centering icons - use padding to center them
+        binding.btnRefreshLogs.setIconGravity(com.google.android.material.button.MaterialButton.ICON_GRAVITY_TEXT_START);
+        binding.btnClearLogs.setIconGravity(com.google.android.material.button.MaterialButton.ICON_GRAVITY_TEXT_START);
+        binding.btnExportLogs.setIconGravity(com.google.android.material.button.MaterialButton.ICON_GRAVITY_TEXT_START);
+        binding.btnPauseLogs.setIconGravity(com.google.android.material.button.MaterialButton.ICON_GRAVITY_TEXT_START);
+        
+        // Set padding to center the icons better
+        int paddingPx = (int) (4 * getResources().getDisplayMetrics().density);
+        binding.btnRefreshLogs.setIconPadding(paddingPx);
+        binding.btnClearLogs.setIconPadding(paddingPx);
+        binding.btnExportLogs.setIconPadding(paddingPx);
+        binding.btnPauseLogs.setIconPadding(paddingPx);
+        
+        // Ensure pause button starts with proper styling and icon
+        binding.btnPauseLogs.setIconResource(R.drawable.ic_pause_24);
+        binding.btnPauseLogs.setIconTint(ColorStateList.valueOf(Color.WHITE));
+        
+        // Debug: Log icon status
+        InAppLogger.log("Development", "Setting up log control button icons");
+        InAppLogger.log("Development", "Refresh button icon: " + (binding.btnRefreshLogs.getIcon() != null ? "SET" : "NULL"));
+        InAppLogger.log("Development", "Clear button icon: " + (binding.btnClearLogs.getIcon() != null ? "SET" : "NULL"));
+        InAppLogger.log("Development", "Export button icon: " + (binding.btnExportLogs.getIcon() != null ? "SET" : "NULL"));
+        
         // Set up crash log controls
         binding.btnViewCrashLogs.setOnClickListener(v -> showCrashLogs());
         binding.btnClearCrashLogs.setOnClickListener(v -> clearCrashLogs());
@@ -171,6 +218,9 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         
         // Update crash log button visibility
         updateCrashLogButtonVisibility();
+        
+        // Set up Repair Blacklist button
+        binding.btnRepairBlacklist.setOnClickListener(v -> repairWordBlacklist());
         
         // Add welcome message
         InAppLogger.log("Development", "Development Settings opened");
@@ -699,15 +749,31 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
     private void toggleLogPause() {
         isLogAutoRefreshPaused = !isLogAutoRefreshPaused;
         
+        // Get icon size and padding for consistency
+        int iconSizePx = (int) (24 * getResources().getDisplayMetrics().density);
+        int paddingPx = (int) (4 * getResources().getDisplayMetrics().density);
+        
         if (isLogAutoRefreshPaused) {
-            // Paused - update button to show resume option
-            binding.btnPauseLogs.setText("▶️ Resume");
-            binding.btnPauseLogs.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, android.R.color.holo_orange_dark)));
+            // Paused - update button to show resume icon
+            binding.btnPauseLogs.setIconResource(R.drawable.ic_play_arrow_24); // Material play icon
+            binding.btnPauseLogs.setText("");
+            binding.btnPauseLogs.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.brand_primary_light)));
+            // Maintain consistent styling
+            binding.btnPauseLogs.setIconTint(ColorStateList.valueOf(Color.WHITE));
+            binding.btnPauseLogs.setIconSize(iconSizePx);
+            binding.btnPauseLogs.setIconGravity(com.google.android.material.button.MaterialButton.ICON_GRAVITY_TEXT_START);
+            binding.btnPauseLogs.setIconPadding(paddingPx);
             Toast.makeText(this, "Auto-refresh paused. You can now scroll through logs.", Toast.LENGTH_SHORT).show();
         } else {
-            // Resumed - update button to show pause option
-            binding.btnPauseLogs.setText("⏸️ Pause");
-            binding.btnPauseLogs.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.brand_primary)));
+            // Resumed - update button to show pause icon
+            binding.btnPauseLogs.setIconResource(R.drawable.ic_pause_24); // Material pause icon
+            binding.btnPauseLogs.setText("");
+            binding.btnPauseLogs.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.brand_primary_light)));
+            // Maintain consistent styling
+            binding.btnPauseLogs.setIconTint(ColorStateList.valueOf(Color.WHITE));
+            binding.btnPauseLogs.setIconSize(iconSizePx);
+            binding.btnPauseLogs.setIconGravity(com.google.android.material.button.MaterialButton.ICON_GRAVITY_TEXT_START);
+            binding.btnPauseLogs.setIconPadding(paddingPx);
             refreshLogs(); // Immediately refresh when resuming
             Toast.makeText(this, "Auto-refresh resumed.", Toast.LENGTH_SHORT).show();
         }
@@ -1165,6 +1231,56 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, "Failed to export battery report: " + e.getMessage(), Toast.LENGTH_LONG).show();
             InAppLogger.logError("Development", "Failed to export battery report: " + e.getMessage());
+        }
+    }
+
+    private void repairWordBlacklist() {
+        try {
+            SharedPreferences prefs = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE);
+            Set<String> blockWords = new HashSet<>(prefs.getStringSet("word_blacklist", new HashSet<>())) ;
+            Set<String> privateWords = new HashSet<>(prefs.getStringSet("word_blacklist_private", new HashSet<>())) ;
+
+            // Clean: remove empty/whitespace-only, deduplicate between sets
+            Set<String> cleanedBlock = new HashSet<>();
+            Set<String> cleanedPrivate = new HashSet<>();
+            for (String word : blockWords) {
+                String w = word.trim();
+                if (!w.isEmpty()) cleanedBlock.add(w);
+            }
+            for (String word : privateWords) {
+                String w = word.trim();
+                if (!w.isEmpty() && !cleanedBlock.contains(w)) cleanedPrivate.add(w);
+            }
+
+            // Save cleaned sets
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putStringSet("word_blacklist", cleanedBlock);
+            editor.putStringSet("word_blacklist_private", cleanedPrivate);
+            editor.apply();
+
+            // Show detailed result
+            StringBuilder msg = new StringBuilder();
+            msg.append("Word blacklist cleaned and re-saved.\n\n");
+            msg.append("Block: ").append(cleanedBlock.size()).append("\n");
+            msg.append("Private: ").append(cleanedPrivate.size()).append("\n");
+            if (blockWords.size() != cleanedBlock.size() || privateWords.size() != cleanedPrivate.size()) {
+                msg.append("\nRemoved duplicates or empty entries.");
+            } else {
+                msg.append("\nNo changes were needed.");
+            }
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Repair Word Blacklist")
+                .setMessage(msg.toString())
+                .setPositiveButton("OK", null)
+                .show();
+            InAppLogger.log("Development", "Word blacklist comprehensively repaired. Block: " + cleanedBlock.size() + ", Private: " + cleanedPrivate.size());
+
+            // Send broadcast to notify FilterSettingsActivity to reload
+            Intent intent = new Intent("com.micoyc.speakthat.ACTION_REPAIR_BLACKLIST");
+            androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        } catch (Exception e) {
+            Toast.makeText(this, "Repair failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            InAppLogger.logError("Development", "Repair blacklist failed: " + e.getMessage());
         }
     }
 } 

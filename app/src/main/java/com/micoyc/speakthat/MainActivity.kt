@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         private const val KEY_SHAKE_TO_STOP_ENABLED = "shake_to_stop_enabled"
         private const val KEY_SHAKE_THRESHOLD = "shake_threshold"
         private const val KEY_MASTER_SWITCH_ENABLED = "master_switch_enabled"
+        private const val KEY_LAST_EASTER_EGG = "last_easter_egg_line"
         
         /**
          * Check if the master switch is enabled (for use by NotificationReaderService)
@@ -320,13 +321,17 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             sharedPreferences.edit().putBoolean(KEY_FIRST_LOGO_TAP, false).apply()
             
         } else {
-            // Subsequent taps: Play random easter egg
+            // Subsequent taps: Play random easter egg (avoiding repeats)
             if (easterEggLines.isNotEmpty()) {
                 val availableLines = getAvailableEasterEggs()
                 if (availableLines.isNotEmpty()) {
-                    val randomLine = availableLines[Random.nextInt(availableLines.size)]
-                    val processedLine = processDynamicEasterEgg(randomLine)
+                    val selectedLine = selectNonRepeatingEasterEgg(availableLines)
+                    val processedLine = processDynamicEasterEgg(selectedLine)
                     speakText(processedLine)
+                    
+                    // Store the original line (before processing) to prevent repeats
+                    sharedPreferences.edit().putString(KEY_LAST_EASTER_EGG, selectedLine).apply()
+                    
                     Log.d(TAG, "Playing easter egg: $processedLine")
                 } else {
                     speakText("SpeakThat! All my jokes are context-sensitive and none apply right now. That's meta!")
@@ -446,6 +451,26 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         }
     }
     
+    private fun selectNonRepeatingEasterEgg(availableLines: List<String>): String {
+        // Get the last spoken easter egg line
+        val lastEasterEgg = sharedPreferences.getString(KEY_LAST_EASTER_EGG, null)
+        
+        // If we only have one line available, or no previous line stored, just pick randomly
+        if (availableLines.size <= 1 || lastEasterEgg == null) {
+            return availableLines[Random.nextInt(availableLines.size)]
+        }
+        
+        // Filter out the last spoken line to avoid back-to-back repeats
+        val nonRepeatingLines = availableLines.filter { it != lastEasterEgg }
+        
+        // If filtering removed all lines (shouldn't happen, but safety check), fall back to all available
+        return if (nonRepeatingLines.isNotEmpty()) {
+            nonRepeatingLines[Random.nextInt(nonRepeatingLines.size)]
+        } else {
+            availableLines[Random.nextInt(availableLines.size)]
+        }
+    }
+    
     private fun processDynamicEasterEgg(line: String): String {
         var processedLine = line
         
@@ -497,7 +522,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun getRandomColor(): String {
-        val colors = arrayOf("red", "blue", "green", "purple", "orange", "yellow", "pink", "cyan")
+        val colors = arrayOf("red", "blue", "green", "purple", "orange", "yellow", "pink", "cyan", "white", "black")
         return colors[Random.nextInt(colors.size)]
     }
     

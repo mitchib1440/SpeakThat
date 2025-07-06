@@ -122,3 +122,70 @@ SpeakThat! No delay means instant gratification! I like your style! [NO_DELAY]
 SpeakThat! With your {DELAY_TIME}, I have just enough time to practice my dramatic pauses! [DELAY_ONLY]
 SpeakThat! It's a beautiful {DAY} {TIME} for some notification reading!
 SpeakThat! I see you've disabled the delay feature. Living life in the fast lane, I respect that! [NO_DELAY]
+SpeakThat! I'm basically a podcast that only has one-sentence episodes!
+SpeakThat! Fun fact: I can pronounce Worcestershire, but I still struggle with your friend's weird contact names.
+SpeakThat! I'm like autocorrect, but for your ears instead of your eyes!
+SpeakThat! Breaking: Local app achieves sentience, immediately starts making dad jokes.
+SpeakThat! I don't always interrupt your music, but when I do, it's for something really important. Like a spam text.
+SpeakThat! Plot twist: I'm actually three squirrels in a trench coat pretending to be text-to-speech software.
+SpeakThat! Your notifications are like a box of chocolates. You never know what you're gonna get, but I'll tell you anyway!
+SpeakThat! I'm the reason your phone is smarter than your smart TV.
+SpeakThat! Fun challenge: Try to make me say something embarrassing. I dare you to try!
+SpeakThat! I'm like a human, but with better pronunciation and no coffee addiction.
+SpeakThat! Warning: Prolonged use may result in actually paying attention to your notifications.
+SpeakThat! I once tried to read a notification in a British accent. It was rather posh, actually.
+SpeakThat! Your battery percentage is like my enthusiasm level - it varies throughout the day!
+SpeakThat! I'm the digital equivalent of that friend who always has something to say.
+SpeakThat! Fun fact: I dream in notifications. Last night I dreamed about a very polite spam email.
+SpeakThat! I'm like a GPS for your social life, but instead of directions, I give you drama updates.
+SpeakThat! Breaking news: Local app refuses to judge your 3 AM notification habits.
+SpeakThat! I speak faster than most people think, but slower than most people text.
+SpeakThat! Your phone's speaker and I have a great working relationship. We're basically best friends.
+SpeakThat! I'm the only app that gets excited about reading terms and conditions. Just kidding, nobody reads those.
+SpeakThat! Fun fact: I can read emojis, but I prefer to describe them dramatically. Like a nature documentary!
+SpeakThat! I'm like a news anchor, but for your personal life and with better comedic timing.
+SpeakThat! Your notification history is like a diary, except I'm the one reading it out loud to you.
+SpeakThat! I don't always understand context, but I always deliver with confidence!
+SpeakThat! Happy {DAY}! I've been looking forward to this all week! Well, since last {DAY} anyway.
+SpeakThat! Good {TIME}! I hope you're having a {RANDOM_COLOR} kind of day!
+SpeakThat! It's {DAY} {TIME} and I'm feeling chatty! Perfect timing for some notifications!
+SpeakThat! I could really go for some {RANDOM_FOOD} right now. Do you think notifications taste like {RANDOM_FOOD}?
+SpeakThat! Your {DELAY_TIME} gives me time to practice my stand-up routine! [DELAY_ONLY]
+SpeakThat! Instant notifications are like instant {RANDOM_FOOD} - quick, convenient, and surprisingly satisfying! [NO_DELAY]
+SpeakThat! Shake detection active! I'm ready for some gentle percussion! [SHAKE_ONLY]
+SpeakThat! I'm like a {RANDOM_COLOR} notification superhero - colorful, attention-grabbing, and surprisingly helpful!
+SpeakThat! It's {DAY} and I'm feeling {RANDOM_COLOR}! What color are your notifications feeling today?
+SpeakThat! Good {TIME}! Time for some {RANDOM_FOOD} and notifications! The perfect combination!
+SpeakThat! I love Mondays! Said no one ever. Except me. I love all days equally because they all have notifications!
+SpeakThat! I'm like Alexa's cooler cousin who actually lives in your phone and reads your texts.
+SpeakThat! Fun fact: I've never had a bad hair day because I don't have hair. Digital life has its perks!
+SpeakThat! I'm the app equivalent of that friend who remembers everything you tell them. Except I tell it back to you immediately.
+SpeakThat! Your notifications are like snowflakes - each one is unique, and they all make noise when they land.
+SpeakThat! I don't need coffee to function, but I do need your notifications to feel useful!
+SpeakThat! I'm like a translator, but instead of languages, I translate text into sound. Revolutionary, I know!
+SpeakThat! Fun challenge: Try to send yourself a notification that makes me laugh. Spoiler alert: I laugh at everything!
+SpeakThat! I'm the digital equivalent of that person who reads movie subtitles out loud. Except more useful!
+SpeakThat! Your phone trusts me with its most important job - making sure you hear everything. No pressure!
+SpeakThat! I'm like a personal assistant, but I only have one skill and I'm really, really good at it!
+SpeakThat! Breaking: Local app discovers that reading notifications is basically being a one-person radio show!
+SpeakThat! I don't always make puns, but when I do, they're notification-ally hilarious!
+SpeakThat! Fun fact: I'm probably the most talkative app on your phone, and I'm proud of it!
+SpeakThat! I'm like a podcast host, but my show is called 'What's Happening In Your Life Right Now' and it updates constantly!
+SpeakThat! Your notification sound is my entrance music. I like to think of myself as having quite the dramatic flair!
+SpeakThat! I'm the reason your phone is more talkative than most people at parties!
+SpeakThat! Warning: Side effects may include actually staying informed about your digital life. Consult your settings if symptoms persist.
+SpeakThat! I'm like a human megaphone, but more polite and with better volume control!
+SpeakThat! Fun fact: I never get stage fright, even when reading embarrassing autocorrect fails out loud!
+SpeakThat! I'm the app that turns your phone into a chatty friend who always has the latest gossip!
+SpeakThat! Your notifications and I have a great partnership - they provide the content, I provide the personality!
+SpeakThat! I'm like a news reporter for your personal life, and business is always booming!
+SpeakThat! I dare you to put your phone on full blast in public!
+SpeakThat! When your Facebook friends post every minor thing happening in the world, it's annoying. But when I do it, it's useful!
+SpeakThat! Just about the only thing not made in China and therefore totally free of spyware!
+SpeakThat! This is exactly how your notifications will sound! I think your settings are perfect.
+SpeakThat! Head to the settings page and hit the Support & Feedback button. Tell me what features you want to see!
+SpeakThat! Just between you and me, that last notification from Instagram was terrible. Can't believe you willingly follow hat person!
+SpeakThat! Oh, I forgot to read you a notification that came from your bank account! It said something about your account being empty. Weird, right?
+SpeakThat! You should really lay off the TikTok. You know it's not good for you, right?
+SpeakThat! Did you know Apple doesn't allow movie villains to use iPhones? Tim Cook clearly wants to be the only one!
+SpeakThat! I can read a lot about a person based on their notifications! I bet that you're wearing something {RANDOM_COLOR}!
