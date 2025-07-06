@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_export_filters"
+        android:title="Export Filters"
+        android:icon="@drawable/ic_export"
+        app:showAsAction="ifRoom"
+        android:contentDescription="Export filter configuration" />
+
+    <item
+        android:id="@+id/action_import_filters"
+        android:title="Import Filters"
+        android:icon="@drawable/ic_import"
+        app:showAsAction="ifRoom"
+        android:contentDescription="Import filter configuration" />
+
+</menu> 

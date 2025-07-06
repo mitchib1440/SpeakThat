@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme - Light Mode -->
+    <style name="Base.Theme.SpeakThat" parent="Theme.Material3.DayNight">
+        <!-- Custom Brand Colors for Light Theme -->
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorPrimaryVariant">@color/brand_primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/brand_accent</item>
+        <item name="colorSecondaryVariant">@color/brand_primary_light</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Light theme colors -->
+        <item name="android:statusBarColor">@color/brand_primary_dark</item>
+        <item name="android:windowBackground">@color/light_background</item>
+        <item name="colorSurface">@color/light_surface</item>
+        <item name="colorOnSurface">@color/light_text_primary</item>
+        <item name="android:textColorPrimary">@color/light_text_primary</item>
+        <item name="android:textColorSecondary">@color/light_text_secondary</item>
+    </style>
+
+    <style name="Theme.SpeakThat" parent="Base.Theme.SpeakThat" />
+    
+    <!-- Theme for Settings Activities with Custom Toolbar -->
+    <style name="Theme.SpeakThat.NoActionBar" parent="Theme.SpeakThat">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+</resources> 

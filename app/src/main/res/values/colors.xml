@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Custom Brand Colors - Based on A245FF -->
+    <color name="brand_primary">#FFA245FF</color>
+    <color name="brand_primary_dark">#FF8B3AE6</color>
+    <color name="brand_primary_light">#FFB55EFF</color>
+    <color name="brand_accent">#FFC865FF</color>
+    
+    <!-- Dark Theme Colors -->
+    <color name="dark_background">#FF2B2A29</color>
+    <color name="dark_surface">#FF3A3938</color>
+    <color name="dark_surface_variant">#FF4A4948</color>
+    <color name="dark_text_primary">#FFFFFFFF</color>
+    <color name="dark_text_secondary">#FFCCCCCC</color>
+    
+    <!-- Light Theme Colors -->
+    <color name="light_background">#FFF8F4FF</color>
+    <color name="light_surface">#FFFFFFFF</color>
+    <color name="light_surface_variant">#FFF5F1FF</color>
+    <color name="light_text_primary">#FF1A1A1A</color>
+    <color name="light_text_secondary">#FF666666</color>
+    
+    <!-- Original Material Colors (kept as fallback) -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    
+    <!-- Status Colors -->
+    <color name="red_500">#FFF44336</color>
+    <color name="green_500">#FF4CAF50</color>
+    
+    <!-- Background Colors -->
+    <color name="background_light">#FFF8F4FF</color>
+    <color name="background_card">#FFFFFFFF</color>
+    <color name="background_card_dark">#FF3A3938</color>
+    
+    <!-- Color Aliases for New UI Components -->
+    <!-- Primary brand color -->
+    <color name="primary">@color/brand_primary</color>
+    
+    <!-- Background colors -->
+    <color name="background_dark">@color/dark_background</color>
+    <color name="card_background">@color/dark_surface</color>
+    
+    <!-- Text colors -->
+    <color name="text_primary">@color/dark_text_primary</color>
+    <color name="text_secondary">@color/dark_text_secondary</color>
+    
+    <!-- Error color -->
+    <color name="error">@color/red_500</color>
+</resources> 

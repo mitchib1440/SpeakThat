@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permission to access notifications -->
+    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
+    
+    <!-- Permission to use text-to-speech -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SpeakThat"
+        tools:targetApi="31">
+
+        <!-- Main Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Settings Activities -->
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+
+        <activity
+            android:name=".GeneralSettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".SettingsActivity"
+            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+
+        <activity
+            android:name=".BehaviorSettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".SettingsActivity"
+            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+
+        <activity
+            android:name=".VoiceSettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".SettingsActivity"
+            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+
+        <activity
+            android:name=".FilterSettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".SettingsActivity"
+            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+
+        <activity
+            android:name=".SmartSettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".SettingsActivity"
+            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+
+        <activity
+            android:name=".SmartSettingsCardActivity"
+            android:exported="false"
+            android:parentActivityName=".SettingsActivity"
+            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+
+        <activity
+            android:name=".NotificationHistoryActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+
+        <activity
+            android:name=".DevelopmentSettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".SettingsActivity"
+            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+
+        <!-- Notification Listener Service -->
+        <service
+            android:name=".NotificationReaderService"
+            android:label="@string/service_name"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <!-- FileProvider for sharing exported files -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.micoyc.speakthat.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
+
+</manifest> 

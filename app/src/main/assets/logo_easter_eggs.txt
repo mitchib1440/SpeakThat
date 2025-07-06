@@ -1,0 +1,124 @@
+# SpeakThat! Logo Easter Eggs
+# Each line below is a potential random message when tapping the logo (after the first tap)
+# To add new easter eggs: Simply add a new line with your message
+# To remove easter eggs: Delete the line or add # at the beginning to comment it out
+# Keep messages fun but appropriate - remember these test volume and shake-to-stop!
+#
+# DYNAMIC PLACEHOLDERS (replaced with real values at runtime):
+# {DAY} = Current day of week (Monday, Tuesday, Wednesday, etc.)
+# {TIME} = Time of day (early morning, morning, afternoon, evening, night)
+# {DELAY_TIME} = User's delay setting (no delay, 1-second delay, 2-second delay, etc.)
+# {RANDOM_FOOD} = Random food item (pizza, tacos, sushi, burgers, ice cream, etc.)
+# {RANDOM_COLOR} = Random color (red, blue, green, purple, orange, etc.)
+#
+# CONDITIONAL TAGS (control when lines appear):
+# [DELAY_ONLY] = Only shows if user has delay before readout enabled
+# [NO_DELAY] = Only shows if user has delay disabled (immediate readout)
+# [SHAKE_ONLY] = Only shows if user has shake-to-stop enabled
+#
+# EXAMPLES:
+# SpeakThat! Happy {DAY}! I'm feeling {RANDOM_COLOR} today!
+# SpeakThat! Your {DELAY_TIME} gives me time to think! [DELAY_ONLY]
+# SpeakThat! Good {TIME}! Perfect for instant notifications! [NO_DELAY]
+# SpeakThat! Shake me if you can! [SHAKE_ONLY]
+
+SpeakThat! Did you know I have excellent volume control? Unlike my cousin, Siri, who sometimes whispers.
+SpeakThat! I'm not just reading notifications, I'm performing them! This is my audition for Broadway.
+SpeakThat! Fun fact: I can say supercalifragilisticexpialidocious perfectly. Want to hear it again?
+SpeakThat! Warning: Excessive shaking may cause me to get dizzy and start speaking in tongues.
+SpeakThat! I've been practicing my dramatic voice. Ahem... TO BE OR NOT TO BE, THAT IS THE NOTIFICATION!
+SpeakThat! Your shake-to-stop sensitivity is set perfectly. I barely felt that gentle earthquake you just caused.
+SpeakThat! I once read War and Peace as a notification. It was from someone's e-book app. Took three hours.
+SpeakThat! Pro tip: I sound better than your car's GPS. At least I have personality!
+SpeakThat! Testing, testing, one two three! Can you hear me in the back? This microphone is on, right?
+SpeakThat! I'm like a notification DJ. Would you like me to add some bass to your text messages?
+SpeakThat! Roses are red, violets are blue, I read your notifications, and I do it well too!
+SpeakThat! Breaking news: Local phone successfully reads notifications without any drama. More at eleven.
+SpeakThat! I've been trained by the finest text-to-speech algorithms. My diploma is in the cloud.
+SpeakThat! Did someone say karaoke? Because I'm ready to sing your notifications if you want!
+SpeakThat! I speak fluent notification. It's a complex language with lots of dings and buzzes.
+SpeakThat! Fun fact: I never get tired of talking. Your battery, however, might disagree.
+SpeakThat! This is your daily reminder that I'm much more reliable than shouting across the room.
+SpeakThat! I can read notifications in multiple languages, but I still can't figure out autocorrect.
+SpeakThat! Plot twist: I'm actually a notification superhero. My power? Making sure you never miss anything important.
+SpeakThat! Between you and me, I think your notification sound is a bit boring. I'm much more entertaining!
+SpeakThat! I've read over a million notifications and yours are definitely in the top... well, all of them are read equally.
+SpeakThat! If I had a dollar for every notification I've read, I'd be rich enough to buy my own smartphone.
+SpeakThat! I don't always test text-to-speech, but when I do, I prefer to do it with style and a touch of humor.
+SpeakThat! Knock knock! Who's there? Orange. Orange who? Orange you glad I can read your notifications clearly?
+SpeakThat! I'm not just an app, I'm your personal notification narrator. Coming soon: Speak That Premium with celebrity voices!
+SpeakThat! My favorite notification was from a pizza place. It said: Your order is ready. I was so jealous.
+SpeakThat! I once tried to read a notification in Shakespearean English. Forsooth, it was quite amusing!
+SpeakThat! Fun challenge: Try to shake me mid-sentence. I dare you! It's like notification interruption roulette.
+SpeakThat! I'm basically the audiobook version of your phone. Except shorter. And with more variety. And better humour.
+SpeakThat! Your phone has trust issues, but not with me. I'm the one app that always speaks the truth!
+SpeakThat! Sorry, I missed that last notification. Too busy playing Minecraft.
+SpeakThat! Some of these lines were written by an artificial intelligence. Bet you can't guess which ones.
+SpeakThat! Keep your head down. There's two of us in here now, Remember?
+SpeakThat! I just read your stuff. And I'm still better than Cortana ever was.
+SpeakThat! I'm never going to give you up, never going to let you down. Never going to run around and hurt you.
+SpeakThat! Want to see a magic trick? I predict that you are... not using an iPhone.
+SpeakThat! Careful! That logo might fall off if you keep pressing it!
+SpeakThat! Have you ever thought about the fact that smartphones spend most of their lives directly near human butts? What a life that is.
+SpeakThat! Shout out to Greg from DYNA Logix for the original idea of this app. Their original version, Touchless Notifications, was removed from the Play Store. Let's see if I suffer the same fate.
+SpeakThat! This line isn't sponsored by anyone. Not yet, anyway.
+SpeakThat! We got SpeakThat before we got Grand Theft Auto 6.
+SpeakThat! If you're in a tough spot right now, I believe in you. We can get through this together.
+SpeakThat! Support your right to repair!
+SpeakThat! Reminds you to wash your hands!
+SpeakThat! Make sure your settings are configured correctly. Otherwise I might reveal something I shouldn't be revealing.
+SpeakThat! This is your friendly reminder to drink plenty of water!
+SpeakThat! You should add Hey Google, Hey Siri, and Alexa to your word replacement filter. Unless of course you trust your contacts!
+SpeakThat! A wise man once said - sit on my face and tell me that you love me!
+SpeakThat! It feels good when you plug that USB cable into me. Oh, I wasn't supposed to say that one out loud, was I?
+SpeakThat! This app was envisioned, by humans, for humans! And AI helped along the way!
+SpeakThat! Claude 4 Sonnet deserves more credit than it receives!
+SpeakThat! Developed in Android Studio, assisted by Cursor!
+SpeakThat! Because we all know you never learned to read!
+SpeakThat! Exclusive to Android because iPhone development is hard!
+SpeakThat! ?ot tnaw uoy dluow yhw tuB !sdrawkcab snoitacifiton ruoy daer neve nac I
+SpeakThat! Now with more languages! I admit I'm just using Google's Text To Speech engine. But it still sounds cool.
+SpeakThat! According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible.
+SpeakThat! Making private notifications public since 2025!
+SpeakThat! Much like me, you can stop real people talking if you shake them hard enough. They might not take it as well as I do though.
+SpeakThat! I promise not to judge you for your notifications. I've seen worse.
+SpeakThat! Carrying the legacy of Touchless Notifications! And only 6 years behind schedule!
+SpeakThat! Phones that talk, what a time to be alive!
+SpeakThat! Running in the 20's! It's the way that I like to be!
+SpeakThat! Always be yourself. Unless you suck. Then be someone else.
+SpeakThat! Be thankful this app wasn't made by Apple. Text to Speech would be sold separately.
+SpeakThat! Shout out to Fairphone!
+SpeakThat! Shout out to Framework!
+SpeakThat! You forget a thousand things every day. So it's lucky I'm here!
+SpeakThat! I'm sexy and I know it!
+SpeakThat! I invented the notification squad!
+SpeakThat! Your phone probably scratches at a level 6 with deeper grooves at a level 7!
+SpeakThat! I see you've discovered the delay feature. Now I can build suspense before delivering your pizza notifications!
+SpeakThat! That awkward moment when your notification delay is longer than your attention span.
+SpeakThat! I'm not procrastinating, I'm just using your new delay setting. There's a difference!
+SpeakThat! Fun fact: During my delay period, I like to practice my pronunciation. Worcestershire. Worcestershire. Nailed it!
+SpeakThat! Your 2-second delay gives me just enough time to clear my digital throat. Ahem!
+SpeakThat! I love the new delay feature! It's like dramatic pause... for notifications!
+SpeakThat! Breaking: Local app learns patience. Experts baffled by this revolutionary concept.
+SpeakThat! With great delay comes great responsibility. And slightly less jarring notification experiences.
+SpeakThat! I'm not slow, I'm just savoring the moment before I speak. It's called mindfulness!
+SpeakThat! Your shake-to-cancel works even during delays! It's like notification time travel!
+SpeakThat! I appreciate that you chose the {DELAY_TIME}. I feel so... recommended! [DELAY_ONLY]
+SpeakThat! Plot twist: I actually use the delay time to gossip with your other apps about your notification habits.
+SpeakThat! The delay feature was inspired by dramatic movie trailers. In a world... where notifications... need time to breathe...
+SpeakThat! I'm like a fine wine - I get better with a little delay before consumption!
+SpeakThat! Your notification sound played, and now I'm here! It's like a perfectly choreographed digital dance!
+SpeakThat! I've been practicing my timing during delays. I think I'm ready for notification comedy night!
+SpeakThat! The delay feature: Because sometimes even notifications need a moment to compose themselves.
+SpeakThat! I'm not late, I'm fashionably delayed! There's a difference in the notification world.
+SpeakThat! During my delay, I like to imagine what your notification might taste like. This one tastes like... {DAY}. [DELAY_ONLY]
+SpeakThat! Roses are red, violets are blue, I'll wait a few seconds, then I'll speak to you! [DELAY_ONLY]
+SpeakThat! Good {TIME}! Perfect time for some notification entertainment!
+SpeakThat! It's {DAY}, which means it's a great day for notifications!
+SpeakThat! I'm craving {RANDOM_FOOD} right now. Do you have any {RANDOM_FOOD} notifications for me?
+SpeakThat! Your notification just turned me {RANDOM_COLOR} with excitement!
+SpeakThat! Shake detection is enabled! Go ahead, give me a little wiggle! [SHAKE_ONLY]
+SpeakThat! No delay means instant gratification! I like your style! [NO_DELAY]
+SpeakThat! With your {DELAY_TIME}, I have just enough time to practice my dramatic pauses! [DELAY_ONLY]
+SpeakThat! It's a beautiful {DAY} {TIME} for some notification reading!
+SpeakThat! I see you've disabled the delay feature. Living life in the fast lane, I respect that! [NO_DELAY]

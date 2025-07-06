@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?android:attr/windowBackground"
+    tools:context=".BehaviorSettingsActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/brand_primary"
+        android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.Material3.Light">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Behavior Settings"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Notification Behavior Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="@color/brand_primary_light"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🔔 Notification Behavior"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/brand_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Control how notifications are handled when one is already being read"
+                        android:textSize="14sp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Recommendation Box -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="?attr/colorSurfaceVariant"
+                        android:padding="12dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="💡 Most users should use: Smart Mode"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/brand_primary"
+                            android:layout_marginEnd="8dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnNotificationBehaviorInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:text="ℹ️ More Info"
+                            android:textSize="12sp"
+                            android:textColor="@color/brand_primary"
+                            android:backgroundTint="@color/white"
+                            android:strokeColor="@color/brand_primary"
+                            android:strokeWidth="1.0"
+                            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                    </LinearLayout>
+
+                    <!-- Behavior Mode Selection -->
+                    <RadioGroup
+                        android:id="@+id/behaviorModeGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp">
+
+                        <RadioButton
+                            android:id="@+id/radioInterrupt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Interrupt (stop current, read new immediately)"
+                            android:checked="true"
+                            android:layout_marginBottom="8dp" />
+
+                        <RadioButton
+                            android:id="@+id/radioQueue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Queue (finish current, then read new)"
+                            android:layout_marginBottom="8dp" />
+
+                        <RadioButton
+                            android:id="@+id/radioSkip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Skip (ignore new notifications while reading)"
+                            android:layout_marginBottom="8dp" />
+
+                        <RadioButton
+                            android:id="@+id/radioSmart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Smart (priority apps interrupt, others queue)"
+                            android:layout_marginBottom="8dp" />
+
+                    </RadioGroup>
+
+                    <!-- Priority Apps Section (for Smart mode) -->
+                    <LinearLayout
+                        android:id="@+id/priorityAppsSection"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/brand_primary_light"
+                            android:layout_marginVertical="16dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="⚡ Priority Apps"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/brand_primary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="These apps will interrupt the current notification. All other apps will queue."
+                            android:textSize="14sp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:layout_marginBottom="16dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="12dp">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="8dp"
+                                app:boxBackgroundMode="outline"
+                                app:boxStrokeColor="@color/brand_primary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/editPriorityApp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Priority app name or package"
+                                    android:inputType="text" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnAddPriorityApp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Add"
+                                android:backgroundTint="@color/brand_primary"
+                                android:textColor="@color/white" />
+
+                        </LinearLayout>
+
+                        <!-- Priority Apps List -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerPriorityApps"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:nestedScrollingEnabled="false" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Media Behavior Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="@color/brand_primary_light"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🎵 Media Behavior"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/brand_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Control how notifications are handled when music or videos are playing"
+                        android:textSize="14sp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Recommendation Box -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="?attr/colorSurfaceVariant"
+                        android:padding="12dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="💡 Most users should use: Lower Audio"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/brand_primary"
+                            android:layout_marginEnd="8dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnMediaBehaviorInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:text="ℹ️ More Info"
+                            android:textSize="12sp"
+                            android:textColor="@color/brand_primary"
+                            android:backgroundTint="@color/white"
+                            android:strokeColor="@color/brand_primary"
+                            android:strokeWidth="1.0"
+                            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                    </LinearLayout>
+
+                    <!-- Media Behavior Mode Selection -->
+                    <RadioGroup
+                        android:id="@+id/mediaBehaviorGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp">
+
+                        <RadioButton
+                            android:id="@+id/radioMediaIgnore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ignore - Continue as normal (current behavior)"
+                            android:checked="true"
+                            android:layout_marginBottom="8dp" />
+
+                        <RadioButton
+                            android:id="@+id/radioMediaPause"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pause - Pause media while speaking"
+                            android:layout_marginBottom="8dp" />
+
+                        <RadioButton
+                            android:id="@+id/radioMediaDuck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lower Audio - Duck media volume temporarily"
+                            android:layout_marginBottom="8dp" />
+
+                        <RadioButton
+                            android:id="@+id/radioMediaSilence"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Silence - Don't speak while media is playing"
+                            android:layout_marginBottom="8dp" />
+
+                    </RadioGroup>
+
+                    <!-- Ducking Volume Controls (hidden by default) -->
+                    <LinearLayout
+                        android:id="@+id/duckingVolumeContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/brand_primary_light"
+                            android:layout_marginVertical="16dp" />
+
+                        <TextView
+                            android:id="@+id/duckingVolumeLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🔉 Ducking Volume"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Set how quiet media should become during notifications"
+                            android:textSize="14sp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:layout_marginBottom="16dp" />
+
+                        <!-- Volume Slider -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🔇"
+                                android:textSize="16sp"
+                                android:layout_marginEnd="8dp" />
+
+                            <com.google.android.material.slider.Slider
+                                android:id="@+id/duckingVolumeSeekBar"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:valueFrom="0.0"
+                                android:valueTo="100.0"
+                                android:value="30.0"
+                                android:stepSize="5.0"
+                                app:thumbColor="@color/brand_primary"
+                                app:trackColorActive="@color/brand_primary"
+                                app:trackColorInactive="@color/brand_primary_light" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🔊"
+                                android:textSize="16sp"
+                                android:layout_marginStart="8dp" />
+
+                        </LinearLayout>
+
+                        <!-- Volume Value Display -->
+                        <TextView
+                            android:id="@+id/duckingVolumeValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="30%"
+                            android:textSize="14sp"
+                            android:textColor="@color/brand_primary"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="💡 Tip: Lower values make media quieter during notifications"
+                            android:textSize="12sp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:textStyle="italic"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Shake to Stop Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="@color/brand_primary_light"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📳 Shake to Stop"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/brand_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Stop readouts instantly by shaking your device"
+                        android:textSize="14sp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Recommendation Box -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="?attr/colorSurfaceVariant"
+                        android:padding="12dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="💡 Most users should: Enable this feature"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/brand_primary"
+                            android:layout_marginEnd="8dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnShakeToStopInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:text="ℹ️ More Info"
+                            android:textSize="12sp"
+                            android:textColor="@color/brand_primary"
+                            android:backgroundTint="@color/white"
+                            android:strokeColor="@color/brand_primary"
+                            android:strokeWidth="1.0"
+                            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                    </LinearLayout>
+
+                    <!-- Shake to Stop Toggle -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Enable shake to stop"
+                            android:textSize="16sp"
+                            android:textColor="?android:attr/textColorPrimary" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switchShakeToStop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumbTint="@color/brand_primary"
+                            android:trackTint="@color/brand_primary_light" />
+
+                    </LinearLayout>
+
+                    <!-- Shake Settings (hidden by default) -->
+                    <LinearLayout
+                        android:id="@+id/shakeSettingsSection"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/brand_primary_light"
+                            android:layout_marginVertical="16dp" />
+
+                        <!-- Shake Intensity Section -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Shake Intensity"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Adjust how hard you need to shake to stop readouts"
+                            android:textSize="14sp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:layout_marginBottom="16dp" />
+
+                        <!-- Intensity Slider -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Gentle"
+                                android:textSize="12sp"
+                                android:textColor="?android:attr/textColorSecondary" />
+
+                            <com.google.android.material.slider.Slider
+                                android:id="@+id/sliderShakeIntensity"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginHorizontal="12dp"
+                                android:valueFrom="5.0"
+                                android:valueTo="25.0"
+                                android:value="12.0"
+                                android:stepSize="1.0"
+                                app:thumbColor="@color/brand_primary"
+                                app:trackColorActive="@color/brand_primary"
+                                app:trackColorInactive="@color/brand_primary_light" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Strong"
+                                android:textSize="12sp"
+                                android:textColor="?android:attr/textColorSecondary" />
+
+                        </LinearLayout>
+
+                        <!-- Shake Meter Section -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Shake Test"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Test your shake intensity and see the trigger threshold"
+                            android:textSize="14sp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:layout_marginBottom="16dp" />
+
+                        <!-- Shake Meter -->
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp">
+
+                            <ProgressBar
+                                android:id="@+id/progressShakeMeter"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="24dp"
+                                android:max="25"
+                                android:progress="0"
+                                android:progressTint="@color/brand_primary"
+                                android:progressBackgroundTint="@color/brand_primary_light" />
+
+                            <!-- Threshold Marker -->
+                            <View
+                                android:id="@+id/thresholdMarker"
+                                android:layout_width="3dp"
+                                android:layout_height="24dp"
+                                android:background="@android:color/holo_red_dark"
+                                android:layout_marginStart="144dp" />
+
+                        </FrameLayout>
+
+                        <!-- Current Values Display -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="16dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Current shake: 0.0"
+                                android:textSize="12sp"
+                                android:textColor="?android:attr/textColorSecondary"
+                                android:id="@+id/textCurrentShake" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Threshold: 12.0"
+                                android:textSize="12sp"
+                                android:textColor="@android:color/holo_red_dark"
+                                android:gravity="end"
+                                android:id="@+id/textThreshold" />
+
+                        </LinearLayout>
+
+                        <!-- Test Button -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnShakeTest"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Start Test"
+                            android:backgroundTint="@color/brand_primary"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Delay Before Readout Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="@color/brand_primary_light"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="⏱️ Delay Before Readout"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/brand_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add a short delay before SpeakThat starts reading notifications"
+                        android:textSize="14sp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Recommendation Box -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="?attr/colorSurfaceVariant"
+                        android:padding="12dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="💡 Most users should use: 2 seconds"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/brand_primary"
+                            android:layout_marginEnd="8dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnDelayInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:text="ℹ️ More Info"
+                            android:textSize="12sp"
+                            android:textColor="@color/brand_primary"
+                            android:backgroundTint="@color/white"
+                            android:strokeColor="@color/brand_primary"
+                            android:strokeWidth="1.0"
+                            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                    </LinearLayout>
+
+                    <!-- Delay Options -->
+                    <RadioGroup
+                        android:id="@+id/delayGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp">
+
+                        <RadioButton
+                            android:id="@+id/radioDelayNone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="None - Start immediately"
+                            android:checked="true"
+                            android:layout_marginBottom="8dp" />
+
+                        <RadioButton
+                            android:id="@+id/radioDelay1s"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1 second - Quick pause"
+                            android:layout_marginBottom="8dp" />
+
+                        <RadioButton
+                            android:id="@+id/radioDelay2s"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2 seconds - Recommended"
+                            android:layout_marginBottom="8dp" />
+
+                        <RadioButton
+                            android:id="@+id/radioDelay3s"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3 seconds - Extra time to react"
+                            android:layout_marginBottom="8dp" />
+
+                    </RadioGroup>
+
+                    <!-- Benefits Section -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="✨ Benefits:\n\n• Avoids overlap with notification sounds\n• Gives you time to shake-to-cancel\n• Less jarring in quiet environments\n• Perfect for meetings and public spaces"
+                        android:textSize="14sp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:lineSpacingExtra="4dp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout> 

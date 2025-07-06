@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme for Dark Mode -->
+    <style name="Base.Theme.SpeakThat" parent="Theme.Material3.DayNight">
+        <!-- Custom Brand Colors for Dark Theme -->
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorPrimaryVariant">@color/brand_primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/brand_accent</item>
+        <item name="colorSecondaryVariant">@color/brand_primary_dark</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Dark theme colors with your custom background -->
+        <item name="android:statusBarColor">@color/brand_primary_dark</item>
+        <item name="android:windowBackground">@color/dark_background</item>
+        <item name="colorSurface">@color/dark_surface</item>
+        <item name="colorOnSurface">@color/dark_text_primary</item>
+        <item name="android:textColorPrimary">@color/dark_text_primary</item>
+        <item name="android:textColorSecondary">@color/dark_text_secondary</item>
+    </style>
+    
+    <!-- Theme for Settings Activities with Custom Toolbar -->
+    <style name="Theme.SpeakThat.NoActionBar" parent="Theme.SpeakThat">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+</resources> 

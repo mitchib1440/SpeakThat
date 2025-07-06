@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?android:attr/windowBackground"
+    tools:context=".FilterSettingsActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/brand_primary"
+        android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.Material3.Light">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filter Settings"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- App List Filtering Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="@color/brand_primary_light"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📱 App List Filtering"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/brand_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Control which apps can trigger notifications"
+                        android:textSize="14sp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- App List Mode Selection -->
+                    <RadioGroup
+                        android:id="@+id/appListModeGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp">
+
+                        <RadioButton
+                            android:id="@+id/radioNone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No app filtering"
+                            android:checked="true" />
+
+                        <RadioButton
+                            android:id="@+id/radioWhitelist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Whitelist (only selected apps)"
+                            android:layout_marginTop="8dp" />
+
+                        <RadioButton
+                            android:id="@+id/radioBlacklist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Blacklist (exclude selected apps)"
+                            android:layout_marginTop="8dp" />
+
+                    </RadioGroup>
+
+                    <!-- App List Management -->
+                    <LinearLayout
+                        android:id="@+id/appListSection"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Manage Apps:"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="8dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <!-- App Search Section -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginBottom="8dp">
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginEnd="8dp"
+                                    app:boxBackgroundMode="outline"
+                                    app:boxStrokeColor="@color/brand_primary">
+
+                                    <AutoCompleteTextView
+                                        android:id="@+id/editAppName"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:minHeight="56dp"
+                                        android:hint="Search common apps or enter package name"
+                                        android:inputType="text"
+                                        android:completionThreshold="1"
+                                        android:dropDownHeight="200dp"
+                                        android:textSize="16sp"
+                                        android:paddingStart="16dp"
+                                        android:paddingEnd="16dp"
+                                        android:paddingTop="16dp"
+                                        android:paddingBottom="16dp" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnAddApp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Add"
+                                    android:backgroundTint="@color/brand_primary"
+                                    android:textColor="@color/white" />
+
+                            </LinearLayout>
+
+                            <!-- Manual Entry Option -->
+                            <TextView
+                                android:id="@+id/txtAppFilterHelp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="💡 Search shows common notification-heavy apps as shortcuts. You can enter any Android package name manually. (Tap for more info)"
+                                android:textSize="12sp"
+                                android:textColor="@color/brand_primary"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:padding="4dp"
+                                android:layout_marginBottom="8dp"
+                                android:clickable="true"
+                                android:focusable="true" />
+
+                        </LinearLayout>
+
+                        <!-- App List -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerAppList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:nestedScrollingEnabled="false" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Word Blacklist Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="@color/brand_primary_light"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🚫 Word Blacklist"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/brand_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Block or privatize notifications containing specific words"
+                        android:textSize="14sp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Add Word -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            app:boxBackgroundMode="outline"
+                            app:boxStrokeColor="@color/brand_primary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editBlacklistWord"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Word to blacklist"
+                                android:inputType="text" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Spinner
+                            android:id="@+id/spinnerBlacklistType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:minWidth="100dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAddBlacklistWord"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Add"
+                            android:backgroundTint="@color/brand_primary"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
+
+                    <!-- Word Blacklist -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerBlacklistWords"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Word Replacement Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="@color/brand_primary_light"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🔄 Word Replacement"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/brand_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Replace words in notifications for censoring or pronunciation fixes"
+                        android:textSize="14sp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Add Word Replacement -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            app:boxBackgroundMode="outline"
+                            app:boxStrokeColor="@color/brand_primary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editReplaceFrom"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Word to replace"
+                                android:inputType="text" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            app:boxBackgroundMode="outline"
+                            app:boxStrokeColor="@color/brand_primary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editReplaceTo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Replace with"
+                                android:inputType="text" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAddReplacement"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Add"
+                            android:backgroundTint="@color/brand_primary"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="💡 Tip: Use lowercase for case-insensitive matching"
+                        android:textSize="12sp"
+                        android:textColor="@color/brand_primary_dark"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- Word Replacements -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerWordReplacements"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout> 

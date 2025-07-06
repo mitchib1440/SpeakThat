@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:maxHeight="600dp">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/textHistoryTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notification History"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/brand_primary"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="?attr/colorSurface" />
+
+    <!-- Instructions -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tap '🚫 Filter Similar' to create smart filters for repetitive notifications"
+        android:textSize="12sp"
+        android:textColor="?android:attr/textColorSecondary"
+        android:gravity="center"
+        android:padding="8dp"
+        android:background="?attr/colorSurfaceVariant" />
+
+    <!-- Notifications List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerNotifications"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp"
+        android:scrollbars="vertical" />
+
+</LinearLayout> 

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/textAppName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="App Name"
+        android:textSize="16sp"
+        android:textColor="?android:attr/textColorPrimary"
+        android:layout_marginEnd="12dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="8dp" />
+
+    <CheckBox
+        android:id="@+id/checkBoxPrivate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Private"
+        android:textSize="14sp"
+        android:buttonTint="@color/brand_primary"
+        android:layout_marginEnd="8dp" />
+
+    <ImageButton
+        android:id="@+id/buttonRemove"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@android:drawable/ic_menu_delete"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Remove app"
+        android:tint="@android:color/holo_red_dark" />
+
+</LinearLayout> 
