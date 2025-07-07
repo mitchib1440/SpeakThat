@@ -4,11 +4,11 @@
     <string name="service_name">SpeakThat Notification Reader</string>
     <string name="permission_needed">Notification Access Required</string>
     <string name="permission_description">SpeakThat! needs access to your notifications to read them aloud. This permission is required for the app to function.</string>
-    <string name="open_settings">Open Settings</string>
+    <string name="open_settings">Open Notification Settings</string>
     <string name="service_enabled">Notification Reader: Enabled</string>
     <string name="service_disabled">Notification Reader: Disabled</string>
     <string name="show_history">Show Notification History</string>
-    <string name="settings">Settings</string>
+    <string name="settings">App Settings</string>
     <string name="no_notifications">No notifications to display</string>
     <string name="notification_history">Notification History</string>
     <string name="close">Close</string>

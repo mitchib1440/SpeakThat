@@ -72,6 +72,15 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
+        // Check if user has seen onboarding
+        if (!OnboardingActivity.hasSeenOnboarding(this)) {
+            // Start onboarding activity
+            val intent = Intent(this, OnboardingActivity::class.java)
+            startActivity(intent)
+            finish() // Close MainActivity
+            return
+        }
+        
         // Initialize crash-persistent logging first
         InAppLogger.initialize(this)
         

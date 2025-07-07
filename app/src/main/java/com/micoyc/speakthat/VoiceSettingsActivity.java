@@ -105,7 +105,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setTitle("Voice Settings");
         }
     }
 

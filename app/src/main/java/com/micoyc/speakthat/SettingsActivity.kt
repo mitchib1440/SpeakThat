@@ -27,7 +27,7 @@ class SettingsActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.title = "Settings"
+        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
     
     private fun setupClickListeners() {
@@ -57,6 +57,11 @@ class SettingsActivity : AppCompatActivity() {
         
         binding.cardSupportFeedback.setOnClickListener {
             showSupportDialog()
+        }
+        
+        binding.cardReRunOnboarding.setOnClickListener {
+            InAppLogger.logUserAction("Re-run onboarding selected")
+            startActivity(Intent(this, OnboardingActivity::class.java))
         }
     }
     

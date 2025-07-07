@@ -19,6 +19,12 @@
         android:theme="@style/Theme.SpeakThat"
         tools:targetApi="31">
 
+        <!-- Onboarding Activity -->
+        <activity
+            android:name=".OnboardingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+
         <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
