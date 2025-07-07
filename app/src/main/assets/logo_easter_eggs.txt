@@ -189,3 +189,4 @@ SpeakThat! Oh, I forgot to read you a notification that came from your bank acco
 SpeakThat! You should really lay off the TikTok. You know it's not good for you, right?
 SpeakThat! Did you know Apple doesn't allow movie villains to use iPhones? Tim Cook clearly wants to be the only one!
 SpeakThat! I can read a lot about a person based on their notifications! I bet that you're wearing something {RANDOM_COLOR}!
+SpeakThis! No.. wait.. that's not right.. SpeakThat!
