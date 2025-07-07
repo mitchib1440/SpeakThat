@@ -26,7 +26,7 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">
@@ -59,7 +59,7 @@
                         android:text="📱 App List Filtering"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/brand_primary"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -170,7 +170,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="💡 Search shows common notification-heavy apps as shortcuts. You can enter any Android package name manually. (Tap for more info)"
                                 android:textSize="12sp"
-                                android:textColor="@color/brand_primary"
+                                android:textColor="?android:attr/textColorPrimary"
                                 android:background="?android:attr/selectableItemBackground"
                                 android:padding="4dp"
                                 android:layout_marginBottom="8dp"
@@ -216,7 +216,7 @@
                         android:text="🚫 Word Blacklist"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/brand_primary"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -258,22 +258,24 @@
                             android:layout_marginEnd="8dp"
                             android:minWidth="100dp" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnAddBlacklistWord"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Add"
-                            android:backgroundTint="@color/brand_primary"
-                            android:textColor="@color/white" />
-
                     </LinearLayout>
 
                     <!-- Word Blacklist -->
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnAddBlacklistWord"
+                        android:layout_width="347dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/brand_primary"
+                        android:text="Add"
+                        android:textColor="@color/white" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerBlacklistWords"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false" />
+                        android:minHeight="50dp"
+                        android:nestedScrollingEnabled="true" />
 
                 </LinearLayout>
 
@@ -302,7 +304,7 @@
                         android:text="🔄 Word Replacement"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/brand_primary"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -369,7 +371,7 @@
                         android:layout_height="wrap_content"
                         android:text="💡 Tip: Use lowercase for case-insensitive matching"
                         android:textSize="12sp"
-                        android:textColor="@color/brand_primary_dark"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:layout_marginBottom="12dp" />
 
                     <!-- Word Replacements -->
@@ -387,6 +389,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout> 

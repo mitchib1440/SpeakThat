@@ -53,4 +53,7 @@
     
     <!-- Error color -->
     <color name="error">@color/red_500</color>
+    
+    <!-- New accessible text color palette for light mode -->
+    <color name="text_tertiary">#2B2A29</color>
 </resources> 

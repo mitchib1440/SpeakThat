@@ -32,7 +32,7 @@
                 android:text="App Name"
                 android:textStyle="bold"
                 android:textSize="14sp"
-                android:textColor="@color/brand_primary" />
+                android:textColor="?android:attr/textColorPrimary" />
 
             <TextView
                 android:id="@+id/textTimestamp"
@@ -71,7 +71,7 @@
                 android:textSize="12sp"
                 android:minWidth="120dp"
                 android:backgroundTint="@color/brand_primary_light"
-                android:textColor="@color/brand_primary" />
+                android:textColor="?android:attr/textColorPrimary" />
 
         </LinearLayout>
 

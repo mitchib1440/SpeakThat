@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="text_primary">#FFFFFF</color>   <!-- White 100 -->
+    <color name="text_secondary">#DFD9E6</color> <!-- White 200 -->
+    <color name="text_tertiary">#9A969F</color>  <!-- White 300 --> 
+</resources> 

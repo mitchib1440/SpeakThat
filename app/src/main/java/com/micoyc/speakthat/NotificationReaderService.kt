@@ -430,7 +430,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         // 2. Apply word filtering and replacements
-        val wordFilterResult = applyWordFiltering(text)
+        val wordFilterResult = applyWordFiltering(text, appName)
         if (!wordFilterResult.shouldSpeak) {
             return wordFilterResult
         }
@@ -468,7 +468,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
-    private fun applyWordFiltering(text: String): FilterResult {
+    private fun applyWordFiltering(text: String, appName: String): FilterResult {
         var processedText = text
         
         // 1. Check for blocked words (including smart filters)
@@ -478,15 +478,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         }
         
-        // 2. Check for private words and replace with [PRIVATE] (including smart filters)
+        // 2. Check for private words and replace entire notification with [PRIVATE] (including smart filters)
         for (privateWord in privateWords) {
             if (matchesWordFilter(processedText, privateWord)) {
-                // For smart patterns, we need to replace the actual matched content, not just the rule
-                processedText = if (privateWord.contains("[") || (privateWord.contains(" ") && privateWord.equals(privateWord.toLowerCase()))) {
-                    "[PRIVATE]" // For complex patterns, just replace entire text with [PRIVATE]
-                } else {
-                    processedText.replace(privateWord, "[PRIVATE]", ignoreCase = true)
-                }
+                // When any private word is detected, replace the entire notification text with a private message
+                // This ensures complete privacy - no partial content is revealed
+                processedText = "You received a private notification from $appName"
+                Log.d(TAG, "Private word '$privateWord' detected - entire notification made private")
+                InAppLogger.logFilter("Made notification private due to word: $privateWord")
+                break // Exit loop since entire text is now private
             }
         }
         
@@ -856,8 +856,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             pendingReadoutRunnable = null
         }
         
-        // Format: "AppName notified you: notification content"
-        val speechText = "$appName notified you: $text"
+        // Format: "AppName notified you: notification content" (unless it's already a private message)
+        val speechText = if (text.startsWith("You received a private notification from")) {
+            text // Private messages already include the app name, so don't add prefix
+        } else {
+            "$appName notified you: $text"
+        }
         
         // Determine which delay to use (conditional delay overrides global delay)
         val effectiveDelay = if (conditionalDelaySeconds > 0) {

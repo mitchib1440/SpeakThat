@@ -103,7 +103,7 @@
                          android:layout_height="wrap_content"
                          android:text="Priority 5"
                          android:textSize="10sp"
-                         android:textColor="@color/white"
+                         android:textColor="?attr/textColorTertiary"
                          android:textStyle="bold"
                          tools:text="Priority 10" />
 
@@ -142,7 +142,7 @@
                          android:layout_height="wrap_content"
                          android:text="2 conditions"
                          android:textSize="10sp"
-                         android:textColor="@color/white"
+                         android:textColor="?attr/textColorTertiary"
                          android:textStyle="bold"
                          tools:text="3 conditions" />
 
@@ -180,7 +180,7 @@
                          android:layout_height="wrap_content"
                          android:text="1 action"
                          android:textSize="10sp"
-                         android:textColor="@color/white"
+                         android:textColor="?attr/textColorTertiary"
                          android:textStyle="bold"
                          tools:text="2 actions" />
 
@@ -215,7 +215,7 @@
                 android:layout_height="32dp"
                 android:text="🗑️"
                 android:textSize="14sp"
-                android:textColor="@color/brand_primary"
+                android:textColor="?android:attr/textColorPrimary"
                 android:backgroundTint="@color/white"
                 android:strokeColor="@color/brand_primary"
                 android:strokeWidth="1"

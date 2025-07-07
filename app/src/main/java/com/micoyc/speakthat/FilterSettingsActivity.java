@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.AutoCompleteTextView;
 import android.view.Menu;
@@ -174,6 +175,11 @@ public class FilterSettingsActivity extends AppCompatActivity {
         wordBlacklistAdapter = new WordListAdapter(wordBlacklistItems, this::removeBlacklistWord, this::onWordTypeChange, this::editBlacklistWord);
         binding.recyclerBlacklistWords.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerBlacklistWords.setAdapter(wordBlacklistAdapter);
+        
+        // Force the RecyclerView to measure itself properly
+        binding.recyclerBlacklistWords.post(() -> {
+            binding.recyclerBlacklistWords.requestLayout();
+        });
     }
 
     private void setupWordReplacementRecycler() {
@@ -221,7 +227,21 @@ public class FilterSettingsActivity extends AppCompatActivity {
         for (String word : privateWords) {
             wordBlacklistItems.add(new WordFilterItem(word, true)); // true = make private
         }
+        
+        Log.d("FilterSettings", "Loaded " + wordBlacklistItems.size() + " blacklist items");
         wordBlacklistAdapter.notifyDataSetChanged();
+        
+        // Force layout refresh to ensure all items are visible
+        binding.recyclerBlacklistWords.post(() -> {
+            Log.d("FilterSettings", "Forcing layout refresh for " + wordBlacklistItems.size() + " items");
+            wordBlacklistAdapter.notifyDataSetChanged();
+            binding.recyclerBlacklistWords.requestLayout();
+            binding.recyclerBlacklistWords.invalidate();
+            
+            // Additional fix for ScrollView + RecyclerView measurement issues
+            binding.recyclerBlacklistWords.getLayoutManager().requestLayout();
+            binding.recyclerBlacklistWords.getParent().requestLayout();
+        });
 
         // Load word replacements
         String replacementData = sharedPreferences.getString(KEY_WORD_REPLACEMENTS, "");
@@ -304,6 +324,15 @@ public class FilterSettingsActivity extends AppCompatActivity {
         wordBlacklistAdapter.notifyDataSetChanged();
         binding.editBlacklistWord.setText("");
         saveWordBlacklist();
+        
+        // Force layout refresh to ensure new item is visible
+        binding.recyclerBlacklistWords.post(() -> {
+            wordBlacklistAdapter.notifyDataSetChanged();
+            binding.recyclerBlacklistWords.requestLayout();
+            binding.recyclerBlacklistWords.getLayoutManager().requestLayout();
+            binding.recyclerBlacklistWords.getParent().requestLayout();
+        });
+        
         // Always reload from storage to ensure UI and storage are in sync
         loadSettings();
     }
@@ -312,6 +341,14 @@ public class FilterSettingsActivity extends AppCompatActivity {
         wordBlacklistItems.remove(position);
         wordBlacklistAdapter.notifyDataSetChanged();
         saveWordBlacklist();
+        
+        // Force layout refresh to ensure proper rendering
+        binding.recyclerBlacklistWords.post(() -> {
+            wordBlacklistAdapter.notifyDataSetChanged();
+            binding.recyclerBlacklistWords.requestLayout();
+            binding.recyclerBlacklistWords.getLayoutManager().requestLayout();
+            binding.recyclerBlacklistWords.getParent().requestLayout();
+        });
     }
 
     private void onWordTypeChange(int position, boolean isPrivate) {

@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="When "
-            android:textColor="@color/text_secondary"
+            android:textColor="?android:attr/textColorSecondary"
             android:textSize="14sp" />
 
         <Spinner
@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="✕"
-            android:textColor="@color/white"
+            android:textColor="?attr/textColorTertiary"
             android:textSize="18sp"
             android:textStyle="bold"
             android:minWidth="40dp"

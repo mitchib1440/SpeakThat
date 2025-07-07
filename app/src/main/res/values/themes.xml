@@ -15,8 +15,9 @@
         <item name="android:windowBackground">@color/light_background</item>
         <item name="colorSurface">@color/light_surface</item>
         <item name="colorOnSurface">@color/light_text_primary</item>
-        <item name="android:textColorPrimary">@color/light_text_primary</item>
-        <item name="android:textColorSecondary">@color/light_text_secondary</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="textColorTertiary">@color/text_tertiary</item>
     </style>
 
     <style name="Theme.SpeakThat" parent="Base.Theme.SpeakThat" />

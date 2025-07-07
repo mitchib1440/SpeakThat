@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text=" → "
             android:textSize="16sp"
-            android:textColor="@color/brand_primary"
+            android:textColor="?android:attr/textColorSecondary"
             android:textStyle="bold"
             android:layout_marginHorizontal="8dp" />
 
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:text="To"
             android:textSize="16sp"
-            android:textColor="@color/brand_primary"
+            android:textColor="?android:attr/textColorPrimary"
             android:textStyle="bold"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
