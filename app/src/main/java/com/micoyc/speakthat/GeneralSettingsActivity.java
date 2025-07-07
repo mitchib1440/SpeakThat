@@ -2,6 +2,7 @@ package com.micoyc.speakthat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -27,6 +28,9 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         binding = ActivityGeneralSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Configure system UI for proper insets handling
+        configureSystemUI();
+
         // Set up toolbar
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null) {
@@ -46,6 +50,11 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+    }
+
+    private void configureSystemUI() {
+        // Ensure the app respects system UI areas
+        getWindow().setDecorFitsSystemWindows(true);
     }
 
     private void initializeDarkModeSwitch() {

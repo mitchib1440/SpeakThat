@@ -19,6 +19,9 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
+        // Configure system UI for proper insets handling
+        configureSystemUI()
+        
         setupToolbar()
         setupClickListeners()
     }
@@ -68,6 +71,24 @@ class SettingsActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+    
+    private fun configureSystemUI() {
+        // Ensure the app respects system UI areas
+        window.setDecorFitsSystemWindows(true)
+        
+        // Set up proper window insets handling for modern Android
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            // For Android 11+ (API 30+), use the new window insets API
+            window.setDecorFitsSystemWindows(true)
+        } else {
+            // For older versions, ensure proper system UI flags
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = (
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            )
+        }
     }
     
     private fun showSupportDialog() {

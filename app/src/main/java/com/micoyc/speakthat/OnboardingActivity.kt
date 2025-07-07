@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.viewpager2.widget.ViewPager2
 import com.micoyc.speakthat.databinding.ActivityOnboardingBinding
 
@@ -27,6 +28,7 @@ class OnboardingActivity : AppCompatActivity() {
     }
     
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         super.onCreate(savedInstanceState)
         
         // Initialize SharedPreferences
@@ -35,6 +37,9 @@ class OnboardingActivity : AppCompatActivity() {
         // Initialize view binding
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Configure system UI for proper insets handling
+        configureSystemUI()
 
         // Determine if we should skip the permission page
         skipPermissionPage = isNotificationServiceEnabled()
@@ -96,6 +101,24 @@ class OnboardingActivity : AppCompatActivity() {
         
         // Set initial button text
         updateButtonText(0, adapter.itemCount)
+    }
+    
+    private fun configureSystemUI() {
+        // Ensure the app respects system UI areas
+        window.setDecorFitsSystemWindows(true)
+        
+        // Set up proper window insets handling for modern Android
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            // For Android 11+ (API 30+), use the new window insets API
+            window.setDecorFitsSystemWindows(true)
+        } else {
+            // For older versions, ensure proper system UI flags
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = (
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            )
+        }
     }
     
     private fun setupPageIndicator(pageCount: Int) {

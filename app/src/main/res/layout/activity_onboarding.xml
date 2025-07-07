@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?android:attr/windowBackground">
+    android:background="@drawable/onboarding_background"
+    android:fitsSystemWindows="true">
 
     <!-- Skip button -->
     <TextView
@@ -14,7 +15,7 @@
         android:layout_gravity="end"
         android:layout_margin="16dp"
         android:text="Skip"
-        android:textColor="?attr/colorPrimary"
+        android:textColor="?android:textColorPrimary"
         android:textSize="16sp"
         android:padding="8dp"
         android:background="?android:attr/selectableItemBackground"

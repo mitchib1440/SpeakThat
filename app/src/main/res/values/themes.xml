@@ -12,12 +12,17 @@
         <item name="colorOnSecondary">@color/white</item>
         <!-- Light theme colors -->
         <item name="android:statusBarColor">@color/brand_primary_dark</item>
+        <item name="android:navigationBarColor">@color/brand_primary_dark</item>
         <item name="android:windowBackground">@color/light_background</item>
         <item name="colorSurface">@color/light_surface</item>
         <item name="colorOnSurface">@color/light_text_primary</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColorSecondary">@color/text_secondary</item>
         <item name="textColorTertiary">@color/text_tertiary</item>
+        <!-- System UI handling -->
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
     <style name="Theme.SpeakThat" parent="Base.Theme.SpeakThat" />

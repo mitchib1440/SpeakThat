@@ -12,12 +12,17 @@
         <item name="colorOnSecondary">@color/white</item>
         <!-- Dark theme colors with your custom background -->
         <item name="android:statusBarColor">@color/brand_primary_dark</item>
+        <item name="android:navigationBarColor">@color/brand_primary_dark</item>
         <item name="android:windowBackground">@color/dark_background</item>
         <item name="colorSurface">@color/dark_surface</item>
         <item name="colorOnSurface">@color/dark_text_primary</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColorSecondary">@color/text_secondary</item>
         <item name="textColorTertiary">@color/text_tertiary</item>
+        <!-- System UI handling -->
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
     
     <!-- Theme for Settings Activities with Custom Toolbar -->
