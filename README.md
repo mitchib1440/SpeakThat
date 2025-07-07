@@ -26,19 +26,18 @@
 - **Customizable voice settings:**
   - Change speech rate, pitch, and voice
   - Preview voice output
-- **Dark and light mode support**
-- **Easter eggs and personality!**
-  - Fun, dynamic messages when you tap the logo
 - **No ads, no tracking, no nonsense**
-
+  - Open source for total transparency
+  - Free to download here on GitHub
+  - Support me by purchasing from [Google Play](https://play.google.com/store/apps/details?id=com.micoyc.speakthat)!
 ---
 
 ## 📲 Getting Started
 
-1. **Clone or download this repository**
-2. **Open in Android Studio**
-3. **Build and run on your device or emulator**
-4. **Follow the onboarding flow** to grant notification access and set your privacy preferences
+1. Download the APK and save it to your phone
+2. Tap the APK to install it (You may be prompted to grant install permissions if you haven't already)
+3. Android will scan the app to make sure it is safe, and it will be installed on your device
+4. Run the app and complete the setup
 
 ---
 
@@ -57,25 +56,14 @@
 
 ---
 
-## 🧑‍💻 Contributing
-Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.
-
-1. Fork the repo
-2. Create your feature branch (`git checkout -b feature/YourFeature`)
-3. Commit your changes (`git commit -am 'Add new feature'`)
-4. Push to the branch (`git push origin feature/YourFeature`)
-5. Open a Pull Request
-
----
-
 ## 📢 Feedback & Support
-- Found a bug? Have a feature request? [Open an issue](https://github.com/yourusername/SpeakThat/issues)
+- Found a bug? Have a feature request? [Open an issue](https://github.com/mitchib1440/SpeakThat/issues)
 - For support, use the in-app "Support & Feedback" option or email the developer
 
 ---
 
 ## 📃 License
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+This project is licensed under the GPL-3.0 License. See [LICENSE](https://github.com/mitchib1440/SpeakThat/blob/main/LICENSE) for details.
 
 ---
 
