@@ -189,8 +189,10 @@ class MediaNotificationDetector {
             val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
             val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
             val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
+            val summaryText = extras.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString() ?: ""
+            val infoText = extras.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString() ?: ""
             
-            val fullText = "$title $text $bigText".lowercase()
+            val fullText = "$title $text $bigText $summaryText $infoText".lowercase()
             
             // Check for media control patterns
             for (pattern in MEDIA_CONTROL_PATTERNS) {
@@ -293,8 +295,10 @@ class MediaNotificationDetector {
             val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
             val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
             val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
+            val summaryText = extras.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString() ?: ""
+            val infoText = extras.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString() ?: ""
             
-            val fullText = "$title $text $bigText".lowercase()
+            val fullText = "$title $text $bigText $summaryText $infoText".lowercase()
             
             for (keyword in importantKeywords) {
                 if (fullText.contains(keyword.lowercase())) {

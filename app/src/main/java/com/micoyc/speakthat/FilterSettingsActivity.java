@@ -69,6 +69,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private static final String KEY_WORD_BLACKLIST = "word_blacklist";
     private static final String KEY_WORD_BLACKLIST_PRIVATE = "word_blacklist_private";
     private static final String KEY_WORD_REPLACEMENTS = "word_replacements";
+    private static final String KEY_DEFAULTS_INITIALIZED = "defaults_initialized";
     
     // Media notification filtering keys
     private static final String KEY_MEDIA_FILTERING_ENABLED = "media_filtering_enabled";
@@ -191,6 +192,14 @@ public class FilterSettingsActivity extends AppCompatActivity {
             saveMediaFilteringEnabled(isChecked);
         });
         
+        // Set up collapsible advanced options
+        binding.advancedOptionsHeader.setOnClickListener(v -> toggleAdvancedOptions());
+        
+        // Set up collapsible sections
+        binding.appListHeader.setOnClickListener(v -> toggleAppList());
+        binding.blacklistHeader.setOnClickListener(v -> toggleBlacklist());
+        binding.replacementHeader.setOnClickListener(v -> toggleReplacement());
+        
         // Set up media excepted app input field
         setupMediaExceptedAppSelector();
     }
@@ -269,6 +278,11 @@ public class FilterSettingsActivity extends AppCompatActivity {
     }
 
     private void loadSettings() {
+        // Initialize defaults if this is the first time
+        initializeDefaultWordBlacklist();
+        initializeDefaultMediaKeywords();
+        initializeDefaultMediaExceptionApps();
+        
         // Load app list mode
         String appListMode = sharedPreferences.getString(KEY_APP_LIST_MODE, "none");
         switch (appListMode) {
@@ -295,6 +309,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
             appList.add(new AppFilterItem(app, privateApps.contains(app)));
         }
         appListAdapter.notifyDataSetChanged();
+        updateCountDisplays();
 
         // Load word blacklist
         Set<String> blacklistWords = sharedPreferences.getStringSet(KEY_WORD_BLACKLIST, new HashSet<>());
@@ -315,6 +330,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         binding.recyclerBlacklistWords.post(() -> {
             Log.d("FilterSettings", "Forcing layout refresh for " + wordBlacklistItems.size() + " items");
             wordBlacklistAdapter.notifyDataSetChanged();
+            updateCountDisplays();
             binding.recyclerBlacklistWords.requestLayout();
             binding.recyclerBlacklistWords.invalidate();
             
@@ -336,9 +352,10 @@ public class FilterSettingsActivity extends AppCompatActivity {
             }
         }
         wordReplacementAdapter.notifyDataSetChanged();
+        updateCountDisplays();
         
         // Load media notification filtering settings
-        boolean isMediaFilteringEnabled = sharedPreferences.getBoolean(KEY_MEDIA_FILTERING_ENABLED, false);
+        boolean isMediaFilteringEnabled = sharedPreferences.getBoolean(KEY_MEDIA_FILTERING_ENABLED, true); // Default to enabled
         binding.switchMediaFiltering.setChecked(isMediaFilteringEnabled);
         binding.mediaFilteringSection.setVisibility(isMediaFilteringEnabled ? View.VISIBLE : View.GONE);
         
@@ -361,6 +378,204 @@ public class FilterSettingsActivity extends AppCompatActivity {
             mediaImportantKeywordsList.add(new WordFilterItem(keyword, mediaImportantKeywordsPrivate.contains(keyword)));
         }
         mediaImportantKeywordsAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Initialize default word blacklist entries for common notification patterns
+     * that most users would want filtered out by default.
+     */
+    private void initializeDefaultWordBlacklist() {
+        // Check if defaults have already been initialized
+        boolean defaultsInitialized = sharedPreferences.getBoolean(KEY_DEFAULTS_INITIALIZED, false);
+        if (defaultsInitialized) {
+            return;
+        }
+
+        // Get existing blacklist words to avoid duplicates
+        Set<String> existingBlockWords = sharedPreferences.getStringSet(KEY_WORD_BLACKLIST, new HashSet<>());
+        Set<String> existingPrivateWords = sharedPreferences.getStringSet(KEY_WORD_BLACKLIST_PRIVATE, new HashSet<>());
+        
+        // Create new sets to avoid modifying the existing ones
+        Set<String> newBlockWords = new HashSet<>(existingBlockWords);
+        Set<String> newPrivateWords = new HashSet<>(existingPrivateWords);
+
+        // System/Background notifications (block entirely)
+        String[] systemWords = {
+            "syncing new emails", "post sent", "updating location", 
+            "sync complete", "sync finished", "now playing",
+            "location updated", "location sharing", "location services"
+        };
+
+        // Media/Entertainment notifications (block entirely)
+        String[] mediaWords = {
+            "now playing", "media controls", "playback controls"
+        };
+
+        // Location/Safety notifications (block entirely)
+        String[] locationWords = {
+            "location updated", "location sharing", "location services"
+        };
+
+        // Battery/Power notifications (block entirely)
+        String[] batteryWords = {
+            // Removed generic terms that could appear in conversation
+        };
+
+        // Network/Connectivity notifications (block entirely)
+        String[] networkWords = {
+            // Removed generic terms that could appear in conversation
+        };
+
+        // Add all system words to block list
+        for (String word : systemWords) {
+            if (!newBlockWords.contains(word) && !newPrivateWords.contains(word)) {
+                newBlockWords.add(word);
+            }
+        }
+
+        // Add all media words to block list
+        for (String word : mediaWords) {
+            if (!newBlockWords.contains(word) && !newPrivateWords.contains(word)) {
+                newBlockWords.add(word);
+            }
+        }
+
+        // Add all location words to block list
+        for (String word : locationWords) {
+            if (!newBlockWords.contains(word) && !newPrivateWords.contains(word)) {
+                newBlockWords.add(word);
+            }
+        }
+
+        // Add all battery words to block list
+        for (String word : batteryWords) {
+            if (!newBlockWords.contains(word) && !newPrivateWords.contains(word)) {
+                newBlockWords.add(word);
+            }
+        }
+
+        // Add all network words to block list
+        for (String word : networkWords) {
+            if (!newBlockWords.contains(word) && !newPrivateWords.contains(word)) {
+                newBlockWords.add(word);
+            }
+        }
+
+        // Save the updated blacklist
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putStringSet(KEY_WORD_BLACKLIST, newBlockWords);
+        editor.putStringSet(KEY_WORD_BLACKLIST_PRIVATE, newPrivateWords);
+        editor.putBoolean(KEY_DEFAULTS_INITIALIZED, true);
+        editor.apply();
+
+        Log.d("FilterSettings", "Initialized default word blacklist with " + 
+              (newBlockWords.size() - existingBlockWords.size()) + " new entries");
+    }
+
+    /**
+     * Initialize default media filtering important keywords that indicate
+     * important notifications that should not be filtered even during media playback.
+     */
+    private void initializeDefaultMediaKeywords() {
+        // Check if defaults have already been initialized
+        boolean defaultsInitialized = sharedPreferences.getBoolean(KEY_DEFAULTS_INITIALIZED, false);
+        if (defaultsInitialized) {
+            return;
+        }
+
+        // Get existing media important keywords
+        Set<String> existingKeywords = sharedPreferences.getStringSet(KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, new HashSet<>());
+        Set<String> existingPrivateKeywords = sharedPreferences.getStringSet(KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS + "_private", new HashSet<>());
+        
+        // Create new sets to avoid modifying the existing ones
+        Set<String> newKeywords = new HashSet<>(existingKeywords);
+        Set<String> newPrivateKeywords = new HashSet<>(existingPrivateKeywords);
+
+        // Keywords that indicate important notifications (not media controls)
+        String[] importantKeywords = {
+            "reply", "replied", "comment", "commented", "mention", "mentioned", 
+            "tag", "tagged", "share", "shared", "message", "messaged", 
+            "call", "called", "missed call", "urgent", "emergency", 
+            "alert", "warning", "error", "failed", "success", 
+            "completed", "finished", "new", "unread", "unopened", 
+            "pending", "scheduled"
+        };
+
+        // Add all important keywords
+        for (String keyword : importantKeywords) {
+            if (!newKeywords.contains(keyword) && !newPrivateKeywords.contains(keyword)) {
+                newKeywords.add(keyword);
+            }
+        }
+
+        // Save the updated keywords
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putStringSet(KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, newKeywords);
+        editor.putStringSet(KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS + "_private", newPrivateKeywords);
+        editor.apply();
+
+        Log.d("FilterSettings", "Initialized default media filtering keywords with " + 
+              (newKeywords.size() - existingKeywords.size()) + " new entries");
+    }
+
+    /**
+     * Initialize default media exception apps that should never have
+     * notifications filtered even during media playback.
+     */
+    private void initializeDefaultMediaExceptionApps() {
+        // Check if defaults have already been initialized
+        boolean defaultsInitialized = sharedPreferences.getBoolean(KEY_DEFAULTS_INITIALIZED, false);
+        if (defaultsInitialized) {
+            return;
+        }
+
+        // Get existing media exception apps
+        Set<String> existingApps = sharedPreferences.getStringSet(KEY_MEDIA_FILTER_EXCEPTED_APPS, new HashSet<>());
+        Set<String> existingPrivateApps = sharedPreferences.getStringSet(KEY_MEDIA_FILTER_EXCEPTED_APPS + "_private", new HashSet<>());
+        
+        // Create new sets to avoid modifying the existing ones
+        Set<String> newApps = new HashSet<>(existingApps);
+        Set<String> newPrivateApps = new HashSet<>(existingPrivateApps);
+
+        // Apps that commonly have important notifications that shouldn't be filtered
+        String[] exceptionApps = {
+            "com.whatsapp",           // WhatsApp - important messages
+            "com.facebook.orca",      // Facebook Messenger
+            "com.instagram.android",  // Instagram - DMs and comments
+            "com.twitter.android",    // Twitter - mentions and DMs
+            "com.google.android.gm",  // Gmail - important emails
+            "com.microsoft.office.outlook", // Outlook
+            "com.skype.raider",       // Skype
+            "com.discord",            // Discord
+            "com.telegram.messenger", // Telegram
+            "com.snapchat.android",   // Snapchat
+            "com.google.android.apps.messaging", // Android Messages
+            "com.android.phone",      // Phone app
+            "com.android.incallui",   // In-call UI
+            "com.android.server.telecom", // Telecom service
+            "com.android.contacts",   // Contacts
+            "com.android.calendar",   // Calendar
+            "com.google.android.calendar", // Google Calendar
+            "com.android.alarmclock", // Clock/Alarm
+            "com.google.android.apps.clock", // Google Clock
+            "com.android.systemui"    // System UI (calls, etc.)
+        };
+
+        // Add all exception apps
+        for (String app : exceptionApps) {
+            if (!newApps.contains(app) && !newPrivateApps.contains(app)) {
+                newApps.add(app);
+            }
+        }
+
+        // Save the updated exception apps
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putStringSet(KEY_MEDIA_FILTER_EXCEPTED_APPS, newApps);
+        editor.putStringSet(KEY_MEDIA_FILTER_EXCEPTED_APPS + "_private", newPrivateApps);
+        editor.apply();
+
+        Log.d("FilterSettings", "Initialized default media exception apps with " + 
+              (newApps.size() - existingApps.size()) + " new entries");
     }
 
     private void addApp() {
@@ -398,6 +613,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
 
         appList.add(new AppFilterItem(packageNameToAdd, false));
         appListAdapter.notifyDataSetChanged();
+        updateCountDisplays();
         editAppName.setText("");
         saveAppList();
     }
@@ -405,6 +621,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private void removeApp(int position) {
         appList.remove(position);
         appListAdapter.notifyDataSetChanged();
+        updateCountDisplays();
         saveAppList();
     }
 
@@ -412,6 +629,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         AppFilterItem item = appList.get(position);
         item.isPrivate = !item.isPrivate;
         appListAdapter.notifyDataSetChanged();
+        updateCountDisplays();
         saveAppList();
     }
 
@@ -444,6 +662,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
 
         wordBlacklistItems.add(new WordFilterItem(word, isPrivate));
         wordBlacklistAdapter.notifyDataSetChanged();
+        updateCountDisplays();
         binding.editBlacklistWord.setText("");
         saveWordBlacklist();
         
@@ -462,6 +681,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private void removeBlacklistWord(int position) {
         wordBlacklistItems.remove(position);
         wordBlacklistAdapter.notifyDataSetChanged();
+        updateCountDisplays();
         saveWordBlacklist();
         
         // Force layout refresh to ensure proper rendering
@@ -484,8 +704,8 @@ public class FilterSettingsActivity extends AppCompatActivity {
         String from = binding.editReplaceFrom.getText().toString().trim();
         String to = binding.editReplaceTo.getText().toString().trim();
         
-        if (from.isEmpty() || to.isEmpty()) {
-            Toast.makeText(this, "Please fill both fields", Toast.LENGTH_SHORT).show();
+        if (from.isEmpty()) {
+            Toast.makeText(this, "Please enter a word or phrase to replace", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -503,6 +723,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
 
         wordReplacementItems.add(new WordReplacementItem(from, to));
         wordReplacementAdapter.notifyDataSetChanged();
+        updateCountDisplays();
         binding.editReplaceFrom.setText("");
         binding.editReplaceTo.setText("");
         
@@ -512,6 +733,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private void removeWordReplacement(int position) {
         wordReplacementItems.remove(position);
         wordReplacementAdapter.notifyDataSetChanged();
+        updateCountDisplays();
         saveWordReplacements();
     }
 
@@ -845,8 +1067,8 @@ public class FilterSettingsActivity extends AppCompatActivity {
             String newFrom = inputFrom.getText().toString().trim();
             String newTo = inputTo.getText().toString().trim();
             
-            if (newFrom.isEmpty() || newTo.isEmpty()) {
-                Toast.makeText(this, "Both fields must be filled", Toast.LENGTH_SHORT).show();
+            if (newFrom.isEmpty()) {
+                Toast.makeText(this, "Please enter a word or phrase to replace", Toast.LENGTH_SHORT).show();
                 return;
             }
             
@@ -975,6 +1197,73 @@ public class FilterSettingsActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_MEDIA_FILTERING_ENABLED, enabled);
         editor.apply();
+    }
+    
+    private void toggleAdvancedOptions() {
+        boolean isVisible = binding.advancedOptionsContent.getVisibility() == View.VISIBLE;
+        
+        if (isVisible) {
+            // Collapse
+            binding.advancedOptionsContent.setVisibility(View.GONE);
+            binding.iconAdvancedOptions.setImageResource(android.R.drawable.arrow_down_float);
+        } else {
+            // Expand
+            binding.advancedOptionsContent.setVisibility(View.VISIBLE);
+            binding.iconAdvancedOptions.setImageResource(android.R.drawable.arrow_up_float);
+        }
+    }
+
+    private void toggleAppList() {
+        boolean isVisible = binding.appListContent.getVisibility() == View.VISIBLE;
+        
+        if (isVisible) {
+            // Collapse
+            binding.appListContent.setVisibility(View.GONE);
+            binding.iconAppList.setImageResource(android.R.drawable.arrow_down_float);
+        } else {
+            // Expand
+            binding.appListContent.setVisibility(View.VISIBLE);
+            binding.iconAppList.setImageResource(android.R.drawable.arrow_up_float);
+        }
+    }
+
+    private void toggleBlacklist() {
+        boolean isVisible = binding.blacklistContent.getVisibility() == View.VISIBLE;
+        
+        if (isVisible) {
+            // Collapse
+            binding.blacklistContent.setVisibility(View.GONE);
+            binding.iconBlacklist.setImageResource(android.R.drawable.arrow_down_float);
+        } else {
+            // Expand
+            binding.blacklistContent.setVisibility(View.VISIBLE);
+            binding.iconBlacklist.setImageResource(android.R.drawable.arrow_up_float);
+        }
+    }
+
+    private void toggleReplacement() {
+        boolean isVisible = binding.replacementContent.getVisibility() == View.VISIBLE;
+        
+        if (isVisible) {
+            // Collapse
+            binding.replacementContent.setVisibility(View.GONE);
+            binding.iconReplacement.setImageResource(android.R.drawable.arrow_down_float);
+        } else {
+            // Expand
+            binding.replacementContent.setVisibility(View.VISIBLE);
+            binding.iconReplacement.setImageResource(android.R.drawable.arrow_up_float);
+        }
+    }
+
+    private void updateCountDisplays() {
+        // Update app list count
+        binding.txtAppListCount.setText("(" + appList.size() + " apps)");
+        
+        // Update blacklist count
+        binding.txtBlacklistCount.setText("(" + wordBlacklistItems.size() + " words)");
+        
+        // Update replacement count
+        binding.txtReplacementCount.setText("(" + wordReplacementItems.size() + " replacements)");
     }
 
     @Override

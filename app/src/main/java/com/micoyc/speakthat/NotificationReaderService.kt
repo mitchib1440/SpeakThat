@@ -231,6 +231,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             if (notificationText.isNotEmpty()) {
                 Log.d(TAG, "New notification from $appName: $notificationText")
+                InAppLogger.logNotification("Processing notification from $appName: $notificationText")
                 
                 // Apply filtering
                 val filterResult = applyFilters(packageName, appName, notificationText, sbn)
@@ -309,13 +310,25 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
         val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
         val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
+        val summaryText = extras.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString() ?: ""
+        val infoText = extras.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString() ?: ""
         
-        // Use big text if available, otherwise combine title and text
+        // Log the available notification content for debugging
+        Log.d(TAG, "Notification content - Title: '$title', Text: '$text', BigText: '$bigText', Summary: '$summaryText', Info: '$infoText'")
+        
+        // Enhanced logic to ensure title is always included when available
+        // This fixes the issue where notifications with both title and bigText would lose the title
+        // The previous logic prioritized bigText over title, but bigText often doesn't include the title
         return when {
-            bigText.isNotEmpty() -> bigText
+            title.isNotEmpty() && bigText.isNotEmpty() -> "$title: $bigText"
             title.isNotEmpty() && text.isNotEmpty() -> "$title: $text"
+            title.isNotEmpty() && summaryText.isNotEmpty() -> "$title: $summaryText"
+            title.isNotEmpty() && infoText.isNotEmpty() -> "$title: $infoText"
+            bigText.isNotEmpty() -> bigText
             title.isNotEmpty() -> title
             text.isNotEmpty() -> text
+            summaryText.isNotEmpty() -> summaryText
+            infoText.isNotEmpty() -> infoText
             else -> ""
         }
     }

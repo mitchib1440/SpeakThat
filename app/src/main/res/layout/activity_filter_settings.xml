@@ -116,77 +116,127 @@
                             android:textStyle="bold"
                             android:layout_marginBottom="8dp" />
 
+                        <!-- App List Header (Collapsible) -->
                         <LinearLayout
+                            android:id="@+id/appListHeader"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_marginBottom="12dp">
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:padding="8dp"
+                            android:layout_marginBottom="8dp">
 
-                            <!-- App Search Section -->
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_marginBottom="8dp">
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:layout_marginEnd="8dp"
-                                    app:boxBackgroundMode="outline"
-                                    app:boxStrokeColor="@color/brand_primary">
-
-                                    <AutoCompleteTextView
-                                        android:id="@+id/editAppName"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:minHeight="56dp"
-                                        android:hint="Search apps or enter package name"
-                                        android:inputType="text"
-                                        android:completionThreshold="1"
-                                        android:dropDownHeight="200dp"
-                                        android:textSize="16sp"
-                                        android:paddingStart="16dp"
-                                        android:paddingEnd="16dp"
-                                        android:paddingTop="16dp"
-                                        android:paddingBottom="16dp" />
-
-                                </com.google.android.material.textfield.TextInputLayout>
-
-                                <com.google.android.material.button.MaterialButton
-                                    android:id="@+id/btnAddApp"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Add"
-                                    android:backgroundTint="@color/brand_primary"
-                                    android:textColor="@color/white" />
-
-                            </LinearLayout>
-
-                            <!-- Manual Entry Option -->
                             <TextView
-                                android:id="@+id/txtAppFilterHelp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="📋 App List"
+                                android:textStyle="bold"
+                                android:textSize="16sp"
+                                android:textColor="?android:attr/textColorPrimary" />
+
+                            <TextView
+                                android:id="@+id/txtAppListCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="💡 Search through thousands of apps by name, package, or category. Click a suggestion to add it instantly. (Tap for more info)"
+                                android:text="(0 apps)"
                                 android:textSize="12sp"
-                                android:textColor="?android:attr/textColorPrimary"
-                                android:background="?android:attr/selectableItemBackground"
-                                android:padding="4dp"
-                                android:layout_marginBottom="8dp"
-                                android:clickable="true"
-                                android:focusable="true" />
+                                android:textColor="?android:attr/textColorSecondary"
+                                android:layout_marginEnd="8dp" />
+
+                                                            <ImageView
+                                    android:id="@+id/iconAppList"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@android:drawable/arrow_up_float"
+                                    android:contentDescription="Toggle app list" />
 
                         </LinearLayout>
 
-                        <!-- App List -->
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerAppList"
+                        <!-- App List Content -->
+                        <LinearLayout
+                            android:id="@+id/appListContent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:nestedScrollingEnabled="false" />
+                            android:orientation="vertical"
+                            android:visibility="visible">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginBottom="12dp">
+
+                                <!-- App Search Section -->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_marginBottom="8dp">
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:layout_marginEnd="8dp"
+                                        app:boxBackgroundMode="outline"
+                                        app:boxStrokeColor="@color/brand_primary">
+
+                                        <AutoCompleteTextView
+                                            android:id="@+id/editAppName"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:minHeight="56dp"
+                                            android:hint="Search apps or enter package name"
+                                            android:inputType="text"
+                                            android:completionThreshold="1"
+                                            android:dropDownHeight="200dp"
+                                            android:textSize="16sp"
+                                            android:paddingStart="16dp"
+                                            android:paddingEnd="16dp"
+                                            android:paddingTop="16dp"
+                                            android:paddingBottom="16dp" />
+
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <com.google.android.material.button.MaterialButton
+                                        android:id="@+id/btnAddApp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Add"
+                                        android:backgroundTint="@color/brand_primary"
+                                        android:textColor="@color/white" />
+
+                                </LinearLayout>
+
+                                <!-- Manual Entry Option -->
+                                <TextView
+                                    android:id="@+id/txtAppFilterHelp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="💡 Search through thousands of apps by name, package, or category. Click a suggestion to add it instantly. (Tap for more info)"
+                                    android:textSize="12sp"
+                                    android:textColor="?android:attr/textColorPrimary"
+                                    android:background="?android:attr/selectableItemBackground"
+                                    android:padding="4dp"
+                                    android:layout_marginBottom="8dp"
+                                    android:clickable="true"
+                                    android:focusable="true" />
+
+                            </LinearLayout>
+
+                            <!-- App List -->
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/recyclerAppList"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:nestedScrollingEnabled="false" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -228,55 +278,105 @@
                         android:textColor="?android:attr/textColorSecondary"
                         android:layout_marginBottom="16dp" />
 
-                    <!-- Add Word -->
+                    <!-- Word Blacklist Header (Collapsible) -->
                     <LinearLayout
+                        android:id="@+id/blacklistHeader"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginBottom="12dp">
+                        android:gravity="center_vertical"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="8dp"
+                        android:layout_marginBottom="8dp">
 
-                        <com.google.android.material.textfield.TextInputLayout
+                        <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginEnd="8dp"
-                            app:boxBackgroundMode="outline"
-                            app:boxStrokeColor="@color/brand_primary">
+                            android:text="📋 Blacklisted Words"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:textColor="?android:attr/textColorPrimary" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/editBlacklistWord"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Word to blacklist"
-                                android:inputType="text" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <Spinner
-                            android:id="@+id/spinnerBlacklistType"
+                        <TextView
+                            android:id="@+id/txtBlacklistCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:minWidth="100dp" />
+                            android:text="(0 words)"
+                            android:textSize="12sp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:layout_marginEnd="8dp" />
+
+                                                    <ImageView
+                                android:id="@+id/iconBlacklist"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@android:drawable/arrow_up_float"
+                                android:contentDescription="Toggle blacklist" />
 
                     </LinearLayout>
 
-                    <!-- Word Blacklist -->
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnAddBlacklistWord"
-                        android:layout_width="347dp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/brand_primary"
-                        android:text="Add"
-                        android:textColor="@color/white" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerBlacklistWords"
+                    <!-- Word Blacklist Content -->
+                    <LinearLayout
+                        android:id="@+id/blacklistContent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="50dp"
-                        android:nestedScrollingEnabled="true" />
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <!-- Add Word -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="12dp">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="8dp"
+                                app:boxBackgroundMode="outline"
+                                app:boxStrokeColor="@color/brand_primary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/editBlacklistWord"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Word to blacklist"
+                                    android:inputType="text" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <Spinner
+                                android:id="@+id/spinnerBlacklistType"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:minWidth="100dp" />
+
+                        </LinearLayout>
+
+                        <!-- Word Blacklist -->
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAddBlacklistWord"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/brand_primary"
+                            android:text="Add"
+                            android:textColor="@color/white" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerBlacklistWords"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="50dp"
+                            android:nestedScrollingEnabled="true" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -316,71 +416,121 @@
                         android:textColor="?android:attr/textColorSecondary"
                         android:layout_marginBottom="16dp" />
 
-                    <!-- Add Word Replacement -->
+                    <!-- Word Replacement Header (Collapsible) -->
                     <LinearLayout
+                        android:id="@+id/replacementHeader"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginBottom="12dp">
+                        android:gravity="center_vertical"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="8dp"
+                        android:layout_marginBottom="8dp">
 
-                        <com.google.android.material.textfield.TextInputLayout
+                        <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginEnd="8dp"
-                            app:boxBackgroundMode="outline"
-                            app:boxStrokeColor="@color/brand_primary">
+                            android:text="📋 Word Replacements"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:textColor="?android:attr/textColorPrimary" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/editReplaceFrom"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Word to replace"
-                                android:inputType="text" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="8dp"
-                            app:boxBackgroundMode="outline"
-                            app:boxStrokeColor="@color/brand_primary">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/editReplaceTo"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Replace with"
-                                android:inputType="text" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnAddReplacement"
+                        <TextView
+                            android:id="@+id/txtReplacementCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Add"
-                            android:backgroundTint="@color/brand_primary"
-                            android:textColor="@color/white" />
+                            android:text="(0 replacements)"
+                            android:textSize="12sp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:layout_marginEnd="8dp" />
+
+                                                    <ImageView
+                                android:id="@+id/iconReplacement"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@android:drawable/arrow_up_float"
+                                android:contentDescription="Toggle replacements" />
 
                     </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="💡 Tip: Use lowercase for case-insensitive matching"
-                        android:textSize="12sp"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:layout_marginBottom="12dp" />
-
-                    <!-- Word Replacements -->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerWordReplacements"
+                    <!-- Word Replacement Content -->
+                    <LinearLayout
+                        android:id="@+id/replacementContent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false" />
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <!-- Add Word Replacement -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="12dp">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="8dp"
+                                app:boxBackgroundMode="outline"
+                                app:boxStrokeColor="@color/brand_primary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/editReplaceFrom"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Word to replace"
+                                    android:inputType="text" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="8dp"
+                                app:boxBackgroundMode="outline"
+                                app:boxStrokeColor="@color/brand_primary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/editReplaceTo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Replace with (leave empty to remove)"
+                                    android:inputType="text" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnAddReplacement"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Add"
+                                android:backgroundTint="@color/brand_primary"
+                                android:textColor="@color/white" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="💡 Tip: Use lowercase for case-insensitive matching. Leave 'Replace with' empty to remove words entirely."
+                            android:textSize="12sp"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:layout_marginBottom="12dp" />
+
+                        <!-- Word Replacements -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerWordReplacements"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -452,133 +602,180 @@
                         android:orientation="vertical"
                         android:visibility="gone">
 
-                        <!-- Exception Apps -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Exception Apps:"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="8dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Apps that should never have notifications filtered (like YouTube for replies)"
-                            android:textSize="12sp"
-                            android:textColor="?android:attr/textColorSecondary"
-                            android:layout_marginBottom="8dp" />
-
+                        <!-- Advanced Options (Collapsible) -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
+                            android:orientation="vertical"
+                            android:layout_marginTop="16dp">
 
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="0dp"
+                            <LinearLayout
+                                android:id="@+id/advancedOptionsHeader"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginEnd="8dp"
-                                app:boxBackgroundMode="outline"
-                                app:boxStrokeColor="@color/brand_primary">
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:padding="8dp">
 
-                                <AutoCompleteTextView
-                                    android:id="@+id/editMediaExceptedApp"
-                                    android:layout_width="match_parent"
+                                <TextView
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:minHeight="56dp"
-                                    android:hint="Search apps or enter package name"
-                                    android:inputType="text"
-                                    android:completionThreshold="1"
-                                    android:dropDownHeight="200dp"
+                                    android:layout_weight="1"
+                                    android:text="⚙️ Advanced Options"
+                                    android:textStyle="bold"
                                     android:textSize="16sp"
-                                    android:paddingStart="16dp"
-                                    android:paddingEnd="16dp"
-                                    android:paddingTop="16dp"
-                                    android:paddingBottom="16dp" />
+                                    android:textColor="?android:attr/textColorPrimary" />
 
-                            </com.google.android.material.textfield.TextInputLayout>
+                                <ImageView
+                                    android:id="@+id/iconAdvancedOptions"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@android:drawable/arrow_down_float"
+                                    android:contentDescription="Toggle advanced options" />
 
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btnAddMediaExceptedApp"
-                                android:layout_width="wrap_content"
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/advancedOptionsContent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Add"
-                                android:backgroundTint="@color/brand_primary"
-                                android:textColor="@color/white" />
+                                android:orientation="vertical"
+                                android:visibility="gone">
 
-                        </LinearLayout>
+                                <!-- Exception Apps -->
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Exception Apps:"
+                                    android:textStyle="bold"
+                                    android:layout_marginBottom="8dp" />
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerMediaExceptedApps"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            android:minHeight="50dp"
-                            android:nestedScrollingEnabled="false" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Apps that should never have notifications filtered (like YouTube for replies)"
+                                    android:textSize="12sp"
+                                    android:textColor="?android:attr/textColorSecondary"
+                                    android:layout_marginBottom="8dp" />
 
-                        <!-- Important Keywords -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Important Keywords:"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="8dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Words that indicate important notifications (like 'reply', 'comment')"
-                            android:textSize="12sp"
-                            android:textColor="?android:attr/textColorSecondary"
-                            android:layout_marginBottom="8dp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginEnd="8dp"
-                                app:boxBackgroundMode="outline"
-                                app:boxStrokeColor="@color/brand_primary">
-
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/editMediaImportantKeyword"
+                                <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="Important keyword (e.g., reply, comment)"
-                                    android:inputType="text" />
+                                    android:orientation="horizontal"
+                                    android:layout_marginBottom="12dp">
 
-                            </com.google.android.material.textfield.TextInputLayout>
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:layout_marginEnd="8dp"
+                                        app:boxBackgroundMode="outline"
+                                        app:boxStrokeColor="@color/brand_primary">
 
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btnAddMediaImportantKeyword"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Add"
-                                android:backgroundTint="@color/brand_primary"
-                                android:textColor="@color/white" />
+                                        <AutoCompleteTextView
+                                            android:id="@+id/editMediaExceptedApp"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:minHeight="56dp"
+                                            android:hint="Search apps or enter package name"
+                                            android:inputType="text"
+                                            android:completionThreshold="1"
+                                            android:dropDownHeight="200dp"
+                                            android:textSize="16sp"
+                                            android:paddingStart="16dp"
+                                            android:paddingEnd="16dp"
+                                            android:paddingTop="16dp"
+                                            android:paddingBottom="16dp" />
+
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <com.google.android.material.button.MaterialButton
+                                        android:id="@+id/btnAddMediaExceptedApp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Add"
+                                        android:backgroundTint="@color/brand_primary"
+                                        android:textColor="@color/white" />
+
+                                </LinearLayout>
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recyclerMediaExceptedApps"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="16dp"
+                                    android:minHeight="50dp"
+                                    android:nestedScrollingEnabled="false" />
+
+                                <!-- Important Keywords -->
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Important Keywords:"
+                                    android:textStyle="bold"
+                                    android:layout_marginBottom="8dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Words that indicate important notifications (like 'reply', 'comment')"
+                                    android:textSize="12sp"
+                                    android:textColor="?android:attr/textColorSecondary"
+                                    android:layout_marginBottom="8dp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_marginBottom="12dp">
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:layout_marginEnd="8dp"
+                                        app:boxBackgroundMode="outline"
+                                        app:boxStrokeColor="@color/brand_primary">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/editMediaImportantKeyword"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:hint="Important keyword (e.g., reply, comment)"
+                                            android:inputType="text" />
+
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <com.google.android.material.button.MaterialButton
+                                        android:id="@+id/btnAddMediaImportantKeyword"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Add"
+                                        android:backgroundTint="@color/brand_primary"
+                                        android:textColor="@color/white" />
+
+                                </LinearLayout>
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recyclerMediaImportantKeywords"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:minHeight="50dp"
+                                    android:nestedScrollingEnabled="false" />
+
+                            </LinearLayout>
 
                         </LinearLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerMediaImportantKeywords"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:minHeight="50dp"
-                            android:nestedScrollingEnabled="false" />
 
                         <!-- Help Text -->
                         <TextView
                             android:id="@+id/txtMediaFilterHelp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="💡 Automatically detects media controls and filters them out while preserving important notifications. (Tap for more info)"
+                            android:text="💡 Enabled by default! Automatically filters out media controls while preserving important notifications. (Tap for more info)"
                             android:textSize="12sp"
                             android:textColor="?android:attr/textColorPrimary"
                             android:background="?android:attr/selectableItemBackground"
