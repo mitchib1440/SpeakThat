@@ -16,7 +16,10 @@ data class AppListData(
     @JvmField val category: String,
     
     @SerializedName("aliases")
-    @JvmField val aliases: List<String>
+    @JvmField val aliases: List<String>,
+
+    @SerializedName("iconSlug")
+    val iconSlug: String? = null
 ) {
     /**
      * Check if this app matches the given search query

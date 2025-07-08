@@ -265,24 +265,41 @@ public class FilterSettingsActivity extends AppCompatActivity {
     }
 
     private void addApp() {
-        String appName = editAppName.getText().toString().trim();
-        if (appName.isEmpty()) {
-            Toast.makeText(this, "Please enter an app name", Toast.LENGTH_SHORT).show();
+        String input = editAppName.getText().toString().trim();
+        if (input.isEmpty()) {
+            Toast.makeText(this, "Please enter an app name or package name", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Check for duplicates
         for (AppFilterItem item : appList) {
-            if (item.packageName.equals(appName)) {
+            if (item.packageName.equals(input)) {
                 Toast.makeText(this, "App already in list", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
 
-        appList.add(new AppFilterItem(appName, false));
+        // Try to match input to a known app in the JSON (by displayName or packageName)
+        AppListData matched = null;
+        for (AppListData app : AppListManager.INSTANCE.loadAppList(this)) {
+            if (app.displayName.equalsIgnoreCase(input) || app.packageName.equalsIgnoreCase(input)) {
+                matched = app;
+                break;
+            }
+        }
+        String packageNameToAdd = (matched != null) ? matched.packageName : input;
+
+        // Check for duplicates again (in case user entered displayName)
+        for (AppFilterItem item : appList) {
+            if (item.packageName.equals(packageNameToAdd)) {
+                Toast.makeText(this, "App already in list", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        appList.add(new AppFilterItem(packageNameToAdd, false));
         appListAdapter.notifyDataSetChanged();
         editAppName.setText("");
-        
         saveAppList();
     }
 

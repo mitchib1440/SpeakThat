@@ -46,6 +46,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.viewpager2)
     implementation(libs.gson)
+    implementation("io.coil-kt:coil:2.4.0")
+    implementation("io.coil-kt:coil-svg:2.4.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

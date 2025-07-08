@@ -10,6 +10,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
+import coil.load
+import coil.decode.SvgDecoder
 
 /**
  * Adapter for displaying app list items from JSON data in AutoCompleteTextView
@@ -33,9 +35,18 @@ class AppSearchAdapter(
         
         val app = getItem(position)
         if (app != null) {
-            // Set app icon (using default icon since we don't have actual app icons)
             val iconView = view.findViewById<ImageView>(R.id.appIcon)
-            iconView.setImageResource(R.drawable.ic_app_default)
+            val iconSlug = app.iconSlug
+            if (!iconSlug.isNullOrBlank()) {
+                val iconUrl = "https://cdn.simpleicons.org/${iconSlug}"
+                iconView.load(iconUrl) {
+                    decoderFactory { result, options, _ -> SvgDecoder(result.source, options) }
+                    placeholder(R.drawable.ic_app_unknown)
+                    error(R.drawable.ic_app_unknown)
+                }
+            } else {
+                iconView.setImageResource(R.drawable.ic_app_default)
+            }
             
             // Set app name
             val nameView = view.findViewById<TextView>(R.id.appName)
