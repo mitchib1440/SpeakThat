@@ -44,6 +44,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import com.micoyc.speakthat.AppListData;
+import com.micoyc.speakthat.AppListManager;
+import com.micoyc.speakthat.AppSearchAdapter;
 
 public class FilterSettingsActivity extends AppCompatActivity {
     private ActivityFilterSettingsBinding binding;
@@ -103,6 +106,9 @@ public class FilterSettingsActivity extends AppCompatActivity {
         
         initializeViews();
         initializeAppSelector();
+        
+        // Test the new JSON app list functionality
+        AppListTest.INSTANCE.testAppListLoading(this);
 
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
         repairBlacklistReceiver = new android.content.BroadcastReceiver() {
@@ -841,28 +847,70 @@ public class FilterSettingsActivity extends AppCompatActivity {
     }
 
     private void initializeAppSelector() {
-        // For now, just use a simple list of common apps
-        // TODO: Revisit full app detection in the future
-        installedApps = getCommonApps();
+        // Load apps from JSON file
+        List<AppListData> jsonApps = AppListManager.INSTANCE.loadAppList(this);
         
-        if (installedApps != null && !installedApps.isEmpty()) {
-            appSelectorAdapter = new AppAutoCompleteAdapter(this, installedApps);
-            editAppName.setAdapter(appSelectorAdapter);
+        if (jsonApps != null && !jsonApps.isEmpty()) {
+            // Create adapter with JSON data
+            AppSearchAdapter jsonAdapter = new AppSearchAdapter(this, jsonApps);
+            editAppName.setAdapter(jsonAdapter);
             editAppName.setThreshold(1); // Show suggestions after 1 character
+            
+            // Debug: Test the adapter
+            InAppLogger.log("AppSelector", "Adapter created with " + jsonApps.size() + " apps");
+            InAppLogger.log("AppSelector", "First few apps: " + 
+                (jsonApps.size() > 0 ? jsonApps.get(0).displayName : "none") + ", " +
+                (jsonApps.size() > 1 ? jsonApps.get(1).displayName : "none") + ", " +
+                (jsonApps.size() > 2 ? jsonApps.get(2).displayName : "none"));
             
             // Handle app selection
             editAppName.setOnItemClickListener((parent, view, position, id) -> {
-                AppInfo selectedApp = appSelectorAdapter.getItem(position);
+                AppListData selectedApp = jsonAdapter.getItem(position);
                 if (selectedApp != null) {
                     editAppName.setText(selectedApp.packageName);
                     editAppName.setSelection(selectedApp.packageName.length());
-                    InAppLogger.log("AppSelector", "Selected app: " + selectedApp.appName + " (" + selectedApp.packageName + ")");
+                    InAppLogger.log("AppSelector", "Selected app: " + selectedApp.displayName + " (" + selectedApp.packageName + ")");
                 }
             });
             
-            InAppLogger.log("AppSelector", "App selector initialized with " + installedApps.size() + " common apps");
+            // Test dropdown functionality
+            editAppName.setOnFocusChangeListener((v, hasFocus) -> {
+                if (hasFocus) {
+                    InAppLogger.log("AppSelector", "EditText focused - should show dropdown");
+                    // Force show dropdown with first few items
+                    editAppName.showDropDown();
+                }
+            });
+            
+            // Test: Add a button to manually trigger dropdown
+            binding.btnAddApp.setOnClickListener(v -> {
+                InAppLogger.log("AppSelector", "Add button clicked - testing dropdown");
+                editAppName.showDropDown();
+            });
+            
+            InAppLogger.log("AppSelector", "App selector initialized with " + jsonApps.size() + " apps from JSON");
         } else {
-            InAppLogger.logError("AppSelector", "No apps loaded for selector");
+            // Fallback to old system if JSON loading fails
+            installedApps = getCommonApps();
+            
+            if (installedApps != null && !installedApps.isEmpty()) {
+                appSelectorAdapter = new AppAutoCompleteAdapter(this, installedApps);
+                editAppName.setAdapter(appSelectorAdapter);
+                editAppName.setThreshold(1);
+                
+                editAppName.setOnItemClickListener((parent, view, position, id) -> {
+                    AppInfo selectedApp = appSelectorAdapter.getItem(position);
+                    if (selectedApp != null) {
+                        editAppName.setText(selectedApp.packageName);
+                        editAppName.setSelection(selectedApp.packageName.length());
+                        InAppLogger.log("AppSelector", "Selected app: " + selectedApp.appName + " (" + selectedApp.packageName + ")");
+                    }
+                });
+                
+                InAppLogger.log("AppSelector", "Fallback: App selector initialized with " + installedApps.size() + " common apps");
+            } else {
+                InAppLogger.logError("AppSelector", "No apps loaded for selector");
+            }
         }
     }
     
@@ -958,17 +1006,19 @@ public class FilterSettingsActivity extends AppCompatActivity {
         builder.setTitle("📱 App Filter Help")
                .setMessage("How App Filtering Works:\n\n" +
                           "🔍 Search Function:\n" +
-                          "• Shows common notification-heavy apps as shortcuts\n" +
+                          "• Search through thousands of apps by name, package, or category\n" +
                           "• You can type any Android package name manually\n" +
+                          "• Click a suggestion to instantly add the package name\n" +
                           "• Filtering works even if an app doesn't appear in search\n\n" +
                           
                           "📋 Package Names:\n" +
                           "• Find package names in: Settings → Apps → [App Name] → Advanced\n" +
-                          "• Examples: com.whatsapp, com.discord, com.google.android.apps.maps\n\n" +
+                          "• Examples: com.whatsapp, com.discord, com.google.android.apps.maps\n" +
+                          "• You can also search by app name (e.g., 'WhatsApp', 'Discord')\n\n" +
                           
                           "⚠️ Android 11+ Limitation:\n" +
                           "• Apps cannot see what's installed on your device\n" +
-                          "• Search shows common apps, but all package names work\n" +
+                          "• Search shows popular apps, but all package names work\n" +
                           "• This is an Android privacy feature, not a bug\n\n" +
                           
                           "✅ Filtering Effectiveness:\n" +

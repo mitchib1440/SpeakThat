@@ -1,0 +1,1490 @@
+[
+  {
+    "displayName": "WhatsApp Messenger",
+    "packageName": "com.whatsapp",
+    "category": "Messaging",
+    "aliases": ["whatsapp", "wa", "chat", "messenger"]
+  },
+  {
+    "displayName": "Facebook",
+    "packageName": "com.facebook.katana",
+    "category": "Social",
+    "aliases": ["facebook", "fb", "social media"]
+  },
+  {
+    "displayName": "Messenger",
+    "packageName": "com.facebook.orca",
+    "category": "Messaging",
+    "aliases": ["messenger", "fb messenger", "chat"]
+  },
+  {
+    "displayName": "Instagram",
+    "packageName": "com.instagram.android",
+    "category": "Social",
+    "aliases": ["instagram", "insta", "ig", "photo", "social media"]
+  },
+  {
+    "displayName": "X",
+    "packageName": "com.twitter.android",
+    "category": "Social",
+    "aliases": ["x", "twitter", "tweet", "social media"]
+  },
+  {
+    "displayName": "YouTube",
+    "packageName": "com.google.android.youtube",
+    "category": "Entertainment",
+    "aliases": ["youtube", "yt", "video", "streaming"]
+  },
+  {
+    "displayName": "Gmail",
+    "packageName": "com.google.android.gm",
+    "category": "Productivity",
+    "aliases": ["gmail", "email", "mail", "google mail"]
+  },
+  {
+    "displayName": "Google Chrome",
+    "packageName": "com.android.chrome",
+    "category": "Browser",
+    "aliases": ["chrome", "browser", "web"]
+  },
+  {
+    "displayName": "Google Maps",
+    "packageName": "com.google.android.apps.maps",
+    "category": "Navigation",
+    "aliases": ["maps", "google maps", "navigation", "gps"]
+  },
+  {
+    "displayName": "TikTok",
+    "packageName": "com.ss.android.ugc.trill",
+    "category": "Entertainment",
+    "aliases": ["tiktok", "short video", "video", "social media"]
+  },
+  {
+    "displayName": "Snapchat",
+    "packageName": "com.snapchat.android",
+    "category": "Social",
+    "aliases": ["snapchat", "snap", "chat", "social media"]
+  },
+  {
+    "displayName": "Telegram",
+    "packageName": "org.telegram.messenger",
+    "category": "Messaging",
+    "aliases": ["telegram", "tg", "chat", "messenger"]
+  },
+  {
+    "displayName": "Signal Private Messenger",
+    "packageName": "org.thoughtcrime.securesms",
+    "category": "Messaging",
+    "aliases": ["signal", "secure chat", "messenger"]
+  },
+  {
+    "displayName": "Netflix",
+    "packageName": "com.netflix.mediaclient",
+    "category": "Entertainment",
+    "aliases": ["netflix", "streaming", "movies", "tv shows"]
+  },
+  {
+    "displayName": "Spotify",
+    "packageName": "com.spotify.music",
+    "category": "Entertainment",
+    "aliases": ["spotify", "music", "audio", "streaming"]
+  },
+  {
+    "displayName": "Amazon Shopping",
+    "packageName": "com.amazon.mShop.android.shopping",
+    "category": "Shopping",
+    "aliases": ["amazon", "shopping", "ecommerce"]
+  },
+  {
+    "displayName": "Google Photos",
+    "packageName": "com.google.android.apps.photos",
+    "category": "Photography",
+    "aliases": ["google photos", "photos", "gallery", "pictures"]
+  },
+  {
+    "displayName": "Google Drive",
+    "packageName": "com.google.android.apps.docs",
+    "category": "Productivity",
+    "aliases": ["google drive", "drive", "cloud storage", "files"]
+  },
+  {
+    "displayName": "Microsoft Outlook",
+    "packageName": "com.microsoft.office.outlook",
+    "category": "Productivity",
+    "aliases": ["outlook", "microsoft outlook", "email", "mail"]
+  },
+  {
+    "displayName": "Microsoft Word",
+    "packageName": "com.microsoft.office.word",
+    "category": "Productivity",
+    "aliases": ["word", "microsoft word", "docs", "documents"]
+  },
+  {
+    "displayName": "Microsoft Excel",
+    "packageName": "com.microsoft.office.excel",
+    "category": "Productivity",
+    "aliases": ["excel", "microsoft excel", "sheets", "spreadsheet"]
+  },
+  {
+    "displayName": "Microsoft PowerPoint",
+    "packageName": "com.microsoft.office.powerpoint",
+    "category": "Productivity",
+    "aliases": ["powerpoint", "microsoft powerpoint", "slides", "presentations"]
+  },
+  {
+    "displayName": "Zoom",
+    "packageName": "us.zoom.videomeetings",
+    "category": "Communication",
+    "aliases": ["zoom", "video call", "meeting", "conference"]
+  },
+  {
+    "displayName": "Google Meet",
+    "packageName": "com.google.android.apps.meetings",
+    "category": "Communication",
+    "aliases": ["google meet", "meet", "video call", "meeting"]
+  },
+  {
+    "displayName": "Skype",
+    "packageName": "com.skype.raider",
+    "category": "Communication",
+    "aliases": ["skype", "video call", "chat", "messenger"]
+  },
+  {
+    "displayName": "Pinterest",
+    "packageName": "com.pinterest",
+    "category": "Social",
+    "aliases": ["pinterest", "inspiration", "ideas", "social media"]
+  },
+  {
+    "displayName": "Reddit",
+    "packageName": "com.reddit.frontpage",
+    "category": "Social",
+    "aliases": ["reddit", "r/", "social media", "forums"]
+  },
+  {
+    "displayName": "LinkedIn",
+    "packageName": "com.linkedin.android",
+    "category": "Social",
+    "aliases": ["linkedin", "professional", "jobs", "networking"]
+  },
+  {
+    "displayName": "Viber Messenger",
+    "packageName": "com.viber.voip",
+    "category": "Messaging",
+    "aliases": ["viber", "chat", "messenger"]
+  },
+  {
+    "displayName": "Line",
+    "packageName": "jp.naver.line.android",
+    "category": "Messaging",
+    "aliases": ["line", "chat", "messenger"]
+  },
+  {
+    "displayName": "WeChat",
+    "packageName": "com.tencent.mm",
+    "category": "Messaging",
+    "aliases": ["wechat", "chat", "messenger"]
+  },
+  {
+    "displayName": "Discord",
+    "packageName": "com.discord",
+    "category": "Communication",
+    "aliases": ["discord", "gaming chat", "voice chat"]
+  },
+  {
+    "displayName": "Twitch",
+    "packageName": "tv.twitch.android.app",
+    "category": "Entertainment",
+    "aliases": ["twitch", "gaming stream", "live stream"]
+  },
+  {
+    "displayName": "Disney+",
+    "packageName": "com.disney.disneyplus",
+    "category": "Entertainment",
+    "aliases": ["disney+", "disney plus", "streaming", "movies", "tv shows"]
+  },
+  {
+    "displayName": "Amazon Prime Video",
+    "packageName": "com.amazon.avod.thirdpartyclient",
+    "category": "Entertainment",
+    "aliases": ["prime video", "amazon prime", "streaming", "movies", "tv shows"]
+  },
+  {
+    "displayName": "Hulu",
+    "packageName": "com.hulu.plus",
+    "category": "Entertainment",
+    "aliases": ["hulu", "streaming", "tv shows"]
+  },
+  {
+    "displayName": "Max",
+    "packageName": "com.hbo.hbonow",
+    "category": "Entertainment",
+    "aliases": ["max", "hbo max", "streaming", "movies", "tv shows"]
+  },
+  {
+    "displayName": "Google Play Store",
+    "packageName": "com.android.vending",
+    "category": "Utility",
+    "aliases": ["play store", "app store", "google play", "apps"]
+  },
+  {
+    "displayName": "Google News",
+    "packageName": "com.google.android.apps.magazines",
+    "category": "News",
+    "aliases": ["google news", "news", "headlines"]
+  },
+  {
+    "displayName": "Google Calendar",
+    "packageName": "com.google.android.calendar",
+    "category": "Productivity",
+    "aliases": ["calendar", "google calendar", "schedule", "events"]
+  },
+  {
+    "displayName": "Google Keep Notes",
+    "packageName": "com.google.android.keep",
+    "category": "Productivity",
+    "aliases": ["google keep", "keep notes", "notes", "memo"]
+  },
+  {
+    "displayName": "Files by Google",
+    "packageName": "com.google.android.apps.nbu.files",
+    "category": "Utility",
+    "aliases": ["files by google", "file manager", "files", "storage"]
+  },
+  {
+    "displayName": "Google Translate",
+    "packageName": "com.google.android.apps.translate",
+    "category": "Utility",
+    "aliases": ["translate", "google translate", "language"]
+  },
+  {
+    "displayName": "Google Home",
+    "packageName": "com.google.android.apps.chromecast.app",
+    "category": "Smart Home",
+    "aliases": ["google home", "smart home", "assistant"]
+  },
+  {
+    "displayName": "Google Authenticator",
+    "packageName": "com.google.android.apps.authenticator2",
+    "category": "Security",
+    "aliases": ["authenticator", "2fa", "google auth"]
+  },
+  {
+    "displayName": "Google Wallet",
+    "packageName": "com.google.android.apps.walletnfcrel",
+    "category": "Finance",
+    "aliases": ["google wallet", "wallet", "payments", "gpay"]
+  },
+  {
+    "displayName": "PayPal",
+    "packageName": "com.paypal.android.p2pmobile",
+    "category": "Finance",
+    "aliases": ["paypal", "payments", "money transfer"]
+  },
+  {
+    "displayName": "Cash App",
+    "packageName": "com.squareup.cash",
+    "category": "Finance",
+    "aliases": ["cash app", "square cash", "payments", "money transfer"]
+  },
+  {
+    "displayName": "Venmo",
+    "packageName": "com.venmo",
+    "category": "Finance",
+    "aliases": ["venmo", "payments", "money transfer"]
+  },
+  {
+    "displayName": "Banking App (Generic Example)",
+    "packageName": "com.example.bankapp",
+    "category": "Finance",
+    "aliases": ["bank", "banking", "finance", "money"]
+  },
+  {
+    "displayName": "Duolingo",
+    "packageName": "com.duolingo",
+    "category": "Education",
+    "aliases": ["duolingo", "language learning", "learn language"]
+  },
+  {
+    "displayName": "Coursera",
+    "packageName": "org.coursera.android",
+    "category": "Education",
+    "aliases": ["coursera", "online courses", "learning"]
+  },
+  {
+    "displayName": "Udemy",
+    "packageName": "com.udemy.android",
+    "category": "Education",
+    "aliases": ["udemy", "online courses", "learning"]
+  },
+  {
+    "displayName": "Kindle",
+    "packageName": "com.amazon.kindle",
+    "category": "Reading",
+    "aliases": ["kindle", "ebooks", "books", "reading"]
+  },
+  {
+    "displayName": "Audible",
+    "packageName": "com.audible.application",
+    "category": "Reading",
+    "aliases": ["audible", "audiobooks", "books"]
+  },
+  {
+    "displayName": "Google Podcasts",
+    "packageName": "com.google.android.apps.podcasts",
+    "category": "Entertainment",
+    "aliases": ["google podcasts", "podcasts", "audio"]
+  },
+  {
+    "displayName": "Pocket Casts",
+    "packageName": "au.com.shiftyjelly.pocketcasts",
+    "category": "Entertainment",
+    "aliases": ["pocket casts", "podcasts", "audio"]
+  },
+  {
+    "displayName": "Waze",
+    "packageName": "com.waze",
+    "category": "Navigation",
+    "aliases": ["waze", "navigation", "traffic", "gps"]
+  },
+  {
+    "displayName": "Uber",
+    "packageName": "com.ubercab",
+    "category": "Travel",
+    "aliases": ["uber", "ride share", "taxi"]
+  },
+  {
+    "displayName": "Lyft",
+    "packageName": "me.lyft.android",
+    "category": "Travel",
+    "aliases": ["lyft", "ride share", "taxi"]
+  },
+  {
+    "displayName": "Booking.com",
+    "packageName": "com.booking",
+    "category": "Travel",
+    "aliases": ["booking.com", "hotel booking", "travel"]
+  },
+  {
+    "displayName": "Airbnb",
+    "packageName": "com.airbnb.android",
+    "category": "Travel",
+    "aliases": ["airbnb", "vacation rental", "travel"]
+  },
+  {
+    "displayName": "Expedia",
+    "packageName": "com.expedia.bookings",
+    "category": "Travel",
+    "aliases": ["expedia", "travel booking", "flights", "hotels"]
+  },
+  {
+    "displayName": "Duo Mobile",
+    "packageName": "com.duosecurity.duomobile",
+    "category": "Security",
+    "aliases": ["duo mobile", "2fa", "security"]
+  },
+  {
+    "displayName": "LastPass Password Manager",
+    "packageName": "com.lastpass.lpandroid",
+    "category": "Security",
+    "aliases": ["lastpass", "password manager", "passwords"]
+  },
+  {
+    "displayName": "1Password",
+    "packageName": "com.agilebits.onepassword",
+    "category": "Security",
+    "aliases": ["1password", "password manager", "passwords"]
+  },
+  {
+    "displayName": "Google Photos",
+    "packageName": "com.google.android.apps.photos",
+    "category": "Photography",
+    "aliases": ["google photos", "photos", "gallery"]
+  },
+  {
+    "displayName": "Snapseed",
+    "packageName": "com.niksoftware.snapseed",
+    "category": "Photography",
+    "aliases": ["snapseed", "photo editor", "edit photos"]
+  },
+  {
+    "displayName": "Adobe Lightroom Mobile",
+    "packageName": "com.adobe.lrmobile",
+    "category": "Photography",
+    "aliases": ["lightroom mobile", "adobe lightroom", "photo editor"]
+  },
+  {
+    "displayName": "Canva",
+    "packageName": "com.canva.editor",
+    "category": "Design",
+    "aliases": ["canva", "graphic design", "design"]
+  },
+  {
+    "displayName": "PicsArt Photo Editor",
+    "packageName": "com.picsart.studio",
+    "category": "Photography",
+    "aliases": ["picsart", "photo editor", "edit photos"]
+  },
+  {
+    "displayName": "Google Home",
+    "packageName": "com.google.android.apps.chromecast.app",
+    "category": "Smart Home",
+    "aliases": ["google home", "smart home", "google assistant"]
+  },
+  {
+    "displayName": "Alexa",
+    "packageName": "com.amazon.dee.app",
+    "category": "Smart Home",
+    "aliases": ["alexa", "amazon alexa", "smart assistant"]
+  },
+  {
+    "displayName": "SmartThings",
+    "packageName": "com.samsung.android.oneconnect",
+    "category": "Smart Home",
+    "aliases": ["smartthings", "samsung smartthings", "smart home"]
+  },
+  {
+    "displayName": "Fitbit",
+    "packageName": "com.fitbit.FitbitMobile",
+    "category": "Health & Fitness",
+    "aliases": ["fitbit", "fitness tracker", "health"]
+  },
+  {
+    "displayName": "MyFitnessPal",
+    "packageName": "com.myfitnesspal.android",
+    "category": "Health & Fitness",
+    "aliases": ["myfitnesspal", "calorie counter", "fitness"]
+  },
+  {
+    "displayName": "Strava",
+    "packageName": "com.strava",
+    "category": "Health & Fitness",
+    "aliases": ["strava", "running tracker", "cycling tracker", "fitness"]
+  },
+  {
+    "displayName": "Headspace",
+    "packageName": "com.getsomeheadspace.android",
+    "category": "Health & Fitness",
+    "aliases": ["headspace", "meditation", "mindfulness"]
+  },
+  {
+    "displayName": "Calm",
+    "packageName": "com.calm.android",
+    "category": "Health & Fitness",
+    "aliases": ["calm", "meditation", "sleep"]
+  },
+  {
+    "displayName": "AccuWeather",
+    "packageName": "com.accuweather.android",
+    "category": "Weather",
+    "aliases": ["accuweather", "weather", "forecast"]
+  },
+  {
+    "displayName": "The Weather Channel",
+    "packageName": "com.weather.Weather",
+    "category": "Weather",
+    "aliases": ["weather channel", "weather", "forecast"]
+  },
+  {
+    "displayName": "Google Play Games",
+    "packageName": "com.google.android.play.games",
+    "category": "Games",
+    "aliases": ["play games", "google games", "games"]
+  },
+  {
+    "displayName": "Clash of Clans",
+    "packageName": "com.supercell.clashofclans",
+    "category": "Games",
+    "aliases": ["clash of clans", "coc", "strategy game"]
+  },
+  {
+    "displayName": "Candy Crush Saga",
+    "packageName": "com.king.candycrushsaga",
+    "category": "Games",
+    "aliases": ["candy crush", "puzzle game"]
+  },
+  {
+    "displayName": "PUBG Mobile",
+    "packageName": "com.tencent.ig",
+    "category": "Games",
+    "aliases": ["pubg mobile", "pubg", "battle royale"]
+  },
+  {
+    "displayName": "Call of Duty: Mobile",
+    "packageName": "com.activision.callofduty.shooter",
+    "category": "Games",
+    "aliases": ["call of duty mobile", "cod mobile", "shooter game"]
+  },
+  {
+    "displayName": "Among Us",
+    "packageName": "com.innersloth.spacemafia",
+    "category": "Games",
+    "aliases": ["among us", "social deduction game"]
+  },
+  {
+    "displayName": "Roblox",
+    "packageName": "com.roblox.client",
+    "category": "Games",
+    "aliases": ["roblox", "sandbox game"]
+  },
+  {
+    "displayName": "Minecraft",
+    "packageName": "com.mojang.minecraftpe",
+    "category": "Games",
+    "aliases": ["minecraft", "sandbox game"]
+  },
+  {
+    "displayName": "8 Ball Pool",
+    "packageName": "com.miniclip.eightballpool",
+    "category": "Games",
+    "aliases": ["8 ball pool", "pool game"]
+  },
+  {
+    "displayName": "Subway Surfers",
+    "packageName": "com.kiloo.subwaysurfers",
+    "category": "Games",
+    "aliases": ["subway surfers", "endless runner"]
+  },
+  {
+    "displayName": "Temple Run 2",
+    "packageName": "com.imangi.templerun2",
+    "category": "Games",
+    "aliases": ["temple run 2", "endless runner"]
+  },
+  {
+    "displayName": "Asphalt 9: Legends",
+    "packageName": "com.gameloft.android.ANMP.GloftA9HM",
+    "category": "Games",
+    "aliases": ["asphalt 9", "racing game"]
+  },
+  {
+    "displayName": "Real Racing 3",
+    "packageName": "com.ea.games.r3_row",
+    "category": "Games",
+    "aliases": ["real racing 3", "racing game"]
+  },
+  {
+    "displayName": "Google Duo",
+    "packageName": "com.google.android.apps.tachyon",
+    "category": "Communication",
+    "aliases": ["google duo", "duo", "video call"]
+  },
+  {
+    "displayName": "Messages",
+    "packageName": "com.google.android.apps.messaging",
+    "category": "Messaging",
+    "aliases": ["messages", "sms", "text messages"]
+  },
+  {
+    "displayName": "Phone",
+    "packageName": "com.google.android.dialer",
+    "category": "Communication",
+    "aliases": ["phone", "dialer", "calls"]
+  },
+  {
+    "displayName": "Contacts",
+    "packageName": "com.google.android.contacts",
+    "category": "Utility",
+    "aliases": ["contacts", "address book"]
+  },
+  {
+    "displayName": "Clock",
+    "packageName": "com.google.android.deskclock",
+    "category": "Utility",
+    "aliases": ["clock", "alarm", "timer", "stopwatch"]
+  },
+  {
+    "displayName": "Calculator",
+    "packageName": "com.google.android.calculator",
+    "category": "Utility",
+    "aliases": ["calculator", "calc"]
+  },
+  {
+    "displayName": "Camera",
+    "packageName": "com.google.android.camera",
+    "category": "Photography",
+    "aliases": ["camera", "take photos", "record video"]
+  },
+  {
+    "displayName": "Gallery (Generic)",
+    "packageName": "com.android.gallery3d",
+    "category": "Photography",
+    "aliases": ["gallery", "photos", "pictures"]
+  },
+  {
+    "displayName": "Settings",
+    "packageName": "com.android.settings",
+    "category": "Utility",
+    "aliases": ["settings", "device settings"]
+  },
+  {
+    "displayName": "Files (Generic File Manager)",
+    "packageName": "com.android.documentsui",
+    "category": "Utility",
+    "aliases": ["files", "file manager", "my files"]
+  },
+  {
+    "displayName": "Google Assistant",
+    "packageName": "com.google.android.apps.googleassistant",
+    "category": "Utility",
+    "aliases": ["google assistant", "assistant", "voice assistant"]
+  },
+  {
+    "displayName": "Google Discover",
+    "packageName": "com.google.android.googlequicksearchbox",
+    "category": "News",
+    "aliases": ["google discover", "discover feed", "news feed"]
+  },
+  {
+    "displayName": "Google One",
+    "packageName": "com.google.android.apps.subscriptions.red",
+    "category": "Utility",
+    "aliases": ["google one", "cloud storage", "storage"]
+  },
+  {
+    "displayName": "Google Arts & Culture",
+    "packageName": "com.google.android.apps.cultural",
+    "category": "Education",
+    "aliases": ["google arts & culture", "art", "culture"]
+  },
+  {
+    "displayName": "Google Classroom",
+    "packageName": "com.google.android.apps.classroom",
+    "category": "Education",
+    "aliases": ["google classroom", "classroom", "education"]
+  },
+  {
+    "displayName": "Google Docs",
+    "packageName": "com.google.android.apps.docs.editors.docs",
+    "category": "Productivity",
+    "aliases": ["google docs", "docs", "documents"]
+  },
+  {
+    "displayName": "Google Sheets",
+    "packageName": "com.google.android.apps.docs.editors.sheets",
+    "category": "Productivity",
+    "aliases": ["google sheets", "sheets", "spreadsheet"]
+  },
+  {
+    "displayName": "Google Slides",
+    "packageName": "com.google.android.apps.docs.editors.slides",
+    "category": "Productivity",
+    "aliases": ["google slides", "slides", "presentations"]
+  },
+  {
+    "displayName": "Google TV",
+    "packageName": "com.google.android.videos",
+    "category": "Entertainment",
+    "aliases": ["google tv", "movies", "tv shows", "streaming"]
+  },
+  {
+    "displayName": "Google Podcasts",
+    "packageName": "com.google.android.apps.podcasts",
+    "category": "Entertainment",
+    "aliases": ["google podcasts", "podcasts"]
+  },
+  {
+    "displayName": "Google Fit",
+    "packageName": "com.google.android.apps.fitness",
+    "category": "Health & Fitness",
+    "aliases": ["google fit", "fitness", "health tracker"]
+  },
+  {
+    "displayName": "Google Find My Device",
+    "packageName": "com.google.android.apps.adm",
+    "category": "Security",
+    "aliases": ["find my device", "phone finder", "lost phone"]
+  },
+  {
+    "displayName": "Google Family Link",
+    "packageName": "com.google.android.apps.kids.familylink",
+    "category": "Utility",
+    "aliases": ["family link", "parental controls"]
+  },
+  {
+    "displayName": "Google Home",
+    "packageName": "com.google.android.apps.chromecast.app",
+    "category": "Smart Home",
+    "aliases": ["google home", "smart home"]
+  },
+  {
+    "displayName": "Google Play Books",
+    "packageName": "com.google.android.apps.books",
+    "category": "Reading",
+    "aliases": ["google play books", "ebooks", "books"]
+  },
+  {
+    "displayName": "Google Photos",
+    "packageName": "com.google.android.apps.photos",
+    "category": "Photography",
+    "aliases": ["google photos", "photos", "gallery"]
+  },
+  {
+    "displayName": "Google Lens",
+    "packageName": "com.google.android.apps.lens",
+    "category": "Utility",
+    "aliases": ["google lens", "lens", "visual search"]
+  },
+  {
+    "displayName": "Google Chrome Beta",
+    "packageName": "com.chrome.beta",
+    "category": "Browser",
+    "aliases": ["chrome beta", "browser", "web"]
+  },
+  {
+    "displayName": "Firefox",
+    "packageName": "org.mozilla.firefox",
+    "category": "Browser",
+    "aliases": ["firefox", "browser", "web"]
+  },
+  {
+    "displayName": "Samsung Internet Browser",
+    "packageName": "com.sec.android.app.sbrowser",
+    "category": "Browser",
+    "aliases": ["samsung internet", "browser", "web"]
+  },
+  {
+    "displayName": "Opera Browser",
+    "packageName": "com.opera.browser",
+    "category": "Browser",
+    "aliases": ["opera", "browser", "web"]
+  },
+  {
+    "displayName": "DuckDuckGo Privacy Browser",
+    "packageName": "com.duckduckgo.mobile.android",
+    "category": "Browser",
+    "aliases": ["duckduckgo", "privacy browser", "web"]
+  },
+  {
+    "displayName": "Brave Private Browser",
+    "packageName": "com.brave.browser",
+    "category": "Browser",
+    "aliases": ["brave browser", "privacy browser", "web"]
+  },
+  {
+    "displayName": "Microsoft Edge",
+    "packageName": "com.microsoft.emmx",
+    "category": "Browser",
+    "aliases": ["microsoft edge", "edge", "browser", "web"]
+  },
+  {
+    "displayName": "Amazon Kindle",
+    "packageName": "com.amazon.kindle",
+    "category": "Reading",
+    "aliases": ["kindle", "ebooks", "books"]
+  },
+  {
+    "displayName": "Libby, by OverDrive",
+    "packageName": "com.overdrive.mobile.android.libby",
+    "category": "Reading",
+    "aliases": ["libby", "library books", "ebooks", "audiobooks"]
+  },
+  {
+    "displayName": "Evernote",
+    "packageName": "com.evernote",
+    "category": "Productivity",
+    "aliases": ["evernote", "notes", "notebook"]
+  },
+  {
+    "displayName": "Notion",
+    "packageName": "notion.id",
+    "category": "Productivity",
+    "aliases": ["notion", "notes", "workspace"]
+  },
+  {
+    "displayName": "Todoist",
+    "packageName": "com.todoist",
+    "category": "Productivity",
+    "aliases": ["todoist", "to-do list", "tasks"]
+  },
+  {
+    "displayName": "Microsoft To Do",
+    "packageName": "com.microsoft.todos",
+    "category": "Productivity",
+    "aliases": ["microsoft to do", "to do list", "tasks"]
+  },
+  {
+    "displayName": "Slack",
+    "packageName": "com.Slack",
+    "category": "Communication",
+    "aliases": ["slack", "team chat", "work chat"]
+  },
+  {
+    "displayName": "Microsoft Teams",
+    "packageName": "com.microsoft.teams",
+    "category": "Communication",
+    "aliases": ["microsoft teams", "teams", "work chat", "video call"]
+  },
+  {
+    "displayName": "Trello",
+    "packageName": "com.trello",
+    "category": "Productivity",
+    "aliases": ["trello", "project management", "kanban"]
+  },
+  {
+    "displayName": "Jira Cloud",
+    "packageName": "com.atlassian.android.jira.core",
+    "category": "Productivity",
+    "aliases": ["jira", "project management", "issue tracker"]
+  },
+  {
+    "displayName": "Dropbox",
+    "packageName": "com.dropbox.android",
+    "category": "Productivity",
+    "aliases": ["dropbox", "cloud storage", "files"]
+  },
+  {
+    "displayName": "OneDrive",
+    "packageName": "com.microsoft.skydrive",
+    "category": "Productivity",
+    "aliases": ["onedrive", "microsoft onedrive", "cloud storage", "files"]
+  },
+  {
+    "displayName": "VLC for Android",
+    "packageName": "org.videolan.vlc",
+    "category": "Entertainment",
+    "aliases": ["vlc", "video player", "media player"]
+  },
+  {
+    "displayName": "MX Player",
+    "packageName": "com.mxtech.videoplayer.ad",
+    "category": "Entertainment",
+    "aliases": ["mx player", "video player", "media player"]
+  },
+  {
+    "displayName": "Shazam",
+    "packageName": "com.shazam.android",
+    "category": "Entertainment",
+    "aliases": ["shazam", "music recognition"]
+  },
+  {
+    "displayName": "SoundCloud",
+    "packageName": "com.soundcloud.android",
+    "category": "Entertainment",
+    "aliases": ["soundcloud", "music", "audio streaming"]
+  },
+  {
+    "displayName": "Deezer",
+    "packageName": "deezer.android.app",
+    "category": "Entertainment",
+    "aliases": ["deezer", "music", "audio streaming"]
+  },
+  {
+    "displayName": "Tidal",
+    "packageName": "com.aspiro.tidal",
+    "category": "Entertainment",
+    "aliases": ["tidal", "music", "audio streaming", "hifi music"]
+  },
+  {
+    "displayName": "YouTube Music",
+    "packageName": "com.google.android.apps.youtube.music",
+    "category": "Entertainment",
+    "aliases": ["youtube music", "music", "streaming"]
+  },
+  {
+    "displayName": "Google Arts & Culture",
+    "packageName": "com.google.android.apps.cultural",
+    "category": "Education",
+    "aliases": ["google arts & culture", "art", "culture", "museums"]
+  },
+  {
+    "displayName": "Khan Academy",
+    "packageName": "org.khanacademy.android",
+    "category": "Education",
+    "aliases": ["khan academy", "learning", "courses"]
+  },
+  {
+    "displayName": "Google Classroom",
+    "packageName": "com.google.android.apps.classroom",
+    "category": "Education",
+    "aliases": ["google classroom", "classroom", "online learning"]
+  },
+  {
+    "displayName": "Remind",
+    "packageName": "com.remind101",
+    "category": "Education",
+    "aliases": ["remind", "school communication"]
+  },
+  {
+    "displayName": "Uber Eats",
+    "packageName": "com.ubercab.eats",
+    "category": "Food & Drink",
+    "aliases": ["uber eats", "food delivery"]
+  },
+  {
+    "displayName": "DoorDash",
+    "packageName": "com.doordash.driverapp",
+    "category": "Food & Drink",
+    "aliases": ["doordash", "food delivery"]
+  },
+  {
+    "displayName": "Grubhub",
+    "packageName": "com.grubhub.android",
+    "category": "Food & Drink",
+    "aliases": ["grubhub", "food delivery"]
+  },
+  {
+    "displayName": "Starbucks",
+    "packageName": "com.starbucks.mobilecard",
+    "category": "Food & Drink",
+    "aliases": ["starbucks", "coffee", "rewards"]
+  },
+  {
+    "displayName": "Yelp",
+    "packageName": "com.yelp.android",
+    "category": "Food & Drink",
+    "aliases": ["yelp", "restaurant reviews", "local guide"]
+  },
+  {
+    "displayName": "OpenTable",
+    "packageName": "com.opentable",
+    "category": "Food & Drink",
+    "aliases": ["opentable", "restaurant reservations"]
+  },
+  {
+    "displayName": "Amazon Alexa",
+    "packageName": "com.amazon.dee.app",
+    "category": "Smart Home",
+    "aliases": ["alexa", "amazon alexa", "smart assistant"]
+  },
+  {
+    "displayName": "Philips Hue",
+    "packageName": "com.philips.lighting.hue2",
+    "category": "Smart Home",
+    "aliases": ["philips hue", "smart lighting"]
+  },
+  {
+    "displayName": "Ring - Always Home",
+    "packageName": "com.ringapp",
+    "category": "Smart Home",
+    "aliases": ["ring", "doorbell", "security camera"]
+  },
+  {
+    "displayName": "Nest",
+    "packageName": "com.nest.android",
+    "category": "Smart Home",
+    "aliases": ["nest", "thermostat", "smart home"]
+  },
+  {
+    "displayName": "My Verizon",
+    "packageName": "com.vzw.hss.myverizon",
+    "category": "Utility",
+    "aliases": ["my verizon", "verizon", "phone bill"]
+  },
+  {
+    "displayName": "AT&T Thanks",
+    "packageName": "com.att.android.attservices",
+    "category": "Utility",
+    "aliases": ["at&t thanks", "at&t", "phone bill"]
+  },
+  {
+    "displayName": "T-Mobile",
+    "packageName": "com.tmobile.pr.mytmobile",
+    "category": "Utility",
+    "aliases": ["t-mobile", "phone bill"]
+  },
+  {
+    "displayName": "WhatsApp Business",
+    "packageName": "com.whatsapp.w4b",
+    "category": "Business",
+    "aliases": ["whatsapp business", "wa business"]
+  },
+  {
+    "displayName": "Microsoft Authenticator",
+    "packageName": "com.azure.authenticator",
+    "category": "Security",
+    "aliases": ["microsoft authenticator", "2fa"]
+  },
+  {
+    "displayName": "Google Pay",
+    "packageName": "com.google.android.apps.nbu.paisa.user",
+    "category": "Finance",
+    "aliases": ["google pay", "gpay", "payments"]
+  },
+  {
+    "displayName": "Samsung Pay",
+    "packageName": "com.samsung.android.spay",
+    "category": "Finance",
+    "aliases": ["samsung pay", "payments"]
+  },
+  {
+    "displayName": "Robinhood",
+    "packageName": "com.robinhood.android",
+    "category": "Finance",
+    "aliases": ["robinhood", "stock trading", "investing"]
+  },
+  {
+    "displayName": "Coinbase",
+    "packageName": "com.coinbase.android",
+    "category": "Finance",
+    "aliases": ["coinbase", "cryptocurrency", "crypto"]
+  },
+  {
+    "displayName": "Binance",
+    "packageName": "com.binance.dev",
+    "category": "Finance",
+    "aliases": ["binance", "cryptocurrency", "crypto exchange"]
+  },
+  {
+    "displayName": "Mint: Budget & Expense Tracker",
+    "packageName": "com.intuit.mint",
+    "category": "Finance",
+    "aliases": ["mint", "budget tracker", "personal finance"]
+  },
+  {
+    "displayName": "You Need A Budget (YNAB)",
+    "packageName": "com.youneedabudget.ynab.app",
+    "category": "Finance",
+    "aliases": ["ynab", "budgeting"]
+  },
+  {
+    "displayName": "Zillow",
+    "packageName": "com.zillow.android.zillowmap",
+    "category": "Real Estate",
+    "aliases": ["zillow", "real estate", "homes for sale"]
+  },
+  {
+    "displayName": "Realtor.com Real Estate",
+    "packageName": "com.realtor.android",
+    "category": "Real Estate",
+    "aliases": ["realtor.com", "real estate", "homes for sale"]
+  },
+  {
+    "displayName": "Redfin",
+    "packageName": "com.redfin.android",
+    "category": "Real Estate",
+    "aliases": ["redfin", "real estate", "homes for sale"]
+  },
+  {
+    "displayName": "eBay",
+    "packageName": "com.ebay.mobile",
+    "category": "Shopping",
+    "aliases": ["ebay", "online shopping", "marketplace"]
+  },
+  {
+    "displayName": "Etsy",
+    "packageName": "com.etsy.android",
+    "category": "Shopping",
+    "aliases": ["etsy", "handmade", "crafts", "shopping"]
+  },
+  {
+    "displayName": "Shein",
+    "packageName": "com.shein.android",
+    "category": "Shopping",
+    "aliases": ["shein", "fashion", "clothing"]
+  },
+  {
+    "displayName": "Temu",
+    "packageName": "com.einnovation.temu",
+    "category": "Shopping",
+    "aliases": ["temu", "shopping"]
+  },
+  {
+    "displayName": "Alibaba.com",
+    "packageName": "com.alibaba.intl.android.apps.poseidon",
+    "category": "Shopping",
+    "aliases": ["alibaba", "wholesale", "b2b"]
+  },
+  {
+    "displayName": "AliExpress",
+    "packageName": "com.alibaba.aliexpresshd",
+    "category": "Shopping",
+    "aliases": ["aliexpress", "online shopping"]
+  },
+  {
+    "displayName": "Wish",
+    "packageName": "com.contextlogic.wish",
+    "category": "Shopping",
+    "aliases": ["wish", "online shopping"]
+  },
+  {
+    "displayName": "Walmart",
+    "packageName": "com.walmart.android",
+    "category": "Shopping",
+    "aliases": ["walmart", "retail", "shopping"]
+  },
+  {
+    "displayName": "Target",
+    "packageName": "com.target.ui",
+    "category": "Shopping",
+    "aliases": ["target", "retail", "shopping"]
+  },
+  {
+    "displayName": "Best Buy",
+    "packageName": "com.bestbuy.android",
+    "category": "Shopping",
+    "aliases": ["best buy", "electronics", "shopping"]
+  },
+  {
+    "displayName": "MyFitnessPal",
+    "packageName": "com.myfitnesspal.android",
+    "category": "Health & Fitness",
+    "aliases": ["myfitnesspal", "calorie tracker", "diet"]
+  },
+  {
+    "displayName": "Nike Training Club",
+    "packageName": "com.nike.ntc",
+    "category": "Health & Fitness",
+    "aliases": ["nike training club", "ntc", "workouts"]
+  },
+  {
+    "displayName": "Adidas Training by Runtastic",
+    "packageName": "com.runtastic.android.pro2",
+    "category": "Health & Fitness",
+    "aliases": ["adidas training", "runtastic", "workouts"]
+  },
+  {
+    "displayName": "Sleep Cycle",
+    "packageName": "com.northcube.sleepcycle",
+    "category": "Health & Fitness",
+    "aliases": ["sleep cycle", "sleep tracker"]
+  },
+  {
+    "displayName": "Flo Period Tracker & Calendar",
+    "packageName": "com.flo.health.menstrual.tracker.period.calendar",
+    "category": "Health & Fitness",
+    "aliases": ["flo", "period tracker", "women's health"]
+  },
+  {
+    "displayName": "WebMD",
+    "packageName": "com.webmd.android",
+    "category": "Health & Fitness",
+    "aliases": ["webmd", "health information"]
+  },
+  {
+    "displayName": "Goodreads",
+    "packageName": "com.goodreads",
+    "category": "Reading",
+    "aliases": ["goodreads", "book reviews", "books"]
+  },
+  {
+    "displayName": "Pocket",
+    "packageName": "com.ideashower.readitlater.pro",
+    "category": "Productivity",
+    "aliases": ["pocket", "read it later", "articles"]
+  },
+  {
+    "displayName": "Feedly",
+    "packageName": "com.devhd.feedly",
+    "category": "News",
+    "aliases": ["feedly", "rss reader", "news aggregator"]
+  },
+  {
+    "displayName": "Flipboard",
+    "packageName": "flipboard.app",
+    "category": "News",
+    "aliases": ["flipboard", "news magazine"]
+  },
+  {
+    "displayName": "ESPN",
+    "packageName": "com.espn.score_center",
+    "category": "Sports",
+    "aliases": ["espn", "sports news", "scores"]
+  },
+  {
+    "displayName": "Bleacher Report",
+    "packageName": "com.bleacherreport.android.app",
+    "category": "Sports",
+    "aliases": ["bleacher report", "br", "sports news"]
+  },
+  {
+    "displayName": "Yahoo Sports",
+    "packageName": "com.yahoo.mobile.client.android.sportacular",
+    "category": "Sports",
+    "aliases": ["yahoo sports", "sports news", "scores"]
+  },
+  {
+    "displayName": "DraftKings",
+    "packageName": "com.draftkings.sportsbook",
+    "category": "Gambling",
+    "aliases": ["draftkings", "sports betting", "fantasy sports"]
+  },
+  {
+    "displayName": "FanDuel Sportsbook & Casino",
+    "packageName": "com.fanduel.sportsbook.android",
+    "category": "Gambling",
+    "aliases": ["fanduel", "sports betting", "casino"]
+  },
+  {
+    "displayName": "Google Arts & Culture",
+    "packageName": "com.google.android.apps.cultural",
+    "category": "Education",
+    "aliases": ["google arts & culture", "art", "culture"]
+  },
+  {
+    "displayName": "TED",
+    "packageName": "com.ted.android",
+    "category": "Education",
+    "aliases": ["ted", "ted talks", "lectures"]
+  },
+  {
+    "displayName": "Wikipedia",
+    "packageName": "org.wikipedia",
+    "category": "Education",
+    "aliases": ["wikipedia", "encyclopedia", "information"]
+  },
+  {
+    "displayName": "IMDb Movies & TV",
+    "packageName": "com.imdb.mobile",
+    "category": "Entertainment",
+    "aliases": ["imdb", "movies", "tv shows", "ratings"]
+  },
+  {
+    "displayName": "Rotten Tomatoes",
+    "packageName": "com.rottentomatoes.android",
+    "category": "Entertainment",
+    "aliases": ["rotten tomatoes", "movie reviews"]
+  },
+  {
+    "displayName": "Letterboxd",
+    "packageName": "com.letterboxd.app",
+    "category": "Entertainment",
+    "aliases": ["letterboxd", "movie diary", "film reviews"]
+  },
+  {
+    "displayName": "Crunchyroll",
+    "packageName": "com.crunchyroll.crunchyroid",
+    "category": "Entertainment",
+    "aliases": ["crunchyroll", "anime", "manga"]
+  },
+  {
+    "displayName": "Funimation",
+    "packageName": "com.funimation.android",
+    "category": "Entertainment",
+    "aliases": ["funimation", "anime"]
+  },
+  {
+    "displayName": "Vudu",
+    "packageName": "com.vudu.android",
+    "category": "Entertainment",
+    "aliases": ["vudu", "movies", "tv shows", "streaming"]
+  },
+  {
+    "displayName": "Paramount+",
+    "packageName": "com.cbs.app",
+    "category": "Entertainment",
+    "aliases": ["paramount+", "paramount plus", "streaming", "tv shows"]
+  },
+  {
+    "displayName": "Peacock TV",
+    "packageName": "com.peacocktv.peacockandroid",
+    "category": "Entertainment",
+    "aliases": ["peacock tv", "peacock", "streaming", "tv shows"]
+  },
+  {
+    "displayName": "Discovery+",
+    "packageName": "com.discovery.discoveryplus",
+    "category": "Entertainment",
+    "aliases": ["discovery+", "discovery plus", "streaming", "documentaries"]
+  },
+  {
+    "displayName": "Tubi",
+    "packageName": "com.tubitv",
+    "category": "Entertainment",
+    "aliases": ["tubi", "free movies", "streaming"]
+  },
+  {
+    "displayName": "Pluto TV",
+    "packageName": "com.pluto.tv",
+    "category": "Entertainment",
+    "aliases": ["pluto tv", "free tv", "streaming"]
+  },
+  {
+    "displayName": "Google TV",
+    "packageName": "com.google.android.videos",
+    "category": "Entertainment",
+    "aliases": ["google tv", "movies", "tv shows"]
+  },
+  {
+    "displayName": "Google Play Music (Legacy - now YouTube Music)",
+    "packageName": "com.google.android.music",
+    "category": "Entertainment",
+    "aliases": ["google play music", "gpm", "music"]
+  },
+  {
+    "displayName": "Pandora",
+    "packageName": "com.pandora.android",
+    "category": "Entertainment",
+    "aliases": ["pandora", "music radio", "streaming"]
+  },
+  {
+    "displayName": "iHeartRadio",
+    "packageName": "com.clearchannel.iheartradio.controller",
+    "category": "Entertainment",
+    "aliases": ["iheartradio", "radio", "music"]
+  },
+  {
+    "displayName": "SiriusXM",
+    "packageName": "com.sirius",
+    "category": "Entertainment",
+    "aliases": ["siriusxm", "satellite radio"]
+  },
+  {
+    "displayName": "Audible",
+    "packageName": "com.audible.application",
+    "category": "Reading",
+    "aliases": ["audible", "audiobooks"]
+  },
+  {
+    "displayName": "Pocket Casts",
+    "packageName": "au.com.shiftyjelly.pocketcasts",
+    "category": "Entertainment",
+    "aliases": ["pocket casts", "podcasts"]
+  },
+  {
+    "displayName": "Overcast",
+    "packageName": "fm.overcast.android",
+    "category": "Entertainment",
+    "aliases": ["overcast", "podcasts"]
+  },
+  {
+    "displayName": "Castbox",
+    "packageName": "fm.castbox.audiobook.radio.podcast",
+    "category": "Entertainment",
+    "aliases": ["castbox", "podcasts", "audiobooks"]
+  },
+  {
+    "displayName": "Spotify for Podcasters (formerly Anchor)",
+    "packageName": "fm.anchor.android",
+    "category": "Entertainment",
+    "aliases": ["spotify for podcasters", "anchor", "podcast creation"]
+  },
+  {
+    "displayName": "Google Arts & Culture",
+    "packageName": "com.google.android.apps.cultural",
+    "category": "Education",
+    "aliases": ["google arts & culture", "art", "culture"]
+  },
+  {
+    "displayName": "Google Translate",
+    "packageName": "com.google.android.apps.translate",
+    "category": "Utility",
+    "aliases": ["google translate", "translate", "language"]
+  },
+  {
+    "displayName": "Google Keep Notes",
+    "packageName": "com.google.android.keep",
+    "category": "Productivity",
+    "aliases": ["google keep", "keep notes", "notes"]
+  },
+  {
+    "displayName": "Google Calendar",
+    "packageName": "com.google.android.calendar",
+    "category": "Productivity",
+    "aliases": ["google calendar", "calendar", "events"]
+  },
+  {
+    "displayName": "Google Clock",
+    "packageName": "com.google.android.deskclock",
+    "category": "Utility",
+    "aliases": ["google clock", "clock", "alarm", "timer"]
+  },
+  {
+    "displayName": "Google Calculator",
+    "packageName": "com.google.android.calculator",
+    "category": "Utility",
+    "aliases": ["google calculator", "calculator", "calc"]
+  },
+  {
+    "displayName": "Google Files",
+    "packageName": "com.google.android.apps.nbu.files",
+    "category": "Utility",
+    "aliases": ["google files", "files", "file manager"]
+  },
+  {
+    "displayName": "Google Photos",
+    "packageName": "com.google.android.apps.photos",
+    "category": "Photography",
+    "aliases": ["google photos", "photos", "gallery"]
+  },
+  {
+    "displayName": "Google Camera",
+    "packageName": "com.google.android.camera",
+    "category": "Photography",
+    "aliases": ["google camera", "camera"]
+  },
+  {
+    "displayName": "Google Phone",
+    "packageName": "com.google.android.dialer",
+    "category": "Communication",
+    "aliases": ["google phone", "phone", "dialer"]
+  },
+  {
+    "displayName": "Google Messages",
+    "packageName": "com.google.android.apps.messaging",
+    "category": "Messaging",
+    "aliases": ["google messages", "messages", "sms"]
+  },
+  {
+    "displayName": "Google Contacts",
+    "packageName": "com.google.android.contacts",
+    "category": "Utility",
+    "aliases": ["google contacts", "contacts"]
+  },
+  {
+    "displayName": "Google Play Store",
+    "packageName": "com.android.vending",
+    "category": "Utility",
+    "aliases": ["google play store", "play store", "app store"]
+  },
+  {
+    "displayName": "Google Play Services",
+    "packageName": "com.google.android.gms",
+    "category": "System",
+    "aliases": ["google play services", "gms"]
+  },
+  {
+    "displayName": "Google Assistant",
+    "packageName": "com.google.android.apps.googleassistant",
+    "category": "Utility",
+    "aliases": ["google assistant", "assistant"]
+  },
+  {
+    "displayName": "Google Chrome",
+    "packageName": "com.android.chrome",
+    "category": "Browser",
+    "aliases": ["google chrome", "chrome", "browser"]
+  },
+  {
+    "displayName": "Google Maps",
+    "packageName": "com.google.android.apps.maps",
+    "category": "Navigation",
+    "aliases": ["google maps", "maps", "navigation"]
+  },
+  {
+    "displayName": "Google Drive",
+    "packageName": "com.google.android.apps.docs",
+    "category": "Productivity",
+    "aliases": ["google drive", "drive", "cloud storage"]
+  },
+  {
+    "displayName": "Google News",
+    "packageName": "com.google.android.apps.magazines",
+    "category": "News",
+    "aliases": ["google news", "news"]
+  },
+  {
+    "displayName": "Google Home",
+    "packageName": "com.google.android.apps.chromecast.app",
+    "category": "Smart Home",
+    "aliases": ["google home", "smart home"]
+  },
+  {
+    "displayName": "Google Authenticator",
+    "packageName": "com.google.android.apps.authenticator2",
+    "category": "Security",
+    "aliases": ["google authenticator", "2fa"]
+  },
+  {
+    "displayName": "Google Wallet",
+    "packageName": "com.google.android.apps.walletnfcrel",
+    "category": "Finance",
+    "aliases": ["google wallet", "wallet", "gpay"]
+  },
+  {
+    "displayName": "Google Play Games",
+    "packageName": "com.google.android.play.games",
+    "category": "Games",
+    "aliases": ["google play games", "play games"]
+  }
+]
