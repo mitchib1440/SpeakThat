@@ -52,6 +52,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var originalMusicVolume = -1 // Store original volume for restoration
     private var audioFocusRequest: android.media.AudioFocusRequest? = null
     
+    // Media notification filtering
+    private var mediaFilterPreferences = MediaNotificationDetector.MediaFilterPreferences()
+    
     // Delay settings
     private var delayBeforeReadout = 0 // Delay in seconds before starting TTS
     private var delayHandler: android.os.Handler? = null
@@ -104,6 +107,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Conditional rules settings
         private const val KEY_CONDITIONAL_RULES = "conditional_rules"
+        
+        // Media notification filtering settings
+        private const val KEY_MEDIA_FILTERING_ENABLED = "media_filtering_enabled"
+        private const val KEY_MEDIA_FILTER_EXCEPTED_APPS = "media_filter_excepted_apps"
+        private const val KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS = "media_filter_important_keywords"
         
         @JvmStatic
         fun getRecentNotifications(): List<NotificationData> {
@@ -225,7 +233,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 Log.d(TAG, "New notification from $appName: $notificationText")
                 
                 // Apply filtering
-                val filterResult = applyFilters(packageName, appName, notificationText)
+                val filterResult = applyFilters(packageName, appName, notificationText, sbn)
                 
                 if (filterResult.shouldSpeak) {
                     // Determine final app name (private apps become "An app")
@@ -408,11 +416,28 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Load delay settings
         delayBeforeReadout = sharedPreferences.getInt(KEY_DELAY_BEFORE_READOUT, 0)
         
+        // Load media notification filtering settings
+        val isMediaFilteringEnabled = sharedPreferences.getBoolean(KEY_MEDIA_FILTERING_ENABLED, false)
+        val exceptedApps = HashSet(sharedPreferences.getStringSet(KEY_MEDIA_FILTER_EXCEPTED_APPS, HashSet()) ?: HashSet())
+        val importantKeywords = HashSet(sharedPreferences.getStringSet(KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, HashSet()) ?: HashSet())
+        
+        // If no custom important keywords are set, use defaults
+        if (importantKeywords.isEmpty()) {
+            importantKeywords.addAll(MediaNotificationDetector.MediaFilterPreferences().importantKeywords)
+        }
+        
+        mediaFilterPreferences = MediaNotificationDetector.MediaFilterPreferences(
+            isMediaFilteringEnabled = isMediaFilteringEnabled,
+            exceptedApps = exceptedApps,
+            importantKeywords = importantKeywords
+        )
+        
         Log.d(TAG, "Filter settings loaded - appMode: $appListMode, apps: ${appList.size}, blocked words: ${blockedWords.size}, replacements: ${wordReplacements.size}")
         Log.d(TAG, "Behavior settings loaded - mode: $notificationBehavior, priority apps: ${priorityApps.size}")
         Log.d(TAG, "Media behavior settings loaded - mode: $mediaBehavior, ducking volume: $duckingVolume%")
         Log.d(TAG, "Delay settings loaded - delay: ${delayBeforeReadout}s")
-        InAppLogger.log("Service", "Settings loaded - Filter mode: $appListMode, Behavior: $notificationBehavior, Media: $mediaBehavior, Delay: ${delayBeforeReadout}s")
+        Log.d(TAG, "Media filtering settings loaded - enabled: $isMediaFilteringEnabled, excepted apps: ${exceptedApps.size}, important keywords: ${importantKeywords.size}")
+        InAppLogger.log("Service", "Settings loaded - Filter mode: $appListMode, Behavior: $notificationBehavior, Media: $mediaBehavior, Delay: ${delayBeforeReadout}s, Media filtering: $isMediaFilteringEnabled")
     }
     
     data class FilterResult(
@@ -422,20 +447,28 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val conditionalDelaySeconds: Int = -1 // -1 means no conditional delay
     )
     
-    private fun applyFilters(packageName: String, appName: String, text: String): FilterResult {
+    private fun applyFilters(packageName: String, appName: String, text: String, sbn: StatusBarNotification? = null): FilterResult {
         // 1. Check app filtering
         val appFilterResult = checkAppFilter(packageName)
         if (!appFilterResult.shouldSpeak) {
             return appFilterResult
         }
         
-        // 2. Apply word filtering and replacements
+        // 2. Apply media notification filtering (if StatusBarNotification is available)
+        if (sbn != null) {
+            val mediaFilterResult = applyMediaFiltering(sbn)
+            if (!mediaFilterResult.shouldSpeak) {
+                return mediaFilterResult
+            }
+        }
+        
+        // 3. Apply word filtering and replacements
         val wordFilterResult = applyWordFiltering(text, appName)
         if (!wordFilterResult.shouldSpeak) {
             return wordFilterResult
         }
         
-        // 3. Apply conditional rules (Smart Rules system)
+        // 4. Apply conditional rules (Smart Rules system)
         val conditionalResult = applyConditionalFiltering(packageName, appName, wordFilterResult.processedText)
         if (!conditionalResult.shouldSpeak) {
             return conditionalResult
@@ -555,6 +588,23 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         return FilterResult(true, text, "No conditional rules applied")
+    }
+    
+    private fun applyMediaFiltering(sbn: StatusBarNotification): FilterResult {
+        // Check if media notification filtering is enabled
+        if (!mediaFilterPreferences.isMediaFilteringEnabled) {
+            return FilterResult(true, "", "Media filtering disabled")
+        }
+        
+        // Check if this notification should be filtered as a media notification
+        if (MediaNotificationDetector.shouldFilterMediaNotification(sbn, mediaFilterPreferences)) {
+            val reason = MediaNotificationDetector.getMediaDetectionReason(sbn)
+            Log.d(TAG, "Media notification filtered out: $reason")
+            InAppLogger.logFilter("Blocked media notification from ${sbn.packageName}: $reason")
+            return FilterResult(false, "", "Media notification filtered: $reason")
+        }
+        
+        return FilterResult(true, "", "Not a media notification or media filtering not applicable")
     }
     
     override fun onSensorChanged(event: SensorEvent) {
@@ -994,6 +1044,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 conditionalFilterManager?.reloadRules()
                 Log.d(TAG, "Conditional rules updated - reloaded from storage")
                 InAppLogger.log("Conditional", "Rules reloaded due to settings change")
+            }
+            KEY_MEDIA_FILTERING_ENABLED, KEY_MEDIA_FILTER_EXCEPTED_APPS, KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS -> {
+                // Reload media filtering settings
+                loadFilterSettings()
+                Log.d(TAG, "Media filtering settings updated")
+                InAppLogger.log("MediaFilter", "Settings reloaded due to settings change")
             }
         }
     }

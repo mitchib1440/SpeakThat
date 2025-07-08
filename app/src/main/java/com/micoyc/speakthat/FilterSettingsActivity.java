@@ -69,16 +69,25 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private static final String KEY_WORD_BLACKLIST = "word_blacklist";
     private static final String KEY_WORD_BLACKLIST_PRIVATE = "word_blacklist_private";
     private static final String KEY_WORD_REPLACEMENTS = "word_replacements";
+    
+    // Media notification filtering keys
+    private static final String KEY_MEDIA_FILTERING_ENABLED = "media_filtering_enabled";
+    private static final String KEY_MEDIA_FILTER_EXCEPTED_APPS = "media_filter_excepted_apps";
+    private static final String KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS = "media_filter_important_keywords";
 
     // Adapters
     private AppListAdapter appListAdapter;
     private WordListAdapter wordBlacklistAdapter;
     private WordReplacementAdapter wordReplacementAdapter;
+    private AppListAdapter mediaExceptedAppsAdapter;
+    private WordListAdapter mediaImportantKeywordsAdapter;
 
     // Data lists
     private List<AppFilterItem> appList = new ArrayList<>();
     private List<WordFilterItem> wordBlacklistItems = new ArrayList<>();
     private List<WordReplacementItem> wordReplacementItems = new ArrayList<>();
+    private List<AppFilterItem> mediaExceptedAppsList = new ArrayList<>();
+    private List<WordFilterItem> mediaImportantKeywordsList = new ArrayList<>();
 
     private LocalBroadcastManager localBroadcastManager;
     private android.content.BroadcastReceiver repairBlacklistReceiver;
@@ -163,12 +172,27 @@ public class FilterSettingsActivity extends AppCompatActivity {
         setupAppListRecycler();
         setupWordBlacklistRecycler();
         setupWordReplacementRecycler();
+        setupMediaFilteringRecyclers();
 
         // Set up button listeners
         binding.btnAddApp.setOnClickListener(v -> addApp());
         binding.txtAppFilterHelp.setOnClickListener(v -> showAppFilterHelp());
         binding.btnAddBlacklistWord.setOnClickListener(v -> addBlacklistWord());
         binding.btnAddReplacement.setOnClickListener(v -> addWordReplacement());
+        
+        // Set up media filtering button listeners
+        binding.btnAddMediaExceptedApp.setOnClickListener(v -> addMediaExceptedApp());
+        binding.btnAddMediaImportantKeyword.setOnClickListener(v -> addMediaImportantKeyword());
+        binding.txtMediaFilterHelp.setOnClickListener(v -> showMediaFilterHelp());
+        
+        // Set up media filtering switch
+        binding.switchMediaFiltering.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            binding.mediaFilteringSection.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            saveMediaFilteringEnabled(isChecked);
+        });
+        
+        // Set up media excepted app input field
+        setupMediaExceptedAppSelector();
     }
 
     private void setupAppListRecycler() {
@@ -192,6 +216,56 @@ public class FilterSettingsActivity extends AppCompatActivity {
         wordReplacementAdapter = new WordReplacementAdapter(wordReplacementItems, this::removeWordReplacement, this::editWordReplacement);
         binding.recyclerWordReplacements.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerWordReplacements.setAdapter(wordReplacementAdapter);
+    }
+    
+    private void setupMediaFilteringRecyclers() {
+        // Set up media excepted apps RecyclerView
+        mediaExceptedAppsAdapter = new AppListAdapter(mediaExceptedAppsList, this::removeMediaExceptedApp, this::toggleMediaExceptedAppPrivate, this::editMediaExceptedApp);
+        binding.recyclerMediaExceptedApps.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerMediaExceptedApps.setAdapter(mediaExceptedAppsAdapter);
+        
+        // Set up media important keywords RecyclerView
+        mediaImportantKeywordsAdapter = new WordListAdapter(mediaImportantKeywordsList, this::removeMediaImportantKeyword, this::onMediaKeywordTypeChange, this::editMediaImportantKeyword);
+        binding.recyclerMediaImportantKeywords.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerMediaImportantKeywords.setAdapter(mediaImportantKeywordsAdapter);
+    }
+    
+    private void setupMediaExceptedAppSelector() {
+        // Load apps from JSON file
+        List<AppListData> jsonApps = AppListManager.INSTANCE.loadAppList(this);
+        
+        if (jsonApps != null && !jsonApps.isEmpty()) {
+            // Create adapter with JSON data
+            AppSearchAdapter jsonAdapter = new AppSearchAdapter(this, jsonApps);
+            binding.editMediaExceptedApp.setAdapter(jsonAdapter);
+            binding.editMediaExceptedApp.setThreshold(1); // Show suggestions after 1 character
+            
+            // Handle app selection
+            binding.editMediaExceptedApp.setOnItemClickListener((parent, view, position, id) -> {
+                AppListData selectedApp = jsonAdapter.getItem(position);
+                if (selectedApp != null) {
+                    binding.editMediaExceptedApp.setText(selectedApp.packageName);
+                    binding.editMediaExceptedApp.setSelection(selectedApp.packageName.length());
+                }
+            });
+        } else {
+            // Fallback to old system if JSON loading fails
+            installedApps = getCommonApps();
+            
+            if (installedApps != null && !installedApps.isEmpty()) {
+                appSelectorAdapter = new AppAutoCompleteAdapter(this, installedApps);
+                binding.editMediaExceptedApp.setAdapter(appSelectorAdapter);
+                binding.editMediaExceptedApp.setThreshold(1);
+                
+                binding.editMediaExceptedApp.setOnItemClickListener((parent, view, position, id) -> {
+                    AppInfo selectedApp = appSelectorAdapter.getItem(position);
+                    if (selectedApp != null) {
+                        binding.editMediaExceptedApp.setText(selectedApp.packageName);
+                        binding.editMediaExceptedApp.setSelection(selectedApp.packageName.length());
+                    }
+                });
+            }
+        }
     }
 
     private void loadSettings() {
@@ -262,6 +336,31 @@ public class FilterSettingsActivity extends AppCompatActivity {
             }
         }
         wordReplacementAdapter.notifyDataSetChanged();
+        
+        // Load media notification filtering settings
+        boolean isMediaFilteringEnabled = sharedPreferences.getBoolean(KEY_MEDIA_FILTERING_ENABLED, false);
+        binding.switchMediaFiltering.setChecked(isMediaFilteringEnabled);
+        binding.mediaFilteringSection.setVisibility(isMediaFilteringEnabled ? View.VISIBLE : View.GONE);
+        
+        // Load media excepted apps
+        Set<String> mediaExceptedApps = sharedPreferences.getStringSet(KEY_MEDIA_FILTER_EXCEPTED_APPS, new HashSet<>());
+        Set<String> mediaExceptedAppsPrivate = sharedPreferences.getStringSet(KEY_MEDIA_FILTER_EXCEPTED_APPS + "_private", new HashSet<>());
+        
+        mediaExceptedAppsList.clear();
+        for (String app : mediaExceptedApps) {
+            mediaExceptedAppsList.add(new AppFilterItem(app, mediaExceptedAppsPrivate.contains(app)));
+        }
+        mediaExceptedAppsAdapter.notifyDataSetChanged();
+        
+        // Load media important keywords
+        Set<String> mediaImportantKeywords = sharedPreferences.getStringSet(KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, new HashSet<>());
+        Set<String> mediaImportantKeywordsPrivate = sharedPreferences.getStringSet(KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS + "_private", new HashSet<>());
+        
+        mediaImportantKeywordsList.clear();
+        for (String keyword : mediaImportantKeywords) {
+            mediaImportantKeywordsList.add(new WordFilterItem(keyword, mediaImportantKeywordsPrivate.contains(keyword)));
+        }
+        mediaImportantKeywordsAdapter.notifyDataSetChanged();
     }
 
     private void addApp() {
@@ -435,6 +534,195 @@ public class FilterSettingsActivity extends AppCompatActivity {
             WordReplacementItem item = wordReplacementItems.get(position);
             showEditWordReplacementDialog(item, position);
         }
+    }
+    
+    // Media filtering methods
+    private void addMediaExceptedApp() {
+        String appName = binding.editMediaExceptedApp.getText().toString().trim();
+        if (appName.isEmpty()) {
+            Toast.makeText(this, "Please select an app", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        // Find the app info
+        AppInfo selectedApp = null;
+        for (AppInfo app : installedApps) {
+            if (app.appName.equals(appName)) {
+                selectedApp = app;
+                break;
+            }
+        }
+        
+        if (selectedApp == null) {
+            Toast.makeText(this, "App not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        // Check if already in list
+        for (AppFilterItem item : mediaExceptedAppsList) {
+            if (item.packageName.equals(selectedApp.packageName)) {
+                Toast.makeText(this, "App already in exception list", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        
+        // Add to list
+        mediaExceptedAppsList.add(new AppFilterItem(selectedApp.packageName, false));
+        mediaExceptedAppsAdapter.notifyDataSetChanged();
+        saveMediaExceptedApps();
+        
+        // Clear input
+        binding.editMediaExceptedApp.setText("");
+        
+        Toast.makeText(this, "Added " + selectedApp.appName + " to media exception list", Toast.LENGTH_SHORT).show();
+    }
+    
+    private void removeMediaExceptedApp(int position) {
+        AppFilterItem item = mediaExceptedAppsList.get(position);
+        mediaExceptedAppsList.remove(position);
+        mediaExceptedAppsAdapter.notifyDataSetChanged();
+        saveMediaExceptedApps();
+        
+        Toast.makeText(this, "Removed " + item.packageName + " from media exception list", Toast.LENGTH_SHORT).show();
+    }
+    
+    private void toggleMediaExceptedAppPrivate(int position) {
+        AppFilterItem item = mediaExceptedAppsList.get(position);
+        item.isPrivate = !item.isPrivate;
+        mediaExceptedAppsAdapter.notifyDataSetChanged();
+        saveMediaExceptedApps();
+    }
+    
+    private void editMediaExceptedApp(int position) {
+        AppFilterItem item = mediaExceptedAppsList.get(position);
+        showEditMediaExceptedAppDialog(item, position);
+    }
+    
+    private void addMediaImportantKeyword() {
+        String keyword = binding.editMediaImportantKeyword.getText().toString().trim();
+        if (keyword.isEmpty()) {
+            Toast.makeText(this, "Please enter a keyword", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        // Check if already in list
+        for (WordFilterItem item : mediaImportantKeywordsList) {
+            if (item.word.equals(keyword)) {
+                Toast.makeText(this, "Keyword already in list", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        
+        // Add to list
+        mediaImportantKeywordsList.add(new WordFilterItem(keyword, false));
+        mediaImportantKeywordsAdapter.notifyDataSetChanged();
+        saveMediaImportantKeywords();
+        
+        // Clear input
+        binding.editMediaImportantKeyword.setText("");
+        
+        Toast.makeText(this, "Added keyword: " + keyword, Toast.LENGTH_SHORT).show();
+    }
+    
+    private void removeMediaImportantKeyword(int position) {
+        WordFilterItem item = mediaImportantKeywordsList.get(position);
+        mediaImportantKeywordsList.remove(position);
+        mediaImportantKeywordsAdapter.notifyDataSetChanged();
+        saveMediaImportantKeywords();
+        
+        Toast.makeText(this, "Removed keyword: " + item.word, Toast.LENGTH_SHORT).show();
+    }
+    
+    private void onMediaKeywordTypeChange(int position, boolean isPrivate) {
+        WordFilterItem item = mediaImportantKeywordsList.get(position);
+        item.isPrivate = isPrivate;
+        mediaImportantKeywordsAdapter.notifyDataSetChanged();
+        saveMediaImportantKeywords();
+    }
+    
+    private void editMediaImportantKeyword(int position) {
+        WordFilterItem item = mediaImportantKeywordsList.get(position);
+        showEditMediaImportantKeywordDialog(item, position);
+    }
+    
+    private void showEditMediaExceptedAppDialog(AppFilterItem item, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Edit Media Exception App");
+        
+        // Create input field
+        final EditText input = new EditText(this);
+        input.setText(item.packageName);
+        input.setHint("Package name (e.g., com.android.chrome)");
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setSelection(input.getText().length()); // Move cursor to end
+        
+        // Add padding
+        input.setPadding(50, 30, 50, 30);
+        builder.setView(input);
+        
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            String newPackageName = input.getText().toString().trim();
+            if (!newPackageName.isEmpty()) {
+                // Check for duplicates (excluding current item)
+                for (int i = 0; i < mediaExceptedAppsList.size(); i++) {
+                    if (i != position && mediaExceptedAppsList.get(i).packageName.equals(newPackageName)) {
+                        Toast.makeText(this, "App already in exception list", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                
+                // Update the item
+                item.packageName = newPackageName;
+                mediaExceptedAppsAdapter.notifyItemChanged(position);
+                saveMediaExceptedApps();
+                Toast.makeText(this, "Media exception app updated", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Package name cannot be empty", Toast.LENGTH_SHORT).show();
+            }
+        });
+        
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
+    
+    private void showEditMediaImportantKeywordDialog(WordFilterItem item, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Edit Media Important Keyword");
+        
+        // Create input field
+        final EditText input = new EditText(this);
+        input.setText(item.word);
+        input.setHint("Important keyword (e.g., reply, comment)");
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setSelection(input.getText().length()); // Move cursor to end
+        
+        // Add padding
+        input.setPadding(50, 30, 50, 30);
+        builder.setView(input);
+        
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            String newKeyword = input.getText().toString().trim();
+            if (!newKeyword.isEmpty()) {
+                // Check for duplicates (excluding current item)
+                for (int i = 0; i < mediaImportantKeywordsList.size(); i++) {
+                    if (i != position && mediaImportantKeywordsList.get(i).word.equals(newKeyword)) {
+                        Toast.makeText(this, "Keyword already in list", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                
+                // Update the item
+                item.word = newKeyword;
+                mediaImportantKeywordsAdapter.notifyItemChanged(position);
+                saveMediaImportantKeywords();
+                Toast.makeText(this, "Media important keyword updated", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Keyword cannot be empty", Toast.LENGTH_SHORT).show();
+            }
+        });
+        
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
     }
 
     private void showEditAppDialog(AppFilterItem item, int position) {
@@ -644,6 +932,48 @@ public class FilterSettingsActivity extends AppCompatActivity {
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_WORD_REPLACEMENTS, sb.toString());
+        editor.apply();
+    }
+    
+    private void saveMediaExceptedApps() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        
+        Set<String> packageNames = new HashSet<>();
+        Set<String> privateFlags = new HashSet<>();
+        
+        for (AppFilterItem item : mediaExceptedAppsList) {
+            packageNames.add(item.packageName);
+            if (item.isPrivate) {
+                privateFlags.add(item.packageName);
+            }
+        }
+        
+        editor.putStringSet(KEY_MEDIA_FILTER_EXCEPTED_APPS, packageNames);
+        editor.putStringSet(KEY_MEDIA_FILTER_EXCEPTED_APPS + "_private", privateFlags);
+        editor.apply();
+    }
+    
+    private void saveMediaImportantKeywords() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        
+        Set<String> keywords = new HashSet<>();
+        Set<String> privateKeywords = new HashSet<>();
+        
+        for (WordFilterItem item : mediaImportantKeywordsList) {
+            keywords.add(item.word);
+            if (item.isPrivate) {
+                privateKeywords.add(item.word);
+            }
+        }
+        
+        editor.putStringSet(KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, keywords);
+        editor.putStringSet(KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS + "_private", privateKeywords);
+        editor.apply();
+    }
+    
+    private void saveMediaFilteringEnabled(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_MEDIA_FILTERING_ENABLED, enabled);
         editor.apply();
     }
 
@@ -1046,5 +1376,35 @@ public class FilterSettingsActivity extends AppCompatActivity {
                .show();
         
         InAppLogger.log("FilterSettings", "App filter help dialog shown");
+    }
+    
+    private void showMediaFilterHelp() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("🎵 Media Notification Filter Help")
+               .setMessage("How Media Notification Filtering Works:\n\n" +
+                          "🔍 Automatic Detection:\n" +
+                          "• Detects music players, video apps, and media controls\n" +
+                          "• Identifies playback bars and media session notifications\n" +
+                          "• Uses content patterns, app categories, and media flags\n\n" +
+                          
+                          "📱 Exception Apps:\n" +
+                          "• Apps that should never have notifications filtered\n" +
+                          "• Useful for apps like YouTube where you want replies but not playback controls\n" +
+                          "• Add apps that send both media and important notifications\n\n" +
+                          
+                          "🔑 Important Keywords:\n" +
+                          "• Words that indicate important notifications (like 'reply', 'comment')\n" +
+                          "• Notifications containing these words won't be filtered\n" +
+                          "• Helps preserve social media updates while filtering media controls\n\n" +
+                          
+                          "✅ Benefits:\n" +
+                          "• Prevents annoying media control notifications\n" +
+                          "• Keeps important social media updates\n" +
+                          "• Works automatically without manual configuration\n" +
+                          "• Customizable exceptions for specific needs")
+               .setPositiveButton("Got it!", (dialog, which) -> dialog.dismiss())
+               .show();
+        
+        InAppLogger.log("FilterSettings", "Media filter help dialog shown");
     }
 } 
