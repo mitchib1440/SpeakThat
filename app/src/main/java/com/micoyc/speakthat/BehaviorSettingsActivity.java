@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.slider.Slider;
@@ -25,8 +27,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class BehaviorSettingsActivity extends AppCompatActivity implements SensorEventListener {
+public class BehaviorSettingsActivity extends AppCompatActivity implements SensorEventListener, CustomAppNameAdapter.OnCustomAppNameActionListener {
     private ActivityBehaviorSettingsBinding binding;
     private SharedPreferences sharedPreferences;
     
@@ -40,6 +45,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String KEY_MEDIA_BEHAVIOR = "media_behavior";
     private static final String KEY_DUCKING_VOLUME = "ducking_volume";
     private static final String KEY_DELAY_BEFORE_READOUT = "delay_before_readout";
+    private static final String KEY_CUSTOM_APP_NAMES = "custom_app_names"; // JSON string of custom app names
 
     // Media behavior options
     private static final String MEDIA_BEHAVIOR_IGNORE = "ignore";
@@ -56,6 +62,8 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     // Adapter and data
     private PriorityAppAdapter priorityAppAdapter;
     private List<String> priorityAppsList = new ArrayList<>();
+    private CustomAppNameAdapter customAppNameAdapter;
+    private List<CustomAppNameAdapter.CustomAppNameEntry> customAppNamesList = new ArrayList<>();
     
     // Shake detection
     private SensorManager sensorManager;
@@ -127,11 +135,18 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Set up button listener
         binding.btnAddPriorityApp.setOnClickListener(v -> addPriorityApp());
 
+        // Set up RecyclerView for custom app names
+        setupCustomAppNamesRecycler();
+
+        // Set up custom app name button listener
+        binding.btnAddCustomAppName.setOnClickListener(v -> addCustomAppName());
+
         // Set up info button listeners
         binding.btnNotificationBehaviorInfo.setOnClickListener(v -> showNotificationBehaviorDialog());
         binding.btnMediaBehaviorInfo.setOnClickListener(v -> showMediaBehaviorDialog());
         binding.btnShakeToStopInfo.setOnClickListener(v -> showShakeToStopDialog());
         binding.btnDelayInfo.setOnClickListener(v -> showDelayDialog());
+        binding.btnAppNamesInfo.setOnClickListener(v -> showCustomAppNamesDialog());
 
         // Set up shake to stop toggle
         binding.switchShakeToStop.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -219,6 +234,12 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.recyclerPriorityApps.setAdapter(priorityAppAdapter);
     }
 
+    private void setupCustomAppNamesRecycler() {
+        customAppNameAdapter = new CustomAppNameAdapter(this);
+        binding.recyclerCustomAppNames.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerCustomAppNames.setAdapter(customAppNameAdapter);
+    }
+
     private void loadSettings() {
         // Load behavior mode
         String behaviorMode = sharedPreferences.getString(KEY_NOTIFICATION_BEHAVIOR, "interrupt");
@@ -299,6 +320,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 binding.radioDelayNone.setChecked(true);
                 break;
         }
+
+        // Load custom app names
+        loadCustomAppNames();
     }
 
     private void addPriorityApp() {
@@ -325,6 +349,111 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         priorityAppsList.remove(position);
         priorityAppAdapter.notifyDataSetChanged();
         savePriorityApps();
+    }
+
+    private void addCustomAppName() {
+        String packageName = binding.editAppPackage.getText().toString().trim();
+        String customName = binding.editCustomAppName.getText().toString().trim();
+        
+        if (packageName.isEmpty() || customName.isEmpty()) {
+            Toast.makeText(this, "Please enter both package name and custom name", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Check for duplicates
+        for (CustomAppNameAdapter.CustomAppNameEntry entry : customAppNamesList) {
+            if (entry.getPackageName().equals(packageName)) {
+                Toast.makeText(this, "Package name already has a custom name", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        CustomAppNameAdapter.CustomAppNameEntry entry = new CustomAppNameAdapter.CustomAppNameEntry(packageName, customName);
+        customAppNamesList.add(entry);
+        customAppNameAdapter.addCustomAppName(entry);
+        
+        // Clear input fields
+        binding.editAppPackage.setText("");
+        binding.editCustomAppName.setText("");
+        
+        saveCustomAppNames();
+    }
+
+    private void removeCustomAppName(int position) {
+        customAppNamesList.remove(position);
+        customAppNameAdapter.removeCustomAppName(position);
+        saveCustomAppNames();
+    }
+
+    @Override
+    public void onDelete(int position) {
+        removeCustomAppName(position);
+    }
+
+    private void loadCustomAppNames() {
+        String customAppNamesJson = sharedPreferences.getString(KEY_CUSTOM_APP_NAMES, "[]");
+        customAppNamesList.clear();
+        
+        try {
+            JSONArray jsonArray = new JSONArray(customAppNamesJson);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String packageName = jsonObject.getString("packageName");
+                String customName = jsonObject.getString("customName");
+                customAppNamesList.add(new CustomAppNameAdapter.CustomAppNameEntry(packageName, customName));
+            }
+        } catch (JSONException e) {
+            Log.e("BehaviorSettings", "Error loading custom app names", e);
+        }
+        
+        // If no custom app names exist, add some defaults
+        if (customAppNamesList.isEmpty()) {
+            addDefaultCustomAppNames();
+        }
+        
+        customAppNameAdapter.updateCustomAppNames(customAppNamesList);
+    }
+
+    private void addDefaultCustomAppNames() {
+        // Add some common custom app names
+        CustomAppNameAdapter.CustomAppNameEntry[] defaultEntries = {
+            new CustomAppNameAdapter.CustomAppNameEntry("com.twitter.android", "Twitter"),
+            new CustomAppNameAdapter.CustomAppNameEntry("com.facebook.katana", "Facebook"),
+            new CustomAppNameAdapter.CustomAppNameEntry("com.whatsapp", "WhatsApp"),
+            new CustomAppNameAdapter.CustomAppNameEntry("com.instagram.android", "Instagram"),
+            new CustomAppNameAdapter.CustomAppNameEntry("com.telegram.messenger", "Telegram"),
+            new CustomAppNameAdapter.CustomAppNameEntry("org.telegram.messenger", "Telegram"),
+            new CustomAppNameAdapter.CustomAppNameEntry("com.snapchat.android", "Snapchat"),
+            new CustomAppNameAdapter.CustomAppNameEntry("com.discord", "Discord"),
+            new CustomAppNameAdapter.CustomAppNameEntry("com.slack", "Slack"),
+            new CustomAppNameAdapter.CustomAppNameEntry("com.microsoft.teams", "Teams")
+        };
+        
+        for (CustomAppNameAdapter.CustomAppNameEntry entry : defaultEntries) {
+            customAppNamesList.add(entry);
+        }
+        
+        saveCustomAppNames();
+    }
+
+    private void saveCustomAppNames() {
+        try {
+            JSONArray jsonArray = new JSONArray();
+            for (CustomAppNameAdapter.CustomAppNameEntry entry : customAppNamesList) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("packageName", entry.getPackageName());
+                jsonObject.put("customName", entry.getCustomName());
+                jsonArray.put(jsonObject);
+            }
+            
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(KEY_CUSTOM_APP_NAMES, jsonArray.toString());
+            editor.apply();
+            
+            InAppLogger.log("BehaviorSettings", "Custom app names saved: " + customAppNamesList.size() + " entries");
+        } catch (JSONException e) {
+            Log.e("BehaviorSettings", "Error saving custom app names", e);
+        }
     }
 
     private void saveBehaviorMode(String mode) {
@@ -654,6 +783,35 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                     saveDelayBeforeReadout(2);
                 })
                 .setNegativeButton(R.string.got_it, null)
+                .show();
+    }
+
+    private void showCustomAppNamesDialog() {
+        // Track dialog usage for analytics
+        trackDialogUsage("custom_app_names_info");
+        
+        String htmlText = "Custom App Names let you change how app names are spoken in notifications:<br><br>" +
+                "<b>🎯 Why customize app names?</b><br>" +
+                "Some apps have confusing or unclear names when spoken aloud. This feature lets you create custom names that are easier to understand:<br><br>" +
+                "<b>📱 Examples:</b><br>" +
+                "• <b>X app</b> → <b>Twitter</b><br>" +
+                "• <b>Meta</b> → <b>Facebook</b><br>" +
+                "• <b>WA</b> → <b>WhatsApp</b><br>" +
+                "• <b>IG</b> → <b>Instagram</b><br><br>" +
+                "<b>🔧 How to use:</b><br>" +
+                "1. Find the app's package name (e.g., com.twitter.android)<br>" +
+                "2. Enter a custom name that's easier to say<br>" +
+                "3. SpeakThat will use your custom name instead<br><br>" +
+                "<b>💡 Finding package names:</b><br>" +
+                "• Check the app's Play Store URL<br>" +
+                "• Use a package name finder app<br>" +
+                "• Common format: com.company.appname<br><br>" +
+                "<b>Note:</b> This only affects how the app name is spoken, not the actual app name on your device.";
+        
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle("Custom App Names")
+                .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
+                .setPositiveButton("Got it!", null)
                 .show();
     }
 

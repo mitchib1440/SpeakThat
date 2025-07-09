@@ -3,23 +3,39 @@ package com.micoyc.speakthat
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.viewpager2.widget.ViewPager2
 import com.micoyc.speakthat.databinding.ActivityOnboardingBinding
+import java.util.Locale
 
-class OnboardingActivity : AppCompatActivity() {
+class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     
     private lateinit var binding: ActivityOnboardingBinding
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var adapter: OnboardingPagerAdapter
     private var skipPermissionPage = false
     
+    // TTS support
+    private var textToSpeech: TextToSpeech? = null
+    private var isTtsInitialized = false
+    private var voiceSettingsPrefs: SharedPreferences? = null
+    private val voiceSettingsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        when (key) {
+            "speech_rate", "pitch", "voice_name", "language", "audio_usage", "content_type" -> {
+                applyVoiceSettings()
+            }
+        }
+    }
+    
     companion object {
         private const val PREFS_NAME = "SpeakThatPrefs"
         private const val KEY_HAS_SEEN_ONBOARDING = "has_seen_onboarding"
+        private const val TAG = "OnboardingActivity"
         
         fun hasSeenOnboarding(context: android.content.Context): Boolean {
             val prefs = context.getSharedPreferences(PREFS_NAME, android.content.Context.MODE_PRIVATE)
@@ -32,6 +48,13 @@ class OnboardingActivity : AppCompatActivity() {
         
         // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        
+        // Initialize voice settings listener
+        voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+        voiceSettingsPrefs?.registerOnSharedPreferenceChangeListener(voiceSettingsListener)
+        
+        // Initialize TTS
+        initializeTextToSpeech()
         
         // Initialize view binding
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
@@ -51,6 +74,79 @@ class OnboardingActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
         val currentPage = binding.viewPager.currentItem
         updateButtonText(currentPage, adapter.itemCount)
+        
+        // Speak current page content when resuming
+        speakCurrentPageContent()
+    }
+    
+    override fun onPause() {
+        super.onPause()
+        // Stop TTS when leaving the activity
+        textToSpeech?.stop()
+    }
+    
+    private fun initializeTextToSpeech() {
+        textToSpeech = TextToSpeech(this, this)
+    }
+    
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            val result = textToSpeech?.setLanguage(Locale.getDefault())
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                // Fallback to English US
+                textToSpeech?.setLanguage(Locale.US)
+            }
+            
+            // Set audio stream to media volume
+            textToSpeech?.setAudioAttributes(
+                android.media.AudioAttributes.Builder()
+                    .setUsage(android.media.AudioAttributes.USAGE_MEDIA)
+                    .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build()
+            )
+            
+            // Apply saved voice settings
+            applyVoiceSettings()
+            
+            isTtsInitialized = true
+            InAppLogger.log(TAG, "TTS initialized successfully for onboarding")
+            
+            // Speak welcome message
+            speakText("Welcome to SpeakThat! Let me guide you through the setup process.")
+        } else {
+            InAppLogger.log(TAG, "TTS initialization failed")
+        }
+    }
+    
+    private fun applyVoiceSettings() {
+        textToSpeech?.let { tts ->
+            voiceSettingsPrefs?.let { prefs ->
+                VoiceSettingsActivity.applyVoiceSettings(tts, prefs)
+            }
+        }
+    }
+    
+    private fun speakText(text: String) {
+        if (isTtsInitialized && textToSpeech != null) {
+            textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "onboarding_utterance")
+            InAppLogger.log(TAG, "Speaking: ${text.take(50)}...")
+        }
+    }
+    
+    private fun speakCurrentPageContent() {
+        if (!isTtsInitialized) return
+        
+        val currentPage = binding.viewPager.currentItem
+        val pageContent = when (currentPage) {
+            0 -> "Welcome to SpeakThat! This app reads your notifications out loud so you never miss important messages. Swipe to learn more."
+            1 -> if (!skipPermissionPage) "To work properly, SpeakThat needs permission to read your notifications. Please grant this permission to continue." else ""
+            2 -> "You can customize which apps and words to filter, adjust voice settings, and control how notifications are read. Let's get started!"
+            else -> ""
+        }
+        
+        if (pageContent.isNotEmpty()) {
+            speakText(pageContent)
+        }
     }
     
     private fun setupOnboarding() {
@@ -83,6 +179,8 @@ class OnboardingActivity : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
                 updateButtonText(position, adapter.itemCount)
                 updatePageIndicator(position)
+                // Speak the content of the new page
+                speakCurrentPageContent()
             }
         })
         binding.viewPager.isUserInputEnabled = true // default
@@ -197,5 +295,17 @@ class OnboardingActivity : AppCompatActivity() {
         // Update the current page to reflect permission status
         val currentPage = binding.viewPager.currentItem
         updateButtonText(currentPage, binding.viewPager.adapter?.itemCount ?: 4)
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        // Clean up TTS resources
+        if (textToSpeech != null) {
+            textToSpeech?.stop()
+            textToSpeech?.shutdown()
+        }
+        
+        // Unregister voice settings listener
+        voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
     }
 } 

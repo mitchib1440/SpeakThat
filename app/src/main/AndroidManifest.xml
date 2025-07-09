@@ -8,7 +8,13 @@
     <!-- Permission to use text-to-speech -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
-       <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Permission for auto-start on boot -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    
+    <!-- Permission to request battery optimization exemption -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -91,6 +97,12 @@
             android:parentActivityName=".SettingsActivity"
             android:theme="@style/Theme.SpeakThat.NoActionBar" />
 
+        <activity
+            android:name=".TestSettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".GeneralSettingsActivity"
+            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+
         <!-- Notification Listener Service -->
         <service
             android:name=".NotificationReaderService"
@@ -101,6 +113,19 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
+
+        <!-- Boot Receiver for auto-start functionality -->
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
 
         <!-- FileProvider for sharing exported files -->
         <provider

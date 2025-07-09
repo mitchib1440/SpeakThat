@@ -673,6 +673,138 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- App Name Customization Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="@color/purple_300"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📱 Custom App Names"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/purple_200"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Customize how app names are spoken in notifications"
+                        android:textSize="14sp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Recommendation Box -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="?attr/colorSurfaceVariant"
+                        android:padding="12dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="💡 Example: X app reads as Twitter"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_200"
+                            android:layout_marginEnd="8dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAppNamesInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:text="ℹ️ More Info"
+                            android:textSize="12sp"
+                            android:textColor="@color/purple_200"
+                            android:backgroundTint="@color/white_100"
+                            android:strokeColor="@color/purple_200"
+                            android:strokeWidth="1.0"
+                            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                    </LinearLayout>
+
+                    <!-- Add Custom App Name -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            app:boxBackgroundMode="outline"
+                            app:boxStrokeColor="@color/purple_200">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editAppPackage"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="App package name (e.g., com.twitter.android)"
+                                android:inputType="text" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
+                            app:boxBackgroundMode="outline"
+                            app:boxStrokeColor="@color/purple_200">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editCustomAppName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Custom name (e.g., Twitter)"
+                                android:inputType="text" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnAddCustomAppName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Add Custom App Name"
+                        android:backgroundTint="@color/purple_200"
+                        android:textColor="@color/white_100"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Custom App Names List -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerCustomAppNames"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:nestedScrollingEnabled="false" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- Delay Before Readout Section -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"

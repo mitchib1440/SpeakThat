@@ -32,6 +32,13 @@
 <b>🧠 Smart (Recommended)</b> - Priority apps interrupt, others queue. Perfect balance of urgency and completeness.
 
 Smart mode lets you choose which apps are urgent enough to interrupt (like calls, messages) while other apps wait their turn.</string>
+
+    <string name="custom_app_names_title">Custom App Names</string>
+    <string name="custom_app_names_description">Customize how app names are spoken in notifications</string>
+    <string name="add_custom_app_name">Add Custom App Name</string>
+    <string name="app_package_hint">App package name (e.g., com.twitter.android)</string>
+    <string name="custom_name_hint">Custom name (e.g., Twitter)</string>
+    <string name="custom_app_names_example">Example: X app reads as Twitter</string>
     
     <string name="media_behavior_dialog_title">Media Behavior Options</string>
     <string name="media_behavior_dialog_message">Choose how SpeakThat handles notifications while music/videos play:

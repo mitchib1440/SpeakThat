@@ -47,6 +47,80 @@ public class FilterConfigManager {
         }
     }
     
+    public static class FullConfig {
+        public String exportDate;
+        public String appVersion;
+        public String configVersion;
+        public FilterConfig filters;
+        public VoiceConfig voice;
+        public BehaviorConfig behavior;
+        public GeneralConfig general;
+        
+        public FullConfig() {
+            this.exportDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+            this.appVersion = "1.0";
+            this.configVersion = CONFIG_VERSION;
+            this.filters = new FilterConfig();
+            this.voice = new VoiceConfig();
+            this.behavior = new BehaviorConfig();
+            this.general = new GeneralConfig();
+        }
+    }
+    
+    public static class VoiceConfig {
+        public float speechRate;
+        public float pitch;
+        public String voiceName;
+        public String language;
+        public int audioUsage;
+        public int contentType;
+        
+        public VoiceConfig() {
+            this.speechRate = 1.0f;
+            this.pitch = 1.0f;
+            this.voiceName = "";
+            this.language = "en_US";
+            this.audioUsage = 0;
+            this.contentType = 0;
+        }
+    }
+    
+    public static class BehaviorConfig {
+        public String notificationBehavior;
+        public Set<String> priorityApps;
+        public boolean shakeToStopEnabled;
+        public float shakeThreshold;
+        public String mediaBehavior;
+        public int duckingVolume;
+        public int delayBeforeReadout;
+        
+        public BehaviorConfig() {
+            this.notificationBehavior = "interrupt";
+            this.priorityApps = new HashSet<>();
+            this.shakeToStopEnabled = false;
+            this.shakeThreshold = 12.0f;
+            this.mediaBehavior = "ignore";
+            this.duckingVolume = 30;
+            this.delayBeforeReadout = 0;
+        }
+    }
+    
+    public static class GeneralConfig {
+        public boolean darkMode;
+        public boolean autoStartOnBoot;
+        public boolean batteryOptimizationDisabled;
+        public boolean aggressiveBackgroundProcessing;
+        public String serviceRestartPolicy;
+        
+        public GeneralConfig() {
+            this.darkMode = true;
+            this.autoStartOnBoot = false;
+            this.batteryOptimizationDisabled = false;
+            this.aggressiveBackgroundProcessing = false;
+            this.serviceRestartPolicy = "crash";
+        }
+    }
+    
     public static class ImportResult {
         public boolean success;
         public String message;
@@ -98,6 +172,101 @@ public class FilterConfigManager {
         // Future extension point - we can add more sections here
         // json.put("behaviorSettings", ...);
         // json.put("voiceSettings", ...);
+        
+        return json.toString(2); // Pretty print with 2-space indentation
+    }
+    
+    /**
+     * Export full configuration including all settings
+     */
+    public static String exportFullConfiguration(Context context) throws JSONException {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences voicePrefs = context.getSharedPreferences("VoiceSettings", Context.MODE_PRIVATE);
+        
+        FullConfig config = new FullConfig();
+        
+        // Load filter settings
+        config.filters.appListMode = prefs.getString(KEY_APP_LIST_MODE, "none");
+        config.filters.appList = new HashSet<>(prefs.getStringSet(KEY_APP_LIST, new HashSet<>()));
+        config.filters.appPrivateFlags = new HashSet<>(prefs.getStringSet(KEY_APP_PRIVATE_FLAGS, new HashSet<>()));
+        config.filters.wordBlacklist = new HashSet<>(prefs.getStringSet(KEY_WORD_BLACKLIST, new HashSet<>()));
+        config.filters.wordBlacklistPrivate = new HashSet<>(prefs.getStringSet(KEY_WORD_BLACKLIST_PRIVATE, new HashSet<>()));
+        config.filters.wordReplacements = prefs.getString(KEY_WORD_REPLACEMENTS, "");
+        
+        // Load voice settings
+        config.voice.speechRate = voicePrefs.getFloat("speech_rate", 1.0f);
+        config.voice.pitch = voicePrefs.getFloat("pitch", 1.0f);
+        config.voice.voiceName = voicePrefs.getString("voice_name", "");
+        config.voice.language = voicePrefs.getString("language", "en_US");
+        config.voice.audioUsage = voicePrefs.getInt("audio_usage", 0);
+        config.voice.contentType = voicePrefs.getInt("content_type", 0);
+        
+        // Load behavior settings
+        config.behavior.notificationBehavior = prefs.getString("notification_behavior", "interrupt");
+        config.behavior.priorityApps = new HashSet<>(prefs.getStringSet("priority_apps", new HashSet<>()));
+        config.behavior.shakeToStopEnabled = prefs.getBoolean("shake_to_stop_enabled", false);
+        config.behavior.shakeThreshold = prefs.getFloat("shake_threshold", 12.0f);
+        config.behavior.mediaBehavior = prefs.getString("media_behavior", "ignore");
+        config.behavior.duckingVolume = prefs.getInt("ducking_volume", 30);
+        config.behavior.delayBeforeReadout = prefs.getInt("delay_before_readout", 0);
+        
+        // Load general settings
+        config.general.darkMode = prefs.getBoolean("dark_mode", true);
+        config.general.autoStartOnBoot = prefs.getBoolean("auto_start_on_boot", false);
+        config.general.batteryOptimizationDisabled = prefs.getBoolean("battery_optimization_disabled", false);
+        config.general.aggressiveBackgroundProcessing = prefs.getBoolean("aggressive_background_processing", false);
+        config.general.serviceRestartPolicy = prefs.getString("service_restart_policy", "crash");
+        
+        // Create JSON structure
+        JSONObject json = new JSONObject();
+        
+        // Metadata
+        JSONObject metadata = new JSONObject();
+        metadata.put("exportDate", config.exportDate);
+        metadata.put("appVersion", config.appVersion);
+        metadata.put("configVersion", config.configVersion);
+        metadata.put("exportType", "SpeakThat_FullConfig");
+        json.put("metadata", metadata);
+        
+        // Filter settings
+        JSONObject filters = new JSONObject();
+        filters.put("appListMode", config.filters.appListMode);
+        filters.put("appList", new JSONArray(config.filters.appList));
+        filters.put("appPrivateFlags", new JSONArray(config.filters.appPrivateFlags));
+        filters.put("wordBlacklist", new JSONArray(config.filters.wordBlacklist));
+        filters.put("wordBlacklistPrivate", new JSONArray(config.filters.wordBlacklistPrivate));
+        filters.put("wordReplacements", config.filters.wordReplacements);
+        json.put("filters", filters);
+        
+        // Voice settings
+        JSONObject voice = new JSONObject();
+        voice.put("speechRate", config.voice.speechRate);
+        voice.put("pitch", config.voice.pitch);
+        voice.put("voiceName", config.voice.voiceName);
+        voice.put("language", config.voice.language);
+        voice.put("audioUsage", config.voice.audioUsage);
+        voice.put("contentType", config.voice.contentType);
+        json.put("voice", voice);
+        
+        // Behavior settings
+        JSONObject behavior = new JSONObject();
+        behavior.put("notificationBehavior", config.behavior.notificationBehavior);
+        behavior.put("priorityApps", new JSONArray(config.behavior.priorityApps));
+        behavior.put("shakeToStopEnabled", config.behavior.shakeToStopEnabled);
+        behavior.put("shakeThreshold", config.behavior.shakeThreshold);
+        behavior.put("mediaBehavior", config.behavior.mediaBehavior);
+        behavior.put("duckingVolume", config.behavior.duckingVolume);
+        behavior.put("delayBeforeReadout", config.behavior.delayBeforeReadout);
+        json.put("behavior", behavior);
+        
+        // General settings
+        JSONObject general = new JSONObject();
+        general.put("darkMode", config.general.darkMode);
+        general.put("autoStartOnBoot", config.general.autoStartOnBoot);
+        general.put("batteryOptimizationDisabled", config.general.batteryOptimizationDisabled);
+        general.put("aggressiveBackgroundProcessing", config.general.aggressiveBackgroundProcessing);
+        general.put("serviceRestartPolicy", config.general.serviceRestartPolicy);
+        json.put("general", general);
         
         return json.toString(2); // Pretty print with 2-space indentation
     }
@@ -187,6 +356,201 @@ public class FilterConfigManager {
             return new ImportResult(false, "Invalid JSON format: " + e.getMessage(), 0);
         } catch (Exception e) {
             InAppLogger.logError("FilterConfig", "Import error: " + e.getMessage());
+            return new ImportResult(false, "Import failed: " + e.getMessage(), 0);
+        }
+    }
+    
+    /**
+     * Import full configuration including all settings
+     */
+    public static ImportResult importFullConfiguration(Context context, String jsonData) {
+        try {
+            JSONObject json = new JSONObject(jsonData);
+            
+            // Validate this is a SpeakThat full config
+            if (!json.has("metadata")) {
+                return new ImportResult(false, "Invalid file format: Missing metadata section", 0);
+            }
+            
+            JSONObject metadata = json.getJSONObject("metadata");
+            String exportType = metadata.optString("exportType", "");
+            if (!exportType.equals("SpeakThat_FullConfig") && !exportType.equals("SpeakThat_FilterConfig")) {
+                return new ImportResult(false, "Invalid file format: Not a SpeakThat configuration", 0);
+            }
+            
+            // Check version compatibility
+            String importVersion = metadata.optString("configVersion", "1.0");
+            if (!isVersionCompatible(importVersion)) {
+                return new ImportResult(false, "Incompatible configuration version: " + importVersion, 0);
+            }
+            
+            SharedPreferences.Editor mainEditor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit();
+            SharedPreferences.Editor voiceEditor = context.getSharedPreferences("VoiceSettings", Context.MODE_PRIVATE).edit();
+            
+            int totalImported = 0;
+            
+            // Import filter settings (if present)
+            if (json.has("filters")) {
+                JSONObject filters = json.getJSONObject("filters");
+                
+                if (filters.has("appListMode")) {
+                    mainEditor.putString(KEY_APP_LIST_MODE, filters.getString("appListMode"));
+                    totalImported++;
+                }
+                
+                if (filters.has("appList")) {
+                    Set<String> appList = jsonArrayToStringSet(filters.getJSONArray("appList"));
+                    mainEditor.putStringSet(KEY_APP_LIST, appList);
+                    totalImported += appList.size();
+                }
+                
+                if (filters.has("appPrivateFlags")) {
+                    Set<String> appPrivateFlags = jsonArrayToStringSet(filters.getJSONArray("appPrivateFlags"));
+                    mainEditor.putStringSet(KEY_APP_PRIVATE_FLAGS, appPrivateFlags);
+                    totalImported += appPrivateFlags.size();
+                }
+                
+                if (filters.has("wordBlacklist")) {
+                    Set<String> wordBlacklist = jsonArrayToStringSet(filters.getJSONArray("wordBlacklist"));
+                    mainEditor.putStringSet(KEY_WORD_BLACKLIST, wordBlacklist);
+                    totalImported += wordBlacklist.size();
+                }
+                
+                if (filters.has("wordBlacklistPrivate")) {
+                    Set<String> wordBlacklistPrivate = jsonArrayToStringSet(filters.getJSONArray("wordBlacklistPrivate"));
+                    mainEditor.putStringSet(KEY_WORD_BLACKLIST_PRIVATE, wordBlacklistPrivate);
+                    totalImported += wordBlacklistPrivate.size();
+                }
+                
+                if (filters.has("wordReplacements")) {
+                    String wordReplacements = filters.getString("wordReplacements");
+                    mainEditor.putString(KEY_WORD_REPLACEMENTS, wordReplacements);
+                    if (!wordReplacements.isEmpty()) {
+                        totalImported += wordReplacements.split("\\|").length;
+                    }
+                }
+            }
+            
+            // Import voice settings (if present)
+            if (json.has("voice")) {
+                JSONObject voice = json.getJSONObject("voice");
+                
+                if (voice.has("speechRate")) {
+                    voiceEditor.putFloat("speech_rate", (float) voice.getDouble("speechRate"));
+                    totalImported++;
+                }
+                
+                if (voice.has("pitch")) {
+                    voiceEditor.putFloat("pitch", (float) voice.getDouble("pitch"));
+                    totalImported++;
+                }
+                
+                if (voice.has("voiceName")) {
+                    voiceEditor.putString("voice_name", voice.getString("voiceName"));
+                    totalImported++;
+                }
+                
+                if (voice.has("language")) {
+                    voiceEditor.putString("language", voice.getString("language"));
+                    totalImported++;
+                }
+                
+                if (voice.has("audioUsage")) {
+                    voiceEditor.putInt("audio_usage", voice.getInt("audioUsage"));
+                    totalImported++;
+                }
+                
+                if (voice.has("contentType")) {
+                    voiceEditor.putInt("content_type", voice.getInt("contentType"));
+                    totalImported++;
+                }
+            }
+            
+            // Import behavior settings (if present)
+            if (json.has("behavior")) {
+                JSONObject behavior = json.getJSONObject("behavior");
+                
+                if (behavior.has("notificationBehavior")) {
+                    mainEditor.putString("notification_behavior", behavior.getString("notificationBehavior"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("priorityApps")) {
+                    Set<String> priorityApps = jsonArrayToStringSet(behavior.getJSONArray("priorityApps"));
+                    mainEditor.putStringSet("priority_apps", priorityApps);
+                    totalImported += priorityApps.size();
+                }
+                
+                if (behavior.has("shakeToStopEnabled")) {
+                    mainEditor.putBoolean("shake_to_stop_enabled", behavior.getBoolean("shakeToStopEnabled"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("shakeThreshold")) {
+                    mainEditor.putFloat("shake_threshold", (float) behavior.getDouble("shakeThreshold"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("mediaBehavior")) {
+                    mainEditor.putString("media_behavior", behavior.getString("mediaBehavior"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("duckingVolume")) {
+                    mainEditor.putInt("ducking_volume", behavior.getInt("duckingVolume"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("delayBeforeReadout")) {
+                    mainEditor.putInt("delay_before_readout", behavior.getInt("delayBeforeReadout"));
+                    totalImported++;
+                }
+            }
+            
+            // Import general settings (if present)
+            if (json.has("general")) {
+                JSONObject general = json.getJSONObject("general");
+                
+                if (general.has("darkMode")) {
+                    mainEditor.putBoolean("dark_mode", general.getBoolean("darkMode"));
+                    totalImported++;
+                }
+                
+                if (general.has("autoStartOnBoot")) {
+                    mainEditor.putBoolean("auto_start_on_boot", general.getBoolean("autoStartOnBoot"));
+                    totalImported++;
+                }
+                
+                if (general.has("batteryOptimizationDisabled")) {
+                    mainEditor.putBoolean("battery_optimization_disabled", general.getBoolean("batteryOptimizationDisabled"));
+                    totalImported++;
+                }
+                
+                if (general.has("aggressiveBackgroundProcessing")) {
+                    mainEditor.putBoolean("aggressive_background_processing", general.getBoolean("aggressiveBackgroundProcessing"));
+                    totalImported++;
+                }
+                
+                if (general.has("serviceRestartPolicy")) {
+                    mainEditor.putString("service_restart_policy", general.getString("serviceRestartPolicy"));
+                    totalImported++;
+                }
+            }
+            
+            // Apply all changes
+            mainEditor.apply();
+            voiceEditor.apply();
+            
+            // Log the import
+            InAppLogger.log("FilterConfig", "Imported " + totalImported + " settings from full configuration");
+            
+            return new ImportResult(true, "Successfully imported " + totalImported + " settings from full configuration", totalImported);
+            
+        } catch (JSONException e) {
+            InAppLogger.logError("FilterConfig", "Full import failed: " + e.getMessage());
+            return new ImportResult(false, "Invalid JSON format: " + e.getMessage(), 0);
+        } catch (Exception e) {
+            InAppLogger.logError("FilterConfig", "Full import error: " + e.getMessage());
             return new ImportResult(false, "Import failed: " + e.getMessage(), 0);
         }
     }

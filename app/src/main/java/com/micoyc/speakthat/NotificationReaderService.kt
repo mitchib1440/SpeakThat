@@ -21,6 +21,7 @@ import java.util.HashMap
 import java.util.HashSet
 import java.util.Locale
 import kotlin.collections.ArrayList
+import org.json.JSONArray
 
 class NotificationReaderService : NotificationListenerService(), TextToSpeech.OnInitListener, SensorEventListener, SharedPreferences.OnSharedPreferenceChangeListener {
     
@@ -139,25 +140,57 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "NotificationReaderService created")
         InAppLogger.log("Service", "NotificationReaderService started")
         
-        // Initialize SharedPreferences
-        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
-        
-        // Register preference change listener to automatically reload settings
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this)
-        
-        // Initialize and register voice settings listener
-        voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-        voiceSettingsPrefs?.registerOnSharedPreferenceChangeListener(voiceSettingsListener)
-        
-        initializeTextToSpeech()
-        initializeShakeDetection()
-        loadFilterSettings()
-        
-        // Initialize conditional filter manager (foundation for future features)
-        conditionalFilterManager = ConditionalFilterManager(this)
-        
-        // Initialize delay handler
-        delayHandler = android.os.Handler(android.os.Looper.getMainLooper())
+        try {
+            // Initialize SharedPreferences
+            sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+            
+            // Register preference change listener to automatically reload settings
+            sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+            
+            // Initialize and register voice settings listener
+            voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+            voiceSettingsPrefs?.registerOnSharedPreferenceChangeListener(voiceSettingsListener)
+            
+            // Initialize components with error handling
+            try {
+                initializeTextToSpeech()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error initializing TextToSpeech", e)
+                InAppLogger.logError("Service", "TextToSpeech initialization failed: " + e.message)
+            }
+            
+            try {
+                initializeShakeDetection()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error initializing shake detection", e)
+                InAppLogger.logError("Service", "Shake detection initialization failed: " + e.message)
+            }
+            
+            try {
+                loadFilterSettings()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error loading filter settings", e)
+                InAppLogger.logError("Service", "Filter settings loading failed: " + e.message)
+            }
+            
+            // Initialize conditional filter manager (foundation for future features)
+            try {
+                conditionalFilterManager = ConditionalFilterManager(this)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error initializing conditional filter manager", e)
+                InAppLogger.logError("Service", "Conditional filter manager initialization failed: " + e.message)
+            }
+            
+            // Initialize delay handler
+            delayHandler = android.os.Handler(android.os.Looper.getMainLooper())
+            
+            Log.d(TAG, "NotificationReaderService initialization completed successfully")
+            InAppLogger.log("Service", "Service initialization completed successfully")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Critical error during service initialization", e)
+            InAppLogger.logError("Service", "Critical initialization error: " + e.message)
+        }
     }
     
     override fun onDestroy() {
@@ -207,54 +240,58 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         super.onNotificationPosted(sbn)
-        
         try {
-            val notification = sbn.notification
-            val packageName = sbn.packageName
-            
-            // Skip our own notifications
-            if (packageName == this.packageName) {
-                return
-            }
-            
-            // Check master switch first - if disabled, don't process any notifications
-            if (!MainActivity.isMasterSwitchEnabled(this)) {
-                Log.d(TAG, "Master switch disabled - ignoring notification from $packageName")
-                InAppLogger.log("MasterSwitch", "Notification ignored due to master switch being disabled")
-                return
-            }
-            
-            // Get app name
-            val appName = getAppName(packageName)
-            
-            // Extract notification text
-            val notificationText = extractNotificationText(notification)
-            
-            if (notificationText.isNotEmpty()) {
-                Log.d(TAG, "New notification from $appName: $notificationText")
-                InAppLogger.logNotification("Processing notification from $appName: $notificationText")
+            try {
+                val notification = sbn.notification
+                val packageName = sbn.packageName
                 
-                // Apply filtering
-                val filterResult = applyFilters(packageName, appName, notificationText, sbn)
-                
-                if (filterResult.shouldSpeak) {
-                    // Determine final app name (private apps become "An app")
-                    val isAppPrivate = privateApps.contains(packageName)
-                    val finalAppName = if (isAppPrivate) "An app" else appName
-                    
-                    // Add to history
-                    addToHistory(finalAppName, packageName, filterResult.processedText)
-                    
-                    // Handle notification based on behavior mode (pass conditional delay info)
-                    handleNotificationBehavior(packageName, finalAppName, filterResult.processedText, filterResult.conditionalDelaySeconds, sbn)
-                } else {
-                    Log.d(TAG, "Notification filtered out: $filterResult.reason")
-                InAppLogger.logFilter("Blocked notification from $appName: ${filterResult.reason}")
+                // Skip our own notifications
+                if (packageName == this.packageName) {
+                    return
                 }
+                
+                // Check master switch first - if disabled, don't process any notifications
+                if (!MainActivity.isMasterSwitchEnabled(this)) {
+                    Log.d(TAG, "Master switch disabled - ignoring notification from $packageName")
+                    InAppLogger.log("MasterSwitch", "Notification ignored due to master switch being disabled")
+                    return
+                }
+                
+                // Get app name
+                val appName = getAppName(packageName)
+                
+                // Extract notification text
+                val notificationText = extractNotificationText(notification)
+                
+                if (notificationText.isNotEmpty()) {
+                    Log.d(TAG, "New notification from $appName: $notificationText")
+                    InAppLogger.logNotification("Processing notification from $appName: $notificationText")
+                    
+                    // Apply filtering
+                    val filterResult = applyFilters(packageName, appName, notificationText, sbn)
+                    
+                    if (filterResult.shouldSpeak) {
+                        // Determine final app name (private apps become "An app")
+                        val isAppPrivate = privateApps.contains(packageName)
+                        val finalAppName = if (isAppPrivate) "An app" else appName
+                        
+                        // Add to history
+                        addToHistory(finalAppName, packageName, filterResult.processedText)
+                        
+                        // Handle notification based on behavior mode (pass conditional delay info)
+                        handleNotificationBehavior(packageName, finalAppName, filterResult.processedText, filterResult.conditionalDelaySeconds, sbn)
+                    } else {
+                        Log.d(TAG, "Notification filtered out: ${filterResult.reason}")
+                        InAppLogger.logFilter("Blocked notification from $appName: ${filterResult.reason}")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error processing notification (inner)", e)
+                InAppLogger.logError("Service", "Error processing notification: " + e.message)
             }
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "Error processing notification", e)
+        } catch (e: Throwable) {
+            Log.e(TAG, "Critical error in onNotificationPosted", e)
+            InAppLogger.logError("Service", "Critical error in onNotificationPosted: " + e.message)
         }
     }
     
@@ -296,6 +333,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     private fun getAppName(packageName: String): String {
+        // First check for custom app name
+        val customAppName = getCustomAppName(packageName)
+        if (customAppName != null) {
+            Log.d(TAG, "Using custom app name for $packageName: $customAppName")
+            return customAppName
+        }
+        
+        // Fall back to system app name
         return try {
             val packageManager = packageManager
             val appInfo: ApplicationInfo = packageManager.getApplicationInfo(packageName, 0)
@@ -303,6 +348,25 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         } catch (e: PackageManager.NameNotFoundException) {
             Log.w(TAG, "App name not found for package: $packageName")
             packageName
+        }
+    }
+
+    private fun getCustomAppName(packageName: String): String? {
+        return try {
+            val customAppNamesJson = sharedPreferences.getString("custom_app_names", "[]") ?: "[]"
+            val jsonArray = org.json.JSONArray(customAppNamesJson)
+            
+            for (i in 0 until jsonArray.length()) {
+                val jsonObject = jsonArray.getJSONObject(i)
+                val storedPackageName = jsonObject.getString("packageName")
+                if (storedPackageName == packageName) {
+                    return jsonObject.getString("customName")
+                }
+            }
+            null
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting custom app name for $packageName", e)
+            null
         }
     }
     
