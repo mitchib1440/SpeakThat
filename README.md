@@ -1,6 +1,19 @@
-# SpeakThat!
+## SpeakThat!
 
 **SpeakThat!** is an Android app that reads your notifications aloud, helping you stay connected without constantly checking your phone. Whether you're driving, busy, visually impaired, or just want to reduce screen time, SpeakThat! makes your notifications accessible, hands-free, and private.
+
+
+## The Journey to get here!
+
+I have been using notification readers for almost as long as I have used smartphones. On my first proper smartphone, I had been using Utter!, created by Ben Randall. It had a notification reader function and while it didn't offer as many options as modern readers do, it showed me how great it was to have a phone read notifications. My eyes felt more free, not being forced to look at what was a very small screen to see very small announcements.
+
+Utter! soon got replaced by Saiy, which was a ground-up re-write and open source to boot! The issue with both of these, however, was that they were fundamentally NOT notification readers. It was just a neat feature they had. And as it wasn't the primary focus of the app, they didn't get many new features. And out of curiousity I decided to see what was available if I searched for dedicated notification reader apps.
+
+That's when I came across Touchless Notifications, created by DYNA Logix. This was everything I had wanted and more. It had genuinely useful features, such as shake-to-stop, word filters, pronunciation correction, and a comprehensive triggers system similar to what is possible with MacroDroid or Tasker. I used Touchless Notifications, specifically the Pro version, very happily for many years. I noticed, however, that some time in 2019 it appeared to have been removed from the PLay Store. I asked the creator what had happened and he explained to me that the app had been unfairly removed from the Play Store from Google for having two different app shortcuts. And despite this being a rule that didn't seem to be enforced for anyone else, and potentially didn't even exist, DYNA Logix decided to not fight it as they had other apps on the Play Store and didn't want to risk angering Google. They recommended that I download an APK extractor and save the package file for Touchless Notifications Pro so I could continue to use it on my future devices. And that's what I did for the next 6 years.
+
+Fast forward to 2025 and it's quite clear that Touchless Notifications was designed for an old version of Android. Unlike Utter!, it still works okay. But I had a feeling that may not be for long. And modern Android had introduced some annoying bugs that definitely weren't going to be fixed over half a decade after the final update was released.
+So, I decided to make my own. I had this idea for a while but coding is not an easy thing to get into. But with the help of AI-assisted coding, it becomes a very feasible dream.
+And so after a few failed versions, I'm pleased to introduce SpeakThat! The notification reader making use of my now 12+ years of user testing in this field!
 
 ---
 
@@ -19,8 +32,8 @@
   - Instantly silence SpeakThat! by shaking your device
 - **Smart onboarding:**
   - Guided setup for privacy and permissions
-  - Explains why notification access is needed
 - **Accessible UI:**
+  - Makes use of the Material 3 design system
   - Large buttons, clear text, and support for screen readers
   - Works in both portrait and landscape
 - **Customizable voice settings:**
@@ -29,7 +42,7 @@
 - **No ads, no tracking, no nonsense**
   - Open source for total transparency
   - Free to download here on GitHub
-  - Support me by purchasing from [Google Play](https://play.google.com/store/apps/details?id=com.micoyc.speakthat)!
+
 ---
 
 ## 📲 Getting Started
