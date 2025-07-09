@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?android:attr/windowBackground"
+    android:background="?attr/colorBackground"
     android:fitsSystemWindows="true"
     tools:context=".BehaviorSettingsActivity">
 
@@ -13,7 +13,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/brand_primary"
+        android:background="@color/purple_200"
         android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.Material3.Light">
 
@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Behavior Settings"
-            android:textColor="@color/white"
+            android:textColor="@color/white_100"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -45,7 +45,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -60,7 +60,7 @@
                         android:text="🔔 Notification Behavior"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/brand_primary"
+                        android:textColor="@color/purple_200"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -68,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:text="Control how notifications are handled when one is already being read"
                         android:textSize="14sp"
-                        android:textColor="?android:attr/textColorSecondary"
+                        android:textColor="@color/text_secondary"
                         android:layout_marginBottom="8dp" />
 
                     <!-- Recommendation Box -->
@@ -88,7 +88,7 @@
                             android:text="💡 Most users should use: Smart Mode"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="@color/brand_primary"
+                            android:textColor="@color/purple_200"
                             android:layout_marginEnd="8dp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -97,9 +97,9 @@
                             android:layout_height="36dp"
                             android:text="ℹ️ More Info"
                             android:textSize="12sp"
-                            android:textColor="@color/brand_primary"
-                            android:backgroundTint="@color/white"
-                            android:strokeColor="@color/brand_primary"
+                            android:textColor="@color/text_secondary"
+                            android:backgroundTint="@color/white_100"
+                            android:strokeColor="@color/purple_200"
                             android:strokeWidth="1.0"
                             style="@style/Widget.Material3.Button.OutlinedButton" />
 
@@ -154,7 +154,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="@color/brand_primary_light"
+                            android:background="@color/purple_300"
                             android:layout_marginVertical="16dp" />
 
                         <TextView
@@ -163,7 +163,7 @@
                             android:text="⚡ Priority Apps"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/brand_primary"
+                            android:textColor="@color/purple_200"
                             android:layout_marginBottom="8dp" />
 
                         <TextView
@@ -171,7 +171,7 @@
                             android:layout_height="wrap_content"
                             android:text="These apps will interrupt the current notification. All other apps will queue."
                             android:textSize="14sp"
-                            android:textColor="?android:attr/textColorSecondary"
+                            android:textColor="@color/text_secondary"
                             android:layout_marginBottom="16dp" />
 
                         <LinearLayout
@@ -186,7 +186,7 @@
                                 android:layout_weight="1"
                                 android:layout_marginEnd="8dp"
                                 app:boxBackgroundMode="outline"
-                                app:boxStrokeColor="@color/brand_primary">
+                                app:boxStrokeColor="@color/purple_200">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/editPriorityApp"
@@ -202,8 +202,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Add"
-                                android:backgroundTint="@color/brand_primary"
-                                android:textColor="@color/white" />
+                                android:backgroundTint="@color/purple_200"
+                                android:textColor="@color/white_100" />
 
                         </LinearLayout>
 
@@ -229,7 +229,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -244,7 +244,7 @@
                         android:text="🎵 Media Behavior"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/brand_primary"
+                        android:textColor="@color/purple_200"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -272,7 +272,7 @@
                             android:text="💡 Most users should use: Lower Audio"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="@color/brand_primary"
+                            android:textColor="@color/purple_200"
                             android:layout_marginEnd="8dp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -281,9 +281,9 @@
                             android:layout_height="36dp"
                             android:text="ℹ️ More Info"
                             android:textSize="12sp"
-                            android:textColor="@color/brand_primary"
-                            android:backgroundTint="@color/white"
-                            android:strokeColor="@color/brand_primary"
+                            android:textColor="@color/purple_200"
+                            android:backgroundTint="@color/white_100"
+                            android:strokeColor="@color/purple_200"
                             android:strokeWidth="1.0"
                             style="@style/Widget.Material3.Button.OutlinedButton" />
 
@@ -338,7 +338,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="@color/brand_primary_light"
+                            android:background="@color/purple_300"
                             android:layout_marginVertical="16dp" />
 
                         <TextView
@@ -383,9 +383,9 @@
                                 android:valueTo="100.0"
                                 android:value="30.0"
                                 android:stepSize="5.0"
-                                app:thumbColor="@color/brand_primary"
-                                app:trackColorActive="@color/brand_primary"
-                                app:trackColorInactive="@color/brand_primary_light" />
+                                app:thumbColor="@color/purple_200"
+                                app:trackColorActive="@color/purple_200"
+                                app:trackColorInactive="@color/purple_300" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -403,7 +403,7 @@
                             android:layout_height="wrap_content"
                             android:text="30%"
                             android:textSize="14sp"
-                            android:textColor="@color/brand_primary"
+                            android:textColor="@color/purple_200"
                             android:textStyle="bold"
                             android:gravity="center"
                             android:layout_marginBottom="8dp" />
@@ -431,7 +431,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -446,7 +446,7 @@
                         android:text="📳 Shake to Stop"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/brand_primary"
+                        android:textColor="@color/purple_200"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -474,7 +474,7 @@
                             android:text="💡 Most users should: Enable this feature"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="@color/brand_primary"
+                            android:textColor="@color/purple_200"
                             android:layout_marginEnd="8dp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -483,9 +483,9 @@
                             android:layout_height="36dp"
                             android:text="ℹ️ More Info"
                             android:textSize="12sp"
-                            android:textColor="@color/brand_primary"
-                            android:backgroundTint="@color/white"
-                            android:strokeColor="@color/brand_primary"
+                            android:textColor="@color/purple_200"
+                            android:backgroundTint="@color/white_100"
+                            android:strokeColor="@color/purple_200"
                             android:strokeWidth="1.0"
                             style="@style/Widget.Material3.Button.OutlinedButton" />
 
@@ -511,8 +511,8 @@
                             android:id="@+id/switchShakeToStop"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:thumbTint="@color/brand_primary"
-                            android:trackTint="@color/brand_primary_light" />
+                            android:thumbTint="@color/purple_200"
+                            android:trackTint="@color/purple_300" />
 
                     </LinearLayout>
 
@@ -527,7 +527,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="@color/brand_primary_light"
+                            android:background="@color/purple_300"
                             android:layout_marginVertical="16dp" />
 
                         <!-- Shake Intensity Section -->
@@ -573,9 +573,9 @@
                                 android:valueTo="25.0"
                                 android:value="12.0"
                                 android:stepSize="1.0"
-                                app:thumbColor="@color/brand_primary"
-                                app:trackColorActive="@color/brand_primary"
-                                app:trackColorInactive="@color/brand_primary_light" />
+                                app:thumbColor="@color/purple_200"
+                                app:trackColorActive="@color/purple_200"
+                                app:trackColorInactive="@color/purple_300" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -617,8 +617,8 @@
                                 android:layout_height="24dp"
                                 android:max="25"
                                 android:progress="0"
-                                android:progressTint="@color/brand_primary"
-                                android:progressBackgroundTint="@color/brand_primary_light" />
+                                android:progressTint="@color/purple_200"
+                                android:progressBackgroundTint="@color/purple_300" />
 
                             <!-- Threshold Marker -->
                             <View
@@ -664,8 +664,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Start Test"
-                            android:backgroundTint="@color/brand_primary"
-                            android:textColor="@color/white" />
+                            android:backgroundTint="@color/purple_200"
+                            android:textColor="@color/white_100" />
 
                     </LinearLayout>
 
@@ -681,7 +681,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -696,7 +696,7 @@
                         android:text="⏱️ Delay Before Readout"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/brand_primary"
+                        android:textColor="@color/purple_200"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -724,7 +724,7 @@
                             android:text="💡 Most users should use: 2 seconds"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="@color/brand_primary"
+                            android:textColor="@color/purple_200"
                             android:layout_marginEnd="8dp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -733,9 +733,9 @@
                             android:layout_height="36dp"
                             android:text="ℹ️ More Info"
                             android:textSize="12sp"
-                            android:textColor="@color/brand_primary"
-                            android:backgroundTint="@color/white"
-                            android:strokeColor="@color/brand_primary"
+                            android:textColor="@color/purple_200"
+                            android:backgroundTint="@color/white_100"
+                            android:strokeColor="@color/purple_200"
                             android:strokeWidth="1.0"
                             style="@style/Widget.Material3.Button.OutlinedButton" />
 

@@ -1049,7 +1049,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         spacer.setText("↓");
         spacer.setGravity(Gravity.CENTER);
         spacer.setPadding(0, 20, 0, 20);
-        spacer.setTextColor(getResources().getColor(R.color.brand_primary, null));
+        spacer.setTextColor(getResources().getColor(R.color.purple_200, null));
         spacer.setTextSize(18);
         layout.addView(spacer);
         

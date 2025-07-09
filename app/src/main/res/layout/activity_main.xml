@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="?android:attr/windowBackground"
+    android:background="?attr/colorBackground"
     android:fitsSystemWindows="true"
     tools:context=".MainActivity"
     android:fillViewport="true">
@@ -41,7 +41,7 @@
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
             app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="@color/brand_primary_light"
+            app:strokeColor="@color/purple_300"
             app:strokeWidth="1dp">
 
             <LinearLayout
@@ -70,7 +70,7 @@
                             android:text="🔊 SpeakThat Active"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="?android:attr/textColorPrimary" />
+                            android:textColor="@color/text_primary" />
 
                         <TextView
                             android:id="@+id/textMasterSwitchStatus"
@@ -78,7 +78,7 @@
                             android:layout_height="wrap_content"
                             android:text="Tap to enable notification reading"
                             android:textSize="14sp"
-                            android:textColor="?android:attr/textColorSecondary"
+                            android:textColor="@color/text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -89,8 +89,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:checked="false"
-                        app:thumbTint="@color/brand_primary"
-                        app:trackTint="@color/brand_primary_light" />
+                        app:thumbTint="@color/purple_200"
+                        app:trackTint="@color/purple_300" />
 
                 </LinearLayout>
 
@@ -98,7 +98,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/brand_primary_light"
+                    android:background="@color/purple_300"
                     android:layout_marginBottom="16dp" />
 
                 <!-- Status Section -->
@@ -109,7 +109,7 @@
                     android:text="@string/service_disabled"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="@color/red_500"
+                    android:textColor="@color/red_100"
                     android:layout_marginBottom="8dp" />
 
                 <TextView
@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/permission_description"
                     android:textSize="14sp"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="@color/text_secondary" />
 
             </LinearLayout>
 
@@ -130,7 +130,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/open_settings"
-            android:layout_marginTop="24dp" />
+            android:layout_marginTop="24dp"
+            android:textColor="@color/white_100" />
 
         <!-- Settings Button -->
         <com.google.android.material.button.MaterialButton
@@ -140,8 +141,8 @@
             android:text="@string/settings"
             android:layout_marginTop="16dp"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            app:strokeColor="@color/brand_primary"
-            android:textColor="@color/brand_primary" />
+            app:strokeColor="@color/purple_200"
+            android:textColor="@color/text_secondary" />
 
     </LinearLayout>
 </ScrollView> 

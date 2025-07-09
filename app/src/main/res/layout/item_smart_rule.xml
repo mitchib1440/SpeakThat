@@ -8,7 +8,7 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="2dp"
     app:cardBackgroundColor="?attr/colorSurface"
-    app:strokeColor="@color/brand_primary_light"
+    app:strokeColor="@color/purple_300"
     app:strokeWidth="1dp"
     android:clickable="true"
     android:focusable="true"
@@ -47,8 +47,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:checked="true"
-                app:thumbTint="@color/brand_primary"
-                app:trackTint="@color/brand_primary_light" />
+                app:thumbTint="@color/purple_200"
+                app:trackTint="@color/purple_300" />
 
         </LinearLayout>
 
@@ -79,7 +79,7 @@
                  android:layout_marginEnd="8dp"
                  app:cardCornerRadius="16dp"
                  app:cardElevation="0dp"
-                 app:cardBackgroundColor="@color/brand_primary"
+                 app:cardBackgroundColor="@color/purple_200"
                  app:strokeWidth="0dp">
 
                  <LinearLayout
@@ -118,7 +118,7 @@
                  android:layout_marginEnd="8dp"
                  app:cardCornerRadius="16dp"
                  app:cardElevation="0dp"
-                 app:cardBackgroundColor="@color/brand_primary"
+                 app:cardBackgroundColor="@color/purple_200"
                  app:strokeWidth="0dp">
 
                  <LinearLayout
@@ -156,7 +156,7 @@
                  android:layout_height="wrap_content"
                  app:cardCornerRadius="16dp"
                  app:cardElevation="0dp"
-                 app:cardBackgroundColor="@color/brand_primary"
+                 app:cardBackgroundColor="@color/purple_200"
                  app:strokeWidth="0dp">
 
                  <LinearLayout
@@ -216,8 +216,8 @@
                 android:text="🗑️"
                 android:textSize="14sp"
                 android:textColor="?android:attr/textColorPrimary"
-                android:backgroundTint="@color/white"
-                android:strokeColor="@color/brand_primary"
+                android:backgroundTint="@color/white_100"
+                android:strokeColor="@color/purple_200"
                 android:strokeWidth="1"
                 android:minWidth="48dp"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton" />

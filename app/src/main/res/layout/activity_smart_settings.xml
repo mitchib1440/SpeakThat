@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?android:attr/windowBackground"
+    android:background="?attr/colorBackground"
     android:fitsSystemWindows="true"
     tools:context=".SmartSettingsActivity">
 
@@ -13,7 +13,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/brand_primary"
+        android:background="@color/purple_200"
         android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.Material3.Light">
 
@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Smart Settings"
-            android:textColor="@color/white"
+            android:textColor="@color/white_100"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -41,7 +41,7 @@
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
             app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="@color/brand_primary_light"
+            app:strokeColor="@color/purple_300"
             app:strokeWidth="1dp">
 
             <LinearLayout
@@ -71,7 +71,7 @@
                         android:text="Conditional Rules"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="?android:attr/textColorPrimary" />
+                        android:textColor="@color/text_primary" />
 
                 </LinearLayout>
 
@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:text="Create smart rules to automatically filter notifications based on time, apps, content, and more."
                     android:textSize="14sp"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@color/text_secondary"
                     android:layout_marginBottom="16dp" />
 
                 <!-- Guidance Tip -->
@@ -104,7 +104,7 @@
                         android:layout_weight="1"
                         android:text="New to Smart Rules? Start with templates below, then customize as needed!"
                         android:textSize="14sp"
-                        android:textColor="?android:attr/textColorSecondary"
+                        android:textColor="@color/text_secondary"
                         android:lineSpacingMultiplier="1.1" />
 
                 </LinearLayout>
@@ -123,8 +123,8 @@
                         android:layout_weight="1"
                         android:text="➕ Add Rule"
                         android:textSize="14sp"
-                        android:textColor="@color/white"
-                        android:backgroundTint="@color/brand_primary"
+                        android:textColor="@color/white_100"
+                        android:backgroundTint="@color/purple_200"
                         android:layout_marginEnd="8dp"
                         style="@style/Widget.Material3.Button" />
 
@@ -135,9 +135,9 @@
                         android:layout_weight="1"
                         android:text="⚡ Templates"
                         android:textSize="14sp"
-                        android:textColor="@color/brand_primary"
-                        android:backgroundTint="@color/white"
-                        android:strokeColor="@color/brand_primary"
+                        android:textColor="@color/text_secondary"
+                        android:backgroundTint="@color/white_100"
+                        android:strokeColor="@color/purple_200"
                         android:strokeWidth="1"
                         android:layout_marginStart="8dp"
                         style="@style/Widget.Material3.Button.OutlinedButton" />
@@ -181,7 +181,7 @@
                 android:text="No Smart Rules Yet"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="?android:attr/textColorPrimary"
+                android:textColor="@color/text_primary"
                 android:layout_marginBottom="8dp" />
 
             <TextView
@@ -189,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:text="Create your first rule to get started with smart filtering!"
                 android:textSize="16sp"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="@color/text_secondary"
                 android:gravity="center"
                 android:layout_marginBottom="24dp" />
 
@@ -199,9 +199,9 @@
                 android:layout_height="wrap_content"
                 android:text="📚 Create Example Rules"
                 android:textSize="14sp"
-                android:textColor="@color/brand_primary"
-                android:backgroundTint="@color/white"
-                android:strokeColor="@color/brand_primary"
+                android:textColor="@color/purple_200"
+                android:backgroundTint="@color/white_100"
+                android:strokeColor="@color/purple_200"
                 android:strokeWidth="1"
                 style="@style/Widget.Material3.Button.OutlinedButton" />
 

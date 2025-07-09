@@ -13,7 +13,7 @@
         android:text="Filter Similar Notifications"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@color/brand_primary"
+        android:textColor="@color/purple_200"
         android:gravity="center"
         android:layout_marginBottom="16dp" />
 
@@ -185,7 +185,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel"
-            android:textColor="@color/brand_primary"
+            android:textColor="@color/purple_200"
             android:layout_marginEnd="8dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -193,8 +193,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Create Filter"
-            android:backgroundTint="@color/brand_primary"
-            android:textColor="@color/white" />
+            android:backgroundTint="@color/purple_200"
+            android:textColor="@color/white_100" />
 
     </LinearLayout>
 

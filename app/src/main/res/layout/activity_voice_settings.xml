@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?android:attr/windowBackground"
+    android:background="?attr/colorBackground"
     android:fitsSystemWindows="true"
     tools:context=".VoiceSettingsActivity">
 
@@ -39,7 +39,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textColor="@color/text_primary" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:text="0.1x"
                     android:textSize="12sp"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="@color/text_secondary" />
 
                 <SeekBar
                     android:id="@+id/speechRateSeekBar"
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:text="3.0x"
                     android:textSize="12sp"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="@color/text_secondary" />
 
                 <TextView
                     android:id="@+id/speechRateValue"
@@ -81,7 +81,7 @@
                     android:layout_marginStart="12dp"
                     android:minWidth="40dp"
                     android:gravity="center"
-                    android:textColor="?attr/colorPrimary" />
+                    android:textColor="@color/purple_200" />
 
             </LinearLayout>
 
@@ -93,7 +93,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textColor="@color/text_primary" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:text="0.1x"
                     android:textSize="12sp"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="@color/text_secondary" />
 
                 <SeekBar
                     android:id="@+id/pitchSeekBar"
@@ -123,7 +123,7 @@
                     android:layout_height="wrap_content"
                     android:text="2.0x"
                     android:textSize="12sp"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="@color/text_secondary" />
 
                 <TextView
                     android:id="@+id/pitchValue"
@@ -135,7 +135,7 @@
                     android:layout_marginStart="12dp"
                     android:minWidth="40dp"
                     android:gravity="center"
-                    android:textColor="?attr/colorPrimary" />
+                    android:textColor="@color/purple_200" />
 
             </LinearLayout>
 
@@ -147,14 +147,14 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="4dp"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textColor="@color/text_primary" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Choose the language and accent. This uses the default voice for that region."
                 android:textSize="14sp"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="@color/text_secondary"
                 android:layout_marginBottom="8dp" />
 
             <Spinner
@@ -172,7 +172,7 @@
                 android:text="OR"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="?attr/colorPrimary"
+                android:textColor="@color/purple_200"
                 android:gravity="center"
                 android:layout_marginVertical="8dp" />
 
@@ -184,14 +184,14 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="4dp"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textColor="@color/text_primary" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Select a specific voice engine. This overrides the language setting above."
                 android:textSize="14sp"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="@color/text_secondary"
                 android:layout_marginBottom="8dp" />
 
             <Spinner
@@ -208,7 +208,7 @@
                 android:layout_height="wrap_content"
                 android:text="💡 Recommendation: Try the Language setting first. Only use Specific Voice if you need a particular voice engine."
                 android:textSize="14sp"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="@color/text_secondary"
                 android:background="?android:attr/selectableItemBackground"
                 android:padding="12dp"
                 android:layout_marginBottom="24dp" />
@@ -221,14 +221,14 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="4dp"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textColor="@color/text_primary" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Configure how notifications are played through your device's audio system."
                 android:textSize="14sp"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="@color/text_secondary"
                 android:layout_marginBottom="16dp" />
 
             <!-- Audio Usage -->
@@ -239,7 +239,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textColor="@color/text_primary" />
 
             <Spinner
                 android:id="@+id/audioUsageSpinner"
@@ -258,14 +258,14 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="4dp"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textColor="@color/text_primary" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tells the system what kind of audio this is. Speech is recommended for notifications."
                 android:textSize="14sp"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="@color/text_secondary"
                 android:layout_marginBottom="8dp" />
 
             <Spinner
@@ -294,7 +294,7 @@
                     android:text="💡 Most users should use: Media + Speech"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:textColor="?attr/colorPrimary" />
+                    android:textColor="@color/purple_200" />
 
                 <Button
                     android:id="@+id/btnAudioHelp"
@@ -306,7 +306,7 @@
                     android:minHeight="0dp"
                     android:padding="8dp"
                     style="?attr/materialButtonOutlinedStyle"
-                    android:textColor="?attr/colorPrimary" />
+                    android:textColor="@color/purple_200" />
 
             </LinearLayout>
 
@@ -318,7 +318,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textColor="@color/text_primary" />
 
             <Button
                 android:id="@+id/previewButton"
@@ -348,7 +348,7 @@
                     android:textSize="16sp"
                     android:layout_marginEnd="8dp"
                     style="?attr/materialButtonOutlinedStyle"
-                    android:textColor="?attr/colorPrimary" />
+                    android:textColor="@color/purple_200" />
 
                 <Button
                     android:id="@+id/saveButton"
@@ -369,7 +369,7 @@
                 android:layout_height="wrap_content"
                 android:text="💡 Tip: Use the preview button to test how notifications will sound with your settings. Changes are applied immediately to the preview."
                 android:textSize="14sp"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="@color/text_secondary"
                 android:layout_marginTop="24dp"
                 android:padding="16dp"
                 android:background="?android:attr/selectableItemBackground"

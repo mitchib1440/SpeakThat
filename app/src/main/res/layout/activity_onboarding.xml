@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/onboarding_background"
+    android:background="?attr/colorBackground"
     android:fitsSystemWindows="true">
 
     <!-- Skip button -->
@@ -15,7 +15,7 @@
         android:layout_gravity="end"
         android:layout_margin="16dp"
         android:text="Skip"
-        android:textColor="?android:textColorPrimary"
+        android:textColor="@color/text_primary"
         android:textSize="16sp"
         android:padding="8dp"
         android:background="?android:attr/selectableItemBackground"
@@ -53,6 +53,7 @@
             android:layout_height="wrap_content"
             android:text="Next"
             android:textSize="16sp"
+            android:textColor="@color/text_primary"
             app:cornerRadius="24dp"
             android:paddingHorizontal="32dp"
             android:paddingVertical="12dp" />

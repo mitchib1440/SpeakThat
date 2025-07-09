@@ -13,7 +13,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/brand_primary"
+        android:background="@color/purple_200"
         android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.Material3.Light">
 
@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Notification History"
-            android:textColor="@color/white"
+            android:textColor="@color/white_100"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -44,7 +44,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -65,7 +65,7 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:background="@drawable/circle_background"
-                            android:backgroundTint="@color/brand_primary_light"
+                            android:backgroundTint="@color/purple_300"
                             android:gravity="center">
 
                             <TextView
@@ -110,7 +110,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -131,7 +131,7 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:background="@drawable/circle_background"
-                            android:backgroundTint="@color/brand_primary_light"
+                            android:backgroundTint="@color/purple_300"
                             android:gravity="center">
 
                             <TextView

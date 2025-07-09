@@ -7,7 +7,7 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="2dp"
     app:cardBackgroundColor="?attr/colorSurface"
-    app:strokeColor="@color/brand_primary_light"
+    app:strokeColor="@color/purple_300"
     app:strokeWidth="1dp">
 
     <LinearLayout
@@ -70,7 +70,7 @@
                 android:text="🚫 Filter Similar"
                 android:textSize="12sp"
                 android:minWidth="120dp"
-                android:backgroundTint="@color/brand_primary_light"
+                android:backgroundTint="@color/purple_300"
                 android:textColor="?android:attr/textColorPrimary" />
 
         </LinearLayout>

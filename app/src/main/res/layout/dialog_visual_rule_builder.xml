@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="24dp"
-    android:background="@color/card_background">
+    android:background="@color/white_200">
 
     <!-- Dialog Header -->
     <LinearLayout
@@ -57,7 +57,7 @@
                 android:layout_marginBottom="24dp"
                 app:boxBackgroundMode="outline"
                 app:boxBackgroundColor="@color/background_dark"
-                app:boxStrokeColor="@color/primary">
+                app:boxStrokeColor="@color/purple_200">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etRuleName"
@@ -76,7 +76,7 @@
                 android:layout_marginBottom="24dp"
                 app:boxBackgroundMode="outline"
                 app:boxBackgroundColor="@color/background_dark"
-                app:boxStrokeColor="@color/primary">
+                app:boxStrokeColor="@color/purple_200">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etRuleDescription"
@@ -183,8 +183,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+ ADD TRIGGER"
-                android:textColor="@color/primary"
-                app:strokeColor="@color/primary"
+                android:textColor="@color/purple_200"
+                app:strokeColor="@color/purple_200"
                 android:layout_marginBottom="24dp" />
 
             <!-- Actions Section -->
@@ -210,8 +210,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+ ADD ACTION"
-                android:textColor="@color/primary"
-                app:strokeColor="@color/primary"
+                android:textColor="@color/purple_200"
+                app:strokeColor="@color/purple_200"
                 android:layout_marginBottom="24dp" />
 
             <!-- Preview Section -->

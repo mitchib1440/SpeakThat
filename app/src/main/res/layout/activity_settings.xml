@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?android:attr/windowBackground"
+    android:background="?attr/colorBackground"
     android:fitsSystemWindows="true"
     tools:context=".SettingsActivity">
 
@@ -13,7 +13,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/brand_primary"
+        android:background="@color/purple_200"
         android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.Material3.Light">
 
@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Settings Categories"
-            android:textColor="@color/white"
+            android:textColor="@color/white_100"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -47,7 +47,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -64,7 +64,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@drawable/circle_background"
-                        android:backgroundTint="@color/brand_primary_light"
+                        android:backgroundTint="@color/purple_300"
                         android:gravity="center">
 
                         <TextView
@@ -88,14 +88,14 @@
                             android:text="General Settings"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="?android:attr/textColorPrimary" />
+                            android:textColor="@color/text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="App preferences, theme settings"
                             android:textSize="14sp"
-                            android:textColor="?android:attr/textColorSecondary"
+                            android:textColor="@color/text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -105,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/brand_primary" />
+                        android:textColor="@color/purple_200" />
 
                 </LinearLayout>
 
@@ -120,7 +120,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -137,7 +137,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@drawable/circle_background"
-                        android:backgroundTint="@color/brand_primary_light"
+                        android:backgroundTint="@color/purple_300"
                         android:gravity="center">
 
                         <TextView
@@ -161,14 +161,14 @@
                             android:text="Behavior Settings"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="?android:attr/textColorPrimary" />
+                            android:textColor="@color/text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="When and how notifications are read"
                             android:textSize="14sp"
-                            android:textColor="?android:attr/textColorSecondary"
+                            android:textColor="@color/text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -178,7 +178,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/brand_primary" />
+                        android:textColor="@color/purple_200" />
 
                 </LinearLayout>
 
@@ -193,7 +193,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -210,7 +210,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@drawable/circle_background"
-                        android:backgroundTint="@color/brand_primary_light"
+                        android:backgroundTint="@color/purple_300"
                         android:gravity="center">
 
                         <TextView
@@ -234,14 +234,14 @@
                             android:text="Voice Settings"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="?android:attr/textColorPrimary" />
+                            android:textColor="@color/text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Text-to-speech voice and speed"
                             android:textSize="14sp"
-                            android:textColor="?android:attr/textColorSecondary"
+                            android:textColor="@color/text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -251,7 +251,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/brand_primary" />
+                        android:textColor="@color/purple_200" />
 
                 </LinearLayout>
 
@@ -266,7 +266,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -283,7 +283,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@drawable/circle_background"
-                        android:backgroundTint="@color/brand_primary_light"
+                        android:backgroundTint="@color/purple_300"
                         android:gravity="center">
 
                         <TextView
@@ -307,14 +307,14 @@
                             android:text="Filter Settings"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="?android:attr/textColorPrimary" />
+                            android:textColor="@color/text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Choose which apps to read"
                             android:textSize="14sp"
-                            android:textColor="?android:attr/textColorSecondary"
+                            android:textColor="@color/text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -324,7 +324,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/brand_primary" />
+                        android:textColor="@color/purple_200" />
 
                 </LinearLayout>
 
@@ -339,7 +339,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -356,7 +356,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@drawable/circle_background"
-                        android:backgroundTint="@color/brand_primary_light"
+                        android:backgroundTint="@color/purple_300"
                         android:gravity="center">
 
                         <TextView
@@ -380,14 +380,14 @@
                             android:text="Smart Settings"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="?android:attr/textColorPrimary" />
+                            android:textColor="@color/text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Conditional filtering and smart automation"
                             android:textSize="14sp"
-                            android:textColor="?android:attr/textColorSecondary"
+                            android:textColor="@color/text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -397,7 +397,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/brand_primary" />
+                        android:textColor="@color/purple_200" />
 
                 </LinearLayout>
 
@@ -412,7 +412,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -429,7 +429,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@drawable/circle_background"
-                        android:backgroundTint="@color/brand_primary_light"
+                        android:backgroundTint="@color/purple_300"
                         android:gravity="center">
 
                         <TextView
@@ -453,14 +453,14 @@
                             android:text="Development Settings"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="?android:attr/textColorPrimary" />
+                            android:textColor="@color/text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Debug tools and logging system"
                             android:textSize="14sp"
-                            android:textColor="?android:attr/textColorSecondary"
+                            android:textColor="@color/text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -470,7 +470,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/brand_primary" />
+                        android:textColor="@color/purple_200" />
 
                 </LinearLayout>
 
@@ -485,7 +485,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -502,7 +502,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@drawable/circle_background"
-                        android:backgroundTint="@color/brand_primary_light"
+                        android:backgroundTint="@color/purple_300"
                         android:gravity="center">
 
                         <TextView
@@ -526,14 +526,14 @@
                             android:text="Re-run Onboarding"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="?android:attr/textColorPrimary" />
+                            android:textColor="@color/text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="See the app introduction again"
                             android:textSize="14sp"
-                            android:textColor="?android:attr/textColorSecondary"
+                            android:textColor="@color/text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -543,7 +543,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/brand_primary" />
+                        android:textColor="@color/purple_200" />
 
                 </LinearLayout>
 
@@ -558,7 +558,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -575,7 +575,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@drawable/circle_background"
-                        android:backgroundTint="@color/brand_primary_light"
+                        android:backgroundTint="@color/purple_300"
                         android:gravity="center">
 
                         <TextView
@@ -599,14 +599,14 @@
                             android:text="Support &amp; Feedback"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="?android:attr/textColorPrimary" />
+                            android:textColor="@color/text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Get help, report bugs, request features"
                             android:textSize="14sp"
-                            android:textColor="?android:attr/textColorSecondary"
+                            android:textColor="@color/text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -616,7 +616,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/brand_primary" />
+                        android:textColor="@color/purple_200" />
 
                 </LinearLayout>
 

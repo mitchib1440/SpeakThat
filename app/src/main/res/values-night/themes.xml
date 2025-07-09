@@ -3,19 +3,20 @@
     <!-- Base application theme for Dark Mode -->
     <style name="Base.Theme.SpeakThat" parent="Theme.Material3.DayNight">
         <!-- Custom Brand Colors for Dark Theme -->
-        <item name="colorPrimary">@color/brand_primary</item>
-        <item name="colorPrimaryVariant">@color/brand_primary_dark</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimaryVariant">@color/purple_300</item>
+        <item name="colorOnPrimary">@color/white_100</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/brand_accent</item>
-        <item name="colorSecondaryVariant">@color/brand_primary_dark</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondary">@color/blue_200</item>
+        <item name="colorSecondaryVariant">@color/blue_300</item>
+        <item name="colorOnSecondary">@color/white_100</item>
         <!-- Dark theme colors with your custom background -->
-        <item name="android:statusBarColor">@color/brand_primary_dark</item>
-        <item name="android:navigationBarColor">@color/brand_primary_dark</item>
-        <item name="android:windowBackground">@color/dark_background</item>
-        <item name="colorSurface">@color/dark_surface</item>
-        <item name="colorOnSurface">@color/dark_text_primary</item>
+        <item name="android:statusBarColor">@color/black_200</item>
+        <item name="android:navigationBarColor">@color/black_200</item>
+        <item name="android:windowBackground">@color/background_dark</item>
+        <item name="colorBackground">@color/background_dark</item>
+        <item name="colorSurface">@color/black_200</item>
+        <item name="colorOnSurface">@color/white_100</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColorSecondary">@color/text_secondary</item>
         <item name="textColorTertiary">@color/text_tertiary</item>

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
-    app:cardBackgroundColor="@color/card_background"
+    app:cardBackgroundColor="@color/white_200"
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp">
 
@@ -37,8 +37,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                app:thumbTint="@color/primary"
-                app:trackTint="@color/primary" />
+                app:thumbTint="@color/purple_200"
+                app:trackTint="@color/purple_200" />
 
         </LinearLayout>
 
@@ -73,10 +73,10 @@
                     android:layout_height="32dp"
                     android:minHeight="32dp"
                     android:text="Or (any condition must be true)"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/purple_200"
                     android:textSize="12sp"
                     app:cornerRadius="8dp"
-                    app:strokeColor="@color/primary"
+                    app:strokeColor="@color/purple_200"
                     app:strokeWidth="1dp" />
 
             </LinearLayout>
@@ -152,7 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Test"
-                android:textColor="@color/primary"
+                android:textColor="@color/purple_200"
                 android:textSize="12sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -161,7 +161,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Edit"
-                android:textColor="@color/primary"
+                android:textColor="@color/purple_200"
                 android:textSize="12sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -170,7 +170,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Delete"
-                android:textColor="@color/error"
+                android:textColor="@color/red_200"
                 android:textSize="12sp" />
 
         </LinearLayout>

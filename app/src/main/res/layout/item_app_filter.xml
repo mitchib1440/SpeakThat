@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:text="Private"
         android:textSize="14sp"
-        android:buttonTint="@color/brand_primary"
+        android:buttonTint="@color/purple_200"
         android:layout_marginEnd="8dp" />
 
     <ImageButton

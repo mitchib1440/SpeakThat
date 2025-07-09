@@ -757,7 +757,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             // Paused - update button to show resume icon
             binding.btnPauseLogs.setIconResource(R.drawable.ic_play_arrow_24); // Material play icon
             binding.btnPauseLogs.setText("");
-            binding.btnPauseLogs.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.brand_primary_light)));
+            binding.btnPauseLogs.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.purple_300)));
             // Maintain consistent styling
             binding.btnPauseLogs.setIconTint(ColorStateList.valueOf(Color.WHITE));
             binding.btnPauseLogs.setIconSize(iconSizePx);
@@ -768,7 +768,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             // Resumed - update button to show pause icon
             binding.btnPauseLogs.setIconResource(R.drawable.ic_pause_24); // Material pause icon
             binding.btnPauseLogs.setText("");
-            binding.btnPauseLogs.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.brand_primary_light)));
+            binding.btnPauseLogs.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.purple_300)));
             // Maintain consistent styling
             binding.btnPauseLogs.setIconTint(ColorStateList.valueOf(Color.WHITE));
             binding.btnPauseLogs.setIconSize(iconSizePx);

@@ -40,8 +40,8 @@
             android:textStyle="bold"
             android:minWidth="40dp"
             android:minHeight="40dp"
-            app:backgroundTint="@color/red_500"
-            app:strokeColor="@color/red_500"
+            app:backgroundTint="@color/red_200"
+            app:strokeColor="@color/red_200"
             app:strokeWidth="2dp"
             app:cornerRadius="20dp"
             android:layout_marginStart="8dp" />

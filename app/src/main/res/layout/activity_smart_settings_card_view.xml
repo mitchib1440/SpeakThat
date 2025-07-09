@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/background_dark"
+    android:background="?attr/colorBackground"
     android:fitsSystemWindows="true">
 
     <!-- Toolbar -->
@@ -12,7 +12,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary"
+        android:background="@color/purple_200"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="Smart Settings"
         app:titleTextColor="@android:color/white" />
@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@color/card_background"
+                app:cardBackgroundColor="@color/white_200"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp">
 
@@ -65,7 +65,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="List View"
-                            android:textColor="@color/primary"
+                            android:textColor="@color/purple_200"
                             android:textSize="12sp" />
 
                     </LinearLayout>
@@ -92,8 +92,8 @@
                             android:layout_weight="1"
                             android:layout_marginEnd="8dp"
                             android:text="✨ Add Rule"
-                            android:textColor="@android:color/white"
-                            app:backgroundTint="@color/primary"
+                            android:textColor="@color/white_100"
+                            app:backgroundTint="@color/purple_200"
                             app:cornerRadius="12dp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -104,8 +104,8 @@
                             android:layout_weight="1"
                             android:layout_marginStart="8dp"
                             android:text="⚡ Templates"
-                            android:textColor="@color/primary"
-                            app:strokeColor="@color/primary"
+                            android:textColor="@color/purple_200"
+                            app:strokeColor="@color/purple_200"
                             app:cornerRadius="12dp" />
 
                     </LinearLayout>
@@ -160,8 +160,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Create Example Rules"
-                    android:textColor="@android:color/white"
-                    app:backgroundTint="@color/primary"
+                    android:textColor="@color/white_100"
+                    app:backgroundTint="@color/purple_200"
                     app:cornerRadius="12dp" />
 
             </LinearLayout>

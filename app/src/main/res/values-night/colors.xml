@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="text_primary">#FFFFFF</color>   <!-- White 100 -->
-    <color name="text_secondary">#DFD9E6</color> <!-- White 200 -->
-    <color name="text_tertiary">#9A969F</color>  <!-- White 300 --> 
+    <!-- SpeakThat Palette Colors -->
+    <color name="white_100">#FFFFFF</color>
+    <color name="white_200">#DFD9E6</color>
+    <color name="white_300">#9A969F</color>
+    <color name="black_100">#000000</color>
+    <color name="black_200">#1D1C1B</color>
+    <color name="black_300">#2B2A29</color>
+    <color name="purple_100">#312F32</color>
+    <color name="purple_200">#AB6ACF</color>
+    <color name="purple_300">#B687D0</color>
+    <color name="green_100">#008B0E</color>
+    <color name="green_200">#28AC35</color>
+    <color name="green_300">#71BF78</color>
+    <color name="red_100">#FE4548</color>
+    <color name="red_200">#CF6A6C</color>
+    <color name="red_300">#D08789</color>
+    <color name="blue_100">#4554FE</color>
+    <color name="blue_200">#6A72CF</color>
+    <color name="blue_300">#878DD0</color>
+    <color name="yellow_100">#FFDD1C</color>
+    <color name="yellow_200">#FFE551</color>
+    <color name="yellow_300">#FFF1A0</color>
+    <!-- Aliases for backwards compatibility -->
+    <color name="text_primary">@color/white_100</color>
+    <color name="text_secondary">@color/white_200</color>
+    <color name="text_tertiary">@color/white_300</color>
+    <color name="background_light">@color/white_200</color>
+    <color name="background_dark">@color/black_200</color>
 </resources> 

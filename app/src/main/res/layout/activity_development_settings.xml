@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?android:attr/windowBackground"
+    android:background="?attr/colorBackground"
     android:fitsSystemWindows="true"
     tools:context=".DevelopmentSettingsActivity">
 
@@ -13,7 +13,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/brand_primary"
+        android:background="@color/purple_200"
         android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.Material3.Light">
 
@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Development Settings"
-            android:textColor="@color/white"
+            android:textColor="@color/white_100"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -45,7 +45,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -60,7 +60,7 @@
                         android:text="🛠️ Debug Tools"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/brand_primary"
+                        android:textColor="@color/purple_200"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -68,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:text="Tools for debugging and testing the app"
                         android:textSize="14sp"
-                        android:textColor="?android:attr/textColorSecondary"
+                        android:textColor="@color/text_secondary"
                         android:layout_marginBottom="16dp" />
 
                     <!-- Notification History Button -->
@@ -77,8 +77,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="📋 Show Notification History"
-                        android:backgroundTint="@color/brand_primary"
-                        android:textColor="@color/white"
+                        android:backgroundTint="@color/purple_200"
+                        android:textColor="@color/white_100"
                         android:layout_marginBottom="8dp" />
 
                     <!-- Analytics Button -->
@@ -87,8 +87,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="📊 Show Help Usage Analytics"
-                        android:backgroundTint="@color/brand_primary"
-                        android:textColor="@color/white"
+                        android:backgroundTint="@color/purple_200"
+                        android:textColor="@color/white_100"
                         android:layout_marginBottom="8dp" />
 
                     <!-- Battery Report Button -->
@@ -97,8 +97,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="🔋 Battery Optimization Report"
-                        android:backgroundTint="@color/brand_primary"
-                        android:textColor="@color/white"
+                        android:backgroundTint="@color/purple_200"
+                        android:textColor="@color/white_100"
                         android:layout_marginBottom="8dp" />
 
                     <!-- Repair Blacklist Button -->
@@ -107,8 +107,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="🛠️ Repair Word Blacklist"
-                        android:backgroundTint="@color/brand_primary"
-                        android:textColor="@color/white"
+                        android:backgroundTint="@color/purple_200"
+                        android:textColor="@color/white_100"
                         android:layout_marginBottom="8dp" />
 
                 </LinearLayout>
@@ -123,7 +123,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -138,7 +138,7 @@
                         android:text="📝 Logging Configuration"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/brand_primary"
+                        android:textColor="@color/purple_200"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -146,7 +146,7 @@
                         android:layout_height="wrap_content"
                         android:text="Configure what gets logged for debugging"
                         android:textSize="14sp"
-                        android:textColor="?android:attr/textColorSecondary"
+                        android:textColor="@color/text_secondary"
                         android:layout_marginBottom="16dp" />
 
                     <!-- Verbose Logging Switch -->
@@ -169,14 +169,14 @@
                                 android:text="Verbose Logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:textColor="?android:attr/textColorPrimary" />
+                                android:textColor="@color/text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Show detailed debug information"
                                 android:textSize="14sp"
-                                android:textColor="?android:attr/textColorSecondary" />
+                                android:textColor="@color/text_secondary" />
 
                         </LinearLayout>
 
@@ -185,8 +185,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            app:thumbTint="@color/brand_primary"
-                            app:trackTint="@color/brand_primary_light" />
+                            app:thumbTint="@color/purple_200"
+                            app:trackTint="@color/purple_300" />
 
                     </LinearLayout>
 
@@ -210,14 +210,14 @@
                                 android:text="Filter Logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:textColor="?android:attr/textColorPrimary" />
+                                android:textColor="@color/text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Log filtering decisions and results"
                                 android:textSize="14sp"
-                                android:textColor="?android:attr/textColorSecondary" />
+                                android:textColor="@color/text_secondary" />
 
                         </LinearLayout>
 
@@ -226,8 +226,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            app:thumbTint="@color/brand_primary"
-                            app:trackTint="@color/brand_primary_light" />
+                            app:thumbTint="@color/purple_200"
+                            app:trackTint="@color/purple_300" />
 
                     </LinearLayout>
 
@@ -251,14 +251,14 @@
                                 android:text="User Action Logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:textColor="?android:attr/textColorPrimary" />
+                                android:textColor="@color/text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Log user interactions and button presses"
                                 android:textSize="14sp"
-                                android:textColor="?android:attr/textColorSecondary" />
+                                android:textColor="@color/text_secondary" />
 
                         </LinearLayout>
 
@@ -267,8 +267,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            app:thumbTint="@color/brand_primary"
-                            app:trackTint="@color/brand_primary_light" />
+                            app:thumbTint="@color/purple_200"
+                            app:trackTint="@color/purple_300" />
 
                     </LinearLayout>
 
@@ -292,14 +292,14 @@
                                 android:text="System Event Logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:textColor="?android:attr/textColorPrimary" />
+                                android:textColor="@color/text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Log app lifecycle and system events"
                                 android:textSize="14sp"
-                                android:textColor="?android:attr/textColorSecondary" />
+                                android:textColor="@color/text_secondary" />
 
                         </LinearLayout>
 
@@ -308,8 +308,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            app:thumbTint="@color/brand_primary"
-                            app:trackTint="@color/brand_primary_light" />
+                            app:thumbTint="@color/purple_200"
+                            app:trackTint="@color/purple_300" />
 
                     </LinearLayout>
 
@@ -333,14 +333,14 @@
                                 android:text="Notification Logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:textColor="?android:attr/textColorPrimary" />
+                                android:textColor="@color/text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Log notification processing events"
                                 android:textSize="14sp"
-                                android:textColor="?android:attr/textColorSecondary" />
+                                android:textColor="@color/text_secondary" />
 
                         </LinearLayout>
 
@@ -349,8 +349,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            app:thumbTint="@color/brand_primary"
-                            app:trackTint="@color/brand_primary_light" />
+                            app:thumbTint="@color/purple_200"
+                            app:trackTint="@color/purple_300" />
 
                     </LinearLayout>
 
@@ -373,14 +373,14 @@
                                 android:text="Sensitive Data Logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:textColor="?android:attr/textColorPrimary" />
+                                android:textColor="@color/text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="⚠️ Log sensitive information (disabled by default)"
                                 android:textSize="14sp"
-                                android:textColor="?android:attr/textColorSecondary" />
+                                android:textColor="@color/text_secondary" />
 
                         </LinearLayout>
 
@@ -389,8 +389,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="false"
-                            app:thumbTint="@color/brand_primary"
-                            app:trackTint="@color/brand_primary_light" />
+                            app:thumbTint="@color/purple_200"
+                            app:trackTint="@color/purple_300" />
 
                     </LinearLayout>
 
@@ -405,7 +405,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/brand_primary_light"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -428,7 +428,7 @@
                             android:text="📊 Live Log Display"
                             android:textSize="20sp"
                             android:textStyle="bold"
-                            android:textColor="@color/brand_primary" />
+                            android:textColor="@color/purple_200" />
 
                         <!-- Log Control Buttons -->
                         <com.google.android.material.button.MaterialButton
@@ -438,10 +438,10 @@
                             android:layout_height="48dp"
                             android:layout_marginEnd="8dp"
                             android:icon="@drawable/ic_pause_24"
-                            android:iconTint="@color/white"
+                            android:iconTint="@color/white_100"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
-                            android:backgroundTint="@color/brand_primary_light" />
+                            android:backgroundTint="@color/purple_300" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnRefreshLogs"
@@ -450,10 +450,10 @@
                             android:layout_height="48dp"
                             android:layout_marginEnd="8dp"
                             android:icon="@drawable/ic_refresh_24"
-                            android:iconTint="@color/white"
+                            android:iconTint="@color/white_100"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
-                            android:backgroundTint="@color/brand_primary_light" />
+                            android:backgroundTint="@color/purple_300" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnClearLogs"
@@ -462,10 +462,10 @@
                             android:layout_height="48dp"
                             android:layout_marginEnd="8dp"
                             android:icon="@drawable/ic_delete_24"
-                            android:iconTint="@color/white"
+                            android:iconTint="@color/white_100"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
-                            android:backgroundTint="@color/brand_primary_light" />
+                            android:backgroundTint="@color/purple_300" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnExportLogs"
@@ -473,10 +473,10 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:icon="@drawable/ic_file_upload_24"
-                            android:iconTint="@color/white"
+                            android:iconTint="@color/white_100"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
-                            android:backgroundTint="@color/brand_primary_light" />
+                            android:backgroundTint="@color/purple_300" />
 
                     </LinearLayout>
 
@@ -485,7 +485,7 @@
                         android:layout_height="wrap_content"
                         android:text="Real-time view of what's happening under the hood"
                         android:textSize="14sp"
-                        android:textColor="?android:attr/textColorSecondary"
+                        android:textColor="@color/text_secondary"
                         android:layout_marginBottom="16dp" />
 
                     <!-- Crash Log Buttons (only visible when crash logs exist) -->
@@ -505,8 +505,8 @@
                             android:layout_marginEnd="8dp"
                             android:text="📄 View Crash Logs"
                             android:textSize="12sp"
-                            android:textColor="@color/red_500"
-                            android:strokeColor="@color/red_500"
+                            android:textColor="@color/red_100"
+                            android:strokeColor="@color/red_100"
                             android:visibility="gone" />
 
                         <com.google.android.material.button.MaterialButton
@@ -518,8 +518,8 @@
                             android:layout_marginStart="8dp"
                             android:text="🗑️ Clear Crash Logs"
                             android:textSize="12sp"
-                            android:textColor="@color/red_500"
-                            android:strokeColor="@color/red_500"
+                            android:textColor="@color/red_100"
+                            android:strokeColor="@color/red_100"
                             android:visibility="gone" />
 
                     </LinearLayout>
@@ -541,7 +541,7 @@
                             android:layout_marginEnd="8dp"
                             android:text="🔍 Debug Crash Logs"
                             android:textSize="12sp"
-                            android:backgroundTint="@color/brand_primary_light" />
+                            android:backgroundTint="@color/purple_300" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnDebugConditionalRules"
@@ -552,7 +552,7 @@
                             android:layout_marginStart="8dp"
                             android:text="🧠 Debug Smart Rules"
                             android:textSize="12sp"
-                            android:backgroundTint="@color/brand_primary_light" />
+                            android:backgroundTint="@color/purple_300" />
 
                     </LinearLayout>
 
@@ -561,8 +561,8 @@
                         android:id="@+id/textLogDisplay"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
-                        android:background="@color/black"
-                        android:textColor="@color/white"
+                        android:background="@color/black_100"
+                        android:textColor="@color/white_100"
                         android:textSize="11sp"
                         android:fontFamily="monospace"
                         android:scrollbars="vertical"

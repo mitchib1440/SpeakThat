@@ -55,7 +55,7 @@
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
             app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="@color/brand_primary_light"
+            app:strokeColor="@color/purple_300"
             app:strokeWidth="1dp"
             android:clickable="true"
             android:focusable="true"
@@ -112,7 +112,7 @@
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
             app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="@color/brand_primary_light"
+            app:strokeColor="@color/purple_300"
             app:strokeWidth="1dp"
             android:clickable="true"
             android:focusable="true"
@@ -169,7 +169,7 @@
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
             app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="@color/brand_primary_light"
+            app:strokeColor="@color/purple_300"
             app:strokeWidth="1dp"
             android:clickable="true"
             android:focusable="true"
@@ -227,7 +227,7 @@
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp"
         app:cardBackgroundColor="?attr/colorSurface"
-        app:strokeColor="@color/brand_primary_light"
+        app:strokeColor="@color/purple_300"
         app:strokeWidth="1dp">
 
         <LinearLayout
@@ -264,8 +264,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    app:thumbTint="@color/brand_primary"
-                    app:trackTint="@color/brand_primary_light" />
+                    app:thumbTint="@color/purple_200"
+                    app:trackTint="@color/purple_300" />
 
             </LinearLayout>
 
@@ -283,7 +283,7 @@
                 android:layout_height="wrap_content"
                 android:text="Current log entries: 0"
                 android:textSize="12sp"
-                android:textColor="@color/brand_primary"
+                android:textColor="@color/purple_200"
                 android:textStyle="italic" />
 
         </LinearLayout>
