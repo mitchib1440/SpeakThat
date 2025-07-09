@@ -33,6 +33,13 @@
             android:layout_marginEnd="32dp" />
 
         <!-- Master Control Card -->
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="v1.0.4"
+            android:textAlignment="viewEnd" />
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardMasterControl"
             android:layout_width="match_parent"
