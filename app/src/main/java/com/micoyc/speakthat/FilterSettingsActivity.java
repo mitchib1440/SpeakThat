@@ -60,6 +60,9 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private AppAutoCompleteAdapter appSelectorAdapter;
     private List<AppInfo> installedApps;
     
+    // Media filtering UI elements
+    private AutoCompleteTextView editFilteredMediaApp;
+    
     // SharedPreferences keys
     private static final String PREFS_NAME = "SpeakThatPrefs";
     private static final String KEY_DARK_MODE = "dark_mode";
@@ -82,6 +85,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private WordReplacementAdapter wordReplacementAdapter;
     private AppListAdapter mediaExceptedAppsAdapter;
     private WordListAdapter mediaImportantKeywordsAdapter;
+    private AppListAdapter filteredMediaAppsAdapter;
 
     // Data lists
     private List<AppFilterItem> appList = new ArrayList<>();
@@ -89,6 +93,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private List<WordReplacementItem> wordReplacementItems = new ArrayList<>();
     private List<AppFilterItem> mediaExceptedAppsList = new ArrayList<>();
     private List<WordFilterItem> mediaImportantKeywordsList = new ArrayList<>();
+    private List<AppFilterItem> filteredMediaAppsList = new ArrayList<>();
 
     private LocalBroadcastManager localBroadcastManager;
     private android.content.BroadcastReceiver repairBlacklistReceiver;
@@ -116,6 +121,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         
         initializeViews();
         initializeAppSelector();
+        initializeFilteredMediaAppSelector();
         
         // Test the new JSON app list functionality
         AppListTest.INSTANCE.testAppListLoading(this);
@@ -174,6 +180,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         setupWordBlacklistRecycler();
         setupWordReplacementRecycler();
         setupMediaFilteringRecyclers();
+        setupFilteredMediaAppsRecycler();
 
         // Set up button listeners
         binding.btnAddApp.setOnClickListener(v -> addApp());
@@ -184,6 +191,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         // Set up media filtering button listeners
         binding.btnAddMediaExceptedApp.setOnClickListener(v -> addMediaExceptedApp());
         binding.btnAddMediaImportantKeyword.setOnClickListener(v -> addMediaImportantKeyword());
+        binding.btnRemoveFilteredMediaApp.setOnClickListener(v -> removeFilteredMediaApp());
         binding.txtMediaFilterHelp.setOnClickListener(v -> showMediaFilterHelp());
         
         // Set up media filtering switch
@@ -239,6 +247,13 @@ public class FilterSettingsActivity extends AppCompatActivity {
         binding.recyclerMediaImportantKeywords.setAdapter(mediaImportantKeywordsAdapter);
     }
     
+    private void setupFilteredMediaAppsRecycler() {
+        // Set up filtered media apps RecyclerView
+        filteredMediaAppsAdapter = new AppListAdapter(filteredMediaAppsList, this::removeFilteredMediaAppFromList, this::toggleFilteredMediaAppPrivate, this::editFilteredMediaApp);
+        binding.recyclerFilteredMediaApps.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerFilteredMediaApps.setAdapter(filteredMediaAppsAdapter);
+    }
+    
     private void setupMediaExceptedAppSelector() {
         // Load apps from JSON file
         List<AppListData> jsonApps = AppListManager.INSTANCE.loadAppList(this);
@@ -282,6 +297,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         initializeDefaultWordBlacklist();
         initializeDefaultMediaKeywords();
         initializeDefaultMediaExceptionApps();
+        initializeDefaultAppBlacklist();
         
         // Load app list mode
         String appListMode = sharedPreferences.getString(KEY_APP_LIST_MODE, "none");
@@ -355,7 +371,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         updateCountDisplays();
         
         // Load media notification filtering settings
-        boolean isMediaFilteringEnabled = sharedPreferences.getBoolean(KEY_MEDIA_FILTERING_ENABLED, true); // Default to enabled
+        boolean isMediaFilteringEnabled = sharedPreferences.getBoolean(KEY_MEDIA_FILTERING_ENABLED, false); // Default to disabled (using blacklist instead)
         binding.switchMediaFiltering.setChecked(isMediaFilteringEnabled);
         binding.mediaFilteringSection.setVisibility(isMediaFilteringEnabled ? View.VISIBLE : View.GONE);
         
@@ -378,6 +394,16 @@ public class FilterSettingsActivity extends AppCompatActivity {
             mediaImportantKeywordsList.add(new WordFilterItem(keyword, mediaImportantKeywordsPrivate.contains(keyword)));
         }
         mediaImportantKeywordsAdapter.notifyDataSetChanged();
+        
+        // Load filtered media apps (apps that are currently in the blacklist)
+        Set<String> blacklistedApps = sharedPreferences.getStringSet(KEY_APP_LIST, new HashSet<>());
+        Set<String> blacklistedAppsPrivate = sharedPreferences.getStringSet(KEY_APP_PRIVATE_FLAGS, new HashSet<>());
+        
+        filteredMediaAppsList.clear();
+        for (String app : blacklistedApps) {
+            filteredMediaAppsList.add(new AppFilterItem(app, blacklistedAppsPrivate.contains(app)));
+        }
+        filteredMediaAppsAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -519,6 +545,69 @@ public class FilterSettingsActivity extends AppCompatActivity {
     }
 
     /**
+     * Initialize default app blacklist entries for apps that commonly
+     * send annoying notifications that most users would want filtered.
+     */
+    private void initializeDefaultAppBlacklist() {
+        // Check if defaults have already been initialized
+        boolean defaultsInitialized = sharedPreferences.getBoolean(KEY_DEFAULTS_INITIALIZED, false);
+        if (defaultsInitialized) {
+            return;
+        }
+
+        // Get existing app list to avoid duplicates
+        Set<String> existingApps = sharedPreferences.getStringSet(KEY_APP_LIST, new HashSet<>());
+        Set<String> existingPrivateApps = sharedPreferences.getStringSet(KEY_APP_PRIVATE_FLAGS, new HashSet<>());
+        
+        // Create new sets to avoid modifying the existing ones
+        Set<String> newApps = new HashSet<>(existingApps);
+        Set<String> newPrivateApps = new HashSet<>(existingPrivateApps);
+
+        // Media apps that commonly send "now playing" notifications
+        String[] mediaApps = {
+            "com.google.android.youtube",      // YouTube
+            "app.revanced.android.youtube",    // YouTube ReVanced
+            "com.revanced.android.youtube",    // YouTube ReVanced (alternative package)
+            "com.vanced.android.youtube",      // YouTube Vanced (legacy)
+            "com.spotify.music",               // Spotify
+            "com.google.android.apps.youtube.music", // YouTube Music
+            "com.maxmpz.audioplayer",          // Poweramp
+            "com.netflix.mediaclient",         // Netflix
+            "com.amazon.avod.thirdpartyclient", // Prime Video
+            "com.disney.disneyplus",           // Disney+
+            "com.hulu.plus",                   // Hulu
+            "com.vimeo.android",               // Vimeo
+            "com.soundcloud.android",          // SoundCloud
+            "com.pandora.android",             // Pandora
+            "com.iheartradio.android",         // iHeartRadio
+            "com.audible.application",         // Audible
+            "com.google.android.apps.music",   // Google Play Music
+            "com.apple.android.music",         // Apple Music
+            "com.plexapp.android",             // Plex
+            "com.emby.embyserver",             // Emby
+            "com.jellyfin.jellyfinmobile"      // Jellyfin
+        };
+
+        // Add all media apps to blacklist
+        for (String app : mediaApps) {
+            if (!newApps.contains(app) && !newPrivateApps.contains(app)) {
+                newApps.add(app);
+            }
+        }
+
+        // Save the updated app list
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putStringSet(KEY_APP_LIST, newApps);
+        editor.putStringSet(KEY_APP_PRIVATE_FLAGS, newPrivateApps);
+        editor.putString(KEY_APP_LIST_MODE, "blacklist"); // Set to blacklist mode
+        editor.putBoolean(KEY_MEDIA_FILTERING_ENABLED, false); // Disable media filtering (using blacklist instead)
+        editor.apply();
+
+        Log.d("FilterSettings", "Initialized default app blacklist with " + 
+              (newApps.size() - existingApps.size()) + " new entries");
+    }
+
+    /**
      * Initialize default media exception apps that should never have
      * notifications filtered even during media playback.
      */
@@ -559,6 +648,9 @@ public class FilterSettingsActivity extends AppCompatActivity {
             "com.android.alarmclock", // Clock/Alarm
             "com.google.android.apps.clock", // Google Clock
             "com.android.systemui"    // System UI (calls, etc.)
+            // Note: YouTube and YouTube ReVanced are NOT in exception list
+            // They will be filtered by media detection, but important notifications
+            // (comments, replies, etc.) will be preserved via important keywords
         };
 
         // Add all exception apps
@@ -865,6 +957,159 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private void editMediaImportantKeyword(int position) {
         WordFilterItem item = mediaImportantKeywordsList.get(position);
         showEditMediaImportantKeywordDialog(item, position);
+    }
+
+    // Filtered Media Apps Management
+    private void removeFilteredMediaApp() {
+        String input = binding.editFilteredMediaApp.getText().toString().trim();
+        if (input.isEmpty()) {
+            Toast.makeText(this, "Please enter an app name or package name", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Try to match input to a known app in the JSON (by displayName or packageName)
+        AppListData matched = null;
+        for (AppListData app : AppListManager.INSTANCE.loadAppList(this)) {
+            if (app.displayName.equalsIgnoreCase(input) || app.packageName.equalsIgnoreCase(input)) {
+                matched = app;
+                break;
+            }
+        }
+        String packageNameToRemove = (matched != null) ? matched.packageName : input;
+
+        // Remove from app blacklist
+        Set<String> apps = sharedPreferences.getStringSet(KEY_APP_LIST, new HashSet<>());
+        Set<String> privateApps = sharedPreferences.getStringSet(KEY_APP_PRIVATE_FLAGS, new HashSet<>());
+        
+        if (apps.contains(packageNameToRemove)) {
+            apps.remove(packageNameToRemove);
+            privateApps.remove(packageNameToRemove);
+            
+            // Save updated lists
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putStringSet(KEY_APP_LIST, apps);
+            editor.putStringSet(KEY_APP_PRIVATE_FLAGS, privateApps);
+            editor.apply();
+            
+            // Reload settings to update UI
+            loadSettings();
+            
+            Toast.makeText(this, "Removed " + (matched != null ? matched.displayName : packageNameToRemove) + " from filter", Toast.LENGTH_SHORT).show();
+            binding.editFilteredMediaApp.setText("");
+        } else {
+            Toast.makeText(this, "App not found in filter list", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void removeFilteredMediaAppFromList(int position) {
+        if (position >= 0 && position < filteredMediaAppsList.size()) {
+            AppFilterItem item = filteredMediaAppsList.get(position);
+            
+            // Remove from app blacklist
+            Set<String> apps = sharedPreferences.getStringSet(KEY_APP_LIST, new HashSet<>());
+            Set<String> privateApps = sharedPreferences.getStringSet(KEY_APP_PRIVATE_FLAGS, new HashSet<>());
+            
+            apps.remove(item.packageName);
+            privateApps.remove(item.packageName);
+            
+            // Save updated lists
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putStringSet(KEY_APP_LIST, apps);
+            editor.putStringSet(KEY_APP_PRIVATE_FLAGS, privateApps);
+            editor.apply();
+            
+            // Reload settings to update UI
+            loadSettings();
+            
+            Toast.makeText(this, "Removed " + item.packageName + " from filter", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void toggleFilteredMediaAppPrivate(int position) {
+        if (position >= 0 && position < filteredMediaAppsList.size()) {
+            AppFilterItem item = filteredMediaAppsList.get(position);
+            item.isPrivate = !item.isPrivate;
+            
+            // Update in SharedPreferences
+            Set<String> apps = sharedPreferences.getStringSet(KEY_APP_LIST, new HashSet<>());
+            Set<String> privateApps = sharedPreferences.getStringSet(KEY_APP_PRIVATE_FLAGS, new HashSet<>());
+            
+            if (item.isPrivate) {
+                privateApps.add(item.packageName);
+            } else {
+                privateApps.remove(item.packageName);
+            }
+            
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putStringSet(KEY_APP_LIST, apps);
+            editor.putStringSet(KEY_APP_PRIVATE_FLAGS, privateApps);
+            editor.apply();
+            
+            filteredMediaAppsAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void editFilteredMediaApp(int position) {
+        if (position >= 0 && position < filteredMediaAppsList.size()) {
+            showEditFilteredMediaAppDialog(filteredMediaAppsList.get(position), position);
+        }
+    }
+
+    private void showEditFilteredMediaAppDialog(AppFilterItem item, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Edit Filtered Media App");
+        
+        // Create input field
+        final EditText input = new EditText(this);
+        input.setText(item.packageName);
+        input.setHint("Package name (e.g., com.android.chrome)");
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setSelection(input.getText().length()); // Move cursor to end
+        
+        // Add padding
+        input.setPadding(50, 30, 50, 30);
+        builder.setView(input);
+        
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            String newPackageName = input.getText().toString().trim();
+            if (!newPackageName.isEmpty()) {
+                // Check for duplicates (excluding current item)
+                for (int i = 0; i < filteredMediaAppsList.size(); i++) {
+                    if (i != position && filteredMediaAppsList.get(i).packageName.equals(newPackageName)) {
+                        Toast.makeText(this, "App already in filtered list", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                
+                // Update the item
+                item.packageName = newPackageName;
+                filteredMediaAppsAdapter.notifyItemChanged(position);
+                
+                // Update in SharedPreferences
+                Set<String> apps = sharedPreferences.getStringSet(KEY_APP_LIST, new HashSet<>());
+                Set<String> privateApps = sharedPreferences.getStringSet(KEY_APP_PRIVATE_FLAGS, new HashSet<>());
+                
+                // Remove old package name and add new one
+                apps.remove(item.packageName);
+                privateApps.remove(item.packageName);
+                apps.add(newPackageName);
+                if (item.isPrivate) {
+                    privateApps.add(newPackageName);
+                }
+                
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putStringSet(KEY_APP_LIST, apps);
+                editor.putStringSet(KEY_APP_PRIVATE_FLAGS, privateApps);
+                editor.apply();
+                
+                Toast.makeText(this, "Filtered media app updated", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Package name cannot be empty", Toast.LENGTH_SHORT).show();
+            }
+        });
+        
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
     }
     
     private void showEditMediaExceptedAppDialog(AppFilterItem item, int position) {
@@ -1546,6 +1791,44 @@ public class FilterSettingsActivity extends AppCompatActivity {
                 InAppLogger.log("AppSelector", "Fallback: App selector initialized with " + installedApps.size() + " common apps");
             } else {
                 InAppLogger.logError("AppSelector", "No apps loaded for selector");
+            }
+        }
+    }
+
+    private void initializeFilteredMediaAppSelector() {
+        // Load apps from JSON file
+        List<AppListData> jsonApps = AppListManager.INSTANCE.loadAppList(this);
+        
+        if (jsonApps != null && !jsonApps.isEmpty()) {
+            // Create adapter with JSON data
+            AppSearchAdapter jsonAdapter = new AppSearchAdapter(this, jsonApps);
+            binding.editFilteredMediaApp.setAdapter(jsonAdapter);
+            binding.editFilteredMediaApp.setThreshold(1); // Show suggestions after 1 character
+            
+            // Handle app selection
+            binding.editFilteredMediaApp.setOnItemClickListener((parent, view, position, id) -> {
+                AppListData selectedApp = jsonAdapter.getItem(position);
+                if (selectedApp != null) {
+                    binding.editFilteredMediaApp.setText(selectedApp.packageName);
+                    binding.editFilteredMediaApp.setSelection(selectedApp.packageName.length());
+                }
+            });
+        } else {
+            // Fallback to old system if JSON loading fails
+            installedApps = getCommonApps();
+            
+            if (installedApps != null && !installedApps.isEmpty()) {
+                appSelectorAdapter = new AppAutoCompleteAdapter(this, installedApps);
+                binding.editFilteredMediaApp.setAdapter(appSelectorAdapter);
+                binding.editFilteredMediaApp.setThreshold(1);
+                
+                binding.editFilteredMediaApp.setOnItemClickListener((parent, view, position, id) -> {
+                    AppInfo selectedApp = appSelectorAdapter.getItem(position);
+                    if (selectedApp != null) {
+                        binding.editFilteredMediaApp.setText(selectedApp.packageName);
+                        binding.editFilteredMediaApp.setSelection(selectedApp.packageName.length());
+                    }
+                });
             }
         }
     }

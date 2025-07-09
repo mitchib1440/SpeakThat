@@ -130,7 +130,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val appName: String,
         val text: String,
         val isPriority: Boolean = false,
-        val conditionalDelaySeconds: Int = -1
+        val conditionalDelaySeconds: Int = -1,
+        val sbn: StatusBarNotification? = null
     )
     
     override fun onCreate() {
@@ -245,7 +246,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     addToHistory(finalAppName, packageName, filterResult.processedText)
                     
                     // Handle notification based on behavior mode (pass conditional delay info)
-                    handleNotificationBehavior(packageName, finalAppName, filterResult.processedText, filterResult.conditionalDelaySeconds)
+                    handleNotificationBehavior(packageName, finalAppName, filterResult.processedText, filterResult.conditionalDelaySeconds, sbn)
                 } else {
                     Log.d(TAG, "Notification filtered out: $filterResult.reason")
                 InAppLogger.logFilter("Blocked notification from $appName: ${filterResult.reason}")
@@ -604,20 +605,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     private fun applyMediaFiltering(sbn: StatusBarNotification): FilterResult {
-        // Check if media notification filtering is enabled
+        // Use unified detection logic
         if (!mediaFilterPreferences.isMediaFilteringEnabled) {
             return FilterResult(true, "", "Media filtering disabled")
         }
-        
-        // Check if this notification should be filtered as a media notification
-        if (MediaNotificationDetector.shouldFilterMediaNotification(sbn, mediaFilterPreferences)) {
+        if (MediaNotificationDetector.isMediaNotification(sbn)) {
             val reason = MediaNotificationDetector.getMediaDetectionReason(sbn)
-            Log.d(TAG, "Media notification filtered out: $reason")
-            InAppLogger.logFilter("Blocked media notification from ${sbn.packageName}: $reason")
-            return FilterResult(false, "", "Media notification filtered: $reason")
+            Log.d(TAG, "Media notification filtered out (unified logic): $reason")
+            InAppLogger.logFilter("Blocked media notification from ${sbn.packageName}: $reason (unified logic)")
+            // Log all extras for debugging
+            val extras = sbn.notification.extras
+            Log.d(TAG, "[UnifiedFilter] Notification extras: $extras")
+            return FilterResult(false, "", "Media notification filtered: $reason (unified logic)")
         }
-        
-        return FilterResult(true, "", "Not a media notification or media filtering not applicable")
+        return FilterResult(true, "", "Not a media notification or media filtering not applicable (unified logic)")
     }
     
     override fun onSensorChanged(event: SensorEvent) {
@@ -670,39 +671,41 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         loadFilterSettings()
         refreshSettings() // This calls the shake settings refresh
     }
-    
-    private fun handleMediaBehavior(appName: String, text: String): Boolean {
+
+    private fun handleMediaBehavior(appName: String, text: String, sbn: StatusBarNotification? = null): Boolean {
         val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-        
-        // Check if media is currently playing
         val isMusicActive = audioManager.isMusicActive
-        
         if (!isMusicActive) {
-            // No media playing, proceed normally
+            Log.d(TAG, "No media currently playing, proceeding normally")
             return true
         }
-        
         Log.d(TAG, "Media is playing, applying media behavior: $mediaBehavior")
         InAppLogger.log("MediaBehavior", "Media detected, applying behavior: $mediaBehavior")
-        
+        // UNIFIED FAIL-SAFE: If this is a media notification, block it no matter what
+        if (sbn != null && MediaNotificationDetector.isMediaNotification(sbn)) {
+            val reason = MediaNotificationDetector.getMediaDetectionReason(sbn)
+            Log.d(TAG, "FAIL-SAFE: Notification detected as media during ducking. Blocking speech. Reason: $reason")
+            InAppLogger.logFilter("FAIL-SAFE: Blocked notification from $appName due to ducking/media detection: $reason")
+            // Log all extras for debugging
+            val extras = sbn.notification.extras
+            Log.d(TAG, "[FailSafe] Notification extras: $extras")
+            return false // Block speech - never read out
+        }
         when (mediaBehavior) {
             "ignore" -> {
-                // Continue as normal, don't interfere with media
                 Log.d(TAG, "Media behavior: IGNORE - proceeding normally")
                 return true
             }
             "pause" -> {
-                // Request audio focus to pause media
                 Log.d(TAG, "Media behavior: PAUSE - requesting audio focus")
                 return requestAudioFocusForSpeech()
             }
             "duck" -> {
-                // Lower media volume temporarily
                 Log.d(TAG, "Media behavior: DUCK - lowering media volume to $duckingVolume%")
+                InAppLogger.log("MediaBehavior", "Ducking media volume - notification will be spoken")
                 return duckMediaVolume()
             }
             "silence" -> {
-                // Don't speak while media is playing
                 Log.d(TAG, "Media behavior: SILENCE - not speaking due to active media")
                 InAppLogger.log("MediaBehavior", "Silenced notification from $appName due to active media")
                 return false
@@ -840,46 +843,43 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
 
-    private fun handleNotificationBehavior(packageName: String, appName: String, text: String, conditionalDelaySeconds: Int = -1) {
+    private fun handleNotificationBehavior(packageName: String, appName: String, text: String, conditionalDelaySeconds: Int = -1, sbn: StatusBarNotification? = null) {
         val isPriorityApp = priorityApps.contains(packageName)
-        val queuedNotification = QueuedNotification(appName, text, isPriorityApp, conditionalDelaySeconds)
+        val queuedNotification = QueuedNotification(appName, text, isPriorityApp, conditionalDelaySeconds, sbn)
         
         Log.d(TAG, "Handling notification behavior - Mode: $notificationBehavior, App: $appName, Currently speaking: $isCurrentlySpeaking, Queue size: ${notificationQueue.size}")
         InAppLogger.logNotification("Processing notification from $appName (mode: $notificationBehavior, speaking: $isCurrentlySpeaking)")
         
-        // Check media behavior first
-        if (!handleMediaBehavior(appName, text)) {
-            Log.d(TAG, "Media behavior blocked notification from $appName")
+        // Check media behavior first, now with sbn for strict filtering
+        if (!handleMediaBehavior(appName, text, sbn)) {
+            Log.d(TAG, "Media behavior blocked notification from $appName (sbn: ${sbn?.packageName})")
+            InAppLogger.logFilter("Media behavior blocked notification from $appName (sbn: ${sbn?.packageName})")
             return
         }
         
         when (notificationBehavior) {
             "interrupt" -> {
                 Log.d(TAG, "INTERRUPT mode: Speaking immediately and interrupting any current speech")
-                // Always interrupt current speech and speak immediately
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn)
             }
             "queue" -> {
                 Log.d(TAG, "QUEUE mode: Adding to queue")
-                // Add to queue and process in order
                 notificationQueue.add(queuedNotification)
                 Log.d(TAG, "Added to queue. New queue size: ${notificationQueue.size}")
                 processNotificationQueue()
             }
             "skip" -> {
-                // Only speak if not currently speaking
                 if (!isCurrentlySpeaking) {
                     Log.d(TAG, "SKIP mode: Not currently speaking, will speak now")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn)
                 } else {
                     Log.d(TAG, "SKIP mode: Currently speaking, skipping notification from $appName")
                 }
             }
             "smart" -> {
-                // Priority apps interrupt, others queue
                 if (isPriorityApp) {
                     Log.d(TAG, "SMART mode: Priority app $appName - interrupting")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn)
                 } else {
                     Log.d(TAG, "SMART mode: Regular app $appName - adding to queue")
                     notificationQueue.add(queuedNotification)
@@ -888,26 +888,25 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             else -> {
                 Log.d(TAG, "UNKNOWN mode '$notificationBehavior': Defaulting to interrupt")
-                // Default to interrupt
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn)
             }
         }
     }
-    
+
     private fun processNotificationQueue() {
         Log.d(TAG, "Processing queue - Currently speaking: $isCurrentlySpeaking, Queue size: ${notificationQueue.size}")
         if (!isCurrentlySpeaking && notificationQueue.isNotEmpty()) {
-            val next = notificationQueue.removeAt(0)
-            Log.d(TAG, "Processing next queued notification from ${next.appName}")
-            speakNotificationImmediate(next.appName, next.text, next.conditionalDelaySeconds)
+            val queuedNotification = notificationQueue.removeAt(0)
+            Log.d(TAG, "Processing next queued notification from ${queuedNotification.appName}")
+            speakNotificationImmediate(queuedNotification.appName, queuedNotification.text, queuedNotification.conditionalDelaySeconds, queuedNotification.sbn)
         } else if (isCurrentlySpeaking) {
             Log.d(TAG, "Still speaking, queue will be processed when current speech finishes")
         } else {
             Log.d(TAG, "Queue is empty")
         }
     }
-    
-    private fun speakNotificationImmediate(appName: String, text: String, conditionalDelaySeconds: Int = -1) {
+
+    private fun speakNotificationImmediate(appName: String, text: String, conditionalDelaySeconds: Int = -1, sbn: StatusBarNotification? = null) {
         if (!isTtsInitialized || textToSpeech == null) {
             Log.w(TAG, "TTS not initialized, cannot speak notification")
             return
@@ -935,25 +934,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         if (effectiveDelay > 0) {
-            // Implement delay before speaking
-            val delayType = if (conditionalDelaySeconds > 0) "conditional" else "global"
-            Log.d(TAG, "Delaying readout by ${effectiveDelay}s ($delayType): $speechText")
-            
-            // Create runnable for delayed execution
+            Log.d(TAG, "Delaying speech by ${effectiveDelay}s")
             pendingReadoutRunnable = Runnable {
-                // Clear the pending runnable since we're about to execute
-                pendingReadoutRunnable = null
-                
-                // Execute the actual speech
                 executeSpeech(speechText)
             }
-            
-            // Schedule the delayed execution
             delayHandler?.postDelayed(pendingReadoutRunnable!!, (effectiveDelay * 1000).toLong())
-            
         } else {
-            // No delay, speak immediately
-            Log.d(TAG, "Speaking immediately: $speechText")
             executeSpeech(speechText)
         }
     }
@@ -995,10 +981,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             override fun onError(utteranceId: String?) {
                 if (utteranceId == "notification_utterance") {
                     isCurrentlySpeaking = false
-                    
-                    // Unregister shake listener since we're done (even with error)
                     unregisterShakeListener()
-                    
+                    Log.e(TAG, "TTS error occurred")
                     InAppLogger.logTTSEvent("TTS error", "Utterance failed")
                     
                     // Clean up media behavior effects
@@ -1010,12 +994,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         })
     }
-    
+
     private fun applyVoiceSettings() {
-        textToSpeech?.let { tts ->
-            // Use the correct SharedPreferences instance for voice settings
-            val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-            VoiceSettingsActivity.applyVoiceSettings(tts, voicePrefs)
+        if (isTtsInitialized && textToSpeech != null) {
+            VoiceSettingsActivity.applyVoiceSettings(textToSpeech!!, voiceSettingsPrefs)
             Log.d(TAG, "Voice settings applied")
         }
     }
@@ -1052,44 +1034,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 delayBeforeReadout = sharedPreferences?.getInt(KEY_DELAY_BEFORE_READOUT, 0) ?: 0
                 Log.d(TAG, "Delay settings updated - delay: ${delayBeforeReadout}s")
             }
-            KEY_CONDITIONAL_RULES -> {
-                // Reload conditional rules when they change
-                conditionalFilterManager?.reloadRules()
-                Log.d(TAG, "Conditional rules updated - reloaded from storage")
-                InAppLogger.log("Conditional", "Rules reloaded due to settings change")
-            }
             KEY_MEDIA_FILTERING_ENABLED, KEY_MEDIA_FILTER_EXCEPTED_APPS, KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS -> {
                 // Reload media filtering settings
                 loadFilterSettings()
                 Log.d(TAG, "Media filtering settings updated")
-                InAppLogger.log("MediaFilter", "Settings reloaded due to settings change")
             }
         }
     }
-    
-    private fun matchesWordFilter(text: String, filterRule: String): Boolean {
-        // Simple contains check for basic filters
-        if (text.contains(filterRule, ignoreCase = true)) {
-            return true
-        }
-        
-        // Check if this might be a smart pattern filter (contains placeholders)
-        if (filterRule.contains("[TIME]") || filterRule.contains("[DATE]") ||
-            filterRule.contains("[NUMBER]") || filterRule.contains("[PERCENT]") ||
-            filterRule.contains("[SIZE]") || filterRule.contains("[URL]") || 
-            filterRule.contains("[EMAIL]")) {
-            
-            // Use the pattern matching from NotificationFilterHelper
-            return NotificationFilterHelper.matchesFilter(text, filterRule, NotificationFilterHelper.FilterType.PATTERN)
-        }
-        
-        // Check if this might be a keyword-only filter (multiple words, all lowercase)
-        if (filterRule.contains(" ") && filterRule.equals(filterRule.toLowerCase()) && 
-            !filterRule.contains("[") && !filterRule.contains(":")) {
-            
-            return NotificationFilterHelper.matchesFilter(text, filterRule, NotificationFilterHelper.FilterType.KEYWORDS)
-        }
-        
-        return false
+
+    private fun matchesWordFilter(text: String, word: String): Boolean {
+        return text.contains(word, ignoreCase = true)
     }
-} 
+}

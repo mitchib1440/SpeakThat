@@ -25,13 +25,17 @@ class MediaNotificationDetector {
             "playing", "paused", "stopped", "buffering", "loading",
             "now playing", "currently playing", "track", "song", "album",
             "artist", "duration", "time", "progress", "volume", "mute",
-            "unmute", "shuffle", "repeat", "loop", "queue", "playlist"
+            "unmute", "shuffle", "repeat", "loop", "queue", "playlist",
+            // YouTube-specific patterns
+            "video", "watching", "streaming", "live", "broadcast", "upload",
+            "subscriber", "view", "like", "comment", "share", "download"
         )
         
         // Media app package names (common media players)
         private val MEDIA_APPS = setOf(
             "com.spotify.music",
             "com.google.android.youtube",
+            "app.revanced.android.youtube",  // Updated YouTube ReVanced package name
             "com.netflix.mediaclient",
             "com.amazon.avod.thirdpartyclient",
             "com.disney.disneyplus",
@@ -47,7 +51,7 @@ class MediaNotificationDetector {
             "com.emby.embyserver",
             "com.jellyfin.jellyfinmobile",
             "com.vanced.android.youtube",
-            "com.revanced.android.youtube",
+            "com.revanced.android.youtube",  // Keep old package name for compatibility
             "com.google.android.apps.youtube.music",
             "com.spotify.lite",
             "com.deezer.android",
@@ -129,7 +133,10 @@ class MediaNotificationDetector {
             Notification.CATEGORY_SERVICE,
             "media_session",
             "media_control",
-            "playback"
+            "playback",
+            "video",
+            "streaming",
+            "youtube"
         )
         
         /**
@@ -138,31 +145,38 @@ class MediaNotificationDetector {
         fun isMediaNotification(sbn: StatusBarNotification): Boolean {
             val notification = sbn.notification
             val packageName = sbn.packageName
+            val extras = notification.extras
+            val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
+            val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
+            val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
+            val summaryText = extras.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString() ?: ""
+            val infoText = extras.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString() ?: ""
+            Log.d(TAG, "[isMediaNotification] Package: $packageName | Title: $title | Text: $text | BigText: $bigText | Summary: $summaryText | Info: $infoText")
             
-            // Check if it's a known media app
-            if (isMediaApp(packageName)) {
-                Log.d(TAG, "Detected media app: $packageName")
-                return true
+            // Debug logging for YouTube-related apps to help identify package names
+            if (packageName.contains("youtube") || packageName.contains("revanced") || packageName.contains("vanced")) {
+                Log.d(TAG, "YouTube-related app detected - Package: $packageName, App: $title")
             }
             
-            // Check notification category
-            if (hasMediaCategory(notification)) {
-                Log.d(TAG, "Detected media category for: $packageName")
-                return true
-            }
-            
-            // Check for media control patterns in text
-            if (containsMediaControls(notification)) {
-                Log.d(TAG, "Detected media controls in text for: $packageName")
-                return true
-            }
-            
-            // Check for media session flags
+            // Only block if it has media session flags, media controls, or seekbar
             if (hasMediaSessionFlags(notification)) {
-                Log.d(TAG, "Detected media session flags for: $packageName")
+                Log.d(TAG, "[isMediaNotification] Detected media session flags for: $packageName (return true)")
                 return true
             }
-            
+            if (containsMediaControls(notification)) {
+                Log.d(TAG, "[isMediaNotification] Detected media controls in text for: $packageName (return true)")
+                return true
+            }
+            if (hasSeekbar(notification)) {
+                Log.d(TAG, "[isMediaNotification] Detected seekbar/progress bar in notification for: $packageName (return true)")
+                return true
+            }
+            // Special check for YouTube notifications that don't have media session flags
+            if (isYouTubeNotification(notification, packageName)) {
+                Log.d(TAG, "[isMediaNotification] Detected YouTube notification without media session flags (return true)")
+                return true
+            }
+            Log.d(TAG, "[isMediaNotification] No media detection for: $packageName (return false)")
             return false
         }
         
@@ -221,8 +235,72 @@ class MediaNotificationDetector {
                                    extras.getBoolean("playback_control", false) ||
                                    extras.getBoolean("media_session", false)
             
-            if (hasMediaSession || hasMediaController || hasPlaybackState || hasCustomMediaFlag) {
+            // Check for YouTube-specific media flags
+            val hasYouTubeMediaFlag = extras.getBoolean("youtube_media", false) ||
+                                     extras.getBoolean("video_playback", false) ||
+                                     extras.getBoolean("streaming", false)
+            
+            if (hasMediaSession || hasMediaController || hasPlaybackState || hasCustomMediaFlag || hasYouTubeMediaFlag) {
                 Log.d(TAG, "Detected media session flags")
+                return true
+            }
+            
+            return false
+        }
+        
+        /**
+         * Check if notification has a seekbar/progress bar (hybrid detection)
+         */
+        private fun hasSeekbar(notification: Notification): Boolean {
+            val extras = notification.extras
+            val hasProgress = extras.containsKey(Notification.EXTRA_PROGRESS)
+            val hasProgressMax = extras.containsKey(Notification.EXTRA_PROGRESS_MAX)
+            val progress = extras.getInt(Notification.EXTRA_PROGRESS, -1)
+            val progressMax = extras.getInt(Notification.EXTRA_PROGRESS_MAX, -1)
+            Log.d(TAG, "[hasSeekbar] hasProgress: $hasProgress, hasProgressMax: $hasProgressMax, progress: $progress, progressMax: $progressMax")
+            // If progress and max are set, it's likely a seekbar
+            val result = hasProgress && hasProgressMax && progressMax > 0
+            Log.d(TAG, "[hasSeekbar] Seekbar detected: $result")
+            return result
+        }
+        
+        /**
+         * Special check for YouTube notifications that don't have media session flags
+         * but are still media-related (video titles, channel names, etc.)
+         */
+        private fun isYouTubeNotification(notification: Notification, packageName: String): Boolean {
+            // Only check YouTube apps
+            if (!packageName.contains("youtube")) {
+                return false
+            }
+            
+            val extras = notification.extras
+            val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
+            val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
+            val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
+            
+            val fullText = "$title $text $bigText".lowercase()
+            
+            // Check for YouTube video patterns
+            val videoPatterns = listOf(
+                "episode", "season", "part", "chapter", "volume",
+                "【", "】", "(", ")", ":", "•", "|", "-",
+                "animation", "reaction", "stream", "live", "premiere",
+                "upload", "video", "content", "channel", "creator"
+            )
+            
+            // Check if the notification contains video title patterns
+            for (pattern in videoPatterns) {
+                if (fullText.contains(pattern.lowercase())) {
+                    Log.d(TAG, "Found YouTube video pattern: $pattern")
+                    return true
+                }
+            }
+            
+            // Check if the notification has a channel name (usually after a colon or dash)
+            if (fullText.contains(":") || fullText.contains("•") || fullText.contains("|")) {
+                // This looks like a video notification with channel name
+                Log.d(TAG, "Detected YouTube video notification with channel name")
                 return true
             }
             
@@ -251,6 +329,10 @@ class MediaNotificationDetector {
             
             if (hasMediaSessionFlags(notification)) {
                 reasons.add("Has media session flags")
+            }
+            
+            if (isYouTubeNotification(notification, packageName)) {
+                reasons.add("YouTube video notification")
             }
             
             return reasons.joinToString(", ")
@@ -322,7 +404,11 @@ class MediaNotificationDetector {
             "upload", "download", "share", "save", "favorite", "bookmark",
             "notification", "alert", "message", "dm", "direct message",
             "live", "streaming", "broadcast", "new video", "new post",
-            "trending", "viral", "popular", "recommended", "suggestion"
+            "trending", "viral", "popular", "recommended", "suggestion",
+            // YouTube-specific important keywords
+            "replied", "commented", "liked", "subscribed", "new subscriber",
+            "channel", "uploaded", "published", "scheduled", "premier",
+            "community", "poll", "story", "shorts", "reels"
         )
     )
 } 
