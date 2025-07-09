@@ -4,7 +4,7 @@
 
 The Conditional Filtering System is a foundation for advanced, context-aware notification filtering in SpeakThat. This system allows users to create rules that automatically adjust notification behavior based on various conditions like time, day of week, app patterns, and notification content.
 
-## 📋 Latest Session Notes - December 2024
+## 📋 Latest Session Notes - July 2025
 
 ### What We Accomplished
 1. **Settings Reorganization**: Moved Smart Rules to its own settings category instead of being part of Filter Settings
