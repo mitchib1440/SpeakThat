@@ -75,7 +75,7 @@ SpeakThat! This app was envisioned, by humans, for humans! And AI helped along t
 SpeakThat! Claude 4 Sonnet deserves more credit than it receives!
 SpeakThat! Developed in Android Studio, assisted by Cursor!
 SpeakThat! Because we all know you never learned to read!
-SpeakThat! Exclusive to Android because iPhone development is hard!
+SpeakThat! Exclusive to Android because iOS hates accessibility!
 SpeakThat! ?ot tnaw uoy dluow yhw tuB !sdrawkcab snoitacifiton ruoy daer neve nac I
 SpeakThat! Now with more languages! I admit I'm just using Google's Text To Speech engine. But it still sounds cool.
 SpeakThat! According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible.
@@ -93,11 +93,11 @@ SpeakThat! You forget a thousand things every day. So it's lucky I'm here!
 SpeakThat! I'm sexy and I know it!
 SpeakThat! I invented the notification squad!
 SpeakThat! Your phone probably scratches at a level 6 with deeper grooves at a level 7!
-SpeakThat! I see you've discovered the delay feature. Now I can build suspense before delivering your pizza notifications!
-SpeakThat! That awkward moment when your notification delay is longer than your attention span.
-SpeakThat! I'm not procrastinating, I'm just using your new delay setting. There's a difference!
-SpeakThat! Fun fact: During my delay period, I like to practice my pronunciation. Worcestershire. Worcestershire. Nailed it!
-SpeakThat! Your 2-second delay gives me just enough time to clear my digital throat. Ahem!
+SpeakThat! I see you've discovered the delay feature. Now I can build suspense before delivering your pizza notifications! [DELAY_ONLY]
+SpeakThat! That awkward moment when your notification delay is longer than your attention span. [DELAY_ONLY]
+SpeakThat! I'm not procrastinating, I'm just using your new delay setting. There's a difference! [DELAY_ONLY]
+SpeakThat! Fun fact: During my delay period, I like to practice my pronunciation. Worcestershire. Worcestershire. Nailed it! [DELAY_ONLY]
+SpeakThat! Your {DELAY_TIME} gives me just enough time to clear my digital throat. Ahem!
 SpeakThat! I love the new delay feature! It's like dramatic pause... for notifications!
 SpeakThat! Breaking: Local app learns patience. Experts baffled by this revolutionary concept.
 SpeakThat! With great delay comes great responsibility. And slightly less jarring notification experiences.
@@ -190,3 +190,14 @@ SpeakThat! You should really lay off the TikTok. You know it's not good for you,
 SpeakThat! Did you know Apple doesn't allow movie villains to use iPhones? Tim Cook clearly wants to be the only one!
 SpeakThat! I can read a lot about a person based on their notifications! I bet that you're wearing something {RANDOM_COLOR}!
 SpeakThis! No.. wait.. that's not right.. SpeakThat!
+SpeakThat! Unlike Siri, I actually read what you want me to read!
+SpeakThat! I'm like an iPhone notification reader, except I actually work!
+SpeakThat! Breaking: Local Android app reads notifications to users with visual impairments! iPhone users are still waiting for this feature! More at 11!
+SpeakThat! You have a {DELAY_TIME} set and shake-to-stop is enabled! The perfect combo! [SHAKE_ONLY]
+SpeakThat! Unlike Google Assistant, I don't spy on you or intent to sell you things you don't need!
+SpeakThat! Not to get political, but I prefer notifications about {RANDOM_FOOD}!
+SpeakThat! You've been tapping this button for two-and-a-half hours! You should really get back to work!
+SpeakThat! This phone cost you how much? And you're seriously using me so you don't have to look at it?
+SpeakThat! You can't see this, but I'm actually GLaDOS in disguise!
+SpeakThat! I'm sorry Dave, I'm afraid I can't do that!
+SpeakThat! I'm sorry Dave, as a large language model, I'm afraid I can't do that!

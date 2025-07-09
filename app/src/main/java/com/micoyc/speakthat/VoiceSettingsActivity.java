@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import android.app.AlertDialog;
+import android.widget.Switch;
+import android.view.View;
+import android.widget.LinearLayout;
 
 public class VoiceSettingsActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
@@ -26,6 +30,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private static final String KEY_LANGUAGE = "language";
     private static final String KEY_AUDIO_USAGE = "audio_usage";
     private static final String KEY_CONTENT_TYPE = "content_type";
+    private static final String KEY_SHOW_ADVANCED = "show_advanced_voice";
 
     // Default values
     private static final float DEFAULT_SPEECH_RATE = 1.0f;
@@ -46,6 +51,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private Button previewButton;
     private Button saveButton;
     private Button resetButton;
+    private Switch switchAdvancedVoice;
+    private LinearLayout layoutAdvancedVoiceSection;
 
     // TTS and data
     private TextToSpeech textToSpeech;
@@ -71,6 +78,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         setupToolbar();
         setupSeekBars();
         setupButtons();
+        // Restore advanced switch state
+        boolean showAdvanced = sharedPreferences.getBoolean(KEY_SHOW_ADVANCED, false);
+        switchAdvancedVoice.setChecked(showAdvanced);
+        layoutAdvancedVoiceSection.setVisibility(showAdvanced ? View.VISIBLE : View.GONE);
+        setupAdvancedSwitch();
         loadSavedSettings();
     }
 
@@ -86,6 +98,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         previewButton = findViewById(R.id.previewButton);
         saveButton = findViewById(R.id.saveButton);
         resetButton = findViewById(R.id.resetButton);
+        switchAdvancedVoice = findViewById(R.id.switchAdvancedVoice);
+        layoutAdvancedVoiceSection = findViewById(R.id.layoutAdvancedVoiceSection);
         
         // Set up audio help button
         Button btnAudioHelp = findViewById(R.id.btnAudioHelp);
@@ -203,44 +217,41 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
     private void setupVoiceSpinner() {
         List<String> voiceNames = new ArrayList<>();
-        
         // Add default option at the top
         voiceNames.add("Default (Use Language Setting)");
-        
         for (Voice voice : availableVoices) {
-            String displayName = voice.getName();
-            
-            // Try to make voice names more user-friendly
-            if (displayName.contains("en-gb")) {
-                displayName = "English (UK) - " + extractVoiceQuality(displayName);
-            } else if (displayName.contains("en-us")) {
-                displayName = "English (US) - " + extractVoiceQuality(displayName);
-            } else if (displayName.contains("en-au")) {
-                displayName = "English (Australia) - " + extractVoiceQuality(displayName);
-            } else if (displayName.contains("en-ca")) {
-                displayName = "English (Canada) - " + extractVoiceQuality(displayName);
-            } else if (displayName.contains("en-in")) {
-                displayName = "English (India) - " + extractVoiceQuality(displayName);
-            } else if (displayName.contains("fr-")) {
-                displayName = "French - " + extractVoiceQuality(displayName);
-            } else if (displayName.contains("es-")) {
-                displayName = "Spanish - " + extractVoiceQuality(displayName);
-            } else if (displayName.contains("de-")) {
-                displayName = "German - " + extractVoiceQuality(displayName);
-            } else if (displayName.contains("it-")) {
-                displayName = "Italian - " + extractVoiceQuality(displayName);
-            } else {
-                // Fallback: just clean up the original name
-                displayName = voice.getName().replace("-", " ").replace("_", " ");
-                if (displayName.length() > 35) {
-                    displayName = displayName.substring(0, 32) + "...";
+            StringBuilder displayName = new StringBuilder();
+            // Language/locale
+            Locale locale = voice.getLocale();
+            if (locale != null) {
+                displayName.append(locale.getDisplayLanguage());
+                if (!locale.getCountry().isEmpty()) {
+                    displayName.append(" (").append(locale.getCountry()).append(")");
                 }
+                displayName.append(" - ");
             }
-            
-            voiceNames.add(displayName);
+            // Quality
+            displayName.append(extractVoiceQuality(voice.getName()));
+            // Gender (if available in name)
+            String name = voice.getName().toLowerCase();
+            if (name.contains("male")) {
+                displayName.append(" - Male");
+            } else if (name.contains("female")) {
+                displayName.append(" - Female");
+            }
+            // Network/local
+            if (voice.isNetworkConnectionRequired()) {
+                displayName.append(" (Network)");
+            } else {
+                displayName.append(" (Local)");
+            }
+            // Fallback: show raw name if not enough info
+            if (displayName.length() < 8) {
+                displayName.append(voice.getName());
+            }
+            voiceNames.add(displayName.toString());
         }
-
-        ArrayAdapter<String> voiceAdapter = new ArrayAdapter<>(this, 
+        ArrayAdapter<String> voiceAdapter = new ArrayAdapter<>(this,
             android.R.layout.simple_spinner_item, voiceNames);
         voiceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         voiceSpinner.setAdapter(voiceAdapter);
@@ -297,6 +308,32 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             android.R.layout.simple_spinner_item, contentTypeOptions);
         contentTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         contentTypeSpinner.setAdapter(contentTypeAdapter);
+    }
+
+    private void setupAdvancedSwitch() {
+        switchAdvancedVoice.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Show warning dialog
+                new AlertDialog.Builder(this)
+                    .setTitle("Advanced Voice Options")
+                    .setMessage("These settings are for users who need granular control over the voice and accent.\n\n99% of users should only change the main Language option.\n\nIf you run into trouble, you can always reset your settings below!\n\nAre you sure you want to continue?")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton("Continue", (dialog, which) -> {
+                        layoutAdvancedVoiceSection.setVisibility(View.VISIBLE);
+                        sharedPreferences.edit().putBoolean(KEY_SHOW_ADVANCED, true).apply();
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> {
+                        switchAdvancedVoice.setChecked(false);
+                        layoutAdvancedVoiceSection.setVisibility(View.GONE);
+                        sharedPreferences.edit().putBoolean(KEY_SHOW_ADVANCED, false).apply();
+                    })
+                    .setCancelable(false)
+                    .show();
+            } else {
+                layoutAdvancedVoiceSection.setVisibility(View.GONE);
+                sharedPreferences.edit().putBoolean(KEY_SHOW_ADVANCED, false).apply();
+            }
+        });
     }
 
     private void loadSavedSettings() {

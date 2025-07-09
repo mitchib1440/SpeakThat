@@ -169,49 +169,116 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="OR"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:text="Most users only need to change this setting."
+                android:textSize="13sp"
                 android:textColor="@color/purple_200"
-                android:gravity="center"
-                android:layout_marginVertical="8dp" />
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="-4dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="8dp" />
 
-            <!-- Voice Section -->
-            <TextView
+            <!-- Advanced Options Toggle -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Specific Voice (Advanced)"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="4dp"
-                android:textColor="@color/text_primary" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Show Advanced Voice Options"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_marginEnd="8dp" />
+                <Switch
+                    android:id="@+id/switchAdvancedVoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false" />
+            </LinearLayout>
 
-            <TextView
+            <!-- Advanced Voice Picker Section (initially hidden) -->
+            <LinearLayout
+                android:id="@+id/layoutAdvancedVoiceSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Select a specific voice engine. This overrides the language setting above."
-                android:textSize="14sp"
-                android:textColor="@color/text_secondary"
-                android:layout_marginBottom="8dp" />
-
-            <Spinner
-                android:id="@+id/voiceSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_advanced_voice_section"
+                android:padding="16dp"
                 android:layout_marginBottom="16dp"
-                android:minHeight="48dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:padding="12dp" />
+                android:layout_marginTop="8dp"
+                android:visibility="gone">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="💡 Recommendation: Try the Language setting first. Only use Specific Voice if you need a particular voice engine."
-                android:textSize="14sp"
-                android:textColor="@color/text_secondary"
-                android:background="?android:attr/selectableItemBackground"
-                android:padding="12dp"
-                android:layout_marginBottom="24dp" />
+                <!-- Advanced Label and Divider -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="⚙️ Advanced"
+                        android:textStyle="bold"
+                        android:textColor="@color/purple_200"
+                        android:textSize="16sp"
+                        android:layout_marginEnd="8dp" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/purple_200" />
+                </LinearLayout>
+
+                <!-- Voice Section -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Specific Voice (Advanced)"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/text_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Select a specific voice engine. This overrides the language setting above. ⚠️ For advanced users only."
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_marginBottom="8dp" />
+
+                <Spinner
+                    android:id="@+id/voiceSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:minHeight="48dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:padding="12dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="💡 Recommendation: Try the Language setting first. Only use Specific Voice if you need a particular voice engine.\n\nYou can always reset your settings below if you run into trouble!"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:padding="12dp"
+                    android:layout_marginBottom="24dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="You can always reset your settings below if you run into trouble!"
+                    android:textSize="13sp"
+                    android:textColor="@color/purple_200"
+                    android:layout_marginBottom="8dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:padding="8dp" />
+            </LinearLayout>
 
             <!-- Audio Channel Configuration -->
             <TextView
