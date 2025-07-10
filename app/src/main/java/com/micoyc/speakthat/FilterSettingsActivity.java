@@ -78,6 +78,16 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private static final String KEY_MEDIA_FILTERING_ENABLED = "media_filtering_enabled";
     private static final String KEY_MEDIA_FILTER_EXCEPTED_APPS = "media_filter_excepted_apps";
     private static final String KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS = "media_filter_important_keywords";
+    
+    // Persistent/Silent notification filtering key
+    private static final String KEY_PERSISTENT_FILTERING_ENABLED = "persistent_filtering_enabled";
+    
+    // Individual persistent filtering category keys
+    private static final String KEY_FILTER_PERSISTENT = "filter_persistent";
+    private static final String KEY_FILTER_SILENT = "filter_silent";
+    private static final String KEY_FILTER_FOREGROUND_SERVICES = "filter_foreground_services";
+    private static final String KEY_FILTER_LOW_PRIORITY = "filter_low_priority";
+    private static final String KEY_FILTER_SYSTEM_NOTIFICATIONS = "filter_system_notifications";
 
     // Adapters
     private AppListAdapter appListAdapter;
@@ -198,6 +208,33 @@ public class FilterSettingsActivity extends AppCompatActivity {
         binding.switchMediaFiltering.setOnCheckedChangeListener((buttonView, isChecked) -> {
             binding.mediaFilteringSection.setVisibility(isChecked ? View.VISIBLE : View.GONE);
             saveMediaFilteringEnabled(isChecked);
+        });
+        
+        // Set up persistent/silent notification filtering switch
+        binding.switchPersistentFiltering.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            binding.persistentFilteringCategories.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            savePersistentFilteringEnabled(isChecked);
+        });
+        
+        // Set up individual persistent filtering category switches
+        binding.switchFilterPersistent.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveFilterPersistent(isChecked);
+        });
+        
+        binding.switchFilterSilent.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveFilterSilent(isChecked);
+        });
+        
+        binding.switchFilterForegroundServices.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveFilterForegroundServices(isChecked);
+        });
+        
+        binding.switchFilterLowPriority.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveFilterLowPriority(isChecked);
+        });
+        
+        binding.switchFilterSystemNotifications.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveFilterSystemNotifications(isChecked);
         });
         
         // Set up collapsible advanced options
@@ -404,6 +441,24 @@ public class FilterSettingsActivity extends AppCompatActivity {
             filteredMediaAppsList.add(new AppFilterItem(app, blacklistedAppsPrivate.contains(app)));
         }
         filteredMediaAppsAdapter.notifyDataSetChanged();
+        
+        // Load persistent/silent notification filtering setting
+        boolean isPersistentFilteringEnabled = sharedPreferences.getBoolean(KEY_PERSISTENT_FILTERING_ENABLED, false);
+        binding.switchPersistentFiltering.setChecked(isPersistentFilteringEnabled);
+        binding.persistentFilteringCategories.setVisibility(isPersistentFilteringEnabled ? View.VISIBLE : View.GONE);
+        
+        // Load individual persistent filtering category settings
+        boolean filterPersistent = sharedPreferences.getBoolean(KEY_FILTER_PERSISTENT, true);
+        boolean filterSilent = sharedPreferences.getBoolean(KEY_FILTER_SILENT, true);
+        boolean filterForegroundServices = sharedPreferences.getBoolean(KEY_FILTER_FOREGROUND_SERVICES, true);
+        boolean filterLowPriority = sharedPreferences.getBoolean(KEY_FILTER_LOW_PRIORITY, false);
+        boolean filterSystemNotifications = sharedPreferences.getBoolean(KEY_FILTER_SYSTEM_NOTIFICATIONS, false);
+        
+        binding.switchFilterPersistent.setChecked(filterPersistent);
+        binding.switchFilterSilent.setChecked(filterSilent);
+        binding.switchFilterForegroundServices.setChecked(filterForegroundServices);
+        binding.switchFilterLowPriority.setChecked(filterLowPriority);
+        binding.switchFilterSystemNotifications.setChecked(filterSystemNotifications);
     }
 
     /**
@@ -1441,6 +1496,42 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private void saveMediaFilteringEnabled(boolean enabled) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_MEDIA_FILTERING_ENABLED, enabled);
+        editor.apply();
+    }
+    
+    private void savePersistentFilteringEnabled(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_PERSISTENT_FILTERING_ENABLED, enabled);
+        editor.apply();
+    }
+    
+    private void saveFilterPersistent(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_FILTER_PERSISTENT, enabled);
+        editor.apply();
+    }
+    
+    private void saveFilterSilent(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_FILTER_SILENT, enabled);
+        editor.apply();
+    }
+    
+    private void saveFilterForegroundServices(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_FILTER_FOREGROUND_SERVICES, enabled);
+        editor.apply();
+    }
+    
+    private void saveFilterLowPriority(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_FILTER_LOW_PRIORITY, enabled);
+        editor.apply();
+    }
+    
+    private void saveFilterSystemNotifications(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_FILTER_SYSTEM_NOTIFICATIONS, enabled);
         editor.apply();
     }
     

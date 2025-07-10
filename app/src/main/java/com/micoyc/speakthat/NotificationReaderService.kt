@@ -56,6 +56,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     // Media notification filtering
     private var mediaFilterPreferences = MediaNotificationDetector.MediaFilterPreferences()
     
+    // Persistent/silent notification filtering
+    private var isPersistentFilteringEnabled = false
+    private var filterPersistent = true
+    private var filterSilent = true
+    private var filterForegroundServices = true
+    private var filterLowPriority = false
+    private var filterSystemNotifications = false
+    
     // Delay settings
     private var delayBeforeReadout = 0 // Delay in seconds before starting TTS
     private var delayHandler: android.os.Handler? = null
@@ -113,6 +121,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val KEY_MEDIA_FILTERING_ENABLED = "media_filtering_enabled"
         private const val KEY_MEDIA_FILTER_EXCEPTED_APPS = "media_filter_excepted_apps"
         private const val KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS = "media_filter_important_keywords"
+        
+        // Persistent/silent notification filtering settings
+        private const val KEY_PERSISTENT_FILTERING_ENABLED = "persistent_filtering_enabled"
         
         @JvmStatic
         fun getRecentNotifications(): List<NotificationData> {
@@ -510,12 +521,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             importantKeywords = importantKeywords
         )
         
+        // Load persistent filtering settings
+        isPersistentFilteringEnabled = sharedPreferences.getBoolean(KEY_PERSISTENT_FILTERING_ENABLED, false)
+        filterPersistent = sharedPreferences.getBoolean("filter_persistent", true)
+        filterSilent = sharedPreferences.getBoolean("filter_silent", true)
+        filterForegroundServices = sharedPreferences.getBoolean("filter_foreground_services", true)
+        filterLowPriority = sharedPreferences.getBoolean("filter_low_priority", false)
+        filterSystemNotifications = sharedPreferences.getBoolean("filter_system_notifications", false)
+        
         Log.d(TAG, "Filter settings loaded - appMode: $appListMode, apps: ${appList.size}, blocked words: ${blockedWords.size}, replacements: ${wordReplacements.size}")
         Log.d(TAG, "Behavior settings loaded - mode: $notificationBehavior, priority apps: ${priorityApps.size}")
         Log.d(TAG, "Media behavior settings loaded - mode: $mediaBehavior, ducking volume: $duckingVolume%")
         Log.d(TAG, "Delay settings loaded - delay: ${delayBeforeReadout}s")
         Log.d(TAG, "Media filtering settings loaded - enabled: $isMediaFilteringEnabled, excepted apps: ${exceptedApps.size}, important keywords: ${importantKeywords.size}")
-        InAppLogger.log("Service", "Settings loaded - Filter mode: $appListMode, Behavior: $notificationBehavior, Media: $mediaBehavior, Delay: ${delayBeforeReadout}s, Media filtering: $isMediaFilteringEnabled")
+        Log.d(TAG, "Persistent filtering enabled: $isPersistentFilteringEnabled")
+        InAppLogger.log("Service", "Settings loaded - Filter mode: $appListMode, Behavior: $notificationBehavior, Media: $mediaBehavior, Delay: ${delayBeforeReadout}s, Media filtering: $isMediaFilteringEnabled, Persistent filtering: $isPersistentFilteringEnabled")
     }
     
     data class FilterResult(
@@ -540,13 +560,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         }
         
-        // 3. Apply word filtering and replacements
+        // 3. Apply persistent/silent notification filtering
+        if (sbn != null && isPersistentFilteringEnabled) {
+            val persistentFilterResult = applyPersistentFiltering(sbn)
+            if (!persistentFilterResult.shouldSpeak) {
+                return persistentFilterResult
+            }
+        }
+        
+        // 4. Apply word filtering and replacements
         val wordFilterResult = applyWordFiltering(text, appName)
         if (!wordFilterResult.shouldSpeak) {
             return wordFilterResult
         }
         
-        // 4. Apply conditional rules (Smart Rules system)
+        // 5. Apply conditional rules (Smart Rules system)
         val conditionalResult = applyConditionalFiltering(packageName, appName, wordFilterResult.processedText)
         if (!conditionalResult.shouldSpeak) {
             return conditionalResult
@@ -683,6 +711,67 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             return FilterResult(false, "", "Media notification filtered: $reason (unified logic)")
         }
         return FilterResult(true, "", "Not a media notification or media filtering not applicable (unified logic)")
+    }
+
+    private fun applyPersistentFiltering(sbn: StatusBarNotification): FilterResult {
+        val notification = sbn.notification
+        val flags = notification.flags
+        
+        // Check for persistent notifications (ongoing notifications that don't auto-dismiss)
+        val isPersistent = (flags and Notification.FLAG_ONGOING_EVENT) != 0 || 
+                          (flags and Notification.FLAG_NO_CLEAR) != 0
+        
+        // Check for silent notifications (no sound, no vibration)
+        val isSilent = notification.sound == null && 
+                      (notification.vibrate == null || notification.vibrate.isEmpty())
+        
+        // Check for foreground service notifications (ongoing services)
+        val isForegroundService = (flags and Notification.FLAG_FOREGROUND_SERVICE) != 0
+        
+        // Check notification priority level
+        val priority = notification.priority
+        val isLowPriorityLevel = priority == Notification.PRIORITY_MIN || 
+                                priority == Notification.PRIORITY_LOW
+        
+        // Check for system notifications (from system apps)
+        val isSystemNotification = sbn.packageName.startsWith("com.android.") ||
+                                 sbn.packageName.startsWith("android.") ||
+                                 sbn.packageName == "com.google.android.apps.messaging" ||
+                                 sbn.packageName == "com.android.phone"
+        
+        // Check each category individually based on user settings
+        val reasons = mutableListOf<String>()
+        
+        if (filterPersistent && isPersistent) {
+            reasons.add("persistent")
+        }
+        
+        if (filterSilent && isSilent) {
+            reasons.add("silent")
+        }
+        
+        if (filterForegroundServices && isForegroundService) {
+            reasons.add("foreground service")
+        }
+        
+        if (filterLowPriority && isLowPriorityLevel) {
+            reasons.add("low priority")
+        }
+        
+        if (filterSystemNotifications && isSystemNotification) {
+            reasons.add("system notification")
+        }
+        
+        // If any category is enabled and matches, filter the notification
+        if (reasons.isNotEmpty()) {
+            val reason = reasons.joinToString(", ")
+            Log.d(TAG, "Persistent/silent notification filtered: $reason from ${sbn.packageName}")
+            InAppLogger.logFilter("Blocked persistent/silent notification from ${sbn.packageName}: $reason")
+            
+            return FilterResult(false, "", "Persistent/silent notification: $reason")
+        }
+        
+        return FilterResult(true, "", "Not a persistent/silent notification or category not enabled")
     }
     
     override fun onSensorChanged(event: SensorEvent) {
@@ -1102,6 +1191,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 // Reload media filtering settings
                 loadFilterSettings()
                 Log.d(TAG, "Media filtering settings updated")
+            }
+            KEY_PERSISTENT_FILTERING_ENABLED -> {
+                // Reload persistent filtering settings
+                isPersistentFilteringEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_FILTERING_ENABLED, false) ?: false
+                Log.d(TAG, "Persistent filtering enabled updated: $isPersistentFilteringEnabled")
+            }
+            "filter_persistent", "filter_silent", "filter_foreground_services", "filter_low_priority", "filter_system_notifications" -> {
+                // Reload persistent filtering category settings
+                filterPersistent = sharedPreferences?.getBoolean("filter_persistent", true) ?: true
+                filterSilent = sharedPreferences?.getBoolean("filter_silent", true) ?: true
+                filterForegroundServices = sharedPreferences?.getBoolean("filter_foreground_services", true) ?: true
+                filterLowPriority = sharedPreferences?.getBoolean("filter_low_priority", false) ?: false
+                filterSystemNotifications = sharedPreferences?.getBoolean("filter_system_notifications", false) ?: false
+                Log.d(TAG, "Persistent filtering category settings updated - persistent: $filterPersistent, silent: $filterSilent, foreground: $filterForegroundServices, low: $filterLowPriority, system: $filterSystemNotifications")
             }
         }
     }

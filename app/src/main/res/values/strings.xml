@@ -77,4 +77,24 @@ This feature is especially loved by people who get notifications during meetings
     
     <string name="use_recommended">Use Recommended</string>
     <string name="got_it">Got it</string>
+    
+    <!-- Persistent/Silent Notification Filtering -->
+    <string name="persistent_notification_filtering_title">🔇 Persistent/Silent Notification Filtering</string>
+    <string name="persistent_notification_filtering_description">Skip notifications that are persistent (ongoing) or silent (no sound/vibration)</string>
+    <string name="enable_persistent_filtering">Enable persistent/silent notification filtering</string>
+    <string name="persistent_filtering_help">💡 Persistent notifications are ongoing (like music controls, navigation, etc.) and silent notifications have no sound/vibration. This option helps reduce notification spam from background services.</string>
+    
+    <!-- Individual Persistent Filtering Categories -->
+    <string name="filter_persistent_notifications">Filter persistent notifications</string>
+    <string name="filter_silent_notifications">Filter silent notifications</string>
+    <string name="filter_foreground_services">Filter foreground service notifications</string>
+    <string name="filter_low_priority">Filter low priority notifications</string>
+    <string name="filter_system_notifications">Filter system notifications</string>
+    
+    <!-- Category Descriptions -->
+    <string name="persistent_notifications_desc">Ongoing notifications that don\'t auto-dismiss (music controls, navigation)</string>
+    <string name="silent_notifications_desc">Notifications with no sound or vibration</string>
+    <string name="foreground_services_desc">Notifications from ongoing background services</string>
+    <string name="low_priority_desc">Notifications with minimum or low priority level</string>
+    <string name="system_notifications_desc">Notifications from system apps (Android, Google services)</string>
 </resources> 
