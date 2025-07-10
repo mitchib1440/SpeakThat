@@ -22,6 +22,8 @@ import java.util.HashSet
 import java.util.Locale
 import kotlin.collections.ArrayList
 import org.json.JSONArray
+import android.app.NotificationManager
+import android.content.Context
 
 class NotificationReaderService : NotificationListenerService(), TextToSpeech.OnInitListener, SensorEventListener, SharedPreferences.OnSharedPreferenceChangeListener {
     
@@ -721,9 +723,41 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val isPersistent = (flags and Notification.FLAG_ONGOING_EVENT) != 0 || 
                           (flags and Notification.FLAG_NO_CLEAR) != 0
         
-        // Check for silent notifications (no sound, no vibration)
-        val isSilent = notification.sound == null && 
-                      (notification.vibrate == null || notification.vibrate.isEmpty())
+        // Improved silent notification detection
+        val isSilent = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            // For Android O and above, check notification channel settings
+            val channel = try {
+                val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                notificationManager.getNotificationChannel(notification.channelId)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error getting notification channel", e)
+                null
+            }
+            
+            // Consider a notification silent if:
+            // 1. Channel is muted (importance NONE) OR
+            // 2. Channel has no sound AND no vibration AND importance <= LOW
+            channel?.let {
+                it.importance == NotificationManager.IMPORTANCE_NONE ||
+                (it.sound == null && !it.shouldVibrate() && it.importance <= NotificationManager.IMPORTANCE_LOW)
+            } ?: run {
+                // Fallback if channel not found: check notification flags and importance
+                val hasNoAlerts = notification.sound == null && 
+                                 (notification.vibrate == null || notification.vibrate.isEmpty()) &&
+                                 (notification.defaults and (Notification.DEFAULT_SOUND or Notification.DEFAULT_VIBRATE)) == 0
+                val importance = notification.priority
+                hasNoAlerts && importance <= Notification.PRIORITY_LOW
+            }
+        } else {
+            // For pre-Oreo devices, check notification flags and settings
+            val hasNoAlerts = notification.sound == null && 
+                            (notification.vibrate == null || notification.vibrate.isEmpty()) &&
+                            (notification.defaults and (Notification.DEFAULT_SOUND or Notification.DEFAULT_VIBRATE)) == 0
+            val lowPriority = notification.priority <= Notification.PRIORITY_LOW
+            
+            // Only consider truly silent if it has no alerts and low priority
+            hasNoAlerts && lowPriority
+        }
         
         // Check for foreground service notifications (ongoing services)
         val isForegroundService = (flags and Notification.FLAG_FOREGROUND_SERVICE) != 0
@@ -767,6 +801,27 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             val reason = reasons.joinToString(", ")
             Log.d(TAG, "Persistent/silent notification filtered: $reason from ${sbn.packageName}")
             InAppLogger.logFilter("Blocked persistent/silent notification from ${sbn.packageName}: $reason")
+            
+            // Add more detailed logging for silent notifications to help debugging
+            if (reasons.contains("silent")) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    val channel = try {
+                        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                        notificationManager.getNotificationChannel(notification.channelId)
+                    } catch (e: Exception) {
+                        null
+                    }
+                    Log.d(TAG, "Silent notification details - Channel: ${notification.channelId}, " +
+                              "Channel importance: ${channel?.importance}, " +
+                              "Channel sound: ${channel?.sound}, " +
+                              "Channel vibration: ${channel?.shouldVibrate()}")
+                } else {
+                    Log.d(TAG, "Silent notification details - Priority: ${notification.priority}, " +
+                              "Sound: ${notification.sound}, " +
+                              "Defaults: ${notification.defaults}, " +
+                              "Vibration: ${notification.vibrate?.isNotEmpty()}")
+                }
+            }
             
             return FilterResult(false, "", "Persistent/silent notification: $reason")
         }
