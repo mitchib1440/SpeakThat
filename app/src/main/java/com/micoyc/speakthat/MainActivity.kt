@@ -39,6 +39,11 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     private var isShakeToStopEnabled = false
     private var shakeThreshold = 12.0f
     
+    // Wave detection
+    private var proximitySensor: Sensor? = null
+    private var isWaveToStopEnabled = false
+    private var waveThreshold = 5.0f
+    
     // Voice settings listener
     private var voiceSettingsPrefs: SharedPreferences? = null
     private val voiceSettingsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
@@ -122,9 +127,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         super.onResume()
         updateServiceStatus()
         
-        // Refresh shake settings in case they changed
+        // Refresh shake and wave settings in case they changed
         loadShakeSettings()
-        // Don't start shake listening here - only during TTS playback
+        loadWaveSettings()
+        // Don't start shake/wave listening here - only during TTS playback
         InAppLogger.logAppLifecycle("MainActivity resumed")
     }
     
@@ -403,9 +409,11 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     private fun initializeShakeDetection() {
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        proximitySensor = sensorManager?.getDefaultSensor(Sensor.TYPE_PROXIMITY)
         
-        // Load shake settings
+        // Load shake and wave settings
         loadShakeSettings()
+        loadWaveSettings()
     }
     
     private fun loadShakeSettings() {
@@ -413,11 +421,22 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         shakeThreshold = sharedPreferences.getFloat(KEY_SHAKE_THRESHOLD, 12.0f)
         Log.d(TAG, "MainActivity shake settings - enabled: $isShakeToStopEnabled, threshold: $shakeThreshold")
     }
+
+    private fun loadWaveSettings() {
+        isWaveToStopEnabled = sharedPreferences.getBoolean("wave_to_stop_enabled", false)
+        waveThreshold = sharedPreferences.getFloat("wave_threshold", 5.0f)
+        Log.d(TAG, "MainActivity wave settings - enabled: $isWaveToStopEnabled, threshold: $waveThreshold")
+    }
     
     private fun startShakeListening() {
         if (isShakeToStopEnabled && accelerometer != null) {
             sensorManager?.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
             Log.d(TAG, "MainActivity shake listener started")
+        }
+        
+        if (isWaveToStopEnabled && proximitySensor != null) {
+            sensorManager?.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_UI)
+            Log.d(TAG, "MainActivity wave listener started")
         }
     }
     
@@ -438,7 +457,25 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             // Check if shake threshold exceeded
             if (shakeValue >= shakeThreshold) {
                 Log.d(TAG, "Shake detected in MainActivity! Stopping TTS. Shake value: $shakeValue")
-                stopSpeaking()
+                stopSpeaking("shake")
+            }
+        } else if (event.sensor.type == Sensor.TYPE_PROXIMITY && isWaveToStopEnabled) {
+            // Proximity sensor returns distance in cm
+            val proximityValue = event.values[0]
+            
+            // Handle different proximity sensor behaviors:
+            // Some sensors return 0 when close, others return actual distance
+            val isTriggered = if (proximityValue == 0f) {
+                // Sensor returns 0 when object is very close (most common)
+                true
+            } else {
+                // Sensor returns actual distance, check if closer than threshold
+                proximityValue <= waveThreshold
+            }
+            
+            if (isTriggered) {
+                Log.d(TAG, "Wave detected in MainActivity! Stopping TTS. Proximity value: $proximityValue cm")
+                stopSpeaking("wave")
             }
         }
     }
@@ -447,11 +484,11 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Not needed for this implementation
     }
     
-    private fun stopSpeaking() {
+    private fun stopSpeaking(triggerType: String = "unknown") {
         textToSpeech?.stop()
         stopShakeListening()
-        InAppLogger.logTTSEvent("MainActivity TTS stopped by shake", "User interrupted easter egg")
-        Log.d(TAG, "MainActivity TTS stopped due to shake")
+        InAppLogger.logTTSEvent("MainActivity TTS stopped by $triggerType", "User interrupted easter egg")
+        Log.d(TAG, "MainActivity TTS stopped due to $triggerType")
     }
     
     private fun applyVoiceSettings() {
