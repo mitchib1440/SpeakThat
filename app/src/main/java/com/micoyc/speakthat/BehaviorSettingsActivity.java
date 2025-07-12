@@ -42,6 +42,8 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String KEY_PRIORITY_APPS = "priority_apps"; // Set<String> of package names
     private static final String KEY_SHAKE_TO_STOP_ENABLED = "shake_to_stop_enabled";
     private static final String KEY_SHAKE_THRESHOLD = "shake_threshold";
+    private static final String KEY_WAVE_TO_STOP_ENABLED = "wave_to_stop_enabled";
+    private static final String KEY_WAVE_THRESHOLD = "wave_threshold";
     private static final String KEY_MEDIA_BEHAVIOR = "media_behavior";
     private static final String KEY_DUCKING_VOLUME = "ducking_volume";
     private static final String KEY_DELAY_BEFORE_READOUT = "delay_before_readout";
@@ -71,6 +73,12 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private boolean isTestingShake = false;
     private float currentShakeValue = 0f;
     private float maxShakeValue = 0f;
+    
+    // Wave detection
+    private Sensor proximitySensor;
+    private boolean isTestingWave = false;
+    private float currentWaveValue = 5.0f; // Default max distance
+    private float minWaveValue = 5.0f; // Track minimum (closest) value during test
     private Handler uiHandler = new Handler(Looper.getMainLooper());
 
     @Override
@@ -93,6 +101,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Initialize sensor manager
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
         initializeUI();
         loadSettings();
@@ -145,6 +154,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.btnNotificationBehaviorInfo.setOnClickListener(v -> showNotificationBehaviorDialog());
         binding.btnMediaBehaviorInfo.setOnClickListener(v -> showMediaBehaviorDialog());
         binding.btnShakeToStopInfo.setOnClickListener(v -> showShakeToStopDialog());
+        binding.btnWaveToStopInfo.setOnClickListener(v -> showWaveToStopDialog());
         binding.btnDelayInfo.setOnClickListener(v -> showDelayDialog());
         binding.btnAppNamesInfo.setOnClickListener(v -> showCustomAppNamesDialog());
 
@@ -177,6 +187,45 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 stopShakeTest();
             } else {
                 startShakeTest();
+            }
+        });
+
+        // Set up wave to stop toggle
+        binding.switchWaveToStop.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            binding.waveSettingsSection.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            saveWaveToStopEnabled(isChecked);
+            
+            // Force update marker when section becomes visible
+            if (isChecked) {
+                uiHandler.postDelayed(() -> forceUpdateWaveMarker(), 200);
+            }
+            
+            // Stop any ongoing test when disabling
+            if (!isChecked && isTestingWave) {
+                stopWaveTest();
+            }
+        });
+
+        // Set up wave sensitivity slider
+        binding.sliderWaveSensitivity.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(Slider slider, float value, boolean fromUser) {
+                if (fromUser) {
+                    Log.d("WaveTest", "Slider value changed to: " + value + " cm");
+                    Log.d("WaveTest", "Calling updateWaveThresholdMarker with value: " + value);
+                    updateWaveThresholdMarker(value);
+                    updateWaveThresholdText(value);
+                    saveWaveThreshold(value);
+                }
+            }
+        });
+
+        // Set up wave test button
+        binding.btnWaveTest.setOnClickListener(v -> {
+            if (isTestingWave) {
+                stopWaveTest();
+            } else {
+                startWaveTest();
             }
         });
 
@@ -277,6 +326,16 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.sliderShakeIntensity.setValue(shakeThreshold);
         updateThresholdMarker(shakeThreshold);
         updateThresholdText(shakeThreshold);
+
+        // Load wave to stop settings
+        boolean waveEnabled = sharedPreferences.getBoolean(KEY_WAVE_TO_STOP_ENABLED, false);
+        binding.switchWaveToStop.setChecked(waveEnabled);
+        binding.waveSettingsSection.setVisibility(waveEnabled ? View.VISIBLE : View.GONE);
+
+        float waveThreshold = sharedPreferences.getFloat(KEY_WAVE_THRESHOLD, 5.0f);
+        binding.sliderWaveSensitivity.setValue(waveThreshold);
+        updateWaveThresholdMarker(waveThreshold);
+        updateWaveThresholdText(waveThreshold);
 
         // Load media behavior settings
         String savedMediaBehavior = sharedPreferences.getString(KEY_MEDIA_BEHAVIOR, DEFAULT_MEDIA_BEHAVIOR);
@@ -481,6 +540,18 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         editor.apply();
     }
 
+    private void saveWaveToStopEnabled(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_WAVE_TO_STOP_ENABLED, enabled);
+        editor.apply();
+    }
+
+    private void saveWaveThreshold(float threshold) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat(KEY_WAVE_THRESHOLD, threshold);
+        editor.apply();
+    }
+
     private void saveMediaBehavior(String mediaBehavior) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_MEDIA_BEHAVIOR, mediaBehavior);
@@ -538,6 +609,54 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.textThreshold.setText(String.format("Threshold: %.1f", threshold));
     }
 
+    private void updateWaveThresholdMarker(float threshold) {
+        // Similar to shake threshold marker but for wave (proximity)
+        binding.waveThresholdMarker.post(() -> {
+            binding.waveThresholdMarker.getViewTreeObserver().addOnGlobalLayoutListener(new android.view.ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    binding.waveThresholdMarker.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    
+                    // Add a small delay to ensure layout is fully ready
+                    uiHandler.postDelayed(() -> {
+                        int progressBarWidth = binding.progressWaveMeter.getWidth();
+                        if (progressBarWidth > 0) {
+                            // For proximity: closer = higher percentage
+                            // Your sensor has 10cm max range, so adjust calculation
+                            // Threshold is the distance where we trigger (closer than this = trigger)
+                            float percentage = Math.max(0, Math.min(1.0f, (10.0f - threshold) / 10.0f));
+                            Log.d("WaveTest", "Updating marker - threshold: " + threshold + " cm, percentage: " + percentage + ", width: " + progressBarWidth);
+                            updateWaveMarkerPosition(percentage, progressBarWidth);
+                        } else {
+                            Log.d("WaveTest", "Progress bar width is 0, cannot update marker");
+                        }
+                    }, 100); // 100ms delay
+                }
+            });
+        });
+    }
+
+    // Force update the marker when the wave settings section becomes visible
+    private void forceUpdateWaveMarker() {
+        if (binding.waveSettingsSection.getVisibility() == View.VISIBLE) {
+            float currentThreshold = binding.sliderWaveSensitivity.getValue();
+            Log.d("WaveTest", "Force updating marker with threshold: " + currentThreshold);
+            updateWaveThresholdMarker(currentThreshold);
+        }
+    }
+
+    private void updateWaveMarkerPosition(float percentage, int progressBarWidth) {
+        int marginStart = Math.round(percentage * progressBarWidth);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) binding.waveThresholdMarker.getLayoutParams();
+        params.leftMargin = marginStart;
+        binding.waveThresholdMarker.setLayoutParams(params);
+        Log.d("WaveTest", "Marker position updated - marginStart: " + marginStart + "px");
+    }
+
+    private void updateWaveThresholdText(float threshold) {
+        binding.textWaveThreshold.setText(String.format("Threshold: %.1f cm", threshold));
+    }
+
     private void startShakeTest() {
         if (accelerometer != null) {
             isTestingShake = true;
@@ -562,6 +681,42 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             // Show max value achieved
             if (maxShakeValue > 0) {
                 Toast.makeText(this, String.format("Peak shake: %.1f", maxShakeValue), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void startWaveTest() {
+        if (proximitySensor != null) {
+            isTestingWave = true;
+            minWaveValue = 5.0f;
+            binding.btnWaveTest.setText("Stop Test");
+            binding.progressWaveMeter.setProgress(0);
+            binding.textCurrentWave.setText("No object detected");
+            
+            // Log sensor info for debugging
+            Log.d("WaveTest", "Starting wave test with proximity sensor: " + proximitySensor.getName());
+            Log.d("WaveTest", "Sensor max range: " + proximitySensor.getMaximumRange() + " cm");
+            
+            // Register sensor listener with high frequency for testing
+            sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_UI);
+        } else {
+            Toast.makeText(this, "Proximity sensor not available on this device", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void stopWaveTest() {
+        if (isTestingWave) {
+            isTestingWave = false;
+            binding.btnWaveTest.setText("Start Test");
+            sensorManager.unregisterListener(this);
+            
+            // Show test results
+            if (minWaveValue == 0) {
+                Toast.makeText(this, "Test complete: Object detected at 0 cm", Toast.LENGTH_SHORT).show();
+            } else if (minWaveValue < 5.0f) {
+                Toast.makeText(this, String.format("Test complete: Closest proximity: %.1f cm", minWaveValue), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Test complete: No objects detected within range", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -596,6 +751,54 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                     binding.textCurrentShake.setTextColor(getColor(android.R.color.holo_green_dark));
                 } else {
                     binding.textCurrentShake.setTextColor(getColor(android.R.color.secondary_text_dark));
+                }
+            });
+        } else if (event.sensor.getType() == Sensor.TYPE_PROXIMITY && isTestingWave) {
+            // Proximity sensor returns distance in cm
+            currentWaveValue = event.values[0];
+            
+            // Log the raw sensor value for debugging
+            Log.d("WaveTest", "Proximity sensor value: " + currentWaveValue + " cm");
+            
+            // Handle different proximity sensor behaviors:
+            // Some sensors return 0 when close, max when far
+            // Others return actual distance values
+            float displayValue = currentWaveValue;
+            
+            // Track minimum value during test (closest distance)
+            if (currentWaveValue < minWaveValue) {
+                minWaveValue = currentWaveValue;
+            }
+            
+            // Update UI on main thread
+            uiHandler.post(() -> {
+                // Update progress bar (inverted: closer = higher progress)
+                // Your sensor has 10cm max range, so adjust calculation
+                float progressValue;
+                if (currentWaveValue == 0) {
+                    // Sensor returns 0 when close (most common)
+                    progressValue = 10.0f; // Full progress for 10cm range
+                } else {
+                    // Sensor returns distance, invert it for 10cm range
+                    progressValue = Math.max(0, 10.0f - currentWaveValue);
+                }
+                
+                int progress = Math.round(progressValue);
+                binding.progressWaveMeter.setProgress(progress);
+                
+                // Update current wave text with more info
+                String statusText = currentWaveValue == 0 ? "Object detected (0 cm)" : 
+                                   String.format("Distance: %.1f cm", currentWaveValue);
+                binding.textCurrentWave.setText(statusText);
+                
+                // Check if threshold exceeded (closer than threshold)
+                float threshold = binding.sliderWaveSensitivity.getValue();
+                boolean isTriggered = (currentWaveValue == 0) || (currentWaveValue <= threshold);
+                
+                if (isTriggered) {
+                    binding.textCurrentWave.setTextColor(getColor(android.R.color.holo_green_dark));
+                } else {
+                    binding.textCurrentWave.setTextColor(getColor(android.R.color.secondary_text_dark));
                 }
             });
         }
@@ -744,6 +947,28 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                     binding.switchShakeToStop.setChecked(true);
                     binding.shakeSettingsSection.setVisibility(View.VISIBLE);
                     saveShakeToStopEnabled(true);
+                })
+                .setNegativeButton(R.string.got_it, null)
+                .show();
+    }
+
+    private void showWaveToStopDialog() {
+        // Track dialog usage for analytics
+        trackDialogUsage("wave_to_stop_info");
+        
+        String htmlText = getString(R.string.wave_to_stop_dialog_message);
+        
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(getString(R.string.wave_to_stop_dialog_title))
+                .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
+                .setPositiveButton(R.string.use_recommended, (dialog, which) -> {
+                    // Track recommendation usage
+                    trackDialogUsage("wave_to_stop_recommended");
+                    
+                    // Enable wave to stop
+                    binding.switchWaveToStop.setChecked(true);
+                    binding.waveSettingsSection.setVisibility(View.VISIBLE);
+                    saveWaveToStopEnabled(true);
                 })
                 .setNegativeButton(R.string.got_it, null)
                 .show();

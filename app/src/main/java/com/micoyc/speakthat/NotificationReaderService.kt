@@ -37,6 +37,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var isShakeToStopEnabled = false
     private var shakeThreshold = 12.0f
     
+    // Wave detection
+    private var proximitySensor: Sensor? = null
+    private var isWaveToStopEnabled = false
+    private var waveThreshold = 5.0f
+    
     // Filter system
     private var appListMode = "none" // "none", "whitelist", "blacklist"
     private var appList = HashSet<String>()
@@ -434,18 +439,26 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private fun initializeShakeDetection() {
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        proximitySensor = sensorManager?.getDefaultSensor(Sensor.TYPE_PROXIMITY)
         
-        // Load shake settings
+        // Load shake and wave settings
         loadShakeSettings()
+        loadWaveSettings()
         
         // Don't register listener here - only register when actually speaking
-        Log.d(TAG, "Shake detection initialized (listener will register during TTS)")
+        Log.d(TAG, "Shake and wave detection initialized (listener will register during TTS)")
     }
     
     private fun loadShakeSettings() {
         isShakeToStopEnabled = sharedPreferences.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false)
         shakeThreshold = sharedPreferences.getFloat(KEY_SHAKE_THRESHOLD, 12.0f)
         Log.d(TAG, "Shake settings loaded - enabled: $isShakeToStopEnabled, threshold: $shakeThreshold")
+    }
+
+    private fun loadWaveSettings() {
+        isWaveToStopEnabled = sharedPreferences.getBoolean("wave_to_stop_enabled", false)
+        waveThreshold = sharedPreferences.getFloat("wave_threshold", 5.0f)
+        Log.d(TAG, "Wave settings loaded - enabled: $isWaveToStopEnabled, threshold: $waveThreshold")
     }
     
     private fun registerShakeListener() {
@@ -454,12 +467,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "Shake listener registered (TTS active)")
             InAppLogger.logSystemEvent("Shake listener started", "TTS playback active")
         }
+        
+        if (isWaveToStopEnabled && proximitySensor != null) {
+            sensorManager?.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_UI)
+            Log.d(TAG, "Wave listener registered (TTS active)")
+            InAppLogger.logSystemEvent("Wave listener started", "TTS playback active")
+        }
     }
     
     private fun unregisterShakeListener() {
         sensorManager?.unregisterListener(this)
-        Log.d(TAG, "Shake listener unregistered (TTS inactive)")
-        InAppLogger.logSystemEvent("Shake listener stopped", "TTS playback finished")
+        Log.d(TAG, "Shake and wave listeners unregistered (TTS inactive)")
+        InAppLogger.logSystemEvent("Shake and wave listeners stopped", "TTS playback finished")
     }
     
     // Call this method when settings might have changed
@@ -469,9 +488,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             unregisterShakeListener()
         }
         loadShakeSettings()
+        loadWaveSettings()
         
-        // If currently speaking and shake is now enabled, register listener
-        if (isCurrentlySpeaking && isShakeToStopEnabled && accelerometer != null) {
+        // If currently speaking and shake or wave is now enabled, register listener
+        if (isCurrentlySpeaking && ((isShakeToStopEnabled && accelerometer != null) || (isWaveToStopEnabled && proximitySensor != null))) {
             registerShakeListener()
         }
     }
@@ -841,7 +861,25 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Check if shake threshold exceeded
             if (shakeValue >= shakeThreshold) {
                 Log.d(TAG, "Shake detected! Stopping TTS. Shake value: $shakeValue, threshold: $shakeThreshold")
-                stopSpeaking()
+                stopSpeaking("shake")
+            }
+        } else if (event.sensor.type == Sensor.TYPE_PROXIMITY && isWaveToStopEnabled) {
+            // Proximity sensor returns distance in cm
+            val proximityValue = event.values[0]
+            
+            // Handle different proximity sensor behaviors:
+            // Some sensors return 0 when close, others return actual distance
+            val isTriggered = if (proximityValue == 0f) {
+                // Sensor returns 0 when object is very close (most common)
+                true
+            } else {
+                // Sensor returns actual distance, check if closer than threshold
+                proximityValue <= waveThreshold
+            }
+            
+            if (isTriggered) {
+                Log.d(TAG, "Wave detected! Stopping TTS. Proximity value: $proximityValue cm, threshold: $waveThreshold cm")
+                stopSpeaking("wave")
             }
         }
     }
@@ -850,7 +888,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Not needed for this implementation
     }
     
-    private fun stopSpeaking() {
+    private fun stopSpeaking(triggerType: String = "unknown") {
         textToSpeech?.stop()
         isCurrentlySpeaking = false
         
@@ -864,14 +902,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         pendingReadoutRunnable?.let { runnable ->
             delayHandler?.removeCallbacks(runnable)
             pendingReadoutRunnable = null
-            Log.d(TAG, "Cancelled pending delayed readout due to shake")
+            Log.d(TAG, "Cancelled pending delayed readout due to $triggerType")
         }
         
         // Clean up media behavior effects
         cleanupMediaBehavior()
         
-        Log.d(TAG, "TTS stopped due to shake")
-        InAppLogger.logTTSEvent("TTS stopped by shake", "User interrupted speech")
+        Log.d(TAG, "TTS stopped due to $triggerType")
+        InAppLogger.logTTSEvent("TTS stopped by $triggerType", "User interrupted speech")
     }
     
     // Call this when settings change

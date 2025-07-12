@@ -97,4 +97,29 @@ This feature is especially loved by people who get notifications during meetings
     <string name="foreground_services_desc">Notifications from ongoing background services</string>
     <string name="low_priority_desc">Notifications with minimum or low priority level</string>
     <string name="system_notifications_desc">Notifications from system apps (Android, Google services)</string>
+    
+    <!-- Wave to Stop Feature -->
+    <string name="wave_to_stop_dialog_title">Wave to Stop Feature</string>
+    <string name="wave_to_stop_dialog_message">Wave to Stop lets you instantly silence SpeakThat by waving your hand in front of the device:
+
+<b>✨ Why it\'s helpful:</b>
+• Perfect for users who can\'t shake their device
+• Great for phones on desks or mounts
+• Works with one hand
+• No physical device movement needed
+• Accessibility-friendly alternative to shake
+
+<b>🎯 How it works:</b>
+• Wave your hand in front of the device (like a magic gesture)
+• Uses the proximity sensor to detect hand movement
+• Current notification stops immediately
+• Queued notifications are cleared
+• New notifications work normally
+
+<b>⚙️ Customization:</b>
+• Adjust sensitivity for your preference
+• Test your wave detection with the meter
+• Works great for different hand sizes and distances
+
+This feature is especially useful for accessibility, desk users, and anyone who prefers gesture control over physical movement.</string>
 </resources> 

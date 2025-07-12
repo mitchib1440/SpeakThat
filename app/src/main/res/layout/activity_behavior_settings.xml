@@ -673,6 +673,277 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Wave to Stop Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="@color/purple_300"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="👋 Wave to Stop"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/purple_200"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Stop readouts instantly by waving your hand in front of the device"
+                        android:textSize="14sp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Recommendation Box -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="?attr/colorSurfaceVariant"
+                        android:padding="12dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="💡 Great for: Desk users &amp; accessibility"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_200"
+                            android:layout_marginEnd="8dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnWaveToStopInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:text="ℹ️ More Info"
+                            android:textSize="12sp"
+                            android:textColor="@color/purple_200"
+                            android:backgroundTint="@color/white_100"
+                            android:strokeColor="@color/purple_200"
+                            android:strokeWidth="1.0"
+                            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                    </LinearLayout>
+
+                    <!-- Wave to Stop Toggle -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Enable wave to stop"
+                            android:textSize="16sp"
+                            android:textColor="?android:attr/textColorPrimary" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switchWaveToStop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumbTint="@color/purple_200"
+                            android:trackTint="@color/purple_300" />
+
+                    </LinearLayout>
+
+                    <!-- Wave Settings (hidden by default) -->
+                    <LinearLayout
+                        android:id="@+id/waveSettingsSection"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/purple_300"
+                            android:layout_marginVertical="16dp" />
+
+                        <!-- Wave Sensitivity Section -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Wave Sensitivity"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Adjust the trigger distance. For binary sensors, this shows the detection zone."
+                            android:textSize="14sp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:layout_marginBottom="16dp" />
+
+                        <!-- Sensitivity Slider -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Far (10cm)"
+                                android:textSize="12sp"
+                                android:textColor="?android:attr/textColorSecondary" />
+
+                            <com.google.android.material.slider.Slider
+                                android:id="@+id/sliderWaveSensitivity"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginHorizontal="12dp"
+                                android:valueFrom="1.0"
+                                android:valueTo="10.0"
+                                android:value="5.0"
+                                android:stepSize="0.5"
+                                app:thumbColor="@color/purple_200"
+                                app:trackColorActive="@color/purple_200"
+                                app:trackColorInactive="@color/purple_300" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Close (1cm)"
+                                android:textSize="12sp"
+                                android:textColor="?android:attr/textColorSecondary" />
+
+                        </LinearLayout>
+
+                        <!-- Wave Test Section -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Wave Test"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Test your wave detection. Binary sensors show 0 (close) or max (far)."
+                            android:textSize="14sp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:layout_marginBottom="8dp" />
+
+                        <!-- Sensor Type Info Box -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="?attr/colorSurfaceVariant"
+                            android:padding="8dp"
+                            android:layout_marginBottom="16dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="💡 Binary sensors (0/10cm) are common and work great for wave detection!"
+                                android:textSize="12sp"
+                                android:textColor="@color/purple_200"
+                                android:layout_marginEnd="8dp" />
+
+                        </LinearLayout>
+
+                        <!-- Wave Meter -->
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp">
+
+                            <ProgressBar
+                                android:id="@+id/progressWaveMeter"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="24dp"
+                                android:max="10"
+                                android:progress="0"
+                                android:progressTint="@color/purple_200"
+                                android:progressBackgroundTint="@color/purple_300" />
+
+                            <!-- Threshold Marker -->
+                            <View
+                                android:id="@+id/waveThresholdMarker"
+                                android:layout_width="3dp"
+                                android:layout_height="24dp"
+                                android:background="@android:color/holo_red_dark"
+                                android:layout_marginStart="240dp" />
+
+                        </FrameLayout>
+
+                        <!-- Current Values Display -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="16dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Current proximity: 5.0 cm"
+                                android:textSize="12sp"
+                                android:textColor="?android:attr/textColorSecondary"
+                                android:id="@+id/textCurrentWave" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Threshold: 5.0 cm"
+                                android:textSize="12sp"
+                                android:textColor="@android:color/holo_red_dark"
+                                android:gravity="end"
+                                android:id="@+id/textWaveThreshold" />
+
+                        </LinearLayout>
+
+                        <!-- Test Button -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnWaveTest"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Start Test"
+                            android:backgroundTint="@color/purple_200"
+                            android:textColor="@color/white_100" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- App Name Customization Section -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
