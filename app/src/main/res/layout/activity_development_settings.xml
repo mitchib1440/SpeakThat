@@ -543,16 +543,7 @@
                             android:textSize="12sp"
                             android:backgroundTint="@color/purple_300" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnDebugConditionalRules"
-                            style="@style/Widget.Material3.Button.TonalButton"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="8dp"
-                            android:text="🧠 Debug Smart Rules"
-                            android:textSize="12sp"
-                            android:backgroundTint="@color/purple_300" />
+
 
                     </LinearLayout>
 

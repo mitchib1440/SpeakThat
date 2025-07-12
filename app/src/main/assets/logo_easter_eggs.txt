@@ -184,7 +184,7 @@ SpeakThat! When your Facebook friends post every minor thing happening in the wo
 SpeakThat! Just about the only thing not made in China and therefore totally free of spyware!
 SpeakThat! This is exactly how your notifications will sound! I think your settings are perfect.
 SpeakThat! Head to the settings page and hit the Support & Feedback button. Tell me what features you want to see!
-SpeakThat! Just between you and me, that last notification from Instagram was terrible. Can't believe you willingly follow hat person!
+SpeakThat! Just between you and me, that last notification from Instagram was terrible. Can't believe you willingly follow that person!
 SpeakThat! Oh, I forgot to read you a notification that came from your bank account! It said something about your account being empty. Weird, right?
 SpeakThat! You should really lay off the TikTok. You know it's not good for you, right?
 SpeakThat! Did you know Apple doesn't allow movie villains to use iPhones? Tim Cook clearly wants to be the only one!
@@ -201,3 +201,4 @@ SpeakThat! This phone cost you how much? And you're seriously using me so you do
 SpeakThat! You can't see this, but I'm actually GLaDOS in disguise!
 SpeakThat! I'm sorry Dave, I'm afraid I can't do that!
 SpeakThat! I'm sorry Dave, as a large language model, I'm afraid I can't do that!
+SpeakThat! Always look on the bright side of life!

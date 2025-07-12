@@ -64,7 +64,7 @@ And so after a few failed versions, I'm pleased to introduce SpeakThat! The noti
 ## 📝 Customization
 - **App Filters:** Block, allow, or privatize notifications from any app
 - **Voice Settings:** Adjust speech rate, pitch, and select your preferred voice
-- **Smart Settings:** Experimental features for advanced users
+
 - **Re-run Onboarding:** Accessible from settings if you want to revisit setup
 
 ---

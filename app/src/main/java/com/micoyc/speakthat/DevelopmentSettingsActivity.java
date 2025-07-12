@@ -166,8 +166,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         // Set up debug crash log button
         binding.btnDebugCrashLogs.setOnClickListener(v -> showCrashLogDebugInfo());
         
-        // Set up conditional rules debug button
-        binding.btnDebugConditionalRules.setOnClickListener(v -> showConditionalRulesDebugInfo());
+
         
         // Set up analytics button
         binding.btnShowAnalytics.setOnClickListener(v -> showAnalyticsDialog());
@@ -893,137 +892,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         uiHandler.removeCallbacks(logUpdateRunnable);
     }
 
-    private void showConditionalRulesDebugInfo() {
-        StringBuilder debugInfo = new StringBuilder();
-        debugInfo.append("=== CONDITIONAL RULES DEBUG INFO ===\n\n");
-        
-        try {
-            // Get ConditionalFilterManager instance
-            ConditionalFilterManager conditionalManager = new ConditionalFilterManager(this);
-            List<ConditionalFilterManager.ConditionalRule> rules = conditionalManager.getAllRules();
-            
-            debugInfo.append("Rules Count: ").append(rules.size()).append("\n");
-            debugInfo.append("Service Running: ").append(isNotificationServiceRunning()).append("\n\n");
-            
-            if (rules.isEmpty()) {
-                debugInfo.append("--- NO RULES FOUND ---\n");
-                debugInfo.append("Possible reasons:\n");
-                debugInfo.append("• No rules have been created\n");
-                debugInfo.append("• Rules storage is corrupted\n");
-                debugInfo.append("• SharedPreferences access issues\n\n");
-                
-                debugInfo.append("Try creating a test rule:\n");
-                debugInfo.append("1. Go to Smart Settings\n");
-                debugInfo.append("2. Add a simple rule (e.g., Screen On)\n");
-                debugInfo.append("3. Come back here to see if it appears\n");
-            } else {
-                debugInfo.append("--- RULES SUMMARY ---\n");
-                for (int i = 0; i < rules.size(); i++) {
-                    ConditionalFilterManager.ConditionalRule rule = rules.get(i);
-                    debugInfo.append((i + 1)).append(". ").append(rule.name)
-                            .append(" (enabled: ").append(rule.enabled)
-                            .append(", priority: ").append(rule.priority).append(")\n");
-                    debugInfo.append("   Conditions: ").append(rule.conditions.size()).append("\n");
-                    debugInfo.append("   Actions: ").append(rule.actions.size()).append("\n");
-                    
-                    // Show condition details
-                    for (ConditionalFilterManager.Condition condition : rule.conditions) {
-                        debugInfo.append("   • ").append(condition.type)
-                                .append(" ").append(condition.operator.displayName)
-                                .append(" '").append(condition.value).append("'");
-                        if (!condition.parameter.isEmpty()) {
-                            debugInfo.append(" (param: '").append(condition.parameter).append("')");
-                        }
-                        debugInfo.append("\n");
-                    }
-                    debugInfo.append("\n");
-                }
-            }
-            
-            // Test a sample notification context
-            debugInfo.append("--- TEST EVALUATION ---\n");
-            ConditionalFilterManager.NotificationContext testContext = 
-                new ConditionalFilterManager.NotificationContext("Test App", "com.test.app", "Test notification");
-            
-            ConditionalFilterManager.ConditionalResult result = conditionalManager.applyConditionalRules(testContext);
-            debugInfo.append("Test notification result:\n");
-            debugInfo.append("• Should block: ").append(result.shouldBlock).append("\n");
-            debugInfo.append("• Should make private: ").append(result.shouldMakePrivate).append("\n");
-            debugInfo.append("• Delay seconds: ").append(result.delaySeconds).append("\n");
-            debugInfo.append("• Applied rules: ").append(result.appliedRules).append("\n");
-            debugInfo.append("• Has changes: ").append(result.hasChanges).append("\n\n");
-            
-            // Check current device state for screen condition
-            android.os.PowerManager powerManager = (android.os.PowerManager) getSystemService(Context.POWER_SERVICE);
-            boolean isScreenOn = powerManager.isInteractive();
-            debugInfo.append("--- CURRENT DEVICE STATE ---\n");
-            debugInfo.append("Screen is: ").append(isScreenOn ? "ON" : "OFF").append("\n");
-            debugInfo.append("Time: ").append(new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date())).append("\n");
-            
-            Calendar cal = Calendar.getInstance();
-            int dayOfWeek = (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) ? 7 : cal.get(Calendar.DAY_OF_WEEK) - 1;
-            String[] days = {"", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-            debugInfo.append("Day: ").append(days[dayOfWeek]).append("\n\n");
-            
-        } catch (Exception e) {
-            debugInfo.append("ERROR: ").append(e.getMessage()).append("\n");
-            debugInfo.append("Stack trace:\n").append(android.util.Log.getStackTraceString(e));
-        }
-        
-        // Show recent conditional logs
-        debugInfo.append("--- RECENT CONDITIONAL LOGS ---\n");
-        String allLogs = InAppLogger.getAllLogs();
-        String[] logLines = allLogs.split("\n");
-        int conditionalLogCount = 0;
-        for (String line : logLines) {
-            if (line.contains("Conditional") && conditionalLogCount < 20) {
-                debugInfo.append(line).append("\n");
-                conditionalLogCount++;
-            }
-        }
-        
-        if (conditionalLogCount == 0) {
-            debugInfo.append("No conditional logs found in recent history\n");
-            debugInfo.append("This suggests rules aren't being evaluated\n");
-        }
-        
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("🧠 Smart Rules Debug Info");
-        
-        // Create scrollable text view
-        ScrollView scrollView = new ScrollView(this);
-        TextView textView = new TextView(this);
-        textView.setText(debugInfo.toString());
-        textView.setTextSize(11f);
-        textView.setPadding(16, 16, 16, 16);
-        textView.setTypeface(android.graphics.Typeface.MONOSPACE);
-        textView.setTextIsSelectable(true);
-        scrollView.addView(textView);
-        
-        builder.setView(scrollView);
-        builder.setPositiveButton("Close", null);
-        builder.setNeutralButton("Test Notification", (dialog, which) -> {
-            // Simulate a test notification to trigger rule evaluation
-            InAppLogger.log("ConditionalTest", "User triggered test notification for rule debugging");
-            Toast.makeText(this, "Test notification logged - check the logs for rule evaluation", Toast.LENGTH_LONG).show();
-        });
-        builder.setNegativeButton("Fix Rules", (dialog, which) -> {
-            fixLegacyDeviceStateRules();
-        });
-        
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        
-        // Make dialog larger
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setLayout(
-                (int) (getResources().getDisplayMetrics().widthPixels * 0.9),
-                (int) (getResources().getDisplayMetrics().heightPixels * 0.8)
-            );
-        }
-        
-        InAppLogger.logUserAction("Conditional rules debug info viewed", "");
-    }
+
     
     private boolean isNotificationServiceRunning() {
         try {
@@ -1035,82 +904,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         }
     }
 
-    private void fixLegacyDeviceStateRules() {
-        try {
-            ConditionalFilterManager conditionalManager = new ConditionalFilterManager(this);
-            List<ConditionalFilterManager.ConditionalRule> rules = conditionalManager.getAllRules();
-            
-            int fixedCount = 0;
-            
-            for (ConditionalFilterManager.ConditionalRule rule : rules) {
-                boolean ruleModified = false;
-                
-                // Check each condition for legacy device state format
-                for (ConditionalFilterManager.Condition condition : rule.conditions) {
-                    if (condition.type == ConditionalFilterManager.ConditionType.DEVICE_STATE) {
-                        // Fix legacy formats
-                        if ("screen_on".equals(condition.value)) {
-                            condition.value = "on";
-                            condition.parameter = "screen_state";
-                            ruleModified = true;
-                            InAppLogger.log("Development", "Fixed legacy rule: " + rule.name + " - screen_on -> on");
-                        } else if ("screen_off".equals(condition.value)) {
-                            condition.value = "off";
-                            condition.parameter = "screen_state";
-                            ruleModified = true;
-                            InAppLogger.log("Development", "Fixed legacy rule: " + rule.name + " - screen_off -> off");
-                        } else if (condition.parameter.isEmpty()) {
-                            // Fix missing parameters for existing correct values
-                            if ("on".equals(condition.value) || "off".equals(condition.value)) {
-                                condition.parameter = "screen_state";
-                                ruleModified = true;
-                                InAppLogger.log("Development", "Fixed missing parameter for rule: " + rule.name);
-                            } else if ("charging".equals(condition.value) || "not_charging".equals(condition.value)) {
-                                condition.parameter = "charging_state";
-                                ruleModified = true;
-                                InAppLogger.log("Development", "Fixed missing charging parameter for rule: " + rule.name);
-                            }
-                        }
-                    }
-                }
-                
-                // Fix incorrect action types for screen-on rules
-                boolean hasScreenOnCondition = rule.conditions.stream()
-                    .anyMatch(c -> c.type == ConditionalFilterManager.ConditionType.DEVICE_STATE 
-                                && "screen_state".equals(c.parameter) 
-                                && "on".equals(c.value));
-                
-                if (hasScreenOnCondition) {
-                    for (ConditionalFilterManager.Action action : rule.actions) {
-                        if (action.type == ConditionalFilterManager.ActionType.DISABLE_MASTER_SWITCH) {
-                            // Change to BLOCK_NOTIFICATION for screen-on rules
-                            action.type = ConditionalFilterManager.ActionType.BLOCK_NOTIFICATION;
-                            action.value = "true";
-                            ruleModified = true;
-                            InAppLogger.log("Development", "Fixed action for screen-on rule: " + rule.name + " - changed to BLOCK_NOTIFICATION");
-                        }
-                    }
-                }
-                
-                if (ruleModified) {
-                    conditionalManager.updateRule(rule);
-                    fixedCount++;
-                }
-            }
-            
-            if (fixedCount > 0) {
-                Toast.makeText(this, "Fixed " + fixedCount + " legacy rule(s)! Please test your rules now.", Toast.LENGTH_LONG).show();
-                InAppLogger.log("Development", "Fixed " + fixedCount + " legacy device state rules");
-            } else {
-                Toast.makeText(this, "No legacy rules found that need fixing.", Toast.LENGTH_SHORT).show();
-                InAppLogger.log("Development", "No legacy rules needed fixing");
-            }
-            
-        } catch (Exception e) {
-            Toast.makeText(this, "Error fixing rules: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            InAppLogger.logError("Development", "Failed to fix legacy rules: " + e.getMessage());
-        }
-    }
+
 
     private void showBatteryOptimizationReport() {
         StringBuilder report = new StringBuilder();

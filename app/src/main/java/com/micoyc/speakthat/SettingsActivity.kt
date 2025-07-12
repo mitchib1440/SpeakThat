@@ -50,9 +50,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent(this, FilterSettingsActivity::class.java))
         }
         
-        binding.cardSmartRules.setOnClickListener {
-            showSmartSettingsWarningDialog()
-        }
+
         
         binding.cardDevelopmentSettings.setOnClickListener {
             startActivity(Intent(this, DevelopmentSettingsActivity::class.java))
@@ -206,32 +204,5 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     
-    private fun showSmartSettingsWarningDialog() {
-        InAppLogger.logUserAction("Smart Settings warning dialog opened")
-        
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("⚠️ Experimental Feature")
-            .setMessage("Smart Settings (Conditional Rules) are currently experimental and under heavy development.\n\n" +
-                    "🔧 What to expect:\n" +
-                    "• Some rules may not work as expected\n" +
-                    "• App may crash during rule creation/editing\n" +
-                    "• Rules may be reset during updates\n" +
-                    "• Time-based rules are known to have issues\n\n" +
-                    "💡 We recommend:\n" +
-                    "• Test rules carefully before relying on them\n" +
-                    "• Use simple rules first\n" +
-                    "• Report any issues via Support & Feedback\n\n" +
-                    "Would you like to continue?")
-            .setPositiveButton("Continue Anyway") { _, _ ->
-                InAppLogger.logUserAction("Smart Settings warning accepted")
-                startActivity(Intent(this, SmartSettingsCardActivity::class.java))
-            }
-            .setNegativeButton("Go Back") { _, _ ->
-                InAppLogger.logUserAction("Smart Settings warning declined")
-            }
-            .setCancelable(false)
-            .create()
-        
-        dialog.show()
-    }
+
 } 

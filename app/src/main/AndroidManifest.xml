@@ -73,17 +73,7 @@
             android:parentActivityName=".SettingsActivity"
             android:theme="@style/Theme.SpeakThat.NoActionBar" />
 
-        <activity
-            android:name=".SmartSettingsActivity"
-            android:exported="false"
-            android:parentActivityName=".SettingsActivity"
-            android:theme="@style/Theme.SpeakThat.NoActionBar" />
 
-        <activity
-            android:name=".SmartSettingsCardActivity"
-            android:exported="false"
-            android:parentActivityName=".SettingsActivity"
-            android:theme="@style/Theme.SpeakThat.NoActionBar" />
 
         <activity
             android:name=".NotificationHistoryActivity"
