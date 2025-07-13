@@ -57,10 +57,10 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String MEDIA_BEHAVIOR_SILENCE = "silence";
 
     // Default values
-    private static final String DEFAULT_NOTIFICATION_BEHAVIOR = "interrupt";
-    private static final String DEFAULT_MEDIA_BEHAVIOR = MEDIA_BEHAVIOR_IGNORE;
+    private static final String DEFAULT_NOTIFICATION_BEHAVIOR = "smart";
+    private static final String DEFAULT_MEDIA_BEHAVIOR = MEDIA_BEHAVIOR_DUCK;
     private static final int DEFAULT_DUCKING_VOLUME = 30; // 30% volume when ducking
-    private static final int DEFAULT_DELAY_BEFORE_READOUT = 0; // 0 seconds (no delay)
+    private static final int DEFAULT_DELAY_BEFORE_READOUT = 2; // 2 seconds
 
     // Adapter and data
     private PriorityAppAdapter priorityAppAdapter;
@@ -112,7 +112,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     }
 
     private void applySavedTheme() {
-        boolean isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, true);
+        boolean isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, false); // Default to light mode
         
         if (isDarkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);

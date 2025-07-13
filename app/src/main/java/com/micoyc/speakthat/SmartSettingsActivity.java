@@ -58,7 +58,7 @@ public class SmartSettingsActivity extends AppCompatActivity {
     }
     
     private void applySavedTheme() {
-        boolean isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, true);
+        boolean isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, false); // Default to light mode
         
         if (isDarkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);

@@ -543,25 +543,29 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private void resetToDefaults() {
         currentSpeechRate = DEFAULT_SPEECH_RATE;
         currentPitch = DEFAULT_PITCH;
-        currentLanguage = Locale.getDefault();
+        currentLanguage = new Locale("en", "US");
 
         // Reset UI
         speechRateSeekBar.setProgress((int) ((DEFAULT_SPEECH_RATE - 0.1f) * 100));
         pitchSeekBar.setProgress((int) ((DEFAULT_PITCH - 0.1f) * 100));
-        
-        // Reset language spinner to default
+
+        // Reset language spinner to English (United States)
         for (int i = 0; i < availableLanguages.size(); i++) {
-            if (availableLanguages.get(i).equals(Locale.getDefault()) || 
-                availableLanguages.get(i).equals(Locale.US)) {
+            if (availableLanguages.get(i).toString().equals(DEFAULT_LANGUAGE)) {
                 languageSpinner.setSelection(i);
                 break;
             }
         }
 
-        // Reset voice spinner to first item
+        // Reset voice spinner to first item (Default)
         if (voiceSpinner.getAdapter().getCount() > 0) {
             voiceSpinner.setSelection(0);
         }
+
+        // Hide advanced options by default
+        switchAdvancedVoice.setChecked(false);
+        layoutAdvancedVoiceSection.setVisibility(View.GONE);
+        sharedPreferences.edit().putBoolean(KEY_SHOW_ADVANCED, false).apply();
 
         // Reset audio settings
         audioUsageSpinner.setSelection(DEFAULT_AUDIO_USAGE);

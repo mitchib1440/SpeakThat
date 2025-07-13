@@ -245,7 +245,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Battery Optimization"
+                                android:text="Battery Optimization Exemption"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary" />
@@ -254,9 +254,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Exclude app from battery optimization for better reliability"
-                                android:textSize="14sp"
-                                android:textColor="@color/text_secondary"
-                                android:layout_marginTop="4dp" />
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                                android:layout_marginBottom="8dp" />
 
                         </LinearLayout>
 

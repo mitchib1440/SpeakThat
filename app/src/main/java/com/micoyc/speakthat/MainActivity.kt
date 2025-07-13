@@ -23,6 +23,8 @@ import com.micoyc.speakthat.databinding.ActivityMainBinding
 import java.io.BufferedReader
 import java.util.Locale
 import kotlin.random.Random
+import android.os.Handler
+import android.os.Looper
 
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEventListener {
     
@@ -55,6 +57,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         }
     }
     
+    // Sensor timeout for safety
+    private var sensorTimeoutHandler: Handler? = null
+    private var sensorTimeoutRunnable: Runnable? = null
+    
     companion object {
         private const val TAG = "MainActivity"
         private const val PREFS_NAME = "SpeakThatPrefs"
@@ -64,7 +70,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         private const val KEY_SHAKE_THRESHOLD = "shake_threshold"
         private const val KEY_MASTER_SWITCH_ENABLED = "master_switch_enabled"
         private const val KEY_LAST_EASTER_EGG = "last_easter_egg_line"
-        
+        @JvmField
+        var isSensorListenerActive: Boolean = false
         /**
          * Check if the master switch is enabled (for use by NotificationReaderService)
          */
@@ -254,7 +261,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     // showNotificationHistory moved to DevelopmentSettingsActivity
     
     private fun applySavedTheme() {
-        val isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, true) // Default to dark mode
+        val isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, false) // Default to light mode
         
         if (isDarkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -471,24 +478,41 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         Log.d(TAG, "startShakeListening called - shake enabled: $isShakeToStopEnabled, wave enabled: $isWaveToStopEnabled")
         
         if (isShakeToStopEnabled && accelerometer != null) {
-            sensorManager?.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
+            sensorManager?.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
             Log.d(TAG, "MainActivity shake listener started")
             InAppLogger.log("MainActivity", "Shake listener registered")
         }
         
         if (isWaveToStopEnabled && proximitySensor != null) {
-            sensorManager?.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_UI)
+            sensorManager?.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL)
             Log.d(TAG, "MainActivity wave listener started")
             InAppLogger.log("MainActivity", "Wave listener registered")
         } else {
             Log.d(TAG, "Wave listener NOT started - enabled: $isWaveToStopEnabled, sensor: ${proximitySensor != null}")
             InAppLogger.log("MainActivity", "Wave listener NOT registered - enabled: $isWaveToStopEnabled")
         }
+        // Start hard timeout
+        if (sensorTimeoutHandler == null) {
+            sensorTimeoutHandler = Handler(Looper.getMainLooper())
+        }
+        // Cancel any previous timeout
+        sensorTimeoutRunnable?.let { sensorTimeoutHandler?.removeCallbacks(it) }
+        sensorTimeoutRunnable = Runnable {
+            Log.w(TAG, "Sensor listener timeout reached! Forcibly unregistering sensors.")
+            InAppLogger.log("MainActivity", "Sensor listener timeout reached! Forcibly unregistering sensors.")
+            stopShakeListening()
+        }
+        sensorTimeoutHandler?.postDelayed(sensorTimeoutRunnable!!, 30_000) // 30 seconds
+        isSensorListenerActive = true
     }
     
     private fun stopShakeListening() {
         sensorManager?.unregisterListener(this)
         Log.d(TAG, "MainActivity shake listener stopped")
+        // Cancel timeout
+        sensorTimeoutRunnable?.let { sensorTimeoutHandler?.removeCallbacks(it) }
+        sensorTimeoutRunnable = null
+        isSensorListenerActive = false
     }
     
     override fun onSensorChanged(event: SensorEvent) {

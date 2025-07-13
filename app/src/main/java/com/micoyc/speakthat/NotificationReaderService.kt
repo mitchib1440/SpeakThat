@@ -463,24 +463,42 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "Wave settings loaded - enabled: $isWaveToStopEnabled, threshold: $waveThreshold")
     }
     
+    // Sensor timeout for safety
+    private var sensorTimeoutHandler: android.os.Handler? = null
+    private var sensorTimeoutRunnable: Runnable? = null
+
     private fun registerShakeListener() {
         if (isShakeToStopEnabled && accelerometer != null) {
-            sensorManager?.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
+            sensorManager?.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
             Log.d(TAG, "Shake listener registered (TTS active)")
             InAppLogger.logSystemEvent("Shake listener started", "TTS playback active")
         }
-        
         if (isWaveToStopEnabled && proximitySensor != null) {
-            sensorManager?.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_UI)
+            sensorManager?.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL)
             Log.d(TAG, "Wave listener registered (TTS active)")
             InAppLogger.logSystemEvent("Wave listener started", "TTS playback active")
         }
+        // Start hard timeout
+        if (sensorTimeoutHandler == null) {
+            sensorTimeoutHandler = android.os.Handler(android.os.Looper.getMainLooper())
+        }
+        // Cancel any previous timeout
+        sensorTimeoutRunnable?.let { sensorTimeoutHandler?.removeCallbacks(it) }
+        sensorTimeoutRunnable = Runnable {
+            Log.w(TAG, "Sensor listener timeout reached! Forcibly unregistering sensors.")
+            InAppLogger.logWarning(TAG, "Sensor listener timeout reached! Forcibly unregistering sensors.")
+            unregisterShakeListener()
+        }
+        sensorTimeoutHandler?.postDelayed(sensorTimeoutRunnable!!, 30_000) // 30 seconds
     }
-    
+
     private fun unregisterShakeListener() {
         sensorManager?.unregisterListener(this)
         Log.d(TAG, "Shake and wave listeners unregistered (TTS inactive)")
         InAppLogger.logSystemEvent("Shake and wave listeners stopped", "TTS playback finished")
+        // Cancel timeout
+        sensorTimeoutRunnable?.let { sensorTimeoutHandler?.removeCallbacks(it) }
+        sensorTimeoutRunnable = null
     }
     
     // Call this method when settings might have changed
