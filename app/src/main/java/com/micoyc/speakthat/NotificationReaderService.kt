@@ -21,7 +21,6 @@ import java.util.HashMap
 import java.util.HashSet
 import java.util.Locale
 import kotlin.collections.ArrayList
-import org.json.JSONArray
 import android.app.NotificationManager
 import android.content.Context
 
@@ -80,8 +79,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private val notificationQueue = mutableListOf<QueuedNotification>()
     private var isCurrentlySpeaking = false
     
-    // Conditional filtering (foundation for future advanced rules)
-    private var conditionalFilterManager: ConditionalFilterManager? = null
+
     
     // Voice settings listener
     private var voiceSettingsPrefs: SharedPreferences? = null
@@ -191,13 +189,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 InAppLogger.logError("Service", "Filter settings loading failed: " + e.message)
             }
             
-            // Initialize conditional filter manager (foundation for future features)
-            try {
-                conditionalFilterManager = ConditionalFilterManager(this)
-            } catch (e: Exception) {
-                Log.e(TAG, "Error initializing conditional filter manager", e)
-                InAppLogger.logError("Service", "Conditional filter manager initialization failed: " + e.message)
-            }
+
             
             // Initialize delay handler
             delayHandler = android.os.Handler(android.os.Looper.getMainLooper())
@@ -355,19 +347,24 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val customAppName = getCustomAppName(packageName)
         if (customAppName != null) {
             Log.d(TAG, "Using custom app name for $packageName: $customAppName")
+            InAppLogger.log("AppName", "Using custom app name for $packageName: $customAppName")
             return customAppName
         }
         
-        // Fall back to system app name
+        // Standard package resolution
         return try {
             val packageManager = packageManager
-            val appInfo: ApplicationInfo = packageManager.getApplicationInfo(packageName, 0)
-            packageManager.getApplicationLabel(appInfo).toString()
-        } catch (e: PackageManager.NameNotFoundException) {
-            Log.w(TAG, "App name not found for package: $packageName")
+            val appInfo = packageManager.getApplicationInfo(packageName, 0)
+            val appName = packageManager.getApplicationLabel(appInfo).toString()
+            Log.d(TAG, "Successfully resolved app name for $packageName: $appName")
+            appName
+        } catch (e: Exception) {
+            Log.w(TAG, "Error getting app name for $packageName: ${e.message}")
             packageName
         }
     }
+    
+
 
     private fun getCustomAppName(packageName: String): String? {
         return try {
@@ -664,62 +661,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         return FilterResult(true, processedText, "Word filtering applied")
     }
     
-    /**
-     * Apply conditional filtering rules to notifications
-     * 
-     * ═══════════════════════════════════════════════════════════════════════════════════
-     * 📋 SESSION NOTES: SMART RULES INTEGRATION POINT
-     * ═══════════════════════════════════════════════════════════════════════════════════
-     * 
-     * 🎯 STATUS: INTEGRATION HOOK READY (Dec 2024)
-     * ✅ ConditionalFilterManager instance created in onCreate()
-     * ✅ Integration point identified in applyFilters() method
-     * ✅ Placeholder method created with detailed implementation plan
-     * 
-     * 🚀 NEXT SESSION: Remove TODO and implement real integration
-     * 1. Uncomment the integration code below
-     * 2. Test with example rules from ConditionalFilterManager
-     * 3. Verify rule priority system works correctly
-     * 4. Add logging for debugging rule application
-     * 
-     * 💡 IMPLEMENTATION PLAN:
-     * - This method will be called for every notification
-     * - ConditionalResult will modify notification behavior
-     * - Rules are applied in priority order (high to low)
-     * - Early exit optimization prevents unnecessary processing
-     * 
-     * This is a placeholder for the next development session
-     */
     private fun applyConditionalFiltering(packageName: String, appName: String, text: String): FilterResult {
-        // Create notification context for rule evaluation
-        val context = ConditionalFilterManager.NotificationContext(appName, packageName, text)
-        val conditionalResult = conditionalFilterManager?.applyConditionalRules(context)
-        
-        // Apply conditional rules if any were triggered
-        if (conditionalResult?.hasChanges == true) {
-            Log.d(TAG, "Conditional rules applied: ${conditionalResult.appliedRules}")
-            InAppLogger.log("Conditional", "Applied rules: ${conditionalResult.appliedRules}")
-            
-            // Check if notification should be blocked
-            if (conditionalResult.shouldBlock) {
-                return FilterResult(false, text, "Blocked by conditional rule: ${conditionalResult.appliedRules}")
-            }
-            
-            // Apply text modifications
-            var modifiedText = conditionalResult.modifiedText ?: text
-            if (conditionalResult.shouldMakePrivate) {
-                modifiedText = "[PRIVATE]"
-            }
-            
-            // Handle delay (will be processed in handleNotificationBehavior)
-            if (conditionalResult.delaySeconds > 0) {
-                Log.d(TAG, "Conditional rule applied ${conditionalResult.delaySeconds}s delay")
-                InAppLogger.log("Conditional", "Applied ${conditionalResult.delaySeconds}s delay from rule")
-            }
-            
-            return FilterResult(true, modifiedText, "Modified by conditional rules: ${conditionalResult.appliedRules}", conditionalResult.delaySeconds)
-        }
-        
+        // Placeholder for future conditional filtering features
         return FilterResult(true, text, "No conditional rules applied")
     }
     

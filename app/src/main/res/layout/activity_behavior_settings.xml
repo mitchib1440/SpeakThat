@@ -780,11 +780,11 @@
                             android:background="@color/purple_300"
                             android:layout_marginVertical="16dp" />
 
-                        <!-- Wave Sensitivity Section -->
+                        <!-- Proximity Threshold Section -->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Wave Sensitivity"
+                            android:text="Proximity Threshold"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="?android:attr/textColorPrimary"
@@ -793,7 +793,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Adjust the trigger distance. For binary sensors, this shows the detection zone."
+                            android:text="Set the percentage of your sensor's maximum distance that will trigger wave-to-stop. (Requires calibration)"
                             android:textSize="14sp"
                             android:textColor="?android:attr/textColorSecondary"
                             android:layout_marginBottom="16dp" />
@@ -809,7 +809,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Close (1cm)"
+                                android:text="30%"
                                 android:textSize="12sp"
                                 android:textColor="?android:attr/textColorSecondary" />
 
@@ -819,10 +819,10 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:layout_marginHorizontal="12dp"
-                                android:valueFrom="1.0"
-                                android:valueTo="10.0"
-                                android:value="5.0"
-                                android:stepSize="0.5"
+                                android:valueFrom="30.0"
+                                android:valueTo="90.0"
+                                android:value="60.0"
+                                android:stepSize="1.0"
                                 app:thumbColor="@color/purple_200"
                                 app:trackColorActive="@color/purple_200"
                                 app:trackColorInactive="@color/purple_300" />
@@ -830,7 +830,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Far (10cm)"
+                                android:text="90%"
                                 android:textSize="12sp"
                                 android:textColor="?android:attr/textColorSecondary" />
 

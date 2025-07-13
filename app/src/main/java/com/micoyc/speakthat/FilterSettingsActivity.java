@@ -2020,17 +2020,10 @@ public class FilterSettingsActivity extends AppCompatActivity {
                           "• You can type any Android package name manually\n" +
                           "• Click a suggestion to instantly add the package name\n" +
                           "• Filtering works even if an app doesn't appear in search\n\n" +
-                          
                           "📋 Package Names:\n" +
                           "• Find package names in: Settings → Apps → [App Name] → Advanced\n" +
                           "• Examples: com.whatsapp, com.discord, com.google.android.apps.maps\n" +
                           "• You can also search by app name (e.g., 'WhatsApp', 'Discord')\n\n" +
-                          
-                          "⚠️ Android 11+ Limitation:\n" +
-                          "• Apps cannot see what's installed on your device\n" +
-                          "• Search shows popular apps, but all package names work\n" +
-                          "• This is an Android privacy feature, not a bug\n\n" +
-                          
                           "✅ Filtering Effectiveness:\n" +
                           "• Works perfectly regardless of search results\n" +
                           "• Matches the actual package name from notifications\n" +

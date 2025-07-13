@@ -341,15 +341,14 @@ class WaveCalibrationActivity : AppCompatActivity(), SensorEventListener {
         val sharedPreferences = getSharedPreferences("BehaviorSettings", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         
-        // Save calibration data
-        editor.putFloat(WAVE_THRESHOLD_KEY, calculatedThreshold)
+        // Save calibration data (only max distance and timestamp)
         editor.putFloat(SENSOR_MAX_RANGE_KEY, maxDistance)
         editor.putString(CALIBRATION_DATA_KEY, readings.joinToString(","))
         editor.putLong(CALIBRATION_TIMESTAMP_KEY, System.currentTimeMillis())
         editor.putBoolean("wave_to_stop_enabled", true)
         editor.apply()
         
-        Log.d(TAG, "Calibration saved - Threshold: ${calculatedThreshold}cm, Max: ${maxDistance}cm")
+        Log.d(TAG, "Calibration saved - Max: "+maxDistance+"cm")
         
         Toast.makeText(this, "Wave detection calibrated successfully!", Toast.LENGTH_SHORT).show()
         setResult(RESULT_OK)

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.View;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
@@ -86,8 +87,13 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     }
 
     private void configureSystemUI() {
-        // Ensure the app respects system UI areas
-        getWindow().setDecorFitsSystemWindows(true);
+        // Set up proper window insets handling for different Android versions
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // For Android 11+ (API 30+), use the new window insets API
+            getWindow().setDecorFitsSystemWindows(true);
+        }
+        // For older versions (Android 10 and below), skip system UI configuration
+        // The app will work fine without explicit system UI flags
     }
 
     private void initializeDarkModeSwitch() {
