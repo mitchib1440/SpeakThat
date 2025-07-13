@@ -103,6 +103,12 @@
             android:parentActivityName=".GeneralSettingsActivity"
             android:theme="@style/Theme.SpeakThat.NoActionBar" />
 
+        <activity
+            android:name=".WaveCalibrationActivity"
+            android:exported="false"
+            android:parentActivityName=".BehaviorSettingsActivity"
+            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+
         <!-- Notification Listener Service -->
         <service
             android:name=".NotificationReaderService"

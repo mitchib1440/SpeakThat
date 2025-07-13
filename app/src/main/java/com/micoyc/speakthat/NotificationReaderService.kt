@@ -457,7 +457,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
     private fun loadWaveSettings() {
         isWaveToStopEnabled = sharedPreferences.getBoolean("wave_to_stop_enabled", false)
-        waveThreshold = sharedPreferences.getFloat("wave_threshold", 5.0f)
+        // Use calibrated threshold if available, otherwise fall back to old system
+        waveThreshold = if (sharedPreferences.contains("wave_threshold_v1")) {
+            sharedPreferences.getFloat("wave_threshold_v1", 3.0f)
+        } else {
+            sharedPreferences.getFloat("wave_threshold", 3.0f)
+        }
         Log.d(TAG, "Wave settings loaded - enabled: $isWaveToStopEnabled, threshold: $waveThreshold")
     }
     
@@ -874,7 +879,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 true
             } else {
                 // Sensor returns actual distance, check if closer than threshold
-                proximityValue <= waveThreshold
+                // Use < instead of <= to avoid triggering when sensor is at max range
+                // ADDITIONAL SAFETY: Only trigger if the value is significantly different from max range
+                // This prevents false triggers on devices like Pixel 2 XL that read ~5cm when uncovered
+                val maxRange = proximitySensor?.maximumRange ?: 5.0f
+                val significantChange = maxRange * 0.3f // Require at least 30% change from max
+                val distanceFromMax = maxRange - proximityValue
+                
+                proximityValue < waveThreshold && distanceFromMax > significantChange
             }
             
             if (isTriggered) {

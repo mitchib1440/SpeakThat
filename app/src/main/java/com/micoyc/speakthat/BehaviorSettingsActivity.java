@@ -1,6 +1,7 @@
 package com.micoyc.speakthat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -80,6 +81,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private float currentWaveValue = 5.0f; // Default max distance
     private float minWaveValue = 5.0f; // Track minimum (closest) value during test
     private Handler uiHandler = new Handler(Looper.getMainLooper());
+
+    private float calibratedMaxDistance = -1f;
+    private float thresholdPercent = 60f; // Default to 60%
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,6 +196,17 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
 
         // Set up wave to stop toggle
         binding.switchWaveToStop.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Check if calibration data exists
+                if (!hasValidCalibrationData()) {
+                    // Launch calibration activity
+                    launchWaveCalibration();
+                    // Don't save the toggle state yet - wait for calibration result
+                    buttonView.setChecked(false);
+                    return;
+                }
+            }
+            
             binding.waveSettingsSection.setVisibility(isChecked ? View.VISIBLE : View.GONE);
             saveWaveToStopEnabled(isChecked);
             
@@ -207,17 +222,23 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         });
 
         // Set up wave sensitivity slider
-        binding.sliderWaveSensitivity.addOnChangeListener(new Slider.OnChangeListener() {
-            @Override
-            public void onValueChange(Slider slider, float value, boolean fromUser) {
-                if (fromUser) {
-                    Log.d("WaveTest", "Slider value changed to: " + value + " cm");
-                    Log.d("WaveTest", "Calling updateWaveThresholdMarker with value: " + value);
-                    updateWaveThresholdMarker(value);
-                    updateWaveThresholdText(value);
-                    saveWaveThreshold(value);
-                }
+        binding.sliderWaveSensitivity.setValueFrom(30f);
+        binding.sliderWaveSensitivity.setValueTo(90f);
+        binding.sliderWaveSensitivity.setStepSize(1f);
+        binding.sliderWaveSensitivity.setLabelFormatter(value -> String.format("%.0f%%", value));
+        binding.textWaveThreshold.setText("Proximity Threshold: --");
+
+        binding.sliderWaveSensitivity.addOnChangeListener((slider, value, fromUser) -> {
+            if (calibratedMaxDistance <= 0) {
+                Toast.makeText(this, "Please calibrate wave detection first!", Toast.LENGTH_SHORT).show();
+                binding.sliderWaveSensitivity.setEnabled(false);
+                return;
             }
+            thresholdPercent = value;
+            float threshold = calibratedMaxDistance * (thresholdPercent / 100f);
+            saveWaveThresholdPercent(thresholdPercent);
+            updateWaveThresholdMarker(threshold);
+            updateWaveThresholdText(threshold);
         });
 
         // Set up wave test button
@@ -227,6 +248,11 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             } else {
                 startWaveTest();
             }
+        });
+        
+        // Set up wave recalibration button
+        binding.btnRecalibrateWave.setOnClickListener(v -> {
+            launchWaveCalibration();
         });
 
         // Set up media behavior radio buttons
@@ -332,10 +358,23 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.switchWaveToStop.setChecked(waveEnabled);
         binding.waveSettingsSection.setVisibility(waveEnabled ? View.VISIBLE : View.GONE);
 
-        float waveThreshold = sharedPreferences.getFloat(KEY_WAVE_THRESHOLD, 5.0f);
-        binding.sliderWaveSensitivity.setValue(waveThreshold);
-        updateWaveThresholdMarker(waveThreshold);
-        updateWaveThresholdText(waveThreshold);
+        // Clamp threshold percent to valid range (30-90), default to 60 if out of range
+        float percent = getSharedPreferences("BehaviorSettings", MODE_PRIVATE).getFloat("wave_threshold_percent", 60f);
+        if (percent < 30f || percent > 90f) {
+            float clamped = (percent < 30f || percent > 90f) ? 60f : Math.max(30f, Math.min(90f, percent));
+            Log.d("WaveTest", "Clamping invalid threshold percent: " + percent + " -> " + clamped);
+            percent = clamped;
+            saveWaveThresholdPercent(percent);
+        }
+        thresholdPercent = percent;
+        calibratedMaxDistance = getSharedPreferences("BehaviorSettings", MODE_PRIVATE).getFloat("sensor_max_range_v1", -1f);
+        float threshold = (calibratedMaxDistance > 0) ? (calibratedMaxDistance * (thresholdPercent / 100f)) : 3.0f;
+
+        // Disable slider if not calibrated
+        binding.sliderWaveSensitivity.setEnabled(calibratedMaxDistance > 0);
+        binding.sliderWaveSensitivity.setValue(thresholdPercent);
+        updateWaveThresholdMarker(threshold);
+        updateWaveThresholdText(threshold);
 
         // Load media behavior settings
         String savedMediaBehavior = sharedPreferences.getString(KEY_MEDIA_BEHAVIOR, DEFAULT_MEDIA_BEHAVIOR);
@@ -547,9 +586,50 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     }
 
     private void saveWaveThreshold(float threshold) {
+        // Smart validation: Prevent users from setting thresholds that would cause problems
+        float validatedThreshold = validateWaveThreshold(threshold);
+        
+        if (validatedThreshold != threshold) {
+            // Show warning to user about the adjustment
+            String message = String.format("Threshold adjusted from %.1fcm to %.1fcm to prevent false triggers", 
+                                         threshold, validatedThreshold);
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            
+            // Update the slider to reflect the corrected value
+            binding.sliderWaveSensitivity.setValue(validatedThreshold);
+            updateWaveThresholdMarker(validatedThreshold);
+            updateWaveThresholdText(validatedThreshold);
+        }
+        
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putFloat(KEY_WAVE_THRESHOLD, threshold);
+        editor.putFloat(KEY_WAVE_THRESHOLD, validatedThreshold);
         editor.apply();
+        
+        Log.d("WaveTest", "Wave threshold saved: " + validatedThreshold + " cm (original: " + threshold + " cm)");
+    }
+    
+    /**
+     * Validates wave threshold to prevent false triggers
+     * @param threshold The user-selected threshold
+     * @return A validated threshold that won't cause problems
+     */
+    private float validateWaveThreshold(float threshold) {
+        // Get the proximity sensor's maximum range
+        float maxRange = 5.0f; // Default fallback
+        if (proximitySensor != null) {
+            maxRange = proximitySensor.getMaximumRange();
+        }
+        
+        // If threshold is too close to max range, it will cause false triggers
+        // Require at least 30% difference from max range
+        float minSafeThreshold = maxRange * 0.7f;
+        
+        if (threshold > minSafeThreshold) {
+            // Threshold is too high, adjust it down
+            return Math.min(minSafeThreshold, 3.0f); // Cap at 3cm for safety
+        }
+        
+        return threshold;
     }
 
     private void saveMediaBehavior(String mediaBehavior) {
@@ -654,7 +734,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     }
 
     private void updateWaveThresholdText(float threshold) {
-        binding.textWaveThreshold.setText(String.format("Threshold: %.1f cm", threshold));
+        binding.textWaveThreshold.setText(String.format("Proximity Threshold: %.0f%% (%.2f cm of %.2f cm max)", thresholdPercent, threshold, calibratedMaxDistance));
     }
 
     private void startShakeTest() {
@@ -1070,6 +1150,77 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         
         // Track last used timestamp for analytics
         sharedPreferences.edit().putLong("last_dialog_usage", System.currentTimeMillis()).apply();
+    }
+    
+    // Wave calibration methods
+    private static final int REQUEST_WAVE_CALIBRATION = 1001;
+    
+    private boolean hasValidCalibrationData() {
+        SharedPreferences prefs = getSharedPreferences("BehaviorSettings", MODE_PRIVATE);
+        float threshold = prefs.getFloat("wave_threshold_v1", -1f);
+        long timestamp = prefs.getLong("calibration_timestamp_v1", 0L);
+        
+        // Check if we have valid calibration data
+        return threshold > 0f && timestamp > 0L;
+    }
+    
+    private void launchWaveCalibration() {
+        try {
+            Log.d("WaveCalibration", "Launching wave calibration activity");
+            Intent intent = new Intent(this, WaveCalibrationActivity.class);
+            startActivityForResult(intent, REQUEST_WAVE_CALIBRATION);
+            Log.d("WaveCalibration", "Wave calibration activity launched successfully");
+        } catch (Exception e) {
+            Log.e("WaveCalibration", "Failed to launch wave calibration activity", e);
+            Toast.makeText(this, "Failed to launch calibration: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
+        if (requestCode == REQUEST_WAVE_CALIBRATION) {
+            if (resultCode == RESULT_OK) {
+                // Calibration successful - enable wave-to-stop
+                binding.switchWaveToStop.setChecked(true);
+                binding.waveSettingsSection.setVisibility(View.VISIBLE);
+                saveWaveToStopEnabled(true);
+                
+                // Load and display the calibrated threshold
+                loadWaveThresholdFromCalibration();
+                
+                Toast.makeText(this, "Wave detection calibrated successfully!", Toast.LENGTH_SHORT).show();
+            } else {
+                // Calibration cancelled or failed
+                Toast.makeText(this, "Wave detection setup cancelled", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    
+    private void loadWaveThresholdFromCalibration() {
+        SharedPreferences prefs = getSharedPreferences("BehaviorSettings", MODE_PRIVATE);
+        calibratedMaxDistance = prefs.getFloat("sensor_max_range_v1", -1f);
+        thresholdPercent = prefs.getFloat("wave_threshold_percent", 60f);
+        float threshold = (calibratedMaxDistance > 0) ? (calibratedMaxDistance * (thresholdPercent / 100f)) : 3.0f;
+
+        // Update the slider and UI
+        binding.sliderWaveSensitivity.setValue(thresholdPercent);
+        updateWaveThresholdMarker(threshold);
+        updateWaveThresholdText(threshold);
+    }
+
+    private void saveWaveThresholdPercent(float percent) {
+        // Clamp percent to valid range (30-90), default to 60 if out of range
+        float clamped = (percent < 30f || percent > 90f) ? 60f : Math.max(30f, Math.min(90f, percent));
+        if (clamped != percent) {
+            Toast.makeText(this, "Threshold percent adjusted to valid range (30-90%)", Toast.LENGTH_SHORT).show();
+        }
+        SharedPreferences.Editor editor = getSharedPreferences("BehaviorSettings", MODE_PRIVATE).edit();
+        editor.putFloat("wave_threshold_percent", clamped);
+        float threshold = (calibratedMaxDistance > 0) ? (calibratedMaxDistance * (clamped / 100f)) : 3.0f;
+        editor.putFloat("wave_threshold_v1", threshold);
+        editor.apply();
     }
 
 } 
