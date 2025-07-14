@@ -97,10 +97,10 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 textToSpeech?.setLanguage(Locale.US)
             }
             
-            // Set audio stream to media volume
+            // Set audio stream to assistant usage to avoid triggering media detection
             textToSpeech?.setAudioAttributes(
                 android.media.AudioAttributes.Builder()
-                    .setUsage(android.media.AudioAttributes.USAGE_MEDIA)
+                    .setUsage(android.media.AudioAttributes.USAGE_ASSISTANT)
                     .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
                     .build()
             )

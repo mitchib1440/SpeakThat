@@ -338,6 +338,8 @@ class WaveCalibrationActivity : AppCompatActivity(), SensorEventListener {
     }
     
     private fun saveCalibrationAndFinish() {
+        Log.d(TAG, "saveCalibrationAndFinish called")
+        
         val sharedPreferences = getSharedPreferences("BehaviorSettings", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         
@@ -348,11 +350,17 @@ class WaveCalibrationActivity : AppCompatActivity(), SensorEventListener {
         editor.putBoolean("wave_to_stop_enabled", true)
         editor.apply()
         
-        Log.d(TAG, "Calibration saved - Max: "+maxDistance+"cm")
+        Log.d(TAG, "Calibration saved - Max: ${maxDistance}cm")
+        Log.d(TAG, "About to set result RESULT_OK and finish activity")
         
         Toast.makeText(this, "Wave detection calibrated successfully!", Toast.LENGTH_SHORT).show()
         setResult(RESULT_OK)
-        finish()
+        
+        // Add a small delay to ensure the result is set before finishing
+        handler.postDelayed({
+            Log.d(TAG, "Finishing WaveCalibrationActivity")
+            finish()
+        }, 100)
     }
     
     private fun disableWaveToStop() {

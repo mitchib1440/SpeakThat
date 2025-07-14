@@ -36,7 +36,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private static final float DEFAULT_SPEECH_RATE = 1.0f;
     private static final float DEFAULT_PITCH = 1.0f;
     private static final String DEFAULT_LANGUAGE = "en_US";
-    private static final int DEFAULT_AUDIO_USAGE = 0; // USAGE_MEDIA
+    private static final int DEFAULT_AUDIO_USAGE = 4; // USAGE_ASSISTANCE_NAVIGATION_GUIDANCE (closest to USAGE_ASSISTANT)
     private static final int DEFAULT_CONTENT_TYPE = 0; // CONTENT_TYPE_SPEECH
 
     // UI Components
@@ -471,7 +471,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             case 2: return android.media.AudioAttributes.USAGE_ALARM;
             case 3: return android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION;
             case 4: return android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE;
-            default: return android.media.AudioAttributes.USAGE_MEDIA;
+            default: return android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE;
         }
     }
 
@@ -664,7 +664,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             case 2: return android.media.AudioAttributes.USAGE_ALARM;
             case 3: return android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION;
             case 4: return android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE;
-            default: return android.media.AudioAttributes.USAGE_MEDIA;
+            default: return android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE;
         }
     }
 

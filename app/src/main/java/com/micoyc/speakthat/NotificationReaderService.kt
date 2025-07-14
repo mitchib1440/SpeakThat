@@ -323,11 +323,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 textToSpeech?.setLanguage(Locale.US)
             }
             
-            // Set audio stream to media volume
+            // Set audio stream to assistant usage to avoid triggering media detection
             val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
             textToSpeech?.setAudioAttributes(
                 android.media.AudioAttributes.Builder()
-                    .setUsage(android.media.AudioAttributes.USAGE_MEDIA)
+                    .setUsage(android.media.AudioAttributes.USAGE_ASSISTANT)
                     .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
                     .build()
             )
@@ -912,10 +912,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private fun handleMediaBehavior(appName: String, text: String, sbn: StatusBarNotification? = null): Boolean {
         val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
         val isMusicActive = audioManager.isMusicActive
+        Log.d(TAG, "Media behavior check - isMusicActive: $isMusicActive, mediaBehavior: $mediaBehavior, isCurrentlySpeaking: $isCurrentlySpeaking")
+        
         if (!isMusicActive) {
             Log.d(TAG, "No media currently playing, proceeding normally")
             return true
         }
+        
+        // If we're currently speaking, this might be our own TTS triggering media detection
+        if (isCurrentlySpeaking) {
+            Log.d(TAG, "Media detected while TTS is speaking - this is likely our own TTS, proceeding normally")
+            InAppLogger.log("MediaBehavior", "Media detected while TTS is speaking - ignoring (likely our own TTS)")
+            return true
+        }
+        
         Log.d(TAG, "Media is playing, applying media behavior: $mediaBehavior")
         InAppLogger.log("MediaBehavior", "Media detected, applying behavior: $mediaBehavior")
         // UNIFIED FAIL-SAFE: If this is a media notification, block it no matter what

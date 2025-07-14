@@ -84,6 +84,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
 
     private float calibratedMaxDistance = -1f;
     private float thresholdPercent = 60f; // Default to 60%
+    private boolean isProcessingCalibrationResult = false; // Flag to prevent race condition
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,9 +197,18 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
 
         // Set up wave to stop toggle
         binding.switchWaveToStop.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            Log.d("WaveCalibration", "Switch toggle triggered - isChecked: " + isChecked + ", isProcessingCalibrationResult: " + isProcessingCalibrationResult);
+            
+            // Skip processing if we're currently handling a calibration result
+            if (isProcessingCalibrationResult) {
+                Log.d("WaveCalibration", "Skipping switch processing - currently handling calibration result");
+                return;
+            }
+            
             if (isChecked) {
                 // Check if calibration data exists
                 if (!hasValidCalibrationData()) {
+                    Log.d("WaveCalibration", "No valid calibration data - launching calibration");
                     // Launch calibration activity
                     launchWaveCalibration();
                     // Don't save the toggle state yet - wait for calibration result
@@ -207,6 +217,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 }
             }
 
+            Log.d("WaveCalibration", "Processing normal switch toggle - isChecked: " + isChecked);
             binding.waveSettingsSection.setVisibility(isChecked ? View.VISIBLE : View.GONE);
             saveWaveToStopEnabled(isChecked);
             
@@ -355,6 +366,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
 
         // Load wave to stop settings
         boolean waveEnabled = sharedPreferences.getBoolean(KEY_WAVE_TO_STOP_ENABLED, false);
+        Log.d("WaveCalibration", "Loading wave settings - waveEnabled: " + waveEnabled);
         binding.switchWaveToStop.setChecked(waveEnabled);
         binding.waveSettingsSection.setVisibility(waveEnabled ? View.VISIBLE : View.GONE);
 
@@ -1160,13 +1172,16 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         float threshold = prefs.getFloat("wave_threshold_v1", -1f);
         long timestamp = prefs.getLong("calibration_timestamp_v1", 0L);
         
+        boolean hasValidData = threshold > 0f && timestamp > 0L;
+        Log.d("WaveCalibration", "hasValidCalibrationData check - threshold: " + threshold + ", timestamp: " + timestamp + ", result: " + hasValidData);
+        
         // Check if we have valid calibration data
-        return threshold > 0f && timestamp > 0L;
+        return hasValidData;
     }
     
     private void launchWaveCalibration() {
         try {
-            Log.d("WaveCalibration", "Launching wave calibration activity");
+            Log.d("WaveCalibration", "launchWaveCalibration called - launching wave calibration activity");
             Intent intent = new Intent(this, WaveCalibrationActivity.class);
             startActivityForResult(intent, REQUEST_WAVE_CALIBRATION);
             Log.d("WaveCalibration", "Wave calibration activity launched successfully");
@@ -1180,8 +1195,17 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         
+        Log.d("WaveCalibration", "onActivityResult called - requestCode: " + requestCode + ", resultCode: " + resultCode);
+        
         if (requestCode == REQUEST_WAVE_CALIBRATION) {
+            Log.d("WaveCalibration", "Processing wave calibration result - resultCode: " + resultCode);
+            
             if (resultCode == RESULT_OK) {
+                Log.d("WaveCalibration", "Calibration successful - enabling wave-to-stop");
+                
+                // Set flag to prevent race condition
+                isProcessingCalibrationResult = true;
+                
                 // Calibration successful - enable wave-to-stop
                 binding.switchWaveToStop.setChecked(true);
                 binding.waveSettingsSection.setVisibility(View.VISIBLE);
@@ -1190,8 +1214,16 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 // Load and display the calibrated threshold
                 loadWaveThresholdFromCalibration();
                 
+                // Clear the flag after a short delay to allow UI updates to complete
+                uiHandler.postDelayed(() -> {
+                    isProcessingCalibrationResult = false;
+                    Log.d("WaveCalibration", "Calibration result processing completed");
+                }, 500);
+                
                 Toast.makeText(this, "Wave detection calibrated successfully!", Toast.LENGTH_SHORT).show();
             } else {
+                Log.d("WaveCalibration", "Calibration cancelled or failed - resultCode: " + resultCode);
+                
                 // Calibration cancelled or failed
                 Toast.makeText(this, "Wave detection setup cancelled", Toast.LENGTH_SHORT).show();
             }
@@ -1199,10 +1231,21 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     }
     
     private void loadWaveThresholdFromCalibration() {
+        Log.d("WaveCalibration", "loadWaveThresholdFromCalibration called");
+        
         SharedPreferences prefs = getSharedPreferences("BehaviorSettings", MODE_PRIVATE);
         calibratedMaxDistance = prefs.getFloat("sensor_max_range_v1", -1f);
         thresholdPercent = prefs.getFloat("wave_threshold_percent", 60f);
         float threshold = (calibratedMaxDistance > 0) ? (calibratedMaxDistance * (thresholdPercent / 100f)) : 3.0f;
+
+        Log.d("WaveCalibration", "Loaded calibration data - maxDistance: " + calibratedMaxDistance + ", thresholdPercent: " + thresholdPercent + ", calculated threshold: " + threshold);
+
+        // Save the calculated threshold to the key that hasValidCalibrationData() checks
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putFloat("wave_threshold_v1", threshold);
+        editor.apply();
+        
+        Log.d("WaveCalibration", "Saved calculated threshold: " + threshold + " to wave_threshold_v1");
 
         // Update the slider and UI
         binding.sliderWaveSensitivity.setValue(thresholdPercent);
