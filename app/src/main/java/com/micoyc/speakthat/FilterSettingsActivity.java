@@ -2,9 +2,6 @@ package com.micoyc.speakthat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
@@ -14,7 +11,6 @@ import android.widget.AutoCompleteTextView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -47,7 +43,6 @@ import java.util.Set;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.micoyc.speakthat.AppListData;
 import com.micoyc.speakthat.AppListManager;
-import com.micoyc.speakthat.AppSearchAdapter;
 
 public class FilterSettingsActivity extends AppCompatActivity {
     private ActivityFilterSettingsBinding binding;
@@ -58,8 +53,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     
     // App selector
     private AutoCompleteTextView editAppName;
-    private AppAutoCompleteAdapter appSelectorAdapter;
-    private List<AppInfo> installedApps;
+    private LazyAppSearchAdapter appSelectorAdapter;
     
     // Media filtering UI elements
     private AutoCompleteTextView editFilteredMediaApp;
@@ -290,64 +284,21 @@ public class FilterSettingsActivity extends AppCompatActivity {
     }
     
     private void setupMediaExceptedAppSelector() {
-        // First try to get installed apps
-        List<AppInfo> installedApps = getInstalledApps();
+        // Use lazy loading adapter for media excepted app selector
+        LazyAppSearchAdapter mediaExceptedAppAdapter = new LazyAppSearchAdapter(this);
+        binding.editMediaExceptedApp.setAdapter(mediaExceptedAppAdapter);
+        binding.editMediaExceptedApp.setThreshold(1); // Show suggestions after 1 character
         
-        if (installedApps != null && !installedApps.isEmpty()) {
-            // Use installed apps as primary source
-            AppAutoCompleteAdapter installedAdapter = new AppAutoCompleteAdapter(this, installedApps);
-            binding.editMediaExceptedApp.setAdapter(installedAdapter);
-            binding.editMediaExceptedApp.setThreshold(1); // Show suggestions after 1 character
-            
-            // Handle app selection
-            binding.editMediaExceptedApp.setOnItemClickListener((parent, view, position, id) -> {
-                AppInfo selectedApp = installedAdapter.getItem(position);
-                if (selectedApp != null) {
-                    binding.editMediaExceptedApp.setText(selectedApp.packageName);
-                    binding.editMediaExceptedApp.setSelection(selectedApp.packageName.length());
-                }
-            });
-            
-            InAppLogger.log("AppSelector", "Media excepted app selector initialized with " + installedApps.size() + " installed apps");
-        } else {
-            // Fallback to JSON apps if installed apps can't be loaded
-            List<AppListData> jsonApps = AppListManager.INSTANCE.loadAppList(this);
-            
-            if (jsonApps != null && !jsonApps.isEmpty()) {
-                AppSearchAdapter jsonAdapter = new AppSearchAdapter(this, jsonApps);
-                binding.editMediaExceptedApp.setAdapter(jsonAdapter);
-                binding.editMediaExceptedApp.setThreshold(1);
-                
-                binding.editMediaExceptedApp.setOnItemClickListener((parent, view, position, id) -> {
-                    AppListData selectedApp = jsonAdapter.getItem(position);
-                    if (selectedApp != null) {
-                        binding.editMediaExceptedApp.setText(selectedApp.packageName);
-                        binding.editMediaExceptedApp.setSelection(selectedApp.packageName.length());
-                    }
-                });
-                
-                InAppLogger.log("AppSelector", "Fallback: Media excepted app selector initialized with " + jsonApps.size() + " JSON apps");
-            } else {
-                // Final fallback to common apps
-                List<AppInfo> commonApps = getCommonApps();
-                
-                if (commonApps != null && !commonApps.isEmpty()) {
-                    AppAutoCompleteAdapter commonAdapter = new AppAutoCompleteAdapter(this, commonApps);
-                    binding.editMediaExceptedApp.setAdapter(commonAdapter);
-                    binding.editMediaExceptedApp.setThreshold(1);
-                    
-                    binding.editMediaExceptedApp.setOnItemClickListener((parent, view, position, id) -> {
-                        AppInfo selectedApp = commonAdapter.getItem(position);
-                        if (selectedApp != null) {
-                            binding.editMediaExceptedApp.setText(selectedApp.packageName);
-                            binding.editMediaExceptedApp.setSelection(selectedApp.packageName.length());
-                        }
-                    });
-                    
-                    InAppLogger.log("AppSelector", "Final fallback: Media excepted app selector initialized with " + commonApps.size() + " common apps");
-                }
+        // Handle app selection
+        binding.editMediaExceptedApp.setOnItemClickListener((parent, view, position, id) -> {
+            AppInfo selectedApp = mediaExceptedAppAdapter.getItem(position);
+            if (selectedApp != null) {
+                binding.editMediaExceptedApp.setText(selectedApp.packageName);
+                binding.editMediaExceptedApp.setSelection(selectedApp.packageName.length());
             }
-        }
+        });
+        
+        InAppLogger.log("AppSelector", "Lazy media excepted app selector initialized - apps will load on search");
     }
 
     private void loadSettings() {
@@ -492,31 +443,17 @@ public class FilterSettingsActivity extends AppCompatActivity {
             }
         }
 
-        // Try to match input to installed apps first, then fall back to JSON
+        // Try to match input to JSON apps as fallback for display names
         String packageNameToAdd = input;
-        
-        // First check installed apps
-        if (installedApps != null) {
-            for (AppInfo app : installedApps) {
-                if (app.appName.equalsIgnoreCase(input) || app.packageName.equalsIgnoreCase(input)) {
-                    packageNameToAdd = app.packageName;
-                    break;
-                }
+        AppListData matched = null;
+        for (AppListData app : AppListManager.INSTANCE.loadAppList(this)) {
+            if (app.displayName.equalsIgnoreCase(input) || app.packageName.equalsIgnoreCase(input)) {
+                matched = app;
+                break;
             }
         }
-        
-        // If not found in installed apps, check JSON as fallback
-        if (packageNameToAdd.equals(input)) {
-            AppListData matched = null;
-            for (AppListData app : AppListManager.INSTANCE.loadAppList(this)) {
-                if (app.displayName.equalsIgnoreCase(input) || app.packageName.equalsIgnoreCase(input)) {
-                    matched = app;
-                    break;
-                }
-            }
-            if (matched != null) {
-                packageNameToAdd = matched.packageName;
-            }
+        if (matched != null) {
+            packageNameToAdd = matched.packageName;
         }
 
         // Check for duplicates again (in case user entered displayName)
@@ -532,6 +469,8 @@ public class FilterSettingsActivity extends AppCompatActivity {
         updateCountDisplays();
         editAppName.setText("");
         saveAppList();
+        
+        InAppLogger.log("AppSelector", "Added app to filter: " + packageNameToAdd);
     }
 
     private void removeApp(int position) {
@@ -676,43 +615,43 @@ public class FilterSettingsActivity extends AppCompatActivity {
     
     // Media filtering methods
     private void addMediaExceptedApp() {
-        String appName = binding.editMediaExceptedApp.getText().toString().trim();
-        if (appName.isEmpty()) {
-            Toast.makeText(this, "Please select an app", Toast.LENGTH_SHORT).show();
+        String input = binding.editMediaExceptedApp.getText().toString().trim();
+        if (input.isEmpty()) {
+            Toast.makeText(this, "Please enter an app name or package name", Toast.LENGTH_SHORT).show();
             return;
         }
         
-        // Find the app info
-        AppInfo selectedApp = null;
-        for (AppInfo app : installedApps) {
-            if (app.appName.equals(appName)) {
-                selectedApp = app;
+        // Try to match input to JSON apps as fallback for display names
+        String packageNameToAdd = input;
+        AppListData matched = null;
+        for (AppListData app : AppListManager.INSTANCE.loadAppList(this)) {
+            if (app.displayName.equalsIgnoreCase(input) || app.packageName.equalsIgnoreCase(input)) {
+                matched = app;
                 break;
             }
         }
-        
-        if (selectedApp == null) {
-            Toast.makeText(this, "App not found", Toast.LENGTH_SHORT).show();
-            return;
+        if (matched != null) {
+            packageNameToAdd = matched.packageName;
         }
         
         // Check if already in list
         for (AppFilterItem item : mediaExceptedAppsList) {
-            if (item.packageName.equals(selectedApp.packageName)) {
+            if (item.packageName.equals(packageNameToAdd)) {
                 Toast.makeText(this, "App already in exception list", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
         
         // Add to list
-        mediaExceptedAppsList.add(new AppFilterItem(selectedApp.packageName, false));
+        mediaExceptedAppsList.add(new AppFilterItem(packageNameToAdd, false));
         mediaExceptedAppsAdapter.notifyDataSetChanged();
         saveMediaExceptedApps();
         
         // Clear input
         binding.editMediaExceptedApp.setText("");
         
-        Toast.makeText(this, "Added " + selectedApp.appName + " to media exception list", Toast.LENGTH_SHORT).show();
+        InAppLogger.log("AppSelector", "Added app to media exception list: " + packageNameToAdd);
+        Toast.makeText(this, "Added " + packageNameToAdd + " to media exception list", Toast.LENGTH_SHORT).show();
     }
     
     private void removeMediaExceptedApp(int position) {
@@ -791,31 +730,17 @@ public class FilterSettingsActivity extends AppCompatActivity {
             return;
         }
 
-        // Try to match input to installed apps first, then fall back to JSON
+        // Try to match input to JSON apps as fallback for display names
         String packageNameToRemove = input;
-        
-        // First check installed apps
-        if (installedApps != null) {
-            for (AppInfo app : installedApps) {
-                if (app.appName.equalsIgnoreCase(input) || app.packageName.equalsIgnoreCase(input)) {
-                    packageNameToRemove = app.packageName;
-                    break;
-                }
+        AppListData matched = null;
+        for (AppListData app : AppListManager.INSTANCE.loadAppList(this)) {
+            if (app.displayName.equalsIgnoreCase(input) || app.packageName.equalsIgnoreCase(input)) {
+                matched = app;
+                break;
             }
         }
-        
-        // If not found in installed apps, check JSON as fallback
-        if (packageNameToRemove.equals(input)) {
-            AppListData matched = null;
-            for (AppListData app : AppListManager.INSTANCE.loadAppList(this)) {
-                if (app.displayName.equalsIgnoreCase(input) || app.packageName.equalsIgnoreCase(input)) {
-                    matched = app;
-                    break;
-                }
-            }
-            if (matched != null) {
-                packageNameToRemove = matched.packageName;
-            }
+        if (matched != null) {
+            packageNameToRemove = matched.packageName;
         }
 
         // Remove from app blacklist
@@ -837,24 +762,15 @@ public class FilterSettingsActivity extends AppCompatActivity {
             
             // Find the app name for display
             String appNameToShow = packageNameToRemove;
-            if (installedApps != null) {
-                for (AppInfo app : installedApps) {
-                    if (app.packageName.equals(packageNameToRemove)) {
-                        appNameToShow = app.appName;
-                        break;
-                    }
-                }
-            }
-            if (appNameToShow.equals(packageNameToRemove)) {
-                // Try JSON as fallback
-                for (AppListData app : AppListManager.INSTANCE.loadAppList(this)) {
-                    if (app.packageName.equals(packageNameToRemove)) {
-                        appNameToShow = app.displayName;
-                        break;
-                    }
+            // Try JSON as fallback
+            for (AppListData app : AppListManager.INSTANCE.loadAppList(this)) {
+                if (app.packageName.equals(packageNameToRemove)) {
+                    appNameToShow = app.displayName;
+                    break;
                 }
             }
             
+            InAppLogger.log("AppSelector", "Removed app from filter: " + packageNameToRemove);
             Toast.makeText(this, "Removed " + appNameToShow + " from filter", Toast.LENGTH_SHORT).show();
             binding.editFilteredMediaApp.setText("");
         } else {
@@ -1420,6 +1336,9 @@ public class FilterSettingsActivity extends AppCompatActivity {
         if (localBroadcastManager != null && repairBlacklistReceiver != null) {
             localBroadcastManager.unregisterReceiver(repairBlacklistReceiver);
         }
+        if (appSelectorAdapter != null) {
+            appSelectorAdapter.shutdown();
+        }
         binding = null;
     }
 
@@ -1625,265 +1544,43 @@ public class FilterSettingsActivity extends AppCompatActivity {
     }
 
     private void initializeAppSelector() {
-        // First try to get installed apps
-        List<AppInfo> installedApps = getInstalledApps();
+        // Use lazy loading adapter that only loads apps when user starts searching
+        appSelectorAdapter = new LazyAppSearchAdapter(this);
+        editAppName.setAdapter(appSelectorAdapter);
+        editAppName.setThreshold(1); // Show suggestions after 1 character
         
-        if (installedApps != null && !installedApps.isEmpty()) {
-            // Use installed apps as primary source
-            appSelectorAdapter = new AppAutoCompleteAdapter(this, installedApps);
-            editAppName.setAdapter(appSelectorAdapter);
-            editAppName.setThreshold(1); // Show suggestions after 1 character
-            
-            // Handle app selection
-            editAppName.setOnItemClickListener((parent, view, position, id) -> {
-                AppInfo selectedApp = appSelectorAdapter.getItem(position);
-                if (selectedApp != null) {
-                    editAppName.setText(selectedApp.packageName);
-                    editAppName.setSelection(selectedApp.packageName.length());
-                    InAppLogger.log("AppSelector", "Selected installed app: " + selectedApp.appName + " (" + selectedApp.packageName + ")");
-                }
-            });
-            
-            InAppLogger.log("AppSelector", "App selector initialized with " + installedApps.size() + " installed apps");
-        } else {
-            // Fallback to JSON apps if installed apps can't be loaded
-            List<AppListData> jsonApps = AppListManager.INSTANCE.loadAppList(this);
-            
-            if (jsonApps != null && !jsonApps.isEmpty()) {
-                AppSearchAdapter jsonAdapter = new AppSearchAdapter(this, jsonApps);
-                editAppName.setAdapter(jsonAdapter);
-                editAppName.setThreshold(1);
-                
-                editAppName.setOnItemClickListener((parent, view, position, id) -> {
-                    AppListData selectedApp = jsonAdapter.getItem(position);
-                    if (selectedApp != null) {
-                        editAppName.setText(selectedApp.packageName);
-                        editAppName.setSelection(selectedApp.packageName.length());
-                        InAppLogger.log("AppSelector", "Selected JSON app: " + selectedApp.displayName + " (" + selectedApp.packageName + ")");
-                    }
-                });
-                
-                InAppLogger.log("AppSelector", "Fallback: App selector initialized with " + jsonApps.size() + " JSON apps");
-            } else {
-                // Final fallback to common apps
-                List<AppInfo> commonApps = getCommonApps();
-                
-                if (commonApps != null && !commonApps.isEmpty()) {
-                    appSelectorAdapter = new AppAutoCompleteAdapter(this, commonApps);
-                    editAppName.setAdapter(appSelectorAdapter);
-                    editAppName.setThreshold(1);
-                    
-                    editAppName.setOnItemClickListener((parent, view, position, id) -> {
-                        AppInfo selectedApp = appSelectorAdapter.getItem(position);
-                        if (selectedApp != null) {
-                            editAppName.setText(selectedApp.packageName);
-                            editAppName.setSelection(selectedApp.packageName.length());
-                            InAppLogger.log("AppSelector", "Selected common app: " + selectedApp.appName + " (" + selectedApp.packageName + ")");
-                        }
-                    });
-                    
-                    InAppLogger.log("AppSelector", "Final fallback: App selector initialized with " + commonApps.size() + " common apps");
-                } else {
-                    InAppLogger.logError("AppSelector", "No apps loaded for selector");
-                }
+        // Handle app selection
+        editAppName.setOnItemClickListener((parent, view, position, id) -> {
+            AppInfo selectedApp = appSelectorAdapter.getItem(position);
+            if (selectedApp != null) {
+                editAppName.setText(selectedApp.packageName);
+                editAppName.setSelection(selectedApp.packageName.length());
+                InAppLogger.log("AppSelector", "Selected app: " + selectedApp.appName + " (" + selectedApp.packageName + ")");
             }
-        }
+        });
+        
+        InAppLogger.log("AppSelector", "Lazy app selector initialized - apps will load on search");
     }
 
     private void initializeFilteredMediaAppSelector() {
-        // First try to get installed apps
-        List<AppInfo> installedApps = getInstalledApps();
+        // Use lazy loading adapter for filtered media app selector too
+        LazyAppSearchAdapter mediaAppAdapter = new LazyAppSearchAdapter(this);
+        binding.editFilteredMediaApp.setAdapter(mediaAppAdapter);
+        binding.editFilteredMediaApp.setThreshold(1); // Show suggestions after 1 character
         
-        if (installedApps != null && !installedApps.isEmpty()) {
-            // Use installed apps as primary source
-            AppAutoCompleteAdapter installedAdapter = new AppAutoCompleteAdapter(this, installedApps);
-            binding.editFilteredMediaApp.setAdapter(installedAdapter);
-            binding.editFilteredMediaApp.setThreshold(1); // Show suggestions after 1 character
-            
-            // Handle app selection
-            binding.editFilteredMediaApp.setOnItemClickListener((parent, view, position, id) -> {
-                AppInfo selectedApp = installedAdapter.getItem(position);
-                if (selectedApp != null) {
-                    binding.editFilteredMediaApp.setText(selectedApp.packageName);
-                    binding.editFilteredMediaApp.setSelection(selectedApp.packageName.length());
-                }
-            });
-            
-            InAppLogger.log("AppSelector", "Filtered media app selector initialized with " + installedApps.size() + " installed apps");
-        } else {
-            // Fallback to JSON apps if installed apps can't be loaded
-            List<AppListData> jsonApps = AppListManager.INSTANCE.loadAppList(this);
-            
-            if (jsonApps != null && !jsonApps.isEmpty()) {
-                AppSearchAdapter jsonAdapter = new AppSearchAdapter(this, jsonApps);
-                binding.editFilteredMediaApp.setAdapter(jsonAdapter);
-                binding.editFilteredMediaApp.setThreshold(1);
-                
-                binding.editFilteredMediaApp.setOnItemClickListener((parent, view, position, id) -> {
-                    AppListData selectedApp = jsonAdapter.getItem(position);
-                    if (selectedApp != null) {
-                        binding.editFilteredMediaApp.setText(selectedApp.packageName);
-                        binding.editFilteredMediaApp.setSelection(selectedApp.packageName.length());
-                    }
-                });
-                
-                InAppLogger.log("AppSelector", "Fallback: Filtered media app selector initialized with " + jsonApps.size() + " JSON apps");
-            } else {
-                // Final fallback to common apps
-                List<AppInfo> commonApps = getCommonApps();
-                
-                if (commonApps != null && !commonApps.isEmpty()) {
-                    AppAutoCompleteAdapter commonAdapter = new AppAutoCompleteAdapter(this, commonApps);
-                    binding.editFilteredMediaApp.setAdapter(commonAdapter);
-                    binding.editFilteredMediaApp.setThreshold(1);
-                    
-                    binding.editFilteredMediaApp.setOnItemClickListener((parent, view, position, id) -> {
-                        AppInfo selectedApp = commonAdapter.getItem(position);
-                        if (selectedApp != null) {
-                            binding.editFilteredMediaApp.setText(selectedApp.packageName);
-                            binding.editFilteredMediaApp.setSelection(selectedApp.packageName.length());
-                        }
-                    });
-                    
-                    InAppLogger.log("AppSelector", "Final fallback: Filtered media app selector initialized with " + commonApps.size() + " common apps");
-                }
+        // Handle app selection
+        binding.editFilteredMediaApp.setOnItemClickListener((parent, view, position, id) -> {
+            AppInfo selectedApp = mediaAppAdapter.getItem(position);
+            if (selectedApp != null) {
+                binding.editFilteredMediaApp.setText(selectedApp.packageName);
+                binding.editFilteredMediaApp.setSelection(selectedApp.packageName.length());
             }
-        }
+        });
+        
+        InAppLogger.log("AppSelector", "Lazy filtered media app selector initialized - apps will load on search");
     }
     
-    private List<AppInfo> getCommonApps() {
-        List<AppInfo> apps = new ArrayList<>();
-        PackageManager pm = getPackageManager();
-        
-                 // Common notification-heavy apps that users typically want to filter
-         // Focused on apps that send frequent updates, location tracking, or repetitive notifications
-         String[][] commonApps = {
-             // Navigation & Location Apps
-             {"Google Maps", "com.google.android.apps.maps"},
-             {"Waze", "com.waze"},
-             {"Life360", "com.life360.android.safetymapd"},
-             {"Find My Device", "com.google.android.apps.adm"},
-             
-             // Ride Sharing & Delivery Apps
-             {"Uber", "com.ubercab"},
-             {"Lyft", "me.lyft.android"},
-             {"DoorDash", "com.dd.doordash"},
-             {"Uber Eats", "com.ubercab.eats"},
-             {"Grubhub", "com.grubhub.android"},
-             {"Postmates", "com.postmates.android"},
-             
-             // Messaging Apps (can be very chatty)
-             {"WhatsApp", "com.whatsapp"},
-             {"Discord", "com.discord"},
-             {"Telegram", "org.telegram.messenger"},
-             {"Signal", "org.thoughtcrime.securesms"},
-             {"Slack", "com.Slack"},
-             {"Microsoft Teams", "com.microsoft.teams"},
-             
-             // Social Media (frequent notifications)
-             {"Facebook", "com.facebook.katana"},
-             {"Instagram", "com.instagram.android"},
-             {"Twitter", "com.twitter.android"},
-             {"TikTok", "com.zhiliaoapp.musically"},
-             {"Snapchat", "com.snapchat.android"},
-             
-             // Shopping & Payment (order updates)
-             {"Amazon", "com.amazon.mShop.android.shopping"},
-             {"Google Pay", "com.google.android.apps.nfc.payment"},
-             {"PayPal", "com.paypal.android.p2pmobile"},
-             {"Venmo", "com.venmo"},
-             
-             // Google Services (system notifications)
-             {"Gmail", "com.google.android.gm"},
-             {"YouTube", "com.google.android.youtube"},
-             {"Google Play Store", "com.android.vending"},
-             
-             // Work/Meeting Apps
-             {"Zoom", "us.zoom.videomeetings"},
-             {"Skype", "com.skype.raider"},
-             
-             // Entertainment (progress updates)
-             {"Spotify", "com.spotify.music"},
-             {"Netflix", "com.netflix.mediaclient"}
-         };
-        
-        try {
-            for (String[] appData : commonApps) {
-                String appName = appData[0];
-                String packageName = appData[1];
-                
-                                 // Try to get the real app icon and name if installed
-                 try {
-                     ApplicationInfo appInfo = pm.getApplicationInfo(packageName, 0);
-                     android.graphics.drawable.Drawable icon = pm.getApplicationIcon(appInfo);
-                     String realName = pm.getApplicationLabel(appInfo).toString();
-                     apps.add(new AppInfo(realName, packageName, icon));
-                     InAppLogger.log("AppSelector", "Found installed app: " + realName + " (" + packageName + ")");
-                 } catch (Exception e) {
-                     // Can't detect if app is installed (Android 11+ restrictions), but filtering still works
-                     android.graphics.drawable.Drawable icon = pm.getDefaultActivityIcon();
-                     apps.add(new AppInfo(appName, packageName, icon));
-                 }
-            }
-            
-            // Sort alphabetically
-            apps.sort((a, b) -> a.appName.compareToIgnoreCase(b.appName));
-            
-            InAppLogger.log("AppSelector", "Loaded " + apps.size() + " common apps for selector");
-            
-        } catch (Exception e) {
-            InAppLogger.logError("AppSelector", "Error loading common apps: " + e.getMessage());
-        }
-        
-        return apps;
-    }
 
-    private List<AppInfo> getInstalledApps() {
-        List<AppInfo> apps = new ArrayList<>();
-        PackageManager pm = getPackageManager();
-        
-        try {
-            // Query for all apps that can be launched (user-installed apps)
-            Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-            mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-            
-            List<ResolveInfo> resolveInfoList = pm.queryIntentActivities(mainIntent, 0);
-            
-            InAppLogger.log("AppSelector", "Found " + resolveInfoList.size() + " installed apps");
-            
-            for (ResolveInfo resolveInfo : resolveInfoList) {
-                try {
-                    String packageName = resolveInfo.activityInfo.packageName;
-                    String appName = resolveInfo.loadLabel(pm).toString();
-                    android.graphics.drawable.Drawable icon = resolveInfo.loadIcon(pm);
-                    
-                    // Skip system apps and our own app
-                    if (!packageName.equals(getPackageName()) && 
-                        !packageName.startsWith("com.android.") &&
-                        !packageName.startsWith("android.") &&
-                        !packageName.startsWith("com.google.android.") &&
-                        !packageName.startsWith("com.samsung.") &&
-                        !packageName.startsWith("com.sec.")) {
-                        
-                        apps.add(new AppInfo(appName, packageName, icon));
-                    }
-                } catch (Exception e) {
-                    // Skip apps that can't be loaded
-                    InAppLogger.logError("AppSelector", "Error loading app info: " + e.getMessage());
-                }
-            }
-            
-            // Sort alphabetically by app name
-            apps.sort((a, b) -> a.appName.compareToIgnoreCase(b.appName));
-            
-            InAppLogger.log("AppSelector", "Loaded " + apps.size() + " user-installed apps");
-            
-        } catch (Exception e) {
-            InAppLogger.logError("AppSelector", "Error getting installed apps: " + e.getMessage());
-        }
-        
-        return apps;
-    }
 
     private void showAppFilterHelp() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

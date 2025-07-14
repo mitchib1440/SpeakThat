@@ -1,3 +1,4 @@
+
 # SpeakThat! Logo Easter Eggs
 # Each line below is a potential random message when tapping the logo (after the first tap)
 # To add new easter eggs: Simply add a new line with your message
