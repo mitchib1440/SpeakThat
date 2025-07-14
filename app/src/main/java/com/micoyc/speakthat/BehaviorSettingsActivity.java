@@ -14,6 +14,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -237,16 +238,18 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.sliderWaveSensitivity.setValueTo(90f);
         binding.sliderWaveSensitivity.setStepSize(1f);
         binding.sliderWaveSensitivity.setLabelFormatter(value -> String.format("%.0f%%", value));
-        binding.textWaveThreshold.setText("Proximity Threshold: --");
+        binding.textWaveThreshold.setText("Proximity Threshold: 60% (3.00 cm of 5.00 cm max) - Not calibrated");
 
         binding.sliderWaveSensitivity.addOnChangeListener((slider, value, fromUser) -> {
-            if (calibratedMaxDistance <= 0) {
-                Toast.makeText(this, "Please calibrate wave detection first!", Toast.LENGTH_SHORT).show();
-                binding.sliderWaveSensitivity.setEnabled(false);
-                return;
-            }
+            Log.d("WaveTest", "Slider changed - value: " + value + ", fromUser: " + fromUser);
             thresholdPercent = value;
-            float threshold = calibratedMaxDistance * (thresholdPercent / 100f);
+            
+            // Use calibrated distance if available, otherwise use default fallback
+            float maxDistance = calibratedMaxDistance > 0 ? calibratedMaxDistance : 5.0f;
+            float threshold = maxDistance * (thresholdPercent / 100f);
+            
+            Log.d("WaveTest", "Calculated threshold: " + threshold + " cm from " + maxDistance + " cm max");
+            
             saveWaveThresholdPercent(thresholdPercent);
             updateWaveThresholdMarker(threshold);
             updateWaveThresholdText(threshold);
@@ -382,9 +385,13 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         calibratedMaxDistance = getSharedPreferences("BehaviorSettings", MODE_PRIVATE).getFloat("sensor_max_range_v1", -1f);
         float threshold = (calibratedMaxDistance > 0) ? (calibratedMaxDistance * (thresholdPercent / 100f)) : 3.0f;
 
-        // Disable slider if not calibrated
-        binding.sliderWaveSensitivity.setEnabled(calibratedMaxDistance > 0);
+        // Enable slider (will use fallback values if not calibrated)
+        binding.sliderWaveSensitivity.setEnabled(true);
         binding.sliderWaveSensitivity.setValue(thresholdPercent);
+        
+        // Update progress bar max value to match calibrated distance
+        updateWaveProgressBarMax();
+        
         updateWaveThresholdMarker(threshold);
         updateWaveThresholdText(threshold);
 
@@ -666,6 +673,11 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     }
 
     private void updateThresholdMarker(float threshold) {
+        // Check if binding is null (activity might be destroyed)
+        if (binding == null) {
+            return;
+        }
+        
         // Calculate marker position based on threshold value (5-25 range)
         float percentage = (threshold - 5f) / 20f; // Convert to 0-1 range
         
@@ -679,6 +691,11 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             binding.progressShakeMeter.getViewTreeObserver().addOnGlobalLayoutListener(new android.view.ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
+                    // Check if binding is still valid when callback executes
+                    if (binding == null) {
+                        return;
+                    }
+                    
                     binding.progressShakeMeter.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     
                     int width = binding.progressShakeMeter.getWidth();
@@ -691,6 +708,11 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     }
 
     private void updateMarkerPosition(float percentage, int progressBarWidth) {
+        // Check if binding is null (activity might be destroyed)
+        if (binding == null) {
+            return;
+        }
+        
         int markerPosition = (int) (progressBarWidth * percentage);
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) binding.thresholdMarker.getLayoutParams();
         params.leftMargin = Math.max(0, markerPosition - 1); // Center the 3dp wide marker, ensure >= 0
@@ -698,55 +720,110 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     }
 
     private void updateThresholdText(float threshold) {
+        // Check if binding is null (activity might be destroyed)
+        if (binding == null) {
+            return;
+        }
+        
         binding.textThreshold.setText(String.format("Threshold: %.1f", threshold));
     }
 
     private void updateWaveThresholdMarker(float threshold) {
-        // Similar to shake threshold marker but for wave (proximity)
-        binding.waveThresholdMarker.post(() -> {
-            binding.waveThresholdMarker.getViewTreeObserver().addOnGlobalLayoutListener(new android.view.ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    binding.waveThresholdMarker.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    
-                    // Add a small delay to ensure layout is fully ready
-                    uiHandler.postDelayed(() -> {
-                        int progressBarWidth = binding.progressWaveMeter.getWidth();
-                        if (progressBarWidth > 0) {
-                            // For proximity: closer = higher percentage
-                            // Your sensor has 10cm max range, so adjust calculation
-                            // Threshold is the distance where we trigger (closer than this = trigger)
-                            float percentage = Math.max(0, Math.min(1.0f, (10.0f - threshold) / 10.0f));
-                            Log.d("WaveTest", "Updating marker - threshold: " + threshold + " cm, percentage: " + percentage + ", width: " + progressBarWidth);
-                            updateWaveMarkerPosition(percentage, progressBarWidth);
-                        } else {
-                            Log.d("WaveTest", "Progress bar width is 0, cannot update marker");
-                        }
-                    }, 100); // 100ms delay
-                }
-            });
-        });
+        Log.d("WaveTest", "updateWaveThresholdMarker called with threshold: " + threshold + " cm");
+        
+        // Check if binding is null (activity might be destroyed)
+        if (binding == null) {
+            Log.d("WaveTest", "Binding is null, skipping marker update");
+            return;
+        }
+        
+        // Simplified marker update - similar to shake threshold marker
+        int progressBarWidth = binding.progressWaveMeter.getWidth();
+        Log.d("WaveTest", "Progress bar width: " + progressBarWidth);
+        
+        if (progressBarWidth > 0) {
+            // For proximity: closer = higher percentage
+            // Use the actual calibrated max distance instead of hardcoded 10.0f
+            // Threshold is the distance where we trigger (closer than this = trigger)
+            float maxRange = calibratedMaxDistance > 0 ? calibratedMaxDistance : 5.0f; // fallback to 5cm
+            // Flip the calculation: threshold/maxRange gives us the correct direction
+            float percentage = Math.max(0, Math.min(1.0f, threshold / maxRange));
+            Log.d("WaveTest", "Updating marker - threshold: " + threshold + " cm, maxRange: " + maxRange + " cm, percentage: " + percentage + ", width: " + progressBarWidth);
+            updateWaveMarkerPosition(percentage, progressBarWidth);
+        } else {
+            // Layout not ready yet, try again after a short delay
+            Log.d("WaveTest", "Layout not ready, retrying in 100ms");
+            uiHandler.postDelayed(() -> updateWaveThresholdMarker(threshold), 100);
+        }
     }
 
     // Force update the marker when the wave settings section becomes visible
     private void forceUpdateWaveMarker() {
+        // Check if binding is null (activity might be destroyed)
+        if (binding == null) {
+            Log.d("WaveTest", "Binding is null, skipping force marker update");
+            return;
+        }
+        
         if (binding.waveSettingsSection.getVisibility() == View.VISIBLE) {
-            float currentThreshold = binding.sliderWaveSensitivity.getValue();
-            Log.d("WaveTest", "Force updating marker with threshold: " + currentThreshold);
-            updateWaveThresholdMarker(currentThreshold);
+            float currentThresholdPercent = binding.sliderWaveSensitivity.getValue();
+            float maxDistance = calibratedMaxDistance > 0 ? calibratedMaxDistance : 5.0f;
+            float threshold = maxDistance * (currentThresholdPercent / 100f);
+            Log.d("WaveTest", "Force updating marker with threshold percent: " + currentThresholdPercent + "%, calculated threshold: " + threshold + " cm");
+            updateWaveThresholdMarker(threshold);
         }
     }
 
     private void updateWaveMarkerPosition(float percentage, int progressBarWidth) {
+        // Check if binding is null (activity might be destroyed)
+        if (binding == null) {
+            Log.d("WaveTest", "Binding is null, skipping marker position update");
+            return;
+        }
+        
         int marginStart = Math.round(percentage * progressBarWidth);
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) binding.waveThresholdMarker.getLayoutParams();
+        
+        // Since the marker is in a FrameLayout, we need to use FrameLayout.LayoutParams
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) binding.waveThresholdMarker.getLayoutParams();
+        if (params == null) {
+            // Create new params if they don't exist
+            params = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+        }
+        
         params.leftMargin = marginStart;
         binding.waveThresholdMarker.setLayoutParams(params);
-        Log.d("WaveTest", "Marker position updated - marginStart: " + marginStart + "px");
+        Log.d("WaveTest", "Marker position updated - marginStart: " + marginStart + "px, percentage: " + percentage);
     }
 
     private void updateWaveThresholdText(float threshold) {
-        binding.textWaveThreshold.setText(String.format("Proximity Threshold: %.0f%% (%.2f cm of %.2f cm max)", thresholdPercent, threshold, calibratedMaxDistance));
+        // Check if binding is null (activity might be destroyed)
+        if (binding == null) {
+            Log.d("WaveTest", "Binding is null, skipping threshold text update");
+            return;
+        }
+        
+        float maxDistance = calibratedMaxDistance > 0 ? calibratedMaxDistance : 5.0f;
+        String statusText = calibratedMaxDistance > 0 ? 
+            String.format("Proximity Threshold: %.0f%% (%.2f cm of %.2f cm max)", thresholdPercent, threshold, maxDistance) :
+            String.format("Proximity Threshold: %.0f%% (%.2f cm of %.2f cm max) - Not calibrated", thresholdPercent, threshold, maxDistance);
+        binding.textWaveThreshold.setText(statusText);
+    }
+    
+    private void updateWaveProgressBarMax() {
+        // Check if binding is null (activity might be destroyed)
+        if (binding == null) {
+            Log.d("WaveTest", "Binding is null, skipping progress bar max update");
+            return;
+        }
+        
+        // Update the progress bar's max value to match the calibrated max distance
+        // Round to nearest integer for cleaner display
+        int maxValue = Math.round(calibratedMaxDistance > 0 ? calibratedMaxDistance : 5.0f);
+        binding.progressWaveMeter.setMax(maxValue);
+        Log.d("WaveTest", "Updated progress bar max value to: " + maxValue);
     }
 
     private void startShakeTest() {
@@ -780,7 +857,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private void startWaveTest() {
         if (proximitySensor != null) {
             isTestingWave = true;
-            minWaveValue = 5.0f;
+            minWaveValue = calibratedMaxDistance > 0 ? calibratedMaxDistance : 5.0f;
             binding.btnWaveTest.setText("Stop Test");
             binding.progressWaveMeter.setProgress(0);
             binding.textCurrentWave.setText("No object detected");
@@ -830,6 +907,11 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             
             // Update UI on main thread
             uiHandler.post(() -> {
+                // Check if binding is null (activity might be destroyed)
+                if (binding == null) {
+                    return;
+                }
+                
                 // Update progress bar (clamped to max value of 25)
                 int progress = Math.round(Math.min(currentShakeValue, 25f));
                 binding.progressShakeMeter.setProgress(progress);
@@ -864,15 +946,21 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             
             // Update UI on main thread
             uiHandler.post(() -> {
+                // Check if binding is null (activity might be destroyed)
+                if (binding == null) {
+                    return;
+                }
+                
                 // Update progress bar (inverted: closer = higher progress)
-                // Your sensor has 10cm max range, so adjust calculation
+                // Use calibrated max distance instead of hardcoded 10.0f
+                float maxRange = calibratedMaxDistance > 0 ? calibratedMaxDistance : 5.0f; // fallback to 5cm
                 float progressValue;
                 if (currentWaveValue == 0) {
                     // Sensor returns 0 when close (most common)
-                    progressValue = 10.0f; // Full progress for 10cm range
+                    progressValue = maxRange; // Full progress for calibrated range
                 } else {
-                    // Sensor returns distance, invert it for 10cm range
-                    progressValue = Math.max(0, 10.0f - currentWaveValue);
+                    // Sensor returns distance, invert it for calibrated range
+                    progressValue = Math.max(0, maxRange - currentWaveValue);
                 }
                 
                 int progress = Math.round(progressValue);
@@ -884,7 +972,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 binding.textCurrentWave.setText(statusText);
                 
                 // Check if threshold exceeded (closer than threshold)
-                float threshold = binding.sliderWaveSensitivity.getValue();
+                float threshold = calibratedMaxDistance * (thresholdPercent / 100f);
                 boolean isTriggered = (currentWaveValue == 0) || (currentWaveValue <= threshold);
                 
                 if (isTriggered) {
@@ -911,10 +999,13 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     protected void onDestroy() {
         super.onDestroy();
         
-        // Clean up sensor listener
-        if (isTestingShake) {
+        // Clean up sensor listeners
+        if (isTestingShake || isTestingWave) {
             sensorManager.unregisterListener(this);
         }
+        
+        // Remove any pending delayed operations
+        uiHandler.removeCallbacksAndMessages(null);
         
         binding = null;
     }
@@ -945,6 +1036,11 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     }
 
     private void updateDuckingVolumeDisplay(int volume) {
+        // Check if binding is null (activity might be destroyed)
+        if (binding == null) {
+            return;
+        }
+        
         binding.duckingVolumeValue.setText(volume + "%");
     }
 
@@ -1249,6 +1345,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
 
         // Update the slider and UI
         binding.sliderWaveSensitivity.setValue(thresholdPercent);
+        updateWaveProgressBarMax();
         updateWaveThresholdMarker(threshold);
         updateWaveThresholdText(threshold);
     }

@@ -37,7 +37,7 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="v1.0.4\nby Mitchi"
+            android:text="v1.1.0\nby Mitchi"
             android:textAlignment="viewEnd"
             android:padding="4dp"
             android:textSize="10sp"/>

@@ -217,7 +217,7 @@
                                     android:id="@+id/txtAppFilterHelp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="💡 Search through thousands of apps by name, package, or category. Click a suggestion to add it instantly. (Tap for more info)"
+                                    android:text="💡 Search through your installed apps by name or package. Click a suggestion to add it instantly. (Tap for more info)"
                                     android:textSize="12sp"
                                     android:textColor="@color/text_primary"
                                     android:background="?android:attr/selectableItemBackground"

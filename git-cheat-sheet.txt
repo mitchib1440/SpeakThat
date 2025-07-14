@@ -1,0 +1,49 @@
+# Git Branch Workflow Cheat Sheet
+
+## 1. Create and Switch to a New Branch
+    git checkout -b my-feature-branch
+
+## 2. Check Status (see what’s changed)
+    git status
+
+## 3. Stage Changes
+    git add .                # Stage all changes
+    # or
+    git add path/to/file     # Stage specific file
+
+## 4. Commit Changes
+    git commit -m "Describe your change"
+
+## 5. Switch Back to Main Branch
+    git checkout main
+
+## 6. Update Main Branch (optional, but good practice)
+    git pull
+
+## 7. Merge Your Feature Branch into Main
+    git merge my-feature-branch
+
+## 8. Delete the Feature Branch (optional, after merging)
+    git branch -d my-feature-branch
+
+## 9. Push Changes to Remote (e.g., GitHub)
+    git push origin main
+
+---
+
+## Bonus: See Branches and History
+
+# List all branches
+    git branch
+
+# See commit history (pretty graph)
+    git log --oneline --graph --all
+
+---
+
+# Option Explanations
+- `-b` : Create a new branch and switch to it
+- `-m` : Commit message
+- `--oneline` : Show each commit as a single line
+- `--graph` : Show a text-based branch/merge graph
+- `--all` : Show all branches (not just current)
