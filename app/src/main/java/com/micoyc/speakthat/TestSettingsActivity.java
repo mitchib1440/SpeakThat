@@ -31,7 +31,12 @@ public class TestSettingsActivity extends AppCompatActivity {
         
         // Apply saved theme
         mainPrefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        applySavedTheme();
+        boolean isDarkMode = mainPrefs.getBoolean("dark_mode", false); // Default to light mode
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
         
         // Initialize voice preferences
         voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE);
@@ -106,7 +111,7 @@ public class TestSettingsActivity extends AppCompatActivity {
     }
     
     private void testGeneralSettings(StringBuilder results) {
-        boolean darkMode = mainPrefs.getBoolean("dark_mode", true);
+        boolean darkMode = mainPrefs.getBoolean("dark_mode", false); // Default to light mode
         boolean autoStart = mainPrefs.getBoolean("auto_start_on_boot", false);
         boolean batteryOpt = mainPrefs.getBoolean("battery_optimization_disabled", false);
         boolean aggressiveProc = mainPrefs.getBoolean("aggressive_background_processing", false);

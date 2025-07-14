@@ -4002,5 +4002,12 @@
     "category": "Entertainment",
     "aliases": ["music", "poweramp"],
     "iconSlug": "poweramp"
+  },
+  {
+    "displayName": "Notification Test App",
+    "packageName": "com.mand.notitest",
+    "category": "Testing",
+    "aliases": ["notitest", "test app"],
+    "iconSlug": "test"
   }
 ]

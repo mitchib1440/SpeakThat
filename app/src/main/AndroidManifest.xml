@@ -2,8 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <queries>
+        <!-- Allow querying all launcher apps for app name resolution -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+        </intent>
+    </queries>
+
     <!-- Permission to access notifications -->
-    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
+    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+        tools:ignore="ProtectedPermissions" />
     
     <!-- Permission to use text-to-speech -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
@@ -91,6 +99,12 @@
             android:name=".TestSettingsActivity"
             android:exported="false"
             android:parentActivityName=".GeneralSettingsActivity"
+            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+
+        <activity
+            android:name=".WaveCalibrationActivity"
+            android:exported="false"
+            android:parentActivityName=".BehaviorSettingsActivity"
             android:theme="@style/Theme.SpeakThat.NoActionBar" />
 
         <!-- Notification Listener Service -->

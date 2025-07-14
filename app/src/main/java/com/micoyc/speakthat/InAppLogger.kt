@@ -359,8 +359,8 @@ object InAppLogger {
             logs.removeAt(0)
         }
         
-        // Save logs periodically (every 50 entries for performance)
-        if (logs.size % 50 == 0) {
+        // Save logs periodically (every 100 entries for performance)
+        if (logs.size % 100 == 0) {
             savePersistentLogs()
         }
         

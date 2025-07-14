@@ -23,6 +23,8 @@ import com.micoyc.speakthat.databinding.ActivityMainBinding
 import java.io.BufferedReader
 import java.util.Locale
 import kotlin.random.Random
+import android.os.Handler
+import android.os.Looper
 
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEventListener {
     
@@ -55,6 +57,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         }
     }
     
+    // Sensor timeout for safety
+    private var sensorTimeoutHandler: Handler? = null
+    private var sensorTimeoutRunnable: Runnable? = null
+    
     companion object {
         private const val TAG = "MainActivity"
         private const val PREFS_NAME = "SpeakThatPrefs"
@@ -64,7 +70,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         private const val KEY_SHAKE_THRESHOLD = "shake_threshold"
         private const val KEY_MASTER_SWITCH_ENABLED = "master_switch_enabled"
         private const val KEY_LAST_EASTER_EGG = "last_easter_egg_line"
-        
+        @JvmField
+        var isSensorListenerActive: Boolean = false
         /**
          * Check if the master switch is enabled (for use by NotificationReaderService)
          */
@@ -254,7 +261,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     // showNotificationHistory moved to DevelopmentSettingsActivity
     
     private fun applySavedTheme() {
-        val isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, true) // Default to dark mode
+        val isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, false) // Default to light mode
         
         if (isDarkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -264,15 +271,12 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun configureSystemUI() {
-        // Ensure the app respects system UI areas
-        window.setDecorFitsSystemWindows(true)
-        
-        // Set up proper window insets handling for modern Android
+        // Set up proper window insets handling for different Android versions
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             // For Android 11+ (API 30+), use the new window insets API
             window.setDecorFitsSystemWindows(true)
         } else {
-            // For older versions, ensure proper system UI flags
+            // For older versions (Android 10 and below), ensure proper system UI flags
             @Suppress("DEPRECATION")
             window.decorView.systemUiVisibility = (
                 android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
@@ -326,14 +330,42 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             InAppLogger.logTTSEvent("TTS initialized successfully", "MainActivity")
             Log.d(TAG, "TextToSpeech initialized successfully for MainActivity")
         } else {
-            Log.e(TAG, "TextToSpeech initialization failed")
+            Log.e(TAG, "TextToSpeech initialization failed with status: $status")
             InAppLogger.logTTSEvent("TTS initialization failed", "Status: $status")
+            
+            // Log device info for debugging
+            val deviceInfo = "Device: ${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}, " +
+                           "Android: ${android.os.Build.VERSION.RELEASE} (API ${android.os.Build.VERSION.SDK_INT})"
+            Log.e(TAG, "Device info: $deviceInfo")
+            InAppLogger.logError("MainActivity", "TTS init failed on $deviceInfo")
+            
+            // Show user feedback
+            Toast.makeText(this, "TTS initialization failed. Some features may not work.", Toast.LENGTH_LONG).show()
         }
     }
     
     private fun handleLogoClick() {
+        // Log TTS status for debugging
+        val ttsStatus = checkTtsStatus()
+        InAppLogger.log("MainActivity", "Logo clicked - $ttsStatus")
+        
+        // Log wave-to-stop settings for debugging
+        val waveEnabled = sharedPreferences.getBoolean("wave_to_stop_enabled", false)
+        val waveThreshold = sharedPreferences.getFloat("wave_threshold", 3.0f)
+        InAppLogger.log("MainActivity", "Wave-to-stop settings - enabled: $waveEnabled, threshold: ${waveThreshold}cm")
+        
         if (!isTtsInitialized) {
             Log.w(TAG, "TTS not initialized, cannot play logo easter egg")
+            InAppLogger.logError("MainActivity", "Logo click failed - TTS not initialized")
+            
+            // Try to reinitialize TTS if it failed
+            if (textToSpeech == null) {
+                Log.d(TAG, "Attempting to reinitialize TTS for logo click")
+                initializeTextToSpeech()
+            }
+            
+            // Show user feedback
+            Toast.makeText(this, "TTS not ready. Please try again in a moment.", Toast.LENGTH_SHORT).show()
             return
         }
         
@@ -379,7 +411,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun speakText(text: String) {
-        if (isTtsInitialized) {
+        if (isTtsInitialized && textToSpeech != null) {
             // Register shake listener for this TTS session
             startShakeListening()
             
@@ -399,10 +431,19 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                     // Stop shake listening even on error
                     stopShakeListening()
                     InAppLogger.logTTSEvent("MainActivity TTS error", "Easter egg failed")
+                    Log.e(TAG, "TTS error during easter egg playback")
                 }
             })
             
-            textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "easter_egg")
+            val result = textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "easter_egg")
+            if (result == TextToSpeech.ERROR) {
+                Log.e(TAG, "TTS speak() returned ERROR")
+                InAppLogger.logError("MainActivity", "TTS speak() failed")
+                Toast.makeText(this, "TTS playback failed", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Log.e(TAG, "Cannot speak text - TTS not ready. Initialized: $isTtsInitialized, TTS: ${textToSpeech != null}")
+            InAppLogger.logError("MainActivity", "TTS not ready for speech - initialized: $isTtsInitialized")
         }
     }
     
@@ -424,28 +465,60 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
 
     private fun loadWaveSettings() {
         isWaveToStopEnabled = sharedPreferences.getBoolean("wave_to_stop_enabled", false)
-        waveThreshold = sharedPreferences.getFloat("wave_threshold", 5.0f)
+        // Use calibrated threshold if available, otherwise fall back to old system
+        waveThreshold = if (sharedPreferences.contains("wave_threshold_v1")) {
+            sharedPreferences.getFloat("wave_threshold_v1", 3.0f)
+        } else {
+            sharedPreferences.getFloat("wave_threshold", 3.0f)
+        }
         Log.d(TAG, "MainActivity wave settings - enabled: $isWaveToStopEnabled, threshold: $waveThreshold")
     }
     
     private fun startShakeListening() {
+        Log.d(TAG, "startShakeListening called - shake enabled: $isShakeToStopEnabled, wave enabled: $isWaveToStopEnabled")
+        
         if (isShakeToStopEnabled && accelerometer != null) {
-            sensorManager?.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
+            sensorManager?.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
             Log.d(TAG, "MainActivity shake listener started")
+            InAppLogger.log("MainActivity", "Shake listener registered")
         }
         
         if (isWaveToStopEnabled && proximitySensor != null) {
-            sensorManager?.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_UI)
+            sensorManager?.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL)
             Log.d(TAG, "MainActivity wave listener started")
+            InAppLogger.log("MainActivity", "Wave listener registered")
+        } else {
+            Log.d(TAG, "Wave listener NOT started - enabled: $isWaveToStopEnabled, sensor: ${proximitySensor != null}")
+            InAppLogger.log("MainActivity", "Wave listener NOT registered - enabled: $isWaveToStopEnabled")
         }
+        // Start hard timeout
+        if (sensorTimeoutHandler == null) {
+            sensorTimeoutHandler = Handler(Looper.getMainLooper())
+        }
+        // Cancel any previous timeout
+        sensorTimeoutRunnable?.let { sensorTimeoutHandler?.removeCallbacks(it) }
+        sensorTimeoutRunnable = Runnable {
+            Log.w(TAG, "Sensor listener timeout reached! Forcibly unregistering sensors.")
+            InAppLogger.log("MainActivity", "Sensor listener timeout reached! Forcibly unregistering sensors.")
+            stopShakeListening()
+        }
+        sensorTimeoutHandler?.postDelayed(sensorTimeoutRunnable!!, 30_000) // 30 seconds
+        isSensorListenerActive = true
     }
     
     private fun stopShakeListening() {
         sensorManager?.unregisterListener(this)
         Log.d(TAG, "MainActivity shake listener stopped")
+        // Cancel timeout
+        sensorTimeoutRunnable?.let { sensorTimeoutHandler?.removeCallbacks(it) }
+        sensorTimeoutRunnable = null
+        isSensorListenerActive = false
     }
     
     override fun onSensorChanged(event: SensorEvent) {
+        // Log all sensor events for debugging
+        Log.d(TAG, "Sensor event: ${event.sensor.type} (shake enabled: $isShakeToStopEnabled, wave enabled: $isWaveToStopEnabled)")
+        
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER && isShakeToStopEnabled) {
             val x = event.values[0]
             val y = event.values[1]
@@ -470,12 +543,32 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 true
             } else {
                 // Sensor returns actual distance, check if closer than threshold
-                proximityValue <= waveThreshold
+                // Use < instead of <= to avoid triggering when sensor is at max range
+                // ADDITIONAL SAFETY: Only trigger if the value is significantly different from max range
+                // This prevents false triggers on devices like Pixel 2 XL that read ~5cm when uncovered
+                val maxRange = proximitySensor?.maximumRange ?: 5.0f
+                val significantChange = maxRange * 0.3f // Require at least 30% change from max
+                val distanceFromMax = maxRange - proximityValue
+                
+                proximityValue < waveThreshold && distanceFromMax > significantChange
             }
             
             if (isTriggered) {
-                Log.d(TAG, "Wave detected in MainActivity! Stopping TTS. Proximity value: $proximityValue cm")
+                val maxRange = proximitySensor?.maximumRange ?: 5.0f
+                val significantChange = maxRange * 0.3f
+                val distanceFromMax = maxRange - proximityValue
+                
+                Log.d(TAG, "Wave detected in MainActivity! Stopping TTS. Proximity: $proximityValue cm, threshold: $waveThreshold cm, maxRange: $maxRange cm, distanceFromMax: $distanceFromMax cm")
+                InAppLogger.log("MainActivity", "Wave detected - proximity: ${proximityValue}cm, threshold: ${waveThreshold}cm, maxRange: ${maxRange}cm")
                 stopSpeaking("wave")
+            } else {
+                // Log proximity values for debugging (but not too frequently)
+                if (System.currentTimeMillis() % 1000 < 100) { // Log ~10% of the time
+                    val maxRange = proximitySensor?.maximumRange ?: 5.0f
+                    val significantChange = maxRange * 0.3f
+                    val distanceFromMax = maxRange - proximityValue
+                    Log.d(TAG, "Proximity sensor reading: $proximityValue cm (threshold: $waveThreshold cm, maxRange: $maxRange cm, distanceFromMax: $distanceFromMax cm)")
+                }
             }
         }
     }
@@ -497,6 +590,42 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             VoiceSettingsActivity.applyVoiceSettings(tts, voicePrefs)
             Log.d(TAG, "MainActivity voice settings applied")
         }
+    }
+    
+    /**
+     * Check TTS status and log diagnostic information
+     */
+    private fun checkTtsStatus(): String {
+        val status = StringBuilder()
+        status.append("TTS Status:\n")
+        status.append("- Initialized: $isTtsInitialized\n")
+        status.append("- TTS instance: ${if (textToSpeech != null) "Present" else "Null"}\n")
+        
+        if (textToSpeech != null) {
+            try {
+                val available = textToSpeech?.isLanguageAvailable(Locale.getDefault()) ?: TextToSpeech.LANG_NOT_SUPPORTED
+                status.append("- Default language available: ${when(available) {
+                    TextToSpeech.LANG_AVAILABLE -> "Yes"
+                    TextToSpeech.LANG_COUNTRY_AVAILABLE -> "Yes (Country)"
+                    TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE -> "Yes (Country Variant)"
+                    TextToSpeech.LANG_MISSING_DATA -> "Missing Data"
+                    TextToSpeech.LANG_NOT_SUPPORTED -> "Not Supported"
+                    else -> "Unknown ($available)"
+                }}\n")
+                
+                val engines = textToSpeech?.engines?.size ?: 0
+                status.append("- Available engines: $engines\n")
+            } catch (e: Exception) {
+                status.append("- Error checking TTS: ${e.message}\n")
+            }
+        }
+        
+        val deviceInfo = "Device: ${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}, " +
+                        "Android: ${android.os.Build.VERSION.RELEASE} (API ${android.os.Build.VERSION.SDK_INT})"
+        status.append("- $deviceInfo")
+        
+        Log.d(TAG, status.toString())
+        return status.toString()
     }
     
     private fun getAvailableEasterEggs(): List<String> {

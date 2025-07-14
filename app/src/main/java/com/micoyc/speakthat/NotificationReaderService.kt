@@ -21,7 +21,6 @@ import java.util.HashMap
 import java.util.HashSet
 import java.util.Locale
 import kotlin.collections.ArrayList
-import org.json.JSONArray
 import android.app.NotificationManager
 import android.content.Context
 
@@ -80,8 +79,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private val notificationQueue = mutableListOf<QueuedNotification>()
     private var isCurrentlySpeaking = false
     
-    // Conditional filtering (foundation for future advanced rules)
-    private var conditionalFilterManager: ConditionalFilterManager? = null
+
     
     // Voice settings listener
     private var voiceSettingsPrefs: SharedPreferences? = null
@@ -191,13 +189,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 InAppLogger.logError("Service", "Filter settings loading failed: " + e.message)
             }
             
-            // Initialize conditional filter manager (foundation for future features)
-            try {
-                conditionalFilterManager = ConditionalFilterManager(this)
-            } catch (e: Exception) {
-                Log.e(TAG, "Error initializing conditional filter manager", e)
-                InAppLogger.logError("Service", "Conditional filter manager initialization failed: " + e.message)
-            }
+
             
             // Initialize delay handler
             delayHandler = android.os.Handler(android.os.Looper.getMainLooper())
@@ -355,19 +347,24 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val customAppName = getCustomAppName(packageName)
         if (customAppName != null) {
             Log.d(TAG, "Using custom app name for $packageName: $customAppName")
+            InAppLogger.log("AppName", "Using custom app name for $packageName: $customAppName")
             return customAppName
         }
         
-        // Fall back to system app name
+        // Standard package resolution
         return try {
             val packageManager = packageManager
-            val appInfo: ApplicationInfo = packageManager.getApplicationInfo(packageName, 0)
-            packageManager.getApplicationLabel(appInfo).toString()
-        } catch (e: PackageManager.NameNotFoundException) {
-            Log.w(TAG, "App name not found for package: $packageName")
+            val appInfo = packageManager.getApplicationInfo(packageName, 0)
+            val appName = packageManager.getApplicationLabel(appInfo).toString()
+            Log.d(TAG, "Successfully resolved app name for $packageName: $appName")
+            appName
+        } catch (e: Exception) {
+            Log.w(TAG, "Error getting app name for $packageName: ${e.message}")
             packageName
         }
     }
+    
+
 
     private fun getCustomAppName(packageName: String): String? {
         return try {
@@ -457,28 +454,51 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
     private fun loadWaveSettings() {
         isWaveToStopEnabled = sharedPreferences.getBoolean("wave_to_stop_enabled", false)
-        waveThreshold = sharedPreferences.getFloat("wave_threshold", 5.0f)
+        // Use calibrated threshold if available, otherwise fall back to old system
+        waveThreshold = if (sharedPreferences.contains("wave_threshold_v1")) {
+            sharedPreferences.getFloat("wave_threshold_v1", 3.0f)
+        } else {
+            sharedPreferences.getFloat("wave_threshold", 3.0f)
+        }
         Log.d(TAG, "Wave settings loaded - enabled: $isWaveToStopEnabled, threshold: $waveThreshold")
     }
     
+    // Sensor timeout for safety
+    private var sensorTimeoutHandler: android.os.Handler? = null
+    private var sensorTimeoutRunnable: Runnable? = null
+
     private fun registerShakeListener() {
         if (isShakeToStopEnabled && accelerometer != null) {
-            sensorManager?.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
+            sensorManager?.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
             Log.d(TAG, "Shake listener registered (TTS active)")
             InAppLogger.logSystemEvent("Shake listener started", "TTS playback active")
         }
-        
         if (isWaveToStopEnabled && proximitySensor != null) {
-            sensorManager?.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_UI)
+            sensorManager?.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL)
             Log.d(TAG, "Wave listener registered (TTS active)")
             InAppLogger.logSystemEvent("Wave listener started", "TTS playback active")
         }
+        // Start hard timeout
+        if (sensorTimeoutHandler == null) {
+            sensorTimeoutHandler = android.os.Handler(android.os.Looper.getMainLooper())
+        }
+        // Cancel any previous timeout
+        sensorTimeoutRunnable?.let { sensorTimeoutHandler?.removeCallbacks(it) }
+        sensorTimeoutRunnable = Runnable {
+            Log.w(TAG, "Sensor listener timeout reached! Forcibly unregistering sensors.")
+            InAppLogger.logWarning(TAG, "Sensor listener timeout reached! Forcibly unregistering sensors.")
+            unregisterShakeListener()
+        }
+        sensorTimeoutHandler?.postDelayed(sensorTimeoutRunnable!!, 30_000) // 30 seconds
     }
-    
+
     private fun unregisterShakeListener() {
         sensorManager?.unregisterListener(this)
         Log.d(TAG, "Shake and wave listeners unregistered (TTS inactive)")
         InAppLogger.logSystemEvent("Shake and wave listeners stopped", "TTS playback finished")
+        // Cancel timeout
+        sensorTimeoutRunnable?.let { sensorTimeoutHandler?.removeCallbacks(it) }
+        sensorTimeoutRunnable = null
     }
     
     // Call this method when settings might have changed
@@ -659,62 +679,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         return FilterResult(true, processedText, "Word filtering applied")
     }
     
-    /**
-     * Apply conditional filtering rules to notifications
-     * 
-     * ═══════════════════════════════════════════════════════════════════════════════════
-     * 📋 SESSION NOTES: SMART RULES INTEGRATION POINT
-     * ═══════════════════════════════════════════════════════════════════════════════════
-     * 
-     * 🎯 STATUS: INTEGRATION HOOK READY (Dec 2024)
-     * ✅ ConditionalFilterManager instance created in onCreate()
-     * ✅ Integration point identified in applyFilters() method
-     * ✅ Placeholder method created with detailed implementation plan
-     * 
-     * 🚀 NEXT SESSION: Remove TODO and implement real integration
-     * 1. Uncomment the integration code below
-     * 2. Test with example rules from ConditionalFilterManager
-     * 3. Verify rule priority system works correctly
-     * 4. Add logging for debugging rule application
-     * 
-     * 💡 IMPLEMENTATION PLAN:
-     * - This method will be called for every notification
-     * - ConditionalResult will modify notification behavior
-     * - Rules are applied in priority order (high to low)
-     * - Early exit optimization prevents unnecessary processing
-     * 
-     * This is a placeholder for the next development session
-     */
     private fun applyConditionalFiltering(packageName: String, appName: String, text: String): FilterResult {
-        // Create notification context for rule evaluation
-        val context = ConditionalFilterManager.NotificationContext(appName, packageName, text)
-        val conditionalResult = conditionalFilterManager?.applyConditionalRules(context)
-        
-        // Apply conditional rules if any were triggered
-        if (conditionalResult?.hasChanges == true) {
-            Log.d(TAG, "Conditional rules applied: ${conditionalResult.appliedRules}")
-            InAppLogger.log("Conditional", "Applied rules: ${conditionalResult.appliedRules}")
-            
-            // Check if notification should be blocked
-            if (conditionalResult.shouldBlock) {
-                return FilterResult(false, text, "Blocked by conditional rule: ${conditionalResult.appliedRules}")
-            }
-            
-            // Apply text modifications
-            var modifiedText = conditionalResult.modifiedText ?: text
-            if (conditionalResult.shouldMakePrivate) {
-                modifiedText = "[PRIVATE]"
-            }
-            
-            // Handle delay (will be processed in handleNotificationBehavior)
-            if (conditionalResult.delaySeconds > 0) {
-                Log.d(TAG, "Conditional rule applied ${conditionalResult.delaySeconds}s delay")
-                InAppLogger.log("Conditional", "Applied ${conditionalResult.delaySeconds}s delay from rule")
-            }
-            
-            return FilterResult(true, modifiedText, "Modified by conditional rules: ${conditionalResult.appliedRules}", conditionalResult.delaySeconds)
-        }
-        
+        // Placeholder for future conditional filtering features
         return FilterResult(true, text, "No conditional rules applied")
     }
     
@@ -861,7 +827,32 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Check if shake threshold exceeded
             if (shakeValue >= shakeThreshold) {
                 Log.d(TAG, "Shake detected! Stopping TTS. Shake value: $shakeValue, threshold: $shakeThreshold")
-                stopSpeaking()
+                stopSpeaking("shake")
+            }
+        } else if (event.sensor.type == Sensor.TYPE_PROXIMITY && isWaveToStopEnabled) {
+            // Proximity sensor returns distance in cm
+            val proximityValue = event.values[0]
+            
+            // Handle different proximity sensor behaviors:
+            // Some sensors return 0 when close, others return actual distance
+            val isTriggered = if (proximityValue == 0f) {
+                // Sensor returns 0 when object is very close (most common)
+                true
+            } else {
+                // Sensor returns actual distance, check if closer than threshold
+                // Use < instead of <= to avoid triggering when sensor is at max range
+                // ADDITIONAL SAFETY: Only trigger if the value is significantly different from max range
+                // This prevents false triggers on devices like Pixel 2 XL that read ~5cm when uncovered
+                val maxRange = proximitySensor?.maximumRange ?: 5.0f
+                val significantChange = maxRange * 0.3f // Require at least 30% change from max
+                val distanceFromMax = maxRange - proximityValue
+                
+                proximityValue < waveThreshold && distanceFromMax > significantChange
+            }
+            
+            if (isTriggered) {
+                Log.d(TAG, "Wave detected! Stopping TTS. Proximity value: $proximityValue cm, threshold: $waveThreshold cm")
+                stopSpeaking("wave")
             }
         } else if (event.sensor.type == Sensor.TYPE_PROXIMITY && isWaveToStopEnabled) {
             // Proximity sensor returns distance in cm
@@ -888,7 +879,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Not needed for this implementation
     }
     
-    private fun stopSpeaking() {
+    private fun stopSpeaking(triggerType: String = "unknown") {
         textToSpeech?.stop()
         isCurrentlySpeaking = false
         
@@ -902,14 +893,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         pendingReadoutRunnable?.let { runnable ->
             delayHandler?.removeCallbacks(runnable)
             pendingReadoutRunnable = null
-            Log.d(TAG, "Cancelled pending delayed readout due to shake")
+            Log.d(TAG, "Cancelled pending delayed readout due to $triggerType")
         }
         
         // Clean up media behavior effects
         cleanupMediaBehavior()
         
-        Log.d(TAG, "TTS stopped due to shake")
-        InAppLogger.logTTSEvent("TTS stopped by shake", "User interrupted speech")
+        Log.d(TAG, "TTS stopped due to $triggerType")
+        InAppLogger.logTTSEvent("TTS stopped by $triggerType", "User interrupted speech")
     }
     
     // Call this when settings change

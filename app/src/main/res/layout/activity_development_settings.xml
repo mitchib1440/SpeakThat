@@ -111,6 +111,16 @@
                         android:textColor="@color/white_100"
                         android:layout_marginBottom="8dp" />
 
+                    <!-- Background Process Monitor Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnBackgroundMonitor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="🛰️ Background Process Monitor"
+                        android:backgroundTint="@color/purple_200"
+                        android:textColor="@color/white_100"
+                        android:layout_marginBottom="8dp" />
+
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -431,18 +441,6 @@
                             android:textColor="@color/purple_200" />
 
                         <!-- Log Control Buttons -->
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnPauseLogs"
-                            style="@style/Widget.Material3.Button.TonalButton"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_marginEnd="8dp"
-                            android:icon="@drawable/ic_pause_24"
-                            android:iconTint="@color/white_100"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            android:backgroundTint="@color/purple_300" />
-
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnRefreshLogs"
                             style="@style/Widget.Material3.Button.TonalButton"

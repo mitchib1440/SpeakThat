@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.View;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
@@ -28,6 +29,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     private ActivityGeneralSettingsBinding binding;
     private SharedPreferences sharedPreferences;
     private ActivityResultLauncher<Intent> importFileLauncher;
+    private boolean isInitializing = true; // Flag to prevent restart during initialization
     
     // SharedPreferences keys
     private static final String PREFS_NAME = "SpeakThatPrefs";
@@ -38,8 +40,8 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     private static final String KEY_SERVICE_RESTART_POLICY = "service_restart_policy"; // "never", "crash", "periodic"
     
     // Default values
-    private static final boolean DEFAULT_AUTO_START = false;
-    private static final boolean DEFAULT_BATTERY_OPTIMIZATION = false;
+    private static final boolean DEFAULT_AUTO_START = true;
+    private static final boolean DEFAULT_BATTERY_OPTIMIZATION = true;
     private static final boolean DEFAULT_AGGRESSIVE_PROCESSING = false;
     private static final String DEFAULT_SERVICE_RESTART_POLICY = "crash";
 
@@ -73,10 +75,13 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         initializeDarkModeSwitch();
         initializeAppBehaviorSettings();
         initializeDataManagementSettings();
+        
+        // Mark initialization as complete
+        isInitializing = false;
     }
 
     private void applySavedTheme() {
-        boolean isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, true); // Default to dark mode
+        boolean isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, false); // Default to light mode
         
         if (isDarkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -86,33 +91,54 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     }
 
     private void configureSystemUI() {
-        // Ensure the app respects system UI areas
-        getWindow().setDecorFitsSystemWindows(true);
+        // Simplified system UI configuration to avoid emulator issues
+        // The app will work fine without explicit system UI flags
     }
 
     private void initializeDarkModeSwitch() {
         SwitchMaterial darkModeSwitch = binding.switchDarkMode;
         
-        // Set initial state based on saved preference
-        boolean isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, true);
+        // Set initial state based on saved preference (ensure it matches what was applied in applySavedTheme)
+        boolean isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, false); // Default to light mode
         darkModeSwitch.setChecked(isDarkMode);
         
         // Set up switch listener
         darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Don't restart during initialization
+            if (isInitializing) {
+                return;
+            }
+            
+            // Only proceed if the value actually changed
+            boolean currentDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, false);
+            if (isChecked == currentDarkMode) {
+                return; // No change, don't restart
+            }
+            
             // Save the preference
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(KEY_DARK_MODE, isChecked);
             editor.apply();
             
-            // Apply the theme change
+            // Apply the theme change without restarting the app
             if (isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
             
-            // Restart the entire app to ensure all activities pick up the new theme
-            restartApp();
+            // Show a message to the user instead of restarting
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Theme Changed")
+                .setMessage("The theme has been changed. For the best experience, you may want to restart the app manually.")
+                .setPositiveButton("Restart Now", (dialog, which) -> {
+                    // Only restart if user explicitly chooses to
+                    restartApp();
+                })
+                .setNegativeButton("Later", null)
+                .show();
+            
+            InAppLogger.log("GeneralSettings", "Dark mode changed to: " + (isChecked ? "dark" : "light"));
         });
     }
 
@@ -130,7 +156,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             InAppLogger.log("GeneralSettings", "Auto-start on boot: " + (isChecked ? "enabled" : "disabled"));
         });
 
-        // Battery optimization
+        // Battery optimization exemption
         SwitchMaterial batteryOptimizationSwitch = binding.switchBatteryOptimization;
         boolean batteryOptimizationDisabled = sharedPreferences.getBoolean(KEY_BATTERY_OPTIMIZATION, DEFAULT_BATTERY_OPTIMIZATION);
         batteryOptimizationSwitch.setChecked(batteryOptimizationDisabled);
