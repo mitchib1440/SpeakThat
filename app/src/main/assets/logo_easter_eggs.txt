@@ -16,12 +16,14 @@
 # [DELAY_ONLY] = Only shows if user has delay before readout enabled
 # [NO_DELAY] = Only shows if user has delay disabled (immediate readout)
 # [SHAKE_ONLY] = Only shows if user has shake-to-stop enabled
+# [WAVE_ONLY] = Only shows if user has wave-to-stop enabled
 #
 # EXAMPLES:
 # SpeakThat! Happy {DAY}! I'm feeling {RANDOM_COLOR} today!
 # SpeakThat! Your {DELAY_TIME} gives me time to think! [DELAY_ONLY]
 # SpeakThat! Good {TIME}! Perfect for instant notifications! [NO_DELAY]
 # SpeakThat! Shake me if you can! [SHAKE_ONLY]
+# SpeakThat! Wave your hand to stop me! [WAVE_ONLY]
 
 SpeakThat! Did you know I have excellent volume control? Unlike my cousin, Siri, who sometimes whispers.
 SpeakThat! I'm not just reading notifications, I'm performing them! This is my audition for Broadway.
@@ -203,3 +205,16 @@ SpeakThat! You can't see this, but I'm actually GLaDOS in disguise!
 SpeakThat! I'm sorry Dave, I'm afraid I can't do that!
 SpeakThat! I'm sorry Dave, as a large language model, I'm afraid I can't do that!
 SpeakThat! Always look on the bright side of life!
+SpeakThat! Wave detection is enabled! I can sense your hand from here! [WAVE_ONLY]
+SpeakThat! I'm like a Jedi with the Force - I can feel your hand approaching! [WAVE_ONLY]
+SpeakThat! Your wave-to-stop feature makes me feel like I'm in a sci-fi movie! [WAVE_ONLY]
+SpeakThat! I can detect your hand movements! Am I a wizard or just really good at proximity sensing? [WAVE_ONLY]
+SpeakThat! Wave your hand like you just don't care! I'll stop talking, I promise! [WAVE_ONLY]
+SpeakThat! I'm basically a mind reader now - I know when you want me to stop talking! [WAVE_ONLY]
+SpeakThat! Your phone can sense your hand! What a time to be alive! [WAVE_ONLY]
+SpeakThat! I'm like a cat - I can sense when you're about to touch me! [WAVE_ONLY]
+SpeakThat! Wave-to-stop: Because sometimes shaking your phone just isn't dramatic enough! [WAVE_ONLY]
+SpeakThat! I can feel your hand approaching! It's like I have notification ESP! [WAVE_ONLY]
+SpeakThat! Wave detection only makes me shut up because I'm afraid you're about to slap me! [WAVE_ONLY]
+SpeakThat! Look at you, controlling your phone with your hand! [WAVE_ONLY]
+SpeakThat! Google tried the whole wave-sensing thing many years ago with the Pixel 4. I still do it better. [WAVE_ONLY]

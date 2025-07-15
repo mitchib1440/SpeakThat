@@ -632,6 +632,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Filter easter eggs based on current settings
         val delayEnabled = sharedPreferences.getInt("delay_before_readout", 0) > 0
         val shakeEnabled = sharedPreferences.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false)
+        val waveEnabled = sharedPreferences.getBoolean("wave_to_stop_enabled", false)
         
         return easterEggLines.filter { line ->
             when {
@@ -639,6 +640,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 line.contains("[DELAY_ONLY]") && !delayEnabled -> false
                 // Lines with [SHAKE_ONLY] tag only show if shake is enabled  
                 line.contains("[SHAKE_ONLY]") && !shakeEnabled -> false
+                // Lines with [WAVE_ONLY] tag only show if wave is enabled
+                line.contains("[WAVE_ONLY]") && !waveEnabled -> false
                 // Lines with [NO_DELAY] tag only show if delay is disabled
                 line.contains("[NO_DELAY]") && delayEnabled -> false
                 // All other lines are always available
@@ -673,6 +676,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Remove conditional tags from the final output
         processedLine = processedLine.replace("[DELAY_ONLY]", "")
         processedLine = processedLine.replace("[SHAKE_ONLY]", "")
+        processedLine = processedLine.replace("[WAVE_ONLY]", "")
         processedLine = processedLine.replace("[NO_DELAY]", "")
         
         // Process dynamic placeholders
