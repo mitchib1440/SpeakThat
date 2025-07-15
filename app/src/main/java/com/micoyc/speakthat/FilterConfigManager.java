@@ -334,7 +334,7 @@ public class FilterConfigManager {
                 filtersImported += wordBlacklistPrivate.size();
             }
             
-            // Import word replacements
+            // Import word swaps
             if (filters.has("wordReplacements")) {
                 String wordReplacements = filters.getString("wordReplacements");
                 editor.putString(KEY_WORD_REPLACEMENTS, wordReplacements);

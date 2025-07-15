@@ -87,7 +87,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     // Adapters
     private AppListAdapter appListAdapter;
     private WordListAdapter wordBlacklistAdapter;
-    private WordReplacementAdapter wordReplacementAdapter;
+    private WordSwapAdapter wordSwapAdapter;
     private AppListAdapter mediaExceptedAppsAdapter;
     private WordListAdapter mediaImportantKeywordsAdapter;
     private AppListAdapter filteredMediaAppsAdapter;
@@ -259,9 +259,9 @@ public class FilterSettingsActivity extends AppCompatActivity {
     }
 
     private void setupWordReplacementRecycler() {
-        wordReplacementAdapter = new WordReplacementAdapter(wordReplacementItems, this::removeWordReplacement, this::editWordReplacement);
+        wordSwapAdapter = new WordSwapAdapter(wordReplacementItems, this::removeWordReplacement, this::editWordReplacement);
         binding.recyclerWordReplacements.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerWordReplacements.setAdapter(wordReplacementAdapter);
+        binding.recyclerWordReplacements.setAdapter(wordSwapAdapter);
     }
     
     private void setupMediaFilteringRecyclers() {
@@ -359,7 +359,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
             binding.recyclerBlacklistWords.getParent().requestLayout();
         });
 
-        // Load word replacements
+        // Load word swaps
         String replacementData = sharedPreferences.getString(KEY_WORD_REPLACEMENTS, "");
         wordReplacementItems.clear();
         if (!replacementData.isEmpty()) {
@@ -371,7 +371,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
                 }
             }
         }
-        wordReplacementAdapter.notifyDataSetChanged();
+        wordSwapAdapter.notifyDataSetChanged();
         updateCountDisplays();
         
         // Load media notification filtering settings
@@ -577,7 +577,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         }
 
         wordReplacementItems.add(new WordReplacementItem(from, to));
-        wordReplacementAdapter.notifyDataSetChanged();
+        wordSwapAdapter.notifyDataSetChanged();
         updateCountDisplays();
         binding.editReplaceFrom.setText("");
         binding.editReplaceTo.setText("");
@@ -587,7 +587,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
 
     private void removeWordReplacement(int position) {
         wordReplacementItems.remove(position);
-        wordReplacementAdapter.notifyDataSetChanged();
+        wordSwapAdapter.notifyDataSetChanged();
         updateCountDisplays();
         saveWordReplacements();
     }
@@ -1051,7 +1051,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
 
     private void showEditWordReplacementDialog(WordReplacementItem item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Edit Word Replacement");
+        builder.setTitle("Edit Word Swap");
         
         // Create layout for two input fields
         LinearLayout layout = new LinearLayout(this);
@@ -1116,9 +1116,9 @@ public class FilterSettingsActivity extends AppCompatActivity {
             // Update the item
             item.from = newFrom;
             item.to = newTo;
-            wordReplacementAdapter.notifyItemChanged(position);
+            wordSwapAdapter.notifyItemChanged(position);
             saveWordReplacements();
-            Toast.makeText(this, "Word replacement updated", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Word swap updated", Toast.LENGTH_SHORT).show();
         });
         
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
@@ -1321,7 +1321,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         binding.txtBlacklistCount.setText("(" + wordBlacklistItems.size() + " words)");
         
         // Update replacement count
-        binding.txtReplacementCount.setText("(" + wordReplacementItems.size() + " replacements)");
+        binding.txtReplacementCount.setText("(" + wordReplacementItems.size() + " swaps)");
     }
 
     @Override

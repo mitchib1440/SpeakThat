@@ -566,7 +566,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         blockedWords = HashSet(sharedPreferences.getStringSet(KEY_WORD_BLACKLIST, HashSet()) ?: HashSet())
         privateWords = HashSet(sharedPreferences.getStringSet(KEY_WORD_BLACKLIST_PRIVATE, HashSet()) ?: HashSet())
         
-        // Load word replacements
+        // Load word swaps
         val replacementData = sharedPreferences.getString(KEY_WORD_REPLACEMENTS, "") ?: ""
         wordReplacements.clear()
         if (replacementData.isNotEmpty()) {
@@ -722,7 +722,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         }
         
-        // 3. Apply word replacements
+        // 3. Apply word swaps
         for ((from, to) in wordReplacements) {
             processedText = processedText.replace(from, to, ignoreCase = true)
         }

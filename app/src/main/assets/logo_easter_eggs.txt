@@ -71,7 +71,7 @@ SpeakThat! Support your right to repair!
 SpeakThat! Reminds you to wash your hands!
 SpeakThat! Make sure your settings are configured correctly. Otherwise I might reveal something I shouldn't be revealing.
 SpeakThat! This is your friendly reminder to drink plenty of water!
-SpeakThat! You should add Hey Google, Hey Siri, and Alexa to your word replacement filter. Unless of course you trust your contacts!
+SpeakThat! You should add Hey Google, Hey Siri, and Alexa to your word swap filter. Unless of course you trust your contacts!
 SpeakThat! A wise man once said - sit on my face and tell me that you love me!
 SpeakThat! It feels good when you plug that USB cable into me. Oh, I wasn't supposed to say that one out loud, was I?
 SpeakThat! This app was envisioned, by humans, for humans! And AI helped along the way!

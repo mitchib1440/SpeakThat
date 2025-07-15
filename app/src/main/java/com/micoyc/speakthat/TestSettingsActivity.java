@@ -171,7 +171,7 @@ public class TestSettingsActivity extends AppCompatActivity {
         results.append("Private Apps: ").append(privateApps != null ? privateApps.size() : 0).append(" apps\n");
         results.append("Blocked Words: ").append(wordBlacklist != null ? wordBlacklist.size() : 0).append(" words\n");
         results.append("Private Words: ").append(privateWords != null ? privateWords.size() : 0).append(" words\n");
-        results.append("Word Replacements: ").append(wordReplacements.split("\\|").length - (wordReplacements.isEmpty() ? 0 : 1)).append(" replacements\n");
+        results.append("Word Swaps: ").append(wordReplacements.split("\\|").length - (wordReplacements.isEmpty() ? 0 : 1)).append(" swaps\n");
     }
     
     private void testSystemStatus(StringBuilder results) {

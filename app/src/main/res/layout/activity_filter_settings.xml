@@ -382,7 +382,7 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Word Replacement Section -->
+            <!-- Word Swap Section -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -402,7 +402,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔄 Word Replacement"
+                        android:text="🔄 Word Swap"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
@@ -411,12 +411,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Replace words in notifications for censoring or pronunciation fixes"
+                        android:text="Swap words in notifications for censoring or pronunciation fixes"
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary"
                         android:layout_marginBottom="16dp" />
 
-                    <!-- Word Replacement Header (Collapsible) -->
+                    <!-- Word Swap Header (Collapsible) -->
                     <LinearLayout
                         android:id="@+id/replacementHeader"
                         android:layout_width="match_parent"
@@ -433,7 +433,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="📋 Word Replacements"
+                            android:text="📋 Word Swaps"
                             android:textStyle="bold"
                             android:textSize="16sp"
                             android:textColor="@color/text_primary" />
@@ -442,7 +442,7 @@
                             android:id="@+id/txtReplacementCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="(0 replacements)"
+                            android:text="(0 swaps)"
                             android:textSize="12sp"
                             android:textColor="@color/text_secondary"
                             android:layout_marginEnd="8dp" />
@@ -452,11 +452,11 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@android:drawable/arrow_up_float"
-                                android:contentDescription="Toggle replacements" />
+                                android:contentDescription="Toggle swaps" />
 
                     </LinearLayout>
 
-                    <!-- Word Replacement Content -->
+                    <!-- Word Swap Content -->
                     <LinearLayout
                         android:id="@+id/replacementContent"
                         android:layout_width="match_parent"
@@ -464,7 +464,7 @@
                         android:orientation="vertical"
                         android:visibility="visible">
 
-                        <!-- Add Word Replacement -->
+                        <!-- Add Word Swap -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -483,7 +483,7 @@
                                     android:id="@+id/editReplaceFrom"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="Word to replace"
+                                    android:hint="Word to swap"
                                     android:inputType="text" />
 
                             </com.google.android.material.textfield.TextInputLayout>
@@ -500,7 +500,7 @@
                                     android:id="@+id/editReplaceTo"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="Replace with (leave empty to remove)"
+                                    android:hint="Swap with (leave empty to remove)"
                                     android:inputType="text" />
 
                             </com.google.android.material.textfield.TextInputLayout>
@@ -518,12 +518,12 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="💡 Tip: Use lowercase for case-insensitive matching. Leave 'Replace with' empty to remove words entirely."
+                            android:text="💡 Tip: Use lowercase for case-insensitive matching. Leave 'Swap with' empty to remove words entirely."
                             android:textSize="12sp"
                             android:textColor="@color/text_primary"
                             android:layout_marginBottom="12dp" />
 
-                        <!-- Word Replacements -->
+                        <!-- Word Swaps -->
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerWordReplacements"
                             android:layout_width="match_parent"

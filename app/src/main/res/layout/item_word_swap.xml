@@ -58,7 +58,7 @@
         android:layout_height="32dp"
         android:src="@android:drawable/ic_menu_delete"
         android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Remove replacement"
+        android:contentDescription="Remove swap"
         android:tint="@android:color/holo_red_dark" />
 
 </LinearLayout> 
