@@ -265,41 +265,51 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault()).format(new Date());
             String filename = "SpeakThat_FullConfig_" + timestamp + ".json";
             
-            // Save to external files directory
-            File exportDir = new File(getExternalFilesDir(null), "exports");
-            if (!exportDir.exists()) {
-                exportDir.mkdirs();
+            // Use FileExportHelper to create the file with fallback support
+            File exportFile = FileExportHelper.createExportFile(this, "exports", filename, configData);
+            
+            if (exportFile != null) {
+                // Create content URI using FileProvider for security
+                Uri fileUri = FileProvider.getUriForFile(this, 
+                    "com.micoyc.speakthat.fileprovider", 
+                    exportFile);
+                
+                // Create share intent
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("application/json");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "SpeakThat! Full Configuration");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "Complete configuration backup created on " + 
+                                    new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date()));
+                shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                
+                startActivity(Intent.createChooser(shareIntent, "Export Full Configuration"));
+                
+                // Show success message
+                new AlertDialog.Builder(this)
+                    .setTitle("Export Successful")
+                    .setMessage("Full configuration exported to:\n" + exportFile.getAbsolutePath())
+                    .setPositiveButton("OK", null)
+                    .show();
+                
+                InAppLogger.log("GeneralSettings", "Full configuration exported to " + filename);
+            } else {
+                // Fallback to text-based sharing if file creation failed
+                Intent textShareIntent = new Intent(Intent.ACTION_SEND);
+                textShareIntent.setType("text/plain");
+                textShareIntent.putExtra(Intent.EXTRA_SUBJECT, "SpeakThat! Full Configuration");
+                textShareIntent.putExtra(Intent.EXTRA_TEXT, configData);
+                
+                startActivity(Intent.createChooser(textShareIntent, "Export Full Configuration as Text"));
+                
+                new AlertDialog.Builder(this)
+                    .setTitle("Export Successful (Text Mode)")
+                    .setMessage("Configuration exported as text (file creation failed)")
+                    .setPositiveButton("OK", null)
+                    .show();
+                
+                InAppLogger.log("GeneralSettings", "Full configuration exported as text fallback");
             }
-            
-            File exportFile = new File(exportDir, filename);
-            FileWriter writer = new FileWriter(exportFile);
-            writer.write(configData);
-            writer.close();
-            
-            // Create content URI using FileProvider for security
-            Uri fileUri = FileProvider.getUriForFile(this, 
-                "com.micoyc.speakthat.fileprovider", 
-                exportFile);
-            
-            // Create share intent
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("application/json");
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "SpeakThat! Full Configuration");
-            shareIntent.putExtra(Intent.EXTRA_TEXT, "Complete configuration backup created on " + 
-                                new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date()));
-            shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
-            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            
-            startActivity(Intent.createChooser(shareIntent, "Export Full Configuration"));
-            
-            // Show success message
-            new AlertDialog.Builder(this)
-                .setTitle("Export Successful")
-                .setMessage("Full configuration exported to:\n" + exportFile.getAbsolutePath())
-                .setPositiveButton("OK", null)
-                .show();
-            
-            InAppLogger.log("GeneralSettings", "Full configuration exported to " + filename);
             
         } catch (Exception e) {
             InAppLogger.logError("GeneralSettings", "Export failed: " + e.getMessage());

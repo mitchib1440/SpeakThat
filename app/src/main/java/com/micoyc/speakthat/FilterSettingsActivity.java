@@ -1426,43 +1426,48 @@ public class FilterSettingsActivity extends AppCompatActivity {
             String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault()).format(new Date());
             String filename = "SpeakThat_Filters_" + timestamp + ".json";
             
-            // Save to external files directory
-            File exportDir = new File(getExternalFilesDir(null), "exports");
-            if (!exportDir.exists()) {
-                exportDir.mkdirs();
+            // Use FileExportHelper to create the file with fallback support
+            File exportFile = FileExportHelper.createExportFile(this, "exports", filename, configData);
+            
+            if (exportFile != null) {
+                // Create content URI using FileProvider for security
+                Uri fileUri = FileProvider.getUriForFile(this, 
+                    "com.micoyc.speakthat.fileprovider", 
+                    exportFile);
+                
+                // Create share intent
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("application/json");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "SpeakThat! Filter Configuration");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "Filter configuration backup created on " + 
+                                    new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date()));
+                shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                
+                startActivity(Intent.createChooser(shareIntent, "Export Filter Configuration"));
+                
+                // Show success message with summary
+                String summary = FilterConfigManager.getFilterSummary(this);
+                new AlertDialog.Builder(this)
+                    .setTitle("Export Successful")
+                    .setMessage("Filter configuration exported to:\n" + exportFile.getAbsolutePath() + 
+                               "\n\nExported settings:\n" + summary)
+                    .setPositiveButton("OK", null)
+                    .show();
+                
+                InAppLogger.log("FilterConfig", "Filter configuration exported to " + filename);
+            } else {
+                // Fallback to text-based sharing if file creation failed
+                Intent textShareIntent = new Intent(Intent.ACTION_SEND);
+                textShareIntent.setType("text/plain");
+                textShareIntent.putExtra(Intent.EXTRA_SUBJECT, "SpeakThat! Filter Configuration");
+                textShareIntent.putExtra(Intent.EXTRA_TEXT, configData);
+                
+                startActivity(Intent.createChooser(textShareIntent, "Export Filter Configuration as Text"));
+                
+                Toast.makeText(this, "Configuration exported as text (file creation failed)", Toast.LENGTH_LONG).show();
+                InAppLogger.log("FilterConfig", "Filter configuration exported as text fallback");
             }
-            
-            File exportFile = new File(exportDir, filename);
-            FileWriter writer = new FileWriter(exportFile);
-            writer.write(configData);
-            writer.close();
-            
-            // Create content URI using FileProvider for security
-            Uri fileUri = FileProvider.getUriForFile(this, 
-                "com.micoyc.speakthat.fileprovider", 
-                exportFile);
-            
-            // Create share intent
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("application/json");
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "SpeakThat! Filter Configuration");
-            shareIntent.putExtra(Intent.EXTRA_TEXT, "Filter configuration backup created on " + 
-                                new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date()));
-            shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
-            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            
-            startActivity(Intent.createChooser(shareIntent, "Export Filter Configuration"));
-            
-            // Show success message with summary
-            String summary = FilterConfigManager.getFilterSummary(this);
-            new AlertDialog.Builder(this)
-                .setTitle("Export Successful")
-                .setMessage("Filter configuration exported to:\n" + exportFile.getAbsolutePath() + 
-                           "\n\nExported settings:\n" + summary)
-                .setPositiveButton("OK", null)
-                .show();
-            
-            InAppLogger.log("FilterConfig", "Filter configuration exported to " + filename);
             
         } catch (Exception e) {
             Toast.makeText(this, "Export failed: " + e.getMessage(), Toast.LENGTH_LONG).show();

@@ -22,6 +22,10 @@
     <!-- Permission to request battery optimization exemption -->
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
+    <!-- Permission for external storage (for Android < API 29) -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"

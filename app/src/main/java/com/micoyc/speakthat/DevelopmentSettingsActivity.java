@@ -336,40 +336,33 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             
             // Try to create and share a file first
             try {
-                // Create logs directory if it doesn't exist
-                File logsDir = new File(getExternalFilesDir(null), "logs");
-                if (!logsDir.exists()) {
-                    logsDir.mkdirs();
+                // Use FileExportHelper to create the file with fallback support
+                File crashLogFile = FileExportHelper.createExportFile(this, "logs", "speakthat_crash_logs_" + timestamp + ".txt", logContent);
+                
+                if (crashLogFile != null) {
+                    InAppLogger.log("Development", "Crash log file created: " + crashLogFile.getAbsolutePath());
+                    
+                    // Create file sharing intent using FileProvider
+                    Uri fileUri = androidx.core.content.FileProvider.getUriForFile(
+                        this,
+                        getApplicationContext().getPackageName() + ".fileprovider",
+                        crashLogFile
+                    );
+                    
+                    Intent fileShareIntent = new Intent(Intent.ACTION_SEND);
+                    fileShareIntent.setType("text/plain");
+                    fileShareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+                    fileShareIntent.putExtra(Intent.EXTRA_SUBJECT, "SpeakThat! Crash Logs - " + timestamp);
+                    fileShareIntent.putExtra(Intent.EXTRA_TEXT, "SpeakThat! Crash Logs attached as file.");
+                    fileShareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    
+                    startActivity(Intent.createChooser(fileShareIntent, "Export Crash Logs as File"));
+                    
+                    Toast.makeText(this, "Crash logs exported as file! File saved to: " + crashLogFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                    InAppLogger.log("Development", "Crash logs exported as file: " + crashLogFile.getName());
+                } else {
+                    throw new Exception("File creation failed");
                 }
-                
-                // Create crash log file with timestamp
-                File crashLogFile = new File(logsDir, "speakthat_crash_logs_" + timestamp + ".txt");
-                
-                // Write crash logs to file
-                FileWriter writer = new FileWriter(crashLogFile);
-                writer.write(logContent);
-                writer.close();
-                
-                InAppLogger.log("Development", "Crash log file created: " + crashLogFile.getAbsolutePath());
-                
-                // Create file sharing intent using FileProvider
-                Uri fileUri = androidx.core.content.FileProvider.getUriForFile(
-                    this,
-                    getApplicationContext().getPackageName() + ".fileprovider",
-                    crashLogFile
-                );
-                
-                Intent fileShareIntent = new Intent(Intent.ACTION_SEND);
-                fileShareIntent.setType("text/plain");
-                fileShareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
-                fileShareIntent.putExtra(Intent.EXTRA_SUBJECT, "SpeakThat! Crash Logs - " + timestamp);
-                fileShareIntent.putExtra(Intent.EXTRA_TEXT, "SpeakThat! Crash Logs attached as file.");
-                fileShareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                
-                startActivity(Intent.createChooser(fileShareIntent, "Export Crash Logs as File"));
-                
-                Toast.makeText(this, "Crash logs exported as file! File saved to: " + crashLogFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
-                InAppLogger.log("Development", "Crash logs exported as file: " + crashLogFile.getName());
                 
             } catch (Exception fileException) {
                 // Fallback to text-based sharing if file sharing fails
@@ -649,40 +642,33 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             
             // Try to create and share a file first
             try {
-                // Create logs directory if it doesn't exist
-                File logsDir = new File(getExternalFilesDir(null), "logs");
-                if (!logsDir.exists()) {
-                    logsDir.mkdirs();
+                // Use FileExportHelper to create the file with fallback support
+                File logFile = FileExportHelper.createExportFile(this, "logs", "speakthat_logs_" + timestamp + ".txt", logContent);
+                
+                if (logFile != null) {
+                    InAppLogger.log("Development", "Log file created: " + logFile.getAbsolutePath());
+                    
+                    // Create file sharing intent using FileProvider
+                    Uri fileUri = androidx.core.content.FileProvider.getUriForFile(
+                        this,
+                        getApplicationContext().getPackageName() + ".fileprovider",
+                        logFile
+                    );
+                    
+                    Intent fileShareIntent = new Intent(Intent.ACTION_SEND);
+                    fileShareIntent.setType("text/plain");
+                    fileShareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+                    fileShareIntent.putExtra(Intent.EXTRA_SUBJECT, "SpeakThat! Debug Logs - " + timestamp);
+                    fileShareIntent.putExtra(Intent.EXTRA_TEXT, "SpeakThat! Debug Logs attached as file.");
+                    fileShareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    
+                    startActivity(Intent.createChooser(fileShareIntent, "Export Logs as File"));
+                    
+                    Toast.makeText(this, "Logs exported as file! File saved to: " + logFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                    InAppLogger.log("Development", "Logs exported as file: " + logFile.getName());
+                } else {
+                    throw new Exception("File creation failed");
                 }
-                
-                // Create log file with timestamp
-                File logFile = new File(logsDir, "speakthat_logs_" + timestamp + ".txt");
-                
-                // Write logs to file
-                FileWriter writer = new FileWriter(logFile);
-                writer.write(logContent);
-                writer.close();
-                
-                InAppLogger.log("Development", "Log file created: " + logFile.getAbsolutePath());
-                
-                // Create file sharing intent using FileProvider
-                Uri fileUri = androidx.core.content.FileProvider.getUriForFile(
-                    this,
-                    getApplicationContext().getPackageName() + ".fileprovider",
-                    logFile
-                );
-                
-                Intent fileShareIntent = new Intent(Intent.ACTION_SEND);
-                fileShareIntent.setType("text/plain");
-                fileShareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
-                fileShareIntent.putExtra(Intent.EXTRA_SUBJECT, "SpeakThat! Debug Logs - " + timestamp);
-                fileShareIntent.putExtra(Intent.EXTRA_TEXT, "SpeakThat! Debug Logs attached as file.");
-                fileShareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                
-                startActivity(Intent.createChooser(fileShareIntent, "Export Logs as File"));
-                
-                Toast.makeText(this, "Logs exported as file! File saved to: " + logFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
-                InAppLogger.log("Development", "Logs exported as file: " + logFile.getName());
                 
             } catch (Exception fileException) {
                 // Fallback to text-based sharing if file sharing fails

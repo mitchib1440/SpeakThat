@@ -6,4 +6,10 @@
     <external-files-path 
         name="logs" 
         path="logs/" />
+    <files-path 
+        name="internal-exports" 
+        path="exports/" />
+    <files-path 
+        name="internal-logs" 
+        path="logs/" />
 </paths> 
