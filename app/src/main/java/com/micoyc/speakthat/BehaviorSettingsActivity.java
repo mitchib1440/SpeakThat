@@ -32,6 +32,25 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.slider.Slider;
+import com.micoyc.speakthat.databinding.ActivityBehaviorSettingsBinding;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import com.micoyc.speakthat.LazyAppSearchAdapter;
+import com.micoyc.speakthat.AppInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ApplicationInfo;
 
 public class BehaviorSettingsActivity extends AppCompatActivity implements SensorEventListener, CustomAppNameAdapter.OnCustomAppNameActionListener {
     private ActivityBehaviorSettingsBinding binding;
@@ -50,6 +69,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String KEY_DUCKING_VOLUME = "ducking_volume";
     private static final String KEY_DELAY_BEFORE_READOUT = "delay_before_readout";
     private static final String KEY_CUSTOM_APP_NAMES = "custom_app_names"; // JSON string of custom app names
+    private static final String KEY_COOLDOWN_APPS = "cooldown_apps"; // JSON string of cooldown app settings
 
     // Media behavior options
     private static final String MEDIA_BEHAVIOR_IGNORE = "ignore";
@@ -68,6 +88,11 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private List<String> priorityAppsList = new ArrayList<>();
     private CustomAppNameAdapter customAppNameAdapter;
     private List<CustomAppNameAdapter.CustomAppNameEntry> customAppNamesList = new ArrayList<>();
+    private CooldownAppAdapter cooldownAppAdapter;
+    private List<CooldownAppAdapter.CooldownAppItem> cooldownAppsList = new ArrayList<>();
+    
+    // App selector for cooldown apps
+    private LazyAppSearchAdapter cooldownAppSelectorAdapter;
     
     // Shake detection
     private SensorManager sensorManager;
@@ -111,6 +136,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
 
         initializeUI();
         loadSettings();
+        
+        // Test app list functionality for debugging
+        testAppListFunctionality();
     }
 
     private void applySavedTheme() {
@@ -153,8 +181,17 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Set up RecyclerView for custom app names
         setupCustomAppNamesRecycler();
 
+        // Set up RecyclerView for cooldown apps
+        setupCooldownAppsRecycler();
+
+        // Set up cooldown app selector
+        setupCooldownAppSelector();
+
         // Set up custom app name button listener
         binding.btnAddCustomAppName.setOnClickListener(v -> addCustomAppName());
+
+        // Set up cooldown app button listener
+        binding.btnAddCooldownApp.setOnClickListener(v -> addCooldownApp());
 
         // Set up info button listeners
         binding.btnNotificationBehaviorInfo.setOnClickListener(v -> showNotificationBehaviorDialog());
@@ -163,6 +200,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.btnWaveToStopInfo.setOnClickListener(v -> showWaveToStopDialog());
         binding.btnDelayInfo.setOnClickListener(v -> showDelayDialog());
         binding.btnAppNamesInfo.setOnClickListener(v -> showCustomAppNamesDialog());
+        binding.btnCooldownInfo.setOnClickListener(v -> showCooldownDialog());
 
         // Set up shake to stop toggle
         binding.switchShakeToStop.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -329,6 +367,45 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.recyclerCustomAppNames.setAdapter(customAppNameAdapter);
     }
 
+    private void setupCooldownAppsRecycler() {
+        cooldownAppAdapter = new CooldownAppAdapter(this, cooldownAppsList, new CooldownAppAdapter.OnCooldownAppActionListener() {
+            @Override
+            public void onCooldownTimeChanged(int position, int cooldownSeconds) {
+                if (position >= 0 && position < cooldownAppsList.size()) {
+                    cooldownAppsList.get(position).cooldownSeconds = cooldownSeconds;
+                    saveCooldownApps();
+                }
+            }
+
+            @Override
+            public void onDeleteCooldownApp(int position) {
+                removeCooldownApp(position);
+            }
+        });
+        binding.recyclerCooldownApps.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerCooldownApps.setAdapter(cooldownAppAdapter);
+    }
+
+    private void setupCooldownAppSelector() {
+        // Use lazy loading adapter for cooldown app selector
+        cooldownAppSelectorAdapter = new LazyAppSearchAdapter(this);
+        binding.editCooldownApp.setAdapter(cooldownAppSelectorAdapter);
+        binding.editCooldownApp.setThreshold(1); // Show suggestions after 1 character
+        
+        // Handle app selection
+        binding.editCooldownApp.setOnItemClickListener((parent, view, position, id) -> {
+            AppInfo selectedApp = cooldownAppSelectorAdapter.getItem(position);
+            if (selectedApp != null) {
+                // Add the selected app to the cooldown list
+                addCooldownAppFromSelection(selectedApp);
+                // Clear the input field after selection
+                binding.editCooldownApp.setText("");
+            }
+        });
+        
+        InAppLogger.log("AppSelector", "Lazy cooldown app selector initialized - apps will load on search");
+    }
+
     private void loadSettings() {
         // Load behavior mode
         String behaviorMode = sharedPreferences.getString(KEY_NOTIFICATION_BEHAVIOR, "interrupt");
@@ -440,6 +517,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
 
         // Load custom app names
         loadCustomAppNames();
+
+        // Load cooldown apps
+        loadCooldownApps();
     }
 
     private void addPriorityApp() {
@@ -571,6 +651,174 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         } catch (JSONException e) {
             Log.e("BehaviorSettings", "Error saving custom app names", e);
         }
+    }
+
+    private void addCooldownApp() {
+        String appName = binding.editCooldownApp.getText().toString().trim();
+        Log.d("BehaviorSettings", "addCooldownApp called with: '" + appName + "'");
+        
+        if (appName.isEmpty()) {
+            Log.d("BehaviorSettings", "App name is empty");
+            Toast.makeText(this, "Please enter an app name", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // First try to find the app in the device's installed apps
+        PackageManager pm = getPackageManager();
+        try {
+            // Try to get app info directly from package manager
+            ApplicationInfo appInfo = pm.getApplicationInfo(appName, 0);
+            String displayName = pm.getApplicationLabel(appInfo).toString();
+            
+            // Create AppInfo object and add it
+            AppInfo selectedApp = new AppInfo(displayName, appName, pm.getApplicationIcon(appInfo));
+            addCooldownAppFromSelection(selectedApp);
+            return;
+            
+        } catch (PackageManager.NameNotFoundException e) {
+            // App not found in device, try searching in JSON app list
+            Log.d("BehaviorSettings", "App not found in device, trying JSON app list");
+        }
+
+        // Find the app in the JSON app list
+        AppListData appData = findAppByNameOrPackage(appName);
+        if (appData == null) {
+            Log.d("BehaviorSettings", "App not found for: '" + appName + "'");
+            Toast.makeText(this, "App not found. Please check the app name or package.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Log.d("BehaviorSettings", "Found app: " + appData.displayName + " (" + appData.packageName + ")");
+
+        // Check for duplicates
+        for (CooldownAppAdapter.CooldownAppItem item : cooldownAppsList) {
+            if (item.packageName.equals(appData.packageName)) {
+                Log.d("BehaviorSettings", "App already in cooldown list: " + appData.packageName);
+                Toast.makeText(this, "App already in cooldown list", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        // Add to cooldown list with default 1-second cooldown
+        CooldownAppAdapter.CooldownAppItem item = new CooldownAppAdapter.CooldownAppItem(
+            appData.packageName, 
+            appData.displayName, 
+            appData.iconSlug, 
+            1 // Default 1-second cooldown
+        );
+        cooldownAppsList.add(item);
+        cooldownAppAdapter.notifyDataSetChanged();
+        binding.editCooldownApp.setText("");
+        
+        Log.d("BehaviorSettings", "Added app to cooldown list: " + appData.displayName);
+        saveCooldownApps();
+    }
+
+    private void removeCooldownApp(int position) {
+        if (position >= 0 && position < cooldownAppsList.size()) {
+            cooldownAppsList.remove(position);
+            cooldownAppAdapter.notifyDataSetChanged();
+            saveCooldownApps();
+        }
+    }
+
+    private void loadCooldownApps() {
+        String cooldownAppsJson = sharedPreferences.getString(KEY_COOLDOWN_APPS, "[]");
+        cooldownAppsList.clear();
+        
+        try {
+            JSONArray jsonArray = new JSONArray(cooldownAppsJson);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String packageName = jsonObject.getString("packageName");
+                String displayName = jsonObject.getString("displayName");
+                String iconSlug = jsonObject.optString("iconSlug", "");
+                boolean hasDeviceIcon = jsonObject.optBoolean("hasDeviceIcon", false);
+                int cooldownSeconds = jsonObject.optInt("cooldownSeconds", 1);
+                cooldownAppsList.add(new CooldownAppAdapter.CooldownAppItem(packageName, displayName, iconSlug, cooldownSeconds, hasDeviceIcon));
+            }
+        } catch (JSONException e) {
+            Log.e("BehaviorSettings", "Error loading cooldown apps", e);
+        }
+    }
+
+    private void saveCooldownApps() {
+        try {
+            JSONArray jsonArray = new JSONArray();
+            for (CooldownAppAdapter.CooldownAppItem item : cooldownAppsList) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("packageName", item.packageName);
+                jsonObject.put("displayName", item.displayName);
+                jsonObject.put("iconSlug", item.iconSlug != null ? item.iconSlug : "");
+                jsonObject.put("hasDeviceIcon", item.icon != null); // Flag to indicate if it has a device icon
+                jsonObject.put("cooldownSeconds", item.cooldownSeconds);
+                jsonArray.put(jsonObject);
+            }
+            
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(KEY_COOLDOWN_APPS, jsonArray.toString());
+            editor.apply();
+            
+            InAppLogger.log("BehaviorSettings", "Cooldown apps saved: " + cooldownAppsList.size() + " entries");
+        } catch (JSONException e) {
+            Log.e("BehaviorSettings", "Error saving cooldown apps", e);
+        }
+    }
+
+    private AppListData findAppByNameOrPackage(String query) {
+        // Load app list from JSON
+        List<AppListData> appList = AppListManager.INSTANCE.loadAppList(this);
+        if (appList == null) {
+            Log.e("BehaviorSettings", "App list is null");
+            return null;
+        }
+        
+        String lowerQuery = query.toLowerCase().trim();
+        Log.d("BehaviorSettings", "Searching for app: '" + query + "' (lowercase: '" + lowerQuery + "')");
+        Log.d("BehaviorSettings", "App list size: " + appList.size());
+        
+        // First, try exact matches
+        for (AppListData app : appList) {
+            if (app.displayName.toLowerCase().equals(lowerQuery) ||
+                app.packageName.toLowerCase().equals(lowerQuery)) {
+                Log.d("BehaviorSettings", "Found exact match: " + app.displayName + " (" + app.packageName + ")");
+                return app;
+            }
+        }
+        
+        // Then, try contains matches
+        for (AppListData app : appList) {
+            if (app.displayName.toLowerCase().contains(lowerQuery) ||
+                app.packageName.toLowerCase().contains(lowerQuery) ||
+                (app.aliases != null && app.aliases.stream().anyMatch(alias -> alias.toLowerCase().contains(lowerQuery)))) {
+                Log.d("BehaviorSettings", "Found partial match: " + app.displayName + " (" + app.packageName + ")");
+                return app;
+            }
+        }
+        
+        // Finally, try word boundary matches (more flexible)
+        String[] queryWords = lowerQuery.split("\\s+");
+        for (AppListData app : appList) {
+            String displayNameLower = app.displayName.toLowerCase();
+            String packageNameLower = app.packageName.toLowerCase();
+            
+            boolean matches = false;
+            for (String word : queryWords) {
+                if (displayNameLower.contains(word) || packageNameLower.contains(word) ||
+                    (app.aliases != null && app.aliases.stream().anyMatch(alias -> alias.toLowerCase().contains(word)))) {
+                    matches = true;
+                    break;
+                }
+            }
+            
+            if (matches) {
+                Log.d("BehaviorSettings", "Found word match: " + app.displayName + " (" + app.packageName + ")");
+                return app;
+            }
+        }
+        
+        Log.d("BehaviorSettings", "No app found for query: '" + query + "'");
+        return null;
     }
 
     private void saveBehaviorMode(String mode) {
@@ -997,6 +1245,10 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
 
     @Override
     protected void onDestroy() {
+        if (cooldownAppSelectorAdapter != null) {
+            cooldownAppSelectorAdapter.shutdown();
+        }
+        
         super.onDestroy();
         
         // Clean up sensor listeners
@@ -1228,6 +1480,37 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 .show();
     }
 
+    private void showCooldownDialog() {
+        // Track dialog usage for analytics
+        trackDialogUsage("cooldown_info");
+        
+        String htmlText = "Notification Cooldown prevents apps from having multiple notifications read within a specified time period:<br><br>" +
+                "<b>🎯 Why use cooldown?</b><br>" +
+                "Some apps send rapid-fire notifications that can be overwhelming. This feature helps manage notification spam by enforcing a \"quiet period\" between notifications from the same app:<br><br>" +
+                "<b>📱 Perfect for:</b><br>" +
+                "• <b>Chat apps</b> - WhatsApp, Telegram, Discord<br>" +
+                "• <b>Social media</b> - Twitter, Instagram, Facebook<br>" +
+                "• <b>Games</b> - Apps with frequent updates<br>" +
+                "• <b>Any app</b> that sends rapid notifications<br><br>" +
+                "<b>⚙️ How it works:</b><br>" +
+                "1. Add an app to the cooldown list<br>" +
+                "2. Set a cooldown time (e.g., 5 seconds)<br>" +
+                "3. If the same app sends another notification within that time, it gets skipped<br>" +
+                "4. After the cooldown period, new notifications are read normally<br><br>" +
+                "<b>💡 Recommended settings:</b><br>" +
+                "• <b>1-3 seconds</b> - For apps that send 2-3 notifications quickly<br>" +
+                "• <b>5-10 seconds</b> - For chat apps with message bursts<br>" +
+                "• <b>15-30 seconds</b> - For very spammy apps<br>" +
+                "• <b>1-5 minutes</b> - For apps that send many notifications over time<br><br>" +
+                "<b>Note:</b> Only notifications from the same app are affected. Different apps can still send notifications normally.";
+        
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle("Notification Cooldown")
+                .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
+                .setPositiveButton("Got it!", null)
+                .show();
+    }
+
     private void addDefaultPriorityApps() {
         // Add some common priority apps
         String[] defaultPriorityApps = {
@@ -1361,6 +1644,71 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         float threshold = (calibratedMaxDistance > 0) ? (calibratedMaxDistance * (clamped / 100f)) : 3.0f;
         editor.putFloat("wave_threshold_v1", threshold);
         editor.apply();
+    }
+
+    /**
+     * Test method to debug app list functionality
+     * Call this from onCreate or add a test button
+     */
+    private void testAppListFunctionality() {
+        Log.d("BehaviorSettings", "=== Testing App List Functionality ===");
+        
+        // Test 1: Load app list
+        List<AppListData> appList = AppListManager.INSTANCE.loadAppList(this);
+        if (appList == null) {
+            Log.e("BehaviorSettings", "TEST FAILED: App list is null");
+            return;
+        }
+        
+        Log.d("BehaviorSettings", "TEST PASSED: App list loaded with " + appList.size() + " apps");
+        
+        // Test 2: Search for common apps
+        String[] testQueries = {"whatsapp", "facebook", "youtube", "gmail", "chrome"};
+        
+        for (String query : testQueries) {
+            AppListData found = findAppByNameOrPackage(query);
+            if (found != null) {
+                Log.d("BehaviorSettings", "TEST PASSED: Found '" + query + "' -> " + found.displayName);
+            } else {
+                Log.e("BehaviorSettings", "TEST FAILED: Could not find '" + query + "'");
+            }
+        }
+        
+        // Test 3: Show first few apps for verification
+        Log.d("BehaviorSettings", "First 5 apps in list:");
+        for (int i = 0; i < Math.min(5, appList.size()); i++) {
+            AppListData app = appList.get(i);
+            Log.d("BehaviorSettings", "  " + (i+1) + ". " + app.displayName + " (" + app.packageName + ")");
+        }
+        
+        Log.d("BehaviorSettings", "=== App List Test Complete ===");
+    }
+
+    private void addCooldownAppFromSelection(AppInfo selectedApp) {
+        Log.d("BehaviorSettings", "Adding cooldown app from selection: " + selectedApp.appName + " (" + selectedApp.packageName + ")");
+        
+        // Check for duplicates
+        for (CooldownAppAdapter.CooldownAppItem item : cooldownAppsList) {
+            if (item.packageName.equals(selectedApp.packageName)) {
+                Toast.makeText(this, "App already in cooldown list", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        // Add to cooldown list with default 1-second cooldown
+        CooldownAppAdapter.CooldownAppItem item = new CooldownAppAdapter.CooldownAppItem(
+            selectedApp.packageName, 
+            selectedApp.appName, 
+            selectedApp.icon, // Use the actual app icon
+            1 // Default 1-second cooldown
+        );
+        cooldownAppsList.add(item);
+        cooldownAppAdapter.notifyDataSetChanged();
+        
+        Log.d("BehaviorSettings", "Added app to cooldown list: " + selectedApp.appName);
+        saveCooldownApps();
+        
+        Toast.makeText(this, "Added " + selectedApp.appName + " to cooldown list", Toast.LENGTH_SHORT).show();
     }
 
 } 

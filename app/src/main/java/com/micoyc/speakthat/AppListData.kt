@@ -19,6 +19,7 @@ data class AppListData(
     @JvmField val aliases: List<String>,
 
     @SerializedName("iconSlug")
+    @JvmField
     val iconSlug: String? = null
 ) {
     /**

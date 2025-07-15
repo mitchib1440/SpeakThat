@@ -20,10 +20,12 @@ object AppListManager {
      */
     fun loadAppList(context: Context): List<AppListData> {
         if (isLoaded) {
+            Log.d(TAG, "Returning cached app list with ${appList.size} apps")
             return appList
         }
         
         return try {
+            Log.d(TAG, "Loading app list from JSON file...")
             val inputStream = context.assets.open(APP_LIST_FILE)
             val jsonString = inputStream.bufferedReader().use { it.readText() }
             
@@ -31,7 +33,7 @@ object AppListManager {
             appList = Gson().fromJson(jsonString, type)
             isLoaded = true
             
-            Log.d(TAG, "Loaded ${appList.size} apps from JSON")
+            Log.d(TAG, "Successfully loaded ${appList.size} apps from JSON")
             appList
         } catch (e: Exception) {
             Log.e(TAG, "Error loading app list from JSON", e)

@@ -19,6 +19,34 @@
         <item>Private (announce privately)</item>
     </string-array>
 
+    <!-- Cooldown Time Options -->
+    <string-array name="cooldown_time_options">
+        <item>1 second</item>
+        <item>2 seconds</item>
+        <item>3 seconds</item>
+        <item>5 seconds</item>
+        <item>10 seconds</item>
+        <item>15 seconds</item>
+        <item>30 seconds</item>
+        <item>1 minute</item>
+        <item>2 minutes</item>
+        <item>5 minutes</item>
+    </string-array>
+
+    <!-- Cooldown Time Values (corresponding to options above) -->
+    <string-array name="cooldown_time_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>300</item>
+    </string-array>
+
     <!-- Behavior Settings Dialogs -->
     <string name="notification_behavior_dialog_title">Notification Behavior Options</string>
     <string name="notification_behavior_dialog_message">Choose how SpeakThat handles multiple notifications:

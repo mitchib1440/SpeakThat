@@ -79,6 +79,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private val notificationQueue = mutableListOf<QueuedNotification>()
     private var isCurrentlySpeaking = false
     
+    // Cooldown tracking
+    private val appCooldownTimestamps = HashMap<String, Long>() // packageName -> last notification timestamp
+    private val appCooldownSettings = HashMap<String, Int>() // packageName -> cooldown seconds
+    
 
     
     // Voice settings listener
@@ -129,6 +133,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Persistent/silent notification filtering settings
         private const val KEY_PERSISTENT_FILTERING_ENABLED = "persistent_filtering_enabled"
+        
+        // Cooldown settings
+        private const val KEY_COOLDOWN_APPS = "cooldown_apps"
         
         @JvmStatic
         fun getRecentNotifications(): List<NotificationData> {
@@ -516,6 +523,42 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
+    private fun loadCooldownSettings() {
+        appCooldownSettings.clear()
+        try {
+            val cooldownAppsJson = sharedPreferences.getString(KEY_COOLDOWN_APPS, "[]") ?: "[]"
+            val jsonArray = org.json.JSONArray(cooldownAppsJson)
+            for (i in 0 until jsonArray.length()) {
+                val jsonObject = jsonArray.getJSONObject(i)
+                val packageName = jsonObject.getString("packageName")
+                val cooldownSeconds = jsonObject.optInt("cooldownSeconds", 5)
+                appCooldownSettings[packageName] = cooldownSeconds
+            }
+            Log.d(TAG, "Loaded cooldown settings for ${appCooldownSettings.size} apps")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error loading cooldown settings", e)
+        }
+    }
+    
+    private fun checkCooldown(packageName: String): FilterResult {
+        val cooldownSeconds = appCooldownSettings[packageName] ?: return FilterResult(true, "", "No cooldown set for app")
+        if (cooldownSeconds <= 0) {
+            return FilterResult(true, "", "Cooldown disabled for app")
+        }
+        val currentTime = System.currentTimeMillis()
+        val lastNotificationTime = appCooldownTimestamps[packageName] ?: 0L
+        val timeSinceLastNotification = (currentTime - lastNotificationTime) / 1000 // Convert to seconds
+        if (timeSinceLastNotification < cooldownSeconds) {
+            val remainingSeconds = cooldownSeconds - timeSinceLastNotification
+            Log.d(TAG, "Cooldown active for $packageName - $remainingSeconds seconds remaining")
+            InAppLogger.logFilter("Cooldown active for $packageName - $remainingSeconds seconds remaining")
+            return FilterResult(false, "", "Cooldown active - $remainingSeconds seconds remaining")
+        }
+        // Update timestamp for this app
+        appCooldownTimestamps[packageName] = currentTime
+        return FilterResult(true, "", "Cooldown passed")
+    }
+    
     private fun loadFilterSettings() {
         appListMode = sharedPreferences.getString(KEY_APP_LIST_MODE, "none") ?: "none"
         appList = HashSet(sharedPreferences.getStringSet(KEY_APP_LIST, HashSet()) ?: HashSet())
@@ -571,6 +614,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         filterLowPriority = sharedPreferences.getBoolean("filter_low_priority", false)
         filterSystemNotifications = sharedPreferences.getBoolean("filter_system_notifications", false)
         
+        // Load cooldown settings
+        loadCooldownSettings()
+        
         Log.d(TAG, "Filter settings loaded - appMode: $appListMode, apps: ${appList.size}, blocked words: ${blockedWords.size}, replacements: ${wordReplacements.size}")
         Log.d(TAG, "Behavior settings loaded - mode: $notificationBehavior, priority apps: ${priorityApps.size}")
         Log.d(TAG, "Media behavior settings loaded - mode: $mediaBehavior, ducking volume: $duckingVolume%")
@@ -593,8 +639,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (!appFilterResult.shouldSpeak) {
             return appFilterResult
         }
+        // 2. Check cooldown
+        val cooldownResult = checkCooldown(packageName)
+        if (!cooldownResult.shouldSpeak) {
+            return cooldownResult
+        }
         
-        // 2. Apply media notification filtering (if StatusBarNotification is available)
+        // 3. Apply media notification filtering (if StatusBarNotification is available)
         if (sbn != null) {
             val mediaFilterResult = applyMediaFiltering(sbn)
             if (!mediaFilterResult.shouldSpeak) {
@@ -602,7 +653,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         }
         
-        // 3. Apply persistent/silent notification filtering
+        // 4. Apply persistent/silent notification filtering
         if (sbn != null && isPersistentFilteringEnabled) {
             val persistentFilterResult = applyPersistentFiltering(sbn)
             if (!persistentFilterResult.shouldSpeak) {
@@ -610,13 +661,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         }
         
-        // 4. Apply word filtering and replacements
+        // 5. Apply word filtering and replacements
         val wordFilterResult = applyWordFiltering(text, appName)
         if (!wordFilterResult.shouldSpeak) {
             return wordFilterResult
         }
         
-        // 5. Apply conditional rules (Smart Rules system)
+        // 6. Apply conditional rules (Smart Rules system)
         val conditionalResult = applyConditionalFiltering(packageName, appName, wordFilterResult.processedText)
         if (!conditionalResult.shouldSpeak) {
             return conditionalResult
@@ -1299,6 +1350,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 filterLowPriority = sharedPreferences?.getBoolean("filter_low_priority", false) ?: false
                 filterSystemNotifications = sharedPreferences?.getBoolean("filter_system_notifications", false) ?: false
                 Log.d(TAG, "Persistent filtering category settings updated - persistent: $filterPersistent, silent: $filterSilent, foreground: $filterForegroundServices, low: $filterLowPriority, system: $filterSystemNotifications")
+            }
+            KEY_COOLDOWN_APPS -> {
+                loadCooldownSettings()
+                Log.d(TAG, "Cooldown settings updated - apps: ${appCooldownSettings.size}")
             }
         }
     }
