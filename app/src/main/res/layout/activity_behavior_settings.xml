@@ -60,7 +60,7 @@
                         android:text="🔔 Notification Behavior"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/purple_200"
+                        android:textColor="@color/text_secondary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -88,7 +88,7 @@
                             android:text="💡 Most users should use: Smart Mode"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="@color/purple_200"
+                            android:textColor="@color/text_tertiary"
                             android:layout_marginEnd="8dp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -244,7 +244,7 @@
                         android:text="🎵 Media Behavior"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/purple_200"
+                        android:textColor="@color/text_primary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -272,7 +272,7 @@
                             android:text="💡 Most users should use: Lower Audio"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="@color/purple_200"
+                            android:textColor="@color/text_tertiary"
                             android:layout_marginEnd="8dp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -446,7 +446,7 @@
                         android:text="📳 Shake to Stop"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/purple_200"
+                        android:textColor="@color/text_secondary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -474,7 +474,7 @@
                             android:text="💡 Most users should: Enable this feature"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="@color/purple_200"
+                            android:textColor="@color/text_tertiary"
                             android:layout_marginEnd="8dp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -696,7 +696,7 @@
                         android:text="👋 Wave to Stop"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/purple_200"
+                        android:textColor="@color/text_secondary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -724,7 +724,7 @@
                             android:text="💡 Great for: Desk users &amp; accessibility"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="@color/purple_200"
+                            android:textColor="@color/text_tertiary"
                             android:layout_marginEnd="8dp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -978,7 +978,7 @@
                         android:text="📱 Custom App Names"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/purple_200"
+                        android:textColor="@color/text_secondary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -1006,7 +1006,7 @@
                             android:text="💡 Example: X app reads as Twitter"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="@color/purple_200"
+                            android:textColor="@color/text_tertiary"
                             android:layout_marginEnd="8dp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -1110,7 +1110,7 @@
                         android:text="⏱️ Delay Before Readout"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/purple_200"
+                        android:textColor="@color/text_secondary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -1138,7 +1138,7 @@
                             android:text="💡 Most users should use: 2 seconds"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="@color/purple_200"
+                            android:textColor="@color/text_tertiary"
                             android:layout_marginEnd="8dp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -1229,7 +1229,7 @@
                         android:text="⏰ Notification Cooldown"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/purple_200"
+                        android:textColor="@color/text_secondary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -1257,7 +1257,7 @@
                             android:text="💡 Great for: Apps that spam notifications"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="@color/purple_200"
+                            android:textColor="@color/text_tertiary"
                             android:layout_marginEnd="8dp" />
 
                         <com.google.android.material.button.MaterialButton

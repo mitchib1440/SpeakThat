@@ -14,7 +14,7 @@
         android:text="Notification History"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@color/purple_200"
+        android:textColor="@color/text_secondary"
         android:gravity="center"
         android:padding="16dp"
         android:background="?attr/colorSurface" />
