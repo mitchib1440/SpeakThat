@@ -22,7 +22,7 @@
         <item name="textColorTertiary">@color/text_tertiary</item>
         <!-- System UI handling -->
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
     

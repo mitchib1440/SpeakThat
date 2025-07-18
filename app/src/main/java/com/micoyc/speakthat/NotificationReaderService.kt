@@ -15,6 +15,7 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import com.micoyc.speakthat.VoiceSettingsActivity
+import com.micoyc.speakthat.BehaviorSettingsActivity
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.HashMap
@@ -271,6 +272,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (!MainActivity.isMasterSwitchEnabled(this)) {
                     Log.d(TAG, "Master switch disabled - ignoring notification from $packageName")
                     InAppLogger.log("MasterSwitch", "Notification ignored due to master switch being disabled")
+                    return
+                }
+
+                // Check Do Not Disturb mode - if enabled and honouring DND, don't process notifications
+                if (BehaviorSettingsActivity.shouldHonourDoNotDisturb(this)) {
+                    Log.d(TAG, "Do Not Disturb mode enabled - ignoring notification from $packageName")
+                    InAppLogger.log("DoNotDisturb", "Notification ignored due to Do Not Disturb mode")
                     return
                 }
                 

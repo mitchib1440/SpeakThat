@@ -93,6 +93,10 @@ public class FilterConfigManager {
         public String mediaBehavior;
         public int duckingVolume;
         public int delayBeforeReadout;
+        public boolean honourDoNotDisturb;
+        public boolean waveToStopEnabled;
+        public String customAppNames;
+        public String cooldownApps;
         
         public BehaviorConfig() {
             this.notificationBehavior = "interrupt";
@@ -209,6 +213,10 @@ public class FilterConfigManager {
         config.behavior.mediaBehavior = prefs.getString("media_behavior", "ignore");
         config.behavior.duckingVolume = prefs.getInt("ducking_volume", 30);
         config.behavior.delayBeforeReadout = prefs.getInt("delay_before_readout", 0);
+        config.behavior.honourDoNotDisturb = prefs.getBoolean("honour_do_not_disturb", true);
+        config.behavior.waveToStopEnabled = prefs.getBoolean("wave_to_stop_enabled", false);
+        config.behavior.customAppNames = prefs.getString("custom_app_names", "[]");
+        config.behavior.cooldownApps = prefs.getString("cooldown_apps", "[]");
         
         // Load general settings
         config.general.darkMode = prefs.getBoolean("dark_mode", true);
@@ -257,6 +265,10 @@ public class FilterConfigManager {
         behavior.put("mediaBehavior", config.behavior.mediaBehavior);
         behavior.put("duckingVolume", config.behavior.duckingVolume);
         behavior.put("delayBeforeReadout", config.behavior.delayBeforeReadout);
+        behavior.put("honourDoNotDisturb", config.behavior.honourDoNotDisturb);
+        behavior.put("waveToStopEnabled", config.behavior.waveToStopEnabled);
+        behavior.put("customAppNames", config.behavior.customAppNames);
+        behavior.put("cooldownApps", config.behavior.cooldownApps);
         json.put("behavior", behavior);
         
         // General settings
@@ -503,6 +515,26 @@ public class FilterConfigManager {
                 
                 if (behavior.has("delayBeforeReadout")) {
                     mainEditor.putInt("delay_before_readout", behavior.getInt("delayBeforeReadout"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("honourDoNotDisturb")) {
+                    mainEditor.putBoolean("honour_do_not_disturb", behavior.getBoolean("honourDoNotDisturb"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("waveToStopEnabled")) {
+                    mainEditor.putBoolean("wave_to_stop_enabled", behavior.getBoolean("waveToStopEnabled"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("customAppNames")) {
+                    mainEditor.putString("custom_app_names", behavior.getString("customAppNames"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("cooldownApps")) {
+                    mainEditor.putString("cooldown_apps", behavior.getString("cooldownApps"));
                     totalImported++;
                 }
             }

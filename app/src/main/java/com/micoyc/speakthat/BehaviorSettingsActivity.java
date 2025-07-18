@@ -7,6 +7,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -70,6 +71,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String KEY_DELAY_BEFORE_READOUT = "delay_before_readout";
     private static final String KEY_CUSTOM_APP_NAMES = "custom_app_names"; // JSON string of custom app names
     private static final String KEY_COOLDOWN_APPS = "cooldown_apps"; // JSON string of cooldown app settings
+    private static final String KEY_HONOUR_DO_NOT_DISTURB = "honour_do_not_disturb"; // boolean
 
     // Media behavior options
     private static final String MEDIA_BEHAVIOR_IGNORE = "ignore";
@@ -82,6 +84,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String DEFAULT_MEDIA_BEHAVIOR = MEDIA_BEHAVIOR_DUCK;
     private static final int DEFAULT_DUCKING_VOLUME = 30; // 30% volume when ducking
     private static final int DEFAULT_DELAY_BEFORE_READOUT = 2; // 2 seconds
+    private static final boolean DEFAULT_HONOUR_DO_NOT_DISTURB = true; // Default to honouring DND
 
     // Adapter and data
     private PriorityAppAdapter priorityAppAdapter;
@@ -196,6 +199,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Set up info button listeners
         binding.btnNotificationBehaviorInfo.setOnClickListener(v -> showNotificationBehaviorDialog());
         binding.btnMediaBehaviorInfo.setOnClickListener(v -> showMediaBehaviorDialog());
+        binding.btnDoNotDisturbInfo.setOnClickListener(v -> showDoNotDisturbDialog());
         binding.btnShakeToStopInfo.setOnClickListener(v -> showShakeToStopDialog());
         binding.btnWaveToStopInfo.setOnClickListener(v -> showWaveToStopDialog());
         binding.btnDelayInfo.setOnClickListener(v -> showDelayDialog());
@@ -352,6 +356,11 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             
             // Save setting
             saveDelayBeforeReadout(delaySeconds);
+        });
+
+        // Set up Do Not Disturb toggle
+        binding.switchHonourDoNotDisturb.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveHonourDoNotDisturb(isChecked);
         });
     }
 
@@ -520,6 +529,10 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
 
         // Load cooldown apps
         loadCooldownApps();
+
+        // Load Do Not Disturb setting
+        boolean honourDoNotDisturb = sharedPreferences.getBoolean(KEY_HONOUR_DO_NOT_DISTURB, DEFAULT_HONOUR_DO_NOT_DISTURB);
+        binding.switchHonourDoNotDisturb.setChecked(honourDoNotDisturb);
     }
 
     private void addPriorityApp() {
@@ -918,6 +931,13 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         editor.putInt(KEY_DELAY_BEFORE_READOUT, delaySeconds);
         editor.apply();
         InAppLogger.log("BehaviorSettings", "Delay before readout changed to: " + delaySeconds + " seconds");
+    }
+
+    private void saveHonourDoNotDisturb(boolean honour) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_HONOUR_DO_NOT_DISTURB, honour);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Honour Do Not Disturb changed to: " + honour);
     }
 
     private void updateThresholdMarker(float threshold) {
@@ -1511,6 +1531,40 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 .show();
     }
 
+    private void showDoNotDisturbDialog() {
+        // Track dialog usage for analytics
+        trackDialogUsage("do_not_disturb_info");
+        
+        String htmlText = "Honour Do Not Disturb mode respects your device's Do Not Disturb settings:<br><br>" +
+                "<b>🎯 What it does:</b><br>" +
+                "When your device is in Do Not Disturb mode, SpeakThat will not read any notifications aloud. This ensures complete silence when you need it most.<br><br>" +
+                "<b>📱 When it's useful:</b><br>" +
+                "• <b>Meetings and presentations</b> - No embarrassing interruptions<br>" +
+                "• <b>Sleep time</b> - Respects your bedtime quiet hours<br>" +
+                "• <b>Focus time</b> - When you need to concentrate without distractions<br>" +
+                "• <b>Quiet environments</b> - Libraries, theaters, or public transport<br><br>" +
+                "<b>⚙️ How it works:</b><br>" +
+                "• Automatically detects when Do Not Disturb is enabled<br>" +
+                "• Works with both manual and scheduled DND<br>" +
+                "• Respects all DND modes (Alarms only, Priority only, etc.)<br>" +
+                "• Notifications resume normally when DND is disabled<br><br>" +
+                "<b>💡 Tip:</b> This feature works seamlessly with your device's existing Do Not Disturb settings. No additional configuration needed!";
+        
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle("Honour Do Not Disturb")
+                .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
+                .setPositiveButton(R.string.use_recommended, (dialog, which) -> {
+                    // Track recommendation usage
+                    trackDialogUsage("do_not_disturb_recommended");
+                    
+                    // Enable honour Do Not Disturb
+                    binding.switchHonourDoNotDisturb.setChecked(true);
+                    saveHonourDoNotDisturb(true);
+                })
+                .setNegativeButton(R.string.got_it, null)
+                .show();
+    }
+
     private void addDefaultPriorityApps() {
         // Add some common priority apps
         String[] defaultPriorityApps = {
@@ -1709,6 +1763,54 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         saveCooldownApps();
         
         Toast.makeText(this, "Added " + selectedApp.appName + " to cooldown list", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Utility method to check if the device is currently in Do Not Disturb mode
+     * This can be used by other parts of the app to respect the DND setting
+     * @param context The application context
+     * @return true if Do Not Disturb is enabled, false otherwise
+     */
+    public static boolean isDoNotDisturbEnabled(Context context) {
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        if (audioManager != null) {
+            // Check for silent mode (traditional DND)
+            if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT) {
+                return true;
+            }
+            
+            // For Android 6.0+ (API 23+), also check for Do Not Disturb mode
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                try {
+                    android.app.NotificationManager notificationManager = 
+                        (android.app.NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    if (notificationManager != null) {
+                        int currentInterruptionFilter = notificationManager.getCurrentInterruptionFilter();
+                        // Check if DND is enabled (any mode except ALL)
+                        return currentInterruptionFilter != android.app.NotificationManager.INTERRUPTION_FILTER_ALL;
+                    }
+                } catch (SecurityException e) {
+                    // If we don't have permission to check DND status, fall back to ringer mode
+                    Log.d("BehaviorSettings", "No permission to check DND status, using ringer mode fallback");
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if SpeakThat should honour Do Not Disturb mode
+     * @param context The application context
+     * @return true if DND should be honoured, false otherwise
+     */
+    public static boolean shouldHonourDoNotDisturb(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        boolean honourDND = prefs.getBoolean(KEY_HONOUR_DO_NOT_DISTURB, DEFAULT_HONOUR_DO_NOT_DISTURB);
+        
+        if (honourDND) {
+            return isDoNotDisturbEnabled(context);
+        }
+        return false;
     }
 
 } 

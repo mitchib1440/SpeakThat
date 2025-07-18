@@ -28,4 +28,5 @@
     <color name="text_tertiary">@color/white_300</color>
     <color name="background_light">@color/white_200</color>
     <color name="background_dark">@color/black_200</color>
+    <color name="search_results_background">@color/black_200</color>
 </resources> 

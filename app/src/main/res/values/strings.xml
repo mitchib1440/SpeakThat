@@ -13,6 +13,10 @@
     <string name="notification_history">Notification History</string>
     <string name="close">Close</string>
 
+    <!-- Search Functionality -->
+    <string name="search_settings_hint">Search settings...</string>
+    <string name="no_search_results">No matching settings found</string>
+
     <!-- Filter Settings -->
     <string-array name="blacklist_types">
         <item>Block (skip entirely)</item>

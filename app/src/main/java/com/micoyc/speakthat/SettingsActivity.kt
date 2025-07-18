@@ -3,16 +3,23 @@ package com.micoyc.speakthat
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.micoyc.speakthat.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
     
     private lateinit var binding: ActivitySettingsBinding
+    private lateinit var searchAdapter: SearchResultsAdapter
+    private val settingsCategories = mutableListOf<SettingsCategory>()
+    private val allSettings = mutableListOf<SettingsItem>()
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +30,9 @@ class SettingsActivity : AppCompatActivity() {
         configureSystemUI()
         
         setupToolbar()
+        setupSearchFunctionality()
+        setupSettingsCategories()
+        setupAllSettings()
         setupClickListeners()
     }
     
@@ -33,7 +43,145 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
     
+    private fun setupSearchFunctionality() {
+        // Setup RecyclerView for search results
+        searchAdapter = SearchResultsAdapter(emptyList()) { settingsItem ->
+            // Hide search results and execute the settings item action
+            binding.searchResultsRecyclerView.visibility = View.GONE
+            binding.settingsScrollView.visibility = View.VISIBLE
+            binding.searchEditText.setText("")
+            
+            // Handle special cases for support items
+            when (settingsItem.id) {
+                "feature_request", "bug_report", "general_support" -> {
+                    showSupportDialog(settingsItem.id)
+                }
+                else -> {
+                    settingsItem.navigationAction()
+                }
+            }
+        }
+        
+        binding.searchResultsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(this@SettingsActivity)
+            adapter = searchAdapter
+        }
+        
+        // Setup search text watcher
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                performSearch(s?.toString() ?: "")
+            }
+        })
+    }
+    
+    private fun setupSettingsCategories() {
+        // Create settings categories with their metadata (for backward compatibility)
+        settingsCategories.clear()
+        settingsCategories.addAll(listOf(
+            SettingsCategory(
+                id = "general",
+                title = "General Settings",
+                description = "App preferences, theme settings",
+                icon = "⚙️",
+                cardView = binding.cardGeneralSettings,
+                onClickAction = { startActivity(Intent(this, GeneralSettingsActivity::class.java)) }
+            ),
+            SettingsCategory(
+                id = "behavior",
+                title = "Behavior Settings",
+                description = "When and how notifications are read",
+                icon = "🔔",
+                cardView = binding.cardBehaviorSettings,
+                onClickAction = { startActivity(Intent(this, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsCategory(
+                id = "voice",
+                title = "Voice Settings",
+                description = "Text-to-speech voice and speed",
+                icon = "🎙️",
+                cardView = binding.cardVoiceSettings,
+                onClickAction = { startActivity(Intent(this, VoiceSettingsActivity::class.java)) }
+            ),
+            SettingsCategory(
+                id = "filter",
+                title = "Filter Settings",
+                description = "Choose which apps to read",
+                icon = "🔍",
+                cardView = binding.cardFilterSettings,
+                onClickAction = { startActivity(Intent(this, FilterSettingsActivity::class.java)) }
+            ),
+            SettingsCategory(
+                id = "development",
+                title = "Development Settings",
+                description = "Debug tools and logging system",
+                icon = "🛠️",
+                cardView = binding.cardDevelopmentSettings,
+                onClickAction = { startActivity(Intent(this, DevelopmentSettingsActivity::class.java)) }
+            ),
+            SettingsCategory(
+                id = "onboarding",
+                title = "Re-run Onboarding",
+                description = "See the app introduction again",
+                icon = "🔄",
+                cardView = binding.cardReRunOnboarding,
+                onClickAction = { 
+                    InAppLogger.logUserAction("Re-run onboarding selected")
+                    startActivity(Intent(this, OnboardingActivity::class.java))
+                }
+            ),
+            SettingsCategory(
+                id = "support",
+                title = "Support & Feedback",
+                description = "Get help, report bugs, request features",
+                icon = "💬",
+                cardView = binding.cardSupportFeedback,
+                onClickAction = { showSupportDialog() }
+            )
+        ))
+    }
+    
+    private fun setupAllSettings() {
+        // Load all individual settings from the database
+        allSettings.clear()
+        allSettings.addAll(SettingsDatabase.getAllSettings(this))
+    }
+    
+    private fun performSearch(query: String) {
+        if (query.isBlank()) {
+            // Show all settings when search is empty
+            binding.searchResultsRecyclerView.visibility = View.GONE
+            binding.settingsScrollView.visibility = View.VISIBLE
+            return
+        }
+        
+        val filteredResults = allSettings.filter { settingsItem ->
+            val searchText = query.lowercase()
+            
+            // Search in title, description, category title, and keywords
+            settingsItem.title.lowercase().contains(searchText) ||
+            settingsItem.description.lowercase().contains(searchText) ||
+            settingsItem.categoryTitle.lowercase().contains(searchText) ||
+            settingsItem.searchKeywords.any { keyword -> 
+                keyword.lowercase().contains(searchText) 
+            }
+        }
+        
+        if (filteredResults.isNotEmpty()) {
+            searchAdapter.updateResults(filteredResults)
+            binding.searchResultsRecyclerView.visibility = View.VISIBLE
+            binding.settingsScrollView.visibility = View.GONE
+        } else {
+            binding.searchResultsRecyclerView.visibility = View.GONE
+            binding.settingsScrollView.visibility = View.VISIBLE
+        }
+    }
+    
     private fun setupClickListeners() {
+        // The click listeners are now handled through the settingsCategories list
+        // but we keep the original setup for backward compatibility
         binding.cardGeneralSettings.setOnClickListener {
             startActivity(Intent(this, GeneralSettingsActivity::class.java))
         }
@@ -49,8 +197,6 @@ class SettingsActivity : AppCompatActivity() {
         binding.cardFilterSettings.setOnClickListener {
             startActivity(Intent(this, FilterSettingsActivity::class.java))
         }
-        
-
         
         binding.cardDevelopmentSettings.setOnClickListener {
             startActivity(Intent(this, DevelopmentSettingsActivity::class.java))
@@ -86,7 +232,7 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     
-    private fun showSupportDialog() {
+    private fun showSupportDialog(type: String = "") {
         InAppLogger.logUserAction("Support dialog opened")
         
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_support_feedback, null)
@@ -130,7 +276,24 @@ class SettingsActivity : AppCompatActivity() {
             dialog.dismiss()
         }
         
-        dialog.show()
+        // If a specific type was requested, automatically trigger it
+        when (type) {
+            "feature_request" -> {
+                dialog.dismiss()
+                sendSupportEmail("Feature Request", false)
+            }
+            "bug_report" -> {
+                dialog.dismiss()
+                sendSupportEmail("Bug Report", false)
+            }
+            "general_support" -> {
+                dialog.dismiss()
+                sendSupportEmail("Support", false)
+            }
+            else -> {
+                dialog.show()
+            }
+        }
     }
     
     private fun sendSupportEmail(type: String, includeLogs: Boolean) {
