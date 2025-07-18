@@ -9,23 +9,7 @@
     android:fitsSystemWindows="true"
     tools:context=".NotificationHistoryActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_200"
-        android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.Material3.Light">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Notification History"
-            android:textColor="@color/white_100"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-    </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
         android:layout_width="match_parent"

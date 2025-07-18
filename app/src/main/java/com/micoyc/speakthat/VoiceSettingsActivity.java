@@ -115,11 +115,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     }
 
     private void setupToolbar() {
-        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
             getSupportActionBar().setTitle("Voice Settings");
         }
     }

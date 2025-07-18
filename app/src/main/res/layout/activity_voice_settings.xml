@@ -9,13 +9,7 @@
     android:fitsSystemWindows="true"
     tools:context=".VoiceSettingsActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_200"
-        android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.Material3.Light" />
+
 
     <ScrollView
         android:layout_width="match_parent"

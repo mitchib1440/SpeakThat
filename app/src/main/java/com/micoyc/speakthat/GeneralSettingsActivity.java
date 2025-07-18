@@ -61,11 +61,10 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         // Configure system UI for proper insets handling
         configureSystemUI();
 
-        // Set up toolbar
-        setSupportActionBar(binding.toolbar);
+        // Set up action bar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setTitle("General Settings");
         }
 
         // Initialize file picker for import

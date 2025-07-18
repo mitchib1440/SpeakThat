@@ -25,6 +25,8 @@ import java.util.Locale
 import kotlin.random.Random
 import android.os.Handler
 import android.os.Looper
+import android.view.Menu
+import android.view.MenuItem
 
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEventListener {
     
@@ -724,6 +726,22 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     private fun getRandomColor(): String {
         val colors = arrayOf("red", "blue", "green", "purple", "orange", "yellow", "pink", "cyan", "white", "black", "pleurigloss")
         return colors[Random.nextInt(colors.size)]
+    }
+    
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+    
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_about -> {
+                InAppLogger.logUserAction("About menu item clicked")
+                startActivity(Intent(this, AboutActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
     
     override fun onDestroy() {

@@ -41,8 +41,7 @@
         <!-- Onboarding Activity -->
         <activity
             android:name=".OnboardingActivity"
-            android:exported="false"
-            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+            android:exported="false" />
 
         <!-- Main Activity -->
         <activity
@@ -58,58 +57,54 @@
         <activity
             android:name=".SettingsActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+            android:parentActivityName=".MainActivity" />
 
         <activity
             android:name=".GeneralSettingsActivity"
             android:exported="false"
-            android:parentActivityName=".SettingsActivity"
-            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+            android:parentActivityName=".SettingsActivity" />
 
         <activity
             android:name=".BehaviorSettingsActivity"
             android:exported="false"
-            android:parentActivityName=".SettingsActivity"
-            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+            android:parentActivityName=".SettingsActivity" />
 
         <activity
             android:name=".VoiceSettingsActivity"
             android:exported="false"
-            android:parentActivityName=".SettingsActivity"
-            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+            android:parentActivityName=".SettingsActivity" />
 
         <activity
             android:name=".FilterSettingsActivity"
             android:exported="false"
-            android:parentActivityName=".SettingsActivity"
-            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+            android:parentActivityName=".SettingsActivity" />
 
 
 
         <activity
             android:name=".NotificationHistoryActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+            android:parentActivityName=".MainActivity" />
 
         <activity
             android:name=".DevelopmentSettingsActivity"
             android:exported="false"
-            android:parentActivityName=".SettingsActivity"
-            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+            android:parentActivityName=".SettingsActivity" />
 
         <activity
             android:name=".TestSettingsActivity"
             android:exported="false"
-            android:parentActivityName=".GeneralSettingsActivity"
-            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+            android:parentActivityName=".GeneralSettingsActivity" />
 
         <activity
             android:name=".WaveCalibrationActivity"
             android:exported="false"
-            android:parentActivityName=".BehaviorSettingsActivity"
-            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+            android:parentActivityName=".BehaviorSettingsActivity" />
+
+        <activity
+            android:name=".AboutActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
 
         <!-- Notification Listener Service -->
         <service

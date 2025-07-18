@@ -70,10 +70,9 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // Set up toolbar
-        setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setTitle("Development Settings");
         }
 
         initializeUI();

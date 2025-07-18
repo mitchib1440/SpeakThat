@@ -125,11 +125,10 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding = ActivityBehaviorSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Set up toolbar
-        setSupportActionBar(binding.toolbar);
+        // Set up action bar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setTitle("Behavior Settings");
         }
 
         // Initialize sensor manager

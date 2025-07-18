@@ -37,10 +37,9 @@ class SettingsActivity : AppCompatActivity() {
     }
     
     private fun setupToolbar() {
-        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.title = getString(R.string.settings)
     }
     
     private fun setupSearchFunctionality() {
