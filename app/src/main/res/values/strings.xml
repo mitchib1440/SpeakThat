@@ -19,8 +19,8 @@
 
     <!-- Filter Settings -->
     <string-array name="blacklist_types">
-        <item>Block (skip entirely)</item>
-        <item>Private (announce privately)</item>
+        <item>Block</item>
+        <item>Private</item>
     </string-array>
 
     <!-- Cooldown Time Options -->

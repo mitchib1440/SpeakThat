@@ -36,11 +36,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var accelerometer: Sensor? = null
     private var isShakeToStopEnabled = false
     private var shakeThreshold = 12.0f
+    private var shakeTimeoutSeconds = 30
     
     // Wave detection
     private var proximitySensor: Sensor? = null
     private var isWaveToStopEnabled = false
     private var waveThreshold = 5.0f
+    private var waveTimeoutSeconds = 30
     
     // Filter system
     private var appListMode = "none" // "none", "whitelist", "blacklist"
@@ -104,6 +106,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val PREFS_NAME = "SpeakThatPrefs"
         private const val KEY_SHAKE_TO_STOP_ENABLED = "shake_to_stop_enabled"
         private const val KEY_SHAKE_THRESHOLD = "shake_threshold"
+        private const val KEY_SHAKE_TIMEOUT_SECONDS = "shake_timeout_seconds"
+        private const val KEY_WAVE_TIMEOUT_SECONDS = "wave_timeout_seconds"
         
         // Filter system keys
         private const val KEY_APP_LIST_MODE = "app_list_mode"
@@ -197,10 +201,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 InAppLogger.logError("Service", "Filter settings loading failed: " + e.message)
             }
             
-
-            
-            // Initialize delay handler
+            // Initialize handlers (pre-created for consistent timing and battery efficiency)
             delayHandler = android.os.Handler(android.os.Looper.getMainLooper())
+            sensorTimeoutHandler = android.os.Handler(android.os.Looper.getMainLooper())
             
             Log.d(TAG, "NotificationReaderService initialization completed successfully")
             InAppLogger.log("Service", "Service initialization completed successfully")
@@ -464,7 +467,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private fun loadShakeSettings() {
         isShakeToStopEnabled = sharedPreferences.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false)
         shakeThreshold = sharedPreferences.getFloat(KEY_SHAKE_THRESHOLD, 12.0f)
-        Log.d(TAG, "Shake settings loaded - enabled: $isShakeToStopEnabled, threshold: $shakeThreshold")
+        
+        // Safety validation: ensure timeout is within valid range (0 or 5-300)
+        var timeout = sharedPreferences.getInt(KEY_SHAKE_TIMEOUT_SECONDS, 30)
+        if (timeout < 0 || (timeout > 0 && timeout < 5) || timeout > 300) {
+            timeout = 30 // Reset to safe default
+            Log.w(TAG, "Invalid shake timeout value detected ($timeout), resetting to 30 seconds")
+            InAppLogger.logWarning(TAG, "Invalid shake timeout value detected, resetting to 30 seconds")
+            // Save the corrected value
+            sharedPreferences.edit().putInt(KEY_SHAKE_TIMEOUT_SECONDS, timeout).apply()
+        }
+        shakeTimeoutSeconds = timeout
+        
+        Log.d(TAG, "Shake settings loaded - enabled: $isShakeToStopEnabled, threshold: $shakeThreshold, timeout: ${shakeTimeoutSeconds}s")
     }
 
     private fun loadWaveSettings() {
@@ -475,7 +490,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         } else {
             sharedPreferences.getFloat("wave_threshold", 3.0f)
         }
-        Log.d(TAG, "Wave settings loaded - enabled: $isWaveToStopEnabled, threshold: $waveThreshold")
+        
+        // Safety validation: ensure timeout is within valid range (0 or 5-300)
+        var timeout = sharedPreferences.getInt(KEY_WAVE_TIMEOUT_SECONDS, 30)
+        if (timeout < 0 || (timeout > 0 && timeout < 5) || timeout > 300) {
+            timeout = 30 // Reset to safe default
+            Log.w(TAG, "Invalid wave timeout value detected ($timeout), resetting to 30 seconds")
+            InAppLogger.logWarning(TAG, "Invalid wave timeout value detected, resetting to 30 seconds")
+            // Save the corrected value
+            sharedPreferences.edit().putInt(KEY_WAVE_TIMEOUT_SECONDS, timeout).apply()
+        }
+        waveTimeoutSeconds = timeout
+        
+        Log.d(TAG, "Wave settings loaded - enabled: $isWaveToStopEnabled, threshold: $waveThreshold, timeout: ${waveTimeoutSeconds}s")
     }
     
     // Sensor timeout for safety
@@ -493,18 +520,29 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "Wave listener registered (TTS active)")
             InAppLogger.logSystemEvent("Wave listener started", "TTS playback active")
         }
-        // Start hard timeout
-        if (sensorTimeoutHandler == null) {
-            sensorTimeoutHandler = android.os.Handler(android.os.Looper.getMainLooper())
+        
+        // Start timeout only if enabled (timeout > 0)
+        if (shakeTimeoutSeconds > 0 || waveTimeoutSeconds > 0) {
+            // Use the longer timeout if both are enabled, otherwise use the enabled one
+            val effectiveTimeout = when {
+                shakeTimeoutSeconds > 0 && waveTimeoutSeconds > 0 -> maxOf(shakeTimeoutSeconds, waveTimeoutSeconds)
+                shakeTimeoutSeconds > 0 -> shakeTimeoutSeconds
+                waveTimeoutSeconds > 0 -> waveTimeoutSeconds
+                else -> 30 // Fallback (shouldn't reach here)
+            }
+            
+            // Cancel any previous timeout
+            sensorTimeoutRunnable?.let { sensorTimeoutHandler?.removeCallbacks(it) }
+            sensorTimeoutRunnable = Runnable {
+                Log.w(TAG, "Sensor listener timeout reached after ${effectiveTimeout}s! Forcibly unregistering sensors.")
+                InAppLogger.logWarning(TAG, "Sensor listener timeout reached after ${effectiveTimeout}s! Forcibly unregistering sensors.")
+                unregisterShakeListener()
+            }
+            sensorTimeoutHandler?.postDelayed(sensorTimeoutRunnable!!, (effectiveTimeout * 1000).toLong())
+            Log.d(TAG, "Sensor timeout scheduled for ${effectiveTimeout} seconds")
+        } else {
+            Log.d(TAG, "Sensor timeout disabled by user settings")
         }
-        // Cancel any previous timeout
-        sensorTimeoutRunnable?.let { sensorTimeoutHandler?.removeCallbacks(it) }
-        sensorTimeoutRunnable = Runnable {
-            Log.w(TAG, "Sensor listener timeout reached! Forcibly unregistering sensors.")
-            InAppLogger.logWarning(TAG, "Sensor listener timeout reached! Forcibly unregistering sensors.")
-            unregisterShakeListener()
-        }
-        sensorTimeoutHandler?.postDelayed(sensorTimeoutRunnable!!, 30_000) // 30 seconds
     }
 
     private fun unregisterShakeListener() {
@@ -1330,10 +1368,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 loadFilterSettings()
                 Log.d(TAG, "Filter settings updated")
             }
-            KEY_SHAKE_TO_STOP_ENABLED, KEY_SHAKE_THRESHOLD -> {
-                // Reload shake settings
+            KEY_SHAKE_TO_STOP_ENABLED, KEY_SHAKE_THRESHOLD, KEY_SHAKE_TIMEOUT_SECONDS, KEY_WAVE_TIMEOUT_SECONDS -> {
+                // Reload shake and wave settings
                 refreshSettings()
-                Log.d(TAG, "Shake settings updated")
+                Log.d(TAG, "Shake/wave settings updated")
             }
             KEY_DELAY_BEFORE_READOUT -> {
                 // Reload delay settings

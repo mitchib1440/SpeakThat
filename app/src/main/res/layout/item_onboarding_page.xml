@@ -3,14 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:scrollbars="vertical"
+    android:fadeScrollbars="false">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:padding="32dp">
+        android:padding="24dp">
 
         <!-- Icon -->
         <TextView
@@ -18,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="80sp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="24dp"
             android:gravity="center"
             android:textColor="@color/text_primary" />
 
@@ -42,7 +44,105 @@
             android:textColor="@color/text_secondary"
             android:gravity="center"
             android:lineSpacingExtra="4dp"
-            android:layout_marginTop="16dp" />
+            android:layout_marginBottom="16dp" />
+
+        <!-- App Selector Section (optional) -->
+        <LinearLayout
+            android:id="@+id/appSelectorSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:visibility="gone">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Search for an app..."
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <AutoCompleteTextView
+                    android:id="@+id/editAppName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textSize="16sp"
+                    android:minHeight="48dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonAddApp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:text="Add App"
+                android:textSize="14sp"
+                app:cornerRadius="20dp"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="8dp"
+                android:textColor="@color/text_primary" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerSelectedApps"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="16dp"
+                android:nestedScrollingEnabled="true"
+                android:scrollbars="vertical"
+                android:fadeScrollbars="false" />
+
+        </LinearLayout>
+
+        <!-- Word Selector Section (optional) -->
+        <LinearLayout
+            android:id="@+id/wordSelectorSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:visibility="gone">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter a word to block..."
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editWord"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textSize="16sp"
+                    android:minHeight="48dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonAddWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:text="Add Word"
+                android:textSize="14sp"
+                app:cornerRadius="20dp"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="8dp"
+                android:textColor="@color/text_primary" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerSelectedWords"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="16dp"
+                android:nestedScrollingEnabled="true"
+                android:scrollbars="vertical"
+                android:fadeScrollbars="false" />
+
+        </LinearLayout>
 
         <!-- Permission Button (optional) -->
         <com.google.android.material.button.MaterialButton

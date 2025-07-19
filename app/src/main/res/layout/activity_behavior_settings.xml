@@ -755,7 +755,119 @@
                             android:layout_height="wrap_content"
                             android:text="Start Test"
                             android:backgroundTint="@color/purple_200"
-                            android:textColor="@color/white_100" />
+                            android:textColor="@color/white_100"
+                            android:layout_marginBottom="16dp" />
+
+                        <!-- Timeout Section -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Timeout Settings"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Set how long to listen for gestures before automatically stopping (to save battery)"
+                            android:textSize="14sp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:layout_marginBottom="16dp" />
+
+                        <!-- Timeout Slider -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="5s"
+                                android:textSize="12sp"
+                                android:textColor="?android:attr/textColorSecondary" />
+
+                            <com.google.android.material.slider.Slider
+                                android:id="@+id/sliderShakeTimeout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginHorizontal="12dp"
+                                android:valueFrom="5.0"
+                                android:valueTo="300.0"
+                                android:value="30.0"
+                                android:stepSize="5.0"
+                                app:thumbColor="@color/purple_200"
+                                app:trackColorActive="@color/purple_200"
+                                app:trackColorInactive="@color/purple_300" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="5m"
+                                android:textSize="12sp"
+                                android:textColor="?android:attr/textColorSecondary" />
+
+                        </LinearLayout>
+
+                        <!-- Timeout Display -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="16dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Timeout: 30 seconds"
+                                android:textSize="14sp"
+                                android:textColor="?android:attr/textColorSecondary"
+                                android:id="@+id/textShakeTimeout" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnShakeTimeoutInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:text="ℹ️"
+                                android:textSize="12sp"
+                                android:textColor="@color/purple_200"
+                                android:backgroundTint="@color/white_100"
+                                android:strokeColor="@color/purple_200"
+                                android:strokeWidth="1.0"
+                                style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                        </LinearLayout>
+
+                        <!-- Disable Timeout Option -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="16dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Disable timeout (not recommended)"
+                                android:textSize="14sp"
+                                android:textColor="?android:attr/textColorSecondary" />
+
+                            <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/switchShakeTimeoutDisabled"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:thumbTint="@color/purple_200"
+                                android:trackTint="@color/purple_300" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -1037,7 +1149,118 @@
                             android:text="Recalibrate Wave Detection"
                             android:textSize="14sp"
                             style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_marginBottom="16dp" />
+
+                        <!-- Timeout Section -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Timeout Settings"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="?android:attr/textColorPrimary"
                             android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Set how long to listen for gestures before automatically stopping (to save battery)"
+                            android:textSize="14sp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:layout_marginBottom="16dp" />
+
+                        <!-- Timeout Slider -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="5s"
+                                android:textSize="12sp"
+                                android:textColor="?android:attr/textColorSecondary" />
+
+                            <com.google.android.material.slider.Slider
+                                android:id="@+id/sliderWaveTimeout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginHorizontal="12dp"
+                                android:valueFrom="5.0"
+                                android:valueTo="300.0"
+                                android:value="30.0"
+                                android:stepSize="5.0"
+                                app:thumbColor="@color/purple_200"
+                                app:trackColorActive="@color/purple_200"
+                                app:trackColorInactive="@color/purple_300" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="5m"
+                                android:textSize="12sp"
+                                android:textColor="?android:attr/textColorSecondary" />
+
+                        </LinearLayout>
+
+                        <!-- Timeout Display -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="16dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Timeout: 30 seconds"
+                                android:textSize="14sp"
+                                android:textColor="?android:attr/textColorSecondary"
+                                android:id="@+id/textWaveTimeout" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnWaveTimeoutInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:text="ℹ️"
+                                android:textSize="12sp"
+                                android:textColor="@color/purple_200"
+                                android:backgroundTint="@color/white_100"
+                                android:strokeColor="@color/purple_200"
+                                android:strokeWidth="1.0"
+                                style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                        </LinearLayout>
+
+                        <!-- Disable Timeout Option -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="16dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Disable timeout (not recommended)"
+                                android:textSize="14sp"
+                                android:textColor="?android:attr/textColorSecondary" />
+
+                            <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/switchWaveTimeoutDisabled"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:thumbTint="@color/purple_200"
+                                android:trackTint="@color/purple_300" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 

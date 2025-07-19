@@ -260,6 +260,14 @@
                         android:text="Block or privatize notifications containing specific words"
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="💡 Block = skip entirely, Private = announce privately"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_secondary"
                         android:layout_marginBottom="16dp" />
 
                     <!-- Word Blacklist Header (Collapsible) -->
@@ -339,7 +347,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="8dp"
-                                android:minWidth="100dp" />
+                                android:minWidth="80dp" />
 
                         </LinearLayout>
 
@@ -357,8 +365,7 @@
                             android:id="@+id/recyclerBlacklistWords"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:minHeight="50dp"
-                            android:nestedScrollingEnabled="true" />
+                            android:nestedScrollingEnabled="false" />
 
                     </LinearLayout>
 
@@ -648,7 +655,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
-                            android:minHeight="50dp"
                             android:nestedScrollingEnabled="false" />
 
                         <!-- Advanced Options (Collapsible) -->
@@ -756,7 +762,6 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="16dp"
-                                    android:minHeight="50dp"
                                     android:nestedScrollingEnabled="false" />
 
                                 <!-- Important Keywords -->
@@ -812,7 +817,6 @@
                                     android:id="@+id/recyclerMediaImportantKeywords"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:minHeight="50dp"
                                     android:nestedScrollingEnabled="false" />
 
                             </LinearLayout>

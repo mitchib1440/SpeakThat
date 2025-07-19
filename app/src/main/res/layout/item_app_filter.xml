@@ -3,9 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp"
+    android:padding="12dp"
     android:background="?android:attr/selectableItemBackground"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:minHeight="56dp">
 
     <TextView
         android:id="@+id/textAppName"
@@ -15,11 +16,13 @@
         android:text="App Name"
         android:textSize="16sp"
         android:textColor="?android:attr/textColorPrimary"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="8dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:padding="8dp" />
+        android:padding="8dp"
+        android:maxLines="1"
+        android:ellipsize="end" />
 
     <CheckBox
         android:id="@+id/checkBoxPrivate"
@@ -32,11 +35,12 @@
 
     <ImageButton
         android:id="@+id/buttonRemove"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@android:drawable/ic_menu_delete"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_delete_24"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="Remove app"
-        android:tint="@android:color/holo_red_dark" />
+        android:tint="@android:color/holo_red_dark"
+        android:padding="4dp" />
 
 </LinearLayout> 

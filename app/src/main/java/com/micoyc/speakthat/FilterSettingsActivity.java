@@ -250,11 +250,6 @@ public class FilterSettingsActivity extends AppCompatActivity {
         wordBlacklistAdapter = new WordListAdapter(wordBlacklistItems, this::removeBlacklistWord, this::onWordTypeChange, this::editBlacklistWord);
         binding.recyclerBlacklistWords.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerBlacklistWords.setAdapter(wordBlacklistAdapter);
-        
-        // Force the RecyclerView to measure itself properly
-        binding.recyclerBlacklistWords.post(() -> {
-            binding.recyclerBlacklistWords.requestLayout();
-        });
     }
 
     private void setupWordReplacementRecycler() {
@@ -349,14 +344,6 @@ public class FilterSettingsActivity extends AppCompatActivity {
         }
         wordBlacklistAdapter.notifyDataSetChanged();
         updateCountDisplays();
-        binding.recyclerBlacklistWords.post(() -> {
-            wordBlacklistAdapter.notifyDataSetChanged();
-            updateCountDisplays();
-            binding.recyclerBlacklistWords.requestLayout();
-            binding.recyclerBlacklistWords.invalidate();
-            binding.recyclerBlacklistWords.getLayoutManager().requestLayout();
-            binding.recyclerBlacklistWords.getParent().requestLayout();
-        });
 
         // Load word swaps
         String replacementData = sharedPreferences.getString(KEY_WORD_REPLACEMENTS, "");
@@ -519,17 +506,6 @@ public class FilterSettingsActivity extends AppCompatActivity {
         updateCountDisplays();
         binding.editBlacklistWord.setText("");
         saveWordBlacklist();
-        
-        // Force layout refresh to ensure new item is visible
-        binding.recyclerBlacklistWords.post(() -> {
-            wordBlacklistAdapter.notifyDataSetChanged();
-            binding.recyclerBlacklistWords.requestLayout();
-            binding.recyclerBlacklistWords.getLayoutManager().requestLayout();
-            binding.recyclerBlacklistWords.getParent().requestLayout();
-        });
-        
-        // Always reload from storage to ensure UI and storage are in sync
-        loadSettings();
     }
 
     private void removeBlacklistWord(int position) {
@@ -537,14 +513,6 @@ public class FilterSettingsActivity extends AppCompatActivity {
         wordBlacklistAdapter.notifyDataSetChanged();
         updateCountDisplays();
         saveWordBlacklist();
-        
-        // Force layout refresh to ensure proper rendering
-        binding.recyclerBlacklistWords.post(() -> {
-            wordBlacklistAdapter.notifyDataSetChanged();
-            binding.recyclerBlacklistWords.requestLayout();
-            binding.recyclerBlacklistWords.getLayoutManager().requestLayout();
-            binding.recyclerBlacklistWords.getParent().requestLayout();
-        });
     }
 
     private void onWordTypeChange(int position, boolean isPrivate) {

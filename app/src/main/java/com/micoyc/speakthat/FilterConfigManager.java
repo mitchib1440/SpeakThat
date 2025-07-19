@@ -90,11 +90,13 @@ public class FilterConfigManager {
         public Set<String> priorityApps;
         public boolean shakeToStopEnabled;
         public float shakeThreshold;
+        public int shakeTimeoutSeconds;
         public String mediaBehavior;
         public int duckingVolume;
         public int delayBeforeReadout;
         public boolean honourDoNotDisturb;
         public boolean waveToStopEnabled;
+        public int waveTimeoutSeconds;
         public String customAppNames;
         public String cooldownApps;
         
@@ -103,9 +105,15 @@ public class FilterConfigManager {
             this.priorityApps = new HashSet<>();
             this.shakeToStopEnabled = false;
             this.shakeThreshold = 12.0f;
+            this.shakeTimeoutSeconds = 30;
             this.mediaBehavior = "ignore";
             this.duckingVolume = 30;
             this.delayBeforeReadout = 0;
+            this.honourDoNotDisturb = true;
+            this.waveToStopEnabled = false;
+            this.waveTimeoutSeconds = 30;
+            this.customAppNames = "[]";
+            this.cooldownApps = "[]";
         }
     }
     
@@ -210,11 +218,13 @@ public class FilterConfigManager {
         config.behavior.priorityApps = new HashSet<>(prefs.getStringSet("priority_apps", new HashSet<>()));
         config.behavior.shakeToStopEnabled = prefs.getBoolean("shake_to_stop_enabled", false);
         config.behavior.shakeThreshold = prefs.getFloat("shake_threshold", 12.0f);
+        config.behavior.shakeTimeoutSeconds = prefs.getInt("shake_timeout_seconds", 30);
         config.behavior.mediaBehavior = prefs.getString("media_behavior", "ignore");
         config.behavior.duckingVolume = prefs.getInt("ducking_volume", 30);
         config.behavior.delayBeforeReadout = prefs.getInt("delay_before_readout", 0);
         config.behavior.honourDoNotDisturb = prefs.getBoolean("honour_do_not_disturb", true);
         config.behavior.waveToStopEnabled = prefs.getBoolean("wave_to_stop_enabled", false);
+        config.behavior.waveTimeoutSeconds = prefs.getInt("wave_timeout_seconds", 30);
         config.behavior.customAppNames = prefs.getString("custom_app_names", "[]");
         config.behavior.cooldownApps = prefs.getString("cooldown_apps", "[]");
         
@@ -262,11 +272,13 @@ public class FilterConfigManager {
         behavior.put("priorityApps", new JSONArray(config.behavior.priorityApps));
         behavior.put("shakeToStopEnabled", config.behavior.shakeToStopEnabled);
         behavior.put("shakeThreshold", config.behavior.shakeThreshold);
+        behavior.put("shakeTimeoutSeconds", config.behavior.shakeTimeoutSeconds);
         behavior.put("mediaBehavior", config.behavior.mediaBehavior);
         behavior.put("duckingVolume", config.behavior.duckingVolume);
         behavior.put("delayBeforeReadout", config.behavior.delayBeforeReadout);
         behavior.put("honourDoNotDisturb", config.behavior.honourDoNotDisturb);
         behavior.put("waveToStopEnabled", config.behavior.waveToStopEnabled);
+        behavior.put("waveTimeoutSeconds", config.behavior.waveTimeoutSeconds);
         behavior.put("customAppNames", config.behavior.customAppNames);
         behavior.put("cooldownApps", config.behavior.cooldownApps);
         json.put("behavior", behavior);
@@ -503,6 +515,17 @@ public class FilterConfigManager {
                     totalImported++;
                 }
                 
+                if (behavior.has("shakeTimeoutSeconds")) {
+                    int timeout = behavior.getInt("shakeTimeoutSeconds");
+                    // Safety validation: ensure timeout is within valid range (0 or 5-300)
+                    if (timeout < 0 || (timeout > 0 && timeout < 5) || timeout > 300) {
+                        timeout = 30; // Reset to safe default
+                        InAppLogger.log("FilterConfig", "Invalid shake timeout value imported, reset to 30 seconds");
+                    }
+                    mainEditor.putInt("shake_timeout_seconds", timeout);
+                    totalImported++;
+                }
+                
                 if (behavior.has("mediaBehavior")) {
                     mainEditor.putString("media_behavior", behavior.getString("mediaBehavior"));
                     totalImported++;
@@ -525,6 +548,17 @@ public class FilterConfigManager {
                 
                 if (behavior.has("waveToStopEnabled")) {
                     mainEditor.putBoolean("wave_to_stop_enabled", behavior.getBoolean("waveToStopEnabled"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("waveTimeoutSeconds")) {
+                    int timeout = behavior.getInt("waveTimeoutSeconds");
+                    // Safety validation: ensure timeout is within valid range (0 or 5-300)
+                    if (timeout < 0 || (timeout > 0 && timeout < 5) || timeout > 300) {
+                        timeout = 30; // Reset to safe default
+                        InAppLogger.log("FilterConfig", "Invalid wave timeout value imported, reset to 30 seconds");
+                    }
+                    mainEditor.putInt("wave_timeout_seconds", timeout);
                     totalImported++;
                 }
                 

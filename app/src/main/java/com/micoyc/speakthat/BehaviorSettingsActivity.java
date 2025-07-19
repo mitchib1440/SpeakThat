@@ -64,8 +64,10 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String KEY_PRIORITY_APPS = "priority_apps"; // Set<String> of package names
     private static final String KEY_SHAKE_TO_STOP_ENABLED = "shake_to_stop_enabled";
     private static final String KEY_SHAKE_THRESHOLD = "shake_threshold";
+    private static final String KEY_SHAKE_TIMEOUT_SECONDS = "shake_timeout_seconds";
     private static final String KEY_WAVE_TO_STOP_ENABLED = "wave_to_stop_enabled";
     private static final String KEY_WAVE_THRESHOLD = "wave_threshold";
+    private static final String KEY_WAVE_TIMEOUT_SECONDS = "wave_timeout_seconds";
     private static final String KEY_MEDIA_BEHAVIOR = "media_behavior";
     private static final String KEY_DUCKING_VOLUME = "ducking_volume";
     private static final String KEY_DELAY_BEFORE_READOUT = "delay_before_readout";
@@ -114,6 +116,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private float calibratedMaxDistance = -1f;
     private float thresholdPercent = 60f; // Default to 60%
     private boolean isProcessingCalibrationResult = false; // Flag to prevent race condition
+    private boolean isProgrammaticallySettingSwitch = false; // Flag to prevent dialog loops
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -310,6 +313,70 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             launchWaveCalibration();
         });
 
+        // Set up shake timeout slider
+        binding.sliderShakeTimeout.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(Slider slider, float value, boolean fromUser) {
+                if (fromUser) {
+                    int timeoutSeconds = (int) value;
+                    updateShakeTimeoutDisplay(timeoutSeconds);
+                    saveShakeTimeoutSeconds(timeoutSeconds);
+                }
+            }
+        });
+
+        // Set up shake timeout disable switch
+        binding.switchShakeTimeoutDisabled.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isProgrammaticallySettingSwitch) {
+                return; // Skip if we're programmatically setting the switch
+            }
+            
+            if (isChecked) {
+                showTimeoutDisableWarning("shake");
+                buttonView.setChecked(false); // Reset until user confirms
+            } else {
+                // User unchecked the disable switch - re-enable timeout with current slider value
+                int currentSliderValue = (int) binding.sliderShakeTimeout.getValue();
+                saveShakeTimeoutSeconds(currentSliderValue);
+                updateShakeTimeoutDisplay(currentSliderValue);
+            }
+        });
+
+        // Set up shake timeout info button
+        binding.btnShakeTimeoutInfo.setOnClickListener(v -> showTimeoutInfoDialog("shake"));
+
+        // Set up wave timeout slider
+        binding.sliderWaveTimeout.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(Slider slider, float value, boolean fromUser) {
+                if (fromUser) {
+                    int timeoutSeconds = (int) value;
+                    updateWaveTimeoutDisplay(timeoutSeconds);
+                    saveWaveTimeoutSeconds(timeoutSeconds);
+                }
+            }
+        });
+
+        // Set up wave timeout disable switch
+        binding.switchWaveTimeoutDisabled.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isProgrammaticallySettingSwitch) {
+                return; // Skip if we're programmatically setting the switch
+            }
+            
+            if (isChecked) {
+                showTimeoutDisableWarning("wave");
+                buttonView.setChecked(false); // Reset until user confirms
+            } else {
+                // User unchecked the disable switch - re-enable timeout with current slider value
+                int currentSliderValue = (int) binding.sliderWaveTimeout.getValue();
+                saveWaveTimeoutSeconds(currentSliderValue);
+                updateWaveTimeoutDisplay(currentSliderValue);
+            }
+        });
+
+        // Set up wave timeout info button
+        binding.btnWaveTimeoutInfo.setOnClickListener(v -> showTimeoutInfoDialog("wave"));
+
         // Set up media behavior radio buttons
         binding.mediaBehaviorGroup.setOnCheckedChangeListener((group, checkedId) -> {
             String mediaBehavior = MEDIA_BEHAVIOR_IGNORE; // default
@@ -452,6 +519,23 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         updateThresholdMarker(shakeThreshold);
         updateThresholdText(shakeThreshold);
 
+        // Load shake timeout settings
+        int shakeTimeoutSeconds = sharedPreferences.getInt(KEY_SHAKE_TIMEOUT_SECONDS, 30);
+        if (shakeTimeoutSeconds == 0) {
+            // Timeout is disabled - set slider to 30 but keep disabled state
+            binding.sliderShakeTimeout.setValue(30);
+            isProgrammaticallySettingSwitch = true;
+            binding.switchShakeTimeoutDisabled.setChecked(true);
+            isProgrammaticallySettingSwitch = false;
+        } else {
+            // Timeout is enabled - set slider to actual value
+            binding.sliderShakeTimeout.setValue(shakeTimeoutSeconds);
+            isProgrammaticallySettingSwitch = true;
+            binding.switchShakeTimeoutDisabled.setChecked(false);
+            isProgrammaticallySettingSwitch = false;
+        }
+        updateShakeTimeoutDisplay(shakeTimeoutSeconds);
+
         // Load wave to stop settings
         boolean waveEnabled = sharedPreferences.getBoolean(KEY_WAVE_TO_STOP_ENABLED, false);
         Log.d("WaveCalibration", "Loading wave settings - waveEnabled: " + waveEnabled);
@@ -479,6 +563,23 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         
         updateWaveThresholdMarker(threshold);
         updateWaveThresholdText(threshold);
+
+        // Load wave timeout settings
+        int waveTimeoutSeconds = sharedPreferences.getInt(KEY_WAVE_TIMEOUT_SECONDS, 30);
+        if (waveTimeoutSeconds == 0) {
+            // Timeout is disabled - set slider to 30 but keep disabled state
+            binding.sliderWaveTimeout.setValue(30);
+            isProgrammaticallySettingSwitch = true;
+            binding.switchWaveTimeoutDisabled.setChecked(true);
+            isProgrammaticallySettingSwitch = false;
+        } else {
+            // Timeout is enabled - set slider to actual value
+            binding.sliderWaveTimeout.setValue(waveTimeoutSeconds);
+            isProgrammaticallySettingSwitch = true;
+            binding.switchWaveTimeoutDisabled.setChecked(false);
+            isProgrammaticallySettingSwitch = false;
+        }
+        updateWaveTimeoutDisplay(waveTimeoutSeconds);
 
         // Load media behavior settings
         String savedMediaBehavior = sharedPreferences.getString(KEY_MEDIA_BEHAVIOR, DEFAULT_MEDIA_BEHAVIOR);
@@ -858,10 +959,58 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         editor.apply();
     }
 
+    private void saveShakeTimeoutSeconds(int timeoutSeconds) {
+        // Safety validation: ensure timeout is within valid range (0 or 5-300)
+        int validatedTimeout = timeoutSeconds;
+        if (timeoutSeconds < 0 || (timeoutSeconds > 0 && timeoutSeconds < 5) || timeoutSeconds > 300) {
+            validatedTimeout = 30; // Reset to safe default
+            Log.w("BehaviorSettings", "Invalid shake timeout value attempted ($timeoutSeconds), resetting to 30 seconds");
+            InAppLogger.logWarning("BehaviorSettings", "Invalid shake timeout value attempted, resetting to 30 seconds");
+            // Update the UI to reflect the corrected value
+            if (binding != null) {
+                binding.sliderShakeTimeout.setValue(validatedTimeout);
+                updateShakeTimeoutDisplay(validatedTimeout);
+                // Uncheck the disable switch if we're resetting to a valid value
+                isProgrammaticallySettingSwitch = true;
+                binding.switchShakeTimeoutDisabled.setChecked(false);
+                isProgrammaticallySettingSwitch = false;
+            }
+        }
+        
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_SHAKE_TIMEOUT_SECONDS, validatedTimeout);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Shake timeout changed to: " + validatedTimeout + " seconds");
+    }
+
     private void saveWaveToStopEnabled(boolean enabled) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_WAVE_TO_STOP_ENABLED, enabled);
         editor.apply();
+    }
+
+    private void saveWaveTimeoutSeconds(int timeoutSeconds) {
+        // Safety validation: ensure timeout is within valid range (0 or 5-300)
+        int validatedTimeout = timeoutSeconds;
+        if (timeoutSeconds < 0 || (timeoutSeconds > 0 && timeoutSeconds < 5) || timeoutSeconds > 300) {
+            validatedTimeout = 30; // Reset to safe default
+            Log.w("BehaviorSettings", "Invalid wave timeout value attempted ($timeoutSeconds), resetting to 30 seconds");
+            InAppLogger.logWarning("BehaviorSettings", "Invalid wave timeout value attempted, resetting to 30 seconds");
+            // Update the UI to reflect the corrected value
+            if (binding != null) {
+                binding.sliderWaveTimeout.setValue(validatedTimeout);
+                updateWaveTimeoutDisplay(validatedTimeout);
+                // Uncheck the disable switch if we're resetting to a valid value
+                isProgrammaticallySettingSwitch = true;
+                binding.switchWaveTimeoutDisabled.setChecked(false);
+                isProgrammaticallySettingSwitch = false;
+            }
+        }
+        
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_WAVE_TIMEOUT_SECONDS, validatedTimeout);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Wave timeout changed to: " + validatedTimeout + " seconds");
     }
 
     private void saveWaveThreshold(float threshold) {
@@ -1812,4 +1961,74 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         return false;
     }
 
+    // Timeout display methods
+    private void updateShakeTimeoutDisplay(int timeoutSeconds) {
+        if (binding != null) {
+            String displayText = timeoutSeconds == 0 ? "Timeout: Disabled" : 
+                               timeoutSeconds == 1 ? "Timeout: 1 second" :
+                               "Timeout: " + timeoutSeconds + " seconds";
+            binding.textShakeTimeout.setText(displayText);
+        }
+    }
+
+    private void updateWaveTimeoutDisplay(int timeoutSeconds) {
+        if (binding != null) {
+            String displayText = timeoutSeconds == 0 ? "Timeout: Disabled" : 
+                               timeoutSeconds == 1 ? "Timeout: 1 second" :
+                               "Timeout: " + timeoutSeconds + " seconds";
+            binding.textWaveTimeout.setText(displayText);
+        }
+    }
+
+    // Warning dialog methods
+    private void showTimeoutDisableWarning(String type) {
+        String title = type.equals("shake") ? "Disable Shake Timeout?" : "Disable Wave Timeout?";
+        String message = "⚠️ **WARNING** ⚠️\n\n" +
+                        "Disabling the timeout could be really bad for your battery if TTS fails to terminate!\n\n" +
+                        "I **strongly** recommend you set the timer to 5 minutes instead.\n\n" +
+                        "Are you sure you want to disable the timeout?";
+
+        new MaterialAlertDialogBuilder(this)
+            .setTitle(title)
+            .setMessage(Html.fromHtml(message, Html.FROM_HTML_MODE_COMPACT))
+            .setPositiveButton("Nevermind, keep the timeout enabled (Recommended)", (dialog, which) -> {
+                // User chose to keep timeout enabled - do nothing
+            })
+            .setNegativeButton("Disable the timeout", (dialog, which) -> {
+                // User confirmed - disable timeout
+                if (type.equals("shake")) {
+                    isProgrammaticallySettingSwitch = true;
+                    binding.switchShakeTimeoutDisabled.setChecked(true);
+                    isProgrammaticallySettingSwitch = false;
+                    // Don't set slider to 0 - keep it at current value but save 0
+                    saveShakeTimeoutSeconds(0);
+                    updateShakeTimeoutDisplay(0);
+                } else {
+                    isProgrammaticallySettingSwitch = true;
+                    binding.switchWaveTimeoutDisabled.setChecked(true);
+                    isProgrammaticallySettingSwitch = false;
+                    // Don't set slider to 0 - keep it at current value but save 0
+                    saveWaveTimeoutSeconds(0);
+                    updateWaveTimeoutDisplay(0);
+                }
+            })
+            .show();
+    }
+
+    private void showTimeoutInfoDialog(String type) {
+        String title = type.equals("shake") ? "Shake Timeout Info" : "Wave Timeout Info";
+        String message = "**Timeout Settings**\n\n" +
+                        "The timeout automatically stops listening for gestures after a set time to save battery.\n\n" +
+                        "• **5-30 seconds**: Good for battery life\n" +
+                        "• **30-120 seconds**: Balanced approach\n" +
+                        "• **120+ seconds**: Uses more battery\n" +
+                        "• **Disabled**: No battery protection (not recommended)\n\n" +
+                        "**Recommendation**: Start with 30 seconds and adjust based on your needs.";
+
+        new MaterialAlertDialogBuilder(this)
+            .setTitle(title)
+            .setMessage(Html.fromHtml(message, Html.FROM_HTML_MODE_COMPACT))
+            .setPositiveButton("Got it", null)
+            .show();
+    }
 } 
