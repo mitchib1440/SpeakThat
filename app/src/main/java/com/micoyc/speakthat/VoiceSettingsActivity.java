@@ -693,7 +693,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 
                 "💡 Recommendation\n" +
                 "For the best notification reading experience, use:\n" +
-                "Media + Speech\n\n" +
+                "Assistance + Speech\n\n" +
                 
                 "This ensures notifications use your media volume (which you're used to controlling) " +
                 "and are optimized for clear speech rather than music.";
