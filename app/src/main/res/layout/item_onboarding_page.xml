@@ -67,7 +67,11 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:textSize="16sp"
-                    android:minHeight="48dp" />
+                    android:minHeight="56dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -116,7 +120,11 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:textSize="16sp"
-                    android:minHeight="48dp" />
+                    android:minHeight="56dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
