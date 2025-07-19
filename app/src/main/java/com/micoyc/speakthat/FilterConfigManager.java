@@ -97,6 +97,7 @@ public class FilterConfigManager {
         public boolean honourDoNotDisturb;
         public boolean waveToStopEnabled;
         public int waveTimeoutSeconds;
+        public boolean pocketModeEnabled;
         public String customAppNames;
         public String cooldownApps;
         
@@ -112,6 +113,7 @@ public class FilterConfigManager {
             this.honourDoNotDisturb = true;
             this.waveToStopEnabled = false;
             this.waveTimeoutSeconds = 30;
+            this.pocketModeEnabled = false;
             this.customAppNames = "[]";
             this.cooldownApps = "[]";
         }
@@ -225,6 +227,7 @@ public class FilterConfigManager {
         config.behavior.honourDoNotDisturb = prefs.getBoolean("honour_do_not_disturb", true);
         config.behavior.waveToStopEnabled = prefs.getBoolean("wave_to_stop_enabled", false);
         config.behavior.waveTimeoutSeconds = prefs.getInt("wave_timeout_seconds", 30);
+        config.behavior.pocketModeEnabled = prefs.getBoolean("pocket_mode_enabled", false);
         config.behavior.customAppNames = prefs.getString("custom_app_names", "[]");
         config.behavior.cooldownApps = prefs.getString("cooldown_apps", "[]");
         
@@ -279,6 +282,7 @@ public class FilterConfigManager {
         behavior.put("honourDoNotDisturb", config.behavior.honourDoNotDisturb);
         behavior.put("waveToStopEnabled", config.behavior.waveToStopEnabled);
         behavior.put("waveTimeoutSeconds", config.behavior.waveTimeoutSeconds);
+        behavior.put("pocketModeEnabled", config.behavior.pocketModeEnabled);
         behavior.put("customAppNames", config.behavior.customAppNames);
         behavior.put("cooldownApps", config.behavior.cooldownApps);
         json.put("behavior", behavior);
@@ -559,6 +563,11 @@ public class FilterConfigManager {
                         InAppLogger.log("FilterConfig", "Invalid wave timeout value imported, reset to 30 seconds");
                     }
                     mainEditor.putInt("wave_timeout_seconds", timeout);
+                    totalImported++;
+                }
+                
+                if (behavior.has("pocketModeEnabled")) {
+                    mainEditor.putBoolean("pocket_mode_enabled", behavior.getBoolean("pocketModeEnabled"));
                     totalImported++;
                 }
                 

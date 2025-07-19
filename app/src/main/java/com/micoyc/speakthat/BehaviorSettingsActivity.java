@@ -68,6 +68,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String KEY_WAVE_TO_STOP_ENABLED = "wave_to_stop_enabled";
     private static final String KEY_WAVE_THRESHOLD = "wave_threshold";
     private static final String KEY_WAVE_TIMEOUT_SECONDS = "wave_timeout_seconds";
+    private static final String KEY_POCKET_MODE_ENABLED = "pocket_mode_enabled";
     private static final String KEY_MEDIA_BEHAVIOR = "media_behavior";
     private static final String KEY_DUCKING_VOLUME = "ducking_volume";
     private static final String KEY_DELAY_BEFORE_READOUT = "delay_before_readout";
@@ -377,6 +378,11 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Set up wave timeout info button
         binding.btnWaveTimeoutInfo.setOnClickListener(v -> showTimeoutInfoDialog("wave"));
 
+        // Set up pocket mode switch
+        binding.switchPocketMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            savePocketModeEnabled(isChecked);
+        });
+
         // Set up media behavior radio buttons
         binding.mediaBehaviorGroup.setOnCheckedChangeListener((group, checkedId) -> {
             String mediaBehavior = MEDIA_BEHAVIOR_IGNORE; // default
@@ -580,6 +586,10 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             isProgrammaticallySettingSwitch = false;
         }
         updateWaveTimeoutDisplay(waveTimeoutSeconds);
+
+        // Load pocket mode setting
+        boolean pocketModeEnabled = sharedPreferences.getBoolean(KEY_POCKET_MODE_ENABLED, false);
+        binding.switchPocketMode.setChecked(pocketModeEnabled);
 
         // Load media behavior settings
         String savedMediaBehavior = sharedPreferences.getString(KEY_MEDIA_BEHAVIOR, DEFAULT_MEDIA_BEHAVIOR);
@@ -1011,6 +1021,13 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         editor.putInt(KEY_WAVE_TIMEOUT_SECONDS, validatedTimeout);
         editor.apply();
         InAppLogger.log("BehaviorSettings", "Wave timeout changed to: " + validatedTimeout + " seconds");
+    }
+
+    private void savePocketModeEnabled(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_POCKET_MODE_ENABLED, enabled);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Pocket mode changed to: " + enabled);
     }
 
     private void saveWaveThreshold(float threshold) {

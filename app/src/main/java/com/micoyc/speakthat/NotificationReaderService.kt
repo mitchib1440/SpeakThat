@@ -43,6 +43,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var isWaveToStopEnabled = false
     private var waveThreshold = 5.0f
     private var waveTimeoutSeconds = 30
+    private var isPocketModeEnabled = false
+    private var wasSensorCoveredAtStart = false
+    private var isSensorCurrentlyCovered = false
+    private var hasSensorBeenUncovered = false
     
     // Filter system
     private var appListMode = "none" // "none", "whitelist", "blacklist"
@@ -502,7 +506,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         waveTimeoutSeconds = timeout
         
-        Log.d(TAG, "Wave settings loaded - enabled: $isWaveToStopEnabled, threshold: $waveThreshold, timeout: ${waveTimeoutSeconds}s")
+        // Load pocket mode setting
+        isPocketModeEnabled = sharedPreferences.getBoolean("pocket_mode_enabled", false)
+        
+        Log.d(TAG, "Wave settings loaded - enabled: $isWaveToStopEnabled, threshold: $waveThreshold, timeout: ${waveTimeoutSeconds}s, pocket mode: $isPocketModeEnabled")
     }
     
     // Sensor timeout for safety
@@ -947,27 +954,26 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 proximityValue < waveThreshold && distanceFromMax > significantChange
             }
             
-            if (isTriggered) {
-                Log.d(TAG, "Wave detected! Stopping TTS. Proximity value: $proximityValue cm, threshold: $waveThreshold cm")
-                stopSpeaking("wave")
-            }
-        } else if (event.sensor.type == Sensor.TYPE_PROXIMITY && isWaveToStopEnabled) {
-            // Proximity sensor returns distance in cm
-            val proximityValue = event.values[0]
+            // Track sensor state changes for pocket mode
+            val wasCovered = isSensorCurrentlyCovered
+            isSensorCurrentlyCovered = isTriggered
             
-            // Handle different proximity sensor behaviors:
-            // Some sensors return 0 when close, others return actual distance
-            val isTriggered = if (proximityValue == 0f) {
-                // Sensor returns 0 when object is very close (most common)
-                true
-            } else {
-                // Sensor returns actual distance, check if closer than threshold
-                proximityValue <= waveThreshold
+            // If sensor was uncovered and is now covered, mark that it has been uncovered
+            if (!wasCovered && isSensorCurrentlyCovered) {
+                hasSensorBeenUncovered = true
+                Log.d(TAG, "Pocket mode: Sensor covered - has been uncovered: $hasSensorBeenUncovered")
             }
             
+            // Pocket mode logic: if enabled, check if sensor was already covered when readout started
             if (isTriggered) {
-                Log.d(TAG, "Wave detected! Stopping TTS. Proximity value: $proximityValue cm, threshold: $waveThreshold cm")
-                stopSpeaking()
+                if (isPocketModeEnabled && wasSensorCoveredAtStart && !hasSensorBeenUncovered) {
+                    // In pocket mode, if sensor was covered at start and hasn't been uncovered yet, continue readout
+                    Log.d(TAG, "Pocket mode: Sensor covered but was already covered at start and hasn't been uncovered - continuing readout")
+                    return
+                } else {
+                    Log.d(TAG, "Wave detected! Stopping TTS. Proximity value: $proximityValue cm, threshold: $waveThreshold cm, pocket mode: $isPocketModeEnabled, was covered at start: $wasSensorCoveredAtStart, has been uncovered: $hasSensorBeenUncovered")
+                    stopSpeaking("wave")
+                }
             }
         }
     }
@@ -1292,6 +1298,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "Executing speech: $speechText")
         isCurrentlySpeaking = true
         
+        // Set pocket mode tracking variables
+        if (isPocketModeEnabled) {
+            wasSensorCoveredAtStart = isSensorCurrentlyCovered
+            hasSensorBeenUncovered = false
+            Log.d(TAG, "Pocket mode: Readout starting - was sensor covered at start: $wasSensorCoveredAtStart")
+        }
+        
         // Register shake listener now that we're about to speak
         registerShakeListener()
         
@@ -1368,7 +1381,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 loadFilterSettings()
                 Log.d(TAG, "Filter settings updated")
             }
-            KEY_SHAKE_TO_STOP_ENABLED, KEY_SHAKE_THRESHOLD, KEY_SHAKE_TIMEOUT_SECONDS, KEY_WAVE_TIMEOUT_SECONDS -> {
+            KEY_SHAKE_TO_STOP_ENABLED, KEY_SHAKE_THRESHOLD, KEY_SHAKE_TIMEOUT_SECONDS, KEY_WAVE_TIMEOUT_SECONDS, "pocket_mode_enabled" -> {
                 // Reload shake and wave settings
                 refreshSettings()
                 Log.d(TAG, "Shake/wave settings updated")

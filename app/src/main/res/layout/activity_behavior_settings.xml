@@ -1262,6 +1262,54 @@
 
                         </LinearLayout>
 
+                        <!-- Pocket Mode Section -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/purple_300"
+                            android:layout_marginVertical="16dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pocket Mode"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Allow readouts to continue when sensor is already covered (like in your pocket), but still stop when you cover it after the readout starts"
+                            android:textSize="14sp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:layout_marginBottom="16dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="16dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Allow readouts when sensor covered"
+                                android:textSize="14sp"
+                                android:textColor="?android:attr/textColorSecondary" />
+
+                            <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/switchPocketMode"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:thumbTint="@color/purple_200"
+                                android:trackTint="@color/purple_300" />
+
+                        </LinearLayout>
+
                     </LinearLayout>
 
                 </LinearLayout>
