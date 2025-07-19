@@ -465,7 +465,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     private fun loadShakeSettings() {
-        isShakeToStopEnabled = sharedPreferences.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false)
+        isShakeToStopEnabled = sharedPreferences.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, true)
         shakeThreshold = sharedPreferences.getFloat(KEY_SHAKE_THRESHOLD, 12.0f)
         
         // Safety validation: ensure timeout is within valid range (0 or 5-300)

@@ -510,7 +510,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         priorityAppAdapter.notifyDataSetChanged();
 
         // Load shake to stop settings
-        boolean shakeEnabled = sharedPreferences.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false);
+        boolean shakeEnabled = sharedPreferences.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, true);
         binding.switchShakeToStop.setChecked(shakeEnabled);
         binding.shakeSettingsSection.setVisibility(shakeEnabled ? View.VISIBLE : View.GONE);
 

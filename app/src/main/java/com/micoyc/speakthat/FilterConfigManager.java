@@ -103,7 +103,7 @@ public class FilterConfigManager {
         public BehaviorConfig() {
             this.notificationBehavior = "interrupt";
             this.priorityApps = new HashSet<>();
-            this.shakeToStopEnabled = false;
+            this.shakeToStopEnabled = true;
             this.shakeThreshold = 12.0f;
             this.shakeTimeoutSeconds = 30;
             this.mediaBehavior = "ignore";
@@ -216,7 +216,7 @@ public class FilterConfigManager {
         // Load behavior settings
         config.behavior.notificationBehavior = prefs.getString("notification_behavior", "interrupt");
         config.behavior.priorityApps = new HashSet<>(prefs.getStringSet("priority_apps", new HashSet<>()));
-        config.behavior.shakeToStopEnabled = prefs.getBoolean("shake_to_stop_enabled", false);
+        config.behavior.shakeToStopEnabled = prefs.getBoolean("shake_to_stop_enabled", true);
         config.behavior.shakeThreshold = prefs.getFloat("shake_threshold", 12.0f);
         config.behavior.shakeTimeoutSeconds = prefs.getInt("shake_timeout_seconds", 30);
         config.behavior.mediaBehavior = prefs.getString("media_behavior", "ignore");

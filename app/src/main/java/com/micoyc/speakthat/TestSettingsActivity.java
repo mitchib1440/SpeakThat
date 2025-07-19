@@ -142,7 +142,7 @@ public class TestSettingsActivity extends AppCompatActivity {
     private void testBehaviorSettings(StringBuilder results) {
         String notificationBehavior = mainPrefs.getString("notification_behavior", "interrupt");
         Set<String> priorityApps = mainPrefs.getStringSet("priority_apps", null);
-        boolean shakeToStop = mainPrefs.getBoolean("shake_to_stop_enabled", false);
+        boolean shakeToStop = mainPrefs.getBoolean("shake_to_stop_enabled", true);
         float shakeThreshold = mainPrefs.getFloat("shake_threshold", 12.0f);
         String mediaBehavior = mainPrefs.getString("media_behavior", "ignore");
         int duckingVolume = mainPrefs.getInt("ducking_volume", 30);
