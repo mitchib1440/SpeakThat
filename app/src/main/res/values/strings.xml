@@ -162,8 +162,20 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="about_developer_title">Developer</string>
     <string name="about_license_title">License</string>
     <string name="version_format">Version %s</string>
-    <string name="app_description">SpeakThat! is an innovative Android app that reads your notifications aloud using text-to-speech technology. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="app_features">• 🔊 Real-time notification reading\n• 🎛️ Customizable voice settings\n• 🎯 Smart notification filtering\n• 📱 App-specific controls\n• 🤝 Media-aware behavior\n• 📊 Notification history\n• 🔄 Shake/Wave to stop\n• 🌙 Dark/Light theme support\n• ⚡ Offline functionality</string>
+    <string name="app_description">SpeakThat! is an Android Notification Reader that announces your notifications aloud using text-to-speech technology. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
+    <string name="app_features">• - Real-time notification reading\n• 🎛- Customizable voice settings\n•-  Smart notification filtering\n• - App-specific controls\n• - Media-aware behavior\n• - Notification history\n• - Shake/Wave to stop\n• - Dark/Light theme support\n• - Offline functionality</string>
     <string name="developer_info">Developed with ❤️ by Mitchi\n\nSpeakThat! is designed to make your Android experience more accessible and convenient. The app works entirely offline and respects your privacy by processing all data locally on your device.</string>
     <string name="license_info">This project is open source and available under the MIT License.\n\nYou can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
+    
+    <string name="read_about_app">Read About App</string>
+    <string name="stop_reading">Stop Reading</string>
+    
+    <!-- TTS-specific strings (emoji-free and speech-optimized) -->
+    <string name="tts_app_intro">Welcome to SpeakThat!</string>
+    <string name="tts_description">SpeakThat is an Android Notification Reader that announces your notifications aloud using text-to-speech technology. Perfect for hands-free operation, accessibility, and staying informed while you\'re busy.</string>
+    <string name="tts_features_intro">Key features include:</string>
+    <string name="tts_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, and notification history tracking.</string>
+    <string name="tts_developer">Developed with love by Mitchi. SpeakThat is designed to make your Android experience more accessible and convenient. The app works entirely offline and respects your privacy by processing all data locally on your device.</string>
+    <string name="tts_license">This project is open source and available under the MIT License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
+    <string name="tts_thank_you">Thank you for using SpeakThat!</string>
 </resources> 

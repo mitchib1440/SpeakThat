@@ -172,12 +172,20 @@
                                 app:boxBackgroundMode="outline"
                                 app:boxStrokeColor="@color/purple_200">
 
-                                <com.google.android.material.textfield.TextInputEditText
+                                <AutoCompleteTextView
                                     android:id="@+id/editPriorityApp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="Priority app name or package"
-                                    android:inputType="text" />
+                                    android:minHeight="56dp"
+                                    android:hint="Search apps or enter package name"
+                                    android:inputType="text"
+                                    android:completionThreshold="1"
+                                    android:dropDownHeight="200dp"
+                                    android:textSize="16sp"
+                                    android:paddingStart="16dp"
+                                    android:paddingEnd="16dp"
+                                    android:paddingTop="16dp"
+                                    android:paddingBottom="16dp" />
 
                             </com.google.android.material.textfield.TextInputLayout>
 
