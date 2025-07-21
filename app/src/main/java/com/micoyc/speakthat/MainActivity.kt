@@ -27,6 +27,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEventListener {
     
@@ -111,7 +112,12 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Initialize view binding
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
+
+        // Get version number
+        val versionName = packageManager.getPackageInfo(packageName, 0).versionName
+        val versionText = getString(R.string.version_format, versionName)
+        findViewById<TextView>(R.id.versionnumber).text = versionText
+
         // Configure system UI for proper insets handling
         configureSystemUI()
         
