@@ -1012,6 +1012,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         refreshSettings() // This calls the shake settings refresh
     }
 
+    /**
+     * MEDIA BEHAVIOR HANDLING (ignore, pause, duck, silence)
+     *
+     * IMPORTANT DEVELOPER NOTE:
+     * - Android's audio focus and stream routing APIs are inconsistent across devices and OS versions.
+     * - 'Pause' mode requests transient audio focus, but many devices/ROMs (especially on Android 13+) will not grant it to notification listeners or background services, so media may not pause.
+     * - 'Duck' mode attempts to lower only the media stream, but on many devices, TTS is also routed through the media stream, so both are ducked together. The app recommends using the Notification stream for TTS, which works best for most users.
+     * - All user-facing warnings and help text are based on extensive real-world testing and user feedback.
+     * - If you revisit this code, check for new Android APIs or device-specific workarounds, but be aware that most limitations are outside app control.
+     * - See BehaviorSettingsActivity and VoiceSettingsActivity for user guidance and warnings.
+     */
     private fun handleMediaBehavior(appName: String, text: String, sbn: StatusBarNotification? = null): Boolean {
         val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
         val isMusicActive = audioManager.isMusicActive
@@ -1031,15 +1042,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         Log.d(TAG, "Media is playing, applying media behavior: $mediaBehavior")
         InAppLogger.log("MediaBehavior", "Media detected, applying behavior: $mediaBehavior")
-        // UNIFIED FAIL-SAFE: If this is a media notification, block it no matter what
+        // REFINED FAIL-SAFE: Only block true media control notifications (not all notifications from media apps)
         if (sbn != null && MediaNotificationDetector.isMediaNotification(sbn)) {
             val reason = MediaNotificationDetector.getMediaDetectionReason(sbn)
-            Log.d(TAG, "FAIL-SAFE: Notification detected as media during ducking. Blocking speech. Reason: $reason")
-            InAppLogger.logFilter("FAIL-SAFE: Blocked notification from $appName due to ducking/media detection: $reason")
+            Log.d(TAG, "REFINED FAIL-SAFE: Notification detected as a media control. Blocking speech. Reason: $reason")
+            InAppLogger.logFilter("REFINED FAIL-SAFE: Blocked media control notification from $appName due to media control detection: $reason")
             // Log all extras for debugging
             val extras = sbn.notification.extras
-            Log.d(TAG, "[FailSafe] Notification extras: $extras")
-            return false // Block speech - never read out
+            Log.d(TAG, "[RefinedFailSafe] Notification extras: $extras")
+            return false // Block speech - never read out for true media controls
         }
         when (mediaBehavior) {
             "ignore" -> {
@@ -1048,12 +1059,40 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             "pause" -> {
                 Log.d(TAG, "Media behavior: PAUSE - requesting audio focus")
-                return requestAudioFocusForSpeech()
+                val focusGranted = requestAudioFocusForSpeech()
+                // Always allow notification to be spoken after requesting audio focus, unless it's a media control notification
+                if (!focusGranted) {
+                    Log.w(TAG, "Audio focus not granted, but proceeding to speak notification anyway (pause mode)")
+                    InAppLogger.log("MediaBehavior", "Audio focus not granted in pause mode. Proceeding to speak notification anyway.")
+                }
+                // Log device and audio info for diagnostics
+                val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+                val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+                val ttsUsage = voicePrefs.getInt("audio_usage", android.media.AudioAttributes.USAGE_ASSISTANT)
+                val ttsContent = voicePrefs.getInt("content_type", android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                val currentVolume = audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
+                val maxVolume = audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)
+                InAppLogger.log("MediaBehavior", "Pause mode triggered. Device: ${android.os.Build.MODEL}, Android: ${android.os.Build.VERSION.SDK_INT}, TTS usage: $ttsUsage, TTS content: $ttsContent, Media volume: $currentVolume/$maxVolume")
+                return true
             }
             "duck" -> {
                 Log.d(TAG, "Media behavior: DUCK - lowering media volume to $duckingVolume%")
                 InAppLogger.log("MediaBehavior", "Ducking media volume - notification will be spoken")
-                return duckMediaVolume()
+                val ducked = duckMediaVolume()
+                // Log device and audio info for diagnostics
+                val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+                val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+                val ttsUsage = voicePrefs.getInt("audio_usage", android.media.AudioAttributes.USAGE_ASSISTANT)
+                val ttsContent = voicePrefs.getInt("content_type", android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                val currentVolume = audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
+                val maxVolume = audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)
+                InAppLogger.log("MediaBehavior", "Duck mode triggered. Device: ${android.os.Build.MODEL}, Android: ${android.os.Build.VERSION.SDK_INT}, TTS usage: $ttsUsage, TTS content: $ttsContent, Media volume: $currentVolume/$maxVolume")
+                // Warn if TTS is routed through the same stream as media
+                if (ttsUsage == android.media.AudioAttributes.USAGE_MEDIA || ttsUsage == android.media.AudioAttributes.USAGE_UNKNOWN) {
+                    Log.w(TAG, "TTS may be routed through the same stream as media. Ducking may lower TTS volume as well.")
+                    InAppLogger.log("MediaBehavior", "Warning: TTS may be affected by ducking on this device. TTS usage: $ttsUsage")
+                }
+                return ducked
             }
             "silence" -> {
                 Log.d(TAG, "Media behavior: SILENCE - not speaking due to active media")

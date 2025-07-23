@@ -36,7 +36,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private static final float DEFAULT_SPEECH_RATE = 1.0f;
     private static final float DEFAULT_PITCH = 1.0f;
     private static final String DEFAULT_LANGUAGE = "en_US";
-    private static final int DEFAULT_AUDIO_USAGE = 4; // USAGE_ASSISTANCE_NAVIGATION_GUIDANCE (closest to USAGE_ASSISTANT)
+    private static final int DEFAULT_AUDIO_USAGE = 5; // USAGE_NOTIFICATION (recommended for Duck Audio)
     private static final int DEFAULT_CONTENT_TYPE = 0; // CONTENT_TYPE_SPEECH
 
     // UI Components
@@ -283,10 +283,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private void setupAudioChannelSpinners() {
         // Audio Usage Spinner
         String[] audioUsageOptions = {
-            "Media (Default)", 
-            "Notification", 
-            "Alarm", 
-            "Voice Call", 
+            "Media",
+            "Notification (Recommended)",
+            "Alarm",
+            "Voice Call",
             "Assistance"
         };
         ArrayAdapter<String> audioUsageAdapter = new ArrayAdapter<>(this,
@@ -678,8 +678,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private void showAudioHelpDialog() {
         String helpText = "🔊 Audio Stream Type\n" +
                 "Controls which volume slider affects notification speech:\n\n" +
-                "• Media: Uses media volume (recommended)\n" +
-                "• Notification: Uses notification volume\n" +
+                "• Media: Uses media volume\n" +
+                "• Notification (Recommended): Uses notification volume (best for Duck Audio)\n" +
                 "• Alarm: Uses alarm volume\n" +
                 "• Voice Call: Uses call volume\n" +
                 "• Assistance: Uses navigation volume\n\n" +
@@ -693,10 +693,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 
                 "💡 Recommendation\n" +
                 "For the best notification reading experience, use:\n" +
-                "Assistance + Speech\n\n" +
+                "Notification (Recommended) + Speech\n\n" +
                 
-                "This ensures notifications use your media volume (which you're used to controlling) " +
-                "and are optimized for clear speech rather than music.";
+                "This ensures notifications use your notification volume (which is usually not affected by media ducking) " +
+                "and are optimized for clear speech rather than music.\n\n" +
+                "If Duck Audio does not work as expected, try other audio usages, but Notification is recommended for most devices.";
 
         new android.app.AlertDialog.Builder(this)
                 .setTitle("Audio Settings Help")

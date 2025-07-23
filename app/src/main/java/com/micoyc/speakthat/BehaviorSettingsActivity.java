@@ -400,10 +400,16 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 mediaBehavior = MEDIA_BEHAVIOR_SILENCE;
             }
             
-            // Show/hide ducking volume controls
-            binding.duckingVolumeContainer.setVisibility(
-                MEDIA_BEHAVIOR_DUCK.equals(mediaBehavior) ? View.VISIBLE : View.GONE
-            );
+            // Show/hide ducking volume controls and warning
+            boolean showDucking = MEDIA_BEHAVIOR_DUCK.equals(mediaBehavior);
+            binding.duckingVolumeContainer.setVisibility(showDucking ? View.VISIBLE : View.GONE);
+            binding.duckingWarningText.setVisibility(showDucking ? View.VISIBLE : View.GONE);
+            if (showDucking) {
+                binding.duckingWarningText.setText("⚠️ For best results, set the notification voice to use the Notification audio stream in Voice Settings. On some devices, lowering media volume may also lower the notification voice. If Duck Audio does not work as expected, try Notification audio.");
+            }
+            // Show/hide pause warning
+            boolean showPauseWarning = MEDIA_BEHAVIOR_PAUSE.equals(mediaBehavior);
+            binding.pauseWarningText.setVisibility(showPauseWarning ? View.VISIBLE : View.GONE);
             
             // Save setting
             saveMediaBehavior(mediaBehavior);

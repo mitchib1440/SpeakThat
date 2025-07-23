@@ -319,6 +319,19 @@
 
                     </RadioGroup>
 
+                    <!-- Pause Limitation Warning -->
+                    <TextView
+                        android:id="@+id/pauseWarningText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="⚠️ Pause mode may not work on all devices due to system limitations."
+                        android:textSize="13sp"
+                        android:textColor="@color/text_warning"
+                        android:background="@color/warning_background"
+                        android:padding="8dp"
+                        android:visibility="gone"
+                        android:gravity="center" />
+
                     <!-- Ducking Volume Controls (hidden by default) -->
                     <LinearLayout
                         android:id="@+id/duckingVolumeContainer"
@@ -399,6 +412,19 @@
                             android:textStyle="bold"
                             android:gravity="center"
                             android:layout_marginBottom="8dp" />
+
+                        <!-- Ducking Limitation Warning -->
+                        <TextView
+                            android:id="@+id/duckingWarningText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="⚠️ On some devices, lowering media volume may also lower the notification voice. If notifications are still hard to hear, try Pause mode or adjust your TTS settings."
+                            android:textSize="13sp"
+                            android:textColor="@color/text_warning"
+                            android:background="@color/warning_background"
+                            android:padding="8dp"
+                            android:visibility="gone"
+                            android:gravity="center" />
 
                         <TextView
                             android:layout_width="match_parent"

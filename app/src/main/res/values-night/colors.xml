@@ -22,6 +22,8 @@
     <color name="yellow_100">#FFDD1C</color>
     <color name="yellow_200">#FFE551</color>
     <color name="yellow_300">#FFF1A0</color>
+    <color name="warning_background">#665C00</color> <!-- Dark yellow background for warning -->
+    <color name="text_warning">#FFD740</color> <!-- Bright yellow/orange text for warning -->
     <!-- Aliases for backwards compatibility -->
     <color name="text_primary">@color/white_100</color>
     <color name="text_secondary">@color/white_200</color>

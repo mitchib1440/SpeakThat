@@ -25,6 +25,8 @@
     <color name="orange_100">#FF8C00</color>
     <color name="orange_200">#FFA500</color>
     <color name="orange_300">#FFB84D</color>
+    <color name="warning_background">#FFF9C4</color> <!-- Light yellow background -->
+    <color name="text_warning">#B26A00</color> <!-- Dark orange text -->
     <!-- Aliases for backwards compatibility -->
     <color name="text_primary">@color/black_100</color>
     <color name="text_secondary">@color/black_200</color>
