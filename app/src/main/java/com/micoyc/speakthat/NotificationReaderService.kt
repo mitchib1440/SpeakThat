@@ -90,6 +90,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private val appCooldownTimestamps = HashMap<String, Long>() // packageName -> last notification timestamp
     private val appCooldownSettings = HashMap<String, Int>() // packageName -> cooldown seconds
     
+    // TTS Recovery tracking
+    private var ttsRecoveryAttempts = 0
+    private var ttsRecoveryHandler: android.os.Handler? = null
+    private var ttsRecoveryRunnable: Runnable? = null
+    private var lastTtsFailureTime = 0L
+    private var consecutiveTtsFailures = 0
+    
+    // Periodic health check
+    private var healthCheckHandler: android.os.Handler? = null
+    private var healthCheckRunnable: Runnable? = null
+    private val HEALTH_CHECK_INTERVAL_MS = 300000L // 5 minutes
+    
 
     
     // Voice settings listener
@@ -146,6 +158,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Cooldown settings
         private const val KEY_COOLDOWN_APPS = "cooldown_apps"
         
+        // TTS Recovery settings
+        private const val MAX_TTS_RECOVERY_ATTEMPTS = 3
+        private const val TTS_RECOVERY_DELAY_MS = 2000L // 2 seconds between attempts
+        
         @JvmStatic
         fun getRecentNotifications(): List<NotificationData> {
             return notificationHistory.toList()
@@ -173,41 +189,63 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         InAppLogger.log("Service", "NotificationReaderService started")
         
         try {
+            Log.d(TAG, "Starting service initialization...")
+            InAppLogger.log("Service", "Starting service initialization")
+            
             // Initialize SharedPreferences
+            Log.d(TAG, "Initializing SharedPreferences...")
             sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+            Log.d(TAG, "SharedPreferences initialized")
             
             // Register preference change listener to automatically reload settings
+            Log.d(TAG, "Registering preference change listener...")
             sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+            Log.d(TAG, "Preference change listener registered")
             
             // Initialize and register voice settings listener
+            Log.d(TAG, "Initializing voice settings...")
             voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
             voiceSettingsPrefs?.registerOnSharedPreferenceChangeListener(voiceSettingsListener)
+            Log.d(TAG, "Voice settings initialized")
             
             // Initialize components with error handling
+            Log.d(TAG, "Initializing TextToSpeech...")
             try {
                 initializeTextToSpeech()
+                Log.d(TAG, "TextToSpeech initialization call completed")
             } catch (e: Exception) {
                 Log.e(TAG, "Error initializing TextToSpeech", e)
                 InAppLogger.logError("Service", "TextToSpeech initialization failed: " + e.message)
             }
             
+            Log.d(TAG, "Initializing shake detection...")
             try {
                 initializeShakeDetection()
+                Log.d(TAG, "Shake detection initialized")
             } catch (e: Exception) {
                 Log.e(TAG, "Error initializing shake detection", e)
                 InAppLogger.logError("Service", "Shake detection initialization failed: " + e.message)
             }
             
+            Log.d(TAG, "Loading filter settings...")
             try {
                 loadFilterSettings()
+                Log.d(TAG, "Filter settings loaded")
             } catch (e: Exception) {
                 Log.e(TAG, "Error loading filter settings", e)
                 InAppLogger.logError("Service", "Filter settings loading failed: " + e.message)
             }
             
             // Initialize handlers (pre-created for consistent timing and battery efficiency)
+            Log.d(TAG, "Initializing handlers...")
             delayHandler = android.os.Handler(android.os.Looper.getMainLooper())
             sensorTimeoutHandler = android.os.Handler(android.os.Looper.getMainLooper())
+            Log.d(TAG, "Handlers initialized")
+            
+            // Start periodic TTS health check
+            Log.d(TAG, "Starting periodic TTS health check...")
+            startPeriodicHealthCheck()
+            Log.d(TAG, "Periodic TTS health check started")
             
             Log.d(TAG, "NotificationReaderService initialization completed successfully")
             InAppLogger.log("Service", "Service initialization completed successfully")
@@ -246,6 +284,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             delayHandler?.removeCallbacks(runnable)
             pendingReadoutRunnable = null
         }
+        
+        // Clean up TTS recovery system
+        ttsRecoveryRunnable?.let { runnable ->
+            ttsRecoveryHandler?.removeCallbacks(runnable)
+            ttsRecoveryRunnable = null
+        }
+        ttsRecoveryHandler = null
+        
+        // Stop periodic health check
+        stopPeriodicHealthCheck()
         
         // Clean up media behavior effects
         cleanupMediaBehavior()
@@ -333,34 +381,273 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     private fun initializeTextToSpeech() {
-        textToSpeech = TextToSpeech(this, this)
+        try {
+            Log.d(TAG, "Starting TTS initialization...")
+            InAppLogger.log("Service", "Starting TTS initialization")
+            
+            textToSpeech = TextToSpeech(this, this)
+            
+            // Add a timeout to detect if TTS initialization hangs
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                if (!isTtsInitialized) {
+                    Log.e(TAG, "TTS initialization timed out after 10 seconds")
+                    InAppLogger.logError("Service", "TTS initialization timed out - attempting recovery")
+                    
+                    // Try to reinitialize TTS
+                    try {
+                        textToSpeech?.shutdown()
+                        textToSpeech = null
+                        textToSpeech = TextToSpeech(this, this)
+                        Log.d(TAG, "TTS reinitialization attempted")
+                        InAppLogger.log("Service", "TTS reinitialization attempted")
+                    } catch (e: Exception) {
+                        Log.e(TAG, "TTS reinitialization failed", e)
+                        InAppLogger.logError("Service", "TTS reinitialization failed: " + e.message)
+                    }
+                }
+            }, 10000) // 10 second timeout
+            
+            Log.d(TAG, "TTS initialization started")
+            InAppLogger.log("Service", "TTS initialization started")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error in initializeTextToSpeech", e)
+            InAppLogger.logError("Service", "TTS initialization error: " + e.message)
+        }
+    }
+    
+    /**
+     * Comprehensive TTS recovery system that can detect and fix various TTS issues
+     */
+    private fun attemptTtsRecovery(reason: String) {
+        val currentTime = System.currentTimeMillis()
+        
+        // Reset recovery attempts if it's been more than 5 minutes since last failure
+        if (currentTime - lastTtsFailureTime > 300000) { // 5 minutes
+            ttsRecoveryAttempts = 0
+            consecutiveTtsFailures = 0
+        }
+        
+        lastTtsFailureTime = currentTime
+        consecutiveTtsFailures++
+        
+        if (ttsRecoveryAttempts >= MAX_TTS_RECOVERY_ATTEMPTS) {
+            Log.e(TAG, "TTS recovery failed after $MAX_TTS_RECOVERY_ATTEMPTS attempts - giving up")
+            InAppLogger.logError("Service", "TTS recovery failed after $MAX_TTS_RECOVERY_ATTEMPTS attempts - giving up")
+            return
+        }
+        
+        ttsRecoveryAttempts++
+        Log.w(TAG, "Attempting TTS recovery #$ttsRecoveryAttempts (reason: $reason)")
+        InAppLogger.log("Service", "Attempting TTS recovery #$ttsRecoveryAttempts (reason: $reason)")
+        
+        // Cancel any existing recovery attempt
+        ttsRecoveryRunnable?.let { runnable ->
+            ttsRecoveryHandler?.removeCallbacks(runnable)
+        }
+        
+        // Schedule recovery attempt
+        ttsRecoveryHandler = android.os.Handler(android.os.Looper.getMainLooper())
+        ttsRecoveryRunnable = Runnable {
+            try {
+                Log.d(TAG, "Executing TTS recovery attempt #$ttsRecoveryAttempts")
+                InAppLogger.log("Service", "Executing TTS recovery attempt #$ttsRecoveryAttempts")
+                
+                // 1. Shutdown existing TTS
+                try {
+                    textToSpeech?.shutdown()
+                    Log.d(TAG, "Existing TTS shutdown completed")
+                } catch (e: Exception) {
+                    Log.w(TAG, "Error shutting down existing TTS", e)
+                }
+                
+                // 2. Clear TTS state
+                textToSpeech = null
+                isTtsInitialized = false
+                
+                // 3. Wait a moment for cleanup
+                Thread.sleep(500)
+                
+                // 4. Reinitialize TTS
+                textToSpeech = TextToSpeech(this, this)
+                
+                // 5. Set up another timeout for this recovery attempt
+                android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                    if (!isTtsInitialized) {
+                        Log.e(TAG, "TTS recovery attempt #$ttsRecoveryAttempts timed out")
+                        InAppLogger.logError("Service", "TTS recovery attempt #$ttsRecoveryAttempts timed out")
+                        
+                        // Try again if we haven't exceeded max attempts
+                        if (ttsRecoveryAttempts < MAX_TTS_RECOVERY_ATTEMPTS) {
+                            attemptTtsRecovery("Recovery timeout")
+                        }
+                    } else {
+                        Log.d(TAG, "TTS recovery successful!")
+                        InAppLogger.log("Service", "TTS recovery successful!")
+                        ttsRecoveryAttempts = 0
+                        consecutiveTtsFailures = 0
+                    }
+                }, 10000) // 10 second timeout
+                
+            } catch (e: Exception) {
+                Log.e(TAG, "Error during TTS recovery attempt #$ttsRecoveryAttempts", e)
+                InAppLogger.logError("Service", "Error during TTS recovery attempt #$ttsRecoveryAttempts: " + e.message)
+                
+                // Try again if we haven't exceeded max attempts
+                if (ttsRecoveryAttempts < MAX_TTS_RECOVERY_ATTEMPTS) {
+                    attemptTtsRecovery("Recovery error")
+                }
+            }
+        }
+        
+        ttsRecoveryHandler?.postDelayed(ttsRecoveryRunnable!!, TTS_RECOVERY_DELAY_MS)
+    }
+    
+    /**
+     * Check if TTS is healthy and attempt recovery if needed
+     */
+    private fun checkTtsHealth(): Boolean {
+        if (textToSpeech == null) {
+            Log.w(TAG, "TTS is null - attempting recovery")
+            attemptTtsRecovery("TTS is null")
+            return false
+        }
+        
+        if (!isTtsInitialized) {
+            Log.w(TAG, "TTS is not initialized - attempting recovery")
+            attemptTtsRecovery("TTS not initialized")
+            return false
+        }
+        
+        // Check if TTS is available
+        try {
+            val isAvailable = textToSpeech?.isLanguageAvailable(Locale.getDefault()) ?: TextToSpeech.LANG_NOT_SUPPORTED
+            if (isAvailable == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.w(TAG, "TTS language not available - attempting recovery")
+                attemptTtsRecovery("Language not available")
+                return false
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Error checking TTS availability - attempting recovery", e)
+            attemptTtsRecovery("TTS availability check failed")
+            return false
+        }
+        
+        return true
+    }
+    
+    /**
+     * Start periodic TTS health checks
+     */
+    private fun startPeriodicHealthCheck() {
+        healthCheckHandler = android.os.Handler(android.os.Looper.getMainLooper())
+        healthCheckRunnable = Runnable {
+            try {
+                Log.d(TAG, "Running periodic TTS health check")
+                InAppLogger.log("Service", "Running periodic TTS health check")
+                
+                // Only run health check if we're not currently speaking
+                if (!isCurrentlySpeaking) {
+                    checkTtsHealth()
+                }
+                
+                // Schedule next health check
+                healthCheckHandler?.postDelayed(healthCheckRunnable!!, HEALTH_CHECK_INTERVAL_MS)
+                
+            } catch (e: Exception) {
+                Log.e(TAG, "Error during periodic health check", e)
+                InAppLogger.logError("Service", "Error during periodic health check: " + e.message)
+                
+                // Still schedule next health check even if this one failed
+                healthCheckHandler?.postDelayed(healthCheckRunnable!!, HEALTH_CHECK_INTERVAL_MS)
+            }
+        }
+        
+        // Start the first health check
+        healthCheckHandler?.postDelayed(healthCheckRunnable!!, HEALTH_CHECK_INTERVAL_MS)
+        Log.d(TAG, "Periodic TTS health check started (every ${HEALTH_CHECK_INTERVAL_MS / 1000} seconds)")
+        InAppLogger.log("Service", "Periodic TTS health check started (every ${HEALTH_CHECK_INTERVAL_MS / 1000} seconds)")
+    }
+    
+    /**
+     * Stop periodic TTS health checks
+     */
+    private fun stopPeriodicHealthCheck() {
+        healthCheckRunnable?.let { runnable ->
+            healthCheckHandler?.removeCallbacks(runnable)
+            healthCheckRunnable = null
+        }
+        healthCheckHandler = null
+        Log.d(TAG, "Periodic TTS health check stopped")
+        InAppLogger.log("Service", "Periodic TTS health check stopped")
     }
     
     override fun onInit(status: Int) {
-        if (status == TextToSpeech.SUCCESS) {
-            val result = textToSpeech?.setLanguage(Locale.getDefault())
-            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                Log.e(TAG, "Language not supported for TTS")
-                // Fallback to English US
-                textToSpeech?.setLanguage(Locale.US)
+        try {
+            Log.d(TAG, "TTS onInit called with status: $status")
+            InAppLogger.log("Service", "TTS onInit called with status: $status")
+            
+            if (status == TextToSpeech.SUCCESS) {
+                Log.d(TAG, "TTS initialization successful, setting up language...")
+                InAppLogger.log("Service", "TTS initialization successful, setting up language")
+                
+                val result = textToSpeech?.setLanguage(Locale.getDefault())
+                Log.d(TAG, "Language set result: $result")
+                
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Log.e(TAG, "Language not supported for TTS, falling back to US English")
+                    InAppLogger.log("Service", "Language not supported, falling back to US English")
+                    // Fallback to English US
+                    textToSpeech?.setLanguage(Locale.US)
+                }
+                
+                // Set audio stream to assistant usage to avoid triggering media detection
+                try {
+                    val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+                    textToSpeech?.setAudioAttributes(
+                        android.media.AudioAttributes.Builder()
+                            .setUsage(android.media.AudioAttributes.USAGE_ASSISTANT)
+                            .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                            .build()
+                    )
+                    Log.d(TAG, "Audio attributes set successfully")
+                    InAppLogger.log("Service", "Audio attributes set successfully")
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error setting audio attributes", e)
+                    InAppLogger.logError("Service", "Error setting audio attributes: " + e.message)
+                }
+                
+                // Apply saved voice settings
+                try {
+                    applyVoiceSettings()
+                    Log.d(TAG, "Voice settings applied successfully")
+                    InAppLogger.log("Service", "Voice settings applied successfully")
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error applying voice settings", e)
+                    InAppLogger.logError("Service", "Error applying voice settings: " + e.message)
+                }
+                
+                isTtsInitialized = true
+                Log.d(TAG, "TextToSpeech initialized successfully")
+                InAppLogger.log("Service", "TextToSpeech initialized successfully")
+                
+                // Reset recovery counters on successful initialization
+                ttsRecoveryAttempts = 0
+                consecutiveTtsFailures = 0
+                
+            } else {
+                Log.e(TAG, "TextToSpeech initialization failed with status: $status")
+                InAppLogger.logError("Service", "TextToSpeech initialization failed with status: $status")
+                
+                // Attempt recovery for initialization failures
+                attemptTtsRecovery("Initialization failed with status: $status")
             }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error in TTS onInit", e)
+            InAppLogger.logError("Service", "Error in TTS onInit: " + e.message)
             
-            // Set audio stream to assistant usage to avoid triggering media detection
-            val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-            textToSpeech?.setAudioAttributes(
-                android.media.AudioAttributes.Builder()
-                    .setUsage(android.media.AudioAttributes.USAGE_ASSISTANT)
-                    .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
-                    .build()
-            )
-            
-            // Apply saved voice settings
-            applyVoiceSettings()
-            
-            isTtsInitialized = true
-            Log.d(TAG, "TextToSpeech initialized successfully")
-        } else {
-            Log.e(TAG, "TextToSpeech initialization failed")
+            // Attempt recovery for exceptions
+            attemptTtsRecovery("onInit exception: " + e.message)
         }
     }
     
@@ -385,7 +672,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             packageName
         }
     }
-    
 
 
     private fun getCustomAppName(packageName: String): String? {
@@ -561,7 +847,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         sensorTimeoutRunnable = null
     }
     
-    // Call this method when settings might have changed
+    // Call this method when settings change
     fun refreshSettings() {
         // Only unregister if we're not currently speaking
         if (!isCurrentlySpeaking) {
@@ -1335,6 +1621,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     private fun executeSpeech(speechText: String) {
         Log.d(TAG, "Executing speech: $speechText")
+        InAppLogger.log("Service", "Executing speech: ${speechText.take(50)}...")
+        
+        // Check TTS health before attempting to speak
+        if (!checkTtsHealth()) {
+            Log.e(TAG, "TTS health check failed - cannot speak")
+            InAppLogger.logError("Service", "TTS health check failed - cannot speak")
+            return
+        }
+        
         isCurrentlySpeaking = true
         
         // Set pocket mode tracking variables
@@ -1348,17 +1643,32 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         registerShakeListener()
         
         // Speak with queue mode FLUSH to interrupt any previous speech
-        textToSpeech?.speak(speechText, TextToSpeech.QUEUE_FLUSH, null, "notification_utterance")
+        Log.d(TAG, "Calling TTS.speak()...")
+        val speakResult = textToSpeech?.speak(speechText, TextToSpeech.QUEUE_FLUSH, null, "notification_utterance")
+        Log.d(TAG, "TTS.speak() returned: $speakResult")
+        InAppLogger.log("Service", "TTS.speak() called, result: $speakResult")
+        
+        // Check if speak() failed
+        if (speakResult == TextToSpeech.ERROR) {
+            Log.e(TAG, "TTS.speak() returned ERROR - attempting recovery")
+            InAppLogger.logError("Service", "TTS.speak() returned ERROR - attempting recovery")
+            attemptTtsRecovery("speak() returned ERROR")
+            isCurrentlySpeaking = false
+            unregisterShakeListener()
+            return
+        }
         
         // Set up completion listener
         textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
             override fun onStart(utteranceId: String?) {
                 // TTS started
+                Log.d(TAG, "TTS utterance started: $utteranceId")
                 InAppLogger.logTTSEvent("TTS started", speechText.take(50))
             }
             
             override fun onDone(utteranceId: String?) {
                 if (utteranceId == "notification_utterance") {
+                    Log.d(TAG, "TTS utterance completed: $utteranceId")
                     isCurrentlySpeaking = false
                     
                     // Unregister shake listener since we're done speaking
@@ -1376,10 +1686,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             override fun onError(utteranceId: String?) {
                 if (utteranceId == "notification_utterance") {
+                    Log.e(TAG, "TTS utterance error: $utteranceId")
                     isCurrentlySpeaking = false
                     unregisterShakeListener()
                     Log.e(TAG, "TTS error occurred")
                     InAppLogger.logTTSEvent("TTS error", "Utterance failed")
+                    
+                    // Attempt recovery for utterance errors
+                    attemptTtsRecovery("Utterance error: $utteranceId")
                     
                     // Clean up media behavior effects
                     cleanupMediaBehavior()
