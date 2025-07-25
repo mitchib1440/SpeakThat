@@ -43,7 +43,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     private static final boolean DEFAULT_AUTO_START = true;
     private static final boolean DEFAULT_BATTERY_OPTIMIZATION = true;
     private static final boolean DEFAULT_AGGRESSIVE_PROCESSING = false;
-    private static final String DEFAULT_SERVICE_RESTART_POLICY = "crash";
+    private static final String DEFAULT_SERVICE_RESTART_POLICY = "periodic";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

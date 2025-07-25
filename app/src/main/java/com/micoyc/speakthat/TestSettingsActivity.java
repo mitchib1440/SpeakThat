@@ -114,7 +114,7 @@ public class TestSettingsActivity extends AppCompatActivity {
         boolean autoStart = mainPrefs.getBoolean("auto_start_on_boot", false);
         boolean batteryOpt = mainPrefs.getBoolean("battery_optimization_disabled", false);
         boolean aggressiveProc = mainPrefs.getBoolean("aggressive_background_processing", false);
-        String restartPolicy = mainPrefs.getString("service_restart_policy", "crash");
+        String restartPolicy = mainPrefs.getString("service_restart_policy", "periodic");
         
         results.append("Dark Mode: ").append(darkMode ? "✅ Enabled" : "❌ Disabled").append("\n");
         results.append("Auto-start on Boot: ").append(autoStart ? "✅ Enabled" : "❌ Disabled").append("\n");
