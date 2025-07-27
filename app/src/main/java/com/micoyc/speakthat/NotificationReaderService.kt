@@ -82,6 +82,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var delayHandler: android.os.Handler? = null
     private var pendingReadoutRunnable: Runnable? = null
     
+    // Speech template settings
+    private var speechTemplate = "{app} notified you: {content}"
+    
     // TTS queue for different behavior modes
     private val notificationQueue = mutableListOf<QueuedNotification>()
     private var isCurrentlySpeaking = false
@@ -143,6 +146,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Delay settings
         private const val KEY_DELAY_BEFORE_READOUT = "delay_before_readout"
+        
+        // Speech template settings
+        private const val KEY_SPEECH_TEMPLATE = "speech_template"
         
         // Conditional rules settings
         private const val KEY_CONDITIONAL_RULES = "conditional_rules"
@@ -956,6 +962,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Load cooldown settings
         loadCooldownSettings()
         
+        // Load speech template
+        speechTemplate = sharedPreferences.getString(KEY_SPEECH_TEMPLATE, "{app} notified you: {content}") ?: "{app} notified you: {content}"
+        
         Log.d(TAG, "Filter settings loaded - appMode: $appListMode, apps: ${appList.size}, blocked words: ${blockedWords.size}, replacements: ${wordReplacements.size}")
         Log.d(TAG, "Behavior settings loaded - mode: $notificationBehavior, priority apps: ${priorityApps.size}")
         Log.d(TAG, "Media behavior settings loaded - mode: $mediaBehavior, ducking volume: $duckingVolume%")
@@ -1597,7 +1606,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val speechText = if (text.startsWith("You received a private notification from")) {
             text // Private messages already include the app name, so don't add prefix
         } else {
-            "$appName notified you: $text"
+            formatSpeechText(appName, text, packageName, sbn)
         }
         
         // Determine which delay to use (conditional delay overrides global delay)
@@ -1767,10 +1776,69 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 loadCooldownSettings()
                 Log.d(TAG, "Cooldown settings updated - apps: ${appCooldownSettings.size}")
             }
+            KEY_SPEECH_TEMPLATE -> {
+                // Reload speech template
+                speechTemplate = sharedPreferences?.getString(KEY_SPEECH_TEMPLATE, "{app} notified you: {content}") ?: "{app} notified you: {content}"
+                Log.d(TAG, "Speech template updated")
+            }
         }
     }
 
     private fun matchesWordFilter(text: String, word: String): Boolean {
         return text.contains(word, ignoreCase = true)
+    }
+    
+    /**
+     * Format speech text using the custom template with placeholders
+     */
+    private fun formatSpeechText(appName: String, text: String, packageName: String, sbn: StatusBarNotification?): String {
+        // Extract notification components from StatusBarNotification if available
+        val title = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
+        val notificationText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
+        val bigText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
+        val summaryText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString() ?: ""
+        val infoText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString() ?: ""
+        
+        // Get current time and date
+        val time = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+        val date = SimpleDateFormat("MMM dd", Locale.getDefault()).format(Date())
+        val timestamp = SimpleDateFormat("HH:mm MMM dd", Locale.getDefault()).format(Date())
+        
+        // Handle app name with custom names and privacy settings
+        val appDisplayName = when {
+            privateApps.contains(packageName) -> "An app"
+            else -> getCustomAppName(packageName) ?: appName
+        }
+        
+        // Get notification metadata
+        val priority = when (sbn?.notification?.priority ?: 0) {
+            Notification.PRIORITY_MIN -> "Min"
+            Notification.PRIORITY_LOW -> "Low"
+            Notification.PRIORITY_DEFAULT -> "Default"
+            Notification.PRIORITY_HIGH -> "High"
+            Notification.PRIORITY_MAX -> "Max"
+            else -> "Default"
+        }
+        
+        val category = sbn?.notification?.category ?: "Unknown"
+        val channel = sbn?.notification?.channelId ?: "Unknown"
+        
+        // Process the template with all available placeholders
+        return speechTemplate
+            .replace("{app}", appDisplayName)
+            .replace("{package}", packageName)
+            .replace("{content}", text)
+            .replace("{title}", title)
+            .replace("{text}", notificationText)
+            .replace("{bigtext}", bigText)
+            .replace("{summary}", summaryText)
+            .replace("{info}", infoText)
+            .replace("{time}", time)
+            .replace("{date}", date)
+            .replace("{timestamp}", timestamp)
+            .replace("{priority}", priority)
+            .replace("{category}", category)
+            .replace("{channel}", channel)
+            .trim()
     }
 }

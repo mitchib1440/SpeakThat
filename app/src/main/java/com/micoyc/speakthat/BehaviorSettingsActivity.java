@@ -52,6 +52,10 @@ import com.micoyc.speakthat.LazyAppSearchAdapter;
 import com.micoyc.speakthat.AppInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ApplicationInfo;
+import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+import android.text.Editable;
+import android.text.TextWatcher;
 
 public class BehaviorSettingsActivity extends AppCompatActivity implements SensorEventListener, CustomAppNameAdapter.OnCustomAppNameActionListener {
     private ActivityBehaviorSettingsBinding binding;
@@ -75,6 +79,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String KEY_CUSTOM_APP_NAMES = "custom_app_names"; // JSON string of custom app names
     private static final String KEY_COOLDOWN_APPS = "cooldown_apps"; // JSON string of cooldown app settings
     private static final String KEY_HONOUR_DO_NOT_DISTURB = "honour_do_not_disturb"; // boolean
+    private static final String KEY_SPEECH_TEMPLATE = "speech_template"; // Custom speech template
 
     // Media behavior options
     private static final String MEDIA_BEHAVIOR_IGNORE = "ignore";
@@ -88,6 +93,22 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final int DEFAULT_DUCKING_VOLUME = 30; // 30% volume when ducking
     private static final int DEFAULT_DELAY_BEFORE_READOUT = 2; // 2 seconds
     private static final boolean DEFAULT_HONOUR_DO_NOT_DISTURB = true; // Default to honouring DND
+
+    // Speech template constants
+    private static final String DEFAULT_SPEECH_TEMPLATE = "{app} notified you: {content}";
+    private static final String[] TEMPLATE_PRESETS = {
+        "Default", "Minimal", "Formal", "Casual", "Time Aware", "Content Only", "App Only", "Custom"
+    };
+    private static final String[] TEMPLATE_VALUES = {
+        "{app} notified you: {content}",
+        "{app}: {content}",
+        "Notification from {app}: {content}",
+        "{app} says: {content}",
+        "{app} at {time}: {content}",
+        "{content}",
+        "{app}",
+        "" // Custom will be empty since it's user-defined
+    };
 
     // Adapter and data
     private PriorityAppAdapter priorityAppAdapter;
@@ -446,6 +467,136 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.switchHonourDoNotDisturb.setOnCheckedChangeListener((buttonView, isChecked) -> {
             saveHonourDoNotDisturb(isChecked);
         });
+        
+        // Set up speech template functionality
+        setupSpeechTemplateUI();
+    }
+    
+    private void setupSpeechTemplateUI() {
+        // Set up template preset spinner
+        ArrayAdapter<String> templateAdapter = new ArrayAdapter<>(
+            this, android.R.layout.simple_spinner_item, TEMPLATE_PRESETS
+        );
+        templateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerSpeechTemplate.setAdapter(templateAdapter);
+        
+        // Handle template preset selection
+        binding.spinnerSpeechTemplate.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, android.view.View view, int position, long id) {
+                if (position >= 0 && position < TEMPLATE_VALUES.length) {
+                    String selectedTemplate = TEMPLATE_VALUES[position];
+                    if (!selectedTemplate.isEmpty()) { // Don't update if "Custom" is selected
+                        binding.editCustomSpeechTemplate.setText(selectedTemplate);
+                        updateSpeechPreview();
+                        saveSpeechTemplate(selectedTemplate);
+                    }
+                }
+            }
+            
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+        
+        // Handle custom template text changes
+        binding.editCustomSpeechTemplate.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            
+            @Override
+            public void afterTextChanged(android.text.Editable s) {
+                String newTemplate = s.toString();
+                updateSpeechPreview();
+                saveSpeechTemplate(newTemplate);
+                
+                // Auto-select "Custom" when user manually edits the format
+                // Check if the current text matches any preset
+                boolean matchesPreset = false;
+                for (int i = 0; i < TEMPLATE_VALUES.length - 1; i++) { // Skip the last "Custom" option
+                    if (TEMPLATE_VALUES[i].equals(newTemplate)) {
+                        matchesPreset = true;
+                        binding.spinnerSpeechTemplate.setSelection(i);
+                        break;
+                    }
+                }
+                
+                // If it doesn't match any preset, select "Custom"
+                if (!matchesPreset) {
+                    binding.spinnerSpeechTemplate.setSelection(TEMPLATE_VALUES.length - 1); // "Custom" is the last option
+                }
+            }
+        });
+        
+        // Set up test template button
+        binding.btnTestSpeechTemplate.setOnClickListener(v -> showTemplateTestDialog());
+        
+        // Set up speech template info button
+        binding.btnSpeechTemplateInfo.setOnClickListener(v -> showSpeechTemplateDialog());
+    }
+    
+    private void showTemplateTestDialog() {
+        String template = binding.editCustomSpeechTemplate.getText().toString();
+        
+        // Create different test scenarios with realistic content
+        String[] testScenarios = {
+            "Mitchi: I heard you're using SpeakThat! Did it just speak that?",
+            "Meeting reminder: Team sync at 3 PM today",
+            "New comment on your post: Great photo!",
+            "Battery low (15% remaining) - connect charger",
+            "Daily rewards available - claim now!",
+            "Rain expected in 2 hours - bring umbrella"
+        };
+        
+        String[] testApps = {
+            "Messages",
+            "Gmail", 
+            "Instagram",
+            "System",
+            "Candy Crush",
+            "Weather"
+        };
+        
+        StringBuilder testResults = new StringBuilder();
+        testResults.append("Your format: <b>").append(template).append("</b><br><br>");
+        testResults.append("<b>How it would sound:</b><br><br>");
+        
+        for (int i = 0; i < testScenarios.length; i++) {
+            String result = template
+                .replace("{app}", testApps[i])
+                .replace("{package}", "com.test." + testApps[i].toLowerCase())
+                .replace("{content}", testScenarios[i])
+                .replace("{title}", testScenarios[i].split(":")[0])
+                .replace("{text}", testScenarios[i].contains(":") ? testScenarios[i].split(":", 2)[1].trim() : testScenarios[i])
+                .replace("{bigtext}", testScenarios[i])
+                .replace("{summary}", "1 new notification")
+                .replace("{info}", "Tap to view")
+                .replace("{time}", "14:30")
+                .replace("{date}", "Dec 15")
+                .replace("{timestamp}", "14:30 Dec 15")
+                .replace("{priority}", "High")
+                .replace("{category}", "Message")
+                .replace("{channel}", "Notifications")
+                .replace("{app_private}", testApps[i])
+                .replace("{app_custom}", testApps[i]);
+            
+            testResults.append("• <b>").append(testApps[i]).append(":</b> \"").append(result).append("\"<br><br>");
+        }
+        
+        testResults.append("<b>💡 Tips:</b><br>");
+        testResults.append("• Test with real notifications to see actual results<br>");
+        testResults.append("• Adjust spacing and punctuation for better pronunciation<br>");
+        testResults.append("• Consider how it sounds when spoken quickly");
+        
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle("🧪 Format Test Results")
+                .setMessage(Html.fromHtml(testResults.toString(), Html.FROM_HTML_MODE_LEGACY))
+                .setPositiveButton("Got it!", null)
+                .show();
     }
 
     private void setupPriorityAppsRecycler() {
@@ -675,6 +826,58 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Load Do Not Disturb setting
         boolean honourDoNotDisturb = sharedPreferences.getBoolean(KEY_HONOUR_DO_NOT_DISTURB, DEFAULT_HONOUR_DO_NOT_DISTURB);
         binding.switchHonourDoNotDisturb.setChecked(honourDoNotDisturb);
+        
+        // Load speech template settings
+        loadSpeechTemplateSettings();
+    }
+    
+    private void loadSpeechTemplateSettings() {
+        String savedTemplate = sharedPreferences.getString(KEY_SPEECH_TEMPLATE, DEFAULT_SPEECH_TEMPLATE);
+        binding.editCustomSpeechTemplate.setText(savedTemplate);
+        
+        // Find and select the matching preset
+        for (int i = 0; i < TEMPLATE_VALUES.length; i++) {
+            if (TEMPLATE_VALUES[i].equals(savedTemplate)) {
+                binding.spinnerSpeechTemplate.setSelection(i);
+                break;
+            }
+        }
+        
+        updateSpeechPreview();
+    }
+    
+    private void saveSpeechTemplate(String template) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_SPEECH_TEMPLATE, template);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Speech template saved: " + template);
+    }
+    
+    private void updateSpeechPreview() {
+        String template = binding.editCustomSpeechTemplate.getText().toString();
+        String preview = generateSpeechPreview(template);
+        binding.textSpeechPreview.setText("Preview: " + preview);
+    }
+    
+    private String generateSpeechPreview(String template) {
+        // Replace placeholders with sample values
+        return template
+            .replace("{app}", "WhatsApp")
+            .replace("{package}", "com.whatsapp")
+            .replace("{content}", "New message from John")
+            .replace("{title}", "New message")
+            .replace("{text}", "from John")
+            .replace("{bigtext}", "New message from John")
+            .replace("{summary}", "1 new message")
+            .replace("{info}", "Message received")
+            .replace("{time}", "14:30")
+            .replace("{date}", "Dec 15")
+            .replace("{timestamp}", "14:30 Dec 15")
+            .replace("{priority}", "High")
+            .replace("{category}", "Message")
+            .replace("{channel}", "Messages")
+            .replace("{app_private}", "An app")
+            .replace("{app_custom}", "WhatsApp");
     }
 
     private void addPriorityApp() {
@@ -1736,6 +1939,118 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         builder.setTitle("Notification Cooldown")
                 .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
                 .setPositiveButton("Got it!", null)
+                .show();
+    }
+    
+    private void showSpeechTemplateDialog() {
+        // Track dialog usage for analytics
+        trackDialogUsage("speech_template_info");
+        
+        String htmlText = "<b>🗣️ Speech Formats</b><br><br>" +
+                "Customize exactly how your notifications are spoken aloud using placeholders and formats.<br><br>" +
+                
+                "<b>🎯 What are Speech Formats?</b><br>" +
+                "Speech formats let you control the exact format and wording of how notifications are read out. Instead of always hearing \"WhatsApp notified you: New message\", you can make it say whatever you prefer.<br><br>" +
+                
+                "<b>💡 Why customize?</b><br>" +
+                "• <b>Personal preference</b> - Some like formal, others casual<br>" +
+                "• <b>Clarity</b> - Make app names easier to understand<br>" +
+                "• <b>Brevity</b> - Shorter formats for quick scanning<br>" +
+                "• <b>Context</b> - Add time, priority, or other details<br>" +
+                "• <b>Accessibility</b> - Format that works best for your needs<br><br>" +
+                
+                "<b>📝 Complete Placeholder Reference:</b><br><br>" +
+                
+                "<b>🔤 App Information:</b><br>" +
+                "• <b>{app}</b> - App display name (automatically uses custom names and respects privacy settings)<br>" +
+                "• <b>{package}</b> - Package name (e.g., \"com.google.android.apps.messaging\")<br><br>" +
+                
+                "<b>📄 Notification Content:</b><br>" +
+                "• <b>{content}</b> - Full notification (title + text combined)<br>" +
+                "• <b>{title}</b> - Notification title only (e.g., \"Mitchi\" for Messages)<br>" +
+                "• <b>{text}</b> - Notification text only (e.g., \"I heard you're using SpeakThat!\" for Messages)<br>" +
+                "• <b>{bigtext}</b> - Big text content (expanded notification)<br>" +
+                "• <b>{summary}</b> - Summary text (e.g., \"1 new message\")<br>" +
+                "• <b>{info}</b> - Info text (additional details)<br><br>" +
+                
+                "<b>⏰ Time & Date:</b><br>" +
+                "• <b>{time}</b> - Current time in HH:mm format (e.g., \"14:30\")<br>" +
+                "• <b>{date}</b> - Current date in MMM dd format (e.g., \"Dec 15\")<br>" +
+                "• <b>{timestamp}</b> - Full timestamp (e.g., \"14:30 Dec 15\")<br><br>" +
+                
+                "<b>📊 Notification Metadata:</b><br>" +
+                "• <b>{priority}</b> - Priority level (Min, Low, Default, High, Max)<br>" +
+                "• <b>{category}</b> - Notification category (Message, Call, etc.)<br>" +
+                "• <b>{channel}</b> - Notification channel ID<br><br>" +
+                
+                "<b>💡 What's the difference?</b><br>" +
+                "• <b>{content} vs {title} + {text}</b> - {content} is everything, {title} and {text} are separate parts<br>" +
+                "• <b>{info}</b> - Usually contains \"Tap to view\" or similar action text<br>" +
+                "• <b>{app}</b> - Automatically uses custom names if set, and respects privacy settings<br><br>" +
+                
+                "<b>💡 Format Examples:</b><br><br>" +
+                
+                "<b>Quick & Simple:</b><br>" +
+                "• <b>Minimal:</b> \"{app}: {content}\" → \"Messages: Mitchi: I heard you're using SpeakThat!\"<br>" +
+                "• <b>App Only:</b> \"{app}\" → \"Messages\"<br>" +
+                "• <b>Content Only:</b> \"{content}\" → \"Mitchi: I heard you're using SpeakThat!\"<br><br>" +
+                
+                "<b>Informative:</b><br>" +
+                "• <b>Default:</b> \"{app} notified you: {content}\" → \"Messages notified you: Mitchi: I heard you're using SpeakThat!\"<br>" +
+                "• <b>Formal:</b> \"Notification from {app}: {content}\" → \"Notification from Messages: Mitchi: I heard you're using SpeakThat!\"<br>" +
+                "• <b>Casual:</b> \"{app} says: {content}\" → \"Messages says: Mitchi: I heard you're using SpeakThat!\"<br><br>" +
+                
+                "<b>Time-Aware:</b><br>" +
+                "• <b>Time Stamp:</b> \"{app} at {time}: {content}\" → \"Messages at 14:30: Mitchi: I heard you're using SpeakThat!\"<br>" +
+                "• <b>Full Context:</b> \"{app} ({time}): {content}\" → \"Messages (14:30): Mitchi: I heard you're using SpeakThat!\"<br><br>" +
+                
+                "<b>Advanced Examples:</b><br>" +
+                "• <b>Priority Aware:</b> \"{app} ({priority}): {content}\" → \"Messages (High): Mitchi: I heard you're using SpeakThat!\"<br>" +
+                "• <b>Category Aware:</b> \"{category} from {app}: {content}\" → \"Message from Messages: Mitchi: I heard you're using SpeakThat!\"<br>" +
+                "• <b>Sender Focused:</b> \"{title} via {app}: {text}\" → \"Mitchi via Messages: I heard you're using SpeakThat!\"<br><br>" +
+                
+                "<b>⚙️ How to Use:</b><br>" +
+                "1. <b>Choose a preset</b> - Start with a format that's close to what you want<br>" +
+                "2. <b>Customize</b> - Edit the format to add or remove elements<br>" +
+                "3. <b>Preview</b> - See exactly how it will sound with the preview<br>" +
+                "4. <b>Test</b> - Try it with real notifications<br>" +
+                "5. <b>Refine</b> - Adjust based on what sounds best to you<br><br>" +
+                
+                "<b>🔧 Tips & Tricks:</b><br>" +
+                "• <b>Mix and match</b> - Combine placeholders in any order<br>" +
+                "• <b>Keep it concise</b> - Shorter formats are easier to understand quickly<br>" +
+                "• <b>Use spacing</b> - Add spaces around placeholders for better pronunciation<br>" +
+                "• <b>Test thoroughly</b> - Different apps may have different content formats<br>" +
+                "• <b>Consider context</b> - Time-aware formats are great for busy periods<br><br>" +
+                
+                "<b>⚠️ Important Notes:</b><br>" +
+                "• <b>Private notifications</b> will still use their special format for privacy<br>" +
+                "• <b>Filtering works first</b> - Formats are applied after all filtering<br>" +
+                "• <b>Real-time updates</b> - Changes take effect immediately<br>" +
+                "• <b>Backward compatible</b> - Default format matches current behavior<br><br>" +
+                
+                "<b>🎯 Recommended Starting Points:</b><br>" +
+                "• <b>New users:</b> Start with \"Default\" or \"Minimal\"<br>" +
+                "• <b>Power users:</b> Try \"Time Aware\" or custom formats<br>" +
+                "• <b>Accessibility focus:</b> Use \"Formal\" or add priority information<br>" +
+                "• <b>Quick scanning:</b> Use \"App Only\" or \"Content Only\"";
+        
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle("🗣️ Speech Formats - Complete Guide")
+                .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
+                .setPositiveButton("Use Recommended", (dialog, which) -> {
+                    // Track recommendation usage
+                    trackDialogUsage("speech_template_recommended");
+                    
+                    // Set to a good starting template (Default - matches current behavior)
+                    binding.editCustomSpeechTemplate.setText("{app} notified you: {content}");
+                    binding.spinnerSpeechTemplate.setSelection(0); // Select "Default"
+                    updateSpeechPreview();
+                    saveSpeechTemplate("{app} notified you: {content}");
+                    
+                    Toast.makeText(this, "Set to recommended format: Default", Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("Got it!", null)
                 .show();
     }
 
