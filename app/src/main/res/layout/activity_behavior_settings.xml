@@ -1807,7 +1807,7 @@
                         android:layout_marginBottom="16dp"
                         android:minHeight="48dp"
                         android:background="@drawable/spinner_background"
-                        android:popupBackground="@color/white_100" />
+                        android:popupBackground="?attr/colorSurface" />
 
                     <!-- Custom Template Input -->
                     <TextView
@@ -1831,7 +1831,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:minHeight="56dp"
-                            android:hint="Enter template with placeholders like {app}, {content}, {time}..."
+                            android:hint="Enter format with placeholders"
                             android:inputType="textMultiLine"
                             android:maxLines="3"
                             android:textSize="16sp"
@@ -1846,27 +1846,25 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="8dp"
-                        android:gravity="center_vertical">
+                        android:orientation="vertical"
+                        android:layout_marginBottom="8dp">
 
                         <TextView
                             android:id="@+id/textSpeechPreview"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:text="Preview: Messages notified you: Mitchi: I heard you're using SpeakThat!"
                             android:textSize="14sp"
                             android:textColor="@color/text_tertiary"
-                            android:layout_marginEnd="8dp" />
+                            android:layout_marginBottom="8dp" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnTestSpeechTemplate"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="36dp"
                             android:text="Test"
                             android:textSize="12sp"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/purple_100"
                             android:backgroundTint="@color/white_100"
                             android:strokeColor="@color/purple_200"
                             android:strokeWidth="1.0"

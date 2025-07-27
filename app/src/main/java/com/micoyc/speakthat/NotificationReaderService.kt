@@ -85,6 +85,25 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     // Speech template settings
     private var speechTemplate = "{app} notified you: {content}"
     
+    // Varied format options for random selection
+    private val variedFormats = arrayOf(
+        "{app} notified you: {content}",
+        "{app} reported: {content}",
+        "Notification from {app}, saying {content}",
+        "Notification from {app}: {content}",
+        "{app} alerts you: {content}",
+        "Update from {app}: {content}",
+        "{app} says: {content}",
+        "{app} notification: {content}",
+        "New notification: {app}: {content}",
+        "New from {app}: {content}",
+        "{app} said: {content}",
+        "{app} updated you: {content}",
+        "New notification from {app}: saying: {content}",
+        "New update from {app}: {content}",
+        "{app}: {content}"
+    )
+    
     // TTS queue for different behavior modes
     private val notificationQueue = mutableListOf<QueuedNotification>()
     private var isCurrentlySpeaking = false
@@ -350,15 +369,31 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 val notificationText = extractNotificationText(notification)
                 
                 if (notificationText.isNotEmpty()) {
-                    Log.d(TAG, "New notification from $appName: $notificationText")
-                    InAppLogger.logNotification("Processing notification from $appName: $notificationText")
+                    // SECURITY: Check sensitive data logging setting once for this notification
+                    val isSensitiveDataLoggingEnabled = sharedPreferences.getBoolean("log_sensitive_data", false)
+                    
+                    // SECURITY: Don't log original content for private apps (unless sensitive data logging is enabled for testing)
+                    val isAppPrivate = privateApps.contains(packageName)
+                    
+                    if (isAppPrivate) {
+                        if (isSensitiveDataLoggingEnabled) {
+                            // SECURITY EXCEPTION: Only for development/testing with explicit user consent
+                            Log.d(TAG, "New notification from $appName: $notificationText [SENSITIVE DATA LOGGING ENABLED]")
+                            InAppLogger.logNotification("Processing private notification from $appName: $notificationText [SENSITIVE DATA LOGGING ENABLED]")
+                        } else {
+                            Log.d(TAG, "New notification from $appName: [PRIVATE CONTENT - NOT LOGGED]")
+                            InAppLogger.logNotification("Processing private notification from $appName: [PRIVATE CONTENT - NOT LOGGED]")
+                        }
+                    } else {
+                        Log.d(TAG, "New notification from $appName: $notificationText")
+                        InAppLogger.logNotification("Processing notification from $appName: $notificationText")
+                    }
                     
                     // Apply filtering
                     val filterResult = applyFilters(packageName, appName, notificationText, sbn)
                     
                     if (filterResult.shouldSpeak) {
                         // Determine final app name (private apps become "An app")
-                        val isAppPrivate = privateApps.contains(packageName)
                         val finalAppName = if (isAppPrivate) "An app" else appName
                         
                         // Add to history
@@ -367,8 +402,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         // Handle notification based on behavior mode (pass conditional delay info)
                         handleNotificationBehavior(packageName, finalAppName, filterResult.processedText, filterResult.conditionalDelaySeconds, sbn)
                     } else {
-                        Log.d(TAG, "Notification filtered out: ${filterResult.reason}")
-                        InAppLogger.logFilter("Blocked notification from $appName: ${filterResult.reason}")
+                        // SECURITY: Don't log specific reasons for blocked notifications to avoid information leakage (unless sensitive data logging is enabled for testing)
+                        if (isSensitiveDataLoggingEnabled) {
+                            // SECURITY EXCEPTION: Only for development/testing with explicit user consent
+                            Log.d(TAG, "Notification blocked from $appName: ${filterResult.reason} [SENSITIVE DATA LOGGING ENABLED]")
+                            InAppLogger.logFilter("Blocked notification from $appName: ${filterResult.reason} [SENSITIVE DATA LOGGING ENABLED]")
+                        } else {
+                            Log.d(TAG, "Notification blocked from $appName: [BLOCKED - REASON NOT LOGGED]")
+                            InAppLogger.logFilter("Blocked notification from $appName: [BLOCKED - REASON NOT LOGGED]")
+                        }
                     }
                 }
             } catch (e: Exception) {
@@ -1010,7 +1052,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         // 5. Apply word filtering and replacements
-        val wordFilterResult = applyWordFiltering(text, appName)
+        val wordFilterResult = applyWordFiltering(text, appName, packageName)
         if (!wordFilterResult.shouldSpeak) {
             return wordFilterResult
         }
@@ -1039,7 +1081,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             "blacklist" -> {
                 if (appList.contains(packageName)) {
-                    FilterResult(false, "", "App blacklisted")
+                    // Check if this app has private mode enabled
+                    if (privateApps.contains(packageName)) {
+                        // Allow through for private mode processing
+                        FilterResult(true, "", "App blacklisted but private mode enabled")
+                    } else {
+                        FilterResult(false, "", "App blacklisted")
+                    }
                 } else {
                     FilterResult(true, "", "App not blacklisted")
                 }
@@ -1048,8 +1096,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
-    private fun applyWordFiltering(text: String, appName: String): FilterResult {
+    private fun applyWordFiltering(text: String, appName: String, packageName: String = ""): FilterResult {
         var processedText = text
+        
+        // SECURITY: Check if this app is in private mode FIRST (highest priority)
+        // This ensures private apps are never processed for word filtering that might reveal content
+        if (packageName.isNotEmpty() && privateApps.contains(packageName)) {
+            processedText = "You received a private notification from $appName"
+            Log.d(TAG, "App '$appName' is in private mode - entire notification made private (SECURITY: bypassing all other filters)")
+            InAppLogger.logFilter("Made notification private due to app privacy setting (SECURITY: bypassing all other filters)")
+            return FilterResult(true, processedText, "App-level privacy applied")
+        }
         
         // 1. Check for blocked words (including smart filters)
         for (blockedWord in blockedWords) {
@@ -1070,7 +1127,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         }
         
-        // 3. Apply word swaps
+        // 3. Apply word swaps (only for non-private notifications)
         for ((from, to) in wordReplacements) {
             processedText = processedText.replace(from, to, ignoreCase = true)
         }
@@ -1823,8 +1880,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val category = sbn?.notification?.category ?: "Unknown"
         val channel = sbn?.notification?.channelId ?: "Unknown"
         
+        // Handle varied template by randomly selecting a format
+        val templateToUse = if (speechTemplate == "VARIED") {
+            variedFormats.random()
+        } else {
+            speechTemplate
+        }
+        
         // Process the template with all available placeholders
-        return speechTemplate
+        return templateToUse
             .replace("{app}", appDisplayName)
             .replace("{package}", packageName)
             .replace("{content}", text)

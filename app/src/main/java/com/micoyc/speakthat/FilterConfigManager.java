@@ -100,6 +100,7 @@ public class FilterConfigManager {
         public boolean pocketModeEnabled;
         public String customAppNames;
         public String cooldownApps;
+        public String speechTemplate;
         
         public BehaviorConfig() {
             this.notificationBehavior = "interrupt";
@@ -116,6 +117,7 @@ public class FilterConfigManager {
             this.pocketModeEnabled = false;
             this.customAppNames = "[]";
             this.cooldownApps = "[]";
+            this.speechTemplate = "{app} notified you: {content}";
         }
     }
     
@@ -230,6 +232,7 @@ public class FilterConfigManager {
         config.behavior.pocketModeEnabled = prefs.getBoolean("pocket_mode_enabled", false);
         config.behavior.customAppNames = prefs.getString("custom_app_names", "[]");
         config.behavior.cooldownApps = prefs.getString("cooldown_apps", "[]");
+        config.behavior.speechTemplate = prefs.getString("speech_template", "{app} notified you: {content}");
         
         // Load general settings
         config.general.darkMode = prefs.getBoolean("dark_mode", true);
@@ -285,6 +288,7 @@ public class FilterConfigManager {
         behavior.put("pocketModeEnabled", config.behavior.pocketModeEnabled);
         behavior.put("customAppNames", config.behavior.customAppNames);
         behavior.put("cooldownApps", config.behavior.cooldownApps);
+        behavior.put("speechTemplate", config.behavior.speechTemplate);
         json.put("behavior", behavior);
         
         // General settings
@@ -578,6 +582,11 @@ public class FilterConfigManager {
                 
                 if (behavior.has("cooldownApps")) {
                     mainEditor.putString("cooldown_apps", behavior.getString("cooldownApps"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("speechTemplate")) {
+                    mainEditor.putString("speech_template", behavior.getString("speechTemplate"));
                     totalImported++;
                 }
             }

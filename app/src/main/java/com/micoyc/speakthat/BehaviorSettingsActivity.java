@@ -97,7 +97,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     // Speech template constants
     private static final String DEFAULT_SPEECH_TEMPLATE = "{app} notified you: {content}";
     private static final String[] TEMPLATE_PRESETS = {
-        "Default", "Minimal", "Formal", "Casual", "Time Aware", "Content Only", "App Only", "Custom"
+        "Default", "Minimal", "Formal", "Casual", "Time Aware", "Content Only", "App Only", "Varied", "Custom"
     };
     private static final String[] TEMPLATE_VALUES = {
         "{app} notified you: {content}",
@@ -107,7 +107,27 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         "{app} at {time}: {content}",
         "{content}",
         "{app}",
+        "VARIED", // Special marker for varied mode
         "" // Custom will be empty since it's user-defined
+    };
+
+    // Varied format options for random selection
+    private static final String[] VARIED_FORMATS = {
+        "{app} notified you: {content}",
+        "{app} reported: {content}",
+        "Notification from {app}, saying {content}",
+        "Notification from {app}: {content}",
+        "{app} alerts you: {content}",
+        "Update from {app}: {content}",
+        "{app} says: {content}",
+        "{app} notification: {content}",
+        "New notification: {app}: {content}",
+        "New from {app}: {content}",
+        "{app} said: {content}",
+        "{app} updated you: {content}",
+        "New notification from {app}: saying: {content}",
+        "New update from {app}: {content}",
+        "{app}: {content}"
     };
 
     // Adapter and data
@@ -484,13 +504,31 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.spinnerSpeechTemplate.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(android.widget.AdapterView<?> parent, android.view.View view, int position, long id) {
-                if (position >= 0 && position < TEMPLATE_VALUES.length) {
-                    String selectedTemplate = TEMPLATE_VALUES[position];
-                    if (!selectedTemplate.isEmpty()) { // Don't update if "Custom" is selected
-                        binding.editCustomSpeechTemplate.setText(selectedTemplate);
-                        updateSpeechPreview();
-                        saveSpeechTemplate(selectedTemplate);
-                    }
+                String selectedTemplate = TEMPLATE_VALUES[position];
+                
+                if (selectedTemplate.equals("VARIED")) {
+                    // Hide custom input section for varied mode
+                    binding.editCustomSpeechTemplate.setVisibility(View.GONE);
+                    // Also hide the "Custom Format:" label by finding its parent container
+                    View customFormatContainer = (View) binding.editCustomSpeechTemplate.getParent().getParent();
+                    customFormatContainer.setVisibility(View.GONE);
+                    binding.textSpeechPreview.setText("Varied mode: Random format selected for each notification");
+                    binding.textSpeechPreview.setTextColor(getResources().getColor(R.color.text_tertiary));
+                    saveSpeechTemplate("VARIED");
+                } else if (selectedTemplate.isEmpty()) {
+                    // Custom mode - show input field
+                    binding.editCustomSpeechTemplate.setVisibility(View.VISIBLE);
+                    View customFormatContainer = (View) binding.editCustomSpeechTemplate.getParent().getParent();
+                    customFormatContainer.setVisibility(View.VISIBLE);
+                    updateSpeechPreview();
+                } else {
+                    // Regular preset - update input field and preview
+                    binding.editCustomSpeechTemplate.setVisibility(View.VISIBLE);
+                    View customFormatContainer = (View) binding.editCustomSpeechTemplate.getParent().getParent();
+                    customFormatContainer.setVisibility(View.VISIBLE);
+                    binding.editCustomSpeechTemplate.setText(selectedTemplate);
+                    updateSpeechPreview();
+                    saveSpeechTemplate(selectedTemplate);
                 }
             }
             
@@ -511,11 +549,13 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             @Override
             public void afterTextChanged(android.text.Editable s) {
                 String newTemplate = s.toString();
-                updateSpeechPreview();
-                saveSpeechTemplate(newTemplate);
                 
-                // Auto-select "Custom" when user manually edits the format
-                // Check if the current text matches any preset
+                // Don't auto-select if we're in varied mode
+                if (binding.spinnerSpeechTemplate.getSelectedItemPosition() == TEMPLATE_PRESETS.length - 2) { // Varied is second to last
+                    return;
+                }
+                
+                // Check if the new template matches any preset
                 boolean matchesPreset = false;
                 for (int i = 0; i < TEMPLATE_VALUES.length - 1; i++) { // Skip the last "Custom" option
                     if (TEMPLATE_VALUES[i].equals(newTemplate)) {
@@ -524,11 +564,12 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                         break;
                     }
                 }
-                
-                // If it doesn't match any preset, select "Custom"
                 if (!matchesPreset) {
                     binding.spinnerSpeechTemplate.setSelection(TEMPLATE_VALUES.length - 1); // "Custom" is the last option
                 }
+                
+                updateSpeechPreview();
+                saveSpeechTemplate(newTemplate);
             }
         });
         
@@ -541,56 +582,97 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     
     private void showTemplateTestDialog() {
         String template = binding.editCustomSpeechTemplate.getText().toString();
+        boolean isVariedMode = template.equals("VARIED") || binding.spinnerSpeechTemplate.getSelectedItemPosition() == TEMPLATE_PRESETS.length - 2;
         
         // Create different test scenarios with realistic content
-        String[] testScenarios = {
+        String[] testTitles = {
+            "Mitchi",
+            "SpeakThat! Bug Report",
+            "@mitchib1440",
+            "Weather Alert",
+            "Battery low (15% remaining)",
+            "'Thank you for using SpeakThat!'"
+        };
+        
+        String[] testTexts = {
+            "I heard you're using SpeakThat! Did it just speak that?",
+            "Thanks for submitting a bug report! We'll get this one squashed in the next release! - Mitchi",
+            "Just released a new app update! Check it out",
+            "Heavy rain expected in 2 hours",
+            "connect charger",
+            "@mitchib1440 replied"
+        };
+        
+        String[] testContents = {
             "Mitchi: I heard you're using SpeakThat! Did it just speak that?",
-            "Meeting reminder: Team sync at 3 PM today",
-            "New comment on your post: Great photo!",
+            "SpeakThat! Bug Report: Thanks for submitting a bug report! We'll get this one squashed in the next release! - Mitchi",
+            "@mitchib1440: Just released a new app update! Check it out",
+            "Weather Alert: Heavy rain expected in 2 hours",
             "Battery low (15% remaining) - connect charger",
-            "Daily rewards available - claim now!",
-            "Rain expected in 2 hours - bring umbrella"
+            "@mitchib1440 replied: 'Thank you for using SpeakThat!'"
         };
         
         String[] testApps = {
             "Messages",
             "Gmail", 
-            "Instagram",
+            "Twitter",
+            "Weather",
             "System",
-            "Candy Crush",
-            "Weather"
+            "YouTube"
         };
         
         StringBuilder testResults = new StringBuilder();
-        testResults.append("Your format: <b>").append(template).append("</b><br><br>");
-        testResults.append("<b>How it would sound:</b><br><br>");
         
-        for (int i = 0; i < testScenarios.length; i++) {
-            String result = template
-                .replace("{app}", testApps[i])
-                .replace("{package}", "com.test." + testApps[i].toLowerCase())
-                .replace("{content}", testScenarios[i])
-                .replace("{title}", testScenarios[i].split(":")[0])
-                .replace("{text}", testScenarios[i].contains(":") ? testScenarios[i].split(":", 2)[1].trim() : testScenarios[i])
-                .replace("{bigtext}", testScenarios[i])
-                .replace("{summary}", "1 new notification")
-                .replace("{info}", "Tap to view")
-                .replace("{time}", "14:30")
-                .replace("{date}", "Dec 15")
-                .replace("{timestamp}", "14:30 Dec 15")
-                .replace("{priority}", "High")
-                .replace("{category}", "Message")
-                .replace("{channel}", "Notifications")
-                .replace("{app_private}", testApps[i])
-                .replace("{app_custom}", testApps[i]);
-            
-            testResults.append("• <b>").append(testApps[i]).append(":</b> \"").append(result).append("\"<br><br>");
+        if (isVariedMode) {
+            testResults.append("Your format: <b>Varied (Random selection)</b><br><br>");
+            testResults.append("<b>How it would sound (random format for each):</b><br><br>");
+        } else {
+            testResults.append("Your format: <b>").append(template).append("</b><br><br>");
+            testResults.append("<b>How it would sound:</b><br><br>");
         }
         
-        testResults.append("<b>💡 Tips:</b><br>");
-        testResults.append("• Test with real notifications to see actual results<br>");
-        testResults.append("• Adjust spacing and punctuation for better pronunciation<br>");
-        testResults.append("• Consider how it sounds when spoken quickly");
+        for (int i = 0; i < testContents.length; i++) {
+            String templateToUse = template;
+            if (isVariedMode) {
+                // Use a random varied format for each test scenario
+                templateToUse = VARIED_FORMATS[i % VARIED_FORMATS.length];
+            }
+            
+            String result = templateToUse
+                .replace("{app}", testApps[i])
+                .replace("{package}", "com.test." + testApps[i].toLowerCase())
+                .replace("{content}", testContents[i])
+                .replace("{title}", testTitles[i])
+                .replace("{text}", testTexts[i])
+                .replace("{bigtext}", testContents[i])
+                .replace("{summary}", "1 new notification")
+                .replace("{info}", "Tap to view")
+                .replace("{time}", "14:40")
+                .replace("{date}", "Dec 15")
+                .replace("{timestamp}", "14:40 Dec 15")
+                .replace("{priority}", "High")
+                .replace("{category}", "Message")
+                .replace("{channel}", "Notifications");
+            
+            if (isVariedMode) {
+                testResults.append("• <b>").append(testApps[i]).append(":</b> \"").append(result).append("\" <i>(using: ").append(templateToUse).append(")</i><br><br>");
+            } else {
+                testResults.append("• <b>").append(testApps[i]).append(":</b> \"").append(result).append("\"<br><br>");
+            }
+        }
+        
+        if (isVariedMode) {
+            testResults.append("<b>💡 Varied Mode Tips:</b><br>");
+            testResults.append("• Each notification gets a random format from 15 options<br>");
+            testResults.append("• Adds variety and personality to your notifications<br>");
+            testResults.append("• No configuration needed - just enjoy the variety!<br>");
+            testResults.append("• Test with real notifications to see the full effect");
+        } else {
+            testResults.append("<b>💡 Tips:</b><br>");
+            testResults.append("• Test with real notifications to see actual results<br>");
+            testResults.append("• Adjust spacing and punctuation for better pronunciation<br>");
+            testResults.append("• Consider how it sounds when spoken quickly");
+        }
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle("🧪 Format Test Results")
@@ -833,17 +915,40 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     
     private void loadSpeechTemplateSettings() {
         String savedTemplate = sharedPreferences.getString(KEY_SPEECH_TEMPLATE, DEFAULT_SPEECH_TEMPLATE);
-        binding.editCustomSpeechTemplate.setText(savedTemplate);
         
-        // Find and select the matching preset
-        for (int i = 0; i < TEMPLATE_VALUES.length; i++) {
-            if (TEMPLATE_VALUES[i].equals(savedTemplate)) {
-                binding.spinnerSpeechTemplate.setSelection(i);
-                break;
+        if (savedTemplate.equals("VARIED")) {
+            // Set spinner to Varied and hide custom input section
+            binding.spinnerSpeechTemplate.setSelection(TEMPLATE_PRESETS.length - 2); // Varied is second to last
+            binding.editCustomSpeechTemplate.setVisibility(View.GONE);
+            View customFormatContainer = (View) binding.editCustomSpeechTemplate.getParent().getParent();
+            customFormatContainer.setVisibility(View.GONE);
+            binding.textSpeechPreview.setText("Varied mode: Random format selected for each notification");
+            binding.textSpeechPreview.setTextColor(getResources().getColor(R.color.text_tertiary));
+        } else {
+            // Find the preset that matches the saved template
+            int presetIndex = -1;
+            for (int i = 0; i < TEMPLATE_VALUES.length; i++) {
+                if (TEMPLATE_VALUES[i].equals(savedTemplate)) {
+                    presetIndex = i;
+                    break;
+                }
             }
+            
+            if (presetIndex >= 0) {
+                // It's a preset
+                binding.spinnerSpeechTemplate.setSelection(presetIndex);
+                binding.editCustomSpeechTemplate.setText(savedTemplate);
+            } else {
+                // It's a custom template
+                binding.spinnerSpeechTemplate.setSelection(TEMPLATE_VALUES.length - 1); // Custom is last
+                binding.editCustomSpeechTemplate.setText(savedTemplate);
+            }
+            
+            binding.editCustomSpeechTemplate.setVisibility(View.VISIBLE);
+            View customFormatContainer = (View) binding.editCustomSpeechTemplate.getParent().getParent();
+            customFormatContainer.setVisibility(View.VISIBLE);
+            updateSpeechPreview();
         }
-        
-        updateSpeechPreview();
     }
     
     private void saveSpeechTemplate(String template) {
@@ -856,28 +961,44 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private void updateSpeechPreview() {
         String template = binding.editCustomSpeechTemplate.getText().toString();
         String preview = generateSpeechPreview(template);
-        binding.textSpeechPreview.setText("Preview: " + preview);
+        binding.textSpeechPreview.setText(Html.fromHtml("Preview: " + preview, Html.FROM_HTML_MODE_LEGACY));
     }
     
     private String generateSpeechPreview(String template) {
-        // Replace placeholders with sample values
-        return template
-            .replace("{app}", "WhatsApp")
-            .replace("{package}", "com.whatsapp")
-            .replace("{content}", "New message from John")
-            .replace("{title}", "New message")
-            .replace("{text}", "from John")
-            .replace("{bigtext}", "New message from John")
-            .replace("{summary}", "1 new message")
-            .replace("{info}", "Message received")
-            .replace("{time}", "14:30")
-            .replace("{date}", "Dec 15")
-            .replace("{timestamp}", "14:30 Dec 15")
-            .replace("{priority}", "High")
-            .replace("{category}", "Message")
-            .replace("{channel}", "Messages")
-            .replace("{app_private}", "An app")
-            .replace("{app_custom}", "WhatsApp");
+        // Replace placeholders with sample values and make them bold
+        String preview = template
+            .replace("{app}", "**Messages**")
+            .replace("{package}", "**com.google.android.apps.messaging**")
+            .replace("{content}", "**Mitchi: I heard you're using SpeakThat! Did it just speak that?**")
+            .replace("{title}", "**Mitchi**")
+            .replace("{text}", "**I heard you're using SpeakThat! Did it just speak that?**")
+            .replace("{bigtext}", "**Mitchi: I heard you're using SpeakThat! Did it just speak that?**")
+            .replace("{summary}", "**1 new message**")
+            .replace("{info}", "**Tap to view**")
+            .replace("{time}", "**14:30**")
+            .replace("{date}", "**Dec 15**")
+            .replace("{timestamp}", "**14:30 Dec 15**")
+            .replace("{priority}", "**High**")
+            .replace("{category}", "**Message**")
+            .replace("{channel}", "**Messages**");
+        
+        // Convert markdown-style bold to HTML bold
+        StringBuilder result = new StringBuilder();
+        boolean inBold = false;
+        for (int i = 0; i < preview.length(); i++) {
+            if (i < preview.length() - 1 && preview.charAt(i) == '*' && preview.charAt(i + 1) == '*') {
+                if (inBold) {
+                    result.append("</b>");
+                } else {
+                    result.append("<b>");
+                }
+                inBold = !inBold;
+                i++; // Skip the second asterisk
+            } else {
+                result.append(preview.charAt(i));
+            }
+        }
+        return result.toString();
     }
 
     private void addPriorityApp() {
@@ -1946,8 +2067,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Track dialog usage for analytics
         trackDialogUsage("speech_template_info");
         
-        String htmlText = "<b>🗣️ Speech Formats</b><br><br>" +
-                "Customize exactly how your notifications are spoken aloud using placeholders and formats.<br><br>" +
+        String htmlText = "Customize exactly how your notifications are spoken aloud using placeholders and formats.<br><br>" +
                 
                 "<b>🎯 What are Speech Formats?</b><br>" +
                 "Speech formats let you control the exact format and wording of how notifications are read out. Instead of always hearing \"WhatsApp notified you: New message\", you can make it say whatever you prefer.<br><br>" +
@@ -1988,6 +2108,11 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "• <b>{info}</b> - Usually contains \"Tap to view\" or similar action text<br>" +
                 "• <b>{app}</b> - Automatically uses custom names if set, and respects privacy settings<br><br>" +
                 
+                "<b>⚠️ Important Notes:</b><br>" +
+                "• <b>Avoid {title} {bigtext}</b> - This can cause duplication since bigtext often includes the title<br>" +
+                "• <b>Use {content}</b> for the full notification, or {title} + {text} for separate parts<br>" +
+                "• <b>Test your format</b> with the Test button to see exactly how it will sound<br><br>" +
+                
                 "<b>💡 Format Examples:</b><br><br>" +
                 
                 "<b>Quick & Simple:</b><br>" +
@@ -1997,17 +2122,18 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 
                 "<b>Informative:</b><br>" +
                 "• <b>Default:</b> \"{app} notified you: {content}\" → \"Messages notified you: Mitchi: I heard you're using SpeakThat!\"<br>" +
-                "• <b>Formal:</b> \"Notification from {app}: {content}\" → \"Notification from Messages: Mitchi: I heard you're using SpeakThat!\"<br>" +
-                "• <b>Casual:</b> \"{app} says: {content}\" → \"Messages says: Mitchi: I heard you're using SpeakThat!\"<br><br>" +
+                "• <b>Formal:</b> \"Notification from {app}: {content}\" → \"Notification from Gmail: New email from John Smith: Meeting tomorrow at 3 PM\"<br>" +
+                "• <b>Casual:</b> \"{app} says: {content}\" → \"Weather says: Weather Alert: Heavy rain expected in 2 hours\"<br><br>" +
                 
                 "<b>Time-Aware:</b><br>" +
-                "• <b>Time Stamp:</b> \"{app} at {time}: {content}\" → \"Messages at 14:30: Mitchi: I heard you're using SpeakThat!\"<br>" +
+                "• <b>Time Stamp:</b> \"{app} at {time}: {content}\" → \"Twitter at 14:30: @mitchib1440: Just released a new app update!\"<br>" +
                 "• <b>Full Context:</b> \"{app} ({time}): {content}\" → \"Messages (14:30): Mitchi: I heard you're using SpeakThat!\"<br><br>" +
                 
                 "<b>Advanced Examples:</b><br>" +
-                "• <b>Priority Aware:</b> \"{app} ({priority}): {content}\" → \"Messages (High): Mitchi: I heard you're using SpeakThat!\"<br>" +
+                "• <b>Priority Aware:</b> \"{app} ({priority}): {content}\" → \"Gmail (High): New email from John Smith: Meeting tomorrow at 3 PM\"<br>" +
                 "• <b>Category Aware:</b> \"{category} from {app}: {content}\" → \"Message from Messages: Mitchi: I heard you're using SpeakThat!\"<br>" +
-                "• <b>Sender Focused:</b> \"{title} via {app}: {text}\" → \"Mitchi via Messages: I heard you're using SpeakThat!\"<br><br>" +
+                "• <b>Sender Focused:</b> \"{title} via {app}: {text}\" → \"Mitchi via Messages: I heard you're using SpeakThat!\"<br>" +
+                "• <b>Detailed:</b> \"{app} - {title}: {bigtext}\" → \"Gmail - New email from John Smith: Meeting tomorrow at 3 PM - Please bring the quarterly report\"<br><br>" +
                 
                 "<b>⚙️ How to Use:</b><br>" +
                 "1. <b>Choose a preset</b> - Start with a format that's close to what you want<br>" +
@@ -2023,17 +2149,39 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "• <b>Test thoroughly</b> - Different apps may have different content formats<br>" +
                 "• <b>Consider context</b> - Time-aware formats are great for busy periods<br><br>" +
                 
-                "<b>⚠️ Important Notes:</b><br>" +
-                "• <b>Private notifications</b> will still use their special format for privacy<br>" +
-                "• <b>Filtering works first</b> - Formats are applied after all filtering<br>" +
-                "• <b>Real-time updates</b> - Changes take effect immediately<br>" +
-                "• <b>Backward compatible</b> - Default format matches current behavior<br><br>" +
-                
                 "<b>🎯 Recommended Starting Points:</b><br>" +
                 "• <b>New users:</b> Start with \"Default\" or \"Minimal\"<br>" +
                 "• <b>Power users:</b> Try \"Time Aware\" or custom formats<br>" +
                 "• <b>Accessibility focus:</b> Use \"Formal\" or add priority information<br>" +
-                "• <b>Quick scanning:</b> Use \"App Only\" or \"Content Only\"";
+                "• <b>Quick scanning:</b> Use \"App Only\" or \"Content Only\"<br><br>" +
+                
+                "<b>💡 Real App Examples:</b><br><br>" +
+                
+                "<b>📱 Messages (Android):</b><br>" +
+                "• <b>Title:</b> \"Mitchi\"<br>" +
+                "• <b>Text:</b> \"I heard you're using SpeakThat! Did it just speak that?\"<br>" +
+                "• <b>BigText:</b> \"I heard you're using SpeakThat! Did it just speak that?\"<br>" +
+                "• <b>Content:</b> \"Mitchi: I heard you're using SpeakThat! Did it just speak that?\"<br><br>" +
+                
+                "<b>📧 Gmail:</b><br>" +
+                "• <b>Title:</b> \"New email from John Smith\"<br>" +
+                "• <b>Text:</b> \"Meeting tomorrow at 3 PM\"<br>" +
+                "• <b>BigText:</b> \"Meeting tomorrow at 3 PM - Please bring the quarterly report and budget spreadsheet. We'll discuss Q4 projections.\"<br>" +
+                "• <b>Content:</b> \"New email from John Smith: Meeting tomorrow at 3 PM\"<br><br>" +
+                
+                "<b>🌤️ Weather:</b><br>" +
+                "• <b>Title:</b> \"Weather Alert\"<br>" +
+                "• <b>Text:</b> \"Heavy rain expected in 2 hours\"<br>" +
+                "• <b>BigText:</b> \"Heavy rain expected in 2 hours - Bring an umbrella and expect delays. Rainfall amounts of 1-2 inches possible.\"<br>" +
+                "• <b>Content:</b> \"Weather Alert: Heavy rain expected in 2 hours\"<br><br>" +
+                
+                "<b>🐦 Twitter:</b><br>" +
+                "• <b>Title:</b> \"@mitchib1440\"<br>" +
+                "• <b>Text:</b> \"Just released a new app update! Check it out\"<br>" +
+                "• <b>BigText:</b> \"Just released a new app update! Check it out - The new version includes dark mode and improved performance. #AndroidDev #AppUpdate\"<br>" +
+                "• <b>Content:</b> \"@mitchib1440: Just released a new app update! Check it out\"<br><br>" +
+                
+                "<b>💡 Remember that different apps present their notifications in different ways.</b><br><br>";
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle("🗣️ Speech Formats - Complete Guide")
