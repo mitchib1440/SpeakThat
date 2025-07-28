@@ -1189,13 +1189,13 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
     }
     
     private void testRuleSystem() {
-        InAppLogger.log("Development", "Starting rule system test (no pre-made rules)...");
+        InAppLogger.log("Development", "Starting rule system test...");
         
         // Run tests in background thread to avoid blocking UI
         new Thread(() -> {
             try {
                 RuleSystemTest test = new RuleSystemTest(this);
-                test.runTestsWithoutPreMadeRules();
+                test.runTests();
                 
                 // Show results on UI thread
                 uiHandler.post(() -> {
@@ -1208,9 +1208,9 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
                     
                     AlertDialog dialog = builder.create();
                     dialog.show();
-                    
-                    InAppLogger.log("Development", "Rule system test completed (no pre-made rules)");
-                    InAppLogger.logUserAction("Rule system test run (no pre-made rules)", "");
+
+                    InAppLogger.log("Development", "Rule system test completed");
+                    InAppLogger.logUserAction("Rule system test run", "");
                 });
                 
             } catch (Exception e) {

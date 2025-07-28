@@ -316,7 +316,6 @@ class RuleEvaluator(private val context: Context) {
                 }
                 
                 InAppLogger.logDebug(TAG, "Any device connected check: $hasConnectedDevice")
-                
                 return EvaluationResult(
                     success = hasConnectedDevice,
                     message = if (hasConnectedDevice) "Bluetooth device connected" else "No Bluetooth device connected"
