@@ -24,6 +24,7 @@ import java.util.Locale
 import kotlin.collections.ArrayList
 import android.app.NotificationManager
 import android.content.Context
+import com.micoyc.speakthat.rules.RuleManager
 
 class NotificationReaderService : NotificationListenerService(), TextToSpeech.OnInitListener, SensorEventListener, SharedPreferences.OnSharedPreferenceChangeListener {
     
@@ -81,6 +82,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var delayBeforeReadout = 0 // Delay in seconds before starting TTS
     private var delayHandler: android.os.Handler? = null
     private var pendingReadoutRunnable: Runnable? = null
+    
+    // Rule system
+    private lateinit var ruleManager: RuleManager
     
     // Speech template settings
     private var speechTemplate = "{app} notified you: {content}"
@@ -265,6 +269,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             } catch (e: Exception) {
                 Log.e(TAG, "Error loading filter settings", e)
                 InAppLogger.logError("Service", "Filter settings loading failed: " + e.message)
+            }
+            
+            Log.d(TAG, "Initializing rule manager...")
+            try {
+                ruleManager = RuleManager(this)
+                Log.d(TAG, "Rule manager initialized")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error initializing rule manager", e)
+                InAppLogger.logError("Service", "Rule manager initialization failed: " + e.message)
             }
             
             // Initialize handlers (pre-created for consistent timing and battery efficiency)
@@ -1138,8 +1151,31 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     private fun applyConditionalFiltering(packageName: String, appName: String, text: String): FilterResult {
-        // Placeholder for future conditional filtering features
-        return FilterResult(true, text, "No conditional rules applied")
+        try {
+            // Check if rules system is enabled
+            if (!::ruleManager.isInitialized) {
+                InAppLogger.logFilter("Rule manager not initialized, allowing notification")
+                return FilterResult(true, text, "Rule manager not initialized")
+            }
+            
+            // Check if any rules should block this notification
+            val shouldBlock = ruleManager.shouldBlockNotification()
+            
+            if (shouldBlock) {
+                val blockingRules = ruleManager.getBlockingRuleNames()
+                val reason = "Rules blocking: ${blockingRules.joinToString(", ")}"
+                InAppLogger.logFilter("Rules blocked notification: $reason")
+                return FilterResult(false, "", reason)
+            } else {
+                InAppLogger.logFilter("Rules passed: no blocking rules active")
+                return FilterResult(true, text, "Rules passed")
+            }
+            
+        } catch (e: Exception) {
+            // Fail-safe: if rules system fails, allow the notification
+            InAppLogger.logError("Service", "Error in rule evaluation: ${e.message}")
+            return FilterResult(true, text, "Rule evaluation failed, allowing notification")
+        }
     }
     
     private fun applyMediaFiltering(sbn: StatusBarNotification): FilterResult {

@@ -288,6 +288,7 @@ object SettingsDatabase {
                 searchKeywords = listOf("persistent", "silent", "filter", "ongoing", "background", "system"),
                 navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
             ),
+
             SettingsItem(
                 id = "export_filter_config",
                 title = "Export Filter Configuration",
