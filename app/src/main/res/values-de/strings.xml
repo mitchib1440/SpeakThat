@@ -11,15 +11,15 @@
     
     <!-- Varied Format Phrases (German) -->
     <string name="tts_reported">hat gemeldet:</string>
-    <string name="tts_saying">sagend</string>
+    <string name="tts_saying">sagt</string>
     <string name="tts_alerts_you">warnt dich:</string>
     <string name="tts_update_from">Update von</string>
     <string name="tts_notification">Benachrichtigung:</string>
     <string name="tts_new_notification">Neue Benachrichtigung:</string>
     <string name="tts_new_from">Neu von</string>
     <string name="tts_said">hat gesagt:</string>
-    <string name="tts_updated_you">hat dich aktualisiert:</string>
+    <string name="tts_updated_you">hat dir mitgeteilt:</string>
     <string name="tts_new_notification_from">Neue Benachrichtigung von</string>
-    <string name="tts_saying_colon">sagend:</string>
+    <string name="tts_saying_colon">sagt:</string>
     <string name="tts_new_update_from">Neues Update von</string>
 </resources> 
