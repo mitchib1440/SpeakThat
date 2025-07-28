@@ -457,7 +457,12 @@ class TriggerConfigActivity : AppCompatActivity() {
                 }
                 
                 TriggerType.BLUETOOTH_DEVICE -> {
-                    val deviceAddresses = trigger.data["device_addresses"] as? Set<String> ?: emptySet()
+                    val deviceAddressesData = trigger.data["device_addresses"]
+            val deviceAddresses = when (deviceAddressesData) {
+                is Set<*> -> deviceAddressesData.mapNotNull { it as? String }.toSet()
+                is List<*> -> deviceAddressesData.mapNotNull { it as? String }.toSet()
+                else -> emptySet<String>()
+            }
                     
                     // Temporarily remove listener to prevent interference during loading
                     binding.switchAnyDevice.setOnCheckedChangeListener(null)
@@ -558,11 +563,20 @@ class TriggerConfigActivity : AppCompatActivity() {
         val screenState = if (binding.spinnerScreenState.selectedItemPosition == 0) "on" else "off"
         val description = if (screenState == "on") "Screen is on" else "Screen is off"
         
-        return Trigger(
-            type = TriggerType.SCREEN_STATE,
-            data = mapOf("screen_state" to screenState),
-            description = description
-        )
+        return if (isEditing && originalTrigger != null) {
+            // Preserve the original trigger ID when editing
+            originalTrigger!!.copy(
+                data = mapOf("screen_state" to screenState),
+                description = description
+            )
+        } else {
+            // Create new trigger
+            Trigger(
+                type = TriggerType.SCREEN_STATE,
+                data = mapOf("screen_state" to screenState),
+                description = description
+            )
+        }
     }
     
     private fun createTimeScheduleTrigger(): Trigger {
@@ -579,15 +593,28 @@ class TriggerConfigActivity : AppCompatActivity() {
         
         val description = "Time: ${String.format("%02d:%02d", startHour, startMinute)} - ${String.format("%02d:%02d", endHour, endMinute)}"
         
-        return Trigger(
-            type = TriggerType.TIME_SCHEDULE,
-            data = mapOf(
-                "start_time" to startTime,
-                "end_time" to endTime,
-                "days_of_week" to daysOfWeek
-            ),
-            description = description
-        )
+        return if (isEditing && originalTrigger != null) {
+            // Preserve the original trigger ID when editing
+            originalTrigger!!.copy(
+                data = mapOf(
+                    "start_time" to startTime,
+                    "end_time" to endTime,
+                    "days_of_week" to daysOfWeek
+                ),
+                description = description
+            )
+        } else {
+            // Create new trigger
+            Trigger(
+                type = TriggerType.TIME_SCHEDULE,
+                data = mapOf(
+                    "start_time" to startTime,
+                    "end_time" to endTime,
+                    "days_of_week" to daysOfWeek
+                ),
+                description = description
+            )
+        }
     }
     
     private fun createBluetoothTrigger(): Trigger {
@@ -617,11 +644,20 @@ class TriggerConfigActivity : AppCompatActivity() {
             "Specific Bluetooth devices: ${deviceAddresses.joinToString(", ")}"
         }
         
-        return Trigger(
-            type = TriggerType.BLUETOOTH_DEVICE,
-            data = mapOf("device_addresses" to deviceAddresses),
-            description = description
-        )
+        return if (isEditing && originalTrigger != null) {
+            // Preserve the original trigger ID when editing
+            originalTrigger!!.copy(
+                data = mapOf("device_addresses" to deviceAddresses),
+                description = description
+            )
+        } else {
+            // Create new trigger
+            Trigger(
+                type = TriggerType.BLUETOOTH_DEVICE,
+                data = mapOf("device_addresses" to deviceAddresses),
+                description = description
+            )
+        }
     }
     
     private fun createWifiTrigger(): Trigger {
@@ -646,11 +682,20 @@ class TriggerConfigActivity : AppCompatActivity() {
             "Connected to: ${networkSSIDs.joinToString(", ")}"
         }
         
-        return Trigger(
-            type = TriggerType.WIFI_NETWORK,
-            data = mapOf("network_ssids" to networkSSIDs),
-            description = description
-        )
+        return if (isEditing && originalTrigger != null) {
+            // Preserve the original trigger ID when editing
+            originalTrigger!!.copy(
+                data = mapOf("network_ssids" to networkSSIDs),
+                description = description
+            )
+        } else {
+            // Create new trigger
+            Trigger(
+                type = TriggerType.WIFI_NETWORK,
+                data = mapOf("network_ssids" to networkSSIDs),
+                description = description
+            )
+        }
     }
     
     // Permission handling methods

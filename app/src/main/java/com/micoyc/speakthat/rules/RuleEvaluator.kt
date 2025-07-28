@@ -277,6 +277,9 @@ class RuleEvaluator(private val context: Context) {
     
     private fun evaluateBluetoothTrigger(trigger: Trigger): EvaluationResult {
         try {
+            InAppLogger.logDebug(TAG, "Evaluating Bluetooth trigger: ${trigger.getLogMessage()}")
+            InAppLogger.logDebug(TAG, "Trigger data: ${trigger.data}")
+            
             val bluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
             
             if (bluetoothAdapter == null) {
@@ -296,7 +299,13 @@ class RuleEvaluator(private val context: Context) {
             }
             
             // Get required device addresses from trigger data
-            val requiredDevices = trigger.data["device_addresses"] as? Set<String> ?: emptySet()
+            val deviceAddressesData = trigger.data["device_addresses"]
+            val requiredDevices = when (deviceAddressesData) {
+                is Set<*> -> deviceAddressesData.mapNotNull { it as? String }.toSet()
+                is List<*> -> deviceAddressesData.mapNotNull { it as? String }.toSet()
+                else -> emptySet<String>()
+            }
+            InAppLogger.logDebug(TAG, "Required devices from trigger data: $requiredDevices")
             
             if (requiredDevices.isEmpty()) {
                 InAppLogger.logDebug(TAG, "No specific devices required, checking if any device is connected")
@@ -306,23 +315,58 @@ class RuleEvaluator(private val context: Context) {
                     device.bondState == android.bluetooth.BluetoothDevice.BOND_BONDED
                 }
                 
+                InAppLogger.logDebug(TAG, "Any device connected check: $hasConnectedDevice")
+                
                 return EvaluationResult(
                     success = hasConnectedDevice,
                     message = if (hasConnectedDevice) "Bluetooth device connected" else "No Bluetooth device connected"
                 )
             } else {
-                // Check for specific devices
-                val connectedDevices = bluetoothAdapter.bondedDevices
+                // Check for specific devices - now using proper connection detection
+                val bondedDevices = bluetoothAdapter.bondedDevices
+                val bondedAddresses = bondedDevices.map { it.address }.toSet()
+                
+                // Try to get actively connected devices using BluetoothManager
+                val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as android.bluetooth.BluetoothManager
+                val connectedDevices = try {
+                    val allConnectedDevices = mutableSetOf<android.bluetooth.BluetoothDevice>()
+                    
+                    // Try multiple Bluetooth profiles to catch different types of devices
+                    val profiles = listOf(
+                        android.bluetooth.BluetoothProfile.A2DP,      // Audio devices
+                        android.bluetooth.BluetoothProfile.HEADSET    // Headset devices
+                    )
+                    
+                    for (profile in profiles) {
+                        try {
+                            val devices = bluetoothManager.getConnectedDevices(profile)
+                            allConnectedDevices.addAll(devices)
+                            InAppLogger.logDebug(TAG, "Profile $profile: ${devices.map { it.address }}")
+                        } catch (e: Throwable) {
+                            InAppLogger.logDebug(TAG, "Profile $profile not supported: ${e.message}")
+                        }
+                    }
+                    
+                    allConnectedDevices.toSet()
+                } catch (e: Throwable) {
+                    InAppLogger.logDebug(TAG, "Could not get connected devices via BluetoothManager: ${e.message}")
+                    emptySet()
+                }
+                
                 val connectedAddresses = connectedDevices.map { it.address }.toSet()
                 val requiredConnected = requiredDevices.any { it in connectedAddresses }
                 
-                InAppLogger.logDebug(TAG, "Required devices: $requiredDevices, Connected: $connectedAddresses, Match: $requiredConnected")
+                InAppLogger.logDebug(TAG, "Required devices: $requiredDevices")
+                InAppLogger.logDebug(TAG, "Bonded devices: $bondedAddresses")
+                InAppLogger.logDebug(TAG, "Actively connected devices: $connectedAddresses")
+                InAppLogger.logDebug(TAG, "Match: $requiredConnected")
                 
                 return EvaluationResult(
                     success = requiredConnected,
-                    message = if (requiredConnected) "Required Bluetooth device connected" else "Required Bluetooth device not connected",
+                    message = if (requiredConnected) "Required Bluetooth device is actively connected" else "Required Bluetooth device is not actively connected",
                     data = mapOf(
                         "required_devices" to requiredDevices,
+                        "bonded_devices" to bondedAddresses,
                         "connected_devices" to connectedAddresses
                     )
                 )

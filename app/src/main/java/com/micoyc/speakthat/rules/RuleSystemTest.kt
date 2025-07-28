@@ -49,6 +49,34 @@ class RuleSystemTest(private val context: Context) {
         InAppLogger.logDebug(TAG, "Rule system tests completed")
     }
     
+    /**
+     * Run tests without creating pre-made rules (for user testing)
+     */
+    fun runTestsWithoutPreMadeRules() {
+        InAppLogger.logDebug(TAG, "Starting rule system tests (no pre-made rules)...")
+        
+        // Save existing rules to restore them later
+        val existingRules = ruleManager.getAllRules()
+        InAppLogger.logDebug(TAG, "Saving ${existingRules.size} existing rules before tests")
+        
+        // Clear existing rules for clean test
+        ruleManager.clearAllRules()
+        
+        // Test 7: Rule evaluation (with no rules)
+        testRuleEvaluation()
+        
+        // Test 8: Blocking logic fix verification
+        testBlockingLogicFix()
+        
+        // Restore existing rules
+        InAppLogger.logDebug(TAG, "Restoring ${existingRules.size} existing rules after tests")
+        existingRules.forEach { rule ->
+            ruleManager.addRule(rule)
+        }
+        
+        InAppLogger.logDebug(TAG, "Rule system tests completed (no pre-made rules)")
+    }
+    
     private fun testBasicRuleCreation() {
         InAppLogger.logDebug(TAG, "Test 1: Basic rule creation")
         
@@ -318,6 +346,89 @@ class RuleSystemTest(private val context: Context) {
         )
         
         return ruleManager.addRule(testRule)
+    }
+    
+    /**
+     * Test the fix for the blocking logic bug
+     * This test verifies that only rules with DISABLE_SPEAKTHAT actions block notifications
+     */
+    fun testBlockingLogicFix() {
+        InAppLogger.logDebug(TAG, "Test 8: Blocking logic fix verification")
+        
+        // Save existing rules to restore them later
+        val existingRules = ruleManager.getAllRules()
+        InAppLogger.logDebug(TAG, "Saving ${existingRules.size} existing rules before test")
+        
+        // Clear existing rules for clean test
+        ruleManager.clearAllRules()
+        
+        // Enable the rules system
+        ruleManager.setRulesEnabled(true)
+        
+        // Test 1: Rule with DISABLE_SPEAKTHAT action should block
+        val blockingRule = Rule(
+            name = "Blocking Rule",
+            enabled = true,
+            triggers = listOf(
+                Trigger(
+                    type = TriggerType.WIFI_NETWORK,
+                    data = mapOf("network_ssids" to setOf<String>()), // Any network
+                    description = "Connected to any WiFi"
+                )
+            ),
+            actions = listOf(
+                Action(
+                    type = ActionType.DISABLE_SPEAKTHAT,
+                    description = "Disable SpeakThat"
+                )
+            )
+        )
+        ruleManager.addRule(blockingRule)
+        
+        // Test 2: Rule with CHANGE_VOICE_SETTINGS action should NOT block
+        val nonBlockingRule = Rule(
+            name = "Non-Blocking Rule",
+            enabled = true,
+            triggers = listOf(
+                Trigger(
+                    type = TriggerType.WIFI_NETWORK,
+                    data = mapOf("network_ssids" to setOf<String>()), // Any network
+                    description = "Connected to any WiFi"
+                )
+            ),
+            actions = listOf(
+                Action(
+                    type = ActionType.CHANGE_VOICE_SETTINGS,
+                    data = mapOf(
+                        "voice_settings" to mapOf(
+                            "speech_rate" to 1.5f,
+                            "pitch" to 0.5f
+                        )
+                    ),
+                    description = "Change voice settings"
+                )
+            )
+        )
+        ruleManager.addRule(nonBlockingRule)
+        
+        // Evaluate the rules
+        val shouldBlock = ruleManager.shouldBlockNotification()
+        val blockingRules = ruleManager.getBlockingRuleNames()
+        
+        InAppLogger.logDebug(TAG, "Blocking logic test results:")
+        InAppLogger.logDebug(TAG, "- Should block notifications: $shouldBlock")
+        InAppLogger.logDebug(TAG, "- Blocking rules: ${blockingRules.joinToString(", ")}")
+        
+        // Verify the fix works correctly
+        val expectedBlocking = shouldBlock && blockingRules.contains("Blocking Rule") && !blockingRules.contains("Non-Blocking Rule")
+        InAppLogger.logDebug(TAG, "Blocking logic fix verification: ${if (expectedBlocking) "PASSED" else "FAILED"}")
+        
+        // Clean up test rules and restore existing rules
+        ruleManager.clearAllRules()
+        InAppLogger.logDebug(TAG, "Restoring ${existingRules.size} existing rules after test")
+        existingRules.forEach { rule ->
+            ruleManager.addRule(rule)
+        }
     }
     
     /**

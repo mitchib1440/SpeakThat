@@ -447,7 +447,12 @@ class ExceptionConfigActivity : AppCompatActivity() {
                 }
                 
                 ExceptionType.BLUETOOTH_DEVICE -> {
-                    val deviceAddresses = exception.data["device_addresses"] as? Set<String> ?: emptySet()
+                    val deviceAddressesData = exception.data["device_addresses"]
+            val deviceAddresses = when (deviceAddressesData) {
+                is Set<*> -> deviceAddressesData.mapNotNull { it as? String }.toSet()
+                is List<*> -> deviceAddressesData.mapNotNull { it as? String }.toSet()
+                else -> emptySet<String>()
+            }
                     
                     // Temporarily remove listener to prevent interference during loading
                     binding.switchAnyDevice.setOnCheckedChangeListener(null)
@@ -548,11 +553,20 @@ class ExceptionConfigActivity : AppCompatActivity() {
         val screenState = if (binding.spinnerScreenState.selectedItemPosition == 0) "on" else "off"
         val description = if (screenState == "on") "Screen is on" else "Screen is off"
         
-        return Exception(
-            type = ExceptionType.SCREEN_STATE,
-            data = mapOf("screen_state" to screenState),
-            description = description
-        )
+        return if (isEditing && originalException != null) {
+            // Preserve the original exception ID when editing
+            originalException!!.copy(
+                data = mapOf("screen_state" to screenState),
+                description = description
+            )
+        } else {
+            // Create new exception
+            Exception(
+                type = ExceptionType.SCREEN_STATE,
+                data = mapOf("screen_state" to screenState),
+                description = description
+            )
+        }
     }
 
     private fun createTimeScheduleException(): Exception {
@@ -581,15 +595,28 @@ class ExceptionConfigActivity : AppCompatActivity() {
             "Between ${String.format("%02d:%02d", (startTime / (60 * 60 * 1000)).toInt(), ((startTime % (60 * 60 * 1000)) / (60 * 1000)).toInt())} and ${String.format("%02d:%02d", (endTime / (60 * 60 * 1000)).toInt(), ((endTime % (60 * 60 * 1000)) / (60 * 1000)).toInt())} on $dayNames"
         }
         
-        return Exception(
-            type = ExceptionType.TIME_SCHEDULE,
-            data = mapOf(
-                "start_time" to startTime,
-                "end_time" to endTime,
-                "days_of_week" to daysOfWeek
-            ),
-            description = description
-        )
+        return if (isEditing && originalException != null) {
+            // Preserve the original exception ID when editing
+            originalException!!.copy(
+                data = mapOf(
+                    "start_time" to startTime,
+                    "end_time" to endTime,
+                    "days_of_week" to daysOfWeek
+                ),
+                description = description
+            )
+        } else {
+            // Create new exception
+            Exception(
+                type = ExceptionType.TIME_SCHEDULE,
+                data = mapOf(
+                    "start_time" to startTime,
+                    "end_time" to endTime,
+                    "days_of_week" to daysOfWeek
+                ),
+                description = description
+            )
+        }
     }
 
     private fun createBluetoothException(): Exception {
@@ -624,11 +651,20 @@ class ExceptionConfigActivity : AppCompatActivity() {
             "Specific devices (${deviceAddresses.size})"
         }
         
-        return Exception(
-            type = ExceptionType.BLUETOOTH_DEVICE,
-            data = mapOf("device_addresses" to deviceAddresses),
-            description = description
-        )
+        return if (isEditing && originalException != null) {
+            // Preserve the original exception ID when editing
+            originalException!!.copy(
+                data = mapOf("device_addresses" to deviceAddresses),
+                description = description
+            )
+        } else {
+            // Create new exception
+            Exception(
+                type = ExceptionType.BLUETOOTH_DEVICE,
+                data = mapOf("device_addresses" to deviceAddresses),
+                description = description
+            )
+        }
     }
 
     private fun createWifiException(): Exception {
@@ -659,11 +695,20 @@ class ExceptionConfigActivity : AppCompatActivity() {
             "Specific networks (${networkSSIDs.size})"
         }
         
-        return Exception(
-            type = ExceptionType.WIFI_NETWORK,
-            data = mapOf("network_ssids" to networkSSIDs),
-            description = description
-        )
+        return if (isEditing && originalException != null) {
+            // Preserve the original exception ID when editing
+            originalException!!.copy(
+                data = mapOf("network_ssids" to networkSSIDs),
+                description = description
+            )
+        } else {
+            // Create new exception
+            Exception(
+                type = ExceptionType.WIFI_NETWORK,
+                data = mapOf("network_ssids" to networkSSIDs),
+                description = description
+            )
+        }
     }
 
     // Permission handling methods

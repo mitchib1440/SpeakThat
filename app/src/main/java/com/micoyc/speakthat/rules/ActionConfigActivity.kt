@@ -217,10 +217,18 @@ class ActionConfigActivity : AppCompatActivity() {
     }
 
     private fun createDisableSpeakThatAction(): Action {
-        return Action(
-            type = ActionType.DISABLE_SPEAKTHAT,
-            description = "Disable SpeakThat"
-        )
+        return if (isEditing && originalAction != null) {
+            // Preserve the original action ID when editing
+            originalAction!!.copy(
+                description = "Disable SpeakThat"
+            )
+        } else {
+            // Create new action
+            Action(
+                type = ActionType.DISABLE_SPEAKTHAT,
+                description = "Disable SpeakThat"
+            )
+        }
     }
 
     private fun createEnableAppFilterAction(): Action {
@@ -235,11 +243,20 @@ class ActionConfigActivity : AppCompatActivity() {
             return Action(type = ActionType.ENABLE_APP_FILTER, description = "Enable App Filter")
         }
         
-        return Action(
-            type = ActionType.ENABLE_APP_FILTER,
-            data = mapOf("app_package" to appPackage),
-            description = "Enable filter for $appPackage"
-        )
+        return if (isEditing && originalAction != null) {
+            // Preserve the original action ID when editing
+            originalAction!!.copy(
+                data = mapOf("app_package" to appPackage),
+                description = "Enable filter for $appPackage"
+            )
+        } else {
+            // Create new action
+            Action(
+                type = ActionType.ENABLE_APP_FILTER,
+                data = mapOf("app_package" to appPackage),
+                description = "Enable filter for $appPackage"
+            )
+        }
     }
 
     private fun createDisableAppFilterAction(): Action {
@@ -254,11 +271,20 @@ class ActionConfigActivity : AppCompatActivity() {
             return Action(type = ActionType.DISABLE_APP_FILTER, description = "Disable App Filter")
         }
         
-        return Action(
-            type = ActionType.DISABLE_APP_FILTER,
-            data = mapOf("app_package" to appPackage),
-            description = "Disable filter for $appPackage"
-        )
+        return if (isEditing && originalAction != null) {
+            // Preserve the original action ID when editing
+            originalAction!!.copy(
+                data = mapOf("app_package" to appPackage),
+                description = "Disable filter for $appPackage"
+            )
+        } else {
+            // Create new action
+            Action(
+                type = ActionType.DISABLE_APP_FILTER,
+                data = mapOf("app_package" to appPackage),
+                description = "Disable filter for $appPackage"
+            )
+        }
     }
 
     private fun createChangeVoiceSettingsAction(): Action {
@@ -273,11 +299,20 @@ class ActionConfigActivity : AppCompatActivity() {
             "pitch" to pitch
         )
         
-        return Action(
-            type = ActionType.CHANGE_VOICE_SETTINGS,
-            data = mapOf("voice_settings" to voiceSettings),
-            description = "Change voice settings (Rate: $speechRate, Pitch: $pitch)"
-        )
+        return if (isEditing && originalAction != null) {
+            // Preserve the original action ID when editing
+            originalAction!!.copy(
+                data = mapOf("voice_settings" to voiceSettings),
+                description = "Change voice settings (Rate: $speechRate, Pitch: $pitch)"
+            )
+        } else {
+            // Create new action
+            Action(
+                type = ActionType.CHANGE_VOICE_SETTINGS,
+                data = mapOf("voice_settings" to voiceSettings),
+                description = "Change voice settings (Rate: $speechRate, Pitch: $pitch)"
+            )
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
