@@ -1,6 +1,6 @@
 # Translation Template for SpeakThat
 
-Ciao Daniele! Hallo German friend! 🎉 Thank you both for helping with translations!
+🎉 Thank you for helping with translations!
 
 ## How the system works
 
