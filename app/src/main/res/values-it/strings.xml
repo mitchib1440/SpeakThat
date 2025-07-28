@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TTS App Phrases (Italian) -->
+    <string name="tts_notified_you">ti ha notificato:</string>
+    <string name="tts_private_notification_received">Hai ricevuto una notifica privata da</string>
+    <string name="tts_an_app">Un\'app</string>
+    
+    <!-- Template Preset Phrases (Italian) -->
+    <string name="tts_notification_from">Notifica da</string>
+    <string name="tts_says">dice:</string>
+    
+    <!-- Varied Format Phrases (Italian) -->
+    <string name="tts_reported">ha riportato:</string>
+    <string name="tts_saying">dicendo</string>
+    <string name="tts_alerts_you">ti avvisa:</string>
+    <string name="tts_update_from">Aggiornamento da</string>
+    <string name="tts_notification">notifica:</string>
+    <string name="tts_new_notification">Nuova notifica:</string>
+    <string name="tts_new_from">Nuovo da</string>
+    <string name="tts_said">ha detto:</string>
+    <string name="tts_updated_you">ti ha aggiornato:</string>
+    <string name="tts_new_notification_from">Nuova notifica da</string>
+    <string name="tts_saying_colon">dicendo:</string>
+    <string name="tts_new_update_from">Nuovo aggiornamento da</string>
+</resources> 

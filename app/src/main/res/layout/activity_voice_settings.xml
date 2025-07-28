@@ -272,6 +272,44 @@
                         android:background="?android:attr/selectableItemBackground"
                         android:padding="8dp" />
 
+                    <!-- TTS Language Section -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="TTS Language"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp"
+                        android:textColor="@color/text_primary" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Choose the language for app phrases (like 'notified you:'). This is separate from the TTS engine language above."
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <Spinner
+                        android:id="@+id/ttsLanguageSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:minHeight="48dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:padding="12dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="This controls phrases like 'notified you:' and 'An app'. Set to match your preferred TTS language."
+                        android:textSize="13sp"
+                        android:textColor="@color/purple_200"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="-4dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:padding="8dp" />
+
                     <!-- Advanced Options Toggle -->
                     <LinearLayout
                         android:layout_width="match_parent"

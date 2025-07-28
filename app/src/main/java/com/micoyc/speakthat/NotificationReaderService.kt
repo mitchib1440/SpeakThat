@@ -1102,7 +1102,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // SECURITY: Check if this app is in private mode FIRST (highest priority)
         // This ensures private apps are never processed for word filtering that might reveal content
         if (packageName.isNotEmpty() && privateApps.contains(packageName)) {
-            processedText = "You received a private notification from $appName"
+            processedText = "${getLocalizedTtsString(R.string.tts_private_notification_received)} $appName"
             Log.d(TAG, "App '$appName' is in private mode - entire notification made private (SECURITY: bypassing all other filters)")
             InAppLogger.logFilter("Made notification private due to app privacy setting (SECURITY: bypassing all other filters)")
             return FilterResult(true, processedText, "App-level privacy applied")
@@ -1120,7 +1120,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             if (matchesWordFilter(processedText, privateWord)) {
                 // When any private word is detected, replace the entire notification text with a private message
                 // This ensures complete privacy - no partial content is revealed
-                processedText = "You received a private notification from $appName"
+                processedText = "${getLocalizedTtsString(R.string.tts_private_notification_received)} $appName"
                 Log.d(TAG, "Private word '$privateWord' detected - entire notification made private")
                 InAppLogger.logFilter("Made notification private due to word: $privateWord")
                 break // Exit loop since entire text is now private
@@ -1863,7 +1863,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Handle app name with custom names and privacy settings
         val appDisplayName = when {
-            privateApps.contains(packageName) -> "An app"
+            privateApps.contains(packageName) -> getLocalizedTtsString(R.string.tts_an_app)
             else -> getCustomAppName(packageName) ?: appName
         }
         
@@ -1882,13 +1882,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Handle varied template by randomly selecting a format
         val templateToUse = if (speechTemplate == "VARIED") {
-            variedFormats.random()
+            getLocalizedVariedFormats().random()
         } else {
             speechTemplate
         }
         
         // Process the template with all available placeholders
-        return templateToUse
+        var processedTemplate = templateToUse
             .replace("{app}", appDisplayName)
             .replace("{package}", packageName)
             .replace("{content}", text)
@@ -1903,6 +1903,93 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             .replace("{priority}", priority)
             .replace("{category}", category)
             .replace("{channel}", channel)
-            .trim()
+        
+        // Localize hard-coded English phrases in the template
+        processedTemplate = processedTemplate
+            .replace("notified you:", getLocalizedTtsString(R.string.tts_notified_you))
+            .replace("reported:", getLocalizedTtsString(R.string.tts_reported))
+            .replace("saying", getLocalizedTtsString(R.string.tts_saying))
+            .replace("alerts you:", getLocalizedTtsString(R.string.tts_alerts_you))
+            .replace("Update from", getLocalizedTtsString(R.string.tts_update_from))
+            .replace("says:", getLocalizedTtsString(R.string.tts_says))
+            .replace("notification:", getLocalizedTtsString(R.string.tts_notification))
+            .replace("New notification:", getLocalizedTtsString(R.string.tts_new_notification))
+            .replace("New from", getLocalizedTtsString(R.string.tts_new_from))
+            .replace("said:", getLocalizedTtsString(R.string.tts_said))
+            .replace("updated you:", getLocalizedTtsString(R.string.tts_updated_you))
+            .replace("New notification from", getLocalizedTtsString(R.string.tts_new_notification_from))
+            .replace("saying:", getLocalizedTtsString(R.string.tts_saying_colon))
+            .replace("New update from", getLocalizedTtsString(R.string.tts_new_update_from))
+            .replace("Notification from", getLocalizedTtsString(R.string.tts_notification_from))
+        
+        return processedTemplate.trim()
+    }
+
+    /**
+     * Get localized TTS string based on user's TTS language setting
+     */
+    private fun getLocalizedTtsString(stringResId: Int): String {
+        // Get the user's TTS language setting
+        val ttsLanguage = voiceSettingsPrefs?.getString("tts_language", "Default (Use System Language)")
+        
+        // If user has selected a specific language, try to get the localized string
+        if (ttsLanguage != null && !ttsLanguage.equals("Default (Use System Language)")) {
+            try {
+                // Parse the language setting (e.g., "Italian (Italy)" -> "it")
+                val languageCode = when {
+                    ttsLanguage.startsWith("Italian") -> "it"
+                    ttsLanguage.startsWith("Spanish") -> "es"
+                    ttsLanguage.startsWith("French") -> "fr"
+                    ttsLanguage.startsWith("German") -> "de"
+                    ttsLanguage.startsWith("English") -> "en"
+                    else -> null
+                }
+                
+                if (languageCode != null) {
+                    // Create a configuration with the selected language
+                    val config = resources.configuration
+                    val originalLocale = config.locale
+                    config.setLocale(Locale(languageCode))
+                    
+                    // Create a new context with the language configuration
+                    val localizedContext = createConfigurationContext(config)
+                    
+                    // Try to get the localized string
+                    val localizedString = localizedContext.getString(stringResId)
+                    if (localizedString.isNotEmpty()) {
+                        Log.d(TAG, "Using localized string for $languageCode: $localizedString")
+                        return localizedString
+                    }
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "Error getting localized string, falling back to default", e)
+            }
+        }
+        
+        // Fallback to default (English) string
+        return getString(stringResId)
+    }
+
+    /**
+     * Get localized varied formats based on user's TTS language setting
+     */
+    private fun getLocalizedVariedFormats(): Array<String> {
+        return arrayOf(
+            "{app} ${getLocalizedTtsString(R.string.tts_notified_you)} {content}",
+            "{app} ${getLocalizedTtsString(R.string.tts_reported)} {content}",
+            "${getLocalizedTtsString(R.string.tts_notification_from)} {app}, ${getLocalizedTtsString(R.string.tts_saying)} {content}",
+            "${getLocalizedTtsString(R.string.tts_notification_from)} {app}: {content}",
+            "{app} ${getLocalizedTtsString(R.string.tts_alerts_you)} {content}",
+            "${getLocalizedTtsString(R.string.tts_update_from)} {app}: {content}",
+            "{app} ${getLocalizedTtsString(R.string.tts_says)} {content}",
+            "{app} ${getLocalizedTtsString(R.string.tts_notification)} {content}",
+            "${getLocalizedTtsString(R.string.tts_new_notification)} {app}: {content}",
+            "${getLocalizedTtsString(R.string.tts_new_from)} {app}: {content}",
+            "{app} ${getLocalizedTtsString(R.string.tts_said)} {content}",
+            "{app} ${getLocalizedTtsString(R.string.tts_updated_you)} {content}",
+            "${getLocalizedTtsString(R.string.tts_new_notification_from)} {app}: ${getLocalizedTtsString(R.string.tts_saying_colon)} {content}",
+            "${getLocalizedTtsString(R.string.tts_new_update_from)} {app}: {content}",
+            "{app}: {content}"
+        )
     }
 }

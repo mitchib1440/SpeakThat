@@ -178,4 +178,27 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_developer">Developed with love by Mitchi. SpeakThat is designed to make your Android experience more accessible and convenient. The app works entirely offline and respects your privacy by processing all data locally on your device.</string>
     <string name="tts_license">This project is open source and available under the MIT License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
     <string name="tts_thank_you">Thank you for using SpeakThat!</string>
+    
+    <!-- TTS App Phrases (for localization) -->
+    <string name="tts_notified_you">notified you:</string>
+    <string name="tts_private_notification_received">You received a private notification from</string>
+    <string name="tts_an_app">An app</string>
+    
+    <!-- Template Preset Phrases -->
+    <string name="tts_notification_from">Notification from</string>
+    <string name="tts_says">says:</string>
+    
+    <!-- Varied Format Phrases -->
+    <string name="tts_reported">reported:</string>
+    <string name="tts_saying">saying</string>
+    <string name="tts_alerts_you">alerts you:</string>
+    <string name="tts_update_from">Update from</string>
+    <string name="tts_notification">notification:</string>
+    <string name="tts_new_notification">New notification:</string>
+    <string name="tts_new_from">New from</string>
+    <string name="tts_said">said:</string>
+    <string name="tts_updated_you">updated you:</string>
+    <string name="tts_new_notification_from">New notification from</string>
+    <string name="tts_saying_colon">saying:</string>
+    <string name="tts_new_update_from">New update from</string>
 </resources> 
