@@ -186,9 +186,14 @@ class RuleBuilderActivity : AppCompatActivity() {
     }
     
     private fun saveRule() {
+        InAppLogger.logDebug("RuleBuilderActivity", "=== SAVE RULE STARTED ===")
+        InAppLogger.logDebug("RuleBuilderActivity", "isEditing: $isEditing, currentRule: ${currentRule?.name}")
+        
         val ruleName = binding.editRuleName.text.toString().trim()
+        InAppLogger.logDebug("RuleBuilderActivity", "Rule name: '$ruleName'")
         
         if (ruleName.isEmpty()) {
+            InAppLogger.logDebug("RuleBuilderActivity", "Rule name is empty, showing error dialog")
             AlertDialog.Builder(this)
                 .setTitle("Invalid Rule Name")
                 .setMessage("Please enter a name for this rule.")
@@ -213,9 +218,15 @@ class RuleBuilderActivity : AppCompatActivity() {
         }
         
         // Create rule with actual data from adapters
+        InAppLogger.logDebug("RuleBuilderActivity", "Creating rule object...")
+        InAppLogger.logDebug("RuleBuilderActivity", "Triggers: ${triggerAdapter.getTriggers().size}")
+        InAppLogger.logDebug("RuleBuilderActivity", "Actions: ${actionAdapter.getActions().size}")
+        InAppLogger.logDebug("RuleBuilderActivity", "Exceptions: ${exceptionAdapter.getExceptions().size}")
+        
         val ruleToSave = if (isEditing && currentRule != null) {
             // Update existing rule
-            currentRule!!.copy(
+            InAppLogger.logDebug("RuleBuilderActivity", "Creating updated rule from existing rule")
+            val updatedRule = currentRule!!.copy(
                 name = ruleName,
                 triggers = triggerAdapter.getTriggers(),
                 actions = actionAdapter.getActions(),
@@ -224,8 +235,11 @@ class RuleBuilderActivity : AppCompatActivity() {
                 exceptionLogic = exceptionLogic,
                 modifiedAt = System.currentTimeMillis()
             )
+            InAppLogger.logDebug("RuleBuilderActivity", "Editing existing rule - Original ID: ${currentRule!!.id}, Updated ID: ${updatedRule.id}")
+            updatedRule
         } else {
             // Create new rule
+            InAppLogger.logDebug("RuleBuilderActivity", "Creating new rule")
             Rule(
                 name = ruleName,
                 enabled = true,
@@ -240,8 +254,12 @@ class RuleBuilderActivity : AppCompatActivity() {
         InAppLogger.logDebug("RuleBuilderActivity", "Saving rule: ${ruleToSave.getLogMessage()}")
         
         // Validate the rule
+        InAppLogger.logDebug("RuleBuilderActivity", "Validating rule...")
         val validation = ruleManager.validateRule(ruleToSave)
+        InAppLogger.logDebug("RuleBuilderActivity", "Validation result: ${validation.isValid}, Errors: ${validation.errors}")
+        
         if (!validation.isValid) {
+            InAppLogger.logDebug("RuleBuilderActivity", "Rule validation failed, showing error dialog")
             AlertDialog.Builder(this)
                 .setTitle("Invalid Rule")
                 .setMessage("Please fix the following issues:\n\n${validation.errors.joinToString("\n")}")
@@ -251,22 +269,31 @@ class RuleBuilderActivity : AppCompatActivity() {
         }
         
         // Save or update the rule
+        InAppLogger.logDebug("RuleBuilderActivity", "About to ${if (isEditing) "update" else "add"} rule...")
         val success = if (isEditing) {
+            InAppLogger.logDebug("RuleBuilderActivity", "Calling ruleManager.updateRule()")
             ruleManager.updateRule(ruleToSave)
         } else {
+            InAppLogger.logDebug("RuleBuilderActivity", "Calling ruleManager.addRule()")
             ruleManager.addRule(ruleToSave)
         }
         
+        InAppLogger.logDebug("RuleBuilderActivity", "Save/update result: $success")
+        
         if (success) {
             InAppLogger.logUserAction("Rule ${if (isEditing) "updated" else "saved"}: $ruleName")
+            InAppLogger.logDebug("RuleBuilderActivity", "Rule saved successfully, finishing activity")
             finish()
         } else {
+            InAppLogger.logDebug("RuleBuilderActivity", "Rule save failed, showing error dialog")
             AlertDialog.Builder(this)
                 .setTitle("Error")
                 .setMessage("Failed to ${if (isEditing) "update" else "save"} rule. Please try again.")
                 .setPositiveButton("OK", null)
                 .show()
         }
+        
+        InAppLogger.logDebug("RuleBuilderActivity", "=== SAVE RULE COMPLETED ===")
     }
     
     private fun showTriggerMenu() {

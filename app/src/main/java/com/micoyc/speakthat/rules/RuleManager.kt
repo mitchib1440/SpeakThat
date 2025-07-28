@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.micoyc.speakthat.InAppLogger
 import com.micoyc.speakthat.rules.ActionExecutor
+import com.micoyc.speakthat.rules.ActionType
 
 /**
  * Rule Manager
@@ -91,6 +92,9 @@ class RuleManager(private val context: Context) {
      */
     fun updateRule(updatedRule: Rule): Boolean {
         val currentRules = loadRules().toMutableList()
+        InAppLogger.logDebug(TAG, "Attempting to update rule with ID: ${updatedRule.id}")
+        InAppLogger.logDebug(TAG, "Current rules in storage: ${currentRules.map { "${it.name}(${it.id})" }}")
+        
         val index = currentRules.indexOfFirst { it.id == updatedRule.id }
         
         if (index != -1) {
@@ -100,6 +104,7 @@ class RuleManager(private val context: Context) {
             return true
         } else {
             InAppLogger.logError(TAG, "Rule not found for update: ${updatedRule.id}")
+            InAppLogger.logError(TAG, "Available rule IDs: ${currentRules.map { it.id }}")
             return false
         }
     }
@@ -172,17 +177,41 @@ class RuleManager(private val context: Context) {
         }
         
         val evaluationResults = evaluateAllRules()
-        val shouldBlock = evaluationResults.any { it.shouldExecute }
+        val executingRules = evaluationResults.filter { it.shouldExecute }
         
-        if (shouldBlock) {
-            val blockingRules = evaluationResults.filter { it.shouldExecute }
-            InAppLogger.logDebug(TAG, "Rules blocking notification: ${blockingRules.map { it.ruleName }}")
+        if (executingRules.isNotEmpty()) {
+            InAppLogger.logDebug(TAG, "Found ${executingRules.size} executing rules: ${executingRules.map { it.ruleName }}")
             
-            // Execute actions for rules that should execute
-            executeActionsForRules(blockingRules)
+            // Execute actions for all rules that should execute
+            executeActionsForRules(executingRules)
+            
+            // Check if any of the executing rules contain DISABLE_SPEAKTHAT actions
+            val shouldBlock = executingRules.any { ruleResult ->
+                val rule = getRule(ruleResult.ruleId)
+                val hasDisableAction = rule?.actions?.any { action ->
+                    action.enabled && action.type == ActionType.DISABLE_SPEAKTHAT
+                } ?: false
+                
+                InAppLogger.logDebug(TAG, "Rule '${ruleResult.ruleName}' has DISABLE_SPEAKTHAT action: $hasDisableAction")
+                hasDisableAction
+            }
+            
+            InAppLogger.logDebug(TAG, "Should block notifications: $shouldBlock")
+            
+            if (shouldBlock) {
+                val blockingRules = executingRules.filter { ruleResult ->
+                    val rule = getRule(ruleResult.ruleId)
+                    rule?.actions?.any { action ->
+                        action.enabled && action.type == ActionType.DISABLE_SPEAKTHAT
+                    } ?: false
+                }
+                InAppLogger.logDebug(TAG, "Rules blocking notification: ${blockingRules.map { it.ruleName }}")
+            }
+            
+            return shouldBlock
         }
         
-        return shouldBlock
+        return false
     }
     
     /**
@@ -218,6 +247,12 @@ class RuleManager(private val context: Context) {
         
         return evaluateAllRules()
             .filter { it.shouldExecute }
+            .filter { ruleResult ->
+                val rule = getRule(ruleResult.ruleId)
+                rule?.actions?.any { action ->
+                    action.enabled && action.type == ActionType.DISABLE_SPEAKTHAT
+                } ?: false
+            }
             .map { it.ruleName }
     }
     
