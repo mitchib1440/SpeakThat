@@ -76,7 +76,6 @@ class RuleSystemTest(private val context: Context) {
         
         InAppLogger.logDebug(TAG, "Rule system tests completed (no pre-made rules)")
     }
-    
     private fun testBasicRuleCreation() {
         InAppLogger.logDebug(TAG, "Test 1: Basic rule creation")
         

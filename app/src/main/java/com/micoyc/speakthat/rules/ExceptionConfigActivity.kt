@@ -448,11 +448,11 @@ class ExceptionConfigActivity : AppCompatActivity() {
                 
                 ExceptionType.BLUETOOTH_DEVICE -> {
                     val deviceAddressesData = exception.data["device_addresses"]
-            val deviceAddresses = when (deviceAddressesData) {
-                is Set<*> -> deviceAddressesData.mapNotNull { it as? String }.toSet()
-                is List<*> -> deviceAddressesData.mapNotNull { it as? String }.toSet()
-                else -> emptySet<String>()
-            }
+                    val deviceAddresses = when (deviceAddressesData) {
+                        is Set<*> -> deviceAddressesData.mapNotNull { it as? String }.toSet()
+                        is List<*> -> deviceAddressesData.mapNotNull { it as? String }.toSet()
+                        else -> emptySet<String>()
+                    }
                     
                     // Temporarily remove listener to prevent interference during loading
                     binding.switchAnyDevice.setOnCheckedChangeListener(null)
