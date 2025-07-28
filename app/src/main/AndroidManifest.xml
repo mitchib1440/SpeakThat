@@ -27,11 +27,21 @@
         android:maxSdkVersion="28" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    
+
     <!-- Permissions for auto-update system -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.INSTALL_PACKAGES" 
         tools:ignore="ProtectedPermissions" />
+    <!-- Conditional filtering permissions -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -73,6 +83,38 @@
             android:name=".BehaviorSettingsActivity"
             android:exported="false"
             android:parentActivityName=".SettingsActivity" />
+
+
+
+        <activity
+            android:name=".RulesActivity"
+            android:exported="false"
+            android:parentActivityName=".SettingsActivity" />
+
+                    <activity
+                android:name=".RuleBuilderActivity"
+                android:exported="false"
+                android:parentActivityName=".RulesActivity" />
+
+            <activity
+                android:name=".rules.TriggerConfigActivity"
+                android:exported="false"
+                android:parentActivityName=".RuleBuilderActivity" />
+
+            <activity
+                android:name=".rules.ActionConfigActivity"
+                android:exported="false"
+                android:parentActivityName=".RuleBuilderActivity" />
+
+            <activity
+                android:name=".rules.ExceptionConfigActivity"
+                android:exported="false"
+                android:parentActivityName=".RuleBuilderActivity" />
+
+            <activity
+                android:name=".BluetoothConditionActivity"
+                android:exported="false"
+                android:parentActivityName=".RulesActivity" />
 
         <activity
             android:name=".VoiceSettingsActivity"

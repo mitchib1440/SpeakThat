@@ -113,6 +113,14 @@ class SettingsActivity : AppCompatActivity() {
                 onClickAction = { startActivity(Intent(this, FilterSettingsActivity::class.java)) }
             ),
             SettingsCategory(
+                id = "conditional",
+                title = "Conditional Rules",
+                description = "Advanced rules for when notifications are read",
+                icon = "🔧",
+                cardView = binding.cardConditionalRules,
+                onClickAction = { startActivity(Intent(this, RulesActivity::class.java)) }
+            ),
+            SettingsCategory(
                 id = "development",
                 title = "Development Settings",
                 description = "Debug tools and logging system",
@@ -195,6 +203,10 @@ class SettingsActivity : AppCompatActivity() {
         
         binding.cardFilterSettings.setOnClickListener {
             startActivity(Intent(this, FilterSettingsActivity::class.java))
+        }
+        
+        binding.cardConditionalRules.setOnClickListener {
+            startActivity(Intent(this, RulesActivity::class.java))
         }
         
         binding.cardDevelopmentSettings.setOnClickListener {
