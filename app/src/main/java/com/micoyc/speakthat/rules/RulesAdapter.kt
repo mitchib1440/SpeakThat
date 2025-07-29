@@ -23,7 +23,9 @@ class RulesAdapter(
         val textTriggers: TextView = view.findViewById(R.id.textTriggersSummary)
         val textActions: TextView = view.findViewById(R.id.textActionsSummary)
         val textExceptions: TextView = view.findViewById(R.id.textExceptionsSummary)
+        val layoutExceptions: View = view.findViewById(R.id.layoutExceptions)
         val switchEnabled: com.google.android.material.materialswitch.MaterialSwitch = view.findViewById(R.id.switchRuleEnabled)
+        val buttonDelete: MaterialButton = view.findViewById(R.id.buttonDeleteRule)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RuleViewHolder {
@@ -46,9 +48,10 @@ class RulesAdapter(
         val actionCount = rule.actions.size
         holder.textActions.text = "$actionCount action${if (actionCount != 1) "s" else ""}"
         
-        // Set exception count
+        // Set exception count and visibility
         val exceptionCount = rule.exceptions.size
         holder.textExceptions.text = "$exceptionCount exception${if (exceptionCount != 1) "s" else ""}"
+        holder.layoutExceptions.visibility = if (exceptionCount > 0) View.VISIBLE else View.GONE
         
         // Temporarily remove listener to prevent recursive calls
         holder.switchEnabled.setOnCheckedChangeListener(null)
@@ -59,6 +62,11 @@ class RulesAdapter(
         // Set up click listeners
         holder.switchEnabled.setOnCheckedChangeListener { _, isChecked ->
             onToggleRule(rule, isChecked)
+        }
+        
+        // Set up delete button click listener
+        holder.buttonDelete.setOnClickListener {
+            onDeleteRule(rule)
         }
         
         // Set up card click for editing (since no edit button)
