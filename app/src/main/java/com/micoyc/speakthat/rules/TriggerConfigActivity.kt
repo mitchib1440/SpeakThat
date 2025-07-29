@@ -415,6 +415,12 @@ class TriggerConfigActivity : AppCompatActivity() {
     
     private fun loadCurrentValues() {
         originalTrigger?.let { trigger ->
+            // Load inversion state for all trigger types
+            binding.switchInvertScreenState.isChecked = trigger.inverted
+            binding.switchInvertTimeSchedule.isChecked = trigger.inverted
+            binding.switchInvertBluetooth.isChecked = trigger.inverted
+            binding.switchInvertWifi.isChecked = trigger.inverted
+            
             when (trigger.type) {
                 TriggerType.SCREEN_STATE -> {
                     val screenState = trigger.data["screen_state"] as? String ?: "on"
@@ -549,11 +555,12 @@ class TriggerConfigActivity : AppCompatActivity() {
             else -> return
         }
         
-        // Return the trigger data
-        val intent = intent.apply {
+        // Create a new intent for the result to avoid modifying the original intent
+        val resultIntent = android.content.Intent().apply {
             putExtra(RESULT_TRIGGER, trigger.toJson())
+            putExtra(EXTRA_IS_EDITING, isEditing)
         }
-        setResult(RESULT_OK, intent)
+        setResult(RESULT_OK, resultIntent)
         
         InAppLogger.logUserAction("Trigger configured: ${trigger.getLogMessage()}", "TriggerConfigActivity")
         finish()
@@ -562,19 +569,22 @@ class TriggerConfigActivity : AppCompatActivity() {
     private fun createScreenStateTrigger(): Trigger {
         val screenState = if (binding.spinnerScreenState.selectedItemPosition == 0) "on" else "off"
         val description = if (screenState == "on") "Screen is on" else "Screen is off"
+        val inverted = binding.switchInvertScreenState.isChecked
         
         return if (isEditing && originalTrigger != null) {
             // Preserve the original trigger ID when editing
             originalTrigger!!.copy(
                 data = mapOf("screen_state" to screenState),
-                description = description
+                description = description,
+                inverted = inverted
             )
         } else {
             // Create new trigger
             Trigger(
                 type = TriggerType.SCREEN_STATE,
                 data = mapOf("screen_state" to screenState),
-                description = description
+                description = description,
+                inverted = inverted
             )
         }
     }
@@ -592,6 +602,7 @@ class TriggerConfigActivity : AppCompatActivity() {
         val endMinute = ((endTime % (60 * 60 * 1000)) / (60 * 1000)).toInt()
         
         val description = "Time: ${String.format("%02d:%02d", startHour, startMinute)} - ${String.format("%02d:%02d", endHour, endMinute)}"
+        val inverted = binding.switchInvertTimeSchedule.isChecked
         
         return if (isEditing && originalTrigger != null) {
             // Preserve the original trigger ID when editing
@@ -601,7 +612,8 @@ class TriggerConfigActivity : AppCompatActivity() {
                     "end_time" to endTime,
                     "days_of_week" to daysOfWeek
                 ),
-                description = description
+                description = description,
+                inverted = inverted
             )
         } else {
             // Create new trigger
@@ -612,7 +624,8 @@ class TriggerConfigActivity : AppCompatActivity() {
                     "end_time" to endTime,
                     "days_of_week" to daysOfWeek
                 ),
-                description = description
+                description = description,
+                inverted = inverted
             )
         }
     }
@@ -643,19 +656,22 @@ class TriggerConfigActivity : AppCompatActivity() {
         } else {
             "Specific Bluetooth devices: ${deviceAddresses.joinToString(", ")}"
         }
+        val inverted = binding.switchInvertBluetooth.isChecked
         
         return if (isEditing && originalTrigger != null) {
             // Preserve the original trigger ID when editing
             originalTrigger!!.copy(
                 data = mapOf("device_addresses" to deviceAddresses),
-                description = description
+                description = description,
+                inverted = inverted
             )
         } else {
             // Create new trigger
             Trigger(
                 type = TriggerType.BLUETOOTH_DEVICE,
                 data = mapOf("device_addresses" to deviceAddresses),
-                description = description
+                description = description,
+                inverted = inverted
             )
         }
     }
@@ -681,19 +697,22 @@ class TriggerConfigActivity : AppCompatActivity() {
         } else {
             "Connected to: ${networkSSIDs.joinToString(", ")}"
         }
+        val inverted = binding.switchInvertWifi.isChecked
         
         return if (isEditing && originalTrigger != null) {
             // Preserve the original trigger ID when editing
             originalTrigger!!.copy(
                 data = mapOf("network_ssids" to networkSSIDs),
-                description = description
+                description = description,
+                inverted = inverted
             )
         } else {
             // Create new trigger
             Trigger(
                 type = TriggerType.WIFI_NETWORK,
                 data = mapOf("network_ssids" to networkSSIDs),
-                description = description
+                description = description,
+                inverted = inverted
             )
         }
     }

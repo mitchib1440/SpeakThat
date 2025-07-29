@@ -85,6 +85,7 @@ data class Trigger(
     val id: String = generateId(),
     val type: TriggerType,
     val enabled: Boolean = true,
+    val inverted: Boolean = false, // NEW: Whether this trigger should be inverted
     val data: Map<String, Any> = emptyMap(), // Flexible data storage for different trigger types
     val description: String = ""
 ) {
@@ -101,7 +102,8 @@ data class Trigger(
     }
     
     fun getLogMessage(): String {
-        return "Trigger[$id]: ${type.displayName} - ${if (enabled) "ENABLED" else "DISABLED"} - $description"
+        val inversionText = if (inverted) " (INVERTED)" else ""
+        return "Trigger[$id]: ${type.displayName}$inversionText - ${if (enabled) "ENABLED" else "DISABLED"} - $description"
     }
     
     fun toJson(): String {
@@ -147,6 +149,7 @@ data class Exception(
     val id: String = generateId(),
     val type: ExceptionType,
     val enabled: Boolean = true,
+    val inverted: Boolean = false, // NEW: Whether this exception should be inverted
     val data: Map<String, Any> = emptyMap(), // Flexible data storage for different exception types
     val description: String = ""
 ) {
@@ -163,7 +166,8 @@ data class Exception(
     }
 
     fun getLogMessage(): String {
-        return "Exception[$id]: ${type.displayName} - ${if (enabled) "ENABLED" else "DISABLED"} - $description"
+        val inversionText = if (inverted) " (INVERTED)" else ""
+        return "Exception[$id]: ${type.displayName}$inversionText - ${if (enabled) "ENABLED" else "DISABLED"} - $description"
     }
 
     fun toJson(): String {
