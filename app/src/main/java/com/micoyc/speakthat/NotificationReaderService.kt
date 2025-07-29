@@ -685,9 +685,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 ttsRecoveryAttempts = 0
                 consecutiveTtsFailures = 0
                 
-                // Test the new template-based localization system
-                testTemplateLocalization()
-                
             } else {
                 Log.e(TAG, "TextToSpeech initialization failed with status: $status")
                 InAppLogger.logError("Service", "TextToSpeech initialization failed with status: $status")
