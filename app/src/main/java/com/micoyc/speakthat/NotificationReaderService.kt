@@ -685,6 +685,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 ttsRecoveryAttempts = 0
                 consecutiveTtsFailures = 0
                 
+                // Test the new template-based localization system
+                testTemplateLocalization()
+                
             } else {
                 Log.e(TAG, "TextToSpeech initialization failed with status: $status")
                 InAppLogger.logError("Service", "TextToSpeech initialization failed with status: $status")
@@ -1122,7 +1125,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             if (matchesWordFilter(processedText, privateWord)) {
                 // When any private word is detected, replace the entire notification text with a private message
                 // This ensures complete privacy - no partial content is revealed
-                processedText = "${getLocalizedTtsString(R.string.tts_private_notification_received)} $appName"
+                val useNewTemplateSystem = true // TODO: Make this configurable via settings
+                processedText = if (useNewTemplateSystem) {
+                    getLocalizedTemplate("private_notification", appName, "")
+                } else {
+                    "${getLocalizedTtsString(R.string.tts_private_notification_received)} $appName"
+                }
                 Log.d(TAG, "Private word '$privateWord' detected - entire notification made private")
                 InAppLogger.logFilter("Made notification private due to word: $privateWord")
                 break // Exit loop since entire text is now private
@@ -1662,7 +1670,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         // Format: "AppName notified you: notification content" (unless it's already a private message)
-        val speechText = if (text.startsWith("You received a private notification from")) {
+        val speechText = if (text.startsWith("You received a private notification from") || 
+                            text.startsWith("Hai ricevuto una notifica privata da") ||
+                            text.startsWith("Du hast eine private Benachrichtigung von")) {
             text // Private messages already include the app name, so don't add prefix
         } else {
             formatSpeechText(appName, text, packageName, sbn)
@@ -1903,7 +1913,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Handle varied template by randomly selecting a format
         val templateToUse = if (speechTemplate == "VARIED") {
-            getLocalizedVariedFormats().random()
+            // Use new template-based system if enabled, otherwise fall back to old system
+            val useNewTemplateSystem = true // TODO: Make this configurable via settings
+            if (useNewTemplateSystem) {
+                getLocalizedVariedFormatsImproved().random()
+            } else {
+                getLocalizedVariedFormats().random()
+            }
         } else {
             speechTemplate
         }
@@ -1925,23 +1941,28 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             .replace("{category}", category)
             .replace("{channel}", channel)
         
-        // Localize hard-coded English phrases in the template
-        processedTemplate = processedTemplate
-            .replace("notified you:", getLocalizedTtsString(R.string.tts_notified_you))
-            .replace("reported:", getLocalizedTtsString(R.string.tts_reported))
-            .replace("saying", getLocalizedTtsString(R.string.tts_saying))
-            .replace("alerts you:", getLocalizedTtsString(R.string.tts_alerts_you))
-            .replace("Update from", getLocalizedTtsString(R.string.tts_update_from))
-            .replace("says:", getLocalizedTtsString(R.string.tts_says))
-            .replace("notification:", getLocalizedTtsString(R.string.tts_notification))
-            .replace("New notification:", getLocalizedTtsString(R.string.tts_new_notification))
-            .replace("New from", getLocalizedTtsString(R.string.tts_new_from))
-            .replace("said:", getLocalizedTtsString(R.string.tts_said))
-            .replace("updated you:", getLocalizedTtsString(R.string.tts_updated_you))
-            .replace("New notification from", getLocalizedTtsString(R.string.tts_new_notification_from))
-            .replace("saying:", getLocalizedTtsString(R.string.tts_saying_colon))
-            .replace("New update from", getLocalizedTtsString(R.string.tts_new_update_from))
-            .replace("Notification from", getLocalizedTtsString(R.string.tts_notification_from))
+        // Only apply old phrase-by-phrase localization if not using new template system
+        // This ensures backward compatibility while allowing the new system to work
+        val useNewTemplateSystem = true // TODO: Make this configurable via settings
+        if (!useNewTemplateSystem) {
+            // Localize hard-coded English phrases in the template (old system)
+            processedTemplate = processedTemplate
+                .replace("notified you:", getLocalizedTtsString(R.string.tts_notified_you))
+                .replace("reported:", getLocalizedTtsString(R.string.tts_reported))
+                .replace("saying", getLocalizedTtsString(R.string.tts_saying))
+                .replace("alerts you:", getLocalizedTtsString(R.string.tts_alerts_you))
+                .replace("Update from", getLocalizedTtsString(R.string.tts_update_from))
+                .replace("says:", getLocalizedTtsString(R.string.tts_says))
+                .replace("notification:", getLocalizedTtsString(R.string.tts_notification))
+                .replace("New notification:", getLocalizedTtsString(R.string.tts_new_notification))
+                .replace("New from", getLocalizedTtsString(R.string.tts_new_from))
+                .replace("said:", getLocalizedTtsString(R.string.tts_said))
+                .replace("updated you:", getLocalizedTtsString(R.string.tts_updated_you))
+                .replace("New notification from", getLocalizedTtsString(R.string.tts_new_notification_from))
+                .replace("saying:", getLocalizedTtsString(R.string.tts_saying_colon))
+                .replace("New update from", getLocalizedTtsString(R.string.tts_new_update_from))
+                .replace("Notification from", getLocalizedTtsString(R.string.tts_notification_from))
+        }
         
         return processedTemplate.trim()
     }
@@ -1993,7 +2014,73 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
 
     /**
+     * Get localized template string with placeholders replaced
+     * This is the new improved method for template-based localization
+     */
+    private fun getLocalizedTemplate(templateKey: String, appName: String, content: String): String {
+        val templateResId = getTemplateResourceId(templateKey)
+        val template = getLocalizedTtsString(templateResId)
+        
+        // Replace placeholders with actual values
+        val result = template
+            .replace("{app}", appName)
+            .replace("{content}", content)
+        
+        Log.d(TAG, "Template localization - Key: $templateKey, App: $appName, Result: $result")
+        return result
+    }
+
+    /**
+     * Get resource ID for template strings
+     */
+    private fun getTemplateResourceId(templateKey: String): Int {
+        return when (templateKey) {
+            "notified_you" -> R.string.tts_template_notified_you
+            "reported" -> R.string.tts_template_reported
+            "saying" -> R.string.tts_template_saying
+            "alerts_you" -> R.string.tts_template_alerts_you
+            "update_from" -> R.string.tts_template_update_from
+            "notification" -> R.string.tts_template_notification
+            "new_notification" -> R.string.tts_template_new_notification
+            "new_from" -> R.string.tts_template_new_from
+            "said" -> R.string.tts_template_said
+            "updated_you" -> R.string.tts_template_updated_you
+            "new_notification_from" -> R.string.tts_template_new_notification_from
+            "new_update_from" -> R.string.tts_template_new_update_from
+            "notification_from" -> R.string.tts_template_notification_from
+            "says" -> R.string.tts_template_says
+            "private_notification" -> R.string.tts_template_private_notification
+            else -> R.string.tts_template_notified_you // Default fallback
+        }
+    }
+
+    /**
+     * Get localized varied formats using template-based approach
+     * This is the new improved method that uses complete sentence templates
+     */
+    private fun getLocalizedVariedFormatsImproved(): Array<String> {
+        return arrayOf(
+            getLocalizedTemplate("notified_you", "{app}", "{content}"),
+            getLocalizedTemplate("reported", "{app}", "{content}"),
+            getLocalizedTemplate("saying", "{app}", "{content}"),
+            getLocalizedTemplate("notification_from", "{app}", "{content}"),
+            getLocalizedTemplate("alerts_you", "{app}", "{content}"),
+            getLocalizedTemplate("update_from", "{app}", "{content}"),
+            getLocalizedTemplate("says", "{app}", "{content}"),
+            getLocalizedTemplate("notification", "{app}", "{content}"),
+            getLocalizedTemplate("new_notification", "{app}", "{content}"),
+            getLocalizedTemplate("new_from", "{app}", "{content}"),
+            getLocalizedTemplate("said", "{app}", "{content}"),
+            getLocalizedTemplate("updated_you", "{app}", "{content}"),
+            getLocalizedTemplate("new_notification_from", "{app}", "{content}"),
+            getLocalizedTemplate("new_update_from", "{app}", "{content}"),
+            "{app}: {content}" // Simple fallback
+        )
+    }
+
+    /**
      * Get localized varied formats based on user's TTS language setting
+     * This is the old method kept for backward compatibility
      */
     private fun getLocalizedVariedFormats(): Array<String> {
         return arrayOf(
@@ -2013,5 +2100,36 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "${getLocalizedTtsString(R.string.tts_new_update_from)} {app}: {content}",
             "{app}: {content}"
         )
+    }
+
+    /**
+     * Test method to demonstrate the new template-based localization system
+     * This can be called for debugging purposes
+     */
+    private fun testTemplateLocalization() {
+        val testAppName = "TestApp"
+        val testContent = "Hello world"
+        
+        Log.d(TAG, "=== Template Localization Test ===")
+        
+        // Test old system
+        Log.d(TAG, "Old system - notified_you: {app} ${getLocalizedTtsString(R.string.tts_notified_you)} {content}")
+        
+        // Test new system
+        val newResult = getLocalizedTemplate("notified_you", testAppName, testContent)
+        Log.d(TAG, "New system - notified_you: $newResult")
+        
+        // Test varied formats
+        val oldVaried = getLocalizedVariedFormats()
+        val newVaried = getLocalizedVariedFormatsImproved()
+        
+        Log.d(TAG, "Old varied format example: ${oldVaried[0]}")
+        Log.d(TAG, "New varied format example: ${newVaried[0]}")
+        
+        // Test private notification
+        val privateResult = getLocalizedTemplate("private_notification", testAppName, "")
+        Log.d(TAG, "Private notification: $privateResult")
+        
+        Log.d(TAG, "=== End Template Localization Test ===")
     }
 }

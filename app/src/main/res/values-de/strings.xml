@@ -22,4 +22,21 @@
     <string name="tts_new_notification_from">Neue Benachrichtigung von</string>
     <string name="tts_saying_colon">sagt:</string>
     <string name="tts_new_update_from">Neues Update von</string>
+    
+    <!-- TTS Template Strings (German) - Complete sentence templates with proper grammar -->
+    <string name="tts_template_notified_you">{app} hat dich benachrichtigt: {content}</string>
+    <string name="tts_template_reported">{app} hat gemeldet: {content}</string>
+    <string name="tts_template_saying">Benachrichtigung von {app}, die sagt {content}</string>
+    <string name="tts_template_alerts_you">{app} warnt dich: {content}</string>
+    <string name="tts_template_update_from">Update von {app}: {content}</string>
+    <string name="tts_template_notification">{app} Benachrichtigung: {content}</string>
+    <string name="tts_template_new_notification">Neue Benachrichtigung: {app}: {content}</string>
+    <string name="tts_template_new_from">Neu von {app}: {content}</string>
+    <string name="tts_template_said">{app} hat gesagt: {content}</string>
+    <string name="tts_template_updated_you">{app} hat dir mitgeteilt: {content}</string>
+    <string name="tts_template_new_notification_from">Neue Benachrichtigung von {app}: die sagt: {content}</string>
+    <string name="tts_template_new_update_from">Neues Update von {app}: {content}</string>
+    <string name="tts_template_notification_from">Benachrichtigung von {app}: {content}</string>
+    <string name="tts_template_says">{app} sagt: {content}</string>
+    <string name="tts_template_private_notification">Du hast eine private Benachrichtigung von {app}</string>
 </resources> 

@@ -240,4 +240,22 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="update_weekly">Weekly</string>
     <string name="update_monthly">Monthly</string>
     <string name="update_never">Never (manual only)</string>
+    
+    <!-- TTS Template Strings (for improved localization) -->
+    <!-- These are complete sentence templates with placeholders for proper localization -->
+    <string name="tts_template_notified_you">{app} notified you: {content}</string>
+    <string name="tts_template_reported">{app} reported: {content}</string>
+    <string name="tts_template_saying">Notification from {app}, saying {content}</string>
+    <string name="tts_template_alerts_you">{app} alerts you: {content}</string>
+    <string name="tts_template_update_from">Update from {app}: {content}</string>
+    <string name="tts_template_notification">{app} notification: {content}</string>
+    <string name="tts_template_new_notification">New notification: {app}: {content}</string>
+    <string name="tts_template_new_from">New from {app}: {content}</string>
+    <string name="tts_template_said">{app} said: {content}</string>
+    <string name="tts_template_updated_you">{app} updated you: {content}</string>
+    <string name="tts_template_new_notification_from">New notification from {app}: saying: {content}</string>
+    <string name="tts_template_new_update_from">New update from {app}: {content}</string>
+    <string name="tts_template_notification_from">Notification from {app}: {content}</string>
+    <string name="tts_template_says">{app} says: {content}</string>
+    <string name="tts_template_private_notification">You received a private notification from {app}</string>
 </resources> 
