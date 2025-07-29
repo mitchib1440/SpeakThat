@@ -128,9 +128,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     // Voice settings listener
     private var voiceSettingsPrefs: SharedPreferences? = null
+    /**
+     * CRITICAL: Listener for voice settings changes.
+     * This ensures the service immediately applies new voice settings when they change.
+     * The voice settings will respect the override logic (specific voice > language).
+     */
     private val voiceSettingsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         when (key) {
             "speech_rate", "pitch", "voice_name", "language", "audio_usage", "content_type" -> {
+                InAppLogger.log("Service", "Voice settings changed: $key - applying to service TTS")
                 applyVoiceSettings()
                 Log.d(TAG, "Voice settings updated: $key")
             }
@@ -636,18 +642,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             InAppLogger.log("Service", "TTS onInit called with status: $status")
             
             if (status == TextToSpeech.SUCCESS) {
-                Log.d(TAG, "TTS initialization successful, setting up language...")
-                InAppLogger.log("Service", "TTS initialization successful, setting up language")
-                
-                val result = textToSpeech?.setLanguage(Locale.getDefault())
-                Log.d(TAG, "Language set result: $result")
-                
-                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                    Log.e(TAG, "Language not supported for TTS, falling back to US English")
-                    InAppLogger.log("Service", "Language not supported, falling back to US English")
-                    // Fallback to English US
-                    textToSpeech?.setLanguage(Locale.US)
-                }
+                Log.d(TAG, "TTS initialization successful, voice settings will be applied next")
+                InAppLogger.log("Service", "TTS initialization successful, voice settings will be applied next")
                 
                 // Set audio stream to assistant usage to avoid triggering media detection
                 try {
@@ -665,8 +661,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     InAppLogger.logError("Service", "Error setting audio attributes: " + e.message)
                 }
                 
-                // Apply saved voice settings
+                // CRITICAL: Set TTS as initialized BEFORE applying voice settings
+                // This prevents the "Cannot apply voice settings - TTS not initialized" error
+                // The applyVoiceSettings() method checks isTtsInitialized, so order matters
+                isTtsInitialized = true
+                
+                // CRITICAL: Apply saved voice settings during TTS initialization
+                // This ensures the service starts with the correct voice settings
+                // The voice settings will respect the override logic (specific voice > language)
                 try {
+                    InAppLogger.log("Service", "About to apply voice settings during TTS initialization")
                     applyVoiceSettings()
                     Log.d(TAG, "Voice settings applied successfully")
                     InAppLogger.log("Service", "Voice settings applied successfully")
@@ -674,8 +678,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     Log.e(TAG, "Error applying voice settings", e)
                     InAppLogger.logError("Service", "Error applying voice settings: " + e.message)
                 }
-                
-                isTtsInitialized = true
                 Log.d(TAG, "TextToSpeech initialized successfully")
                 InAppLogger.log("Service", "TextToSpeech initialized successfully")
                 
@@ -1689,6 +1691,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "Executing speech: $speechText")
         InAppLogger.log("Service", "Executing speech: ${speechText.take(50)}...")
         
+        // CRITICAL: Force refresh voice settings before each speech to ensure they're applied
+        // This prevents issues where voice settings might not be current
+        // The voice settings will respect the override logic (specific voice > language)
+        InAppLogger.log("Service", "Refreshing voice settings before speech execution")
+        applyVoiceSettings()
+        
         // Check TTS health before attempting to speak
         if (!checkTtsHealth()) {
             Log.e(TAG, "TTS health check failed - cannot speak")
@@ -1771,10 +1779,23 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         })
     }
 
+    /**
+     * CRITICAL: Applies voice settings to the service's TTS instance.
+     * This method is called:
+     * 1. During TTS initialization
+     * 2. When voice settings change via preference listener
+     * 3. Before each notification (to ensure settings are current)
+     * 
+     * The voice settings will respect the override logic (specific voice > language).
+     */
     private fun applyVoiceSettings() {
         if (isTtsInitialized && textToSpeech != null) {
+            InAppLogger.log("Service", "Applying voice settings to service TTS instance")
             VoiceSettingsActivity.applyVoiceSettings(textToSpeech!!, voiceSettingsPrefs)
             Log.d(TAG, "Voice settings applied")
+            InAppLogger.log("Service", "Voice settings applied to service TTS instance")
+        } else {
+            InAppLogger.log("Service", "Cannot apply voice settings - TTS not initialized or null")
         }
     }
 
@@ -1942,6 +1963,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     ttsLanguage.startsWith("French") -> "fr"
                     ttsLanguage.startsWith("German") -> "de"
                     ttsLanguage.startsWith("English") -> "en"
+                    ttsLanguage.startsWith("Portuguese") -> "pt"
                     else -> null
                 }
                 

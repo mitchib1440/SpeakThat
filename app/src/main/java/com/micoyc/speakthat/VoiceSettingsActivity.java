@@ -19,6 +19,7 @@ import android.app.AlertDialog;
 import android.widget.Switch;
 import android.view.View;
 import android.widget.LinearLayout;
+import java.util.HashSet;
 
 public class VoiceSettingsActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
@@ -37,7 +38,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private static final float DEFAULT_SPEECH_RATE = 1.0f;
     private static final float DEFAULT_PITCH = 1.0f;
     private static final String DEFAULT_LANGUAGE = "en_US";
-    private static final int DEFAULT_AUDIO_USAGE = 5; // USAGE_NOTIFICATION (recommended for Duck Audio)
+    private static final int DEFAULT_AUDIO_USAGE = 4; // USAGE_ASSISTANCE (recommended for Duck Audio)
     private static final int DEFAULT_CONTENT_TYPE = 0; // CONTENT_TYPE_SPEECH
 
     // UI Components
@@ -53,6 +54,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private Button previewButton;
     private Button saveButton;
     private Button resetButton;
+    private Button btnVoiceInfo;
     private Switch switchAdvancedVoice;
     private LinearLayout layoutAdvancedVoiceSection;
 
@@ -101,6 +103,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         previewButton = findViewById(R.id.previewButton);
         saveButton = findViewById(R.id.saveButton);
         resetButton = findViewById(R.id.resetButton);
+        btnVoiceInfo = findViewById(R.id.btnVoiceInfo);
         switchAdvancedVoice = findViewById(R.id.switchAdvancedVoice);
         layoutAdvancedVoiceSection = findViewById(R.id.layoutAdvancedVoiceSection);
         
@@ -188,6 +191,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         previewButton.setOnClickListener(v -> previewVoiceSettings());
         saveButton.setOnClickListener(v -> saveSettings());
         resetButton.setOnClickListener(v -> resetToDefaults());
+        btnVoiceInfo.setOnClickListener(v -> showVoiceInfoDialog());
     }
 
     private void setupVoicesAndLanguages() {
@@ -209,6 +213,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         availableLanguages.add(Locale.GERMANY);
         availableLanguages.add(Locale.ITALY);
         availableLanguages.add(new Locale("es", "ES")); // Spanish
+        availableLanguages.add(new Locale("pt", "PT")); // Portuguese (Portugal)
+        availableLanguages.add(new Locale("pt", "BR")); // Portuguese (Brazil)
 
         setupVoiceSpinner();
         setupLanguageSpinner();
@@ -220,6 +226,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         List<String> voiceNames = new ArrayList<>();
         // Add default option at the top
         voiceNames.add("Default (Use Language Setting)");
+        
+        // Enhanced logging for voice debugging
+        InAppLogger.log("VoiceSettings", "Setting up voice spinner - Total available voices: " + availableVoices.size());
+        
         for (Voice voice : availableVoices) {
             StringBuilder displayName = new StringBuilder();
             // Language/locale
@@ -252,6 +262,16 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             }
             voiceNames.add(displayName.toString());
         }
+        
+        // Log summary of available languages
+        Set<String> availableLanguages = new HashSet<>();
+        for (Voice voice : availableVoices) {
+            if (voice.getLocale() != null) {
+                availableLanguages.add(voice.getLocale().getLanguage());
+            }
+        }
+        InAppLogger.log("VoiceSettings", "Available language codes: " + String.join(", ", availableLanguages));
+        
         ArrayAdapter<String> voiceAdapter = new ArrayAdapter<>(this,
             android.R.layout.simple_spinner_item, voiceNames);
         voiceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -270,6 +290,218 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         } else {
             return "Standard";
         }
+    }
+    
+    private static String extractLanguageFromVoiceName(String voiceName) {
+        // Common language patterns in voice names
+        if (voiceName.toLowerCase().contains("pt-") || voiceName.toLowerCase().contains("portuguese")) {
+            return "pt";
+        } else if (voiceName.toLowerCase().contains("es-") || voiceName.toLowerCase().contains("spanish")) {
+            return "es";
+        } else if (voiceName.toLowerCase().contains("fr-") || voiceName.toLowerCase().contains("french")) {
+            return "fr";
+        } else if (voiceName.toLowerCase().contains("de-") || voiceName.toLowerCase().contains("german")) {
+            return "de";
+        } else if (voiceName.toLowerCase().contains("it-") || voiceName.toLowerCase().contains("italian")) {
+            return "it";
+        } else if (voiceName.toLowerCase().contains("en-") || voiceName.toLowerCase().contains("english")) {
+            return "en";
+        } else if (voiceName.toLowerCase().contains("ja-") || voiceName.toLowerCase().contains("japanese")) {
+            return "ja";
+        } else if (voiceName.toLowerCase().contains("ko-") || voiceName.toLowerCase().contains("korean")) {
+            return "ko";
+        } else if (voiceName.toLowerCase().contains("zh-") || voiceName.toLowerCase().contains("chinese")) {
+            return "zh";
+        } else if (voiceName.toLowerCase().contains("ru-") || voiceName.toLowerCase().contains("russian")) {
+            return "ru";
+        } else if (voiceName.toLowerCase().contains("ar-") || voiceName.toLowerCase().contains("arabic")) {
+            return "ar";
+        } else if (voiceName.toLowerCase().contains("hi-") || voiceName.toLowerCase().contains("hindi")) {
+            return "hi";
+        } else if (voiceName.toLowerCase().contains("th-") || voiceName.toLowerCase().contains("thai")) {
+            return "th";
+        } else if (voiceName.toLowerCase().contains("tr-") || voiceName.toLowerCase().contains("turkish")) {
+            return "tr";
+        } else if (voiceName.toLowerCase().contains("pl-") || voiceName.toLowerCase().contains("polish")) {
+            return "pl";
+        } else if (voiceName.toLowerCase().contains("nl-") || voiceName.toLowerCase().contains("dutch")) {
+            return "nl";
+        } else if (voiceName.toLowerCase().contains("sv-") || voiceName.toLowerCase().contains("swedish")) {
+            return "sv";
+        } else if (voiceName.toLowerCase().contains("da-") || voiceName.toLowerCase().contains("danish")) {
+            return "da";
+        } else if (voiceName.toLowerCase().contains("no-") || voiceName.toLowerCase().contains("norwegian")) {
+            return "no";
+        } else if (voiceName.toLowerCase().contains("fi-") || voiceName.toLowerCase().contains("finnish")) {
+            return "fi";
+        } else if (voiceName.toLowerCase().contains("cs-") || voiceName.toLowerCase().contains("czech")) {
+            return "cs";
+        } else if (voiceName.toLowerCase().contains("sk-") || voiceName.toLowerCase().contains("slovak")) {
+            return "sk";
+        } else if (voiceName.toLowerCase().contains("hu-") || voiceName.toLowerCase().contains("hungarian")) {
+            return "hu";
+        } else if (voiceName.toLowerCase().contains("ro-") || voiceName.toLowerCase().contains("romanian")) {
+            return "ro";
+        } else if (voiceName.toLowerCase().contains("bg-") || voiceName.toLowerCase().contains("bulgarian")) {
+            return "bg";
+        } else if (voiceName.toLowerCase().contains("hr-") || voiceName.toLowerCase().contains("croatian")) {
+            return "hr";
+        } else if (voiceName.toLowerCase().contains("sl-") || voiceName.toLowerCase().contains("slovenian")) {
+            return "sl";
+        } else if (voiceName.toLowerCase().contains("et-") || voiceName.toLowerCase().contains("estonian")) {
+            return "et";
+        } else if (voiceName.toLowerCase().contains("lv-") || voiceName.toLowerCase().contains("latvian")) {
+            return "lv";
+        } else if (voiceName.toLowerCase().contains("lt-") || voiceName.toLowerCase().contains("lithuanian")) {
+            return "lt";
+        } else if (voiceName.toLowerCase().contains("el-") || voiceName.toLowerCase().contains("greek")) {
+            return "el";
+        } else if (voiceName.toLowerCase().contains("he-") || voiceName.toLowerCase().contains("hebrew")) {
+            return "he";
+        } else if (voiceName.toLowerCase().contains("id-") || voiceName.toLowerCase().contains("indonesian")) {
+            return "id";
+        } else if (voiceName.toLowerCase().contains("ms-") || voiceName.toLowerCase().contains("malay")) {
+            return "ms";
+        } else if (voiceName.toLowerCase().contains("vi-") || voiceName.toLowerCase().contains("vietnamese")) {
+            return "vi";
+        } else if (voiceName.toLowerCase().contains("bn-") || voiceName.toLowerCase().contains("bengali")) {
+            return "bn";
+        } else if (voiceName.toLowerCase().contains("ta-") || voiceName.toLowerCase().contains("tamil")) {
+            return "ta";
+        } else if (voiceName.toLowerCase().contains("te-") || voiceName.toLowerCase().contains("telugu")) {
+            return "te";
+        } else if (voiceName.toLowerCase().contains("kn-") || voiceName.toLowerCase().contains("kannada")) {
+            return "kn";
+        } else if (voiceName.toLowerCase().contains("ml-") || voiceName.toLowerCase().contains("malayalam")) {
+            return "ml";
+        } else if (voiceName.toLowerCase().contains("gu-") || voiceName.toLowerCase().contains("gujarati")) {
+            return "gu";
+        } else if (voiceName.toLowerCase().contains("pa-") || voiceName.toLowerCase().contains("punjabi")) {
+            return "pa";
+        } else if (voiceName.toLowerCase().contains("mr-") || voiceName.toLowerCase().contains("marathi")) {
+            return "mr";
+        } else if (voiceName.toLowerCase().contains("ur-") || voiceName.toLowerCase().contains("urdu")) {
+            return "ur";
+        } else if (voiceName.toLowerCase().contains("fa-") || voiceName.toLowerCase().contains("persian")) {
+            return "fa";
+        } else if (voiceName.toLowerCase().contains("uk-") || voiceName.toLowerCase().contains("ukrainian")) {
+            return "uk";
+        } else if (voiceName.toLowerCase().contains("be-") || voiceName.toLowerCase().contains("belarusian")) {
+            return "be";
+        } else if (voiceName.toLowerCase().contains("kk-") || voiceName.toLowerCase().contains("kazakh")) {
+            return "kk";
+        } else if (voiceName.toLowerCase().contains("uz-") || voiceName.toLowerCase().contains("uzbek")) {
+            return "uz";
+        } else if (voiceName.toLowerCase().contains("ky-") || voiceName.toLowerCase().contains("kyrgyz")) {
+            return "ky";
+        } else if (voiceName.toLowerCase().contains("tg-") || voiceName.toLowerCase().contains("tajik")) {
+            return "tg";
+        } else if (voiceName.toLowerCase().contains("tk-") || voiceName.toLowerCase().contains("turkmen")) {
+            return "tk";
+        } else if (voiceName.toLowerCase().contains("az-") || voiceName.toLowerCase().contains("azerbaijani")) {
+            return "az";
+        } else if (voiceName.toLowerCase().contains("ka-") || voiceName.toLowerCase().contains("georgian")) {
+            return "ka";
+        } else if (voiceName.toLowerCase().contains("am-") || voiceName.toLowerCase().contains("amharic")) {
+            return "am";
+        } else if (voiceName.toLowerCase().contains("sw-") || voiceName.toLowerCase().contains("swahili")) {
+            return "sw";
+        } else if (voiceName.toLowerCase().contains("zu-") || voiceName.toLowerCase().contains("zulu")) {
+            return "zu";
+        } else if (voiceName.toLowerCase().contains("af-") || voiceName.toLowerCase().contains("afrikaans")) {
+            return "af";
+        } else if (voiceName.toLowerCase().contains("is-") || voiceName.toLowerCase().contains("icelandic")) {
+            return "is";
+        } else if (voiceName.toLowerCase().contains("mt-") || voiceName.toLowerCase().contains("maltese")) {
+            return "mt";
+        } else if (voiceName.toLowerCase().contains("cy-") || voiceName.toLowerCase().contains("welsh")) {
+            return "cy";
+        } else if (voiceName.toLowerCase().contains("ga-") || voiceName.toLowerCase().contains("irish")) {
+            return "ga";
+        } else if (voiceName.toLowerCase().contains("eu-") || voiceName.toLowerCase().contains("basque")) {
+            return "eu";
+        } else if (voiceName.toLowerCase().contains("ca-") || voiceName.toLowerCase().contains("catalan")) {
+            return "ca";
+        } else if (voiceName.toLowerCase().contains("gl-") || voiceName.toLowerCase().contains("galician")) {
+            return "gl";
+        } else if (voiceName.toLowerCase().contains("sq-") || voiceName.toLowerCase().contains("albanian")) {
+            return "sq";
+        } else if (voiceName.toLowerCase().contains("mk-") || voiceName.toLowerCase().contains("macedonian")) {
+            return "mk";
+        } else if (voiceName.toLowerCase().contains("sr-") || voiceName.toLowerCase().contains("serbian")) {
+            return "sr";
+        } else if (voiceName.toLowerCase().contains("bs-") || voiceName.toLowerCase().contains("bosnian")) {
+            return "bs";
+        } else if (voiceName.toLowerCase().contains("me-") || voiceName.toLowerCase().contains("montenegrin")) {
+            return "me";
+        } else if (voiceName.toLowerCase().contains("mn-") || voiceName.toLowerCase().contains("mongolian")) {
+            return "mn";
+        } else if (voiceName.toLowerCase().contains("ne-") || voiceName.toLowerCase().contains("nepali")) {
+            return "ne";
+        } else if (voiceName.toLowerCase().contains("si-") || voiceName.toLowerCase().contains("sinhala")) {
+            return "si";
+        } else if (voiceName.toLowerCase().contains("my-") || voiceName.toLowerCase().contains("burmese")) {
+            return "my";
+        } else if (voiceName.toLowerCase().contains("km-") || voiceName.toLowerCase().contains("khmer")) {
+            return "km";
+        } else if (voiceName.toLowerCase().contains("lo-") || voiceName.toLowerCase().contains("lao")) {
+            return "lo";
+        } else if (voiceName.toLowerCase().contains("jw-") || voiceName.toLowerCase().contains("javanese")) {
+            return "jw";
+        } else if (voiceName.toLowerCase().contains("su-") || voiceName.toLowerCase().contains("sundanese")) {
+            return "su";
+        } else if (voiceName.toLowerCase().contains("ceb-") || voiceName.toLowerCase().contains("cebuano")) {
+            return "ceb";
+        } else if (voiceName.toLowerCase().contains("fil-") || voiceName.toLowerCase().contains("filipino")) {
+            return "fil";
+        } else if (voiceName.toLowerCase().contains("haw-") || voiceName.toLowerCase().contains("hawaiian")) {
+            return "haw";
+        } else if (voiceName.toLowerCase().contains("mi-") || voiceName.toLowerCase().contains("maori")) {
+            return "mi";
+        } else if (voiceName.toLowerCase().contains("sm-") || voiceName.toLowerCase().contains("samoan")) {
+            return "sm";
+        } else if (voiceName.toLowerCase().contains("to-") || voiceName.toLowerCase().contains("tongan")) {
+            return "to";
+        } else if (voiceName.toLowerCase().contains("fj-") || voiceName.toLowerCase().contains("fijian")) {
+            return "fj";
+        } else if (voiceName.toLowerCase().contains("yue-") || voiceName.toLowerCase().contains("cantonese")) {
+            return "yue";
+        } else if (voiceName.toLowerCase().contains("cmn-") || voiceName.toLowerCase().contains("mandarin")) {
+            return "cmn";
+        } else if (voiceName.toLowerCase().contains("nan-") || voiceName.toLowerCase().contains("minnan")) {
+            return "nan";
+        } else if (voiceName.toLowerCase().contains("hak-") || voiceName.toLowerCase().contains("hakka")) {
+            return "hak";
+        } else if (voiceName.toLowerCase().contains("bo-") || voiceName.toLowerCase().contains("tibetan")) {
+            return "bo";
+        } else if (voiceName.toLowerCase().contains("dz-") || voiceName.toLowerCase().contains("dzongkha")) {
+            return "dz";
+        } else if (voiceName.toLowerCase().contains("as-") || voiceName.toLowerCase().contains("assamese")) {
+            return "as";
+        } else if (voiceName.toLowerCase().contains("or-") || voiceName.toLowerCase().contains("odia")) {
+            return "or";
+        } else if (voiceName.toLowerCase().contains("sa-") || voiceName.toLowerCase().contains("sanskrit")) {
+            return "sa";
+        } else if (voiceName.toLowerCase().contains("sd-") || voiceName.toLowerCase().contains("sindhi")) {
+            return "sd";
+        } else if (voiceName.toLowerCase().contains("ks-") || voiceName.toLowerCase().contains("kashmiri")) {
+            return "ks";
+        } else if (voiceName.toLowerCase().contains("doi-") || voiceName.toLowerCase().contains("dogri")) {
+            return "doi";
+        } else if (voiceName.toLowerCase().contains("brx-") || voiceName.toLowerCase().contains("bodo")) {
+            return "brx";
+        } else if (voiceName.toLowerCase().contains("mni-") || voiceName.toLowerCase().contains("manipuri")) {
+            return "mni";
+        } else if (voiceName.toLowerCase().contains("sat-") || voiceName.toLowerCase().contains("santali")) {
+            return "sat";
+        } else if (voiceName.toLowerCase().contains("kok-") || voiceName.toLowerCase().contains("konkani")) {
+            return "kok";
+        } else if (voiceName.toLowerCase().contains("mai-") || voiceName.toLowerCase().contains("maithili")) {
+            return "mai";
+        }
+        
+        // If no pattern matches, return null
+        return null;
     }
 
     private void setupLanguageSpinner() {
@@ -294,6 +526,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         ttsLanguageNames.add("German (Germany)");
         ttsLanguageNames.add("Italian (Italy)");
         ttsLanguageNames.add("Spanish (Spain)");
+        ttsLanguageNames.add("Portuguese (Portugal)");
+        ttsLanguageNames.add("Portuguese (Brazil)");
 
         ArrayAdapter<String> ttsLanguageAdapter = new ArrayAdapter<>(this,
             android.R.layout.simple_spinner_item, ttsLanguageNames);
@@ -411,27 +645,51 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             }
         }
 
-        // Load audio settings
+        // Load audio settings with bounds checking
         int audioUsage = sharedPreferences.getInt(KEY_AUDIO_USAGE, DEFAULT_AUDIO_USAGE);
-        audioUsageSpinner.setSelection(audioUsage);
+        if (audioUsageSpinner.getAdapter() != null && audioUsage < audioUsageSpinner.getAdapter().getCount()) {
+            audioUsageSpinner.setSelection(audioUsage);
+        } else {
+            audioUsageSpinner.setSelection(DEFAULT_AUDIO_USAGE);
+            InAppLogger.log("VoiceSettings", "Audio usage index out of bounds, using default: " + DEFAULT_AUDIO_USAGE);
+        }
         
         int contentType = sharedPreferences.getInt(KEY_CONTENT_TYPE, DEFAULT_CONTENT_TYPE);
-        contentTypeSpinner.setSelection(contentType);
+        if (contentTypeSpinner.getAdapter() != null && contentType < contentTypeSpinner.getAdapter().getCount()) {
+            contentTypeSpinner.setSelection(contentType);
+        } else {
+            contentTypeSpinner.setSelection(DEFAULT_CONTENT_TYPE);
+            InAppLogger.log("VoiceSettings", "Content type index out of bounds, using default: " + DEFAULT_CONTENT_TYPE);
+        }
     }
 
+    /**
+     * Updates the TTS instance with current UI settings.
+     * CRITICAL: This method respects the voice override logic - if a specific voice is selected,
+     * it completely overrides any language setting. This ensures the "Specific Voice" option
+     * always takes precedence over "Language & Region" as intended by the user.
+     * 
+     * This method is called during TTS initialization and when resetting to defaults.
+     */
     private void updateUIWithCurrentSettings() {
         if (!isTtsReady) return;
 
-        // Apply current settings to TTS
+        // Apply speech rate and pitch (these don't conflict with voice/language settings)
         textToSpeech.setSpeechRate(currentSpeechRate);
         textToSpeech.setPitch(currentPitch);
         
-        if (currentLanguage != null) {
-            textToSpeech.setLanguage(currentLanguage);
-        }
-        
+        // CRITICAL: Apply voice settings with proper override logic
+        // The order matters - specific voice should override language setting
         if (currentVoice != null) {
-            textToSpeech.setVoice(currentVoice);
+            // Specific voice selected - apply it and skip language setting entirely
+            // This ensures the user's voice choice is always respected
+            int voiceResult = textToSpeech.setVoice(currentVoice);
+            InAppLogger.log("VoiceSettings", "UI Update: Specific voice applied: " + currentVoice.getName() + " (result: " + voiceResult + ")");
+        } else if (currentLanguage != null) {
+            // No specific voice selected - apply language setting as fallback
+            // This only happens when user hasn't chosen a specific voice
+            int langResult = textToSpeech.setLanguage(currentLanguage);
+            InAppLogger.log("VoiceSettings", "UI Update: Language applied: " + currentLanguage.toString() + " (result: " + langResult + ")");
         }
     }
 
@@ -450,27 +708,48 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         
         InAppLogger.log("VoiceSettings", "Voice preview played - Rate: " + currentSpeechRate + ", Pitch: " + currentPitch);
     }
+    
 
+
+    /**
+     * Applies the current UI settings to the TTS instance for preview.
+     * CRITICAL: This method implements the voice override logic for the preview button.
+     * If a specific voice is successfully selected, it completely overrides the language setting.
+     * This ensures the preview matches exactly what will happen during actual notifications.
+     */
     private void applyCurrentUISettings() {
-        // Apply speech rate and pitch
+        // Apply speech rate and pitch (these don't conflict with voice/language settings)
         textToSpeech.setSpeechRate(currentSpeechRate);
         textToSpeech.setPitch(currentPitch);
 
-        // Apply selected voice
+        // CRITICAL: Apply selected voice with override logic
+        // Check if user selected a specific voice (not the "Default" option)
         int voicePosition = voiceSpinner.getSelectedItemPosition();
+        boolean specificVoiceSelected = false;
         if (voicePosition > 0 && (voicePosition - 1) < availableVoices.size()) {
-            // Subtract 1 because position 0 is "Default" option
+            // Subtract 1 because position 0 is "Default (Use Language Setting)" option
             currentVoice = availableVoices.get(voicePosition - 1);
-            textToSpeech.setVoice(currentVoice);
+            int voiceResult = textToSpeech.setVoice(currentVoice);
+            specificVoiceSelected = (voiceResult == TextToSpeech.SUCCESS);
+            InAppLogger.log("VoiceSettings", "Preview: Specific voice set to: " + currentVoice.getName() + " (result: " + voiceResult + ", success: " + specificVoiceSelected + ")");
         } else {
-            currentVoice = null; // Default option selected
+            currentVoice = null; // Default option selected - will use language setting
         }
 
-        // Apply selected language
-        int languagePosition = languageSpinner.getSelectedItemPosition();
-        if (languagePosition >= 0 && languagePosition < availableLanguages.size()) {
-            currentLanguage = availableLanguages.get(languagePosition);
-            textToSpeech.setLanguage(currentLanguage);
+        // CRITICAL: Apply language setting ONLY if no specific voice was successfully selected
+        // This implements the override logic - specific voice takes complete precedence
+        if (!specificVoiceSelected) {
+            // No specific voice or voice selection failed - fall back to language setting
+            int languagePosition = languageSpinner.getSelectedItemPosition();
+            if (languagePosition >= 0 && languagePosition < availableLanguages.size()) {
+                currentLanguage = availableLanguages.get(languagePosition);
+                int langResult = textToSpeech.setLanguage(currentLanguage);
+                InAppLogger.log("VoiceSettings", "Preview: Language set to: " + currentLanguage.toString() + " (result: " + langResult + ")");
+            }
+        } else {
+            // Specific voice was successfully applied - skip language setting entirely
+            // This ensures the voice choice is not overridden by language setting
+            InAppLogger.log("VoiceSettings", "Preview: Skipping language setting - specific voice overrides it");
         }
 
         // Apply TTS language (this is separate from the TTS engine language)
@@ -637,19 +916,42 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         layoutAdvancedVoiceSection.setVisibility(View.GONE);
         sharedPreferences.edit().putBoolean(KEY_SHOW_ADVANCED, false).apply();
 
-        // Reset audio settings
-        audioUsageSpinner.setSelection(DEFAULT_AUDIO_USAGE);
-        contentTypeSpinner.setSelection(DEFAULT_CONTENT_TYPE);
+        // Reset audio settings with bounds checking
+        if (audioUsageSpinner.getAdapter() != null && DEFAULT_AUDIO_USAGE < audioUsageSpinner.getAdapter().getCount()) {
+            audioUsageSpinner.setSelection(DEFAULT_AUDIO_USAGE);
+        } else {
+            audioUsageSpinner.setSelection(0); // Fallback to first option
+            InAppLogger.log("VoiceSettings", "Reset: Audio usage default out of bounds, using index 0");
+        }
+        
+        if (contentTypeSpinner.getAdapter() != null && DEFAULT_CONTENT_TYPE < contentTypeSpinner.getAdapter().getCount()) {
+            contentTypeSpinner.setSelection(DEFAULT_CONTENT_TYPE);
+        } else {
+            contentTypeSpinner.setSelection(0); // Fallback to first option
+            InAppLogger.log("VoiceSettings", "Reset: Content type default out of bounds, using index 0");
+        }
 
         updateUIWithCurrentSettings();
         Toast.makeText(this, "Settings reset to defaults", Toast.LENGTH_SHORT).show();
         InAppLogger.log("VoiceSettings", "Settings reset to defaults");
     }
 
-    // Public method to get current settings for use by NotificationReaderService
+    /**
+     * CRITICAL: Public method to apply voice settings to any TTS instance.
+     * This is the main method used by NotificationReaderService and other components.
+     * 
+     * IMPLEMENTATION DETAILS:
+     * 1. If a specific voice is selected, it completely overrides any language setting
+     * 2. If no specific voice, falls back to language setting
+     * 3. If no language setting, uses system default
+     * 4. If system default fails, falls back to US English
+     * 
+     * This ensures consistent behavior across all app components.
+     */
     public static void applyVoiceSettings(TextToSpeech tts, SharedPreferences prefs) {
         if (tts == null || prefs == null) return;
 
+        // Load all voice settings from preferences
         float speechRate = prefs.getFloat(KEY_SPEECH_RATE, DEFAULT_SPEECH_RATE);
         float pitch = prefs.getFloat(KEY_PITCH, DEFAULT_PITCH);
         String voiceName = prefs.getString(KEY_VOICE_NAME, "");
@@ -657,12 +959,21 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
         InAppLogger.log("VoiceSettings", "Applying voice settings - Rate: " + speechRate + ", Pitch: " + pitch + ", Voice: " + voiceName + ", Language: " + language);
 
+        // Apply speech rate and pitch (these don't conflict with voice/language settings)
         tts.setSpeechRate(speechRate);
         tts.setPitch(pitch);
 
-        // Apply language setting if we have one
+        // CRITICAL: Apply language setting with proper override logic
+        // The order is important - check for specific voice first, then fall back to language
         boolean languageApplied = false;
-        if (!language.isEmpty() && !language.equals("")) {
+        if (!voiceName.isEmpty()) {
+            // CRITICAL: Skip language setting if we have a specific voice
+            // The specific voice will completely override any language setting
+            // This ensures the user's voice choice is always respected
+            InAppLogger.log("VoiceSettings", "Skipping language setting - specific voice will override it");
+        } else if (!language.isEmpty() && !language.equals("")) {
+            // No specific voice selected - apply the language setting
+            // Parse language string (e.g., "en_US" -> Locale("en", "US"))
             Locale targetLocale = null;
             String[] langParts = language.split("_");
             if (langParts.length >= 2) {
@@ -676,35 +987,86 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             int langResult = tts.setLanguage(targetLocale);
             languageApplied = (langResult == TextToSpeech.LANG_AVAILABLE || langResult == TextToSpeech.LANG_COUNTRY_AVAILABLE || langResult == TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE);
             InAppLogger.log("VoiceSettings", "Language set to: " + targetLocale.toString() + " (result: " + langResult + ", success: " + languageApplied + ")");
+        } else {
+            // No specific voice and no language setting - use system default as fallback
+            int langResult = tts.setLanguage(Locale.getDefault());
+            languageApplied = (langResult == TextToSpeech.LANG_AVAILABLE || langResult == TextToSpeech.LANG_COUNTRY_AVAILABLE || langResult == TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE);
+            InAppLogger.log("VoiceSettings", "Using system default language: " + Locale.getDefault().toString() + " (result: " + langResult + ", success: " + languageApplied + ")");
+            
+            // CRITICAL: If system default fails, fallback to US English
+            // This ensures the app always has a working language setting
+            if (!languageApplied) {
+                InAppLogger.log("VoiceSettings", "System default language failed, falling back to US English");
+                tts.setLanguage(Locale.US);
+            }
         }
 
-        // Apply specific voice if we have one (this may override the language setting, which is intended)
+        // CRITICAL: Apply specific voice if we have one
+        // This completely overrides any language setting that was applied above
+        // This is the core of the voice override feature
         boolean voiceApplied = false;
         if (!voiceName.isEmpty()) {
             Set<Voice> voices = tts.getVoices();
             if (voices != null) {
+                // Enhanced logging for voice debugging
+                InAppLogger.log("VoiceSettings", "Attempting to set voice: " + voiceName);
+                InAppLogger.log("VoiceSettings", "Total available voices: " + voices.size());
+                
+                // CRITICAL: Try to find and set the exact voice
+                // This will override any language setting that was applied earlier
                 for (Voice voice : voices) {
                     if (voice.getName().equals(voiceName)) {
                         int voiceResult = tts.setVoice(voice);
                         voiceApplied = (voiceResult == TextToSpeech.SUCCESS);
                         InAppLogger.log("VoiceSettings", "Specific voice set to: " + voice.getName() + " (result: " + voiceResult + ", success: " + voiceApplied + ")");
                         if (voiceApplied) {
+                            // CRITICAL: This is the key message - specific voice overrides language
                             InAppLogger.log("VoiceSettings", "Note: Specific voice overrides language setting");
+                        } else {
+                            InAppLogger.log("VoiceSettings", "WARNING: Voice selection failed despite finding the voice");
                         }
                         break;
                     }
                 }
+                
+                // CRITICAL: If exact voice not found, try language-based fallback
+                // This provides a robust fallback system for when specific voices are unavailable
                 if (!voiceApplied) {
                     InAppLogger.log("VoiceSettings", "Specific voice not found: " + voiceName + " (available voices: " + voices.size() + ")");
+                    
+                    // Extract language from voice name for intelligent fallback
+                    // This allows us to find any voice with the same language
+                    String fallbackLanguage = extractLanguageFromVoiceName(voiceName);
+                    if (fallbackLanguage != null) {
+                        InAppLogger.log("VoiceSettings", "Attempting language fallback for: " + fallbackLanguage);
+                        
+                        // CRITICAL: Try to find any voice with the same language
+                        // This ensures users still get a voice in their preferred language
+                        for (Voice voice : voices) {
+                            if (voice.getLocale() != null && voice.getLocale().getLanguage().equals(fallbackLanguage)) {
+                                int fallbackResult = tts.setVoice(voice);
+                                if (fallbackResult == TextToSpeech.SUCCESS) {
+                                    InAppLogger.log("VoiceSettings", "Language fallback voice applied: " + voice.getName() + " (Language: " + fallbackLanguage + ")");
+                                    voiceApplied = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!voiceApplied) {
+                            InAppLogger.log("VoiceSettings", "No fallback voice found for language: " + fallbackLanguage);
+                        }
+                    }
                 }
             } else {
                 InAppLogger.log("VoiceSettings", "No voices available from TTS engine");
             }
         }
         
-        // Log what was actually applied
+        // CRITICAL: Log the final result of voice settings application
+        // This helps with debugging and confirms the override logic is working
         if (voiceApplied) {
-            InAppLogger.log("VoiceSettings", "Final result: Using specific voice (" + voiceName + ")");
+            // CRITICAL: This confirms the voice override is working
+            InAppLogger.log("VoiceSettings", "Final result: Using specific voice (" + voiceName + ") - language setting ignored");
         } else if (languageApplied) {
             InAppLogger.log("VoiceSettings", "Final result: Using language setting (" + language + ")");
         } else {
@@ -780,6 +1142,76 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 .show();
                 
         InAppLogger.log("VoiceSettings", "Audio help dialog shown");
+    }
+
+    /**
+     * Shows comprehensive information about advanced voice options.
+     * This dialog educates users about different voice types, their implications,
+     * and important warnings before they rely on specific voices.
+     * 
+     * The dialog explains:
+     * - Different voice types (Local, Network, Enhanced, Compact)
+     * - Storage and performance implications
+     * - Important warnings about network requirements
+     * - Recommendations for different use cases
+     * - How the voice override system works
+     */
+    private void showVoiceInfoDialog() {
+        String infoText = "🎯 Advanced Voice Types Explained\n\n" +
+                
+                "🔹 Local Voices (High Quality)\n" +
+                "• Stored on your device\n" +
+                "• Work offline\n" +
+                "• Fast and reliable\n" +
+                "• Limited selection\n" +
+                "• No data usage\n\n" +
+                
+                "🌐 Network Voices\n" +
+                "• Downloaded on-demand\n" +
+                "• Require internet for first use\n" +
+                "• Cached locally after download\n" +
+                "• Much larger selection\n" +
+                "• ~10-50MB per voice\n\n" +
+                
+                "⚡ Enhanced Voices\n" +
+                "• Higher quality than standard\n" +
+                "• May use more processing power\n" +
+                "• Better pronunciation\n" +
+                "• Larger file size\n\n" +
+                
+                "📱 Compact Voices\n" +
+                "• Smaller file size\n" +
+                "• Faster loading\n" +
+                "• Good for older devices\n" +
+                "• Slightly lower quality\n\n" +
+                
+                "⚠️ Important Warnings\n" +
+                "• Network voices require internet for first download\n" +
+                "• Large voices may take time to download\n" +
+                "• Some voices may not work on all devices\n" +
+                "• Voice quality varies by device and Android version\n\n" +
+                
+                "💡 Recommendations\n" +
+                "• Start with Language setting (simpler)\n" +
+                "• Try Local voices first (reliable)\n" +
+                "• Network voices for more options\n" +
+                "• Test voices before relying on them\n" +
+                "• Reset settings if you have issues\n\n" +
+                
+                "🔄 How It Works\n" +
+                "• Specific Voice completely overrides Language setting\n" +
+                "• Voice settings apply to all notifications\n" +
+                "• Changes take effect immediately\n" +
+                "• Settings are saved automatically";
+
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Advanced Voice Information")
+                .setMessage(infoText)
+                .setPositiveButton("Got it", null)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
+                
+        InAppLogger.log("VoiceSettings", "Voice info dialog shown");
     }
 
     @Override

@@ -320,18 +320,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
-            val result = textToSpeech?.setLanguage(Locale.getDefault())
-            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                Log.e(TAG, "Language not supported for TTS")
-                InAppLogger.logTTSEvent("Language not supported", Locale.getDefault().toString())
-                // Fallback to English US
-                textToSpeech?.setLanguage(Locale.US)
-                InAppLogger.logTTSEvent("Fallback to English US")
-            } else {
-                InAppLogger.logTTSEvent("Language set successfully", Locale.getDefault().toString())
-            }
-            
-            // Apply saved voice settings
+            // Apply saved voice settings (which will handle language/voice selection)
             applyVoiceSettings()
             
             isTtsInitialized = true

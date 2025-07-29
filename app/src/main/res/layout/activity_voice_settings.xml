@@ -375,13 +375,35 @@
                             android:layout_marginBottom="4dp"
                             android:textColor="@color/text_primary" />
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Select a specific voice engine. This overrides the language setting above. ⚠️ For advanced users only."
-                            android:textSize="14sp"
-                            android:textColor="@color/text_secondary"
-                            android:layout_marginBottom="8dp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="8dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Select a specific voice engine. This overrides the language setting above. ⚠️ For advanced users only."
+                                android:textSize="14sp"
+                                android:textColor="@color/text_secondary" />
+
+                            <Button
+                                android:id="@+id/btnVoiceInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ℹ️"
+                                android:textSize="16sp"
+                                android:minWidth="48dp"
+                                android:minHeight="48dp"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:padding="8dp"
+                                android:layout_marginStart="8dp"
+                                style="@style/Widget.Material3.Button.TextButton" />
+
+                        </LinearLayout>
 
                         <Spinner
                             android:id="@+id/voiceSpinner"

@@ -79,12 +79,6 @@ class AboutActivity : AppCompatActivity() {
         if (textToSpeech == null) {
             textToSpeech = TextToSpeech(this) { status ->
                 if (status == TextToSpeech.SUCCESS) {
-                    val result = textToSpeech?.setLanguage(Locale.getDefault())
-                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        Toast.makeText(this, "TTS language not supported", Toast.LENGTH_SHORT).show()
-                        return@TextToSpeech
-                    }
-                    
                     // Set audio stream to assistant usage to avoid triggering media detection
                     textToSpeech?.setAudioAttributes(
                         android.media.AudioAttributes.Builder()
@@ -93,7 +87,7 @@ class AboutActivity : AppCompatActivity() {
                             .build()
                     )
                     
-                    // Apply saved voice settings
+                    // Apply saved voice settings (which will handle language/voice selection)
                     applyVoiceSettings()
                     
                     // Set up utterance progress listener

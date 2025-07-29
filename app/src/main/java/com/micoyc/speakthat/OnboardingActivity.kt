@@ -91,12 +91,6 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
-            val result = textToSpeech?.setLanguage(Locale.getDefault())
-            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                // Fallback to English US
-                textToSpeech?.setLanguage(Locale.US)
-            }
-            
             // Set audio stream to assistant usage to avoid triggering media detection
             textToSpeech?.setAudioAttributes(
                 android.media.AudioAttributes.Builder()
@@ -105,7 +99,7 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     .build()
             )
             
-            // Apply saved voice settings
+            // Apply saved voice settings (which will handle language/voice selection)
             applyVoiceSettings()
             
             isTtsInitialized = true
