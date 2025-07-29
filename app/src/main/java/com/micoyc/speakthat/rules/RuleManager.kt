@@ -29,6 +29,85 @@ class RuleManager(private val context: Context) {
     private val actionExecutor = ActionExecutor(context)
     
     // ============================================================================
+    // CACHING SYSTEM
+    // ============================================================================
+    
+    @Volatile
+    private var cachedRules: List<Rule>? = null
+    private var lastCacheTime: Long = 0L
+    private val cacheValidityDuration = 5000L // 5 seconds cache validity
+    
+    // Evaluation result caching for single notification processing
+    private var lastEvaluationResults: List<RuleEvaluationResult>? = null
+    private var lastEvaluationTime: Long = 0L
+    private val evaluationCacheDuration = 1000L // 1 second for evaluation results
+    
+    /**
+     * Get rules with caching - only loads from storage if cache is stale
+     */
+    private fun getRulesWithCache(): List<Rule> {
+        val currentTime = System.currentTimeMillis()
+        
+        // Return cached rules if they're still valid
+        if (cachedRules != null && (currentTime - lastCacheTime) < cacheValidityDuration) {
+            return cachedRules!!
+        }
+        
+        // Cache is stale or null, reload from storage
+        val rules = loadRulesFromStorage()
+        cachedRules = rules
+        lastCacheTime = currentTime
+        
+        InAppLogger.logDebug(TAG, "Cache refreshed - loaded ${rules.size} rules from storage")
+        return rules
+    }
+    
+    /**
+     * Invalidate the cache - forces next call to reload from storage
+     */
+    private fun invalidateCache() {
+        cachedRules = null
+        lastCacheTime = 0L
+        lastEvaluationResults = null // Also invalidate evaluation cache
+        lastEvaluationTime = 0L
+        InAppLogger.logDebug(TAG, "Cache invalidated")
+    }
+    
+    /**
+     * Load rules directly from storage (bypasses cache)
+     */
+    private fun loadRulesFromStorage(): List<Rule> {
+        val rulesJson = sharedPreferences.getString(KEY_RULES_LIST, "[]")
+        return try {
+            val type = object : TypeToken<List<Rule>>() {}.type
+            val rules = gson.fromJson<List<Rule>>(rulesJson, type) ?: emptyList()
+            InAppLogger.logDebug(TAG, "Loaded ${rules.size} rules from storage")
+            rules
+        } catch (e: Throwable) {
+            InAppLogger.logError(TAG, "Error loading rules: ${e.message}")
+            emptyList()
+        }
+    }
+    
+    /**
+     * Preload the cache - useful for initialization
+     */
+    fun preloadCache() {
+        getRulesWithCache()
+        InAppLogger.logDebug(TAG, "Cache preloaded")
+    }
+    
+    /**
+     * Invalidate only the evaluation cache (keeps rule cache)
+     * Useful when conditions might have changed but rules haven't
+     */
+    fun invalidateEvaluationCache() {
+        lastEvaluationResults = null
+        lastEvaluationTime = 0L
+        InAppLogger.logDebug(TAG, "Evaluation cache invalidated")
+    }
+    
+    // ============================================================================
     // MASTER TOGGLE
     // ============================================================================
     
@@ -57,23 +136,15 @@ class RuleManager(private val context: Context) {
     fun saveRules(rules: List<Rule>) {
         val rulesJson = gson.toJson(rules)
         sharedPreferences.edit().putString(KEY_RULES_LIST, rulesJson).apply()
+        invalidateCache() // Invalidate cache after saving
         InAppLogger.logDebug(TAG, "Saved ${rules.size} rules to storage")
     }
     
     /**
-     * Load all rules from persistent storage
+     * Load all rules from persistent storage (with caching)
      */
     fun loadRules(): List<Rule> {
-        val rulesJson = sharedPreferences.getString(KEY_RULES_LIST, "[]")
-        return try {
-            val type = object : TypeToken<List<Rule>>() {}.type
-            val rules = gson.fromJson<List<Rule>>(rulesJson, type) ?: emptyList()
-            InAppLogger.logDebug(TAG, "Loaded ${rules.size} rules from storage")
-            rules
-        } catch (e: Throwable) {
-            InAppLogger.logError(TAG, "Error loading rules: ${e.message}")
-            emptyList()
-        }
+        return getRulesWithCache()
     }
     
     /**
@@ -152,7 +223,7 @@ class RuleManager(private val context: Context) {
     // ============================================================================
     
     /**
-     * Evaluate all enabled rules and return the results
+     * Evaluate all enabled rules and return the results (with caching)
      */
     fun evaluateAllRules(): List<RuleEvaluationResult> {
         if (!isRulesEnabled()) {
@@ -160,12 +231,27 @@ class RuleManager(private val context: Context) {
             return emptyList()
         }
         
+        val currentTime = System.currentTimeMillis()
+        
+        // Return cached evaluation results if they're still valid
+        if (lastEvaluationResults != null && (currentTime - lastEvaluationTime) < evaluationCacheDuration) {
+            InAppLogger.logDebug(TAG, "Using cached evaluation results (${lastEvaluationResults!!.size} rules)")
+            return lastEvaluationResults!!
+        }
+        
+        // Cache is stale or null, perform fresh evaluation
         val enabledRules = getEnabledRules()
         InAppLogger.logDebug(TAG, "Evaluating ${enabledRules.size} enabled rules")
         
-        return enabledRules.map { rule ->
+        val results = enabledRules.map { rule ->
             ruleEvaluator.evaluateRule(rule)
         }
+        
+        // Cache the results
+        lastEvaluationResults = results
+        lastEvaluationTime = currentTime
+        
+        return results
     }
     
     /**

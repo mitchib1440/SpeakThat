@@ -193,11 +193,24 @@ class RuleEvaluator(private val context: Context) {
         
         InAppLogger.logDebug(TAG, "Evaluating trigger: ${trigger.getLogMessage()}")
         
-        return when (trigger.type) {
+        // Get the base evaluation result
+        val baseResult = when (trigger.type) {
             TriggerType.BLUETOOTH_DEVICE -> evaluateBluetoothTrigger(trigger)
             TriggerType.SCREEN_STATE -> evaluateScreenStateTrigger(trigger)
             TriggerType.TIME_SCHEDULE -> evaluateTimeScheduleTrigger(trigger)
             TriggerType.WIFI_NETWORK -> evaluateWifiNetworkTrigger(trigger)
+        }
+        
+        // Apply inversion if needed
+        return if (trigger.inverted) {
+            InAppLogger.logDebug(TAG, "Inverting trigger result: ${baseResult.success} -> ${!baseResult.success}")
+            EvaluationResult(
+                success = !baseResult.success,
+                message = "INVERTED: ${baseResult.message}",
+                data = baseResult.data
+            )
+        } else {
+            baseResult
         }
     }
     
@@ -263,11 +276,24 @@ class RuleEvaluator(private val context: Context) {
         
         InAppLogger.logDebug(TAG, "Evaluating exception: ${exception.getLogMessage()}")
         
-        return when (exception.type) {
+        // Get the base evaluation result
+        val baseResult = when (exception.type) {
             ExceptionType.BLUETOOTH_DEVICE -> evaluateBluetoothException(exception)
             ExceptionType.SCREEN_STATE -> evaluateScreenStateException(exception)
             ExceptionType.TIME_SCHEDULE -> evaluateTimeScheduleException(exception)
             ExceptionType.WIFI_NETWORK -> evaluateWifiNetworkException(exception)
+        }
+        
+        // Apply inversion if needed
+        return if (exception.inverted) {
+            InAppLogger.logDebug(TAG, "Inverting exception result: ${baseResult.success} -> ${!baseResult.success}")
+            EvaluationResult(
+                success = !baseResult.success,
+                message = "INVERTED: ${baseResult.message}",
+                data = baseResult.data
+            )
+        } else {
+            baseResult
         }
     }
     
@@ -280,13 +306,14 @@ class RuleEvaluator(private val context: Context) {
             InAppLogger.logDebug(TAG, "Evaluating Bluetooth trigger: ${trigger.getLogMessage()}")
             InAppLogger.logDebug(TAG, "Trigger data: ${trigger.data}")
             
+            // Step 1: Check Bluetooth availability and permissions
             val bluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
             
             if (bluetoothAdapter == null) {
                 InAppLogger.logDebug(TAG, "Bluetooth not available on this device")
                 return EvaluationResult(
                     success = false,
-                    message = "Bluetooth not available"
+                    message = "Bluetooth not available on this device"
                 )
             }
             
@@ -298,7 +325,18 @@ class RuleEvaluator(private val context: Context) {
                 )
             }
             
-            // Get required device addresses from trigger data
+            // Step 2: Check Bluetooth permissions
+            val hasPermissions = checkBluetoothPermissions()
+            if (!hasPermissions) {
+                InAppLogger.logDebug(TAG, "Bluetooth permissions not granted - requesting permissions")
+                requestBluetoothPermissions()
+                return EvaluationResult(
+                    success = false,
+                    message = "Bluetooth permissions required"
+                )
+            }
+            
+            // Step 3: Get required device addresses from trigger data
             val deviceAddressesData = trigger.data["device_addresses"]
             val requiredDevices = when (deviceAddressesData) {
                 is Set<*> -> deviceAddressesData.mapNotNull { it as? String }.toSet()
@@ -307,68 +345,13 @@ class RuleEvaluator(private val context: Context) {
             }
             InAppLogger.logDebug(TAG, "Required devices from trigger data: $requiredDevices")
             
+            // Step 4: Handle "any device" vs "specific device" logic
             if (requiredDevices.isEmpty()) {
-                InAppLogger.logDebug(TAG, "No specific devices required, checking if any device is connected")
-                // Check if any device is connected
-                val connectedDevices = bluetoothAdapter.bondedDevices
-                val hasConnectedDevice = connectedDevices.any { device ->
-                    device.bondState == android.bluetooth.BluetoothDevice.BOND_BONDED
-                }
-                
-                InAppLogger.logDebug(TAG, "Any device connected check: $hasConnectedDevice")
-                return EvaluationResult(
-                    success = hasConnectedDevice,
-                    message = if (hasConnectedDevice) "Bluetooth device connected" else "No Bluetooth device connected"
-                )
+                InAppLogger.logDebug(TAG, "No specific devices required - checking if ANY Bluetooth device is connected")
+                return evaluateAnyBluetoothDevice()
             } else {
-                // Check for specific devices - now using proper connection detection
-                val bondedDevices = bluetoothAdapter.bondedDevices
-                val bondedAddresses = bondedDevices.map { it.address }.toSet()
-                
-                // Try to get actively connected devices using BluetoothManager
-                val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as android.bluetooth.BluetoothManager
-                val connectedDevices = try {
-                    val allConnectedDevices = mutableSetOf<android.bluetooth.BluetoothDevice>()
-                    
-                    // Try multiple Bluetooth profiles to catch different types of devices
-                    val profiles = listOf(
-                        android.bluetooth.BluetoothProfile.A2DP,      // Audio devices
-                        android.bluetooth.BluetoothProfile.HEADSET    // Headset devices
-                    )
-                    
-                    for (profile in profiles) {
-                        try {
-                            val devices = bluetoothManager.getConnectedDevices(profile)
-                            allConnectedDevices.addAll(devices)
-                            InAppLogger.logDebug(TAG, "Profile $profile: ${devices.map { it.address }}")
-                        } catch (e: Throwable) {
-                            InAppLogger.logDebug(TAG, "Profile $profile not supported: ${e.message}")
-                        }
-                    }
-                    
-                    allConnectedDevices.toSet()
-                } catch (e: Throwable) {
-                    InAppLogger.logDebug(TAG, "Could not get connected devices via BluetoothManager: ${e.message}")
-                    emptySet()
-                }
-                
-                val connectedAddresses = connectedDevices.map { it.address }.toSet()
-                val requiredConnected = requiredDevices.any { it in connectedAddresses }
-                
-                InAppLogger.logDebug(TAG, "Required devices: $requiredDevices")
-                InAppLogger.logDebug(TAG, "Bonded devices: $bondedAddresses")
-                InAppLogger.logDebug(TAG, "Actively connected devices: $connectedAddresses")
-                InAppLogger.logDebug(TAG, "Match: $requiredConnected")
-                
-                return EvaluationResult(
-                    success = requiredConnected,
-                    message = if (requiredConnected) "Required Bluetooth device is actively connected" else "Required Bluetooth device is not actively connected",
-                    data = mapOf(
-                        "required_devices" to requiredDevices,
-                        "bonded_devices" to bondedAddresses,
-                        "connected_devices" to connectedAddresses
-                    )
-                )
+                InAppLogger.logDebug(TAG, "Specific devices required - checking for: $requiredDevices")
+                return evaluateSpecificBluetoothDevices(requiredDevices)
             }
             
         } catch (e: Throwable) {
@@ -377,6 +360,259 @@ class RuleEvaluator(private val context: Context) {
                 success = false,
                 message = "Bluetooth evaluation error: ${e.message}"
             )
+        }
+    }
+    
+    /**
+     * Check if the app has the necessary Bluetooth permissions
+     */
+    private fun checkBluetoothPermissions(): Boolean {
+        return try {
+            val hasConnect = context.checkSelfPermission(android.Manifest.permission.BLUETOOTH_CONNECT) == android.content.pm.PackageManager.PERMISSION_GRANTED
+            val hasScan = context.checkSelfPermission(android.Manifest.permission.BLUETOOTH_SCAN) == android.content.pm.PackageManager.PERMISSION_GRANTED
+            val hasBluetooth = context.checkSelfPermission(android.Manifest.permission.BLUETOOTH) == android.content.pm.PackageManager.PERMISSION_GRANTED
+            
+            InAppLogger.logDebug(TAG, "Bluetooth permissions - CONNECT: $hasConnect, SCAN: $hasScan, BLUETOOTH: $hasBluetooth")
+            
+            // For Android 12+ (API 31+), we need BLUETOOTH_CONNECT
+            // For older versions, we need BLUETOOTH
+            val hasRequiredPermissions = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                hasConnect
+            } else {
+                hasBluetooth
+            }
+            
+            InAppLogger.logDebug(TAG, "Required Bluetooth permissions granted: $hasRequiredPermissions")
+            hasRequiredPermissions
+            
+        } catch (e: Throwable) {
+            InAppLogger.logError(TAG, "Error checking Bluetooth permissions: ${e.message}")
+            false
+        }
+    }
+    
+    /**
+     * Request Bluetooth permissions (this will be handled by the UI layer)
+     */
+    private fun requestBluetoothPermissions() {
+        InAppLogger.logDebug(TAG, "Bluetooth permissions need to be requested by the UI layer")
+        // Note: This method is called from the service context, so we can't directly request permissions
+        // The UI layer should handle permission requests when the user configures Bluetooth triggers
+    }
+    
+    /**
+     * Evaluate if ANY Bluetooth device is connected (when no specific devices are required)
+     */
+    private fun evaluateAnyBluetoothDevice(): EvaluationResult {
+        InAppLogger.logDebug(TAG, "=== EVALUATING ANY BLUETOOTH DEVICE ===")
+        
+        // Method 1: Try to get actively connected devices via BluetoothManager
+        val connectedDevices = getActivelyConnectedDevices()
+        val connectedAddresses = connectedDevices.map { it.address }.toSet()
+        
+        if (connectedAddresses.isNotEmpty()) {
+            InAppLogger.logDebug(TAG, "Method 1 SUCCESS: Found ${connectedAddresses.size} actively connected devices: $connectedAddresses")
+            return EvaluationResult(
+                success = true,
+                message = "Bluetooth device is actively connected",
+                data = mapOf(
+                    "detection_method" to "active_connection",
+                    "connected_devices" to connectedAddresses
+                )
+            )
+        }
+        
+        // Method 2: Check if any bonded device is connected via audio routing
+        val anyDeviceConnected = checkAnyBondedDeviceConnected()
+        if (anyDeviceConnected) {
+            InAppLogger.logDebug(TAG, "Method 2 SUCCESS: Found bonded device with active audio routing")
+            return EvaluationResult(
+                success = true,
+                message = "Bluetooth device is connected (detected via audio routing)",
+                data = mapOf(
+                    "detection_method" to "audio_routing_fallback"
+                )
+            )
+        }
+        
+        InAppLogger.logDebug(TAG, "ALL METHODS FAILED: No Bluetooth device is actively connected (paired/bonded devices are NOT considered connected)")
+        return EvaluationResult(
+            success = false,
+            message = "No Bluetooth device is actively connected",
+            data = mapOf(
+                "detection_method" to "all_methods_failed"
+            )
+        )
+    }
+    
+    /**
+     * Evaluate if specific Bluetooth devices are connected
+     */
+    private fun evaluateSpecificBluetoothDevices(requiredDevices: Set<String>): EvaluationResult {
+        InAppLogger.logDebug(TAG, "=== EVALUATING SPECIFIC BLUETOOTH DEVICES ===")
+        InAppLogger.logDebug(TAG, "Required devices: $requiredDevices")
+        
+        // Method 1: Try to get actively connected devices via BluetoothManager
+        val connectedDevices = getActivelyConnectedDevices()
+        val connectedAddresses = connectedDevices.map { it.address }.toSet()
+        
+        // Check if any required device is actively connected
+        val specificDeviceConnected = requiredDevices.any { it in connectedAddresses }
+        if (specificDeviceConnected) {
+            val connectedRequiredDevices = requiredDevices.intersect(connectedAddresses)
+            InAppLogger.logDebug(TAG, "Method 1 SUCCESS: Required device(s) actively connected: $connectedRequiredDevices")
+            return EvaluationResult(
+                success = true,
+                message = "Required Bluetooth device is actively connected",
+                data = mapOf(
+                    "detection_method" to "active_connection",
+                    "connected_required_devices" to connectedRequiredDevices,
+                    "all_connected_devices" to connectedAddresses
+                )
+            )
+        }
+        
+        // Method 2: Check if any required device is bonded and has active audio routing
+        val specificDeviceConnectedViaAudio = checkSpecificBondedDeviceConnected(requiredDevices)
+        if (specificDeviceConnectedViaAudio) {
+            InAppLogger.logDebug(TAG, "Method 2 SUCCESS: Required device connected via audio routing")
+            return EvaluationResult(
+                success = true,
+                message = "Required Bluetooth device is connected (detected via audio routing)",
+                data = mapOf(
+                    "detection_method" to "audio_routing_fallback"
+                )
+            )
+        }
+        
+        InAppLogger.logDebug(TAG, "ALL METHODS FAILED: Required Bluetooth device is not connected (paired/bonded devices are NOT considered connected)")
+        return EvaluationResult(
+            success = false,
+            message = "Required Bluetooth device is not connected",
+            data = mapOf(
+                "detection_method" to "all_methods_failed",
+                "required_devices" to requiredDevices,
+                "connected_devices" to connectedAddresses
+            )
+        )
+    }
+    
+    /**
+     * Get actively connected Bluetooth devices using multiple detection methods
+     */
+    private fun getActivelyConnectedDevices(): Set<android.bluetooth.BluetoothDevice> {
+        InAppLogger.logDebug(TAG, "--- Getting actively connected devices ---")
+        
+        val allConnectedDevices = mutableSetOf<android.bluetooth.BluetoothDevice>()
+        
+        try {
+            val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as android.bluetooth.BluetoothManager
+            
+            // Try multiple Bluetooth profiles to catch different types of devices
+            val profiles = listOf(
+                android.bluetooth.BluetoothProfile.A2DP,      // Audio devices (music, podcasts)
+                android.bluetooth.BluetoothProfile.HEADSET    // Headset devices (calls)
+            )
+            
+            var profilesSupported = false
+            for (profile in profiles) {
+                try {
+                    val devices = bluetoothManager.getConnectedDevices(profile)
+                    allConnectedDevices.addAll(devices)
+                    profilesSupported = true
+                    InAppLogger.logDebug(TAG, "Profile $profile: ${devices.map { it.address }}")
+                    if (devices.isNotEmpty()) {
+                        InAppLogger.logDebug(TAG, "Profile $profile devices: ${devices.map { "${it.name} (${it.address})" }}")
+                    }
+                } catch (e: Throwable) {
+                    InAppLogger.logDebug(TAG, "Profile $profile not supported: ${e.message}")
+                }
+            }
+            
+            if (!profilesSupported) {
+                InAppLogger.logDebug(TAG, "WARNING: No Bluetooth profiles are supported on this device")
+                InAppLogger.logDebug(TAG, "This is a device limitation - will use fallback detection methods")
+            }
+            
+        } catch (e: Throwable) {
+            InAppLogger.logError(TAG, "Error getting connected devices via BluetoothManager: ${e.message}")
+        }
+        
+        InAppLogger.logDebug(TAG, "Total actively connected devices found: ${allConnectedDevices.size}")
+        return allConnectedDevices
+    }
+    
+    /**
+     * Check if any bonded device is connected via audio routing
+     */
+    private fun checkAnyBondedDeviceConnected(): Boolean {
+        InAppLogger.logDebug(TAG, "--- Checking if any bonded device is connected via audio routing ---")
+        
+        try {
+            val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as android.media.AudioManager
+            
+            // Check various audio routing indicators
+            val isBluetoothA2dpOn = audioManager.isBluetoothA2dpOn
+            val isBluetoothScoOn = audioManager.isBluetoothScoOn
+            val audioMode = audioManager.mode
+            
+            InAppLogger.logDebug(TAG, "Audio routing check - A2DP: $isBluetoothA2dpOn, SCO: $isBluetoothScoOn, Mode: $audioMode")
+            
+            // Consider connected if audio is being routed to Bluetooth
+            val isConnected = isBluetoothA2dpOn || isBluetoothScoOn || 
+                             audioMode == android.media.AudioManager.MODE_IN_COMMUNICATION ||
+                             audioMode == android.media.AudioManager.MODE_IN_CALL
+            
+            InAppLogger.logDebug(TAG, "Audio routing indicates Bluetooth connection: $isConnected")
+            return isConnected
+            
+        } catch (e: Throwable) {
+            InAppLogger.logError(TAG, "Error checking audio routing: ${e.message}")
+            return false
+        }
+    }
+    
+    /**
+     * Check if specific bonded devices are connected via audio routing
+     */
+    private fun checkSpecificBondedDeviceConnected(requiredDevices: Set<String>): Boolean {
+        InAppLogger.logDebug(TAG, "--- Checking if specific bonded devices are connected via audio routing ---")
+        
+        try {
+            val bluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
+            val bondedDevices = bluetoothAdapter?.bondedDevices ?: emptySet()
+            
+            // Check if any required device is in the bonded list
+            val matchingBondedDevices = bondedDevices.filter { device ->
+                requiredDevices.contains(device.address)
+            }
+            
+            if (matchingBondedDevices.isEmpty()) {
+                InAppLogger.logDebug(TAG, "No required devices found in bonded devices list")
+                return false
+            }
+            
+            InAppLogger.logDebug(TAG, "Found ${matchingBondedDevices.size} matching bonded devices: ${matchingBondedDevices.map { "${it.name} (${it.address})" }}")
+            
+            // Check if audio is being routed to Bluetooth
+            val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as android.media.AudioManager
+            val isBluetoothA2dpOn = audioManager.isBluetoothA2dpOn
+            val isBluetoothScoOn = audioManager.isBluetoothScoOn
+            val audioMode = audioManager.mode
+            
+            InAppLogger.logDebug(TAG, "Audio routing check - A2DP: $isBluetoothA2dpOn, SCO: $isBluetoothScoOn, Mode: $audioMode")
+            
+            // Consider connected if audio is being routed to Bluetooth
+            val isConnected = isBluetoothA2dpOn || isBluetoothScoOn || 
+                             audioMode == android.media.AudioManager.MODE_IN_COMMUNICATION ||
+                             audioMode == android.media.AudioManager.MODE_IN_CALL
+            
+            InAppLogger.logDebug(TAG, "Specific device audio routing check result: $isConnected")
+            return isConnected
+            
+        } catch (e: Throwable) {
+            InAppLogger.logError(TAG, "Error checking specific device audio routing: ${e.message}")
+            return false
         }
     }
     

@@ -20,6 +20,7 @@ class RulesActivity : AppCompatActivity() {
     private lateinit var ruleManager: RuleManager
     private lateinit var rulesAdapter: RulesAdapter
     private var hasShownExperimentalWarning = false
+    private var experimentalWarningDialog: AlertDialog? = null
     
     companion object {
         private const val PREFS_NAME = "SpeakThatPrefs"
@@ -141,11 +142,18 @@ class RulesActivity : AppCompatActivity() {
     }
     
     private fun showExperimentalFeatureWarning() {
-        AlertDialog.Builder(this)
+        // Dismiss any existing dialog first
+        experimentalWarningDialog?.dismiss()
+        
+        experimentalWarningDialog = AlertDialog.Builder(this)
             .setTitle("Experimental Feature")
             .setMessage("Rules are experimental. If you experience issues, you can disable them in settings. Your existing filters and privacy settings will always be respected.")
             .setPositiveButton("I Understand") { _, _ ->
                 InAppLogger.logUserAction("Experimental feature warning acknowledged")
+                experimentalWarningDialog = null
+            }
+            .setOnDismissListener {
+                experimentalWarningDialog = null
             }
             .show()
     }
@@ -189,6 +197,13 @@ class RulesActivity : AppCompatActivity() {
             // Revert the switch if update failed
             rulesAdapter.updateRule(rule)
         }
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        // Clean up dialog to prevent window leaks
+        experimentalWarningDialog?.dismiss()
+        experimentalWarningDialog = null
     }
     
     override fun onSupportNavigateUp(): Boolean {

@@ -29,6 +29,8 @@ class ExceptionConfigActivity : AppCompatActivity() {
         const val RESULT_EXCEPTION = "result_exception"
         private const val REQUEST_BLUETOOTH_PERMISSIONS = 2001
         private const val REQUEST_WIFI_PERMISSIONS = 2002
+        private const val PREFS_NAME = "SpeakThatPrefs"
+        private const val KEY_DARK_MODE = "dark_mode"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,8 +55,8 @@ class ExceptionConfigActivity : AppCompatActivity() {
     }
 
     private fun applySavedTheme() {
-        val sharedPrefs = getSharedPreferences("app_settings", MODE_PRIVATE)
-        val isDarkMode = sharedPrefs.getBoolean("dark_mode", false)
+        val sharedPrefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        val isDarkMode = sharedPrefs.getBoolean(KEY_DARK_MODE, false)
         AppCompatDelegate.setDefaultNightMode(
             if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
         )
@@ -405,6 +407,12 @@ class ExceptionConfigActivity : AppCompatActivity() {
 
     private fun loadCurrentValues() {
         originalException?.let { exception ->
+            // Load inversion state for all exception types
+            binding.switchInvertScreenState.isChecked = exception.inverted
+            binding.switchInvertTimeSchedule.isChecked = exception.inverted
+            binding.switchInvertBluetooth.isChecked = exception.inverted
+            binding.switchInvertWifi.isChecked = exception.inverted
+            
             when (exception.type) {
                 ExceptionType.SCREEN_STATE -> {
                     val screenState = exception.data["screen_state"] as? String ?: "on"
@@ -539,11 +547,12 @@ class ExceptionConfigActivity : AppCompatActivity() {
             else -> return
         }
         
-        // Return the exception data
-        val intent = intent.apply {
+        // Create a new intent for the result to avoid modifying the original intent
+        val resultIntent = android.content.Intent().apply {
             putExtra(RESULT_EXCEPTION, exception.toJson())
+            putExtra(EXTRA_IS_EDITING, isEditing)
         }
-        setResult(RESULT_OK, intent)
+        setResult(RESULT_OK, resultIntent)
         
         InAppLogger.logUserAction("Exception configured: ${exception.getLogMessage()}", "ExceptionConfigActivity")
         finish()
@@ -552,19 +561,22 @@ class ExceptionConfigActivity : AppCompatActivity() {
     private fun createScreenStateException(): Exception {
         val screenState = if (binding.spinnerScreenState.selectedItemPosition == 0) "on" else "off"
         val description = if (screenState == "on") "Screen is on" else "Screen is off"
+        val inverted = binding.switchInvertScreenState.isChecked
         
         return if (isEditing && originalException != null) {
             // Preserve the original exception ID when editing
             originalException!!.copy(
                 data = mapOf("screen_state" to screenState),
-                description = description
+                description = description,
+                inverted = inverted
             )
         } else {
             // Create new exception
             Exception(
                 type = ExceptionType.SCREEN_STATE,
                 data = mapOf("screen_state" to screenState),
-                description = description
+                description = description,
+                inverted = inverted
             )
         }
     }
@@ -594,6 +606,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
             
             "Between ${String.format("%02d:%02d", (startTime / (60 * 60 * 1000)).toInt(), ((startTime % (60 * 60 * 1000)) / (60 * 1000)).toInt())} and ${String.format("%02d:%02d", (endTime / (60 * 60 * 1000)).toInt(), ((endTime % (60 * 60 * 1000)) / (60 * 1000)).toInt())} on $dayNames"
         }
+        val inverted = binding.switchInvertTimeSchedule.isChecked
         
         return if (isEditing && originalException != null) {
             // Preserve the original exception ID when editing
@@ -603,7 +616,8 @@ class ExceptionConfigActivity : AppCompatActivity() {
                     "end_time" to endTime,
                     "days_of_week" to daysOfWeek
                 ),
-                description = description
+                description = description,
+                inverted = inverted
             )
         } else {
             // Create new exception
@@ -614,7 +628,8 @@ class ExceptionConfigActivity : AppCompatActivity() {
                     "end_time" to endTime,
                     "days_of_week" to daysOfWeek
                 ),
-                description = description
+                description = description,
+                inverted = inverted
             )
         }
     }
@@ -650,19 +665,22 @@ class ExceptionConfigActivity : AppCompatActivity() {
         } else {
             "Specific devices (${deviceAddresses.size})"
         }
+        val inverted = binding.switchInvertBluetooth.isChecked
         
         return if (isEditing && originalException != null) {
             // Preserve the original exception ID when editing
             originalException!!.copy(
                 data = mapOf("device_addresses" to deviceAddresses),
-                description = description
+                description = description,
+                inverted = inverted
             )
         } else {
             // Create new exception
             Exception(
                 type = ExceptionType.BLUETOOTH_DEVICE,
                 data = mapOf("device_addresses" to deviceAddresses),
-                description = description
+                description = description,
+                inverted = inverted
             )
         }
     }
@@ -694,19 +712,22 @@ class ExceptionConfigActivity : AppCompatActivity() {
         } else {
             "Specific networks (${networkSSIDs.size})"
         }
+        val inverted = binding.switchInvertWifi.isChecked
         
         return if (isEditing && originalException != null) {
             // Preserve the original exception ID when editing
             originalException!!.copy(
                 data = mapOf("network_ssids" to networkSSIDs),
-                description = description
+                description = description,
+                inverted = inverted
             )
         } else {
             // Create new exception
             Exception(
                 type = ExceptionType.WIFI_NETWORK,
                 data = mapOf("network_ssids" to networkSSIDs),
-                description = description
+                description = description,
+                inverted = inverted
             )
         }
     }

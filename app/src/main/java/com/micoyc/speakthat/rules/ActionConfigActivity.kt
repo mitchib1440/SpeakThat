@@ -206,11 +206,12 @@ class ActionConfigActivity : AppCompatActivity() {
             else -> return
         }
 
-        // Return the action data
-        val intent = intent.apply {
+        // Create a new intent for the result to avoid modifying the original intent
+        val resultIntent = android.content.Intent().apply {
             putExtra(RESULT_ACTION, action.toJson())
+            putExtra(EXTRA_IS_EDITING, isEditing)
         }
-        setResult(RESULT_OK, intent)
+        setResult(RESULT_OK, resultIntent)
 
         InAppLogger.logUserAction("Action configured: ${action.getLogMessage()}", "ActionConfigActivity")
         finish()

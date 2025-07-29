@@ -431,6 +431,100 @@ class RuleSystemTest(private val context: Context) {
     }
     
     /**
+     * Test the inversion functionality for triggers and exceptions
+     * This test demonstrates how inverted conditions work
+     */
+    fun testInversionFunctionality(): Boolean {
+        InAppLogger.logDebug(TAG, "Test: Inversion functionality")
+        
+        // Test 1: Inverted Bluetooth trigger (disable when NO headphones connected)
+        val invertedBluetoothRule = Rule(
+            name = "Disable when no headphones",
+            enabled = true,
+            triggers = listOf(
+                Trigger(
+                    type = TriggerType.BLUETOOTH_DEVICE,
+                    inverted = true, // NEW: Invert the condition
+                    data = mapOf("device_addresses" to setOf("00:11:22:33:44:55")), // Headphone MAC
+                    description = "No headphones connected"
+                )
+            ),
+            actions = listOf(
+                Action(
+                    type = ActionType.DISABLE_SPEAKTHAT,
+                    description = "Disable SpeakThat when no headphones"
+                )
+            ),
+            triggerLogic = LogicGate.AND
+        )
+        
+        val success1 = ruleManager.addRule(invertedBluetoothRule)
+        InAppLogger.logDebug(TAG, "Inverted Bluetooth rule added: $success1")
+        
+        // Test 2: Inverted screen state trigger (disable when screen is ON)
+        val invertedScreenRule = Rule(
+            name = "Disable when screen on",
+            enabled = true,
+            triggers = listOf(
+                Trigger(
+                    type = TriggerType.SCREEN_STATE,
+                    inverted = true, // NEW: Invert the condition
+                    data = mapOf("screen_state" to "on"),
+                    description = "Screen is ON (inverted)"
+                )
+            ),
+            actions = listOf(
+                Action(
+                    type = ActionType.DISABLE_SPEAKTHAT,
+                    description = "Disable SpeakThat when screen is on"
+                )
+            ),
+            triggerLogic = LogicGate.AND
+        )
+        
+        val success2 = ruleManager.addRule(invertedScreenRule)
+        InAppLogger.logDebug(TAG, "Inverted screen state rule added: $success2")
+        
+        // Test 3: Rule with inverted exception (allow when NOT on home WiFi)
+        val invertedExceptionRule = Rule(
+            name = "Allow when not on home WiFi",
+            enabled = true,
+            triggers = listOf(
+                Trigger(
+                    type = TriggerType.TIME_SCHEDULE,
+                    data = mapOf(
+                        "start_time" to 0L,
+                        "end_time" to 23 * 60 * 60 * 1000L, // 23:00
+                        "days_of_week" to setOf(1, 2, 3, 4, 5) // Weekdays
+                    ),
+                    description = "During work hours"
+                )
+            ),
+            exceptions = listOf(
+                Exception(
+                    type = ExceptionType.WIFI_NETWORK,
+                    inverted = true, // NEW: Invert the exception
+                    data = mapOf("network_ssids" to setOf("HomeWiFi")),
+                    description = "NOT on home WiFi"
+                )
+            ),
+            actions = listOf(
+                Action(
+                    type = ActionType.DISABLE_SPEAKTHAT,
+                    description = "Disable SpeakThat during work hours when not on home WiFi"
+                )
+            ),
+            triggerLogic = LogicGate.AND,
+            exceptionLogic = LogicGate.AND
+        )
+        
+        val success3 = ruleManager.addRule(invertedExceptionRule)
+        InAppLogger.logDebug(TAG, "Inverted exception rule added: $success3")
+        
+        return success1 && success2 && success3
+    }
+    
+    /**
      * Get test results summary
      */
     fun getTestSummary(): String {
