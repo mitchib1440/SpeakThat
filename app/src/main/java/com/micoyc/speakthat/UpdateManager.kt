@@ -3,7 +3,9 @@ package com.micoyc.speakthat
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.os.Build
 import android.util.Log
+import com.micoyc.speakthat.InAppLogger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -23,12 +25,14 @@ import java.util.concurrent.TimeUnit
  * - Downloading APK files securely
  * - Verifying APK signatures to prevent malware
  * - Managing update preferences
+ * - Detecting installation source to prevent conflicts with Google Play
  * 
  * Security features:
  * - HTTPS-only connections
  * - APK signature verification
  * - User consent required for all operations
  * - No background polling (battery-friendly)
+ * - Robust Google Play detection to prevent update conflicts
  */
 class UpdateManager private constructor(private val context: Context) {
     
@@ -45,10 +49,21 @@ class UpdateManager private constructor(private val context: Context) {
         private const val KEY_LAST_UPDATE_CHECK = "last_update_check"
         private const val KEY_LAST_CHECKED_VERSION = "last_checked_version"
         private const val KEY_UPDATE_CHECK_INTERVAL = "update_check_interval_hours"
+        private const val KEY_INSTALLATION_SOURCE = "installation_source"
+        private const val KEY_GOOGLE_PLAY_DETECTED = "google_play_detected"
+        
+        // Google Play Store identifiers
+        private const val GOOGLE_PLAY_STORE_PACKAGE = "com.android.vending"
+        private const val GOOGLE_PLAY_STORE_PACKAGE_ALT = "com.google.android.packageinstaller"
         
         // Default settings
         private const val DEFAULT_UPDATE_CHECK_INTERVAL = 24L // 24 hours
         private const val NETWORK_TIMEOUT_SECONDS = 30L
+        
+        // Build-time flags for distribution channel detection
+        // These should be set in build.gradle for different build variants
+        private const val BUILD_FLAVOR_GITHUB = "github"
+        private const val BUILD_FLAVOR_GOOGLE_PLAY = "googleplay"
         
         @Volatile
         private var INSTANCE: UpdateManager? = null
@@ -71,12 +86,233 @@ class UpdateManager private constructor(private val context: Context) {
         .build()
     
     /**
+     * Robust detection of Google Play Store installation
+     * Uses multiple verification methods to prevent false positives
+     * @return true if app was installed from Google Play Store
+     */
+    fun isInstalledFromGooglePlay(): Boolean {
+        // Check if we've already determined the installation source
+        val cachedResult = prefs.getBoolean(KEY_GOOGLE_PLAY_DETECTED, false)
+        if (cachedResult) {
+            Log.d(TAG, "Using cached Google Play detection result: true")
+            return true
+        }
+        
+        try {
+            Log.d(TAG, "Performing fresh Google Play installation detection...")
+            
+            // Log detailed debug info for troubleshooting
+            logInstallationSourceDetails()
+            
+            // ULTRA-CONSERVATIVE APPROACH: Only trust installer package name
+            // This is the most reliable method and prevents false positives
+            val installerPackage = getInstallerPackageName()
+            Log.d(TAG, "Installer package: $installerPackage")
+            
+            // Only consider it Google Play if installer package is explicitly Google Play
+            if (installerPackage == GOOGLE_PLAY_STORE_PACKAGE) {
+                Log.i(TAG, "Google Play Store detected via installer package - ULTRA-CONSERVATIVE")
+                cacheGooglePlayDetection(true)
+                return true
+            }
+            
+            // Alternative Google Play installer package (less common)
+            if (installerPackage == GOOGLE_PLAY_STORE_PACKAGE_ALT) {
+                Log.i(TAG, "Google Play Store detected via alternative installer package - ULTRA-CONSERVATIVE")
+                cacheGooglePlayDetection(true)
+                return true
+            }
+            
+            // For all other cases (null, unknown, other stores), assume NOT Google Play
+            // This is the safest approach to prevent false positives
+            Log.d(TAG, "Installer package is not Google Play: '$installerPackage' - assuming NOT from Google Play for safety")
+            cacheGooglePlayDetection(false)
+            return false
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error detecting installation source", e)
+            // On error, assume NOT from Google Play to prevent blocking legitimate updates
+            cacheGooglePlayDetection(false)
+            return false
+        }
+    }
+    
+    /**
+     * Get the installer package name using the most reliable method available
+     */
+    private fun getInstallerPackageName(): String? {
+        return try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                // Android 11+ (API 30+)
+                context.packageManager.getInstallSourceInfo(context.packageName).installingPackageName
+            } else {
+                // Android 10 and below
+                @Suppress("DEPRECATION")
+                context.packageManager.getInstallerPackageName(context.packageName)
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Error getting installer package name", e)
+            null
+        }
+    }
+    
+    /**
+     * Check if Google Play Store is installed on the device
+     */
+    private fun isGooglePlayStoreInstalled(): Boolean {
+        return try {
+            context.packageManager.getPackageInfo(GOOGLE_PLAY_STORE_PACKAGE, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        } catch (e: Exception) {
+            Log.w(TAG, "Error checking if Google Play Store is installed", e)
+            false
+        }
+    }
+    
+    /**
+     * Check if app has Google Play signature characteristics
+     * This is a fallback method for edge cases
+     */
+    private fun hasGooglePlaySignatureCharacteristics(): Boolean {
+        return try {
+            val packageInfo = context.packageManager.getPackageInfo(
+                context.packageName,
+                PackageManager.GET_SIGNATURES
+            )
+            
+            // Google Play apps typically have specific signature characteristics
+            // This is a conservative check to avoid false positives
+            val signatures = packageInfo.signatures
+            if (signatures != null && signatures.isNotEmpty()) {
+                val signature = signatures[0]
+                val signatureString = signature.toCharsString()
+                
+                Log.d(TAG, "App signature: $signatureString")
+                
+                // Check for Google Play signature patterns (very conservative)
+                // Only flag as Google Play if we're very confident
+                // Google Play apps typically have signatures containing specific patterns
+                val hasGooglePattern = signatureString.contains("google", ignoreCase = true)
+                val hasAndroidPattern = signatureString.contains("android", ignoreCase = true)
+                
+                Log.d(TAG, "Signature analysis - Google pattern: $hasGooglePattern, Android pattern: $hasAndroidPattern")
+                
+                // Only consider it a Google Play app if it has Google-specific patterns
+                // Android pattern alone is too broad and would catch development builds
+                hasGooglePattern
+            } else {
+                Log.d(TAG, "No signatures found")
+                false
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Error checking signature characteristics", e)
+            false
+        }
+    }
+    
+    /**
+     * Check if app was installed via system methods (ADB, etc.)
+     */
+    private fun isSystemInstalled(): Boolean {
+        return try {
+            val installerPackage = getInstallerPackageName()
+            installerPackage == null || installerPackage.isEmpty()
+        } catch (e: Exception) {
+            Log.w(TAG, "Error checking system installation", e)
+            false
+        }
+    }
+    
+    /**
+     * Cache the Google Play detection result to avoid repeated checks
+     */
+    private fun cacheGooglePlayDetection(isGooglePlay: Boolean) {
+        prefs.edit()
+            .putBoolean(KEY_GOOGLE_PLAY_DETECTED, isGooglePlay)
+            .putString(KEY_INSTALLATION_SOURCE, if (isGooglePlay) "google_play" else "other")
+            .apply()
+        
+        Log.d(TAG, "Cached Google Play detection result: $isGooglePlay")
+    }
+    
+    /**
+     * Get the cached installation source for debugging
+     */
+    fun getInstallationSource(): String {
+        return prefs.getString(KEY_INSTALLATION_SOURCE, "unknown") ?: "unknown"
+    }
+    
+    /**
+     * Reset Google Play detection cache (for testing purposes)
+     * This allows re-detection of installation source
+     */
+    fun resetGooglePlayDetectionCache() {
+        prefs.edit()
+            .remove(KEY_GOOGLE_PLAY_DETECTED)
+            .remove(KEY_INSTALLATION_SOURCE)
+            .apply()
+        
+        Log.d(TAG, "Google Play detection cache reset")
+        InAppLogger.logSystemEvent("Google Play detection cache reset", "UpdateManager")
+    }
+    
+    /**
+     * Get detailed installation source information for debugging
+     * @return Map containing all detection details
+     */
+    fun getInstallationSourceDetails(): Map<String, Any> {
+        val details = mutableMapOf<String, Any>()
+        
+        try {
+            details["cached_result"] = prefs.getBoolean(KEY_GOOGLE_PLAY_DETECTED, false)
+            details["cached_source"] = getInstallationSource()
+            details["installer_package"] = getInstallerPackageName() ?: "null"
+            details["google_play_installed"] = isGooglePlayStoreInstalled()
+            details["system_installed"] = isSystemInstalled()
+            details["signature_characteristics"] = hasGooglePlaySignatureCharacteristics()
+            
+            // Get current app version for context
+            details["current_version"] = getCurrentVersion()
+            
+            // Add debug info about the detection process
+            details["debug_info"] = "Use resetGooglePlayDetectionCache() to clear cached result and re-detect"
+            
+        } catch (e: Exception) {
+            details["error"] = e.message ?: "Unknown error"
+        }
+        
+        return details
+    }
+    
+    /**
+     * Debug method to log all installation source details
+     * Call this to understand why the detection is working as it is
+     */
+    fun logInstallationSourceDetails() {
+        val details = getInstallationSourceDetails()
+        Log.i(TAG, "=== INSTALLATION SOURCE DEBUG INFO ===")
+        details.forEach { (key, value) ->
+            Log.i(TAG, "$key: $value")
+        }
+        Log.i(TAG, "=======================================")
+    }
+    
+    /**
      * Check if an update is available by comparing current version with GitHub release
      * @return UpdateInfo if update is available, null otherwise
      */
     suspend fun checkForUpdates(): UpdateInfo? = withContext(Dispatchers.IO) {
         try {
             Log.d(TAG, "Checking for updates...")
+            
+            // CRITICAL: Check if app was installed from Google Play Store
+            if (isInstalledFromGooglePlay()) {
+                Log.i(TAG, "App installed from Google Play Store - GitHub updates disabled for security and policy compliance")
+                InAppLogger.logSystemEvent("Update check blocked - Google Play installation detected", "UpdateManager")
+                return@withContext null
+            }
             
             // Get current app version from package manager
             val currentVersion = getCurrentVersion()

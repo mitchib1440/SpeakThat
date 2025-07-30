@@ -792,6 +792,23 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             return
         }
         
+        // CRITICAL: Check if app was installed from Google Play Store
+        if (updateManager.isInstalledFromGooglePlay()) {
+            Log.i(TAG, "App installed from Google Play Store - GitHub updates disabled")
+            InAppLogger.logSystemEvent("Update check blocked - Google Play installation detected", "MainActivity")
+            
+            // Show Google Play message to user (only once per session)
+            val googlePlayMessageShown = sharedPreferences.getBoolean("google_play_message_shown", false)
+            if (!googlePlayMessageShown) {
+                runOnUiThread {
+                    showGooglePlayUpdateMessage()
+                }
+                // Mark message as shown for this session
+                sharedPreferences.edit().putBoolean("google_play_message_shown", true).apply()
+            }
+            return
+        }
+        
         // Perform the update check in background
         lifecycleScope.launch {
             try {
@@ -867,5 +884,41 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             bytes < 1024 * 1024 * 1024 -> "${bytes / (1024 * 1024)} MB"
             else -> "${bytes / (1024 * 1024 * 1024)} GB"
         }
+    }
+    
+    /**
+     * Show Google Play update message to users who installed from Google Play Store
+     * This explains why GitHub updates are disabled and directs them to Google Play
+     */
+    private fun showGooglePlayUpdateMessage() {
+        AlertDialog.Builder(this)
+            .setTitle("Updates via Google Play")
+            .setMessage("You installed SpeakThat from Google Play Store. " +
+                "For security and policy compliance, automatic updates are handled through Google Play.\n\n" +
+                "To update the app, please visit Google Play Store and check for updates there.\n\n" +
+                "This ensures you receive verified, secure updates that comply with Google Play policies.")
+            .setPositiveButton("Open Google Play") { _, _ ->
+                try {
+                    // Open Google Play Store to the app's page
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        data = android.net.Uri.parse("market://details?id=${packageName}")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    // Fallback to web browser if Play Store app is not available
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        data = android.net.Uri.parse("https://play.google.com/store/apps/details?id=${packageName}")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                    startActivity(intent)
+                }
+            }
+            .setNegativeButton("OK", null)
+            .setCancelable(true)
+            .show()
+        
+        Log.i(TAG, "Showed Google Play update message to user")
+        InAppLogger.logSystemEvent("Google Play update message shown to user", "MainActivity")
     }
 } 

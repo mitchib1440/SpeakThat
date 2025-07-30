@@ -117,8 +117,6 @@
                 app:icon="@drawable/ic_refresh_24"
                 style="@style/Widget.Material3.Button.OutlinedButton" />
 
-
-
         </LinearLayout>
 
         <!-- Privacy Notice -->

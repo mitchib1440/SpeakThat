@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import androidx.core.view.WindowCompat
 
 /**
  * Privacy-focused update activity
@@ -69,8 +70,11 @@ class UpdateActivity : AppCompatActivity() {
         binding = ActivityUpdateBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
+        // Enable edge-to-edge display
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        
         // Configure system UI for proper insets handling
-        configureSystemUI()
+        // configureSystemUI() // This line is removed as per the new_code, as the edge-to-edge display handles insets.
         
         // Set up action bar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -134,6 +138,17 @@ class UpdateActivity : AppCompatActivity() {
         
         lifecycleScope.launch {
             try {
+                // CRITICAL: Check if app was installed from Google Play Store
+                if (updateManager.isInstalledFromGooglePlay()) {
+                    Log.i(TAG, "App installed from Google Play Store - GitHub updates disabled")
+                    InAppLogger.logSystemEvent("Update check blocked - Google Play installation detected", "UpdateActivity")
+                    
+                    withContext(Dispatchers.Main) {
+                        showGooglePlayMessage()
+                    }
+                    return@launch
+                }
+                
                 val update = updateManager.checkForUpdates()
                 
                 withContext(Dispatchers.Main) {
@@ -416,5 +431,46 @@ class UpdateActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+    
+    /**
+     * Show Google Play message to users who installed from Google Play Store
+     * This explains why GitHub updates are disabled and directs them to Google Play
+     */
+    private fun showGooglePlayMessage() {
+        binding.progressBar.visibility = View.GONE
+        binding.textStatus.text = "Updates via Google Play"
+        binding.textUpdateInfo.text = "You installed SpeakThat from Google Play Store. " +
+            "For security and policy compliance, automatic updates are handled through Google Play.\n\n" +
+            "To update the app, please visit Google Play Store and check for updates there.\n\n" +
+            "This ensures you receive verified, secure updates that comply with Google Play policies."
+        
+        binding.buttonCheckAgain.visibility = View.VISIBLE
+        binding.buttonDownload.visibility = View.GONE
+        binding.buttonInstall.visibility = View.GONE
+        binding.buttonViewReleaseNotes.visibility = View.GONE
+        
+        // Add a button to open Google Play Store
+        binding.buttonCheckAgain.text = "Open Google Play"
+        binding.buttonCheckAgain.setOnClickListener {
+            try {
+                // Open Google Play Store to the app's page
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = android.net.Uri.parse("market://details?id=${packageName}")
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                startActivity(intent)
+            } catch (e: Exception) {
+                // Fallback to web browser if Play Store app is not available
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = android.net.Uri.parse("https://play.google.com/store/apps/details?id=${packageName}")
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                startActivity(intent)
+            }
+        }
+        
+        Log.i(TAG, "Showed Google Play message in UpdateActivity")
+        InAppLogger.logSystemEvent("Google Play message shown in UpdateActivity", "UpdateActivity")
     }
 } 

@@ -105,6 +105,16 @@
                         android:textColor="@color/white_100"
                         android:layout_marginBottom="8dp" />
 
+                    <!-- Installation Source Debug Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnInstallationSourceDebug"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="🔍 Installation Source Debug"
+                        android:backgroundTint="@color/purple_200"
+                        android:textColor="@color/white_100"
+                        android:layout_marginBottom="8dp" />
+
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
