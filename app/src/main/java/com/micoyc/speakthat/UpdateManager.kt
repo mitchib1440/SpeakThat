@@ -65,13 +65,27 @@ class UpdateManager private constructor(private val context: Context) {
         private const val BUILD_FLAVOR_GITHUB = "github"
         private const val BUILD_FLAVOR_GOOGLE_PLAY = "googleplay"
         
-        @Volatile
-        private var INSTANCE: UpdateManager? = null
+        // Use WeakReference to prevent memory leaks
+        // This allows the UpdateManager to be garbage collected when not in use
+        private var instanceRef: java.lang.ref.WeakReference<UpdateManager>? = null
         
         fun getInstance(context: Context): UpdateManager {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: UpdateManager(context.applicationContext).also { INSTANCE = it }
+            // Try to get existing instance from weak reference
+            var instance = instanceRef?.get()
+            
+            if (instance == null) {
+                // Create new instance if none exists or was garbage collected
+                synchronized(this) {
+                    instance = instanceRef?.get()
+                    if (instance == null) {
+                        instance = UpdateManager(context.applicationContext)
+                        instanceRef = java.lang.ref.WeakReference(instance)
+                        Log.d(TAG, "Created new UpdateManager instance")
+                    }
+                }
             }
+            
+            return instance!!
         }
     }
     
