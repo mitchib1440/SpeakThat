@@ -49,6 +49,13 @@ dependencies {
     implementation(libs.gson)
     implementation("io.coil-kt:coil:2.4.0")
     implementation("io.coil-kt:coil-svg:2.4.0")
+    
+    // For network requests (update system)
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    
+    // For background work (optional, for future enhancements)
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

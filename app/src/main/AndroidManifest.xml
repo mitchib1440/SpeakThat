@@ -27,6 +27,11 @@
         android:maxSdkVersion="28" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    
+    <!-- Permissions for auto-update system -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES" 
+        tools:ignore="ProtectedPermissions" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -105,6 +110,12 @@
             android:name=".AboutActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
+
+        <!-- Update Activity -->
+        <activity
+            android:name=".UpdateActivity"
+            android:exported="false"
+            android:parentActivityName=".AboutActivity" />
 
         <!-- Notification Listener Service -->
         <service

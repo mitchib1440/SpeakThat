@@ -1,0 +1,420 @@
+package com.micoyc.speakthat
+
+import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
+import androidx.lifecycle.lifecycleScope
+import com.micoyc.speakthat.databinding.ActivityUpdateBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+
+/**
+ * Privacy-focused update activity
+ * 
+ * This activity provides:
+ * - Clean, simple UI for update process
+ * - Manual update checks only (no background polling)
+ * - Clear progress indication
+ * - APK signature verification
+ * - User consent at every step
+ * - Release notes viewing
+ * 
+ * Security features:
+ * - Always asks user permission before downloading
+ * - Verifies APK signature before installation
+ * - Clear error messages for security issues
+ */
+class UpdateActivity : AppCompatActivity() {
+    
+    private lateinit var binding: ActivityUpdateBinding
+    private lateinit var updateManager: UpdateManager
+    private var updateInfo: UpdateManager.UpdateInfo? = null
+    private var downloadedApk: File? = null
+    
+    companion object {
+        private const val TAG = "UpdateActivity"
+        private const val EXTRA_FORCE_CHECK = "force_check"
+        
+        /**
+         * Start the update activity
+         * @param context Context to start from
+         * @param forceCheck If true, bypass time restrictions and check immediately
+         */
+        fun start(context: android.content.Context, forceCheck: Boolean = false) {
+            val intent = Intent(context, UpdateActivity::class.java).apply {
+                putExtra(EXTRA_FORCE_CHECK, forceCheck)
+            }
+            context.startActivity(intent)
+        }
+    }
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        
+        // Initialize logging
+        InAppLogger.logSystemEvent("UpdateActivity started", "UpdateActivity")
+        
+        // Initialize update manager
+        updateManager = UpdateManager.getInstance(this)
+        
+        // Initialize view binding
+        binding = ActivityUpdateBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        
+        // Configure system UI for proper insets handling
+        configureSystemUI()
+        
+        // Set up action bar
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = getString(R.string.check_for_updates)
+        
+        // Set up UI
+        setupUI()
+        
+        // Check for updates
+        val forceCheck = intent.getBooleanExtra(EXTRA_FORCE_CHECK, false)
+        if (forceCheck || updateManager.shouldCheckForUpdates()) {
+            checkForUpdates()
+        } else {
+            showNoUpdateAvailable()
+        }
+    }
+    
+    /**
+     * Set up UI elements and click listeners
+     */
+    private fun setupUI() {
+        // Set up click listeners for all buttons
+        binding.buttonCheckAgain.setOnClickListener {
+            checkForUpdates()
+        }
+        
+        binding.buttonDownload.setOnClickListener {
+            updateInfo?.let { info ->
+                downloadUpdate(info)
+            }
+        }
+        
+        binding.buttonInstall.setOnClickListener {
+            downloadedApk?.let { apk ->
+                installUpdate(apk)
+            }
+        }
+        
+        binding.buttonViewReleaseNotes.setOnClickListener {
+            updateInfo?.let { info ->
+                showReleaseNotes(info.releaseNotes)
+            }
+        }
+        
+
+    }
+    
+    /**
+     * Configure system UI for proper insets handling
+     */
+    private fun configureSystemUI() {
+        // Use fitsSystemWindows for proper padding - this should handle the status bar automatically
+        window.setDecorFitsSystemWindows(true)
+    }
+    
+    /**
+     * Check for available updates
+     */
+    private fun checkForUpdates() {
+        showCheckingState()
+        
+        lifecycleScope.launch {
+            try {
+                val update = updateManager.checkForUpdates()
+                
+                withContext(Dispatchers.Main) {
+                    if (update != null) {
+                        updateInfo = update
+                        showUpdateAvailable(update)
+                        // Show toast for update found
+                        Toast.makeText(this@UpdateActivity, "Update available: ${update.versionName}", Toast.LENGTH_SHORT).show()
+                    } else {
+                        showNoUpdateAvailable()
+                        // Show toast for no update
+                        Toast.makeText(this@UpdateActivity, "You're using the latest version!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                
+            } catch (e: Exception) {
+                InAppLogger.logError("UpdateActivity", "Update check failed: ${e.message}")
+                
+                withContext(Dispatchers.Main) {
+                    showErrorState(getString(R.string.update_check_failed))
+                    // Show error toast
+                    val errorMessage = when {
+                        e.message?.contains("network", ignoreCase = true) == true -> "Unable to check for updates! - Network error"
+                        e.message?.contains("timeout", ignoreCase = true) == true -> "Unable to check for updates! - Connection timeout"
+                        else -> "Unable to check for updates! - ${e.message ?: "Unknown error"}"
+                    }
+                    Toast.makeText(this@UpdateActivity, errorMessage, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+    
+    /**
+     * Start download process with user confirmation
+     */
+    private fun downloadUpdate(updateInfo: UpdateManager.UpdateInfo) {
+        // Ask for user consent before downloading
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.download_update))
+            .setMessage(getString(R.string.download_confirmation, updateInfo.versionName))
+            .setPositiveButton(getString(R.string.download)) { _, _ ->
+                performDownload(updateInfo)
+            }
+            .setNegativeButton(getString(R.string.cancel), null)
+            .show()
+    }
+    
+    /**
+     * Perform the actual download with progress tracking
+     */
+    private fun performDownload(updateInfo: UpdateManager.UpdateInfo) {
+        showDownloadingState()
+        
+        lifecycleScope.launch {
+            try {
+                val apkFile = updateManager.downloadApk(updateInfo) { progress ->
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        updateDownloadProgress(progress)
+                    }
+                }
+                
+                withContext(Dispatchers.Main) {
+                    if (apkFile != null) {
+                        downloadedApk = apkFile
+                        showDownloadComplete()
+                    } else {
+                        showErrorState(getString(R.string.download_failed))
+                    }
+                }
+                
+            } catch (e: Exception) {
+                InAppLogger.logError("UpdateActivity", "Download failed: ${e.message}")
+                
+                withContext(Dispatchers.Main) {
+                    showErrorState(getString(R.string.download_failed))
+                }
+            }
+        }
+    }
+    
+    /**
+     * Install the downloaded APK with signature verification
+     */
+    private fun installUpdate(apkFile: File) {
+        // Verify APK signature first for security
+        lifecycleScope.launch {
+            try {
+                val isValid = updateManager.verifyApkSignature(apkFile)
+                
+                withContext(Dispatchers.Main) {
+                    if (isValid) {
+                        startInstallation(apkFile)
+                    } else {
+                        showErrorState(getString(R.string.invalid_apk_signature))
+                    }
+                }
+                
+            } catch (e: Exception) {
+                InAppLogger.logError("UpdateActivity", "Signature verification failed: ${e.message}")
+                
+                withContext(Dispatchers.Main) {
+                    showErrorState(getString(R.string.signature_verification_failed))
+                }
+            }
+        }
+    }
+    
+    /**
+     * Start the installation process using Android's package installer
+     */
+    private fun startInstallation(apkFile: File) {
+        try {
+            // Verify file exists and is readable
+            if (!apkFile.exists()) {
+                throw Exception("APK file does not exist: ${apkFile.absolutePath}")
+            }
+            
+            if (!apkFile.canRead()) {
+                throw Exception("APK file is not readable: ${apkFile.absolutePath}")
+            }
+            
+            Log.d(TAG, "Installing APK: ${apkFile.absolutePath} (size: ${apkFile.length()} bytes)")
+            
+            // Create content URI for the APK file
+            val uri = FileProvider.getUriForFile(
+                this,
+                "com.micoyc.speakthat.fileprovider",
+                apkFile
+            )
+            
+            Log.d(TAG, "FileProvider URI: $uri")
+            
+            // Create intent to install the APK
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, "application/vnd.android.package-archive")
+                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            }
+            
+            // Verify that we can resolve the intent
+            if (intent.resolveActivity(packageManager) == null) {
+                throw Exception("No app found to handle APK installation")
+            }
+            
+            startActivity(intent)
+            
+            // Log successful installation start
+            InAppLogger.logSystemEvent("Update installation started", "UpdateActivity")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Installation failed: ${e.message}", e)
+            InAppLogger.logError("UpdateActivity", "Installation failed: ${e.message}")
+            showErrorState(getString(R.string.installation_failed))
+        }
+    }
+    
+    /**
+     * Show release notes in a dialog
+     */
+    private fun showReleaseNotes(notes: String) {
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.release_notes))
+            .setMessage(notes.ifEmpty { getString(R.string.no_release_notes) })
+            .setPositiveButton(getString(R.string.ok), null)
+            .show()
+    }
+    
+
+    
+    // UI State Management Methods
+    
+    /**
+     * Show checking for updates state
+     */
+    private fun showCheckingState() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.textStatus.text = getString(R.string.checking_for_updates)
+        binding.buttonCheckAgain.visibility = View.GONE
+        binding.buttonDownload.visibility = View.GONE
+        binding.buttonInstall.visibility = View.GONE
+        binding.buttonViewReleaseNotes.visibility = View.GONE
+    }
+    
+    /**
+     * Show update available state
+     */
+    private fun showUpdateAvailable(update: UpdateManager.UpdateInfo) {
+        binding.progressBar.visibility = View.GONE
+        binding.textStatus.text = getString(R.string.update_available, update.versionName)
+        binding.textUpdateInfo.text = getString(
+            R.string.update_info,
+            update.versionName,
+            formatFileSize(update.fileSize),
+            update.releaseDate
+        )
+        
+        binding.buttonCheckAgain.visibility = View.GONE
+        binding.buttonDownload.visibility = View.VISIBLE
+        binding.buttonViewReleaseNotes.visibility = View.VISIBLE
+        binding.buttonInstall.visibility = View.GONE
+        
+        // Log update availability
+        InAppLogger.logSystemEvent("Update available: ${update.versionName}", "UpdateActivity")
+    }
+    
+    /**
+     * Show no update available state
+     */
+    private fun showNoUpdateAvailable() {
+        binding.progressBar.visibility = View.GONE
+        binding.textStatus.text = getString(R.string.no_update_available)
+        binding.textUpdateInfo.text = getString(R.string.app_up_to_date)
+        
+        binding.buttonCheckAgain.visibility = View.VISIBLE
+        binding.buttonDownload.visibility = View.GONE
+        binding.buttonInstall.visibility = View.GONE
+        binding.buttonViewReleaseNotes.visibility = View.GONE
+    }
+    
+    /**
+     * Show downloading state
+     */
+    private fun showDownloadingState() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.textStatus.text = getString(R.string.downloading_update)
+        binding.buttonDownload.visibility = View.GONE
+        binding.buttonInstall.visibility = View.GONE
+    }
+    
+    /**
+     * Update download progress
+     */
+    private fun updateDownloadProgress(progress: Int) {
+        binding.progressBar.progress = progress
+        binding.textStatus.text = getString(R.string.downloading_update_progress, progress)
+    }
+    
+    /**
+     * Show download complete state
+     */
+    private fun showDownloadComplete() {
+        binding.progressBar.visibility = View.GONE
+        binding.textStatus.text = getString(R.string.download_complete)
+        binding.buttonInstall.visibility = View.VISIBLE
+        binding.buttonDownload.visibility = View.GONE
+        
+        // Log successful download
+        InAppLogger.logSystemEvent("Update downloaded successfully", "UpdateActivity")
+    }
+    
+    /**
+     * Show error state
+     */
+    private fun showErrorState(errorMessage: String) {
+        binding.progressBar.visibility = View.GONE
+        binding.textStatus.text = errorMessage
+        binding.buttonCheckAgain.visibility = View.VISIBLE
+        binding.buttonDownload.visibility = View.GONE
+        binding.buttonInstall.visibility = View.GONE
+        binding.buttonViewReleaseNotes.visibility = View.GONE
+        
+        // Log error
+        InAppLogger.logError("UpdateActivity", errorMessage)
+    }
+    
+    /**
+     * Format file size for display
+     */
+    private fun formatFileSize(bytes: Long): String {
+        return when {
+            bytes < 1024 -> "$bytes B"
+            bytes < 1024 * 1024 -> "${bytes / 1024} KB"
+            else -> "${bytes / (1024 * 1024)} MB"
+        }
+    }
+    
+    /**
+     * Handle back button press
+     */
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+} 

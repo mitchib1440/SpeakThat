@@ -55,6 +55,11 @@ class AboutActivity : AppCompatActivity() {
                 startTTS()
             }
         }
+        
+        // Add update check button
+        binding.buttonCheckUpdates.setOnClickListener {
+            UpdateActivity.start(this, forceCheck = true)
+        }
     }
     
     private fun loadAppInfo() {

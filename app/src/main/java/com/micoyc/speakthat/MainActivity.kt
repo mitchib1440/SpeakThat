@@ -28,6 +28,8 @@ import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEventListener {
     
@@ -136,6 +138,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Set up UI
         setupUI()
         updateServiceStatus()
+        
+        // Check for updates automatically (if enabled)
+        Log.d(TAG, "About to check for updates automatically")
+        checkForUpdatesIfEnabled()
     }
     
     override fun onResume() {
@@ -147,6 +153,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         loadWaveSettings()
         // Don't start shake/wave listening here - only during TTS playback
         InAppLogger.logAppLifecycle("MainActivity resumed")
+        
+        // Check for updates automatically when returning to app (if enabled)
+        Log.d(TAG, "About to check for updates on resume")
+        checkForUpdatesIfEnabled()
     }
     
     override fun onPause() {
@@ -747,5 +757,115 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         
         textToSpeech?.shutdown()
         stopShakeListening()
+    }
+    
+    /**
+     * Check for updates automatically if enabled in settings
+     * This runs silently in the background without user interaction
+     */
+    private fun checkForUpdatesIfEnabled() {
+        Log.d(TAG, "checkForUpdatesIfEnabled() called")
+        
+        // Check if auto-update is enabled
+        val autoUpdateEnabled = sharedPreferences.getBoolean("auto_update_enabled", true)
+        Log.d(TAG, "Auto-update enabled: $autoUpdateEnabled")
+        
+        if (!autoUpdateEnabled) {
+            Log.d(TAG, "Auto-update disabled, skipping update check")
+            return
+        }
+        
+        // Check if enough time has passed since last check
+        val updateManager = UpdateManager.getInstance(this)
+        val shouldCheck = updateManager.shouldCheckForUpdates()
+        Log.d(TAG, "Should check for updates: $shouldCheck")
+        
+        if (!shouldCheck) {
+            Log.d(TAG, "Update check interval not met, skipping update check")
+            return
+        }
+        
+        // Check if we've already notified about the current version
+        val lastCheckedVersion = sharedPreferences.getString("last_checked_version", "")
+        if (lastCheckedVersion != null && updateManager.hasNotifiedAboutVersion(lastCheckedVersion)) {
+            Log.d(TAG, "Already notified about version $lastCheckedVersion, skipping update check")
+            return
+        }
+        
+        // Perform the update check in background
+        lifecycleScope.launch {
+            try {
+                Log.d(TAG, "Performing automatic update check")
+                val updateInfo = updateManager.checkForUpdates()
+                
+                if (updateInfo != null) {
+                    Log.i(TAG, "Update available: ${updateInfo.versionName}")
+                    InAppLogger.logSystemEvent("Update available: ${updateInfo.versionName}", "MainActivity")
+                    
+                    // Show update notification to user
+                    showUpdateNotification(updateInfo)
+                } else {
+                    Log.d(TAG, "No update available")
+                    // Show success toast
+                    runOnUiThread {
+                        Toast.makeText(this@MainActivity, "You're using the latest version!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error during automatic update check", e)
+                InAppLogger.logSystemEvent("Update check failed: ${e.message}", "MainActivity")
+                
+                // Show error toast
+                runOnUiThread {
+                    val errorMessage = when {
+                        e.message?.contains("network", ignoreCase = true) == true -> "Unable to check for updates! - Network error"
+                        e.message?.contains("timeout", ignoreCase = true) == true -> "Unable to check for updates! - Connection timeout"
+                        else -> "Unable to check for updates! - ${e.message ?: "Unknown error"}"
+                    }
+                    Toast.makeText(this@MainActivity, errorMessage, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+    
+    /**
+     * Show update notification to user
+     */
+    private fun showUpdateNotification(updateInfo: UpdateManager.UpdateInfo) {
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.update_available, updateInfo.versionName))
+            .setMessage(getString(R.string.update_info, 
+                updateInfo.versionName,
+                formatFileSize(updateInfo.fileSize),
+                updateInfo.releaseDate
+            ))
+            .setPositiveButton(getString(R.string.download_update)) { _, _ ->
+                // Start update activity
+                val intent = Intent(this, UpdateActivity::class.java)
+                intent.putExtra("force_check", true)
+                startActivity(intent)
+            }
+            .setNegativeButton(getString(R.string.cancel), null)
+            .setNeutralButton(getString(R.string.view_release_notes)) { _, _ ->
+                // Show release notes
+                AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.release_notes))
+                    .setMessage(updateInfo.releaseNotes.ifEmpty { getString(R.string.no_release_notes) })
+                    .setPositiveButton(getString(R.string.ok), null)
+                    .show()
+            }
+            .show()
+    }
+    
+    /**
+     * Format file size for display
+     */
+    private fun formatFileSize(bytes: Long): String {
+        return when {
+            bytes < 1024 -> "$bytes B"
+            bytes < 1024 * 1024 -> "${bytes / 1024} KB"
+            bytes < 1024 * 1024 * 1024 -> "${bytes / (1024 * 1024)} MB"
+            else -> "${bytes / (1024 * 1024 * 1024)} GB"
+        }
     }
 } 

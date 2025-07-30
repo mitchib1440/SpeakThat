@@ -38,12 +38,16 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     private static final String KEY_BATTERY_OPTIMIZATION = "battery_optimization_disabled";
     private static final String KEY_AGGRESSIVE_PROCESSING = "aggressive_background_processing";
     private static final String KEY_SERVICE_RESTART_POLICY = "service_restart_policy"; // "never", "crash", "periodic"
+    private static final String KEY_AUTO_UPDATE_ENABLED = "auto_update_enabled";
+    private static final String KEY_UPDATE_CHECK_FREQUENCY = "update_check_frequency"; // "daily", "weekly", "monthly", "never"
     
     // Default values
     private static final boolean DEFAULT_AUTO_START = true;
     private static final boolean DEFAULT_BATTERY_OPTIMIZATION = true;
     private static final boolean DEFAULT_AGGRESSIVE_PROCESSING = false;
     private static final String DEFAULT_SERVICE_RESTART_POLICY = "periodic";
+    private static final boolean DEFAULT_AUTO_UPDATE_ENABLED = true;
+    private static final String DEFAULT_UPDATE_CHECK_FREQUENCY = "weekly";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +77,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         // Initialize all settings
         initializeDarkModeSwitch();
         initializeAppBehaviorSettings();
+        initializeUpdateSettings();
         initializeDataManagementSettings();
         
         // Mark initialization as complete
@@ -221,6 +226,59 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             editor.apply();
             
             InAppLogger.log("GeneralSettings", "Service restart policy changed to: " + newPolicy);
+        });
+    }
+    
+    private void initializeUpdateSettings() {
+        // Auto-update switch
+        SwitchMaterial autoUpdateSwitch = binding.switchAutoUpdate;
+        boolean autoUpdateEnabled = sharedPreferences.getBoolean(KEY_AUTO_UPDATE_ENABLED, DEFAULT_AUTO_UPDATE_ENABLED);
+        autoUpdateSwitch.setChecked(autoUpdateEnabled);
+        
+        autoUpdateSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(KEY_AUTO_UPDATE_ENABLED, isChecked);
+            editor.apply();
+            
+            InAppLogger.log("GeneralSettings", "Auto-update: " + (isChecked ? "enabled" : "disabled"));
+        });
+        
+        // Update check frequency radio group
+        String updateFrequency = sharedPreferences.getString(KEY_UPDATE_CHECK_FREQUENCY, DEFAULT_UPDATE_CHECK_FREQUENCY);
+        switch (updateFrequency) {
+            case "daily":
+                binding.radioUpdateDaily.setChecked(true);
+                break;
+            case "weekly":
+                binding.radioUpdateWeekly.setChecked(true);
+                break;
+            case "monthly":
+                binding.radioUpdateMonthly.setChecked(true);
+                break;
+            case "never":
+                binding.radioUpdateNever.setChecked(true);
+                break;
+        }
+        
+        binding.radioGroupUpdateFrequency.setOnCheckedChangeListener((group, checkedId) -> {
+            String newFrequency;
+            if (checkedId == R.id.radioUpdateDaily) {
+                newFrequency = "daily";
+            } else if (checkedId == R.id.radioUpdateWeekly) {
+                newFrequency = "weekly";
+            } else if (checkedId == R.id.radioUpdateMonthly) {
+                newFrequency = "monthly";
+            } else if (checkedId == R.id.radioUpdateNever) {
+                newFrequency = "never";
+            } else {
+                newFrequency = DEFAULT_UPDATE_CHECK_FREQUENCY;
+            }
+            
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(KEY_UPDATE_CHECK_FREQUENCY, newFrequency);
+            editor.apply();
+            
+            InAppLogger.log("GeneralSettings", "Update check frequency changed to: " + newFrequency);
         });
     }
 

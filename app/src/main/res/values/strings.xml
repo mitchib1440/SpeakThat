@@ -162,21 +162,21 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="about_developer_title">Developer</string>
     <string name="about_license_title">License</string>
     <string name="version_format">Version %s</string>
-    <string name="app_description">SpeakThat! is an Android Notification Reader that announces your notifications aloud using text-to-speech technology. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="app_features">• - Real-time notification reading\n• 🎛- Customizable voice settings\n•-  Smart notification filtering\n• - App-specific controls\n• - Media-aware behavior\n• - Notification history\n• - Shake/Wave to stop\n• - Dark/Light theme support\n• - Offline functionality</string>
-    <string name="developer_info">Developed with ❤️ by Mitchi\n\nSpeakThat! is designed to make your Android experience more accessible and convenient. The app works entirely offline and respects your privacy by processing all data locally on your device.</string>
-    <string name="license_info">This project is open source and available under the MIT License.\n\nYou can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
+    <string name="app_description">SpeakThat! is an Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
+    <string name="app_features">• Real-time notification reading\n• Customizable voice settings\n• Smart notification filtering\n• App-specific controls\n• Media-aware behavior\n• Notification history\n• Shake/Wave to stop\n• Custom speech formatting\n• Dark/Light theme support\n• Offline functionality</string>
+    <string name="developer_info">Developed with ❤️ by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day.\n\nSpeakThat! was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers.\n\nThis project was accelerated by AI-assisted programming.</string>
+    <string name="license_info">This project is open source and available under the GPL-3.0 License.\n\nYou can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
     
     <string name="read_about_app">Read About App</string>
     <string name="stop_reading">Stop Reading</string>
     
     <!-- TTS-specific strings (emoji-free and speech-optimized) -->
     <string name="tts_app_intro">Welcome to SpeakThat!</string>
-    <string name="tts_description">SpeakThat is an Android Notification Reader that announces your notifications aloud using text-to-speech technology. Perfect for hands-free operation, accessibility, and staying informed while you\'re busy.</string>
+    <string name="tts_description">SpeakThat is an Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
     <string name="tts_features_intro">Key features include:</string>
-    <string name="tts_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, and notification history tracking.</string>
-    <string name="tts_developer">Developed with love by Mitchi. SpeakThat is designed to make your Android experience more accessible and convenient. The app works entirely offline and respects your privacy by processing all data locally on your device.</string>
-    <string name="tts_license">This project is open source and available under the MIT License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
+    <string name="tts_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, and full offline functionality.</string>
+    <string name="tts_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
+    <string name="tts_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
     <string name="tts_thank_you">Thank you for using SpeakThat!</string>
     
     <!-- TTS App Phrases (for localization) -->
@@ -201,4 +201,43 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_new_notification_from">New notification from</string>
     <string name="tts_saying_colon">saying:</string>
     <string name="tts_new_update_from">New update from</string>
+    
+    <!-- Update System -->
+    <string name="check_for_updates">Check for Updates</string>
+    <string name="update_checker">Update Checker</string>
+    <string name="checking_for_updates">Checking for updates...</string>
+    <string name="update_available">Update Available: %s</string>
+    <string name="no_update_available">No Update Available</string>
+    <string name="app_up_to_date">Your app is up to date!</string>
+    <string name="update_info">Version: %1$s\nSize: %2$s\nReleased: %3$s</string>
+    <string name="download_update">Download Update</string>
+    <string name="download_confirmation">Download version %s? This will use mobile data if not on WiFi.</string>
+    <string name="downloading_update">Downloading update...</string>
+    <string name="downloading_update_progress">Downloading update... %d%%</string>
+    <string name="download_complete">Download complete!</string>
+    <string name="install_update">Install Update</string>
+    <string name="view_release_notes">View Release Notes</string>
+    <string name="release_notes">Release Notes</string>
+    <string name="no_release_notes">No release notes available</string>
+    <string name="check_again">Check Again</string>
+    <string name="update_check_failed">Failed to check for updates</string>
+    <string name="download_failed">Download failed</string>
+    <string name="installation_failed">Installation failed</string>
+    <string name="invalid_apk_signature">Invalid APK signature</string>
+    <string name="signature_verification_failed">Signature verification failed</string>
+    <string name="update_privacy_notice">Privacy: Update checks only verify version numbers. No personal data is collected or transmitted.</string>
+    <string name="download">Download</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    
+    <!-- Update Settings -->
+    <string name="auto_update_settings">Auto-Update Settings</string>
+    <string name="check_for_updates_auto">Check for Updates</string>
+    <string name="check_for_updates_auto_desc">Automatically check for app updates when you open the app</string>
+    <string name="check_frequency">Check Frequency</string>
+    <string name="check_frequency_desc">How often should the app check for updates?</string>
+    <string name="update_daily">Daily (recommended)</string>
+    <string name="update_weekly">Weekly</string>
+    <string name="update_monthly">Monthly</string>
+    <string name="update_never">Never (manual only)</string>
 </resources> 
