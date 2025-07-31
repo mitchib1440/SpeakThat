@@ -27,6 +27,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
@@ -75,6 +76,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         private const val KEY_SHAKE_THRESHOLD = "shake_threshold"
         private const val KEY_MASTER_SWITCH_ENABLED = "master_switch_enabled"
         private const val KEY_LAST_EASTER_EGG = "last_easter_egg_line"
+        // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
+        private const val KEY_TRANSLATION_BANNER_DISMISSED = "translation_banner_dismissed"
         @JvmField
         var isSensorListenerActive: Boolean = false
         /**
@@ -168,6 +171,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private fun setupUI() {
         setupClickListeners()
+        // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
+        setupTranslationBanner()
     }
     
     private fun setupClickListeners() {
@@ -193,6 +198,19 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         binding.logoSpeakThat.setOnClickListener {
             InAppLogger.logUserAction("Logo clicked", "First tap: $isFirstLogoTap")
             handleLogoClick()
+        }
+        
+        // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
+        // Translation banner dismiss button
+        binding.buttonDismissTranslationBanner.setOnClickListener {
+            InAppLogger.logUserAction("Translation banner dismissed")
+            dismissTranslationBanner()
+        }
+        
+        // Translation banner email functionality
+        binding.cardTranslationHelp.setOnClickListener {
+            InAppLogger.logUserAction("Translation banner clicked - opening email")
+            sendTranslationEmail()
         }
     }
     
@@ -920,5 +938,66 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         
         Log.i(TAG, "Showed Google Play update message to user")
         InAppLogger.logSystemEvent("Google Play update message shown to user", "MainActivity")
+    }
+
+    // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
+    private fun setupTranslationBanner() {
+        val isDismissed = sharedPreferences.getBoolean(KEY_TRANSLATION_BANNER_DISMISSED, false)
+        if (!isDismissed) {
+            binding.cardTranslationHelp.visibility = View.VISIBLE
+        } else {
+            binding.cardTranslationHelp.visibility = View.GONE
+        }
+    }
+
+    private fun dismissTranslationBanner() {
+        binding.cardTranslationHelp.visibility = View.GONE
+        sharedPreferences.edit().putBoolean(KEY_TRANSLATION_BANNER_DISMISSED, true).apply()
+        InAppLogger.logUserAction("Translation banner dismissed")
+    }
+    
+    // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
+    private fun sendTranslationEmail() {
+        try {
+            val subject = "SpeakThat! Translations"
+            val recipient = "micoycbusiness@gmail.com"
+            
+            val bodyBuilder = StringBuilder()
+            bodyBuilder.append("Hello SpeakThat! Team,\n\n")
+            bodyBuilder.append("I would like to help translate SpeakThat! to my language.\n\n")
+            bodyBuilder.append("Languages I speak:\n")
+            bodyBuilder.append("[Please list the languages you speak and your fluency level - e.g., 'English (native), Spanish (fluent), French (conversational)']\n\n")
+            bodyBuilder.append("Which language(s) would you like to help translate?\n")
+            bodyBuilder.append("[Please specify which language(s) you'd like to translate SpeakThat! into]\n\n")
+            bodyBuilder.append("Additional information:\n")
+            bodyBuilder.append("[Any other relevant information about your translation experience or preferences]\n\n")
+            bodyBuilder.append("Thank you for helping make SpeakThat! available to more users!\n")
+            bodyBuilder.append("- SpeakThat! User")
+            
+            val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+                data = android.net.Uri.parse("mailto:")
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(recipient))
+                putExtra(Intent.EXTRA_SUBJECT, subject)
+                putExtra(Intent.EXTRA_TEXT, bodyBuilder.toString())
+            }
+            
+            try {
+                startActivity(emailIntent)
+                InAppLogger.logUserAction("Translation email opened")
+            } catch (e: Exception) {
+                // Fallback: try with chooser
+                try {
+                    startActivity(Intent.createChooser(emailIntent, "Send translation email"))
+                    InAppLogger.logUserAction("Translation email opened via chooser")
+                } catch (e2: Exception) {
+                    Toast.makeText(this, "No email app found. Please install an email app to send translation requests.", Toast.LENGTH_LONG).show()
+                    InAppLogger.logError("Translation", "No email app available: ${e2.message}")
+                }
+            }
+            
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error opening email: ${e.message}", Toast.LENGTH_LONG).show()
+            InAppLogger.logCrash(e, "Translation email")
+        }
     }
 } 

@@ -70,6 +70,7 @@ public class FilterConfigManager {
     public static class VoiceConfig {
         public float speechRate;
         public float pitch;
+        public float ttsVolume;
         public String voiceName;
         public String language;
         public int audioUsage;
@@ -78,6 +79,7 @@ public class FilterConfigManager {
         public VoiceConfig() {
             this.speechRate = 1.0f;
             this.pitch = 1.0f;
+            this.ttsVolume = 1.0f;
             this.voiceName = "";
             this.language = "en_US";
             this.audioUsage = 0;
@@ -212,6 +214,7 @@ public class FilterConfigManager {
         // Load voice settings
         config.voice.speechRate = voicePrefs.getFloat("speech_rate", 1.0f);
         config.voice.pitch = voicePrefs.getFloat("pitch", 1.0f);
+        config.voice.ttsVolume = voicePrefs.getFloat("tts_volume", 1.0f);
         config.voice.voiceName = voicePrefs.getString("voice_name", "");
         config.voice.language = voicePrefs.getString("language", "en_US");
         config.voice.audioUsage = voicePrefs.getInt("audio_usage", 0);
@@ -266,6 +269,7 @@ public class FilterConfigManager {
         JSONObject voice = new JSONObject();
         voice.put("speechRate", config.voice.speechRate);
         voice.put("pitch", config.voice.pitch);
+        voice.put("ttsVolume", config.voice.ttsVolume);
         voice.put("voiceName", config.voice.voiceName);
         voice.put("language", config.voice.language);
         voice.put("audioUsage", config.voice.audioUsage);
@@ -474,6 +478,11 @@ public class FilterConfigManager {
                 
                 if (voice.has("pitch")) {
                     voiceEditor.putFloat("pitch", (float) voice.getDouble("pitch"));
+                    totalImported++;
+                }
+                
+                if (voice.has("ttsVolume")) {
+                    voiceEditor.putFloat("tts_volume", (float) voice.getDouble("ttsVolume"));
                     totalImported++;
                 }
                 

@@ -27,6 +27,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private static final String PREFS_NAME = "VoiceSettings";
     private static final String KEY_SPEECH_RATE = "speech_rate";
     private static final String KEY_PITCH = "pitch";
+    private static final String KEY_TTS_VOLUME = "tts_volume";
     private static final String KEY_VOICE_NAME = "voice_name";
     private static final String KEY_LANGUAGE = "language";
     private static final String KEY_AUDIO_USAGE = "audio_usage";
@@ -37,22 +38,24 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     // Default values
     private static final float DEFAULT_SPEECH_RATE = 1.0f;
     private static final float DEFAULT_PITCH = 1.0f;
+    private static final float DEFAULT_TTS_VOLUME = 1.0f;
     private static final String DEFAULT_LANGUAGE = "en_US";
-    private static final int DEFAULT_AUDIO_USAGE = 4; // USAGE_ASSISTANCE (recommended for Duck Audio)
+    private static final int DEFAULT_AUDIO_USAGE = 1; // USAGE_NOTIFICATION (recommended for Duck Audio)
     private static final int DEFAULT_CONTENT_TYPE = 0; // CONTENT_TYPE_SPEECH
 
     // UI Components
     private SeekBar speechRateSeekBar;
     private SeekBar pitchSeekBar;
+    private SeekBar ttsVolumeSeekBar;
     private TextView speechRateValue;
     private TextView pitchValue;
+    private TextView ttsVolumeValue;
     private Spinner voiceSpinner;
     private Spinner languageSpinner;
     private Spinner audioUsageSpinner;
     private Spinner contentTypeSpinner;
     private Spinner ttsLanguageSpinner;
     private Button previewButton;
-    private Button saveButton;
     private Button resetButton;
     private Button btnVoiceInfo;
     private Switch switchAdvancedVoice;
@@ -68,6 +71,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     // Current settings
     private float currentSpeechRate = DEFAULT_SPEECH_RATE;
     private float currentPitch = DEFAULT_PITCH;
+    private float currentTtsVolume = DEFAULT_TTS_VOLUME;
     private Voice currentVoice;
     private Locale currentLanguage;
 
@@ -95,13 +99,14 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         speechRateValue = findViewById(R.id.speechRateValue);
         pitchSeekBar = findViewById(R.id.pitchSeekBar);
         pitchValue = findViewById(R.id.pitchValue);
+        ttsVolumeSeekBar = findViewById(R.id.ttsVolumeSeekBar);
+        ttsVolumeValue = findViewById(R.id.ttsVolumeValue);
         voiceSpinner = findViewById(R.id.voiceSpinner);
         languageSpinner = findViewById(R.id.languageSpinner);
         audioUsageSpinner = findViewById(R.id.audioUsageSpinner);
         contentTypeSpinner = findViewById(R.id.contentTypeSpinner);
         ttsLanguageSpinner = findViewById(R.id.ttsLanguageSpinner);
         previewButton = findViewById(R.id.previewButton);
-        saveButton = findViewById(R.id.saveButton);
         resetButton = findViewById(R.id.resetButton);
         btnVoiceInfo = findViewById(R.id.btnVoiceInfo);
         switchAdvancedVoice = findViewById(R.id.switchAdvancedVoice);
@@ -157,6 +162,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 speechRateValue.setText(String.format("%.1fx", currentSpeechRate));
                 if (fromUser && isTtsReady) {
                     textToSpeech.setSpeechRate(currentSpeechRate);
+                    // Save immediately when user changes the setting
+                    saveSpeechRate(currentSpeechRate);
                 }
             }
 
@@ -176,6 +183,30 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 pitchValue.setText(String.format("%.1fx", currentPitch));
                 if (fromUser && isTtsReady) {
                     textToSpeech.setPitch(currentPitch);
+                    // Save immediately when user changes the setting
+                    savePitch(currentPitch);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        // TTS Volume SeekBar (0.0 to 1.0)
+        ttsVolumeSeekBar.setMax(100); // 0.0 to 1.0 in 0.01 increments
+        ttsVolumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                currentTtsVolume = progress / 100.0f;
+                ttsVolumeValue.setText(String.format("%.0f%%", currentTtsVolume * 100));
+                if (fromUser && isTtsReady) {
+                    // Apply volume through audio attributes
+                    applyAudioAttributes();
+                    // Save immediately when user changes the setting
+                    saveTtsVolume(currentTtsVolume);
                 }
             }
 
@@ -189,7 +220,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
     private void setupButtons() {
         previewButton.setOnClickListener(v -> previewVoiceSettings());
-        saveButton.setOnClickListener(v -> saveSettings());
+        // Remove save button functionality - settings save automatically now
         resetButton.setOnClickListener(v -> resetToDefaults());
         btnVoiceInfo.setOnClickListener(v -> showVoiceInfoDialog());
     }
@@ -276,6 +307,26 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             android.R.layout.simple_spinner_item, voiceNames);
         voiceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         voiceSpinner.setAdapter(voiceAdapter);
+        
+        // Add listener to save voice selection automatically
+        voiceSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0 && (position - 1) < availableVoices.size()) {
+                    currentVoice = availableVoices.get(position - 1);
+                    saveVoice(currentVoice.getName());
+                } else {
+                    currentVoice = null;
+                    saveVoice(""); // Clear voice setting
+                }
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+                currentVoice = null;
+                saveVoice(""); // Clear voice setting
+            }
+        });
     }
     
     private String extractVoiceQuality(String voiceName) {
@@ -514,25 +565,64 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             android.R.layout.simple_spinner_item, languageNames);
         languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         languageSpinner.setAdapter(languageAdapter);
+        
+        // Add listener to save language selection automatically
+        languageSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                if (position >= 0 && position < availableLanguages.size()) {
+                    currentLanguage = availableLanguages.get(position);
+                    saveLanguage(currentLanguage.toString());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+                // Keep current language
+            }
+        });
     }
 
     private void setupTtsLanguageSpinner() {
+        // Use the TtsLanguageManager to get only languages with actual translations
+        List<TtsLanguageManager.TtsLanguage> supportedLanguages = TtsLanguageManager.getSupportedTtsLanguages(this);
+        
         List<String> ttsLanguageNames = new ArrayList<>();
-        ttsLanguageNames.add("Default (Use System Language)");
-        ttsLanguageNames.add("English (United States)");
-        ttsLanguageNames.add("English (United Kingdom)");
-        ttsLanguageNames.add("English (Canada)");
-        ttsLanguageNames.add("French (France)");
-        ttsLanguageNames.add("German (Germany)");
-        ttsLanguageNames.add("Italian (Italy)");
-        ttsLanguageNames.add("Spanish (Spain)");
-        ttsLanguageNames.add("Portuguese (Portugal)");
-        ttsLanguageNames.add("Portuguese (Brazil)");
+        for (TtsLanguageManager.TtsLanguage language : supportedLanguages) {
+            ttsLanguageNames.add(language.displayName);
+        }
 
         ArrayAdapter<String> ttsLanguageAdapter = new ArrayAdapter<>(this,
             android.R.layout.simple_spinner_item, ttsLanguageNames);
         ttsLanguageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ttsLanguageSpinner.setAdapter(ttsLanguageAdapter);
+        
+        InAppLogger.log("VoiceSettings", "TTS Language spinner setup with " + supportedLanguages.size() + " supported languages");
+        
+        // Add listener to save TTS language selection automatically
+        ttsLanguageSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                if (position >= 0 && position < supportedLanguages.size()) {
+                    String selectedDisplayName = ttsLanguageNames.get(position);
+                    String languageCode = "system"; // Default
+                    
+                    for (TtsLanguageManager.TtsLanguage language : supportedLanguages) {
+                        if (language.displayName.equals(selectedDisplayName)) {
+                            languageCode = language.localeCode;
+                            break;
+                        }
+                    }
+                    
+                    saveTtsLanguage(languageCode);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+                saveTtsLanguage("system"); // Default to system
+            }
+        });
     }
 
     private void setupAudioChannelSpinners() {
@@ -548,6 +638,19 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             android.R.layout.simple_spinner_item, audioUsageOptions);
         audioUsageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         audioUsageSpinner.setAdapter(audioUsageAdapter);
+        
+        // Add listener to save audio usage selection automatically
+        audioUsageSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                saveAudioUsage(position);
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+                saveAudioUsage(DEFAULT_AUDIO_USAGE);
+            }
+        });
 
         // Content Type Spinner
         String[] contentTypeOptions = {
@@ -560,6 +663,19 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             android.R.layout.simple_spinner_item, contentTypeOptions);
         contentTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         contentTypeSpinner.setAdapter(contentTypeAdapter);
+        
+        // Add listener to save content type selection automatically
+        contentTypeSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                saveContentType(position);
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+                saveContentType(DEFAULT_CONTENT_TYPE);
+            }
+        });
     }
 
     private void setupAdvancedSwitch() {
@@ -572,18 +688,18 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setPositiveButton("Continue", (dialog, which) -> {
                         layoutAdvancedVoiceSection.setVisibility(View.VISIBLE);
-                        sharedPreferences.edit().putBoolean(KEY_SHOW_ADVANCED, true).apply();
+                        saveAdvancedVoiceEnabled(true);
                     })
                     .setNegativeButton("Cancel", (dialog, which) -> {
                         switchAdvancedVoice.setChecked(false);
                         layoutAdvancedVoiceSection.setVisibility(View.GONE);
-                        sharedPreferences.edit().putBoolean(KEY_SHOW_ADVANCED, false).apply();
+                        saveAdvancedVoiceEnabled(false);
                     })
                     .setCancelable(false)
                     .show();
             } else {
                 layoutAdvancedVoiceSection.setVisibility(View.GONE);
-                sharedPreferences.edit().putBoolean(KEY_SHOW_ADVANCED, false).apply();
+                saveAdvancedVoiceEnabled(false);
             }
         });
     }
@@ -598,6 +714,12 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         currentPitch = sharedPreferences.getFloat(KEY_PITCH, DEFAULT_PITCH);
         int pitchProgress = (int) ((currentPitch - 0.1f) * 100);
         pitchSeekBar.setProgress(pitchProgress);
+
+        // Load TTS volume
+        currentTtsVolume = sharedPreferences.getFloat(KEY_TTS_VOLUME, DEFAULT_TTS_VOLUME);
+        int volumeProgress = (int) (currentTtsVolume * 100);
+        ttsVolumeSeekBar.setProgress(volumeProgress);
+        ttsVolumeValue.setText(String.format("%.0f%%", currentTtsVolume * 100));
 
         // Load voice
         String savedVoiceName = sharedPreferences.getString(KEY_VOICE_NAME, "");
@@ -635,10 +757,12 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         }
 
         // Load TTS language (only if adapter is set up)
-        String savedTtsLanguage = sharedPreferences.getString(KEY_TTS_LANGUAGE, "Default (Use System Language)");
+        String savedTtsLanguage = sharedPreferences.getString(KEY_TTS_LANGUAGE, "system");
         if (ttsLanguageSpinner.getAdapter() != null) {
+            // Convert saved language code to display name for selection
+            String displayName = TtsLanguageManager.getLanguageDisplayName(savedTtsLanguage);
             for (int i = 0; i < ttsLanguageSpinner.getAdapter().getCount(); i++) {
-                if (ttsLanguageSpinner.getAdapter().getItem(i).equals(savedTtsLanguage)) {
+                if (ttsLanguageSpinner.getAdapter().getItem(i).equals(displayName)) {
                     ttsLanguageSpinner.setSelection(i);
                     break;
                 }
@@ -661,6 +785,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             contentTypeSpinner.setSelection(DEFAULT_CONTENT_TYPE);
             InAppLogger.log("VoiceSettings", "Content type index out of bounds, using default: " + DEFAULT_CONTENT_TYPE);
         }
+
+        // Load advanced voice switch state
+        boolean showAdvanced = sharedPreferences.getBoolean(KEY_SHOW_ADVANCED, false);
+        switchAdvancedVoice.setChecked(showAdvanced);
+        layoutAdvancedVoiceSection.setVisibility(showAdvanced ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -702,11 +831,29 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         // Apply current UI settings
         applyCurrentUISettings();
 
-        // Preview text
-        String previewText = "This is how your notifications will sound with these voice settings.";
+        // Get the current TTS language setting
+        String ttsLanguageCode = "system"; // Default
+        if (ttsLanguageSpinner.getAdapter() != null) {
+            int ttsLanguagePosition = ttsLanguageSpinner.getSelectedItemPosition();
+            if (ttsLanguagePosition >= 0 && ttsLanguagePosition < ttsLanguageSpinner.getAdapter().getCount()) {
+                String selectedDisplayName = ttsLanguageSpinner.getAdapter().getItem(ttsLanguagePosition).toString();
+                
+                // Convert display name to language code
+                List<TtsLanguageManager.TtsLanguage> supportedLanguages = TtsLanguageManager.getSupportedTtsLanguages(this);
+                for (TtsLanguageManager.TtsLanguage language : supportedLanguages) {
+                    if (language.displayName.equals(selectedDisplayName)) {
+                        ttsLanguageCode = language.localeCode;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Get localized preview text
+        String previewText = TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_voice_test);
         textToSpeech.speak(previewText, TextToSpeech.QUEUE_FLUSH, null, "preview");
         
-        InAppLogger.log("VoiceSettings", "Voice preview played - Rate: " + currentSpeechRate + ", Pitch: " + currentPitch);
+        InAppLogger.log("VoiceSettings", "Voice preview played - Rate: " + currentSpeechRate + ", Pitch: " + currentPitch + ", Language: " + ttsLanguageCode);
     }
     
 
@@ -804,94 +951,19 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         }
     }
 
-    private void saveSettings() {
-        // Update current values from UI before saving
-        currentSpeechRate = 0.1f + (speechRateSeekBar.getProgress() / 100.0f);
-        currentPitch = 0.1f + (pitchSeekBar.getProgress() / 100.0f);
-        
-        // Get currently selected voice and language
-        int voicePosition = voiceSpinner.getSelectedItemPosition();
-        if (voicePosition > 0 && (voicePosition - 1) < availableVoices.size()) {
-            // Subtract 1 because position 0 is "Default" option
-            currentVoice = availableVoices.get(voicePosition - 1);
-        } else {
-            currentVoice = null; // Default option selected
-        }
-        
-        int languagePosition = languageSpinner.getSelectedItemPosition();
-        if (languagePosition >= 0 && languagePosition < availableLanguages.size()) {
-            currentLanguage = availableLanguages.get(languagePosition);
-        }
-        
-        applyCurrentUISettings();
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putFloat(KEY_SPEECH_RATE, currentSpeechRate);
-        editor.putFloat(KEY_PITCH, currentPitch);
-        
-        // Save voice setting (if a specific voice is selected)
-        if (currentVoice != null && voicePosition > 0) { // Position 0 is typically "Default" or no selection
-            editor.putString(KEY_VOICE_NAME, currentVoice.getName());
-            InAppLogger.log("VoiceSettings", "Saving specific voice: " + currentVoice.getName());
-        } else {
-            // Clear voice setting if default/none is selected
-            editor.remove(KEY_VOICE_NAME);
-            InAppLogger.log("VoiceSettings", "Cleared specific voice setting (using default)");
-        }
-        
-        // Save language setting (always save the selected language)
-        if (currentLanguage != null) {
-            editor.putString(KEY_LANGUAGE, currentLanguage.toString());
-            InAppLogger.log("VoiceSettings", "Saving language: " + currentLanguage.toString());
-        } else {
-            InAppLogger.log("VoiceSettings", "No language selected to save");
-        }
-
-        // Save TTS language setting
-        if (ttsLanguageSpinner.getAdapter() != null) {
-            int ttsLanguagePosition = ttsLanguageSpinner.getSelectedItemPosition();
-            if (ttsLanguagePosition >= 0 && ttsLanguagePosition < ttsLanguageSpinner.getAdapter().getCount()) {
-                String selectedTtsLanguage = ttsLanguageSpinner.getAdapter().getItem(ttsLanguagePosition).toString();
-                if (!selectedTtsLanguage.equals("Default (Use System Language)")) {
-                    editor.putString(KEY_TTS_LANGUAGE, selectedTtsLanguage);
-                    InAppLogger.log("VoiceSettings", "Saving TTS language: " + selectedTtsLanguage);
-                } else {
-                    editor.remove(KEY_TTS_LANGUAGE);
-                    InAppLogger.log("VoiceSettings", "Cleared TTS language setting (using system default)");
-                }
-            } else {
-                InAppLogger.log("VoiceSettings", "No TTS language selected to save");
-            }
-        }
-
-        // Save audio settings
-        editor.putInt(KEY_AUDIO_USAGE, audioUsageSpinner.getSelectedItemPosition());
-        editor.putInt(KEY_CONTENT_TYPE, contentTypeSpinner.getSelectedItemPosition());
-        
-        editor.apply();
-
-        Toast.makeText(this, "Voice settings saved", Toast.LENGTH_SHORT).show();
-        String ttsLanguageInfo = "system default";
-        if (ttsLanguageSpinner.getAdapter() != null) {
-            int ttsLanguagePosition = ttsLanguageSpinner.getSelectedItemPosition();
-            if (ttsLanguagePosition >= 0 && ttsLanguagePosition < ttsLanguageSpinner.getAdapter().getCount()) {
-                ttsLanguageInfo = ttsLanguageSpinner.getAdapter().getItem(ttsLanguagePosition).toString();
-            }
-        }
-        InAppLogger.log("VoiceSettings", "Settings saved - Rate: " + currentSpeechRate + ", Pitch: " + currentPitch + 
-                       ", Voice: " + (currentVoice != null && voicePosition > 0 ? currentVoice.getName() : "default") + 
-                       ", Language: " + (currentLanguage != null ? currentLanguage.toString() : "none") + 
-                       ", TTS Language: " + ttsLanguageInfo);
-    }
+    // Note: saveSettings() method removed - settings now save automatically when changed
 
     private void resetToDefaults() {
         currentSpeechRate = DEFAULT_SPEECH_RATE;
         currentPitch = DEFAULT_PITCH;
+        currentTtsVolume = DEFAULT_TTS_VOLUME;
         currentLanguage = new Locale("en", "US");
 
         // Reset UI
         speechRateSeekBar.setProgress((int) ((DEFAULT_SPEECH_RATE - 0.1f) * 100));
         pitchSeekBar.setProgress((int) ((DEFAULT_PITCH - 0.1f) * 100));
+        ttsVolumeSeekBar.setProgress((int) (DEFAULT_TTS_VOLUME * 100));
+        ttsVolumeValue.setText(String.format("%.0f%%", DEFAULT_TTS_VOLUME * 100));
 
         // Reset language spinner to English (United States)
         for (int i = 0; i < availableLanguages.size(); i++) {
@@ -908,13 +980,13 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
         // Reset TTS language spinner to "Default (Use System Language)"
         if (ttsLanguageSpinner.getAdapter() != null && ttsLanguageSpinner.getAdapter().getCount() > 0) {
-            ttsLanguageSpinner.setSelection(0);
+            ttsLanguageSpinner.setSelection(0); // First item is always "Default (Use System Language)"
         }
 
         // Hide advanced options by default
         switchAdvancedVoice.setChecked(false);
         layoutAdvancedVoiceSection.setVisibility(View.GONE);
-        sharedPreferences.edit().putBoolean(KEY_SHOW_ADVANCED, false).apply();
+        saveAdvancedVoiceEnabled(false);
 
         // Reset audio settings with bounds checking
         if (audioUsageSpinner.getAdapter() != null && DEFAULT_AUDIO_USAGE < audioUsageSpinner.getAdapter().getCount()) {
@@ -954,10 +1026,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         // Load all voice settings from preferences
         float speechRate = prefs.getFloat(KEY_SPEECH_RATE, DEFAULT_SPEECH_RATE);
         float pitch = prefs.getFloat(KEY_PITCH, DEFAULT_PITCH);
+        float ttsVolume = prefs.getFloat(KEY_TTS_VOLUME, DEFAULT_TTS_VOLUME);
         String voiceName = prefs.getString(KEY_VOICE_NAME, "");
         String language = prefs.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE);
 
-        InAppLogger.log("VoiceSettings", "Applying voice settings - Rate: " + speechRate + ", Pitch: " + pitch + ", Voice: " + voiceName + ", Language: " + language);
+        InAppLogger.log("VoiceSettings", "Applying voice settings - Rate: " + speechRate + ", Pitch: " + pitch + ", Volume: " + (ttsVolume * 100) + "%, Voice: " + voiceName + ", Language: " + language);
 
         // Apply speech rate and pitch (these don't conflict with voice/language settings)
         tts.setSpeechRate(speechRate);
@@ -1086,7 +1159,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             .build();
             
         tts.setAudioAttributes(audioAttributes);
-        InAppLogger.log("VoiceSettings", "Audio attributes applied - Usage: " + audioUsage + ", Content: " + contentType);
+        InAppLogger.log("VoiceSettings", "Audio attributes applied - Usage: " + audioUsage + ", Content: " + contentType + ", Volume: " + (ttsVolume * 100) + "%");
     }
 
     private static int getAudioUsageFromIndexStatic(int index) {
@@ -1212,6 +1285,79 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 .show();
                 
         InAppLogger.log("VoiceSettings", "Voice info dialog shown");
+    }
+
+    private void saveSpeechRate(float speechRate) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat(KEY_SPEECH_RATE, speechRate);
+        editor.apply();
+        InAppLogger.log("VoiceSettings", "Speech rate saved: " + speechRate);
+    }
+
+    private void savePitch(float pitch) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat(KEY_PITCH, pitch);
+        editor.apply();
+        InAppLogger.log("VoiceSettings", "Pitch saved: " + pitch);
+    }
+
+    private void saveVoice(String voiceName) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if (!voiceName.isEmpty()) {
+            editor.putString(KEY_VOICE_NAME, voiceName);
+            InAppLogger.log("VoiceSettings", "Specific voice saved: " + voiceName);
+        } else {
+            editor.remove(KEY_VOICE_NAME);
+            InAppLogger.log("VoiceSettings", "Voice setting cleared (using default)");
+        }
+        editor.apply();
+    }
+
+    private void saveLanguage(String language) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_LANGUAGE, language);
+        editor.apply();
+        InAppLogger.log("VoiceSettings", "Language saved: " + language);
+    }
+
+    private void saveTtsLanguage(String languageCode) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if (!"system".equals(languageCode)) {
+            editor.putString(KEY_TTS_LANGUAGE, languageCode);
+            InAppLogger.log("VoiceSettings", "TTS language saved: " + languageCode);
+        } else {
+            editor.remove(KEY_TTS_LANGUAGE);
+            InAppLogger.log("VoiceSettings", "TTS language cleared (using system default)");
+        }
+        editor.apply();
+    }
+
+    private void saveAudioUsage(int audioUsageIndex) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_AUDIO_USAGE, audioUsageIndex);
+        editor.apply();
+        InAppLogger.log("VoiceSettings", "Audio usage saved: " + audioUsageIndex);
+    }
+
+    private void saveContentType(int contentTypeIndex) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_CONTENT_TYPE, contentTypeIndex);
+        editor.apply();
+        InAppLogger.log("VoiceSettings", "Content type saved: " + contentTypeIndex);
+    }
+
+    private void saveAdvancedVoiceEnabled(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_SHOW_ADVANCED, enabled);
+        editor.apply();
+        InAppLogger.log("VoiceSettings", "Advanced voice options " + (enabled ? "enabled" : "disabled"));
+    }
+
+    private void saveTtsVolume(float volume) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat(KEY_TTS_VOLUME, volume);
+        editor.apply();
+        InAppLogger.log("VoiceSettings", "TTS volume saved: " + (volume * 100) + "%");
     }
 
     @Override

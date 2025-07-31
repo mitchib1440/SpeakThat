@@ -106,7 +106,7 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             InAppLogger.log(TAG, "TTS initialized successfully for onboarding")
             
             // Speak welcome message
-            speakText("Welcome to SpeakThat! Let me guide you through the setup process.")
+            speakText(getLocalizedTtsString(R.string.tts_onboarding_welcome))
         } else {
             InAppLogger.log(TAG, "TTS initialization failed")
         }
@@ -135,26 +135,26 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         
         val currentPage = binding.viewPager.currentItem
         val pageContent = if (skipPermissionPage) {
-            // When permission page is skipped, adjust the content mapping
+            // When permission page is skipped (6 pages total)
             when (currentPage) {
-                0 -> "Welcome to SpeakThat! This app reads your notifications out loud so you never miss important messages. Swipe to learn more."
-                1 -> "Your privacy matters. You control exactly what gets read aloud. Shake your phone to stop any announcement instantly. Everything stays on your device."
-                2 -> "Let's set up some basic privacy filters to get you started. SpeakThat features a powerful filtering system that allows you to choose what gets read and what doesn't."
-                3 -> "Type the name of an app you want me to never read notifications from. Common examples include banking apps, medical apps, and dating apps."
-                4 -> "Type words or phrases that you want me to never read notifications containing. Common examples include password, PIN, credit card, and medical terms."
-                5 -> "SpeakThat is ready to help you stay connected while keeping your eyes free! You can add more filters anytime in the app settings."
+                0 -> getLocalizedTtsString(R.string.tts_onboarding_welcome)
+                1 -> getLocalizedTtsString(R.string.tts_onboarding_privacy)
+                2 -> getLocalizedTtsString(R.string.tts_onboarding_filters)
+                3 -> getLocalizedTtsString(R.string.tts_onboarding_apps)
+                4 -> getLocalizedTtsString(R.string.tts_onboarding_words)
+                5 -> getLocalizedTtsString(R.string.tts_onboarding_complete)
                 else -> ""
             }
         } else {
-            // When permission page is included, use the original mapping
+            // When permission page is included (7 pages total)
             when (currentPage) {
-                0 -> "Welcome to SpeakThat! This app reads your notifications out loud so you never miss important messages. Swipe to learn more."
-                1 -> "To work properly, SpeakThat needs permission to read your notifications. Please grant this permission to continue."
-                2 -> "Your privacy matters. You control exactly what gets read aloud. Shake your phone to stop any announcement instantly. Everything stays on your device."
-                3 -> "Let's set up some basic privacy filters to get you started. SpeakThat features a powerful filtering system that allows you to choose what gets read and what doesn't."
-                4 -> "Type the name of an app you want me to never read notifications from. Common examples include banking apps, medical apps, and dating apps."
-                5 -> "Type words or phrases that you want me to never read notifications containing. Common examples include password, PIN, credit card, and medical terms."
-                6 -> "SpeakThat is ready to help you stay connected while keeping your eyes free! You can add more filters anytime in the app settings."
+                0 -> getLocalizedTtsString(R.string.tts_onboarding_welcome)
+                1 -> getLocalizedTtsString(R.string.tts_onboarding_permission)
+                2 -> getLocalizedTtsString(R.string.tts_onboarding_privacy)
+                3 -> getLocalizedTtsString(R.string.tts_onboarding_filters)
+                4 -> getLocalizedTtsString(R.string.tts_onboarding_apps)
+                5 -> getLocalizedTtsString(R.string.tts_onboarding_words)
+                6 -> getLocalizedTtsString(R.string.tts_onboarding_complete)
                 else -> ""
             }
         }
@@ -162,6 +162,14 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         if (pageContent.isNotEmpty()) {
             speakText(pageContent)
         }
+    }
+    
+    private fun getLocalizedTtsString(stringResId: Int): String {
+        // Get the user's selected TTS language from voice settings
+        val ttsLanguageCode = voiceSettingsPrefs?.getString("tts_language", null)
+        
+        // Use TtsLanguageManager to get the localized string
+        return TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, stringResId)
     }
     
     private fun setupOnboarding() {

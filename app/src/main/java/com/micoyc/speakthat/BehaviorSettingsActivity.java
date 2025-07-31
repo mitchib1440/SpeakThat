@@ -99,16 +99,17 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String[] TEMPLATE_PRESETS = {
         "Default", "Minimal", "Formal", "Casual", "Time Aware", "Content Only", "App Only", "Varied", "Custom"
     };
-    private static final String[] TEMPLATE_VALUES = {
-        "{app} notified you: {content}",
-        "{app}: {content}",
-        "Notification from {app}: {content}",
-        "{app} says: {content}",
-        "{app} at {time}: {content}",
-        "{content}",
-        "{app}",
+    // Template keys that correspond to localized string resources
+    private static final String[] TEMPLATE_KEYS = {
+        "tts_format_default",
+        "tts_format_minimal", 
+        "tts_format_formal",
+        "tts_format_casual",
+        "tts_format_time_aware",
+        "tts_format_content_only",
+        "tts_format_app_only",
         "VARIED", // Special marker for varied mode
-        "" // Custom will be empty since it's user-defined
+        "CUSTOM" // Custom will be handled separately
     };
 
     // Varied format options for random selection
@@ -504,9 +505,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.spinnerSpeechTemplate.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(android.widget.AdapterView<?> parent, android.view.View view, int position, long id) {
-                String selectedTemplate = TEMPLATE_VALUES[position];
+                String selectedTemplateKey = TEMPLATE_KEYS[position];
                 
-                if (selectedTemplate.equals("VARIED")) {
+                if (selectedTemplateKey.equals("VARIED")) {
                     // Hide custom input section for varied mode
                     binding.editCustomSpeechTemplate.setVisibility(View.GONE);
                     // Also hide the "Custom Format:" label by finding its parent container
@@ -515,20 +516,21 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                     binding.textSpeechPreview.setText("Varied mode: Random format selected for each notification");
                     binding.textSpeechPreview.setTextColor(getResources().getColor(R.color.text_tertiary));
                     saveSpeechTemplate("VARIED");
-                } else if (selectedTemplate.isEmpty()) {
+                } else if (selectedTemplateKey.equals("CUSTOM")) {
                     // Custom mode - show input field
                     binding.editCustomSpeechTemplate.setVisibility(View.VISIBLE);
                     View customFormatContainer = (View) binding.editCustomSpeechTemplate.getParent().getParent();
                     customFormatContainer.setVisibility(View.VISIBLE);
                     updateSpeechPreview();
                 } else {
-                    // Regular preset - update input field and preview
+                    // Regular preset - get localized template and update input field and preview
+                    String localizedTemplate = getLocalizedTemplateValue(selectedTemplateKey);
                     binding.editCustomSpeechTemplate.setVisibility(View.VISIBLE);
                     View customFormatContainer = (View) binding.editCustomSpeechTemplate.getParent().getParent();
                     customFormatContainer.setVisibility(View.VISIBLE);
-                    binding.editCustomSpeechTemplate.setText(selectedTemplate);
+                    binding.editCustomSpeechTemplate.setText(localizedTemplate);
                     updateSpeechPreview();
-                    saveSpeechTemplate(selectedTemplate);
+                    saveSpeechTemplate(localizedTemplate);
                 }
             }
             
@@ -557,15 +559,16 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 
                 // Check if the new template matches any preset
                 boolean matchesPreset = false;
-                for (int i = 0; i < TEMPLATE_VALUES.length - 1; i++) { // Skip the last "Custom" option
-                    if (TEMPLATE_VALUES[i].equals(newTemplate)) {
+                for (int i = 0; i < TEMPLATE_KEYS.length - 1; i++) { // Skip the last "Custom" option
+                    String localizedTemplate = getLocalizedTemplateValue(TEMPLATE_KEYS[i]);
+                    if (localizedTemplate.equals(newTemplate)) {
                         matchesPreset = true;
                         binding.spinnerSpeechTemplate.setSelection(i);
                         break;
                     }
                 }
                 if (!matchesPreset) {
-                    binding.spinnerSpeechTemplate.setSelection(TEMPLATE_VALUES.length - 1); // "Custom" is the last option
+                    binding.spinnerSpeechTemplate.setSelection(TEMPLATE_KEYS.length - 1); // "Custom" is the last option
                 }
                 
                 updateSpeechPreview();
@@ -927,8 +930,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         } else {
             // Find the preset that matches the saved template
             int presetIndex = -1;
-            for (int i = 0; i < TEMPLATE_VALUES.length; i++) {
-                if (TEMPLATE_VALUES[i].equals(savedTemplate)) {
+            for (int i = 0; i < TEMPLATE_KEYS.length; i++) {
+                String localizedTemplate = getLocalizedTemplateValue(TEMPLATE_KEYS[i]);
+                if (localizedTemplate.equals(savedTemplate)) {
                     presetIndex = i;
                     break;
                 }
@@ -940,7 +944,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 binding.editCustomSpeechTemplate.setText(savedTemplate);
             } else {
                 // It's a custom template
-                binding.spinnerSpeechTemplate.setSelection(TEMPLATE_VALUES.length - 1); // Custom is last
+                binding.spinnerSpeechTemplate.setSelection(TEMPLATE_KEYS.length - 1); // Custom is last
                 binding.editCustomSpeechTemplate.setText(savedTemplate);
             }
             
@@ -949,6 +953,21 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             customFormatContainer.setVisibility(View.VISIBLE);
             updateSpeechPreview();
         }
+    }
+    
+    /**
+     * Get localized template value based on user's TTS language setting
+     */
+    private String getLocalizedTemplateValue(String templateKey) {
+        if ("VARIED".equals(templateKey) || "CUSTOM".equals(templateKey)) {
+            return templateKey;
+        }
+        
+        // Get the user's TTS language setting
+        android.content.SharedPreferences voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE);
+        String ttsLanguageCode = voiceSettingsPrefs.getString("tts_language", "system");
+        
+        return TtsLanguageManager.getLocalizedTtsStringByName(this, ttsLanguageCode, templateKey);
     }
     
     private void saveSpeechTemplate(String template) {

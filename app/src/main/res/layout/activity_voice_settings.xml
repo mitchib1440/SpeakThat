@@ -179,6 +179,59 @@
 
                     </LinearLayout>
 
+                    <!-- TTS Volume Section -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="TTS Volume"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"
+                        android:textColor="@color/text_primary" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0%"
+                            android:textSize="12sp"
+                            android:textColor="@color/text_secondary" />
+
+                        <SeekBar
+                            android:id="@+id/ttsVolumeSeekBar"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginHorizontal="8dp"
+                            android:max="100"
+                            android:progress="100" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100%"
+                            android:textSize="12sp"
+                            android:textColor="@color/text_secondary" />
+
+                        <TextView
+                            android:id="@+id/ttsVolumeValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100%"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:layout_marginStart="12dp"
+                            android:minWidth="40dp"
+                            android:gravity="center"
+                            android:textColor="@color/purple_200" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -652,7 +705,7 @@
                         android:textColor="?attr/colorOnSecondary"
                         android:padding="16dp" />
 
-                    <!-- Action Buttons -->
+                    <!-- Action Button -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -661,25 +714,12 @@
 
                         <Button
                             android:id="@+id/resetButton"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Reset"
+                            android:text="Reset to Defaults"
                             android:textSize="16sp"
-                            android:layout_marginEnd="8dp"
                             style="?attr/materialButtonOutlinedStyle"
                             android:textColor="@color/purple_200" />
-
-                        <Button
-                            android:id="@+id/saveButton"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Save Settings"
-                            android:textSize="16sp"
-                            android:layout_marginStart="8dp"
-                            android:backgroundTint="?attr/colorPrimary"
-                            android:textColor="?attr/colorOnPrimary" />
 
                     </LinearLayout>
 
@@ -687,7 +727,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="💡 Tip: Use the preview button to test how notifications will sound with your settings. Changes are applied immediately to the preview."
+                        android:text="💡 Tip: Use the preview button to test how notifications will sound with your settings. All changes are saved automatically as you make them."
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary"
                         android:layout_marginTop="24dp"

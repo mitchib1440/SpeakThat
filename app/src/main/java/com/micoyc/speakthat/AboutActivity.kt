@@ -159,18 +159,21 @@ class AboutActivity : AppCompatActivity() {
         val packageInfo = packageManager.getPackageInfo(packageName, 0)
         val version = getString(R.string.version_format, packageInfo.versionName)
         
+        // Get the user's TTS language setting
+        val ttsLanguageCode = voiceSettingsPrefs?.getString("tts_language", "system") ?: "system"
+        
         return """
-            ${getString(R.string.tts_app_intro)} $version.
+            ${TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_intro)} $version.
             
-            ${getString(R.string.tts_description)}
+            ${TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_description)}
             
-            ${getString(R.string.tts_features_intro)} ${getString(R.string.tts_features)}
+            ${TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_features_intro)} ${TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_features)}
             
-            ${getString(R.string.tts_developer)}
+            ${TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_developer)}
             
-            ${getString(R.string.tts_license)}
+            ${TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_license)}
             
-            ${getString(R.string.tts_thank_you)}
+            ${TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_thank_you)}
         """.trimIndent()
     }
     

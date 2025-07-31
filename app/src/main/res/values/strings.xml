@@ -179,28 +179,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
     <string name="tts_thank_you">Thank you for using SpeakThat!</string>
     
-    <!-- TTS App Phrases (for localization) -->
-    <string name="tts_notified_you">notified you:</string>
-    <string name="tts_private_notification_received">You received a private notification from</string>
-    <string name="tts_an_app">An app</string>
-    
-    <!-- Template Preset Phrases -->
-    <string name="tts_notification_from">Notification from</string>
-    <string name="tts_says">says:</string>
-    
-    <!-- Varied Format Phrases -->
-    <string name="tts_reported">reported:</string>
-    <string name="tts_saying">saying</string>
-    <string name="tts_alerts_you">alerts you:</string>
-    <string name="tts_update_from">Update from</string>
-    <string name="tts_notification">notification:</string>
-    <string name="tts_new_notification">New notification:</string>
-    <string name="tts_new_from">New from</string>
-    <string name="tts_said">said:</string>
-    <string name="tts_updated_you">updated you:</string>
-    <string name="tts_new_notification_from">New notification from</string>
-    <string name="tts_saying_colon">saying:</string>
-    <string name="tts_new_update_from">New update from</string>
+
     
     <!-- Update System -->
     <string name="check_for_updates">Check for Updates</string>
@@ -258,4 +237,48 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_template_notification_from">Notification from {app}: {content}</string>
     <string name="tts_template_says">{app} says: {content}</string>
     <string name="tts_template_private_notification">You received a private notification from {app}</string>
+    
+    <!-- TTS Context Templates - Complete sentences for different app contexts -->
+    <!-- About Page TTS -->
+    <string name="tts_about_intro">Welcome to SpeakThat!</string>
+    <string name="tts_about_description">SpeakThat is an Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
+    <string name="tts_about_features_intro">Key features include:</string>
+    <string name="tts_about_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, and full offline functionality.</string>
+    <string name="tts_about_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
+    <string name="tts_about_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
+    <string name="tts_about_thank_you">Thank you for using SpeakThat!</string>
+    
+    <!-- Voice Settings Test -->
+    <string name="tts_voice_test">This is how your notifications will sound with these voice settings.</string>
+    
+    <!-- Onboarding TTS -->
+    <string name="tts_onboarding_welcome">Welcome to SpeakThat! Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.</string>
+    <string name="tts_onboarding_permission">SpeakThat needs permission to read your notifications aloud. Everything stays on your device and you control what gets read.</string>
+    <string name="tts_onboarding_privacy">Your privacy matters. You control exactly what gets read aloud. Shake your phone to stop any announcement instantly. Everything stays on your device.</string>
+    <string name="tts_onboarding_filters">Let\'s set up some basic privacy filters to get you started. SpeakThat features a powerful filtering system that allows you to choose what gets read and what doesn\'t.</string>
+    <string name="tts_onboarding_apps">Type the name of an app you want me to never read notifications from. Common examples include banking apps, medical apps, and dating apps.</string>
+    <string name="tts_onboarding_words">Type words or phrases that you want me to never read notifications containing. Common examples include password, PIN, credit card, and medical terms.</string>
+    <string name="tts_onboarding_complete">SpeakThat is ready to help you stay connected while keeping your eyes free! You can add more filters anytime in the app settings.</string>
+    
+    <!-- Behavior Settings Speech Format Templates -->
+    <string name="tts_behavior_default">Default format</string>
+    <string name="tts_behavior_minimal">Minimal format</string>
+    <string name="tts_behavior_formal">Formal format</string>
+    <string name="tts_behavior_casual">Casual format</string>
+    <string name="tts_behavior_time_aware">Time aware format</string>
+    <string name="tts_behavior_content_only">Content only format</string>
+    <string name="tts_behavior_app_only">App only format</string>
+    <string name="tts_behavior_varied">Varied format</string>
+    <string name="tts_behavior_custom">Custom format</string>
+    
+    <!-- Speech Format Preset Templates -->
+    <string name="tts_format_default">{app} notified you: {content}</string>
+    <string name="tts_format_minimal">{app}: {content}</string>
+    <string name="tts_format_formal">Notification from {app}: {content}</string>
+    <string name="tts_format_casual">{app} says: {content}</string>
+    <string name="tts_format_time_aware">{app} at {time}: {content}</string>
+    <string name="tts_format_content_only">{content}</string>
+    <string name="tts_format_app_only">{app}</string>
+    <string name="tts_format_varied">VARIED</string>
+    <string name="tts_format_custom">CUSTOM</string>
 </resources> 
