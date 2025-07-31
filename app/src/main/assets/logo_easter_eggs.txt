@@ -218,3 +218,4 @@ SpeakThat! I can feel your hand approaching! It's like I have notification ESP! 
 SpeakThat! Wave detection only makes me shut up because I'm afraid you're about to slap me! [WAVE_ONLY]
 SpeakThat! Look at you, controlling your phone with your hand! [WAVE_ONLY]
 SpeakThat! Google tried the whole wave-sensing thing many years ago with the Pixel 4. I still do it better! [WAVE_ONLY]
+SpeakThat! Don't mind my bruises - I had a small battle with Google to get onto the Play Store!

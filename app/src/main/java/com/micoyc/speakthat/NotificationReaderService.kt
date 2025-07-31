@@ -1901,7 +1901,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         val category = sbn?.notification?.category ?: "Unknown"
-        val channel = sbn?.notification?.channelId ?: "Unknown"
+        val channel = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            sbn?.notification?.channelId ?: "Unknown"
+        } else {
+            "Unknown"
+        }
         
         // Handle varied template by randomly selecting a format
         val templateToUse = if (speechTemplate == "VARIED") {

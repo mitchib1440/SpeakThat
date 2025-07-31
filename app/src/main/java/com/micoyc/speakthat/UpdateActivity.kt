@@ -120,6 +120,7 @@ class UpdateActivity : AppCompatActivity() {
         }
         
 
+
     }
     
     /**
@@ -127,6 +128,7 @@ class UpdateActivity : AppCompatActivity() {
      */
     private fun configureSystemUI() {
         // Use fitsSystemWindows for proper padding - this should handle the status bar automatically
+        @Suppress("DEPRECATION")
         window.setDecorFitsSystemWindows(true)
     }
     
@@ -139,14 +141,43 @@ class UpdateActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 // CRITICAL: Check if app was installed from Google Play Store
-                if (updateManager.isInstalledFromGooglePlay()) {
-                    Log.i(TAG, "App installed from Google Play Store - GitHub updates disabled")
-                    InAppLogger.logSystemEvent("Update check blocked - Google Play installation detected", "UpdateActivity")
+                var isGooglePlay = updateManager.isInstalledFromGooglePlay()
+                
+                // AUTOMATIC FORCE FRESH DETECTION: If initially detected as Google Play, try force fresh detection
+                if (isGooglePlay) {
+                    Log.i(TAG, "Initial detection: Google Play Store - attempting force fresh detection")
+                    InAppLogger.logSystemEvent("Initial Google Play detection - attempting force fresh detection", "UpdateActivity")
                     
+                    // Show a brief message to user
                     withContext(Dispatchers.Main) {
-                        showGooglePlayMessage()
+                        binding.textStatus.text = "Verifying installation source..."
+                        binding.progressBar.visibility = View.VISIBLE
                     }
-                    return@launch
+                    
+                    // Force fresh detection
+                    isGooglePlay = updateManager.forceFreshGooglePlayDetection()
+                    
+                    Log.i(TAG, "Force fresh detection result: isGooglePlay = $isGooglePlay")
+                    InAppLogger.logSystemEvent("Force fresh detection result: isGooglePlay = $isGooglePlay", "UpdateActivity")
+                    
+                    // If still detected as Google Play after force fresh detection
+                    if (isGooglePlay) {
+                        Log.i(TAG, "Confirmed Google Play Store installation - GitHub updates disabled")
+                        InAppLogger.logSystemEvent("Update check blocked - confirmed Google Play installation", "UpdateActivity")
+                        
+                        withContext(Dispatchers.Main) {
+                            showGooglePlayMessage()
+                        }
+                        return@launch
+                    } else {
+                        Log.i(TAG, "Force fresh detection corrected false positive - proceeding with update check")
+                        InAppLogger.logSystemEvent("Force fresh detection corrected false positive", "UpdateActivity")
+                        
+                        // Show brief success message
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@UpdateActivity, "Installation source verified - proceeding with update check", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
                 
                 val update = updateManager.checkForUpdates()
@@ -429,7 +460,12 @@ class UpdateActivity : AppCompatActivity() {
      * Handle back button press
      */
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            onBackPressedDispatcher.onBackPressed()
+        } else {
+            @Suppress("DEPRECATION")
+            onBackPressed()
+        }
         return true
     }
     
@@ -473,4 +509,5 @@ class UpdateActivity : AppCompatActivity() {
         Log.i(TAG, "Showed Google Play message in UpdateActivity")
         InAppLogger.logSystemEvent("Google Play message shown in UpdateActivity", "UpdateActivity")
     }
+
 } 

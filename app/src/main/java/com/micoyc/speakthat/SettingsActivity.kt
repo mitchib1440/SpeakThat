@@ -212,7 +212,12 @@ class SettingsActivity : AppCompatActivity() {
     }
     
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            onBackPressedDispatcher.onBackPressed()
+        } else {
+            @Suppress("DEPRECATION")
+            onBackPressed()
+        }
         return true
     }
     
@@ -220,6 +225,7 @@ class SettingsActivity : AppCompatActivity() {
         // Set up proper window insets handling for different Android versions
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             // For Android 11+ (API 30+), use the new window insets API
+            @Suppress("DEPRECATION")
             window.setDecorFitsSystemWindows(true)
         } else {
             // For older versions (Android 10 and below), ensure proper system UI flags

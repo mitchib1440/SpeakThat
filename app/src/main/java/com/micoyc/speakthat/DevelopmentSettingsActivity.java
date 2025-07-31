@@ -270,6 +270,8 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         // Add Installation Source Debug button
         binding.btnInstallationSourceDebug.setOnClickListener(v -> showInstallationSourceDebug());
         
+
+        
         // Add welcome message
         InAppLogger.log("Development", "Development Settings opened");
     }
@@ -1231,4 +1233,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             InAppLogger.logError("Development", "Error showing installation source debug: " + e.getMessage());
         }
     }
+    
+
 } 
