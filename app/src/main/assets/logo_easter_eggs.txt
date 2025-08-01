@@ -251,3 +251,4 @@ SpeakThat! I'm basically a notification reader with the personality of a golden 
 SpeakThat! Ben Randall started this crazy adventure! His app was called Utter! Which also had an exclamation mark!
 SpeakThat! Double negatives are a big no-no!
 SpeakThat! Teslas are only expensive because they charge a lot.
+SpeakThat! The world's most comprehensive notification reader!
