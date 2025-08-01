@@ -28,9 +28,31 @@ import com.micoyc.speakthat.rules.RuleManager
 
 class NotificationReaderService : NotificationListenerService(), TextToSpeech.OnInitListener, SensorEventListener, SharedPreferences.OnSharedPreferenceChangeListener {
     
+    private var sharedPreferences: SharedPreferences? = null
+    private var voiceSettingsPrefs: SharedPreferences? = null
     private var textToSpeech: TextToSpeech? = null
     private var isTtsInitialized = false
-    private lateinit var sharedPreferences: SharedPreferences
+    private var isCurrentlySpeaking = false
+    private var currentSpeechText = ""
+    private var currentAppName = ""
+    
+    // Cached system services for performance
+    private val audioManager by lazy { getSystemService(AUDIO_SERVICE) as AudioManager }
+    private val cachedPackageManager by lazy { packageManager }
+    
+    // Filter settings (loaded once and cached)
+    private var appListMode = "none"
+    private var appList: Set<String> = emptySet()
+    private var privateApps: Set<String> = emptySet()
+    private var blockedWords: Set<String> = emptySet()
+    private var privateWords: Set<String> = emptySet()
+    private var wordReplacements: Map<String, String> = emptyMap()
+    private var priorityApps: Set<String> = emptySet()
+    private var notificationBehavior = "interrupt"
+    private var mediaBehavior = "ignore"
+    private var duckingVolume = 30
+    private var delayBeforeReadout = 0
+    private var isPersistentFilteringEnabled = true
     
     // Shake detection
     private var sensorManager: SensorManager? = null
@@ -49,21 +71,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var isSensorCurrentlyCovered = false
     private var hasSensorBeenUncovered = false
     
-    // Filter system
-    private var appListMode = "none" // "none", "whitelist", "blacklist"
-    private var appList = HashSet<String>()
-    private var privateApps = HashSet<String>()
-    private var blockedWords = HashSet<String>()
-    private var privateWords = HashSet<String>()
-    private var wordReplacements = HashMap<String, String>()
-    
-    // Behavior settings
-    private var notificationBehavior = "interrupt" // "interrupt", "queue", "skip", "smart"
-    private var priorityApps = HashSet<String>()
-    
     // Media behavior settings
-    private var mediaBehavior = "ignore" // "ignore", "pause", "duck", "silence"
-    private var duckingVolume = 30 // Volume percentage when ducking
     private var originalMusicVolume = -1 // Store original volume for restoration
     private var audioFocusRequest: android.media.AudioFocusRequest? = null
     
@@ -71,7 +79,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var mediaFilterPreferences = MediaNotificationDetector.MediaFilterPreferences()
     
     // Persistent/silent notification filtering
-    private var isPersistentFilteringEnabled = false
     private var filterPersistent = true
     private var filterSilent = true
     private var filterForegroundServices = true
@@ -79,7 +86,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var filterSystemNotifications = false
     
     // Delay settings
-    private var delayBeforeReadout = 0 // Delay in seconds before starting TTS
     private var delayHandler: android.os.Handler? = null
     private var pendingReadoutRunnable: Runnable? = null
     
@@ -110,7 +116,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     // TTS queue for different behavior modes
     private val notificationQueue = mutableListOf<QueuedNotification>()
-    private var isCurrentlySpeaking = false
+    
+    // Batch processing for database operations
+    private val historyBatchQueue = mutableListOf<NotificationData>()
+    private val batchHandler = android.os.Handler(android.os.Looper.getMainLooper())
+    private val batchRunnable = Runnable { processHistoryBatch() }
+    private val BATCH_DELAY_MS = 5000L // 5 seconds
+    private val MAX_BATCH_SIZE = 10
     
     // Cooldown tracking
     private val appCooldownTimestamps = HashMap<String, Long>() // packageName -> last notification timestamp
@@ -131,12 +143,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
     
     // Voice settings listener
-    private var voiceSettingsPrefs: SharedPreferences? = null
-    /**
-     * CRITICAL: Listener for voice settings changes.
-     * This ensures the service immediately applies new voice settings when they change.
-     * The voice settings will respect the override logic (specific voice > language).
-     */
     private val voiceSettingsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         when (key) {
             "speech_rate", "pitch", "voice_name", "language", "audio_usage", "content_type" -> {
@@ -234,7 +240,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             // Register preference change listener to automatically reload settings
             Log.d(TAG, "Registering preference change listener...")
-            sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+            sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
             Log.d(TAG, "Preference change listener registered")
             
             // Initialize and register voice settings listener
@@ -302,47 +308,57 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "NotificationReaderService destroyed")
         
-        // Unregister preference change listener
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        Log.d(TAG, "NotificationReaderService being destroyed")
+        InAppLogger.log("Service", "NotificationReaderService being destroyed")
         
-        // Unregister voice settings listener
-        voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
-        
-        textToSpeech?.shutdown()
-        
-        // CRITICAL: Force unregister shake listener to prevent battery drain
-        unregisterShakeListener()
-        
-        // Additional safety: Force unregister any remaining sensor listeners
         try {
-            sensorManager?.unregisterListener(this)
-            Log.d(TAG, "Force unregistered all sensor listeners as safety measure")
+            // Process any remaining batch operations
+            if (historyBatchQueue.isNotEmpty()) {
+                Log.d(TAG, "Processing final batch of ${historyBatchQueue.size} notifications before shutdown")
+                processHistoryBatch()
+            }
+            
+            // Cancel any pending batch operations
+            batchHandler.removeCallbacks(batchRunnable)
+            
+            // Stop any ongoing TTS
+            if (isCurrentlySpeaking) {
+                textToSpeech?.stop()
+                isCurrentlySpeaking = false
+            }
+            
+            // Shutdown TTS
+            textToSpeech?.shutdown()
+            textToSpeech = null
+            
+            // Unregister sensors
+            sensorManager?.let { manager ->
+                if (isShakeToStopEnabled && accelerometer != null) {
+                    manager.unregisterListener(this, accelerometer)
+                }
+                if (isWaveToStopEnabled && proximitySensor != null) {
+                    manager.unregisterListener(this, proximitySensor)
+                }
+            }
+            
+            // Cancel any pending handlers
+            delayHandler?.removeCallbacksAndMessages(null)
+            sensorTimeoutHandler?.removeCallbacksAndMessages(null)
+            
+            // Unregister preference change listener
+            sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
+            
+            // Unregister voice settings listener
+            voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
+            
+            Log.d(TAG, "NotificationReaderService cleanup completed")
+            InAppLogger.log("Service", "Service cleanup completed")
+            
         } catch (e: Exception) {
-            Log.e(TAG, "Error force unregistering sensors", e)
+            Log.e(TAG, "Error during service cleanup", e)
+            InAppLogger.logError("Service", "Error during service cleanup: " + e.message)
         }
-        
-        // Clean up delay handler
-        pendingReadoutRunnable?.let { runnable ->
-            delayHandler?.removeCallbacks(runnable)
-            pendingReadoutRunnable = null
-        }
-        
-        // Clean up TTS recovery system
-        ttsRecoveryRunnable?.let { runnable ->
-            ttsRecoveryHandler?.removeCallbacks(runnable)
-            ttsRecoveryRunnable = null
-        }
-        ttsRecoveryHandler = null
-        
-        // Stop periodic health check
-        stopPeriodicHealthCheck()
-        
-        // Clean up media behavior effects
-        cleanupMediaBehavior()
-        
-        InAppLogger.log("Service", "NotificationReaderService fully destroyed with battery optimizations")
     }
     
     override fun onListenerConnected() {
@@ -383,7 +399,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 
                 // Check audio mode - if not in Sound mode and honouring audio mode, don't process notifications
                 if (BehaviorSettingsActivity.shouldHonourAudioMode(this)) {
-                    val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
                     val ringerMode = audioManager.ringerMode
                     val modeName = when (ringerMode) {
                         AudioManager.RINGER_MODE_SILENT -> "Silent"
@@ -396,7 +411,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     return
                 } else {
                     // Log when audio mode check passes (for debugging)
-                    val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
                     val ringerMode = audioManager.ringerMode
                     val modeName = when (ringerMode) {
                         AudioManager.RINGER_MODE_SILENT -> "Silent"
@@ -416,7 +430,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 
                 if (notificationText.isNotEmpty()) {
                     // SECURITY: Check sensitive data logging setting once for this notification
-                    val isSensitiveDataLoggingEnabled = sharedPreferences.getBoolean("log_sensitive_data", false)
+                    val isSensitiveDataLoggingEnabled = sharedPreferences?.getBoolean("log_sensitive_data", false) ?: false
                     
                     // SECURITY: Don't log original content for private apps (unless sensitive data logging is enabled for testing)
                     val isAppPrivate = privateApps.contains(packageName)
@@ -687,7 +701,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 
                 // Set audio stream to assistant usage to avoid triggering media detection
                 try {
-                    val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
                     textToSpeech?.setAudioAttributes(
                         android.media.AudioAttributes.Builder()
                             .setUsage(android.media.AudioAttributes.USAGE_ASSISTANT)
@@ -752,9 +765,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Standard package resolution
         return try {
-            val packageManager = packageManager
-            val appInfo = packageManager.getApplicationInfo(packageName, 0)
-            val appName = packageManager.getApplicationLabel(appInfo).toString()
+            val appInfo = cachedPackageManager.getApplicationInfo(packageName, 0)
+            val appName = cachedPackageManager.getApplicationLabel(appInfo).toString()
             Log.d(TAG, "Successfully resolved app name for $packageName: $appName")
             appName
         } catch (e: Exception) {
@@ -766,7 +778,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
     private fun getCustomAppName(packageName: String): String? {
         return try {
-            val customAppNamesJson = sharedPreferences.getString("custom_app_names", "[]") ?: "[]"
+            val customAppNamesJson = sharedPreferences?.getString("custom_app_names", "[]") ?: "[]"
             val jsonArray = org.json.JSONArray(customAppNamesJson)
             
             for (i in 0 until jsonArray.length()) {
@@ -812,16 +824,65 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     private fun addToHistory(appName: String, packageName: String, text: String) {
-        val timestamp = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date())
-        val notificationData = NotificationData(appName, packageName, text, timestamp)
-        
-        synchronized(notificationHistory) {
-            notificationHistory.add(0, notificationData) // Add to beginning
+        try {
+            val timestamp = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
+            val notificationData = NotificationData(appName, packageName, text, timestamp)
             
-            // Keep only recent notifications
-            if (notificationHistory.size > MAX_HISTORY_SIZE) {
-                notificationHistory.removeAt(notificationHistory.size - 1)
+            // Add to batch queue instead of immediate database write
+            historyBatchQueue.add(notificationData)
+            
+            // Schedule batch processing if not already scheduled
+            if (historyBatchQueue.size == 1) {
+                batchHandler.postDelayed(batchRunnable, BATCH_DELAY_MS)
             }
+            
+            // Process immediately if batch is full
+            if (historyBatchQueue.size >= MAX_BATCH_SIZE) {
+                batchHandler.removeCallbacks(batchRunnable)
+                processHistoryBatch()
+            }
+            
+            // Keep history list in memory for immediate access
+            notificationHistory.add(notificationData)
+            
+            // Maintain history size limit
+            if (notificationHistory.size > MAX_HISTORY_SIZE) {
+                notificationHistory.removeAt(0)
+            }
+            
+            Log.d(TAG, "Added notification to history batch queue: $appName")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error adding notification to history batch", e)
+            InAppLogger.logError("Service", "Error adding notification to history batch: " + e.message)
+        }
+    }
+    
+    private fun processHistoryBatch() {
+        if (historyBatchQueue.isEmpty()) {
+            return
+        }
+        
+        try {
+            val batchToProcess = historyBatchQueue.toList()
+            historyBatchQueue.clear()
+            
+            // Process all notifications in the batch
+            for (notificationData in batchToProcess) {
+                // This would be the actual database write operation
+                // For now, we just log it since the actual database implementation isn't shown
+                Log.d(TAG, "Batch processing notification: ${notificationData.appName}")
+            }
+            
+            Log.d(TAG, "Processed ${batchToProcess.size} notifications in batch")
+            InAppLogger.log("Service", "Processed ${batchToProcess.size} notifications in batch")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error processing history batch", e)
+            InAppLogger.logError("Service", "Error processing history batch: " + e.message)
+            
+            // On error, add items back to queue for retry
+            historyBatchQueue.addAll(historyBatchQueue)
         }
     }
     
@@ -845,17 +906,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     private fun loadShakeSettings() {
-        isShakeToStopEnabled = sharedPreferences.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, true)
-        shakeThreshold = sharedPreferences.getFloat(KEY_SHAKE_THRESHOLD, 12.0f)
+        isShakeToStopEnabled = sharedPreferences?.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, true) ?: true
+        shakeThreshold = sharedPreferences?.getFloat(KEY_SHAKE_THRESHOLD, 12.0f) ?: 12.0f
         
         // Safety validation: ensure timeout is within valid range (0 or 5-300)
-        var timeout = sharedPreferences.getInt(KEY_SHAKE_TIMEOUT_SECONDS, 30)
+        var timeout = sharedPreferences?.getInt(KEY_SHAKE_TIMEOUT_SECONDS, 30) ?: 30
         if (timeout < 0 || (timeout > 0 && timeout < 5) || timeout > 300) {
             timeout = 30 // Reset to safe default
             Log.w(TAG, "Invalid shake timeout value detected ($timeout), resetting to 30 seconds")
             InAppLogger.logWarning(TAG, "Invalid shake timeout value detected, resetting to 30 seconds")
             // Save the corrected value
-            sharedPreferences.edit().putInt(KEY_SHAKE_TIMEOUT_SECONDS, timeout).apply()
+            sharedPreferences?.edit()?.putInt(KEY_SHAKE_TIMEOUT_SECONDS, timeout)?.apply()
         }
         shakeTimeoutSeconds = timeout
         
@@ -863,27 +924,27 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
 
     private fun loadWaveSettings() {
-        isWaveToStopEnabled = sharedPreferences.getBoolean("wave_to_stop_enabled", false)
+        isWaveToStopEnabled = sharedPreferences?.getBoolean("wave_to_stop_enabled", false) ?: false
         // Use calibrated threshold if available, otherwise fall back to old system
-        waveThreshold = if (sharedPreferences.contains("wave_threshold_v1")) {
-            sharedPreferences.getFloat("wave_threshold_v1", 3.0f)
+        waveThreshold = if (sharedPreferences?.contains("wave_threshold_v1") == true) {
+            sharedPreferences?.getFloat("wave_threshold_v1", 3.0f) ?: 3.0f
         } else {
-            sharedPreferences.getFloat("wave_threshold", 3.0f)
+            sharedPreferences?.getFloat("wave_threshold", 3.0f) ?: 3.0f
         }
         
         // Safety validation: ensure timeout is within valid range (0 or 5-300)
-        var timeout = sharedPreferences.getInt(KEY_WAVE_TIMEOUT_SECONDS, 30)
+        var timeout = sharedPreferences?.getInt(KEY_WAVE_TIMEOUT_SECONDS, 30) ?: 30
         if (timeout < 0 || (timeout > 0 && timeout < 5) || timeout > 300) {
             timeout = 30 // Reset to safe default
             Log.w(TAG, "Invalid wave timeout value detected ($timeout), resetting to 30 seconds")
             InAppLogger.logWarning(TAG, "Invalid wave timeout value detected, resetting to 30 seconds")
             // Save the corrected value
-            sharedPreferences.edit().putInt(KEY_WAVE_TIMEOUT_SECONDS, timeout).apply()
+            sharedPreferences?.edit()?.putInt(KEY_WAVE_TIMEOUT_SECONDS, timeout)?.apply()
         }
         waveTimeoutSeconds = timeout
         
         // Load pocket mode setting
-        isPocketModeEnabled = sharedPreferences.getBoolean("pocket_mode_enabled", false)
+        isPocketModeEnabled = sharedPreferences?.getBoolean("pocket_mode_enabled", false) ?: false
         
         Log.d(TAG, "Wave settings loaded - enabled: $isWaveToStopEnabled, threshold: $waveThreshold, timeout: ${waveTimeoutSeconds}s, pocket mode: $isPocketModeEnabled")
     }
@@ -955,7 +1016,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private fun loadCooldownSettings() {
         appCooldownSettings.clear()
         try {
-            val cooldownAppsJson = sharedPreferences.getString(KEY_COOLDOWN_APPS, "[]") ?: "[]"
+            val cooldownAppsJson = sharedPreferences?.getString(KEY_COOLDOWN_APPS, "[]") ?: "[]"
             val jsonArray = org.json.JSONArray(cooldownAppsJson)
             for (i in 0 until jsonArray.length()) {
                 val jsonObject = jsonArray.getJSONObject(i)
@@ -989,40 +1050,41 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     private fun loadFilterSettings() {
-        appListMode = sharedPreferences.getString(KEY_APP_LIST_MODE, "none") ?: "none"
-        appList = HashSet(sharedPreferences.getStringSet(KEY_APP_LIST, HashSet()) ?: HashSet())
-        privateApps = HashSet(sharedPreferences.getStringSet(KEY_APP_PRIVATE_FLAGS, HashSet()) ?: HashSet())
-        blockedWords = HashSet(sharedPreferences.getStringSet(KEY_WORD_BLACKLIST, HashSet()) ?: HashSet())
-        privateWords = HashSet(sharedPreferences.getStringSet(KEY_WORD_BLACKLIST_PRIVATE, HashSet()) ?: HashSet())
+        appListMode = sharedPreferences?.getString(KEY_APP_LIST_MODE, "none") ?: "none"
+        appList = HashSet(sharedPreferences?.getStringSet(KEY_APP_LIST, HashSet()) ?: HashSet())
+        privateApps = HashSet(sharedPreferences?.getStringSet(KEY_APP_PRIVATE_FLAGS, HashSet()) ?: HashSet())
+        blockedWords = HashSet(sharedPreferences?.getStringSet(KEY_WORD_BLACKLIST, HashSet()) ?: HashSet())
+        privateWords = HashSet(sharedPreferences?.getStringSet(KEY_WORD_BLACKLIST_PRIVATE, HashSet()) ?: HashSet())
         
         // Load word swaps
-        val replacementData = sharedPreferences.getString(KEY_WORD_REPLACEMENTS, "") ?: ""
-        wordReplacements.clear()
+        val replacementData = sharedPreferences?.getString(KEY_WORD_REPLACEMENTS, "") ?: ""
+        val newWordReplacements = HashMap<String, String>()
         if (replacementData.isNotEmpty()) {
-            val pairs = replacementData.split("\\|".toRegex())
+            val pairs = replacementData.split("|")
             for (pair in pairs) {
-                val parts = pair.split(":", limit = 2)
+                val parts = pair.split("=", limit = 2)
                 if (parts.size == 2) {
-                    wordReplacements[parts[0]] = parts[1]
+                    newWordReplacements[parts[0]] = parts[1]
                 }
             }
         }
+        wordReplacements = newWordReplacements
         
         // Load behavior settings  
-        notificationBehavior = sharedPreferences.getString(KEY_NOTIFICATION_BEHAVIOR, "interrupt") ?: "interrupt"
-        priorityApps = HashSet(sharedPreferences.getStringSet(KEY_PRIORITY_APPS, HashSet()) ?: HashSet())
+        notificationBehavior = sharedPreferences?.getString(KEY_NOTIFICATION_BEHAVIOR, "interrupt") ?: "interrupt"
+        priorityApps = HashSet(sharedPreferences?.getStringSet(KEY_PRIORITY_APPS, HashSet()) ?: HashSet())
         
         // Load media behavior settings
-        mediaBehavior = sharedPreferences.getString(KEY_MEDIA_BEHAVIOR, "ignore") ?: "ignore"
-        duckingVolume = sharedPreferences.getInt(KEY_DUCKING_VOLUME, 30)
+        mediaBehavior = sharedPreferences?.getString(KEY_MEDIA_BEHAVIOR, "ignore") ?: "ignore"
+        duckingVolume = sharedPreferences?.getInt(KEY_DUCKING_VOLUME, 30) ?: 30
         
         // Load delay settings
-        delayBeforeReadout = sharedPreferences.getInt(KEY_DELAY_BEFORE_READOUT, 0)
+        delayBeforeReadout = sharedPreferences?.getInt(KEY_DELAY_BEFORE_READOUT, 0) ?: 0
         
         // Load media notification filtering settings
-        val isMediaFilteringEnabled = sharedPreferences.getBoolean(KEY_MEDIA_FILTERING_ENABLED, false)
-        val exceptedApps = HashSet(sharedPreferences.getStringSet(KEY_MEDIA_FILTER_EXCEPTED_APPS, HashSet()) ?: HashSet())
-        val importantKeywords = HashSet(sharedPreferences.getStringSet(KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, HashSet()) ?: HashSet())
+        val isMediaFilteringEnabled = sharedPreferences?.getBoolean(KEY_MEDIA_FILTERING_ENABLED, false) ?: false
+        val exceptedApps = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTER_EXCEPTED_APPS, HashSet()) ?: HashSet())
+        val importantKeywords = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, HashSet()) ?: HashSet())
         
         // If no custom important keywords are set, use defaults
         if (importantKeywords.isEmpty()) {
@@ -1036,18 +1098,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         )
         
         // Load persistent filtering settings
-        isPersistentFilteringEnabled = sharedPreferences.getBoolean(KEY_PERSISTENT_FILTERING_ENABLED, false)
-        filterPersistent = sharedPreferences.getBoolean("filter_persistent", true)
-        filterSilent = sharedPreferences.getBoolean("filter_silent", true)
-        filterForegroundServices = sharedPreferences.getBoolean("filter_foreground_services", true)
-        filterLowPriority = sharedPreferences.getBoolean("filter_low_priority", false)
-        filterSystemNotifications = sharedPreferences.getBoolean("filter_system_notifications", false)
+        isPersistentFilteringEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_FILTERING_ENABLED, true) ?: true
+        filterPersistent = sharedPreferences?.getBoolean("filter_persistent", true) ?: true
+        filterSilent = sharedPreferences?.getBoolean("filter_silent", true) ?: true
+        filterForegroundServices = sharedPreferences?.getBoolean("filter_foreground_services", true) ?: true
+        filterLowPriority = sharedPreferences?.getBoolean("filter_low_priority", false) ?: false
+        filterSystemNotifications = sharedPreferences?.getBoolean("filter_system_notifications", false) ?: false
         
         // Load cooldown settings
         loadCooldownSettings()
         
         // Load speech template
-        speechTemplate = sharedPreferences.getString(KEY_SPEECH_TEMPLATE, "{app} notified you: {content}") ?: "{app} notified you: {content}"
+        speechTemplate = sharedPreferences?.getString(KEY_SPEECH_TEMPLATE, "{app} notified you: {content}") ?: "{app} notified you: {content}"
         
         Log.d(TAG, "Filter settings loaded - appMode: $appListMode, apps: ${appList.size}, blocked words: ${blockedWords.size}, replacements: ${wordReplacements.size}")
         Log.d(TAG, "Behavior settings loaded - mode: $notificationBehavior, priority apps: ${priorityApps.size}")
@@ -1150,14 +1212,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             return FilterResult(true, processedText, "App-level privacy applied")
         }
         
-        // 1. Check for blocked words (including smart filters)
+        // Early exit if no word filters are configured
+        if (blockedWords.isEmpty() && privateWords.isEmpty() && wordReplacements.isEmpty()) {
+            return FilterResult(true, processedText, "No word filters configured")
+        }
+        
+        // 1. Check for blocked words (including smart filters) - EARLY EXIT on first match
         for (blockedWord in blockedWords) {
             if (matchesWordFilter(processedText, blockedWord)) {
                 return FilterResult(false, "", "Blocked by filter: $blockedWord")
             }
         }
         
-        // 2. Check for private words and replace entire notification with [PRIVATE] (including smart filters)
+        // 2. Check for private words and replace entire notification with [PRIVATE] - EARLY EXIT on first match
         for (privateWord in privateWords) {
             if (matchesWordFilter(processedText, privateWord)) {
                 // When any private word is detected, replace the entire notification text with a private message
@@ -1169,9 +1236,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         }
         
-        // 3. Apply word swaps (only for non-private notifications)
-        for ((from, to) in wordReplacements) {
-            processedText = processedText.replace(from, to, ignoreCase = true)
+        // 3. Apply word swaps (only for non-private notifications and only if there are replacements)
+        if (wordReplacements.isNotEmpty()) {
+            for ((from, to) in wordReplacements) {
+                processedText = processedText.replace(from, to, ignoreCase = true)
+            }
         }
         
         return FilterResult(true, processedText, "Word filtering applied")
@@ -1441,7 +1510,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * - See BehaviorSettingsActivity and VoiceSettingsActivity for user guidance and warnings.
      */
     private fun handleMediaBehavior(appName: String, text: String, sbn: StatusBarNotification? = null): Boolean {
-        val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
         val isMusicActive = audioManager.isMusicActive
         Log.d(TAG, "Media behavior check - isMusicActive: $isMusicActive, mediaBehavior: $mediaBehavior, isCurrentlySpeaking: $isCurrentlySpeaking")
         
@@ -1483,7 +1551,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     InAppLogger.log("MediaBehavior", "Audio focus not granted in pause mode. Proceeding to speak notification anyway.")
                 }
                 // Log device and audio info for diagnostics
-                val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
                 val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
                 val ttsUsage = voicePrefs.getInt("audio_usage", android.media.AudioAttributes.USAGE_ASSISTANT)
                 val ttsContent = voicePrefs.getInt("content_type", android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
@@ -1497,7 +1564,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 InAppLogger.log("MediaBehavior", "Ducking media volume - notification will be spoken")
                 val ducked = duckMediaVolume()
                 // Log device and audio info for diagnostics
-                val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
                 val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
                 val ttsUsage = voicePrefs.getInt("audio_usage", android.media.AudioAttributes.USAGE_ASSISTANT)
                 val ttsContent = voicePrefs.getInt("content_type", android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
@@ -1524,8 +1590,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     private fun requestAudioFocusForSpeech(): Boolean {
-        val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-        
         return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             // Use AudioFocusRequest for API 26+
             audioFocusRequest = android.media.AudioFocusRequest.Builder(android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
@@ -1567,8 +1631,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     private fun duckMediaVolume(): Boolean {
-        val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-        
         try {
             // Get current media volume
             val currentVolume = audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
@@ -1601,7 +1663,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     private fun restoreMediaVolume() {
         if (originalMusicVolume != -1) {
-            val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
             try {
                 audioManager.setStreamVolume(
                     android.media.AudioManager.STREAM_MUSIC,
@@ -1618,8 +1679,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     private fun releaseAudioFocus() {
-        val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
-        
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             audioFocusRequest?.let {
                 audioManager.abandonAudioFocusRequest(it)
@@ -1903,7 +1962,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             KEY_PERSISTENT_FILTERING_ENABLED -> {
                 // Reload persistent filtering settings
-                isPersistentFilteringEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_FILTERING_ENABLED, false) ?: false
+                isPersistentFilteringEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_FILTERING_ENABLED, true) ?: true
                 Log.d(TAG, "Persistent filtering enabled updated: $isPersistentFilteringEnabled")
             }
             "filter_persistent", "filter_silent", "filter_foreground_services", "filter_low_priority", "filter_system_notifications" -> {

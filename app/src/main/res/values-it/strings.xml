@@ -62,4 +62,7 @@
     <string name="tts_format_app_only">{app}</string>
     <string name="tts_format_varied">VARIATO</string>
     <string name="tts_format_custom">PERSONALIZZATO</string>
+    
+    <!-- Battery saving tip -->
+    <string name="master_switch_battery_tip">💡 Suggerimento: Spegni quando non serve per risparmiare batteria</string>
 </resources> 
