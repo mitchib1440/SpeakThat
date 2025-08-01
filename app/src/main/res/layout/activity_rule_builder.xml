@@ -10,6 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
         android:padding="16dp">
 
         <LinearLayout
@@ -22,34 +23,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
-                app:cardBackgroundColor="@color/purple_50"
-                app:strokeColor="@color/purple_200"
+                app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="16dp"
-                    android:gravity="center_vertical">
+                    android:padding="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
                         android:text="💡"
-                        android:textSize="20sp"
-                        android:layout_marginEnd="12dp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Rules check conditions for each notification. They don't remember state - they filter notifications in real-time."
-                        android:textSize="14sp"
+                        android:lineSpacingExtra="2dp"
+                        android:text="Rules check conditions for each notification. They don't remember state changes - they filter notifications in real-time."
                         android:textColor="@color/text_secondary"
-                        android:lineSpacingExtra="2dp" />
+                        android:textSize="11dp" />
 
                 </LinearLayout>
 
@@ -60,9 +61,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
                 app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp">
 
@@ -75,9 +76,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="12dp">
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:layout_width="40dp"
@@ -97,29 +98,29 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
                             android:text="Rule Name"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
                             android:textColor="@color/text_primary"
-                            android:layout_marginStart="12dp" />
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:boxStrokeColor="@color/purple_200"
-                        app:hintTextColor="@color/purple_200"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+                        app:hintTextColor="@color/purple_200">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editRuleName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Enter rule name (e.g., Night Mode, Car Mode)"
-                            android:textColor="@color/text_primary"
                             android:inputType="text"
-                            android:maxLines="1" />
+                            android:maxLines="1"
+                            android:textColor="@color/text_primary" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -132,9 +133,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
                 app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp">
 
@@ -147,9 +148,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="12dp">
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:layout_width="40dp"
@@ -169,12 +170,12 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
                             android:layout_weight="1"
                             android:text="Triggers"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
                             android:textColor="@color/text_primary"
-                            android:layout_marginStart="12dp" />
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnAddTrigger"
@@ -190,35 +191,35 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
                         android:text="Conditions that must be met for this rule to activate"
-                        android:textSize="14sp"
                         android:textColor="@color/text_secondary"
-                        android:layout_marginBottom="12dp" />
+                        android:textSize="14sp" />
 
                     <!-- Logic Gate Selection -->
                     <LinearLayout
                         android:id="@+id/layoutTriggerLogic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
                         android:layout_marginBottom="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
                         android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
                             android:text="Logic:"
-                            android:textSize="14sp"
                             android:textColor="@color/text_secondary"
-                            android:layout_marginEnd="8dp" />
+                            android:textSize="14sp" />
 
                         <com.google.android.material.button.MaterialButtonToggleGroup
                             android:id="@+id/toggleTriggerLogic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:singleSelection="true"
-                            app:selectionRequired="true">
+                            app:selectionRequired="true"
+                            app:singleSelection="true">
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnTriggerAnd"
@@ -263,9 +264,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
                 app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp">
 
@@ -278,9 +279,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="12dp">
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:layout_width="40dp"
@@ -300,12 +301,12 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
                             android:layout_weight="1"
                             android:text="Actions"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
                             android:textColor="@color/text_primary"
-                            android:layout_marginStart="12dp" />
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnAddAction"
@@ -321,10 +322,10 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
                         android:text="What happens when the triggers are met"
-                        android:textSize="14sp"
                         android:textColor="@color/text_secondary"
-                        android:layout_marginBottom="12dp" />
+                        android:textSize="14sp" />
 
                     <!-- Actions List -->
                     <androidx.recyclerview.widget.RecyclerView
@@ -341,9 +342,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
                 app:strokeColor="@color/purple_300"
                 app:strokeWidth="1dp">
 
@@ -356,9 +357,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="12dp">
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:layout_width="40dp"
@@ -378,12 +379,12 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
                             android:layout_weight="1"
                             android:text="Exceptions"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
                             android:textColor="@color/text_primary"
-                            android:layout_marginStart="12dp" />
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnAddException"
@@ -399,35 +400,35 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
                         android:text="Conditions that override the triggers (optional)"
-                        android:textSize="14sp"
                         android:textColor="@color/text_secondary"
-                        android:layout_marginBottom="12dp" />
+                        android:textSize="14sp" />
 
                     <!-- Logic Gate Selection -->
                     <LinearLayout
                         android:id="@+id/layoutExceptionLogic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
                         android:layout_marginBottom="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
                         android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
                             android:text="Logic:"
-                            android:textSize="14sp"
                             android:textColor="@color/text_secondary"
-                            android:layout_marginEnd="8dp" />
+                            android:textSize="14sp" />
 
                         <com.google.android.material.button.MaterialButtonToggleGroup
                             android:id="@+id/toggleExceptionLogic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:singleSelection="true"
-                            app:selectionRequired="true">
+                            app:selectionRequired="true"
+                            app:singleSelection="true">
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnExceptionAnd"
@@ -472,14 +473,14 @@
                 android:id="@+id/btnSaveRule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:padding="16dp"
                 android:text="Save Rule"
                 android:textColor="@color/white_100"
-                app:backgroundTint="@color/purple_200"
-                app:cornerRadius="12dp"
-                android:padding="16dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="32dp" />
+                app:backgroundTint="@color/purple_200"
+                app:cornerRadius="12dp" />
 
         </LinearLayout>
 

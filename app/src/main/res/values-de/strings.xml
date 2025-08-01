@@ -92,4 +92,41 @@
     
     <!-- Template Action Descriptions (German) -->
     <string name="template_action_skip_notification">Diese Benachrichtigung überspringen</string>
+    
+    <!-- Rule Natural Language Templates (German) -->
+    <string name="rule_format_when_trigger_will_action">Wenn %1$s, wird %2$s %3$s</string>
+    <string name="rule_format_when_trigger_will_action_unless_exception">Wenn %1$s, wird %2$s %3$s, es sei denn %4$s</string>
+    <string name="rule_format_when_trigger_will_action_unless_exceptions">Wenn %1$s, wird %2$s %3$s, es sei denn %4$s</string>
+    
+    <!-- Rule Component Descriptions (German) -->
+    <string name="rule_trigger_bluetooth_connected">Bluetooth-Gerät verbunden ist</string>
+    <string name="rule_trigger_bluetooth_disconnected">Bluetooth-Gerät getrennt ist</string>
+    <string name="rule_trigger_screen_on">Bildschirm eingeschaltet ist</string>
+    <string name="rule_trigger_screen_off">Bildschirm ausgeschaltet ist</string>
+    <string name="rule_trigger_time_between">Zeit zwischen %1$s und %2$s ist</string>
+    <string name="rule_trigger_wifi_connected">mit %1$s verbunden ist</string>
+    <string name="rule_trigger_wifi_disconnected">nicht mit %1$s verbunden ist</string>
+    <string name="rule_trigger_multiple">mehrere Bedingungen erfüllt sind</string>
+    
+    <string name="rule_action_skip_notification">Benachrichtigungen überspringen</string>
+    <string name="rule_action_enable_app_filter">App-Filterung für %1$s aktivieren</string>
+    <string name="rule_action_disable_app_filter">App-Filterung für %1$s deaktivieren</string>
+    <string name="rule_action_change_voice_settings">Stimmeinstellungen ändern</string>
+    <string name="rule_action_multiple">mehrere Aktionen ausführen</string>
+    
+    <string name="rule_exception_bluetooth_connected">Bluetooth-Gerät verbunden ist</string>
+    <string name="rule_exception_bluetooth_disconnected">Bluetooth-Gerät getrennt ist</string>
+    <string name="rule_exception_screen_on">Bildschirm eingeschaltet ist</string>
+    <string name="rule_exception_screen_off">Bildschirm ausgeschaltet ist</string>
+    <string name="rule_exception_time_between">Zeit zwischen %1$s und %2$s ist</string>
+    <string name="rule_exception_wifi_connected">mit %1$s verbunden ist</string>
+    <string name="rule_exception_wifi_disconnected">nicht mit %1$s verbunden ist</string>
+    <string name="rule_exception_multiple">mehrere Ausnahmen gelten</string>
+    
+    <!-- Logic Connectors (German) -->
+    <string name="rule_logic_and">und</string>
+    <string name="rule_logic_or">oder</string>
+    <string name="rule_logic_xor">entweder</string>
+    <string name="rule_logic_separator">, </string>
+    <string name="rule_logic_final_separator"> und </string>
 </resources> 

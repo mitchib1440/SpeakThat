@@ -20,10 +20,7 @@ class RulesAdapter(
     class RuleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textRuleName: TextView = view.findViewById(R.id.textRuleName)
         val textRuleSummary: TextView = view.findViewById(R.id.textRuleSummary)
-        val textTriggers: TextView = view.findViewById(R.id.textTriggersSummary)
-        val textActions: TextView = view.findViewById(R.id.textActionsSummary)
-        val textExceptions: TextView = view.findViewById(R.id.textExceptionsSummary)
-        val layoutExceptions: View = view.findViewById(R.id.layoutExceptions)
+        val textRuleDescription: TextView = view.findViewById(R.id.textRuleDescription)
         val switchEnabled: com.google.android.material.materialswitch.MaterialSwitch = view.findViewById(R.id.switchRuleEnabled)
         val buttonDelete: MaterialButton = view.findViewById(R.id.buttonDeleteRule)
     }
@@ -40,18 +37,8 @@ class RulesAdapter(
         holder.textRuleName.text = rule.name
         holder.textRuleSummary.text = rule.getSummary()
         
-        // Set trigger count
-        val triggerCount = rule.triggers.size
-        holder.textTriggers.text = "$triggerCount trigger${if (triggerCount != 1) "s" else ""}"
-        
-        // Set action count
-        val actionCount = rule.actions.size
-        holder.textActions.text = "$actionCount action${if (actionCount != 1) "s" else ""}"
-        
-        // Set exception count and visibility
-        val exceptionCount = rule.exceptions.size
-        holder.textExceptions.text = "$exceptionCount exception${if (exceptionCount != 1) "s" else ""}"
-        holder.layoutExceptions.visibility = if (exceptionCount > 0) View.VISIBLE else View.GONE
+        // Set natural language description
+        holder.textRuleDescription.text = rule.getNaturalLanguageDescription(holder.itemView.context)
         
         // Temporarily remove listener to prevent recursive calls
         holder.switchEnabled.setOnCheckedChangeListener(null)

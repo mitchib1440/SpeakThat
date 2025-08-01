@@ -163,8 +163,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="about_developer_title">Developer</string>
     <string name="about_license_title">License</string>
     <string name="version_format">Version %s</string>
-    <string name="app_description">SpeakThat! is an Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="app_features">• Real-time notification reading\n• Customizable voice settings\n• Smart notification filtering\n• App-specific controls\n• Media-aware behavior\n• Notification history\n• Shake/Wave to stop\n• Custom speech formatting\n• Dark/Light theme support\n• Offline functionality</string>
+    <string name="app_description">SpeakThat! is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
+    <string name="app_features">• Real-time notification reading\n• Customizable voice settings\n• Smart notification filtering\n• App-specific controls\n• Media-aware behavior\n• Notification history\n• Shake/Wave to stop\n• Custom speech formatting\n• Dark/Light theme support\n• Conditional rules for advanced logic and schedules\n• Fully ad-free and offline functionality</string>
     <string name="developer_info">Developed with ❤️ by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day.\n\nSpeakThat! was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers.\n\nThis project was accelerated by AI-assisted programming.</string>
     <string name="license_info">This project is open source and available under the GPL-3.0 License.\n\nYou can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
     
@@ -173,9 +173,9 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     
     <!-- TTS-specific strings (emoji-free and speech-optimized) -->
     <string name="tts_app_intro">Welcome to SpeakThat!</string>
-    <string name="tts_description">SpeakThat is an Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
+    <string name="tts_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
     <string name="tts_features_intro">Key features include:</string>
-    <string name="tts_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, and full offline functionality.</string>
+    <string name="tts_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and fully ad-free, offline functionality.</string>
     <string name="tts_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
     <string name="tts_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
     <string name="tts_thank_you">Thank you for using SpeakThat!</string>
@@ -242,9 +242,9 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- TTS Context Templates - Complete sentences for different app contexts -->
     <!-- About Page TTS -->
     <string name="tts_about_intro">Welcome to SpeakThat!</string>
-    <string name="tts_about_description">SpeakThat is an Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
+    <string name="tts_about_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
     <string name="tts_about_features_intro">Key features include:</string>
-    <string name="tts_about_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, and full offline functionality.</string>
+    <string name="tts_about_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and full ad-free, offline functionality.</string>
     <string name="tts_about_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
     <string name="tts_about_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
     <string name="tts_about_thank_you">Thank you for using SpeakThat!</string>
@@ -309,4 +309,41 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     
     <!-- Template Action Descriptions -->
     <string name="template_action_skip_notification">Don\'t read notifications</string>
+    
+    <!-- Rule Natural Language Templates -->
+    <string name="rule_format_when_trigger_will_action">When %1$s, %2$s will %3$s</string>
+    <string name="rule_format_when_trigger_will_action_unless_exception">When %1$s, %2$s will %3$s unless %4$s</string>
+    <string name="rule_format_when_trigger_will_action_unless_exceptions">When %1$s, %2$s will %3$s unless %4$s</string>
+    
+    <!-- Rule Component Descriptions -->
+    <string name="rule_trigger_bluetooth_connected">Bluetooth device is connected</string>
+    <string name="rule_trigger_bluetooth_disconnected">Bluetooth device is disconnected</string>
+    <string name="rule_trigger_screen_on">screen is on</string>
+    <string name="rule_trigger_screen_off">screen is off</string>
+    <string name="rule_trigger_time_between">time is between %1$s and %2$s</string>
+    <string name="rule_trigger_wifi_connected">connected to %1$s</string>
+    <string name="rule_trigger_wifi_disconnected">not connected to %1$s</string>
+    <string name="rule_trigger_multiple">multiple conditions are met</string>
+    
+    <string name="rule_action_skip_notification">skip reading notifications</string>
+    <string name="rule_action_enable_app_filter">enable app filtering for %1$s</string>
+    <string name="rule_action_disable_app_filter">disable app filtering for %1$s</string>
+    <string name="rule_action_change_voice_settings">change voice settings</string>
+    <string name="rule_action_multiple">perform multiple actions</string>
+    
+    <string name="rule_exception_bluetooth_connected">Bluetooth device is connected</string>
+    <string name="rule_exception_bluetooth_disconnected">Bluetooth device is disconnected</string>
+    <string name="rule_exception_screen_on">screen is on</string>
+    <string name="rule_exception_screen_off">screen is off</string>
+    <string name="rule_exception_time_between">time is between %1$s and %2$s</string>
+    <string name="rule_exception_wifi_connected">connected to %1$s</string>
+    <string name="rule_exception_wifi_disconnected">not connected to %1$s</string>
+    <string name="rule_exception_multiple">multiple exceptions apply</string>
+    
+    <!-- Logic Connectors -->
+    <string name="rule_logic_and">and</string>
+    <string name="rule_logic_or">or</string>
+    <string name="rule_logic_xor">either</string>
+    <string name="rule_logic_separator">, </string>
+    <string name="rule_logic_final_separator">, and </string>
 </resources> 

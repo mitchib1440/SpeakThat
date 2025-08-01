@@ -92,4 +92,41 @@
     
     <!-- Template Action Descriptions (Italian) -->
     <string name="template_action_skip_notification">Salta la lettura di questa notifica</string>
+    
+    <!-- Rule Natural Language Templates (Italian) -->
+    <string name="rule_format_when_trigger_will_action">Quando %1$s, %2$s %3$s</string>
+    <string name="rule_format_when_trigger_will_action_unless_exception">Quando %1$s, %2$s %3$s a meno che %4$s</string>
+    <string name="rule_format_when_trigger_will_action_unless_exceptions">Quando %1$s, %2$s %3$s a meno che %4$s</string>
+    
+    <!-- Rule Component Descriptions (Italian) -->
+    <string name="rule_trigger_bluetooth_connected">il dispositivo Bluetooth è connesso</string>
+    <string name="rule_trigger_bluetooth_disconnected">il dispositivo Bluetooth è disconnesso</string>
+    <string name="rule_trigger_screen_on">lo schermo è acceso</string>
+    <string name="rule_trigger_screen_off">lo schermo è spento</string>
+    <string name="rule_trigger_time_between">l\'ora è tra %1$s e %2$s</string>
+    <string name="rule_trigger_wifi_connected">connesso a %1$s</string>
+    <string name="rule_trigger_wifi_disconnected">non connesso a %1$s</string>
+    <string name="rule_trigger_multiple">multiple condizioni sono soddisfatte</string>
+    
+    <string name="rule_action_skip_notification">salta la lettura delle notifiche</string>
+    <string name="rule_action_enable_app_filter">abilita il filtraggio app per %1$s</string>
+    <string name="rule_action_disable_app_filter">disabilita il filtraggio app per %1$s</string>
+    <string name="rule_action_change_voice_settings">cambia le impostazioni vocali</string>
+    <string name="rule_action_multiple">esegue multiple azioni</string>
+    
+    <string name="rule_exception_bluetooth_connected">il dispositivo Bluetooth è connesso</string>
+    <string name="rule_exception_bluetooth_disconnected">il dispositivo Bluetooth è disconnesso</string>
+    <string name="rule_exception_screen_on">lo schermo è acceso</string>
+    <string name="rule_exception_screen_off">lo schermo è spento</string>
+    <string name="rule_exception_time_between">l\'ora è tra %1$s e %2$s</string>
+    <string name="rule_exception_wifi_connected">connesso a %1$s</string>
+    <string name="rule_exception_wifi_disconnected">non connesso a %1$s</string>
+    <string name="rule_exception_multiple">multiple eccezioni si applicano</string>
+    
+    <!-- Logic Connectors (Italian) -->
+    <string name="rule_logic_and">e</string>
+    <string name="rule_logic_or">o</string>
+    <string name="rule_logic_xor">o</string>
+    <string name="rule_logic_separator">, </string>
+    <string name="rule_logic_final_separator"> e </string>
 </resources> 

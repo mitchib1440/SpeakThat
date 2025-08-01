@@ -55,13 +55,16 @@ object RuleTemplates {
      */
     fun createRuleFromTemplate(template: RuleTemplate, customData: Map<String, Any> = emptyMap()): Rule {
         InAppLogger.logDebug(TAG, "Creating rule from template: ${template.name}")
+        InAppLogger.logDebug(TAG, "Custom data received: $customData")
         
         // Convert template triggers to actual triggers
         val triggers = template.triggers.map { triggerTemplate ->
+            val processedData = processTriggerData(triggerTemplate.type, triggerTemplate.data + customData)
+            InAppLogger.logDebug(TAG, "Trigger ${triggerTemplate.type}: processed data = $processedData")
             Trigger(
                 type = triggerTemplate.type,
                 inverted = triggerTemplate.inverted,
-                data = triggerTemplate.data + customData,
+                data = processedData,
                 description = triggerTemplate.description
             )
         }
@@ -75,11 +78,46 @@ object RuleTemplates {
             )
         }
         
-        return Rule(
+        val rule = Rule(
             name = template.name,
             triggers = triggers,
             actions = actions
         )
+        
+        InAppLogger.logDebug(TAG, "Created rule: ${rule.name} with ${triggers.size} triggers")
+        triggers.forEach { trigger ->
+            InAppLogger.logDebug(TAG, "  Trigger ${trigger.type}: data = ${trigger.data}")
+        }
+        
+        return rule
+    }
+    
+    /**
+     * Process trigger data to convert template format to actual trigger format
+     */
+    private fun processTriggerData(triggerType: TriggerType, data: Map<String, Any>): Map<String, Any> {
+        return when (triggerType) {
+            TriggerType.TIME_SCHEDULE -> {
+                // Convert hour/minute format to milliseconds format
+                val startHour = data["startHour"] as? Int ?: 0
+                val startMinute = data["startMinute"] as? Int ?: 0
+                val endHour = data["endHour"] as? Int ?: 0
+                val endMinute = data["endMinute"] as? Int ?: 0
+                val selectedDays = data["selectedDays"] as? Set<Int> ?: emptySet()
+                
+                val startTimeMillis = (startHour * 60 * 60 * 1000L) + (startMinute * 60 * 1000L)
+                val endTimeMillis = (endHour * 60 * 60 * 1000L) + (endMinute * 60 * 1000L)
+                
+                InAppLogger.logDebug(TAG, "Converting time data: ${startHour}:${startMinute} -> ${startTimeMillis}ms, ${endHour}:${endMinute} -> ${endTimeMillis}ms, days: $selectedDays")
+                
+                mapOf(
+                    "start_time" to startTimeMillis,
+                    "end_time" to endTimeMillis,
+                    "days_of_week" to selectedDays
+                )
+            }
+            else -> data
+        }
     }
     
     // ============================================================================

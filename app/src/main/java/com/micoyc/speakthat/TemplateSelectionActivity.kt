@@ -321,7 +321,7 @@ class TemplateSelectionActivity : AppCompatActivity() {
                 if (checkBoxThursday.isChecked) selectedDays.add(4)
                 if (checkBoxFriday.isChecked) selectedDays.add(5)
                 if (checkBoxSaturday.isChecked) selectedDays.add(6)
-                if (checkBoxSunday.isChecked) selectedDays.add(0)
+                if (checkBoxSunday.isChecked) selectedDays.add(7)
                 
                 // Create custom data for the rule
                 val customData = mapOf(

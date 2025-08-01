@@ -46,6 +46,9 @@ class RuleSystemTest(private val context: Context) {
         // Test 7: Rule evaluation
         testRuleEvaluation()
         
+        // Test 8: Natural language description
+        testNaturalLanguageDescription()
+        
         InAppLogger.logDebug(TAG, "Rule system tests completed")
     }
     
@@ -522,6 +525,104 @@ class RuleSystemTest(private val context: Context) {
         InAppLogger.logDebug(TAG, "Inverted exception rule added: $success3")
         
         return success1 && success2 && success3
+    }
+    
+    /**
+     * Test the natural language description functionality
+     */
+    fun testNaturalLanguageDescription() {
+        InAppLogger.logDebug(TAG, "Test 8: Natural language description")
+        
+        // Create a simple rule to test natural language description
+        val simpleRule = Rule(
+            name = "Quiet Hours",
+            enabled = true,
+            triggers = listOf(
+                Trigger(
+                    type = TriggerType.SCREEN_STATE,
+                    data = mapOf("screen_state" to "on"),
+                    description = "Screen is on"
+                )
+            ),
+            actions = listOf(
+                Action(
+                    type = ActionType.DISABLE_SPEAKTHAT,
+                    description = "Skip reading notifications"
+                )
+            ),
+            triggerLogic = LogicGate.AND
+        )
+        
+        // Test the natural language description
+        val naturalDescription = simpleRule.getNaturalLanguageDescription(context)
+        InAppLogger.logDebug(TAG, "Natural language description: $naturalDescription")
+        
+        // Create a rule with exceptions
+        val ruleWithException = Rule(
+            name = "Work Hours",
+            enabled = true,
+            triggers = listOf(
+                Trigger(
+                    type = TriggerType.TIME_SCHEDULE,
+                    data = mapOf(
+                        "start_time" to 9 * 60 * 60 * 1000L, // 09:00
+                        "end_time" to 17 * 60 * 60 * 1000L,  // 17:00
+                        "days_of_week" to setOf(1, 2, 3, 4, 5) // Weekdays
+                    ),
+                    description = "Between 9 AM and 5 PM"
+                )
+            ),
+            actions = listOf(
+                Action(
+                    type = ActionType.DISABLE_SPEAKTHAT,
+                    description = "Skip reading notifications"
+                )
+            ),
+            exceptions = listOf(
+                Exception(
+                    type = ExceptionType.WIFI_NETWORK,
+                    data = mapOf("network_ssids" to setOf("Home WiFi")),
+                    description = "Connected to Home WiFi"
+                )
+            ),
+            triggerLogic = LogicGate.AND,
+            exceptionLogic = LogicGate.AND
+        )
+        
+        // Test the natural language description with exception
+        val naturalDescriptionWithException = ruleWithException.getNaturalLanguageDescription(context)
+        InAppLogger.logDebug(TAG, "Natural language description with exception: $naturalDescriptionWithException")
+        
+        // Create a rule with multiple triggers
+        val ruleWithMultipleTriggers = Rule(
+            name = "Home Mode",
+            enabled = true,
+            triggers = listOf(
+                Trigger(
+                    type = TriggerType.WIFI_NETWORK,
+                    data = mapOf("network_ssids" to setOf("Home WiFi")),
+                    description = "Connected to Home WiFi"
+                ),
+                Trigger(
+                    type = TriggerType.SCREEN_STATE,
+                    data = mapOf("screen_state" to "off"),
+                    description = "Screen is off"
+                )
+            ),
+            actions = listOf(
+                Action(
+                    type = ActionType.DISABLE_SPEAKTHAT,
+                    description = "Skip reading notifications"
+                )
+            ),
+            triggerLogic = LogicGate.AND
+        )
+        
+        // Test the natural language description with multiple triggers
+        val naturalDescriptionMultipleTriggers = ruleWithMultipleTriggers.getNaturalLanguageDescription(context)
+        InAppLogger.logDebug(TAG, "Natural language description with multiple triggers: $naturalDescriptionMultipleTriggers")
+        
+        InAppLogger.logDebug(TAG, "Natural language description test completed")
     }
     
     /**

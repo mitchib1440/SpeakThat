@@ -217,6 +217,269 @@ data class Rule(
         return "$triggerSummary → $actionSummary (exceptions: $exceptionSummary)"
     }
     
+    /**
+     * Generates a natural language description of the rule
+     * Format: "When <trigger>, <rule name> will <action> unless <exception>"
+     */
+    fun getNaturalLanguageDescription(context: android.content.Context): String {
+        val triggerDesc = getTriggerDescription(context)
+        val actionDesc = getActionDescription(context)
+        val exceptionDesc = getExceptionDescription(context)
+        
+        return when {
+            exceptions.isEmpty() -> {
+                context.getString(
+                    com.micoyc.speakthat.R.string.rule_format_when_trigger_will_action,
+                    triggerDesc,
+                    name,
+                    actionDesc
+                )
+            }
+            exceptions.size == 1 -> {
+                context.getString(
+                    com.micoyc.speakthat.R.string.rule_format_when_trigger_will_action_unless_exception,
+                    triggerDesc,
+                    name,
+                    actionDesc,
+                    exceptionDesc
+                )
+            }
+            else -> {
+                context.getString(
+                    com.micoyc.speakthat.R.string.rule_format_when_trigger_will_action_unless_exceptions,
+                    triggerDesc,
+                    name,
+                    actionDesc,
+                    exceptionDesc
+                )
+            }
+        }
+    }
+    
+    private fun getTriggerDescription(context: android.content.Context): String {
+        if (triggers.isEmpty()) {
+            return context.getString(com.micoyc.speakthat.R.string.rule_trigger_multiple)
+        }
+        
+        if (triggers.size == 1) {
+            return getSingleTriggerDescription(context, triggers[0])
+        }
+        
+        // Multiple triggers - combine with logic gate
+        val triggerDescriptions = triggers.map { getSingleTriggerDescription(context, it) }
+        return combineDescriptions(context, triggerDescriptions, triggerLogic)
+    }
+    
+    private fun getSingleTriggerDescription(context: android.content.Context, trigger: Trigger): String {
+        if (!trigger.enabled) return ""
+        
+        return when (trigger.type) {
+            TriggerType.BLUETOOTH_DEVICE -> {
+                val deviceAddresses = trigger.data["device_addresses"] as? Set<String> ?: emptySet()
+                val deviceName = if (deviceAddresses.isEmpty()) "any Bluetooth device" else "Bluetooth device"
+                if (trigger.inverted) {
+                    context.getString(com.micoyc.speakthat.R.string.rule_trigger_bluetooth_disconnected)
+                } else {
+                    context.getString(com.micoyc.speakthat.R.string.rule_trigger_bluetooth_connected)
+                }
+            }
+            TriggerType.SCREEN_STATE -> {
+                val screenState = trigger.data["screen_state"] as? String ?: "on"
+                val screenOn = screenState == "on"
+                if (screenOn xor trigger.inverted) {
+                    context.getString(com.micoyc.speakthat.R.string.rule_trigger_screen_on)
+                } else {
+                    context.getString(com.micoyc.speakthat.R.string.rule_trigger_screen_off)
+                }
+            }
+            TriggerType.TIME_SCHEDULE -> {
+                // Handle different number types that might be stored
+                val startTimeRaw = trigger.data["start_time"]
+                val endTimeRaw = trigger.data["end_time"]
+                
+                val startTimeMillis = when (startTimeRaw) {
+                    is Long -> startTimeRaw
+                    is Double -> startTimeRaw.toLong()
+                    is Int -> startTimeRaw.toLong()
+                    else -> 0L
+                }
+                
+                val endTimeMillis = when (endTimeRaw) {
+                    is Long -> endTimeRaw
+                    is Double -> endTimeRaw.toLong()
+                    is Int -> endTimeRaw.toLong()
+                    else -> 0L
+                }
+                
+                // Fix time conversion logic - handle case where time is 0 (00:00)
+                val startHour = (startTimeMillis / (60 * 60 * 1000)).toInt()
+                val startMinute = ((startTimeMillis % (60 * 60 * 1000)) / (60 * 1000)).toInt()
+                val endHour = (endTimeMillis / (60 * 60 * 1000)).toInt()
+                val endMinute = ((endTimeMillis % (60 * 60 * 1000)) / (60 * 1000)).toInt()
+                
+                val startTime = String.format("%02d:%02d", startHour, startMinute)
+                val endTime = String.format("%02d:%02d", endHour, endMinute)
+                
+                context.getString(
+                    com.micoyc.speakthat.R.string.rule_trigger_time_between,
+                    startTime,
+                    endTime
+                )
+            }
+            TriggerType.WIFI_NETWORK -> {
+                val networkSSIDs = trigger.data["network_ssids"] as? Set<String> ?: emptySet()
+                val networkName = if (networkSSIDs.isEmpty()) "any WiFi network" else networkSSIDs.first()
+                if (trigger.inverted) {
+                    context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_disconnected, networkName)
+                } else {
+                    context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_connected, networkName)
+                }
+            }
+        }
+    }
+    
+    private fun getActionDescription(context: android.content.Context): String {
+        if (actions.isEmpty()) {
+            return context.getString(com.micoyc.speakthat.R.string.rule_action_multiple)
+        }
+        
+        if (actions.size == 1) {
+            return getSingleActionDescription(context, actions[0])
+        }
+        
+        // Multiple actions
+        val actionDescriptions = actions.map { getSingleActionDescription(context, it) }
+        return combineDescriptions(context, actionDescriptions, LogicGate.AND)
+    }
+    
+    private fun getSingleActionDescription(context: android.content.Context, action: Action): String {
+        if (!action.enabled) return ""
+        
+        return when (action.type) {
+            ActionType.DISABLE_SPEAKTHAT -> {
+                context.getString(com.micoyc.speakthat.R.string.rule_action_skip_notification)
+            }
+            ActionType.ENABLE_APP_FILTER -> {
+                val appPackage = action.data["app_package"] as? String ?: "app"
+                context.getString(com.micoyc.speakthat.R.string.rule_action_enable_app_filter, appPackage)
+            }
+            ActionType.DISABLE_APP_FILTER -> {
+                val appPackage = action.data["app_package"] as? String ?: "app"
+                context.getString(com.micoyc.speakthat.R.string.rule_action_disable_app_filter, appPackage)
+            }
+            ActionType.CHANGE_VOICE_SETTINGS -> {
+                context.getString(com.micoyc.speakthat.R.string.rule_action_change_voice_settings)
+            }
+        }
+    }
+    
+    private fun getExceptionDescription(context: android.content.Context): String {
+        if (exceptions.isEmpty()) {
+            return ""
+        }
+        
+        if (exceptions.size == 1) {
+            return getSingleExceptionDescription(context, exceptions[0])
+        }
+        
+        // Multiple exceptions - combine with logic gate
+        val exceptionDescriptions = exceptions.map { getSingleExceptionDescription(context, it) }
+        return combineDescriptions(context, exceptionDescriptions, exceptionLogic)
+    }
+    
+    private fun getSingleExceptionDescription(context: android.content.Context, exception: Exception): String {
+        if (!exception.enabled) return ""
+        
+        return when (exception.type) {
+            ExceptionType.BLUETOOTH_DEVICE -> {
+                val deviceAddresses = exception.data["device_addresses"] as? Set<String> ?: emptySet()
+                val deviceName = if (deviceAddresses.isEmpty()) "any Bluetooth device" else "Bluetooth device"
+                if (exception.inverted) {
+                    context.getString(com.micoyc.speakthat.R.string.rule_exception_bluetooth_disconnected)
+                } else {
+                    context.getString(com.micoyc.speakthat.R.string.rule_exception_bluetooth_connected)
+                }
+            }
+            ExceptionType.SCREEN_STATE -> {
+                val screenState = exception.data["screen_state"] as? String ?: "on"
+                val screenOn = screenState == "on"
+                if (screenOn xor exception.inverted) {
+                    context.getString(com.micoyc.speakthat.R.string.rule_exception_screen_on)
+                } else {
+                    context.getString(com.micoyc.speakthat.R.string.rule_exception_screen_off)
+                }
+            }
+            ExceptionType.TIME_SCHEDULE -> {
+                // Handle different number types that might be stored
+                val startTimeRaw = exception.data["start_time"]
+                val endTimeRaw = exception.data["end_time"]
+                
+                val startTimeMillis = when (startTimeRaw) {
+                    is Long -> startTimeRaw
+                    is Double -> startTimeRaw.toLong()
+                    is Int -> startTimeRaw.toLong()
+                    else -> 0L
+                }
+                
+                val endTimeMillis = when (endTimeRaw) {
+                    is Long -> endTimeRaw
+                    is Double -> endTimeRaw.toLong()
+                    is Int -> endTimeRaw.toLong()
+                    else -> 0L
+                }
+                
+                // Fix time conversion logic - handle case where time is 0 (00:00)
+                val startHour = (startTimeMillis / (60 * 60 * 1000)).toInt()
+                val startMinute = ((startTimeMillis % (60 * 60 * 1000)) / (60 * 1000)).toInt()
+                val endHour = (endTimeMillis / (60 * 60 * 1000)).toInt()
+                val endMinute = ((endTimeMillis % (60 * 60 * 1000)) / (60 * 1000)).toInt()
+                
+                val startTime = String.format("%02d:%02d", startHour, startMinute)
+                val endTime = String.format("%02d:%02d", endHour, endMinute)
+                
+                context.getString(
+                    com.micoyc.speakthat.R.string.rule_exception_time_between,
+                    startTime,
+                    endTime
+                )
+            }
+            ExceptionType.WIFI_NETWORK -> {
+                val networkSSIDs = exception.data["network_ssids"] as? Set<String> ?: emptySet()
+                val networkName = if (networkSSIDs.isEmpty()) "any WiFi network" else networkSSIDs.first()
+                if (exception.inverted) {
+                    context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_disconnected, networkName)
+                } else {
+                    context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_connected, networkName)
+                }
+            }
+        }
+    }
+    
+    private fun combineDescriptions(context: android.content.Context, descriptions: List<String>, logic: LogicGate): String {
+        val validDescriptions = descriptions.filter { it.isNotEmpty() }
+        if (validDescriptions.isEmpty()) return ""
+        if (validDescriptions.size == 1) return validDescriptions[0]
+        
+        val separator = context.getString(com.micoyc.speakthat.R.string.rule_logic_separator)
+        val finalSeparator = context.getString(com.micoyc.speakthat.R.string.rule_logic_final_separator)
+        
+        return when (logic) {
+            LogicGate.AND -> {
+                if (validDescriptions.size == 2) {
+                    validDescriptions[0] + finalSeparator + validDescriptions[1]
+                } else {
+                    validDescriptions.dropLast(1).joinToString(separator) + finalSeparator + validDescriptions.last()
+                }
+            }
+            LogicGate.OR -> {
+                validDescriptions.joinToString(" ${context.getString(com.micoyc.speakthat.R.string.rule_logic_or)} ")
+            }
+            LogicGate.XOR -> {
+                validDescriptions.joinToString(" ${context.getString(com.micoyc.speakthat.R.string.rule_logic_xor)} ")
+            }
+        }
+    }
+    
     fun isValid(): Boolean {
         // A rule must have at least one trigger and one action to be valid
         val hasTriggers = triggers.isNotEmpty() && triggers.any { it.enabled }

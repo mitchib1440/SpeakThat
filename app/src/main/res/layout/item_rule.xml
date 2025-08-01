@@ -77,88 +77,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <!-- Triggers Summary -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Triggers"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_secondary"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/textTriggersSummary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Screen on"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary" />
-
-            </LinearLayout>
-
-            <!-- Actions Summary -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Actions"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_secondary"
-                    android:layout_marginBottom="4dp" />
-
-                <TextView
-                    android:id="@+id/textActionsSummary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Disable SpeakThat"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Exceptions Summary (if any) -->
-        <LinearLayout
-            android:id="@+id/layoutExceptions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="8dp"
-            android:visibility="gone">
+            android:layout_marginTop="8dp">
 
+            <!-- Natural Language Rule Description -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Exceptions"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_secondary"
-                android:layout_marginBottom="4dp" />
-
-            <TextView
-                android:id="@+id/textExceptionsSummary"
+                android:id="@+id/textRuleDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Time between 19:00-07:00"
-                android:textSize="12sp"
-                android:textColor="@color/text_secondary" />
+                android:text="When screen is on, Quiet Hours will skip reading notifications"
+                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:lineSpacingExtra="2dp"
+                android:lineSpacingMultiplier="1.1" />
 
         </LinearLayout>
 

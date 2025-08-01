@@ -170,6 +170,10 @@ class TriggerConfigActivity : AppCompatActivity() {
             selectedDays.remove(day)
         }
         
+        updateSelectedDaysDisplay()
+    }
+    
+    private fun updateSelectedDaysDisplay() {
         // Update the display
         val dayNames = selectedDays.map { dayValue ->
             when (dayValue) {
@@ -198,6 +202,23 @@ class TriggerConfigActivity : AppCompatActivity() {
     private fun showTimePickerDialog(isStartTime: Boolean) {
         val calendar = Calendar.getInstance()
         
+        // Use saved time if available, otherwise use current time
+        val savedTimeMillis = if (isStartTime) startTimeMillis else endTimeMillis
+        val initialHour: Int
+        val initialMinute: Int
+        
+        if (savedTimeMillis != null && savedTimeMillis > 0) {
+            // Use saved time
+            initialHour = (savedTimeMillis / (60 * 60 * 1000)).toInt()
+            initialMinute = ((savedTimeMillis % (60 * 60 * 1000)) / (60 * 1000)).toInt()
+            InAppLogger.logDebug("TriggerConfigActivity", "Time picker: Using saved time for ${if (isStartTime) "start" else "end"}: ${String.format("%02d:%02d", initialHour, initialMinute)} (${savedTimeMillis}ms)")
+        } else {
+            // Use current time as default
+            initialHour = calendar.get(Calendar.HOUR_OF_DAY)
+            initialMinute = calendar.get(Calendar.MINUTE)
+            InAppLogger.logDebug("TriggerConfigActivity", "Time picker: Using current time for ${if (isStartTime) "start" else "end"}: ${String.format("%02d:%02d", initialHour, initialMinute)}")
+        }
+        
         TimePickerDialog(
             this,
             { _, hourOfDay, minute ->
@@ -207,13 +228,15 @@ class TriggerConfigActivity : AppCompatActivity() {
                 if (isStartTime) {
                     binding.textStartTime.text = timeString
                     startTimeMillis = timeInMillis
+                    InAppLogger.logDebug("TriggerConfigActivity", "Start time set to: $timeString (${timeInMillis}ms)")
                 } else {
                     binding.textEndTime.text = timeString
                     endTimeMillis = timeInMillis
+                    InAppLogger.logDebug("TriggerConfigActivity", "End time set to: $timeString (${timeInMillis}ms)")
                 }
             },
-            calendar.get(Calendar.HOUR_OF_DAY),
-            calendar.get(Calendar.MINUTE),
+            initialHour,
+            initialMinute,
             true
         ).show()
     }
@@ -429,11 +452,50 @@ class TriggerConfigActivity : AppCompatActivity() {
                 }
                 
                 TriggerType.TIME_SCHEDULE -> {
-                    val startTime = trigger.data["start_time"] as? Long ?: 0L
-                    val endTime = trigger.data["end_time"] as? Long ?: 0L
-                    val daysOfWeek = trigger.data["days_of_week"] as? Set<Int> ?: emptySet()
+                    InAppLogger.logDebug("TriggerConfigActivity", "Loading time schedule trigger - full trigger data: ${trigger.data}")
                     
-                    // Set time displays
+                    // Handle different number types that might be stored
+                    val startTimeRaw = trigger.data["start_time"]
+                    val endTimeRaw = trigger.data["end_time"]
+                    val daysOfWeekRaw = trigger.data["days_of_week"]
+                    
+                    val startTime = when (startTimeRaw) {
+                        is Long -> startTimeRaw
+                        is Double -> startTimeRaw.toLong()
+                        is Int -> startTimeRaw.toLong()
+                        else -> 0L
+                    }
+                    
+                    val endTime = when (endTimeRaw) {
+                        is Long -> endTimeRaw
+                        is Double -> endTimeRaw.toLong()
+                        is Int -> endTimeRaw.toLong()
+                        else -> 0L
+                    }
+                    
+                    val daysOfWeek = when (daysOfWeekRaw) {
+                        is Set<*> -> daysOfWeekRaw.mapNotNull { 
+                            when (it) {
+                                is Int -> it
+                                is Double -> it.toInt()
+                                is Long -> it.toInt()
+                                else -> null
+                            }
+                        }.toSet()
+                        is List<*> -> daysOfWeekRaw.mapNotNull { 
+                            when (it) {
+                                is Int -> it
+                                is Double -> it.toInt()
+                                is Long -> it.toInt()
+                                else -> null
+                            }
+                        }.toSet()
+                        else -> emptySet<Int>()
+                    }
+                    
+                    InAppLogger.logDebug("TriggerConfigActivity", "Loading time schedule trigger - startTime: ${startTime}ms, endTime: ${endTime}ms, days: $daysOfWeek")
+                    
+                    // Set time displays - Fix time conversion logic
                     val startHour = (startTime / (60 * 60 * 1000)).toInt()
                     val startMinute = ((startTime % (60 * 60 * 1000)) / (60 * 1000)).toInt()
                     binding.textStartTime.text = String.format("%02d:%02d", startHour, startMinute)
@@ -444,9 +506,13 @@ class TriggerConfigActivity : AppCompatActivity() {
                     binding.textEndTime.text = String.format("%02d:%02d", endHour, endMinute)
                     endTimeMillis = endTime
                     
+                    InAppLogger.logDebug("TriggerConfigActivity", "Time display set - start: ${String.format("%02d:%02d", startHour, startMinute)}, end: ${String.format("%02d:%02d", endHour, endMinute)}")
+                    
                     // Set selected days
                     selectedDays.clear()
                     selectedDays.addAll(daysOfWeek)
+                    
+                    InAppLogger.logDebug("TriggerConfigActivity", "Selected days loaded: $selectedDays")
                     
                     // Update checkboxes
                     val dayValues = arrayOf(
@@ -459,7 +525,8 @@ class TriggerConfigActivity : AppCompatActivity() {
                         checkbox?.isChecked = selectedDays.contains(dayValues[i])
                     }
                     
-                    updateSelectedDays(0, false) // Update display
+                    // Update the display without clearing selection
+                    updateSelectedDaysDisplay()
                 }
                 
                 TriggerType.BLUETOOTH_DEVICE -> {
