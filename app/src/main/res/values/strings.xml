@@ -282,4 +282,31 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_format_app_only">{app}</string>
     <string name="tts_format_varied">VARIED</string>
     <string name="tts_format_custom">CUSTOM</string>
+    
+    <!-- Rule Builder Templates -->
+    <string name="template_selection_title">Choose a Template</string>
+    <string name="template_selection_description">Select a pre-configured rule template to get started quickly, or create a custom rule from scratch.</string>
+    <string name="create_custom_rule">Create Custom Rule</string>
+    
+    <!-- Template Names -->
+    <string name="template_headphones_only_name">Bluetooth Headphones</string>
+    <string name="template_headphones_only_description">Select your Bluetooth headphones, and notifications will never be read when they are connected to your phone</string>
+    
+    <string name="template_time_schedule_name">Quiet Hours</string>
+    <string name="template_time_schedule_description">Select two times you want SpeakThat to remain silent between</string>
+    
+    <string name="template_screen_off_name">Only when Screen Off</string>
+    <string name="template_screen_off_description">Notifications will only be read if your screen is off</string>
+    
+    <string name="template_home_network_name">Only on Home WiFi</string>
+    <string name="template_home_network_description">Enter your Home WiFi network and notifications will only be read when you\'re connected to it</string>
+    
+    <!-- Template Trigger Descriptions -->
+    <string name="template_trigger_headphones_disconnected">When Bluetooth headphones are disconnected</string>
+    <string name="template_trigger_time_between">Between 10:00 PM and 8:00 AM</string>
+    <string name="template_trigger_screen_on">When screen is turned on</string>
+    <string name="template_trigger_not_home_wifi">When not connected to Home WiFi</string>
+    
+    <!-- Template Action Descriptions -->
+    <string name="template_action_skip_notification">Don\'t read notifications</string>
 </resources> 

@@ -44,7 +44,7 @@ class TemplateSelectionActivity : AppCompatActivity() {
         
         // Set up action bar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Choose a Template"
+        supportActionBar?.title = "Choose a Template or Create Custom Rule"
         
         // Initialize rule manager
         ruleManager = RuleManager(this)
@@ -62,7 +62,7 @@ class TemplateSelectionActivity : AppCompatActivity() {
     
     private fun setupRecyclerView() {
         adapter = TemplateAdapter(
-            templates = RuleTemplates.getAllTemplates(),
+            templates = RuleTemplates.getAllTemplates(this),
             onTemplateSelected = { template -> handleTemplateSelection(template) }
         )
         
@@ -71,7 +71,7 @@ class TemplateSelectionActivity : AppCompatActivity() {
             adapter = this@TemplateSelectionActivity.adapter
         }
         
-        InAppLogger.logDebug("TemplateSelectionActivity", "RecyclerView initialized with ${RuleTemplates.getAllTemplates().size} templates")
+        InAppLogger.logDebug("TemplateSelectionActivity", "RecyclerView initialized with ${RuleTemplates.getAllTemplates(this).size} templates")
     }
     
     private fun setupButtons() {

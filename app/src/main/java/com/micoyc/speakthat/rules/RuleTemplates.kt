@@ -1,6 +1,8 @@
 package com.micoyc.speakthat.rules
 
+import android.content.Context
 import com.micoyc.speakthat.InAppLogger
+import com.micoyc.speakthat.R
 
 /**
  * Rule Templates
@@ -38,13 +40,13 @@ object RuleTemplates {
     /**
      * Get all available rule templates
      */
-    fun getAllTemplates(): List<RuleTemplate> {
+    fun getAllTemplates(context: Context): List<RuleTemplate> {
         return listOf(
             // Essential templates for common use cases
-            createHeadphonesOnlyTemplate(),
-            createScreenOnTemplate(),
-            createHomeNetworkTemplate(),
-            createTimeScheduleTemplate()
+            createHeadphonesOnlyTemplate(context),
+            createScreenOnTemplate(context),
+            createHomeNetworkTemplate(context),
+            createTimeScheduleTemplate(context)
         )
     }
     
@@ -84,11 +86,11 @@ object RuleTemplates {
     // TEMPLATE DEFINITIONS
     // ============================================================================
     
-    private fun createHeadphonesOnlyTemplate(): RuleTemplate {
+    private fun createHeadphonesOnlyTemplate(context: Context): RuleTemplate {
         return RuleTemplate(
             id = "headphones_only",
-            name = "Only read notifications when Bluetooth headphones are connected",
-            description = "Skip notifications when your Bluetooth headphones are disconnected",
+            name = context.getString(R.string.template_headphones_only_name),
+            description = context.getString(R.string.template_headphones_only_description),
             icon = "🎧",
             requiresDeviceSelection = true,
             deviceType = "bluetooth",
@@ -100,13 +102,13 @@ object RuleTemplates {
                         "device_addresses" to emptySet<String>(),
                         "device_display_text" to ""
                     ),
-                    description = "When Bluetooth headphones are disconnected"
+                    description = context.getString(R.string.template_trigger_headphones_disconnected)
                 )
             ),
             actions = listOf(
                 ActionTemplate(
                     type = ActionType.DISABLE_SPEAKTHAT,
-                    description = "Skip reading this notification"
+                    description = context.getString(R.string.template_action_skip_notification)
                 )
             )
         )
@@ -114,11 +116,11 @@ object RuleTemplates {
     
 
     
-    private fun createTimeScheduleTemplate(): RuleTemplate {
+    private fun createTimeScheduleTemplate(context: Context): RuleTemplate {
         return RuleTemplate(
             id = "time_schedule",
-            name = "Don't read notifications between specific times",
-            description = "Skip notifications during your specified time range",
+            name = context.getString(R.string.template_time_schedule_name),
+            description = context.getString(R.string.template_time_schedule_description),
             icon = "⏰",
             requiresDeviceSelection = true,
             deviceType = "time_schedule",
@@ -131,13 +133,13 @@ object RuleTemplates {
                         "endHour" to 8,
                         "endMinute" to 0
                     ),
-                    description = "Between 10:00 PM and 8:00 AM"
+                    description = context.getString(R.string.template_trigger_time_between)
                 )
             ),
             actions = listOf(
                 ActionTemplate(
                     type = ActionType.DISABLE_SPEAKTHAT,
-                    description = "Skip reading this notification"
+                    description = context.getString(R.string.template_action_skip_notification)
                 )
             )
         )
@@ -145,34 +147,34 @@ object RuleTemplates {
     
 
     
-    private fun createScreenOnTemplate(): RuleTemplate {
+    private fun createScreenOnTemplate(context: Context): RuleTemplate {
         return RuleTemplate(
             id = "screen_off",
-            name = "Only read notifications when my screen is off",
-            description = "Skip notifications when your phone screen is turned on",
+            name = context.getString(R.string.template_screen_off_name),
+            description = context.getString(R.string.template_screen_off_description),
             icon = "📱",
             triggers = listOf(
                 TriggerTemplate(
                     type = TriggerType.SCREEN_STATE,
                     inverted = false, // Not inverted - trigger when screen is ON (to skip notifications)
                     data = mapOf("screenOn" to true),
-                    description = "When screen is turned on"
+                    description = context.getString(R.string.template_trigger_screen_on)
                 )
             ),
             actions = listOf(
                 ActionTemplate(
                     type = ActionType.DISABLE_SPEAKTHAT,
-                    description = "Skip reading this notification"
+                    description = context.getString(R.string.template_action_skip_notification)
                 )
             )
         )
     }
     
-    private fun createHomeNetworkTemplate(): RuleTemplate {
+    private fun createHomeNetworkTemplate(context: Context): RuleTemplate {
         return RuleTemplate(
             id = "home_network",
-            name = "Only read notifications when connected to Home WiFi",
-            description = "Skip notifications when not connected to your home WiFi network",
+            name = context.getString(R.string.template_home_network_name),
+            description = context.getString(R.string.template_home_network_description),
             icon = "🏠",
             requiresDeviceSelection = true,
             deviceType = "wifi",
@@ -180,13 +182,13 @@ object RuleTemplates {
                 TriggerTemplate(
                     type = TriggerType.WIFI_NETWORK,
                     inverted = true,
-                    description = "When not connected to home WiFi"
+                    description = context.getString(R.string.template_trigger_not_home_wifi)
                 )
             ),
             actions = listOf(
                 ActionTemplate(
                     type = ActionType.DISABLE_SPEAKTHAT,
-                    description = "Skip reading this notification"
+                    description = context.getString(R.string.template_action_skip_notification)
                 )
             )
         )

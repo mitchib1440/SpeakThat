@@ -65,4 +65,31 @@
     
     <!-- Battery saving tip -->
     <string name="master_switch_battery_tip">💡 Suggerimento: Spegni quando non serve per risparmiare batteria</string>
+    
+    <!-- Rule Builder Templates (Italian) -->
+    <string name="template_selection_title">Scegli un Template</string>
+    <string name="template_selection_description">Seleziona un template di regola preconfigurato per iniziare rapidamente, o crea una regola personalizzata da zero.</string>
+    <string name="create_custom_rule">Crea Regola Personalizzata</string>
+    
+    <!-- Template Names (Italian) -->
+    <string name="template_headphones_only_name">Leggi notifiche solo quando gli auricolari Bluetooth sono connessi</string>
+    <string name="template_headphones_only_description">Salta le notifiche quando i tuoi auricolari Bluetooth sono disconnessi</string>
+    
+    <string name="template_time_schedule_name">Non leggere notifiche tra orari specifici</string>
+    <string name="template_time_schedule_description">Salta le notifiche durante il tuo intervallo di tempo specificato</string>
+    
+    <string name="template_screen_off_name">Leggi notifiche solo quando il mio schermo è spento</string>
+    <string name="template_screen_off_description">Salta le notifiche quando lo schermo del telefono è acceso</string>
+    
+    <string name="template_home_network_name">Leggi notifiche solo quando connesso al WiFi di casa</string>
+    <string name="template_home_network_description">Salta le notifiche quando non connesso alla tua rete WiFi di casa</string>
+    
+    <!-- Template Trigger Descriptions (Italian) -->
+    <string name="template_trigger_headphones_disconnected">Quando gli auricolari Bluetooth sono disconnessi</string>
+    <string name="template_trigger_time_between">Tra le 22:00 e le 8:00</string>
+    <string name="template_trigger_screen_on">Quando lo schermo è acceso</string>
+    <string name="template_trigger_not_home_wifi">Quando non connesso al WiFi di casa</string>
+    
+    <!-- Template Action Descriptions (Italian) -->
+    <string name="template_action_skip_notification">Salta la lettura di questa notifica</string>
 </resources> 

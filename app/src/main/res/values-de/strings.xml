@@ -65,4 +65,31 @@
     
     <!-- Battery saving tip -->
     <string name="master_switch_battery_tip">💡 Tipp: Ausschalten wenn nicht benötigt, um Akku zu sparen</string>
+    
+    <!-- Rule Builder Templates (German) -->
+    <string name="template_selection_title">Template auswählen</string>
+    <string name="template_selection_description">Wähle eine vorkonfigurierte Regelvorlage für einen schnellen Start oder erstelle eine benutzerdefinierte Regel von Grund auf.</string>
+    <string name="create_custom_rule">Benutzerdefinierte Regel erstellen</string>
+    
+    <!-- Template Names (German) -->
+    <string name="template_headphones_only_name">Benachrichtigungen nur bei verbundenen Bluetooth-Kopfhörern vorlesen</string>
+    <string name="template_headphones_only_description">Benachrichtigungen überspringen, wenn deine Bluetooth-Kopfhörer getrennt sind</string>
+    
+    <string name="template_time_schedule_name">Benachrichtigungen zwischen bestimmten Zeiten nicht vorlesen</string>
+    <string name="template_time_schedule_description">Benachrichtigungen während deines angegebenen Zeitraums überspringen</string>
+    
+    <string name="template_screen_off_name">Benachrichtigungen nur vorlesen, wenn mein Bildschirm aus ist</string>
+    <string name="template_screen_off_description">Benachrichtigungen überspringen, wenn dein Telefonbildschirm eingeschaltet ist</string>
+    
+    <string name="template_home_network_name">Benachrichtigungen nur bei Verbindung zum Heim-WLAN vorlesen</string>
+    <string name="template_home_network_description">Benachrichtigungen überspringen, wenn nicht mit deinem Heim-WLAN-Netzwerk verbunden</string>
+    
+    <!-- Template Trigger Descriptions (German) -->
+    <string name="template_trigger_headphones_disconnected">Wenn Bluetooth-Kopfhörer getrennt sind</string>
+    <string name="template_trigger_time_between">Zwischen 22:00 Uhr und 8:00 Uhr</string>
+    <string name="template_trigger_screen_on">Wenn Bildschirm eingeschaltet ist</string>
+    <string name="template_trigger_not_home_wifi">Wenn nicht mit Heim-WLAN verbunden</string>
+    
+    <!-- Template Action Descriptions (German) -->
+    <string name="template_action_skip_notification">Diese Benachrichtigung überspringen</string>
 </resources> 
