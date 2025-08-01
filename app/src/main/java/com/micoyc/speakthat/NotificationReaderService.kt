@@ -381,6 +381,33 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     return
                 }
                 
+                // Check audio mode - if not in Sound mode and honouring audio mode, don't process notifications
+                if (BehaviorSettingsActivity.shouldHonourAudioMode(this)) {
+                    val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+                    val ringerMode = audioManager.ringerMode
+                    val modeName = when (ringerMode) {
+                        AudioManager.RINGER_MODE_SILENT -> "Silent"
+                        AudioManager.RINGER_MODE_VIBRATE -> "Vibrate"
+                        AudioManager.RINGER_MODE_NORMAL -> "Sound"
+                        else -> "Unknown"
+                    }
+                    Log.d(TAG, "Audio mode check failed - device is in $modeName mode, ignoring notification from $packageName")
+                    InAppLogger.log("AudioMode", "Notification ignored due to audio mode: $modeName")
+                    return
+                } else {
+                    // Log when audio mode check passes (for debugging)
+                    val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+                    val ringerMode = audioManager.ringerMode
+                    val modeName = when (ringerMode) {
+                        AudioManager.RINGER_MODE_SILENT -> "Silent"
+                        AudioManager.RINGER_MODE_VIBRATE -> "Vibrate"
+                        AudioManager.RINGER_MODE_NORMAL -> "Sound"
+                        else -> "Unknown"
+                    }
+                    Log.d(TAG, "Audio mode check passed - device is in $modeName mode, proceeding with notification from $packageName")
+                    InAppLogger.log("AudioMode", "Audio mode check passed: $modeName")
+                }
+                
                 // Get app name
                 val appName = getAppName(packageName)
                 
