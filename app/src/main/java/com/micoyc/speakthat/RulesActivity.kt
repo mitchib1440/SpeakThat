@@ -12,6 +12,7 @@ import com.micoyc.speakthat.databinding.ActivityRulesBinding
 import com.micoyc.speakthat.rules.RuleManager
 import com.micoyc.speakthat.rules.Rule
 import com.micoyc.speakthat.rules.RulesAdapter
+import com.micoyc.speakthat.rules.RuleTemplates
 
 class RulesActivity : AppCompatActivity() {
     
@@ -73,15 +74,19 @@ class RulesActivity : AppCompatActivity() {
     
     private fun setupButtons() {
         binding.btnAddRule.setOnClickListener {
-            startActivity(Intent(this, RuleBuilderActivity::class.java))
-            InAppLogger.logUserAction("Add rule button clicked")
+            // Go directly to template selection
+            startActivity(Intent(this, TemplateSelectionActivity::class.java))
+            InAppLogger.logUserAction("Add rule button clicked - opened template selection")
         }
         
         binding.btnAddFirstRule.setOnClickListener {
-            startActivity(Intent(this, RuleBuilderActivity::class.java))
-            InAppLogger.logUserAction("Add first rule button clicked")
+            // Go directly to template selection
+            startActivity(Intent(this, TemplateSelectionActivity::class.java))
+            InAppLogger.logUserAction("Add first rule button clicked - opened template selection")
         }
     }
+    
+
     
     private fun setupRecyclerView() {
         rulesAdapter = RulesAdapter(
@@ -139,6 +144,14 @@ class RulesActivity : AppCompatActivity() {
             binding.emptyStateContainer.visibility = View.VISIBLE
             InAppLogger.logDebug("RulesActivity", "Rules system disabled, showing empty state")
         }
+    }
+    
+    private fun showErrorDialog(message: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Error")
+            .setMessage(message)
+            .setPositiveButton("OK", null)
+            .show()
     }
     
     private fun showExperimentalFeatureWarning() {

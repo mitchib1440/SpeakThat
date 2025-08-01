@@ -46,7 +46,7 @@ enum class TriggerType(val displayName: String, val description: String) {
  * Types of actions that can be performed when a rule is triggered
  */
 enum class ActionType(val displayName: String, val description: String) {
-    DISABLE_SPEAKTHAT("Disable SpeakThat", "Turn off notification reading completely"),
+    DISABLE_SPEAKTHAT("Skip this notification", "Don't read this notification aloud"),
     ENABLE_APP_FILTER("Enable Specific App Filter", "Enable filtering for a specific app"),
     DISABLE_APP_FILTER("Disable Specific App Filter", "Disable filtering for a specific app"),
     CHANGE_VOICE_SETTINGS("Change Voice Settings", "Modify voice parameters");
