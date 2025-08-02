@@ -95,6 +95,21 @@ public class TtsLanguageManager {
         // Vietnamese (has complete translations)
         languages.add(new TtsLanguage("Tiếng Việt (Việt Nam)", "vi_VN", new Locale("vi", "VN")));
         
+        // Hindi (has complete translations - SOV word order, Devanagari script)
+        languages.add(new TtsLanguage("हिन्दी (भारत)", "hi_IN", new Locale("hi", "IN")));
+        
+        // Indonesian (has complete translations)
+        languages.add(new TtsLanguage("Bahasa Indonesia (Indonesia)", "id_ID", new Locale("id", "ID")));
+        
+        // Turkish (has complete translations - agglutinative language)
+        languages.add(new TtsLanguage("Türkçe (Türkiye)", "tr_TR", new Locale("tr", "TR")));
+        
+        // Polish (has complete translations - complex grammar)
+        languages.add(new TtsLanguage("Polski (Polska)", "pl_PL", new Locale("pl", "PL")));
+        
+        // Dutch (has complete translations)
+        languages.add(new TtsLanguage("Nederlands (Nederland)", "nl_NL", new Locale("nl", "NL")));
+        
         // Note: Add more languages here ONLY when they have complete translations
         // This prevents the "fraud" issue of showing languages without proper translations
         

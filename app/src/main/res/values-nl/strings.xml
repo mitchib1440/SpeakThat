@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TTS Template Strings (Dutch) - Complete sentence templates with proper Dutch grammar -->
+    <string name="tts_template_notified_you">{app} heeft u geïnformeerd: {content}</string>
+    <string name="tts_template_reported">{app} heeft gerapporteerd: {content}</string>
+    <string name="tts_template_saying">Melding van {app}, zegt dat {content}</string>
+    <string name="tts_template_alerts_you">{app} waarschuwt u: {content}</string>
+    <string name="tts_template_update_from">Update van {app}: {content}</string>
+    <string name="tts_template_notification">{app} melding: {content}</string>
+    <string name="tts_template_new_notification">Nieuwe melding: {app}: {content}</string>
+    <string name="tts_template_new_from">Nieuw van {app}: {content}</string>
+    <string name="tts_template_said">{app} zei: {content}</string>
+    <string name="tts_template_updated_you">{app} heeft u bijgewerkt: {content}</string>
+    <string name="tts_template_new_notification_from">Nieuwe melding van {app}: zegt dat {content}</string>
+    <string name="tts_template_new_update_from">Nieuwe update van {app}: {content}</string>
+    <string name="tts_template_notification_from">Melding van {app}: {content}</string>
+    <string name="tts_template_says">{app} zegt: {content}</string>
+    <string name="tts_template_private_notification">U heeft een privé-melding ontvangen van {app}</string>
+    
+    <!-- Voice Settings Test (Dutch) -->
+    <string name="tts_voice_test">Dit is hoe uw meldingen zullen klinken met deze steminstellingen.</string>
+    
+    <!-- Onboarding TTS (Dutch) -->
+    <string name="tts_onboarding_welcome">Welkom bij SpeakThat! Blijf verbonden zonder naar het scherm te staren. Uw telefoon zal meldingen hardop voorlezen zodat u zich kunt concentreren op wat belangrijk is.</string>
+    <string name="tts_onboarding_permission">SpeakThat heeft toestemming nodig om uw meldingen hardop voor te lezen. Alles wordt op uw apparaat opgeslagen en u controleert wat wordt voorgelezen.</string>
+    <string name="tts_onboarding_privacy">Uw privacy is zeer belangrijk. U controleert precies wat hardop wordt voorgelezen. Schud uw telefoon om elke melding onmiddellijk te stoppen. Alles wordt op uw apparaat opgeslagen.</string>
+    <string name="tts_onboarding_filters">Laten we enkele basis privacy-filters instellen om te beginnen. SpeakThat heeft een krachtig filtersysteem dat u in staat stelt te kiezen wat wordt voorgelezen en wat niet.</string>
+    <string name="tts_onboarding_apps">Voer de namen in van apps waarvan u nooit wilt dat ik de meldingen voorlees. Veelvoorkomende voorbeelden zijn bankapps, medische apps en dating-apps.</string>
+    <string name="tts_onboarding_words">Voer woorden of zinnen in die u nooit wilt dat ik in meldingen voorlees. Veelvoorkomende voorbeelden zijn wachtwoorden, PIN-codes, creditcards en medische termen.</string>
+    <string name="tts_onboarding_complete">SpeakThat is klaar om u te helpen verbonden te blijven terwijl uw ogen vrij blijven! U kunt op elk moment meer filters toevoegen in de app-instellingen.</string>
+    
+    <!-- About Page TTS (Dutch) -->
+    <string name="tts_about_intro">Welkom bij SpeakThat!</string>
+    <string name="tts_about_description">SpeakThat is een open-source Android meldingslezer die uw meldingen hardop voorleest met behulp van tekst-naar-spraak. Perfect voor handenvrij werk, toegankelijkheid en het behouden van informatie tijdens multitasking.</string>
+    <string name="tts_about_features_intro">Belangrijkste functies omvatten:</string>
+    <string name="tts_about_features">Real-time meldingslezen, aanpasbare steminstellingen, slimme meldingsfiltering, specifieke app-controle, media-bewust gedrag, meldingsgeschiedenis tracking, schud-om-te-stoppen en zwaai-om-te-stoppen, aangepaste stemformattering, ondersteuning voor donkere en lichte modus, voorwaardelijke regels voor geavanceerde logica en planning, en volledige advertentievrije en offline functionaliteit.</string>
+    <string name="tts_about_developer">Met liefde ontwikkeld door Michi, een onafhankelijke ontwikkelaar uit het Verenigd Koninkrijk met meer dan 12 jaar ervaring in het dagelijks testen en gebruiken van een meldingslezer. SpeakThat is geïnspireerd door Touchless Notifications, oorspronkelijk ontwikkeld door DYNA Logix, en streeft ernaar de erfenis van aanpasbare meldingslezer voort te zetten. Dit project is versneld door AI-ondersteunde programmering.</string>
+    <string name="tts_about_license">Dit project is open-source en beschikbaar onder de GPL-3.0 licentie. U kunt de volledige licentietekst en broncode bekijken op GitHub. Bijdragen en feedback zijn welkom!</string>
+    <string name="tts_about_thank_you">Bedankt voor het gebruik van SpeakThat!</string>
+</resources> 
