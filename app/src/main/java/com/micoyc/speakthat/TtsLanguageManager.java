@@ -50,11 +50,50 @@ public class TtsLanguageManager {
         // English (using GB spelling as default since you're British)
         languages.add(new TtsLanguage("English (United Kingdom)", "en_GB", new Locale("en", "GB")));
         
+        // Pirate English (for testing and fun!)
+        languages.add(new TtsLanguage("Pirate English (Arr!)", "en_PIRATE", new Locale("en", "PIRATE")));
+        
         // German (has complete translations)
         languages.add(new TtsLanguage("Deutsch (Deutschland)", "de_DE", new Locale("de", "DE")));
         
         // Italian (has complete translations)
         languages.add(new TtsLanguage("Italiano (Italia)", "it_IT", new Locale("it", "IT")));
+        
+        // Swedish (has complete translations)
+        languages.add(new TtsLanguage("Svenska (Sverige)", "sv_SE", new Locale("sv", "SE")));
+        
+        // Portuguese (has complete translations)
+        languages.add(new TtsLanguage("Português (Brasil)", "pt_BR", new Locale("pt", "BR")));
+        
+        // Spanish (has complete translations)
+        languages.add(new TtsLanguage("Español (España)", "es_ES", new Locale("es", "ES")));
+        
+        // French (has complete translations)
+        languages.add(new TtsLanguage("Français (France)", "fr_FR", new Locale("fr", "FR")));
+        
+        // Arabic (has complete translations - RTL language)
+        languages.add(new TtsLanguage("العربية (المملكة العربية السعودية)", "ar_SA", new Locale("ar", "SA")));
+        
+        // Japanese (has complete translations - SOV word order)
+        languages.add(new TtsLanguage("日本語 (日本)", "ja_JP", new Locale("ja", "JP")));
+        
+        // Korean (has complete translations - SOV word order)
+        languages.add(new TtsLanguage("한국어 (대한민국)", "ko_KR", new Locale("ko", "KR")));
+        
+        // Chinese Simplified (has complete translations)
+        languages.add(new TtsLanguage("中文 (简体)", "zh_CN", new Locale("zh", "CN")));
+        
+        // Chinese Traditional (has complete translations)
+        languages.add(new TtsLanguage("中文 (繁體)", "zh_TW", new Locale("zh", "TW")));
+        
+        // Russian (has complete translations)
+        languages.add(new TtsLanguage("Русский (Россия)", "ru_RU", new Locale("ru", "RU")));
+        
+        // Thai (has complete translations)
+        languages.add(new TtsLanguage("ไทย (ประเทศไทย)", "th_TH", new Locale("th", "TH")));
+        
+        // Vietnamese (has complete translations)
+        languages.add(new TtsLanguage("Tiếng Việt (Việt Nam)", "vi_VN", new Locale("vi", "VN")));
         
         // Note: Add more languages here ONLY when they have complete translations
         // This prevents the "fraud" issue of showing languages without proper translations
@@ -157,6 +196,12 @@ public class TtsLanguageManager {
             return context.getString(stringResourceId);
         }
         
+        // Handle Pirate English programmatically
+        if ("en_PIRATE".equals(ttsLanguageCode)) {
+            String originalString = context.getString(stringResourceId);
+            return convertToPirateSpeak(originalString);
+        }
+        
         try {
             // Create a configuration for the target language
             Configuration config = new Configuration(context.getResources().getConfiguration());
@@ -188,6 +233,11 @@ public class TtsLanguageManager {
             return resourceId != 0 ? context.getString(resourceId) : stringName;
         }
         
+        // Handle Pirate English programmatically
+        if ("en_PIRATE".equals(ttsLanguageCode)) {
+            return getPirateEnglishTranslation(stringName, context);
+        }
+        
         try {
             // Create a configuration for the target language
             Configuration config = new Configuration(context.getResources().getConfiguration());
@@ -216,5 +266,95 @@ public class TtsLanguageManager {
             int fallbackResourceId = context.getResources().getIdentifier(stringName, "string", context.getPackageName());
             return fallbackResourceId != 0 ? context.getString(fallbackResourceId) : stringName;
         }
+    }
+    
+    /**
+     * Get Pirate English translation for a string
+     */
+    private static String getPirateEnglishTranslation(String stringName, Context context) {
+        // Get the original English string first
+        int resourceId = context.getResources().getIdentifier(stringName, "string", context.getPackageName());
+        if (resourceId == 0) {
+            return stringName; // Fallback to string name if not found
+        }
+        
+        String originalString = context.getString(resourceId);
+        
+        // Convert to pirate speak
+        return convertToPirateSpeak(originalString);
+    }
+    
+    /**
+     * Convert English text to pirate speak
+     */
+    private static String convertToPirateSpeak(String text) {
+        if (text == null || text.isEmpty()) {
+            return text;
+        }
+        
+        // Simple pirate speak conversion rules
+        String pirateText = text;
+        
+        // Replace common words with pirate equivalents
+        pirateText = pirateText.replaceAll("\\bYou\\b", "Ye");
+        pirateText = pirateText.replaceAll("\\byou\\b", "ye");
+        pirateText = pirateText.replaceAll("\\bYour\\b", "Yer");
+        pirateText = pirateText.replaceAll("\\byour\\b", "yer");
+        pirateText = pirateText.replaceAll("\\bAre\\b", "Be");
+        pirateText = pirateText.replaceAll("\\bare\\b", "be");
+        pirateText = pirateText.replaceAll("\\bIs\\b", "Be");
+        pirateText = pirateText.replaceAll("\\bis\\b", "be");
+        pirateText = pirateText.replaceAll("\\bAm\\b", "Be");
+        pirateText = pirateText.replaceAll("\\bam\\b", "be");
+        pirateText = pirateText.replaceAll("\\bSaying\\b", "Sayin'");
+        pirateText = pirateText.replaceAll("\\bsaying\\b", "sayin'");
+        pirateText = pirateText.replaceAll("\\bTelling\\b", "Tellin'");
+        pirateText = pirateText.replaceAll("\\btelling\\b", "tellin'");
+        pirateText = pirateText.replaceAll("\\bWarning\\b", "Warnin'");
+        pirateText = pirateText.replaceAll("\\bwarning\\b", "warnin'");
+        pirateText = pirateText.replaceAll("\\bReading\\b", "Readin'");
+        pirateText = pirateText.replaceAll("\\breading\\b", "readin'");
+        pirateText = pirateText.replaceAll("\\bStaying\\b", "Stayin'");
+        pirateText = pirateText.replaceAll("\\bstaying\\b", "stayin'");
+        pirateText = pirateText.replaceAll("\\bUsing\\b", "Usin'");
+        pirateText = pirateText.replaceAll("\\busing\\b", "usin'");
+        pirateText = pirateText.replaceAll("\\bLooking\\b", "Lookin'");
+        pirateText = pirateText.replaceAll("\\blooking\\b", "lookin'");
+        pirateText = pirateText.replaceAll("\\bStaring\\b", "Starin'");
+        pirateText = pirateText.replaceAll("\\bstaring\\b", "starin'");
+        pirateText = pirateText.replaceAll("\\bFocusing\\b", "Focusin'");
+        pirateText = pirateText.replaceAll("\\bfocusing\\b", "focusin'");
+        pirateText = pirateText.replaceAll("\\bControlling\\b", "Controllin'");
+        pirateText = pirateText.replaceAll("\\bcontrolling\\b", "controllin'");
+        pirateText = pirateText.replaceAll("\\bFiltering\\b", "Filterin'");
+        pirateText = pirateText.replaceAll("\\bfiltering\\b", "filterin'");
+        pirateText = pirateText.replaceAll("\\bChoosing\\b", "Choosin'");
+        pirateText = pirateText.replaceAll("\\bchoosing\\b", "choosin'");
+        pirateText = pirateText.replaceAll("\\bWorking\\b", "Workin'");
+        pirateText = pirateText.replaceAll("\\bworking\\b", "workin'");
+        pirateText = pirateText.replaceAll("\\bTesting\\b", "Testin'");
+        pirateText = pirateText.replaceAll("\\btesting\\b", "testin'");
+        pirateText = pirateText.replaceAll("\\bDeveloping\\b", "Developin'");
+        pirateText = pirateText.replaceAll("\\bdeveloping\\b", "developin'");
+        pirateText = pirateText.replaceAll("\\bAccelerating\\b", "Acceleratin'");
+        pirateText = pirateText.replaceAll("\\baccelerating\\b", "acceleratin'");
+        
+        // Add some pirate flair
+        if (pirateText.contains("Welcome")) {
+            pirateText = pirateText.replace("Welcome", "Ahoy there, welcome");
+        }
+        if (pirateText.contains("Thank you")) {
+            pirateText = pirateText.replace("Thank you", "Thank ye");
+        }
+        if (pirateText.contains("Thank you for")) {
+            pirateText = pirateText.replace("Thank you for", "Thank ye for");
+        }
+        
+        // Add "matey" to certain sentences
+        if (pirateText.contains("settings") && !pirateText.contains("matey")) {
+            pirateText = pirateText.replace(".", ", matey!");
+        }
+        
+        return pirateText;
     }
 } 

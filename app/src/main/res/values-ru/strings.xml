@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TTS Template Strings (Russian) - Complete sentence templates -->
+    <string name="tts_template_notified_you">{app} уведомил вас: {content}</string>
+    <string name="tts_template_reported">{app} сообщил: {content}</string>
+    <string name="tts_template_saying">Уведомление от {app}, говорящее {content}</string>
+    <string name="tts_template_alerts_you">{app} предупреждает вас: {content}</string>
+    <string name="tts_template_update_from">Обновление от {app}: {content}</string>
+    <string name="tts_template_notification">{app} уведомление: {content}</string>
+    <string name="tts_template_new_notification">Новое уведомление: {app}: {content}</string>
+    <string name="tts_template_new_from">Новое от {app}: {content}</string>
+    <string name="tts_template_said">{app} сказал: {content}</string>
+    <string name="tts_template_updated_you">{app} обновил вас: {content}</string>
+    <string name="tts_template_new_notification_from">Новое уведомление от {app}: говорящее: {content}</string>
+    <string name="tts_template_new_update_from">Новое обновление от {app}: {content}</string>
+    <string name="tts_template_notification_from">Уведомление от {app}: {content}</string>
+    <string name="tts_template_says">{app} говорит: {content}</string>
+    <string name="tts_template_private_notification">Вы получили приватное уведомление от {app}</string>
+    
+    <!-- Voice Settings Test (Russian) -->
+    <string name="tts_voice_test">Вот как будут звучать ваши уведомления с этими настройками голоса.</string>
+    
+    <!-- Onboarding TTS (Russian) -->
+    <string name="tts_onboarding_welcome">Добро пожаловать в SpeakThat! Оставайтесь на связи, не глядя на экран. Ваш телефон будет читать уведомления вслух, чтобы вы могли сосредоточиться на важном.</string>
+    <string name="tts_onboarding_permission">SpeakThat нужны разрешения для чтения ваших уведомлений вслух. Все остается на вашем устройстве, и вы контролируете, что читается.</string>
+    <string name="tts_onboarding_privacy">Ваша конфиденциальность важна. Вы точно контролируете, что читается вслух. Встряхните телефон, чтобы мгновенно остановить любое объявление. Все остается на вашем устройстве.</string>
+    <string name="tts_onboarding_filters">Давайте настроим несколько основных фильтров конфиденциальности для начала. SpeakThat имеет мощную систему фильтрации, которая позволяет вам выбирать, что читается, а что нет.</string>
+    <string name="tts_onboarding_apps">Введите название приложения, уведомления которого вы никогда не хотите, чтобы я читал. Общие примеры включают банковские приложения, медицинские приложения и приложения для знакомств.</string>
+    <string name="tts_onboarding_words">Введите слова или фразы, которые вы никогда не хотите, чтобы я читал в уведомлениях. Общие примеры включают пароль, PIN, кредитную карту и медицинские термины.</string>
+    <string name="tts_onboarding_complete">SpeakThat готов помочь вам оставаться на связи, сохраняя глаза свободными! Вы можете добавить больше фильтров в любое время в настройках приложения.</string>
+    
+    <!-- About Page TTS (Russian) -->
+    <string name="tts_about_intro">Добро пожаловать в SpeakThat!</string>
+    <string name="tts_about_description">SpeakThat - это открытый Android-ридер уведомлений, который объявляет ваши уведомления вслух, используя преобразование текста в речь. Идеально подходит для работы без рук, доступности и информированности во время многозадачности.</string>
+    <string name="tts_about_features_intro">Основные функции включают:</string>
+    <string name="tts_about_features">Чтение уведомлений в реальном времени, настраиваемые голосовые настройки, умная фильтрация уведомлений, приложение-специфичные элементы управления, медиа-осведомленное поведение, отслеживание истории уведомлений, встряхивание для остановки и волна для остановки, пользовательское форматирование речи, поддержка темного и светлого режимов, условные правила для продвинутой логики и расписаний, и полная функциональность без рекламы и офлайн.</string>
+    <string name="tts_about_developer">Разработано с любовью Мичи, независимым разработчиком из Великобритании с более чем 12-летним опытом тестирования и использования читателей уведомлений каждый день. SpeakThat вдохновлен Touchless Notifications, изначально разработанным DYNA Logix, и стремится продолжить наследие настраиваемых читателей уведомлений. Этот проект был ускорен программированием с помощью искусственного интеллекта.</string>
+    <string name="tts_about_license">Этот проект с открытым исходным кодом доступен под лицензией GPL-3.0. Вы можете просмотреть полный текст лицензии и исходный код на GitHub. Вклад и обратная связь приветствуются!</string>
+    <string name="tts_about_thank_you">Спасибо за использование SpeakThat!</string>
+</resources> 

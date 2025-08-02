@@ -177,7 +177,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Set up action bar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Behavior Settings");
+            getSupportActionBar().setTitle(getString(R.string.title_behavior_settings));
         }
 
         // Initialize sensor manager

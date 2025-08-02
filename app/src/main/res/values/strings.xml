@@ -346,4 +346,139 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_logic_xor">either</string>
     <string name="rule_logic_separator">, </string>
     <string name="rule_logic_final_separator">, and </string>
+    
+    <!-- Critical Hardcoded Strings - Activity Titles -->
+    <string name="title_behavior_settings">Behavior Settings</string>
+    <string name="title_general_settings">General Settings</string>
+    <string name="title_voice_settings">Voice Settings</string>
+    <string name="title_filter_settings">Filter Settings</string>
+    <string name="title_test_settings">Test Settings</string>
+    <string name="title_notification_history">Notification History</string>
+    <string name="title_bluetooth_devices">Bluetooth Devices</string>
+    
+    <!-- Critical Hardcoded Strings - Dialog Titles -->
+    <string name="dialog_title_theme_changed">Theme Changed</string>
+    <string name="dialog_title_export_successful">Export Successful</string>
+    <string name="dialog_title_export_failed">Export Failed</string>
+    <string name="dialog_title_import_full_config">Import Full Configuration</string>
+    <string name="dialog_title_import_successful">Import Successful</string>
+    <string name="dialog_title_import_failed">Import Failed</string>
+    <string name="dialog_title_clear_all_data">Clear All Data</string>
+    <string name="dialog_title_data_cleared">Data Cleared</string>
+    <string name="dialog_title_clear_failed">Clear Failed</string>
+    <string name="dialog_title_advanced_voice_options">Advanced Voice Options</string>
+    <string name="dialog_title_audio_settings_help">Audio Settings Help</string>
+    <string name="dialog_title_advanced_voice_information">Advanced Voice Information</string>
+    <string name="dialog_title_format_test_results">🧪 Format Test Results</string>
+    <string name="dialog_title_delay_before_readout">Delay Before Readout</string>
+    <string name="dialog_title_custom_app_names">Custom App Names</string>
+    <string name="dialog_title_notification_cooldown">Notification Cooldown</string>
+    <string name="dialog_title_speech_formats_guide">🗣️ Speech Formats - Complete Guide</string>
+    <string name="dialog_title_honour_do_not_disturb">Honour Do Not Disturb</string>
+    <string name="dialog_title_honour_audio_mode">Honour Audio Mode</string>
+    <string name="dialog_title_select_bluetooth_device">Select Bluetooth Device</string>
+    <string name="dialog_title_remove_device">Remove Device</string>
+    <string name="dialog_title_error">Error</string>
+    <string name="dialog_title_bluetooth_not_available">Bluetooth Not Available</string>
+    <string name="dialog_title_bluetooth_disabled">Bluetooth Disabled</string>
+    <string name="dialog_title_no_devices_found">No Devices Found</string>
+    <string name="dialog_title_select_bluetooth_devices">Select Bluetooth Devices</string>
+    <string name="dialog_title_wifi_disabled">WiFi Disabled</string>
+    <string name="dialog_title_wifi_networks">WiFi Networks</string>
+    <string name="dialog_title_no_networks_found">No Networks Found</string>
+    <string name="dialog_title_select_wifi_networks">Select WiFi Networks</string>
+    <string name="dialog_title_enter_wifi_network">Enter WiFi Network</string>
+    <string name="dialog_title_set_quiet_hours">Set Quiet Hours</string>
+    <string name="dialog_title_rule_created">Rule Created!</string>
+    <string name="dialog_title_experimental_feature">Experimental Feature</string>
+    <string name="dialog_title_delete_rule">Delete Rule</string>
+    <string name="dialog_title_invalid_rule_name">Invalid Rule Name</string>
+    <string name="dialog_title_invalid_rule">Invalid Rule</string>
+    <string name="dialog_title_add_trigger">Add Trigger</string>
+    <string name="dialog_title_add_action">Add Action</string>
+    <string name="dialog_title_add_exception">Add Exception</string>
+    <string name="dialog_title_remove_trigger">Remove Trigger</string>
+    <string name="dialog_title_remove_action">Remove Action</string>
+    <string name="dialog_title_remove_exception">Remove Exception</string>
+    <string name="dialog_title_coming_soon">Coming Soon</string>
+    <string name="dialog_title_select_app">Select App</string>
+    <string name="dialog_title_invalid_app_package">Invalid App Package</string>
+    <string name="dialog_title_edit_rule">Edit Rule</string>
+    <string name="dialog_title_create_rule">Create Rule</string>
+    
+    <!-- Critical Hardcoded Strings - Dialog Messages -->
+    <string name="dialog_message_theme_changed">The theme has been changed. For the best experience, you may want to restart the app manually.</string>
+    <string name="dialog_message_export_successful">Full configuration exported to:\n%s</string>
+    <string name="dialog_message_export_successful_text">Configuration exported as text (file creation failed)</string>
+    <string name="dialog_message_export_failed">Failed to export configuration: %s</string>
+    <string name="dialog_message_import_full_config">This will replace your current settings with the imported configuration.\n\nDo you want to continue?</string>
+    <string name="dialog_message_import_successful">%s</string>
+    <string name="dialog_message_import_failed">%s</string>
+    <string name="dialog_message_import_failed_read">Failed to read file: %s</string>
+    <string name="dialog_message_clear_all_data">This will reset all settings to defaults and clear notification history.\n\nThis action cannot be undone.\n\nDo you want to continue?</string>
+    <string name="dialog_message_data_cleared">All settings have been reset to defaults and notification history has been cleared.</string>
+    <string name="dialog_message_clear_failed">Failed to clear data: %s</string>
+    <string name="dialog_message_advanced_voice_options">These settings are for users who need granular control over the voice and accent.\n\n99% of users should only change the main Language option.\n\nIf you run into trouble, you can always reset to defaults.</string>
+    <string name="dialog_message_bluetooth_not_available">Bluetooth is not available on this device.</string>
+    <string name="dialog_message_bluetooth_disabled">Please enable Bluetooth to select devices.</string>
+    <string name="dialog_message_no_devices_found">No paired Bluetooth devices found. Please pair some devices first.</string>
+    <string name="dialog_message_wifi_disabled">Please enable WiFi to select networks.</string>
+    <string name="dialog_message_wifi_networks">Unable to automatically detect WiFi networks. Please manually enter WiFi network names (SSIDs) one per line.\n\nNote: You can also try enabling location services and granting location permissions to automatically detect networks.</string>
+    <string name="dialog_message_no_networks_found">No WiFi networks found. Please connect to some networks first or manually enter network names.</string>
+    <string name="dialog_message_enter_wifi_network">Enter the name of your WiFi network:</string>
+    <string name="dialog_message_set_quiet_hours">Choose the time range and days when you don\'t want notifications read:</string>
+    <string name="dialog_message_rule_created">Your rule \'%s\' has been created successfully.</string>
+    <string name="dialog_message_experimental_feature">Rules are experimental. If you experience issues, you can disable them in settings. Your existing filters and privacy settings will always be respected.</string>
+    <string name="dialog_message_delete_rule">Are you sure you want to delete the rule \'%s\'?</string>
+    <string name="dialog_message_invalid_rule_name">Please enter a name for this rule.</string>
+    <string name="dialog_message_invalid_rule">Please fix the following issues:\n\n%s</string>
+    <string name="dialog_message_save_rule_failed">Failed to %s rule. Please try again.</string>
+    <string name="dialog_message_remove_trigger">Are you sure you want to remove this trigger?</string>
+    <string name="dialog_message_remove_action">Are you sure you want to remove this action?</string>
+    <string name="dialog_message_remove_exception">Are you sure you want to remove this exception?</string>
+    <string name="dialog_message_coming_soon">%s configuration will be implemented in the next phase.</string>
+    <string name="dialog_message_select_app">Enter the app package name (e.g., com.whatsapp):</string>
+    <string name="dialog_message_invalid_app_package">Please enter an app package name.</string>
+    <string name="dialog_message_remove_device">Remove %s from the list?</string>
+    <string name="dialog_message_select_bluetooth_device">Choose the Bluetooth device for this rule:</string>
+    <string name="dialog_message_select_wifi_network">Choose the WiFi network for this rule:</string>
+    
+    <!-- Critical Hardcoded Strings - Button Labels -->
+    <string name="button_restart_now">Restart Now</string>
+    <string name="button_later">Later</string>
+    <string name="button_select_file">Select File</string>
+    <string name="button_clear_all_data">Clear All Data</string>
+    <string name="button_continue">Continue</string>
+    <string name="button_got_it">Got it!</string>
+    <string name="button_use_recommended">Use Recommended</string>
+    <string name="button_nevermind_keep_timeout">Nevermind, keep the timeout enabled (Recommended)</string>
+    <string name="button_disable_timeout">Disable the timeout</string>
+    <string name="button_create_rule">Create Rule</string>
+    <string name="button_manual_input">Manual Input</string>
+    <string name="button_i_understand">I Understand</string>
+    <string name="button_delete">Delete</string>
+    <string name="button_remove">Remove</string>
+    
+    <!-- Critical Hardcoded Strings - App Categories -->
+    <string name="category_social_media">Social Media</string>
+    <string name="category_social_media_description">Social networking and community apps</string>
+    <string name="category_messaging">Messaging</string>
+    <string name="category_messaging_description">Chat and communication apps</string>
+    <string name="category_finance">Finance</string>
+    <string name="category_finance_description">Banking and financial apps</string>
+    <string name="category_health">Health</string>
+    <string name="category_health_description">Health and fitness apps</string>
+    <string name="category_entertainment">Entertainment</string>
+    <string name="category_entertainment_description">Media and entertainment apps</string>
+    <string name="category_games">Games</string>
+    <string name="category_games_description">Mobile games and gaming apps</string>
+    
+    <!-- Critical Hardcoded Strings - Other -->
+    <string name="unknown_device">Unknown Device</string>
+    <string name="export_full_config_text">Complete configuration backup created on %s</string>
+    <string name="export_full_config_chooser">Export Full Configuration</string>
+    <string name="export_full_config_text_chooser">Export Full Configuration as Text</string>
+    <string name="select_configuration_file">Select Configuration File</string>
+    <string name="save_rule">save</string>
+    <string name="update_rule">update</string>
 </resources> 

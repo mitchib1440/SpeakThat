@@ -67,12 +67,12 @@ class RuleBuilderActivity : AppCompatActivity() {
             // We're editing an existing rule
             isEditing = true
             currentRule = Rule.fromJson(editRuleData)
-            supportActionBar?.title = "Edit Rule"
+            supportActionBar?.title = getString(R.string.dialog_title_edit_rule)
         } else {
             // We're creating a new rule
             isEditing = false
             currentRule = null
-            supportActionBar?.title = "Create Rule"
+            supportActionBar?.title = getString(R.string.dialog_title_create_rule)
         }
         
         // Set up action bar
@@ -195,9 +195,9 @@ class RuleBuilderActivity : AppCompatActivity() {
         if (ruleName.isEmpty()) {
             InAppLogger.logDebug("RuleBuilderActivity", "Rule name is empty, showing error dialog")
             AlertDialog.Builder(this)
-                .setTitle("Invalid Rule Name")
-                .setMessage("Please enter a name for this rule.")
-                .setPositiveButton("OK", null)
+                .setTitle(getString(R.string.dialog_title_invalid_rule_name))
+                .setMessage(getString(R.string.dialog_message_invalid_rule_name))
+                .setPositiveButton(getString(R.string.ok), null)
                 .show()
             return
         }
@@ -261,9 +261,9 @@ class RuleBuilderActivity : AppCompatActivity() {
         if (!validation.isValid) {
             InAppLogger.logDebug("RuleBuilderActivity", "Rule validation failed, showing error dialog")
             AlertDialog.Builder(this)
-                .setTitle("Invalid Rule")
-                .setMessage("Please fix the following issues:\n\n${validation.errors.joinToString("\n")}")
-                .setPositiveButton("OK", null)
+                .setTitle(getString(R.string.dialog_title_invalid_rule))
+                .setMessage(getString(R.string.dialog_message_invalid_rule, validation.errors.joinToString("\n")))
+                .setPositiveButton(getString(R.string.ok), null)
                 .show()
             return
         }
@@ -287,9 +287,9 @@ class RuleBuilderActivity : AppCompatActivity() {
         } else {
             InAppLogger.logDebug("RuleBuilderActivity", "Rule save failed, showing error dialog")
             AlertDialog.Builder(this)
-                .setTitle("Error")
-                .setMessage("Failed to ${if (isEditing) "update" else "save"} rule. Please try again.")
-                .setPositiveButton("OK", null)
+                .setTitle(getString(R.string.dialog_title_error))
+                .setMessage(getString(R.string.dialog_message_save_rule_failed, if (isEditing) getString(R.string.update_rule) else getString(R.string.save_rule)))
+                .setPositiveButton(getString(R.string.ok), null)
                 .show()
         }
         
@@ -305,7 +305,7 @@ class RuleBuilderActivity : AppCompatActivity() {
         )
         
         AlertDialog.Builder(this)
-            .setTitle("Add Trigger")
+            .setTitle(getString(R.string.dialog_title_add_trigger))
             .setItems(triggerOptions) { _, which ->
                 when (which) {
                     0 -> addBluetoothTrigger()
@@ -326,7 +326,7 @@ class RuleBuilderActivity : AppCompatActivity() {
         )
         
         AlertDialog.Builder(this)
-            .setTitle("Add Action")
+            .setTitle(getString(R.string.dialog_title_add_action))
             .setItems(actionOptions) { _, which ->
                 when (which) {
                     0 -> addDisableSpeakThatAction()
@@ -347,7 +347,7 @@ class RuleBuilderActivity : AppCompatActivity() {
         )
         
         AlertDialog.Builder(this)
-            .setTitle("Add Exception")
+            .setTitle(getString(R.string.dialog_title_add_exception))
             .setItems(exceptionOptions) { _, which ->
                 when (which) {
                     0 -> addBluetoothException()
@@ -461,12 +461,12 @@ class RuleBuilderActivity : AppCompatActivity() {
     
     private fun removeTrigger(trigger: Trigger) {
         AlertDialog.Builder(this)
-            .setTitle("Remove Trigger")
-            .setMessage("Are you sure you want to remove this trigger?")
-            .setPositiveButton("Remove") { _, _ ->
+                            .setTitle(getString(R.string.dialog_title_remove_trigger))
+                .setMessage(getString(R.string.dialog_message_remove_trigger))
+                .setPositiveButton(getString(R.string.button_remove)) { _, _ ->
                 triggerAdapter.removeTrigger(trigger)
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
     
@@ -476,12 +476,12 @@ class RuleBuilderActivity : AppCompatActivity() {
     
     private fun removeAction(action: Action) {
         AlertDialog.Builder(this)
-            .setTitle("Remove Action")
-            .setMessage("Are you sure you want to remove this action?")
-            .setPositiveButton("Remove") { _, _ ->
+            .setTitle(getString(R.string.dialog_title_remove_action))
+            .setMessage(getString(R.string.dialog_message_remove_action))
+            .setPositiveButton(getString(R.string.button_remove)) { _, _ ->
                 actionAdapter.removeAction(action)
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
     
@@ -491,20 +491,20 @@ class RuleBuilderActivity : AppCompatActivity() {
     
     private fun removeException(exception: Exception) {
         AlertDialog.Builder(this)
-            .setTitle("Remove Exception")
-            .setMessage("Are you sure you want to remove this exception?")
-            .setPositiveButton("Remove") { _, _ ->
+            .setTitle(getString(R.string.dialog_title_remove_exception))
+            .setMessage(getString(R.string.dialog_message_remove_exception))
+            .setPositiveButton(getString(R.string.button_remove)) { _, _ ->
                 exceptionAdapter.removeException(exception)
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
     
     private fun showNotImplementedDialog(feature: String) {
         AlertDialog.Builder(this)
-            .setTitle("Coming Soon")
-            .setMessage("$feature configuration will be implemented in the next phase.")
-            .setPositiveButton("OK", null)
+            .setTitle(getString(R.string.dialog_title_coming_soon))
+            .setMessage(getString(R.string.dialog_message_coming_soon, feature))
+            .setPositiveButton(getString(R.string.ok), null)
             .show()
     }
     
