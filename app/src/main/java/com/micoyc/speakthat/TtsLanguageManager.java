@@ -107,6 +107,9 @@ public class TtsLanguageManager {
         // Polish (has complete translations - complex grammar)
         languages.add(new TtsLanguage("Polski (Polska)", "pl_PL", new Locale("pl", "PL")));
         
+        // Punjabi (has complete translations - Gurmukhi script)
+        languages.add(new TtsLanguage("ਪੰਜਾਬੀ (ਭਾਰਤ)", "pa_IN", new Locale("pa", "IN")));
+        
         // Dutch (has complete translations)
         languages.add(new TtsLanguage("Nederlands (Nederland)", "nl_NL", new Locale("nl", "NL")));
         
