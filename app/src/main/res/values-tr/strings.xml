@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TTS Template Strings (Turkish) - Complete sentence templates with proper Turkish grammar -->
+    <string name="tts_template_notified_you">{app} size bildirdi: {content}</string>
+    <string name="tts_template_reported">{app} rapor etti: {content}</string>
+    <string name="tts_template_saying">{app} bildirimi, şunu söylüyor: {content}</string>
+    <string name="tts_template_alerts_you">{app} sizi uyarıyor: {content}</string>
+    <string name="tts_template_update_from">{app} güncellemesi: {content}</string>
+    <string name="tts_template_notification">{app} bildirimi: {content}</string>
+    <string name="tts_template_new_notification">Yeni bildirim: {app}: {content}</string>
+    <string name="tts_template_new_from">{app} yeni: {content}</string>
+    <string name="tts_template_said">{app} dedi: {content}</string>
+    <string name="tts_template_updated_you">{app} sizi güncelledi: {content}</string>
+    <string name="tts_template_new_notification_from">{app} yeni bildirimi: şunu söylüyor: {content}</string>
+    <string name="tts_template_new_update_from">{app} yeni güncellemesi: {content}</string>
+    <string name="tts_template_notification_from">{app} bildirimi: {content}</string>
+    <string name="tts_template_says">{app} söylüyor: {content}</string>
+    <string name="tts_template_private_notification">{app} özel bildirimi aldınız</string>
+    
+    <!-- Voice Settings Test (Turkish) -->
+    <string name="tts_voice_test">Bildirimleriniz bu ses ayarlarıyla böyle duyulacak.</string>
+    
+    <!-- Onboarding TTS (Turkish) -->
+    <string name="tts_onboarding_welcome">SpeakThat\'e hoş geldiniz! Ekrana bakmadan bağlı kalın. Telefonunuz bildirimleri sesli okuyacak böylece önemli şeylere odaklanabilirsiniz.</string>
+    <string name="tts_onboarding_permission">SpeakThat bildirimlerinizi sesli okumak için izin gerektirir. Her şey cihazınızda saklanır ve neyin okunacağını siz kontrol edersiniz.</string>
+    <string name="tts_onboarding_privacy">Gizliliğiniz çok önemlidir. Ne sesli okunacağını tam olarak siz kontrol edersiniz. Herhangi bir bildirimi anında durdurmak için telefonu sallayın. Her şey cihazınızda saklanır.</string>
+    <string name="tts_onboarding_filters">Başlamak için bazı temel gizlilik filtreleri kuralım. SpeakThat\'in güçlü bir filtreleme sistemi var, neyin okunacağını ve neyin okunmayacağını seçmenize izin verir.</string>
+    <string name="tts_onboarding_apps">Bildirimlerini asla okumamı istemediğiniz uygulamaların adlarını girin. Yaygın örnekler bankacılık uygulamaları, tıbbi uygulamalar ve tanışma uygulamalarını içerir.</string>
+    <string name="tts_onboarding_words">Bildirimlerde asla okumamı istemediğiniz kelime veya ifadeleri girin. Yaygın örnekler şifreler, PIN\'ler, kredi kartları ve tıbbi terimleri içerir.</string>
+    <string name="tts_onboarding_complete">SpeakThat gözlerinizi özgür tutarken bağlı kalmanıza yardım etmeye hazır! Uygulama ayarlarında istediğiniz zaman daha fazla filtre ekleyebilirsiniz.</string>
+    
+    <!-- About Page TTS (Turkish) -->
+    <string name="tts_about_intro">SpeakThat\'e hoş geldiniz!</string>
+    <string name="tts_about_description">SpeakThat, metin-konuşma dönüşümü kullanarak bildirimlerinizi sesli okuyan açık kaynaklı bir Android bildirim okuyucusudur. Eller serbest çalışma, erişilebilirlik ve çoklu görev yaparken bilgiyi korumak için mükemmeldir.</string>
+    <string name="tts_about_features_intro">Ana özellikler şunları içerir:</string>
+    <string name="tts_about_features">Gerçek zamanlı bildirim okuma, özelleştirilebilir ses ayarları, akıllı bildirim filtreleme, belirli uygulama kontrolü, medya farkında davranış, bildirim geçmişi takibi, sallayarak durdurma ve el sallayarak durdurma, özel ses biçimlendirme, karanlık ve açık mod desteği, gelişmiş mantık ve zamanlama için koşullu kurallar ve tam reklamsız ve çevrimdışı işlevsellik.</string>
+    <string name="tts_about_developer">Michi tarafından sevgiyle geliştirildi, her gün bildirim okuyucu test eden ve kullanan 12 yıldan fazla deneyime sahip İngiltere\'den bağımsız bir geliştirici. SpeakThat, başlangıçta DYNA Logix tarafından geliştirilen Touchless Notifications\'tan ilham almıştır ve özelleştirilebilir bildirim okuyucu mirasını sürdürmeyi amaçlar. Bu proje yapay zeka destekli programlama ile hızlandırılmıştır.</string>
+    <string name="tts_about_license">Bu proje açık kaynaklıdır ve GPL-3.0 lisansı altında mevcuttur. Tam lisans metnini ve kaynak kodu GitHub\'da görebilirsiniz. Katkılar ve geri bildirimler hoş karşılanır!</string>
+    <string name="tts_about_thank_you">SpeakThat kullandığınız için teşekkürler!</string>
+</resources> 

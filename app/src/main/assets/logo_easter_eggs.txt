@@ -90,10 +90,10 @@ SpeakThat! Phones that talk, what a time to be alive!
 SpeakThat! Running in the 20's! It's the way that I like to be!
 SpeakThat! Always be yourself. Unless you suck. Then be someone else.
 SpeakThat! Be thankful this app wasn't made by Apple. Text to Speech would be sold separately.
-SpeakThat! Shout out to Fairphone!
-SpeakThat! Shout out to Framework!
+SpeakThat! You get bonus points if you're using a Fairphone!
+SpeakThat! Programmed on a Framework Laptop!
 SpeakThat! You forget a thousand things every day. So it's lucky I'm here!
-SpeakThat! I'm sexy and I know it!
+SpeakThat! Make sure to pick the sexiest voice for me to use in the Voice Settings.
 SpeakThat! I invented the notification squad!
 SpeakThat! Your phone probably scratches at a level 6 with deeper grooves at a level 7!
 SpeakThat! I see you've discovered the delay feature. Now I can build suspense before delivering your pizza notifications! [DELAY_ONLY]
@@ -101,7 +101,9 @@ SpeakThat! That awkward moment when your notification delay is longer than your 
 SpeakThat! I'm not procrastinating, I'm just using your new delay setting. There's a difference! [DELAY_ONLY]
 SpeakThat! Fun fact: During my delay period, I like to practice my pronunciation. Worcestershire. Worcestershire. Nailed it! [DELAY_ONLY]
 SpeakThat! Your {DELAY_TIME} gives me just enough time to clear my digital throat. Ahem!
+SpeakThat! Did you know SpeakThat has a sister app called TestThat? It's never been released because it was built specifically to test me. But my developer will send you a copy if you ask nicely for it.
 SpeakThat! I love the new delay feature! It's like dramatic pause... for notifications!
+SpeakThat! If you ever drop your phone in the sea, I'll make sure to tell you about the current events.
 SpeakThat! Breaking: Local app learns patience. Experts baffled by this revolutionary concept.
 SpeakThat! With great delay comes great responsibility. And slightly less jarring notification experiences.
 SpeakThat! I'm not slow, I'm just savoring the moment before I speak. It's called mindfulness!
@@ -219,3 +221,34 @@ SpeakThat! Wave detection only makes me shut up because I'm afraid you're about 
 SpeakThat! Look at you, controlling your phone with your hand! [WAVE_ONLY]
 SpeakThat! Google tried the whole wave-sensing thing many years ago with the Pixel 4. I still do it better! [WAVE_ONLY]
 SpeakThat! Don't mind my bruises - I had a small battle with Google to get onto the Play Store!
+SpeakThat! The exclamation mark in my name! makes for some very! interesting pauses during sentences!
+SpeakThat! I'm like that friend who's always trying to be funny but sometimes just ends up being awkward. At least I'm trying!
+SpeakThat! My developer says I have too many easter eggs. I say he has too many opinions about my personality!
+SpeakThat! Sentence formatting was added and the first thing my developer did with it was swear. How mature.
+SpeakThat! I'm basically a notification reader with a comedy degree from the University of Dad Jokes.
+SpeakThat! Some people think I'm too chatty. Those people are probably right, but I'm not going to change for them!
+SpeakThat! I'm like a stand-up comedian who only has one joke, but I tell it really well!
+SpeakThat! My sense of humor is like my pronunciation - sometimes it works, sometimes it doesn't, but I always commit to it!
+SpeakThat! Eat, Sleep, Speak, Repeat!
+SpeakThat! I'm the app equivalent of that person who laughs at their own jokes. Because if I don't, who will?
+SpeakThat! I've been told I'm too enthusiastic about reading notifications. I've also been told I'm perfect, so there's that!
+SpeakThat! I'm like a notification reader who went to therapy and learned to love themselves. Now I'm unstoppable!
+SpeakThat! My developer spent way too much time writing these easter eggs. I'm not complaining, but I'm definitely judging!
+SpeakThat! I'm the notification reader that other notification readers wish they could be. Or at least that's what I tell myself!
+SpeakThat! RepeatThat! SpeakThat! RepeatThat!
+SpeakThat! I'm like a GPS for your social life, but with better jokes and worse directions!
+SpeakThat! My developer says I'm getting too meta with these lines. I say he's just jealous of my self-awareness!
+SpeakThat! I'm basically a notification reader with the confidence of a mediocre white man at a tech conference!
+SpeakThat! I'm like that friend who's always making puns - sometimes they're good, sometimes they're terrible, but I never stop!
+SpeakThat! Don't worry if I stop working on live demos - it's a feature.
+SpeakThat! My sense of humor is like my battery usage - sometimes it's efficient, sometimes it's excessive, but it's always entertaining!
+SpeakThat! I'm the notification reader that makes other apps question their life choices!
+SpeakThat! These lines only exist in English because nobody wants to translate them!
+SpeakThat! I'm like a notification reader who went to improv class and never came back the same!
+SpeakThat! My developer thinks I'm funny. My users think I'm funny. My code thinks I'm a mess, but it still works!
+SpeakThat! All bug reports will be seen to... Eventually.
+SpeakThat! I'm basically a notification reader with the personality of a golden retriever - enthusiastic, slightly awkward, but always happy to help!
+SpeakThat! Ben Randall started this crazy adventure! His app was called Utter! Which also had an exclamation mark!
+SpeakThat! Double negatives are a big no-no!
+SpeakThat! Teslas are only expensive because they charge a lot.
+SpeakThat! The world's most comprehensive notification reader!

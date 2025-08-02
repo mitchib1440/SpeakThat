@@ -62,4 +62,71 @@
     <string name="tts_format_app_only">{app}</string>
     <string name="tts_format_varied">VARIATO</string>
     <string name="tts_format_custom">PERSONALIZZATO</string>
+    
+    <!-- Battery saving tip -->
+    <string name="master_switch_battery_tip">💡 Suggerimento: Spegni quando non serve per risparmiare batteria</string>
+    
+    <!-- Rule Builder Templates (Italian) -->
+    <string name="template_selection_title">Scegli un Template</string>
+    <string name="template_selection_description">Seleziona un template di regola preconfigurato per iniziare rapidamente, o crea una regola personalizzata da zero.</string>
+    <string name="create_custom_rule">Crea Regola Personalizzata</string>
+    
+    <!-- Template Names (Italian) -->
+    <string name="template_headphones_only_name">Leggi notifiche solo quando gli auricolari Bluetooth sono connessi</string>
+    <string name="template_headphones_only_description">Salta le notifiche quando i tuoi auricolari Bluetooth sono disconnessi</string>
+    
+    <string name="template_time_schedule_name">Non leggere notifiche tra orari specifici</string>
+    <string name="template_time_schedule_description">Salta le notifiche durante il tuo intervallo di tempo specificato</string>
+    
+    <string name="template_screen_off_name">Leggi notifiche solo quando il mio schermo è spento</string>
+    <string name="template_screen_off_description">Salta le notifiche quando lo schermo del telefono è acceso</string>
+    
+    <string name="template_home_network_name">Leggi notifiche solo quando connesso al WiFi di casa</string>
+    <string name="template_home_network_description">Salta le notifiche quando non connesso alla tua rete WiFi di casa</string>
+    
+    <!-- Template Trigger Descriptions (Italian) -->
+    <string name="template_trigger_headphones_disconnected">Quando gli auricolari Bluetooth sono disconnessi</string>
+    <string name="template_trigger_time_between">Tra le 22:00 e le 8:00</string>
+    <string name="template_trigger_screen_on">Quando lo schermo è acceso</string>
+    <string name="template_trigger_not_home_wifi">Quando non connesso al WiFi di casa</string>
+    
+    <!-- Template Action Descriptions (Italian) -->
+    <string name="template_action_skip_notification">Salta la lettura di questa notifica</string>
+    
+    <!-- Rule Natural Language Templates (Italian) -->
+    <string name="rule_format_when_trigger_will_action">Quando %1$s, %2$s %3$s</string>
+    <string name="rule_format_when_trigger_will_action_unless_exception">Quando %1$s, %2$s %3$s a meno che %4$s</string>
+    <string name="rule_format_when_trigger_will_action_unless_exceptions">Quando %1$s, %2$s %3$s a meno che %4$s</string>
+    
+    <!-- Rule Component Descriptions (Italian) -->
+    <string name="rule_trigger_bluetooth_connected">il dispositivo Bluetooth è connesso</string>
+    <string name="rule_trigger_bluetooth_disconnected">il dispositivo Bluetooth è disconnesso</string>
+    <string name="rule_trigger_screen_on">lo schermo è acceso</string>
+    <string name="rule_trigger_screen_off">lo schermo è spento</string>
+    <string name="rule_trigger_time_between">l\'ora è tra %1$s e %2$s</string>
+    <string name="rule_trigger_wifi_connected">connesso a %1$s</string>
+    <string name="rule_trigger_wifi_disconnected">non connesso a %1$s</string>
+    <string name="rule_trigger_multiple">multiple condizioni sono soddisfatte</string>
+    
+    <string name="rule_action_skip_notification">salta la lettura delle notifiche</string>
+    <string name="rule_action_enable_app_filter">abilita il filtraggio app per %1$s</string>
+    <string name="rule_action_disable_app_filter">disabilita il filtraggio app per %1$s</string>
+    <string name="rule_action_change_voice_settings">cambia le impostazioni vocali</string>
+    <string name="rule_action_multiple">esegue multiple azioni</string>
+    
+    <string name="rule_exception_bluetooth_connected">il dispositivo Bluetooth è connesso</string>
+    <string name="rule_exception_bluetooth_disconnected">il dispositivo Bluetooth è disconnesso</string>
+    <string name="rule_exception_screen_on">lo schermo è acceso</string>
+    <string name="rule_exception_screen_off">lo schermo è spento</string>
+    <string name="rule_exception_time_between">l\'ora è tra %1$s e %2$s</string>
+    <string name="rule_exception_wifi_connected">connesso a %1$s</string>
+    <string name="rule_exception_wifi_disconnected">non connesso a %1$s</string>
+    <string name="rule_exception_multiple">multiple eccezioni si applicano</string>
+    
+    <!-- Logic Connectors (Italian) -->
+    <string name="rule_logic_and">e</string>
+    <string name="rule_logic_or">o</string>
+    <string name="rule_logic_xor">o</string>
+    <string name="rule_logic_separator">, </string>
+    <string name="rule_logic_final_separator"> e </string>
 </resources> 

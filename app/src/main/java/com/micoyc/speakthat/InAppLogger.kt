@@ -10,6 +10,7 @@ import java.util.*
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.system.exitProcess
 
+
 object InAppLogger {
     private val logs = CopyOnWriteArrayList<LogEntry>()
     private const val MAX_LOGS = 500 // Keep last 500 log entries
@@ -449,12 +450,52 @@ object InAppLogger {
     }
     
     @JvmStatic
-    fun getSystemInfo(): String {
+    fun getInstallationSource(context: android.content.Context): String {
+        return try {
+            val installerPackageName = context.packageManager.getInstallerPackageName(context.packageName)
+            
+            when {
+                installerPackageName == "com.android.vending" -> "Google Play Store"
+                installerPackageName == "com.amazon.venezia" -> "Amazon Appstore"
+                installerPackageName == "com.samsung.android.galaxy.store" -> "Samsung Galaxy Store"
+                installerPackageName == "com.huawei.appmarket" -> "Huawei AppGallery"
+                installerPackageName == "com.sec.android.app.samsungapps" -> "Samsung Galaxy Store (Legacy)"
+                installerPackageName == "com.xiaomi.mipicks" -> "Xiaomi GetApps"
+                installerPackageName == "com.oppo.market" -> "OPPO App Market"
+                installerPackageName == "com.vivo.appstore" -> "vivo App Store"
+                installerPackageName == "com.oneplus.filemanager" -> "OnePlus App Store"
+                installerPackageName == "com.mi.globalbrowser" -> "Mi Browser"
+                installerPackageName == "com.android.packageinstaller" -> "Direct APK Installation"
+                installerPackageName == "com.google.android.packageinstaller" -> "Direct APK Installation"
+                installerPackageName == null -> "Unknown/Manual Installation"
+                else -> "Other Store: $installerPackageName"
+            }
+        } catch (e: Exception) {
+            "Unknown/Error detecting source"
+        }
+    }
+    
+    @JvmStatic
+    fun getAppVersionInfo(context: android.content.Context): String {
+        return try {
+            val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+            val versionName = packageInfo.versionName
+            val versionCode = packageInfo.longVersionCode
+            
+            "SpeakThat! v$versionName (Build $versionCode)"
+        } catch (e: Exception) {
+            "SpeakThat! (Version Unknown)"
+        }
+    }
+    
+    @JvmStatic
+    fun getSystemInfo(context: android.content.Context): String {
         return """
             |=== SYSTEM INFORMATION ===
             |Android Version: ${android.os.Build.VERSION.RELEASE} (API ${android.os.Build.VERSION.SDK_INT})
             |Device: ${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}
-            |App Version: SpeakThat! (Debug Build)
+            |App Version: ${getAppVersionInfo(context)}
+            |Installation Source: ${getInstallationSource(context)}
             |Logging Settings: Verbose=$verboseMode, Filters=$logFilters, Notifications=$logNotifications, UserActions=$logUserActions, SystemEvents=$logSystemEvents, Sensitive=$logSensitiveData
             |Total Log Entries: ${logs.size}
             |Crash Logs Available: ${hasCrashLogs()}

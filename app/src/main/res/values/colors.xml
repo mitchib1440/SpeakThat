@@ -7,6 +7,7 @@
     <color name="black_100">#000000</color>
     <color name="black_200">#1D1C1B</color>
     <color name="black_300">#2B2A29</color>
+    <color name="purple_50">#F3E5F5</color> <!-- Light purple background for info sections -->
     <color name="purple_100">#A145FE</color>
     <color name="purple_200">#AB6ACF</color>
     <color name="purple_300">#B687D0</color>

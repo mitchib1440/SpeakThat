@@ -177,7 +177,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Set up action bar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Behavior Settings");
+            getSupportActionBar().setTitle(getString(R.string.title_behavior_settings));
         }
 
         // Initialize sensor manager
@@ -488,6 +488,14 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.switchHonourDoNotDisturb.setOnCheckedChangeListener((buttonView, isChecked) -> {
             saveHonourDoNotDisturb(isChecked);
         });
+        
+        // Set up Audio Mode toggle
+        binding.switchHonourAudioMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveHonourAudioMode(isChecked);
+        });
+        
+        // Set up Audio Mode info button
+        binding.btnAudioModeInfo.setOnClickListener(v -> showAudioModeDialog());
         
         // Set up speech template functionality
         setupSpeechTemplateUI();
@@ -911,6 +919,10 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Load Do Not Disturb setting
         boolean honourDoNotDisturb = sharedPreferences.getBoolean(KEY_HONOUR_DO_NOT_DISTURB, DEFAULT_HONOUR_DO_NOT_DISTURB);
         binding.switchHonourDoNotDisturb.setChecked(honourDoNotDisturb);
+        
+        // Load Audio Mode setting
+        boolean honourAudioMode = sharedPreferences.getBoolean("honour_audio_mode", true); // Default to true for safety
+        binding.switchHonourAudioMode.setChecked(honourAudioMode);
         
         // Load speech template settings
         loadSpeechTemplateSettings();
@@ -1489,6 +1501,13 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         editor.putBoolean(KEY_HONOUR_DO_NOT_DISTURB, honour);
         editor.apply();
         InAppLogger.log("BehaviorSettings", "Honour Do Not Disturb changed to: " + honour);
+    }
+
+    private void saveHonourAudioMode(boolean honour) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("honour_audio_mode", honour);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Honour Audio Mode changed to: " + honour);
     }
 
     private void updateThresholdMarker(float threshold) {
@@ -2255,6 +2274,41 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 .show();
     }
 
+    private void showAudioModeDialog() {
+        // Track dialog usage for analytics
+        trackDialogUsage("audio_mode_info");
+        
+        String htmlText = "Honour Audio Mode ensures notifications are only read when your device is in Sound mode:<br><br>" +
+                "<b>🎯 What it does:</b><br>" +
+                "When your device is in Silent or Vibrate mode, SpeakThat will not read any notifications aloud. This prevents unwanted audio when your phone is muted.<br><br>" +
+                "<b>📱 When it's useful:</b><br>" +
+                "• <b>Silent mode</b> - No audio interruptions when phone is completely muted<br>" +
+                "• <b>Vibrate mode</b> - Respects your choice to only feel notifications<br>" +
+                "• <b>Meetings</b> - No embarrassing audio when phone is on vibrate<br>" +
+                "• <b>Quiet environments</b> - Ensures notifications only play when you can hear them<br><br>" +
+                "<b>⚙️ How it works:</b><br>" +
+                "• Automatically detects your device's audio mode<br>" +
+                "• Only allows TTS when in Sound mode (RINGER_MODE_NORMAL)<br>" +
+                "• Blocks TTS in Silent mode (RINGER_MODE_SILENT)<br>" +
+                "• Blocks TTS in Vibrate mode (RINGER_MODE_VIBRATE)<br>" +
+                "• Notifications resume normally when switched back to Sound mode<br><br>" +
+                "<b>💡 Tip:</b> This feature works with your device's physical volume buttons and system settings. Perfect for users who frequently switch between audio modes!";
+        
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle("Honour Audio Mode")
+                .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
+                .setPositiveButton(R.string.use_recommended, (dialog, which) -> {
+                    // Track recommendation usage
+                    trackDialogUsage("audio_mode_recommended");
+                    
+                    // Enable honour audio mode
+                    binding.switchHonourAudioMode.setChecked(true);
+                    saveHonourAudioMode(true);
+                })
+                .setNegativeButton(R.string.got_it, null)
+                .show();
+    }
+
     private void addDefaultPriorityApps() {
         // Add some common priority apps
         String[] defaultPriorityApps = {
@@ -2518,6 +2572,38 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         
         if (honourDND) {
             return isDoNotDisturbEnabled(context);
+        }
+        return false;
+    }
+
+    /**
+     * Check if the device is currently in Sound mode (not Silent or Vibrate)
+     * This can be used to prevent TTS when the phone is muted
+     * @param context The application context
+     * @return true if device is in Sound mode, false if Silent or Vibrate
+     */
+    public static boolean isDeviceInSoundMode(Context context) {
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        if (audioManager != null) {
+            int ringerMode = audioManager.getRingerMode();
+            // Only allow TTS when in RINGER_MODE_NORMAL (Sound mode)
+            // RINGER_MODE_SILENT = 0, RINGER_MODE_VIBRATE = 1, RINGER_MODE_NORMAL = 2
+            return ringerMode == AudioManager.RINGER_MODE_NORMAL;
+        }
+        return false;
+    }
+
+    /**
+     * Check if SpeakThat should honour audio mode (only speak when in Sound mode)
+     * @param context The application context
+     * @return true if audio mode should be honoured, false otherwise
+     */
+    public static boolean shouldHonourAudioMode(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        boolean honourAudioMode = prefs.getBoolean("honour_audio_mode", true); // Default to true for safety
+        
+        if (honourAudioMode) {
+            return !isDeviceInSoundMode(context); // Return true if we should block (not in sound mode)
         }
         return false;
     }

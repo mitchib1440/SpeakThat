@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TTS Template Strings (Swedish) - Complete sentence templates with proper grammar -->
+    <string name="tts_template_notified_you">{app} meddelade dig: {content}</string>
+    <string name="tts_template_reported">{app} rapporterade: {content}</string>
+    <string name="tts_template_saying">Meddelande från {app}, som säger {content}</string>
+    <string name="tts_template_alerts_you">{app} varnar dig: {content}</string>
+    <string name="tts_template_update_from">Uppdatering från {app}: {content}</string>
+    <string name="tts_template_notification">{app} meddelande: {content}</string>
+    <string name="tts_template_new_notification">Nytt meddelande: {app}: {content}</string>
+    <string name="tts_template_new_from">Nytt från {app}: {content}</string>
+    <string name="tts_template_said">{app} sa: {content}</string>
+    <string name="tts_template_updated_you">{app} uppdaterade dig: {content}</string>
+    <string name="tts_template_new_notification_from">Nytt meddelande från {app}: som säger: {content}</string>
+    <string name="tts_template_new_update_from">Ny uppdatering från {app}: {content}</string>
+    <string name="tts_template_notification_from">Meddelande från {app}: {content}</string>
+    <string name="tts_template_says">{app} säger: {content}</string>
+    <string name="tts_template_private_notification">Du har fått ett privat meddelande från {app}</string>
+    
+    <!-- TTS Context Templates - Complete sentences for different app contexts (Swedish) -->
+    <!-- About Page TTS -->
+    <string name="tts_about_intro">Välkommen till SpeakThat!</string>
+    <string name="tts_about_description">SpeakThat är en Android-meddelandeläsare som meddelar dina notifikationer högt med text-till-tal. Perfekt för handsfri användning, tillgänglighet och att hålla sig informerad medan du gör flera saker samtidigt.</string>
+    <string name="tts_about_features_intro">Huvudfunktioner inkluderar:</string>
+    <string name="tts_about_features">Realtidsmeddelandeläsning, anpassningsbara röstinställningar, intelligent meddelandefiltrering, app-specifik kontroll, medieveten beteende, meddelandehistorik, Skaka för att stoppa och Vinka för att stoppa, anpassad talformatering, stöd för mörkt och ljust läge och fullständig offline-funktionalitet.</string>
+    <string name="tts_about_developer">Utvecklat med kärlek av Mitchi, en solo-utvecklare från Storbritannien med över 12 års erfarenhet av att testa och använda meddelandeläsare varje dag. SpeakThat inspirerades av Touchless Notifications, ursprungligen utvecklat av DYNA Logix, och syftar till att föra vidare arvet av anpassningsbara meddelandeläsare. Detta projekt accelererades av AI-assisterad programmering.</string>
+    <string name="tts_about_license">Detta projekt är öppen källkod och tillgängligt under GPL-3.0-licensen. Du kan se den fullständiga licensen och källkoden på GitHub. Bidrag och feedback är välkomna!</string>
+    <string name="tts_about_thank_you">Tack för att du använder SpeakThat!</string>
+    
+    <!-- Voice Settings Test -->
+    <string name="tts_voice_test">Så här kommer dina meddelanden att låta med dessa röstinställningar.</string>
+    
+    <!-- Onboarding TTS -->
+    <string name="tts_onboarding_welcome">Välkommen till SpeakThat! Håll dig ansluten utan att stirra på din skärm. Din telefon kommer att läsa meddelanden högt så du kan fokusera på det som betyder något.</string>
+    <string name="tts_onboarding_permission">SpeakThat behöver tillstånd för att läsa dina meddelanden högt. Allt stannar på din enhet och du kontrollerar vad som läses.</string>
+    <string name="tts_onboarding_privacy">Din integritet är viktig. Du kontrollerar exakt vad som läses högt. Skaka din telefon för att omedelbart stoppa alla meddelanden. Allt stannar på din enhet.</string>
+    <string name="tts_onboarding_filters">Låt oss sätta upp några grundläggande integritetsfilter för att komma igång. SpeakThat har ett kraftfullt filtersystem som låter dig välja vad som läses och vad som inte gör det.</string>
+    <string name="tts_onboarding_apps">Skriv namnet på en app som du aldrig vill att jag ska läsa meddelanden från. Vanliga exempel inkluderar bankappar, medicinska appar och dejtingsappar.</string>
+    <string name="tts_onboarding_words">Skriv ord eller fraser som du aldrig vill att jag ska läsa i meddelanden. Vanliga exempel inkluderar lösenord, PIN, kreditkort och medicinska termer.</string>
+    <string name="tts_onboarding_complete">SpeakThat är redo att hjälpa dig att hålla dig ansluten samtidigt som du håller dina ögon fria! Du kan lägga till fler filter när som helst i appinställningarna.</string>
+    
+    <!-- Behavior Settings Speech Format Templates -->
+    <string name="tts_behavior_default">Standardformat</string>
+    <string name="tts_behavior_minimal">Minimalt format</string>
+    <string name="tts_behavior_formal">Formellt format</string>
+    <string name="tts_behavior_casual">Avslappnat format</string>
+    <string name="tts_behavior_time_aware">Tidsmedvetet format</string>
+    <string name="tts_behavior_content_only">Endast innehåll</string>
+    <string name="tts_behavior_app_only">Endast app</string>
+    <string name="tts_behavior_varied">Varierat format</string>
+    <string name="tts_behavior_custom">Anpassat format</string>
+    
+    <!-- Speech Format Preset Templates -->
+    <string name="tts_format_default">{app} meddelade dig: {content}</string>
+    <string name="tts_format_minimal">{app}: {content}</string>
+    <string name="tts_format_formal">Meddelande från {app}: {content}</string>
+    <string name="tts_format_casual">{app} säger: {content}</string>
+    <string name="tts_format_time_aware">{app} kl {time}: {content}</string>
+    <string name="tts_format_content_only">{content}</string>
+    <string name="tts_format_app_only">{app}</string>
+    <string name="tts_format_varied">VARIERAT</string>
+    <string name="tts_format_custom">ANPASSAT</string>
+    
+    <!-- Battery saving tip -->
+    <string name="master_switch_battery_tip">💡 Tips: Stäng av när det inte behövs för att spara batteri</string>
+    
+    <!-- Rule Builder Templates (Swedish) -->
+    <string name="template_selection_title">Välj en mall</string>
+    <string name="template_selection_description">Välj en förkonfigurerad regelmall för att komma igång snabbt, eller skapa en anpassad regel från grunden.</string>
+    <string name="create_custom_rule">Skapa anpassad regel</string>
+    
+    <!-- Template Names (Swedish) -->
+    <string name="template_headphones_only_name">Läs meddelanden endast när Bluetooth-hörlurar är anslutna</string>
+    <string name="template_headphones_only_description">Hoppa över meddelanden när dina Bluetooth-hörlurar är frånkopplade</string>
+    
+    <string name="template_time_schedule_name">Läs inte meddelanden mellan specifika tider</string>
+    <string name="template_time_schedule_description">Hoppa över meddelanden under ditt angivna tidsintervall</string>
+    
+    <string name="template_screen_off_name">Läs meddelanden endast när min skärm är av</string>
+    <string name="template_screen_off_description">Hoppa över meddelanden när din telefonskärm är på</string>
+    
+    <string name="template_home_network_name">Läs meddelanden endast när ansluten till hemma-WiFi</string>
+    <string name="template_home_network_description">Hoppa över meddelanden när inte ansluten till ditt hemma-WiFi-nätverk</string>
+    
+    <!-- Template Trigger Descriptions (Swedish) -->
+    <string name="template_trigger_headphones_disconnected">När Bluetooth-hörlurar är frånkopplade</string>
+    <string name="template_trigger_time_between">Mellan 22:00 och 08:00</string>
+    <string name="template_trigger_screen_on">När skärmen är på</string>
+    <string name="template_trigger_not_home_wifi">När inte ansluten till hemma-WiFi</string>
+    
+    <!-- Template Action Descriptions (Swedish) -->
+    <string name="template_action_skip_notification">Hoppa över läsning av detta meddelande</string>
+    
+    <!-- Rule Natural Language Templates (Swedish) -->
+    <string name="rule_format_when_trigger_will_action">När %1$s, kommer %2$s %3$s</string>
+    <string name="rule_format_when_trigger_will_action_unless_exception">När %1$s, kommer %2$s %3$s såvida inte %4$s</string>
+    <string name="rule_format_when_trigger_will_action_unless_exceptions">När %1$s, kommer %2$s %3$s såvida inte %4$s</string>
+    
+    <!-- Rule Component Descriptions (Swedish) -->
+    <string name="rule_trigger_bluetooth_connected">Bluetooth-enhet är ansluten</string>
+    <string name="rule_trigger_bluetooth_disconnected">Bluetooth-enhet är frånkopplad</string>
+    <string name="rule_trigger_screen_on">skärmen är på</string>
+    <string name="rule_trigger_screen_off">skärmen är av</string>
+    <string name="rule_trigger_time_between">tid är mellan %1$s och %2$s</string>
+    <string name="rule_trigger_wifi_connected">ansluten till %1$s</string>
+    <string name="rule_trigger_wifi_disconnected">inte ansluten till %1$s</string>
+    <string name="rule_trigger_multiple">flera villkor är uppfyllda</string>
+    
+    <string name="rule_action_skip_notification">hoppa över läsning av meddelanden</string>
+    <string name="rule_action_enable_app_filter">aktivera app-filtrering för %1$s</string>
+    <string name="rule_action_disable_app_filter">inaktivera app-filtrering för %1$s</string>
+    <string name="rule_action_change_voice_settings">ändra röstinställningar</string>
+    <string name="rule_action_multiple">utför flera åtgärder</string>
+    
+    <string name="rule_exception_bluetooth_connected">Bluetooth-enhet är ansluten</string>
+    <string name="rule_exception_bluetooth_disconnected">Bluetooth-enhet är frånkopplad</string>
+    <string name="rule_exception_screen_on">skärmen är på</string>
+    <string name="rule_exception_screen_off">skärmen är av</string>
+    <string name="rule_exception_time_between">tid är mellan %1$s och %2$s</string>
+    <string name="rule_exception_wifi_connected">ansluten till %1$s</string>
+    <string name="rule_exception_wifi_disconnected">inte ansluten till %1$s</string>
+    <string name="rule_exception_multiple">flera undantag gäller</string>
+    
+    <!-- Logic Connectors (Swedish) -->
+    <string name="rule_logic_and">och</string>
+    <string name="rule_logic_or">eller</string>
+    <string name="rule_logic_xor">antingen</string>
+    <string name="rule_logic_separator">, </string>
+    <string name="rule_logic_final_separator"> och </string>
+</resources> 

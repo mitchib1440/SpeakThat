@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TTS Template Strings (Vietnamese) - Complete sentence templates with proper Vietnamese grammar -->
+    <string name="tts_template_notified_you">{app} đã thông báo cho bạn: {content}</string>
+    <string name="tts_template_reported">{app} đã báo cáo: {content}</string>
+    <string name="tts_template_saying">Thông báo từ {app}, nói rằng {content}</string>
+    <string name="tts_template_alerts_you">{app} cảnh báo bạn: {content}</string>
+    <string name="tts_template_update_from">Cập nhật từ {app}: {content}</string>
+    <string name="tts_template_notification">{app} thông báo: {content}</string>
+    <string name="tts_template_new_notification">Thông báo mới: {app}: {content}</string>
+    <string name="tts_template_new_from">Mới từ {app}: {content}</string>
+    <string name="tts_template_said">{app} đã nói: {content}</string>
+    <string name="tts_template_updated_you">{app} đã cập nhật cho bạn: {content}</string>
+    <string name="tts_template_new_notification_from">Thông báo mới từ {app}: nói rằng {content}</string>
+    <string name="tts_template_new_update_from">Cập nhật mới từ {app}: {content}</string>
+    <string name="tts_template_notification_from">Thông báo từ {app}: {content}</string>
+    <string name="tts_template_says">{app} nói: {content}</string>
+    <string name="tts_template_private_notification">Bạn đã nhận được thông báo riêng tư từ {app}</string>
+    
+    <!-- Voice Settings Test (Vietnamese) -->
+    <string name="tts_voice_test">Đây là cách thông báo của bạn sẽ nghe với các cài đặt giọng nói này.</string>
+    
+    <!-- Onboarding TTS (Vietnamese) -->
+    <string name="tts_onboarding_welcome">Chào mừng bạn đến với SpeakThat! Giữ kết nối mà không cần nhìn chằm chằm vào màn hình. Điện thoại của bạn sẽ đọc thông báo thành tiếng để bạn có thể tập trung vào những gì quan trọng.</string>
+    <string name="tts_onboarding_permission">SpeakThat cần quyền để đọc thông báo của bạn thành tiếng. Mọi thứ đều được lưu trên thiết bị của bạn và bạn kiểm soát những gì được đọc.</string>
+    <string name="tts_onboarding_privacy">Quyền riêng tư của bạn rất quan trọng. Bạn kiểm soát chính xác những gì được đọc thành tiếng. Lắc điện thoại để dừng bất kỳ thông báo nào ngay lập tức. Mọi thứ đều được lưu trên thiết bị của bạn.</string>
+    <string name="tts_onboarding_filters">Hãy thiết lập một số bộ lọc quyền riêng tư cơ bản để bắt đầu. SpeakThat có hệ thống lọc mạnh mẽ cho phép bạn chọn những gì được đọc và những gì không.</string>
+    <string name="tts_onboarding_apps">Nhập tên ứng dụng mà bạn không bao giờ muốn tôi đọc thông báo. Các ví dụ phổ biến bao gồm ứng dụng ngân hàng, ứng dụng y tế và ứng dụng hẹn hò.</string>
+    <string name="tts_onboarding_words">Nhập từ hoặc cụm từ mà bạn không bao giờ muốn tôi đọc trong thông báo. Các ví dụ phổ biến bao gồm mật khẩu, PIN, thẻ tín dụng và thuật ngữ y tế.</string>
+    <string name="tts_onboarding_complete">SpeakThat đã sẵn sàng giúp bạn duy trì kết nối trong khi giữ cho đôi mắt tự do! Bạn có thể thêm nhiều bộ lọc hơn bất cứ lúc nào trong cài đặt ứng dụng.</string>
+    
+    <!-- About Page TTS (Vietnamese) -->
+    <string name="tts_about_intro">Chào mừng bạn đến với SpeakThat!</string>
+    <string name="tts_about_description">SpeakThat là một trình đọc thông báo Android mã nguồn mở thông báo thông báo của bạn thành tiếng bằng cách sử dụng chuyển đổi văn bản thành giọng nói. Hoàn hảo cho công việc không cần tay, khả năng tiếp cận và duy trì thông tin trong khi đa nhiệm.</string>
+    <string name="tts_about_features_intro">Các tính năng chính bao gồm:</string>
+    <string name="tts_about_features">Đọc thông báo thời gian thực, cài đặt giọng nói có thể tùy chỉnh, lọc thông báo thông minh, kiểm soát ứng dụng cụ thể, hành vi nhận thức phương tiện, theo dõi lịch sử thông báo, lắc để dừng và vẫy để dừng, định dạng giọng nói tùy chỉnh, hỗ trợ chế độ tối và sáng, quy tắc có điều kiện cho logic nâng cao và lịch trình, và chức năng hoàn chỉnh không quảng cáo và ngoại tuyến.</string>
+    <string name="tts_about_developer">Được phát triển với tình yêu bởi Michi, một nhà phát triển độc lập từ Vương quốc Anh với hơn 12 năm kinh nghiệm kiểm tra và sử dụng trình đọc thông báo mỗi ngày. SpeakThat được lấy cảm hứng từ Touchless Notifications, ban đầu được phát triển bởi DYNA Logix, và nhằm mục đích tiếp tục di sản của trình đọc thông báo có thể tùy chỉnh. Dự án này được tăng tốc bằng lập trình hỗ trợ trí tuệ nhân tạo.</string>
+    <string name="tts_about_license">Dự án này là mã nguồn mở và có sẵn theo giấy phép GPL-3.0. Bạn có thể xem văn bản giấy phép đầy đủ và mã nguồn trên GitHub. Đóng góp và phản hồi được chào đón!</string>
+    <string name="tts_about_thank_you">Cảm ơn bạn đã sử dụng SpeakThat!</string>
+</resources> 

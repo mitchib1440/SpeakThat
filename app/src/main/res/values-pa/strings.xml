@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TTS Template Strings (for improved localization) -->
+    <!-- These are complete sentence templates with placeholders for proper localization -->
+    <string name="tts_template_notified_you">{app} ਨੇ ਤੁਹਾਨੂੰ ਸੂਚਿਤ ਕੀਤਾ: {content}</string>
+    <string name="tts_template_reported">{app} ਨੇ ਰਿਪੋਰਟ ਕੀਤੀ: {content}</string>
+    <string name="tts_template_saying">{app} ਤੋਂ ਨੋਟੀਫਿਕੇਸ਼ਨ, ਕਹਿੰਦਾ ਹੈ {content}</string>
+    <string name="tts_template_alerts_you">{app} ਤੁਹਾਨੂੰ ਚੇਤਾਵਨੀ ਦਿੰਦਾ ਹੈ: {content}</string>
+    <string name="tts_template_update_from">{app} ਤੋਂ ਅਪਡੇਟ: {content}</string>
+    <string name="tts_template_notification">{app} ਨੋਟੀਫਿਕੇਸ਼ਨ: {content}</string>
+    <string name="tts_template_new_notification">ਨਵੀਂ ਨੋਟੀਫਿਕੇਸ਼ਨ: {app}: {content}</string>
+    <string name="tts_template_new_from">{app} ਤੋਂ ਨਵਾਂ: {content}</string>
+    <string name="tts_template_said">{app} ਨੇ ਕਿਹਾ: {content}</string>
+    <string name="tts_template_updated_you">{app} ਨੇ ਤੁਹਾਨੂੰ ਅਪਡੇਟ ਕੀਤਾ: {content}</string>
+    <string name="tts_template_new_notification_from">{app} ਤੋਂ ਨਵੀਂ ਨੋਟੀਫਿਕੇਸ਼ਨ: ਕਹਿੰਦਾ ਹੈ: {content}</string>
+    <string name="tts_template_new_update_from">{app} ਤੋਂ ਨਵਾਂ ਅਪਡੇਟ: {content}</string>
+    <string name="tts_template_notification_from">{app} ਤੋਂ ਨੋਟੀਫਿਕੇਸ਼ਨ: {content}</string>
+    <string name="tts_template_says">{app} ਕਹਿੰਦਾ ਹੈ: {content}</string>
+    <string name="tts_template_private_notification">ਤੁਹਾਨੂੰ {app} ਤੋਂ ਇੱਕ ਨਿੱਜੀ ਨੋਟੀਫਿਕੇਸ਼ਨ ਮਿਲੀ ਹੈ</string>
+    
+    <!-- About Page TTS -->
+    <string name="tts_about_intro">SpeakThat ਵਿੱਚ ਤੁਹਾਡਾ ਸਵਾਗਤ ਹੈ!</string>
+    <string name="tts_about_description">SpeakThat ਇੱਕ ਓਪਨ-ਸੋਰਸ ਐਂਡਰਾਇਡ ਨੋਟੀਫਿਕੇਸ਼ਨ ਰੀਡਰ ਹੈ ਜੋ ਟੈਕਸਟ-ਟੂ-ਸਪੀਚ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਤੁਹਾਡੀਆਂ ਨੋਟੀਫਿਕੇਸ਼ਨਾਂ ਨੂੰ ਉੱਚੀ ਆਵਾਜ਼ ਵਿੱਚ ਐਲਾਨਦਾ ਹੈ। ਹੈਂਡਸ-ਫ੍ਰੀ ਓਪਰੇਸ਼ਨ, ਐਕਸੈਸੀਬਿਲਿਟੀ, ਅਤੇ ਮਲਟੀਟਾਸਕਿੰਗ ਦੌਰਾਨ ਜਾਣਕਾਰੀ ਰੱਖਣ ਲਈ ਬਿਲਕੁਲ ਢੁਕਵਾਂ।</string>
+    <string name="tts_about_features_intro">ਮੁੱਖ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਵਿੱਚ ਸ਼ਾਮਲ ਹਨ:</string>
+    <string name="tts_about_features">ਰੀਅਲ-ਟਾਈਮ ਨੋਟੀਫਿਕੇਸ਼ਨ ਪੜ੍ਹਨ, ਕਸਟਮਾਈਜ਼ੇਬਲ ਵੌਇਸ ਸੈਟਿੰਗਾਂ, ਸਮਾਰਟ ਨੋਟੀਫਿਕੇਸ਼ਨ ਫਿਲਟਰਿੰਗ, ਐਪ-ਸਪੈਸਿਫਿਕ ਕੰਟਰੋਲ, ਮੀਡੀਆ-ਅਵੇਅਰ ਬਿਹੇਵੀਅਰ, ਨੋਟੀਫਿਕੇਸ਼ਨ ਹਿਸਟਰੀ ਟ੍ਰੈਕਿੰਗ, ਸ਼ੇਕ ਟੂ ਸਟਾਪ ਅਤੇ ਵੇਵ ਟੂ ਸਟਾਪ, ਕਸਟਮ ਸਪੀਚ ਫਾਰਮੈਟਿੰਗ, ਡਾਰਕ ਮੋਡ ਅਤੇ ਲਾਈਟ ਮੋਡ ਸਪੋਰਟ, ਐਡਵਾਂਸਡ ਲੌਜਿਕ ਅਤੇ ਸਕੈਡਿਊਲ ਲਈ ਕੰਡੀਸ਼ਨਲ ਰੂਲ, ਅਤੇ ਪੂਰੀ ਐਡ-ਫ੍ਰੀ, ਔਫਲਾਈਨ ਫੰਕਸ਼ਨੈਲਿਟੀ।</string>
+    <string name="tts_about_developer">ਮਿਚੀ ਦੁਆਰਾ ਪਿਆਰ ਨਾਲ ਵਿਕਸਿਤ, ਯੂਕੇ ਤੋਂ ਇੱਕ ਸੋਲੋ ਡਿਵੈਲਪਰ ਜਿਸ ਕੋਲ ਹਰ ਰੋਜ਼ ਨੋਟੀਫਿਕੇਸ਼ਨ ਰੀਡਰਾਂ ਦੀ ਟੈਸਟਿੰਗ ਅਤੇ ਵਰਤੋਂ ਦੇ 12 ਸਾਲਾਂ ਤੋਂ ਵੱਧ ਦਾ ਤਜਰਬਾ ਹੈ। SpeakThat Touchless Notifications ਤੋਂ ਪ੍ਰੇਰਿਤ ਹੈ, ਜੋ ਮੂਲ ਰੂਪ ਵਿੱਚ DYNA Logix ਦੁਆਰਾ ਵਿਕਸਿਤ ਕੀਤਾ ਗਿਆ ਸੀ, ਅਤੇ ਕਸਟਮਾਈਜ਼ੇਬਲ ਨੋਟੀਫਿਕੇਸ਼ਨ ਰੀਡਰਾਂ ਦੀ ਵਿਰਾਸਤ ਨੂੰ ਅੱਗੇ ਵਧਾਉਣ ਦਾ ਟੀਚਾ ਰੱਖਦਾ ਹੈ। ਇਹ ਪ੍ਰੋਜੈਕਟ ਆਰਟੀਫਿਸ਼ੀਅਲ ਇੰਟੈਲੀਜੈਂਸ ਸਹਾਇਤਾ ਪ੍ਰੋਗਰਾਮਿੰਗ ਦੁਆਰਾ ਤੇਜ਼ੀ ਨਾਲ ਵਿਕਸਿਤ ਕੀਤਾ ਗਿਆ ਸੀ।</string>
+    <string name="tts_about_license">ਇਹ ਪ੍ਰੋਜੈਕਟ ਓਪਨ ਸੋਰਸ ਹੈ ਅਤੇ GPL-3.0 ਲਾਇਸੈਂਸ ਦੇ ਤਹਿਤ ਉਪਲਬਧ ਹੈ। ਤੁਸੀਂ GitHub ਤੇ ਪੂਰਾ ਲਾਇਸੈਂਸ ਟੈਕਸਟ ਅਤੇ ਸੋਰਸ ਕੋਡ ਦੇਖ ਸਕਦੇ ਹੋ। ਯੋਗਦਾਨ ਅਤੇ ਫੀਡਬੈਕ ਦਾ ਸਵਾਗਤ ਹੈ!</string>
+    <string name="tts_about_thank_you">SpeakThat ਵਰਤਣ ਲਈ ਤੁਹਾਡਾ ਧੰਨਵਾਦ!</string>
+    
+    <!-- Voice Settings Test -->
+    <string name="tts_voice_test">ਇਹ ਹੈ ਕਿ ਤੁਹਾਡੀਆਂ ਨੋਟੀਫਿਕੇਸ਼ਨਾਂ ਇਹਨਾਂ ਵੌਇਸ ਸੈਟਿੰਗਾਂ ਨਾਲ ਕਿਵੇਂ ਲੱਗਣਗੀਆਂ।</string>
+    
+    <!-- Onboarding TTS -->
+    <string name="tts_onboarding_welcome">SpeakThat ਵਿੱਚ ਤੁਹਾਡਾ ਸਵਾਗਤ ਹੈ! ਆਪਣੀ ਸਕ੍ਰੀਨ ਨੂੰ ਘੂਰੇ ਬਿਨਾਂ ਜੁੜੇ ਰਹੋ। ਤੁਹਾਡਾ ਫੋਨ ਨੋਟੀਫਿਕੇਸ਼ਨਾਂ ਨੂੰ ਉੱਚੀ ਆਵਾਜ਼ ਵਿੱਚ ਪੜ੍ਹੇਗਾ ਤਾਂ ਜੋ ਤੁਸੀਂ ਮਹੱਤਵਪੂਰਨ ਚੀਜ਼ਾਂ ਤੇ ਧਿਆਨ ਕੇਂਦਰਿਤ ਕਰ ਸਕੋ।</string>
+    <string name="tts_onboarding_permission">SpeakThat ਨੂੰ ਤੁਹਾਡੀਆਂ ਨੋਟੀਫਿਕੇਸ਼ਨਾਂ ਨੂੰ ਉੱਚੀ ਆਵਾਜ਼ ਵਿੱਚ ਪੜ੍ਹਨ ਦੀ ਇਜਾਜ਼ਤ ਦੀ ਲੋੜ ਹੈ। ਸਭ ਕੁਝ ਤੁਹਾਡੇ ਡਿਵਾਈਸ ਤੇ ਰਹਿੰਦਾ ਹੈ ਅਤੇ ਤੁਸੀਂ ਨਿਯੰਤ੍ਰਿਤ ਕਰਦੇ ਹੋ ਕਿ ਕੀ ਪੜ੍ਹਿਆ ਜਾਵੇ।</string>
+    <string name="tts_onboarding_privacy">ਤੁਹਾਡੀ ਪ੍ਰਾਈਵੇਸੀ ਮਹੱਤਵਪੂਰਨ ਹੈ। ਤੁਸੀਂ ਬਿਲਕੁਲ ਨਿਯੰਤ੍ਰਿਤ ਕਰਦੇ ਹੋ ਕਿ ਕੀ ਉੱਚੀ ਆਵਾਜ਼ ਵਿੱਚ ਪੜ੍ਹਿਆ ਜਾਵੇ। ਕਿਸੇ ਵੀ ਐਲਾਨ ਨੂੰ ਤੁਰੰਤ ਰੋਕਣ ਲਈ ਆਪਣੇ ਫੋਨ ਨੂੰ ਹਿਲਾਓ। ਸਭ ਕੁਝ ਤੁਹਾਡੇ ਡਿਵਾਈਸ ਤੇ ਰਹਿੰਦਾ ਹੈ।</string>
+    <string name="tts_onboarding_filters">ਆਓ ਤੁਹਾਨੂੰ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਕੁਝ ਬੁਨਿਆਦੀ ਪ੍ਰਾਈਵੇਸੀ ਫਿਲਟਰ ਸੈਟ ਅਪ ਕਰੀਏ। SpeakThat ਵਿੱਚ ਇੱਕ ਸ਼ਕਤੀਸ਼ਾਲੀ ਫਿਲਟਰਿੰਗ ਸਿਸਟਮ ਹੈ ਜੋ ਤੁਹਾਨੂੰ ਚੁਣਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿੰਦਾ ਹੈ ਕਿ ਕੀ ਪੜ੍ਹਿਆ ਜਾਵੇ ਅਤੇ ਕੀ ਨਹੀਂ।</string>
+    <string name="tts_onboarding_apps">ਉਸ ਐਪ ਦਾ ਨਾਮ ਟਾਈਪ ਕਰੋ ਜਿਸ ਤੋਂ ਤੁਸੀਂ ਕਦੇ ਵੀ ਨੋਟੀਫਿਕੇਸ਼ਨਾਂ ਨੂੰ ਪੜ੍ਹਵਾਉਣਾ ਨਹੀਂ ਚਾਹੁੰਦੇ। ਆਮ ਉਦਾਹਰਣਾਂ ਵਿੱਚ ਬੈਂਕਿੰਗ ਐਪਸ, ਮੈਡੀਕਲ ਐਪਸ, ਅਤੇ ਡੇਟਿੰਗ ਐਪਸ ਸ਼ਾਮਲ ਹਨ।</string>
+    <string name="tts_onboarding_words">ਉਹ ਸ਼ਬਦ ਜਾਂ ਵਾਕਾਂਸ਼ ਟਾਈਪ ਕਰੋ ਜਿਨ੍ਹਾਂ ਨੂੰ ਤੁਸੀਂ ਕਦੇ ਵੀ ਨੋਟੀਫਿਕੇਸ਼ਨਾਂ ਵਿੱਚ ਪੜ੍ਹਵਾਉਣਾ ਨਹੀਂ ਚਾਹੁੰਦੇ। ਆਮ ਉਦਾਹਰਣਾਂ ਵਿੱਚ ਪਾਸਵਰਡ, PIN, ਕ੍ਰੈਡਿਟ ਕਾਰਡ, ਅਤੇ ਮੈਡੀਕਲ ਟਰਮ ਸ਼ਾਮਲ ਹਨ।</string>
+    <string name="tts_onboarding_complete">SpeakThat ਤੁਹਾਨੂੰ ਜੁੜੇ ਰਹਿਣ ਵਿੱਚ ਮਦਦ ਕਰਨ ਲਈ ਤਿਆਰ ਹੈ ਜਦੋਂ ਕਿ ਤੁਹਾਡੀਆਂ ਅੱਖਾਂ ਨੂੰ ਮੁਕਤ ਰੱਖਦਾ ਹੈ! ਤੁਸੀਂ ਐਪ ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਕਿਸੇ ਵੀ ਸਮੇਂ ਹੋਰ ਫਿਲਟਰ ਜੋੜ ਸਕਦੇ ਹੋ।</string>
+    
+    <!-- Behavior Settings Speech Format Templates -->
+    <string name="tts_behavior_default">ਡਿਫਾਲਟ ਫਾਰਮੈਟ</string>
+    <string name="tts_behavior_minimal">ਘੱਟੋ-ਘੱਟ ਫਾਰਮੈਟ</string>
+    <string name="tts_behavior_formal">ਰਸਮੀ ਫਾਰਮੈਟ</string>
+    <string name="tts_behavior_casual">ਆਮ ਫਾਰਮੈਟ</string>
+    <string name="tts_behavior_time_aware">ਸਮੇਂ-ਅਵੇਅਰ ਫਾਰਮੈਟ</string>
+    <string name="tts_behavior_content_only">ਸਿਰਫ ਸਮੱਗਰੀ ਫਾਰਮੈਟ</string>
+    <string name="tts_behavior_app_only">ਸਿਰਫ ਐਪ ਫਾਰਮੈਟ</string>
+    <string name="tts_behavior_varied">ਵਿਭਿੰਨ ਫਾਰਮੈਟ</string>
+    <string name="tts_behavior_custom">ਕਸਟਮ ਫਾਰਮੈਟ</string>
+    
+    <!-- Speech Format Preset Templates -->
+    <string name="tts_format_default">{app} ਨੇ ਤੁਹਾਨੂੰ ਸੂਚਿਤ ਕੀਤਾ: {content}</string>
+    <string name="tts_format_minimal">{app}: {content}</string>
+    <string name="tts_format_formal">{app} ਤੋਂ ਨੋਟੀਫਿਕੇਸ਼ਨ: {content}</string>
+    <string name="tts_format_casual">{app} ਕਹਿੰਦਾ ਹੈ: {content}</string>
+    <string name="tts_format_time_aware">{app} {time} ਤੇ: {content}</string>
+    <string name="tts_format_content_only">{content}</string>
+    <string name="tts_format_app_only">{app}</string>
+    <string name="tts_format_varied">ਵਿਭਿੰਨ</string>
+    <string name="tts_format_custom">ਕਸਟਮ</string>
+</resources> 

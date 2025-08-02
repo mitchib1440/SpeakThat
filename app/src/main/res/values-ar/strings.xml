@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TTS Template Strings (Arabic) - Complete sentence templates with proper grammar -->
+    <string name="tts_template_notified_you">{app} أبلغك: {content}</string>
+    <string name="tts_template_reported">{app} أبلغ: {content}</string>
+    <string name="tts_template_saying">إشعار من {app}، يقول {content}</string>
+    <string name="tts_template_alerts_you">{app} ينبهك: {content}</string>
+    <string name="tts_template_update_from">تحديث من {app}: {content}</string>
+    <string name="tts_template_notification">{app} إشعار: {content}</string>
+    <string name="tts_template_new_notification">إشعار جديد: {app}: {content}</string>
+    <string name="tts_template_new_from">جديد من {app}: {content}</string>
+    <string name="tts_template_said">{app} قال: {content}</string>
+    <string name="tts_template_updated_you">{app} حدثك: {content}</string>
+    <string name="tts_template_new_notification_from">إشعار جديد من {app}: يقول: {content}</string>
+    <string name="tts_template_new_update_from">تحديث جديد من {app}: {content}</string>
+    <string name="tts_template_notification_from">إشعار من {app}: {content}</string>
+    <string name="tts_template_says">{app} يقول: {content}</string>
+    <string name="tts_template_private_notification">لقد تلقيت إشعاراً خاصاً من {app}</string>
+    
+    <!-- Voice Settings Test (Arabic) -->
+    <string name="tts_voice_test">هكذا ستبدو إشعاراتك بهذه إعدادات الصوت.</string>
+    
+    <!-- Onboarding TTS (Arabic) -->
+    <string name="tts_onboarding_welcome">مرحباً بك في SpeakThat! ابق متصلاً دون التحديق في شاشتك. سيقوم هاتفك بقراءة الإشعارات بصوت عالٍ حتى تتمكن من التركيز على ما يهم.</string>
+    <string name="tts_onboarding_permission">يحتاج SpeakThat إلى إذن لقراءة إشعاراتك بصوت عالٍ. كل شيء يبقى على جهازك وأنت تتحكم فيما يتم قراءته.</string>
+    <string name="tts_onboarding_privacy">خصوصيتك مهمة. أنت تتحكم بالضبط فيما يتم قراءته بصوت عالٍ. اهز هاتفك لإيقاف أي إعلان فوراً. كل شيء يبقى على جهازك.</string>
+    <string name="tts_onboarding_filters">دعنا نضع بعض فلاتر الخصوصية الأساسية للبدء. يتميز SpeakThat بنظام تصفية قوي يتيح لك اختيار ما يتم قراءته وما لا يتم.</string>
+    <string name="tts_onboarding_apps">اكتب اسم تطبيق لا تريد أبداً أن أقرأ إشعاراته. الأمثلة الشائعة تشمل تطبيقات البنوك والتطبيقات الطبية وتطبيقات المواعدة.</string>
+    <string name="tts_onboarding_words">اكتب كلمات أو عبارات لا تريد أبداً أن أقرأها في الإشعارات. الأمثلة الشائعة تشمل كلمة المرور ورمز PIN وبطاقة الائتمان والمصطلحات الطبية.</string>
+    <string name="tts_onboarding_complete">SpeakThat جاهز لمساعدتك في البقاء متصلاً مع الحفاظ على عينيك حرة! يمكنك إضافة المزيد من الفلاتر في أي وقت في إعدادات التطبيق.</string>
+    
+    <!-- About Page TTS (Arabic) -->
+    <string name="tts_about_intro">مرحباً بك في SpeakThat!</string>
+    <string name="tts_about_description">SpeakThat هو قارئ إشعارات أندرويد مفتوح المصدر يعلن إشعاراتك بصوت عالٍ باستخدام تحويل النص إلى كلام. مثالي للعمل بدون استخدام اليدين وإمكانية الوصول والبقاء على اطلاع أثناء أداء مهام متعددة.</string>
+    <string name="tts_about_features_intro">الميزات الرئيسية تشمل:</string>
+    <string name="tts_about_features">قراءة الإشعارات في الوقت الفعلي، إعدادات صوت قابلة للتخصيص، تصفية ذكية للإشعارات، تحكم محدد للتطبيق، سلوك واعٍ بالوسائط، تتبع تاريخ الإشعارات، هز للتوقف وموجة للتوقف، تنسيق كلام مخصص، دعم الوضع المظلم والفاتح، قواعد شرطية للمنطق المتقدم والجداول الزمنية، ووظائف كاملة بدون إعلانات وبدون اتصال.</string>
+    <string name="tts_about_developer">تم تطويره بحب من قبل ميتشي، مطور مستقل من المملكة المتحدة مع أكثر من 12 عاماً من الخبرة في اختبار واستخدام قراء الإشعارات كل يوم. تم إلهام SpeakThat من Touchless Notifications، الذي طوره في الأصل DYNA Logix، ويهدف إلى استمرار إرث قراء الإشعارات القابلة للتخصيص. تم تسريع هذا المشروع بالبرمجة المدعومة بالذكاء الاصطناعي.</string>
+    <string name="tts_about_license">هذا المشروع مفتوح المصدر ومتاح تحت رخصة GPL-3.0. يمكنك عرض نص الرخصة الكامل والكود المصدري على GitHub. المساهمات والتعليقات مرحب بها!</string>
+    <string name="tts_about_thank_you">شكراً لك لاستخدام SpeakThat!</string>
+</resources> 

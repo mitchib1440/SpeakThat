@@ -115,8 +115,15 @@
                         android:textColor="@color/white_100"
                         android:layout_marginBottom="8dp" />
 
-
-
+                    <!-- Rule System Test Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRuleSystemTest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="🧪 Test Rule System"
+                        android:backgroundTint="@color/purple_200"
+                        android:textColor="@color/white_100"
+                        android:layout_marginBottom="8dp" />
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>

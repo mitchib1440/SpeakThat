@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TTS Template Strings (Spanish) - Complete sentence templates with proper grammar -->
+    <string name="tts_template_notified_you">{app} te notificó: {content}</string>
+    <string name="tts_template_reported">{app} reportó: {content}</string>
+    <string name="tts_template_saying">Notificación de {app}, diciendo {content}</string>
+    <string name="tts_template_alerts_you">{app} te alerta: {content}</string>
+    <string name="tts_template_update_from">Actualización de {app}: {content}</string>
+    <string name="tts_template_notification">{app} notificación: {content}</string>
+    <string name="tts_template_new_notification">Nueva notificación: {app}: {content}</string>
+    <string name="tts_template_new_from">Nuevo de {app}: {content}</string>
+    <string name="tts_template_said">{app} dijo: {content}</string>
+    <string name="tts_template_updated_you">{app} te actualizó: {content}</string>
+    <string name="tts_template_new_notification_from">Nueva notificación de {app}: diciendo: {content}</string>
+    <string name="tts_template_new_update_from">Nueva actualización de {app}: {content}</string>
+    <string name="tts_template_notification_from">Notificación de {app}: {content}</string>
+    <string name="tts_template_says">{app} dice: {content}</string>
+    <string name="tts_template_private_notification">Recibiste una notificación privada de {app}</string>
+    
+    <!-- About Page TTS (Spanish) -->
+    <string name="tts_about_intro">¡Bienvenido a SpeakThat!</string>
+    <string name="tts_about_description">SpeakThat es un Lector de Notificaciones Android de código abierto que anuncia tus notificaciones en voz alta usando texto-a-voz. Perfecto para operación manos libres, accesibilidad y mantenerse informado mientras haces múltiples tareas.</string>
+    <string name="tts_about_features_intro">Las características principales incluyen:</string>
+    <string name="tts_about_features">Lectura de notificaciones en tiempo real, configuración de voz personalizable, filtrado inteligente de notificaciones, controles específicos por aplicación, comportamiento consciente de medios, seguimiento del historial de notificaciones, Agitar para Detener y Onda para Detener, formato de habla personalizado, soporte para modo oscuro y claro, reglas condicionales para lógica avanzada y horarios, y funcionalidad completa sin anuncios y sin conexión.</string>
+    <string name="tts_about_developer">Desarrollado con amor por Mitchi, un desarrollador independiente del Reino Unido con más de 12 años de experiencia probando y usando lectores de notificaciones todos los días. SpeakThat fue inspirado por Touchless Notifications, originalmente desarrollado por DYNA Logix, y busca continuar el legado de lectores de notificaciones personalizables. Este proyecto fue acelerado por programación asistida por Inteligencia Artificial.</string>
+    <string name="tts_about_license">Este proyecto es de código abierto y está disponible bajo la Licencia GPL-3.0. Puedes ver el texto completo de la licencia y el código fuente en GitHub. ¡Las contribuciones y comentarios son bienvenidos!</string>
+    <string name="tts_about_thank_you">¡Gracias por usar SpeakThat!</string>
+    
+    <!-- Voice Settings Test (Spanish) -->
+    <string name="tts_voice_test">Así es como sonarán tus notificaciones con esta configuración de voz.</string>
+    
+    <!-- Onboarding TTS (Spanish) -->
+    <string name="tts_onboarding_welcome">¡Bienvenido a SpeakThat! Mantente conectado sin mirar fijamente tu pantalla. Tu teléfono leerá las notificaciones en voz alta para que puedas concentrarte en lo que importa.</string>
+    <string name="tts_onboarding_permission">SpeakThat necesita permiso para leer tus notificaciones en voz alta. Todo se mantiene en tu dispositivo y tú controlas qué se lee.</string>
+    <string name="tts_onboarding_privacy">Tu privacidad importa. Tú controlas exactamente qué se lee en voz alta. Agita tu teléfono para detener cualquier anuncio instantáneamente. Todo se mantiene en tu dispositivo.</string>
+    <string name="tts_onboarding_filters">Configuremos algunos filtros básicos de privacidad para comenzar. SpeakThat cuenta con un potente sistema de filtrado que te permite elegir qué se lee y qué no.</string>
+    <string name="tts_onboarding_apps">Escribe el nombre de una aplicación de la que nunca quieres que lea notificaciones. Ejemplos comunes incluyen aplicaciones bancarias, médicas y de citas.</string>
+    <string name="tts_onboarding_words">Escribe palabras o frases que nunca quieres que lea en las notificaciones. Ejemplos comunes incluyen contraseña, PIN, tarjeta de crédito y términos médicos.</string>
+    <string name="tts_onboarding_complete">¡SpeakThat está listo para ayudarte a mantenerte conectado mientras mantienes tus ojos libres! Puedes agregar más filtros en cualquier momento en la configuración de la aplicación.</string>
+    
+    <!-- Behavior Settings Speech Format Templates (Spanish) -->
+    <string name="tts_behavior_default">Formato predeterminado</string>
+    <string name="tts_behavior_minimal">Formato mínimo</string>
+    <string name="tts_behavior_formal">Formato formal</string>
+    <string name="tts_behavior_casual">Formato casual</string>
+    <string name="tts_behavior_time_aware">Formato consciente del tiempo</string>
+    <string name="tts_behavior_content_only">Solo contenido</string>
+    <string name="tts_behavior_app_only">Solo aplicación</string>
+    <string name="tts_behavior_varied">Formato variado</string>
+    <string name="tts_behavior_custom">Formato personalizado</string>
+    
+    <!-- Speech Format Preset Templates (Spanish) -->
+    <string name="tts_format_default">{app} te notificó: {content}</string>
+    <string name="tts_format_minimal">{app}: {content}</string>
+    <string name="tts_format_formal">Notificación de {app}: {content}</string>
+    <string name="tts_format_casual">{app} dice: {content}</string>
+    <string name="tts_format_time_aware">{app} a las {time}: {content}</string>
+    <string name="tts_format_content_only">{content}</string>
+    <string name="tts_format_app_only">{app}</string>
+    <string name="tts_format_varied">VARIADO</string>
+    <string name="tts_format_custom">PERSONALIZADO</string>
+    
+    <!-- Rule Builder Templates (Spanish) -->
+    <string name="template_selection_title">Elegir una Plantilla</string>
+    <string name="template_selection_description">Selecciona una plantilla de regla preconfigurada para comenzar rápidamente, o crea una regla personalizada desde cero.</string>
+    <string name="create_custom_rule">Crear Regla Personalizada</string>
+    
+    <!-- Template Names (Spanish) -->
+    <string name="template_headphones_only_name">Auriculares Bluetooth</string>
+    <string name="template_headphones_only_description">Selecciona tus auriculares Bluetooth, y las notificaciones nunca se leerán cuando estén conectados a tu teléfono</string>
+    
+    <string name="template_time_schedule_name">Horas Silenciosas</string>
+    <string name="template_time_schedule_description">Selecciona dos horarios entre los que quieres que SpeakThat permanezca en silencio</string>
+    
+    <string name="template_screen_off_name">Solo cuando la Pantalla está Apagada</string>
+    <string name="template_screen_off_description">Las notificaciones solo se leerán si tu pantalla está apagada</string>
+    
+    <string name="template_home_network_name">Solo en WiFi de Casa</string>
+    <string name="template_home_network_description">Ingresa tu red WiFi de casa y las notificaciones solo se leerán cuando estés conectado a ella</string>
+    
+    <!-- Template Trigger Descriptions (Spanish) -->
+    <string name="template_trigger_headphones_disconnected">Cuando los auriculares Bluetooth se desconecten</string>
+    <string name="template_trigger_time_between">Entre las 10:00 PM y las 8:00 AM</string>
+    <string name="template_trigger_screen_on">Cuando se encienda la pantalla</string>
+    <string name="template_trigger_not_home_wifi">Cuando no esté conectado al WiFi de casa</string>
+    
+    <!-- Template Action Descriptions (Spanish) -->
+    <string name="template_action_skip_notification">No leer notificaciones</string>
+    
+    <!-- Rule Natural Language Templates (Spanish) -->
+    <string name="rule_format_when_trigger_will_action">Cuando %1$s, %2$s %3$s</string>
+    <string name="rule_format_when_trigger_will_action_unless_exception">Cuando %1$s, %2$s %3$s a menos que %4$s</string>
+    <string name="rule_format_when_trigger_will_action_unless_exceptions">Cuando %1$s, %2$s %3$s a menos que %4$s</string>
+    
+    <!-- Rule Component Descriptions (Spanish) -->
+    <string name="rule_trigger_bluetooth_connected">El dispositivo Bluetooth está conectado</string>
+    <string name="rule_trigger_bluetooth_disconnected">El dispositivo Bluetooth está desconectado</string>
+    <string name="rule_trigger_screen_on">La pantalla está encendida</string>
+    <string name="rule_trigger_screen_off">La pantalla está apagada</string>
+    <string name="rule_trigger_time_between">La hora está entre %1$s y %2$s</string>
+    <string name="rule_trigger_wifi_connected">Está conectado a WiFi</string>
+    <string name="rule_trigger_wifi_disconnected">No está conectado a WiFi</string>
+    <string name="rule_trigger_wifi_network">Está conectado a la red WiFi: %1$s</string>
+    <string name="rule_trigger_not_wifi_network">No está conectado a la red WiFi: %1$s</string>
+    
+    <string name="rule_action_skip_notification">No leer la notificación</string>
+    <string name="rule_action_read_notification">Leer la notificación</string>
+    <string name="rule_action_skip_app">No leer notificaciones de la aplicación: %1$s</string>
+    <string name="rule_action_read_app">Leer notificaciones de la aplicación: %1$s</string>
+    
+    <string name="rule_exception_bluetooth_connected">El dispositivo Bluetooth está conectado</string>
+    <string name="rule_exception_bluetooth_disconnected">El dispositivo Bluetooth está desconectado</string>
+    <string name="rule_exception_screen_on">La pantalla está encendida</string>
+    <string name="rule_exception_screen_off">La pantalla está apagada</string>
+    <string name="rule_exception_time_between">La hora está entre %1$s y %2$s</string>
+    <string name="rule_exception_wifi_connected">Está conectado a WiFi</string>
+    <string name="rule_exception_wifi_disconnected">No está conectado a WiFi</string>
+    <string name="rule_exception_wifi_network">Está conectado a la red WiFi: %1$s</string>
+    <string name="rule_exception_not_wifi_network">No está conectado a la red WiFi: %1$s</string>
+</resources> 

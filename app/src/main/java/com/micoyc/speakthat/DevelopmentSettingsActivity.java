@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.micoyc.speakthat.databinding.ActivityDevelopmentSettingsBinding;
+import com.micoyc.speakthat.rules.RuleSystemTest;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -270,7 +271,8 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         // Add Installation Source Debug button
         binding.btnInstallationSourceDebug.setOnClickListener(v -> showInstallationSourceDebug());
         
-
+        // Add Rule System Test button
+        binding.btnRuleSystemTest.setOnClickListener(v -> testRuleSystem());
         
         // Add welcome message
         InAppLogger.log("Development", "Development Settings opened");
@@ -1234,5 +1236,45 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         }
     }
     
+    private void testRuleSystem() {
+        InAppLogger.log("Development", "Starting rule system test (no pre-made rules)...");
+        
+        // Run tests in background thread to avoid blocking UI
+        new Thread(() -> {
+            try {
+                RuleSystemTest test = new RuleSystemTest(this);
+                test.runTestsWithoutPreMadeRules();
+                
+                // Show results on UI thread
+                uiHandler.post(() -> {
+                    String summary = test.getTestSummary();
+                    
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("🧪 Rule System Test Results");
+                    builder.setMessage(summary);
+                    builder.setPositiveButton("OK", null);
+                    
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
 
-} 
+                    InAppLogger.log("Development", "Rule system test completed (no pre-made rules)");
+                    InAppLogger.logUserAction("Rule system test run (no pre-made rules)", "");
+                });
+                
+            } catch (Exception e) {
+                // Show error on UI thread
+                uiHandler.post(() -> {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("❌ Rule System Test Error");
+                    builder.setMessage("Error running rule system test: " + e.getMessage());
+                    builder.setPositiveButton("OK", null);
+                    
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    
+                    InAppLogger.logError("Development", "Rule system test failed: " + e.getMessage());
+                });
+            }
+        }).start();
+    }
+}

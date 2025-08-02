@@ -128,7 +128,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private void setupToolbar() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Voice Settings");
+            getSupportActionBar().setTitle(getString(R.string.title_voice_settings));
         }
     }
 
@@ -683,14 +683,14 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             if (isChecked) {
                 // Show warning dialog
                 new AlertDialog.Builder(this)
-                    .setTitle("Advanced Voice Options")
-                    .setMessage("These settings are for users who need granular control over the voice and accent.\n\n99% of users should only change the main Language option.\n\nIf you run into trouble, you can always reset your settings below!\n\nAre you sure you want to continue?")
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton("Continue", (dialog, which) -> {
+                                    .setTitle(getString(R.string.dialog_title_advanced_voice_options))
+                .setMessage(getString(R.string.dialog_message_advanced_voice_options))
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(getString(R.string.button_continue), (dialog, which) -> {
                         layoutAdvancedVoiceSection.setVisibility(View.VISIBLE);
                         saveAdvancedVoiceEnabled(true);
                     })
-                    .setNegativeButton("Cancel", (dialog, which) -> {
+                    .setNegativeButton(getString(R.string.cancel), (dialog, which) -> {
                         switchAdvancedVoice.setChecked(false);
                         layoutAdvancedVoiceSection.setVisibility(View.GONE);
                         saveAdvancedVoiceEnabled(false);

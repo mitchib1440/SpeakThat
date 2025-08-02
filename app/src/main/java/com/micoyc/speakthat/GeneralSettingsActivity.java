@@ -68,7 +68,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         // Set up action bar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("General Settings");
+            getSupportActionBar().setTitle(getString(R.string.title_general_settings));
         }
 
         // Initialize file picker for import
@@ -133,13 +133,13 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             
             // Show a message to the user instead of restarting
             new androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("Theme Changed")
-                .setMessage("The theme has been changed. For the best experience, you may want to restart the app manually.")
-                .setPositiveButton("Restart Now", (dialog, which) -> {
+                .setTitle(getString(R.string.dialog_title_theme_changed))
+                .setMessage(getString(R.string.dialog_message_theme_changed))
+                .setPositiveButton(getString(R.string.button_restart_now), (dialog, which) -> {
                     // Only restart if user explicitly chooses to
                     restartApp();
                 })
-                .setNegativeButton("Later", null)
+                .setNegativeButton(getString(R.string.button_later), null)
                 .show();
             
             InAppLogger.log("GeneralSettings", "Dark mode changed to: " + (isChecked ? "dark" : "light"));
@@ -335,18 +335,18 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("application/json");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, "SpeakThat! Full Configuration");
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "Complete configuration backup created on " + 
-                                    new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date()));
+                shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.export_full_config_text,
+                                    new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date())));
                 shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
                 shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 
-                startActivity(Intent.createChooser(shareIntent, "Export Full Configuration"));
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.export_full_config_chooser)));
                 
                 // Show success message
                 new AlertDialog.Builder(this)
-                    .setTitle("Export Successful")
-                    .setMessage("Full configuration exported to:\n" + exportFile.getAbsolutePath())
-                    .setPositiveButton("OK", null)
+                                    .setTitle(getString(R.string.dialog_title_export_successful))
+                .setMessage(getString(R.string.dialog_message_export_successful, exportFile.getAbsolutePath()))
+                .setPositiveButton(getString(R.string.ok), null)
                     .show();
                 
                 InAppLogger.log("GeneralSettings", "Full configuration exported to " + filename);
@@ -357,12 +357,12 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 textShareIntent.putExtra(Intent.EXTRA_SUBJECT, "SpeakThat! Full Configuration");
                 textShareIntent.putExtra(Intent.EXTRA_TEXT, configData);
                 
-                startActivity(Intent.createChooser(textShareIntent, "Export Full Configuration as Text"));
+                startActivity(Intent.createChooser(textShareIntent, getString(R.string.export_full_config_text_chooser)));
                 
                 new AlertDialog.Builder(this)
-                    .setTitle("Export Successful (Text Mode)")
-                    .setMessage("Configuration exported as text (file creation failed)")
-                    .setPositiveButton("OK", null)
+                                    .setTitle(getString(R.string.dialog_title_export_successful))
+                .setMessage(getString(R.string.dialog_message_export_successful_text))
+                .setPositiveButton(getString(R.string.ok), null)
                     .show();
                 
                 InAppLogger.log("GeneralSettings", "Full configuration exported as text fallback");
@@ -371,19 +371,19 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         } catch (Exception e) {
             InAppLogger.logError("GeneralSettings", "Export failed: " + e.getMessage());
             new AlertDialog.Builder(this)
-                .setTitle("Export Failed")
-                .setMessage("Failed to export configuration: " + e.getMessage())
-                .setPositiveButton("OK", null)
+                .setTitle(getString(R.string.dialog_title_export_failed))
+                .setMessage(getString(R.string.dialog_message_export_failed, e.getMessage()))
+                .setPositiveButton(getString(R.string.ok), null)
                 .show();
         }
     }
 
     private void importFullConfiguration() {
         new AlertDialog.Builder(this)
-            .setTitle("Import Full Configuration")
-            .setMessage("This will replace your current settings with the imported configuration.\n\nDo you want to continue?")
-            .setPositiveButton("Select File", (dialog, which) -> openFilePicker())
-            .setNegativeButton("Cancel", null)
+                            .setTitle(getString(R.string.dialog_title_import_full_config))
+                .setMessage(getString(R.string.dialog_message_import_full_config))
+                .setPositiveButton(getString(R.string.button_select_file), (dialog, which) -> openFilePicker())
+                .setNegativeButton(getString(R.string.cancel), null)
             .show();
     }
 
@@ -396,7 +396,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         String[] mimeTypes = {"application/json", "text/plain", "*/*"};
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         
-        importFileLauncher.launch(Intent.createChooser(intent, "Select Configuration File"));
+        importFileLauncher.launch(Intent.createChooser(intent, getString(R.string.select_configuration_file)));
     }
 
     private void importFullConfiguration(Uri uri) {
@@ -419,37 +419,37 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             if (result.success) {
                 // Show success dialog
                 new AlertDialog.Builder(this)
-                    .setTitle("Import Successful")
-                    .setMessage(result.message)
-                    .setPositiveButton("OK", null)
+                                    .setTitle(getString(R.string.dialog_title_import_successful))
+                .setMessage(getString(R.string.dialog_message_import_successful, result.message))
+                .setPositiveButton(getString(R.string.ok), null)
                     .show();
                 
                 InAppLogger.log("GeneralSettings", "Full configuration imported successfully");
             } else {
                 // Show error dialog
                 new AlertDialog.Builder(this)
-                    .setTitle("Import Failed")
-                    .setMessage(result.message)
-                    .setPositiveButton("OK", null)
+                                    .setTitle(getString(R.string.dialog_title_import_failed))
+                .setMessage(getString(R.string.dialog_message_import_failed, result.message))
+                .setPositiveButton(getString(R.string.ok), null)
                     .show();
             }
             
         } catch (IOException e) {
             InAppLogger.logError("GeneralSettings", "Import file read failed: " + e.getMessage());
             new AlertDialog.Builder(this)
-                .setTitle("Import Failed")
-                .setMessage("Failed to read file: " + e.getMessage())
-                .setPositiveButton("OK", null)
+                .setTitle(getString(R.string.dialog_title_import_failed))
+                .setMessage(getString(R.string.dialog_message_import_failed_read, e.getMessage()))
+                .setPositiveButton(getString(R.string.ok), null)
                 .show();
         }
     }
 
     private void showClearDataDialog() {
         new AlertDialog.Builder(this)
-            .setTitle("Clear All Data")
-            .setMessage("This will reset all settings to defaults and clear notification history.\n\nThis action cannot be undone.\n\nDo you want to continue?")
-            .setPositiveButton("Clear All Data", (dialog, which) -> clearAllData())
-            .setNegativeButton("Cancel", null)
+                            .setTitle(getString(R.string.dialog_title_clear_all_data))
+                .setMessage(getString(R.string.dialog_message_clear_all_data))
+                .setPositiveButton(getString(R.string.button_clear_all_data), (dialog, which) -> clearAllData())
+                .setNegativeButton(getString(R.string.cancel), null)
             .setIcon(android.R.drawable.ic_dialog_alert)
             .show();
     }
@@ -474,17 +474,17 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             InAppLogger.log("GeneralSettings", "All data cleared successfully");
             
             new AlertDialog.Builder(this)
-                .setTitle("Data Cleared")
-                .setMessage("All settings have been reset to defaults and notification history has been cleared.")
-                .setPositiveButton("OK", (dialog, which) -> restartApp())
+                .setTitle(getString(R.string.dialog_title_data_cleared))
+                .setMessage(getString(R.string.dialog_message_data_cleared))
+                .setPositiveButton(getString(R.string.ok), (dialog, which) -> restartApp())
                 .show();
                 
         } catch (Exception e) {
             InAppLogger.logError("GeneralSettings", "Clear data failed: " + e.getMessage());
             new AlertDialog.Builder(this)
-                .setTitle("Clear Failed")
-                .setMessage("Failed to clear data: " + e.getMessage())
-                .setPositiveButton("OK", null)
+                .setTitle(getString(R.string.dialog_title_clear_failed))
+                .setMessage(getString(R.string.dialog_message_clear_failed, e.getMessage()))
+                .setPositiveButton(getString(R.string.ok), null)
                 .show();
         }
     }

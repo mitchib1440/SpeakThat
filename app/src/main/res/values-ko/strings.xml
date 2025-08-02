@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TTS Template Strings (Korean) - Complete sentence templates with SOV word order -->
+    <string name="tts_template_notified_you">{app}이(가) 당신에게 알림: {content}</string>
+    <string name="tts_template_reported">{app}이(가) 보고함: {content}</string>
+    <string name="tts_template_saying">{app}의 알림, {content}라고 말합니다</string>
+    <string name="tts_template_alerts_you">{app}이(가) 당신에게 경고: {content}</string>
+    <string name="tts_template_update_from">{app}의 업데이트: {content}</string>
+    <string name="tts_template_notification">{app} 알림: {content}</string>
+    <string name="tts_template_new_notification">새 알림: {app}: {content}</string>
+    <string name="tts_template_new_from">{app}의 새 소식: {content}</string>
+    <string name="tts_template_said">{app}이(가) 말함: {content}</string>
+    <string name="tts_template_updated_you">{app}이(가) 당신을 업데이트함: {content}</string>
+    <string name="tts_template_new_notification_from">{app}의 새 알림: {content}라고 말합니다</string>
+    <string name="tts_template_new_update_from">{app}의 새 업데이트: {content}</string>
+    <string name="tts_template_notification_from">{app}의 알림: {content}</string>
+    <string name="tts_template_says">{app}이(가) 말합니다: {content}</string>
+    <string name="tts_template_private_notification">{app}의 개인 알림을 받았습니다</string>
+    
+    <!-- Voice Settings Test (Korean) -->
+    <string name="tts_voice_test">이 음성 설정으로 알림이 어떻게 들릴지입니다.</string>
+    
+    <!-- Onboarding TTS (Korean) -->
+    <string name="tts_onboarding_welcome">SpeakThat에 오신 것을 환영합니다! 화면을 쳐다보지 않고도 연결을 유지하세요. 휴대폰이 알림을 소리로 읽어주어 중요한 일에 집중할 수 있습니다.</string>
+    <string name="tts_onboarding_permission">SpeakThat는 알림을 소리로 읽기 위한 권한이 필요합니다. 모든 것은 기기에 저장되며 무엇을 읽을지는 당신이 제어합니다.</string>
+    <string name="tts_onboarding_privacy">당신의 개인정보는 중요합니다. 무엇이 소리로 읽힐지 정확히 제어할 수 있습니다. 휴대폰을 흔들면 어떤 발표도 즉시 중단할 수 있습니다. 모든 것은 기기에 저장됩니다.</string>
+    <string name="tts_onboarding_filters">기본 개인정보 필터를 설정하여 시작해 보겠습니다. SpeakThat는 무엇을 읽고 읽지 않을지 선택할 수 있는 강력한 필터링 시스템을 갖추고 있습니다.</string>
+    <string name="tts_onboarding_apps">알림을 읽어주지 않기를 원하는 앱의 이름을 입력하세요. 일반적인 예로는 은행 앱, 의료 앱, 데이트 앱이 있습니다.</string>
+    <string name="tts_onboarding_words">알림에 포함된 읽어주지 않기를 원하는 단어나 구를 입력하세요. 일반적인 예로는 비밀번호, PIN, 신용카드, 의료 용어가 있습니다.</string>
+    <string name="tts_onboarding_complete">SpeakThat가 눈을 자유롭게 유지하면서 연결을 유지하는 데 도움을 줄 준비가 되었습니다! 앱 설정에서 언제든지 더 많은 필터를 추가할 수 있습니다.</string>
+    
+    <!-- About Page TTS (Korean) -->
+    <string name="tts_about_intro">SpeakThat에 오신 것을 환영합니다!</string>
+    <string name="tts_about_description">SpeakThat는 텍스트 음성 변환을 사용하여 알림을 소리로 발표하는 오픈소스 Android 알림 리더입니다. 핸즈프리 작업, 접근성, 멀티태스킹 중 정보 파악에 완벽합니다.</string>
+    <string name="tts_about_features_intro">주요 기능에는 다음이 포함됩니다:</string>
+    <string name="tts_about_features">실시간 알림 읽기, 맞춤형 음성 설정, 스마트 알림 필터링, 앱별 제어, 미디어 인식 동작, 알림 기록 추적, 흔들어 중지 및 파도로 중지, 맞춤형 음성 형식, 다크 모드 및 라이트 모드 지원, 고급 로직 및 일정을 위한 조건부 규칙, 완전한 광고 없는 오프라인 기능.</string>
+    <string name="tts_about_developer">영국의 독립 개발자인 미치가 사랑을 담아 개발했습니다. 12년 이상 매일 알림 리더를 테스트하고 사용한 경험이 있습니다. SpeakThat는 원래 DYNA Logix에서 개발한 Touchless Notifications에서 영감을 받았으며, 맞춤형 알림 리더의 유산을 계승하는 것을 목표로 합니다. 이 프로젝트는 인공지능 지원 프로그래밍으로 가속화되었습니다.</string>
+    <string name="tts_about_license">이 프로젝트는 오픈소스이며 GPL-3.0 라이선스 하에서 사용할 수 있습니다. GitHub에서 라이선스 전문과 소스 코드를 확인할 수 있습니다. 기여와 피드백을 환영합니다!</string>
+    <string name="tts_about_thank_you">SpeakThat를 사용해 주셔서 감사합니다!</string>
+</resources> 
