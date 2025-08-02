@@ -22,10 +22,10 @@
     <!-- TTS Context Templates - Complete sentences for different app contexts (German) -->
     <!-- About Page TTS -->
     <string name="tts_about_intro">Willkommen bei SpeakThat!</string>
-    <string name="tts_about_description">SpeakThat ist ein Android-Benachrichtigungsleser, der deine Benachrichtigungen mit Text-zu-Sprache vorliest. Perfekt für freihändige Bedienung, Barrierefreiheit und um informiert zu bleiben während du mehrere Dinge gleichzeitig machst.</string>
+    <string name="tts_about_description">SpeakThat ist ein Android-Benachrichtigungsleser, der deine Benachrichtigungen mit Text-zu-Sprache vorliest. Perfekt für freihändige Bedienung, Barrierefreiheit und um informiert zu bleiben, während du mehrere Dinge gleichzeitig tust.</string>
     <string name="tts_about_features_intro">Hauptfunktionen sind:</string>
-    <string name="tts_about_features">Echtzeit-Benachrichtigungslesung, anpassbare Stimmeinstellungen, intelligente Benachrichtigungsfilterung, app-spezifische Steuerung, medienbewusstes Verhalten, Benachrichtigungshistorie, Schütteln zum Stoppen und Winken zum Stoppen, benutzerdefinierte Sprachformatierung, Dark Mode und Light Mode Unterstützung und vollständige Offline-Funktionalität.</string>
-    <string name="tts_about_developer">Entwickelt mit Liebe von Mitchi, einem Solo-Entwickler aus Großbritannien mit über 12 Jahren Erfahrung beim Testen und Verwenden von Benachrichtigungslesern jeden Tag. SpeakThat wurde von Touchless Notifications inspiriert, ursprünglich entwickelt von DYNA Logix, und zielt darauf ab, das Erbe anpassbarer Benachrichtigungsleser fortzuführen. Dieses Projekt wurde durch KI-gestützte Programmierung beschleunigt.</string>
+    <string name="tts_about_features">Echtzeit-Benachrichtigungslesung, anpassbare Stimmeinstellungen, intelligente Benachrichtigungsfilterung, App-spezifische Steuerung, medienbewusstes Verhalten, Benachrichtigungsverlauf, Schütteln zum Stoppen und Winken zum Stoppen, benutzerdefinierte Sprachformatierung, Dark Mode und Light Mode Unterstützung und vollständige Offline-Funktionalität.</string>
+    <string name="tts_about_developer">Entwickelt mit Liebe von Mitchi, einem Solo-Entwickler aus Großbritannien mit über 12 Jahren Erfahrung beim täglichen Testen und Verwenden von Benachrichtigungslesern. SpeakThat wurde von Touchless Notifications inspiriert, ursprünglich entwickelt von DYNA Logix, und zielt darauf ab, das Erbe anpassbarer Benachrichtigungsleser fortzuführen. Dieses Projekt wurde durch KI-gestützte Programmierung beschleunigt.</string>
     <string name="tts_about_license">Dieses Projekt ist Open Source und unter der GPL-3.0-Lizenz verfügbar. Du kannst den vollständigen Lizenztext und Quellcode auf GitHub einsehen. Beiträge und Feedback sind willkommen!</string>
     <string name="tts_about_thank_you">Vielen Dank für die Nutzung von SpeakThat!</string>
     
@@ -33,18 +33,18 @@
     <string name="tts_voice_test">So werden deine Benachrichtigungen mit diesen Stimmeinstellungen klingen.</string>
     
     <!-- Onboarding TTS -->
-    <string name="tts_onboarding_welcome">Willkommen bei SpeakThat! Bleibe verbunden, ohne auf deinen Bildschirm zu starren. Dein Telefon liest Benachrichtigungen laut vor, damit du dich auf das Wichtige konzentrieren kannst.</string>
+    <string name="tts_onboarding_welcome">Willkommen bei SpeakThat! Bleibe verbunden, ohne auf deinen Bildschirm zu schauen. Dein Telefon liest Benachrichtigungen laut vor, damit du dich auf das Wesentliche konzentrieren kannst.</string>
     <string name="tts_onboarding_permission">SpeakThat benötigt die Erlaubnis, deine Benachrichtigungen laut vorzulesen. Alles bleibt auf deinem Gerät und du kontrollierst, was vorgelesen wird.</string>
     <string name="tts_onboarding_privacy">Deine Privatsphäre ist wichtig. Du kontrollierst genau, was laut vorgelesen wird. Schüttle dein Telefon, um jede Ankündigung sofort zu stoppen. Alles bleibt auf deinem Gerät.</string>
     <string name="tts_onboarding_filters">Lass uns einige grundlegende Datenschutzfilter einrichten. SpeakThat verfügt über ein leistungsstarkes Filtersystem, mit dem du wählen kannst, was vorgelesen wird und was nicht.</string>
     <string name="tts_onboarding_apps">Gib den Namen einer App ein, von der ich niemals Benachrichtigungen vorlesen soll. Häufige Beispiele sind Banking-Apps, medizinische Apps und Dating-Apps.</string>
-    <string name="tts_onboarding_words">Gib Wörter oder Phrasen ein, die ich niemals in Benachrichtigungen vorlesen soll. Häufige Beispiele sind Passwort, PIN, Kreditkarte und medizinische Begriffe.</string>
+    <string name="tts_onboarding_words">Gib Wörter oder Sätze ein, die ich niemals in Benachrichtigungen vorlesen soll. Häufige Beispiele sind Passwort, PIN, Kreditkarte und medizinische Begriffe.</string>
     <string name="tts_onboarding_complete">SpeakThat ist bereit, dir zu helfen, verbunden zu bleiben und dabei deine Augen frei zu halten! Du kannst jederzeit weitere Filter in den App-Einstellungen hinzufügen.</string>
     
     <!-- Behavior Settings Speech Format Templates -->
     <string name="tts_behavior_default">Standardformat</string>
     <string name="tts_behavior_minimal">Minimales Format</string>
-    <string name="tts_behavior_formal">Formales Format</string>
+    <string name="tts_behavior_formal">Höfliches Format</string>
     <string name="tts_behavior_casual">Lässiges Format</string>
     <string name="tts_behavior_time_aware">Zeitbewusstes Format</string>
     <string name="tts_behavior_content_only">Nur Inhalt Format</string>
@@ -64,10 +64,10 @@
     <string name="tts_format_custom">BENUTZERDEFINIERT</string>
     
     <!-- Battery saving tip -->
-    <string name="master_switch_battery_tip">💡 Tipp: Ausschalten wenn nicht benötigt, um Akku zu sparen</string>
+    <string name="master_switch_battery_tip">💡 Tipp: Ausschalten, wenn nicht benötigt, um Akku zu sparen</string>
     
     <!-- Rule Builder Templates (German) -->
-    <string name="template_selection_title">Template auswählen</string>
+    <string name="template_selection_title">Vorlage auswählen</string>
     <string name="template_selection_description">Wähle eine vorkonfigurierte Regelvorlage für einen schnellen Start oder erstelle eine benutzerdefinierte Regel von Grund auf.</string>
     <string name="create_custom_rule">Benutzerdefinierte Regel erstellen</string>
     
@@ -78,8 +78,8 @@
     <string name="template_time_schedule_name">Benachrichtigungen zwischen bestimmten Zeiten nicht vorlesen</string>
     <string name="template_time_schedule_description">Benachrichtigungen während deines angegebenen Zeitraums überspringen</string>
     
-    <string name="template_screen_off_name">Benachrichtigungen nur vorlesen, wenn mein Bildschirm aus ist</string>
-    <string name="template_screen_off_description">Benachrichtigungen überspringen, wenn dein Telefonbildschirm eingeschaltet ist</string>
+    <string name="template_screen_off_name">Benachrichtigungen nur vorlesen, wenn dein Bildschirm aus ist</string>
+    <string name="template_screen_off_description">Benachrichtigungen überspringen, wenn dein Handybildschirm eingeschaltet ist</string>
     
     <string name="template_home_network_name">Benachrichtigungen nur bei Verbindung zum Heim-WLAN vorlesen</string>
     <string name="template_home_network_description">Benachrichtigungen überspringen, wenn nicht mit deinem Heim-WLAN-Netzwerk verbunden</string>
