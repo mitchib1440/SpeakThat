@@ -63,6 +63,17 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, GeneralSettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "auto_updates",
+                title = "Auto-Updates",
+                description = "Automatically check for and install app updates",
+                category = "general",
+                categoryTitle = "General Settings",
+                categoryIcon = "⚙️",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("auto", "updates", "update", "check", "install", "app", "version", "new", "latest", "upgrade", "download", "automatic", "auto update", "auto updates"),
+                navigationAction = { context.startActivity(Intent(context, GeneralSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "export_config",
                 title = "Export Configuration",
                 description = "Export all settings to a file for backup",
@@ -150,6 +161,28 @@ object SettingsDatabase {
                 categoryIcon = "🔔",
                 settingType = SettingType.CARD,
                 searchKeywords = listOf("custom", "app", "names", "speak", "pronounce", "alias"),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "speech_formatting",
+                title = "Speech Formatting",
+                description = "Customize how notifications are formatted when spoken",
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.CARD,
+                searchKeywords = listOf("speech", "formatting", "template", "format", "customize", "how", "spoken", "text", "style", "template", "format", "custom", "speech template", "notification format", "speak format"),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "honour_audio_mode",
+                title = "Honour Audio Mode",
+                description = "Respect device audio mode settings",
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("honour", "audio", "mode", "respect", "device", "ringer", "silent", "vibrate", "sound", "mode", "audio mode", "ringer mode", "silent mode", "vibrate mode"),
                 navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
             ),
 
@@ -310,6 +343,31 @@ object SettingsDatabase {
                 settingType = SettingType.BUTTON,
                 searchKeywords = listOf("import", "filter", "configuration", "restore", "load"),
                 navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+            ),
+
+            // Conditional Rules
+            SettingsItem(
+                id = "conditional_rules",
+                title = "Conditional Rules",
+                description = "Advanced rules for when notifications are read based on conditions",
+                category = "conditional",
+                categoryTitle = "Conditional Rules",
+                categoryIcon = "🔧",
+                settingType = SettingType.CARD,
+                searchKeywords = listOf(
+                    "conditional", "rules", "advanced", "conditions", "when", "if", "logic",
+                    "bluetooth", "bluetooth condition", "bluetooth device", "headphones", "earbuds", "wireless",
+                    "schedule", "time", "schedule condition", "time schedule", "daily", "weekly", "hours", "minutes",
+                    "wifi", "wifi condition", "network", "wifi network", "ssid", "internet", "connection",
+                    "screen", "screen condition", "screen state", "screen on", "screen off", "display", "awake",
+                    "smart", "intelligent", "automation", "automatic", "context", "environment", "situation",
+                    "filter", "filtering", "conditional filtering", "advanced filtering", "smart filtering",
+                    "device", "environment", "surroundings", "location", "time", "schedule", "calendar",
+                    "headphones", "earbuds", "bluetooth headset", "wireless headphones", "audio device",
+                    "network", "wifi network", "cellular", "mobile data", "internet connection",
+                    "screen state", "display state", "device state", "awake", "sleep", "locked", "unlocked"
+                ),
+                navigationAction = { context.startActivity(Intent(context, RulesActivity::class.java)) }
             ),
 
             // Development Settings

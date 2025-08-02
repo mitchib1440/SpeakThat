@@ -418,7 +418,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Advanced rules for when notifications are read"
+                            android:text="Configure Bluetooth, time schedules, etc"
                             android:textSize="14sp"
                             android:textColor="@color/text_secondary"
                             android:layout_marginTop="4dp" />

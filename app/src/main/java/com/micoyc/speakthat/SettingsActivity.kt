@@ -301,11 +301,11 @@ class SettingsActivity : AppCompatActivity() {
             }
             "bug_report" -> {
                 dialog.dismiss()
-                sendSupportEmail("Bug Report", false)
+                sendSupportEmail("Bug Report", true)
             }
             "general_support" -> {
                 dialog.dismiss()
-                sendSupportEmail("Support", false)
+                sendSupportEmail("Support", true)
             }
             else -> {
                 dialog.show()
@@ -316,43 +316,32 @@ class SettingsActivity : AppCompatActivity() {
     private fun sendSupportEmail(type: String, includeLogs: Boolean) {
         try {
             val subject = "SpeakThat! $type"
-            val recipient = "oceanstream72@gmail.com"
+            val recipient = "micoycbusiness@gmail.com"
             
             val bodyBuilder = StringBuilder()
-            bodyBuilder.append("Hello SpeakThat! Team,\n\n")
             
             when (type) {
                 "Feature Request" -> {
                     bodyBuilder.append("I would like to request the following feature:\n\n")
-                    bodyBuilder.append("[Please describe your feature request here]\n\n")
-                    bodyBuilder.append("Why would this feature be useful?\n")
-                    bodyBuilder.append("[Please explain the benefit or use case]\n\n")
+                    bodyBuilder.append("[Please explain your idea]\n\n\n\n")
                 }
                 "Bug Report" -> {
                     bodyBuilder.append("I encountered the following issue:\n\n")
-                    bodyBuilder.append("What happened?\n")
-                    bodyBuilder.append("[Please describe the problem]\n\n")
-                    bodyBuilder.append("What were you trying to do?\n")
-                    bodyBuilder.append("[Please describe the steps you took]\n\n")
-                    bodyBuilder.append("What did you expect to happen?\n")
-                    bodyBuilder.append("[Please describe the expected behavior]\n\n")
+                    bodyBuilder.append("[Please explain the issue]\n\n\n\n")
                 }
                 "Support" -> {
                     bodyBuilder.append("I need help with:\n\n")
-                    bodyBuilder.append("[Please describe your question or issue]\n\n")
+                    bodyBuilder.append("[Please explain what you need help with]\n\n\n\n")
                 }
             }
             
             if (includeLogs) {
                 bodyBuilder.append("=== DEBUG INFORMATION ===\n")
-                bodyBuilder.append(InAppLogger.getSystemInfo())
+                bodyBuilder.append(InAppLogger.getSystemInfo(this))
                 bodyBuilder.append("\n\n=== DEBUG LOGS ===\n")
                 bodyBuilder.append(InAppLogger.getLogsForSupport())
                 bodyBuilder.append("\n=== END DEBUG INFO ===\n\n")
             }
-            
-            bodyBuilder.append("Thank you for your time!\n")
-            bodyBuilder.append("- SpeakThat! User")
             
             val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
                 data = Uri.parse("mailto:")

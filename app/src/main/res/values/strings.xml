@@ -451,7 +451,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="button_continue">Continue</string>
     <string name="button_got_it">Got it!</string>
     <string name="button_use_recommended">Use Recommended</string>
-    <string name="button_nevermind_keep_timeout">Nevermind, keep the timeout enabled (Recommended)</string>
+    <string name="button_nevermind_keep_timeout">Keep the timeout enabled (Recommended)</string>
     <string name="button_disable_timeout">Disable the timeout</string>
     <string name="button_create_rule">Create Rule</string>
     <string name="button_manual_input">Manual Input</string>
