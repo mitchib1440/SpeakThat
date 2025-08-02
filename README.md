@@ -2,6 +2,8 @@
 
 **SpeakThat!** is an Android app that reads your notifications aloud, helping you stay connected without constantly checking your phone. Whether you're driving, busy, visually impaired, or just want to reduce screen time, SpeakThat! makes your notifications accessible, hands-free, and private.
 
+[![IzzyOnDroid](https://img.shields.io/badge/IzzyOnDroid-Available-green?logo=android)](https://apt.izzysoft.de/fdroid/index/apk/com.micoyc.speakthat)
+[![License](https://img.shields.io/badge/License-GPL--3.0-green.svg)](LICENSE)
 
 ## The Journey to get here!
 
