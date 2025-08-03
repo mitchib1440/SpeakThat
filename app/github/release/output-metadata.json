@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.micoyc.speakthat.github",
+  "applicationId": "com.micoyc.speakthat",
   "variantName": "githubRelease",
   "elements": [
     {

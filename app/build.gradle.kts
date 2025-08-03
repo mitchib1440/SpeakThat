@@ -22,7 +22,7 @@ android {
     productFlavors {
         create("github") {
             dimension = "distribution"
-            applicationIdSuffix = ".github"
+            // Removed applicationIdSuffix to maintain compatibility with existing installs
             // Keep version name clean for backwards compatibility
             // versionNameSuffix = "-github"  // Removed to maintain clean version names
             
@@ -33,7 +33,7 @@ android {
         
         create("store") {
             dimension = "distribution"
-            applicationIdSuffix = ".store"
+            // Removed applicationIdSuffix to maintain compatibility with existing installs
             // Keep version name clean for backwards compatibility
             // versionNameSuffix = "-store"  // Removed to maintain clean version names
             
