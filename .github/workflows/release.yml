@@ -42,34 +42,50 @@ jobs:
       - name: Build Store variant (without auto-updater)
         run: ./gradlew assembleStoreRelease
         
+      - name: Rename APK files with proper naming convention
+        run: |
+          # Get version from gradle.properties or build.gradle.kts
+          VERSION=$(grep 'versionName = ' app/build.gradle.kts | sed 's/.*versionName = "\([^"]*\)".*/\1/')
+          echo "Version detected: $VERSION"
+          
+          # Rename GitHub variant
+          mv app/build/outputs/apk/github/release/app-github-release-unsigned.apk app/build/outputs/apk/github/release/SpeakThat-v${VERSION}.apk
+          
+          # Rename Store variant  
+          mv app/build/outputs/apk/store/release/app-store-release-unsigned.apk app/build/outputs/apk/store/release/SpeakThat-NoUpdater-v${VERSION}.apk
+          
+          echo "Files renamed successfully"
+          ls -la app/build/outputs/apk/github/release/
+          ls -la app/build/outputs/apk/store/release/
+        
       - name: Upload GitHub APK
         uses: actions/upload-artifact@v4
         with:
           name: SpeakThat-github-release
-          path: app/build/outputs/apk/github/release/app-github-release-unsigned.apk
+          path: app/build/outputs/apk/github/release/SpeakThat-v*.apk
           
       - name: Upload Store APK
         uses: actions/upload-artifact@v4
         with:
           name: SpeakThat-store-release
-          path: app/build/outputs/apk/store/release/app-store-release-unsigned.apk
+          path: app/build/outputs/apk/store/release/SpeakThat-NoUpdater-v*.apk
           
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            app/build/outputs/apk/github/release/app-github-release-unsigned.apk
-            app/build/outputs/apk/store/release/app-store-release-unsigned.apk
+            app/build/outputs/apk/github/release/SpeakThat-v*.apk
+            app/build/outputs/apk/store/release/SpeakThat-NoUpdater-v*.apk
           body: |
             ## SpeakThat Release
             
             ### Download Options:
             
             **For direct GitHub users (recommended):**
-            - Download `app-github-release-unsigned.apk` - Includes auto-updater functionality
+            - Download `SpeakThat-v*.apk` - Includes auto-updater functionality
             
             **For app stores (F-Droid, Play Store, etc.):**
-            - Download `app-store-release-unsigned.apk` - No auto-updater (stores handle updates)
+            - Download `SpeakThat-NoUpdater-v*.apk` - No auto-updater (stores handle updates)
             
             ### What's New:
             - Bug fixes and improvements
