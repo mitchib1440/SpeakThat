@@ -53,8 +53,6 @@ android {
         }
     }
     
-
-    
     // Disable Google dependency blob for open source distribution
     dependenciesInfo {
         includeInApk = false
@@ -71,6 +69,22 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true  // Enable BuildConfig generation
+    }
+
+    // Configure APK output file naming
+    applicationVariants.all {
+        outputs.all {
+            if (this is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
+                val flavor = productFlavors[0].name
+                val versionName = defaultConfig.versionName
+                
+                outputFileName = when (flavor) {
+                    "store" -> "SpeakThat-NoUpdater-v${versionName}.apk"
+                    "github" -> "SpeakThat-v${versionName}.apk"
+                    else -> "SpeakThat-${flavor}-v${versionName}.apk"
+                }
+            }
+        }
     }
 }
 
