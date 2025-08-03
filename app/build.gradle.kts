@@ -53,23 +53,7 @@ android {
         }
     }
     
-    // Custom APK file naming
-    applicationVariants.all { variant ->
-        variant.outputs.configureEach {
-            val outputImpl = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
-            val flavor = variant.flavorName
-            val buildType = variant.buildType.name
-            val versionName = variant.versionName
-            
-            val newName = when {
-                flavor == "github" && buildType == "release" -> "SpeakThat-v${versionName}.apk"
-                flavor == "store" && buildType == "release" -> "SpeakThat-NoUpdater-v${versionName}.apk"
-                else -> "SpeakThat-${flavor}-${buildType}-v${versionName}.apk"
-            }
-            
-            outputImpl.outputFileName = newName
-        }
-    }
+
     
     // Disable Google dependency blob for open source distribution
     dependenciesInfo {
