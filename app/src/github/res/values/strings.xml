@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- GitHub-specific strings -->
+    <string name="update_channel">GitHub</string>
+    <string name="update_message">Auto-updates enabled via GitHub</string>
+    <string name="update_button_text">Check for Updates</string>
+</resources> 

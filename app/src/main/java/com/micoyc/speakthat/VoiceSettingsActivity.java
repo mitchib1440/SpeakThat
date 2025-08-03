@@ -78,6 +78,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // Apply saved theme FIRST before anything else
+        SharedPreferences mainPrefs = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE);
+        applySavedTheme(mainPrefs);
+        
         setContentView(R.layout.activity_voice_settings);
 
         initializeViews();
@@ -92,6 +97,16 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         layoutAdvancedVoiceSection.setVisibility(showAdvanced ? View.VISIBLE : View.GONE);
         setupAdvancedSwitch();
         loadSavedSettings();
+    }
+
+    private void applySavedTheme(SharedPreferences prefs) {
+        boolean isDarkMode = prefs.getBoolean("dark_mode", false);
+        
+        if (isDarkMode) {
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
 
     private void initializeViews() {

@@ -2,6 +2,14 @@
 <resources>
     <string name="app_name">SpeakThat!</string>
     <string name="service_name">SpeakThat Notification Reader</string>
+    
+    <!-- Permission Explanations for IzzyOnDroid/F-Droid -->
+    <string name="permission_request_install_packages">Used for auto-update system to install new versions from GitHub releases. Only used when user explicitly enables auto-updates and app was not installed from Google Play Store.</string>
+    <string name="permission_access_location">Required for Bluetooth and WiFi conditional filtering features. Used to detect nearby Bluetooth devices and WiFi networks for user-defined rules. No location tracking or data collection.</string>
+    <string name="permission_bluetooth_scan">Required for Bluetooth conditional filtering. Allows the app to detect when specific Bluetooth devices are connected for notification rules. No data is collected or transmitted.</string>
+    <string name="permission_nearby_wifi_devices">Required for WiFi network conditional filtering on Android 13+. Allows the app to detect WiFi network changes for user-defined notification rules. No network data is collected.</string>
+    <string name="permission_read_external_storage">Used for importing/exporting app settings and configuration files. Allows users to backup and restore their settings. No personal data is accessed.</string>
+    
     <string name="permission_needed">Notification Access Required</string>
     <string name="permission_description">SpeakThat! needs access to your notifications to read them aloud. This permission is required for the app to function.</string>
     <string name="master_switch_battery_tip">💡 Turn off when not needed to save battery</string>
@@ -163,6 +171,16 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="about_developer_title">Developer</string>
     <string name="about_license_title">License</string>
     <string name="version_format">Version %s</string>
+    <string name="version_format_with_variant" formatted="false">Version %1$s (%2$s)</string>
+    
+    <!-- Store Update Dialog -->
+    <string name="store_update_dialog_title">Updates via App Store</string>
+    <string name="store_update_dialog_message">This version of SpeakThat! receives updates through your app store (F-Droid, Google Play Store, etc.).</string>
+    <string name="store_update_dialog_info">• Updates are automatically handled by your app store\n• You\'ll receive notifications when updates are available\n• No manual download or installation required</string>
+    <string name="store_update_dialog_help_title">Need the auto-update version?</string>
+    <string name="store_update_dialog_help_message">If you want automatic updates directly from GitHub, you can download the GitHub version instead. This version is identical but includes auto-update functionality.</string>
+    <string name="store_update_dialog_visit_github">Visit GitHub</string>
+    <string name="store_update_dialog_got_it">Got it</string>
     <string name="app_description">SpeakThat! is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
     <string name="app_features">• Real-time notification reading\n• Customizable voice settings\n• Smart notification filtering\n• App-specific controls\n• Media-aware behavior\n• Notification history\n• Shake/Wave to stop\n• Custom speech formatting\n• Dark/Light theme support\n• Conditional rules for advanced logic and schedules\n• Fully ad-free and offline functionality</string>
     <string name="developer_info">Developed with ❤️ by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day.\n\nSpeakThat! was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers.\n\nThis project was accelerated by AI-assisted programming.</string>
@@ -481,4 +499,17 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="select_configuration_file">Select Configuration File</string>
     <string name="save_rule">save</string>
     <string name="update_rule">update</string>
+    
+    <!-- Conditional Rules - Trigger Strings -->
+    <string name="rule_trigger_wifi_network">Connected to WiFi network: %1$s</string>
+    <string name="rule_trigger_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    
+    <!-- Conditional Rules - Action Strings -->
+    <string name="rule_action_read_notification">Read the notification</string>
+    <string name="rule_action_skip_app">Skip notifications from app: %1$s</string>
+    <string name="rule_action_read_app">Read notifications from app: %1$s</string>
+    
+    <!-- Conditional Rules - Exception Strings -->
+    <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
+    <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
 </resources> 

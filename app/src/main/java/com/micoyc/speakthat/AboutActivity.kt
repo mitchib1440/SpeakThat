@@ -28,6 +28,10 @@ class AboutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
+        // Apply saved theme FIRST before anything else
+        val mainPrefs = getSharedPreferences("SpeakThatPrefs", android.content.Context.MODE_PRIVATE)
+        applySavedTheme(mainPrefs)
+        
         // Initialize voice settings listener
         voiceSettingsPrefs = getSharedPreferences("VoiceSettings", android.content.Context.MODE_PRIVATE)
         voiceSettingsPrefs?.registerOnSharedPreferenceChangeListener(voiceSettingsListener)
@@ -46,6 +50,16 @@ class AboutActivity : AppCompatActivity() {
         // Load app information
         loadAppInfo()
     }
+
+    private fun applySavedTheme(prefs: android.content.SharedPreferences) {
+        val isDarkMode = prefs.getBoolean("dark_mode", false)
+        
+        if (isDarkMode) {
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO)
+        }
+    }
     
     private fun setupClickListeners() {
         binding.buttonTTS.setOnClickListener {
@@ -58,14 +72,15 @@ class AboutActivity : AppCompatActivity() {
         
         // Add update check button
         binding.buttonCheckUpdates.setOnClickListener {
-            UpdateActivity.start(this, forceCheck = true)
+            UpdateFeature.startUpdateActivity(this, forceCheck = true)
         }
     }
     
     private fun loadAppInfo() {
-        // App version and build info
+        // App version and build info with build variant
         val packageInfo = packageManager.getPackageInfo(packageName, 0)
-        binding.textVersion.text = getString(R.string.version_format, packageInfo.versionName)
+        val buildVariant = InAppLogger.getBuildVariantInfo()
+        binding.textVersion.text = getString(R.string.version_format_with_variant, packageInfo.versionName, buildVariant)
         
         // App description
         binding.textDescription.text = getString(R.string.app_description)
@@ -157,7 +172,8 @@ class AboutActivity : AppCompatActivity() {
     
     private fun buildAboutText(): String {
         val packageInfo = packageManager.getPackageInfo(packageName, 0)
-        val version = getString(R.string.version_format, packageInfo.versionName)
+        val buildVariant = InAppLogger.getBuildVariantInfo()
+        val version = getString(R.string.version_format_with_variant, packageInfo.versionName, buildVariant)
         
         // Get the user's TTS language setting
         val ttsLanguageCode = voiceSettingsPrefs?.getString("tts_language", "system") ?: "system"

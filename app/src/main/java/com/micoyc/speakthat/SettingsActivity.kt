@@ -23,6 +23,11 @@ class SettingsActivity : AppCompatActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Apply saved theme FIRST before anything else
+        val mainPrefs = getSharedPreferences("SpeakThatPrefs", android.content.Context.MODE_PRIVATE)
+        applySavedTheme(mainPrefs)
+        
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
@@ -34,6 +39,16 @@ class SettingsActivity : AppCompatActivity() {
         setupSettingsCategories()
         setupAllSettings()
         setupClickListeners()
+    }
+
+    private fun applySavedTheme(prefs: android.content.SharedPreferences) {
+        val isDarkMode = prefs.getBoolean("dark_mode", false)
+        
+        if (isDarkMode) {
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
     
     private fun setupToolbar() {

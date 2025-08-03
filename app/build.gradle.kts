@@ -11,10 +11,36 @@ android {
         applicationId = "com.micoyc.speakthat"
         minSdk = 24
         targetSdk = 35
-        versionCode = 11
-        versionName = "1.3.1"
+        versionCode = 12
+        versionName = "1.3.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    // Add product flavors for different distribution channels
+    flavorDimensions += "distribution"
+    productFlavors {
+        create("github") {
+            dimension = "distribution"
+            applicationIdSuffix = ".github"
+            // Keep version name clean for backwards compatibility
+            // versionNameSuffix = "-github"  // Removed to maintain clean version names
+            
+            // Build config fields for GitHub variant
+            buildConfigField("boolean", "ENABLE_AUTO_UPDATER", "true")
+            buildConfigField("String", "DISTRIBUTION_CHANNEL", "\"github\"")
+        }
+        
+        create("store") {
+            dimension = "distribution"
+            applicationIdSuffix = ".store"
+            // Keep version name clean for backwards compatibility
+            // versionNameSuffix = "-store"  // Removed to maintain clean version names
+            
+            // Build config fields for store variant
+            buildConfigField("boolean", "ENABLE_AUTO_UPDATER", "false")
+            buildConfigField("String", "DISTRIBUTION_CHANNEL", "\"store\"")
+        }
     }
 
     buildTypes {
@@ -26,6 +52,13 @@ android {
             )
         }
     }
+    
+    // Disable Google dependency blob for open source distribution
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+    
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -35,6 +68,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true  // Enable BuildConfig generation
     }
 }
 
@@ -50,7 +84,7 @@ dependencies {
     implementation("io.coil-kt:coil:2.4.0")
     implementation("io.coil-kt:coil-svg:2.4.0")
     
-    // For network requests (update system)
+    // For network requests (update system) - available to both flavors
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     
     // For background work (optional, for future enhancements)

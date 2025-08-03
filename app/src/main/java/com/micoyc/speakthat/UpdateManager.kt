@@ -100,7 +100,7 @@ class UpdateManager private constructor(private val context: Context) {
         .build()
     
     /**
-     * Simple and reliable detection of Google Play Store installation
+     * Check if app was installed from Google Play Store
      * Uses only the installer package name check, which is the most reliable method
      * @return true if app was installed from Google Play Store
      */
@@ -139,6 +139,63 @@ class UpdateManager private constructor(private val context: Context) {
             cacheGooglePlayDetection(false)
             return false
         }
+    }
+    
+    /**
+     * Check if app was installed from a repository (F-Droid, IzzyOnDroid, etc.)
+     * @return true if app was installed from a repository
+     */
+    fun isInstalledFromRepository(): Boolean {
+        try {
+            val installerPackage = getInstallerPackageName()
+            Log.d(TAG, "Checking repository installation, installer: $installerPackage")
+            
+            // Common repository installer packages
+            val repositoryPackages = listOf(
+                "org.fdroid.fdroid",           // F-Droid
+                "com.fdroid.fdroid",           // F-Droid (alternative)
+                "de.izzysoft.fdroid",          // IzzyOnDroid
+                "com.aurora.store",             // Aurora Store
+                "com.aurora.services",          // Aurora Services
+                "com.android.vending.billing.InAppBillingService.COIN" // Some alternative stores
+            )
+            
+            val isFromRepository = installerPackage != null && 
+                                 installerPackage != GOOGLE_PLAY_STORE_PACKAGE &&
+                                 repositoryPackages.any { installerPackage.contains(it) }
+            
+            Log.i(TAG, "Repository detection result: ${if (isFromRepository) "Repository" else "Not Repository"}")
+            InAppLogger.logSystemEvent("Repository detection: ${if (isFromRepository) "Repository" else "Not Repository"}", "UpdateManager")
+            
+            return isFromRepository
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error in repository detection", e)
+            InAppLogger.logSystemEvent("Error in repository detection: ${e.message}", "UpdateManager")
+            return false
+        }
+    }
+    
+    /**
+     * Check if auto-updates should be enabled for this installation
+     * Repository users should get updates from their repository instead
+     * @return true if auto-updates should be enabled
+     */
+    fun shouldEnableAutoUpdates(): Boolean {
+        // Google Play users can use auto-updates
+        if (isInstalledFromGooglePlay()) {
+            return true
+        }
+        
+        // Repository users should get updates from their repository
+        if (isInstalledFromRepository()) {
+            Log.i(TAG, "Auto-updates disabled for repository installation")
+            InAppLogger.logSystemEvent("Auto-updates disabled for repository installation", "UpdateManager")
+            return false
+        }
+        
+        // For other installations (direct APK, etc.), allow auto-updates
+        return true
     }
     
     /**
@@ -504,10 +561,24 @@ class UpdateManager private constructor(private val context: Context) {
     
     /**
      * Get current app version from package manager
+     * Strips any suffixes for clean version comparison
      */
     private fun getCurrentVersion(): String {
         val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-        return packageInfo.versionName ?: "1.0.0"
+        val fullVersionName = packageInfo.versionName ?: "1.0.0"
+        
+        // Strip any suffixes (like "-github", "-store") for clean version comparison
+        // This ensures backwards compatibility with existing users
+        return stripVersionSuffix(fullVersionName)
+    }
+    
+    /**
+     * Strip version suffixes for clean comparison
+     * Handles suffixes like "-github", "-store", etc.
+     */
+    private fun stripVersionSuffix(versionName: String): String {
+        // Remove common suffixes that might exist in older versions
+        return versionName.replace(Regex("-[a-zA-Z]+$"), "")
     }
     
     /**
@@ -533,7 +604,11 @@ class UpdateManager private constructor(private val context: Context) {
         val tagName = json.getString("tag_name")
         val versionName = tagName.removePrefix("v") // Remove "v" prefix if present
         
+        // Ensure clean version name for comparison
+        val cleanVersionName = stripVersionSuffix(versionName)
+        
         // Find APK asset in the release
+        // IMPORTANT: Filter out "NoUpdate" APKs to ensure GitHub users only get the auto-update version
         val assets = json.getJSONArray("assets")
         var downloadUrl = ""
         var fileSize = 0L
@@ -541,9 +616,17 @@ class UpdateManager private constructor(private val context: Context) {
         for (i in 0 until assets.length()) {
             val asset = assets.getJSONObject(i)
             val name = asset.getString("name")
+            
+            // Skip APKs with "NoUpdate" in the filename (these are for stores)
+            if (name.contains("NoUpdate", ignoreCase = true)) {
+                Log.d(TAG, "Skipping NoUpdate APK: $name")
+                continue
+            }
+            
             if (name.endsWith(".apk")) {
                 downloadUrl = asset.getString("browser_download_url")
                 fileSize = asset.getLong("size")
+                Log.d(TAG, "Found suitable APK for GitHub users: $name")
                 break
             }
         }
@@ -554,8 +637,8 @@ class UpdateManager private constructor(private val context: Context) {
         }
         
         return UpdateInfo(
-            versionName = versionName,
-            versionCode = extractVersionCode(versionName),
+            versionName = cleanVersionName, // Use clean version name for comparison
+            versionCode = extractVersionCode(cleanVersionName),
             downloadUrl = downloadUrl,
             fileSize = fileSize,
             releaseNotes = json.optString("body", ""),

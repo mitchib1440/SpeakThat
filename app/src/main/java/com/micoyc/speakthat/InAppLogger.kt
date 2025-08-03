@@ -480,11 +480,27 @@ object InAppLogger {
         return try {
             val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
             val versionName = packageInfo.versionName
-            val versionCode = packageInfo.longVersionCode
+            val versionCode = packageInfo.versionCode // Use versionCode instead of longVersionCode for API compatibility
             
-            "SpeakThat! v$versionName (Build $versionCode)"
+            // Get build variant information
+            val buildVariant = when {
+                BuildConfig.DISTRIBUTION_CHANNEL == "github" -> "GitHub"
+                BuildConfig.DISTRIBUTION_CHANNEL == "store" -> "Store"
+                else -> "Unknown"
+            }
+            
+            "SpeakThat! v$versionName ($buildVariant) (Build $versionCode)"
         } catch (e: Exception) {
             "SpeakThat! (Version Unknown)"
+        }
+    }
+    
+    @JvmStatic
+    fun getBuildVariantInfo(): String {
+        return when {
+            BuildConfig.DISTRIBUTION_CHANNEL == "github" -> "GitHub"
+            BuildConfig.DISTRIBUTION_CHANNEL == "store" -> "Store"
+            else -> "Unknown"
         }
     }
     
@@ -495,6 +511,7 @@ object InAppLogger {
             |Android Version: ${android.os.Build.VERSION.RELEASE} (API ${android.os.Build.VERSION.SDK_INT})
             |Device: ${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}
             |App Version: ${getAppVersionInfo(context)}
+            |Build Variant: ${getBuildVariantInfo()}
             |Installation Source: ${getInstallationSource(context)}
             |Logging Settings: Verbose=$verboseMode, Filters=$logFilters, Notifications=$logNotifications, UserActions=$logUserActions, SystemEvents=$logSystemEvents, Sensitive=$logSensitiveData
             |Total Log Entries: ${logs.size}

@@ -1,0 +1,16 @@
+<?xml version="1.1" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Store variant: No auto-update permissions -->
+    <!-- This empty manifest ensures the store variant doesn't include
+         REQUEST_INSTALL_PACKAGES or INSTALL_PACKAGES permissions -->
+
+    <application>
+        <!-- Store-specific activity -->
+        <activity
+            android:name=".StoreSpecificActivity"
+            android:exported="false" />
+    </application>
+
+</manifest> 

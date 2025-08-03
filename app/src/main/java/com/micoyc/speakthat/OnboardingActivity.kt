@@ -46,6 +46,10 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
+        // Apply saved theme FIRST before anything else
+        val mainPrefs = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE)
+        applySavedTheme(mainPrefs)
+        
         // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
         
@@ -66,6 +70,16 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         // Determine if we should skip the permission page
         skipPermissionPage = isNotificationServiceEnabled()
         setupOnboarding()
+    }
+
+    private fun applySavedTheme(prefs: android.content.SharedPreferences) {
+        val isDarkMode = prefs.getBoolean("dark_mode", false)
+        
+        if (isDarkMode) {
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
     
     override fun onResume() {

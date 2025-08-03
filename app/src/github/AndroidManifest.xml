@@ -1,0 +1,16 @@
+<?xml version="1.1" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- GitHub-specific permissions for auto-update system -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!-- Note: INSTALL_PACKAGES is typically only for system apps, so we don't need it -->
+
+    <application>
+        <!-- GitHub-specific activity -->
+        <activity
+            android:name=".GitHubSpecificActivity"
+            android:exported="false" />
+    </application>
+
+</manifest> 

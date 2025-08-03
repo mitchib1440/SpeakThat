@@ -1062,13 +1062,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (replacementData.isNotEmpty()) {
             val pairs = replacementData.split("|")
             for (pair in pairs) {
-                val parts = pair.split("=", limit = 2)
+                val parts = pair.split(":", limit = 2)
                 if (parts.size == 2) {
                     newWordReplacements[parts[0]] = parts[1]
                 }
             }
         }
         wordReplacements = newWordReplacements
+        Log.d(TAG, "Loaded word replacements: $wordReplacements")
         
         // Load behavior settings  
         notificationBehavior = sharedPreferences?.getString(KEY_NOTIFICATION_BEHAVIOR, "interrupt") ?: "interrupt"
@@ -1238,8 +1239,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // 3. Apply word swaps (only for non-private notifications and only if there are replacements)
         if (wordReplacements.isNotEmpty()) {
+            Log.d(TAG, "Word replacements available: ${wordReplacements.size} items")
             for ((from, to) in wordReplacements) {
+                val originalText = processedText
                 processedText = processedText.replace(from, to, ignoreCase = true)
+                if (originalText != processedText) {
+                    Log.d(TAG, "Word replacement applied: '$from' -> '$to'")
+                    InAppLogger.logFilter("Word replacement applied: '$from' -> '$to'")
+                } else {
+                    Log.d(TAG, "Word replacement not found: '$from' in text: '$processedText'")
+                    InAppLogger.logFilter("Word replacement not found: '$from' in text: '$processedText'")
+                }
             }
         }
         

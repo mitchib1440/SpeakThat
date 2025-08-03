@@ -118,17 +118,19 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Get version number
-        val versionName = packageManager.getPackageInfo(packageName, 0).versionName
-        val versionText = getString(R.string.version_format, versionName)
+        // Get version number with build variant
+        val packageInfo = packageManager.getPackageInfo(packageName, 0)
+        val buildVariant = InAppLogger.getBuildVariantInfo()
+        val versionText = getString(R.string.version_format_with_variant, packageInfo.versionName, buildVariant)
         findViewById<TextView>(R.id.versionnumber).text = versionText
 
         // Configure system UI for proper insets handling
         configureSystemUI()
         
-        // Log app lifecycle
+        // Log app lifecycle and build variant
         InAppLogger.logAppLifecycle("MainActivity created")
         InAppLogger.logSystemEvent("App started", "MainActivity")
+        InAppLogger.logSystemEvent("Build variant", InAppLogger.getBuildVariantInfo())
         
         // Initialize components
         initializeShakeDetection()
@@ -656,7 +658,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private fun getAvailableEasterEggs(): List<String> {
         // Filter easter eggs based on current settings
-        val delayEnabled = sharedPreferences.getInt("delay_before_readout", 0) > 0
+        val delayEnabled = sharedPreferences.getInt("delay_before_readout", 2) > 0
         val shakeEnabled = sharedPreferences.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false)
         val waveEnabled = sharedPreferences.getBoolean("wave_to_stop_enabled", false)
         
@@ -734,7 +736,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun getCurrentDelayTime(): String {
-        val delaySeconds = sharedPreferences.getInt("delay_before_readout", 0)
+        val delaySeconds = sharedPreferences.getInt("delay_before_readout", 2)
         return when (delaySeconds) {
             0 -> "no delay"
             1 -> "1-second delay"
@@ -785,83 +787,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     private fun checkForUpdatesIfEnabled() {
         Log.d(TAG, "checkForUpdatesIfEnabled() called")
         
-        // Check if auto-update is enabled
-        val autoUpdateEnabled = sharedPreferences.getBoolean("auto_update_enabled", true)
-        Log.d(TAG, "Auto-update enabled: $autoUpdateEnabled")
-        
-        if (!autoUpdateEnabled) {
-            Log.d(TAG, "Auto-update disabled, skipping update check")
-            return
-        }
-        
-        // Check if enough time has passed since last check
-        val updateManager = UpdateManager.getInstance(this)
-        val shouldCheck = updateManager.shouldCheckForUpdates()
-        Log.d(TAG, "Should check for updates: $shouldCheck")
-        
-        if (!shouldCheck) {
-            Log.d(TAG, "Update check interval not met, skipping update check")
-            return
-        }
-        
-        // Check if we've already notified about the current version
-        val lastCheckedVersion = sharedPreferences.getString("last_checked_version", "")
-        if (lastCheckedVersion != null && updateManager.hasNotifiedAboutVersion(lastCheckedVersion)) {
-            Log.d(TAG, "Already notified about version $lastCheckedVersion, skipping update check")
-            return
-        }
-        
-        // CRITICAL: Check if app was installed from Google Play Store
-        if (updateManager.isInstalledFromGooglePlay()) {
-            Log.i(TAG, "App installed from Google Play Store - GitHub updates disabled")
-            InAppLogger.logSystemEvent("Update check blocked - Google Play installation detected", "MainActivity")
-            
-            // Show Google Play message to user (only once per session)
-            val googlePlayMessageShown = sharedPreferences.getBoolean("google_play_message_shown", false)
-            if (!googlePlayMessageShown) {
-                runOnUiThread {
-                    showGooglePlayUpdateMessage()
-                }
-                // Mark message as shown for this session
-                sharedPreferences.edit().putBoolean("google_play_message_shown", true).apply()
-            }
-            return
-        }
-        
-        // Perform the update check in background
-        lifecycleScope.launch {
-            try {
-                Log.d(TAG, "Performing automatic update check")
-                val updateInfo = updateManager.checkForUpdates()
-                
-                if (updateInfo != null) {
-                    Log.i(TAG, "Update available: ${updateInfo.versionName}")
-                    InAppLogger.logSystemEvent("Update available: ${updateInfo.versionName}", "MainActivity")
-                    
-                    // Show update notification to user
-                    showUpdateNotification(updateInfo)
-                } else {
-                    Log.d(TAG, "No update available")
-                    // Show success toast
-                    runOnUiThread {
-                        Toast.makeText(this@MainActivity, "You're using the latest version!", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } catch (e: Exception) {
-                Log.e(TAG, "Error during automatic update check", e)
-                InAppLogger.logSystemEvent("Update check failed: ${e.message}", "MainActivity")
-                
-                // Show error toast
-                runOnUiThread {
-                    val errorMessage = when {
-                        e.message?.contains("network", ignoreCase = true) == true -> "Unable to check for updates! - Network error"
-                        e.message?.contains("timeout", ignoreCase = true) == true -> "Unable to check for updates! - Connection timeout"
-                        else -> "Unable to check for updates! - ${e.message ?: "Unknown error"}"
-                    }
-                    Toast.makeText(this@MainActivity, errorMessage, Toast.LENGTH_LONG).show()
-                }
-            }
-        }
+        // Use the wrapper to handle conditional update checking
+        UpdateFeature.checkForUpdatesIfEnabled(this)
     }
     
     /**
@@ -876,10 +803,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 updateInfo.releaseDate
             ))
             .setPositiveButton(getString(R.string.download_update)) { _, _ ->
-                // Start update activity
-                val intent = Intent(this, UpdateActivity::class.java)
-                intent.putExtra("force_check", true)
-                startActivity(intent)
+                // Start update activity using wrapper
+                UpdateFeature.startUpdateActivity(this, forceCheck = true)
             }
             .setNegativeButton(getString(R.string.cancel), null)
             .setNeutralButton(getString(R.string.view_release_notes)) { _, _ ->
@@ -939,6 +864,25 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         
         Log.i(TAG, "Showed Google Play update message to user")
         InAppLogger.logSystemEvent("Google Play update message shown to user", "MainActivity")
+    }
+    
+    /**
+     * Show repository update message to users who installed from F-Droid/IzzyOnDroid
+     * This explains why GitHub updates are disabled and directs them to their repository
+     */
+    private fun showRepositoryUpdateMessage() {
+        AlertDialog.Builder(this)
+            .setTitle("Updates via Repository")
+            .setMessage("You installed SpeakThat from a repository (F-Droid, IzzyOnDroid, etc.). " +
+                "For security and to maintain the repository's screening process, automatic updates are handled through your repository.\n\n" +
+                "To update the app, please use your repository's update system (F-Droid, IzzyOnDroid client, etc.).\n\n" +
+                "This ensures you receive updates that have been screened and verified by the repository maintainers.")
+            .setPositiveButton("OK", null)
+            .setCancelable(true)
+            .show()
+        
+        Log.i(TAG, "Showed repository update message to user")
+        InAppLogger.logSystemEvent("Repository update message shown to user", "MainActivity")
     }
 
     // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED

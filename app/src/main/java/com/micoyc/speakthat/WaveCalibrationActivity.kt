@@ -50,6 +50,10 @@ class WaveCalibrationActivity : AppCompatActivity(), SensorEventListener {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "WaveCalibrationActivity onCreate started")
         
+        // Apply saved theme FIRST before anything else
+        val mainPrefs = getSharedPreferences("SpeakThatPrefs", android.content.Context.MODE_PRIVATE)
+        applySavedTheme(mainPrefs)
+        
         try {
             binding = ActivityWaveCalibrationBinding.inflate(layoutInflater)
             setContentView(binding.root)
@@ -68,6 +72,16 @@ class WaveCalibrationActivity : AppCompatActivity(), SensorEventListener {
             Log.e(TAG, "WaveCalibrationActivity onCreate failed", e)
             Toast.makeText(this, "Failed to initialize calibration: ${e.message}", Toast.LENGTH_LONG).show()
             finish()
+        }
+    }
+
+    private fun applySavedTheme(prefs: android.content.SharedPreferences) {
+        val isDarkMode = prefs.getBoolean("dark_mode", false)
+        
+        if (isDarkMode) {
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
     
