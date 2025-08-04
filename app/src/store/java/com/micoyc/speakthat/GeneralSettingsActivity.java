@@ -49,6 +49,9 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         binding = ActivityGeneralSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         
+        // Set the activity title
+        getSupportActionBar().setTitle(getString(R.string.title_general_settings));
+        
         // Initialize activity result launchers
         initializeActivityResultLaunchers();
         

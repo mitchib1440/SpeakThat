@@ -94,31 +94,15 @@
                     android:gravity="center_vertical">
 
                     <LinearLayout
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/circle_background"
-                        android:backgroundTint="@color/purple_300"
-                        android:gravity="center">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="⚙️"
-                            android:textSize="24sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="General Settings"
+                            android:text="⚙️ General Settings"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary" />
@@ -167,31 +151,15 @@
                     android:gravity="center_vertical">
 
                     <LinearLayout
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/circle_background"
-                        android:backgroundTint="@color/purple_300"
-                        android:gravity="center">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🔔"
-                            android:textSize="24sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Behavior Settings"
+                            android:text="🔔 Behavior Settings"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary" />
@@ -240,31 +208,15 @@
                     android:gravity="center_vertical">
 
                     <LinearLayout
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/circle_background"
-                        android:backgroundTint="@color/purple_300"
-                        android:gravity="center">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🎙️"
-                            android:textSize="24sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Voice Settings"
+                            android:text="🎙️ Voice Settings"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary" />
@@ -313,31 +265,15 @@
                     android:gravity="center_vertical">
 
                     <LinearLayout
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/circle_background"
-                        android:backgroundTint="@color/purple_300"
-                        android:gravity="center">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🔍"
-                            android:textSize="24sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Filter Settings"
+                            android:text="🔍 Filter Settings"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary" />
@@ -386,31 +322,15 @@
                     android:gravity="center_vertical">
 
                     <LinearLayout
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/circle_background"
-                        android:backgroundTint="@color/purple_300"
-                        android:gravity="center">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🔧"
-                            android:textSize="24sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Conditional Rules"
+                            android:text="🔧 Conditional Rules"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary" />
@@ -461,31 +381,15 @@
                     android:gravity="center_vertical">
 
                     <LinearLayout
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/circle_background"
-                        android:backgroundTint="@color/purple_300"
-                        android:gravity="center">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🛠️"
-                            android:textSize="24sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Development Settings"
+                            android:text="🛠️ Development Settings"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary" />
@@ -534,31 +438,15 @@
                     android:gravity="center_vertical">
 
                     <LinearLayout
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/circle_background"
-                        android:backgroundTint="@color/purple_300"
-                        android:gravity="center">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🔄"
-                            android:textSize="24sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Re-run Onboarding"
+                            android:text="🔄 Re-run Onboarding"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary" />
@@ -607,31 +495,15 @@
                     android:gravity="center_vertical">
 
                     <LinearLayout
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/circle_background"
-                        android:backgroundTint="@color/purple_300"
-                        android:gravity="center">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="💬"
-                            android:textSize="24sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Support &amp; Feedback"
+                            android:text="💬 Support &amp; Feedback"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary" />
