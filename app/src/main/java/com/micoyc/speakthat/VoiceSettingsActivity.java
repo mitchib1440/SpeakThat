@@ -238,6 +238,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         // Remove save button functionality - settings save automatically now
         resetButton.setOnClickListener(v -> resetToDefaults());
         btnVoiceInfo.setOnClickListener(v -> showVoiceInfoDialog());
+        
+        // Translation assistance functionality
+        LinearLayout cardTranslationHelp = findViewById(R.id.cardTranslationHelp);
+        cardTranslationHelp.setOnClickListener(v -> sendTranslationEmail());
     }
 
     private void setupVoicesAndLanguages() {
@@ -1373,6 +1377,28 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         editor.putFloat(KEY_TTS_VOLUME, volume);
         editor.apply();
         InAppLogger.log("VoiceSettings", "TTS volume saved: " + (volume * 100) + "%");
+    }
+    
+    private void sendTranslationEmail() {
+        try {
+            android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_SENDTO);
+            intent.setData(android.net.Uri.parse("mailto:"));
+            intent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"micoycbusiness@gmail.com"});
+            intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "SpeakThat! Translations");
+            
+            StringBuilder body = new StringBuilder();
+            body.append("I would like to help translate SpeakThat! to my language.\n\n");
+            body.append("Languages I speak:\n\n");
+            body.append("[Please replace this text with the languages you speak]\n\n");
+            
+            intent.putExtra(android.content.Intent.EXTRA_TEXT, body.toString());
+            
+            startActivity(intent);
+            InAppLogger.logUserAction("Translation email opened from Voice Settings", "");
+        } catch (Exception e) {
+            Toast.makeText(this, "Unable to open email app", Toast.LENGTH_SHORT).show();
+            InAppLogger.logError("VoiceSettings", "Failed to open translation email: " + e.getMessage());
+        }
     }
 
     @Override
