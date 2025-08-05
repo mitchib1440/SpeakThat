@@ -207,6 +207,28 @@ object SettingsDatabase {
                 searchKeywords = listOf("honour", "phone", "calls", "respect", "call", "telephone", "conversation", "interrupt", "during", "call", "phone call", "telephony", "call state"),
                 navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
             ),
+            SettingsItem(
+                id = "persistent_notification",
+                title = "Persistent Notification",
+                description = "Show a persistent notification when SpeakThat is active",
+                category = "general",
+                categoryTitle = "General Settings",
+                categoryIcon = "⚙️",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("persistent", "notification", "active", "running", "status", "indicator", "show", "display", "ongoing", "service", "foreground"),
+                navigationAction = { context.startActivity(Intent(context, GeneralSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "notification_while_reading",
+                title = "Notification While Reading",
+                description = "Show a notification when TTS is actively reading",
+                category = "general",
+                categoryTitle = "General Settings",
+                categoryIcon = "⚙️",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("notification", "reading", "tts", "speaking", "active", "shut up", "stop", "cancel", "while", "during", "speech", "text to speech"),
+                navigationAction = { context.startActivity(Intent(context, GeneralSettingsActivity::class.java)) }
+            ),
 
             // Voice Settings
             SettingsItem(

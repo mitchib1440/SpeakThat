@@ -143,6 +143,24 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     }
 
     private void setupPerformanceSettings() {
+        // Persistent Notification Toggle
+        SwitchMaterial persistentNotificationSwitch = binding.switchPersistentNotification;
+        boolean persistentNotificationEnabled = sharedPreferences.getBoolean("persistent_notification", false);
+        persistentNotificationSwitch.setChecked(persistentNotificationEnabled);
+
+        persistentNotificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean("persistent_notification", isChecked).apply();
+        });
+
+        // Notification While Reading Toggle
+        SwitchMaterial notificationWhileReadingSwitch = binding.switchNotificationWhileReading;
+        boolean notificationWhileReadingEnabled = sharedPreferences.getBoolean("notification_while_reading", false);
+        notificationWhileReadingSwitch.setChecked(notificationWhileReadingEnabled);
+
+        notificationWhileReadingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean("notification_while_reading", isChecked).apply();
+        });
+
         // Auto-Start Toggle
         SwitchMaterial autoStartSwitch = binding.switchAutoStart;
         boolean autoStartEnabled = sharedPreferences.getBoolean("auto_start_enabled", true);
