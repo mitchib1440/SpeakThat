@@ -328,6 +328,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 isCurrentlySpeaking = false
             }
             
+            // Clean up enhanced ducking if active
+            cleanupMediaBehavior()
+            
+            // Clean up VolumeShaper resources if active
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && isUsingVolumeShaper) {
+                cleanupVolumeShaper()
+            }
+            
             // Shutdown TTS
             textToSpeech?.shutdown()
             textToSpeech = null
@@ -1502,6 +1510,22 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         InAppLogger.logTTSEvent("TTS stopped by $triggerType", "User interrupted speech")
     }
     
+    /**
+     * Stop current TTS speech without clearing the queue.
+     * Used internally by audio focus handlers.
+     */
+    private fun stopCurrentSpeech() {
+        textToSpeech?.stop()
+        isCurrentlySpeaking = false
+        unregisterShakeListener()
+        
+        // Clean up media behavior effects
+        cleanupMediaBehavior()
+        
+        Log.d(TAG, "Current TTS speech stopped by audio focus change")
+        InAppLogger.logTTSEvent("TTS stopped by audio focus", "Focus loss interrupted speech")
+    }
+    
     // Call this when settings change
     fun refreshAllSettings() {
         loadFilterSettings()
@@ -1570,22 +1594,39 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 return true
             }
             "duck" -> {
-                Log.d(TAG, "Media behavior: DUCK - lowering media volume to $duckingVolume%")
-                InAppLogger.log("MediaBehavior", "Ducking media volume - notification will be spoken")
-                val ducked = duckMediaVolume()
-                // Log device and audio info for diagnostics
-                val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-                val ttsUsage = voicePrefs.getInt("audio_usage", android.media.AudioAttributes.USAGE_ASSISTANT)
-                val ttsContent = voicePrefs.getInt("content_type", android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
-                val currentVolume = audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
-                val maxVolume = audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)
-                InAppLogger.log("MediaBehavior", "Duck mode triggered. Device: ${android.os.Build.MODEL}, Android: ${android.os.Build.VERSION.SDK_INT}, TTS usage: $ttsUsage, TTS content: $ttsContent, Media volume: $currentVolume/$maxVolume")
-                // Warn if TTS is routed through the same stream as media
-                if (ttsUsage == android.media.AudioAttributes.USAGE_MEDIA || ttsUsage == android.media.AudioAttributes.USAGE_UNKNOWN) {
-                    Log.w(TAG, "TTS may be routed through the same stream as media. Ducking may lower TTS volume as well.")
-                    InAppLogger.log("MediaBehavior", "Warning: TTS may be affected by ducking on this device. TTS usage: $ttsUsage")
+                Log.d(TAG, "Media behavior: DUCK - attempting enhanced ducking approach")
+                InAppLogger.log("MediaBehavior", "Enhanced ducking initiated - trying system ducking first")
+                
+                // Step 1: Try enhanced ducking with system audio focus
+                val enhancedDuckSuccess = tryEnhancedDucking()
+                
+                if (enhancedDuckSuccess) {
+                    Log.d(TAG, "Enhanced ducking successful - system is handling media ducking")
+                    InAppLogger.log("MediaBehavior", "System ducking activated successfully")
+                    return true
+                        } else {
+            Log.d(TAG, "Enhanced ducking not available - falling back to manual volume control")
+            InAppLogger.log("MediaBehavior", "Falling back to manual ducking")
+                    
+                    // Step 2: Fall back to manual ducking (existing implementation)
+                    val ducked = duckMediaVolume()
+                    
+                    // Log device and audio info for diagnostics
+                    val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+                    val ttsUsage = voicePrefs.getInt("audio_usage", android.media.AudioAttributes.USAGE_ASSISTANT)
+                    val ttsContent = voicePrefs.getInt("content_type", android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                    val currentVolume = audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
+                    val maxVolume = audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)
+                    InAppLogger.log("MediaBehavior", "Manual duck mode triggered. Device: ${android.os.Build.MODEL}, Android: ${android.os.Build.VERSION.SDK_INT}, TTS usage: $ttsUsage, TTS content: $ttsContent, Media volume: $currentVolume/$maxVolume")
+                    
+                    // Warn if TTS is routed through the same stream as media
+                    if (ttsUsage == android.media.AudioAttributes.USAGE_MEDIA || ttsUsage == android.media.AudioAttributes.USAGE_UNKNOWN) {
+                        Log.w(TAG, "TTS may be routed through the same stream as media. Ducking may lower TTS volume as well.")
+                        InAppLogger.log("MediaBehavior", "Warning: TTS may be affected by ducking on this device. TTS usage: $ttsUsage")
+                    }
+                    
+                    return ducked
                 }
-                return ducked
             }
             "silence" -> {
                 Log.d(TAG, "Media behavior: SILENCE - not speaking due to active media")
@@ -1654,7 +1695,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Calculate ducked volume
             val duckedVolume = (maxVolume * duckingVolume / 100).coerceAtLeast(1)
             
-            // Set ducked volume
+            // Try VolumeShaper for smooth transitions on Android 8.0+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                val volumeShaperResult = tryVolumeShaperDuck(currentVolume.toFloat(), duckedVolume.toFloat(), maxVolume)
+                if (volumeShaperResult) {
+                    Log.d(TAG, "VolumeShaper ducking applied from $currentVolume to $duckedVolume")
+                    InAppLogger.log("MediaBehavior", "Smooth ducking applied to $duckingVolume% using VolumeShaper")
+                    return true
+                } else {
+                    Log.d(TAG, "VolumeShaper ducking failed - falling back to manual volume control")
+                }
+            }
+            
+            // Fallback to abrupt volume change
             audioManager.setStreamVolume(
                 android.media.AudioManager.STREAM_MUSIC,
                 duckedVolume,
@@ -1674,17 +1727,41 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private fun restoreMediaVolume() {
         if (originalMusicVolume != -1) {
             try {
+                val currentVolume = audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
+                val maxVolume = audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)
+                
+                Log.d(TAG, "Restoring media volume from $currentVolume to $originalMusicVolume (max: $maxVolume)")
+                
+                // Try smooth restoration on Android 8.0+ if we were using smooth ducking
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && isUsingVolumeShaper) {
+                    Log.d(TAG, "Attempting smooth volume restoration from $currentVolume to $originalMusicVolume")
+                    InAppLogger.log("MediaBehavior", "Smooth volume restoration using VolumeShaper")
+                    
+                    val volumeShaperResult = tryVolumeShaperRestore(currentVolume.toFloat(), originalMusicVolume.toFloat(), maxVolume)
+                    if (volumeShaperResult) {
+                        Log.d(TAG, "Smooth restoration started - will complete automatically")
+                        // Don't reset originalMusicVolume here - let the smooth restoration handle it
+                        return
+                    } else {
+                        Log.d(TAG, "Smooth restoration failed - falling back to immediate restoration")
+                    }
+                }
+                
+                // Immediate restoration (fallback or default)
                 audioManager.setStreamVolume(
                     android.media.AudioManager.STREAM_MUSIC,
                     originalMusicVolume,
                     0
                 )
-                Log.d(TAG, "Media volume restored to $originalMusicVolume")
+                Log.d(TAG, "Media volume immediately restored to $originalMusicVolume")
                 InAppLogger.log("MediaBehavior", "Restored media volume")
                 originalMusicVolume = -1
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to restore media volume", e)
+                originalMusicVolume = -1 // Reset on error to prevent stuck state
             }
+        } else {
+            Log.d(TAG, "No original volume to restore (originalMusicVolume = -1)")
         }
     }
     
@@ -1704,6 +1781,371 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "Audio focus released")
     }
     
+    // Enhanced ducking variables for tracking system ducking state
+    private var enhancedDuckingFocusRequest: android.media.AudioFocusRequest? = null
+    private var isUsingEnhancedDucking = false
+    
+    // Smooth ducking for gradual transitions (Android 8.0+)
+    private var volumeShaper: android.media.VolumeShaper? = null // Kept for compatibility
+    private var isUsingVolumeShaper = false // Actually tracks smooth ducking state
+    
+    /**
+     * ENHANCED DUCKING APPROACH
+     * 
+     * This method attempts to use modern Android audio focus APIs to achieve better ducking behavior.
+     * It requests AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK which tells the system that we want temporary
+     * focus and that other apps should duck (lower their volume) rather than pause completely.
+     * 
+     * Benefits:
+     * - System handles the ducking automatically
+     * - More consistent timing across devices
+     * - Better integration with Android's audio policy
+     * - Can extend ducking duration to match TTS length
+     * 
+     * Falls back to manual ducking if system ducking is not supported or fails.
+     */
+    private fun tryEnhancedDucking(): Boolean {
+        // Only attempt enhanced ducking on Android 8.0+ where the APIs are more reliable
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
+            Log.d(TAG, "Enhanced ducking not available on Android < 8.0")
+            return false
+        }
+        
+        try {
+            // Get TTS audio attributes from voice settings
+            val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+            val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
+            val ttsContentIndex = voicePrefs.getInt("content_type", 0) // Default to SPEECH index
+            
+            // Convert index to actual usage constant (matching VoiceSettingsActivity)
+            val ttsUsage = when (ttsUsageIndex) {
+                0 -> android.media.AudioAttributes.USAGE_MEDIA
+                1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
+                2 -> android.media.AudioAttributes.USAGE_ALARM
+                3 -> android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION
+                4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+                else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE // Safe fallback
+            }
+            
+            val ttsContent = when (ttsContentIndex) {
+                0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                else -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH // Safe fallback
+            }
+            
+            Log.d(TAG, "Enhanced ducking - TTS usage index: $ttsUsageIndex -> usage constant: $ttsUsage")
+            InAppLogger.log("MediaBehavior", "Enhanced ducking - TTS usage: $ttsUsage (index: $ttsUsageIndex)")
+            
+            // Create audio attributes for our TTS
+            val ttsAudioAttributes = android.media.AudioAttributes.Builder()
+                .setUsage(ttsUsage)
+                .setContentType(ttsContent)
+                .build()
+            
+            // Create focus request for enhanced ducking
+            enhancedDuckingFocusRequest = android.media.AudioFocusRequest.Builder(
+                android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
+            )
+                .setAudioAttributes(ttsAudioAttributes)
+                .setOnAudioFocusChangeListener { focusChange ->
+                    handleEnhancedDuckingFocusChange(focusChange)
+                }
+                .setAcceptsDelayedFocusGain(false) // We want immediate response for notifications
+                .setWillPauseWhenDucked(false) // We don't want our TTS to be ducked
+                .build()
+            
+            // Check if enhanced ducking is viable for this TTS usage
+            // Note: Some devices reject enhanced ducking for certain usage types
+            if (ttsUsage == android.media.AudioAttributes.USAGE_MEDIA || 
+                ttsUsage == android.media.AudioAttributes.USAGE_UNKNOWN ||
+                ttsUsage == android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE) {
+                Log.d(TAG, "Enhanced ducking skipped - TTS usage ($ttsUsage) may be ducked by system or rejected by device")
+                InAppLogger.log("MediaBehavior", "Enhanced ducking skipped - TTS usage $ttsUsage may be affected by system ducking or rejected by device audio policy")
+                return false
+            }
+            
+            // Allow Notification stream to try enhanced ducking since some users report it works better
+            if (ttsUsage == android.media.AudioAttributes.USAGE_NOTIFICATION) {
+                Log.d(TAG, "Enhanced ducking with Notification stream - may work on some devices despite potential conflicts")
+                InAppLogger.log("MediaBehavior", "Attempting enhanced ducking with Notification stream (usage: $ttsUsage) - device-dependent behavior")
+            }
+            
+            // Request audio focus
+            val result = audioManager.requestAudioFocus(enhancedDuckingFocusRequest!!)
+            
+            // Debug logging to understand the result codes  
+            val resultText = when (result) {
+                android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED -> "GRANTED"
+                android.media.AudioManager.AUDIOFOCUS_REQUEST_FAILED -> "FAILED" 
+                android.media.AudioManager.AUDIOFOCUS_REQUEST_DELAYED -> "DELAYED"
+                else -> "UNKNOWN($result)"
+            }
+            Log.d(TAG, "Enhanced ducking audio focus result: $resultText ($result)")
+            InAppLogger.log("MediaBehavior", "Enhanced ducking audio focus result: $resultText (device: ${android.os.Build.MODEL}, usage: $ttsUsage)")
+            
+            if (result == android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                isUsingEnhancedDucking = true
+                Log.d(TAG, "Enhanced ducking focus GRANTED - system should duck other media automatically")
+                InAppLogger.log("MediaBehavior", "Enhanced ducking GRANTED - system handling media volume reduction")
+                return true
+            } else {
+                Log.d(TAG, "Enhanced ducking focus request $resultText - falling back to manual ducking")
+                InAppLogger.log("MediaBehavior", "Enhanced ducking $resultText on ${android.os.Build.MODEL} - this device may have restrictive audio focus policies")
+                cleanupEnhancedDucking()
+                return false
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Enhanced ducking failed with exception", e)
+            InAppLogger.logError("MediaBehavior", "Enhanced ducking exception: ${e.message}")
+            cleanupEnhancedDucking()
+            return false
+        }
+    }
+    
+    /**
+     * Handle audio focus changes during enhanced ducking.
+     * This is called by the system when audio focus state changes.
+     */
+    private fun handleEnhancedDuckingFocusChange(focusChange: Int) {
+        when (focusChange) {
+            android.media.AudioManager.AUDIOFOCUS_GAIN -> {
+                Log.d(TAG, "Enhanced ducking: Audio focus gained")
+                // TTS should continue/start speaking
+            }
+            android.media.AudioManager.AUDIOFOCUS_LOSS -> {
+                Log.d(TAG, "Enhanced ducking: Audio focus lost permanently")
+                InAppLogger.log("MediaBehavior", "Enhanced ducking focus lost - cleaning up")
+                cleanupEnhancedDucking()
+                // Stop TTS if it's currently speaking
+                if (isCurrentlySpeaking) {
+                    stopCurrentSpeech()
+                }
+            }
+            android.media.AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
+                Log.d(TAG, "Enhanced ducking: Audio focus lost temporarily")
+                // Pause TTS temporarily - it should resume when focus is regained
+                if (isCurrentlySpeaking) {
+                    textToSpeech?.stop()
+                }
+            }
+            android.media.AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
+                Log.d(TAG, "Enhanced ducking: Can duck (should not happen with our focus request)")
+                // This shouldn't happen with our setup, but handle gracefully
+            }
+        }
+    }
+    
+    /**
+     * Release enhanced ducking focus and clean up state.
+     * This should be called when TTS completes or is interrupted.
+     */
+    private fun releaseEnhancedDucking() {
+        if (isUsingEnhancedDucking && enhancedDuckingFocusRequest != null) {
+            try {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    audioManager.abandonAudioFocusRequest(enhancedDuckingFocusRequest!!)
+                    Log.d(TAG, "Enhanced ducking focus released - media should return to normal volume")
+                    InAppLogger.log("MediaBehavior", "Enhanced ducking released - system restoring media volume")
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error releasing enhanced ducking focus", e)
+                InAppLogger.logError("MediaBehavior", "Error releasing enhanced ducking: ${e.message}")
+            }
+            
+            cleanupEnhancedDucking()
+        }
+    }
+    
+    /**
+     * Clean up enhanced ducking state without focus operations.
+     * Used for error handling and state reset.
+     */
+    private fun cleanupEnhancedDucking() {
+        enhancedDuckingFocusRequest = null
+        isUsingEnhancedDucking = false
+    }
+    
+    /**
+     * SMOOTH DUCKING APPROACH
+     * 
+     * Provides smooth, gradual volume transitions instead of abrupt changes.
+     * This creates a much more professional audio experience similar to professional audio software.
+     * Available on Android 8.0+ (API 26+).
+     * 
+     * Note: Originally designed for VolumeShaper, but VolumeShaper requires access to specific
+     * AudioTrack/MediaPlayer instances which aren't available for the media stream directly.
+     * Instead, we use smooth manual volume transitions with Handler-based stepping.
+     */
+    
+    /**
+     * Apply smooth volume ducking using gradual volume changes.
+     * Creates a smooth fade-down curve over 500ms.
+     * 
+     * @param fromVolume Current volume level (0.0 to maxVolume)
+     * @param toVolume Target ducked volume level (0.0 to maxVolume)  
+     * @param maxVolume Maximum volume for the stream
+     * @return true if smooth ducking was successfully started, false otherwise
+     */
+    @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.O)
+    private fun tryVolumeShaperDuck(fromVolume: Float, toVolume: Float, maxVolume: Int): Boolean {
+        return try {
+            // Clean up any existing smooth ducking
+            cleanupVolumeShaper()
+            
+            val fromVolumeInt = fromVolume.toInt()
+            val toVolumeInt = toVolume.toInt()
+            
+            if (fromVolumeInt == toVolumeInt) {
+                Log.d(TAG, "Smooth ducking skipped - volumes are the same ($fromVolumeInt)")
+                return false
+            }
+            
+            isUsingVolumeShaper = true
+            val handler = android.os.Handler(android.os.Looper.getMainLooper())
+            val durationMs = 500L
+            val steps = 10
+            val stepDelay = durationMs / steps
+            val volumeStep = (toVolumeInt - fromVolumeInt).toFloat() / steps
+            
+            Log.d(TAG, "Smooth ducking started: $fromVolumeInt → $toVolumeInt over ${durationMs}ms")
+            
+            for (i in 1..steps) {
+                val delay = stepDelay * i
+                
+                handler.postDelayed({
+                    if (isUsingVolumeShaper) { // Check if still active
+                        val currentVolume = (fromVolumeInt + (volumeStep * i)).toInt()
+                            .coerceIn(0, maxVolume)
+                        
+                        try {
+                            audioManager.setStreamVolume(
+                                android.media.AudioManager.STREAM_MUSIC,
+                                currentVolume,
+                                0
+                            )
+                        } catch (e: Exception) {
+                            Log.w(TAG, "Smooth ducking step $i failed", e)
+                        }
+                    }
+                }, delay)
+            }
+            
+            true
+            
+        } catch (e: Exception) {
+            Log.d(TAG, "Smooth ducking failed: ${e.message}")
+            cleanupVolumeShaper()
+            false
+        }
+    }
+    
+    /**
+     * Apply smooth volume restoration using gradual volume changes.
+     * Creates a smooth fade-up curve over 300ms.
+     * 
+     * @param fromVolume Current volume level (0.0 to maxVolume)
+     * @param toVolume Target restored volume level (0.0 to maxVolume)
+     * @param maxVolume Maximum volume for the stream
+     * @return true if smooth restoration was successfully started, false otherwise
+     */
+    @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.O)
+    private fun tryVolumeShaperRestore(fromVolume: Float, toVolume: Float, maxVolume: Int): Boolean {
+        return try {
+            val fromVolumeInt = fromVolume.toInt()
+            val toVolumeInt = toVolume.toInt()
+            
+            if (fromVolumeInt == toVolumeInt) {
+                Log.d(TAG, "Smooth restoration skipped - volumes are the same ($fromVolumeInt)")
+                originalMusicVolume = -1 // Clear since no restoration needed
+                cleanupVolumeShaper()
+                return false
+            }
+            
+            // Keep smooth ducking active for restoration
+            val handler = android.os.Handler(android.os.Looper.getMainLooper())
+            val durationMs = 300L // Faster restoration than ducking
+            val steps = 8
+            val stepDelay = durationMs / steps
+            val volumeStep = (toVolumeInt - fromVolumeInt).toFloat() / steps
+            
+            Log.d(TAG, "Smooth restoration: $fromVolumeInt → $toVolumeInt over ${durationMs}ms")
+            
+            // Set up timeout failsafe (in case smooth restoration fails)
+            handler.postDelayed({
+                if (originalMusicVolume != -1 && isUsingVolumeShaper) {
+                    Log.w(TAG, "Smooth restoration timeout - forcing immediate restoration to $originalMusicVolume")
+                    try {
+                        audioManager.setStreamVolume(android.media.AudioManager.STREAM_MUSIC, originalMusicVolume, 0)
+                        originalMusicVolume = -1
+                        cleanupVolumeShaper()
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Timeout restoration failed", e)
+                    }
+                }
+            }, durationMs + 200) // Timeout slightly after expected completion
+            
+            for (i in 1..steps) {
+                val delay = stepDelay * i
+                
+                handler.postDelayed({
+                    if (isUsingVolumeShaper && originalMusicVolume != -1) { // Check if still active and not cancelled
+                        val currentVolume = (fromVolumeInt + (volumeStep * i)).toInt()
+                            .coerceIn(0, maxVolume)
+                        
+                        try {
+                            audioManager.setStreamVolume(
+                                android.media.AudioManager.STREAM_MUSIC,
+                                currentVolume,
+                                0
+                            )
+                        } catch (e: Exception) {
+                            Log.w(TAG, "Smooth restoration step $i failed", e)
+                        }
+                        
+                        // Final cleanup after last step
+                        if (i == steps) {
+                            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                                if (originalMusicVolume != -1) { // Only clean up if not already cleaned by timeout
+                                    Log.d(TAG, "Smooth restoration completed - final volume: $currentVolume")
+                                    originalMusicVolume = -1 // Clear the stored volume
+                                    cleanupVolumeShaper() // Clean up smooth ducking state
+                                }
+                            }, 25) // Small delay to ensure volume is set
+                        }
+                    }
+                }, delay)
+            }
+            
+            true
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Smooth restoration failed: ${e.message}")
+            originalMusicVolume = -1
+            cleanupVolumeShaper()
+            false
+        }
+    }
+    
+    /**
+     * Clean up smooth ducking resources and reset state.
+     * Should be called when transitioning to manual volume control or when done with smooth transitions.
+     */
+    @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.O)
+    private fun cleanupVolumeShaper() {
+        try {
+            // Cancel any pending smooth ducking operations
+            volumeShaper?.close()
+            volumeShaper = null
+            isUsingVolumeShaper = false
+            Log.d(TAG, "Smooth ducking cleaned up")
+        } catch (e: Exception) {
+            Log.d(TAG, "Smooth ducking cleanup error: ${e.message}")
+        }
+    }
+    
     private fun cleanupMediaBehavior() {
         when (mediaBehavior) {
             "pause" -> {
@@ -1711,8 +2153,74 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 releaseAudioFocus()
             }
             "duck" -> {
-                // Restore original media volume
-                restoreMediaVolume()
+                // Clean up enhanced ducking first if it was used
+                if (isUsingEnhancedDucking) {
+                    releaseEnhancedDucking()
+                } else {
+                    // Restore original media volume for manual ducking
+                    restoreMediaVolume()
+                }
+                
+                // Clean up smooth ducking if it was used
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && isUsingVolumeShaper) {
+                    Log.d(TAG, "Cleaning up smooth ducking and ensuring volume restoration")
+                    // Force immediate restoration if smooth restoration didn't complete
+                    if (originalMusicVolume != -1) {
+                        try {
+                            audioManager.setStreamVolume(android.media.AudioManager.STREAM_MUSIC, originalMusicVolume, 0)
+                            Log.d(TAG, "Force-restored volume to $originalMusicVolume during cleanup")
+                            originalMusicVolume = -1
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Failed to force-restore volume during cleanup", e)
+                        }
+                    }
+                    cleanupVolumeShaper()
+                }
+            }
+            // "ignore" and "silence" don't need cleanup
+        }
+    }
+    
+    /**
+     * Clean up media behavior with delayed VolumeShaper cleanup to allow smooth restoration to complete.
+     * Used when TTS completes normally to avoid race condition between restoration and cleanup.
+     */
+    private fun cleanupMediaBehaviorDelayed() {
+        when (mediaBehavior) {
+            "pause" -> {
+                // Release audio focus to allow media to resume
+                releaseAudioFocus()
+            }
+            "duck" -> {
+                // Clean up enhanced ducking first if it was used
+                if (isUsingEnhancedDucking) {
+                    releaseEnhancedDucking()
+                } else {
+                    // Restore original media volume for manual ducking
+                    restoreMediaVolume()
+                }
+                
+                // Delay VolumeShaper cleanup to allow smooth restoration to complete
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && isUsingVolumeShaper) {
+                    Log.d(TAG, "Scheduling delayed VolumeShaper cleanup to allow smooth restoration")
+                    
+                    // Schedule cleanup after smooth restoration should complete (300ms + safety buffer)
+                    android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                        Log.d(TAG, "Executing delayed VolumeShaper cleanup")
+                        
+                        // Final safety net - force immediate restoration if smooth restoration didn't complete
+                        if (originalMusicVolume != -1) {
+                            try {
+                                audioManager.setStreamVolume(android.media.AudioManager.STREAM_MUSIC, originalMusicVolume, 0)
+                                Log.d(TAG, "Force-restored volume to $originalMusicVolume during delayed cleanup")
+                                originalMusicVolume = -1
+                            } catch (e: Exception) {
+                                Log.e(TAG, "Failed to force-restore volume during delayed cleanup", e)
+                            }
+                        }
+                        cleanupVolumeShaper()
+                    }, 800) // Wait longer than restoration duration (300ms) + safety buffer
+                }
             }
             // "ignore" and "silence" don't need cleanup
         }
@@ -1884,8 +2392,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     
                     InAppLogger.logTTSEvent("TTS completed", "Utterance finished")
                     
-                    // Clean up media behavior effects
-                    cleanupMediaBehavior()
+                    // Clean up media behavior effects (with delay for smooth restoration)
+                    cleanupMediaBehaviorDelayed()
                     
                     // Process next item in queue if any
                     processNotificationQueue()

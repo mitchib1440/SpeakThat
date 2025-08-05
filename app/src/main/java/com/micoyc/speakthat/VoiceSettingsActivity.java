@@ -1205,10 +1205,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private void showAudioHelpDialog() {
         String helpText = "🔊 Audio Stream Type\n" +
                 "Controls which volume slider affects notification speech:\n\n" +
-                "• Media: Uses media volume\n" +
-                "• Notification (Recommended): Uses notification volume (best for Duck Audio)\n" +
+                "• Media: Uses media volume (may conflict with ducking)\n" +
+                "• Notification (Recommended): Uses notification volume\n" +
                 "• Alarm: Uses alarm volume\n" +
-                "• Voice Call: Uses call volume\n" +
+                "• Voice Call: Uses call volume (often works well)\n" +
                 "• Assistance: Uses navigation volume\n\n" +
                 
                 "🎵 Content Type\n" +
@@ -1218,13 +1218,20 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 "• Notification Sound: For short notification sounds\n" +
                 "• Sonification: For UI sounds and alerts\n\n" +
                 
-                "💡 Recommendation\n" +
-                "For the best notification reading experience, use:\n" +
-                "Notification (Recommended) + Speech\n\n" +
+                "⚠️ Device Compatibility\n" +
+                "Audio behavior varies significantly across devices and Android versions. " +
+                "Some devices may not support ducking for certain streams or apps.\n\n" +
                 
-                "This ensures notifications use your notification volume (which is usually not affected by media ducking) " +
-                "and are optimized for clear speech rather than music.\n\n" +
-                "If Duck Audio does not work as expected, try other audio usages, but Notification is recommended for most devices.";
+                "💡 Troubleshooting Audio Issues\n" +
+                "If ducking isn't working well:\n" +
+                "• Try 'Voice Call' or 'Notification' streams (most compatible)\n" +
+                "• Avoid 'Media' stream as it may duck your TTS with your music\n" +
+                "• Different apps respond differently to audio ducking\n" +
+                "• The app automatically chooses the best ducking method for your device\n\n" +
+                
+                "🎯 Recommended Settings\n" +
+                "For best results: Notification + Speech\n" +
+                "Alternative: Voice Call + Speech";
 
         new android.app.AlertDialog.Builder(this)
                 .setTitle("Audio Settings Help")
