@@ -165,6 +165,17 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "honour_do_not_disturb",
+                title = "Honour Do Not Disturb",
+                description = "Respect device Do Not Disturb settings",
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("honour", "do not disturb", "dnd", "respect", "device", "silent", "quiet", "mode", "disturb", "not disturb"),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "honour_audio_mode",
                 title = "Honour Audio Mode",
                 description = "Respect device audio mode settings",
@@ -173,6 +184,17 @@ object SettingsDatabase {
                 categoryIcon = "🔔",
                 settingType = SettingType.SWITCH,
                 searchKeywords = listOf("honour", "audio", "mode", "respect", "device", "ringer", "silent", "vibrate", "sound", "mode", "audio mode", "ringer mode", "silent mode", "vibrate mode"),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "honour_phone_calls",
+                title = "Honour Phone Calls",
+                description = "Prevent notifications during phone calls",
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("honour", "phone", "calls", "respect", "call", "telephone", "conversation", "interrupt", "during", "call", "phone call", "telephony", "call state"),
                 navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
             ),
 

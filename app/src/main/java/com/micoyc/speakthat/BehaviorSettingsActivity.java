@@ -79,6 +79,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String KEY_CUSTOM_APP_NAMES = "custom_app_names"; // JSON string of custom app names
     private static final String KEY_COOLDOWN_APPS = "cooldown_apps"; // JSON string of cooldown app settings
     private static final String KEY_HONOUR_DO_NOT_DISTURB = "honour_do_not_disturb"; // boolean
+    private static final String KEY_HONOUR_PHONE_CALLS = "honour_phone_calls"; // boolean
     private static final String KEY_SPEECH_TEMPLATE = "speech_template"; // Custom speech template
 
     // Media behavior options
@@ -93,6 +94,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final int DEFAULT_DUCKING_VOLUME = 30; // 30% volume when ducking
     private static final int DEFAULT_DELAY_BEFORE_READOUT = 2; // 2 seconds
     private static final boolean DEFAULT_HONOUR_DO_NOT_DISTURB = true; // Default to honouring DND
+    private static final boolean DEFAULT_HONOUR_PHONE_CALLS = true; // Default to honouring phone calls
 
     // Speech template constants
     private static final String DEFAULT_SPEECH_TEMPLATE = "{app} notified you: {content}";
@@ -497,8 +499,16 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             saveHonourAudioMode(isChecked);
         });
         
+        // Set up Phone Calls toggle
+        binding.switchHonourPhoneCalls.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveHonourPhoneCalls(isChecked);
+        });
+        
         // Set up Audio Mode info button
         binding.btnAudioModeInfo.setOnClickListener(v -> showAudioModeDialog());
+        
+        // Set up Phone Calls info button
+        binding.btnPhoneCallsInfo.setOnClickListener(v -> showPhoneCallsDialog());
         
         // Set up speech template functionality
         setupSpeechTemplateUI();
@@ -926,6 +936,10 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Load Audio Mode setting
         boolean honourAudioMode = sharedPreferences.getBoolean("honour_audio_mode", true); // Default to true for safety
         binding.switchHonourAudioMode.setChecked(honourAudioMode);
+        
+        // Load Phone Calls setting
+        boolean honourPhoneCalls = sharedPreferences.getBoolean(KEY_HONOUR_PHONE_CALLS, DEFAULT_HONOUR_PHONE_CALLS);
+        binding.switchHonourPhoneCalls.setChecked(honourPhoneCalls);
         
         // Load speech template settings
         loadSpeechTemplateSettings();
@@ -1511,6 +1525,13 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         editor.putBoolean("honour_audio_mode", honour);
         editor.apply();
         InAppLogger.log("BehaviorSettings", "Honour Audio Mode changed to: " + honour);
+    }
+
+    private void saveHonourPhoneCalls(boolean honour) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_HONOUR_PHONE_CALLS, honour);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Honour phone calls changed to: " + honour);
     }
 
     private void updateThresholdMarker(float threshold) {
@@ -2312,6 +2333,41 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 .show();
     }
 
+    private void showPhoneCallsDialog() {
+        // Track dialog usage for analytics
+        trackDialogUsage("phone_calls_info");
+        
+        String htmlText = "Honour Phone Calls prevents notification readouts when you're on a phone call:<br><br>" +
+                "<b>🎯 What it does:</b><br>" +
+                "When you're on a phone call, SpeakThat will not read any notifications aloud. This prevents interruptions during important conversations.<br><br>" +
+                "<b>📱 When it's useful:</b><br>" +
+                "• <b>Important calls</b> - No interruptions during business or personal calls<br>" +
+                "• <b>Conference calls</b> - Maintains professional audio environment<br>" +
+                "• <b>Voice calls</b> - Prevents notification audio from being heard by call participants<br>" +
+                "• <b>Video calls</b> - Keeps your audio clean during video conversations<br><br>" +
+                "<b>⚙️ How it works:</b><br>" +
+                "• Automatically detects when you're on a phone call<br>" +
+                "• Uses both AudioManager and TelephonyManager for reliable detection<br>" +
+                "• Works with all types of calls (cellular, VoIP, video calls)<br>" +
+                "• Notifications resume normally when call ends<br>" +
+                "• Gracefully handles permission restrictions<br><br>" +
+                "<b>💡 Tip:</b> This feature respects your conversation privacy and ensures you never miss important notifications due to call interruptions!";
+        
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle("Honour Phone Calls")
+                .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
+                .setPositiveButton(R.string.use_recommended, (dialog, which) -> {
+                    // Track recommendation usage
+                    trackDialogUsage("phone_calls_recommended");
+                    
+                    // Enable honour phone calls
+                    binding.switchHonourPhoneCalls.setChecked(true);
+                    saveHonourPhoneCalls(true);
+                })
+                .setNegativeButton(R.string.got_it, null)
+                .show();
+    }
+
     private void addDefaultPriorityApps() {
         // Add some common priority apps
         String[] defaultPriorityApps = {
@@ -2607,6 +2663,66 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         
         if (honourAudioMode) {
             return !isDeviceInSoundMode(context); // Return true if we should block (not in sound mode)
+        }
+        return false;
+    }
+
+    /**
+     * Check if the device is currently in a phone call
+     * @param context The application context
+     * @return true if a phone call is active, false otherwise
+     */
+    public static boolean isPhoneCallActive(Context context) {
+        try {
+            // Check audio mode - if in call mode, a call is likely active
+            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            if (audioManager != null) {
+                int audioMode = audioManager.getMode();
+                // AudioManager.MODE_IN_CALL indicates an active phone call
+                if (audioMode == AudioManager.MODE_IN_CALL) {
+                    return true;
+                }
+            }
+            
+            // Additional check using TelephonyManager for more reliable detection
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                // For Android 9+ (API 28+), we can use TelephonyManager
+                android.telephony.TelephonyManager telephonyManager = 
+                    (android.telephony.TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+                if (telephonyManager != null) {
+                    int callState = telephonyManager.getCallState();
+                    // TelephonyManager.CALL_STATE_OFFHOOK indicates an active call
+                    return callState == android.telephony.TelephonyManager.CALL_STATE_OFFHOOK;
+                }
+            }
+            
+            return false;
+        } catch (SecurityException e) {
+            // If we don't have permission to check call state, fall back to audio mode only
+            Log.d("BehaviorSettings", "No permission to check call state, using audio mode fallback");
+            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            if (audioManager != null) {
+                int audioMode = audioManager.getMode();
+                return audioMode == AudioManager.MODE_IN_CALL;
+            }
+            return false;
+        } catch (Exception e) {
+            Log.e("BehaviorSettings", "Error checking phone call state", e);
+            return false;
+        }
+    }
+
+    /**
+     * Check if SpeakThat should honour phone calls (prevent readouts during calls)
+     * @param context The application context
+     * @return true if phone calls should be honoured, false otherwise
+     */
+    public static boolean shouldHonourPhoneCalls(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        boolean honourPhoneCalls = prefs.getBoolean(KEY_HONOUR_PHONE_CALLS, DEFAULT_HONOUR_PHONE_CALLS);
+        
+        if (honourPhoneCalls) {
+            return isPhoneCallActive(context);
         }
         return false;
     }

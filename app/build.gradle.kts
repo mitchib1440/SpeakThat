@@ -97,10 +97,12 @@ dependencies {
     implementation(libs.androidx.viewpager2)
     implementation(libs.androidx.recyclerview)
     implementation(libs.gson)
+    
+    // Coil for image loading - only used in GitHub variant for online icons
     implementation("io.coil-kt:coil:2.4.0")
     implementation("io.coil-kt:coil-svg:2.4.0")
     
-    // For network requests (update system) - available to both flavors
+    // For network requests (update system) - only used in GitHub variant
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     
     // For background work (optional, for future enhancements)
