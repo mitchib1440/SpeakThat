@@ -447,7 +447,10 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             binding.duckingVolumeContainer.setVisibility(showDucking ? View.VISIBLE : View.GONE);
             binding.duckingWarningText.setVisibility(showDucking ? View.VISIBLE : View.GONE);
             if (showDucking) {
-                binding.duckingWarningText.setText("⚠️ For best results, set the notification voice to use the Notification audio stream in Voice Settings. On some devices, lowering media volume may also lower the notification voice. If Duck Audio does not work as expected, try Notification audio.");
+                binding.duckingWarningText.setText("⚠️ Audio ducking works differently across devices and Android versions. Some devices may not duck certain apps or audio streams properly.\n\n" +
+                        "💡 If ducking isn't working well: Try different audio streams in Voice Settings ('Voice Call' or 'Notification' often work best). " +
+                        "Avoid 'Media' stream as it may duck your TTS along with your music.\n\n" +
+                        "🔧 The app automatically uses advanced system ducking when available, with smooth manual ducking as backup for maximum compatibility.");
             }
             // Show/hide pause warning
             boolean showPauseWarning = MEDIA_BEHAVIOR_PAUSE.equals(mediaBehavior);
