@@ -1,7 +1,11 @@
 package com.micoyc.speakthat
 
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.hardware.Sensor
@@ -14,6 +18,7 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.text.TextUtils
 import android.util.Log
+import androidx.core.app.NotificationCompat
 import com.micoyc.speakthat.VoiceSettingsActivity
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -76,6 +81,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         private const val KEY_SHAKE_THRESHOLD = "shake_threshold"
         private const val KEY_MASTER_SWITCH_ENABLED = "master_switch_enabled"
         private const val KEY_LAST_EASTER_EGG = "last_easter_egg_line"
+        private const val REQUEST_NOTIFICATION_PERMISSION = 1001
         // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
     
         @JvmField
@@ -100,6 +106,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             finish() // Close MainActivity
             return
         }
+        
+        // Request notification permission for Android 13+
+        requestNotificationPermission()
         
         // Initialize crash-persistent logging first
         InAppLogger.initialize(this)
@@ -270,6 +279,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Update UI immediately
         updateServiceStatus()
         
+        // Manage notifications based on master switch state
+        manageNotificationsForMasterSwitch(isEnabled)
+        
         // Log the change
         InAppLogger.logSettingsChange("Master Switch", (!isEnabled).toString(), isEnabled.toString())
         InAppLogger.log("MasterSwitch", "Master switch ${if (isEnabled) "enabled" else "disabled"}")
@@ -283,6 +295,76 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         
         Log.d(TAG, "Master switch toggled: $isEnabled")
+    }
+    
+    /**
+     * Manage SpeakThat notifications based on master switch state
+     */
+    private fun manageNotificationsForMasterSwitch(isEnabled: Boolean) {
+        try {
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            
+            if (isEnabled) {
+                // Master switch enabled - show persistent notification if setting is enabled
+                val isPersistentNotificationEnabled = sharedPreferences.getBoolean("persistent_notification", false)
+                if (isPersistentNotificationEnabled) {
+                    // Create notification channel for Android O+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        val channel = NotificationChannel(
+                            "SpeakThat_Channel",
+                            "SpeakThat Notifications",
+                            NotificationManager.IMPORTANCE_DEFAULT
+                        ).apply {
+                            description = "Notifications from SpeakThat app"
+                            setSound(null, null) // No sound
+                            enableVibration(false) // No vibration
+                            setShowBadge(false) // No badge
+                        }
+                        notificationManager.createNotificationChannel(channel)
+                    }
+                    
+                    // Create intent for opening SpeakThat
+                    val openAppIntent = Intent(this, MainActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    }
+                    val openAppPendingIntent = PendingIntent.getActivity(
+                        this, 0, openAppIntent, 
+                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                    )
+                    
+                    // Build notification
+                    val notification = androidx.core.app.NotificationCompat.Builder(this, "SpeakThat_Channel")
+                        .setContentTitle("SpeakThat Active")
+                        .setContentText("Tap to open SpeakThat settings")
+                        .setSmallIcon(R.drawable.speakthaticon)
+                        .setOngoing(true) // Persistent notification
+                        .setSilent(true) // Silent notification
+                        .setPriority(androidx.core.app.NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(openAppPendingIntent)
+                        .addAction(
+                            R.drawable.speakthaticon,
+                            "Open SpeakThat!",
+                            openAppPendingIntent
+                        )
+                        .build()
+                    
+                    // Show notification
+                    notificationManager.notify(1001, notification)
+                    Log.d(TAG, "Persistent notification shown due to master switch enabled")
+                    InAppLogger.log("Notifications", "Persistent notification shown due to master switch enabled")
+                }
+            } else {
+                // Master switch disabled - hide all SpeakThat notifications
+                notificationManager.cancel(1001) // Persistent notification
+                notificationManager.cancel(1002) // Reading notification
+                Log.d(TAG, "All SpeakThat notifications hidden due to master switch disabled")
+                InAppLogger.log("Notifications", "All SpeakThat notifications hidden due to master switch disabled")
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error managing notifications for master switch", e)
+            InAppLogger.logError("Notifications", "Error managing notifications for master switch: ${e.message}")
+        }
     }
     
     // showNotificationHistory moved to DevelopmentSettingsActivity
@@ -872,6 +954,43 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         
         Log.i(TAG, "Showed repository update message to user")
         InAppLogger.logSystemEvent("Repository update message shown to user", "MainActivity")
+    }
+    
+    /**
+     * Request notification permission for Android 13+
+     */
+    private fun requestNotificationPermission() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "Requesting POST_NOTIFICATIONS permission")
+                InAppLogger.log("Permissions", "Requesting POST_NOTIFICATIONS permission")
+                requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), REQUEST_NOTIFICATION_PERMISSION)
+            } else {
+                Log.d(TAG, "POST_NOTIFICATIONS permission already granted")
+                InAppLogger.log("Permissions", "POST_NOTIFICATIONS permission already granted")
+            }
+        }
+    }
+    
+    /**
+     * Handle permission request results
+     */
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        
+        when (requestCode) {
+            REQUEST_NOTIFICATION_PERMISSION -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "POST_NOTIFICATIONS permission granted")
+                    InAppLogger.log("Permissions", "POST_NOTIFICATIONS permission granted")
+                    Toast.makeText(this, "Notification permission granted", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.w(TAG, "POST_NOTIFICATIONS permission denied")
+                    InAppLogger.log("Permissions", "POST_NOTIFICATIONS permission denied")
+                    Toast.makeText(this, "Notification permission denied - SpeakThat notifications may not appear", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 
 } 

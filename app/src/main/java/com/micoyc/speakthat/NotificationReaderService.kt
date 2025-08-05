@@ -1,6 +1,11 @@
 package com.micoyc.speakthat
 
 import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
@@ -14,6 +19,7 @@ import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.util.Log
+import androidx.core.app.NotificationCompat
 import com.micoyc.speakthat.VoiceSettingsActivity
 import com.micoyc.speakthat.BehaviorSettingsActivity
 import java.text.SimpleDateFormat
@@ -22,8 +28,6 @@ import java.util.HashMap
 import java.util.HashSet
 import java.util.Locale
 import kotlin.collections.ArrayList
-import android.app.NotificationManager
-import android.content.Context
 import com.micoyc.speakthat.rules.RuleManager
 
 class NotificationReaderService : NotificationListenerService(), TextToSpeech.OnInitListener, SensorEventListener, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -120,6 +124,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     // Batch processing for database operations
     private val historyBatchQueue = mutableListOf<NotificationData>()
     private val batchHandler = android.os.Handler(android.os.Looper.getMainLooper())
+    
+    // Notification manager for SpeakThat's own notifications
+    private val notificationManager by lazy { getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
     private val batchRunnable = Runnable { processHistoryBatch() }
     private val BATCH_DELAY_MS = 5000L // 5 seconds
     private val MAX_BATCH_SIZE = 10
@@ -163,6 +170,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val KEY_SHAKE_TIMEOUT_SECONDS = "shake_timeout_seconds"
         private const val KEY_WAVE_TIMEOUT_SECONDS = "wave_timeout_seconds"
         
+        // Notification IDs
+        private const val PERSISTENT_NOTIFICATION_ID = 1001
+        private const val READING_NOTIFICATION_ID = 1002
+        
         // Filter system keys
         private const val KEY_APP_LIST_MODE = "app_list_mode"
         private const val KEY_APP_LIST = "app_list"
@@ -187,6 +198,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Conditional rules settings
         private const val KEY_CONDITIONAL_RULES = "conditional_rules"
+        
+        // Notification settings
+        private const val KEY_PERSISTENT_NOTIFICATION = "persistent_notification"
+        private const val KEY_NOTIFICATION_WHILE_READING = "notification_while_reading"
         
         // Media notification filtering settings
         private const val KEY_MEDIA_FILTERING_ENABLED = "media_filtering_enabled"
@@ -300,6 +315,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "NotificationReaderService initialization completed successfully")
             InAppLogger.log("Service", "Service initialization completed successfully")
             
+            // Show persistent notification if enabled and master switch is on
+            checkAndShowPersistentNotification()
+            
         } catch (e: Exception) {
             Log.e(TAG, "Critical error during service initialization", e)
             InAppLogger.logError("Service", "Critical initialization error: " + e.message)
@@ -359,6 +377,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             // Unregister voice settings listener
             voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
+            
+            // Hide all SpeakThat notifications
+            hidePersistentNotification()
+            hideReadingNotification()
             
             Log.d(TAG, "NotificationReaderService cleanup completed")
             InAppLogger.log("Service", "Service cleanup completed")
@@ -1130,6 +1152,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Load speech template
         speechTemplate = sharedPreferences?.getString(KEY_SPEECH_TEMPLATE, "{app} notified you: {content}") ?: "{app} notified you: {content}"
+        
+        // Load notification settings
+        val isPersistentNotificationEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_NOTIFICATION, false) ?: false
+        val isNotificationWhileReadingEnabled = sharedPreferences?.getBoolean(KEY_NOTIFICATION_WHILE_READING, false) ?: false
         
         Log.d(TAG, "Filter settings loaded - appMode: $appListMode, apps: ${appList.size}, blocked words: ${blockedWords.size}, replacements: ${wordReplacements.size}")
         Log.d(TAG, "Behavior settings loaded - mode: $notificationBehavior, priority apps: ${priorityApps.size}")
@@ -2359,6 +2385,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         isCurrentlySpeaking = true
         
+        // Show reading notification if enabled
+        showReadingNotification(currentAppName, currentSpeechText)
+        
         // Set pocket mode tracking variables
         if (isPocketModeEnabled) {
             wasSensorCoveredAtStart = isSensorCurrentlyCovered
@@ -2398,6 +2427,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     Log.d(TAG, "TTS utterance completed: $utteranceId")
                     isCurrentlySpeaking = false
                     
+                    // Hide reading notification
+                    hideReadingNotification()
+                    
                     // Unregister shake listener since we're done speaking
                     unregisterShakeListener()
                     
@@ -2415,6 +2447,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (utteranceId == "notification_utterance") {
                     Log.e(TAG, "TTS utterance error: $utteranceId")
                     isCurrentlySpeaking = false
+                    
+                    // Hide reading notification
+                    hideReadingNotification()
+                    
                     unregisterShakeListener()
                     Log.e(TAG, "TTS error occurred")
                     InAppLogger.logTTSEvent("TTS error", "Utterance failed")
@@ -2511,6 +2547,22 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 // Reload speech template
                 speechTemplate = sharedPreferences?.getString(KEY_SPEECH_TEMPLATE, "{app} notified you: {content}") ?: "{app} notified you: {content}"
                 Log.d(TAG, "Speech template updated")
+            }
+            KEY_PERSISTENT_NOTIFICATION -> {
+                // Handle persistent notification setting change
+                val isPersistentNotificationEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_NOTIFICATION, false) ?: false
+                if (isPersistentNotificationEnabled) {
+                    checkAndShowPersistentNotification()
+                } else {
+                    hidePersistentNotification()
+                }
+                Log.d(TAG, "Persistent notification setting updated: $isPersistentNotificationEnabled")
+            }
+            KEY_NOTIFICATION_WHILE_READING -> {
+                // Handle notification while reading setting change
+                val isNotificationWhileReadingEnabled = sharedPreferences?.getBoolean(KEY_NOTIFICATION_WHILE_READING, false) ?: false
+                Log.d(TAG, "Notification while reading setting updated: $isNotificationWhileReadingEnabled")
+                // Note: Reading notifications are shown/hidden dynamically during TTS, so no immediate action needed here
             }
         }
     }
@@ -2660,7 +2712,271 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         )
     }
 
-
-
+    // MARK: - SpeakThat Notification Methods
+    
+    /**
+     * Check if persistent notification should be shown and show it if conditions are met
+     */
+    private fun checkAndShowPersistentNotification() {
+        val isPersistentNotificationEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_NOTIFICATION, false) ?: false
+        val isMasterSwitchEnabled = MainActivity.isMasterSwitchEnabled(this)
+        
+        Log.d(TAG, "Checking persistent notification: enabled=$isPersistentNotificationEnabled, masterSwitch=$isMasterSwitchEnabled")
+        
+        if (isPersistentNotificationEnabled && isMasterSwitchEnabled) {
+            showPersistentNotification()
+        } else {
+            Log.d(TAG, "Persistent notification conditions not met: enabled=$isPersistentNotificationEnabled, masterSwitch=$isMasterSwitchEnabled")
+        }
+    }
+    
+    /**
+     * Show persistent notification when SpeakThat is active
+     */
+    private fun showPersistentNotification() {
+        try {
+            val isPersistentNotificationEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_NOTIFICATION, false) ?: false
+            if (!isPersistentNotificationEnabled) {
+                Log.d(TAG, "Persistent notification disabled in settings")
+                return
+            }
+            
+            // Check notification permission for Android 13+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                    Log.w(TAG, "POST_NOTIFICATIONS permission not granted - cannot show persistent notification")
+                    InAppLogger.logError("Notifications", "POST_NOTIFICATIONS permission not granted")
+                    return
+                }
+            }
+            
+            // Create notification channel for Android O+
+            createNotificationChannel()
+            
+            // Create intent for opening SpeakThat
+            val openAppIntent = Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+            val openAppPendingIntent = PendingIntent.getActivity(
+                this, 0, openAppIntent, 
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            
+            // Build notification
+            val notification = NotificationCompat.Builder(this, "SpeakThat_Channel")
+                .setContentTitle("SpeakThat Active")
+                .setContentText("Tap to open SpeakThat settings")
+                .setSmallIcon(R.drawable.speakthaticon)
+                .setOngoing(true) // Persistent notification
+                .setSilent(true) // Silent notification
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(openAppPendingIntent)
+                .addAction(
+                    R.drawable.speakthaticon,
+                    "Open SpeakThat!",
+                    openAppPendingIntent
+                )
+                .build()
+            
+            // Show notification
+            notificationManager.notify(PERSISTENT_NOTIFICATION_ID, notification)
+            Log.d(TAG, "Persistent notification shown with ID: $PERSISTENT_NOTIFICATION_ID")
+            InAppLogger.log("Notifications", "Persistent notification shown with ID: $PERSISTENT_NOTIFICATION_ID")
+            
+            // Verify notification was actually posted
+            val activeNotifications = notificationManager.activeNotifications
+            val ourNotification = activeNotifications.find { it.id == PERSISTENT_NOTIFICATION_ID }
+            if (ourNotification != null) {
+                Log.d(TAG, "Persistent notification verified as active")
+                InAppLogger.log("Notifications", "Persistent notification verified as active")
+            } else {
+                Log.w(TAG, "Persistent notification not found in active notifications")
+                InAppLogger.logError("Notifications", "Persistent notification not found in active notifications")
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error showing persistent notification", e)
+            InAppLogger.logError("Notifications", "Error showing persistent notification: ${e.message}")
+        }
+    }
+    
+    /**
+     * Hide persistent notification
+     */
+    private fun hidePersistentNotification() {
+        try {
+            notificationManager.cancel(PERSISTENT_NOTIFICATION_ID)
+            Log.d(TAG, "Persistent notification hidden")
+            InAppLogger.log("Notifications", "Persistent notification hidden")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error hiding persistent notification", e)
+            InAppLogger.logError("Notifications", "Error hiding persistent notification: ${e.message}")
+        }
+    }
+    
+    /**
+     * Show notification while TTS is reading
+     */
+    private fun showReadingNotification(appName: String, content: String) {
+        try {
+            val isNotificationWhileReadingEnabled = sharedPreferences?.getBoolean(KEY_NOTIFICATION_WHILE_READING, false) ?: false
+            if (!isNotificationWhileReadingEnabled) {
+                Log.d(TAG, "Reading notification disabled in settings")
+                return
+            }
+            
+            // Check notification permission for Android 13+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                    Log.w(TAG, "POST_NOTIFICATIONS permission not granted - cannot show reading notification")
+                    InAppLogger.logError("Notifications", "POST_NOTIFICATIONS permission not granted")
+                    return
+                }
+            }
+            
+            // Create notification channel for Android O+
+            createNotificationChannel()
+            
+            // Create intent for opening SpeakThat
+            val openAppIntent = Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+            val openAppPendingIntent = PendingIntent.getActivity(
+                this, 0, openAppIntent, 
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            
+            // Create intent for stopping TTS
+            val stopTtsIntent = Intent(this, NotificationReaderService::class.java).apply {
+                action = "STOP_TTS"
+            }
+            val stopTtsPendingIntent = PendingIntent.getService(
+                this, 0, stopTtsIntent, 
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            
+            // Build notification
+            val notification = NotificationCompat.Builder(this, "SpeakThat_Channel")
+                .setContentTitle("SpeakThat Reading")
+                .setContentText("$appName: $content")
+                .setSmallIcon(R.drawable.speakthaticon)
+                .setOngoing(false) // Temporary notification
+                .setSilent(true) // Silent notification
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(openAppPendingIntent)
+                .addAction(
+                    R.drawable.speakthaticon,
+                    "Shut Up!",
+                    stopTtsPendingIntent
+                )
+                .addAction(
+                    R.drawable.speakthaticon,
+                    "Open SpeakThat!",
+                    openAppPendingIntent
+                )
+                .setAutoCancel(true) // Auto-dismiss when tapped
+                .build()
+            
+            // Show notification
+            notificationManager.notify(READING_NOTIFICATION_ID, notification)
+            Log.d(TAG, "Reading notification shown for $appName with ID: $READING_NOTIFICATION_ID")
+            InAppLogger.log("Notifications", "Reading notification shown for $appName with ID: $READING_NOTIFICATION_ID")
+            
+            // Verify notification was actually posted
+            val activeNotifications = notificationManager.activeNotifications
+            val ourNotification = activeNotifications.find { it.id == READING_NOTIFICATION_ID }
+            if (ourNotification != null) {
+                Log.d(TAG, "Reading notification verified as active")
+                InAppLogger.log("Notifications", "Reading notification verified as active")
+            } else {
+                Log.w(TAG, "Reading notification not found in active notifications")
+                InAppLogger.logError("Notifications", "Reading notification not found in active notifications")
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error showing reading notification", e)
+            InAppLogger.logError("Notifications", "Error showing reading notification: ${e.message}")
+        }
+    }
+    
+    /**
+     * Hide reading notification
+     */
+    private fun hideReadingNotification() {
+        try {
+            notificationManager.cancel(READING_NOTIFICATION_ID)
+            Log.d(TAG, "Reading notification hidden")
+            InAppLogger.log("Notifications", "Reading notification hidden")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error hiding reading notification", e)
+            InAppLogger.logError("Notifications", "Error hiding reading notification: ${e.message}")
+        }
+    }
+    
+    /**
+     * Create notification channel for Android O+
+     */
+    private fun createNotificationChannel() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            try {
+                val channel = NotificationChannel(
+                    "SpeakThat_Channel",
+                    "SpeakThat Notifications",
+                    NotificationManager.IMPORTANCE_DEFAULT
+                ).apply {
+                    description = "Notifications from SpeakThat app"
+                    setSound(null, null) // No sound
+                    enableVibration(false) // No vibration
+                    setShowBadge(false) // No badge
+                }
+                
+                notificationManager.createNotificationChannel(channel)
+                Log.d(TAG, "Notification channel created with IMPORTANCE_DEFAULT")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error creating notification channel", e)
+            }
+        }
+    }
+    
+    /**
+     * Handle notification actions
+     */
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        when (intent?.action) {
+            "STOP_TTS" -> {
+                Log.d(TAG, "Stop TTS action received")
+                InAppLogger.log("Notifications", "Stop TTS action received from notification")
+                stopTts()
+                return START_STICKY
+            }
+        }
+        return super.onStartCommand(intent, flags, startId)
+    }
+    
+    /**
+     * Stop TTS and hide reading notification
+     */
+    private fun stopTts() {
+        try {
+            // Stop current TTS
+            textToSpeech?.stop()
+            isCurrentlySpeaking = false
+            currentSpeechText = ""
+            currentAppName = ""
+            
+            // Clear notification queue
+            notificationQueue.clear()
+            
+            // Hide reading notification
+            hideReadingNotification()
+            
+            Log.d(TAG, "TTS stopped via notification action")
+            InAppLogger.log("Notifications", "TTS stopped via notification action")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error stopping TTS", e)
+            InAppLogger.logError("Notifications", "Error stopping TTS: ${e.message}")
+        }
+    }
 
 }

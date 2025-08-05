@@ -80,6 +80,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String KEY_COOLDOWN_APPS = "cooldown_apps"; // JSON string of cooldown app settings
     private static final String KEY_HONOUR_DO_NOT_DISTURB = "honour_do_not_disturb"; // boolean
     private static final String KEY_HONOUR_PHONE_CALLS = "honour_phone_calls"; // boolean
+
     private static final String KEY_SPEECH_TEMPLATE = "speech_template"; // Custom speech template
 
     // Media behavior options
@@ -95,6 +96,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final int DEFAULT_DELAY_BEFORE_READOUT = 2; // 2 seconds
     private static final boolean DEFAULT_HONOUR_DO_NOT_DISTURB = true; // Default to honouring DND
     private static final boolean DEFAULT_HONOUR_PHONE_CALLS = true; // Default to honouring phone calls
+
 
     // Speech template constants
     private static final String DEFAULT_SPEECH_TEMPLATE = "{app} notified you: {content}";
@@ -503,6 +505,8 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.switchHonourPhoneCalls.setOnCheckedChangeListener((buttonView, isChecked) -> {
             saveHonourPhoneCalls(isChecked);
         });
+        
+
         
         // Set up Audio Mode info button
         binding.btnAudioModeInfo.setOnClickListener(v -> showAudioModeDialog());
@@ -940,6 +944,8 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Load Phone Calls setting
         boolean honourPhoneCalls = sharedPreferences.getBoolean(KEY_HONOUR_PHONE_CALLS, DEFAULT_HONOUR_PHONE_CALLS);
         binding.switchHonourPhoneCalls.setChecked(honourPhoneCalls);
+        
+
         
         // Load speech template settings
         loadSpeechTemplateSettings();
@@ -1533,6 +1539,8 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         editor.apply();
         InAppLogger.log("BehaviorSettings", "Honour phone calls changed to: " + honour);
     }
+    
+
 
     private void updateThresholdMarker(float threshold) {
         // Check if binding is null (activity might be destroyed)
