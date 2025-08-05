@@ -393,6 +393,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_title_notification_cooldown">Notification Cooldown</string>
     <string name="dialog_title_speech_formats_guide">🗣️ Speech Formats - Complete Guide</string>
     <string name="dialog_title_honour_do_not_disturb">Honour Do Not Disturb</string>
+    <string name="dialog_title_honour_phone_calls">Honour Phone Calls</string>
     <string name="dialog_title_honour_audio_mode">Honour Audio Mode</string>
     <string name="dialog_title_select_bluetooth_device">Select Bluetooth Device</string>
     <string name="dialog_title_remove_device">Remove Device</string>

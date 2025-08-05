@@ -430,6 +430,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     InAppLogger.log("AudioMode", "Audio mode check passed: $modeName")
                 }
                 
+                // Check phone calls - if on a call and honouring phone calls, don't process notifications
+                if (BehaviorSettingsActivity.shouldHonourPhoneCalls(this)) {
+                    Log.d(TAG, "Phone call check failed - device is on a call, ignoring notification from $packageName")
+                    InAppLogger.log("PhoneCalls", "Notification ignored due to active phone call")
+                    return
+                } else {
+                    // Log when phone call check passes (for debugging)
+                    Log.d(TAG, "Phone call check passed - device is not on a call, proceeding with notification from $packageName")
+                    InAppLogger.log("PhoneCalls", "Phone call check passed: no active call")
+                }
+                
                 // Get app name
                 val appName = getAppName(packageName)
                 

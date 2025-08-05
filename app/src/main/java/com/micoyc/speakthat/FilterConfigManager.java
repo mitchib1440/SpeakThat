@@ -97,6 +97,7 @@ public class FilterConfigManager {
         public int duckingVolume;
         public int delayBeforeReadout;
         public boolean honourDoNotDisturb;
+        public boolean honourPhoneCalls; // Add honour phone calls setting
         public boolean honourAudioMode; // Add honour audio mode setting
         public boolean waveToStopEnabled;
         public int waveTimeoutSeconds;
@@ -115,6 +116,7 @@ public class FilterConfigManager {
             this.duckingVolume = 30;
             this.delayBeforeReadout = 0;
             this.honourDoNotDisturb = true;
+            this.honourPhoneCalls = true; // Default to true for safety
             this.honourAudioMode = true; // Default to true for safety
             this.waveToStopEnabled = false;
             this.waveTimeoutSeconds = 30;
@@ -232,6 +234,7 @@ public class FilterConfigManager {
         config.behavior.duckingVolume = prefs.getInt("ducking_volume", 30);
         config.behavior.delayBeforeReadout = prefs.getInt("delay_before_readout", 0);
         config.behavior.honourDoNotDisturb = prefs.getBoolean("honour_do_not_disturb", true);
+        config.behavior.honourPhoneCalls = prefs.getBoolean("honour_phone_calls", true); // Add honour phone calls
         config.behavior.honourAudioMode = prefs.getBoolean("honour_audio_mode", true); // Add honour audio mode
         config.behavior.waveToStopEnabled = prefs.getBoolean("wave_to_stop_enabled", false);
         config.behavior.waveTimeoutSeconds = prefs.getInt("wave_timeout_seconds", 30);
@@ -290,6 +293,7 @@ public class FilterConfigManager {
         behavior.put("duckingVolume", config.behavior.duckingVolume);
         behavior.put("delayBeforeReadout", config.behavior.delayBeforeReadout);
         behavior.put("honourDoNotDisturb", config.behavior.honourDoNotDisturb);
+        behavior.put("honourPhoneCalls", config.behavior.honourPhoneCalls); // Add honour phone calls
         behavior.put("honourAudioMode", config.behavior.honourAudioMode); // Add honour audio mode
         behavior.put("waveToStopEnabled", config.behavior.waveToStopEnabled);
         behavior.put("waveTimeoutSeconds", config.behavior.waveTimeoutSeconds);
@@ -564,6 +568,11 @@ public class FilterConfigManager {
                 
                 if (behavior.has("honourDoNotDisturb")) {
                     mainEditor.putBoolean("honour_do_not_disturb", behavior.getBoolean("honourDoNotDisturb"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("honourPhoneCalls")) {
+                    mainEditor.putBoolean("honour_phone_calls", behavior.getBoolean("honourPhoneCalls"));
                     totalImported++;
                 }
                 

@@ -28,6 +28,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Permission to detect phone calls for Honour Phone Calls feature -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <!-- Conditional filtering permissions -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />

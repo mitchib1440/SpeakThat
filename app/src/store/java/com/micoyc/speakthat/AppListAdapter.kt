@@ -8,13 +8,10 @@ import android.widget.ArrayAdapter
 import android.widget.Filter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
-import coil.load
-import coil.decode.SvgDecoder
 
 /**
- * Adapter for displaying app list items from JSON data in AutoCompleteTextView
+ * Store-specific version of AppSearchAdapter that never makes network requests
+ * This ensures privacy-conscious users don't have any network activity for app icons
  */
 class AppSearchAdapter(
     context: Context,
@@ -29,24 +26,15 @@ class AppSearchAdapter(
     override fun getItem(position: Int): AppListData? = 
         if (position < filteredApps.size) filteredApps[position] else null
     
-    @NonNull
-    override fun getView(position: Int, @Nullable convertView: View?, @NonNull parent: ViewGroup): View {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: inflater.inflate(R.layout.item_app_selector, parent, false)
         
         val app = getItem(position)
         if (app != null) {
             val iconView = view.findViewById<ImageView>(R.id.appIcon)
-            val iconSlug = app.iconSlug
-            if (!iconSlug.isNullOrBlank()) {
-                val iconUrl = "https://cdn.simpleicons.org/${iconSlug}"
-                iconView.load(iconUrl) {
-                    decoderFactory { result, options, _ -> SvgDecoder(result.source, options) }
-                    placeholder(R.drawable.ic_app_unknown)
-                    error(R.drawable.ic_app_unknown)
-                }
-            } else {
-                iconView.setImageResource(R.drawable.ic_app_default)
-            }
+            // Store variant: Always use local fallback icons for privacy
+            // No network requests are made, even if iconSlug is provided
+            iconView.setImageResource(R.drawable.ic_app_default)
             
             // Set app name
             val nameView = view.findViewById<TextView>(R.id.appName)
@@ -55,9 +43,6 @@ class AppSearchAdapter(
             // Set package name
             val packageView = view.findViewById<TextView>(R.id.packageName)
             packageView.text = app.packageName
-            
-            // Set category as subtitle (if you want to show it)
-            // You can add a category TextView to the layout if needed
         }
         
         return view

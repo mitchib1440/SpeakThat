@@ -1,0 +1,21 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.micoyc.speakthat",
+  "variantName": "githubDebug",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 13,
+      "versionName": "1.3.3",
+      "outputFile": "SpeakThat-v1.3.3.apk"
+    }
+  ],
+  "elementType": "File",
+  "minSdkVersionForDexing": 24
+}
