@@ -1547,6 +1547,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Clean up media behavior effects
         cleanupMediaBehavior()
         
+        // Hide reading notification since we're no longer speaking
+        hideReadingNotification()
+        
         Log.d(TAG, "TTS stopped due to $triggerType")
         InAppLogger.logTTSEvent("TTS stopped by $triggerType", "User interrupted speech")
     }
@@ -1562,6 +1565,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Clean up media behavior effects
         cleanupMediaBehavior()
+        
+        // Hide reading notification since we're no longer speaking
+        hideReadingNotification()
         
         Log.d(TAG, "Current TTS speech stopped by audio focus change")
         InAppLogger.logTTSEvent("TTS stopped by audio focus", "Focus loss interrupted speech")

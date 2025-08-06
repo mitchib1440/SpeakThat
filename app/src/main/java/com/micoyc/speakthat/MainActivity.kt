@@ -149,9 +149,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             return
         }
         
-        // Request notification permission for Android 13+
-        requestNotificationPermission()
-        
         // Initialize crash-persistent logging first
         InAppLogger.initialize(this)
         
@@ -1021,18 +1018,33 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     /**
-     * Request notification permission for Android 13+
+     * Request notification permission for Android 13+ when needed
+     * This is called when user enables notification features
      */
-    private fun requestNotificationPermission() {
+    fun requestNotificationPermissionIfNeeded(): Boolean {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
             if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
                 Log.d(TAG, "Requesting POST_NOTIFICATIONS permission")
                 InAppLogger.log("Permissions", "Requesting POST_NOTIFICATIONS permission")
                 requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), REQUEST_NOTIFICATION_PERMISSION)
+                return false // Permission not yet granted
             } else {
                 Log.d(TAG, "POST_NOTIFICATIONS permission already granted")
                 InAppLogger.log("Permissions", "POST_NOTIFICATIONS permission already granted")
+                return true // Permission already granted
             }
+        }
+        return true // No permission needed for older Android versions
+    }
+    
+    /**
+     * Check if notification permission is granted
+     */
+    fun isNotificationPermissionGranted(): Boolean {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        } else {
+            true // No permission needed for older Android versions
         }
     }
     

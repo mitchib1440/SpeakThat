@@ -149,6 +149,18 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         persistentNotificationSwitch.setChecked(persistentNotificationEnabled);
 
         persistentNotificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // User is enabling persistent notification - check permission first
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                    if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                        // Request permission
+                        requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1001);
+                        // Don't save the setting yet - wait for permission result
+                        buttonView.setChecked(false);
+                        return;
+                    }
+                }
+            }
             sharedPreferences.edit().putBoolean("persistent_notification", isChecked).apply();
         });
 
@@ -158,6 +170,18 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         notificationWhileReadingSwitch.setChecked(notificationWhileReadingEnabled);
 
         notificationWhileReadingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // User is enabling reading notification - check permission first
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                    if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                        // Request permission
+                        requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1002);
+                        // Don't save the setting yet - wait for permission result
+                        buttonView.setChecked(false);
+                        return;
+                    }
+                }
+            }
             sharedPreferences.edit().putBoolean("notification_while_reading", isChecked).apply();
         });
 
@@ -386,6 +410,31 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 performExport();
             } else {
                 requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+        }
+    }
+    
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        
+        if (requestCode == 1001 || requestCode == 1002) { // Notification permission requests
+            if (grantResults.length > 0 && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                // Permission granted - enable the setting
+                if (requestCode == 1001) {
+                    // Persistent notification
+                    binding.switchPersistentNotification.setChecked(true);
+                    sharedPreferences.edit().putBoolean("persistent_notification", true).apply();
+                    Toast.makeText(this, "Persistent notification enabled", Toast.LENGTH_SHORT).show();
+                } else if (requestCode == 1002) {
+                    // Reading notification
+                    binding.switchNotificationWhileReading.setChecked(true);
+                    sharedPreferences.edit().putBoolean("notification_while_reading", true).apply();
+                    Toast.makeText(this, "Reading notification enabled", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                // Permission denied
+                Toast.makeText(this, "Notification permission denied - feature will not work", Toast.LENGTH_LONG).show();
             }
         }
     }
