@@ -25,20 +25,20 @@
     <!-- Filter Settings -->
     <string-array name="blacklist_types">
         <item>ブロック</item>
-        <item>Private</item>
+        <item>プライベート</item>
     </string-array>
     <!-- Cooldown Time Options -->
     <string-array name="cooldown_time_options">
-        <item>1 second</item>
-        <item>2 seconds</item>
-        <item>3 seconds</item>
-        <item>5 seconds</item>
-        <item>10 seconds</item>
-        <item>15 seconds</item>
-        <item>30 seconds</item>
-        <item>1 minute</item>
-        <item>2 minutes</item>
-        <item>5 minutes</item>
+        <item>1秒</item>
+        <item>2秒</item>
+        <item>3秒</item>
+        <item>5秒</item>
+        <item>10秒</item>
+        <item>15秒</item>
+        <item>30秒</item>
+        <item>1分</item>
+        <item>2分</item>
+        <item>5分</item>
     </string-array>
     <!-- Cooldown Time Values (corresponding to options above) -->
     <string-array name="cooldown_time_values">
@@ -54,25 +54,24 @@
         <item>300</item>
     </string-array>
     <!-- Behavior Settings Dialogs -->
-    <string name="notification_behavior_dialog_title">Notification Behavior Options</string>
-    <string name="notification_behavior_dialog_message">Choose how SpeakThat handles multiple notifications:
+    <string name="notification_behavior_dialog_title">通知の動作オプション</string>
+    <string name="notification_behavior_dialog_message">通知が重複する場合にどう扱うか選択してください:
 
-<b>🔄 Interrupt</b> - Stops current notification and reads new one immediately. Best for urgent notifications.
+<b>🔄 割り込み</b> - 現在の通知を止めて新しい通知を即座に読み上げます。緊急の通知に最適です。
 
-<b>📋 Queue</b> - Finishes current notification, then reads new ones in order. Nothing gets missed.
+<b>📋 待機</b> - 現在の通知が完了してから新しい通知を順番に読み上げます。漏れがありません。
 
-<b>⏭️ Skip</b> - Ignores new notifications while reading. Simple but you might miss important ones.
+<b>⏭️ スキップ</b> - 通知を読み上げている間の新しい通知は無視します。シンプルですが、重要な通知を逃す可能性があります。
 
-<b>🧠 Smart (Recommended)</b> - Priority apps interrupt, others queue. Perfect balance of urgency and completeness.
-
-Smart mode lets you choose which apps are urgent enough to interrupt (like calls, messages) while other apps wait their turn.</string>
-    <string name="custom_app_names_title">Custom App Names</string>
-    <string name="custom_app_names_description">Customize how app names are spoken in notifications</string>
-    <string name="add_custom_app_name">Add Custom App Name</string>
-    <string name="app_package_hint">App package name (e.g., com.twitter.android)</string>
-    <string name="custom_name_hint">Custom name (e.g., Twitter)</string>
-    <string name="custom_app_names_example">Example: X app reads as Twitter</string>
-    <string name="media_behavior_dialog_title">Media Behavior Options</string>
+<b>🧠 スマート (推奨)</b> - 優先アプリは割り込み、その他は待機します。緊急性と完全性の完璧なバランスを。
+スマートモードでは、他のアプリを待機させながら割り込みするべき緊急のアプリ(電話やメッセージなど)を選択できます。</string>
+    <string name="custom_app_names_title">アプリ名のカスタマイズ</string>
+    <string name="custom_app_names_description">通知でのアプリ名の読み方をカスタマイズします</string>
+    <string name="add_custom_app_name">カスタムアプリ名を追加</string>
+    <string name="app_package_hint">アプリパッケージ名（例：com.twitter.android）</string>
+    <string name="custom_name_hint">カスタム名（例：Twitter）</string>
+    <string name="custom_app_names_example">例：XアプリはTwitterと読む</string>
+    <string name="media_behavior_dialog_title">メディアの動作オプション</string>
     <string name="media_behavior_dialog_message">Choose how SpeakThat handles notifications while music/videos play:
 
 <b>🎵 Ignore</b> - Speaks over your media. Simple but can be disruptive.
@@ -84,7 +83,7 @@ Smart mode lets you choose which apps are urgent enough to interrupt (like calls
 <b>🔇 Silence</b> - Doesn\'t speak while media plays. Quiet but you might miss important notifications.
 
 Lower Audio works like a car radio - it ducks the music down when speaking, then brings it back up. Perfect for music lovers who still want notifications.</string>
-    <string name="shake_to_stop_dialog_title">Shake to Stop Feature</string>
+    <string name="shake_to_stop_dialog_title">振って停止</string>
     <string name="shake_to_stop_dialog_message">Shake to Stop lets you instantly silence SpeakThat by shaking your device:
 
 <b>✨ Why it\'s helpful:</b>
@@ -105,12 +104,12 @@ Lower Audio works like a car radio - it ducks the music down when speaking, then
 • Works great for both gentle and vigorous shakers
 
 This feature is especially loved by people who get notifications during meetings, movies, or while driving.</string>
-    <string name="use_recommended">Use Recommended</string>
-    <string name="got_it">Got it</string>
+    <string name="use_recommended">おすすめを使用する</string>
+    <string name="got_it">了解</string>
     <!-- Persistent/Silent Notification Filtering -->
-    <string name="persistent_notification_filtering_title">🔇 Persistent/Silent Notification Filtering</string>
-    <string name="persistent_notification_filtering_description">Skip notifications that are persistent (ongoing) or silent (no sound/vibration)</string>
-    <string name="enable_persistent_filtering">Enable persistent/silent notification filtering</string>
+    <string name="persistent_notification_filtering_title">🔇 永続/サイレント通知フィルタ</string>
+    <string name="persistent_notification_filtering_description">永続的(進行中)またはサイレント(音/振動なし)の通知をスキップ</string>
+    <string name="enable_persistent_filtering">🔇 永続/サイレント通知フィルタ</string>
     <string name="persistent_filtering_help">💡 Persistent notifications are ongoing (like music controls, navigation, etc.) and silent notifications have no sound/vibration. This option helps reduce notification spam from background services.</string>
     <!-- Individual Persistent Filtering Categories -->
     <string name="filter_persistent_notifications">Filter persistent notifications</string>
@@ -181,40 +180,40 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Update System -->
     <string name="check_for_updates">Check for Updates</string>
     <string name="update_checker">Update Checker</string>
-    <string name="checking_for_updates">Checking for updates...</string>
-    <string name="update_available">Update Available: %s</string>
-    <string name="no_update_available">No Update Available</string>
-    <string name="app_up_to_date">Your app is up to date!</string>
-    <string name="update_info">Version: %1$s\nSize: %2$s\nReleased: %3$s</string>
-    <string name="download_update">Download Update</string>
-    <string name="download_confirmation">Download version %s? This will use mobile data if not on WiFi.</string>
-    <string name="downloading_update">Downloading update...</string>
-    <string name="downloading_update_progress">Downloading update... %d%%</string>
-    <string name="download_complete">Download complete!</string>
-    <string name="install_update">Install Update</string>
-    <string name="view_release_notes">View Release Notes</string>
-    <string name="release_notes">Release Notes</string>
-    <string name="no_release_notes">No release notes available</string>
-    <string name="check_again">Check Again</string>
-    <string name="update_check_failed">Failed to check for updates</string>
-    <string name="download_failed">Download failed</string>
-    <string name="installation_failed">Installation failed</string>
-    <string name="invalid_apk_signature">Invalid APK signature</string>
-    <string name="signature_verification_failed">Signature verification failed</string>
-    <string name="update_privacy_notice">Privacy: Update checks only verify version numbers. No personal data is collected or transmitted.</string>
-    <string name="download">Download</string>
-    <string name="cancel">Cancel</string>
+    <string name="checking_for_updates">アップデートを確認中...</string>
+    <string name="update_available">利用可能なアップデート： %s</string>
+    <string name="no_update_available">利用可能なアップデートはありません</string>
+    <string name="app_up_to_date">アプリは最新です！</string>
+    <string name="update_info">バージョン： %1$s\nサイズ： %2$s\nリリース日： %3$s</string>
+    <string name="download_update">アップデートをダウンロード</string>
+    <string name="download_confirmation">バージョン %sをダウンロードしますか? WiFi接続でない場合、モバイルデータを使用します。</string>
+    <string name="downloading_update">アップデートをダウンロード中...</string>
+    <string name="downloading_update_progress">アップデートをダウンロード中... %d%%</string>
+    <string name="download_complete">ダウンロード完了！</string>
+    <string name="install_update">アップデートをインストール</string>
+    <string name="view_release_notes">リリースノートを表示</string>
+    <string name="release_notes">リリースノート</string>
+    <string name="no_release_notes">リリースノートはありません</string>
+    <string name="check_again">もう一度確認</string>
+    <string name="update_check_failed">アップデートの確認に失敗しました</string>
+    <string name="download_failed">ダウンロードに失敗しました</string>
+    <string name="installation_failed">インストールに失敗しました</string>
+    <string name="invalid_apk_signature">無効なAPK署名</string>
+    <string name="signature_verification_failed">署名の検証に失敗しました</string>
+    <string name="update_privacy_notice">プライバシー: 更新チェックはバージョン番号のみを確認します。個人データの収集や送信は行いません。</string>
+    <string name="download">ダウンロード</string>
+    <string name="cancel">キャンセル</string>
     <string name="ok">OK</string>
     <!-- Update Settings -->
-    <string name="auto_update_settings">Auto-Update Settings</string>
-    <string name="check_for_updates_auto">Check for Updates</string>
-    <string name="check_for_updates_auto_desc">Automatically check for app updates when you open the app</string>
-    <string name="check_frequency">Check Frequency</string>
-    <string name="check_frequency_desc">How often should the app check for updates?</string>
-    <string name="update_daily">Daily (recommended)</string>
-    <string name="update_weekly">Weekly</string>
-    <string name="update_monthly">Monthly</string>
-    <string name="update_never">Never (manual only)</string>
+    <string name="auto_update_settings">自動アップデートの設定</string>
+    <string name="check_for_updates_auto">アップデートの確認</string>
+    <string name="check_for_updates_auto_desc">アプリを開いたときにアップデートを自動的に確認する</string>
+    <string name="check_frequency">確認の頻度</string>
+    <string name="check_frequency_desc">アプリのアップデートの確認頻度は？</string>
+    <string name="update_daily">毎日 (推奨)</string>
+    <string name="update_weekly">毎週</string>
+    <string name="update_monthly">毎月</string>
+    <string name="update_never">しない (手動のみ)</string>
     <!-- TTS Template Strings (for improved localization) -->
     <!-- These are complete sentence templates with placeholders for proper localization -->
     <string name="tts_template_notified_you">{app}があなたに通知しました: {content}</string>
@@ -252,21 +251,21 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_onboarding_words">通知に含まれる読んでほしくない単語やフレーズを入力してください。一般的な例には、パスワード、PIN、クレジットカード、医療用語が含まれます。</string>
     <string name="tts_onboarding_complete">SpeakThatは目を自由に保ちながら接続を維持するお手伝いの準備ができています！アプリ設定でいつでもフィルターを追加できます。</string>
     <!-- Behavior Settings Speech Format Templates -->
-    <string name="tts_behavior_default">Default format</string>
-    <string name="tts_behavior_minimal">Minimal format</string>
-    <string name="tts_behavior_formal">Formal format</string>
-    <string name="tts_behavior_casual">Casual format</string>
-    <string name="tts_behavior_time_aware">Time aware format</string>
-    <string name="tts_behavior_content_only">Content only format</string>
-    <string name="tts_behavior_app_only">App only format</string>
-    <string name="tts_behavior_varied">Varied format</string>
-    <string name="tts_behavior_custom">Custom format</string>
+    <string name="tts_behavior_default">デフォルトのフォーマット</string>
+    <string name="tts_behavior_minimal">最小のフォーマット</string>
+    <string name="tts_behavior_formal">堅いフォーマット</string>
+    <string name="tts_behavior_casual">カジュアルなフォーマット</string>
+    <string name="tts_behavior_time_aware">時刻付きフォーマット</string>
+    <string name="tts_behavior_content_only">コンテンツのみフォーマット</string>
+    <string name="tts_behavior_app_only">アプリのみフォーマット</string>
+    <string name="tts_behavior_varied">ランダムなフォーマット</string>
+    <string name="tts_behavior_custom">カスタムフォーマット</string>
     <!-- Speech Format Preset Templates -->
-    <string name="tts_format_default">{app} notified you: {content}</string>
+    <string name="tts_format_default">{app}の通知: {content}</string>
     <string name="tts_format_minimal">{app}: {content}</string>
-    <string name="tts_format_formal">Notification from {app}: {content}</string>
-    <string name="tts_format_casual">{app} says: {content}</string>
-    <string name="tts_format_time_aware">{app} at {time}: {content}</string>
+    <string name="tts_format_formal">{app}からの通知: {content}</string>
+    <string name="tts_format_casual">{app}が言いました: {content}</string>
+    <string name="tts_format_time_aware">{app} {time}: {content}</string>
     <string name="tts_format_content_only">{content}</string>
     <string name="tts_format_app_only">{app}</string>
     <string name="tts_format_varied">VARIED</string>
@@ -326,57 +325,57 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Critical Hardcoded Strings - Activity Titles -->
     <string name="title_behavior_settings">Behavior Settings</string>
     <string name="title_general_settings">General Settings</string>
-    <string name="title_voice_settings">Voice Settings</string>
-    <string name="title_filter_settings">Filter Settings</string>
-    <string name="title_test_settings">Test Settings</string>
-    <string name="title_notification_history">Notification History</string>
-    <string name="title_bluetooth_devices">Bluetooth Devices</string>
+    <string name="title_voice_settings">音声設定</string>
+    <string name="title_filter_settings">フィルタ設定</string>
+    <string name="title_test_settings">設定のテスト</string>
+    <string name="title_notification_history">通知履歴</string>
+    <string name="title_bluetooth_devices">Bluetooth端末</string>
     <!-- Critical Hardcoded Strings - Dialog Titles -->
-    <string name="dialog_title_theme_changed">Theme Changed</string>
-    <string name="dialog_title_export_successful">Export Successful</string>
-    <string name="dialog_title_export_failed">Export Failed</string>
-    <string name="dialog_title_import_full_config">Import Full Configuration</string>
-    <string name="dialog_title_import_successful">Import Successful</string>
-    <string name="dialog_title_import_failed">Import Failed</string>
-    <string name="dialog_title_clear_all_data">Clear All Data</string>
-    <string name="dialog_title_data_cleared">Data Cleared</string>
-    <string name="dialog_title_clear_failed">Clear Failed</string>
-    <string name="dialog_title_advanced_voice_options">Advanced Voice Options</string>
-    <string name="dialog_title_audio_settings_help">Audio Settings Help</string>
-    <string name="dialog_title_advanced_voice_information">Advanced Voice Information</string>
-    <string name="dialog_title_format_test_results">🧪 Format Test Results</string>
-    <string name="dialog_title_delay_before_readout">Delay Before Readout</string>
-    <string name="dialog_title_custom_app_names">Custom App Names</string>
-    <string name="dialog_title_notification_cooldown">Notification Cooldown</string>
-    <string name="dialog_title_speech_formats_guide">🗣️ Speech Formats - Complete Guide</string>
-    <string name="dialog_title_honour_do_not_disturb">Honour Do Not Disturb</string>
-    <string name="dialog_title_honour_audio_mode">Honour Audio Mode</string>
-    <string name="dialog_title_select_bluetooth_device">Select Bluetooth Device</string>
-    <string name="dialog_title_remove_device">Remove Device</string>
-    <string name="dialog_title_error">Error</string>
-    <string name="dialog_title_bluetooth_not_available">Bluetooth Not Available</string>
-    <string name="dialog_title_bluetooth_disabled">Bluetooth Disabled</string>
-    <string name="dialog_title_no_devices_found">No Devices Found</string>
-    <string name="dialog_title_select_bluetooth_devices">Select Bluetooth Devices</string>
-    <string name="dialog_title_wifi_disabled">WiFi Disabled</string>
-    <string name="dialog_title_wifi_networks">WiFi Networks</string>
-    <string name="dialog_title_no_networks_found">No Networks Found</string>
-    <string name="dialog_title_select_wifi_networks">Select WiFi Networks</string>
-    <string name="dialog_title_enter_wifi_network">Enter WiFi Network</string>
-    <string name="dialog_title_set_quiet_hours">Set Quiet Hours</string>
-    <string name="dialog_title_rule_created">Rule Created!</string>
-    <string name="dialog_title_experimental_feature">Experimental Feature</string>
-    <string name="dialog_title_delete_rule">Delete Rule</string>
-    <string name="dialog_title_invalid_rule_name">Invalid Rule Name</string>
-    <string name="dialog_title_invalid_rule">Invalid Rule</string>
-    <string name="dialog_title_add_trigger">Add Trigger</string>
-    <string name="dialog_title_add_action">Add Action</string>
-    <string name="dialog_title_add_exception">Add Exception</string>
-    <string name="dialog_title_remove_trigger">Remove Trigger</string>
-    <string name="dialog_title_remove_action">Remove Action</string>
-    <string name="dialog_title_remove_exception">Remove Exception</string>
-    <string name="dialog_title_coming_soon">Coming Soon</string>
-    <string name="dialog_title_select_app">Select App</string>
+    <string name="dialog_title_theme_changed">テーマを変更しました</string>
+    <string name="dialog_title_export_successful">正常にエクスポートしました</string>
+    <string name="dialog_title_export_failed">エクスポートに失敗しました</string>
+    <string name="dialog_title_import_full_config">全ての設定をインポート</string>
+    <string name="dialog_title_import_successful">正常にインスポートしました</string>
+    <string name="dialog_title_import_failed">インポートに失敗しました</string>
+    <string name="dialog_title_clear_all_data">全てのデータを消去</string>
+    <string name="dialog_title_data_cleared">データを消去しました</string>
+    <string name="dialog_title_clear_failed">消去に失敗しました</string>
+    <string name="dialog_title_advanced_voice_options">高度な音声オプション</string>
+    <string name="dialog_title_audio_settings_help">音声設定のヘルプ</string>
+    <string name="dialog_title_advanced_voice_information">高度な音声情報</string>
+    <string name="dialog_title_format_test_results">フォーマットのテスト結果</string>
+    <string name="dialog_title_delay_before_readout">読み上げ前の遅延</string>
+    <string name="dialog_title_custom_app_names">カスタムアプリ名</string>
+    <string name="dialog_title_notification_cooldown">通知のクールダウン時間</string>
+    <string name="dialog_title_speech_formats_guide">🗣️ 音声フォーマット - 完全ガイド</string>
+    <string name="dialog_title_honour_do_not_disturb">おやすみモードに配慮</string>
+    <string name="dialog_title_honour_audio_mode">マナー・サイレントに配慮</string>
+    <string name="dialog_title_select_bluetooth_device">Bluetoothデバイスを選択</string>
+    <string name="dialog_title_remove_device">デバイスを削除</string>
+    <string name="dialog_title_error">エラー</string>
+    <string name="dialog_title_bluetooth_not_available">Bluetoothが利用できません</string>
+    <string name="dialog_title_bluetooth_disabled">Bluetoothは無効です</string>
+    <string name="dialog_title_no_devices_found">デバイスが見つかりません</string>
+    <string name="dialog_title_select_bluetooth_devices">Bluetoothデバイスを選択</string>
+    <string name="dialog_title_wifi_disabled">WiFiが無効です</string>
+    <string name="dialog_title_wifi_networks">WiFiネットワーク</string>
+    <string name="dialog_title_no_networks_found">ネットワークが見つかりません</string>
+    <string name="dialog_title_select_wifi_networks">WiFiネットワークを選択</string>
+    <string name="dialog_title_enter_wifi_network">WiFiネットワークを入力</string>
+    <string name="dialog_title_set_quiet_hours">サイレントタイムを設定</string>
+    <string name="dialog_title_rule_created">ルールを作成しました！</string>
+    <string name="dialog_title_experimental_feature">実験的な機能</string>
+    <string name="dialog_title_delete_rule">ルールを削除</string>
+    <string name="dialog_title_invalid_rule_name">無効なルール名</string>
+    <string name="dialog_title_invalid_rule">無効なルール</string>
+    <string name="dialog_title_add_trigger">トリガーを追加</string>
+    <string name="dialog_title_add_action">アクションを追加</string>
+    <string name="dialog_title_add_exception">例外を追加</string>
+    <string name="dialog_title_remove_trigger">トリガーを削除</string>
+    <string name="dialog_title_remove_action">アクションを削除</string>
+    <string name="dialog_title_remove_exception">例外を削除</string>
+    <string name="dialog_title_coming_soon">準備中</string>
+    <string name="dialog_title_select_app">アプリを選択</string>
     <string name="dialog_title_invalid_app_package">Invalid App Package</string>
     <string name="dialog_title_edit_rule">Edit Rule</string>
     <string name="dialog_title_create_rule">Create Rule</string>
@@ -429,37 +428,37 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="button_create_rule">Create Rule</string>
     <string name="button_manual_input">Manual Input</string>
     <string name="button_i_understand">I Understand</string>
-    <string name="button_delete">Delete</string>
-    <string name="button_remove">Remove</string>
+    <string name="button_delete">削除</string>
+    <string name="button_remove">削除</string>
     <!-- Critical Hardcoded Strings - App Categories -->
-    <string name="category_social_media">Social Media</string>
-    <string name="category_social_media_description">Social networking and community apps</string>
-    <string name="category_messaging">Messaging</string>
-    <string name="category_messaging_description">Chat and communication apps</string>
-    <string name="category_finance">Finance</string>
-    <string name="category_finance_description">Banking and financial apps</string>
-    <string name="category_health">Health</string>
-    <string name="category_health_description">Health and fitness apps</string>
-    <string name="category_entertainment">Entertainment</string>
-    <string name="category_entertainment_description">Media and entertainment apps</string>
-    <string name="category_games">Games</string>
-    <string name="category_games_description">Mobile games and gaming apps</string>
+    <string name="category_social_media">ソーシャルメディア</string>
+    <string name="category_social_media_description">SNSアプリ</string>
+    <string name="category_messaging">メッセージ</string>
+    <string name="category_messaging_description">チャットとコミュニケーションアプリ</string>
+    <string name="category_finance">金融</string>
+    <string name="category_finance_description">銀行・金融アプリ</string>
+    <string name="category_health">健康</string>
+    <string name="category_health_description">健康とフィットネスアプリ</string>
+    <string name="category_entertainment">エンターテイメント</string>
+    <string name="category_entertainment_description">メディアとエンターテイメントアプリ</string>
+    <string name="category_games">ゲーム</string>
+    <string name="category_games_description">モバイルゲームとゲームアプリ</string>
     <!-- Critical Hardcoded Strings - Other -->
-    <string name="unknown_device">Unknown Device</string>
-    <string name="export_full_config_text">Complete configuration backup created on %s</string>
-    <string name="export_full_config_chooser">Export Full Configuration</string>
-    <string name="export_full_config_text_chooser">Export Full Configuration as Text</string>
-    <string name="select_configuration_file">Select Configuration File</string>
-    <string name="save_rule">save</string>
-    <string name="update_rule">update</string>
+    <string name="unknown_device">不明なデバイス</string>
+    <string name="export_full_config_text">%sに設定のバックアップが完了しました</string>
+    <string name="export_full_config_chooser">全ての設定をエクスポート</string>
+    <string name="export_full_config_text_chooser">全ての設定をテキストでエクスポート</string>
+    <string name="select_configuration_file">設定ファイルを選択</string>
+    <string name="save_rule">保存</string>
+    <string name="update_rule">更新</string>
     <!-- Conditional Rules - Trigger Strings -->
-    <string name="rule_trigger_wifi_network">Connected to WiFi network: %1$s</string>
-    <string name="rule_trigger_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <string name="rule_trigger_wifi_network">WiFiネットワークに接続: %1$s</string>
+    <string name="rule_trigger_not_wifi_network">WiFiネットワークに接続していません： %1$s</string>
     <!-- Conditional Rules - Action Strings -->
-    <string name="rule_action_read_notification">Read the notification</string>
-    <string name="rule_action_skip_app">Skip notifications from app: %1$s</string>
-    <string name="rule_action_read_app">Read notifications from app: %1$s</string>
+    <string name="rule_action_read_notification">通知を読む</string>
+    <string name="rule_action_skip_app">アプリからの通知をスキップ： %1$s</string>
+    <string name="rule_action_read_app">アプリからの通知を読む： %1$s</string>
     <!-- Conditional Rules - Exception Strings -->
-    <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
-    <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <string name="rule_exception_wifi_network">WiFiネットワークに接続: %1$s</string>
+    <string name="rule_exception_not_wifi_network">WiFiネットワークに接続していません： %1$s</string>
 </resources>
