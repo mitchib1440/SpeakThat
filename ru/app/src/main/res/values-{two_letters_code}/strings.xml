@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SpeakThat!</string>
-    <string name="service_name">SpeakThat Notification Reader</string>
+    <string name="service_name">SpeakThat Чтение Уведомлений</string>
     <!-- Permission Explanations for IzzyOnDroid/F-Droid -->
-    <string name="permission_request_install_packages">Used for auto-update system to install new versions from GitHub releases. Only used when user explicitly enables auto-updates and app was not installed from Google Play Store.</string>
-    <string name="permission_access_location">Required for Bluetooth and WiFi conditional filtering features. Used to detect nearby Bluetooth devices and WiFi networks for user-defined rules. No location tracking or data collection.</string>
-    <string name="permission_bluetooth_scan">Required for Bluetooth conditional filtering. Allows the app to detect when specific Bluetooth devices are connected for notification rules. No data is collected or transmitted.</string>
-    <string name="permission_nearby_wifi_devices">Required for WiFi network conditional filtering on Android 13+. Allows the app to detect WiFi network changes for user-defined notification rules. No network data is collected.</string>
-    <string name="permission_read_external_storage">Used for importing/exporting app settings and configuration files. Allows users to backup and restore their settings. No personal data is accessed.</string>
-    <string name="permission_needed">Notification Access Required</string>
-    <string name="permission_description">SpeakThat! needs access to your notifications to read them aloud. This permission is required for the app to function.</string>
+    <string name="permission_request_install_packages">Используется в системе автоматического обновления для установки новых версий из релизов GitHub. Используется только в том случае, если пользователь явно включил автоматическое обновление, а приложение не было установлено из магазина Google Play.</string>
+    <string name="permission_access_location">Требуется для функций условной фильтрации Bluetooth и WiFi. Используется для обнаружения близлежащих устройств Bluetooth и сетей Wi-Fi в соответствии с пользовательскими правилами. Не требуется отслеживание местоположения или сбор данных.</string>
+    <string name="permission_bluetooth_scan">Требуется для условной фильтрации Bluetooth. Позволяет приложению определять, когда подключены определённые устройства Bluetooth, для соблюдения правил уведомления. Данные не собираются и не передаются.</string>
+    <string name="permission_nearby_wifi_devices">Требуется для условной фильтрации сети Wi-Fi на Android 13+. Позволяет приложению обнаруживать изменения в сети Wi-Fi по пользовательским правилам уведомления. Сетевые данные не собираются.</string>
+    <string name="permission_read_external_storage">Используется для импорта /экспорта настроек приложения и файлов конфигурации. Позволяет пользователям создавать резервные копии и восстанавливать свои настройки. Доступ к персональным данным отсутствует.</string>
+    <string name="permission_needed">Требуется доступ к уведомлениями</string>
+    <string name="permission_description"></string>
     <string name="master_switch_battery_tip">💡 Turn off when not needed to save battery</string>
     <string name="open_settings">Open Permission Settings</string>
     <string name="service_enabled">Notification Reader: Enabled</string>
