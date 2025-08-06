@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SpeakThat!</string>
+    <string name="service_name">SpeakThat Notification Reader</string>
+    <!-- Permission Explanations for IzzyOnDroid/F-Droid -->
+    <string name="permission_request_install_packages">Used for auto-update system to install new versions from GitHub releases. Only used when user explicitly enables auto-updates and app was not installed from Google Play Store.</string>
+    <string name="permission_access_location">Required for Bluetooth and WiFi conditional filtering features. Used to detect nearby Bluetooth devices and WiFi networks for user-defined rules. No location tracking or data collection.</string>
+    <string name="permission_bluetooth_scan">Required for Bluetooth conditional filtering. Allows the app to detect when specific Bluetooth devices are connected for notification rules. No data is collected or transmitted.</string>
+    <string name="permission_nearby_wifi_devices">Required for WiFi network conditional filtering on Android 13+. Allows the app to detect WiFi network changes for user-defined notification rules. No network data is collected.</string>
+    <string name="permission_read_external_storage">Used for importing/exporting app settings and configuration files. Allows users to backup and restore their settings. No personal data is accessed.</string>
+    <string name="permission_needed">Notification Access Required</string>
+    <string name="permission_description">SpeakThat! needs access to your notifications to read them aloud. This permission is required for the app to function.</string>
+    <string name="master_switch_battery_tip">💡 Turn off when not needed to save battery</string>
+    <string name="open_settings">Open Permission Settings</string>
+    <string name="service_enabled">Notification Reader: Enabled</string>
+    <string name="service_disabled">Notification Reader: Disabled</string>
+    <string name="show_history">Show Notification History</string>
+    <string name="settings">SpeakThat! Settings</string>
+    <string name="no_notifications">No notifications to display</string>
+    <string name="notification_history">Notification History</string>
+    <string name="close">Close</string>
+    <!-- Search Functionality -->
+    <string name="search_settings_hint">Search settings...</string>
+    <string name="no_search_results">No matching settings found</string>
+    <!-- Filter Settings -->
+    <string-array name="blacklist_types">
+        <item>Block</item>
+        <item>Private</item>
+    </string-array>
+    <!-- Cooldown Time Options -->
+    <string-array name="cooldown_time_options">
+        <item>1 second</item>
+        <item>2 seconds</item>
+        <item>3 seconds</item>
+        <item>5 seconds</item>
+        <item>10 seconds</item>
+        <item>15 seconds</item>
+        <item>30 seconds</item>
+        <item>1 minute</item>
+        <item>2 minutes</item>
+        <item>5 minutes</item>
+    </string-array>
+    <!-- Cooldown Time Values (corresponding to options above) -->
+    <string-array name="cooldown_time_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>300</item>
+    </string-array>
+    <!-- Behavior Settings Dialogs -->
+    <string name="notification_behavior_dialog_title">Notification Behavior Options</string>
+    <string name="notification_behavior_dialog_message">Choose how SpeakThat handles multiple notifications:
+
+<b>🔄 Interrupt</b> - Stops current notification and reads new one immediately. Best for urgent notifications.
+
+<b>📋 Queue</b> - Finishes current notification, then reads new ones in order. Nothing gets missed.
+
+<b>⏭️ Skip</b> - Ignores new notifications while reading. Simple but you might miss important ones.
+
+<b>🧠 Smart (Recommended)</b> - Priority apps interrupt, others queue. Perfect balance of urgency and completeness.
+
+Smart mode lets you choose which apps are urgent enough to interrupt (like calls, messages) while other apps wait their turn.</string>
+    <string name="custom_app_names_title">Custom App Names</string>
+    <string name="custom_app_names_description">Customize how app names are spoken in notifications</string>
+    <string name="add_custom_app_name">Add Custom App Name</string>
+    <string name="app_package_hint">App package name (e.g., com.twitter.android)</string>
+    <string name="custom_name_hint">Custom name (e.g., Twitter)</string>
+    <string name="custom_app_names_example">Example: X app reads as Twitter</string>
+    <string name="media_behavior_dialog_title">Media Behavior Options</string>
+    <string name="media_behavior_dialog_message">Choose how SpeakThat handles notifications while music/videos play:
+
+<b>🎵 Ignore</b> - Speaks over your media. Simple but can be disruptive.
+
+<b>⏸️ Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow.
+
+<b>🔉 Lower Audio (Recommended)</b> - Temporarily reduces media volume so you can hear both. Most natural experience.
+
+<b>🔇 Silence</b> - Doesn\'t speak while media plays. Quiet but you might miss important notifications.
+
+Lower Audio works like a car radio - it ducks the music down when speaking, then brings it back up. Perfect for music lovers who still want notifications.</string>
+    <string name="shake_to_stop_dialog_title">Shake to Stop Feature</string>
+    <string name="shake_to_stop_dialog_message">Shake to Stop lets you instantly silence SpeakThat by shaking your device:
+
+<b>✨ Why it\'s helpful:</b>
+• Stop embarrassing notifications in quiet places
+• Quick control when your hands are busy
+• Works even when screen is off
+• No fumbling for buttons
+
+<b>🎯 How it works:</b>
+• Shake your device firmly (like a dice shake)
+• Current notification stops immediately
+• Queued notifications are cleared
+• New notifications work normally
+
+<b>⚙️ Customization:</b>
+• Adjust sensitivity for your preference
+• Test your shake strength with the meter
+• Works great for both gentle and vigorous shakers
+
+This feature is especially loved by people who get notifications during meetings, movies, or while driving.</string>
+    <string name="use_recommended">Use Recommended</string>
+    <string name="got_it">Got it</string>
+    <!-- Persistent/Silent Notification Filtering -->
+    <string name="persistent_notification_filtering_title">🔇 Persistent/Silent Notification Filtering</string>
+    <string name="persistent_notification_filtering_description">Skip notifications that are persistent (ongoing) or silent (no sound/vibration)</string>
+    <string name="enable_persistent_filtering">Enable persistent/silent notification filtering</string>
+    <string name="persistent_filtering_help">💡 Persistent notifications are ongoing (like music controls, navigation, etc.) and silent notifications have no sound/vibration. This option helps reduce notification spam from background services.</string>
+    <!-- Individual Persistent Filtering Categories -->
+    <string name="filter_persistent_notifications">Filter persistent notifications</string>
+    <string name="filter_silent_notifications">Filter silent notifications</string>
+    <string name="filter_foreground_services">Filter foreground service notifications</string>
+    <string name="filter_low_priority">Filter low priority notifications</string>
+    <string name="filter_system_notifications">Filter system notifications</string>
+    <!-- Category Descriptions -->
+    <string name="persistent_notifications_desc">Ongoing notifications that don\'t auto-dismiss (music controls, navigation)</string>
+    <string name="silent_notifications_desc">Notifications with no sound or vibration</string>
+    <string name="foreground_services_desc">Notifications from ongoing background services</string>
+    <string name="low_priority_desc">Notifications with minimum or low priority level</string>
+    <string name="system_notifications_desc">Notifications from system apps (Android, Google services)</string>
+    <!-- Wave to Stop Feature -->
+    <string name="wave_to_stop_dialog_title">Wave to Stop Feature</string>
+    <string name="wave_to_stop_dialog_message">Wave to Stop lets you instantly silence SpeakThat by waving your hand in front of the device:
+
+<b>✨ Why it\'s helpful:</b>
+• Perfect for users who can\'t shake their device
+• Great for phones on desks or mounts
+• Works with one hand
+• No physical device movement needed
+• Accessibility-friendly alternative to shake
+
+<b>🎯 How it works:</b>
+• Wave your hand in front of the device (like a magic gesture)
+• Uses the proximity sensor to detect hand movement
+• Current notification stops immediately
+• Queued notifications are cleared
+• New notifications work normally
+
+<b>⚙️ Customization:</b>
+• Adjust sensitivity for your preference
+• Test your wave detection with the meter
+• Works great for different hand sizes and distances
+
+This feature is especially useful for accessibility, desk users, and anyone who prefers gesture control over physical movement.</string>
+    <!-- About Page -->
+    <string name="about">About</string>
+    <string name="about_description_title">About SpeakThat!</string>
+    <string name="about_features_title">Key Features</string>
+    <string name="about_developer_title">Developer</string>
+    <string name="about_license_title">License</string>
+    <string name="version_format">Version %s</string>
+    <string name="version_format_with_variant" formatted="false">Version %1$s (%2$s)</string>
+    <!-- Store Update Dialog -->
+    <string name="store_update_dialog_title">Updates via App Store</string>
+    <string name="store_update_dialog_message">This version of SpeakThat! receives updates through your app store (F-Droid, Google Play Store, etc.).</string>
+    <string name="store_update_dialog_info">• Updates are automatically handled by your app store\n• You\'ll receive notifications when updates are available\n• No manual download or installation required</string>
+    <string name="store_update_dialog_help_title">Need the auto-update version?</string>
+    <string name="store_update_dialog_help_message">If you want automatic updates directly from GitHub, you can download the GitHub version instead. This version is identical but includes auto-update functionality.</string>
+    <string name="store_update_dialog_visit_github">Visit GitHub</string>
+    <string name="store_update_dialog_got_it">Got it</string>
+    <string name="app_description">SpeakThat! is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
+    <string name="app_features">• Real-time notification reading\n• Customizable voice settings\n• Smart notification filtering\n• App-specific controls\n• Media-aware behavior\n• Notification history\n• Shake/Wave to stop\n• Custom speech formatting\n• Dark/Light theme support\n• Conditional rules for advanced logic and schedules\n• Fully ad-free and offline functionality</string>
+    <string name="developer_info">Developed with ❤️ by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day.\n\nSpeakThat! was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers.\n\nThis project was accelerated by AI-assisted programming.</string>
+    <string name="license_info">This project is open source and available under the GPL-3.0 License.\n\nYou can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
+    <string name="read_about_app">Read About App</string>
+    <string name="stop_reading">Stop Reading</string>
+    <!-- TTS-specific strings (emoji-free and speech-optimized) -->
+    <string name="tts_app_intro">Welcome to SpeakThat!</string>
+    <string name="tts_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
+    <string name="tts_features_intro">Key features include:</string>
+    <string name="tts_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and fully ad-free, offline functionality.</string>
+    <string name="tts_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
+    <string name="tts_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
+    <string name="tts_thank_you">Thank you for using SpeakThat!</string>
+    <!-- Update System -->
+    <string name="check_for_updates">Check for Updates</string>
+    <string name="update_checker">Update Checker</string>
+    <string name="checking_for_updates">Checking for updates...</string>
+    <string name="update_available">Update Available: %s</string>
+    <string name="no_update_available">No Update Available</string>
+    <string name="app_up_to_date">Your app is up to date!</string>
+    <string name="update_info">Version: %1$s\nSize: %2$s\nReleased: %3$s</string>
+    <string name="download_update">Download Update</string>
+    <string name="download_confirmation">Download version %s? This will use mobile data if not on WiFi.</string>
+    <string name="downloading_update">Downloading update...</string>
+    <string name="downloading_update_progress">Downloading update... %d%%</string>
+    <string name="download_complete">Download complete!</string>
+    <string name="install_update">Install Update</string>
+    <string name="view_release_notes">View Release Notes</string>
+    <string name="release_notes">Release Notes</string>
+    <string name="no_release_notes">No release notes available</string>
+    <string name="check_again">Check Again</string>
+    <string name="update_check_failed">Failed to check for updates</string>
+    <string name="download_failed">Download failed</string>
+    <string name="installation_failed">Installation failed</string>
+    <string name="invalid_apk_signature">Invalid APK signature</string>
+    <string name="signature_verification_failed">Signature verification failed</string>
+    <string name="update_privacy_notice">Privacy: Update checks only verify version numbers. No personal data is collected or transmitted.</string>
+    <string name="download">Download</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <!-- Update Settings -->
+    <string name="auto_update_settings">Auto-Update Settings</string>
+    <string name="check_for_updates_auto">Check for Updates</string>
+    <string name="check_for_updates_auto_desc">Automatically check for app updates when you open the app</string>
+    <string name="check_frequency">Check Frequency</string>
+    <string name="check_frequency_desc">How often should the app check for updates?</string>
+    <string name="update_daily">Daily (recommended)</string>
+    <string name="update_weekly">Weekly</string>
+    <string name="update_monthly">Monthly</string>
+    <string name="update_never">Never (manual only)</string>
+    <!-- TTS Template Strings (for improved localization) -->
+    <!-- These are complete sentence templates with placeholders for proper localization -->
+    <string name="tts_template_notified_you">{app} уведомил вас: {content}</string>
+    <string name="tts_template_reported">{app} сообщил: {content}</string>
+    <string name="tts_template_saying">Уведомление от {app}, говорящее {content}</string>
+    <string name="tts_template_alerts_you">{app} предупреждает вас: {content}</string>
+    <string name="tts_template_update_from">Обновление от {app}: {content}</string>
+    <string name="tts_template_notification">{app} уведомление: {content}</string>
+    <string name="tts_template_new_notification">Новое уведомление: {app}: {content}</string>
+    <string name="tts_template_new_from">Новое от {app}: {content}</string>
+    <string name="tts_template_said">{app} сказал: {content}</string>
+    <string name="tts_template_updated_you">{app} обновил вас: {content}</string>
+    <string name="tts_template_new_notification_from">Новое уведомление от {app}: говорящее: {content}</string>
+    <string name="tts_template_new_update_from">Новое обновление от {app}: {content}</string>
+    <string name="tts_template_notification_from">Уведомление от {app}: {content}</string>
+    <string name="tts_template_says">{app} говорит: {content}</string>
+    <string name="tts_template_private_notification">Вы получили приватное уведомление от {app}</string>
+    <!-- TTS Context Templates - Complete sentences for different app contexts -->
+    <!-- About Page TTS -->
+    <string name="tts_about_intro">Добро пожаловать в SpeakThat!</string>
+    <string name="tts_about_description">SpeakThat - это открытый Android-ридер уведомлений, который объявляет ваши уведомления вслух, используя преобразование текста в речь. Идеально подходит для работы без рук, доступности и информированности во время многозадачности.</string>
+    <string name="tts_about_features_intro">Основные функции включают:</string>
+    <string name="tts_about_features">Чтение уведомлений в реальном времени, настраиваемые голосовые настройки, умная фильтрация уведомлений, приложение-специфичные элементы управления, медиа-осведомленное поведение, отслеживание истории уведомлений, встряхивание для остановки и волна для остановки, пользовательское форматирование речи, поддержка темного и светлого режимов, условные правила для продвинутой логики и расписаний, и полная функциональность без рекламы и офлайн.</string>
+    <string name="tts_about_developer">Разработано с любовью Мичи, независимым разработчиком из Великобритании с более чем 12-летним опытом тестирования и использования читателей уведомлений каждый день. SpeakThat вдохновлен Touchless Notifications, изначально разработанным DYNA Logix, и стремится продолжить наследие настраиваемых читателей уведомлений. Этот проект был ускорен программированием с помощью искусственного интеллекта.</string>
+    <string name="tts_about_license">Этот проект с открытым исходным кодом доступен под лицензией GPL-3.0. Вы можете просмотреть полный текст лицензии и исходный код на GitHub. Вклад и обратная связь приветствуются!</string>
+    <string name="tts_about_thank_you">Спасибо за использование SpeakThat!</string>
+    <!-- Voice Settings Test -->
+    <string name="tts_voice_test">Вот как будут звучать ваши уведомления с этими настройками голоса.</string>
+    <!-- Onboarding TTS -->
+    <string name="tts_onboarding_welcome">Добро пожаловать в SpeakThat! Оставайтесь на связи, не глядя на экран. Ваш телефон будет читать уведомления вслух, чтобы вы могли сосредоточиться на важном.</string>
+    <string name="tts_onboarding_permission">SpeakThat нужны разрешения для чтения ваших уведомлений вслух. Все остается на вашем устройстве, и вы контролируете, что читается.</string>
+    <string name="tts_onboarding_privacy">Ваша конфиденциальность важна. Вы точно контролируете, что читается вслух. Встряхните телефон, чтобы мгновенно остановить любое объявление. Все остается на вашем устройстве.</string>
+    <string name="tts_onboarding_filters">Давайте настроим несколько основных фильтров конфиденциальности для начала. SpeakThat имеет мощную систему фильтрации, которая позволяет вам выбирать, что читается, а что нет.</string>
+    <string name="tts_onboarding_apps">Введите название приложения, уведомления которого вы никогда не хотите, чтобы я читал. Общие примеры включают банковские приложения, медицинские приложения и приложения для знакомств.</string>
+    <string name="tts_onboarding_words">Введите слова или фразы, которые вы никогда не хотите, чтобы я читал в уведомлениях. Общие примеры включают пароль, PIN, кредитную карту и медицинские термины.</string>
+    <string name="tts_onboarding_complete">SpeakThat готов помочь вам оставаться на связи, сохраняя глаза свободными! Вы можете добавить больше фильтров в любое время в настройках приложения.</string>
+    <!-- Behavior Settings Speech Format Templates -->
+    <string name="tts_behavior_default">Default format</string>
+    <string name="tts_behavior_minimal">Minimal format</string>
+    <string name="tts_behavior_formal">Formal format</string>
+    <string name="tts_behavior_casual">Casual format</string>
+    <string name="tts_behavior_time_aware">Time aware format</string>
+    <string name="tts_behavior_content_only">Content only format</string>
+    <string name="tts_behavior_app_only">App only format</string>
+    <string name="tts_behavior_varied">Varied format</string>
+    <string name="tts_behavior_custom">Custom format</string>
+    <!-- Speech Format Preset Templates -->
+    <string name="tts_format_default">{app} notified you: {content}</string>
+    <string name="tts_format_minimal">{app}: {content}</string>
+    <string name="tts_format_formal">Notification from {app}: {content}</string>
+    <string name="tts_format_casual">{app} says: {content}</string>
+    <string name="tts_format_time_aware">{app} at {time}: {content}</string>
+    <string name="tts_format_content_only">{content}</string>
+    <string name="tts_format_app_only">{app}</string>
+    <string name="tts_format_varied">VARIED</string>
+    <string name="tts_format_custom">CUSTOM</string>
+    <!-- Rule Builder Templates -->
+    <string name="template_selection_title">Choose a Template</string>
+    <string name="template_selection_description">Select a pre-configured rule template to get started quickly, or create a custom rule from scratch.</string>
+    <string name="create_custom_rule">Create Custom Rule</string>
+    <!-- Template Names -->
+    <string name="template_headphones_only_name">Bluetooth Headphones</string>
+    <string name="template_headphones_only_description">Select your Bluetooth headphones, and notifications will never be read when they are connected to your phone</string>
+    <string name="template_time_schedule_name">Quiet Hours</string>
+    <string name="template_time_schedule_description">Select two times you want SpeakThat to remain silent between</string>
+    <string name="template_screen_off_name">Only when Screen Off</string>
+    <string name="template_screen_off_description">Notifications will only be read if your screen is off</string>
+    <string name="template_home_network_name">Only on Home WiFi</string>
+    <string name="template_home_network_description">Enter your Home WiFi network and notifications will only be read when you\'re connected to it</string>
+    <!-- Template Trigger Descriptions -->
+    <string name="template_trigger_headphones_disconnected">When Bluetooth headphones are disconnected</string>
+    <string name="template_trigger_time_between">Between 10:00 PM and 8:00 AM</string>
+    <string name="template_trigger_screen_on">When screen is turned on</string>
+    <string name="template_trigger_not_home_wifi">When not connected to Home WiFi</string>
+    <!-- Template Action Descriptions -->
+    <string name="template_action_skip_notification">Don\'t read notifications</string>
+    <!-- Rule Natural Language Templates -->
+    <string name="rule_format_when_trigger_will_action">When %1$s, %2$s will %3$s</string>
+    <string name="rule_format_when_trigger_will_action_unless_exception">When %1$s, %2$s will %3$s unless %4$s</string>
+    <string name="rule_format_when_trigger_will_action_unless_exceptions">When %1$s, %2$s will %3$s unless %4$s</string>
+    <!-- Rule Component Descriptions -->
+    <string name="rule_trigger_bluetooth_connected">Bluetooth device is connected</string>
+    <string name="rule_trigger_bluetooth_disconnected">Bluetooth device is disconnected</string>
+    <string name="rule_trigger_screen_on">screen is on</string>
+    <string name="rule_trigger_screen_off">screen is off</string>
+    <string name="rule_trigger_time_between">time is between %1$s and %2$s</string>
+    <string name="rule_trigger_wifi_connected">connected to %1$s</string>
+    <string name="rule_trigger_wifi_disconnected">not connected to %1$s</string>
+    <string name="rule_trigger_multiple">multiple conditions are met</string>
+    <string name="rule_action_skip_notification">skip reading notifications</string>
+    <string name="rule_action_enable_app_filter">enable app filtering for %1$s</string>
+    <string name="rule_action_disable_app_filter">disable app filtering for %1$s</string>
+    <string name="rule_action_change_voice_settings">change voice settings</string>
+    <string name="rule_action_multiple">perform multiple actions</string>
+    <string name="rule_exception_bluetooth_connected">Bluetooth device is connected</string>
+    <string name="rule_exception_bluetooth_disconnected">Bluetooth device is disconnected</string>
+    <string name="rule_exception_screen_on">screen is on</string>
+    <string name="rule_exception_screen_off">screen is off</string>
+    <string name="rule_exception_time_between">time is between %1$s and %2$s</string>
+    <string name="rule_exception_wifi_connected">connected to %1$s</string>
+    <string name="rule_exception_wifi_disconnected">not connected to %1$s</string>
+    <string name="rule_exception_multiple">multiple exceptions apply</string>
+    <!-- Logic Connectors -->
+    <string name="rule_logic_and">and</string>
+    <string name="rule_logic_or">or</string>
+    <string name="rule_logic_xor">either</string>
+    <string name="rule_logic_separator">, </string>
+    <string name="rule_logic_final_separator">, and </string>
+    <!-- Critical Hardcoded Strings - Activity Titles -->
+    <string name="title_behavior_settings">Behavior Settings</string>
+    <string name="title_general_settings">General Settings</string>
+    <string name="title_voice_settings">Voice Settings</string>
+    <string name="title_filter_settings">Filter Settings</string>
+    <string name="title_test_settings">Test Settings</string>
+    <string name="title_notification_history">Notification History</string>
+    <string name="title_bluetooth_devices">Bluetooth Devices</string>
+    <!-- Critical Hardcoded Strings - Dialog Titles -->
+    <string name="dialog_title_theme_changed">Theme Changed</string>
+    <string name="dialog_title_export_successful">Export Successful</string>
+    <string name="dialog_title_export_failed">Export Failed</string>
+    <string name="dialog_title_import_full_config">Import Full Configuration</string>
+    <string name="dialog_title_import_successful">Import Successful</string>
+    <string name="dialog_title_import_failed">Import Failed</string>
+    <string name="dialog_title_clear_all_data">Clear All Data</string>
+    <string name="dialog_title_data_cleared">Data Cleared</string>
+    <string name="dialog_title_clear_failed">Clear Failed</string>
+    <string name="dialog_title_advanced_voice_options">Advanced Voice Options</string>
+    <string name="dialog_title_audio_settings_help">Audio Settings Help</string>
+    <string name="dialog_title_advanced_voice_information">Advanced Voice Information</string>
+    <string name="dialog_title_format_test_results">🧪 Format Test Results</string>
+    <string name="dialog_title_delay_before_readout">Delay Before Readout</string>
+    <string name="dialog_title_custom_app_names">Custom App Names</string>
+    <string name="dialog_title_notification_cooldown">Notification Cooldown</string>
+    <string name="dialog_title_speech_formats_guide">🗣️ Speech Formats - Complete Guide</string>
+    <string name="dialog_title_honour_do_not_disturb">Honour Do Not Disturb</string>
+    <string name="dialog_title_honour_audio_mode">Honour Audio Mode</string>
+    <string name="dialog_title_select_bluetooth_device">Select Bluetooth Device</string>
+    <string name="dialog_title_remove_device">Remove Device</string>
+    <string name="dialog_title_error">Error</string>
+    <string name="dialog_title_bluetooth_not_available">Bluetooth Not Available</string>
+    <string name="dialog_title_bluetooth_disabled">Bluetooth Disabled</string>
+    <string name="dialog_title_no_devices_found">No Devices Found</string>
+    <string name="dialog_title_select_bluetooth_devices">Select Bluetooth Devices</string>
+    <string name="dialog_title_wifi_disabled">WiFi Disabled</string>
+    <string name="dialog_title_wifi_networks">WiFi Networks</string>
+    <string name="dialog_title_no_networks_found">No Networks Found</string>
+    <string name="dialog_title_select_wifi_networks">Select WiFi Networks</string>
+    <string name="dialog_title_enter_wifi_network">Enter WiFi Network</string>
+    <string name="dialog_title_set_quiet_hours">Set Quiet Hours</string>
+    <string name="dialog_title_rule_created">Rule Created!</string>
+    <string name="dialog_title_experimental_feature">Experimental Feature</string>
+    <string name="dialog_title_delete_rule">Delete Rule</string>
+    <string name="dialog_title_invalid_rule_name">Invalid Rule Name</string>
+    <string name="dialog_title_invalid_rule">Invalid Rule</string>
+    <string name="dialog_title_add_trigger">Add Trigger</string>
+    <string name="dialog_title_add_action">Add Action</string>
+    <string name="dialog_title_add_exception">Add Exception</string>
+    <string name="dialog_title_remove_trigger">Remove Trigger</string>
+    <string name="dialog_title_remove_action">Remove Action</string>
+    <string name="dialog_title_remove_exception">Remove Exception</string>
+    <string name="dialog_title_coming_soon">Coming Soon</string>
+    <string name="dialog_title_select_app">Select App</string>
+    <string name="dialog_title_invalid_app_package">Invalid App Package</string>
+    <string name="dialog_title_edit_rule">Edit Rule</string>
+    <string name="dialog_title_create_rule">Create Rule</string>
+    <!-- Critical Hardcoded Strings - Dialog Messages -->
+    <string name="dialog_message_theme_changed">The theme has been changed. For the best experience, you may want to restart the app manually.</string>
+    <string name="dialog_message_export_successful">Full configuration exported to:\n%s</string>
+    <string name="dialog_message_export_successful_text">Configuration exported as text (file creation failed)</string>
+    <string name="dialog_message_export_failed">Failed to export configuration: %s</string>
+    <string name="dialog_message_import_full_config">This will replace your current settings with the imported configuration.\n\nDo you want to continue?</string>
+    <string name="dialog_message_import_successful">%s</string>
+    <string name="dialog_message_import_failed">%s</string>
+    <string name="dialog_message_import_failed_read">Failed to read file: %s</string>
+    <string name="dialog_message_clear_all_data">This will reset all settings to defaults and clear notification history.\n\nThis action cannot be undone.\n\nDo you want to continue?</string>
+    <string name="dialog_message_data_cleared">All settings have been reset to defaults and notification history has been cleared.</string>
+    <string name="dialog_message_clear_failed">Failed to clear data: %s</string>
+    <string name="dialog_message_advanced_voice_options">These settings are for users who need granular control over the voice and accent.\n\n99% of users should only change the main Language option.\n\nIf you run into trouble, you can always reset to defaults.</string>
+    <string name="dialog_message_bluetooth_not_available">Bluetooth is not available on this device.</string>
+    <string name="dialog_message_bluetooth_disabled">Please enable Bluetooth to select devices.</string>
+    <string name="dialog_message_no_devices_found">No paired Bluetooth devices found. Please pair some devices first.</string>
+    <string name="dialog_message_wifi_disabled">Please enable WiFi to select networks.</string>
+    <string name="dialog_message_wifi_networks">Unable to automatically detect WiFi networks. Please manually enter WiFi network names (SSIDs) one per line.\n\nNote: You can also try enabling location services and granting location permissions to automatically detect networks.</string>
+    <string name="dialog_message_no_networks_found">No WiFi networks found. Please connect to some networks first or manually enter network names.</string>
+    <string name="dialog_message_enter_wifi_network">Enter the name of your WiFi network:</string>
+    <string name="dialog_message_set_quiet_hours">Choose the time range and days when you don\'t want notifications read:</string>
+    <string name="dialog_message_rule_created">Your rule \'%s\' has been created successfully.</string>
+    <string name="dialog_message_experimental_feature">Rules are experimental. If you experience issues, you can disable them in settings. Your existing filters and privacy settings will always be respected.</string>
+    <string name="dialog_message_delete_rule">Are you sure you want to delete the rule \'%s\'?</string>
+    <string name="dialog_message_invalid_rule_name">Please enter a name for this rule.</string>
+    <string name="dialog_message_invalid_rule">Please fix the following issues:\n\n%s</string>
+    <string name="dialog_message_save_rule_failed">Failed to %s rule. Please try again.</string>
+    <string name="dialog_message_remove_trigger">Are you sure you want to remove this trigger?</string>
+    <string name="dialog_message_remove_action">Are you sure you want to remove this action?</string>
+    <string name="dialog_message_remove_exception">Are you sure you want to remove this exception?</string>
+    <string name="dialog_message_coming_soon">%s configuration will be implemented in the next phase.</string>
+    <string name="dialog_message_select_app">Enter the app package name (e.g., com.whatsapp):</string>
+    <string name="dialog_message_invalid_app_package">Please enter an app package name.</string>
+    <string name="dialog_message_remove_device">Remove %s from the list?</string>
+    <string name="dialog_message_select_bluetooth_device">Choose the Bluetooth device for this rule:</string>
+    <string name="dialog_message_select_wifi_network">Choose the WiFi network for this rule:</string>
+    <!-- Critical Hardcoded Strings - Button Labels -->
+    <string name="button_restart_now">Restart Now</string>
+    <string name="button_later">Later</string>
+    <string name="button_select_file">Select File</string>
+    <string name="button_clear_all_data">Clear All Data</string>
+    <string name="button_continue">Continue</string>
+    <string name="button_got_it">Got it!</string>
+    <string name="button_use_recommended">Use Recommended</string>
+    <string name="button_nevermind_keep_timeout">Keep the timeout enabled (Recommended)</string>
+    <string name="button_disable_timeout">Disable the timeout</string>
+    <string name="button_create_rule">Create Rule</string>
+    <string name="button_manual_input">Manual Input</string>
+    <string name="button_i_understand">I Understand</string>
+    <string name="button_delete">Delete</string>
+    <string name="button_remove">Remove</string>
+    <!-- Critical Hardcoded Strings - App Categories -->
+    <string name="category_social_media">Social Media</string>
+    <string name="category_social_media_description">Social networking and community apps</string>
+    <string name="category_messaging">Messaging</string>
+    <string name="category_messaging_description">Chat and communication apps</string>
+    <string name="category_finance">Finance</string>
+    <string name="category_finance_description">Banking and financial apps</string>
+    <string name="category_health">Health</string>
+    <string name="category_health_description">Health and fitness apps</string>
+    <string name="category_entertainment">Entertainment</string>
+    <string name="category_entertainment_description">Media and entertainment apps</string>
+    <string name="category_games">Games</string>
+    <string name="category_games_description">Mobile games and gaming apps</string>
+    <!-- Critical Hardcoded Strings - Other -->
+    <string name="unknown_device">Unknown Device</string>
+    <string name="export_full_config_text">Complete configuration backup created on %s</string>
+    <string name="export_full_config_chooser">Export Full Configuration</string>
+    <string name="export_full_config_text_chooser">Export Full Configuration as Text</string>
+    <string name="select_configuration_file">Select Configuration File</string>
+    <string name="save_rule">save</string>
+    <string name="update_rule">update</string>
+    <!-- Conditional Rules - Trigger Strings -->
+    <string name="rule_trigger_wifi_network">Connected to WiFi network: %1$s</string>
+    <string name="rule_trigger_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <!-- Conditional Rules - Action Strings -->
+    <string name="rule_action_read_notification">Read the notification</string>
+    <string name="rule_action_skip_app">Skip notifications from app: %1$s</string>
+    <string name="rule_action_read_app">Read notifications from app: %1$s</string>
+    <!-- Conditional Rules - Exception Strings -->
+    <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
+    <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+</resources>
