@@ -68,6 +68,48 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         }
     }
     
+    /**
+     * SharedPreferences listener to sync UI when Quick Settings tile changes the master switch
+     * This ensures the main app's UI stays in sync even when the app is in the background
+     */
+    private val masterSwitchListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == KEY_MASTER_SWITCH_ENABLED) {
+            // Check if we need to update the UI
+            val currentState = isMasterSwitchEnabled(this)
+            val switchState = binding.switchMasterControl.isChecked
+            
+            if (currentState != switchState) {
+                Log.d(TAG, "MainActivity: Detected master switch change via SharedPreferences - current: $currentState, switch: $switchState")
+                
+                // Update UI on main thread
+                runOnUiThread {
+                    // Temporarily remove listener to prevent infinite loop
+                    binding.switchMasterControl.setOnCheckedChangeListener(null)
+                    
+                    // Update switch to match current state
+                    binding.switchMasterControl.isChecked = currentState
+                    
+                    // Update status text
+                    if (currentState) {
+                        binding.textMasterSwitchStatus.text = "SpeakThat will read notifications when active"
+                        binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.purple_200))
+                    } else {
+                        binding.textMasterSwitchStatus.text = "SpeakThat is disabled - notifications will not be read"
+                        binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.red_200))
+                    }
+                    
+                    // Restore listener
+                    binding.switchMasterControl.setOnCheckedChangeListener { _, isChecked ->
+                        handleMasterSwitchToggle(isChecked)
+                    }
+                    
+                    Log.d(TAG, "MainActivity: UI synced via SharedPreferences listener")
+                    InAppLogger.log("QuickSettingsSync", "MainActivity UI synced via SharedPreferences: $currentState")
+                }
+            }
+        }
+    }
+    
     // Sensor timeout for safety
     private var sensorTimeoutHandler: Handler? = null
     private var sensorTimeoutRunnable: Runnable? = null
@@ -120,6 +162,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
         voiceSettingsPrefs?.registerOnSharedPreferenceChangeListener(voiceSettingsListener)
         
+        // Register master switch listener for Quick Settings tile sync
+        sharedPreferences.registerOnSharedPreferenceChangeListener(masterSwitchListener)
+        
         // Apply saved theme first
         applySavedTheme()
         
@@ -141,6 +186,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         InAppLogger.logSystemEvent("App started", "MainActivity")
         InAppLogger.logSystemEvent("Build variant", InAppLogger.getBuildVariantInfo())
         
+        // Log Quick Settings tile status
+        QuickSettingsHelper.logTileStatus(this)
+        
         // Initialize components
         initializeShakeDetection()
         initializeTextToSpeech()
@@ -158,6 +206,35 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         checkForUpdatesIfEnabled()
     }
     
+
+    
+    override fun onPause() {
+        super.onPause()
+        // Stop shake listening if active
+        stopShakeListening()
+        InAppLogger.logAppLifecycle("MainActivity paused")
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        // Unregister voice settings listener
+        voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
+        
+        // Unregister master switch listener
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(masterSwitchListener)
+        
+        // Clean up TTS
+        textToSpeech?.stop()
+        textToSpeech?.shutdown()
+        
+        // Clean up sensors
+        sensorManager?.unregisterListener(this)
+        
+        InAppLogger.logAppLifecycle("MainActivity destroyed")
+    }
+    
+
+    
     override fun onResume() {
         super.onResume()
         updateServiceStatus()
@@ -171,13 +248,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Check for updates automatically when returning to app (if enabled)
         Log.d(TAG, "About to check for updates on resume")
         checkForUpdatesIfEnabled()
-    }
-    
-    override fun onPause() {
-        super.onPause()
-        // Stop shake listening if active
-        stopShakeListening()
-        InAppLogger.logAppLifecycle("MainActivity paused")
+        
+
     }
     
     private fun setupUI() {
@@ -293,6 +365,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             "SpeakThat disabled - notifications will be silent"
         }
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        
+
         
         Log.d(TAG, "Master switch toggled: $isEnabled")
     }
@@ -839,16 +913,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-    
-    override fun onDestroy() {
-        super.onDestroy()
-        
-        // Unregister voice settings listener
-        voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
-        
-        textToSpeech?.shutdown()
-        stopShakeListening()
     }
     
     /**
