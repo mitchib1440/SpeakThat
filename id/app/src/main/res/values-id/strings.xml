@@ -217,40 +217,40 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="update_never">Never (manual only)</string>
     <!-- TTS Template Strings (for improved localization) -->
     <!-- These are complete sentence templates with placeholders for proper localization -->
-    <string name="tts_template_notified_you">{app} notified you: {content}</string>
-    <string name="tts_template_reported">{app} reported: {content}</string>
-    <string name="tts_template_saying">Notification from {app}, saying {content}</string>
-    <string name="tts_template_alerts_you">{app} alerts you: {content}</string>
-    <string name="tts_template_update_from">Update from {app}: {content}</string>
-    <string name="tts_template_notification">{app} notification: {content}</string>
-    <string name="tts_template_new_notification">New notification: {app}: {content}</string>
-    <string name="tts_template_new_from">New from {app}: {content}</string>
-    <string name="tts_template_said">{app} said: {content}</string>
-    <string name="tts_template_updated_you">{app} updated you: {content}</string>
-    <string name="tts_template_new_notification_from">New notification from {app}: saying: {content}</string>
-    <string name="tts_template_new_update_from">New update from {app}: {content}</string>
-    <string name="tts_template_notification_from">Notification from {app}: {content}</string>
-    <string name="tts_template_says">{app} says: {content}</string>
-    <string name="tts_template_private_notification">You received a private notification from {app}</string>
+    <string name="tts_template_notified_you">{app} telah memberi tahu Anda: {content}</string>
+    <string name="tts_template_reported">{app} telah melaporkan: {content}</string>
+    <string name="tts_template_saying">Notifikasi dari {app}, mengatakan bahwa {content}</string>
+    <string name="tts_template_alerts_you">{app} mengingatkan Anda: {content}</string>
+    <string name="tts_template_update_from">Pembaruan dari {app}: {content}</string>
+    <string name="tts_template_notification">{app} notifikasi: {content}</string>
+    <string name="tts_template_new_notification">Notifikasi baru: {app}: {content}</string>
+    <string name="tts_template_new_from">Baru dari {app}: {content}</string>
+    <string name="tts_template_said">{app} berkata: {content}</string>
+    <string name="tts_template_updated_you">{app} telah memperbarui Anda: {content}</string>
+    <string name="tts_template_new_notification_from">Notifikasi baru dari {app}: mengatakan bahwa {content}</string>
+    <string name="tts_template_new_update_from">Pembaruan baru dari {app}: {content}</string>
+    <string name="tts_template_notification_from">Notifikasi dari {app}: {content}</string>
+    <string name="tts_template_says">{app} mengatakan: {content}</string>
+    <string name="tts_template_private_notification">Anda telah menerima notifikasi pribadi dari {app}</string>
     <!-- TTS Context Templates - Complete sentences for different app contexts -->
     <!-- About Page TTS -->
-    <string name="tts_about_intro">Welcome to SpeakThat!</string>
-    <string name="tts_about_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="tts_about_features_intro">Key features include:</string>
-    <string name="tts_about_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and full ad-free, offline functionality.</string>
-    <string name="tts_about_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
-    <string name="tts_about_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
-    <string name="tts_about_thank_you">Thank you for using SpeakThat!</string>
+    <string name="tts_about_intro">Selamat datang di SpeakThat!</string>
+    <string name="tts_about_description">SpeakThat adalah pembaca notifikasi Android open-source yang membaca notifikasi Anda dengan keras menggunakan text-to-speech. Sempurna untuk pekerjaan hands-free, aksesibilitas, dan mempertahankan informasi sambil multitasking.</string>
+    <string name="tts_about_features_intro">Fitur utama meliputi:</string>
+    <string name="tts_about_features">Pembacaan notifikasi real-time, pengaturan suara yang dapat disesuaikan, penyaringan notifikasi cerdas, kontrol aplikasi spesifik, perilaku sadar media, pelacakan riwayat notifikasi, shake-to-stop dan wave-to-stop, pemformatan suara kustom, dukungan mode gelap dan terang, aturan kondisional untuk logika dan penjadwalan lanjutan, dan fungsionalitas lengkap tanpa iklan dan offline.</string>
+    <string name="tts_about_developer">Dikembangkan dengan cinta oleh Michi, seorang pengembang independen dari Inggris dengan lebih dari 12 tahun pengalaman menguji dan menggunakan pembaca notifikasi setiap hari. SpeakThat terinspirasi dari Touchless Notifications, yang awalnya dikembangkan oleh DYNA Logix, dan bertujuan untuk melanjutkan warisan pembaca notifikasi yang dapat disesuaikan. Proyek ini dipercepat dengan pemrograman berbantuan kecerdasan buatan.</string>
+    <string name="tts_about_license">Proyek ini open-source dan tersedia di bawah lisensi GPL-3.0. Anda dapat melihat teks lisensi lengkap dan kode sumber di GitHub. Kontribusi dan umpan balik disambut baik!</string>
+    <string name="tts_about_thank_you">Terima kasih telah menggunakan SpeakThat!</string>
     <!-- Voice Settings Test -->
-    <string name="tts_voice_test">This is how your notifications will sound with these voice settings.</string>
+    <string name="tts_voice_test">Ini adalah bagaimana notifikasi Anda akan terdengar dengan pengaturan suara ini.</string>
     <!-- Onboarding TTS -->
-    <string name="tts_onboarding_welcome">Welcome to SpeakThat! Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.</string>
-    <string name="tts_onboarding_permission">SpeakThat needs permission to read your notifications aloud. Everything stays on your device and you control what gets read.</string>
-    <string name="tts_onboarding_privacy">Your privacy matters. You control exactly what gets read aloud. Shake your phone to stop any announcement instantly. Everything stays on your device.</string>
-    <string name="tts_onboarding_filters">Let\'s set up some basic privacy filters to get you started. SpeakThat features a powerful filtering system that allows you to choose what gets read and what doesn\'t.</string>
-    <string name="tts_onboarding_apps">Type the name of an app you want me to never read notifications from. Common examples include banking apps, medical apps, and dating apps.</string>
-    <string name="tts_onboarding_words">Type words or phrases that you want me to never read notifications containing. Common examples include password, PIN, credit card, and medical terms.</string>
-    <string name="tts_onboarding_complete">SpeakThat is ready to help you stay connected while keeping your eyes free! You can add more filters anytime in the app settings.</string>
+    <string name="tts_onboarding_welcome">Selamat datang di SpeakThat! Tetap terhubung tanpa menatap layar. Ponsel Anda akan membaca notifikasi dengan keras sehingga Anda dapat fokus pada hal-hal yang penting.</string>
+    <string name="tts_onboarding_permission">SpeakThat memerlukan izin untuk membaca notifikasi Anda dengan keras. Semuanya disimpan di perangkat Anda dan Anda mengontrol apa yang dibaca.</string>
+    <string name="tts_onboarding_privacy">Privasi Anda sangat penting. Anda mengontrol secara tepat apa yang dibaca dengan keras. Goyangkan ponsel untuk menghentikan notifikasi apa pun secara instan. Semuanya disimpan di perangkat Anda.</string>
+    <string name="tts_onboarding_filters">Mari atur beberapa filter privasi dasar untuk memulai. SpeakThat memiliki sistem penyaringan yang kuat yang memungkinkan Anda memilih apa yang dibaca dan apa yang tidak.</string>
+    <string name="tts_onboarding_apps">Masukkan nama aplikasi yang tidak pernah ingin Anda baca notifikasinya. Contoh umum termasuk aplikasi perbankan, aplikasi medis, dan aplikasi kencan.</string>
+    <string name="tts_onboarding_words">Masukkan kata atau frasa yang tidak pernah ingin Anda baca dalam notifikasi. Contoh umum termasuk kata sandi, PIN, kartu kredit, dan istilah medis.</string>
+    <string name="tts_onboarding_complete">SpeakThat siap membantu Anda tetap terhubung sambil menjaga mata Anda bebas! Anda dapat menambahkan lebih banyak filter kapan saja di pengaturan aplikasi.</string>
     <!-- Behavior Settings Speech Format Templates -->
     <string name="tts_behavior_default">Default format</string>
     <string name="tts_behavior_minimal">Minimal format</string>
