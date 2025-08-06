@@ -72,107 +72,107 @@
     <string name="custom_name_hint">カスタム名（例：Twitter）</string>
     <string name="custom_app_names_example">例：XアプリはTwitterと読む</string>
     <string name="media_behavior_dialog_title">メディアの動作オプション</string>
-    <string name="media_behavior_dialog_message">Choose how SpeakThat handles notifications while music/videos play:
+    <string name="media_behavior_dialog_message">音楽やビデオの再生中に通知をどう扱うか選択してください：
 
-<b>🎵 Ignore</b> - Speaks over your media. Simple but can be disruptive.
+<b>🎵 無視</b> - メディアに重ねて読み上げます。シンプルですが煩いかもしれません。
 
-<b>⏸️ Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow.
+<b>⏸️ 停止</b> - 読み上げ中はメディアを完全に停止します。ポッドキャストにはおすすめですが、音楽の流れは止めてしまいます。
 
-<b>🔉 Lower Audio (Recommended)</b> - Temporarily reduces media volume so you can hear both. Most natural experience.
+<b>🔉 音量を下げる (推奨)</b> - 一時的にメディアの音量を下げて両方を聞き取れるようにします。最も自然な振る舞いになります。
 
-<b>🔇 Silence</b> - Doesn\'t speak while media plays. Quiet but you might miss important notifications.
+<b>🔇 サイレント</b> - メディアの再生中は読み上げません。静かですが、重要な通知を逃すかもしれません。
 
-Lower Audio works like a car radio - it ducks the music down when speaking, then brings it back up. Perfect for music lovers who still want notifications.</string>
+「音量を下げる」は、カーラジオのように振る舞います。読み上げ中は音量を下げ、戻します。音楽が好きで通知も知りたい場合に最適です。</string>
     <string name="shake_to_stop_dialog_title">振って停止</string>
-    <string name="shake_to_stop_dialog_message">Shake to Stop lets you instantly silence SpeakThat by shaking your device:
+    <string name="shake_to_stop_dialog_message">「振って停止」は、デバイスを振ることで、即座に静かにすることができます：
 
-<b>✨ Why it\'s helpful:</b>
-• Stop embarrassing notifications in quiet places
-• Quick control when your hands are busy
-• Works even when screen is off
-• No fumbling for buttons
+<b>✨ 何が便利か:</b>
+• 静かな場所で通知を止められる
+• 手が塞がっているときでもすぐに操作できる
+• 画面がオフのままでも機能する
+• ボタンを手探りしなくてもいい
 
-<b>🎯 How it works:</b>
-• Shake your device firmly (like a dice shake)
-• Current notification stops immediately
-• Queued notifications are cleared
-• New notifications work normally
+<b>🎯 どのように機能するか:</b>
+• デバイスをしっかり振る(サイコロのように)
+• 現在の通知が即座に止まる
+• 待機中の通知は全て消去される
+• 新しい通知は通常どおり機能する
 
-<b>⚙️ Customization:</b>
-• Adjust sensitivity for your preference
-• Test your shake strength with the meter
-• Works great for both gentle and vigorous shakers
+<b>⚙️ カスタマイズ:</b>
+• 好みに合わせて感度を設定
+• メーターを見ながら振る強さをテストする
+• 弱い振動と強い振動のどちらでも機能する
 
-This feature is especially loved by people who get notifications during meetings, movies, or while driving.</string>
+この機能は、会議中や運転中に通知を受ける方に特に便利です。</string>
     <string name="use_recommended">おすすめを使用する</string>
     <string name="got_it">了解</string>
     <!-- Persistent/Silent Notification Filtering -->
     <string name="persistent_notification_filtering_title">🔇 永続/サイレント通知フィルタ</string>
     <string name="persistent_notification_filtering_description">永続的(進行中)またはサイレント(音/振動なし)の通知をスキップ</string>
     <string name="enable_persistent_filtering">🔇 永続/サイレント通知フィルタ</string>
-    <string name="persistent_filtering_help">💡 Persistent notifications are ongoing (like music controls, navigation, etc.) and silent notifications have no sound/vibration. This option helps reduce notification spam from background services.</string>
+    <string name="persistent_filtering_help">💡 永続的な通知(音楽コントロール、ナビゲーションなど)は継続的で、サイレント通知には音や振動がありません。このオプションは、バックグラウンドサービスから通知が繰り返されるのを防ぎます。</string>
     <!-- Individual Persistent Filtering Categories -->
-    <string name="filter_persistent_notifications">Filter persistent notifications</string>
-    <string name="filter_silent_notifications">Filter silent notifications</string>
-    <string name="filter_foreground_services">Filter foreground service notifications</string>
-    <string name="filter_low_priority">Filter low priority notifications</string>
-    <string name="filter_system_notifications">Filter system notifications</string>
+    <string name="filter_persistent_notifications">永続的な通知をフィルターする</string>
+    <string name="filter_silent_notifications">サイレント通知をフィルターする</string>
+    <string name="filter_foreground_services">フォアグラウンドサービスの通知をフィルター</string>
+    <string name="filter_low_priority">優先度の低い通知をフィルター</string>
+    <string name="filter_system_notifications">システム通知をフィルター</string>
     <!-- Category Descriptions -->
-    <string name="persistent_notifications_desc">Ongoing notifications that don\'t auto-dismiss (music controls, navigation)</string>
-    <string name="silent_notifications_desc">Notifications with no sound or vibration</string>
-    <string name="foreground_services_desc">Notifications from ongoing background services</string>
-    <string name="low_priority_desc">Notifications with minimum or low priority level</string>
-    <string name="system_notifications_desc">Notifications from system apps (Android, Google services)</string>
+    <string name="persistent_notifications_desc">自動解除されない継続通知（音楽コントロール、ナビゲーション）</string>
+    <string name="silent_notifications_desc">音や振動のない通知</string>
+    <string name="foreground_services_desc">バックグラウンドサービスからの通知</string>
+    <string name="low_priority_desc">優先度が低い通知</string>
+    <string name="system_notifications_desc">システムアプリからの通知（Android、Googleサービス）</string>
     <!-- Wave to Stop Feature -->
-    <string name="wave_to_stop_dialog_title">Wave to Stop Feature</string>
-    <string name="wave_to_stop_dialog_message">Wave to Stop lets you instantly silence SpeakThat by waving your hand in front of the device:
+    <string name="wave_to_stop_dialog_title">手振りで停止機能</string>
+    <string name="wave_to_stop_dialog_message">「手振りで停止」は、デバイスの前で手を振ることで即座に停止します：
 
-<b>✨ Why it\'s helpful:</b>
-• Perfect for users who can\'t shake their device
-• Great for phones on desks or mounts
-• Works with one hand
-• No physical device movement needed
-• Accessibility-friendly alternative to shake
+<b>✨ なぜ便利か:</b>
+• デバイスを振れないユーザーに最適
+• デスクやスタンドに乗せたデバイスに良い
+• 片手で機能する
+• デバイスが物理的に動く必要がない
+• 「振って停止」の替わりとして体の不自由な方にも
 
-<b>🎯 How it works:</b>
-• Wave your hand in front of the device (like a magic gesture)
-• Uses the proximity sensor to detect hand movement
-• Current notification stops immediately
-• Queued notifications are cleared
-• New notifications work normally
+<b>🎯 どのように機能するか:</b>
+• デバイスの前で手を降る(ジェスチャーのように)
+• 近接センサーを使って手の動きを検知
+• 現在の通知が即座に停止
+• 待機中の通知は全て消去
+• 新しい通知は通常どおり機能します
 
-<b>⚙️ Customization:</b>
-• Adjust sensitivity for your preference
-• Test your wave detection with the meter
-• Works great for different hand sizes and distances
+<b>⚙️ カスタマイズ:</b>
+• 好みに合わせて感度を調整
+• メーターを見て手振りの検知をテストする
+• 異なる手の大きさや距離でも機能します
 
-This feature is especially useful for accessibility, desk users, and anyone who prefers gesture control over physical movement.</string>
+この機能は、体の不自由な方や、デスクで使う方や、物理的な動きよりもジェスチャーを好む方に便利です。</string>
     <!-- About Page -->
-    <string name="about">About</string>
-    <string name="about_description_title">About SpeakThat!</string>
-    <string name="about_features_title">Key Features</string>
-    <string name="about_developer_title">Developer</string>
-    <string name="about_license_title">License</string>
-    <string name="version_format">Version %s</string>
-    <string name="version_format_with_variant" formatted="false">Version %1$s (%2$s)</string>
+    <string name="about">このアプリについて</string>
+    <string name="about_description_title">SpeakThat!について</string>
+    <string name="about_features_title">主な特徴</string>
+    <string name="about_developer_title">開発者</string>
+    <string name="about_license_title">ライセンス</string>
+    <string name="version_format">バージョン %s</string>
+    <string name="version_format_with_variant" formatted="false">バージョン %1$s (%2$s)</string>
     <!-- Store Update Dialog -->
-    <string name="store_update_dialog_title">Updates via App Store</string>
-    <string name="store_update_dialog_message">This version of SpeakThat! receives updates through your app store (F-Droid, Google Play Store, etc.).</string>
+    <string name="store_update_dialog_title">App Store経由で更新</string>
+    <string name="store_update_dialog_message">このバージョンの SpeakThat! は、アプリストア(F-Droid、Google Playストアなど)からアップデートを受け取ります。</string>
     <string name="store_update_dialog_info">• Updates are automatically handled by your app store\n• You\'ll receive notifications when updates are available\n• No manual download or installation required</string>
-    <string name="store_update_dialog_help_title">Need the auto-update version?</string>
-    <string name="store_update_dialog_help_message">If you want automatic updates directly from GitHub, you can download the GitHub version instead. This version is identical but includes auto-update functionality.</string>
-    <string name="store_update_dialog_visit_github">Visit GitHub</string>
-    <string name="store_update_dialog_got_it">Got it</string>
-    <string name="app_description">SpeakThat! is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
+    <string name="store_update_dialog_help_title">バージョンの自動アップデートが必要ですか？</string>
+    <string name="store_update_dialog_help_message">GitHubから直接自動アップデートを行いたい場合は、GitHubのバージョンをダウンロードしてください。このバージョンは同じですが、自動アップデート機能が含まれています。</string>
+    <string name="store_update_dialog_visit_github">GitHubを開く</string>
+    <string name="store_update_dialog_got_it">了解</string>
+    <string name="app_description">SpeakThat!は、テキスト読み上げを使用して通知を音声で知らせるオープンソースのAndroid通知リーダーです。マルチタスク中に操作、アクセシビリティ、通知を受けるのに最適です。</string>
     <string name="app_features">• Real-time notification reading\n• Customizable voice settings\n• Smart notification filtering\n• App-specific controls\n• Media-aware behavior\n• Notification history\n• Shake/Wave to stop\n• Custom speech formatting\n• Dark/Light theme support\n• Conditional rules for advanced logic and schedules\n• Fully ad-free and offline functionality</string>
-    <string name="developer_info">Developed with ❤️ by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day.\n\nSpeakThat! was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers.\n\nThis project was accelerated by AI-assisted programming.</string>
-    <string name="license_info">This project is open source and available under the GPL-3.0 License.\n\nYou can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
-    <string name="read_about_app">Read About App</string>
-    <string name="stop_reading">Stop Reading</string>
+    <string name="developer_info">イギリスのソロ開発者であるMitchiが❤️を込めて開発しました。12年以上にわたって毎日通知リーダーをテストし使用してきた経験を活かしています。SpeakThat!は、DYNA Logixによって開発されたTouchless Notificationsに触発され、カスタマイズ可能な通知リーダーの遺産を継承することを目指しています。このプロジェクトはAI支援プログラミングによって加速されました。</string>
+    <string name="license_info">このプロジェクトはオープンソースで、GPL-3.0ライセンスの下で利用可能です。GitHubでライセンスの全文とソースコードを確認できます。貢献とフィードバックを歓迎します！</string>
+    <string name="read_about_app">アプリについてを読む</string>
+    <string name="stop_reading">読むのを停止する</string>
     <!-- TTS-specific strings (emoji-free and speech-optimized) -->
-    <string name="tts_app_intro">Welcome to SpeakThat!</string>
-    <string name="tts_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="tts_features_intro">Key features include:</string>
+    <string name="tts_app_intro">SpeakThat!へようこそ</string>
+    <string name="tts_description">SpeakThatは、テキスト読み上げを使用して通知を音声で知らせるオープンソースのAndroid通知リーダーです。ハンズフリー操作や、体の不自由な方が情報を得るのに最適です。</string>
+    <string name="tts_features_intro">主な機能:</string>
     <string name="tts_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and fully ad-free, offline functionality.</string>
     <string name="tts_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
     <string name="tts_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
