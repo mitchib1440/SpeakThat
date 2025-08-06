@@ -285,6 +285,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_onboarding_filters">Let\'s set up some basic privacy filters to get you started. SpeakThat features a powerful filtering system that allows you to choose what gets read and what doesn\'t.</string>
     <string name="tts_onboarding_apps">Type the name of an app you want me to never read notifications from. Common examples include banking apps, medical apps, and dating apps.</string>
     <string name="tts_onboarding_words">Type words or phrases that you want me to never read notifications containing. Common examples include password, PIN, credit card, and medical terms.</string>
+    <string name="tts_onboarding_rules">Set up smart rules that automatically control when notifications are read based on your situation. For example, only read notifications when headphones are connected, or skip notifications when the screen is on.</string>
     <string name="tts_onboarding_complete">SpeakThat is ready to help you stay connected while keeping your eyes free! You can add more filters anytime in the app settings.</string>
     
     <!-- Behavior Settings Speech Format Templates -->

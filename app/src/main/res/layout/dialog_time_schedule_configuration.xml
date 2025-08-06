@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set Time Schedule:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose when this rule should be active."
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Start Time -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start Time:"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TimePicker
+            android:id="@+id/timePickerStart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+            android:layout_marginBottom="16dp" />
+
+        <!-- End Time -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="End Time:"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TimePicker
+            android:id="@+id/timePickerEnd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Days of Week -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Days of Week:"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/checkBoxMonday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Monday" />
+
+            <CheckBox
+                android:id="@+id/checkBoxTuesday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tuesday" />
+
+            <CheckBox
+                android:id="@+id/checkBoxWednesday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Wednesday" />
+
+            <CheckBox
+                android:id="@+id/checkBoxThursday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thursday" />
+
+            <CheckBox
+                android:id="@+id/checkBoxFriday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Friday" />
+
+            <CheckBox
+                android:id="@+id/checkBoxSaturday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Saturday" />
+
+            <CheckBox
+                android:id="@+id/checkBoxSunday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sunday" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView> 

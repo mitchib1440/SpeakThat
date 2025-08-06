@@ -32,6 +32,10 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
     }
     
+
+    
+
+    
     companion object {
         private const val PREFS_NAME = "SpeakThatPrefs"
         private const val KEY_HAS_SEEN_ONBOARDING = "has_seen_onboarding"
@@ -149,18 +153,19 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         
         val currentPage = binding.viewPager.currentItem
         val pageContent = if (skipPermissionPage) {
-            // When permission page is skipped (6 pages total)
+            // When permission page is skipped (7 pages total)
             when (currentPage) {
                 0 -> getLocalizedTtsString(R.string.tts_onboarding_welcome)
                 1 -> getLocalizedTtsString(R.string.tts_onboarding_privacy)
                 2 -> getLocalizedTtsString(R.string.tts_onboarding_filters)
                 3 -> getLocalizedTtsString(R.string.tts_onboarding_apps)
                 4 -> getLocalizedTtsString(R.string.tts_onboarding_words)
-                5 -> getLocalizedTtsString(R.string.tts_onboarding_complete)
+                5 -> getLocalizedTtsString(R.string.tts_onboarding_rules)
+                6 -> getLocalizedTtsString(R.string.tts_onboarding_complete)
                 else -> ""
             }
         } else {
-            // When permission page is included (7 pages total)
+            // When permission page is included (8 pages total)
             when (currentPage) {
                 0 -> getLocalizedTtsString(R.string.tts_onboarding_welcome)
                 1 -> getLocalizedTtsString(R.string.tts_onboarding_permission)
@@ -168,7 +173,8 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 3 -> getLocalizedTtsString(R.string.tts_onboarding_filters)
                 4 -> getLocalizedTtsString(R.string.tts_onboarding_apps)
                 5 -> getLocalizedTtsString(R.string.tts_onboarding_words)
-                6 -> getLocalizedTtsString(R.string.tts_onboarding_complete)
+                6 -> getLocalizedTtsString(R.string.tts_onboarding_rules)
+                7 -> getLocalizedTtsString(R.string.tts_onboarding_complete)
                 else -> ""
             }
         }
@@ -186,6 +192,10 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         return TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, stringResId)
     }
     
+
+
+
+
     private fun setupOnboarding() {
         // Set up ViewPager2 with or without permission page
         adapter = if (skipPermissionPage) {
