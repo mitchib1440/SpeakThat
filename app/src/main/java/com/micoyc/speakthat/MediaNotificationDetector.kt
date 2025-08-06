@@ -354,6 +354,12 @@ class MediaNotificationDetector {
             
             val packageName = sbn.packageName
             
+            // Check if this app is in the filtered media apps list
+            if (userPreferences.filteredMediaApps.contains(packageName)) {
+                Log.d(TAG, "Media notification from filtered media app: $packageName")
+                return true
+            }
+            
             // Check if this app is in the exception list
             if (userPreferences.exceptedApps.contains(packageName)) {
                 Log.d(TAG, "Media notification from excepted app: $packageName")
@@ -409,6 +415,7 @@ class MediaNotificationDetector {
             "replied", "commented", "liked", "subscribed", "new subscriber",
             "channel", "uploaded", "published", "scheduled", "premier",
             "community", "poll", "story", "shorts", "reels"
-        )
+        ),
+        val filteredMediaApps: Set<String> = emptySet()
     )
 } 

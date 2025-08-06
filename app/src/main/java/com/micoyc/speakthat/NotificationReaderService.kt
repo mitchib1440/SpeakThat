@@ -207,6 +207,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val KEY_MEDIA_FILTERING_ENABLED = "media_filtering_enabled"
         private const val KEY_MEDIA_FILTER_EXCEPTED_APPS = "media_filter_excepted_apps"
         private const val KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS = "media_filter_important_keywords"
+        private const val KEY_MEDIA_FILTERED_APPS = "media_filtered_apps"
+        private const val KEY_MEDIA_FILTERED_APPS_PRIVATE = "media_filtered_apps_private"
         
         // Persistent/silent notification filtering settings
         private const val KEY_PERSISTENT_FILTERING_ENABLED = "persistent_filtering_enabled"
@@ -1127,6 +1129,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val isMediaFilteringEnabled = sharedPreferences?.getBoolean(KEY_MEDIA_FILTERING_ENABLED, false) ?: false
         val exceptedApps = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTER_EXCEPTED_APPS, HashSet()) ?: HashSet())
         val importantKeywords = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, HashSet()) ?: HashSet())
+        val filteredMediaApps = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTERED_APPS, HashSet()) ?: HashSet())
         
         // If no custom important keywords are set, use defaults
         if (importantKeywords.isEmpty()) {
@@ -1136,7 +1139,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         mediaFilterPreferences = MediaNotificationDetector.MediaFilterPreferences(
             isMediaFilteringEnabled = isMediaFilteringEnabled,
             exceptedApps = exceptedApps,
-            importantKeywords = importantKeywords
+            importantKeywords = importantKeywords,
+            filteredMediaApps = filteredMediaApps
         )
         
         // Load persistent filtering settings
@@ -2520,7 +2524,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 delayBeforeReadout = sharedPreferences?.getInt(KEY_DELAY_BEFORE_READOUT, 0) ?: 0
                 Log.d(TAG, "Delay settings updated - delay: ${delayBeforeReadout}s")
             }
-            KEY_MEDIA_FILTERING_ENABLED, KEY_MEDIA_FILTER_EXCEPTED_APPS, KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS -> {
+            KEY_MEDIA_FILTERING_ENABLED, KEY_MEDIA_FILTER_EXCEPTED_APPS, KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, KEY_MEDIA_FILTERED_APPS, KEY_MEDIA_FILTERED_APPS_PRIVATE -> {
                 // Reload media filtering settings
                 loadFilterSettings()
                 Log.d(TAG, "Media filtering settings updated")

@@ -556,7 +556,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Automatically filter out media playback controls while preserving important notifications"
+                        android:text="Automatically filter notifications for apps like YouTube that have both unwanted notifications (media controls) while allowing wanted notifications (like replies to your comments)"
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -604,7 +604,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Apps that are automatically filtered. Remove apps you want to hear notifications from."
+                            android:text="Apps that are automatically filtered for media notifications. Add media apps you want to filter out."
                             android:textSize="12sp"
                             android:textColor="@color/text_secondary"
                             android:layout_marginBottom="12dp" />
@@ -623,20 +623,20 @@
                                 app:boxBackgroundMode="outline"
                                 app:boxStrokeColor="@color/purple_200">
 
-                                <AutoCompleteTextView
-                                    android:id="@+id/editFilteredMediaApp"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:minHeight="56dp"
-                                    android:hint="Search apps to remove from filter"
-                                    android:inputType="text"
-                                    android:completionThreshold="1"
-                                    android:dropDownHeight="200dp"
-                                    android:textSize="16sp"
-                                    android:paddingStart="16dp"
-                                    android:paddingEnd="16dp"
-                                    android:paddingTop="16dp"
-                                    android:paddingBottom="16dp" />
+                                                                        <AutoCompleteTextView
+                                            android:id="@+id/editFilteredMediaApp"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:minHeight="56dp"
+                                            android:hint="Search apps to add to media filter"
+                                            android:inputType="text"
+                                            android:completionThreshold="1"
+                                            android:dropDownHeight="200dp"
+                                            android:textSize="16sp"
+                                            android:paddingStart="16dp"
+                                            android:paddingEnd="16dp"
+                                            android:paddingTop="16dp"
+                                            android:paddingBottom="16dp" />
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -644,7 +644,7 @@
                                 android:id="@+id/btnRemoveFilteredMediaApp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Remove"
+                                android:text="Add"
                                 android:backgroundTint="@color/purple_200"
                                 android:textColor="@color/white_100" />
 
@@ -828,7 +828,7 @@
                             android:id="@+id/txtMediaFilterHelp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="💡 Enabled by default! Automatically filters out media controls while preserving important notifications. (Tap for more info)"
+                            android:text="💡 Automatically filters out media controls while preserving important notifications. (Tap for more info)"
                             android:textSize="12sp"
                             android:textColor="@color/text_primary"
                             android:background="?android:attr/selectableItemBackground"
