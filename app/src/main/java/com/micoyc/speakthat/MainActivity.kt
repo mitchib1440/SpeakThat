@@ -120,6 +120,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         private const val KEY_DARK_MODE = "dark_mode"
         private const val KEY_FIRST_LOGO_TAP = "first_logo_tap"
         private const val KEY_SHAKE_TO_STOP_ENABLED = "shake_to_stop_enabled"
+        private const val KEY_WAVE_TO_STOP_ENABLED = "wave_to_stop_enabled"
         private const val KEY_SHAKE_THRESHOLD = "shake_threshold"
         private const val KEY_MASTER_SWITCH_ENABLED = "master_switch_enabled"
         private const val KEY_LAST_EASTER_EGG = "last_easter_egg_line"
@@ -520,7 +521,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         InAppLogger.log("MainActivity", "Logo clicked - $ttsStatus")
         
         // Log wave-to-stop settings for debugging
-        val waveEnabled = sharedPreferences?.getBoolean("wave_to_stop_enabled", false) ?: false
+        val waveEnabled = sharedPreferences?.getBoolean(KEY_WAVE_TO_STOP_ENABLED, false) ?: false
         val waveThreshold = sharedPreferences?.getFloat("wave_threshold", 3.0f) ?: 3.0f
         InAppLogger.log("MainActivity", "Wave-to-stop settings - enabled: $waveEnabled, threshold: ${waveThreshold}cm")
         
@@ -543,13 +544,23 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             // First tap: Play instructional message
             val baseText = "This is SpeakThat! The notification reader. This is how incoming notifications will be announced."
             
-            // Check if shake-to-stop is enabled
+            // Check if shake-to-stop and wave-to-stop are enabled
             val isShakeToStopEnabled = sharedPreferences?.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false) ?: false
+            val isWaveToStopEnabled = sharedPreferences?.getBoolean(KEY_WAVE_TO_STOP_ENABLED, false) ?: false
             
-            val instructionText = if (isShakeToStopEnabled) {
-                "$baseText This is a great opportunity to test your Shake-to-Stop settings. Go ahead and shake your device to stop me talking."
-            } else {
-                baseText
+            val instructionText = when {
+                isShakeToStopEnabled && isWaveToStopEnabled -> {
+                    "$baseText This is a great opportunity to test your Shake-to-Stop and Wave-to-Stop settings. Go ahead and shake your device or wave your hand to stop me talking."
+                }
+                isShakeToStopEnabled -> {
+                    "$baseText This is a great opportunity to test your Shake-to-Stop settings. Go ahead and shake your device to stop me talking."
+                }
+                isWaveToStopEnabled -> {
+                    "$baseText This is a great opportunity to test your Wave-to-Stop settings. Go ahead and wave your hand to stop me talking."
+                }
+                else -> {
+                    baseText
+                }
             }
             
             speakText(instructionText)
@@ -634,7 +645,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
 
     private fun loadWaveSettings() {
-        isWaveToStopEnabled = sharedPreferences?.getBoolean("wave_to_stop_enabled", false) ?: false
+        isWaveToStopEnabled = sharedPreferences?.getBoolean(KEY_WAVE_TO_STOP_ENABLED, false) ?: false
         // Use calibrated threshold if available, otherwise fall back to old system
         waveThreshold = if (sharedPreferences?.contains("wave_threshold_v1") == true) {
             sharedPreferences?.getFloat("wave_threshold_v1", 3.0f) ?: 3.0f
@@ -802,7 +813,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Filter easter eggs based on current settings
         val delayEnabled = (sharedPreferences?.getInt("delay_before_readout", 2) ?: 2) > 0
         val shakeEnabled = sharedPreferences?.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false) ?: false
-        val waveEnabled = sharedPreferences?.getBoolean("wave_to_stop_enabled", false) ?: false
+        val waveEnabled = sharedPreferences?.getBoolean(KEY_WAVE_TO_STOP_ENABLED, false) ?: false
         
         return easterEggLines.filter { line ->
             when {
