@@ -1620,31 +1620,32 @@ public class FilterSettingsActivity extends AppCompatActivity {
     
     private void showMediaFilterHelp() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("🎵 Media Notification Filter Help")
-               .setMessage("How Media Notification Filtering Works:\n\n" +
-                          "🔍 Automatic Detection:\n" +
-                          "• Detects music players, video apps, and media controls\n" +
-                          "• Identifies playback bars and media session notifications\n" +
-                          "• Uses content patterns, app categories, and media flags\n\n" +
+        builder.setTitle("🎵 Smart Media Notification Filter")
+               .setMessage("How Smart Media Detection Works:\n\n" +
+                          "🔍 Reliable Detection Methods:\n" +
+                          "• Media session flags (official Android media controls)\n" +
+                          "• Progress bars/seekbars (actual playback controls)\n" +
+                          "• System notification categories (media_session, playback)\n" +
+                          "• No unreliable text pattern matching\n\n" +
                           
                           "📱 Exception Apps:\n" +
                           "• Apps that should never have notifications filtered\n" +
-                          "• Useful for apps like YouTube where you want replies but not playback controls\n" +
-                          "• Add apps that send both media and important notifications\n\n" +
+                          "• Useful for apps that send both media and important notifications\n" +
+                          "• Add apps that might have false positives\n\n" +
                           
                           "🔑 Important Keywords:\n" +
-                          "• Words that indicate important notifications (like 'reply', 'comment')\n" +
+                          "• Words that indicate social interaction (like 'reply', 'comment')\n" +
                           "• Notifications containing these words won't be filtered\n" +
-                          "• Helps preserve social media updates while filtering media controls\n\n" +
+                          "• Helps preserve important notifications from media apps\n\n" +
                           
                           "✅ Benefits:\n" +
-                          "• Prevents annoying media control notifications\n" +
-                          "• Keeps important social media updates\n" +
-                          "• Works automatically without manual configuration\n" +
-                          "• Customizable exceptions for specific needs")
+                          "• Prevents false positives (like Gmail being detected as media)\n" +
+                          "• Only blocks actual media control notifications\n" +
+                          "• Works with persistent/silent notification filtering\n" +
+                          "• Much more reliable than text-based detection")
                .setPositiveButton("Got it!", (dialog, which) -> dialog.dismiss())
                .show();
         
-        InAppLogger.log("FilterSettings", "Media filter help dialog shown");
+        InAppLogger.log("FilterSettings", "Smart media filter help dialog shown");
     }
 } 

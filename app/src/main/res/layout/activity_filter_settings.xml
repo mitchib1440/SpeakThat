@@ -547,7 +547,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🎵 Media Notification Filtering"
+                        android:text="🎵 Smart Media Notification Filter"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
@@ -579,7 +579,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Enable media notification filtering"
+                            android:text="Enable smart media notification filtering"
                             android:textSize="16sp"
                             android:textColor="@color/text_primary" />
 

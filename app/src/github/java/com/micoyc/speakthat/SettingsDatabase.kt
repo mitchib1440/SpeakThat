@@ -345,13 +345,13 @@ object SettingsDatabase {
             ),
             SettingsItem(
                 id = "media_filtering",
-                title = "Media Notification Filtering",
-                description = "Filter out media playback notifications",
+                title = "Smart Media Notification Filter",
+                description = "Filter out actual media control notifications",
                 category = "filter",
                 categoryTitle = "Filter Settings",
                 categoryIcon = "🔍",
                 settingType = SettingType.SWITCH,
-                searchKeywords = listOf("media", "filter", "music", "video", "playback", "youtube", "spotify"),
+                searchKeywords = listOf("media", "filter", "music", "video", "playback", "youtube", "spotify", "smart"),
                 navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
             ),
             SettingsItem(
