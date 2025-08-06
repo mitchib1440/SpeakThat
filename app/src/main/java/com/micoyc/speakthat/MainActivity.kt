@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEventListener {
     
     private lateinit var binding: ActivityMainBinding
-    private lateinit var sharedPreferences: SharedPreferences
+    private var sharedPreferences: SharedPreferences? = null
     private var textToSpeech: TextToSpeech? = null
     private var isTtsInitialized = false
     private var isFirstLogoTap = true
@@ -163,7 +163,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         voiceSettingsPrefs?.registerOnSharedPreferenceChangeListener(voiceSettingsListener)
         
         // Register master switch listener for Quick Settings tile sync
-        sharedPreferences.registerOnSharedPreferenceChangeListener(masterSwitchListener)
+        sharedPreferences?.registerOnSharedPreferenceChangeListener(masterSwitchListener)
         
         // Apply saved theme first
         applySavedTheme()
@@ -195,7 +195,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         loadEasterEggs()
         
         // Load logo tap state
-        isFirstLogoTap = sharedPreferences.getBoolean(KEY_FIRST_LOGO_TAP, true)
+        isFirstLogoTap = sharedPreferences?.getBoolean(KEY_FIRST_LOGO_TAP, true) ?: true
         
         // Set up UI
         setupUI()
@@ -220,8 +220,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Unregister voice settings listener
         voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
         
-        // Unregister master switch listener
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(masterSwitchListener)
+        // Unregister master switch listener (safely handle null case)
+        sharedPreferences?.unregisterOnSharedPreferenceChangeListener(masterSwitchListener)
         
         // Clean up TTS
         textToSpeech?.stop()
@@ -288,7 +288,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private fun updateServiceStatus() {
         val isEnabled = isNotificationServiceEnabled()
-        val isMasterEnabled = sharedPreferences.getBoolean(KEY_MASTER_SWITCH_ENABLED, true)
+        val isMasterEnabled = sharedPreferences?.getBoolean(KEY_MASTER_SWITCH_ENABLED, true) ?: true
         
         // Update master switch state
         binding.switchMasterControl.setOnCheckedChangeListener(null) // Prevent infinite loop
@@ -346,7 +346,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private fun handleMasterSwitchToggle(isEnabled: Boolean) {
         // Save the master switch state
-        sharedPreferences.edit().putBoolean(KEY_MASTER_SWITCH_ENABLED, isEnabled).apply()
+        sharedPreferences?.edit()?.putBoolean(KEY_MASTER_SWITCH_ENABLED, isEnabled)?.apply()
         
         // Update UI immediately
         updateServiceStatus()
@@ -380,7 +380,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             
             if (isEnabled) {
                 // Master switch enabled - show persistent notification if setting is enabled
-                val isPersistentNotificationEnabled = sharedPreferences.getBoolean("persistent_notification", false)
+                val isPersistentNotificationEnabled = sharedPreferences?.getBoolean("persistent_notification", false) ?: false
                 if (isPersistentNotificationEnabled) {
                     // Create notification channel for Android O+
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -444,7 +444,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     // showNotificationHistory moved to DevelopmentSettingsActivity
     
     private fun applySavedTheme() {
-        val isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, false) // Default to light mode
+        val isDarkMode = sharedPreferences?.getBoolean(KEY_DARK_MODE, false) ?: false // Default to light mode
         
         if (isDarkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -523,8 +523,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         InAppLogger.log("MainActivity", "Logo clicked - $ttsStatus")
         
         // Log wave-to-stop settings for debugging
-        val waveEnabled = sharedPreferences.getBoolean("wave_to_stop_enabled", false)
-        val waveThreshold = sharedPreferences.getFloat("wave_threshold", 3.0f)
+        val waveEnabled = sharedPreferences?.getBoolean("wave_to_stop_enabled", false) ?: false
+        val waveThreshold = sharedPreferences?.getFloat("wave_threshold", 3.0f) ?: 3.0f
         InAppLogger.log("MainActivity", "Wave-to-stop settings - enabled: $waveEnabled, threshold: ${waveThreshold}cm")
         
         if (!isTtsInitialized) {
@@ -547,7 +547,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             val baseText = "This is SpeakThat! The notification reader. This is how incoming notifications will be announced."
             
             // Check if shake-to-stop is enabled
-            val isShakeToStopEnabled = sharedPreferences.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false)
+            val isShakeToStopEnabled = sharedPreferences?.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false) ?: false
             
             val instructionText = if (isShakeToStopEnabled) {
                 "$baseText This is a great opportunity to test your Shake-to-Stop settings. Go ahead and shake your device to stop me talking."
@@ -559,7 +559,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             
             // Mark that first tap has occurred
             isFirstLogoTap = false
-            sharedPreferences.edit().putBoolean(KEY_FIRST_LOGO_TAP, false).apply()
+            sharedPreferences?.edit()?.putBoolean(KEY_FIRST_LOGO_TAP, false)?.apply()
             
         } else {
             // Subsequent taps: Play random easter egg (avoiding repeats)
@@ -571,7 +571,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                     speakText(processedLine)
                     
                     // Store the original line (before processing) to prevent repeats
-                    sharedPreferences.edit().putString(KEY_LAST_EASTER_EGG, selectedLine).apply()
+                    sharedPreferences?.edit()?.putString(KEY_LAST_EASTER_EGG, selectedLine)?.apply()
                     
                     Log.d(TAG, "Playing easter egg: $processedLine")
                 } else {
@@ -631,18 +631,18 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun loadShakeSettings() {
-        isShakeToStopEnabled = sharedPreferences.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, true)
-        shakeThreshold = sharedPreferences.getFloat(KEY_SHAKE_THRESHOLD, 12.0f)
+        isShakeToStopEnabled = sharedPreferences?.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, true) ?: true
+        shakeThreshold = sharedPreferences?.getFloat(KEY_SHAKE_THRESHOLD, 12.0f) ?: 12.0f
         Log.d(TAG, "MainActivity shake settings - enabled: $isShakeToStopEnabled, threshold: $shakeThreshold")
     }
 
     private fun loadWaveSettings() {
-        isWaveToStopEnabled = sharedPreferences.getBoolean("wave_to_stop_enabled", false)
+        isWaveToStopEnabled = sharedPreferences?.getBoolean("wave_to_stop_enabled", false) ?: false
         // Use calibrated threshold if available, otherwise fall back to old system
-        waveThreshold = if (sharedPreferences.contains("wave_threshold_v1")) {
-            sharedPreferences.getFloat("wave_threshold_v1", 3.0f)
+        waveThreshold = if (sharedPreferences?.contains("wave_threshold_v1") == true) {
+            sharedPreferences?.getFloat("wave_threshold_v1", 3.0f) ?: 3.0f
         } else {
-            sharedPreferences.getFloat("wave_threshold", 3.0f)
+            sharedPreferences?.getFloat("wave_threshold", 3.0f) ?: 3.0f
         }
         Log.d(TAG, "MainActivity wave settings - enabled: $isWaveToStopEnabled, threshold: $waveThreshold")
     }
@@ -803,9 +803,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private fun getAvailableEasterEggs(): List<String> {
         // Filter easter eggs based on current settings
-        val delayEnabled = sharedPreferences.getInt("delay_before_readout", 2) > 0
-        val shakeEnabled = sharedPreferences.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false)
-        val waveEnabled = sharedPreferences.getBoolean("wave_to_stop_enabled", false)
+        val delayEnabled = (sharedPreferences?.getInt("delay_before_readout", 2) ?: 2) > 0
+        val shakeEnabled = sharedPreferences?.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false) ?: false
+        val waveEnabled = sharedPreferences?.getBoolean("wave_to_stop_enabled", false) ?: false
         
         return easterEggLines.filter { line ->
             when {
@@ -825,7 +825,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private fun selectNonRepeatingEasterEgg(availableLines: List<String>): String {
         // Get the last spoken easter egg line
-        val lastEasterEgg = sharedPreferences.getString(KEY_LAST_EASTER_EGG, null)
+        val lastEasterEgg = sharedPreferences?.getString(KEY_LAST_EASTER_EGG, null)
         
         // If we only have one line available, or no previous line stored, just pick randomly
         if (availableLines.size <= 1 || lastEasterEgg == null) {
@@ -881,7 +881,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun getCurrentDelayTime(): String {
-        val delaySeconds = sharedPreferences.getInt("delay_before_readout", 2)
+        val delaySeconds = sharedPreferences?.getInt("delay_before_readout", 2) ?: 2
         return when (delaySeconds) {
             0 -> "no delay"
             1 -> "1-second delay"

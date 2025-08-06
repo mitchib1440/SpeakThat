@@ -308,7 +308,8 @@ class TemplateSelectionActivity : AppCompatActivity() {
             checkBoxSunday.isChecked = isChecked
         }
         
-        AlertDialog.Builder(this)
+        // Create dialog with proper sizing for time pickers
+        val dialog = AlertDialog.Builder(this)
             .setTitle("Set Quiet Hours")
             .setMessage("Choose the time range and days when you don't want notifications read:")
             .setView(dialogView)
@@ -335,7 +336,19 @@ class TemplateSelectionActivity : AppCompatActivity() {
                 createRuleFromTemplate(template, customData)
             }
             .setNegativeButton("Cancel", null)
-            .show()
+            .create()
+        
+        // Show dialog and then adjust its width to use more screen space
+        dialog.show()
+        
+        // Ensure dialog uses adequate width for time pickers
+        val window = dialog.window
+        if (window != null) {
+            val displayMetrics = resources.displayMetrics
+            val width = (displayMetrics.widthPixels * 0.95).toInt() // Use 95% of screen width
+            val height = android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+            window.setLayout(width, height)
+        }
     }
     
     private fun createRuleFromTemplate(template: RuleTemplate, customData: Map<String, Any> = emptyMap()) {
