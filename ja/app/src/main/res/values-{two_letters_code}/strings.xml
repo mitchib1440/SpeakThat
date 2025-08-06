@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SpeakThat!</string>
-    <string name="service_name">SpeakThat Notification Reader</string>
+    <string name="service_name">SpeakThat 通知読み上げ</string>
     <!-- Permission Explanations for IzzyOnDroid/F-Droid -->
-    <string name="permission_request_install_packages">Used for auto-update system to install new versions from GitHub releases. Only used when user explicitly enables auto-updates and app was not installed from Google Play Store.</string>
-    <string name="permission_access_location">Required for Bluetooth and WiFi conditional filtering features. Used to detect nearby Bluetooth devices and WiFi networks for user-defined rules. No location tracking or data collection.</string>
-    <string name="permission_bluetooth_scan">Required for Bluetooth conditional filtering. Allows the app to detect when specific Bluetooth devices are connected for notification rules. No data is collected or transmitted.</string>
-    <string name="permission_nearby_wifi_devices">Required for WiFi network conditional filtering on Android 13+. Allows the app to detect WiFi network changes for user-defined notification rules. No network data is collected.</string>
-    <string name="permission_read_external_storage">Used for importing/exporting app settings and configuration files. Allows users to backup and restore their settings. No personal data is accessed.</string>
-    <string name="permission_needed">Notification Access Required</string>
-    <string name="permission_description">SpeakThat! needs access to your notifications to read them aloud. This permission is required for the app to function.</string>
-    <string name="master_switch_battery_tip">💡 Turn off when not needed to save battery</string>
-    <string name="open_settings">Open Permission Settings</string>
-    <string name="service_enabled">Notification Reader: Enabled</string>
-    <string name="service_disabled">Notification Reader: Disabled</string>
-    <string name="show_history">Show Notification History</string>
-    <string name="settings">SpeakThat! Settings</string>
-    <string name="no_notifications">No notifications to display</string>
-    <string name="notification_history">Notification History</string>
-    <string name="close">Close</string>
+    <string name="permission_request_install_packages">GitHubのリリースから新しいバージョンをインストールする自動更新システムに使用されます。 ユーザーが明示的に自動更新を有効にし、Google Play ストアからアプリがインストールされていない場合にのみ使用されます。</string>
+    <string name="permission_access_location">BluetoothとWiFiの条件フィルタ機能に必要です。 ユーザー定義ルールで近くのBluetoothデバイスとWiFiネットワークを検出するために使用されます。位置情報の追跡やデータ収集は行いません。</string>
+    <string name="permission_bluetooth_scan">Bluetooth条件フィルタに必要です。通知ルールで特定のBluetoothデバイスの接続をアプリが検出することを許可します。データの収集や送信は行いません。</string>
+    <string name="permission_nearby_wifi_devices">Android 13以降でWiFiネットワーク条件フィルタに必要です。ユーザー定義通知ルールでWiFiネットワークの変更を検出することをアプリに許可します。ネットワークデータは収集されません。</string>
+    <string name="permission_read_external_storage">アプリの設定と、設定ファイルのインポート/エクスポートに使用します。ユーザーは設定のバックアップと復元を許可します。個人データにはアクセスしません。</string>
+    <string name="permission_needed">通知へのアクセスが必要です</string>
+    <string name="permission_description">SpeakThat! は、読み上げのために通知にアクセスする必要があります。この権限はアプリが機能するために必要です。</string>
+    <string name="master_switch_battery_tip">💡 バッテリーを節約するために不要な場合はオフにします</string>
+    <string name="open_settings">権限の設定を開く</string>
+    <string name="service_enabled">通知リーダー：有効</string>
+    <string name="service_disabled">通知リーダー：無効</string>
+    <string name="show_history">通知履歴を表示</string>
+    <string name="settings">SpeakThat! 設定</string>
+    <string name="no_notifications">表示する通知はありません</string>
+    <string name="notification_history">通知履歴</string>
+    <string name="close">閉じる</string>
     <!-- Search Functionality -->
-    <string name="search_settings_hint">Search settings...</string>
-    <string name="no_search_results">No matching settings found</string>
+    <string name="search_settings_hint">設定を検索...</string>
+    <string name="no_search_results">一致する設定は見つかりません</string>
     <!-- Filter Settings -->
     <string-array name="blacklist_types">
-        <item>Block</item>
+        <item>ブロック</item>
         <item>Private</item>
     </string-array>
     <!-- Cooldown Time Options -->
