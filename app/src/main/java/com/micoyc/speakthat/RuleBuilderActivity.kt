@@ -275,7 +275,15 @@ class RuleBuilderActivity : AppCompatActivity() {
             ruleManager.updateRule(ruleToSave)
         } else {
             InAppLogger.logDebug("RuleBuilderActivity", "Calling ruleManager.addRule()")
-            ruleManager.addRule(ruleToSave)
+            val addSuccess = ruleManager.addRule(ruleToSave)
+            
+            // Enable Conditional Rules if it's not already enabled and rule was added successfully
+            if (addSuccess && !ruleManager.isRulesEnabled()) {
+                ruleManager.setRulesEnabled(true)
+                InAppLogger.logUserAction("Enabled Conditional Rules feature")
+            }
+            
+            addSuccess
         }
         
         InAppLogger.logDebug("RuleBuilderActivity", "Save/update result: $success")

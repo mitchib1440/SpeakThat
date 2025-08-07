@@ -399,9 +399,8 @@ class OnboardingPagerAdapter(
                     ruleManager.addRule(rule)
                     
                     // Enable Conditional Rules if it's not already enabled
-                    val sharedPreferences = binding.root.context.getSharedPreferences("SpeakThatPrefs", android.content.Context.MODE_PRIVATE)
-                    if (!sharedPreferences.getBoolean("conditional_rules_enabled", false)) {
-                        sharedPreferences.edit().putBoolean("conditional_rules_enabled", true).apply()
+                    if (!ruleManager.isRulesEnabled()) {
+                        ruleManager.setRulesEnabled(true)
                         InAppLogger.log("OnboardingRuleTemplates", "Enabled Conditional Rules feature")
                     }
                     
@@ -681,9 +680,8 @@ class OnboardingPagerAdapter(
                     ruleManager.addRule(rule)
                     
                     // Enable Conditional Rules if it's not already enabled
-                    val sharedPreferences = binding.root.context.getSharedPreferences("SpeakThatPrefs", android.content.Context.MODE_PRIVATE)
-                    if (!sharedPreferences.getBoolean("conditional_rules_enabled", false)) {
-                        sharedPreferences.edit().putBoolean("conditional_rules_enabled", true).apply()
+                    if (!ruleManager.isRulesEnabled()) {
+                        ruleManager.setRulesEnabled(true)
                         InAppLogger.log("OnboardingRuleTemplates", "Enabled Conditional Rules feature")
                     }
                     

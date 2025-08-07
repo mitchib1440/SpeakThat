@@ -231,7 +231,7 @@ data class Rule(
                 context.getString(
                     com.micoyc.speakthat.R.string.rule_format_when_trigger_will_action,
                     triggerDesc,
-                    name,
+                    "this rule",
                     actionDesc
                 )
             }
@@ -239,7 +239,7 @@ data class Rule(
                 context.getString(
                     com.micoyc.speakthat.R.string.rule_format_when_trigger_will_action_unless_exception,
                     triggerDesc,
-                    name,
+                    "this rule",
                     actionDesc,
                     exceptionDesc
                 )
@@ -248,7 +248,7 @@ data class Rule(
                 context.getString(
                     com.micoyc.speakthat.R.string.rule_format_when_trigger_will_action_unless_exceptions,
                     triggerDesc,
-                    name,
+                    "this rule",
                     actionDesc,
                     exceptionDesc
                 )

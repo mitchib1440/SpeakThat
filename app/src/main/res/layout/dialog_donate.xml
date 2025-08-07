@@ -162,7 +162,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Monthly support with exclusive benefits"
+                                android:text="Monthly support with exclusive updates"
                                 android:textSize="14sp"
                                 android:textColor="?android:attr/textColorSecondary"
                                 android:layout_marginTop="2dp" />
@@ -289,7 +289,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Donate via the BitCoin network"
+                                android:text="Donate BTC via the Bitcoin network"
                                 android:textSize="14sp"
                                 android:textColor="?android:attr/textColorSecondary"
                                 android:layout_marginTop="2dp" />
@@ -316,7 +316,8 @@
                 android:text="🔒 Privacy: All donations are processed by their respective platforms. I don't collect or store any payment information."
                 android:textSize="12sp"
                 android:textColor="?android:attr/textColorSecondary"
-                android:padding="12dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
                 android:layout_marginBottom="16dp" />
 
             <TextView
@@ -325,6 +326,8 @@
                 android:text="Psst! You can also send a friendly email, a nice message always makes my day! :)"
                 android:textSize="12sp"
                 android:textColor="?android:attr/textColorSecondary"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
                 android:layout_marginBottom="16dp" />
 
         </LinearLayout>

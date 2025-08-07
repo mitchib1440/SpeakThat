@@ -358,6 +358,12 @@ class TemplateSelectionActivity : AppCompatActivity() {
             // Add the rule to the rule manager
             val success = ruleManager.addRule(rule)
             
+            // Enable Conditional Rules if it's not already enabled
+            if (success && !ruleManager.isRulesEnabled()) {
+                ruleManager.setRulesEnabled(true)
+                InAppLogger.logUserAction("Enabled Conditional Rules feature")
+            }
+            
             if (success) {
                 InAppLogger.logUserAction("Rule created from template: ${template.name}")
                 
@@ -366,6 +372,7 @@ class TemplateSelectionActivity : AppCompatActivity() {
                     .setTitle("Rule Created!")
                     .setMessage("Your rule '${template.name}' has been created successfully.")
                     .setPositiveButton("OK") { _, _ ->
+                        InAppLogger.logDebug("TemplateSelectionActivity", "Rule created successfully, finishing activity")
                         finish()
                     }
                     .show()
