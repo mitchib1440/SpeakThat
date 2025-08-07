@@ -193,7 +193,6 @@ class OnboardingPagerAdapter(
             val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(binding.root.context)
             binding.recyclerSelectedApps.layoutManager = layoutManager
             binding.recyclerSelectedApps.adapter = selectedAppsAdapter
-            binding.recyclerSelectedApps.setHasFixedSize(true)
             
             // Load existing apps
             loadSelectedApps(selectedAppsAdapter)
@@ -216,7 +215,6 @@ class OnboardingPagerAdapter(
             val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(binding.root.context)
             binding.recyclerSelectedWords.layoutManager = layoutManager
             binding.recyclerSelectedWords.adapter = selectedWordsAdapter
-            binding.recyclerSelectedWords.setHasFixedSize(true)
             
             // Load existing words
             loadSelectedWords(selectedWordsAdapter)
@@ -384,7 +382,6 @@ class OnboardingPagerAdapter(
                  val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(binding.root.context)
                  binding.recyclerRuleTemplates.layoutManager = layoutManager
                  binding.recyclerRuleTemplates.adapter = ruleTemplatesAdapter
-                 binding.recyclerRuleTemplates.setHasFixedSize(true)
 
                  // Load templates
                  ruleTemplatesAdapter.loadTemplates(binding.root.context)

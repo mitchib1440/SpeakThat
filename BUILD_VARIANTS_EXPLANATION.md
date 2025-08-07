@@ -21,7 +21,7 @@ SpeakThat uses Android build variants to create two different APK versions optim
 ### **Store Variant** (`store` flavor) 
 - **No auto-updater**: Updates handled by app stores (Play Store, F-Droid, etc.)
 - **Local icons only**: Uses only local fallback icons for privacy
-- **No INTERNET permission**: Privacy-conscious users can trust the app won't make network requests
+- **INTERNET permission**: Required for network voice downloads (legitimate TTS feature)
 - **No network libraries**: Excludes OkHttp and Coil to reduce APK size and privacy footprint
 - **Target users**: Privacy-conscious users who prefer app store distribution
 
@@ -55,7 +55,7 @@ dependencies {
 
 ### Permission Management
 - **Main manifest**: Contains all permissions including INTERNET
-- **Store manifest**: Removes INTERNET permission using `tools:node="remove"`
+- **Store manifest**: Inherits INTERNET permission for network voice downloads
 
 ## APK Output Files
 
