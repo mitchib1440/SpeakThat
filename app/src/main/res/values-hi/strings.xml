@@ -217,40 +217,40 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="update_never">Never (manual only)</string>
     <!-- TTS Template Strings (for improved localization) -->
     <!-- These are complete sentence templates with placeholders for proper localization -->
-    <string name="tts_template_notified_you">{app} notified you: {content}</string>
-    <string name="tts_template_reported">{app} reported: {content}</string>
-    <string name="tts_template_saying">Notification from {app}, saying {content}</string>
-    <string name="tts_template_alerts_you">{app} alerts you: {content}</string>
-    <string name="tts_template_update_from">Update from {app}: {content}</string>
-    <string name="tts_template_notification">{app} notification: {content}</string>
-    <string name="tts_template_new_notification">New notification: {app}: {content}</string>
-    <string name="tts_template_new_from">New from {app}: {content}</string>
-    <string name="tts_template_said">{app} said: {content}</string>
-    <string name="tts_template_updated_you">{app} updated you: {content}</string>
-    <string name="tts_template_new_notification_from">New notification from {app}: saying: {content}</string>
-    <string name="tts_template_new_update_from">New update from {app}: {content}</string>
-    <string name="tts_template_notification_from">Notification from {app}: {content}</string>
-    <string name="tts_template_says">{app} says: {content}</string>
-    <string name="tts_template_private_notification">You received a private notification from {app}</string>
+    <string name="tts_template_notified_you">{app} ने आपको सूचित किया: {content}</string>
+    <string name="tts_template_reported">{app} ने रिपोर्ट किया: {content}</string>
+    <string name="tts_template_saying">{app} से सूचना, कह रहा है कि {content}</string>
+    <string name="tts_template_alerts_you">{app} आपको चेतावनी दे रहा है: {content}</string>
+    <string name="tts_template_update_from">{app} से अपडेट: {content}</string>
+    <string name="tts_template_notification">{app} सूचना: {content}</string>
+    <string name="tts_template_new_notification">नई सूचना: {app}: {content}</string>
+    <string name="tts_template_new_from">{app} से नया: {content}</string>
+    <string name="tts_template_said">{app} ने कहा: {content}</string>
+    <string name="tts_template_updated_you">{app} ने आपको अपडेट किया: {content}</string>
+    <string name="tts_template_new_notification_from">{app} से नई सूचना: कह रहा है कि {content}</string>
+    <string name="tts_template_new_update_from">{app} से नया अपडेट: {content}</string>
+    <string name="tts_template_notification_from">{app} से सूचना: {content}</string>
+    <string name="tts_template_says">{app} कह रहा है: {content}</string>
+    <string name="tts_template_private_notification">आपको {app} से एक निजी सूचना मिली है</string>
     <!-- TTS Context Templates - Complete sentences for different app contexts -->
     <!-- About Page TTS -->
-    <string name="tts_about_intro">Welcome to SpeakThat!</string>
-    <string name="tts_about_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="tts_about_features_intro">Key features include:</string>
-    <string name="tts_about_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and full ad-free, offline functionality.</string>
-    <string name="tts_about_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
-    <string name="tts_about_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
-    <string name="tts_about_thank_you">Thank you for using SpeakThat!</string>
+    <string name="tts_about_intro">SpeakThat में आपका स्वागत है!</string>
+    <string name="tts_about_description">SpeakThat एक ओपन-सोर्स Android नोटिफिकेशन रीडर है जो टेक्स्ट-टू-स्पीच का उपयोग करके आपकी सूचनाओं को जोर से पढ़ता है। हैंड्स-फ्री काम, एक्सेसिबिलिटी और मल्टीटास्किंग के दौरान जानकारी बनाए रखने के लिए बिल्कुल उपयुक्त।</string>
+    <string name="tts_about_features_intro">मुख्य विशेषताएं शामिल हैं:</string>
+    <string name="tts_about_features">रीयल-टाइम नोटिफिकेशन पढ़ना, कस्टमाइजेबल आवाज़ सेटिंग्स, स्मार्ट नोटिफिकेशन फिल्टरिंग, विशिष्ट ऐप नियंत्रण, मीडिया-अवेयर बिहेवियर, नोटिफिकेशन इतिहास ट्रैकिंग, शेक-टू-स्टॉप और वेव-टू-स्टॉप, कस्टम आवाज़ फॉर्मेटिंग, डार्क और लाइट मोड सपोर्ट, एडवांस्ड लॉजिक और शेड्यूलिंग के लिए कंडीशनल रूल्स, और पूर्ण नो-एड्स और ऑफलाइन फंक्शनैलिटी।</string>
+    <string name="tts_about_developer">मिची द्वारा प्यार से विकसित, यूनाइटेड किंगडम के एक स्वतंत्र डेवलपर जिनके पास हर दिन नोटिफिकेशन रीडर का परीक्षण और उपयोग करने के 12 से अधिक वर्षों का अनुभव है। SpeakThat Touchless Notifications से प्रेरित है, जो मूल रूप से DYNA Logix द्वारा विकसित किया गया था, और कस्टमाइजेबल नोटिफिकेशन रीडर की विरासत को जारी रखने का लक्ष्य रखता है। यह प्रोजेक्ट आर्टिफिशियल इंटेलिजेंस-सहायता प्रोग्रामिंग द्वारा तेज किया गया है।</string>
+    <string name="tts_about_license">यह प्रोजेक्ट ओपन-सोर्स है और GPL-3.0 लाइसेंस के तहत उपलब्ध है। आप GitHub पर पूरा लाइसेंस टेक्स्ट और सोर्स कोड देख सकते हैं। योगदान और प्रतिक्रिया का स्वागत है!</string>
+    <string name="tts_about_thank_you">SpeakThat का उपयोग करने के लिए धन्यवाद!</string>
     <!-- Voice Settings Test -->
-    <string name="tts_voice_test">This is how your notifications will sound with these voice settings.</string>
+    <string name="tts_voice_test">यह है कि आपकी सूचनाएं इन आवाज़ सेटिंग्स के साथ कैसी सुनाई देंगी।</string>
     <!-- Onboarding TTS -->
-    <string name="tts_onboarding_welcome">Welcome to SpeakThat! Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.</string>
-    <string name="tts_onboarding_permission">SpeakThat needs permission to read your notifications aloud. Everything stays on your device and you control what gets read.</string>
-    <string name="tts_onboarding_privacy">Your privacy matters. You control exactly what gets read aloud. Shake your phone to stop any announcement instantly. Everything stays on your device.</string>
-    <string name="tts_onboarding_filters">Let\'s set up some basic privacy filters to get you started. SpeakThat features a powerful filtering system that allows you to choose what gets read and what doesn\'t.</string>
-    <string name="tts_onboarding_apps">Type the name of an app you want me to never read notifications from. Common examples include banking apps, medical apps, and dating apps.</string>
-    <string name="tts_onboarding_words">Type words or phrases that you want me to never read notifications containing. Common examples include password, PIN, credit card, and medical terms.</string>
-    <string name="tts_onboarding_complete">SpeakThat is ready to help you stay connected while keeping your eyes free! You can add more filters anytime in the app settings.</string>
+    <string name="tts_onboarding_welcome">SpeakThat में आपका स्वागत है! स्क्रीन पर घूरने के बिना जुड़े रहें। आपका फोन सूचनाओं को जोर से पढ़ेगा ताकि आप महत्वपूर्ण चीजों पर ध्यान केंद्रित कर सकें।</string>
+    <string name="tts_onboarding_permission">SpeakThat को आपकी सूचनाओं को जोर से पढ़ने के लिए अनुमति की आवश्यकता है। सब कुछ आपके डिवाइस पर संग्रहीत है और आप नियंत्रित करते हैं कि क्या पढ़ा जाए।</string>
+    <string name="tts_onboarding_privacy">आपकी गोपनीयता बहुत महत्वपूर्ण है। आप सटीक रूप से नियंत्रित करते हैं कि क्या जोर से पढ़ा जाए। किसी भी सूचना को तुरंत रोकने के लिए फोन को हिलाएं। सब कुछ आपके डिवाइस पर संग्रहीत है।</string>
+    <string name="tts_onboarding_filters">शुरू करने के लिए कुछ बुनियादी गोपनीयता फिल्टर सेट करें। SpeakThat में एक शक्तिशाली फिल्टरिंग सिस्टम है जो आपको चुनने की अनुमति देता है कि क्या पढ़ा जाए और क्या नहीं।</string>
+    <string name="tts_onboarding_apps">उन ऐप्स के नाम दर्ज करें जिनकी सूचनाएं आप कभी नहीं चाहते कि मैं पढ़ूं। सामान्य उदाहरणों में बैंकिंग ऐप्स, मेडिकल ऐप्स और डेटिंग ऐप्स शामिल हैं।</string>
+    <string name="tts_onboarding_words">उन शब्दों या वाक्यांशों को दर्ज करें जिन्हें आप कभी नहीं चाहते कि मैं सूचनाओं में पढ़ूं। सामान्य उदाहरणों में पासवर्ड, PIN, क्रेडिट कार्ड और मेडिकल शब्द शामिल हैं।</string>
+    <string name="tts_onboarding_complete">SpeakThat आपकी आंखों को मुक्त रखते हुए जुड़े रहने में मदद करने के लिए तैयार है! आप ऐप सेटिंग्स में किसी भी समय अधिक फिल्टर जोड़ सकते हैं।</string>
     <!-- Behavior Settings Speech Format Templates -->
     <string name="tts_behavior_default">Default format</string>
     <string name="tts_behavior_minimal">Minimal format</string>
