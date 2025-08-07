@@ -20,7 +20,6 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.micoyc.speakthat.TextFilterManager
 import com.micoyc.speakthat.VoiceSettingsActivity
 import com.micoyc.speakthat.BehaviorSettingsActivity
 import java.text.SimpleDateFormat
@@ -2387,23 +2386,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         InAppLogger.log("Service", "Refreshing voice settings before speech execution")
         applyVoiceSettings()
         
-        // Apply multilingual text filtering based on user preferences
-        val filteredText = if (textToSpeech != null) {
-            val currentVoice = textToSpeech?.voice
-            if (currentVoice != null) {
-                val filtered = TextFilterManager.filterTextForVoice(speechText, currentVoice, this)
-                if (filtered != speechText) {
-                    Log.d(TAG, "Text filtered for voice compatibility: '$speechText' -> '$filtered'")
-                    InAppLogger.log("Service", "Text filtered for voice compatibility")
-                }
-                filtered
-            } else {
-                speechText
-            }
-        } else {
-            speechText
-        }
-        
         // Check TTS health before attempting to speak
         if (!checkTtsHealth()) {
             Log.e(TAG, "TTS health check failed - cannot speak")
@@ -2428,7 +2410,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Speak with queue mode FLUSH to interrupt any previous speech
         Log.d(TAG, "Calling TTS.speak()...")
-        val speakResult = textToSpeech?.speak(filteredText, TextToSpeech.QUEUE_FLUSH, null, "notification_utterance")
+        val speakResult = textToSpeech?.speak(speechText, TextToSpeech.QUEUE_FLUSH, null, "notification_utterance")
         Log.d(TAG, "TTS.speak() returned: $speakResult")
         InAppLogger.log("Service", "TTS.speak() called, result: $speakResult")
         

@@ -463,6 +463,45 @@
 
                         </LinearLayout>
 
+                        <!-- Multi-Language Warning -->
+                        <LinearLayout
+                            android:id="@+id/multiLanguageWarning"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:padding="8dp"
+                            android:layout_marginBottom="8dp">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/ic_info_24"
+                                android:contentDescription="Warning"
+                                android:layout_marginEnd="8dp"
+                                app:tint="@color/purple_200" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/specific_voice_warning"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_200" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tap for details"
+                                android:textSize="10sp"
+                                android:textColor="@color/text_secondary" />
+
+                        </LinearLayout>
+
                         <Spinner
                             android:id="@+id/voiceSpinner"
                             android:layout_width="match_parent"
@@ -488,46 +527,9 @@
                             android:text="You can always reset your settings below if you run into trouble!"
                             android:textSize="13sp"
                             android:textColor="@color/text_tertiary"
-                            android:layout_marginBottom="16dp"
+                            android:layout_marginBottom="8dp"
                             android:background="?android:attr/selectableItemBackground"
                             android:padding="8dp" />
-
-                        <!-- Multilingual Text Handling Section -->
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="🌐 Multilingual Text Handling"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="4dp"
-                            android:textColor="@color/text_primary" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Choose how to handle text that your selected voice cannot pronounce properly (e.g., Japanese characters with an English voice). Note: Some voice engines may still skip certain text even in 'Attempt' mode."
-                            android:textSize="14sp"
-                            android:textColor="@color/text_secondary"
-                            android:layout_marginBottom="8dp" />
-
-                        <Spinner
-                            android:id="@+id/multilingualFilterSpinner"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            android:minHeight="48dp"
-                            android:background="?android:attr/selectableItemBackground"
-                            android:padding="12dp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="💡 Note: SpeakThat currently supports one language at a time. We're working on multi-language support for future updates! Voice engines have different capabilities - some may skip unsupported text regardless of your setting."
-                            android:textSize="14sp"
-                            android:textColor="@color/text_secondary"
-                            android:background="?android:attr/selectableItemBackground"
-                            android:padding="12dp"
-                            android:layout_marginBottom="8dp" />
                     </LinearLayout>
 
                 </LinearLayout>

@@ -522,4 +522,33 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Conditional Rules - Exception Strings -->
     <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    
+    <!-- Multi-Language Voice Warning -->
+    <string name="specific_voice_warning">⚠️ Multi-language limitation</string>
+    <string name="specific_voice_warning_description">SpeakThat only supports one voice at a time. If you receive notifications in multiple languages, some may sound garbled.</string>
+    <string name="specific_voice_warning_dialog_title">Multi-Language Voice Limitation</string>
+    <string name="specific_voice_warning_dialog_message">SpeakThat currently only supports one voice at a time. This means:
+
+<b>✅ What works well:</b>
+• Notifications in the same language as your selected voice
+• Single-language usage scenarios
+• Most common notification patterns
+
+<b>⚠️ Potential issues:</b>
+• Notifications in different languages may sound garbled
+• Mixed-language content might be difficult to understand
+• Some characters or accents may not be pronounced correctly
+
+<b>💡 Recommendations:</b>
+• Choose a voice that matches your most common notification language
+• Consider using the Language &amp; Region setting instead of Specific Voice
+• Test with your actual notifications to ensure clarity
+
+<b>🔮 Future plans:</b>
+• Multi-language voice support is planned for future updates
+• Automatic language detection and voice switching
+• Better handling of mixed-language content
+
+For now, the Language &amp; Region setting often works better for multi-language users as it automatically adapts to different content types.</string>
+    <string name="specific_voice_warning_dialog_got_it">Got it</string>
 </resources> 
