@@ -34,6 +34,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private static final String KEY_CONTENT_TYPE = "content_type";
     private static final String KEY_SHOW_ADVANCED = "show_advanced_voice";
     private static final String KEY_TTS_LANGUAGE = "tts_language";
+    private static final String KEY_MULTILINGUAL_FILTER = "multilingual_filter";
 
     // Default values
     private static final float DEFAULT_SPEECH_RATE = 1.0f;
@@ -55,6 +56,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private Spinner audioUsageSpinner;
     private Spinner contentTypeSpinner;
     private Spinner ttsLanguageSpinner;
+    private Spinner multilingualFilterSpinner;
     private Button previewButton;
     private Button resetButton;
     private Button btnVoiceInfo;
@@ -121,6 +123,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         audioUsageSpinner = findViewById(R.id.audioUsageSpinner);
         contentTypeSpinner = findViewById(R.id.contentTypeSpinner);
         ttsLanguageSpinner = findViewById(R.id.ttsLanguageSpinner);
+        multilingualFilterSpinner = findViewById(R.id.multilingualFilterSpinner);
         previewButton = findViewById(R.id.previewButton);
         resetButton = findViewById(R.id.resetButton);
         btnVoiceInfo = findViewById(R.id.btnVoiceInfo);
@@ -269,6 +272,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         setupVoiceSpinner();
         setupLanguageSpinner();
         setupTtsLanguageSpinner();
+        setupMultilingualFilterSpinner();
         setupAudioChannelSpinners();
     }
 
@@ -644,6 +648,34 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         });
     }
 
+    private void setupMultilingualFilterSpinner() {
+        String[] filterOptions = {
+            "Skip unsupported text",
+            "Replace with [unreadable] (groups consecutive text)",
+            "Attempt to pronounce anyway (voice-dependent)"
+        };
+        
+        ArrayAdapter<String> filterAdapter = new ArrayAdapter<>(this,
+            android.R.layout.simple_spinner_item, filterOptions);
+        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        multilingualFilterSpinner.setAdapter(filterAdapter);
+        
+        InAppLogger.log("VoiceSettings", "Multilingual filter spinner setup with " + filterOptions.length + " options");
+        
+        // Add listener to save filter selection automatically
+        multilingualFilterSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                saveMultilingualFilter(position);
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+                saveMultilingualFilter(0); // Default to skip
+            }
+        });
+    }
+
     private void setupAudioChannelSpinners() {
         // Audio Usage Spinner
         String[] audioUsageOptions = {
@@ -803,6 +835,15 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         } else {
             contentTypeSpinner.setSelection(DEFAULT_CONTENT_TYPE);
             InAppLogger.log("VoiceSettings", "Content type index out of bounds, using default: " + DEFAULT_CONTENT_TYPE);
+        }
+
+        // Load multilingual filter setting
+        int savedFilterMode = sharedPreferences.getInt(KEY_MULTILINGUAL_FILTER, 0);
+        if (multilingualFilterSpinner.getAdapter() != null && savedFilterMode < multilingualFilterSpinner.getAdapter().getCount()) {
+            multilingualFilterSpinner.setSelection(savedFilterMode);
+        } else {
+            multilingualFilterSpinner.setSelection(0); // Default to skip
+            InAppLogger.log("VoiceSettings", "Multilingual filter index out of bounds, using default: 0");
         }
 
         // Load advanced voice switch state
@@ -1000,6 +1041,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         // Reset TTS language spinner to "Default (Use System Language)"
         if (ttsLanguageSpinner.getAdapter() != null && ttsLanguageSpinner.getAdapter().getCount() > 0) {
             ttsLanguageSpinner.setSelection(0); // First item is always "Default (Use System Language)"
+        }
+
+        // Reset multilingual filter spinner to "Skip unsupported text"
+        if (multilingualFilterSpinner.getAdapter() != null && multilingualFilterSpinner.getAdapter().getCount() > 0) {
+            multilingualFilterSpinner.setSelection(0); // Default to skip
         }
 
         // Hide advanced options by default
@@ -1384,6 +1430,13 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         editor.putFloat(KEY_TTS_VOLUME, volume);
         editor.apply();
         InAppLogger.log("VoiceSettings", "TTS volume saved: " + (volume * 100) + "%");
+    }
+
+    private void saveMultilingualFilter(int filterMode) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_MULTILINGUAL_FILTER, filterMode);
+        editor.apply();
+        InAppLogger.log("VoiceSettings", "Multilingual filter saved: " + filterMode);
     }
     
     private void sendTranslationEmail() {
