@@ -140,24 +140,11 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     
     private fun speakText(text: String) {
         if (isTtsInitialized && textToSpeech != null) {
-            // CRITICAL: Apply voice settings with text analysis to handle language mismatches
-            // This will automatically detect if the selected voice is compatible with the text language
-            // and switch to a compatible voice if needed
-            applyVoiceSettingsWithText(text)
-            
             // Stop any current speech first
             textToSpeech?.stop()
             // Then speak the new text
             textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "onboarding_utterance")
             InAppLogger.log(TAG, "Speaking: ${text.take(50)}...")
-        }
-    }
-
-    private fun applyVoiceSettingsWithText(text: String) {
-        textToSpeech?.let { tts ->
-            voiceSettingsPrefs?.let { prefs ->
-                VoiceSettingsActivity.applyVoiceSettings(tts, prefs, text)
-            }
         }
     }
     

@@ -34,9 +34,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private static final String KEY_CONTENT_TYPE = "content_type";
     private static final String KEY_SHOW_ADVANCED = "show_advanced_voice";
     private static final String KEY_TTS_LANGUAGE = "tts_language";
-    private static final String KEY_ALWAYS_USE_APPROPRIATE_LANGUAGE = "always_use_appropriate_language";
-    private static final String KEY_LATIN_DOMINANT_THRESHOLD = "latin_dominant_threshold";
-    private static final String KEY_MIXED_TEXT_THRESHOLD = "mixed_text_threshold";
 
     // Default values
     private static final float DEFAULT_SPEECH_RATE = 1.0f;
@@ -45,10 +42,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private static final String DEFAULT_LANGUAGE = "en_US";
     private static final int DEFAULT_AUDIO_USAGE = 1; // USAGE_NOTIFICATION (recommended for Duck Audio)
     private static final int DEFAULT_CONTENT_TYPE = 0; // CONTENT_TYPE_SPEECH
-    
-    // Language detection threshold defaults (as percentages)
-    private static final double DEFAULT_LATIN_DOMINANT_THRESHOLD = 0.7; // 70%
-    private static final double DEFAULT_MIXED_TEXT_THRESHOLD = 0.15; // 15%
 
     // UI Components
     private SeekBar speechRateSeekBar;
@@ -67,12 +60,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private Button btnVoiceInfo;
     private Switch switchAdvancedVoice;
     private LinearLayout layoutAdvancedVoiceSection;
-    private Switch switchAlwaysUseAppropriateLanguage;
-    private SeekBar latinDominantThresholdSeekBar;
-    private SeekBar mixedTextThresholdSeekBar;
-    private TextView latinDominantThresholdValue;
-    private TextView mixedTextThresholdValue;
-    private LinearLayout layoutLanguageDetectionSection;
 
     // TTS and data
     private TextToSpeech textToSpeech;
@@ -87,8 +74,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private float currentTtsVolume = DEFAULT_TTS_VOLUME;
     private Voice currentVoice;
     private Locale currentLanguage;
-    private double currentLatinDominantThreshold = DEFAULT_LATIN_DOMINANT_THRESHOLD;
-    private double currentMixedTextThreshold = DEFAULT_MIXED_TEXT_THRESHOLD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +96,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         switchAdvancedVoice.setChecked(showAdvanced);
         layoutAdvancedVoiceSection.setVisibility(showAdvanced ? View.VISIBLE : View.GONE);
         setupAdvancedSwitch();
-        setupAlwaysUseAppropriateLanguageSwitch();
         loadSavedSettings();
     }
 
@@ -142,12 +126,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         btnVoiceInfo = findViewById(R.id.btnVoiceInfo);
         switchAdvancedVoice = findViewById(R.id.switchAdvancedVoice);
         layoutAdvancedVoiceSection = findViewById(R.id.layoutAdvancedVoiceSection);
-        switchAlwaysUseAppropriateLanguage = findViewById(R.id.switchAlwaysUseAppropriateLanguage);
-        latinDominantThresholdSeekBar = findViewById(R.id.latinDominantThresholdSeekBar);
-        mixedTextThresholdSeekBar = findViewById(R.id.mixedTextThresholdSeekBar);
-        latinDominantThresholdValue = findViewById(R.id.latinDominantThresholdValue);
-        mixedTextThresholdValue = findViewById(R.id.mixedTextThresholdValue);
-        layoutLanguageDetectionSection = findViewById(R.id.layoutLanguageDetectionSection);
         
         // Set up audio help button
         Button btnAudioHelp = findViewById(R.id.btnAudioHelp);
@@ -244,49 +222,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                     applyAudioAttributes();
                     // Save immediately when user changes the setting
                     saveTtsVolume(currentTtsVolume);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
-
-        // Language Detection Threshold SeekBars
-        setupLanguageDetectionSeekBars();
-    }
-
-    private void setupLanguageDetectionSeekBars() {
-        // Latin Dominant Threshold SeekBar (50% to 100%)
-        latinDominantThresholdSeekBar.setMax(50); // 50% to 100% = 50 steps
-        latinDominantThresholdSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                currentLatinDominantThreshold = 0.5 + (progress / 100.0); // 0.5 to 1.0
-                latinDominantThresholdValue.setText(String.format("%.0f%%", currentLatinDominantThreshold * 100));
-                if (fromUser) {
-                    saveLatinDominantThreshold(currentLatinDominantThreshold);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
-
-        // Mixed Text Threshold SeekBar (5% to 45%)
-        mixedTextThresholdSeekBar.setMax(40); // 5% to 45% = 40 steps
-        mixedTextThresholdSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                currentMixedTextThreshold = 0.05 + (progress / 100.0); // 0.05 to 0.45
-                mixedTextThresholdValue.setText(String.format("%.0f%%", currentMixedTextThreshold * 100));
-                if (fromUser) {
-                    saveMixedTextThreshold(currentMixedTextThreshold);
                 }
             }
 
@@ -788,17 +723,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         });
     }
 
-    private void setupAlwaysUseAppropriateLanguageSwitch() {
-        switchAlwaysUseAppropriateLanguage.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            // Save the setting immediately when user changes it
-            saveAlwaysUseAppropriateLanguage(isChecked);
-            InAppLogger.log("VoiceSettings", "Always use appropriate language setting changed to: " + isChecked);
-            
-            // Show/hide language detection sensitivity section based on switch state
-            layoutLanguageDetectionSection.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-        });
-    }
-
     private void loadSavedSettings() {
         // Load speech rate
         currentSpeechRate = sharedPreferences.getFloat(KEY_SPEECH_RATE, DEFAULT_SPEECH_RATE);
@@ -885,26 +809,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         boolean showAdvanced = sharedPreferences.getBoolean(KEY_SHOW_ADVANCED, false);
         switchAdvancedVoice.setChecked(showAdvanced);
         layoutAdvancedVoiceSection.setVisibility(showAdvanced ? View.VISIBLE : View.GONE);
-        
-        // Load always use appropriate language switch state (default to true for backward compatibility)
-        boolean alwaysUseAppropriateLanguage = sharedPreferences.getBoolean(KEY_ALWAYS_USE_APPROPRIATE_LANGUAGE, true);
-        switchAlwaysUseAppropriateLanguage.setChecked(alwaysUseAppropriateLanguage);
-        
-        // Set initial visibility of language detection section
-        layoutLanguageDetectionSection.setVisibility(alwaysUseAppropriateLanguage ? View.VISIBLE : View.GONE);
-
-        // Load language detection thresholds
-        currentLatinDominantThreshold = sharedPreferences.getFloat(KEY_LATIN_DOMINANT_THRESHOLD, (float) DEFAULT_LATIN_DOMINANT_THRESHOLD);
-        currentMixedTextThreshold = sharedPreferences.getFloat(KEY_MIXED_TEXT_THRESHOLD, (float) DEFAULT_MIXED_TEXT_THRESHOLD);
-        
-        // Set seekbar positions for thresholds
-        int latinDominantProgress = (int) ((currentLatinDominantThreshold - 0.5) * 100);
-        latinDominantThresholdSeekBar.setProgress(latinDominantProgress);
-        latinDominantThresholdValue.setText(String.format("%.0f%%", currentLatinDominantThreshold * 100));
-        
-        int mixedTextProgress = (int) ((currentMixedTextThreshold - 0.05) * 100);
-        mixedTextThresholdSeekBar.setProgress(mixedTextProgress);
-        mixedTextThresholdValue.setText(String.format("%.0f%%", currentMixedTextThreshold * 100));
     }
 
     /**
@@ -1102,25 +1006,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         switchAdvancedVoice.setChecked(false);
         layoutAdvancedVoiceSection.setVisibility(View.GONE);
         saveAdvancedVoiceEnabled(false);
-        
-        // Reset always use appropriate language to true (default for backward compatibility)
-        switchAlwaysUseAppropriateLanguage.setChecked(true);
-        saveAlwaysUseAppropriateLanguage(true);
-
-        // Reset language detection thresholds to defaults
-        currentLatinDominantThreshold = DEFAULT_LATIN_DOMINANT_THRESHOLD;
-        currentMixedTextThreshold = DEFAULT_MIXED_TEXT_THRESHOLD;
-        
-        int latinDominantProgress = (int) ((DEFAULT_LATIN_DOMINANT_THRESHOLD - 0.5) * 100);
-        latinDominantThresholdSeekBar.setProgress(latinDominantProgress);
-        latinDominantThresholdValue.setText(String.format("%.0f%%", DEFAULT_LATIN_DOMINANT_THRESHOLD * 100));
-        
-        int mixedTextProgress = (int) ((DEFAULT_MIXED_TEXT_THRESHOLD - 0.05) * 100);
-        mixedTextThresholdSeekBar.setProgress(mixedTextProgress);
-        mixedTextThresholdValue.setText(String.format("%.0f%%", DEFAULT_MIXED_TEXT_THRESHOLD * 100));
-        
-        saveLatinDominantThreshold(DEFAULT_LATIN_DOMINANT_THRESHOLD);
-        saveMixedTextThreshold(DEFAULT_MIXED_TEXT_THRESHOLD);
 
         // Reset audio settings with bounds checking
         if (audioUsageSpinner.getAdapter() != null && DEFAULT_AUDIO_USAGE < audioUsageSpinner.getAdapter().getCount()) {
@@ -1155,18 +1040,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
      * This ensures consistent behavior across all app components.
      */
     public static void applyVoiceSettings(TextToSpeech tts, SharedPreferences prefs) {
-        applyVoiceSettings(tts, prefs, null);
-    }
-
-    /**
-     * CRITICAL: Enhanced version that can handle text-specific language detection.
-     * This method checks if the selected voice is compatible with the text being spoken.
-     * 
-     * @param tts The TTS instance
-     * @param prefs The voice settings preferences
-     * @param textToSpeak Optional text that will be spoken (for language detection)
-     */
-    public static void applyVoiceSettings(TextToSpeech tts, SharedPreferences prefs, String textToSpeak) {
         if (tts == null || prefs == null) return;
 
         // Load all voice settings from preferences
@@ -1175,53 +1048,23 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         float ttsVolume = prefs.getFloat(KEY_TTS_VOLUME, DEFAULT_TTS_VOLUME);
         String voiceName = prefs.getString(KEY_VOICE_NAME, "");
         String language = prefs.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE);
-        boolean alwaysUseAppropriateLanguage = prefs.getBoolean(KEY_ALWAYS_USE_APPROPRIATE_LANGUAGE, true);
-        
-        // Load language detection thresholds
-        double latinDominantThreshold = prefs.getFloat(KEY_LATIN_DOMINANT_THRESHOLD, (float) DEFAULT_LATIN_DOMINANT_THRESHOLD);
-        double mixedTextThreshold = prefs.getFloat(KEY_MIXED_TEXT_THRESHOLD, (float) DEFAULT_MIXED_TEXT_THRESHOLD);
 
-        InAppLogger.log("VoiceSettings", "Applying voice settings - Rate: " + speechRate + ", Pitch: " + pitch + ", Volume: " + (ttsVolume * 100) + "%, Voice: " + voiceName + ", Language: " + language + ", AlwaysUseAppropriateLanguage: " + alwaysUseAppropriateLanguage);
+        InAppLogger.log("VoiceSettings", "Applying voice settings - Rate: " + speechRate + ", Pitch: " + pitch + ", Volume: " + (ttsVolume * 100) + "%, Voice: " + voiceName + ", Language: " + language);
 
         // Apply speech rate and pitch (these don't conflict with voice/language settings)
         tts.setSpeechRate(speechRate);
         tts.setPitch(pitch);
 
-        // CRITICAL: Check for voice-text language compatibility if we have text to analyze
-        boolean shouldOverrideVoice = false;
-        String detectedLanguage = null;
-        
-        if (textToSpeak != null && !textToSpeak.trim().isEmpty() && !voiceName.isEmpty()) {
-            detectedLanguage = detectTextLanguage(textToSpeak, latinDominantThreshold, mixedTextThreshold);
-            if (detectedLanguage != null) {
-                boolean isCompatible = isVoiceCompatibleWithLanguage(tts, voiceName, detectedLanguage);
-                if (!isCompatible) {
-                    InAppLogger.log("VoiceSettings", "WARNING: Voice " + voiceName + " is not compatible with detected language: " + detectedLanguage);
-                    InAppLogger.log("VoiceSettings", "Text sample: " + textToSpeak.substring(0, Math.min(50, textToSpeak.length())) + "...");
-                    
-                    // CRITICAL: Only override voice if user has enabled "Always use most appropriate language"
-                    if (alwaysUseAppropriateLanguage) {
-                        shouldOverrideVoice = true;
-                        InAppLogger.log("VoiceSettings", "User preference: Always use appropriate language is ENABLED - will override incompatible voice");
-                    } else {
-                        InAppLogger.log("VoiceSettings", "User preference: Always use appropriate language is DISABLED - will use specific voice regardless of compatibility");
-                    }
-                } else {
-                    InAppLogger.log("VoiceSettings", "Voice " + voiceName + " is compatible with detected language: " + detectedLanguage);
-                }
-            }
-        }
-
         // CRITICAL: Apply language setting with proper override logic
         // The order is important - check for specific voice first, then fall back to language
         boolean languageApplied = false;
-        if (!voiceName.isEmpty() && !shouldOverrideVoice) {
-            // CRITICAL: Skip language setting if we have a specific voice and it's compatible
+        if (!voiceName.isEmpty()) {
+            // CRITICAL: Skip language setting if we have a specific voice
             // The specific voice will completely override any language setting
             // This ensures the user's voice choice is always respected
             InAppLogger.log("VoiceSettings", "Skipping language setting - specific voice will override it");
         } else if (!language.isEmpty() && !language.equals("")) {
-            // No specific voice selected or voice is incompatible - apply the language setting
+            // No specific voice selected - apply the language setting
             // Parse language string (e.g., "en_US" -> Locale("en", "US"))
             Locale targetLocale = null;
             String[] langParts = language.split("_");
@@ -1250,11 +1093,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             }
         }
 
-        // CRITICAL: Apply specific voice if we have one and it's compatible
+        // CRITICAL: Apply specific voice if we have one
         // This completely overrides any language setting that was applied above
         // This is the core of the voice override feature
         boolean voiceApplied = false;
-        if (!voiceName.isEmpty() && !shouldOverrideVoice) {
+        if (!voiceName.isEmpty()) {
             Set<Voice> voices = tts.getVoices();
             if (voices != null) {
                 // Enhanced logging for voice debugging
@@ -1309,34 +1152,17 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             } else {
                 InAppLogger.log("VoiceSettings", "No voices available from TTS engine");
             }
-        } else if (shouldOverrideVoice && detectedLanguage != null) {
-            // CRITICAL: Voice is incompatible with text language - find a compatible voice
-            InAppLogger.log("VoiceSettings", "Finding compatible voice for detected language: " + detectedLanguage);
-            voiceApplied = findAndSetCompatibleVoice(tts, detectedLanguage);
         }
         
         // CRITICAL: Log the final result of voice settings application
         // This helps with debugging and confirms the override logic is working
         if (voiceApplied) {
-            // Get the actual voice that was applied for better logging
-            Voice currentVoice = tts.getVoice();
-            String actualVoiceName = (currentVoice != null) ? currentVoice.getName() : "unknown";
-            String actualLanguage = (currentVoice != null && currentVoice.getLocale() != null) ? currentVoice.getLocale().getLanguage() : "unknown";
-            
-            if (shouldOverrideVoice) {
-                InAppLogger.log("VoiceSettings", "Final result: Voice overridden to " + actualVoiceName + " (language: " + actualLanguage + ") for detected language: " + detectedLanguage);
-            } else {
-                InAppLogger.log("VoiceSettings", "Final result: Using specific voice (" + actualVoiceName + ", language: " + actualLanguage + ") - language setting ignored");
-            }
+            // CRITICAL: This confirms the voice override is working
+            InAppLogger.log("VoiceSettings", "Final result: Using specific voice (" + voiceName + ") - language setting ignored");
         } else if (languageApplied) {
             InAppLogger.log("VoiceSettings", "Final result: Using language setting (" + language + ")");
         } else {
             InAppLogger.log("VoiceSettings", "Final result: Using TTS defaults (no custom voice or language applied)");
-        }
-        
-        // Log user preference for debugging
-        if (!voiceName.isEmpty() && detectedLanguage != null) {
-            InAppLogger.log("VoiceSettings", "User preference summary: AlwaysUseAppropriateLanguage=" + alwaysUseAppropriateLanguage + ", VoiceOverride=" + shouldOverrideVoice);
         }
 
         // Apply audio attributes
@@ -1374,202 +1200,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             case 3: return android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION;
             default: return android.media.AudioAttributes.CONTENT_TYPE_SPEECH;
         }
-    }
-
-    /**
-     * Detect the primary language of the given text using character analysis
-     * This is a simple heuristic-based approach that works for most common cases
-     */
-    private static String detectTextLanguage(String text, double latinDominantThreshold, double mixedTextThreshold) {
-        if (text == null || text.trim().isEmpty()) {
-            return null;
-        }
-
-        // Count characters by script
-        int latinCount = 0;
-        int hiraganaCount = 0;
-        int katakanaCount = 0;
-        int kanjiCount = 0;
-        int hangulCount = 0;
-        int cyrillicCount = 0;
-        int arabicCount = 0;
-        int thaiCount = 0;
-        int devanagariCount = 0;
-        int chineseCount = 0;
-
-        for (char c : text.toCharArray()) {
-            if (Character.isLetter(c)) {
-                if (c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z') {
-                    latinCount++;
-                } else if (c >= '\u3040' && c <= '\u309F') { // Hiragana
-                    hiraganaCount++;
-                } else if (c >= '\u30A0' && c <= '\u30FF') { // Katakana
-                    katakanaCount++;
-                } else if (c >= '\u4E00' && c <= '\u9FFF') { // CJK Unified Ideographs (Kanji/Hanzi)
-                    kanjiCount++;
-                } else if (c >= '\uAC00' && c <= '\uD7AF') { // Hangul
-                    hangulCount++;
-                } else if (c >= '\u0400' && c <= '\u04FF') { // Cyrillic
-                    cyrillicCount++;
-                } else if (c >= '\u0600' && c <= '\u06FF') { // Arabic
-                    arabicCount++;
-                } else if (c >= '\u0E00' && c <= '\u0E7F') { // Thai
-                    thaiCount++;
-                } else if (c >= '\u0900' && c <= '\u097F') { // Devanagari
-                    devanagariCount++;
-                }
-            }
-        }
-
-        // Determine primary language based on character counts
-        int totalLetters = latinCount + hiraganaCount + katakanaCount + kanjiCount + hangulCount + 
-                          cyrillicCount + arabicCount + thaiCount + devanagariCount;
-
-        if (totalLetters == 0) {
-            return null; // No letters detected
-        }
-
-        // Enhanced logging for debugging mixed-language detection
-        InAppLogger.log("VoiceSettings", "Language detection - Total letters: " + totalLetters + 
-                       ", Latin: " + latinCount + ", Japanese: " + (hiraganaCount + katakanaCount + kanjiCount) + 
-                       ", Korean: " + hangulCount + ", Chinese: " + kanjiCount + 
-                       ", Russian: " + cyrillicCount + ", Arabic: " + arabicCount + 
-                       ", Thai: " + thaiCount + ", Hindi: " + devanagariCount);
-
-        // Calculate percentages
-        double latinPercent = (double) latinCount / totalLetters;
-        double japanesePercent = (double) (hiraganaCount + katakanaCount + kanjiCount) / totalLetters;
-        double koreanPercent = (double) hangulCount / totalLetters;
-        double chinesePercent = (double) kanjiCount / totalLetters;
-        double russianPercent = (double) cyrillicCount / totalLetters;
-        double arabicPercent = (double) arabicCount / totalLetters;
-        double thaiPercent = (double) thaiCount / totalLetters;
-        double hindiPercent = (double) devanagariCount / totalLetters;
-
-        // Determine language based on highest percentage
-        // ENHANCED LOGIC: Balance between script dominance and mixed-language scenarios
-        // Uses user-defined thresholds for more flexible language detection
-        
-        if (latinPercent > latinDominantThreshold) {
-            // Latin is clearly dominant - only switch if other scripts have significant presence
-            // For Latin-dominant text, we use a higher threshold (20%) to prevent unnecessary switching
-            double significantPresenceThreshold = 0.2;
-            
-            if (japanesePercent > significantPresenceThreshold) {
-                InAppLogger.log("VoiceSettings", "Language detection result: Japanese (significant presence in Latin-dominant text)");
-                return "ja"; // Japanese
-            } else if (koreanPercent > significantPresenceThreshold) {
-                InAppLogger.log("VoiceSettings", "Language detection result: Korean (significant presence in Latin-dominant text)");
-                return "ko"; // Korean
-            } else if (chinesePercent > significantPresenceThreshold) {
-                InAppLogger.log("VoiceSettings", "Language detection result: Chinese (significant presence in Latin-dominant text)");
-                return "zh"; // Chinese
-            } else if (russianPercent > significantPresenceThreshold) {
-                InAppLogger.log("VoiceSettings", "Language detection result: Russian (significant presence in Latin-dominant text)");
-                return "ru"; // Russian
-            } else if (arabicPercent > significantPresenceThreshold) {
-                InAppLogger.log("VoiceSettings", "Language detection result: Arabic (significant presence in Latin-dominant text)");
-                return "ar"; // Arabic
-            } else if (thaiPercent > significantPresenceThreshold) {
-                InAppLogger.log("VoiceSettings", "Language detection result: Thai (significant presence in Latin-dominant text)");
-                return "th"; // Thai
-            } else if (hindiPercent > significantPresenceThreshold) {
-                InAppLogger.log("VoiceSettings", "Language detection result: Hindi (significant presence in Latin-dominant text)");
-                return "hi"; // Hindi
-            } else {
-                // Latin is dominant and no other script has significant presence
-                InAppLogger.log("VoiceSettings", "Language detection result: English (Latin script dominant)");
-                return "en"; // Default to English for Latin script
-            }
-        } else {
-            // Latin is not clearly dominant - use user-defined mixed text threshold
-            if (japanesePercent > mixedTextThreshold) {
-                InAppLogger.log("VoiceSettings", "Language detection result: Japanese (mixed text detected)");
-                return "ja"; // Japanese
-            } else if (koreanPercent > mixedTextThreshold) {
-                InAppLogger.log("VoiceSettings", "Language detection result: Korean (mixed text detected)");
-                return "ko"; // Korean
-            } else if (chinesePercent > mixedTextThreshold) {
-                InAppLogger.log("VoiceSettings", "Language detection result: Chinese (mixed text detected)");
-                return "zh"; // Chinese
-            } else if (russianPercent > mixedTextThreshold) {
-                InAppLogger.log("VoiceSettings", "Language detection result: Russian (mixed text detected)");
-                return "ru"; // Russian
-            } else if (arabicPercent > mixedTextThreshold) {
-                InAppLogger.log("VoiceSettings", "Language detection result: Arabic (mixed text detected)");
-                return "ar"; // Arabic
-            } else if (thaiPercent > mixedTextThreshold) {
-                InAppLogger.log("VoiceSettings", "Language detection result: Thai (mixed text detected)");
-                return "th"; // Thai
-            } else if (hindiPercent > mixedTextThreshold) {
-                InAppLogger.log("VoiceSettings", "Language detection result: Hindi (mixed text detected)");
-                return "hi"; // Hindi
-            } else if (latinPercent > 0.5) {
-                // Latin is still the majority but not clearly dominant
-                InAppLogger.log("VoiceSettings", "Language detection result: English (Latin script majority)");
-                return "en"; // Default to English for Latin script
-            }
-        }
-
-        InAppLogger.log("VoiceSettings", "Language detection result: Could not determine language");
-        return null; // Could not determine language
-    }
-
-    /**
-     * Check if a voice is compatible with a given language
-     */
-    private static boolean isVoiceCompatibleWithLanguage(TextToSpeech tts, String voiceName, String languageCode) {
-        if (tts == null || voiceName == null || languageCode == null) {
-            return false;
-        }
-
-        Set<Voice> voices = tts.getVoices();
-        if (voices == null) {
-            return false;
-        }
-
-        // Find the voice and check its locale
-        for (Voice voice : voices) {
-            if (voice.getName().equals(voiceName)) {
-                Locale voiceLocale = voice.getLocale();
-                if (voiceLocale != null) {
-                    String voiceLanguage = voiceLocale.getLanguage();
-                    return voiceLanguage.equals(languageCode);
-                }
-                break;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Find and set a voice compatible with the given language
-     */
-    private static boolean findAndSetCompatibleVoice(TextToSpeech tts, String languageCode) {
-        if (tts == null || languageCode == null) {
-            return false;
-        }
-
-        Set<Voice> voices = tts.getVoices();
-        if (voices == null) {
-            return false;
-        }
-
-        // Find any voice that supports the given language
-        for (Voice voice : voices) {
-            Locale voiceLocale = voice.getLocale();
-            if (voiceLocale != null && voiceLocale.getLanguage().equals(languageCode)) {
-                int result = tts.setVoice(voice);
-                if (result == TextToSpeech.SUCCESS) {
-                    InAppLogger.log("VoiceSettings", "Found compatible voice for language " + languageCode + ": " + voice.getName());
-                    return true;
-                }
-            }
-        }
-
-        InAppLogger.log("VoiceSettings", "No compatible voice found for language: " + languageCode);
-        return false;
     }
 
     private void showAudioHelpDialog() {
@@ -1754,27 +1384,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         editor.putFloat(KEY_TTS_VOLUME, volume);
         editor.apply();
         InAppLogger.log("VoiceSettings", "TTS volume saved: " + (volume * 100) + "%");
-    }
-
-    private void saveAlwaysUseAppropriateLanguage(boolean enabled) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(KEY_ALWAYS_USE_APPROPRIATE_LANGUAGE, enabled);
-        editor.apply();
-        InAppLogger.log("VoiceSettings", "Always use appropriate language setting saved: " + enabled);
-    }
-
-    private void saveLatinDominantThreshold(double threshold) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putFloat(KEY_LATIN_DOMINANT_THRESHOLD, (float) threshold);
-        editor.apply();
-        InAppLogger.log("VoiceSettings", "Latin dominant threshold saved: " + (threshold * 100) + "%");
-    }
-
-    private void saveMixedTextThreshold(double threshold) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putFloat(KEY_MIXED_TEXT_THRESHOLD, (float) threshold);
-        editor.apply();
-        InAppLogger.log("VoiceSettings", "Mixed text threshold saved: " + (threshold * 100) + "%");
     }
     
     private void sendTranslationEmail() {

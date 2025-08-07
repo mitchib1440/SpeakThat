@@ -141,21 +141,7 @@ class AboutActivity : AppCompatActivity() {
     
     private fun speakAboutApp() {
         val aboutText = buildAboutText()
-        
-        // CRITICAL: Apply voice settings with text analysis to handle language mismatches
-        // This will automatically detect if the selected voice is compatible with the text language
-        // and switch to a compatible voice if needed
-        applyVoiceSettingsWithText(aboutText)
-        
         textToSpeech?.speak(aboutText, TextToSpeech.QUEUE_FLUSH, null, "about_app")
-    }
-
-    private fun applyVoiceSettingsWithText(text: String) {
-        textToSpeech?.let { tts ->
-            voiceSettingsPrefs?.let { prefs ->
-                VoiceSettingsActivity.applyVoiceSettings(tts, prefs, text)
-            }
-        }
     }
     
     private fun stopTTS() {
