@@ -2,6 +2,13 @@
 <resources>
     <string name="app_name">SpeakThat!</string>
     <string name="service_name">SpeakThat Notification Reader</string>
+    <!-- Quick Settings Tile -->
+    <string name="quick_settings_tile_label">SpeakThat</string>
+    <string name="quick_settings_tile_enabled">Enabled</string>
+    <string name="quick_settings_tile_disabled">Disabled</string>
+    <string name="quick_settings_tile_enabled_toast">SpeakThat enabled via Quick Settings</string>
+    <string name="quick_settings_tile_disabled_toast">SpeakThat disabled via Quick Settings</string>
+    <string name="quick_settings_tile_error_toast">Error toggling SpeakThat</string>
     <!-- Permission Explanations for IzzyOnDroid/F-Droid -->
     <string name="permission_request_install_packages">Used for auto-update system to install new versions from GitHub releases. Only used when user explicitly enables auto-updates and app was not installed from Google Play Store.</string>
     <string name="permission_access_location">Required for Bluetooth and WiFi conditional filtering features. Used to detect nearby Bluetooth devices and WiFi networks for user-defined rules. No location tracking or data collection.</string>
@@ -217,40 +224,41 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="update_never">Never (manual only)</string>
     <!-- TTS Template Strings (for improved localization) -->
     <!-- These are complete sentence templates with placeholders for proper localization -->
-    <string name="tts_template_notified_you">{app} size bildirdi: {content}</string>
-    <string name="tts_template_reported">{app} rapor etti: {content}</string>
-    <string name="tts_template_saying">{app} bildirimi, şunu söylüyor: {content}</string>
-    <string name="tts_template_alerts_you">{app} sizi uyarıyor: {content}</string>
-    <string name="tts_template_update_from">{app} güncellemesi: {content}</string>
-    <string name="tts_template_notification">{app} bildirimi: {content}</string>
-    <string name="tts_template_new_notification">Yeni bildirim: {app}: {content}</string>
-    <string name="tts_template_new_from">{app} yeni: {content}</string>
-    <string name="tts_template_said">{app} dedi: {content}</string>
-    <string name="tts_template_updated_you">{app} sizi güncelledi: {content}</string>
-    <string name="tts_template_new_notification_from">{app} yeni bildirimi: şunu söylüyor: {content}</string>
-    <string name="tts_template_new_update_from">{app} yeni güncellemesi: {content}</string>
-    <string name="tts_template_notification_from">{app} bildirimi: {content}</string>
-    <string name="tts_template_says">{app} söylüyor: {content}</string>
-    <string name="tts_template_private_notification">{app} özel bildirimi aldınız</string>
+    <string name="tts_template_notified_you">{app} notified you: {content}</string>
+    <string name="tts_template_reported">{app} reported: {content}</string>
+    <string name="tts_template_saying">Notification from {app}, saying {content}</string>
+    <string name="tts_template_alerts_you">{app} alerts you: {content}</string>
+    <string name="tts_template_update_from">Update from {app}: {content}</string>
+    <string name="tts_template_notification">{app} notification: {content}</string>
+    <string name="tts_template_new_notification">New notification: {app}: {content}</string>
+    <string name="tts_template_new_from">New from {app}: {content}</string>
+    <string name="tts_template_said">{app} said: {content}</string>
+    <string name="tts_template_updated_you">{app} updated you: {content}</string>
+    <string name="tts_template_new_notification_from">New notification from {app}: saying: {content}</string>
+    <string name="tts_template_new_update_from">New update from {app}: {content}</string>
+    <string name="tts_template_notification_from">Notification from {app}: {content}</string>
+    <string name="tts_template_says">{app} says: {content}</string>
+    <string name="tts_template_private_notification">You received a private notification from {app}</string>
     <!-- TTS Context Templates - Complete sentences for different app contexts -->
     <!-- About Page TTS -->
-    <string name="tts_about_intro">SpeakThat\'e hoş geldiniz!</string>
-    <string name="tts_about_description">SpeakThat, metin-konuşma dönüşümü kullanarak bildirimlerinizi sesli okuyan açık kaynaklı bir Android bildirim okuyucusudur. Eller serbest çalışma, erişilebilirlik ve çoklu görev yaparken bilgiyi korumak için mükemmeldir.</string>
-    <string name="tts_about_features_intro">Ana özellikler şunları içerir:</string>
-    <string name="tts_about_features">Gerçek zamanlı bildirim okuma, özelleştirilebilir ses ayarları, akıllı bildirim filtreleme, belirli uygulama kontrolü, medya farkında davranış, bildirim geçmişi takibi, sallayarak durdurma ve el sallayarak durdurma, özel ses biçimlendirme, karanlık ve açık mod desteği, gelişmiş mantık ve zamanlama için koşullu kurallar ve tam reklamsız ve çevrimdışı işlevsellik.</string>
-    <string name="tts_about_developer">Michi tarafından sevgiyle geliştirildi, her gün bildirim okuyucu test eden ve kullanan 12 yıldan fazla deneyime sahip İngiltere\'den bağımsız bir geliştirici. SpeakThat, başlangıçta DYNA Logix tarafından geliştirilen Touchless Notifications\'tan ilham almıştır ve özelleştirilebilir bildirim okuyucu mirasını sürdürmeyi amaçlar. Bu proje yapay zeka destekli programlama ile hızlandırılmıştır.</string>
-    <string name="tts_about_license">Bu proje açık kaynaklıdır ve GPL-3.0 lisansı altında mevcuttur. Tam lisans metnini ve kaynak kodu GitHub\'da görebilirsiniz. Katkılar ve geri bildirimler hoş karşılanır!</string>
-    <string name="tts_about_thank_you">SpeakThat kullandığınız için teşekkürler!</string>
+    <string name="tts_about_intro">Welcome to SpeakThat!</string>
+    <string name="tts_about_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
+    <string name="tts_about_features_intro">Key features include:</string>
+    <string name="tts_about_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and full ad-free, offline functionality.</string>
+    <string name="tts_about_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
+    <string name="tts_about_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
+    <string name="tts_about_thank_you">Thank you for using SpeakThat!</string>
     <!-- Voice Settings Test -->
-    <string name="tts_voice_test">Bildirimleriniz bu ses ayarlarıyla böyle duyulacak.</string>
+    <string name="tts_voice_test">This is how your notifications will sound with these voice settings.</string>
     <!-- Onboarding TTS -->
-    <string name="tts_onboarding_welcome">SpeakThat\'e hoş geldiniz! Ekrana bakmadan bağlı kalın. Telefonunuz bildirimleri sesli okuyacak böylece önemli şeylere odaklanabilirsiniz.</string>
-    <string name="tts_onboarding_permission">SpeakThat bildirimlerinizi sesli okumak için izin gerektirir. Her şey cihazınızda saklanır ve neyin okunacağını siz kontrol edersiniz.</string>
-    <string name="tts_onboarding_privacy">Gizliliğiniz çok önemlidir. Ne sesli okunacağını tam olarak siz kontrol edersiniz. Herhangi bir bildirimi anında durdurmak için telefonu sallayın. Her şey cihazınızda saklanır.</string>
-    <string name="tts_onboarding_filters">Başlamak için bazı temel gizlilik filtreleri kuralım. SpeakThat\'in güçlü bir filtreleme sistemi var, neyin okunacağını ve neyin okunmayacağını seçmenize izin verir.</string>
-    <string name="tts_onboarding_apps">Bildirimlerini asla okumamı istemediğiniz uygulamaların adlarını girin. Yaygın örnekler bankacılık uygulamaları, tıbbi uygulamalar ve tanışma uygulamalarını içerir.</string>
-    <string name="tts_onboarding_words">Bildirimlerde asla okumamı istemediğiniz kelime veya ifadeleri girin. Yaygın örnekler şifreler, PIN\'ler, kredi kartları ve tıbbi terimleri içerir.</string>
-    <string name="tts_onboarding_complete">SpeakThat gözlerinizi özgür tutarken bağlı kalmanıza yardım etmeye hazır! Uygulama ayarlarında istediğiniz zaman daha fazla filtre ekleyebilirsiniz.</string>
+    <string name="tts_onboarding_welcome">Welcome to SpeakThat! Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.</string>
+    <string name="tts_onboarding_permission">SpeakThat needs permission to read your notifications aloud. Everything stays on your device and you control what gets read.</string>
+    <string name="tts_onboarding_privacy">Your privacy matters. You control exactly what gets read aloud. Shake your phone to stop any announcement instantly. Everything stays on your device.</string>
+    <string name="tts_onboarding_filters">Let\'s set up some basic privacy filters to get you started. SpeakThat features a powerful filtering system that allows you to choose what gets read and what doesn\'t.</string>
+    <string name="tts_onboarding_apps">Type the name of an app you want me to never read notifications from. Common examples include banking apps, medical apps, and dating apps.</string>
+    <string name="tts_onboarding_words">Type words or phrases that you want me to never read notifications containing. Common examples include password, PIN, credit card, and medical terms.</string>
+    <string name="tts_onboarding_rules">Set up smart rules that automatically control when notifications are read based on your situation. For example, only read notifications when headphones are connected, or skip notifications when the screen is on.</string>
+    <string name="tts_onboarding_complete">SpeakThat is ready to help you stay connected while keeping your eyes free! You can add more filters anytime in the app settings.</string>
     <!-- Behavior Settings Speech Format Templates -->
     <string name="tts_behavior_default">Default format</string>
     <string name="tts_behavior_minimal">Minimal format</string>
@@ -350,6 +358,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_title_notification_cooldown">Notification Cooldown</string>
     <string name="dialog_title_speech_formats_guide">🗣️ Speech Formats - Complete Guide</string>
     <string name="dialog_title_honour_do_not_disturb">Honour Do Not Disturb</string>
+    <string name="dialog_title_honour_phone_calls">Honour Phone Calls</string>
     <string name="dialog_title_honour_audio_mode">Honour Audio Mode</string>
     <string name="dialog_title_select_bluetooth_device">Select Bluetooth Device</string>
     <string name="dialog_title_remove_device">Remove Device</string>
@@ -462,4 +471,10 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Conditional Rules - Exception Strings -->
     <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <!-- Multi-Language Voice Warning -->
+    <string name="specific_voice_warning">⚠️ Multi-language limitation</string>
+    <string name="specific_voice_warning_description">SpeakThat only supports one voice at a time. If you receive notifications in multiple languages, some may sound garbled.</string>
+    <string name="specific_voice_warning_dialog_title">Multi-Language Voice Limitation</string>
+    <string name="specific_voice_warning_dialog_message">SpeakThat currently only supports one voice at a time. This means:\n\n✅ What works well:\n• Notifications in the same language as your selected voice\n• Single-language usage scenarios\n• Most common notification patterns\n\n⚠️ Potential issues:\n• Notifications in different languages may sound garbled\n• Mixed-language content might be difficult to understand\n• Some characters or accents may not be pronounced correctly\n\n💡 Recommendations:\n• Choose a voice that matches your most common notification language\n• Consider using the Language &amp; Region setting instead of Specific Voice\n• Test with your actual notifications to ensure clarity\n\n🔮 Future plans:\n• Multi-language voice support is planned for future updates\n• Automatic language detection and voice switching\n• Better handling of mixed-language content\n\nFor now, the Language &amp; Region setting often works better for multi-language users as it automatically adapts to different content types.</string>
+    <string name="specific_voice_warning_dialog_got_it">Got it</string>
 </resources>
