@@ -4,14 +4,6 @@
 
 SpeakThat now includes a Quick Settings tile that allows you to quickly toggle the app's master switch without opening the app. This provides instant access to enable or disable notification reading from anywhere on your device.
 
-## Features
-
-- **Quick Toggle**: Instantly enable/disable SpeakThat from the Quick Settings panel
-- **Perfect Sync**: The tile state always matches the main app's master switch
-- **Visual Feedback**: Clear indication of current status (Enabled/Disabled)
-- **Battery Efficient**: Minimal background processing, only updates when needed
-- **Android 7.0+ Compatible**: Works on all supported Android versions
-
 ## How to Add the Quick Settings Tile
 
 ### Step 1: Open Quick Settings

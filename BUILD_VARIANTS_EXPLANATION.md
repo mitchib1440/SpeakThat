@@ -25,15 +25,6 @@ SpeakThat uses Android build variants to create two different APK versions optim
 - **No network libraries**: Excludes OkHttp and Coil to reduce APK size and privacy footprint
 - **Target users**: Privacy-conscious users who prefer app store distribution
 
-## Privacy Benefits of Store Variant
-
-The Store variant is specifically designed for privacy-conscious users:
-
-1. **No network permissions**: Users can verify the app cannot make any internet requests
-2. **No online icon loading**: App icons are loaded only from local resources
-3. **Smaller APK size**: Excludes network libraries (OkHttp, Coil)
-4. **Transparent behavior**: Users know exactly what the app can and cannot do
-
 ## Technical Implementation
 
 ### Build Configuration
@@ -70,27 +61,3 @@ dependencies {
 
 - **GitHub**: `SpeakThat-v1.3.3.apk` (with auto-updater)
 - **Store**: `SpeakThat-NoUpdater-v1.3.3.apk` (privacy-focused)
-
-## User Experience
-
-### GitHub Users
-- Get automatic updates when new versions are released
-- See colorful app icons loaded from CDN
-- Slightly larger APK due to network libraries
-
-### Store Users  
-- Updates handled by their app store
-- See consistent local fallback icons
-- Smaller APK with no network dependencies
-- Complete privacy - no internet access
-
-## Why This Matters
-
-Privacy-conscious users often avoid apps with INTERNET permissions unless absolutely necessary. By providing a Store variant without internet access, we:
-
-1. **Respect user privacy preferences**
-2. **Provide transparency about app behavior**
-3. **Reduce attack surface** (no network code = no network vulnerabilities)
-4. **Maintain functionality** (app works perfectly without online icons)
-
-This approach demonstrates that privacy and functionality can coexist when designed thoughtfully. 
