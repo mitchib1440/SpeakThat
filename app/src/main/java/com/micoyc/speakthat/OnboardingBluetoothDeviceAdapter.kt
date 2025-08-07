@@ -39,23 +39,22 @@ class OnboardingBluetoothDeviceAdapter(
     override fun getItemCount(): Int = devices.size
 
     inner class DeviceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val checkBox: CheckBox = itemView.findViewById(android.R.id.text1)
-        private val textView: TextView = itemView.findViewById(android.R.id.text1)
+        private val checkedTextView: android.widget.CheckedTextView = itemView.findViewById(android.R.id.text1)
 
         fun bind(device: BluetoothDevice) {
             val deviceName = device.name ?: "Unknown Device"
             val deviceAddress = device.address
             
-            textView.text = deviceName
-            checkBox.isChecked = selectedDevices.contains(deviceAddress)
+            checkedTextView.text = deviceName
+            checkedTextView.isChecked = selectedDevices.contains(deviceAddress)
             
             itemView.setOnClickListener {
                 if (selectedDevices.contains(deviceAddress)) {
                     selectedDevices.remove(deviceAddress)
-                    checkBox.isChecked = false
+                    checkedTextView.isChecked = false
                 } else {
                     selectedDevices.add(deviceAddress)
-                    checkBox.isChecked = true
+                    checkedTextView.isChecked = true
                 }
                 onDeviceSelected(device)
             }

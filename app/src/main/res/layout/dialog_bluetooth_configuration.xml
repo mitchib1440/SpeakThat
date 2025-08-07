@@ -24,7 +24,7 @@
         android:id="@+id/recyclerBluetoothDevices"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@drawable/rounded_background"
+        android:background="@drawable/dialog_input_background"
         android:padding="8dp" />
 
 </LinearLayout> 

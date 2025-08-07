@@ -401,6 +401,13 @@ class OnboardingPagerAdapter(
                     val ruleManager = com.micoyc.speakthat.rules.RuleManager(binding.root.context)
                     ruleManager.addRule(rule)
                     
+                    // Enable Conditional Rules if it's not already enabled
+                    val sharedPreferences = binding.root.context.getSharedPreferences("SpeakThatPrefs", android.content.Context.MODE_PRIVATE)
+                    if (!sharedPreferences.getBoolean("conditional_rules_enabled", false)) {
+                        sharedPreferences.edit().putBoolean("conditional_rules_enabled", true).apply()
+                        InAppLogger.log("OnboardingRuleTemplates", "Enabled Conditional Rules feature")
+                    }
+                    
                     InAppLogger.log("OnboardingRuleTemplates", "Added rule from template: ${template.name}")
                     
                     // Show a toast to confirm the rule was added
@@ -451,6 +458,25 @@ class OnboardingPagerAdapter(
             }
 
             private fun showBluetoothConfigurationDialog(template: RuleTemplate) {
+                // Check permission first before showing dialog
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                    if (binding.root.context.checkSelfPermission(android.Manifest.permission.BLUETOOTH_CONNECT) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                        // Request permission first
+                        if (binding.root.context is android.app.Activity) {
+                            (binding.root.context as android.app.Activity).requestPermissions(
+                                arrayOf(android.Manifest.permission.BLUETOOTH_CONNECT),
+                                1001
+                            )
+                        }
+                        android.widget.Toast.makeText(
+                            binding.root.context,
+                            "Bluetooth permission needed. Please grant permission and try again.",
+                            android.widget.Toast.LENGTH_LONG
+                        ).show()
+                        return
+                    }
+                }
+
                 val dialogView = android.view.LayoutInflater.from(binding.root.context)
                     .inflate(R.layout.dialog_bluetooth_configuration, null)
                 
@@ -464,10 +490,13 @@ class OnboardingPagerAdapter(
                             val customData = mapOf("device_addresses" to selectedDevices)
                             addRuleFromTemplateWithData(template, customData)
                         } else {
+                            // If no devices selected, create rule with placeholder data
+                            val customData = mapOf("device_addresses" to setOf("placeholder_device"))
+                            addRuleFromTemplateWithData(template, customData)
                             android.widget.Toast.makeText(
                                 binding.root.context,
-                                "Please select at least one device",
-                                android.widget.Toast.LENGTH_SHORT
+                                "Rule added with placeholder. You can configure devices later in settings.",
+                                android.widget.Toast.LENGTH_LONG
                             ).show()
                         }
                     }
@@ -517,24 +546,21 @@ class OnboardingPagerAdapter(
                     .setTitle("Configure ${template.name}")
                     .setView(dialogView)
                     .setPositiveButton("Add Rule") { _, _ ->
-                        // Get selected networks
-                        val selectedNetworks = getSelectedWifiNetworks(dialogView)
-                        if (selectedNetworks.isNotEmpty()) {
-                            val customData = mapOf("network_ssids" to selectedNetworks)
+                        // Get entered SSID
+                        val ssid = getEnteredWifiSsid(dialogView)
+                        if (ssid.isNotEmpty()) {
+                            val customData = mapOf("network_ssids" to setOf(ssid))
                             addRuleFromTemplateWithData(template, customData)
                         } else {
                             android.widget.Toast.makeText(
                                 binding.root.context,
-                                "Please select at least one network",
+                                "Please enter a WiFi network name",
                                 android.widget.Toast.LENGTH_SHORT
                             ).show()
                         }
                     }
                     .setNegativeButton("Cancel", null)
                     .create()
-
-                // Set up WiFi network list
-                setupWifiNetworkList(dialogView)
                 
                 dialog.show()
             }
@@ -577,18 +603,7 @@ class OnboardingPagerAdapter(
                 checkBoxFriday.isChecked = true
             }
 
-            private fun setupWifiNetworkList(dialogView: android.view.View) {
-                val recyclerView = dialogView.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recyclerWifiNetworks)
-                val adapter = OnboardingWifiNetworkAdapter { network ->
-                    // Handle network selection
-                }
-                
-                recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(binding.root.context)
-                recyclerView.adapter = adapter
-                
-                // Load available WiFi networks
-                loadAvailableWifiNetworks(adapter)
-            }
+
 
             private fun getSelectedBluetoothDevices(dialogView: android.view.View): Set<String> {
                 // Get selected device addresses from the adapter
@@ -626,19 +641,28 @@ class OnboardingPagerAdapter(
                 )
             }
 
-            private fun getSelectedWifiNetworks(dialogView: android.view.View): Set<String> {
-                // Get selected network SSIDs from the adapter
-                val recyclerView = dialogView.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recyclerWifiNetworks)
-                val adapter = recyclerView.adapter as? OnboardingWifiNetworkAdapter
-                return adapter?.getSelectedNetworks() ?: emptySet()
+            private fun getEnteredWifiSsid(dialogView: android.view.View): String {
+                // Get entered SSID from the EditText
+                val editText = dialogView.findViewById<android.widget.EditText>(R.id.editWifiSsid)
+                return editText.text?.toString()?.trim() ?: ""
             }
 
             private fun loadAvailableBluetoothDevices(adapter: OnboardingBluetoothDeviceAdapter) {
-                // Load available Bluetooth devices
+                // Load available Bluetooth devices (permission already checked)
                 val bluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
                 if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) {
-                    val pairedDevices = bluetoothAdapter.bondedDevices
-                    adapter.updateDevices(pairedDevices.toList())
+                    try {
+                        val pairedDevices = bluetoothAdapter.bondedDevices
+                        adapter.updateDevices(pairedDevices.toList())
+                        InAppLogger.log("OnboardingBluetooth", "Loaded ${pairedDevices.size} Bluetooth devices")
+                    } catch (e: SecurityException) {
+                        InAppLogger.logError("OnboardingBluetooth", "Security exception accessing Bluetooth devices: ${e.message}")
+                        android.widget.Toast.makeText(
+                            binding.root.context,
+                            "Permission denied to access Bluetooth devices",
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } else {
                     android.widget.Toast.makeText(
                         binding.root.context,
@@ -648,20 +672,7 @@ class OnboardingPagerAdapter(
                 }
             }
 
-            private fun loadAvailableWifiNetworks(adapter: OnboardingWifiNetworkAdapter) {
-                // Load available WiFi networks
-                val wifiManager = binding.root.context.getSystemService(android.content.Context.WIFI_SERVICE) as android.net.wifi.WifiManager
-                if (wifiManager.isWifiEnabled) {
-                    val configuredNetworks = wifiManager.configuredNetworks
-                    adapter.updateNetworks(configuredNetworks?.toList() ?: emptyList())
-                } else {
-                    android.widget.Toast.makeText(
-                        binding.root.context,
-                        "WiFi is not enabled",
-                        android.widget.Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
+
 
             private fun addRuleFromTemplateWithData(template: RuleTemplate, customData: Map<String, Any>) {
                 try {
@@ -671,6 +682,13 @@ class OnboardingPagerAdapter(
                     // Get the rule manager and add the rule
                     val ruleManager = com.micoyc.speakthat.rules.RuleManager(binding.root.context)
                     ruleManager.addRule(rule)
+                    
+                    // Enable Conditional Rules if it's not already enabled
+                    val sharedPreferences = binding.root.context.getSharedPreferences("SpeakThatPrefs", android.content.Context.MODE_PRIVATE)
+                    if (!sharedPreferences.getBoolean("conditional_rules_enabled", false)) {
+                        sharedPreferences.edit().putBoolean("conditional_rules_enabled", true).apply()
+                        InAppLogger.log("OnboardingRuleTemplates", "Enabled Conditional Rules feature")
+                    }
                     
                     InAppLogger.log("OnboardingRuleTemplates", "Added configured rule from template: ${template.name}")
                     

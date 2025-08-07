@@ -447,6 +447,14 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_message_data_cleared">All settings have been reset to defaults and notification history has been cleared.</string>
     <string name="dialog_message_clear_failed">Failed to clear data: %s</string>
     <string name="dialog_message_advanced_voice_options">These settings are for users who need granular control over the voice and accent.\n\n99% of users should only change the main Language option.\n\nIf you run into trouble, you can always reset to defaults.</string>
+    
+    <!-- Voice Settings - Always Use Appropriate Language -->
+    <string name="voice_settings_always_use_appropriate_language">Always use most appropriate language</string>
+    <string name="voice_settings_always_use_appropriate_language_description">When enabled, allows the specific voice to be overridden by text content. When disabled, the specific voice is always applied regardless of compatibility.</string>
+    <string name="voice_settings_language_detection_sensitivity">Language Detection Sensitivity</string>
+    <string name="voice_settings_language_detection_sensitivity_description">Adjust how sensitive the language detection is when mixed text is found. Higher values require more foreign text to trigger a language switch.</string>
+    <string name="voice_settings_latin_dominant_threshold">Latin Dominant Threshold</string>
+    <string name="voice_settings_mixed_text_threshold">Mixed Text Threshold</string>
     <string name="dialog_message_bluetooth_not_available">Bluetooth is not available on this device.</string>
     <string name="dialog_message_bluetooth_disabled">Please enable Bluetooth to select devices.</string>
     <string name="dialog_message_no_devices_found">No paired Bluetooth devices found. Please pair some devices first.</string>

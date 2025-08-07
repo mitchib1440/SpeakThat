@@ -140,11 +140,24 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     
     private fun speakText(text: String) {
         if (isTtsInitialized && textToSpeech != null) {
+            // CRITICAL: Apply voice settings with text analysis to handle language mismatches
+            // This will automatically detect if the selected voice is compatible with the text language
+            // and switch to a compatible voice if needed
+            applyVoiceSettingsWithText(text)
+            
             // Stop any current speech first
             textToSpeech?.stop()
             // Then speak the new text
             textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "onboarding_utterance")
             InAppLogger.log(TAG, "Speaking: ${text.take(50)}...")
+        }
+    }
+
+    private fun applyVoiceSettingsWithText(text: String) {
+        textToSpeech?.let { tts ->
+            voiceSettingsPrefs?.let { prefs ->
+                VoiceSettingsActivity.applyVoiceSettings(tts, prefs, text)
+            }
         }
     }
     
@@ -340,6 +353,45 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         // Update the current page to reflect permission status
         val currentPage = binding.viewPager.currentItem
         updateButtonText(currentPage, binding.viewPager.adapter?.itemCount ?: 4)
+    }
+    
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        
+        when (requestCode) {
+            1001 -> { // Bluetooth permission
+                if (grantResults.isNotEmpty() && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                    InAppLogger.log("OnboardingActivity", "Bluetooth permission granted")
+                    // Refresh the current page to reload Bluetooth devices
+                    adapter.notifyDataSetChanged()
+                } else {
+                    InAppLogger.log("OnboardingActivity", "Bluetooth permission denied")
+                    android.widget.Toast.makeText(
+                        this,
+                        "Bluetooth permission is required to configure Bluetooth rules",
+                        android.widget.Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+            1002 -> { // WiFi permission
+                if (grantResults.isNotEmpty() && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                    InAppLogger.log("OnboardingActivity", "WiFi permission granted")
+                    // Refresh the current page to reload WiFi networks
+                    adapter.notifyDataSetChanged()
+                } else {
+                    InAppLogger.log("OnboardingActivity", "WiFi permission denied")
+                    android.widget.Toast.makeText(
+                        this,
+                        "WiFi permission is required to configure WiFi rules",
+                        android.widget.Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
     }
     
     override fun onDestroy() {

@@ -2356,6 +2356,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         } else {
             formatSpeechText(appName, text, packageName, sbn)
         }
+
+        // CRITICAL: Apply voice settings with text analysis to handle language mismatches
+        // This will automatically detect if the selected voice is compatible with the text language
+        // and switch to a compatible voice if needed
+        applyVoiceSettings(speechText)
         
         // Determine which delay to use (conditional delay overrides global delay)
         val effectiveDelay = if (conditionalDelaySeconds > 0) {
@@ -2384,7 +2389,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // This prevents issues where voice settings might not be current
         // The voice settings will respect the override logic (specific voice > language)
         InAppLogger.log("Service", "Refreshing voice settings before speech execution")
-        applyVoiceSettings()
+        applyVoiceSettings(speechText)
         
         // Check TTS health before attempting to speak
         if (!checkTtsHealth()) {
@@ -2488,9 +2493,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * The voice settings will respect the override logic (specific voice > language).
      */
     private fun applyVoiceSettings() {
+        applyVoiceSettings(null)
+    }
+
+    /**
+     * CRITICAL: Enhanced version that applies voice settings with text analysis.
+     * This method can detect language mismatches and automatically find compatible voices.
+     * 
+     * @param textToSpeak Optional text that will be spoken (for language detection)
+     */
+    private fun applyVoiceSettings(textToSpeak: String?) {
         if (isTtsInitialized && textToSpeech != null) {
-            InAppLogger.log("Service", "Applying voice settings to service TTS instance")
-            VoiceSettingsActivity.applyVoiceSettings(textToSpeech!!, voiceSettingsPrefs)
+            InAppLogger.log("Service", "Applying voice settings to service TTS instance" + (if (textToSpeak != null) " with text analysis" else ""))
+            VoiceSettingsActivity.applyVoiceSettings(textToSpeech!!, voiceSettingsPrefs, textToSpeak)
             Log.d(TAG, "Voice settings applied")
             InAppLogger.log("Service", "Voice settings applied to service TTS instance")
         } else {

@@ -593,6 +593,11 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private fun speakText(text: String) {
         if (isTtsInitialized && textToSpeech != null) {
+            // CRITICAL: Apply voice settings with text analysis to handle language mismatches
+            // This will automatically detect if the selected voice is compatible with the text language
+            // and switch to a compatible voice if needed
+            applyVoiceSettingsWithText(text)
+            
             // Register shake listener for this TTS session
             startShakeListening()
             
@@ -625,6 +630,13 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         } else {
             Log.e(TAG, "Cannot speak text - TTS not ready. Initialized: $isTtsInitialized, TTS: ${textToSpeech != null}")
             InAppLogger.logError("MainActivity", "TTS not ready for speech - initialized: $isTtsInitialized")
+        }
+    }
+
+    private fun applyVoiceSettingsWithText(text: String) {
+        textToSpeech?.let { tts ->
+            val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+            VoiceSettingsActivity.applyVoiceSettings(tts, voicePrefs, text)
         }
     }
     
