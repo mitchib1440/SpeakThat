@@ -148,3 +148,4 @@ An open-source Android notification reader that announces your notifications alo
 **SpeakThat!** is designed to be powerful yet simple to use. Start with basic features and gradually explore advanced options. The privacy-first approach means you're always in control, and the comprehensive filtering system ensures you only hear what matters to you.
 
 **Remember**: Everything stays on your device, and you decide exactly what gets read aloud.
+

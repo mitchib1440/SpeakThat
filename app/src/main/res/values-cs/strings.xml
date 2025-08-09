@@ -277,7 +277,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="create_custom_rule">Create Custom Rule</string>
     <!-- Template Names -->
     <string name="template_headphones_only_name">Bluetooth Headphones</string>
-    <string name="template_headphones_only_description">Select your Bluetooth headphones, and notifications will never be read when they are connected to your phone</string>
+    <string name="template_headphones_only_description">Select your Bluetooth headphones, and notifications will ONLY be read when they are connected to your phone</string>
     <string name="template_time_schedule_name">Quiet Hours</string>
     <string name="template_time_schedule_description">Select two times you want SpeakThat to remain silent between</string>
     <string name="template_screen_off_name">Only when Screen Off</string>

@@ -347,3 +347,4 @@ SpeakThat! includes comprehensive logging to help diagnose issues:
 **SpeakThat!** is designed to be powerful yet simple to use. Start with the basic features and gradually explore the advanced options as you become comfortable with the app. The privacy-first approach means you're always in control of what gets read, and the comprehensive filtering system ensures you only hear what matters to you.
 
 Remember: Your privacy and control are the top priorities. Everything stays on your device, and you decide exactly what gets read aloud.
+
