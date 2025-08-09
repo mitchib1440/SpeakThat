@@ -7,9 +7,18 @@
     <color name="black_100">#000000</color>
     <color name="black_200">#1D1C1B</color>
     <color name="black_300">#2B2A29</color>
+    <color name="purple_base">#31174C</color> <!-- Base purple for gradient cards -->
     <color name="purple_100">#312F32</color>
     <color name="purple_200">#AB6ACF</color>
     <color name="purple_300">#B687D0</color>
+    <!-- Gradient overlay colors -->
+    <color name="white_overlay_20">#33FFFFFF</color> <!-- 20% white for gradient start -->
+    <color name="white_overlay_12">#1FFFFFFF</color> <!-- 12% white for subtle gradient start -->
+    <color name="white_overlay_8">#14FFFFFF</color> <!-- 8% white for very subtle gradient start -->
+    <!-- Dark mode text colors for gradient cards (override light mode versions) -->
+    <color name="purple_card_text_primary">#FFFFFF</color> <!-- White text works well in dark mode -->
+    <color name="purple_card_text_secondary">#DFD9E6</color> <!-- Light purple-tinted text for dark mode -->
+    <color name="transparent">#00FFFFFF</color> <!-- Transparent for gradient end -->
     <color name="green_100">#008B0E</color>
     <color name="green_200">#28AC35</color>
     <color name="green_300">#71BF78</color>

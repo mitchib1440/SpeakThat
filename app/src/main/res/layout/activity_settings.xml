@@ -79,9 +79,9 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeColor="@color/purple_200"
+                app:strokeWidth="0dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground">
@@ -91,7 +91,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="20dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -105,14 +106,14 @@
                             android:text="⚙️ General Settings"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="@color/purple_card_text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="App preferences, theme settings"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -122,7 +123,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/purple_200" />
+                        android:textColor="@color/white_100" />
 
                 </LinearLayout>
 
@@ -136,9 +137,9 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeColor="@color/purple_200"
+                app:strokeWidth="0dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground">
@@ -148,7 +149,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="20dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -162,14 +164,14 @@
                             android:text="🎙️ Voice Settings"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="@color/purple_card_text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Text-to-speech voice and speed"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -179,7 +181,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/purple_200" />
+                        android:textColor="@color/white_100" />
 
                 </LinearLayout>
 
@@ -193,9 +195,9 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeColor="@color/purple_200"
+                app:strokeWidth="0dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground">
@@ -205,7 +207,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="20dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -219,14 +222,14 @@
                             android:text="🔔 Behavior Settings"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="@color/purple_card_text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="When and how notifications are read"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -236,7 +239,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/purple_200" />
+                        android:textColor="@color/white_100" />
 
                 </LinearLayout>
 
@@ -250,9 +253,9 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeColor="@color/purple_200"
+                app:strokeWidth="0dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground">
@@ -262,7 +265,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="20dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -276,14 +280,14 @@
                             android:text="🔍 Filter Settings"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="@color/purple_card_text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Choose which apps to read"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -293,7 +297,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/purple_200" />
+                        android:textColor="@color/white_100" />
 
                 </LinearLayout>
 
@@ -307,9 +311,9 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeColor="@color/purple_200"
+                app:strokeWidth="0dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground">
@@ -319,7 +323,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="20dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -333,14 +338,14 @@
                             android:text="🔧 Conditional Rules"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="@color/purple_card_text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Configure Bluetooth, time schedules, etc"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -350,7 +355,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/purple_200" />
+                        android:textColor="@color/white_100" />
 
                 </LinearLayout>
 
@@ -366,9 +371,9 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeColor="@color/purple_200"
+                app:strokeWidth="0dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground">
@@ -378,7 +383,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="20dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -392,14 +398,14 @@
                             android:text="🛠️ Development Settings"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="@color/purple_card_text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Debug tools and logging system"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -409,7 +415,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/purple_200" />
+                        android:textColor="@color/white_100" />
 
                 </LinearLayout>
 
@@ -423,9 +429,9 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeColor="@color/purple_200"
+                app:strokeWidth="0dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground">
@@ -435,7 +441,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="20dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -449,14 +456,14 @@
                             android:text="🔄 Re-run Onboarding"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="@color/purple_card_text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="See the app introduction again"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -466,7 +473,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/purple_200" />
+                        android:textColor="@color/white_100" />
 
                 </LinearLayout>
 
@@ -480,9 +487,9 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeColor="@color/purple_200"
+                app:strokeWidth="0dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground">
@@ -492,7 +499,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="20dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -506,14 +514,14 @@
                             android:text="💬 Support &amp; Feedback"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="@color/purple_card_text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Get help, report bugs, request features"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -523,7 +531,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/purple_200" />
+                        android:textColor="@color/white_100" />
 
                 </LinearLayout>
 
@@ -537,9 +545,9 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeColor="@color/purple_200"
+                app:strokeWidth="0dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground">
@@ -549,7 +557,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="20dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -563,14 +572,14 @@
                             android:text="❤️ Donate"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="@color/purple_card_text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Support development and keep the app free"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -580,7 +589,7 @@
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="@color/purple_200" />
+                        android:textColor="@color/white_100" />
 
                 </LinearLayout>
 

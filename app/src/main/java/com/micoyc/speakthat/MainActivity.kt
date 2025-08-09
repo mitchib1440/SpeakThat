@@ -298,26 +298,27 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Update master switch status text
         if (isMasterEnabled) {
             binding.textMasterSwitchStatus.text = "SpeakThat will read notifications when active"
-            binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_200))
+            binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_card_text_secondary))
         } else {
             binding.textMasterSwitchStatus.text = "SpeakThat is disabled - notifications will not be read"
-            binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this, R.color.red_200))
+            binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_card_text_secondary))
         }
         
-        // Update permission status
+        // Update permission status with white text and emoji indicators
         if (isEnabled) {
-            // Service is enabled - use brand color
-            binding.textServiceStatus.text = getString(R.string.service_enabled)
-            binding.textServiceStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_200))
+            // Service is enabled - use green checkmark
+            binding.textServiceStatus.text = "Notification permissions: ✅"
+            binding.textServiceStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_card_text_primary))
             binding.textPermissionStatus.text = "SpeakThat has notification access"
-            binding.buttonEnablePermission.text = "Disable Notification Access"
         } else {
-            // Service is disabled
-            binding.textServiceStatus.text = getString(R.string.service_disabled)
-            binding.textServiceStatus.setTextColor(ContextCompat.getColor(this, R.color.red_200))
+            // Service is disabled - use red cross
+            binding.textServiceStatus.text = "Notification permissions: ❌"
+            binding.textServiceStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_card_text_primary))
             binding.textPermissionStatus.text = getString(R.string.permission_description)
-            binding.buttonEnablePermission.text = getString(R.string.open_settings)
         }
+        
+        // Always show "Permission Settings" for consistent button sizing
+        binding.buttonEnablePermission.text = getString(R.string.open_settings)
     }
     
     private fun isNotificationServiceEnabled(): Boolean {

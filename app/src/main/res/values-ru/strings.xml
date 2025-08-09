@@ -10,7 +10,7 @@
     <string name="permission_needed">Требуется доступ к уведомлениями</string>
     <string name="permission_description">Приложению SpeakThat! Требуется доступ к вашим уведомлениям, чтобы озвучивать их. Это разрешение необходимо для работы приложения.</string>
     <string name="master_switch_battery_tip">💡 Turn off when not needed to save battery</string>
-    <string name="open_settings">Open Permission Settings</string>
+    <string name="open_settings">Permission Settings</string>
     <string name="service_enabled">Notification Reader: Enabled</string>
     <string name="service_disabled">Notification Reader: Disabled</string>
     <string name="show_history">Show Notification History</string>
