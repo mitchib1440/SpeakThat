@@ -15,7 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.micoyc.speakthat.databinding.ActivityGeneralSettingsBinding;
 import org.json.JSONException;
 import java.io.BufferedReader;
@@ -113,7 +113,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
 
     private void setupThemeSettings() {
         // Dark Mode Toggle
-        SwitchMaterial darkModeSwitch = binding.switchDarkMode;
+        MaterialSwitch darkModeSwitch = binding.switchDarkMode;
         boolean isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
         darkModeSwitch.setChecked(isDarkMode);
 
@@ -144,7 +144,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
 
     private void setupPerformanceSettings() {
         // Persistent Notification Toggle
-        SwitchMaterial persistentNotificationSwitch = binding.switchPersistentNotification;
+        MaterialSwitch persistentNotificationSwitch = binding.switchPersistentNotification;
         boolean persistentNotificationEnabled = sharedPreferences.getBoolean("persistent_notification", false);
         persistentNotificationSwitch.setChecked(persistentNotificationEnabled);
 
@@ -165,7 +165,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         });
 
         // Notification While Reading Toggle
-        SwitchMaterial notificationWhileReadingSwitch = binding.switchNotificationWhileReading;
+        MaterialSwitch notificationWhileReadingSwitch = binding.switchNotificationWhileReading;
         boolean notificationWhileReadingEnabled = sharedPreferences.getBoolean("notification_while_reading", false);
         notificationWhileReadingSwitch.setChecked(notificationWhileReadingEnabled);
 
@@ -186,7 +186,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         });
 
         // Auto-Start Toggle
-        SwitchMaterial autoStartSwitch = binding.switchAutoStart;
+        MaterialSwitch autoStartSwitch = binding.switchAutoStart;
         boolean autoStartEnabled = sharedPreferences.getBoolean("auto_start_enabled", true);
         autoStartSwitch.setChecked(autoStartEnabled);
 
@@ -195,7 +195,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         });
 
         // Battery Optimization Toggle
-        SwitchMaterial batteryOptimizationSwitch = binding.switchBatteryOptimization;
+        MaterialSwitch batteryOptimizationSwitch = binding.switchBatteryOptimization;
         boolean batteryOptimizationEnabled = sharedPreferences.getBoolean("battery_optimization_enabled", false);
         batteryOptimizationSwitch.setChecked(batteryOptimizationEnabled);
 
@@ -204,7 +204,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         });
 
         // Aggressive Processing Toggle
-        SwitchMaterial aggressiveProcessingSwitch = binding.switchAggressiveProcessing;
+        MaterialSwitch aggressiveProcessingSwitch = binding.switchAggressiveProcessing;
         boolean aggressiveProcessingEnabled = sharedPreferences.getBoolean("aggressive_processing_enabled", false);
         aggressiveProcessingSwitch.setChecked(aggressiveProcessingEnabled);
 

@@ -54,9 +54,8 @@
             android:layout_marginBottom="12dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="@color/purple_300"
-            app:strokeWidth="1dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:strokeWidth="0dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground">
@@ -66,7 +65,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="16dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@drawable/gradient_card_subtle_right">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -87,14 +87,14 @@
                         android:text="Feature Request"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="?android:attr/textColorPrimary" />
+                        android:textColor="@color/purple_card_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Suggest new features or improvements"
                         android:textSize="14sp"
-                        android:textColor="?android:attr/textColorSecondary"
+                        android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginTop="4dp" />
 
                 </LinearLayout>
@@ -111,9 +111,8 @@
             android:layout_marginBottom="12dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="@color/purple_300"
-            app:strokeWidth="1dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:strokeWidth="0dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground">
@@ -123,7 +122,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="16dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@drawable/gradient_card_subtle_right">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -144,14 +144,14 @@
                         android:text="Bug Report"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="?android:attr/textColorPrimary" />
+                        android:textColor="@color/purple_card_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Report crashes, errors, or unexpected behavior"
                         android:textSize="14sp"
-                        android:textColor="?android:attr/textColorSecondary"
+                        android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginTop="4dp" />
 
                 </LinearLayout>
@@ -168,9 +168,8 @@
             android:layout_marginBottom="20dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="@color/purple_300"
-            app:strokeWidth="1dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:strokeWidth="0dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground">
@@ -180,7 +179,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="16dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@drawable/gradient_card_subtle_right">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -201,14 +201,14 @@
                         android:text="General Support"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="?android:attr/textColorPrimary" />
+                        android:textColor="@color/purple_card_text_primary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Get help with setup, usage, or general questions"
                         android:textSize="14sp"
-                        android:textColor="?android:attr/textColorSecondary"
+                        android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginTop="4dp" />
 
                 </LinearLayout>
@@ -226,15 +226,15 @@
         android:layout_marginBottom="20dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp"
-        app:cardBackgroundColor="?attr/colorSurface"
-        app:strokeColor="@color/purple_300"
-        app:strokeWidth="1dp">
+        app:cardBackgroundColor="@android:color/transparent"
+        app:strokeWidth="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:background="@drawable/gradient_card_subtle_right">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -257,15 +257,17 @@
                     android:text="Include Debug Logs"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textColor="@color/purple_card_text_primary" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/switchIncludeLogs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    app:thumbTint="@color/purple_200"
-                    app:trackTint="@color/purple_300" />
+                    android:thumbTint="@color/switch_thumb_color"
+                    android:trackTint="@color/switch_track_color"
+                    app:thumbTint="@color/switch_thumb_color"
+                    app:trackTint="@color/switch_track_color" />
 
             </LinearLayout>
 
@@ -274,7 +276,7 @@
                 android:layout_height="wrap_content"
                 android:text="Recommended for bug reports and technical issues. Debug logs help me identify and fix problems faster.\nLogs may contain information about your notification content! Please proofread the email before you send it to me."
                 android:textSize="14sp"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="@color/purple_card_text_secondary"
                 android:layout_marginBottom="8dp" />
 
             <TextView
@@ -283,7 +285,7 @@
                 android:layout_height="wrap_content"
                 android:text="Current log entries: 0"
                 android:textSize="12sp"
-                android:textColor="@color/purple_200"
+                android:textColor="@color/white_100"
                 android:textStyle="italic" />
 
         </LinearLayout>

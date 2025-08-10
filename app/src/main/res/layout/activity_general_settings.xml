@@ -79,14 +79,15 @@
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchDarkMode"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            app:thumbTint="@color/white_100"
-                            app:trackTint="@color/white_200"
-                            app:trackTintMode="src_atop" />
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color" />
 
                     </LinearLayout>
 
@@ -152,13 +153,15 @@
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchAutoStart"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:thumbTint="@color/white_100"
-                            app:trackTint="@color/white_200"
-                            app:trackTintMode="src_atop" />
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color"
+                            android:paddingLeft="12dp"/>
 
                     </LinearLayout>
 
@@ -195,13 +198,15 @@
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchBatteryOptimization"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:thumbTint="@color/white_100"
-                            app:trackTint="@color/white_200"
-                            app:trackTintMode="src_atop" />
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color"
+                            android:paddingLeft="12dp"/>
 
                     </LinearLayout>
 
@@ -237,13 +242,15 @@
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchAggressiveProcessing"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:thumbTint="@color/white_100"
-                            app:trackTint="@color/white_200"
-                            app:trackTintMode="src_atop" />
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color"
+                            android:paddingLeft="12dp"/>
 
                     </LinearLayout>
 
@@ -284,6 +291,8 @@
                                 android:text="Never restart automatically"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_primary"
+                                android:buttonTint="@color/radio_button_color"
+                                app:buttonTint="@color/radio_button_color"
                                 android:paddingVertical="4dp" />
 
                             <RadioButton
@@ -293,6 +302,8 @@
                                 android:text="Restart only on crash"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_primary"
+                                android:buttonTint="@color/radio_button_color"
+                                app:buttonTint="@color/radio_button_color"
                                 android:paddingVertical="4dp" />
 
                             <RadioButton
@@ -302,6 +313,8 @@
                                 android:text="Restart periodically (every 6 hours)"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_primary"
+                                android:buttonTint="@color/radio_button_color"
+                                app:buttonTint="@color/radio_button_color"
                                 android:paddingVertical="4dp" />
 
                         </RadioGroup>
@@ -370,13 +383,15 @@
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchPersistentNotification"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:thumbTint="@color/white_100"
-                            app:trackTint="@color/white_200"
-                            app:trackTintMode="src_atop" />
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color"
+                            android:paddingLeft="12dp"/>
 
                     </LinearLayout>
 
@@ -412,13 +427,15 @@
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchNotificationWhileReading"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:thumbTint="@color/white_100"
-                            app:trackTint="@color/white_200"
-                            app:trackTintMode="src_atop" />
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color"
+                            android:paddingLeft="12dp"/>
 
                     </LinearLayout>
 

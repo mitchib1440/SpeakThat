@@ -393,13 +393,15 @@
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginEnd="8dp" />
-                        <Switch
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchAdvancedVoice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="false"
-                            android:thumbTint="@color/white_100"
-                            android:trackTint="@color/white_200" />
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color" />
                     </LinearLayout>
 
                     <!-- Advanced Voice Picker Section (initially hidden) -->

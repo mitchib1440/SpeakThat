@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.micoyc.speakthat.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
@@ -280,7 +280,7 @@ class SettingsActivity : AppCompatActivity() {
         val cardFeatureRequest = dialogView.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardFeatureRequest)
         val cardBugReport = dialogView.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardBugReport)
         val cardGeneralSupport = dialogView.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardGeneralSupport)
-        val switchIncludeLogs = dialogView.findViewById<SwitchMaterial>(R.id.switchIncludeLogs)
+        val switchIncludeLogs = dialogView.findViewById<MaterialSwitch>(R.id.switchIncludeLogs)
         val textLogInfo = dialogView.findViewById<android.widget.TextView>(R.id.textLogInfo)
         val btnCancel = dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnCancel)
         

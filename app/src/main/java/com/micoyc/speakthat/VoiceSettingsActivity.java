@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import android.app.AlertDialog;
-import android.widget.Switch;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import android.view.View;
 import android.widget.LinearLayout;
 import java.util.HashSet;
@@ -60,7 +60,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private Button previewButton;
     private Button resetButton;
     private Button btnVoiceInfo;
-    private Switch switchAdvancedVoice;
+    private MaterialSwitch switchAdvancedVoice;
     private LinearLayout layoutAdvancedVoiceSection;
 
     // TTS and data
