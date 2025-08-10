@@ -27,15 +27,15 @@
                 android:visibility="gone"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/orange_300"
-                app:strokeWidth="1dp">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -204,8 +204,8 @@
                                 android:layout_height="wrap_content"
                                 android:text="19:00"
                                 android:textSize="16sp"
-                                android:textColor="@color/text_primary"
-                                android:background="@drawable/rounded_background"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:background="@drawable/bg_advanced_voice_section"
                                 android:padding="12dp"
                                 android:gravity="center" />
 
@@ -232,8 +232,8 @@
                                 android:layout_height="wrap_content"
                                 android:text="07:00"
                                 android:textSize="16sp"
-                                android:textColor="@color/text_primary"
-                                android:background="@drawable/rounded_background"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:background="@drawable/bg_advanced_voice_section"
                                 android:padding="12dp"
                                 android:gravity="center" />
 
@@ -247,23 +247,41 @@
                         android:orientation="horizontal"
                         android:layout_marginBottom="16dp">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/buttonStartTime"
+                        <FrameLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Set Start Time"
                             android:layout_marginEnd="8dp"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                            android:background="@drawable/bg_advanced_voice_section">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/buttonEndTime"
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/buttonStartTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Set Start Time"
+                                android:background="@android:color/transparent"
+                                android:textColor="@color/white_100"
+                                style="@style/Widget.Material3.Button.TextButton" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Set End Time"
                             android:layout_marginStart="8dp"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                            android:background="@drawable/bg_advanced_voice_section">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/buttonEndTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Set End Time"
+                                android:background="@android:color/transparent"
+                                android:textColor="@color/white_100"
+                                style="@style/Widget.Material3.Button.TextButton" />
+
+                        </FrameLayout>
 
                     </LinearLayout>
 
@@ -281,8 +299,8 @@
                         android:layout_height="wrap_content"
                         android:text="No days selected"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
-                        android:background="@drawable/rounded_background"
+                        android:textColor="@color/purple_card_text_secondary"
+                        android:background="@drawable/bg_advanced_voice_section"
                         android:padding="8dp"
                         android:layout_marginBottom="8dp" />
 
@@ -547,22 +565,61 @@
         android:background="?attr/colorSurface"
         android:elevation="8dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonCancel"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="CANCEL"
             android:layout_marginEnd="8dp"
-            style="@style/Widget.MaterialComponents.Button.TextButton" />
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonSave"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gradient_card_subtle_right">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonCancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="CANCEL"
+                    android:textColor="@color/white_100"
+                    android:background="@android:color/transparent"
+                    style="@style/Widget.Material3.Button.TextButton" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Save"
-            android:layout_marginStart="8dp" />
+            android:layout_marginStart="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gradient_card_subtle_right">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonSave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Save"
+                    android:textColor="@color/white_100"
+                    android:background="@android:color/transparent"
+                    style="@style/Widget.Material3.Button.TextButton" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 

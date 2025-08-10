@@ -8,31 +8,42 @@
     android:fitsSystemWindows="true">
 
     <!-- Header Section -->
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="?attr/colorSurface">
+        android:layout_margin="16dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:strokeWidth="0dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="📋 Choose a Rule Template"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary" />
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/template_selection_description"
-            android:textSize="14sp"
-            android:textColor="@color/text_secondary"
-            android:layout_marginBottom="16dp" />
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@drawable/gradient_card_subtle_right">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="📋 Choose a Rule Template"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/purple_card_text_primary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/template_selection_description"
+                android:textSize="14sp"
+                android:textColor="@color/purple_card_text_secondary"
+                android:layout_marginBottom="16dp" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- Templates List -->
     <androidx.recyclerview.widget.RecyclerView
@@ -44,27 +55,36 @@
         android:clipToPadding="false" />
 
     <!-- Bottom Button -->
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="?attr/colorSurface">
+        android:layout_margin="16dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:strokeWidth="0dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCreateCustomRule"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/create_custom_rule"
-            android:textColor="@color/text_primary"
-            app:backgroundTint="?attr/colorSurface"
-            app:strokeColor="@color/purple_200"
-            app:strokeWidth="2dp"
-            app:cornerRadius="12dp"
+            android:orientation="vertical"
             android:padding="16dp"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:background="@drawable/gradient_card_subtle_right">
 
-    </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCreateCustomRule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/create_custom_rule"
+                android:textColor="@color/white_100"
+                android:background="@android:color/transparent"
+                android:padding="16dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                style="@style/Widget.Material3.Button.TextButton" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout> 

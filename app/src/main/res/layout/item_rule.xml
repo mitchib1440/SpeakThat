@@ -6,7 +6,8 @@
     android:layout_marginBottom="12dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="2dp"
-    app:cardBackgroundColor="?attr/colorSurface"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:strokeWidth="0dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground">
@@ -15,7 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="@drawable/gradient_card_subtle_right">
 
         <!-- Rule Header -->
         <LinearLayout
@@ -38,7 +40,7 @@
                     android:text="Rule Name"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="@color/text_primary" />
+                    android:textColor="@color/purple_card_text_primary" />
 
                 <TextView
                     android:id="@+id/textRuleSummary"
@@ -46,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:text="Rule summary"
                     android:textSize="14sp"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/purple_card_text_secondary"
                     android:layout_marginTop="2dp" />
 
             </LinearLayout>
@@ -55,8 +57,10 @@
                 android:id="@+id/switchRuleEnabled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:thumbTint="@color/purple_200"
-                android:trackTint="@color/purple_300"
+                android:thumbTint="@color/switch_thumb_color"
+                android:trackTint="@color/switch_track_color"
+                app:thumbTint="@color/switch_thumb_color"
+                app:trackTint="@color/switch_track_color"
                 android:layout_marginEnd="8dp" />
 
             <com.google.android.material.button.MaterialButton
@@ -68,7 +72,7 @@
                 android:padding="8dp"
                 app:icon="@drawable/ic_delete_24"
                 app:iconSize="20dp"
-                app:iconTint="@color/text_secondary"
+                app:iconTint="@color/white_100"
                 style="@style/Widget.Material3.Button.IconButton" />
 
         </LinearLayout>
@@ -87,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:text="When screen is on, Quiet Hours will skip reading notifications"
                 android:textSize="14sp"
-                android:textColor="@color/text_secondary"
+                android:textColor="@color/purple_card_text_secondary"
                 android:lineSpacingExtra="2dp"
                 android:lineSpacingMultiplier="1.1" />
 

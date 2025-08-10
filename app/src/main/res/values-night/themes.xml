@@ -31,4 +31,12 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    
+    <!-- Custom TextInputLayout style with forced white hint text -->
+    <style name="Widget.SpeakThat.TextInputLayout.WhiteHint" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="android:textColorHint">@color/white_100</item>
+        <item name="hintTextColor">@color/white_100</item>
+        <item name="placeholderTextColor">@color/white_100</item>
+        <item name="boxStrokeColor">@color/white_100</item>
+    </style>
 </resources> 
