@@ -1407,6 +1407,26 @@ public class FilterSettingsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_filter_settings, menu);
+        
+        // Programmatically set icon tint for theme adaptation
+        MenuItem exportItem = menu.findItem(R.id.action_export_filters);
+        MenuItem importItem = menu.findItem(R.id.action_import_filters);
+        
+        // Get the appropriate color based on theme
+        int iconColor = getResources().getColor(android.R.color.white, getTheme());
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
+            // Light mode - use black
+            iconColor = getResources().getColor(android.R.color.black, getTheme());
+        }
+        
+        if (exportItem != null) {
+            exportItem.setIconTintList(android.content.res.ColorStateList.valueOf(iconColor));
+        }
+        
+        if (importItem != null) {
+            importItem.setIconTintList(android.content.res.ColorStateList.valueOf(iconColor));
+        }
+        
         return true;
     }
 

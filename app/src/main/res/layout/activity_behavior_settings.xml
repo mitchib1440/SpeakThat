@@ -65,27 +65,43 @@
                         android:layout_marginBottom="16dp"
                         android:gravity="center_vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="💡 Most users should use: Smart Mode"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:layout_marginEnd="8dp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="8dp">
 
-                        <com.google.android.material.button.MaterialButton
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:contentDescription="Tip"
+                                android:layout_marginEnd="6dp"
+                                android:tint="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Most users should use: Smart Mode"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <ImageView
                             android:id="@+id/btnNotificationBehaviorInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:text="ℹ️ More Info"
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:backgroundTint="@android:color/transparent"
-                            android:strokeColor="@color/white_100"
-                            android:strokeWidth="1.0"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="More Info"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            android:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -272,27 +288,43 @@
                         android:layout_marginBottom="16dp"
                         android:gravity="center_vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="💡 Most users should use: Lower Audio"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:layout_marginEnd="8dp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="8dp">
 
-                        <com.google.android.material.button.MaterialButton
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:contentDescription="Tip"
+                                android:layout_marginEnd="6dp"
+                                android:tint="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Most users should use: Lower Audio"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <ImageView
                             android:id="@+id/btnMediaBehaviorInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:text="ℹ️ More Info"
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:backgroundTint="@android:color/transparent"
-                            android:strokeColor="@color/white_100"
-                            android:strokeWidth="1.0"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="More Info"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            android:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -455,14 +487,29 @@
                             android:visibility="gone"
                             android:gravity="center" />
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="💡 Tip: Lower values make media quieter during notifications"
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_secondary"
-                            android:textStyle="italic"
-                            android:gravity="center" />
+                            android:orientation="horizontal"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:contentDescription="Tip"
+                                android:layout_marginEnd="4dp"
+                                android:tint="@color/purple_card_text_secondary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tip: Lower values make media quieter during notifications"
+                                android:textSize="12sp"
+                                android:textColor="@color/purple_card_text_secondary"
+                                android:textStyle="italic" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -514,27 +561,43 @@
                         android:layout_marginBottom="16dp"
                         android:gravity="center_vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="💡 Most users should: Enable this feature"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:layout_marginEnd="8dp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="8dp">
 
-                        <com.google.android.material.button.MaterialButton
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:contentDescription="Tip"
+                                android:layout_marginEnd="6dp"
+                                android:tint="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Most users should: Enable this feature"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <ImageView
                             android:id="@+id/btnDoNotDisturbInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:text="ℹ️ More Info"
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:backgroundTint="@android:color/transparent"
-                            android:strokeColor="@color/white_100"
-                            android:strokeWidth="1.0"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="More Info"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            android:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -622,27 +685,43 @@
                         android:layout_marginBottom="16dp"
                         android:gravity="center_vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="💡 Most users should: Enable this feature"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:layout_marginEnd="8dp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="8dp">
 
-                        <com.google.android.material.button.MaterialButton
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:contentDescription="Tip"
+                                android:layout_marginEnd="6dp"
+                                android:tint="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Most users should: Enable this feature"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <ImageView
                             android:id="@+id/btnPhoneCallsInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:text="ℹ️ More Info"
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:backgroundTint="@android:color/transparent"
-                            android:strokeColor="@color/white_100"
-                            android:strokeWidth="1.0"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="More Info"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            android:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -732,27 +811,43 @@
                         android:layout_marginBottom="16dp"
                         android:gravity="center_vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="💡 Recommended: Enable this feature"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:layout_marginEnd="8dp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="8dp">
 
-                        <com.google.android.material.button.MaterialButton
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:contentDescription="Tip"
+                                android:layout_marginEnd="6dp"
+                                android:tint="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Recommended: Enable this feature"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <ImageView
                             android:id="@+id/btnAudioModeInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:text="ℹ️ More Info"
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:backgroundTint="@android:color/transparent"
-                            android:strokeColor="@color/white_100"
-                            android:strokeWidth="1.0"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="More Info"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            android:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -841,27 +936,43 @@
                         android:layout_marginBottom="16dp"
                         android:gravity="center_vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="💡 Most users should: Enable this feature"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:layout_marginEnd="8dp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="8dp">
 
-                        <com.google.android.material.button.MaterialButton
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:contentDescription="Tip"
+                                android:layout_marginEnd="6dp"
+                                android:tint="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Most users should: Enable this feature"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <ImageView
                             android:id="@+id/btnShakeToStopInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:text="ℹ️ More Info"
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:backgroundTint="@android:color/transparent"
-                            android:strokeColor="@color/white_100"
-                            android:strokeWidth="1.0"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="More Info"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            android:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -1116,17 +1227,17 @@
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:id="@+id/textShakeTimeout" />
 
-                            <com.google.android.material.button.MaterialButton
+                            <ImageView
                                 android:id="@+id/btnShakeTimeoutInfo"
-                                android:layout_width="wrap_content"
-                                android:layout_height="36dp"
-                                android:text="ℹ️"
-                                android:textSize="12sp"
-                                android:textColor="@color/purple_card_text_primary"
-                                android:backgroundTint="@android:color/transparent"
-                                android:strokeColor="@color/white_100"
-                                android:strokeWidth="1.0"
-                                style="@style/Widget.Material3.Button.OutlinedButton" />
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/help_24px"
+                                android:contentDescription="More Info"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                                android:padding="4dp"
+                                android:tint="@color/white_100" />
 
                         </LinearLayout>
 
@@ -1206,27 +1317,43 @@
                         android:layout_marginBottom="16dp"
                         android:gravity="center_vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="💡 Great for: Desk users &amp; accessibility"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:layout_marginEnd="8dp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="8dp">
 
-                        <com.google.android.material.button.MaterialButton
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:contentDescription="Tip"
+                                android:layout_marginEnd="6dp"
+                                android:tint="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Great for: Desk users &amp; accessibility"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <ImageView
                             android:id="@+id/btnWaveToStopInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:text="ℹ️ More Info"
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:backgroundTint="@android:color/transparent"
-                            android:strokeColor="@color/white_100"
-                            android:strokeWidth="1.0"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="More Info"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            android:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -1355,14 +1482,30 @@
                             android:layout_marginBottom="16dp"
                             android:gravity="center_vertical">
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="💡 Different phones work differently - some only see 'near' or 'far', others see everything in between.\n \nIt's normal if this bar only goes to the extremes!"
-                                android:textSize="12sp"
-                                android:textColor="@color/purple_card_text_primary"
-                                android:layout_marginEnd="8dp" />
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginEnd="8dp">
+
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@drawable/lightbulb_2_24px"
+                                    android:contentDescription="Tip"
+                                    android:layout_marginEnd="4dp"
+                                    android:tint="@color/purple_card_text_primary" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Different phones work differently - some only see 'near' or 'far', others see everything in between.\n \nIt's normal if this bar only goes to the extremes!"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/purple_card_text_primary" />
+
+                            </LinearLayout>
 
                         </LinearLayout>
 
@@ -1512,17 +1655,17 @@
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:id="@+id/textWaveTimeout" />
 
-                            <com.google.android.material.button.MaterialButton
+                            <ImageView
                                 android:id="@+id/btnWaveTimeoutInfo"
-                                android:layout_width="wrap_content"
-                                android:layout_height="36dp"
-                                android:text="ℹ️"
-                                android:textSize="12sp"
-                                android:textColor="@color/purple_card_text_primary"
-                                android:backgroundTint="@android:color/transparent"
-                                android:strokeColor="@color/white_100"
-                                android:strokeWidth="1.0"
-                                style="@style/Widget.Material3.Button.OutlinedButton" />
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/help_24px"
+                                android:contentDescription="More Info"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                                android:padding="4dp"
+                                android:tint="@color/white_100" />
 
                         </LinearLayout>
 
@@ -1650,27 +1793,43 @@
                         android:layout_marginBottom="16dp"
                         android:gravity="center_vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="💡 Example: X app reads as Twitter"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:layout_marginEnd="8dp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="8dp">
 
-                        <com.google.android.material.button.MaterialButton
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:contentDescription="Tip"
+                                android:layout_marginEnd="6dp"
+                                android:tint="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Example: X app reads as Twitter"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <ImageView
                             android:id="@+id/btnAppNamesInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:text="ℹ️ More Info"
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:backgroundTint="@android:color/transparent"
-                            android:strokeColor="@color/white_100"
-                            android:strokeWidth="1.0"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="More Info"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            android:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -1686,9 +1845,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginEnd="8dp"
+                            style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
                             app:boxBackgroundMode="outline"
-                            app:boxStrokeColor="@color/white_100"
-                            app:hintTextColor="@color/purple_card_text_secondary">
+                            app:boxStrokeColor="@color/white_100">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/editAppPackage"
@@ -1696,8 +1855,7 @@
                                 android:layout_height="wrap_content"
                                 android:hint="App package name (e.g., com.twitter.android)"
                                 android:inputType="text"
-                                android:textColor="@color/purple_card_text_primary"
-                                android:textColorHint="@color/purple_card_text_secondary" />
+                                android:textColor="@color/purple_card_text_primary" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -1706,9 +1864,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="8dp"
+                            style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
                             app:boxBackgroundMode="outline"
-                            app:boxStrokeColor="@color/white_100"
-                            app:hintTextColor="@color/purple_card_text_secondary">
+                            app:boxStrokeColor="@color/white_100">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/editCustomAppName"
@@ -1716,8 +1874,7 @@
                                 android:layout_height="wrap_content"
                                 android:hint="Custom name (e.g., Twitter)"
                                 android:inputType="text"
-                                android:textColor="@color/purple_card_text_primary"
-                                android:textColorHint="@color/purple_card_text_secondary" />
+                                android:textColor="@color/purple_card_text_primary" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -1726,10 +1883,10 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnAddCustomAppName"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:text="Add Custom App Name"
-                        android:backgroundTint="@color/white_100"
-                        android:textColor="@color/purple_base"
+                        android:backgroundTint="#26000000"
+                        android:textColor="@color/white_100"
                         android:layout_marginBottom="16dp" />
 
                     <!-- Custom App Names List -->
@@ -1789,27 +1946,43 @@
                         android:layout_marginBottom="16dp"
                         android:gravity="center_vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="💡 Most users should use: 2 seconds"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:layout_marginEnd="8dp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="8dp">
 
-                        <com.google.android.material.button.MaterialButton
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:contentDescription="Tip"
+                                android:layout_marginEnd="6dp"
+                                android:tint="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Most users should use: 2 seconds"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <ImageView
                             android:id="@+id/btnDelayInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:text="ℹ️ More Info"
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:backgroundTint="@android:color/transparent"
-                            android:strokeColor="@color/white_100"
-                            android:strokeWidth="1.0"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="More Info"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            android:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -1921,27 +2094,43 @@
                         android:layout_marginBottom="16dp"
                         android:gravity="center_vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="💡 Great for: Apps that spam notifications"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:layout_marginEnd="8dp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="8dp">
 
-                        <com.google.android.material.button.MaterialButton
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:contentDescription="Tip"
+                                android:layout_marginEnd="6dp"
+                                android:tint="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Great for: Apps that spam notifications"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <ImageView
                             android:id="@+id/btnCooldownInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:text="ℹ️ More Info"
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:backgroundTint="@android:color/transparent"
-                            android:strokeColor="@color/white_100"
-                            android:strokeWidth="1.0"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="More Info"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            android:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -1949,17 +2138,16 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:layout_marginBottom="12dp">
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
                             app:boxBackgroundMode="outline"
-                            app:boxStrokeColor="@color/white_100"
-                            app:hintTextColor="@color/purple_card_text_secondary">
+                            app:boxStrokeColor="@color/white_100">
 
                             <AutoCompleteTextView
                                 android:id="@+id/editCooldownApp"
@@ -1972,7 +2160,6 @@
                                 android:dropDownHeight="200dp"
                                 android:textSize="16sp"
                                 android:textColor="@color/purple_card_text_primary"
-                                android:textColorHint="@color/purple_card_text_secondary"
                                 android:paddingStart="16dp"
                                 android:paddingEnd="16dp"
                                 android:paddingTop="16dp"
@@ -1982,11 +2169,11 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnAddCooldownApp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
                             android:text="Add"
-                            android:backgroundTint="@color/white_100"
-                            android:textColor="@color/purple_base" />
+                            android:backgroundTint="#26000000"
+                            android:textColor="@color/white_100" />
 
                     </LinearLayout>
 
@@ -2047,27 +2234,43 @@
                         android:layout_marginBottom="16dp"
                         android:gravity="center_vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="💡 Customize your notification experience"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:layout_marginEnd="8dp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="8dp">
 
-                        <com.google.android.material.button.MaterialButton
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:contentDescription="Tip"
+                                android:layout_marginEnd="6dp"
+                                android:tint="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Customize your notification experience"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <ImageView
                             android:id="@+id/btnSpeechTemplateInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:text="ℹ️ More Info"
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:backgroundTint="@android:color/transparent"
-                            android:strokeColor="@color/white_100"
-                            android:strokeWidth="1.0"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="More Info"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            android:tint="@color/white_100" />
 
                     </LinearLayout>
 

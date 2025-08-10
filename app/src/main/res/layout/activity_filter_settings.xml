@@ -376,7 +376,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="8dp"
                                 android:minWidth="80dp"
-                                android:background="@drawable/spinner_background"
+                                android:background="@drawable/dropdown_background"
                                 android:popupBackground="@color/white_100" />
 
                         </LinearLayout>
@@ -497,63 +497,72 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
+                            android:orientation="vertical"
                             android:layout_marginBottom="12dp">
 
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="0dp"
+                            <!-- Text Input Fields Row -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginEnd="8dp"
-                                style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
-                                app:boxBackgroundMode="outline"
-                                app:boxStrokeColor="@color/white_100"
-                                app:hintTextColor="@color/white_100"
-                                app:placeholderTextColor="@color/white_100">
+                                android:orientation="horizontal"
+                                android:layout_marginBottom="8dp">
 
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/editReplaceFrom"
-                                    android:layout_width="match_parent"
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:hint="Word to swap"
-                                    android:inputType="text"
-                                    android:textColor="@color/purple_card_text_primary"
-                                    android:textColorHint="@color/white_100" />
+                                    android:layout_weight="1"
+                                    android:layout_marginEnd="8dp"
+                                    style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                    app:boxBackgroundMode="outline"
+                                    app:boxStrokeColor="@color/white_100"
+                                    app:hintTextColor="@color/white_100"
+                                    app:placeholderTextColor="@color/white_100">
 
-                            </com.google.android.material.textfield.TextInputLayout>
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/editReplaceFrom"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Word to swap"
+                                        android:inputType="text"
+                                        android:textColor="@color/purple_card_text_primary"
+                                        android:textColorHint="@color/white_100" />
 
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginEnd="8dp"
-                                style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
-                                app:boxBackgroundMode="outline"
-                                app:boxStrokeColor="@color/white_100"
-                                app:hintTextColor="@color/white_100"
-                                app:placeholderTextColor="@color/white_100">
+                                </com.google.android.material.textfield.TextInputLayout>
 
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/editReplaceTo"
-                                    android:layout_width="match_parent"
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:hint="Swap with (leave empty to remove)"
-                                    android:inputType="text"
-                                    android:textColor="@color/purple_card_text_primary"
-                                    android:textColorHint="@color/white_100" />
+                                    android:layout_weight="1"
+                                    style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                    app:boxBackgroundMode="outline"
+                                    app:boxStrokeColor="@color/white_100"
+                                    app:hintTextColor="@color/white_100"
+                                    app:placeholderTextColor="@color/white_100">
 
-                            </com.google.android.material.textfield.TextInputLayout>
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/editReplaceTo"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Swap with (optional)"
+                                        android:inputType="text"
+                                        android:textColor="@color/purple_card_text_primary"
+                                        android:textColorHint="@color/white_100" />
 
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                            </LinearLayout>
+
+                            <!-- Add Button (Full Width) -->
                             <FrameLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/bg_advanced_voice_section">
 
                                 <com.google.android.material.button.MaterialButton
                                     android:id="@+id/btnAddReplacement"
                                     style="@style/Widget.Material3.Button.TextButton"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="58dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="48dp"
                                     android:background="@android:color/transparent"
                                     android:text="Add"
                                     android:textColor="@color/white_100" />
@@ -670,59 +679,60 @@
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="12dp" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
+                                                 <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="vertical"
+                             android:layout_marginBottom="12dp">
 
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginEnd="8dp"
-                                style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
-                                app:boxBackgroundMode="outline"
-                                app:boxStrokeColor="@color/white_100"
-                                app:hintTextColor="@color/white_100"
-                                app:placeholderTextColor="@color/white_100">
+                             <!-- Text Input Field -->
+                             <com.google.android.material.textfield.TextInputLayout
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginBottom="8dp"
+                                 style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                 app:boxBackgroundMode="outline"
+                                 app:boxStrokeColor="@color/white_100"
+                                 app:hintTextColor="@color/white_100"
+                                 app:placeholderTextColor="@color/white_100">
 
-                                <AutoCompleteTextView
-                                    android:id="@+id/editFilteredMediaApp"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:minHeight="56dp"
-                                    android:hint="Search apps to add to media filter"
-                                    android:inputType="text"
-                                    android:completionThreshold="1"
-                                    android:dropDownHeight="200dp"
-                                    android:textSize="16sp"
-                                    android:textColor="@color/purple_card_text_primary"
-                                    android:textColorHint="@color/white_100"
-                                    android:paddingStart="16dp"
-                                    android:paddingEnd="16dp"
-                                    android:paddingTop="16dp"
-                                    android:paddingBottom="16dp" />
+                                 <AutoCompleteTextView
+                                     android:id="@+id/editFilteredMediaApp"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:minHeight="56dp"
+                                     android:hint="Search apps to add to media filter"
+                                     android:inputType="text"
+                                     android:completionThreshold="1"
+                                     android:dropDownHeight="200dp"
+                                     android:textSize="16sp"
+                                     android:textColor="@color/purple_card_text_primary"
+                                     android:textColorHint="@color/white_100"
+                                     android:paddingStart="16dp"
+                                     android:paddingEnd="16dp"
+                                     android:paddingTop="16dp"
+                                     android:paddingBottom="16dp" />
 
-                            </com.google.android.material.textfield.TextInputLayout>
+                             </com.google.android.material.textfield.TextInputLayout>
 
-                            <FrameLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/bg_advanced_voice_section">
+                             <!-- Add Button (Full Width) -->
+                             <FrameLayout
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:background="@drawable/bg_advanced_voice_section">
 
-                                <com.google.android.material.button.MaterialButton
-                                    android:id="@+id/btnRemoveFilteredMediaApp"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Add"
-                                    android:background="@android:color/transparent"
-                                    android:textColor="@color/white_100"
-                                    style="@style/Widget.Material3.Button.TextButton" />
+                                 <com.google.android.material.button.MaterialButton
+                                     android:id="@+id/btnRemoveFilteredMediaApp"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="48dp"
+                                     android:text="Add"
+                                     android:background="@android:color/transparent"
+                                     android:textColor="@color/white_100"
+                                     style="@style/Widget.Material3.Button.TextButton" />
 
-                            </FrameLayout>
+                             </FrameLayout>
 
-                        </LinearLayout>
+                         </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerFilteredMediaApps"
@@ -791,59 +801,60 @@
                                     android:textColor="@color/purple_card_text_secondary"
                                     android:layout_marginBottom="8dp" />
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:layout_marginBottom="12dp">
+                                                                 <LinearLayout
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:orientation="vertical"
+                                     android:layout_marginBottom="12dp">
 
-                                    <com.google.android.material.textfield.TextInputLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:layout_marginEnd="8dp"
-                                        style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
-                                        app:boxBackgroundMode="outline"
-                                        app:boxStrokeColor="@color/white_100"
-                                        app:hintTextColor="@color/white_100"
-                                        app:placeholderTextColor="@color/white_100">
+                                     <!-- Text Input Field -->
+                                     <com.google.android.material.textfield.TextInputLayout
+                                         android:layout_width="match_parent"
+                                         android:layout_height="wrap_content"
+                                         android:layout_marginBottom="8dp"
+                                         style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                         app:boxBackgroundMode="outline"
+                                         app:boxStrokeColor="@color/white_100"
+                                         app:hintTextColor="@color/white_100"
+                                         app:placeholderTextColor="@color/white_100">
 
-                                        <AutoCompleteTextView
-                                            android:id="@+id/editMediaExceptedApp"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:minHeight="56dp"
-                                            android:hint="Search apps or enter package name"
-                                            android:inputType="text"
-                                            android:completionThreshold="1"
-                                            android:dropDownHeight="200dp"
-                                            android:textSize="16sp"
-                                            android:textColor="@color/purple_card_text_primary"
-                                            android:textColorHint="@color/white_100"
-                                            android:paddingStart="16dp"
-                                            android:paddingEnd="16dp"
-                                            android:paddingTop="16dp"
-                                            android:paddingBottom="16dp" />
+                                         <AutoCompleteTextView
+                                             android:id="@+id/editMediaExceptedApp"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="wrap_content"
+                                             android:minHeight="56dp"
+                                             android:hint="Search apps or enter package name"
+                                             android:inputType="text"
+                                             android:completionThreshold="1"
+                                             android:dropDownHeight="200dp"
+                                             android:textSize="16sp"
+                                             android:textColor="@color/purple_card_text_primary"
+                                             android:textColorHint="@color/white_100"
+                                             android:paddingStart="16dp"
+                                             android:paddingEnd="16dp"
+                                             android:paddingTop="16dp"
+                                             android:paddingBottom="16dp" />
 
-                                    </com.google.android.material.textfield.TextInputLayout>
+                                     </com.google.android.material.textfield.TextInputLayout>
 
-                                    <FrameLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:background="@drawable/bg_advanced_voice_section">
+                                     <!-- Add Button (Full Width) -->
+                                     <FrameLayout
+                                         android:layout_width="match_parent"
+                                         android:layout_height="wrap_content"
+                                         android:background="@drawable/bg_advanced_voice_section">
 
-                                        <com.google.android.material.button.MaterialButton
-                                            android:id="@+id/btnAddMediaExceptedApp"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Add"
-                                            android:background="@android:color/transparent"
-                                            android:textColor="@color/white_100"
-                                            style="@style/Widget.Material3.Button.TextButton" />
+                                         <com.google.android.material.button.MaterialButton
+                                             android:id="@+id/btnAddMediaExceptedApp"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="48dp"
+                                             android:text="Add"
+                                             android:background="@android:color/transparent"
+                                             android:textColor="@color/white_100"
+                                             style="@style/Widget.Material3.Button.TextButton" />
 
-                                    </FrameLayout>
+                                     </FrameLayout>
 
-                                </LinearLayout>
+                                 </LinearLayout>
 
                                 <androidx.recyclerview.widget.RecyclerView
                                     android:id="@+id/recyclerMediaExceptedApps"
@@ -869,51 +880,52 @@
                                     android:textColor="@color/purple_card_text_secondary"
                                     android:layout_marginBottom="8dp" />
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:layout_marginBottom="12dp">
+                                                                 <LinearLayout
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:orientation="vertical"
+                                     android:layout_marginBottom="12dp">
 
-                                    <com.google.android.material.textfield.TextInputLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:layout_marginEnd="8dp"
-                                        style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
-                                        app:boxBackgroundMode="outline"
-                                        app:boxStrokeColor="@color/white_100"
-                                        app:hintTextColor="@color/white_100"
-                                        app:placeholderTextColor="@color/white_100">
+                                     <!-- Text Input Field -->
+                                     <com.google.android.material.textfield.TextInputLayout
+                                         android:layout_width="match_parent"
+                                         android:layout_height="wrap_content"
+                                         android:layout_marginBottom="8dp"
+                                         style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                         app:boxBackgroundMode="outline"
+                                         app:boxStrokeColor="@color/white_100"
+                                         app:hintTextColor="@color/white_100"
+                                         app:placeholderTextColor="@color/white_100">
 
-                                        <com.google.android.material.textfield.TextInputEditText
-                                            android:id="@+id/editMediaImportantKeyword"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:hint="Important keyword (e.g., reply, comment)"
-                                            android:inputType="text"
-                                            android:textColor="@color/purple_card_text_primary"
-                                            android:textColorHint="@color/white_100" />
+                                         <com.google.android.material.textfield.TextInputEditText
+                                             android:id="@+id/editMediaImportantKeyword"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="wrap_content"
+                                             android:hint="Important keyword (e.g., reply, comment)"
+                                             android:inputType="text"
+                                             android:textColor="@color/purple_card_text_primary"
+                                             android:textColorHint="@color/white_100" />
 
-                                    </com.google.android.material.textfield.TextInputLayout>
+                                     </com.google.android.material.textfield.TextInputLayout>
 
-                                    <FrameLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:background="@drawable/bg_advanced_voice_section">
+                                     <!-- Add Button (Full Width) -->
+                                     <FrameLayout
+                                         android:layout_width="match_parent"
+                                         android:layout_height="wrap_content"
+                                         android:background="@drawable/bg_advanced_voice_section">
 
-                                        <com.google.android.material.button.MaterialButton
-                                            android:id="@+id/btnAddMediaImportantKeyword"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Add"
-                                            android:background="@android:color/transparent"
-                                            android:textColor="@color/white_100"
-                                            style="@style/Widget.Material3.Button.TextButton" />
+                                         <com.google.android.material.button.MaterialButton
+                                             android:id="@+id/btnAddMediaImportantKeyword"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="48dp"
+                                             android:text="Add"
+                                             android:background="@android:color/transparent"
+                                             android:textColor="@color/white_100"
+                                             style="@style/Widget.Material3.Button.TextButton" />
 
-                                    </FrameLayout>
+                                     </FrameLayout>
 
-                                </LinearLayout>
+                                 </LinearLayout>
 
                                 <androidx.recyclerview.widget.RecyclerView
                                     android:id="@+id/recyclerMediaImportantKeywords"

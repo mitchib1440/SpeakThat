@@ -7,6 +7,7 @@
         android:title="Export Filters"
         android:icon="@drawable/ic_export"
         app:showAsAction="ifRoom"
+        app:iconTint="?attr/colorOnSurface"
         android:contentDescription="Export filter configuration" />
 
     <item
@@ -14,6 +15,7 @@
         android:title="Import Filters"
         android:icon="@drawable/ic_import"
         app:showAsAction="ifRoom"
+        app:iconTint="?attr/colorOnSurface"
         android:contentDescription="Import filter configuration" />
 
 </menu> 

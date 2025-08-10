@@ -251,7 +251,7 @@
                         android:id="@+id/spinnerSpeechRate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/spinner_background"
+                        android:background="@drawable/dropdown_background"
                         android:padding="12dp"
                         android:layout_marginBottom="16dp" />
 
@@ -268,7 +268,7 @@
                         android:id="@+id/spinnerPitch"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/spinner_background"
+                        android:background="@drawable/dropdown_background"
                         android:padding="12dp" />
 
                 </LinearLayout>

@@ -271,7 +271,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:minHeight="48dp"
-                        android:background="@drawable/spinner_background"
+                        android:background="@drawable/dropdown_background"
                         android:popupBackground="?attr/colorSurface"
                         android:padding="12dp" />
 
@@ -310,7 +310,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:minHeight="48dp"
-                        android:background="@drawable/spinner_background"
+                        android:background="@drawable/dropdown_background"
                         android:popupBackground="?attr/colorSurface"
                         android:padding="12dp" />
 
@@ -463,19 +463,18 @@
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
-                            <Button
+                            <ImageView
                                 android:id="@+id/btnVoiceInfo"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="ℹ️"
-                                android:textSize="16sp"
-                                android:minWidth="48dp"
-                                android:minHeight="48dp"
-                                android:textColor="@color/white_100"
-                                android:background="?android:attr/selectableItemBackground"
-                                android:padding="8dp"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/help_24px"
+                                android:contentDescription="More Info"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                                android:padding="4dp"
                                 android:layout_marginStart="8dp"
-                                style="@style/Widget.Material3.Button.TextButton" />
+                                android:tint="@color/white_100" />
 
                         </LinearLayout>
 
@@ -653,17 +652,17 @@
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_secondary" />
 
-                        <Button
+                        <ImageView
                             android:id="@+id/btnAudioHelp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ℹ️ More Info"
-                            android:textSize="12sp"
-                            android:minWidth="0dp"
-                            android:minHeight="0dp"
-                            android:padding="8dp"
-                            android:textColor="@color/white_100"
-                            style="?attr/materialButtonOutlinedStyle" />
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="More Info"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            android:tint="@color/white_100" />
 
                     </LinearLayout>
 
