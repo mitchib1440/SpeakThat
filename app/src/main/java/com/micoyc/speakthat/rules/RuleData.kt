@@ -18,12 +18,11 @@ class MapStringAnyTypeAdapter : JsonSerializer<Map<String, Any>>, JsonDeserializ
         
         val jsonObject = JsonObject()
         for ((key, value) in src) {
-            when (value) {
-                null -> jsonObject.add(key, JsonNull.INSTANCE)
-                is String -> jsonObject.addProperty(key, value)
-                is Number -> jsonObject.addProperty(key, value)
-                is Boolean -> jsonObject.addProperty(key, value)
-                is List<*> -> {
+            when {
+                value is String -> jsonObject.addProperty(key, value)
+                value is Number -> jsonObject.addProperty(key, value)
+                value is Boolean -> jsonObject.addProperty(key, value)
+                value is List<*> -> {
                     val jsonArray = JsonArray()
                     for (item in value) {
                         when (item) {
@@ -36,7 +35,7 @@ class MapStringAnyTypeAdapter : JsonSerializer<Map<String, Any>>, JsonDeserializ
                     }
                     jsonObject.add(key, jsonArray)
                 }
-                is Set<*> -> {
+                value is Set<*> -> {
                     val jsonArray = JsonArray()
                     for (item in value) {
                         when (item) {
@@ -77,7 +76,7 @@ class MapStringAnyTypeAdapter : JsonSerializer<Map<String, Any>>, JsonDeserializ
                             InAppLogger.logDebug("MapStringAnyTypeAdapter", "  abs(toLong() - toDouble()): ${abs(number.toLong() - number.toDouble())}")
                             InAppLogger.logDebug("MapStringAnyTypeAdapter", "  abs(toInt() - toDouble()): ${abs(number.toInt() - number.toDouble())}")
                             
-                            val result = when {
+                            val convertedValue = when {
                                 abs(number.toLong() - number.toDouble()) < 0.001 -> {
                                     InAppLogger.logDebug("MapStringAnyTypeAdapter", "  -> Converting to Long: ${number.toLong()}")
                                     number.toLong()
@@ -91,8 +90,8 @@ class MapStringAnyTypeAdapter : JsonSerializer<Map<String, Any>>, JsonDeserializ
                                     number.toDouble()
                                 }
                             }
-                            InAppLogger.logDebug("MapStringAnyTypeAdapter", "  Final result: $result (${result.javaClass.simpleName})")
-                            result
+                            InAppLogger.logDebug("MapStringAnyTypeAdapter", "  Final result: $convertedValue (${convertedValue.javaClass.simpleName})")
+                            convertedValue
                         }
                         primitive.isBoolean -> primitive.asBoolean
                         else -> primitive.asString
@@ -117,7 +116,7 @@ class MapStringAnyTypeAdapter : JsonSerializer<Map<String, Any>>, JsonDeserializ
                                         InAppLogger.logDebug("MapStringAnyTypeAdapter", "  abs(toLong() - toDouble()): ${abs(number.toLong() - number.toDouble())}")
                                         InAppLogger.logDebug("MapStringAnyTypeAdapter", "  abs(toInt() - toDouble()): ${abs(number.toInt() - number.toDouble())}")
                                         
-                                        val result = when {
+                                        val convertedValue = when {
                                             abs(number.toLong() - number.toDouble()) < 0.001 -> {
                                                 InAppLogger.logDebug("MapStringAnyTypeAdapter", "  -> Converting to Long: ${number.toLong()}")
                                                 number.toLong()
@@ -131,8 +130,8 @@ class MapStringAnyTypeAdapter : JsonSerializer<Map<String, Any>>, JsonDeserializ
                                                 number.toDouble()
                                             }
                                         }
-                                        InAppLogger.logDebug("MapStringAnyTypeAdapter", "  Final result: $result (${result.javaClass.simpleName})")
-                                        result
+                                        InAppLogger.logDebug("MapStringAnyTypeAdapter", "  Final result: $convertedValue (${convertedValue.javaClass.simpleName})")
+                                        convertedValue
                                     }
                                     primitive.isBoolean -> primitive.asBoolean
                                     else -> primitive.asString
@@ -505,8 +504,6 @@ data class Rule(
         
         return when (trigger.type) {
             TriggerType.BLUETOOTH_DEVICE -> {
-                val deviceAddresses = trigger.data["device_addresses"] as? Set<String> ?: emptySet()
-                val deviceName = if (deviceAddresses.isEmpty()) "any Bluetooth device" else "Bluetooth device"
                 if (trigger.inverted) {
                     context.getString(com.micoyc.speakthat.R.string.rule_trigger_bluetooth_disconnected)
                 } else {
@@ -557,6 +554,7 @@ data class Rule(
                 )
             }
             TriggerType.WIFI_NETWORK -> {
+                @Suppress("UNCHECKED_CAST")
                 val networkSSIDs = trigger.data["network_ssids"] as? Set<String> ?: emptySet()
                 val networkName = if (networkSSIDs.isEmpty()) "any WiFi network" else networkSSIDs.first()
                 if (trigger.inverted) {
@@ -622,8 +620,6 @@ data class Rule(
         
         return when (exception.type) {
             ExceptionType.BLUETOOTH_DEVICE -> {
-                val deviceAddresses = exception.data["device_addresses"] as? Set<String> ?: emptySet()
-                val deviceName = if (deviceAddresses.isEmpty()) "any Bluetooth device" else "Bluetooth device"
                 if (exception.inverted) {
                     context.getString(com.micoyc.speakthat.R.string.rule_exception_bluetooth_disconnected)
                 } else {
@@ -674,6 +670,7 @@ data class Rule(
                 )
             }
             ExceptionType.WIFI_NETWORK -> {
+                @Suppress("UNCHECKED_CAST")
                 val networkSSIDs = exception.data["network_ssids"] as? Set<String> ?: emptySet()
                 val networkName = if (networkSSIDs.isEmpty()) "any WiFi network" else networkSSIDs.first()
                 if (exception.inverted) {
