@@ -40,7 +40,7 @@ class RuleManager(private val context: Context) {
     // Evaluation result caching for single notification processing
     private var lastEvaluationResults: List<RuleEvaluationResult>? = null
     private var lastEvaluationTime: Long = 0L
-    private val evaluationCacheDuration = 1000L // 1 second for evaluation results
+    private val evaluationCacheDuration = 100L // Reduced to 100ms for time-sensitive rules
     
     /**
      * Get rules with caching - only loads from storage if cache is stale
@@ -233,14 +233,28 @@ class RuleManager(private val context: Context) {
         
         val currentTime = System.currentTimeMillis()
         
+        // Check if we have time-sensitive rules that require more frequent evaluation
+        val enabledRules = getEnabledRules()
+        val hasTimeSensitiveRules = enabledRules.any { rule ->
+            rule.triggers.any { trigger ->
+                trigger.enabled && trigger.type == TriggerType.TIME_SCHEDULE
+            }
+        }
+        
+        // Use shorter cache duration for time-sensitive rules
+        val effectiveCacheDuration = if (hasTimeSensitiveRules) {
+            50L // 50ms for time-sensitive rules
+        } else {
+            evaluationCacheDuration // 100ms for other rules
+        }
+        
         // Return cached evaluation results if they're still valid
-        if (lastEvaluationResults != null && (currentTime - lastEvaluationTime) < evaluationCacheDuration) {
-            InAppLogger.logDebug(TAG, "Using cached evaluation results (${lastEvaluationResults!!.size} rules)")
+        if (lastEvaluationResults != null && (currentTime - lastEvaluationTime) < effectiveCacheDuration) {
+            InAppLogger.logDebug(TAG, "Using cached evaluation results (${lastEvaluationResults!!.size} rules) - cache age: ${currentTime - lastEvaluationTime}ms, cache duration: ${effectiveCacheDuration}ms")
             return lastEvaluationResults!!
         }
         
         // Cache is stale or null, perform fresh evaluation
-        val enabledRules = getEnabledRules()
         InAppLogger.logDebug(TAG, "Evaluating ${enabledRules.size} enabled rules")
         
         val results = enabledRules.map { rule ->
