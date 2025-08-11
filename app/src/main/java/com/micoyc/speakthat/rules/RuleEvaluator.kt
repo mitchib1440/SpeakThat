@@ -656,11 +656,16 @@ class RuleEvaluator(private val context: Context) {
         try {
             val calendar = java.util.Calendar.getInstance()
             
-            // Get schedule data from trigger - handle different number types that might be stored
+            // Debug: Log the entire trigger data
+            InAppLogger.logDebug(TAG, "TimeSchedule trigger data: ${trigger.data}")
+            InAppLogger.logDebug(TAG, "TimeSchedule trigger data types: ${trigger.data.mapValues { it.value?.javaClass?.simpleName ?: "null" }}")
+            
+            // Get schedule data from trigger - handle both Long and Double types
             val startTimeRaw = trigger.data["start_time"]
             val endTimeRaw = trigger.data["end_time"]
-            val daysOfWeekRaw = trigger.data["days_of_week"]
+            val daysOfWeek = trigger.data["days_of_week"] as? Set<Int> ?: emptySet()
             
+            // Convert start_time to Long, handling both Long and Double types
             val startTime = when (startTimeRaw) {
                 is Long -> startTimeRaw
                 is Double -> startTimeRaw.toLong()
@@ -668,6 +673,7 @@ class RuleEvaluator(private val context: Context) {
                 else -> 0L
             }
             
+            // Convert end_time to Long, handling both Long and Double types
             val endTime = when (endTimeRaw) {
                 is Long -> endTimeRaw
                 is Double -> endTimeRaw.toLong()
@@ -675,32 +681,12 @@ class RuleEvaluator(private val context: Context) {
                 else -> 0L
             }
             
-            val daysOfWeek = when (daysOfWeekRaw) {
-                is Set<*> -> daysOfWeekRaw.mapNotNull { 
-                    when (it) {
-                        is Int -> it
-                        is Double -> it.toInt()
-                        is Long -> it.toInt()
-                        else -> null
-                    }
-                }.toSet()
-                is List<*> -> daysOfWeekRaw.mapNotNull { 
-                    when (it) {
-                        is Int -> it
-                        is Double -> it.toInt()
-                        is Long -> it.toInt()
-                        else -> null
-                    }
-                }.toSet()
-                else -> emptySet<Int>()
-            }
-            
-            // Debug logging for raw values
-            InAppLogger.logDebug(TAG, "Raw time values - start: $startTimeRaw (${startTimeRaw?.javaClass?.simpleName}), end: $endTimeRaw (${endTimeRaw?.javaClass?.simpleName})")
-            InAppLogger.logDebug(TAG, "Converted time values - start: ${startTime}ms, end: ${endTime}ms")
+            InAppLogger.logDebug(TAG, "TimeSchedule converted times: startTime=$startTime (${startTimeRaw?.javaClass?.simpleName}), endTime=$endTime (${endTimeRaw?.javaClass?.simpleName})")
             
             // Check if current day is in allowed days
-            val currentDayOfWeek = calendar.get(java.util.Calendar.DAY_OF_WEEK)
+            // Calendar.DAY_OF_WEEK is 1-based (Sunday=1, Saturday=7)
+            // But our days_of_week set is 0-based (Sunday=0, Saturday=6)
+            val currentDayOfWeek = calendar.get(java.util.Calendar.DAY_OF_WEEK) - 1
             val dayAllowed = daysOfWeek.isEmpty() || currentDayOfWeek in daysOfWeek
             
             if (!dayAllowed) {
@@ -711,7 +697,7 @@ class RuleEvaluator(private val context: Context) {
                 )
             }
             
-            // Extract current time of day in milliseconds (same format as start/end times)
+            // Convert current time to time-of-day milliseconds (since midnight)
             val currentHour = calendar.get(java.util.Calendar.HOUR_OF_DAY)
             val currentMinute = calendar.get(java.util.Calendar.MINUTE)
             val currentTimeOfDay = (currentHour * 60 * 60 * 1000L) + (currentMinute * 60 * 1000L)
@@ -725,13 +711,13 @@ class RuleEvaluator(private val context: Context) {
                 currentTimeOfDay >= startTime || currentTimeOfDay <= endTime
             }
             
-            InAppLogger.logDebug(TAG, "Time check: current=${String.format("%02d:%02d", currentHour, currentMinute)} (${currentTimeOfDay}ms), start=${startTime}ms, end=${endTime}ms, inRange=$timeInRange")
+            InAppLogger.logDebug(TAG, "Time check: current=${currentHour}:${currentMinute.toString().padStart(2, '0')} (${currentTimeOfDay}ms), start=${startTime}ms, end=${endTime}ms, inRange=$timeInRange")
             
             return EvaluationResult(
                 success = timeInRange,
                 message = if (timeInRange) "Current time is within schedule" else "Current time is outside schedule",
                 data = mapOf(
-                    "current_time" to currentTimeOfDay,
+                    "current_time_of_day" to currentTimeOfDay,
                     "start_time" to startTime,
                     "end_time" to endTime,
                     "days_of_week" to daysOfWeek

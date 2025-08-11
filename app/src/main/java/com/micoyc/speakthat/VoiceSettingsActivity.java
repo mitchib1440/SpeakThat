@@ -6,6 +6,7 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -59,7 +60,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
     private Button previewButton;
     private Button resetButton;
-    private Button btnVoiceInfo;
+    private ImageView btnVoiceInfo;
     private MaterialSwitch switchAdvancedVoice;
     private LinearLayout layoutAdvancedVoiceSection;
 
@@ -130,7 +131,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         layoutAdvancedVoiceSection = findViewById(R.id.layoutAdvancedVoiceSection);
         
         // Set up audio help button
-        Button btnAudioHelp = findViewById(R.id.btnAudioHelp);
+        ImageView btnAudioHelp = findViewById(R.id.btnAudioHelp);
         btnAudioHelp.setOnClickListener(v -> showAudioHelpDialog());
     }
 

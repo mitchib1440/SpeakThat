@@ -3,6 +3,7 @@ package com.micoyc.speakthat.rules
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.micoyc.speakthat.InAppLogger
 import com.micoyc.speakthat.rules.ActionExecutor
@@ -24,7 +25,13 @@ class RuleManager(private val context: Context) {
     }
     
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-    private val gson = Gson()
+    private val gson = GsonBuilder()
+        .registerTypeAdapter(object : TypeToken<Map<String, Any>>() {}.type, MapStringAnyTypeAdapter())
+        .registerTypeAdapter(Rule::class.java, RuleTypeAdapter())
+        .registerTypeAdapter(Trigger::class.java, TriggerTypeAdapter())
+        .registerTypeAdapter(Action::class.java, ActionTypeAdapter())
+        .registerTypeAdapter(Exception::class.java, ExceptionTypeAdapter())
+        .create()
     private val ruleEvaluator = RuleEvaluator(context)
     private val actionExecutor = ActionExecutor(context)
     
@@ -78,9 +85,10 @@ class RuleManager(private val context: Context) {
      */
     private fun loadRulesFromStorage(): List<Rule> {
         val rulesJson = sharedPreferences.getString(KEY_RULES_LIST, "[]")
+        InAppLogger.logDebug(TAG, "Raw JSON loaded: $rulesJson")
         return try {
             val type = object : TypeToken<List<Rule>>() {}.type
-            val rules = gson.fromJson<List<Rule>>(rulesJson, type) ?: emptyList()
+            val rules = gson.fromJson(rulesJson, type) ?: emptyList<Rule>()
             InAppLogger.logDebug(TAG, "Loaded ${rules.size} rules from storage")
             rules
         } catch (e: Throwable) {
@@ -138,6 +146,7 @@ class RuleManager(private val context: Context) {
         sharedPreferences.edit().putString(KEY_RULES_LIST, rulesJson).apply()
         invalidateCache() // Invalidate cache after saving
         InAppLogger.logDebug(TAG, "Saved ${rules.size} rules to storage")
+        InAppLogger.logDebug(TAG, "Raw JSON saved: $rulesJson")
     }
     
     /**
