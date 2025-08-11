@@ -10,10 +10,10 @@
     <string name="permission_read_external_storage">アプリの設定と、設定ファイルのインポート/エクスポートに使用します。ユーザーは設定のバックアップと復元を許可します。個人データにはアクセスしません。</string>
     <string name="permission_needed">通知へのアクセスが必要です</string>
     <string name="permission_description">SpeakThat! は、読み上げのために通知にアクセスする必要があります。この権限はアプリが機能するために必要です。</string>
-    <string name="master_switch_battery_tip">💡 バッテリーを節約するために不要な場合はオフにします</string>
+    <string name="master_switch_battery_tip">💡 バッテリーを節約するために、必要のないときはオフにします</string>
     <string name="open_settings">権限の設定を開く</string>
-    <string name="service_enabled">通知リーダー：有効</string>
-    <string name="service_disabled">通知リーダー：無効</string>
+    <string name="service_enabled">通知の読み取り：有効</string>
+    <string name="service_disabled">通知の読み取り：無効</string>
     <string name="show_history">通知履歴を表示</string>
     <string name="settings">SpeakThat! 設定</string>
     <string name="no_notifications">表示する通知はありません</string>
@@ -94,15 +94,15 @@
     <string name="persistent_notification_filtering_title">🔇 永続/サイレント通知フィルタ</string>
     <string name="persistent_notification_filtering_description">永続的(進行中)またはサイレント(音/振動なし)の通知をスキップ</string>
     <string name="enable_persistent_filtering">🔇 永続/サイレント通知フィルタ</string>
-    <string name="persistent_filtering_help">💡 永続的な通知(音楽コントロール、ナビゲーションなど)は継続的で、サイレント通知には音や振動がありません。このオプションは、バックグラウンドサービスから通知が繰り返されるのを防ぎます。</string>
+    <string name="persistent_filtering_help">💡 永続的な通知とは継続的に表示される通知(音楽コントロール、ナビゲーションなど)のことで、サイレント通知とは音や振動がない通知のことです。このオプションは、バックグラウンドサービスから通知が繰り返されるのを防ぎます。</string>
     <!-- Individual Persistent Filtering Categories -->
     <string name="filter_persistent_notifications">永続的な通知をフィルターする</string>
     <string name="filter_silent_notifications">サイレント通知をフィルターする</string>
-    <string name="filter_foreground_services">フォアグラウンドサービスの通知をフィルター</string>
-    <string name="filter_low_priority">優先度の低い通知をフィルター</string>
-    <string name="filter_system_notifications">システム通知をフィルター</string>
+    <string name="filter_foreground_services">フォアグラウンドサービスの通知をフィルターする</string>
+    <string name="filter_low_priority">優先度の低い通知をフィルターする</string>
+    <string name="filter_system_notifications">システム通知をフィルターする</string>
     <!-- Category Descriptions -->
-    <string name="persistent_notifications_desc">自動解除されない継続通知（音楽コントロール、ナビゲーション）</string>
+    <string name="persistent_notifications_desc">自動解除されない継続的な通知（音楽コントロール、ナビゲーション）</string>
     <string name="silent_notifications_desc">音や振動のない通知</string>
     <string name="foreground_services_desc">バックグラウンドサービスからの通知</string>
     <string name="low_priority_desc">優先度が低い通知</string>
@@ -125,7 +125,7 @@
     <string name="version_format">バージョン %s</string>
     <string name="version_format_with_variant" formatted="false">バージョン %1$s (%2$s)</string>
     <!-- Store Update Dialog -->
-    <string name="store_update_dialog_title">App Store経由で更新</string>
+    <string name="store_update_dialog_title">アプリストア経由で更新</string>
     <string name="store_update_dialog_message">このバージョンの SpeakThat! は、アプリストア(F-Droid、Google Playストアなど)からアップデートを受け取ります。</string>
     <string name="store_update_dialog_info">• アップデートはアプリストアから自動的に実行されます\n• アップデートが利用できるときは通知を受け取ります\n• 手動ダウンロードやインストールは必要ありません</string>
     <string name="store_update_dialog_help_title">バージョンの自動アップデートが必要ですか？</string>
