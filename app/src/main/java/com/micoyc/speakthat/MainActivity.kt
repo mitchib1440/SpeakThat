@@ -36,6 +36,10 @@ import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import android.graphics.drawable.AnimatedVectorDrawable
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEventListener {
     
@@ -45,6 +49,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     private var isTtsInitialized = false
     private var isFirstLogoTap = true
     private val easterEggLines = mutableListOf<String>()
+    private var animatedLogo: AnimatedVectorDrawable? = null
     
     // Shake detection
     private var sensorManager: SensorManager? = null
@@ -252,6 +257,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private fun setupUI() {
         setupClickListeners()
+        setupAnimatedLogo()
         // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
 
     }
@@ -284,6 +290,66 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
 
     }
     
+    private fun setupAnimatedLogo() {
+        try {
+            // Initialize the animated logo drawable
+            animatedLogo = ContextCompat.getDrawable(this, R.drawable.logo_speakthat_animated) as? AnimatedVectorDrawable
+            if (animatedLogo != null) {
+                Log.d(TAG, "Animated logo initialized successfully")
+                InAppLogger.log("MainActivity", "Animated logo setup successful")
+            } else {
+                Log.w(TAG, "Failed to initialize animated logo")
+                InAppLogger.logError("MainActivity", "Failed to initialize animated logo")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error setting up animated logo", e)
+            InAppLogger.logError("MainActivity", "Error setting up animated logo: ${e.message}")
+        }
+    }
+    
+    private fun triggerLogoAnimation() {
+        try {
+            // Randomly select one of several animated logo variants for variety
+            val animatedLogoVariants = arrayOf(
+                R.drawable.logo_speakthat_animated,
+                R.drawable.logo_speakthat_animated_variant1,
+                R.drawable.logo_speakthat_animated_variant2,
+                R.drawable.logo_speakthat_animated_variant3
+            )
+            
+            val randomVariant = animatedLogoVariants.random()
+            val animatedLogo = ContextCompat.getDrawable(this, randomVariant) as? AnimatedVectorDrawable
+            
+            if (animatedLogo != null) {
+                // Set the animated logo as the ImageView's drawable
+                binding.logoSpeakThat.setImageDrawable(animatedLogo)
+                
+                // Start the animation
+                animatedLogo.start()
+                
+                // Log the animation start
+                Log.d(TAG, "Logo animation started with bright colors (variant: $randomVariant)")
+                InAppLogger.log("MainActivity", "Logo animation triggered with variant: $randomVariant")
+                
+                // Reset to static logo after animation completes (approximately 2 seconds)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    try {
+                        binding.logoSpeakThat.setImageResource(R.drawable.logo_speakthat)
+                        Log.d(TAG, "Logo animation completed, reset to static")
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error resetting logo to static", e)
+                    }
+                }, 2000) // 2 seconds delay
+            } else {
+                Log.w(TAG, "Animated logo is null, cannot trigger animation")
+                InAppLogger.logError("MainActivity", "Animated logo is null")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error triggering logo animation", e)
+            InAppLogger.logError("MainActivity", "Error triggering logo animation: ${e.message}")
+        }
+    }
+    
     private fun updateServiceStatus() {
         val isEnabled = isNotificationServiceEnabled()
         val isMasterEnabled = sharedPreferences?.getBoolean(KEY_MASTER_SWITCH_ENABLED, true) ?: true
@@ -304,16 +370,14 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_card_text_secondary))
         }
         
-        // Update permission status with white text and emoji indicators
+        // Update permission status with icon indicators
         if (isEnabled) {
-            // Service is enabled - use green checkmark
-            binding.textServiceStatus.text = "Notification permissions: ✅"
-            binding.textServiceStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_card_text_primary))
+            // Service is enabled - use check icon
+            binding.iconPermissionStatus.setImageResource(R.drawable.check_24px)
             binding.textPermissionStatus.text = "SpeakThat has notification access"
         } else {
-            // Service is disabled - use red cross
-            binding.textServiceStatus.text = "Notification permissions: ❌"
-            binding.textServiceStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_card_text_primary))
+            // Service is disabled - use close icon
+            binding.iconPermissionStatus.setImageResource(R.drawable.close_24px)
             binding.textPermissionStatus.text = getString(R.string.permission_description)
         }
         
@@ -517,6 +581,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun handleLogoClick() {
+        // Trigger the animated logo flashing effect
+        triggerLogoAnimation()
+        
         // Log TTS status for debugging
         val ttsStatus = checkTtsStatus()
         InAppLogger.log("MainActivity", "Logo clicked - $ttsStatus")

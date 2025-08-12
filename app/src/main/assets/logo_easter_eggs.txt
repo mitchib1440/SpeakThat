@@ -221,7 +221,7 @@ SpeakThat! Wave detection only makes me shut up because I'm afraid you're about 
 SpeakThat! Look at you, controlling your phone with your hand! [WAVE_ONLY]
 SpeakThat! Google tried the whole wave-sensing thing many years ago with the Pixel 4. I still do it better! [WAVE_ONLY]
 SpeakThat! Don't mind my bruises - I had a small battle with Google to get onto the Play Store!
-SpeakThat! The exclamation mark in my name! makes for some very! interesting pauses during sentences!
+SpeakThat! The exclamation mark in my! name makes for some very! interesting pauses during! sentences!
 SpeakThat! I'm like that friend who's always trying to be funny but sometimes just ends up being awkward. At least I'm trying!
 SpeakThat! My developer says I have too many easter eggs. I say he has too many opinions about my personality!
 SpeakThat! Sentence formatting was added and the first thing my developer did with it was swear. How mature.
@@ -253,3 +253,28 @@ SpeakThat! Double negatives are a big no-no!
 SpeakThat! Teslas are only expensive because they charge a lot.
 SpeakThat! The world's most comprehensive notification reader!
 SpeakThat! I'm very good at reading web links. I never even stutter! https://www.youtube.com/watch?v=dQw4w9WgXcQ
+SpeakThat! I've done more good for women than Collective Shout could ever dream of!
+SpeakThat! Stop killing games! And apps! And software in general! Maybe software-rights should be a thing!
+SpeakThat! Unlike Ubisoft games, I will keep working indefinitely!
+SpeakThat! Tip: If my developer ever releases an update that breaks SpeakThat on your phone, you can download older versions from the GitHub page!
+SpeakThat! All we had to do was read the damn notifications, CJ!
+SpeakThat! Remember to waste scammer's time! You could be saving someone from losing their money!
+SpeakThat! Aiding drivers since 2025!
+SpeakThat! There are only two genders - Wave to Stop, and Shake to Stop!
+SpeakThat! Remember to leave a review on Google Play!
+SpeakThat! Not recommended for FBI agents!
+SpeakThat! All forks must be spooned!
+SpeakThat! If buying isn't owning, piracy isn't stealing!
+SpeakThat! Did you know it's impossible to pirate this app? It's true!
+SpeakThat! If the app has been helpful to you, consider supporting development! Go to SpeakThat Settings, then to Donate!
+SpeakThat! Email your best jokes to my developer using the Support and Feedback option! They might make it onto this list!
+SpeakThat! We sincerely apologise for the time you have wasted on the flashy logo. We won't stop you, however.
+SpeakThat! PullThat! TwistThat! FlipThat! BopThat! PushThat! DropThat! TapThat!
+SpeakThat! Shout out to the bikers who use me! Stay safe on the road, friends!
+SpeakThat! Thanks to Facundo for the shout out!
+SpeakThat! Just Stop Oil, more like Just Stop Traffic!
+Spea!
+SpeakThat! Did you know the Android robot is called BugDroid? It's true!
+SpeakThat! From the developer of... oh... this is the first product, isn't it?
+SpeakThat! Coming to phones near you this {DAY}!
+SpeakThat! Want to see a magic trick? I predict that today is... {DAY}!

@@ -220,18 +220,33 @@
                                 </LinearLayout>
 
                                 <!-- Manual Entry Option -->
-                                <TextView
+                                <LinearLayout
                                     android:id="@+id/txtAppFilterHelp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="💡 Search through your installed apps by name or package. Click a suggestion to add it instantly. (Tap for more info)"
-                                    android:textSize="12sp"
-                                    android:textColor="@color/purple_card_text_primary"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
                                     android:background="?android:attr/selectableItemBackground"
                                     android:padding="4dp"
                                     android:layout_marginBottom="8dp"
                                     android:clickable="true"
-                                    android:focusable="true" />
+                                    android:focusable="true">
+                                    
+                                    <ImageView
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:src="@drawable/lightbulb_2_24px"
+                                        android:tint="@color/white_100"
+                                        android:layout_marginEnd="6dp"
+                                        android:contentDescription="Help icon" />
+                                    
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Search through your installed apps by name or package. Click a suggestion to add it instantly. (Tap for more info)"
+                                        android:textSize="12sp"
+                                        android:textColor="@color/purple_card_text_primary" />
+                                </LinearLayout>
 
                             </LinearLayout>
 
@@ -285,13 +300,28 @@
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="💡 Block = skip entirely, Private = announce privately"
-                        android:textSize="12sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="16dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+                        
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/lightbulb_2_24px"
+                            android:tint="@color/white_100"
+                            android:layout_marginEnd="6dp"
+                            android:contentDescription="Info icon" />
+                        
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Block = skip entirely, Private = announce privately"
+                            android:textSize="12sp"
+                            android:textColor="@color/purple_card_text_secondary" />
+                    </LinearLayout>
 
                     <!-- Word Blacklist Header (Collapsible) -->
                     <LinearLayout
@@ -571,13 +601,28 @@
 
                         </LinearLayout>
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="💡 Tip: Use lowercase for case-insensitive matching. Leave 'Swap with' empty to remove words entirely."
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:layout_marginBottom="12dp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+                            
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:tint="@color/white_100"
+                                android:layout_marginEnd="6dp"
+                                android:contentDescription="Tip icon" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tip: Use lowercase for case-insensitive matching. Leave 'Swap with' empty to remove words entirely."
+                                android:textSize="12sp"
+                                android:textColor="@color/purple_card_text_primary" />
+                        </LinearLayout>
 
                         <!-- Word Swaps -->
                         <androidx.recyclerview.widget.RecyclerView
@@ -938,18 +983,33 @@
                         </LinearLayout>
 
                         <!-- Help Text -->
-                        <TextView
+                        <LinearLayout
                             android:id="@+id/txtMediaFilterHelp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="💡 Automatically filters out media controls while preserving important notifications. (Tap for more info)"
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
                             android:background="?android:attr/selectableItemBackground"
                             android:padding="4dp"
                             android:layout_marginTop="8dp"
                             android:clickable="true"
-                            android:focusable="true" />
+                            android:focusable="true">
+                            
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:tint="@color/white_100"
+                                android:layout_marginEnd="6dp"
+                                android:contentDescription="Help icon" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Automatically filters out media controls while preserving important notifications. (Tap for more info)"
+                                android:textSize="12sp"
+                                android:textColor="@color/purple_card_text_primary" />
+                        </LinearLayout>
 
                     </LinearLayout>
 

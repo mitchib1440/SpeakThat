@@ -10,6 +10,7 @@
     <string name="permission_needed">通知へのアクセスが必要です</string>
     <string name="permission_description">SpeakThat! は、読み上げのために通知にアクセスする必要があります。この権限はアプリが機能するために必要です。</string>
     <string name="master_switch_battery_tip">💡 バッテリーを節約するために不要な場合はオフにします</string>
+    <string name="master_switch_battery_tip_no_emoji">バッテリーを節約するために、必要のないときはオフにします</string>
     <string name="open_settings">権限の設定を開く</string>
     <string name="service_enabled">通知リーダー：有効</string>
     <string name="service_disabled">通知リーダー：無効</string>

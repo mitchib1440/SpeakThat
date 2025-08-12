@@ -21,6 +21,7 @@
     <string name="permission_needed">Notification Access Required</string>
     <string name="permission_description">SpeakThat! needs access to your notifications to read them aloud. This permission is required for the app to function.</string>
     <string name="master_switch_battery_tip">💡 Turn off when not needed to save battery</string>
+    <string name="master_switch_battery_tip_no_emoji">Turn off when not needed to save battery</string>
     <string name="open_settings">Permission Settings</string>
     <string name="service_enabled">Notification Reader: Enabled</string>
     <string name="service_disabled">Notification Reader: Disabled</string>
@@ -524,7 +525,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
     
     <!-- Multi-Language Voice Warning -->
-    <string name="specific_voice_warning">⚠️ Multi-language limitation</string>
+    <string name="specific_voice_warning">Multi-language limitation</string>
     <string name="specific_voice_warning_description">SpeakThat only supports one voice at a time. If you receive notifications in multiple languages, some may sound garbled.</string>
     <string name="specific_voice_warning_dialog_title">Multi-Language Voice Limitation</string>
     <string name="specific_voice_warning_dialog_message">SpeakThat currently only supports one voice at a time. This means:\n\n✅ What works well:\n• Notifications in the same language as your selected voice\n• Single-language usage scenarios\n• Most common notification patterns\n\n⚠️ Potential issues:\n• Notifications in different languages may sound garbled\n• Mixed-language content might be difficult to understand\n• Some characters or accents may not be pronounced correctly\n\n💡 Recommendations:\n• Choose a voice that matches your most common notification language\n• Consider using the Language &amp; Region setting instead of Specific Voice\n• Test with your actual notifications to ensure clarity\n\n🔮 Future plans:\n• Multi-language voice support is planned for future updates\n• Automatic language detection and voice switching\n• Better handling of mixed-language content\n\nFor now, the Language &amp; Region setting often works better for multi-language users as it automatically adapts to different content types.</string>

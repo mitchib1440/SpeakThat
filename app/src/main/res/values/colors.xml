@@ -10,6 +10,7 @@
     <color name="purple_50">#F3E5F5</color> <!-- Light purple background for info sections -->
     <color name="purple_base">#31174C</color> <!-- Base purple for gradient cards -->
     <color name="purple_100">#A145FE</color>
+    <color name="logo_color">#AB6ACF</color> <!-- purple_200 for light mode -->
     <color name="purple_200">#AB6ACF</color>
     <color name="purple_300">#B687D0</color>
     <color name="purple_400">#E1ABFF</color>

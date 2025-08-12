@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:ordering="sequentially">
+    
+    <!-- Flash sequence for letter 'a2' - slow pattern with bright red -->
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="250"
+        android:valueFrom="@color/logo_color"
+        android:valueTo="@android:color/holo_red_light"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="200"
+        android:valueFrom="@android:color/holo_red_light"
+        android:valueTo="@color/logo_color"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="230"
+        android:valueFrom="@color/logo_color"
+        android:valueTo="@android:color/holo_red_light"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="180"
+        android:valueFrom="@android:color/holo_red_light"
+        android:valueTo="@color/logo_color"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="240"
+        android:valueFrom="@color/logo_color"
+        android:valueTo="@android:color/holo_red_light"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="190"
+        android:valueFrom="@android:color/holo_red_light"
+        android:valueTo="@color/logo_color"
+        android:valueType="colorType" />
+    
+</set>

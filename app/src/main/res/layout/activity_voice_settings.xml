@@ -455,13 +455,28 @@
                             android:gravity="center_vertical"
                             android:layout_marginBottom="8dp">
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Select a specific voice engine. This overrides the language setting above. ⚠️ For advanced users only."
-                                android:textSize="14sp"
-                                android:textColor="@color/purple_card_text_secondary" />
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+                                
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Select a specific voice engine. This overrides the language setting above. For advanced users only."
+                                    android:textSize="14sp"
+                                    android:textColor="@color/purple_card_text_secondary" />
+                                
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/warning_24px"
+                                    android:tint="@color/white_100"
+                                    android:layout_marginStart="6dp"
+                                    android:contentDescription="Warning icon" />
+                            </LinearLayout>
 
                             <ImageView
                                 android:id="@+id/btnVoiceInfo"
@@ -527,15 +542,31 @@
                             android:popupBackground="?attr/colorSurface"
                             android:padding="12dp" />
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="💡 Recommendation: Try the Language setting first. Only use Specific Voice if you need a particular voice engine.\n\nYou can always reset your settings below if you run into trouble!"
-                            android:textSize="14sp"
-                            android:textColor="@color/purple_card_text_secondary"
+                            android:orientation="horizontal"
+                            android:gravity="top"
                             android:background="?android:attr/selectableItemBackground"
                             android:padding="12dp"
-                            android:layout_marginBottom="24dp" />
+                            android:layout_marginBottom="24dp">
+                            
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:tint="@color/white_100"
+                                android:layout_marginEnd="6dp"
+                                android:layout_marginTop="2dp"
+                                android:contentDescription="Recommendation icon" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Recommendation: Try the Language setting first. Only use Specific Voice if you need a particular voice engine.\n\nYou can always reset your settings below if you run into trouble!"
+                                android:textSize="14sp"
+                                android:textColor="@color/purple_card_text_secondary" />
+                        </LinearLayout>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -643,14 +674,29 @@
                         android:background="?android:attr/selectableItemBackground"
                         android:padding="12dp">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="💡 We recommend: Notification + Speech"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_secondary" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+                            
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:tint="@color/white_100"
+                                android:layout_marginEnd="6dp"
+                                android:contentDescription="Recommendation icon" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="We recommend: Notification + Speech"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_secondary" />
+                        </LinearLayout>
 
                         <ImageView
                             android:id="@+id/btnAudioHelp"
@@ -755,16 +801,31 @@
                     </LinearLayout>
 
                     <!-- Help Text -->
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="💡 Tip: Use the preview button to test how notifications will sound with your settings. All changes are saved automatically as you make them."
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
+                        android:orientation="horizontal"
+                        android:gravity="top"
                         android:layout_marginTop="24dp"
                         android:padding="16dp"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:drawablePadding="8dp" />
+                        android:background="?android:attr/selectableItemBackground">
+                        
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/lightbulb_2_24px"
+                            android:tint="@color/white_100"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginTop="2dp"
+                            android:contentDescription="Tip icon" />
+                        
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tip: Use the preview button to test how notifications will sound with your settings. All changes are saved automatically as you make them."
+                            android:textSize="14sp"
+                            android:textColor="@color/purple_card_text_secondary" />
+                    </LinearLayout>
 
                 </LinearLayout>
 

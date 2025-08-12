@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/logo_speakthat">
+    
+    <!-- Animation for the first path (main logo shape) -->
+    <target
+        android:name="logo_shape"
+        android:animation="@animator/logo_flash_3" />
+    
+    <!-- Animation for the second path (first letter) -->
+    <target
+        android:name="letter_s"
+        android:animation="@animator/logo_flash_5" />
+    
+    <!-- Animation for the third path (letter p) -->
+    <target
+        android:name="letter_p"
+        android:animation="@animator/logo_flash_7" />
+    
+    <!-- Animation for the fourth path (letter e) -->
+    <target
+        android:name="letter_e"
+        android:animation="@animator/logo_flash_9" />
+    
+    <!-- Animation for the fifth path (letter a) -->
+    <target
+        android:name="letter_a"
+        android:animation="@animator/logo_flash_11" />
+    
+    <!-- Animation for the sixth path (letter k) -->
+    <target
+        android:name="letter_k"
+        android:animation="@animator/logo_flash_2" />
+    
+    <!-- Animation for the seventh path (letter t) -->
+    <target
+        android:name="letter_t"
+        android:animation="@animator/logo_flash_4" />
+    
+    <!-- Animation for the eighth path (letter h) -->
+    <target
+        android:name="letter_h"
+        android:animation="@animator/logo_flash_6" />
+    
+    <!-- Animation for the ninth path (letter a_alt) -->
+    <target
+        android:name="letter_a_alt"
+        android:animation="@animator/logo_flash_8" />
+    
+    <!-- Animation for the tenth path (letter t2) -->
+    <target
+        android:name="letter_t2"
+        android:animation="@animator/logo_flash_10" />
+    
+    <!-- Animation for the eleventh path (exclamation mark) -->
+    <target
+        android:name="exclamation"
+        android:animation="@animator/logo_flash_1" />
+    
+</animated-vector>

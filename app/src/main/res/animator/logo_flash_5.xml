@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:ordering="sequentially">
+    
+    <!-- Flash sequence for letter 'a' - medium-fast pattern with bright purple -->
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="160"
+        android:valueFrom="@color/logo_color"
+        android:valueTo="@android:color/holo_purple"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="140"
+        android:valueFrom="@android:color/holo_purple"
+        android:valueTo="@color/logo_color"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="180"
+        android:valueFrom="@color/logo_color"
+        android:valueTo="@android:color/holo_purple"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="120"
+        android:valueFrom="@android:color/holo_purple"
+        android:valueTo="@color/logo_color"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="170"
+        android:valueFrom="@color/logo_color"
+        android:valueTo="@android:color/holo_purple"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="130"
+        android:valueFrom="@android:color/holo_purple"
+        android:valueTo="@color/logo_color"
+        android:valueType="colorType" />
+    
+</set>
