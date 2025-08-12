@@ -1,29 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SpeakThat!</string>
     <string name="service_name">SpeakThat 通知読み上げ</string>
     <!-- Permission Explanations for IzzyOnDroid/F-Droid -->
-    <string name="permission_request_install_packages">
-GitHubのリリースから新しいバージョンをインストールする自動更新システムに使用されます。 ユーザーが明示的に自動更新を有効にし、Google Play ストアからアプリがインストールされていない場合にのみ使用されます。
-</string>
-    <string name="permission_access_location">
-BluetoothとWiFiの条件フィルタ機能に必要です。 ユーザー定義ルールで近くのBluetoothデバイスとWiFiネットワークを検出するために使用されます。位置情報の追跡やデータ収集は行いません。
-</string>
-    <string name="permission_bluetooth_scan">
-Bluetooth条件フィルタに必要です。通知ルールで特定のBluetoothデバイスの接続をアプリが検出することを許可します。データの収集や送信は行いません。
-</string>
-    <string name="permission_nearby_wifi_devices">
-Android 13以降でWiFiネットワーク条件フィルタに必要です。ユーザー定義通知ルールでWiFiネットワークの変更を検出することをアプリに許可します。ネットワークデータは収集されません。
-</string>
-    <string name="permission_read_external_storage">
-アプリの設定と、設定ファイルのインポート/エクスポートに使用します。ユーザーは設定のバックアップと復元を許可します。個人データにはアクセスしません。
-</string>
+    <string name="permission_request_install_packages">GitHubのリリースから新しいバージョンをインストールする自動更新システムに使用されます。 ユーザーが明示的に自動更新を有効にし、Google Play ストアからアプリがインストールされていない場合にのみ使用されます。</string>
+    <string name="permission_access_location">BluetoothとWiFiの条件フィルタ機能に必要です。 ユーザー定義ルールで近くのBluetoothデバイスとWiFiネットワークを検出するために使用されます。位置情報の追跡やデータ収集は行いません。</string>
+    <string name="permission_bluetooth_scan">Bluetooth条件フィルタに必要です。通知ルールで特定のBluetoothデバイスの接続をアプリが検出することを許可します。データの収集や送信は行いません。</string>
+    <string name="permission_nearby_wifi_devices">Android 13以降でWiFiネットワーク条件フィルタに必要です。ユーザー定義通知ルールでWiFiネットワークの変更を検出することをアプリに許可します。ネットワークデータは収集されません。</string>
+    <string name="permission_read_external_storage">アプリの設定と、設定ファイルのインポート/エクスポートに使用します。ユーザーは設定のバックアップと復元を許可します。個人データにはアクセスしません。</string>
     <string name="permission_needed">通知へのアクセスが必要です</string>
-    <string name="permission_description">
-SpeakThat! は、読み上げのために通知にアクセスする必要があります。この権限はアプリが機能するために必要です。
-</string>
-    <string name="master_switch_battery_tip">💡 バッテリーを節約するために不要な場合はオフにします</string>
+    <string name="permission_description">SpeakThat! は、読み上げのために通知にアクセスする必要があります。この権限はアプリが機能するために必要です。</string>
+    <string name="master_switch_battery_tip"> バッテリーを節約するために、必要のないときはオフにします</string>
     <string name="open_settings">権限の設定を開く</string>
-    <string name="service_enabled">通知リーダー：有効</string>
+    <string name="service_enabled">通知の読み取り：有効</string>
     <string name="service_disabled">通知リーダー：無効</string>
     <string name="show_history">通知履歴を表示</string>
     <string name="settings">SpeakThat! 設定</string>
@@ -51,9 +40,7 @@ SpeakThat! は、読み上げのために通知にアクセスする必要があ
         <item>2分</item>
         <item>5分</item>
     </string-array>
-    <!--
-     Cooldown Time Values (corresponding to options above)
-    -->
+    <!-- Cooldown Time Values (corresponding to options above) -->
     <string-array name="cooldown_time_values">
         <item>1</item>
         <item>2</item>
@@ -68,8 +55,7 @@ SpeakThat! は、読み上げのために通知にアクセスする必要があ
     </string-array>
     <!-- Behavior Settings Dialogs -->
     <string name="notification_behavior_dialog_title">通知の動作オプション</string>
-    <string name="notification_behavior_dialog_message">
-通知が重複する場合にどう扱うか選択してください:
+    <string name="notification_behavior_dialog_message">通知が重複する場合にどう扱うか選択してください:
 <b>🔄 割り込み</b>
 - 現在の通知を止めて新しい通知を即座に読み上げます。緊急の通知に最適です。
 <b>📋 待機</b>
@@ -77,8 +63,7 @@ SpeakThat! は、読み上げのために通知にアクセスする必要があ
 <b>⏭️ スキップ</b>
 - 通知を読み上げている間の新しい通知は無視します。シンプルですが、重要な通知を逃す可能性があります。
 <b>🧠 スマート (推奨)</b>
-- 優先アプリは割り込み、その他は待機します。緊急性と完全性の完璧なバランスを。 スマートモードでは、他のアプリを待機させながら割り込みするべき緊急のアプリ(電話やメッセージなど)を選択できます。
-</string>
+- 優先アプリは割り込み、その他は待機します。緊急性と完全性の完璧なバランスを。 スマートモードでは、他のアプリを待機させながら割り込みするべき緊急のアプリ(電話やメッセージなど)を選択できます。</string>
     <string name="custom_app_names_title">アプリ名のカスタマイズ</string>
     <string name="custom_app_names_description">通知でのアプリ名の読み方をカスタマイズします</string>
     <string name="add_custom_app_name">カスタムアプリ名を追加</string>
@@ -86,8 +71,7 @@ SpeakThat! は、読み上げのために通知にアクセスする必要があ
     <string name="custom_name_hint">カスタム名（例：Twitter）</string>
     <string name="custom_app_names_example">例：XアプリはTwitterと読む</string>
     <string name="media_behavior_dialog_title">メディアの動作オプション</string>
-    <string name="media_behavior_dialog_message">
-音楽やビデオの再生中に通知をどう扱うか選択してください：
+    <string name="media_behavior_dialog_message">音楽やビデオの再生中に通知をどう扱うか選択してください：
 <b>🎵 無視</b>
 - メディアに重ねて読み上げます。シンプルですが煩いかもしれません。
 <b>⏸️ 停止</b>
@@ -95,50 +79,43 @@ SpeakThat! は、読み上げのために通知にアクセスする必要があ
 <b>🔉 音量を下げる (推奨)</b>
 - 一時的にメディアの音量を下げて両方を聞き取れるようにします。最も自然な振る舞いになります。
 <b>🔇 サイレント</b>
-- メディアの再生中は読み上げません。静かですが、重要な通知を逃すかもしれません。 「音量を下げる」は、カーラジオのように振る舞います。読み上げ中は音量を下げ、戻します。音楽が好きで通知も知りたい場合に最適です。
-</string>
+- メディアの再生中は読み上げません。静かですが、重要な通知を逃すかもしれません。 「音量を下げる」は、カーラジオのように振る舞います。読み上げ中は音量を下げ、戻します。音楽が好きで通知も知りたい場合に最適です。</string>
     <string name="shake_to_stop_dialog_title">振って停止</string>
-    <string name="shake_to_stop_dialog_message">
-「振って停止」は、デバイスを振ることで、即座に静かにすることができます：
+    <string name="shake_to_stop_dialog_message">「振って停止」は、デバイスを振ることで、即座に静かにすることができます：
 <b>✨ 何が便利か:</b>
 • 静かな場所で通知を止められる • 手が塞がっているときでもすぐに操作できる • 画面がオフのままでも機能する • ボタンを手探りしなくてもいい
 <b>🎯 どのように機能するか:</b>
 • デバイスをしっかり振る(サイコロのように) • 現在の通知が即座に止まる • 待機中の通知は全て消去される • 新しい通知は通常どおり機能する
 <b>⚙️ カスタマイズ:</b>
-• 好みに合わせて感度を設定 • メーターを見ながら振る強さをテストする • 弱い振動と強い振動のどちらでも機能する この機能は、会議中や運転中に通知を受ける方に特に便利です。
-</string>
+• 好みに合わせて感度を設定 • メーターを見ながら振る強さをテストする • 弱い振動と強い振動のどちらでも機能する この機能は、会議中や運転中に通知を受ける方に特に便利です。</string>
     <string name="use_recommended">おすすめを使用する</string>
     <string name="got_it">了解</string>
     <!-- Persistent/Silent Notification Filtering -->
     <string name="persistent_notification_filtering_title">🔇 永続/サイレント通知フィルタ</string>
     <string name="persistent_notification_filtering_description">永続的(進行中)またはサイレント(音/振動なし)の通知をスキップ</string>
     <string name="enable_persistent_filtering">🔇 永続/サイレント通知フィルタ</string>
-    <string name="persistent_filtering_help">
-💡 永続的な通知(音楽コントロール、ナビゲーションなど)は継続的で、サイレント通知には音や振動がありません。このオプションは、バックグラウンドサービスから通知が繰り返されるのを防ぎます。
-</string>
+    <string name="persistent_filtering_help">💡 永続的な通知とは継続的に表示される通知(音楽コントロール、ナビゲーションなど)のことで、サイレント通知とは音や振動がない通知のことです。このオプションは、バックグラウンドサービスから通知が繰り返されるのを防ぎます。</string>
     <!-- Individual Persistent Filtering Categories -->
     <string name="filter_persistent_notifications">永続的な通知をフィルターする</string>
     <string name="filter_silent_notifications">サイレント通知をフィルターする</string>
-    <string name="filter_foreground_services">フォアグラウンドサービスの通知をフィルター</string>
-    <string name="filter_low_priority">優先度の低い通知をフィルター</string>
-    <string name="filter_system_notifications">システム通知をフィルター</string>
+    <string name="filter_foreground_services">フォアグラウンドサービスの通知をフィルターする</string>
+    <string name="filter_low_priority">優先度の低い通知をフィルターする</string>
+    <string name="filter_system_notifications">システム通知をフィルターする</string>
     <!-- Category Descriptions -->
-    <string name="persistent_notifications_desc">自動解除されない継続通知（音楽コントロール、ナビゲーション）</string>
+    <string name="persistent_notifications_desc">自動解除されない継続的な通知（音楽コントロール、ナビゲーション）</string>
     <string name="silent_notifications_desc">音や振動のない通知</string>
     <string name="foreground_services_desc">バックグラウンドサービスからの通知</string>
     <string name="low_priority_desc">優先度が低い通知</string>
     <string name="system_notifications_desc">システムアプリからの通知（Android、Googleサービス）</string>
     <!-- Wave to Stop Feature -->
     <string name="wave_to_stop_dialog_title">手振りで停止機能</string>
-    <string name="wave_to_stop_dialog_message">
-「手振りで停止」は、デバイスの前で手を振ることで即座に停止します：
+    <string name="wave_to_stop_dialog_message">「手振りで停止」は、デバイスの前で手を振ることで即座に停止します：
 <b>✨ なぜ便利か:</b>
 • デバイスを振れないユーザーに最適 • デスクやスタンドに乗せたデバイスに良い • 片手で機能する • デバイスが物理的に動く必要がない • 「振って停止」の替わりとして体の不自由な方にも
 <b>🎯 どのように機能するか:</b>
 • デバイスの前で手を降る(ジェスチャーのように) • 近接センサーを使って手の動きを検知 • 現在の通知が即座に停止 • 待機中の通知は全て消去 • 新しい通知は通常どおり機能します
 <b>⚙️ カスタマイズ:</b>
-• 好みに合わせて感度を調整 • メーターを見て手振りの検知をテストする • 異なる手の大きさや距離でも機能します この機能は、体の不自由な方や、デスクで使う方や、物理的な動きよりもジェスチャーを好む方に便利です。
-</string>
+• 好みに合わせて感度を調整 • メーターを見て手振りの検知をテストする • 異なる手の大きさや距離でも機能します この機能は、体の不自由な方や、デスクで使う方や、物理的な動きよりもジェスチャーを好む方に便利です。</string>
     <!-- About Page -->
     <string name="about">このアプリについて</string>
     <string name="about_description_title">SpeakThat!について</string>
@@ -148,50 +125,26 @@ SpeakThat! は、読み上げのために通知にアクセスする必要があ
     <string name="version_format">バージョン %s</string>
     <string name="version_format_with_variant" formatted="false">バージョン %1$s (%2$s)</string>
     <!-- Store Update Dialog -->
-    <string name="store_update_dialog_title">App Store経由で更新</string>
-    <string name="store_update_dialog_message">
-このバージョンの SpeakThat! は、アプリストア(F-Droid、Google Playストアなど)からアップデートを受け取ります。
-</string>
-    <string name="store_update_dialog_info">
-• アップデートはアプリストアから自動的に実行されます\n• アップデートが利用できるときは通知を受け取ります\n• 手動ダウンロードやインストールは必要ありません
-</string>
+    <string name="store_update_dialog_title">アプリストア経由で更新</string>
+    <string name="store_update_dialog_message">このバージョンの SpeakThat! は、アプリストア(F-Droid、Google Playストアなど)からアップデートを受け取ります。</string>
+    <string name="store_update_dialog_info">• アップデートはアプリストアから自動的に実行されます\n• アップデートが利用できるときは通知を受け取ります\n• 手動ダウンロードやインストールは必要ありません</string>
     <string name="store_update_dialog_help_title">バージョンの自動アップデートが必要ですか？</string>
-    <string name="store_update_dialog_help_message">
-GitHubから直接自動アップデートを行いたい場合は、GitHubのバージョンをダウンロードしてください。このバージョンは同じですが、自動アップデート機能が含まれています。
-</string>
+    <string name="store_update_dialog_help_message">GitHubから直接自動アップデートを行いたい場合は、GitHubのバージョンをダウンロードしてください。このバージョンは同じですが、自動アップデート機能が含まれています。</string>
     <string name="store_update_dialog_visit_github">GitHubを開く</string>
     <string name="store_update_dialog_got_it">了解</string>
-    <string name="app_description">
-SpeakThat!は、テキスト読み上げを使用して通知を音声で知らせるオープンソースのAndroid通知リーダーです。マルチタスク中に操作、アクセシビリティ、通知を受けるのに最適です。
-</string>
-    <string name="app_features">
-リアルタイム通知読み取り、カスタマイズ可能な音声設定、スマート通知フィルタリング、アプリごとの制御、メディア対応動作、通知履歴追跡、振って停止と手振りで停止、読み上げフォーマットのカスタマイズ、ダークモードとライトモードのサポート、高度なロジックとスケジュールによる条件ルール、広告なし、オフラインで機能。
-</string>
-    <string name="developer_info">
-イギリスのソロ開発者であるMitchiが❤️を込めて開発しました。12年以上にわたって毎日通知リーダーをテストし使用してきた経験を活かしています。SpeakThat!は、DYNA Logixによって開発されたTouchless Notificationsに触発され、カスタマイズ可能な通知リーダーの遺産を継承することを目指しています。このプロジェクトはAI支援プログラミングによって加速されました。
-</string>
-    <string name="license_info">
-このプロジェクトはオープンソースで、GPL-3.0ライセンスの下で利用可能です。GitHubでライセンスの全文とソースコードを確認できます。貢献とフィードバックを歓迎します！
-</string>
+    <string name="app_description">SpeakThat!は、テキスト読み上げを使用して通知を音声で知らせるオープンソースのAndroid通知リーダーです。マルチタスク中に操作、アクセシビリティ、通知を受けるのに最適です。</string>
+    <string name="app_features">リアルタイム通知読み取り、カスタマイズ可能な音声設定、スマート通知フィルタリング、アプリごとの制御、メディア対応動作、通知履歴追跡、振って停止と手振りで停止、読み上げフォーマットのカスタマイズ、ダークモードとライトモードのサポート、高度なロジックとスケジュールによる条件ルール、広告なし、オフラインで機能。</string>
+    <string name="developer_info">イギリスのソロ開発者であるMitchiが❤️を込めて開発しました。12年以上にわたって毎日通知リーダーをテストし使用してきた経験を活かしています。SpeakThat!は、DYNA Logixによって開発されたTouchless Notificationsに触発され、カスタマイズ可能な通知リーダーの遺産を継承することを目指しています。このプロジェクトはAI支援プログラミングによって加速されました。</string>
+    <string name="license_info">このプロジェクトはオープンソースで、GPL-3.0ライセンスの下で利用可能です。GitHubでライセンスの全文とソースコードを確認できます。貢献とフィードバックを歓迎します！</string>
     <string name="read_about_app">アプリについてを読む</string>
     <string name="stop_reading">読むのを停止する</string>
-    <!--
-     TTS-specific strings (emoji-free and speech-optimized)
-    -->
+    <!-- TTS-specific strings (emoji-free and speech-optimized) -->
     <string name="tts_app_intro">SpeakThat!へようこそ</string>
-    <string name="tts_description">
-SpeakThatは、テキスト読み上げを使用して通知を音声で知らせるオープンソースのAndroid通知リーダーです。ハンズフリー操作や、体の不自由な方が情報を得るのに最適です。
-</string>
+    <string name="tts_description">SpeakThatは、テキスト読み上げを使用して通知を音声で知らせるオープンソースのAndroid通知リーダーです。ハンズフリー操作や、体の不自由な方が情報を得るのに最適です。</string>
     <string name="tts_features_intro">主な機能:</string>
-    <string name="tts_features">
-リアルタイム通知読み取り、カスタマイズ可能な音声設定、スマート通知フィルタリング、アプリごとの制御、メディア対応動作、通知履歴追跡、振って停止と手振りで停止、読み上げフォーマットのカスタマイズ、ダークモードとライトモードのサポート、高度なロジックとスケジュールによる条件ルール、広告なし、オフラインで機能。
-</string>
-    <string name="tts_developer">
-イギリスのソロ開発者であるMitchiが愛を込めて開発しました。12年以上にわたって毎日通知リーダーをテストし使用してきた経験を活かしています。SpeakThat!は、DYNA Logixによって開発されたTouchless Notificationsに触発され、カスタマイズ可能な通知リーダーの遺産を継承することを目指しています。このプロジェクトはAI支援プログラミングによって加速されました。
-</string>
-    <string name="tts_license">
-このプロジェクトはオープンソースで、GPL-3.0ライセンスの下で利用可能です。GitHubでライセンスの全文とソースコードを確認できます。貢献とフィードバックを歓迎します！
-</string>
+    <string name="tts_features">リアルタイム通知読み取り、カスタマイズ可能な音声設定、スマート通知フィルタリング、アプリごとの制御、メディア対応動作、通知履歴追跡、振って停止と手振りで停止、読み上げフォーマットのカスタマイズ、ダークモードとライトモードのサポート、高度なロジックとスケジュールによる条件ルール、広告なし、オフラインで機能。</string>
+    <string name="tts_developer">イギリスのソロ開発者であるMitchiが愛を込めて開発しました。12年以上にわたって毎日通知リーダーをテストし使用してきた経験を活かしています。SpeakThat!は、DYNA Logixによって開発されたTouchless Notificationsに触発され、カスタマイズ可能な通知リーダーの遺産を継承することを目指しています。このプロジェクトはAI支援プログラミングによって加速されました。</string>
+    <string name="tts_license">このプロジェクトはオープンソースで、GPL-3.0ライセンスの下で利用可能です。GitHubでライセンスの全文とソースコードを確認できます。貢献とフィードバックを歓迎します！</string>
     <string name="tts_thank_you">SpeakThat!をご利用いただき、ありがとうございます</string>
     <!-- Update System -->
     <string name="check_for_updates">アップデートの確認</string>
@@ -231,9 +184,7 @@ SpeakThatは、テキスト読み上げを使用して通知を音声で知ら�
     <string name="update_monthly">毎月</string>
     <string name="update_never">しない (手動のみ)</string>
     <!-- TTS Template Strings (for improved localization) -->
-    <!--
-     These are complete sentence templates with placeholders for proper localization
-    -->
+    <!-- These are complete sentence templates with placeholders for proper localization -->
     <string name="tts_template_notified_you">{app}があなたに通知しました: {content}</string>
     <string name="tts_template_reported">{app}が報告しました: {content}</string>
     <string name="tts_template_saying">{app}からの通知、{content}と言っています</string>
@@ -249,49 +200,25 @@ SpeakThatは、テキスト読み上げを使用して通知を音声で知ら�
     <string name="tts_template_notification_from">{app}からの通知: {content}</string>
     <string name="tts_template_says">{app}が言います: {content}</string>
     <string name="tts_template_private_notification">{app}からのプライベート通知を受信しました</string>
-    <!--
-     TTS Context Templates - Complete sentences for different app contexts
-    -->
+    <!-- TTS Context Templates - Complete sentences for different app contexts -->
     <!-- About Page TTS -->
     <string name="tts_about_intro">SpeakThatへようこそ！</string>
-    <string name="tts_about_description">
-SpeakThatは、テキスト読み上げを使用して通知を音声でアナウンスするオープンソースのAndroid通知リーダーです。ハンズフリー操作、アクセシビリティ、マルチタスク中の情報把握に最適です。
-</string>
+    <string name="tts_about_description">SpeakThatは、テキスト読み上げを使用して通知を音声でアナウンスするオープンソースのAndroid通知リーダーです。ハンズフリー操作、アクセシビリティ、マルチタスク中の情報把握に最適です。</string>
     <string name="tts_about_features_intro">主な機能には以下が含まれます:</string>
-    <string name="tts_about_features">
-リアルタイム通知読み取り、カスタマイズ可能な音声設定、スマート通知フィルタリング、アプリ固有の制御、メディア対応動作、通知履歴追跡、振って停止と波で停止、カスタム音声フォーマット、ダークモードとライトモードのサポート、高度なロジックとスケジュールの条件付きルール、完全なオフライン機能。
-</string>
-    <string name="tts_about_developer">
-イギリスのソロ開発者であるミッチが愛を込めて開発しました。12年以上にわたって毎日通知リーダーをテストし使用してきた経験があります。SpeakThatは、もともとDYNA Logixによって開発されたTouchless Notificationsに触発され、カスタマイズ可能な通知リーダーの遺産を継承することを目指しています。このプロジェクトは人工知能支援プログラミングによって加速されました。
-</string>
-    <string name="tts_about_license">
-このプロジェクトはオープンソースで、GPL-3.0ライセンスの下で利用可能です。GitHubでライセンスの全文とソースコードを確認できます。貢献とフィードバックを歓迎します！
-</string>
+    <string name="tts_about_features">リアルタイム通知読み取り、カスタマイズ可能な音声設定、スマート通知フィルタリング、アプリ固有の制御、メディア対応動作、通知履歴追跡、振って停止と波で停止、カスタム音声フォーマット、ダークモードとライトモードのサポート、高度なロジックとスケジュールの条件付きルール、完全なオフライン機能。</string>
+    <string name="tts_about_developer">イギリスのソロ開発者であるミッチが愛を込めて開発しました。12年以上にわたって毎日通知リーダーをテストし使用してきた経験があります。SpeakThatは、もともとDYNA Logixによって開発されたTouchless Notificationsに触発され、カスタマイズ可能な通知リーダーの遺産を継承することを目指しています。このプロジェクトは人工知能支援プログラミングによって加速されました。</string>
+    <string name="tts_about_license">このプロジェクトはオープンソースで、GPL-3.0ライセンスの下で利用可能です。GitHubでライセンスの全文とソースコードを確認できます。貢献とフィードバックを歓迎します！</string>
     <string name="tts_about_thank_you">SpeakThatをご利用いただき、ありがとうございます！</string>
     <!-- Voice Settings Test -->
     <string name="tts_voice_test">これがこの音声設定での通知の聞こえ方です。</string>
     <!-- Onboarding TTS -->
-    <string name="tts_onboarding_welcome">
-SpeakThatへようこそ！画面を見つめずに接続を保ちましょう。お使いの電話が通知を音読するので、重要なことに集中できます。
-</string>
-    <string name="tts_onboarding_permission">
-SpeakThatは通知を音読するための許可が必要です。すべてはお使いのデバイスに保存され、何を読むかはあなたが制御します。
-</string>
-    <string name="tts_onboarding_privacy">
-あなたのプライバシーは重要です。何が音読されるかを正確に制御できます。電話を振ると、どのアナウンスも即座に停止できます。すべてはお使いのデバイスに保存されます。
-</string>
-    <string name="tts_onboarding_filters">
-基本的なプライバシーフィルターを設定して始めましょう。SpeakThatは何を読むか何を読まないかを選択できる強力なフィルタリングシステムを備えています。
-</string>
-    <string name="tts_onboarding_apps">
-通知を読んでほしくないアプリの名前を入力してください。一般的な例には、銀行アプリ、医療アプリ、デートアプリが含まれます。
-</string>
-    <string name="tts_onboarding_words">
-通知に含まれる読んでほしくない単語やフレーズを入力してください。一般的な例には、パスワード、PIN、クレジットカード、医療用語が含まれます。
-</string>
-    <string name="tts_onboarding_complete">
-SpeakThatは目を自由に保ちながら接続を維持するお手伝いの準備ができています！アプリ設定でいつでもフィルターを追加できます。
-</string>
+    <string name="tts_onboarding_welcome">SpeakThatへようこそ！画面を見つめずに接続を保ちましょう。お使いの電話が通知を音読するので、重要なことに集中できます。</string>
+    <string name="tts_onboarding_permission">SpeakThatは通知を音読するための許可が必要です。すべてはお使いのデバイスに保存され、何を読むかはあなたが制御します。</string>
+    <string name="tts_onboarding_privacy">あなたのプライバシーは重要です。何が音読されるかを正確に制御できます。電話を振ると、どのアナウンスも即座に停止できます。すべてはお使いのデバイスに保存されます。</string>
+    <string name="tts_onboarding_filters">基本的なプライバシーフィルターを設定して始めましょう。SpeakThatは何を読むか何を読まないかを選択できる強力なフィルタリングシステムを備えています。</string>
+    <string name="tts_onboarding_apps">通知を読んでほしくないアプリの名前を入力してください。一般的な例には、銀行アプリ、医療アプリ、デートアプリが含まれます。</string>
+    <string name="tts_onboarding_words">通知に含まれる読んでほしくない単語やフレーズを入力してください。一般的な例には、パスワード、PIN、クレジットカード、医療用語が含まれます。</string>
+    <string name="tts_onboarding_complete">SpeakThatは目を自由に保ちながら接続を維持するお手伝いの準備ができています！アプリ設定でいつでもフィルターを追加できます。</string>
     <!-- Behavior Settings Speech Format Templates -->
     <string name="tts_behavior_default">デフォルトのフォーマット</string>
     <string name="tts_behavior_minimal">最小のフォーマット</string>
@@ -314,15 +241,11 @@ SpeakThatは目を自由に保ちながら接続を維持するお手伝いの�
     <string name="tts_format_custom">カスタム</string>
     <!-- Rule Builder Templates -->
     <string name="template_selection_title">テンプレートを選択</string>
-    <string name="template_selection_description">
-素早く開始するために事前に設定されたルールテンプレートを選択することもできますが、ゼロからカスタムルールを作成することもできます。
-</string>
+    <string name="template_selection_description">素早く開始するために事前に設定されたルールテンプレートを選択することもできますが、ゼロからカスタムルールを作成することもできます。</string>
     <string name="create_custom_rule">カスタムルールを作成</string>
     <!-- Template Names -->
     <string name="template_headphones_only_name">Bluetoothヘッドフォン</string>
-    <string name="template_headphones_only_description">
-Bluetoothヘッドフォンを選択してください。そのデバイスに接続しているとき、通知は読み上げません。
-</string>
+    <string name="template_headphones_only_description">Bluetoothヘッドフォンを選択してください。そのデバイスに接続しているとき、通知は読み上げません。</string>
     <string name="template_time_schedule_name">サイレントタイム</string>
     <string name="template_time_schedule_description">SpeakThatをサイレントにしたい開始時刻と終了時刻を選択してください</string>
     <string name="template_screen_off_name">画面オフ時のみ</string>
@@ -356,21 +279,21 @@ Bluetoothヘッドフォンを選択してください。そのデバイスに�
     <string name="rule_action_multiple">複数のアクションを実行</string>
     <string name="rule_exception_bluetooth_connected">Bluetoothデバイスが接続されている</string>
     <string name="rule_exception_bluetooth_disconnected">Bluetoothデバイスが切断されている</string>
-    <string name="rule_exception_screen_on">screen is on</string>
-    <string name="rule_exception_screen_off">screen is off</string>
-    <string name="rule_exception_time_between">time is between %1$s and %2$s</string>
-    <string name="rule_exception_wifi_connected">connected to %1$s</string>
-    <string name="rule_exception_wifi_disconnected">not connected to %1$s</string>
-    <string name="rule_exception_multiple">multiple exceptions apply</string>
+    <string name="rule_exception_screen_on">画面がオン</string>
+    <string name="rule_exception_screen_off">画面がオフ</string>
+    <string name="rule_exception_time_between">時間が%1$sから%2$sまでのとき</string>
+    <string name="rule_exception_wifi_connected">%1$s に接続</string>
+    <string name="rule_exception_wifi_disconnected">%1$s に接続していない</string>
+    <string name="rule_exception_multiple">複数の例外が適用されます</string>
     <!-- Logic Connectors -->
-    <string name="rule_logic_and">and</string>
-    <string name="rule_logic_or">or</string>
-    <string name="rule_logic_xor">either</string>
-    <string name="rule_logic_separator">, </string>
-    <string name="rule_logic_final_separator">, and </string>
+    <string name="rule_logic_and">かつ</string>
+    <string name="rule_logic_or">または</string>
+    <string name="rule_logic_xor">どちらか</string>
+    <string name="rule_logic_separator">、</string>
+    <string name="rule_logic_final_separator">、および </string>
     <!-- Critical Hardcoded Strings - Activity Titles -->
-    <string name="title_behavior_settings">Behavior Settings</string>
-    <string name="title_general_settings">General Settings</string>
+    <string name="title_behavior_settings">動作設定</string>
+    <string name="title_general_settings">全般設定</string>
     <string name="title_voice_settings">音声設定</string>
     <string name="title_filter_settings">フィルタ設定</string>
     <string name="title_test_settings">設定のテスト</string>
@@ -422,82 +345,58 @@ Bluetoothヘッドフォンを選択してください。そのデバイスに�
     <string name="dialog_title_remove_exception">例外を削除</string>
     <string name="dialog_title_coming_soon">準備中</string>
     <string name="dialog_title_select_app">アプリを選択</string>
-    <string name="dialog_title_invalid_app_package">Invalid App Package</string>
-    <string name="dialog_title_edit_rule">Edit Rule</string>
-    <string name="dialog_title_create_rule">Create Rule</string>
+    <string name="dialog_title_invalid_app_package">無効なアプリパッケージ</string>
+    <string name="dialog_title_edit_rule">ルールを編集</string>
+    <string name="dialog_title_create_rule">ルールを作成</string>
     <!-- Critical Hardcoded Strings - Dialog Messages -->
-    <string name="dialog_message_theme_changed">
-The theme has been changed. For the best experience, you may want to restart the app manually.
-</string>
-    <string name="dialog_message_export_successful">Full configuration exported to:\n%s</string>
-    <string name="dialog_message_export_successful_text">
-Configuration exported as text (file creation failed)
-</string>
-    <string name="dialog_message_export_failed">Failed to export configuration: %s</string>
-    <string name="dialog_message_import_full_config">
-This will replace your current settings with the imported configuration.\n\nDo you want to continue?
-</string>
+    <string name="dialog_message_theme_changed">The theme has been changed. For the best experience, you may want to restart the app manually.</string>
+    <string name="dialog_message_export_successful">全ての設定をエクスポートしました:\n%s</string>
+    <string name="dialog_message_export_successful_text">Configuration exported as text (file creation failed)</string>
+    <string name="dialog_message_export_failed">設定のエクスポートに失敗しました: %s</string>
+    <string name="dialog_message_import_full_config">This will replace your current settings with the imported configuration.\n\nDo you want to continue?</string>
     <string name="dialog_message_import_successful">%s</string>
     <string name="dialog_message_import_failed">%s</string>
-    <string name="dialog_message_import_failed_read">Failed to read file: %s</string>
-    <string name="dialog_message_clear_all_data">
-This will reset all settings to defaults and clear notification history.\n\nThis action cannot be undone.\n\nDo you want to continue?
-</string>
-    <string name="dialog_message_data_cleared">
-All settings have been reset to defaults and notification history has been cleared.
-</string>
-    <string name="dialog_message_clear_failed">Failed to clear data: %s</string>
-    <string name="dialog_message_advanced_voice_options">
-These settings are for users who need granular control over the voice and accent.\n\n99% of users should only change the main Language option.\n\nIf you run into trouble, you can always reset to defaults.
-</string>
-    <string name="dialog_message_bluetooth_not_available">Bluetooth is not available on this device.</string>
-    <string name="dialog_message_bluetooth_disabled">Please enable Bluetooth to select devices.</string>
-    <string name="dialog_message_no_devices_found">
-No paired Bluetooth devices found. Please pair some devices first.
-</string>
-    <string name="dialog_message_wifi_disabled">Please enable WiFi to select networks.</string>
-    <string name="dialog_message_wifi_networks">
-Unable to automatically detect WiFi networks. Please manually enter WiFi network names (SSIDs) one per line.\n\nNote: You can also try enabling location services and granting location permissions to automatically detect networks.
-</string>
-    <string name="dialog_message_no_networks_found">
-No WiFi networks found. Please connect to some networks first or manually enter network names.
-</string>
-    <string name="dialog_message_enter_wifi_network">Enter the name of your WiFi network:</string>
-    <string name="dialog_message_set_quiet_hours">
-Choose the time range and days when you don\'t want notifications read:
-</string>
-    <string name="dialog_message_rule_created">Your rule \'%s\' has been created successfully.</string>
-    <string name="dialog_message_experimental_feature">
-Rules are experimental. If you experience issues, you can disable them in settings. Your existing filters and privacy settings will always be respected.
-</string>
-    <string name="dialog_message_delete_rule">Are you sure you want to delete the rule \'%s\'?</string>
-    <string name="dialog_message_invalid_rule_name">Please enter a name for this rule.</string>
-    <string name="dialog_message_invalid_rule">Please fix the following issues:\n\n%s</string>
-    <string name="dialog_message_save_rule_failed">Failed to %s rule. Please try again.</string>
-    <string name="dialog_message_remove_trigger">Are you sure you want to remove this trigger?</string>
-    <string name="dialog_message_remove_action">Are you sure you want to remove this action?</string>
-    <string name="dialog_message_remove_exception">Are you sure you want to remove this exception?</string>
-    <string name="dialog_message_coming_soon">
-%s configuration will be implemented in the next phase.
-</string>
-    <string name="dialog_message_select_app">Enter the app package name (e.g., com.whatsapp):</string>
-    <string name="dialog_message_invalid_app_package">Please enter an app package name.</string>
-    <string name="dialog_message_remove_device">Remove %s from the list?</string>
-    <string name="dialog_message_select_bluetooth_device">Choose the Bluetooth device for this rule:</string>
-    <string name="dialog_message_select_wifi_network">Choose the WiFi network for this rule:</string>
+    <string name="dialog_message_import_failed_read">ファイルの読み込みに失敗しました: %s</string>
+    <string name="dialog_message_clear_all_data">This will reset all settings to defaults and clear notification history.\n\nThis action cannot be undone.\n\nDo you want to continue?</string>
+    <string name="dialog_message_data_cleared">All settings have been reset to defaults and notification history has been cleared.</string>
+    <string name="dialog_message_clear_failed">データの消去に失敗しました: %s</string>
+    <string name="dialog_message_advanced_voice_options">These settings are for users who need granular control over the voice and accent.\n\n99% of users should only change the main Language option.\n\nIf you run into trouble, you can always reset to defaults.</string>
+    <string name="dialog_message_bluetooth_not_available">Bluetoothはこのデバイスでは利用できません。</string>
+    <string name="dialog_message_bluetooth_disabled">デバイスを選択するにはBluetoothを有効にしてください。</string>
+    <string name="dialog_message_no_devices_found">No paired Bluetooth devices found. Please pair some devices first.</string>
+    <string name="dialog_message_wifi_disabled">ネットワークを選択するにはWiFiを有効にしてください。</string>
+    <string name="dialog_message_wifi_networks">Unable to automatically detect WiFi networks. Please manually enter WiFi network names (SSIDs) one per line.\n\nNote: You can also try enabling location services and granting location permissions to automatically detect networks.</string>
+    <string name="dialog_message_no_networks_found">No WiFi networks found. Please connect to some networks first or manually enter network names.</string>
+    <string name="dialog_message_enter_wifi_network">WiFiネットワークの名前を入力してください:</string>
+    <string name="dialog_message_set_quiet_hours">Choose the time range and days when you don\'t want notifications read:</string>
+    <string name="dialog_message_rule_created">ルール \'%s\' が正常に作成されました。</string>
+    <string name="dialog_message_experimental_feature">Rules are experimental. If you experience issues, you can disable them in settings. Your existing filters and privacy settings will always be respected.</string>
+    <string name="dialog_message_delete_rule">ルール \'%s\' を削除してもよろしいですか？</string>
+    <string name="dialog_message_invalid_rule_name">ルールの名前を入力してください。</string>
+    <string name="dialog_message_invalid_rule">以下の問題を修正してください:\n\n%s</string>
+    <string name="dialog_message_save_rule_failed">%s ルールに失敗しました。もう一度やり直してください。</string>
+    <string name="dialog_message_remove_trigger">このトリガーを削除してもよろしいですか？</string>
+    <string name="dialog_message_remove_action">このアクションを削除してもよろしいですか？</string>
+    <string name="dialog_message_remove_exception">この例外を削除してもよろしいですか？</string>
+    <string name="dialog_message_coming_soon">%s configuration will be implemented in the next phase.</string>
+    <string name="dialog_message_select_app">アプリパッケージ名を入力してください(例︰ com.whatsapp)︰</string>
+    <string name="dialog_message_invalid_app_package">アプリパッケージ名を入力してください。</string>
+    <string name="dialog_message_remove_device">%s をリストから削除しますか？</string>
+    <string name="dialog_message_select_bluetooth_device">このルールのBluetoothデバイスを選択してください：</string>
+    <string name="dialog_message_select_wifi_network">このルールのWiFiネットワークを選択してください：</string>
     <!-- Critical Hardcoded Strings - Button Labels -->
-    <string name="button_restart_now">Restart Now</string>
-    <string name="button_later">Later</string>
-    <string name="button_select_file">Select File</string>
-    <string name="button_clear_all_data">Clear All Data</string>
-    <string name="button_continue">Continue</string>
-    <string name="button_got_it">Got it!</string>
-    <string name="button_use_recommended">Use Recommended</string>
-    <string name="button_nevermind_keep_timeout">Keep the timeout enabled (Recommended)</string>
-    <string name="button_disable_timeout">Disable the timeout</string>
-    <string name="button_create_rule">Create Rule</string>
-    <string name="button_manual_input">Manual Input</string>
-    <string name="button_i_understand">I Understand</string>
+    <string name="button_restart_now">今すぐ再起動</string>
+    <string name="button_later">あとで</string>
+    <string name="button_select_file">ファイルを選択</string>
+    <string name="button_clear_all_data">全てのデータを消去</string>
+    <string name="button_continue">続ける</string>
+    <string name="button_got_it">了解！</string>
+    <string name="button_use_recommended">おすすめを使用する</string>
+    <string name="button_nevermind_keep_timeout">タイムアウトを有効のままにする (推奨)</string>
+    <string name="button_disable_timeout">タイムアウトを無効にする</string>
+    <string name="button_create_rule">ルールを作成</string>
+    <string name="button_manual_input">手動入力</string>
+    <string name="button_i_understand">理解しました</string>
     <string name="button_delete">削除</string>
     <string name="button_remove">削除</string>
     <!-- Critical Hardcoded Strings - App Categories -->
