@@ -5,8 +5,9 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
-    app:cardBackgroundColor="?attr/colorSurface"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:strokeWidth="0dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground">
@@ -16,15 +17,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:background="@drawable/gradient_card_subtle_right">
 
         <!-- Icon -->
         <TextView
             android:id="@+id/textIcon"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/circle_background"
-            android:backgroundTint="@color/purple_100"
             android:gravity="center"
             android:textSize="24sp"
             android:layout_marginEnd="16dp" />
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary"
+                android:textColor="@color/purple_card_text_primary"
                 android:layout_marginBottom="4dp" />
 
             <TextView
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:textColor="@color/text_secondary"
+                android:textColor="@color/purple_card_text_secondary"
                 android:lineSpacingExtra="2dp" />
 
         </LinearLayout>
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:text="→"
             android:textSize="18sp"
-            android:textColor="@color/text_tertiary"
+            android:textColor="@color/white_100"
             android:layout_marginStart="8dp" />
 
     </LinearLayout>

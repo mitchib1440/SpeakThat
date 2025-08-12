@@ -165,6 +165,17 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "honour_do_not_disturb",
+                title = "Honour Do Not Disturb",
+                description = "Respect device Do Not Disturb settings",
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("honour", "do not disturb", "dnd", "respect", "device", "silent", "quiet", "mode", "disturb", "not disturb"),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "honour_audio_mode",
                 title = "Honour Audio Mode",
                 description = "Respect device audio mode settings",
@@ -174,6 +185,39 @@ object SettingsDatabase {
                 settingType = SettingType.SWITCH,
                 searchKeywords = listOf("honour", "audio", "mode", "respect", "device", "ringer", "silent", "vibrate", "sound", "mode", "audio mode", "ringer mode", "silent mode", "vibrate mode"),
                 navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "honour_phone_calls",
+                title = "Honour Phone Calls",
+                description = "Prevent notifications during phone calls",
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("honour", "phone", "calls", "respect", "call", "telephone", "conversation", "interrupt", "during", "call", "phone call", "telephony", "call state"),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "persistent_notification",
+                title = "Persistent Notification",
+                description = "Show a persistent notification when SpeakThat is active",
+                category = "general",
+                categoryTitle = "General Settings",
+                categoryIcon = "⚙️",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("persistent", "notification", "active", "running", "status", "indicator", "show", "display", "ongoing", "service", "foreground"),
+                navigationAction = { context.startActivity(Intent(context, GeneralSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "notification_while_reading",
+                title = "Notification While Reading",
+                description = "Show a notification when TTS is actively reading",
+                category = "general",
+                categoryTitle = "General Settings",
+                categoryIcon = "⚙️",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("notification", "reading", "tts", "speaking", "active", "shut up", "stop", "cancel", "while", "during", "speech", "text to speech"),
+                navigationAction = { context.startActivity(Intent(context, GeneralSettingsActivity::class.java)) }
             ),
 
             // Voice Settings
@@ -291,13 +335,13 @@ object SettingsDatabase {
             ),
             SettingsItem(
                 id = "media_filtering",
-                title = "Media Notification Filtering",
-                description = "Filter out media playback notifications",
+                title = "Smart Media Notification Filter",
+                description = "Filter out actual media control notifications",
                 category = "filter",
                 categoryTitle = "Filter Settings",
                 categoryIcon = "🔍",
                 settingType = SettingType.SWITCH,
-                searchKeywords = listOf("media", "filter", "music", "video", "playback", "youtube", "spotify"),
+                searchKeywords = listOf("media", "filter", "music", "video", "playback", "youtube", "spotify", "smart"),
                 navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
             ),
             SettingsItem(

@@ -47,32 +47,62 @@
                 android:textSize="16sp" />
 
             <!-- TTS Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonTTS"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="16dp"
-                android:text="@string/read_about_app"
-                android:textColor="@color/white_100"
-                app:icon="@drawable/ic_play_arrow_24"
-                app:iconGravity="textStart"
-                app:iconTint="@color/white_100"
-                style="@style/Widget.Material3.Button" />
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/gradient_card_subtle_right"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonTTS"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:text="@string/read_about_app"
+                        android:textColor="@color/white_100"
+                        app:icon="@drawable/ic_play_arrow_24"
+                        app:iconGravity="textStart"
+                        app:iconTint="@color/white_100"/>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:background="@drawable/gradient_card_subtle_right"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonCheckUpdates"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:text="@string/check_for_updates"
+                        android:textColor="@color/white_100"
+                        app:icon="@drawable/ic_refresh_24"
+                        app:iconGravity="textStart"
+                        app:iconTint="@color/white_100" />
+
+                </FrameLayout>
+            </LinearLayout>
 
             <!-- Update Check Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonCheckUpdates"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="32dp"
-                android:text="@string/check_for_updates"
-                android:textColor="@color/white_100"
-                app:icon="@drawable/ic_refresh_24"
-                app:iconGravity="textStart"
-                app:iconTint="@color/white_100"
-                style="@style/Widget.Material3.Button.OutlinedButton" />
 
             <!-- Description Card -->
             <com.google.android.material.card.MaterialCardView
@@ -81,15 +111,15 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="20dp"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -97,7 +127,7 @@
                         android:text="@string/about_description_title"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="@color/text_primary"
+                        android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -105,7 +135,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/purple_card_text_secondary"
                         android:lineSpacingExtra="4dp" />
 
                 </LinearLayout>
@@ -119,15 +149,15 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="20dp"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -135,7 +165,7 @@
                         android:text="@string/about_features_title"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="@color/text_primary"
+                        android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -143,7 +173,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/purple_card_text_secondary"
                         android:lineSpacingExtra="4dp" />
 
                 </LinearLayout>
@@ -157,15 +187,15 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="20dp"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -173,7 +203,7 @@
                         android:text="@string/about_developer_title"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="@color/text_primary"
+                        android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -181,7 +211,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/purple_card_text_secondary"
                         android:lineSpacingExtra="4dp" />
 
                 </LinearLayout>
@@ -195,15 +225,15 @@
                 android:layout_marginBottom="24dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="20dp"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -211,7 +241,7 @@
                         android:text="@string/about_license_title"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="@color/text_primary"
+                        android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -219,7 +249,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/purple_card_text_secondary"
                         android:lineSpacingExtra="4dp" />
 
                 </LinearLayout>

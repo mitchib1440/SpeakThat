@@ -15,7 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.micoyc.speakthat.databinding.ActivityGeneralSettingsBinding;
 import org.json.JSONException;
 import java.io.BufferedReader;
@@ -48,6 +48,9 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         
         binding = ActivityGeneralSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        
+        // Set the activity title
+        getSupportActionBar().setTitle(getString(R.string.title_general_settings));
         
         // Initialize activity result launchers
         initializeActivityResultLaunchers();
@@ -110,7 +113,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
 
     private void setupThemeSettings() {
         // Dark Mode Toggle
-        SwitchMaterial darkModeSwitch = binding.switchDarkMode;
+        MaterialSwitch darkModeSwitch = binding.switchDarkMode;
         boolean isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
         darkModeSwitch.setChecked(isDarkMode);
 
@@ -140,8 +143,50 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     }
 
     private void setupPerformanceSettings() {
+        // Persistent Notification Toggle
+        MaterialSwitch persistentNotificationSwitch = binding.switchPersistentNotification;
+        boolean persistentNotificationEnabled = sharedPreferences.getBoolean("persistent_notification", false);
+        persistentNotificationSwitch.setChecked(persistentNotificationEnabled);
+
+        persistentNotificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // User is enabling persistent notification - check permission first
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                    if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                        // Request permission
+                        requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1001);
+                        // Don't save the setting yet - wait for permission result
+                        buttonView.setChecked(false);
+                        return;
+                    }
+                }
+            }
+            sharedPreferences.edit().putBoolean("persistent_notification", isChecked).apply();
+        });
+
+        // Notification While Reading Toggle
+        MaterialSwitch notificationWhileReadingSwitch = binding.switchNotificationWhileReading;
+        boolean notificationWhileReadingEnabled = sharedPreferences.getBoolean("notification_while_reading", false);
+        notificationWhileReadingSwitch.setChecked(notificationWhileReadingEnabled);
+
+        notificationWhileReadingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // User is enabling reading notification - check permission first
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                    if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                        // Request permission
+                        requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1002);
+                        // Don't save the setting yet - wait for permission result
+                        buttonView.setChecked(false);
+                        return;
+                    }
+                }
+            }
+            sharedPreferences.edit().putBoolean("notification_while_reading", isChecked).apply();
+        });
+
         // Auto-Start Toggle
-        SwitchMaterial autoStartSwitch = binding.switchAutoStart;
+        MaterialSwitch autoStartSwitch = binding.switchAutoStart;
         boolean autoStartEnabled = sharedPreferences.getBoolean("auto_start_enabled", true);
         autoStartSwitch.setChecked(autoStartEnabled);
 
@@ -150,7 +195,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         });
 
         // Battery Optimization Toggle
-        SwitchMaterial batteryOptimizationSwitch = binding.switchBatteryOptimization;
+        MaterialSwitch batteryOptimizationSwitch = binding.switchBatteryOptimization;
         boolean batteryOptimizationEnabled = sharedPreferences.getBoolean("battery_optimization_enabled", false);
         batteryOptimizationSwitch.setChecked(batteryOptimizationEnabled);
 
@@ -159,7 +204,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         });
 
         // Aggressive Processing Toggle
-        SwitchMaterial aggressiveProcessingSwitch = binding.switchAggressiveProcessing;
+        MaterialSwitch aggressiveProcessingSwitch = binding.switchAggressiveProcessing;
         boolean aggressiveProcessingEnabled = sharedPreferences.getBoolean("aggressive_processing_enabled", false);
         aggressiveProcessingSwitch.setChecked(aggressiveProcessingEnabled);
 
@@ -365,6 +410,31 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 performExport();
             } else {
                 requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+        }
+    }
+    
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        
+        if (requestCode == 1001 || requestCode == 1002) { // Notification permission requests
+            if (grantResults.length > 0 && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                // Permission granted - enable the setting
+                if (requestCode == 1001) {
+                    // Persistent notification
+                    binding.switchPersistentNotification.setChecked(true);
+                    sharedPreferences.edit().putBoolean("persistent_notification", true).apply();
+                    Toast.makeText(this, "Persistent notification enabled", Toast.LENGTH_SHORT).show();
+                } else if (requestCode == 1002) {
+                    // Reading notification
+                    binding.switchNotificationWhileReading.setChecked(true);
+                    sharedPreferences.edit().putBoolean("notification_while_reading", true).apply();
+                    Toast.makeText(this, "Reading notification enabled", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                // Permission denied
+                Toast.makeText(this, "Notification permission denied - feature will not work", Toast.LENGTH_LONG).show();
             }
         }
     }

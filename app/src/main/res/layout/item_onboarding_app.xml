@@ -7,7 +7,7 @@
     android:padding="12dp"
     android:layout_marginBottom="8dp"
     android:gravity="center_vertical"
-    android:background="?attr/colorSurface"
+    android:background="@drawable/gradient_card_subtle_right"
     android:elevation="2dp">
 
     <!-- App Icon -->
@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:textColor="?attr/colorOnSurface"
+            android:textColor="@color/purple_card_text_primary"
             android:textStyle="bold"
             android:maxLines="1"
             android:ellipsize="end" />
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textColor="@color/purple_card_text_secondary"
             android:maxLines="1"
             android:ellipsize="end"
             android:layout_marginTop="2dp" />
@@ -58,6 +58,6 @@
         android:src="@drawable/ic_delete_24"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Remove app"
-        android:tint="?attr/colorOnSurfaceVariant" />
+        android:tint="@color/purple_card_text_primary" />
 
 </LinearLayout> 

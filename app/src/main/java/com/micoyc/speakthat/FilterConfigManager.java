@@ -97,7 +97,10 @@ public class FilterConfigManager {
         public int duckingVolume;
         public int delayBeforeReadout;
         public boolean honourDoNotDisturb;
+        public boolean honourPhoneCalls; // Add honour phone calls setting
         public boolean honourAudioMode; // Add honour audio mode setting
+        public boolean persistentNotification; // Add persistent notification setting
+        public boolean notificationWhileReading; // Add notification while reading setting
         public boolean waveToStopEnabled;
         public int waveTimeoutSeconds;
         public boolean pocketModeEnabled;
@@ -115,7 +118,10 @@ public class FilterConfigManager {
             this.duckingVolume = 30;
             this.delayBeforeReadout = 0;
             this.honourDoNotDisturb = true;
+            this.honourPhoneCalls = true; // Default to true for safety
             this.honourAudioMode = true; // Default to true for safety
+            this.persistentNotification = false; // Default to false
+            this.notificationWhileReading = false; // Default to false
             this.waveToStopEnabled = false;
             this.waveTimeoutSeconds = 30;
             this.pocketModeEnabled = false;
@@ -232,7 +238,10 @@ public class FilterConfigManager {
         config.behavior.duckingVolume = prefs.getInt("ducking_volume", 30);
         config.behavior.delayBeforeReadout = prefs.getInt("delay_before_readout", 0);
         config.behavior.honourDoNotDisturb = prefs.getBoolean("honour_do_not_disturb", true);
+        config.behavior.honourPhoneCalls = prefs.getBoolean("honour_phone_calls", true); // Add honour phone calls
         config.behavior.honourAudioMode = prefs.getBoolean("honour_audio_mode", true); // Add honour audio mode
+        config.behavior.persistentNotification = prefs.getBoolean("persistent_notification", false); // Add persistent notification
+        config.behavior.notificationWhileReading = prefs.getBoolean("notification_while_reading", false); // Add notification while reading
         config.behavior.waveToStopEnabled = prefs.getBoolean("wave_to_stop_enabled", false);
         config.behavior.waveTimeoutSeconds = prefs.getInt("wave_timeout_seconds", 30);
         config.behavior.pocketModeEnabled = prefs.getBoolean("pocket_mode_enabled", false);
@@ -290,7 +299,10 @@ public class FilterConfigManager {
         behavior.put("duckingVolume", config.behavior.duckingVolume);
         behavior.put("delayBeforeReadout", config.behavior.delayBeforeReadout);
         behavior.put("honourDoNotDisturb", config.behavior.honourDoNotDisturb);
+        behavior.put("honourPhoneCalls", config.behavior.honourPhoneCalls); // Add honour phone calls
         behavior.put("honourAudioMode", config.behavior.honourAudioMode); // Add honour audio mode
+        behavior.put("persistentNotification", config.behavior.persistentNotification); // Add persistent notification
+        behavior.put("notificationWhileReading", config.behavior.notificationWhileReading); // Add notification while reading
         behavior.put("waveToStopEnabled", config.behavior.waveToStopEnabled);
         behavior.put("waveTimeoutSeconds", config.behavior.waveTimeoutSeconds);
         behavior.put("pocketModeEnabled", config.behavior.pocketModeEnabled);
@@ -567,8 +579,23 @@ public class FilterConfigManager {
                     totalImported++;
                 }
                 
+                if (behavior.has("honourPhoneCalls")) {
+                    mainEditor.putBoolean("honour_phone_calls", behavior.getBoolean("honourPhoneCalls"));
+                    totalImported++;
+                }
+                
                 if (behavior.has("honourAudioMode")) {
                     mainEditor.putBoolean("honour_audio_mode", behavior.getBoolean("honourAudioMode"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("persistentNotification")) {
+                    mainEditor.putBoolean("persistent_notification", behavior.getBoolean("persistentNotification"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("notificationWhileReading")) {
+                    mainEditor.putBoolean("notification_while_reading", behavior.getBoolean("notificationWhileReading"));
                     totalImported++;
                 }
                 

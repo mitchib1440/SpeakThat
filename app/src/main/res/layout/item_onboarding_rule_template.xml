@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:strokeWidth="0dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?android:attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/gradient_card_subtle_right">
+
+        <!-- Icon -->
+        <TextView
+            android:id="@+id/textIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:textColor="@color/purple_card_text_primary"
+            android:layout_marginEnd="16dp" />
+
+        <!-- Content -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/purple_card_text_primary"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/textDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/purple_card_text_secondary"
+                android:lineSpacingExtra="2dp" />
+
+        </LinearLayout>
+
+        <!-- Add Button -->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_advanced_voice_section">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add"
+                android:textSize="12sp"
+                android:background="@android:color/transparent"
+                android:textColor="@color/white_100"
+                app:cornerRadius="16dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                style="@style/Widget.Material3.Button.TextButton" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView> 

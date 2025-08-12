@@ -252,3 +252,4 @@ SpeakThat! Ben Randall started this crazy adventure! His app was called Utter! W
 SpeakThat! Double negatives are a big no-no!
 SpeakThat! Teslas are only expensive because they charge a lot.
 SpeakThat! The world's most comprehensive notification reader!
+SpeakThat! I'm very good at reading web links. I never even stutter! https://www.youtube.com/watch?v=dQw4w9WgXcQ

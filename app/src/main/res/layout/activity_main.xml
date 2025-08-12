@@ -16,79 +16,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED -->
-        <!-- This banner invites users to help translate the app -->
-        <!-- To remove: Delete this entire MaterialCardView block and remove related code from MainActivity.kt -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardTranslationHelp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackground"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/warning_background"
-            app:strokeColor="@color/purple_200"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_info_24"
-                    android:contentDescription="Info"
-                    android:layout_marginEnd="12dp"
-                    app:tint="@color/purple_100" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Help Translate SpeakThat!"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_warning" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tap to send translation email"
-                        android:textSize="12sp"
-                        android:textColor="@color/text_warning"
-                        android:layout_marginTop="2dp" />
-
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/buttonDismissTranslationBanner"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_delete_24"
-                    android:contentDescription="Dismiss"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:padding="4dp"
-                    app:tint="@color/purple_100" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-        <!-- END TRANSLATION BANNER -->
-
         <!-- App Logo -->
         <ImageView
             android:id="@+id/logoSpeakThat"
@@ -132,15 +59,16 @@
             android:layout_marginTop="32dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="@color/purple_300"
-            app:strokeWidth="1dp">
+            app:cardBackgroundColor="@android:color/transparent"
+            app:strokeColor="@color/purple_200"
+            app:strokeWidth="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="20dp"
+                android:background="@drawable/gradient_card_subtle_right">
 
                 <!-- Master Switch Row -->
                 <LinearLayout
@@ -162,7 +90,7 @@
                             android:text="🔊 SpeakThat! Active"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="@color/purple_card_text_primary" />
 
                         <TextView
                             android:id="@+id/textMasterSwitchStatus"
@@ -170,7 +98,7 @@
                             android:layout_height="wrap_content"
                             android:text="Tap to enable notification reading"
                             android:textSize="14sp"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp"
                             android:layout_marginBottom="8dp"/>
 
@@ -179,19 +107,22 @@
                             android:layout_height="wrap_content"
                             android:text="@string/master_switch_battery_tip"
                             android:textSize="12sp"
-                            android:textColor="@color/text_tertiary"
+                            android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="2dp" />
 
                     </LinearLayout>
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
+                    <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/switchMasterControl"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:checked="false"
-                        app:thumbTint="@color/purple_200"
-                        app:trackTint="@color/purple_300" />
+                        android:thumbTint="@color/switch_thumb_color"
+                        android:trackTint="@color/switch_track_color"
+                        app:thumbTint="@color/switch_thumb_color"
+                        app:trackTint="@color/switch_track_color"
+                        android:paddingLeft="12dp"/>
 
                 </LinearLayout>
 
@@ -199,7 +130,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/purple_300"
+                    android:background="@color/white_100"
                     android:layout_marginBottom="16dp" />
 
                 <!-- Status Section -->
@@ -207,10 +138,10 @@
                     android:id="@+id/textServiceStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/service_disabled"
+                    android:text="Notification permissions: ❌"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="@color/red_100"
+                    android:textColor="@color/purple_card_text_primary"
                     android:layout_marginBottom="8dp" />
 
                 <TextView
@@ -219,31 +150,82 @@
                     android:layout_height="wrap_content"
                     android:text="@string/permission_description"
                     android:textSize="14sp"
-                    android:textColor="@color/text_secondary" />
+                    android:textColor="@color/purple_card_text_secondary" />
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Enable Permission Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonEnablePermission"
+        <!-- Button Row -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/open_settings"
             android:layout_marginTop="24dp"
-            android:textColor="@color/white_100" />
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="2">
 
-        <!-- Settings Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonSettings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/settings"
-            android:layout_marginTop="16dp"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            app:strokeColor="@color/purple_200"
-            android:textColor="@color/text_secondary" />
+            <!-- Permission Button -->
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:minHeight="56dp"
+                android:background="@drawable/gradient_card_subtle_right"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonEnablePermission"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:text="@string/open_settings"
+                    android:textColor="@color/white_100"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:background="@android:color/transparent"
+                    style="@style/Widget.Material3.Button.TextButton" />
+
+            </FrameLayout>
+
+            <!-- Settings Button (More Commonly Used - Right side for easier reach) -->
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:minHeight="56dp"
+                android:background="@drawable/gradient_card_subtle_right"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:text="@string/settings"
+                    android:textColor="@color/white_100"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:background="@android:color/transparent"
+                    style="@style/Widget.Material3.Button.TextButton" />
+
+            </FrameLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView> 

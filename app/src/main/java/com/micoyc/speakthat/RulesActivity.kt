@@ -107,6 +107,7 @@ class RulesActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         // Refresh the rules list when returning from RuleBuilderActivity
+        InAppLogger.logDebug("RulesActivity", "onResume() called - refreshing UI")
         updateUI()
         
         // Show experimental warning only once when rules are enabled
@@ -124,10 +125,16 @@ class RulesActivity : AppCompatActivity() {
     
     private fun updateUI() {
         val isMasterEnabled = ruleManager.isRulesEnabled()
+        InAppLogger.logDebug("RulesActivity", "updateUI() - Master toggle enabled: $isMasterEnabled")
         
         if (isMasterEnabled) {
             val rules = ruleManager.getAllRules()
             val hasRules = rules.isNotEmpty()
+            
+            InAppLogger.logDebug("RulesActivity", "updateUI() - Loaded ${rules.size} rules from RuleManager")
+            if (rules.isNotEmpty()) {
+                InAppLogger.logDebug("RulesActivity", "updateUI() - Rule names: ${rules.map { it.name }}")
+            }
             
             if (hasRules) {
                 binding.rulesContainer.visibility = View.VISIBLE

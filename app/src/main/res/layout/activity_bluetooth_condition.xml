@@ -34,38 +34,14 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="8dp">
-
-                        <LinearLayout
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/circle_background"
-                            android:backgroundTint="@color/purple_300"
-                            android:gravity="center">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="📱"
-                                android:textSize="20sp" />
-
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Bluetooth Devices"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_primary"
-                            android:layout_marginStart="12dp" />
-
-                    </LinearLayout>
+                        android:layout_marginBottom="8dp"
+                        android:text="📱 Bluetooth Devices"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -137,14 +113,30 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="ℹ️ How it works"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_primary"
-                        android:layout_marginBottom="8dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="Help"
+                            android:layout_marginEnd="8dp"
+                            android:tint="@color/text_primary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="How it works"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="match_parent"

@@ -1,6 +1,214 @@
 package com.micoyc.speakthat.rules
 
+import android.content.Context
+import com.google.gson.*
+import com.google.gson.reflect.TypeToken
 import com.micoyc.speakthat.InAppLogger
+import java.lang.reflect.Type
+import kotlin.math.abs
+
+/**
+ * Custom type adapter for Map<String, Any> to handle proper serialization/deserialization
+ * This ensures that numeric types (Long, Int, Double) are preserved correctly
+ */
+class MapStringAnyTypeAdapter : JsonSerializer<Map<String, Any>>, JsonDeserializer<Map<String, Any>> {
+    
+    override fun serialize(src: Map<String, Any>?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
+        if (src == null) return JsonNull.INSTANCE
+        
+        val jsonObject = JsonObject()
+        for ((key, value) in src) {
+            when {
+                value is String -> jsonObject.addProperty(key, value)
+                value is Number -> jsonObject.addProperty(key, value)
+                value is Boolean -> jsonObject.addProperty(key, value)
+                value is List<*> -> {
+                    val jsonArray = JsonArray()
+                    for (item in value) {
+                        when (item) {
+                            null -> jsonArray.add(JsonNull.INSTANCE)
+                            is String -> jsonArray.add(item)
+                            is Number -> jsonArray.add(item)
+                            is Boolean -> jsonArray.add(item)
+                            else -> jsonArray.add(Gson().toJsonTree(item))
+                        }
+                    }
+                    jsonObject.add(key, jsonArray)
+                }
+                value is Set<*> -> {
+                    val jsonArray = JsonArray()
+                    for (item in value) {
+                        when (item) {
+                            null -> jsonArray.add(JsonNull.INSTANCE)
+                            is String -> jsonArray.add(item)
+                            is Number -> jsonArray.add(item)
+                            is Boolean -> jsonArray.add(item)
+                            else -> jsonArray.add(Gson().toJsonTree(item))
+                        }
+                    }
+                    jsonObject.add(key, jsonArray)
+                }
+                else -> jsonObject.add(key, Gson().toJsonTree(value))
+            }
+        }
+        return jsonObject
+    }
+    
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Map<String, Any> {
+        if (json == null || json.isJsonNull) return emptyMap()
+        
+        val result = mutableMapOf<String, Any>()
+        val jsonObject = json.asJsonObject
+        
+        for ((key, value) in jsonObject.entrySet()) {
+            result[key] = when {
+                value.isJsonNull -> ""
+                value.isJsonPrimitive -> {
+                    val primitive = value.asJsonPrimitive
+                    when {
+                        primitive.isString -> primitive.asString
+                        primitive.isNumber -> {
+                            val number = primitive.asNumber
+                            InAppLogger.logDebug("MapStringAnyTypeAdapter", "Processing number: $number (${number.javaClass.simpleName})")
+                            InAppLogger.logDebug("MapStringAnyTypeAdapter", "  toLong(): ${number.toLong()}")
+                            InAppLogger.logDebug("MapStringAnyTypeAdapter", "  toDouble(): ${number.toDouble()}")
+                            InAppLogger.logDebug("MapStringAnyTypeAdapter", "  toInt(): ${number.toInt()}")
+                            InAppLogger.logDebug("MapStringAnyTypeAdapter", "  abs(toLong() - toDouble()): ${abs(number.toLong() - number.toDouble())}")
+                            InAppLogger.logDebug("MapStringAnyTypeAdapter", "  abs(toInt() - toDouble()): ${abs(number.toInt() - number.toDouble())}")
+                            
+                            val convertedValue = when {
+                                abs(number.toLong() - number.toDouble()) < 0.001 -> {
+                                    InAppLogger.logDebug("MapStringAnyTypeAdapter", "  -> Converting to Long: ${number.toLong()}")
+                                    number.toLong()
+                                }
+                                abs(number.toInt() - number.toDouble()) < 0.001 -> {
+                                    InAppLogger.logDebug("MapStringAnyTypeAdapter", "  -> Converting to Int: ${number.toInt()}")
+                                    number.toInt()
+                                }
+                                else -> {
+                                    InAppLogger.logDebug("MapStringAnyTypeAdapter", "  -> Converting to Double: ${number.toDouble()}")
+                                    number.toDouble()
+                                }
+                            }
+                            InAppLogger.logDebug("MapStringAnyTypeAdapter", "  Final result: $convertedValue (${convertedValue.javaClass.simpleName})")
+                            convertedValue
+                        }
+                        primitive.isBoolean -> primitive.asBoolean
+                        else -> primitive.asString
+                    }
+                }
+                value.isJsonArray -> {
+                    val array = value.asJsonArray
+                    val list = mutableListOf<Any>()
+                    for (element in array) {
+                        when {
+                            element.isJsonNull -> list.add("")
+                            element.isJsonPrimitive -> {
+                                val primitive = element.asJsonPrimitive
+                                list.add(when {
+                                    primitive.isString -> primitive.asString
+                                    primitive.isNumber -> {
+                                        val number = primitive.asNumber
+                                        InAppLogger.logDebug("MapStringAnyTypeAdapter", "Array Processing number: $number (${number.javaClass.simpleName})")
+                                        InAppLogger.logDebug("MapStringAnyTypeAdapter", "  toLong(): ${number.toLong()}")
+                                        InAppLogger.logDebug("MapStringAnyTypeAdapter", "  toDouble(): ${number.toDouble()}")
+                                        InAppLogger.logDebug("MapStringAnyTypeAdapter", "  toInt(): ${number.toInt()}")
+                                        InAppLogger.logDebug("MapStringAnyTypeAdapter", "  abs(toLong() - toDouble()): ${abs(number.toLong() - number.toDouble())}")
+                                        InAppLogger.logDebug("MapStringAnyTypeAdapter", "  abs(toInt() - toDouble()): ${abs(number.toInt() - number.toDouble())}")
+                                        
+                                        val convertedValue = when {
+                                            abs(number.toLong() - number.toDouble()) < 0.001 -> {
+                                                InAppLogger.logDebug("MapStringAnyTypeAdapter", "  -> Converting to Long: ${number.toLong()}")
+                                                number.toLong()
+                                            }
+                                            abs(number.toInt() - number.toDouble()) < 0.001 -> {
+                                                InAppLogger.logDebug("MapStringAnyTypeAdapter", "  -> Converting to Int: ${number.toInt()}")
+                                                number.toInt()
+                                            }
+                                            else -> {
+                                                InAppLogger.logDebug("MapStringAnyTypeAdapter", "  -> Converting to Double: ${number.toDouble()}")
+                                                number.toDouble()
+                                            }
+                                        }
+                                        InAppLogger.logDebug("MapStringAnyTypeAdapter", "  Final result: $convertedValue (${convertedValue.javaClass.simpleName})")
+                                        convertedValue
+                                    }
+                                    primitive.isBoolean -> primitive.asBoolean
+                                    else -> primitive.asString
+                                })
+                            }
+                                                          else -> list.add(context?.deserialize(element, Any::class.java) ?: "")
+                        }
+                    }
+                    list
+                }
+                else -> Gson().fromJson(value, Any::class.java)
+            }
+        }
+        
+        return result
+    }
+}
+
+/**
+ * Custom type adapters for Rule system classes to ensure consistent serialization/deserialization
+ */
+
+class RuleTypeAdapter : JsonSerializer<Rule>, JsonDeserializer<Rule> {
+    private val gson = GsonBuilder()
+        .registerTypeAdapter(object : TypeToken<Map<String, Any>>() {}.type, MapStringAnyTypeAdapter())
+        .create()
+    
+    override fun serialize(src: Rule?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
+        return gson.toJsonTree(src)
+    }
+    
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Rule {
+        return gson.fromJson(json, Rule::class.java)
+    }
+}
+
+class TriggerTypeAdapter : JsonSerializer<Trigger>, JsonDeserializer<Trigger> {
+    private val gson = GsonBuilder()
+        .registerTypeAdapter(object : TypeToken<Map<String, Any>>() {}.type, MapStringAnyTypeAdapter())
+        .create()
+    
+    override fun serialize(src: Trigger?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
+        return gson.toJsonTree(src)
+    }
+    
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Trigger {
+        return gson.fromJson(json, Trigger::class.java)
+    }
+}
+
+class ActionTypeAdapter : JsonSerializer<Action>, JsonDeserializer<Action> {
+    private val gson = GsonBuilder()
+        .registerTypeAdapter(object : TypeToken<Map<String, Any>>() {}.type, MapStringAnyTypeAdapter())
+        .create()
+    
+    override fun serialize(src: Action?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
+        return gson.toJsonTree(src)
+    }
+    
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Action {
+        return gson.fromJson(json, Action::class.java)
+    }
+}
+
+class ExceptionTypeAdapter : JsonSerializer<Exception>, JsonDeserializer<Exception> {
+    private val gson = GsonBuilder()
+        .registerTypeAdapter(object : TypeToken<Map<String, Any>>() {}.type, MapStringAnyTypeAdapter())
+        .create()
+    
+    override fun serialize(src: Exception?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
+        return gson.toJsonTree(src)
+    }
+    
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Exception {
+        return gson.fromJson(json, Exception::class.java)
+    }
+}
 
 /**
  * Core data structures for the rule system
@@ -94,7 +302,10 @@ data class Trigger(
         
         fun fromJson(json: String): Trigger? {
             return try {
-                com.google.gson.Gson().fromJson(json, Trigger::class.java)
+                val gson = GsonBuilder()
+                    .registerTypeAdapter(object : TypeToken<Map<String, Any>>() {}.type, MapStringAnyTypeAdapter())
+                    .create()
+                gson.fromJson(json, Trigger::class.java)
             } catch (e: Throwable) {
                 null
             }
@@ -107,7 +318,10 @@ data class Trigger(
     }
     
     fun toJson(): String {
-        return com.google.gson.Gson().toJson(this)
+        val gson = GsonBuilder()
+            .registerTypeAdapter(object : TypeToken<Map<String, Any>>() {}.type, MapStringAnyTypeAdapter())
+            .create()
+        return gson.toJson(this)
     }
 }
 
@@ -126,7 +340,10 @@ data class Action(
         
         fun fromJson(json: String): Action? {
             return try {
-                com.google.gson.Gson().fromJson(json, Action::class.java)
+                val gson = GsonBuilder()
+                    .registerTypeAdapter(object : TypeToken<Map<String, Any>>() {}.type, MapStringAnyTypeAdapter())
+                    .create()
+                gson.fromJson(json, Action::class.java)
             } catch (e: Throwable) {
                 null
             }
@@ -138,7 +355,10 @@ data class Action(
     }
     
     fun toJson(): String {
-        return com.google.gson.Gson().toJson(this)
+        val gson = GsonBuilder()
+            .registerTypeAdapter(object : TypeToken<Map<String, Any>>() {}.type, MapStringAnyTypeAdapter())
+            .create()
+        return gson.toJson(this)
     }
 }
 
@@ -158,7 +378,10 @@ data class Exception(
 
         fun fromJson(json: String): Exception? {
             return try {
-                com.google.gson.Gson().fromJson(json, Exception::class.java)
+                val gson = GsonBuilder()
+                    .registerTypeAdapter(object : TypeToken<Map<String, Any>>() {}.type, MapStringAnyTypeAdapter())
+                    .create()
+                gson.fromJson(json, Exception::class.java)
             } catch (e: Throwable) {
                 null
             }
@@ -171,7 +394,10 @@ data class Exception(
     }
 
     fun toJson(): String {
-        return com.google.gson.Gson().toJson(this)
+        val gson = GsonBuilder()
+            .registerTypeAdapter(object : TypeToken<Map<String, Any>>() {}.type, MapStringAnyTypeAdapter())
+            .create()
+        return gson.toJson(this)
     }
 }
 
@@ -195,7 +421,10 @@ data class Rule(
         
         fun fromJson(json: String): Rule? {
             return try {
-                com.google.gson.Gson().fromJson(json, Rule::class.java)
+                val gson = GsonBuilder()
+                    .registerTypeAdapter(object : TypeToken<Map<String, Any>>() {}.type, MapStringAnyTypeAdapter())
+                    .create()
+                gson.fromJson(json, Rule::class.java)
             } catch (e: Throwable) {
                 null
             }
@@ -231,7 +460,7 @@ data class Rule(
                 context.getString(
                     com.micoyc.speakthat.R.string.rule_format_when_trigger_will_action,
                     triggerDesc,
-                    name,
+                    "this rule",
                     actionDesc
                 )
             }
@@ -239,7 +468,7 @@ data class Rule(
                 context.getString(
                     com.micoyc.speakthat.R.string.rule_format_when_trigger_will_action_unless_exception,
                     triggerDesc,
-                    name,
+                    "this rule",
                     actionDesc,
                     exceptionDesc
                 )
@@ -248,7 +477,7 @@ data class Rule(
                 context.getString(
                     com.micoyc.speakthat.R.string.rule_format_when_trigger_will_action_unless_exceptions,
                     triggerDesc,
-                    name,
+                    "this rule",
                     actionDesc,
                     exceptionDesc
                 )
@@ -275,8 +504,6 @@ data class Rule(
         
         return when (trigger.type) {
             TriggerType.BLUETOOTH_DEVICE -> {
-                val deviceAddresses = trigger.data["device_addresses"] as? Set<String> ?: emptySet()
-                val deviceName = if (deviceAddresses.isEmpty()) "any Bluetooth device" else "Bluetooth device"
                 if (trigger.inverted) {
                     context.getString(com.micoyc.speakthat.R.string.rule_trigger_bluetooth_disconnected)
                 } else {
@@ -327,6 +554,7 @@ data class Rule(
                 )
             }
             TriggerType.WIFI_NETWORK -> {
+                @Suppress("UNCHECKED_CAST")
                 val networkSSIDs = trigger.data["network_ssids"] as? Set<String> ?: emptySet()
                 val networkName = if (networkSSIDs.isEmpty()) "any WiFi network" else networkSSIDs.first()
                 if (trigger.inverted) {
@@ -392,8 +620,6 @@ data class Rule(
         
         return when (exception.type) {
             ExceptionType.BLUETOOTH_DEVICE -> {
-                val deviceAddresses = exception.data["device_addresses"] as? Set<String> ?: emptySet()
-                val deviceName = if (deviceAddresses.isEmpty()) "any Bluetooth device" else "Bluetooth device"
                 if (exception.inverted) {
                     context.getString(com.micoyc.speakthat.R.string.rule_exception_bluetooth_disconnected)
                 } else {
@@ -444,6 +670,7 @@ data class Rule(
                 )
             }
             ExceptionType.WIFI_NETWORK -> {
+                @Suppress("UNCHECKED_CAST")
                 val networkSSIDs = exception.data["network_ssids"] as? Set<String> ?: emptySet()
                 val networkName = if (networkSSIDs.isEmpty()) "any WiFi network" else networkSSIDs.first()
                 if (exception.inverted) {
@@ -491,6 +718,9 @@ data class Rule(
     }
 
     fun toJson(): String {
-        return com.google.gson.Gson().toJson(this)
+        val gson = GsonBuilder()
+            .registerTypeAdapter(object : TypeToken<Map<String, Any>>() {}.type, MapStringAnyTypeAdapter())
+            .create()
+        return gson.toJson(this)
     }
 } 

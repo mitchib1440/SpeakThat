@@ -28,15 +28,15 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
                         android:text="🛠️ Debug Tools"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -52,78 +52,134 @@
                         android:layout_height="wrap_content"
                         android:text="Tools for debugging and testing the app"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
 
                     <!-- Notification History Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnShowHistory"
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="📋 Show Notification History"
-                        android:backgroundTint="@color/purple_200"
-                        android:textColor="@color/white_100"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_advanced_voice_section">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnShowHistory"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="📋 Show Notification History"
+                            android:background="@android:color/transparent"
+                            android:textColor="@color/white_100"
+                            style="@style/Widget.Material3.Button.TextButton" />
+
+                    </FrameLayout>
 
                     <!-- Analytics Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnShowAnalytics"
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="📊 Show Help Usage Analytics"
-                        android:backgroundTint="@color/purple_200"
-                        android:textColor="@color/white_100"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_advanced_voice_section">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnShowAnalytics"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="📊 Show Help Usage Analytics"
+                            android:background="@android:color/transparent"
+                            android:textColor="@color/white_100"
+                            style="@style/Widget.Material3.Button.TextButton" />
+
+                    </FrameLayout>
 
                     <!-- Battery Report Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnBatteryReport"
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="🔋 Battery Optimization Report"
-                        android:backgroundTint="@color/purple_200"
-                        android:textColor="@color/white_100"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_advanced_voice_section">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnBatteryReport"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="🔋 Battery Optimization Report"
+                            android:background="@android:color/transparent"
+                            android:textColor="@color/white_100"
+                            style="@style/Widget.Material3.Button.TextButton" />
+
+                    </FrameLayout>
 
                     <!-- Repair Blacklist Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnRepairBlacklist"
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="🛠️ Repair Word Blacklist"
-                        android:backgroundTint="@color/purple_200"
-                        android:textColor="@color/white_100"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_advanced_voice_section">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnRepairBlacklist"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="🛠️ Repair Word Blacklist"
+                            android:background="@android:color/transparent"
+                            android:textColor="@color/white_100"
+                            style="@style/Widget.Material3.Button.TextButton" />
+
+                    </FrameLayout>
 
                     <!-- Background Process Monitor Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnBackgroundMonitor"
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="🛰️ Background Process Monitor"
-                        android:backgroundTint="@color/purple_200"
-                        android:textColor="@color/white_100"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_advanced_voice_section">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnBackgroundMonitor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="🛰️ Background Process Monitor"
+                            android:background="@android:color/transparent"
+                            android:textColor="@color/white_100"
+                            style="@style/Widget.Material3.Button.TextButton" />
+
+                    </FrameLayout>
 
                     <!-- Installation Source Debug Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnInstallationSourceDebug"
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="🔍 Installation Source Debug"
-                        android:backgroundTint="@color/purple_200"
-                        android:textColor="@color/white_100"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_advanced_voice_section">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnInstallationSourceDebug"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="🔍 Installation Source Debug"
+                            android:background="@android:color/transparent"
+                            android:textColor="@color/white_100"
+                            style="@style/Widget.Material3.Button.TextButton" />
+
+                    </FrameLayout>
 
                     <!-- Rule System Test Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnRuleSystemTest"
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="🧪 Test Rule System"
-                        android:backgroundTint="@color/purple_200"
-                        android:textColor="@color/white_100"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_advanced_voice_section">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnRuleSystemTest"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="🧪 Test Rule System"
+                            android:background="@android:color/transparent"
+                            android:textColor="@color/white_100"
+                            style="@style/Widget.Material3.Button.TextButton" />
+
+                    </FrameLayout>
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -135,15 +191,15 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -151,7 +207,7 @@
                         android:text="📝 Logging Configuration"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -159,7 +215,7 @@
                         android:layout_height="wrap_content"
                         android:text="Configure what gets logged for debugging"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
 
                     <!-- Verbose Logging Switch -->
@@ -182,24 +238,27 @@
                                 android:text="Verbose Logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:textColor="@color/text_primary" />
+                                android:textColor="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Show detailed debug information"
                                 android:textSize="14sp"
-                                android:textColor="@color/text_secondary" />
+                                android:textColor="@color/purple_card_text_secondary" />
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchVerboseLogging"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            app:thumbTint="@color/purple_200"
-                            app:trackTint="@color/purple_300" />
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color"
+                            android:paddingLeft="12dp"/>
 
                     </LinearLayout>
 
@@ -223,24 +282,27 @@
                                 android:text="Filter Logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:textColor="@color/text_primary" />
+                                android:textColor="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Log filtering decisions and results"
                                 android:textSize="14sp"
-                                android:textColor="@color/text_secondary" />
+                                android:textColor="@color/purple_card_text_secondary" />
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchLogFilters"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            app:thumbTint="@color/purple_200"
-                            app:trackTint="@color/purple_300" />
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color"
+                            android:paddingLeft="12dp"/>
 
                     </LinearLayout>
 
@@ -264,24 +326,27 @@
                                 android:text="User Action Logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:textColor="@color/text_primary" />
+                                android:textColor="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Log user interactions and button presses"
                                 android:textSize="14sp"
-                                android:textColor="@color/text_secondary" />
+                                android:textColor="@color/purple_card_text_secondary" />
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchLogUserActions"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            app:thumbTint="@color/purple_200"
-                            app:trackTint="@color/purple_300" />
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color"
+                            android:paddingLeft="12dp"/>
 
                     </LinearLayout>
 
@@ -305,24 +370,27 @@
                                 android:text="System Event Logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:textColor="@color/text_primary" />
+                                android:textColor="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Log app lifecycle and system events"
                                 android:textSize="14sp"
-                                android:textColor="@color/text_secondary" />
+                                android:textColor="@color/purple_card_text_secondary" />
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchLogSystemEvents"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            app:thumbTint="@color/purple_200"
-                            app:trackTint="@color/purple_300" />
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color"
+                            android:paddingLeft="12dp"/>
 
                     </LinearLayout>
 
@@ -346,24 +414,27 @@
                                 android:text="Notification Logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:textColor="@color/text_primary" />
+                                android:textColor="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Log notification processing events"
                                 android:textSize="14sp"
-                                android:textColor="@color/text_secondary" />
+                                android:textColor="@color/purple_card_text_secondary" />
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchLogNotifications"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            app:thumbTint="@color/purple_200"
-                            app:trackTint="@color/purple_300" />
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color"
+                            android:paddingLeft="12dp"/>
 
                     </LinearLayout>
 
@@ -386,24 +457,27 @@
                                 android:text="Sensitive Data Logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:textColor="@color/text_primary" />
+                                android:textColor="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="⚠️ Log sensitive information (disabled by default)"
                                 android:textSize="14sp"
-                                android:textColor="@color/text_secondary" />
+                                android:textColor="@color/purple_card_text_secondary" />
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchLogSensitiveData"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="false"
-                            app:thumbTint="@color/purple_200"
-                            app:trackTint="@color/purple_300" />
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color"
+                            android:paddingLeft="12dp"/>
 
                     </LinearLayout>
 
@@ -417,15 +491,15 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -441,43 +515,64 @@
                             android:text="📊 Live Log Display"
                             android:textSize="20sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="@color/purple_card_text_primary" />
 
                         <!-- Log Control Buttons -->
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnRefreshLogs"
-                            style="@style/Widget.Material3.Button.TonalButton"
+                        <FrameLayout
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_marginEnd="8dp"
-                            android:icon="@drawable/ic_refresh_24"
-                            android:iconTint="@color/white_100"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            android:backgroundTint="@color/purple_300" />
+                            android:background="@drawable/bg_advanced_voice_section">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnClearLogs"
-                            style="@style/Widget.Material3.Button.TonalButton"
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnRefreshLogs"
+                                style="@style/Widget.Material3.Button.TonalButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:icon="@drawable/ic_refresh_24"
+                                android:iconTint="@color/white_100"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:background="@android:color/transparent" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_marginEnd="8dp"
-                            android:icon="@drawable/ic_delete_24"
-                            android:iconTint="@color/white_100"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            android:backgroundTint="@color/purple_300" />
+                            android:background="@drawable/bg_advanced_voice_section">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnExportLogs"
-                            style="@style/Widget.Material3.Button.TonalButton"
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnClearLogs"
+                                style="@style/Widget.Material3.Button.TonalButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:icon="@drawable/ic_delete_24"
+                                android:iconTint="@color/white_100"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:background="@android:color/transparent" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:icon="@drawable/ic_file_upload_24"
-                            android:iconTint="@color/white_100"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            android:backgroundTint="@color/purple_300" />
+                            android:background="@drawable/bg_advanced_voice_section">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnExportLogs"
+                                style="@style/Widget.Material3.Button.TonalButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:icon="@drawable/ic_file_upload_24"
+                                android:iconTint="@color/white_100"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:background="@android:color/transparent" />
+
+                        </FrameLayout>
 
                     </LinearLayout>
 
@@ -486,7 +581,7 @@
                         android:layout_height="wrap_content"
                         android:text="Real-time view of what's happening under the hood"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
 
                     <!-- Crash Log Buttons (only visible when crash logs exist) -->
@@ -533,22 +628,30 @@
                         android:gravity="center"
                         android:layout_marginBottom="16dp">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnDebugCrashLogs"
-                            style="@style/Widget.Material3.Button.TonalButton"
+                        <FrameLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginEnd="8dp"
-                            android:text="🔍 Debug Crash Logs"
-                            android:textSize="12sp"
-                            android:backgroundTint="@color/purple_300" />
+                            android:background="@drawable/bg_advanced_voice_section">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnDebugCrashLogs"
+                                style="@style/Widget.Material3.Button.TonalButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="🔍 Debug Crash Logs"
+                                android:textSize="12sp"
+                                android:background="@android:color/transparent"
+                                android:textColor="@color/white_100" />
+
+                        </FrameLayout>
 
 
 
                     </LinearLayout>
 
-                    <!-- Log Display Area -->
+                    <!-- Log Display Area - EXCEPTION: Keep solid black for readability -->
                     <TextView
                         android:id="@+id/textLogDisplay"
                         android:layout_width="match_parent"

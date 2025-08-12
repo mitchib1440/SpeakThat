@@ -4,6 +4,10 @@ import android.widget.ImageView
 import coil.load
 import coil.decode.SvgDecoder
 
+/**
+ * GitHub-specific version of CoilImageLoader that uses Coil for network image loading
+ * This allows users to see app icons from the Simple Icons CDN
+ */
 object CoilImageLoader {
     @JvmStatic
     fun loadSvg(imageView: ImageView, url: String) {

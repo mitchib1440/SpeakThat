@@ -11,7 +11,7 @@
     <string name="permission_needed">Notification Access Required</string>
     <string name="permission_description">SpeakThat! needs access to your notifications to read them aloud. This permission is required for the app to function.</string>
     <string name="master_switch_battery_tip">💡 Turn off when not needed to save battery</string>
-    <string name="open_settings">Open Permission Settings</string>
+    <string name="open_settings">Permission Settings</string>
     <string name="service_enabled">Notification Reader: Enabled</string>
     <string name="service_disabled">Notification Reader: Disabled</string>
     <string name="show_history">Show Notification History</string>
@@ -277,7 +277,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="create_custom_rule">Create Custom Rule</string>
     <!-- Template Names -->
     <string name="template_headphones_only_name">Bluetooth Headphones</string>
-    <string name="template_headphones_only_description">Select your Bluetooth headphones, and notifications will never be read when they are connected to your phone</string>
+    <string name="template_headphones_only_description">Select your Bluetooth headphones, and notifications will ONLY be read when they are connected to your phone</string>
     <string name="template_time_schedule_name">Quiet Hours</string>
     <string name="template_time_schedule_description">Select two times you want SpeakThat to remain silent between</string>
     <string name="template_screen_off_name">Only when Screen Off</string>

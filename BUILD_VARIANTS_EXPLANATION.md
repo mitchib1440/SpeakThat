@@ -1,197 +1,63 @@
 Full disclosure, this text and many other guidance texts in this project were written by an AI as I was learning the ropes of programming on Android
 
-# Build Variants: How the System Knows What Should Be Different
+# Build Variants: GitHub vs Store Distribution
 
 ## Overview
 
-Android's build system uses **source sets** to organize different files for different build variants. This allows you to have a single codebase that produces different APKs with different features, permissions, and resources.
+SpeakThat uses Android build variants to create two different APK versions optimized for different distribution channels:
 
-## How It Works
+- **GitHub variant**: Full-featured with auto-updates and online icons
+- **Store variant**: Privacy-focused with no internet permissions
 
-### 1. Source Set Structure
+## Key Differences
 
-```
-app/src/
-├── main/           # Shared code for ALL variants
-├── github/         # GitHub-specific files (auto-updater)
-└── store/          # Store-specific files (no auto-updater)
-```
+### **GitHub Variant** (`github` flavor)
+- **Auto-updater enabled**: Can download and install updates from GitHub
+- **Online app icons**: Loads app icons from CDN for better visual experience
+- **INTERNET permission**: Required for updates and icon loading
+- **Network libraries**: Includes OkHttp and Coil for network operations
+- **Target users**: Direct download users who want latest features
 
-### 2. Manifest Merging
+### **Store Variant** (`store` flavor) 
+- **No auto-updater**: Updates handled by app stores (Play Store, F-Droid, etc.)
+- **Local icons only**: Uses only local fallback icons for privacy
+- **INTERNET permission**: Required for network voice downloads (legitimate TTS feature)
+- **No network libraries**: Excludes OkHttp and Coil to reduce APK size and privacy footprint
+- **Target users**: Privacy-conscious users who prefer app store distribution
 
-Android automatically merges manifests from different source sets in this priority order:
+## Technical Implementation
 
-1. **`main/AndroidManifest.xml`** - Base manifest (shared permissions, activities)
-2. **`github/AndroidManifest.xml`** - GitHub-specific overrides/additions
-3. **`store/AndroidManifest.xml`** - Store-specific overrides/additions
-
-### 3. How Permissions Are Handled
-
-**GitHub Variant:**
-- `main/` manifest: Contains shared permissions (INTERNET, BLUETOOTH, etc.)
-- `github/` manifest: **ADDED** `REQUEST_INSTALL_PACKAGES` and `INSTALL_PACKAGES`
-- **Result:** GitHub APK has auto-update permissions
-
-**Store Variant:**
-- `main/` manifest: Contains shared permissions (INTERNET, BLUETOOTH, etc.)
-- `store/` manifest: **NO** auto-update permissions
-- **Result:** Store APK does NOT have auto-update permissions
-
-### 4. Code Organization
-
-#### Shared Code (in `main/`)
+### Build Configuration
 ```kotlin
-// This code exists in BOTH variants
-class MainActivity : AppCompatActivity() {
-    fun someSharedFunction() {
-        // Bug fixes here apply to both variants automatically
+// build.gradle.kts
+productFlavors {
+    create("github") {
+        buildConfigField("boolean", "ENABLE_AUTO_UPDATER", "true")
+        buildConfigField("String", "DISTRIBUTION_CHANNEL", "\"github\"")
     }
-}
-```
-
-#### Flavor-Specific Code
-```kotlin
-// app/src/github/java/.../GitHubSpecificActivity.kt
-// This class ONLY exists in GitHub variant
-class GitHubSpecificActivity : Activity() {
-    // Auto-update functionality
-}
-
-// app/src/store/java/.../StoreSpecificActivity.kt  
-// This class ONLY exists in Store variant
-class StoreSpecificActivity : Activity() {
-    // Store-specific functionality
-}
-```
-
-#### Conditional Code (using BuildConfig)
-```kotlin
-// This code exists in BOTH variants but behaves differently
-object UpdateFeature {
-    fun startUpdateActivity(context: Context) {
-        if (BuildConfig.ENABLE_AUTO_UPDATER) {
-            // This code only runs in GitHub variant
-            UpdateActivity.start(context)
-        } else {
-            // This code only runs in Store variant
-            showStoreMessage(context)
-        }
-    }
-}
-```
-
-### 5. Resource Overrides
-
-**GitHub Variant:**
-- `main/res/values/strings.xml`: Base strings
-- `github/res/values/strings.xml`: `update_channel = "GitHub"`
-
-**Store Variant:**
-- `main/res/values/strings.xml`: Base strings  
-- `store/res/values/strings.xml`: `update_channel = "App Store"`
-
-### 6. Build Process
-
-When you build:
-
-**GitHub Variant (`assembleGithubRelease`):**
-1. Compiles `main/` + `github/` source sets
-2. Merges `main/AndroidManifest.xml` + `github/AndroidManifest.xml`
-3. Uses `github/res/` resources (overriding `main/res/` where needed)
-4. Sets `BuildConfig.ENABLE_AUTO_UPDATER = true`
-
-**Store Variant (`assembleStoreRelease`):**
-1. Compiles `main/` + `store/` source sets  
-2. Merges `main/AndroidManifest.xml` + `store/AndroidManifest.xml`
-3. Uses `store/res/` resources (overriding `main/res/` where needed)
-4. Sets `BuildConfig.ENABLE_AUTO_UPDATER = false`
-
-### 7. How Bug Fixes Work
-
-**Bug fixes are automatic because:**
-
-1. **Shared Code:** Most of your code is in `main/` and exists in both variants
-2. **Single Compilation:** When you fix a bug in `main/`, it's compiled into both APKs
-3. **No Duplication:** You don't need separate bug fixes for each variant
-
-**Example:**
-```kotlin
-// In main/java/.../MainActivity.kt
-fun processNotification(notification: Notification) {
-    // BUG: Missing null check
-    val title = notification.title.toString() // This could crash
     
-    // FIX: Add null check
-    val title = notification.title?.toString() ?: "Unknown"
-    
-    // This fix automatically applies to both GitHub and Store variants
-}
-```
-
-### 8. How Conditional Features Work
-
-**Using BuildConfig Fields:**
-```kotlin
-// Defined in build.gradle.kts
-buildConfigField("boolean", "ENABLE_AUTO_UPDATER", "true")  // GitHub
-buildConfigField("boolean", "ENABLE_AUTO_UPDATER", "false") // Store
-
-// Used in code
-if (BuildConfig.ENABLE_AUTO_UPDATER) {
-    // Only compiled into GitHub variant
-    checkForUpdates()
-}
-```
-
-**Using Source Sets:**
-```kotlin
-// app/src/github/java/.../UpdateManager.kt
-// This class only exists in GitHub variant
-class UpdateManager {
-    fun downloadUpdate() { /* ... */ }
-}
-
-// app/src/main/java/.../MainActivity.kt  
-// This code exists in both variants
-class MainActivity {
-    fun checkUpdates() {
-        // This line only compiles in GitHub variant
-        UpdateManager().downloadUpdate() // Compile error in Store variant
+    create("store") {
+        buildConfigField("boolean", "ENABLE_AUTO_UPDATER", "false") 
+        buildConfigField("String", "DISTRIBUTION_CHANNEL", "\"store\"")
     }
 }
+
+dependencies {
+    // Network libraries only for GitHub variant
+    githubImplementation("io.coil-kt:coil:2.4.0")
+    githubImplementation("com.squareup.okhttp3:okhttp:4.12.0")
+}
 ```
 
-### 9. Testing Different Variants
+### Conditional Code
+- **GitHub variant**: Uses `AppListAdapter.kt` with Coil for online icon loading
+- **Store variant**: Uses `app/src/store/java/.../AppListAdapter.kt` with local icons only
 
-**In Android Studio:**
-1. Open "Build Variants" panel
-2. Select "githubDebug" or "storeDebug"
-3. Run the app - you'll see different behavior
+### Permission Management
+- **Main manifest**: Contains all permissions including INTERNET
+- **Store manifest**: Inherits INTERNET permission for network voice downloads
 
-**Command Line:**
-```bash
-# Build GitHub variant
-./gradlew assembleGithubRelease
+## APK Output Files
 
-# Build Store variant  
-./gradlew assembleStoreRelease
-```
-
-### 10. Key Benefits
-
-1. **Single Codebase:** All bug fixes apply to both variants automatically
-2. **Conditional Features:** Easy to enable/disable features per variant
-3. **Store Compliance:** Store variant has no auto-update permissions
-4. **GitHub Features:** GitHub variant has full auto-update functionality
-5. **Resource Flexibility:** Different strings, icons, etc. per variant
-
-## Summary
-
-The Android build system "knows" what should be different through:
-
-1. **Source set organization** - Different files in different directories
-2. **Manifest merging** - Automatic combination of manifest files
-3. **BuildConfig fields** - Compile-time flags for conditional logic
-4. **Resource overriding** - Flavor-specific resources replace main resources
-
-This gives you the best of both worlds: shared code for bug fixes and maintenance, with variant-specific features for different distribution channels. 
+- **GitHub**: `SpeakThat-v1.3.3.apk` (with auto-updater)
+- **Store**: `SpeakThat-NoUpdater-v1.3.3.apk` (privacy-focused)

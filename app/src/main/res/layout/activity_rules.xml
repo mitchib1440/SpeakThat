@@ -13,47 +13,24 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
-        android:background="?attr/colorSurface">
+        android:layout_margin="16dp"
+        android:background="@drawable/gradient_card_subtle_right">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="8dp">
-
-            <LinearLayout
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/circle_background"
-                android:backgroundTint="@color/purple_300"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🔧"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rules"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary"
-                android:layout_marginStart="12dp" />
-
-        </LinearLayout>
+            android:text="🔧 Rules"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/purple_card_text_primary"
+            android:layout_marginBottom="12dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Create powerful rules to control when SpeakThat reads notifications based on your device state, time, and connections."
             android:textSize="14sp"
-            android:textColor="@color/text_secondary"
+            android:textColor="@color/purple_card_text_secondary"
             android:layout_marginBottom="16dp" />
 
         <LinearLayout
@@ -69,14 +46,16 @@
                 android:text="Enable Rules"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/purple_card_text_primary" />
 
             <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/switchMasterToggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:thumbTint="@color/purple_200"
-                android:trackTint="@color/purple_300" />
+                android:thumbTint="@color/switch_thumb_color"
+                android:trackTint="@color/switch_track_color"
+                app:thumbTint="@color/switch_thumb_color"
+                app:trackTint="@color/switch_track_color" />
 
         </LinearLayout>
 
@@ -103,17 +82,36 @@
 
 
         <!-- Add Rule Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAddRule"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create New Rule"
-            android:textColor="@color/white_100"
-            app:backgroundTint="@color/purple_200"
-            app:cornerRadius="12dp"
-            android:padding="16dp"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:background="@drawable/gradient_card_subtle_right">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddRule"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Create New Rule"
+                    android:textColor="@color/white_100"
+                    android:background="@android:color/transparent"
+                    android:padding="16dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    style="@style/Widget.Material3.Button.TextButton" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 
@@ -127,21 +125,12 @@
         android:gravity="center"
         android:padding="32dp">
 
-        <LinearLayout
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/circle_background"
-            android:backgroundTint="@color/purple_200"
-            android:gravity="center"
-            android:layout_marginBottom="24dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="🔧"
-                android:textSize="32sp" />
-
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔧"
+            android:textSize="48sp"
+            android:layout_marginBottom="24dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -163,17 +152,36 @@
             android:lineSpacingExtra="4dp"
             android:layout_marginBottom="32dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAddFirstRule"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create Your First Rule"
-            android:textColor="@color/white_100"
-            app:backgroundTint="@color/purple_200"
-            app:cornerRadius="12dp"
-            android:padding="16dp"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:background="@drawable/gradient_card_subtle_right">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddFirstRule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Create Your First Rule"
+                    android:textColor="@color/white_100"
+                    android:background="@android:color/transparent"
+                    android:padding="16dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    style="@style/Widget.Material3.Button.TextButton" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 

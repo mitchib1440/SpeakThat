@@ -6,6 +6,7 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import android.app.AlertDialog;
-import android.widget.Switch;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import android.view.View;
 import android.widget.LinearLayout;
 import java.util.HashSet;
@@ -34,6 +35,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private static final String KEY_CONTENT_TYPE = "content_type";
     private static final String KEY_SHOW_ADVANCED = "show_advanced_voice";
     private static final String KEY_TTS_LANGUAGE = "tts_language";
+
 
     // Default values
     private static final float DEFAULT_SPEECH_RATE = 1.0f;
@@ -55,10 +57,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private Spinner audioUsageSpinner;
     private Spinner contentTypeSpinner;
     private Spinner ttsLanguageSpinner;
+
     private Button previewButton;
     private Button resetButton;
-    private Button btnVoiceInfo;
-    private Switch switchAdvancedVoice;
+    private ImageView btnVoiceInfo;
+    private MaterialSwitch switchAdvancedVoice;
     private LinearLayout layoutAdvancedVoiceSection;
 
     // TTS and data
@@ -128,7 +131,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         layoutAdvancedVoiceSection = findViewById(R.id.layoutAdvancedVoiceSection);
         
         // Set up audio help button
-        Button btnAudioHelp = findViewById(R.id.btnAudioHelp);
+        ImageView btnAudioHelp = findViewById(R.id.btnAudioHelp);
         btnAudioHelp.setOnClickListener(v -> showAudioHelpDialog());
     }
 
@@ -238,6 +241,14 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         // Remove save button functionality - settings save automatically now
         resetButton.setOnClickListener(v -> resetToDefaults());
         btnVoiceInfo.setOnClickListener(v -> showVoiceInfoDialog());
+        
+        // Translation assistance functionality
+        LinearLayout cardTranslationHelp = findViewById(R.id.cardTranslationHelp);
+        cardTranslationHelp.setOnClickListener(v -> sendTranslationEmail());
+        
+        // Multi-language warning functionality
+        LinearLayout multiLanguageWarning = findViewById(R.id.multiLanguageWarning);
+        multiLanguageWarning.setOnClickListener(v -> showMultiLanguageWarningDialog());
     }
 
     private void setupVoicesAndLanguages() {
@@ -640,6 +651,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         });
     }
 
+
+
     private void setupAudioChannelSpinners() {
         // Audio Usage Spinner
         String[] audioUsageOptions = {
@@ -800,6 +813,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             contentTypeSpinner.setSelection(DEFAULT_CONTENT_TYPE);
             InAppLogger.log("VoiceSettings", "Content type index out of bounds, using default: " + DEFAULT_CONTENT_TYPE);
         }
+
+
 
         // Load advanced voice switch state
         boolean showAdvanced = sharedPreferences.getBoolean(KEY_SHOW_ADVANCED, false);
@@ -997,6 +1012,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         if (ttsLanguageSpinner.getAdapter() != null && ttsLanguageSpinner.getAdapter().getCount() > 0) {
             ttsLanguageSpinner.setSelection(0); // First item is always "Default (Use System Language)"
         }
+
+
 
         // Hide advanced options by default
         switchAdvancedVoice.setChecked(false);
@@ -1201,10 +1218,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private void showAudioHelpDialog() {
         String helpText = "🔊 Audio Stream Type\n" +
                 "Controls which volume slider affects notification speech:\n\n" +
-                "• Media: Uses media volume\n" +
-                "• Notification (Recommended): Uses notification volume (best for Duck Audio)\n" +
+                "• Media: Uses media volume (may conflict with ducking)\n" +
+                "• Notification (Recommended): Uses notification volume\n" +
                 "• Alarm: Uses alarm volume\n" +
-                "• Voice Call: Uses call volume\n" +
+                "• Voice Call: Uses call volume (often works well)\n" +
                 "• Assistance: Uses navigation volume\n\n" +
                 
                 "🎵 Content Type\n" +
@@ -1214,13 +1231,20 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 "• Notification Sound: For short notification sounds\n" +
                 "• Sonification: For UI sounds and alerts\n\n" +
                 
-                "💡 Recommendation\n" +
-                "For the best notification reading experience, use:\n" +
-                "Notification (Recommended) + Speech\n\n" +
+                "⚠️ Device Compatibility\n" +
+                "Audio behavior varies significantly across devices and Android versions. " +
+                "Some devices may not support ducking for certain streams or apps.\n\n" +
                 
-                "This ensures notifications use your notification volume (which is usually not affected by media ducking) " +
-                "and are optimized for clear speech rather than music.\n\n" +
-                "If Duck Audio does not work as expected, try other audio usages, but Notification is recommended for most devices.";
+                "💡 Troubleshooting Audio Issues\n" +
+                "If ducking isn't working well:\n" +
+                "• Try 'Voice Call' or 'Notification' streams (most compatible)\n" +
+                "• Avoid 'Media' stream as it may duck your TTS with your music\n" +
+                "• Different apps respond differently to audio ducking\n" +
+                "• The app automatically chooses the best ducking method for your device\n\n" +
+                
+                "🎯 Recommended Settings\n" +
+                "For best results: Notification + Speech\n" +
+                "Alternative: Voice Call + Speech";
 
         new android.app.AlertDialog.Builder(this)
                 .setTitle("Audio Settings Help")
@@ -1302,6 +1326,26 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         InAppLogger.log("VoiceSettings", "Voice info dialog shown");
     }
 
+    /**
+     * Shows a dialog explaining the multi-language limitation of the Specific Voice feature.
+     * 
+     * The dialog explains:
+     * - Current limitation of one voice at a time
+     * - Potential issues with mixed-language content
+     * - Recommendations for multi-language users
+     * - Future plans for multi-language support
+     */
+    private void showMultiLanguageWarningDialog() {
+        new android.app.AlertDialog.Builder(this)
+                .setTitle(getString(R.string.specific_voice_warning_dialog_title))
+                .setMessage(getString(R.string.specific_voice_warning_dialog_message))
+                .setPositiveButton(getString(R.string.specific_voice_warning_dialog_got_it), null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+                
+        InAppLogger.log("VoiceSettings", "Multi-language warning dialog shown");
+    }
+
     private void saveSpeechRate(float speechRate) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putFloat(KEY_SPEECH_RATE, speechRate);
@@ -1373,6 +1417,30 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         editor.putFloat(KEY_TTS_VOLUME, volume);
         editor.apply();
         InAppLogger.log("VoiceSettings", "TTS volume saved: " + (volume * 100) + "%");
+    }
+
+
+    
+    private void sendTranslationEmail() {
+        try {
+            android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_SENDTO);
+            intent.setData(android.net.Uri.parse("mailto:"));
+            intent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"micoycbusiness@gmail.com"});
+            intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "SpeakThat! Translations");
+            
+            StringBuilder body = new StringBuilder();
+            body.append("I would like to help translate SpeakThat! to my language.\n\n");
+            body.append("Languages I speak:\n\n");
+            body.append("[Please replace this text with the languages you speak]\n\n");
+            
+            intent.putExtra(android.content.Intent.EXTRA_TEXT, body.toString());
+            
+            startActivity(intent);
+            InAppLogger.logUserAction("Translation email opened from Voice Settings", "");
+        } catch (Exception e) {
+            Toast.makeText(this, "Unable to open email app", Toast.LENGTH_SHORT).show();
+            InAppLogger.logError("VoiceSettings", "Failed to open translation email: " + e.getMessage());
+        }
     }
 
     @Override

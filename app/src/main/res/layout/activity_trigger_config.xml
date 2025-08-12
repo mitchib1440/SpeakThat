@@ -27,15 +27,15 @@
                 android:visibility="gone"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
                         android:text="📱 Screen State"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/text_primary"
+                        android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -51,7 +51,7 @@
                         android:layout_height="wrap_content"
                         android:text="Choose when this trigger should activate:"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
 
                     <!-- Inversion Toggle -->
@@ -73,22 +73,26 @@
                                 android:layout_height="wrap_content"
                                 android:text="Invert Condition"
                                 android:textSize="16sp"
-                                android:textColor="@color/text_primary" />
+                                android:textColor="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Trigger when condition is NOT met"
                                 android:textSize="14sp"
-                                android:textColor="@color/text_secondary" />
+                                android:textColor="@color/purple_card_text_secondary" />
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchInvertScreenState"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:checked="false" />
+                            android:checked="false"
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color" />
 
                     </LinearLayout>
 
@@ -112,15 +116,15 @@
                 android:visibility="gone"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -169,11 +173,15 @@
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchInvertTimeSchedule"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:checked="false" />
+                            android:checked="false"
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color" />
 
                     </LinearLayout>
 
@@ -190,7 +198,7 @@
                             android:layout_height="wrap_content"
                             android:text="Start Time:"
                             android:textSize="16sp"
-                            android:textColor="@color/text_primary"
+                            android:textColor="@color/purple_card_text_primary"
                             android:layout_marginEnd="12dp" />
 
                         <TextView
@@ -200,18 +208,27 @@
                             android:layout_weight="1"
                             android:text="09:00"
                             android:textSize="16sp"
-                            android:textColor="@color/text_primary"
-                            android:background="@drawable/rounded_background"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:background="@drawable/bg_advanced_voice_section"
                             android:padding="8dp"
                             android:layout_marginEnd="12dp" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnStartTime"
+                        <FrameLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Set"
-                            android:textSize="14sp"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            android:background="@drawable/bg_advanced_voice_section">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnStartTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Set"
+                                android:textSize="14sp"
+                                android:background="@android:color/transparent"
+                                android:textColor="@color/white_100"
+                                style="@style/Widget.Material3.Button.TextButton" />
+
+                        </FrameLayout>
 
                     </LinearLayout>
 
@@ -228,7 +245,7 @@
                             android:layout_height="wrap_content"
                             android:text="End Time:"
                             android:textSize="16sp"
-                            android:textColor="@color/text_primary"
+                            android:textColor="@color/purple_card_text_primary"
                             android:layout_marginEnd="12dp" />
 
                         <TextView
@@ -238,18 +255,27 @@
                             android:layout_weight="1"
                             android:text="17:00"
                             android:textSize="16sp"
-                            android:textColor="@color/text_primary"
-                            android:background="@drawable/rounded_background"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:background="@drawable/bg_advanced_voice_section"
                             android:padding="8dp"
                             android:layout_marginEnd="12dp" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnEndTime"
+                        <FrameLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Set"
-                            android:textSize="14sp"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            android:background="@drawable/bg_advanced_voice_section">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnEndTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Set"
+                                android:textSize="14sp"
+                                android:background="@android:color/transparent"
+                                android:textColor="@color/white_100"
+                                style="@style/Widget.Material3.Button.TextButton" />
+
+                        </FrameLayout>
 
                     </LinearLayout>
 
@@ -259,7 +285,7 @@
                         android:layout_height="wrap_content"
                         android:text="Days of Week:"
                         android:textSize="16sp"
-                        android:textColor="@color/text_primary"
+                        android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="8dp" />
 
                     <TextView
@@ -268,8 +294,8 @@
                         android:layout_height="wrap_content"
                         android:text="No days selected"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
-                        android:background="@drawable/rounded_background"
+                        android:textColor="@color/purple_card_text_secondary"
+                        android:background="@drawable/bg_advanced_voice_section"
                         android:padding="8dp"
                         android:layout_marginBottom="8dp" />
 
@@ -292,15 +318,15 @@
                 android:visibility="gone"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -308,7 +334,7 @@
                         android:text="📶 Bluetooth Device"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/text_primary"
+                        android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -316,7 +342,7 @@
                         android:layout_height="wrap_content"
                         android:text="Choose which Bluetooth devices should trigger this rule:"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
 
                     <!-- Inversion Toggle -->
@@ -338,22 +364,26 @@
                                 android:layout_height="wrap_content"
                                 android:text="Invert Condition"
                                 android:textSize="16sp"
-                                android:textColor="@color/text_primary" />
+                                android:textColor="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Trigger when condition is NOT met"
                                 android:textSize="14sp"
-                                android:textColor="@color/text_secondary" />
+                                android:textColor="@color/purple_card_text_secondary" />
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchInvertBluetooth"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:checked="false" />
+                            android:checked="false"
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color" />
 
                     </LinearLayout>
 
@@ -387,11 +417,15 @@
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchAnyDevice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:checked="true" />
+                            android:checked="true"
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color" />
 
                     </LinearLayout>
 
@@ -422,13 +456,22 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnSelectDevices"
+                    <FrameLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Select Devices"
-                        android:textSize="14sp"
-                        style="@style/Widget.Material3.Button.OutlinedButton" />
+                        android:background="@drawable/bg_advanced_voice_section">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnSelectDevices"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Select Devices"
+                            android:textSize="14sp"
+                            android:background="@android:color/transparent"
+                            android:textColor="@color/white_100"
+                            style="@style/Widget.Material3.Button.TextButton" />
+
+                    </FrameLayout>
 
                 </LinearLayout>
 
@@ -443,15 +486,15 @@
                 android:visibility="gone"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface"
-                app:strokeColor="@color/purple_300"
-                app:strokeWidth="1dp">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:background="@drawable/gradient_card_subtle_right">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -459,7 +502,7 @@
                         android:text="📶 WiFi Network"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:textColor="@color/text_primary"
+                        android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -467,7 +510,7 @@
                         android:layout_height="wrap_content"
                         android:text="Choose which WiFi networks should trigger this rule:"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
 
                     <!-- Inversion Toggle -->
@@ -489,22 +532,26 @@
                                 android:layout_height="wrap_content"
                                 android:text="Invert Condition"
                                 android:textSize="16sp"
-                                android:textColor="@color/text_primary" />
+                                android:textColor="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Trigger when condition is NOT met"
                                 android:textSize="14sp"
-                                android:textColor="@color/text_secondary" />
+                                android:textColor="@color/purple_card_text_secondary" />
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchInvertWifi"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:checked="false" />
+                            android:checked="false"
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color" />
 
                     </LinearLayout>
 
@@ -538,11 +585,15 @@
 
                         </LinearLayout>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchAnyNetwork"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:checked="true" />
+                            android:checked="true"
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color" />
 
                     </LinearLayout>
 
@@ -597,24 +648,63 @@
         android:padding="16dp"
         android:background="?attr/colorSurface">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCancel"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cancel"
-            android:textSize="16sp"
             android:layout_marginEnd="8dp"
-            style="@style/Widget.Material3.Button.OutlinedButton" />
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSave"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gradient_card_subtle_right">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel"
+                    android:textSize="16sp"
+                    android:textColor="@color/white_100"
+                    android:background="@android:color/transparent"
+                    style="@style/Widget.Material3.Button.TextButton" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Save"
-            android:textSize="16sp"
-            android:layout_marginStart="8dp" />
+            android:layout_marginStart="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gradient_card_subtle_right">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Save"
+                    android:textSize="16sp"
+                    android:textColor="@color/white_100"
+                    android:background="@android:color/transparent"
+                    style="@style/Widget.Material3.Button.TextButton" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 

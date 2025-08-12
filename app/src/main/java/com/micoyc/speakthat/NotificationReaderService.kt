@@ -1,6 +1,11 @@
 package com.micoyc.speakthat
 
 import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
@@ -14,6 +19,7 @@ import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.util.Log
+import androidx.core.app.NotificationCompat
 import com.micoyc.speakthat.VoiceSettingsActivity
 import com.micoyc.speakthat.BehaviorSettingsActivity
 import java.text.SimpleDateFormat
@@ -22,8 +28,6 @@ import java.util.HashMap
 import java.util.HashSet
 import java.util.Locale
 import kotlin.collections.ArrayList
-import android.app.NotificationManager
-import android.content.Context
 import com.micoyc.speakthat.rules.RuleManager
 
 class NotificationReaderService : NotificationListenerService(), TextToSpeech.OnInitListener, SensorEventListener, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -120,6 +124,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     // Batch processing for database operations
     private val historyBatchQueue = mutableListOf<NotificationData>()
     private val batchHandler = android.os.Handler(android.os.Looper.getMainLooper())
+    
+    // Notification manager for SpeakThat's own notifications
+    private val notificationManager by lazy { getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
     private val batchRunnable = Runnable { processHistoryBatch() }
     private val BATCH_DELAY_MS = 5000L // 5 seconds
     private val MAX_BATCH_SIZE = 10
@@ -163,6 +170,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val KEY_SHAKE_TIMEOUT_SECONDS = "shake_timeout_seconds"
         private const val KEY_WAVE_TIMEOUT_SECONDS = "wave_timeout_seconds"
         
+        // Notification IDs
+        private const val PERSISTENT_NOTIFICATION_ID = 1001
+        private const val READING_NOTIFICATION_ID = 1002
+        
         // Filter system keys
         private const val KEY_APP_LIST_MODE = "app_list_mode"
         private const val KEY_APP_LIST = "app_list"
@@ -188,10 +199,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Conditional rules settings
         private const val KEY_CONDITIONAL_RULES = "conditional_rules"
         
+        // Notification settings
+        private const val KEY_PERSISTENT_NOTIFICATION = "persistent_notification"
+        private const val KEY_NOTIFICATION_WHILE_READING = "notification_while_reading"
+        
         // Media notification filtering settings
         private const val KEY_MEDIA_FILTERING_ENABLED = "media_filtering_enabled"
         private const val KEY_MEDIA_FILTER_EXCEPTED_APPS = "media_filter_excepted_apps"
         private const val KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS = "media_filter_important_keywords"
+        private const val KEY_MEDIA_FILTERED_APPS = "media_filtered_apps"
+        private const val KEY_MEDIA_FILTERED_APPS_PRIVATE = "media_filtered_apps_private"
         
         // Persistent/silent notification filtering settings
         private const val KEY_PERSISTENT_FILTERING_ENABLED = "persistent_filtering_enabled"
@@ -300,6 +317,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "NotificationReaderService initialization completed successfully")
             InAppLogger.log("Service", "Service initialization completed successfully")
             
+            // Show persistent notification if enabled and master switch is on
+            checkAndShowPersistentNotification()
+            
         } catch (e: Exception) {
             Log.e(TAG, "Critical error during service initialization", e)
             InAppLogger.logError("Service", "Critical initialization error: " + e.message)
@@ -328,6 +348,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 isCurrentlySpeaking = false
             }
             
+            // Clean up enhanced ducking if active
+            cleanupMediaBehavior()
+            
+            // Clean up VolumeShaper resources if active
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && isUsingVolumeShaper) {
+                cleanupVolumeShaper()
+            }
+            
             // Shutdown TTS
             textToSpeech?.shutdown()
             textToSpeech = null
@@ -351,6 +379,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             // Unregister voice settings listener
             voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
+            
+            // Hide all SpeakThat notifications
+            hidePersistentNotification()
+            hideReadingNotification()
             
             Log.d(TAG, "NotificationReaderService cleanup completed")
             InAppLogger.log("Service", "Service cleanup completed")
@@ -420,6 +452,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     }
                     Log.d(TAG, "Audio mode check passed - device is in $modeName mode, proceeding with notification from $packageName")
                     InAppLogger.log("AudioMode", "Audio mode check passed: $modeName")
+                }
+                
+                // Check phone calls - if on a call and honouring phone calls, don't process notifications
+                if (BehaviorSettingsActivity.shouldHonourPhoneCalls(this)) {
+                    Log.d(TAG, "Phone call check failed - device is on a call, ignoring notification from $packageName")
+                    InAppLogger.log("PhoneCalls", "Notification ignored due to active phone call")
+                    return
+                } else {
+                    // Log when phone call check passes (for debugging)
+                    Log.d(TAG, "Phone call check passed - device is not on a call, proceeding with notification from $packageName")
+                    InAppLogger.log("PhoneCalls", "Phone call check passed: no active call")
                 }
                 
                 // Get app name
@@ -1086,6 +1129,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val isMediaFilteringEnabled = sharedPreferences?.getBoolean(KEY_MEDIA_FILTERING_ENABLED, false) ?: false
         val exceptedApps = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTER_EXCEPTED_APPS, HashSet()) ?: HashSet())
         val importantKeywords = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, HashSet()) ?: HashSet())
+        val filteredMediaApps = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTERED_APPS, HashSet()) ?: HashSet())
         
         // If no custom important keywords are set, use defaults
         if (importantKeywords.isEmpty()) {
@@ -1095,7 +1139,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         mediaFilterPreferences = MediaNotificationDetector.MediaFilterPreferences(
             isMediaFilteringEnabled = isMediaFilteringEnabled,
             exceptedApps = exceptedApps,
-            importantKeywords = importantKeywords
+            importantKeywords = importantKeywords,
+            filteredMediaApps = filteredMediaApps
         )
         
         // Load persistent filtering settings
@@ -1111,6 +1156,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Load speech template
         speechTemplate = sharedPreferences?.getString(KEY_SPEECH_TEMPLATE, "{app} notified you: {content}") ?: "{app} notified you: {content}"
+        
+        // Load notification settings
+        val isPersistentNotificationEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_NOTIFICATION, false) ?: false
+        val isNotificationWhileReadingEnabled = sharedPreferences?.getBoolean(KEY_NOTIFICATION_WHILE_READING, false) ?: false
         
         Log.d(TAG, "Filter settings loaded - appMode: $appListMode, apps: ${appList.size}, blocked words: ${blockedWords.size}, replacements: ${wordReplacements.size}")
         Log.d(TAG, "Behavior settings loaded - mode: $notificationBehavior, priority apps: ${priorityApps.size}")
@@ -1498,8 +1547,30 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Clean up media behavior effects
         cleanupMediaBehavior()
         
+        // Hide reading notification since we're no longer speaking
+        hideReadingNotification()
+        
         Log.d(TAG, "TTS stopped due to $triggerType")
         InAppLogger.logTTSEvent("TTS stopped by $triggerType", "User interrupted speech")
+    }
+    
+    /**
+     * Stop current TTS speech without clearing the queue.
+     * Used internally by audio focus handlers.
+     */
+    private fun stopCurrentSpeech() {
+        textToSpeech?.stop()
+        isCurrentlySpeaking = false
+        unregisterShakeListener()
+        
+        // Clean up media behavior effects
+        cleanupMediaBehavior()
+        
+        // Hide reading notification since we're no longer speaking
+        hideReadingNotification()
+        
+        Log.d(TAG, "Current TTS speech stopped by audio focus change")
+        InAppLogger.logTTSEvent("TTS stopped by audio focus", "Focus loss interrupted speech")
     }
     
     // Call this when settings change
@@ -1570,22 +1641,39 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 return true
             }
             "duck" -> {
-                Log.d(TAG, "Media behavior: DUCK - lowering media volume to $duckingVolume%")
-                InAppLogger.log("MediaBehavior", "Ducking media volume - notification will be spoken")
-                val ducked = duckMediaVolume()
-                // Log device and audio info for diagnostics
-                val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-                val ttsUsage = voicePrefs.getInt("audio_usage", android.media.AudioAttributes.USAGE_ASSISTANT)
-                val ttsContent = voicePrefs.getInt("content_type", android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
-                val currentVolume = audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
-                val maxVolume = audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)
-                InAppLogger.log("MediaBehavior", "Duck mode triggered. Device: ${android.os.Build.MODEL}, Android: ${android.os.Build.VERSION.SDK_INT}, TTS usage: $ttsUsage, TTS content: $ttsContent, Media volume: $currentVolume/$maxVolume")
-                // Warn if TTS is routed through the same stream as media
-                if (ttsUsage == android.media.AudioAttributes.USAGE_MEDIA || ttsUsage == android.media.AudioAttributes.USAGE_UNKNOWN) {
-                    Log.w(TAG, "TTS may be routed through the same stream as media. Ducking may lower TTS volume as well.")
-                    InAppLogger.log("MediaBehavior", "Warning: TTS may be affected by ducking on this device. TTS usage: $ttsUsage")
+                Log.d(TAG, "Media behavior: DUCK - attempting enhanced ducking approach")
+                InAppLogger.log("MediaBehavior", "Enhanced ducking initiated - trying system ducking first")
+                
+                // Step 1: Try enhanced ducking with system audio focus
+                val enhancedDuckSuccess = tryEnhancedDucking()
+                
+                if (enhancedDuckSuccess) {
+                    Log.d(TAG, "Enhanced ducking successful - system is handling media ducking")
+                    InAppLogger.log("MediaBehavior", "System ducking activated successfully")
+                    return true
+                        } else {
+            Log.d(TAG, "Enhanced ducking not available - falling back to manual volume control")
+            InAppLogger.log("MediaBehavior", "Falling back to manual ducking")
+                    
+                    // Step 2: Fall back to manual ducking (existing implementation)
+                    val ducked = duckMediaVolume()
+                    
+                    // Log device and audio info for diagnostics
+                    val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+                    val ttsUsage = voicePrefs.getInt("audio_usage", android.media.AudioAttributes.USAGE_ASSISTANT)
+                    val ttsContent = voicePrefs.getInt("content_type", android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                    val currentVolume = audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
+                    val maxVolume = audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)
+                    InAppLogger.log("MediaBehavior", "Manual duck mode triggered. Device: ${android.os.Build.MODEL}, Android: ${android.os.Build.VERSION.SDK_INT}, TTS usage: $ttsUsage, TTS content: $ttsContent, Media volume: $currentVolume/$maxVolume")
+                    
+                    // Warn if TTS is routed through the same stream as media
+                    if (ttsUsage == android.media.AudioAttributes.USAGE_MEDIA || ttsUsage == android.media.AudioAttributes.USAGE_UNKNOWN) {
+                        Log.w(TAG, "TTS may be routed through the same stream as media. Ducking may lower TTS volume as well.")
+                        InAppLogger.log("MediaBehavior", "Warning: TTS may be affected by ducking on this device. TTS usage: $ttsUsage")
+                    }
+                    
+                    return ducked
                 }
-                return ducked
             }
             "silence" -> {
                 Log.d(TAG, "Media behavior: SILENCE - not speaking due to active media")
@@ -1654,7 +1742,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Calculate ducked volume
             val duckedVolume = (maxVolume * duckingVolume / 100).coerceAtLeast(1)
             
-            // Set ducked volume
+            // Try VolumeShaper for smooth transitions on Android 8.0+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                val volumeShaperResult = tryVolumeShaperDuck(currentVolume.toFloat(), duckedVolume.toFloat(), maxVolume)
+                if (volumeShaperResult) {
+                    Log.d(TAG, "VolumeShaper ducking applied from $currentVolume to $duckedVolume")
+                    InAppLogger.log("MediaBehavior", "Smooth ducking applied to $duckingVolume% using VolumeShaper")
+                    return true
+                } else {
+                    Log.d(TAG, "VolumeShaper ducking failed - falling back to manual volume control")
+                }
+            }
+            
+            // Fallback to abrupt volume change
             audioManager.setStreamVolume(
                 android.media.AudioManager.STREAM_MUSIC,
                 duckedVolume,
@@ -1674,17 +1774,41 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private fun restoreMediaVolume() {
         if (originalMusicVolume != -1) {
             try {
+                val currentVolume = audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
+                val maxVolume = audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)
+                
+                Log.d(TAG, "Restoring media volume from $currentVolume to $originalMusicVolume (max: $maxVolume)")
+                
+                // Try smooth restoration on Android 8.0+ if we were using smooth ducking
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && isUsingVolumeShaper) {
+                    Log.d(TAG, "Attempting smooth volume restoration from $currentVolume to $originalMusicVolume")
+                    InAppLogger.log("MediaBehavior", "Smooth volume restoration using VolumeShaper")
+                    
+                    val volumeShaperResult = tryVolumeShaperRestore(currentVolume.toFloat(), originalMusicVolume.toFloat(), maxVolume)
+                    if (volumeShaperResult) {
+                        Log.d(TAG, "Smooth restoration started - will complete automatically")
+                        // Don't reset originalMusicVolume here - let the smooth restoration handle it
+                        return
+                    } else {
+                        Log.d(TAG, "Smooth restoration failed - falling back to immediate restoration")
+                    }
+                }
+                
+                // Immediate restoration (fallback or default)
                 audioManager.setStreamVolume(
                     android.media.AudioManager.STREAM_MUSIC,
                     originalMusicVolume,
                     0
                 )
-                Log.d(TAG, "Media volume restored to $originalMusicVolume")
+                Log.d(TAG, "Media volume immediately restored to $originalMusicVolume")
                 InAppLogger.log("MediaBehavior", "Restored media volume")
                 originalMusicVolume = -1
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to restore media volume", e)
+                originalMusicVolume = -1 // Reset on error to prevent stuck state
             }
+        } else {
+            Log.d(TAG, "No original volume to restore (originalMusicVolume = -1)")
         }
     }
     
@@ -1704,6 +1828,371 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "Audio focus released")
     }
     
+    // Enhanced ducking variables for tracking system ducking state
+    private var enhancedDuckingFocusRequest: android.media.AudioFocusRequest? = null
+    private var isUsingEnhancedDucking = false
+    
+    // Smooth ducking for gradual transitions (Android 8.0+)
+    private var volumeShaper: android.media.VolumeShaper? = null // Kept for compatibility
+    private var isUsingVolumeShaper = false // Actually tracks smooth ducking state
+    
+    /**
+     * ENHANCED DUCKING APPROACH
+     * 
+     * This method attempts to use modern Android audio focus APIs to achieve better ducking behavior.
+     * It requests AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK which tells the system that we want temporary
+     * focus and that other apps should duck (lower their volume) rather than pause completely.
+     * 
+     * Benefits:
+     * - System handles the ducking automatically
+     * - More consistent timing across devices
+     * - Better integration with Android's audio policy
+     * - Can extend ducking duration to match TTS length
+     * 
+     * Falls back to manual ducking if system ducking is not supported or fails.
+     */
+    private fun tryEnhancedDucking(): Boolean {
+        // Only attempt enhanced ducking on Android 8.0+ where the APIs are more reliable
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
+            Log.d(TAG, "Enhanced ducking not available on Android < 8.0")
+            return false
+        }
+        
+        try {
+            // Get TTS audio attributes from voice settings
+            val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+            val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
+            val ttsContentIndex = voicePrefs.getInt("content_type", 0) // Default to SPEECH index
+            
+            // Convert index to actual usage constant (matching VoiceSettingsActivity)
+            val ttsUsage = when (ttsUsageIndex) {
+                0 -> android.media.AudioAttributes.USAGE_MEDIA
+                1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
+                2 -> android.media.AudioAttributes.USAGE_ALARM
+                3 -> android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION
+                4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+                else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE // Safe fallback
+            }
+            
+            val ttsContent = when (ttsContentIndex) {
+                0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                else -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH // Safe fallback
+            }
+            
+            Log.d(TAG, "Enhanced ducking - TTS usage index: $ttsUsageIndex -> usage constant: $ttsUsage")
+            InAppLogger.log("MediaBehavior", "Enhanced ducking - TTS usage: $ttsUsage (index: $ttsUsageIndex)")
+            
+            // Create audio attributes for our TTS
+            val ttsAudioAttributes = android.media.AudioAttributes.Builder()
+                .setUsage(ttsUsage)
+                .setContentType(ttsContent)
+                .build()
+            
+            // Create focus request for enhanced ducking
+            enhancedDuckingFocusRequest = android.media.AudioFocusRequest.Builder(
+                android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
+            )
+                .setAudioAttributes(ttsAudioAttributes)
+                .setOnAudioFocusChangeListener { focusChange ->
+                    handleEnhancedDuckingFocusChange(focusChange)
+                }
+                .setAcceptsDelayedFocusGain(false) // We want immediate response for notifications
+                .setWillPauseWhenDucked(false) // We don't want our TTS to be ducked
+                .build()
+            
+            // Check if enhanced ducking is viable for this TTS usage
+            // Note: Some devices reject enhanced ducking for certain usage types
+            if (ttsUsage == android.media.AudioAttributes.USAGE_MEDIA || 
+                ttsUsage == android.media.AudioAttributes.USAGE_UNKNOWN ||
+                ttsUsage == android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE) {
+                Log.d(TAG, "Enhanced ducking skipped - TTS usage ($ttsUsage) may be ducked by system or rejected by device")
+                InAppLogger.log("MediaBehavior", "Enhanced ducking skipped - TTS usage $ttsUsage may be affected by system ducking or rejected by device audio policy")
+                return false
+            }
+            
+            // Allow Notification stream to try enhanced ducking since some users report it works better
+            if (ttsUsage == android.media.AudioAttributes.USAGE_NOTIFICATION) {
+                Log.d(TAG, "Enhanced ducking with Notification stream - may work on some devices despite potential conflicts")
+                InAppLogger.log("MediaBehavior", "Attempting enhanced ducking with Notification stream (usage: $ttsUsage) - device-dependent behavior")
+            }
+            
+            // Request audio focus
+            val result = audioManager.requestAudioFocus(enhancedDuckingFocusRequest!!)
+            
+            // Debug logging to understand the result codes  
+            val resultText = when (result) {
+                android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED -> "GRANTED"
+                android.media.AudioManager.AUDIOFOCUS_REQUEST_FAILED -> "FAILED" 
+                android.media.AudioManager.AUDIOFOCUS_REQUEST_DELAYED -> "DELAYED"
+                else -> "UNKNOWN($result)"
+            }
+            Log.d(TAG, "Enhanced ducking audio focus result: $resultText ($result)")
+            InAppLogger.log("MediaBehavior", "Enhanced ducking audio focus result: $resultText (device: ${android.os.Build.MODEL}, usage: $ttsUsage)")
+            
+            if (result == android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                isUsingEnhancedDucking = true
+                Log.d(TAG, "Enhanced ducking focus GRANTED - system should duck other media automatically")
+                InAppLogger.log("MediaBehavior", "Enhanced ducking GRANTED - system handling media volume reduction")
+                return true
+            } else {
+                Log.d(TAG, "Enhanced ducking focus request $resultText - falling back to manual ducking")
+                InAppLogger.log("MediaBehavior", "Enhanced ducking $resultText on ${android.os.Build.MODEL} - this device may have restrictive audio focus policies")
+                cleanupEnhancedDucking()
+                return false
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Enhanced ducking failed with exception", e)
+            InAppLogger.logError("MediaBehavior", "Enhanced ducking exception: ${e.message}")
+            cleanupEnhancedDucking()
+            return false
+        }
+    }
+    
+    /**
+     * Handle audio focus changes during enhanced ducking.
+     * This is called by the system when audio focus state changes.
+     */
+    private fun handleEnhancedDuckingFocusChange(focusChange: Int) {
+        when (focusChange) {
+            android.media.AudioManager.AUDIOFOCUS_GAIN -> {
+                Log.d(TAG, "Enhanced ducking: Audio focus gained")
+                // TTS should continue/start speaking
+            }
+            android.media.AudioManager.AUDIOFOCUS_LOSS -> {
+                Log.d(TAG, "Enhanced ducking: Audio focus lost permanently")
+                InAppLogger.log("MediaBehavior", "Enhanced ducking focus lost - cleaning up")
+                cleanupEnhancedDucking()
+                // Stop TTS if it's currently speaking
+                if (isCurrentlySpeaking) {
+                    stopCurrentSpeech()
+                }
+            }
+            android.media.AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
+                Log.d(TAG, "Enhanced ducking: Audio focus lost temporarily")
+                // Pause TTS temporarily - it should resume when focus is regained
+                if (isCurrentlySpeaking) {
+                    textToSpeech?.stop()
+                }
+            }
+            android.media.AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
+                Log.d(TAG, "Enhanced ducking: Can duck (should not happen with our focus request)")
+                // This shouldn't happen with our setup, but handle gracefully
+            }
+        }
+    }
+    
+    /**
+     * Release enhanced ducking focus and clean up state.
+     * This should be called when TTS completes or is interrupted.
+     */
+    private fun releaseEnhancedDucking() {
+        if (isUsingEnhancedDucking && enhancedDuckingFocusRequest != null) {
+            try {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    audioManager.abandonAudioFocusRequest(enhancedDuckingFocusRequest!!)
+                    Log.d(TAG, "Enhanced ducking focus released - media should return to normal volume")
+                    InAppLogger.log("MediaBehavior", "Enhanced ducking released - system restoring media volume")
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error releasing enhanced ducking focus", e)
+                InAppLogger.logError("MediaBehavior", "Error releasing enhanced ducking: ${e.message}")
+            }
+            
+            cleanupEnhancedDucking()
+        }
+    }
+    
+    /**
+     * Clean up enhanced ducking state without focus operations.
+     * Used for error handling and state reset.
+     */
+    private fun cleanupEnhancedDucking() {
+        enhancedDuckingFocusRequest = null
+        isUsingEnhancedDucking = false
+    }
+    
+    /**
+     * SMOOTH DUCKING APPROACH
+     * 
+     * Provides smooth, gradual volume transitions instead of abrupt changes.
+     * This creates a much more professional audio experience similar to professional audio software.
+     * Available on Android 8.0+ (API 26+).
+     * 
+     * Note: Originally designed for VolumeShaper, but VolumeShaper requires access to specific
+     * AudioTrack/MediaPlayer instances which aren't available for the media stream directly.
+     * Instead, we use smooth manual volume transitions with Handler-based stepping.
+     */
+    
+    /**
+     * Apply smooth volume ducking using gradual volume changes.
+     * Creates a smooth fade-down curve over 500ms.
+     * 
+     * @param fromVolume Current volume level (0.0 to maxVolume)
+     * @param toVolume Target ducked volume level (0.0 to maxVolume)  
+     * @param maxVolume Maximum volume for the stream
+     * @return true if smooth ducking was successfully started, false otherwise
+     */
+    @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.O)
+    private fun tryVolumeShaperDuck(fromVolume: Float, toVolume: Float, maxVolume: Int): Boolean {
+        return try {
+            // Clean up any existing smooth ducking
+            cleanupVolumeShaper()
+            
+            val fromVolumeInt = fromVolume.toInt()
+            val toVolumeInt = toVolume.toInt()
+            
+            if (fromVolumeInt == toVolumeInt) {
+                Log.d(TAG, "Smooth ducking skipped - volumes are the same ($fromVolumeInt)")
+                return false
+            }
+            
+            isUsingVolumeShaper = true
+            val handler = android.os.Handler(android.os.Looper.getMainLooper())
+            val durationMs = 500L
+            val steps = 10
+            val stepDelay = durationMs / steps
+            val volumeStep = (toVolumeInt - fromVolumeInt).toFloat() / steps
+            
+            Log.d(TAG, "Smooth ducking started: $fromVolumeInt → $toVolumeInt over ${durationMs}ms")
+            
+            for (i in 1..steps) {
+                val delay = stepDelay * i
+                
+                handler.postDelayed({
+                    if (isUsingVolumeShaper) { // Check if still active
+                        val currentVolume = (fromVolumeInt + (volumeStep * i)).toInt()
+                            .coerceIn(0, maxVolume)
+                        
+                        try {
+                            audioManager.setStreamVolume(
+                                android.media.AudioManager.STREAM_MUSIC,
+                                currentVolume,
+                                0
+                            )
+                        } catch (e: Exception) {
+                            Log.w(TAG, "Smooth ducking step $i failed", e)
+                        }
+                    }
+                }, delay)
+            }
+            
+            true
+            
+        } catch (e: Exception) {
+            Log.d(TAG, "Smooth ducking failed: ${e.message}")
+            cleanupVolumeShaper()
+            false
+        }
+    }
+    
+    /**
+     * Apply smooth volume restoration using gradual volume changes.
+     * Creates a smooth fade-up curve over 300ms.
+     * 
+     * @param fromVolume Current volume level (0.0 to maxVolume)
+     * @param toVolume Target restored volume level (0.0 to maxVolume)
+     * @param maxVolume Maximum volume for the stream
+     * @return true if smooth restoration was successfully started, false otherwise
+     */
+    @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.O)
+    private fun tryVolumeShaperRestore(fromVolume: Float, toVolume: Float, maxVolume: Int): Boolean {
+        return try {
+            val fromVolumeInt = fromVolume.toInt()
+            val toVolumeInt = toVolume.toInt()
+            
+            if (fromVolumeInt == toVolumeInt) {
+                Log.d(TAG, "Smooth restoration skipped - volumes are the same ($fromVolumeInt)")
+                originalMusicVolume = -1 // Clear since no restoration needed
+                cleanupVolumeShaper()
+                return false
+            }
+            
+            // Keep smooth ducking active for restoration
+            val handler = android.os.Handler(android.os.Looper.getMainLooper())
+            val durationMs = 300L // Faster restoration than ducking
+            val steps = 8
+            val stepDelay = durationMs / steps
+            val volumeStep = (toVolumeInt - fromVolumeInt).toFloat() / steps
+            
+            Log.d(TAG, "Smooth restoration: $fromVolumeInt → $toVolumeInt over ${durationMs}ms")
+            
+            // Set up timeout failsafe (in case smooth restoration fails)
+            handler.postDelayed({
+                if (originalMusicVolume != -1 && isUsingVolumeShaper) {
+                    Log.w(TAG, "Smooth restoration timeout - forcing immediate restoration to $originalMusicVolume")
+                    try {
+                        audioManager.setStreamVolume(android.media.AudioManager.STREAM_MUSIC, originalMusicVolume, 0)
+                        originalMusicVolume = -1
+                        cleanupVolumeShaper()
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Timeout restoration failed", e)
+                    }
+                }
+            }, durationMs + 200) // Timeout slightly after expected completion
+            
+            for (i in 1..steps) {
+                val delay = stepDelay * i
+                
+                handler.postDelayed({
+                    if (isUsingVolumeShaper && originalMusicVolume != -1) { // Check if still active and not cancelled
+                        val currentVolume = (fromVolumeInt + (volumeStep * i)).toInt()
+                            .coerceIn(0, maxVolume)
+                        
+                        try {
+                            audioManager.setStreamVolume(
+                                android.media.AudioManager.STREAM_MUSIC,
+                                currentVolume,
+                                0
+                            )
+                        } catch (e: Exception) {
+                            Log.w(TAG, "Smooth restoration step $i failed", e)
+                        }
+                        
+                        // Final cleanup after last step
+                        if (i == steps) {
+                            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                                if (originalMusicVolume != -1) { // Only clean up if not already cleaned by timeout
+                                    Log.d(TAG, "Smooth restoration completed - final volume: $currentVolume")
+                                    originalMusicVolume = -1 // Clear the stored volume
+                                    cleanupVolumeShaper() // Clean up smooth ducking state
+                                }
+                            }, 25) // Small delay to ensure volume is set
+                        }
+                    }
+                }, delay)
+            }
+            
+            true
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Smooth restoration failed: ${e.message}")
+            originalMusicVolume = -1
+            cleanupVolumeShaper()
+            false
+        }
+    }
+    
+    /**
+     * Clean up smooth ducking resources and reset state.
+     * Should be called when transitioning to manual volume control or when done with smooth transitions.
+     */
+    @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.O)
+    private fun cleanupVolumeShaper() {
+        try {
+            // Cancel any pending smooth ducking operations
+            volumeShaper?.close()
+            volumeShaper = null
+            isUsingVolumeShaper = false
+            Log.d(TAG, "Smooth ducking cleaned up")
+        } catch (e: Exception) {
+            Log.d(TAG, "Smooth ducking cleanup error: ${e.message}")
+        }
+    }
+    
     private fun cleanupMediaBehavior() {
         when (mediaBehavior) {
             "pause" -> {
@@ -1711,8 +2200,74 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 releaseAudioFocus()
             }
             "duck" -> {
-                // Restore original media volume
-                restoreMediaVolume()
+                // Clean up enhanced ducking first if it was used
+                if (isUsingEnhancedDucking) {
+                    releaseEnhancedDucking()
+                } else {
+                    // Restore original media volume for manual ducking
+                    restoreMediaVolume()
+                }
+                
+                // Clean up smooth ducking if it was used
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && isUsingVolumeShaper) {
+                    Log.d(TAG, "Cleaning up smooth ducking and ensuring volume restoration")
+                    // Force immediate restoration if smooth restoration didn't complete
+                    if (originalMusicVolume != -1) {
+                        try {
+                            audioManager.setStreamVolume(android.media.AudioManager.STREAM_MUSIC, originalMusicVolume, 0)
+                            Log.d(TAG, "Force-restored volume to $originalMusicVolume during cleanup")
+                            originalMusicVolume = -1
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Failed to force-restore volume during cleanup", e)
+                        }
+                    }
+                    cleanupVolumeShaper()
+                }
+            }
+            // "ignore" and "silence" don't need cleanup
+        }
+    }
+    
+    /**
+     * Clean up media behavior with delayed VolumeShaper cleanup to allow smooth restoration to complete.
+     * Used when TTS completes normally to avoid race condition between restoration and cleanup.
+     */
+    private fun cleanupMediaBehaviorDelayed() {
+        when (mediaBehavior) {
+            "pause" -> {
+                // Release audio focus to allow media to resume
+                releaseAudioFocus()
+            }
+            "duck" -> {
+                // Clean up enhanced ducking first if it was used
+                if (isUsingEnhancedDucking) {
+                    releaseEnhancedDucking()
+                } else {
+                    // Restore original media volume for manual ducking
+                    restoreMediaVolume()
+                }
+                
+                // Delay VolumeShaper cleanup to allow smooth restoration to complete
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && isUsingVolumeShaper) {
+                    Log.d(TAG, "Scheduling delayed VolumeShaper cleanup to allow smooth restoration")
+                    
+                    // Schedule cleanup after smooth restoration should complete (300ms + safety buffer)
+                    android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                        Log.d(TAG, "Executing delayed VolumeShaper cleanup")
+                        
+                        // Final safety net - force immediate restoration if smooth restoration didn't complete
+                        if (originalMusicVolume != -1) {
+                            try {
+                                audioManager.setStreamVolume(android.media.AudioManager.STREAM_MUSIC, originalMusicVolume, 0)
+                                Log.d(TAG, "Force-restored volume to $originalMusicVolume during delayed cleanup")
+                                originalMusicVolume = -1
+                            } catch (e: Exception) {
+                                Log.e(TAG, "Failed to force-restore volume during delayed cleanup", e)
+                            }
+                        }
+                        cleanupVolumeShaper()
+                    }, 800) // Wait longer than restoration duration (300ms) + safety buffer
+                }
             }
             // "ignore" and "silence" don't need cleanup
         }
@@ -1840,6 +2395,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         isCurrentlySpeaking = true
         
+        // Show reading notification if enabled
+        showReadingNotification(currentAppName, currentSpeechText)
+        
         // Set pocket mode tracking variables
         if (isPocketModeEnabled) {
             wasSensorCoveredAtStart = isSensorCurrentlyCovered
@@ -1879,13 +2437,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     Log.d(TAG, "TTS utterance completed: $utteranceId")
                     isCurrentlySpeaking = false
                     
+                    // Hide reading notification
+                    hideReadingNotification()
+                    
                     // Unregister shake listener since we're done speaking
                     unregisterShakeListener()
                     
                     InAppLogger.logTTSEvent("TTS completed", "Utterance finished")
                     
-                    // Clean up media behavior effects
-                    cleanupMediaBehavior()
+                    // Clean up media behavior effects (with delay for smooth restoration)
+                    cleanupMediaBehaviorDelayed()
                     
                     // Process next item in queue if any
                     processNotificationQueue()
@@ -1896,6 +2457,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (utteranceId == "notification_utterance") {
                     Log.e(TAG, "TTS utterance error: $utteranceId")
                     isCurrentlySpeaking = false
+                    
+                    // Hide reading notification
+                    hideReadingNotification()
+                    
                     unregisterShakeListener()
                     Log.e(TAG, "TTS error occurred")
                     InAppLogger.logTTSEvent("TTS error", "Utterance failed")
@@ -1965,7 +2530,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 delayBeforeReadout = sharedPreferences?.getInt(KEY_DELAY_BEFORE_READOUT, 0) ?: 0
                 Log.d(TAG, "Delay settings updated - delay: ${delayBeforeReadout}s")
             }
-            KEY_MEDIA_FILTERING_ENABLED, KEY_MEDIA_FILTER_EXCEPTED_APPS, KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS -> {
+            KEY_MEDIA_FILTERING_ENABLED, KEY_MEDIA_FILTER_EXCEPTED_APPS, KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, KEY_MEDIA_FILTERED_APPS, KEY_MEDIA_FILTERED_APPS_PRIVATE -> {
                 // Reload media filtering settings
                 loadFilterSettings()
                 Log.d(TAG, "Media filtering settings updated")
@@ -1992,6 +2557,22 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 // Reload speech template
                 speechTemplate = sharedPreferences?.getString(KEY_SPEECH_TEMPLATE, "{app} notified you: {content}") ?: "{app} notified you: {content}"
                 Log.d(TAG, "Speech template updated")
+            }
+            KEY_PERSISTENT_NOTIFICATION -> {
+                // Handle persistent notification setting change
+                val isPersistentNotificationEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_NOTIFICATION, false) ?: false
+                if (isPersistentNotificationEnabled) {
+                    checkAndShowPersistentNotification()
+                } else {
+                    hidePersistentNotification()
+                }
+                Log.d(TAG, "Persistent notification setting updated: $isPersistentNotificationEnabled")
+            }
+            KEY_NOTIFICATION_WHILE_READING -> {
+                // Handle notification while reading setting change
+                val isNotificationWhileReadingEnabled = sharedPreferences?.getBoolean(KEY_NOTIFICATION_WHILE_READING, false) ?: false
+                Log.d(TAG, "Notification while reading setting updated: $isNotificationWhileReadingEnabled")
+                // Note: Reading notifications are shown/hidden dynamically during TTS, so no immediate action needed here
             }
         }
     }
@@ -2141,7 +2722,271 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         )
     }
 
-
-
+    // MARK: - SpeakThat Notification Methods
+    
+    /**
+     * Check if persistent notification should be shown and show it if conditions are met
+     */
+    private fun checkAndShowPersistentNotification() {
+        val isPersistentNotificationEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_NOTIFICATION, false) ?: false
+        val isMasterSwitchEnabled = MainActivity.isMasterSwitchEnabled(this)
+        
+        Log.d(TAG, "Checking persistent notification: enabled=$isPersistentNotificationEnabled, masterSwitch=$isMasterSwitchEnabled")
+        
+        if (isPersistentNotificationEnabled && isMasterSwitchEnabled) {
+            showPersistentNotification()
+        } else {
+            Log.d(TAG, "Persistent notification conditions not met: enabled=$isPersistentNotificationEnabled, masterSwitch=$isMasterSwitchEnabled")
+        }
+    }
+    
+    /**
+     * Show persistent notification when SpeakThat is active
+     */
+    private fun showPersistentNotification() {
+        try {
+            val isPersistentNotificationEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_NOTIFICATION, false) ?: false
+            if (!isPersistentNotificationEnabled) {
+                Log.d(TAG, "Persistent notification disabled in settings")
+                return
+            }
+            
+            // Check notification permission for Android 13+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                    Log.w(TAG, "POST_NOTIFICATIONS permission not granted - cannot show persistent notification")
+                    InAppLogger.logError("Notifications", "POST_NOTIFICATIONS permission not granted")
+                    return
+                }
+            }
+            
+            // Create notification channel for Android O+
+            createNotificationChannel()
+            
+            // Create intent for opening SpeakThat
+            val openAppIntent = Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+            val openAppPendingIntent = PendingIntent.getActivity(
+                this, 0, openAppIntent, 
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            
+            // Build notification
+            val notification = NotificationCompat.Builder(this, "SpeakThat_Channel")
+                .setContentTitle("SpeakThat Active")
+                .setContentText("Tap to open SpeakThat settings")
+                .setSmallIcon(R.drawable.speakthaticon)
+                .setOngoing(true) // Persistent notification
+                .setSilent(true) // Silent notification
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(openAppPendingIntent)
+                .addAction(
+                    R.drawable.speakthaticon,
+                    "Open SpeakThat!",
+                    openAppPendingIntent
+                )
+                .build()
+            
+            // Show notification
+            notificationManager.notify(PERSISTENT_NOTIFICATION_ID, notification)
+            Log.d(TAG, "Persistent notification shown with ID: $PERSISTENT_NOTIFICATION_ID")
+            InAppLogger.log("Notifications", "Persistent notification shown with ID: $PERSISTENT_NOTIFICATION_ID")
+            
+            // Verify notification was actually posted
+            val activeNotifications = notificationManager.activeNotifications
+            val ourNotification = activeNotifications.find { it.id == PERSISTENT_NOTIFICATION_ID }
+            if (ourNotification != null) {
+                Log.d(TAG, "Persistent notification verified as active")
+                InAppLogger.log("Notifications", "Persistent notification verified as active")
+            } else {
+                Log.w(TAG, "Persistent notification not found in active notifications")
+                InAppLogger.logError("Notifications", "Persistent notification not found in active notifications")
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error showing persistent notification", e)
+            InAppLogger.logError("Notifications", "Error showing persistent notification: ${e.message}")
+        }
+    }
+    
+    /**
+     * Hide persistent notification
+     */
+    private fun hidePersistentNotification() {
+        try {
+            notificationManager.cancel(PERSISTENT_NOTIFICATION_ID)
+            Log.d(TAG, "Persistent notification hidden")
+            InAppLogger.log("Notifications", "Persistent notification hidden")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error hiding persistent notification", e)
+            InAppLogger.logError("Notifications", "Error hiding persistent notification: ${e.message}")
+        }
+    }
+    
+    /**
+     * Show notification while TTS is reading
+     */
+    private fun showReadingNotification(appName: String, content: String) {
+        try {
+            val isNotificationWhileReadingEnabled = sharedPreferences?.getBoolean(KEY_NOTIFICATION_WHILE_READING, false) ?: false
+            if (!isNotificationWhileReadingEnabled) {
+                Log.d(TAG, "Reading notification disabled in settings")
+                return
+            }
+            
+            // Check notification permission for Android 13+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                    Log.w(TAG, "POST_NOTIFICATIONS permission not granted - cannot show reading notification")
+                    InAppLogger.logError("Notifications", "POST_NOTIFICATIONS permission not granted")
+                    return
+                }
+            }
+            
+            // Create notification channel for Android O+
+            createNotificationChannel()
+            
+            // Create intent for opening SpeakThat
+            val openAppIntent = Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+            val openAppPendingIntent = PendingIntent.getActivity(
+                this, 0, openAppIntent, 
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            
+            // Create intent for stopping TTS
+            val stopTtsIntent = Intent(this, NotificationReaderService::class.java).apply {
+                action = "STOP_TTS"
+            }
+            val stopTtsPendingIntent = PendingIntent.getService(
+                this, 0, stopTtsIntent, 
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            
+            // Build notification
+            val notification = NotificationCompat.Builder(this, "SpeakThat_Channel")
+                .setContentTitle("SpeakThat Reading")
+                .setContentText("$appName: $content")
+                .setSmallIcon(R.drawable.speakthaticon)
+                .setOngoing(false) // Temporary notification
+                .setSilent(true) // Silent notification
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(openAppPendingIntent)
+                .addAction(
+                    R.drawable.speakthaticon,
+                    "Shut Up!",
+                    stopTtsPendingIntent
+                )
+                .addAction(
+                    R.drawable.speakthaticon,
+                    "Open SpeakThat!",
+                    openAppPendingIntent
+                )
+                .setAutoCancel(true) // Auto-dismiss when tapped
+                .build()
+            
+            // Show notification
+            notificationManager.notify(READING_NOTIFICATION_ID, notification)
+            Log.d(TAG, "Reading notification shown for $appName with ID: $READING_NOTIFICATION_ID")
+            InAppLogger.log("Notifications", "Reading notification shown for $appName with ID: $READING_NOTIFICATION_ID")
+            
+            // Verify notification was actually posted
+            val activeNotifications = notificationManager.activeNotifications
+            val ourNotification = activeNotifications.find { it.id == READING_NOTIFICATION_ID }
+            if (ourNotification != null) {
+                Log.d(TAG, "Reading notification verified as active")
+                InAppLogger.log("Notifications", "Reading notification verified as active")
+            } else {
+                Log.w(TAG, "Reading notification not found in active notifications")
+                InAppLogger.logError("Notifications", "Reading notification not found in active notifications")
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error showing reading notification", e)
+            InAppLogger.logError("Notifications", "Error showing reading notification: ${e.message}")
+        }
+    }
+    
+    /**
+     * Hide reading notification
+     */
+    private fun hideReadingNotification() {
+        try {
+            notificationManager.cancel(READING_NOTIFICATION_ID)
+            Log.d(TAG, "Reading notification hidden")
+            InAppLogger.log("Notifications", "Reading notification hidden")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error hiding reading notification", e)
+            InAppLogger.logError("Notifications", "Error hiding reading notification: ${e.message}")
+        }
+    }
+    
+    /**
+     * Create notification channel for Android O+
+     */
+    private fun createNotificationChannel() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            try {
+                val channel = NotificationChannel(
+                    "SpeakThat_Channel",
+                    "SpeakThat Notifications",
+                    NotificationManager.IMPORTANCE_DEFAULT
+                ).apply {
+                    description = "Notifications from SpeakThat app"
+                    setSound(null, null) // No sound
+                    enableVibration(false) // No vibration
+                    setShowBadge(false) // No badge
+                }
+                
+                notificationManager.createNotificationChannel(channel)
+                Log.d(TAG, "Notification channel created with IMPORTANCE_DEFAULT")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error creating notification channel", e)
+            }
+        }
+    }
+    
+    /**
+     * Handle notification actions
+     */
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        when (intent?.action) {
+            "STOP_TTS" -> {
+                Log.d(TAG, "Stop TTS action received")
+                InAppLogger.log("Notifications", "Stop TTS action received from notification")
+                stopTts()
+                return START_STICKY
+            }
+        }
+        return super.onStartCommand(intent, flags, startId)
+    }
+    
+    /**
+     * Stop TTS and hide reading notification
+     */
+    private fun stopTts() {
+        try {
+            // Stop current TTS
+            textToSpeech?.stop()
+            isCurrentlySpeaking = false
+            currentSpeechText = ""
+            currentAppName = ""
+            
+            // Clear notification queue
+            notificationQueue.clear()
+            
+            // Hide reading notification
+            hideReadingNotification()
+            
+            Log.d(TAG, "TTS stopped via notification action")
+            InAppLogger.log("Notifications", "TTS stopped via notification action")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error stopping TTS", e)
+            InAppLogger.logError("Notifications", "Error stopping TTS: ${e.message}")
+        }
+    }
 
 }

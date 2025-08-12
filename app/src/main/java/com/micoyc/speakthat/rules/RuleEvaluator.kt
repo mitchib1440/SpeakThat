@@ -655,15 +655,38 @@ class RuleEvaluator(private val context: Context) {
     private fun evaluateTimeScheduleTrigger(trigger: Trigger): EvaluationResult {
         try {
             val calendar = java.util.Calendar.getInstance()
-            val currentTime = calendar.timeInMillis
             
-            // Get schedule data from trigger
-            val startTime = trigger.data["start_time"] as? Long ?: 0L
-            val endTime = trigger.data["end_time"] as? Long ?: 0L
+            // Debug: Log the entire trigger data
+            InAppLogger.logDebug(TAG, "TimeSchedule trigger data: ${trigger.data}")
+            InAppLogger.logDebug(TAG, "TimeSchedule trigger data types: ${trigger.data.mapValues { it.value?.javaClass?.simpleName ?: "null" }}")
+            
+            // Get schedule data from trigger - handle both Long and Double types
+            val startTimeRaw = trigger.data["start_time"]
+            val endTimeRaw = trigger.data["end_time"]
             val daysOfWeek = trigger.data["days_of_week"] as? Set<Int> ?: emptySet()
             
+            // Convert start_time to Long, handling both Long and Double types
+            val startTime = when (startTimeRaw) {
+                is Long -> startTimeRaw
+                is Double -> startTimeRaw.toLong()
+                is Int -> startTimeRaw.toLong()
+                else -> 0L
+            }
+            
+            // Convert end_time to Long, handling both Long and Double types
+            val endTime = when (endTimeRaw) {
+                is Long -> endTimeRaw
+                is Double -> endTimeRaw.toLong()
+                is Int -> endTimeRaw.toLong()
+                else -> 0L
+            }
+            
+            InAppLogger.logDebug(TAG, "TimeSchedule converted times: startTime=$startTime (${startTimeRaw?.javaClass?.simpleName}), endTime=$endTime (${endTimeRaw?.javaClass?.simpleName})")
+            
             // Check if current day is in allowed days
-            val currentDayOfWeek = calendar.get(java.util.Calendar.DAY_OF_WEEK)
+            // Calendar.DAY_OF_WEEK is 1-based (Sunday=1, Saturday=7)
+            // But our days_of_week set is 0-based (Sunday=0, Saturday=6)
+            val currentDayOfWeek = calendar.get(java.util.Calendar.DAY_OF_WEEK) - 1
             val dayAllowed = daysOfWeek.isEmpty() || currentDayOfWeek in daysOfWeek
             
             if (!dayAllowed) {
@@ -674,22 +697,27 @@ class RuleEvaluator(private val context: Context) {
                 )
             }
             
+            // Convert current time to time-of-day milliseconds (since midnight)
+            val currentHour = calendar.get(java.util.Calendar.HOUR_OF_DAY)
+            val currentMinute = calendar.get(java.util.Calendar.MINUTE)
+            val currentTimeOfDay = (currentHour * 60 * 60 * 1000L) + (currentMinute * 60 * 1000L)
+            
             // Check if current time is within schedule
             val timeInRange = if (startTime <= endTime) {
-                // Same day schedule
-                currentTime in startTime..endTime
+                // Same day schedule (e.g., 09:00 to 17:00)
+                currentTimeOfDay >= startTime && currentTimeOfDay <= endTime
             } else {
                 // Overnight schedule (e.g., 22:00 to 06:00)
-                currentTime >= startTime || currentTime <= endTime
+                currentTimeOfDay >= startTime || currentTimeOfDay <= endTime
             }
             
-            InAppLogger.logDebug(TAG, "Time check: current=$currentTime, start=$startTime, end=$endTime, inRange=$timeInRange")
+            InAppLogger.logDebug(TAG, "Time check: current=${currentHour}:${currentMinute.toString().padStart(2, '0')} (${currentTimeOfDay}ms), start=${startTime}ms, end=${endTime}ms, inRange=$timeInRange")
             
             return EvaluationResult(
                 success = timeInRange,
                 message = if (timeInRange) "Current time is within schedule" else "Current time is outside schedule",
                 data = mapOf(
-                    "current_time" to currentTime,
+                    "current_time_of_day" to currentTimeOfDay,
                     "start_time" to startTime,
                     "end_time" to endTime,
                     "days_of_week" to daysOfWeek

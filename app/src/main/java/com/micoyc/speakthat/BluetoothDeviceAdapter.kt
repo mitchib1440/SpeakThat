@@ -8,6 +8,9 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * Adapter for Bluetooth devices in BluetoothConditionActivity
+ */
 class BluetoothDeviceAdapter(
     private val devices: MutableList<BluetoothDevice>,
     private val onRemoveClick: (BluetoothDevice) -> Unit

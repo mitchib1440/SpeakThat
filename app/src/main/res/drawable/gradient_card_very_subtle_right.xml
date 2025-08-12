@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Light mode: Purple brand with very subtle black gradient -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Purple_200 brand base background -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/purple_200" />
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+    
+    <!-- Very subtle black gradient (same positioning as dark mode) -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:centerX="0.8"
+                android:centerY="0.3"
+                android:gradientRadius="200dp"
+                android:startColor="@color/black_overlay_10"
+                android:endColor="@color/transparent" />
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+</layer-list>

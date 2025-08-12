@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Subtle right-side gradient for cards -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base purple background -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/purple_base" />
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+    
+    <!-- Subtle radial gradient positioned towards right side -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:centerX="0.75"
+                android:centerY="0.4"
+                android:gradientRadius="220dp"
+                android:startColor="@color/white_overlay_12"
+                android:endColor="@color/transparent" />
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+</layer-list>

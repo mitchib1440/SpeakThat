@@ -1,7 +1,11 @@
 package com.micoyc.speakthat
 
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.hardware.Sensor
@@ -14,6 +18,7 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.text.TextUtils
 import android.util.Log
+import androidx.core.app.NotificationCompat
 import com.micoyc.speakthat.VoiceSettingsActivity
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -35,7 +40,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEventListener {
     
     private lateinit var binding: ActivityMainBinding
-    private lateinit var sharedPreferences: SharedPreferences
+    private var sharedPreferences: SharedPreferences? = null
     private var textToSpeech: TextToSpeech? = null
     private var isTtsInitialized = false
     private var isFirstLogoTap = true
@@ -63,6 +68,48 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         }
     }
     
+    /**
+     * SharedPreferences listener to sync UI when Quick Settings tile changes the master switch
+     * This ensures the main app's UI stays in sync even when the app is in the background
+     */
+    private val masterSwitchListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == KEY_MASTER_SWITCH_ENABLED) {
+            // Check if we need to update the UI
+            val currentState = isMasterSwitchEnabled(this)
+            val switchState = binding.switchMasterControl.isChecked
+            
+            if (currentState != switchState) {
+                Log.d(TAG, "MainActivity: Detected master switch change via SharedPreferences - current: $currentState, switch: $switchState")
+                
+                // Update UI on main thread
+                runOnUiThread {
+                    // Temporarily remove listener to prevent infinite loop
+                    binding.switchMasterControl.setOnCheckedChangeListener(null)
+                    
+                    // Update switch to match current state
+                    binding.switchMasterControl.isChecked = currentState
+                    
+                    // Update status text
+                    if (currentState) {
+                        binding.textMasterSwitchStatus.text = "SpeakThat will read notifications when active"
+                        binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.purple_200))
+                    } else {
+                        binding.textMasterSwitchStatus.text = "SpeakThat is disabled - notifications will not be read"
+                        binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.red_200))
+                    }
+                    
+                    // Restore listener
+                    binding.switchMasterControl.setOnCheckedChangeListener { _, isChecked ->
+                        handleMasterSwitchToggle(isChecked)
+                    }
+                    
+                    Log.d(TAG, "MainActivity: UI synced via SharedPreferences listener")
+                    InAppLogger.log("QuickSettingsSync", "MainActivity UI synced via SharedPreferences: $currentState")
+                }
+            }
+        }
+    }
+    
     // Sensor timeout for safety
     private var sensorTimeoutHandler: Handler? = null
     private var sensorTimeoutRunnable: Runnable? = null
@@ -73,11 +120,13 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         private const val KEY_DARK_MODE = "dark_mode"
         private const val KEY_FIRST_LOGO_TAP = "first_logo_tap"
         private const val KEY_SHAKE_TO_STOP_ENABLED = "shake_to_stop_enabled"
+        private const val KEY_WAVE_TO_STOP_ENABLED = "wave_to_stop_enabled"
         private const val KEY_SHAKE_THRESHOLD = "shake_threshold"
         private const val KEY_MASTER_SWITCH_ENABLED = "master_switch_enabled"
         private const val KEY_LAST_EASTER_EGG = "last_easter_egg_line"
+        private const val REQUEST_NOTIFICATION_PERMISSION = 1001
         // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
-        private const val KEY_TRANSLATION_BANNER_DISMISSED = "translation_banner_dismissed"
+    
         @JvmField
         var isSensorListenerActive: Boolean = false
         /**
@@ -111,6 +160,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
         voiceSettingsPrefs?.registerOnSharedPreferenceChangeListener(voiceSettingsListener)
         
+        // Register master switch listener for Quick Settings tile sync
+        sharedPreferences?.registerOnSharedPreferenceChangeListener(masterSwitchListener)
+        
         // Apply saved theme first
         applySavedTheme()
         
@@ -132,13 +184,16 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         InAppLogger.logSystemEvent("App started", "MainActivity")
         InAppLogger.logSystemEvent("Build variant", InAppLogger.getBuildVariantInfo())
         
+        // Log Quick Settings tile status
+        QuickSettingsHelper.logTileStatus(this)
+        
         // Initialize components
         initializeShakeDetection()
         initializeTextToSpeech()
         loadEasterEggs()
         
         // Load logo tap state
-        isFirstLogoTap = sharedPreferences.getBoolean(KEY_FIRST_LOGO_TAP, true)
+        isFirstLogoTap = sharedPreferences?.getBoolean(KEY_FIRST_LOGO_TAP, true) ?: true
         
         // Set up UI
         setupUI()
@@ -148,6 +203,35 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         Log.d(TAG, "About to check for updates automatically")
         checkForUpdatesIfEnabled()
     }
+    
+
+    
+    override fun onPause() {
+        super.onPause()
+        // Stop shake listening if active
+        stopShakeListening()
+        InAppLogger.logAppLifecycle("MainActivity paused")
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        // Unregister voice settings listener
+        voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
+        
+        // Unregister master switch listener (safely handle null case)
+        sharedPreferences?.unregisterOnSharedPreferenceChangeListener(masterSwitchListener)
+        
+        // Clean up TTS
+        textToSpeech?.stop()
+        textToSpeech?.shutdown()
+        
+        // Clean up sensors
+        sensorManager?.unregisterListener(this)
+        
+        InAppLogger.logAppLifecycle("MainActivity destroyed")
+    }
+    
+
     
     override fun onResume() {
         super.onResume()
@@ -162,19 +246,14 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Check for updates automatically when returning to app (if enabled)
         Log.d(TAG, "About to check for updates on resume")
         checkForUpdatesIfEnabled()
-    }
-    
-    override fun onPause() {
-        super.onPause()
-        // Stop shake listening if active
-        stopShakeListening()
-        InAppLogger.logAppLifecycle("MainActivity paused")
+        
+
     }
     
     private fun setupUI() {
         setupClickListeners()
         // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
-        setupTranslationBanner()
+
     }
     
     private fun setupClickListeners() {
@@ -202,23 +281,12 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             handleLogoClick()
         }
         
-        // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
-        // Translation banner dismiss button
-        binding.buttonDismissTranslationBanner.setOnClickListener {
-            InAppLogger.logUserAction("Translation banner dismissed")
-            dismissTranslationBanner()
-        }
-        
-        // Translation banner email functionality
-        binding.cardTranslationHelp.setOnClickListener {
-            InAppLogger.logUserAction("Translation banner clicked - opening email")
-            sendTranslationEmail()
-        }
+
     }
     
     private fun updateServiceStatus() {
         val isEnabled = isNotificationServiceEnabled()
-        val isMasterEnabled = sharedPreferences.getBoolean(KEY_MASTER_SWITCH_ENABLED, true)
+        val isMasterEnabled = sharedPreferences?.getBoolean(KEY_MASTER_SWITCH_ENABLED, true) ?: true
         
         // Update master switch state
         binding.switchMasterControl.setOnCheckedChangeListener(null) // Prevent infinite loop
@@ -230,26 +298,27 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Update master switch status text
         if (isMasterEnabled) {
             binding.textMasterSwitchStatus.text = "SpeakThat will read notifications when active"
-            binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_200))
+            binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_card_text_secondary))
         } else {
             binding.textMasterSwitchStatus.text = "SpeakThat is disabled - notifications will not be read"
-            binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this, R.color.red_200))
+            binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_card_text_secondary))
         }
         
-        // Update permission status
+        // Update permission status with white text and emoji indicators
         if (isEnabled) {
-            // Service is enabled - use brand color
-            binding.textServiceStatus.text = getString(R.string.service_enabled)
-            binding.textServiceStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_200))
+            // Service is enabled - use green checkmark
+            binding.textServiceStatus.text = "Notification permissions: ✅"
+            binding.textServiceStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_card_text_primary))
             binding.textPermissionStatus.text = "SpeakThat has notification access"
-            binding.buttonEnablePermission.text = "Disable Notification Access"
         } else {
-            // Service is disabled
-            binding.textServiceStatus.text = getString(R.string.service_disabled)
-            binding.textServiceStatus.setTextColor(ContextCompat.getColor(this, R.color.red_200))
+            // Service is disabled - use red cross
+            binding.textServiceStatus.text = "Notification permissions: ❌"
+            binding.textServiceStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_card_text_primary))
             binding.textPermissionStatus.text = getString(R.string.permission_description)
-            binding.buttonEnablePermission.text = getString(R.string.open_settings)
         }
+        
+        // Always show "Permission Settings" for consistent button sizing
+        binding.buttonEnablePermission.text = getString(R.string.open_settings)
     }
     
     private fun isNotificationServiceEnabled(): Boolean {
@@ -276,10 +345,13 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private fun handleMasterSwitchToggle(isEnabled: Boolean) {
         // Save the master switch state
-        sharedPreferences.edit().putBoolean(KEY_MASTER_SWITCH_ENABLED, isEnabled).apply()
+        sharedPreferences?.edit()?.putBoolean(KEY_MASTER_SWITCH_ENABLED, isEnabled)?.apply()
         
         // Update UI immediately
         updateServiceStatus()
+        
+        // Manage notifications based on master switch state
+        manageNotificationsForMasterSwitch(isEnabled)
         
         // Log the change
         InAppLogger.logSettingsChange("Master Switch", (!isEnabled).toString(), isEnabled.toString())
@@ -293,13 +365,85 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         }
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         
+
+        
         Log.d(TAG, "Master switch toggled: $isEnabled")
+    }
+    
+    /**
+     * Manage SpeakThat notifications based on master switch state
+     */
+    private fun manageNotificationsForMasterSwitch(isEnabled: Boolean) {
+        try {
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            
+            if (isEnabled) {
+                // Master switch enabled - show persistent notification if setting is enabled
+                val isPersistentNotificationEnabled = sharedPreferences?.getBoolean("persistent_notification", false) ?: false
+                if (isPersistentNotificationEnabled) {
+                    // Create notification channel for Android O+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        val channel = NotificationChannel(
+                            "SpeakThat_Channel",
+                            "SpeakThat Notifications",
+                            NotificationManager.IMPORTANCE_DEFAULT
+                        ).apply {
+                            description = "Notifications from SpeakThat app"
+                            setSound(null, null) // No sound
+                            enableVibration(false) // No vibration
+                            setShowBadge(false) // No badge
+                        }
+                        notificationManager.createNotificationChannel(channel)
+                    }
+                    
+                    // Create intent for opening SpeakThat
+                    val openAppIntent = Intent(this, MainActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    }
+                    val openAppPendingIntent = PendingIntent.getActivity(
+                        this, 0, openAppIntent, 
+                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                    )
+                    
+                    // Build notification
+                    val notification = androidx.core.app.NotificationCompat.Builder(this, "SpeakThat_Channel")
+                        .setContentTitle("SpeakThat Active")
+                        .setContentText("Tap to open SpeakThat settings")
+                        .setSmallIcon(R.drawable.speakthaticon)
+                        .setOngoing(true) // Persistent notification
+                        .setSilent(true) // Silent notification
+                        .setPriority(androidx.core.app.NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(openAppPendingIntent)
+                        .addAction(
+                            R.drawable.speakthaticon,
+                            "Open SpeakThat!",
+                            openAppPendingIntent
+                        )
+                        .build()
+                    
+                    // Show notification
+                    notificationManager.notify(1001, notification)
+                    Log.d(TAG, "Persistent notification shown due to master switch enabled")
+                    InAppLogger.log("Notifications", "Persistent notification shown due to master switch enabled")
+                }
+            } else {
+                // Master switch disabled - hide all SpeakThat notifications
+                notificationManager.cancel(1001) // Persistent notification
+                notificationManager.cancel(1002) // Reading notification
+                Log.d(TAG, "All SpeakThat notifications hidden due to master switch disabled")
+                InAppLogger.log("Notifications", "All SpeakThat notifications hidden due to master switch disabled")
+            }
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error managing notifications for master switch", e)
+            InAppLogger.logError("Notifications", "Error managing notifications for master switch: ${e.message}")
+        }
     }
     
     // showNotificationHistory moved to DevelopmentSettingsActivity
     
     private fun applySavedTheme() {
-        val isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, false) // Default to light mode
+        val isDarkMode = sharedPreferences?.getBoolean(KEY_DARK_MODE, false) ?: false // Default to light mode
         
         if (isDarkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -378,8 +522,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         InAppLogger.log("MainActivity", "Logo clicked - $ttsStatus")
         
         // Log wave-to-stop settings for debugging
-        val waveEnabled = sharedPreferences.getBoolean("wave_to_stop_enabled", false)
-        val waveThreshold = sharedPreferences.getFloat("wave_threshold", 3.0f)
+        val waveEnabled = sharedPreferences?.getBoolean(KEY_WAVE_TO_STOP_ENABLED, false) ?: false
+        val waveThreshold = sharedPreferences?.getFloat("wave_threshold", 3.0f) ?: 3.0f
         InAppLogger.log("MainActivity", "Wave-to-stop settings - enabled: $waveEnabled, threshold: ${waveThreshold}cm")
         
         if (!isTtsInitialized) {
@@ -401,20 +545,30 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             // First tap: Play instructional message
             val baseText = "This is SpeakThat! The notification reader. This is how incoming notifications will be announced."
             
-            // Check if shake-to-stop is enabled
-            val isShakeToStopEnabled = sharedPreferences.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false)
+            // Check if shake-to-stop and wave-to-stop are enabled
+            val isShakeToStopEnabled = sharedPreferences?.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false) ?: false
+            val isWaveToStopEnabled = sharedPreferences?.getBoolean(KEY_WAVE_TO_STOP_ENABLED, false) ?: false
             
-            val instructionText = if (isShakeToStopEnabled) {
-                "$baseText This is a great opportunity to test your Shake-to-Stop settings. Go ahead and shake your device to stop me talking."
-            } else {
-                baseText
+            val instructionText = when {
+                isShakeToStopEnabled && isWaveToStopEnabled -> {
+                    "$baseText This is a great opportunity to test your Shake-to-Stop and Wave-to-Stop settings. Go ahead and shake your device or wave your hand to stop me talking."
+                }
+                isShakeToStopEnabled -> {
+                    "$baseText This is a great opportunity to test your Shake-to-Stop settings. Go ahead and shake your device to stop me talking."
+                }
+                isWaveToStopEnabled -> {
+                    "$baseText This is a great opportunity to test your Wave-to-Stop settings. Go ahead and wave your hand to stop me talking."
+                }
+                else -> {
+                    baseText
+                }
             }
             
             speakText(instructionText)
             
             // Mark that first tap has occurred
             isFirstLogoTap = false
-            sharedPreferences.edit().putBoolean(KEY_FIRST_LOGO_TAP, false).apply()
+            sharedPreferences?.edit()?.putBoolean(KEY_FIRST_LOGO_TAP, false)?.apply()
             
         } else {
             // Subsequent taps: Play random easter egg (avoiding repeats)
@@ -426,7 +580,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                     speakText(processedLine)
                     
                     // Store the original line (before processing) to prevent repeats
-                    sharedPreferences.edit().putString(KEY_LAST_EASTER_EGG, selectedLine).apply()
+                    sharedPreferences?.edit()?.putString(KEY_LAST_EASTER_EGG, selectedLine)?.apply()
                     
                     Log.d(TAG, "Playing easter egg: $processedLine")
                 } else {
@@ -486,18 +640,18 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun loadShakeSettings() {
-        isShakeToStopEnabled = sharedPreferences.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, true)
-        shakeThreshold = sharedPreferences.getFloat(KEY_SHAKE_THRESHOLD, 12.0f)
+        isShakeToStopEnabled = sharedPreferences?.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, true) ?: true
+        shakeThreshold = sharedPreferences?.getFloat(KEY_SHAKE_THRESHOLD, 12.0f) ?: 12.0f
         Log.d(TAG, "MainActivity shake settings - enabled: $isShakeToStopEnabled, threshold: $shakeThreshold")
     }
 
     private fun loadWaveSettings() {
-        isWaveToStopEnabled = sharedPreferences.getBoolean("wave_to_stop_enabled", false)
+        isWaveToStopEnabled = sharedPreferences?.getBoolean(KEY_WAVE_TO_STOP_ENABLED, false) ?: false
         // Use calibrated threshold if available, otherwise fall back to old system
-        waveThreshold = if (sharedPreferences.contains("wave_threshold_v1")) {
-            sharedPreferences.getFloat("wave_threshold_v1", 3.0f)
+        waveThreshold = if (sharedPreferences?.contains("wave_threshold_v1") == true) {
+            sharedPreferences?.getFloat("wave_threshold_v1", 3.0f) ?: 3.0f
         } else {
-            sharedPreferences.getFloat("wave_threshold", 3.0f)
+            sharedPreferences?.getFloat("wave_threshold", 3.0f) ?: 3.0f
         }
         Log.d(TAG, "MainActivity wave settings - enabled: $isWaveToStopEnabled, threshold: $waveThreshold")
     }
@@ -658,9 +812,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private fun getAvailableEasterEggs(): List<String> {
         // Filter easter eggs based on current settings
-        val delayEnabled = sharedPreferences.getInt("delay_before_readout", 2) > 0
-        val shakeEnabled = sharedPreferences.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false)
-        val waveEnabled = sharedPreferences.getBoolean("wave_to_stop_enabled", false)
+        val delayEnabled = (sharedPreferences?.getInt("delay_before_readout", 2) ?: 2) > 0
+        val shakeEnabled = sharedPreferences?.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false) ?: false
+        val waveEnabled = sharedPreferences?.getBoolean(KEY_WAVE_TO_STOP_ENABLED, false) ?: false
         
         return easterEggLines.filter { line ->
             when {
@@ -680,7 +834,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private fun selectNonRepeatingEasterEgg(availableLines: List<String>): String {
         // Get the last spoken easter egg line
-        val lastEasterEgg = sharedPreferences.getString(KEY_LAST_EASTER_EGG, null)
+        val lastEasterEgg = sharedPreferences?.getString(KEY_LAST_EASTER_EGG, null)
         
         // If we only have one line available, or no previous line stored, just pick randomly
         if (availableLines.size <= 1 || lastEasterEgg == null) {
@@ -736,7 +890,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun getCurrentDelayTime(): String {
-        val delaySeconds = sharedPreferences.getInt("delay_before_readout", 2)
+        val delaySeconds = sharedPreferences?.getInt("delay_before_readout", 2) ?: 2
         return when (delaySeconds) {
             0 -> "no delay"
             1 -> "1-second delay"
@@ -768,16 +922,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-    
-    override fun onDestroy() {
-        super.onDestroy()
-        
-        // Unregister voice settings listener
-        voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
-        
-        textToSpeech?.shutdown()
-        stopShakeListening()
     }
     
     /**
@@ -884,65 +1028,57 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         Log.i(TAG, "Showed repository update message to user")
         InAppLogger.logSystemEvent("Repository update message shown to user", "MainActivity")
     }
-
-    // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
-    private fun setupTranslationBanner() {
-        val isDismissed = sharedPreferences.getBoolean(KEY_TRANSLATION_BANNER_DISMISSED, false)
-        if (!isDismissed) {
-            binding.cardTranslationHelp.visibility = View.VISIBLE
-        } else {
-            binding.cardTranslationHelp.visibility = View.GONE
+    
+    /**
+     * Request notification permission for Android 13+ when needed
+     * This is called when user enables notification features
+     */
+    fun requestNotificationPermissionIfNeeded(): Boolean {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "Requesting POST_NOTIFICATIONS permission")
+                InAppLogger.log("Permissions", "Requesting POST_NOTIFICATIONS permission")
+                requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), REQUEST_NOTIFICATION_PERMISSION)
+                return false // Permission not yet granted
+            } else {
+                Log.d(TAG, "POST_NOTIFICATIONS permission already granted")
+                InAppLogger.log("Permissions", "POST_NOTIFICATIONS permission already granted")
+                return true // Permission already granted
+            }
         }
-    }
-
-    private fun dismissTranslationBanner() {
-        binding.cardTranslationHelp.visibility = View.GONE
-        sharedPreferences.edit().putBoolean(KEY_TRANSLATION_BANNER_DISMISSED, true).apply()
-        InAppLogger.logUserAction("Translation banner dismissed")
+        return true // No permission needed for older Android versions
     }
     
-    // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
-    private fun sendTranslationEmail() {
-        try {
-            val subject = "SpeakThat! Translations"
-            val recipient = "micoycbusiness@gmail.com"
-            
-            val bodyBuilder = StringBuilder()
-            bodyBuilder.append("Hello SpeakThat! Team,\n\n")
-            bodyBuilder.append("I would like to help translate SpeakThat! to my language.\n\n")
-            bodyBuilder.append("Languages I speak:\n")
-            bodyBuilder.append("[Please list the languages you speak and your fluency level - e.g., 'English (native), Spanish (fluent), French (conversational)']\n\n")
-            bodyBuilder.append("Which language(s) would you like to help translate?\n")
-            bodyBuilder.append("[Please specify which language(s) you'd like to translate SpeakThat! into]\n\n")
-            bodyBuilder.append("Additional information:\n")
-            bodyBuilder.append("[Any other relevant information about your translation experience or preferences]\n\n")
-            bodyBuilder.append("Thank you for helping make SpeakThat! available to more users!\n")
-            bodyBuilder.append("- SpeakThat! User")
-            
-            val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
-                data = android.net.Uri.parse("mailto:")
-                putExtra(Intent.EXTRA_EMAIL, arrayOf(recipient))
-                putExtra(Intent.EXTRA_SUBJECT, subject)
-                putExtra(Intent.EXTRA_TEXT, bodyBuilder.toString())
-            }
-            
-            try {
-                startActivity(emailIntent)
-                InAppLogger.logUserAction("Translation email opened")
-            } catch (e: Exception) {
-                // Fallback: try with chooser
-                try {
-                    startActivity(Intent.createChooser(emailIntent, "Send translation email"))
-                    InAppLogger.logUserAction("Translation email opened via chooser")
-                } catch (e2: Exception) {
-                    Toast.makeText(this, "No email app found. Please install an email app to send translation requests.", Toast.LENGTH_LONG).show()
-                    InAppLogger.logError("Translation", "No email app available: ${e2.message}")
-                }
-            }
-            
-        } catch (e: Exception) {
-            Toast.makeText(this, "Error opening email: ${e.message}", Toast.LENGTH_LONG).show()
-            InAppLogger.logCrash(e, "Translation email")
+    /**
+     * Check if notification permission is granted
+     */
+    fun isNotificationPermissionGranted(): Boolean {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        } else {
+            true // No permission needed for older Android versions
         }
     }
+    
+    /**
+     * Handle permission request results
+     */
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        
+        when (requestCode) {
+            REQUEST_NOTIFICATION_PERMISSION -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "POST_NOTIFICATIONS permission granted")
+                    InAppLogger.log("Permissions", "POST_NOTIFICATIONS permission granted")
+                    Toast.makeText(this, "Notification permission granted", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.w(TAG, "POST_NOTIFICATIONS permission denied")
+                    InAppLogger.log("Permissions", "POST_NOTIFICATIONS permission denied")
+                    Toast.makeText(this, "Notification permission denied - SpeakThat notifications may not appear", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
 } 

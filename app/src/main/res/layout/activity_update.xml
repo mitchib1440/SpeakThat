@@ -29,13 +29,16 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:cardElevation="2dp"
-            app:cardCornerRadius="12dp">
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:strokeWidth="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="20dp"
+                android:background="@drawable/gradient_card_subtle_right">
 
                 <!-- Status Text -->
                 <TextView
@@ -44,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/checking_for_updates"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
-                    android:textColor="?attr/colorOnSurface"
+                    android:textColor="@color/purple_card_text_primary"
                     android:gravity="center"
                     android:layout_marginBottom="16dp" />
 
@@ -54,7 +57,9 @@
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="16dp"
+                    android:progressTint="@color/white_100"
+                    android:progressBackgroundTint="@color/white_200" />
 
                 <!-- Update Info -->
                 <TextView
@@ -63,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/app_up_to_date"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textColor="@color/purple_card_text_secondary"
                     android:gravity="center" />
 
             </LinearLayout>
@@ -78,44 +83,88 @@
             android:spacing="12dp">
 
             <!-- Download Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonDownload"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/download_update"
-                android:visibility="gone"
-                app:icon="@drawable/ic_file_upload_24"
-                style="@style/Widget.Material3.Button" />
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/gradient_card_subtle_right">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonDownload"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/download_update"
+                    android:visibility="gone"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/white_100"
+                    app:icon="@drawable/ic_file_upload_24"
+                    app:iconTint="@color/white_100"
+                    style="@style/Widget.Material3.Button.TextButton" />
+
+            </FrameLayout>
 
             <!-- Install Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonInstall"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/install_update"
-                android:visibility="gone"
-                app:icon="@drawable/ic_play_arrow_24"
-                style="@style/Widget.Material3.Button" />
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/gradient_card_subtle_right">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonInstall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/install_update"
+                    android:visibility="gone"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/white_100"
+                    app:icon="@drawable/ic_play_arrow_24"
+                    app:iconTint="@color/white_100"
+                    style="@style/Widget.Material3.Button.TextButton" />
+
+            </FrameLayout>
 
             <!-- View Release Notes Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonViewReleaseNotes"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/view_release_notes"
-                android:visibility="gone"
-                app:icon="@drawable/ic_info_24"
-                style="@style/Widget.Material3.Button.OutlinedButton" />
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/gradient_card_subtle_right">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonViewReleaseNotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/view_release_notes"
+                    android:visibility="gone"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/white_100"
+                    app:icon="@drawable/ic_info_24"
+                    app:iconTint="@color/white_100"
+                    style="@style/Widget.Material3.Button.TextButton" />
+
+            </FrameLayout>
 
             <!-- Check Again Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonCheckAgain"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/check_again"
-                android:visibility="gone"
-                app:icon="@drawable/ic_refresh_24"
-                style="@style/Widget.Material3.Button.OutlinedButton" />
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/gradient_card_subtle_right">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonCheckAgain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/check_again"
+                    android:visibility="gone"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/white_100"
+                    app:icon="@drawable/ic_refresh_24"
+                    app:iconTint="@color/white_100"
+                    style="@style/Widget.Material3.Button.TextButton" />
+
+            </FrameLayout>
 
         </LinearLayout>
 
