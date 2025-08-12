@@ -10,10 +10,10 @@
     <string name="permission_read_external_storage">アプリの設定と、設定ファイルのインポート/エクスポートに使用します。ユーザーは設定のバックアップと復元を許可します。個人データにはアクセスしません。</string>
     <string name="permission_needed">通知へのアクセスが必要です</string>
     <string name="permission_description">SpeakThat! は、読み上げのために通知にアクセスする必要があります。この権限はアプリが機能するために必要です。</string>
-    <string name="master_switch_battery_tip">💡 バッテリーを節約するために、必要のないときはオフにします</string>
+    <string name="master_switch_battery_tip"> バッテリーを節約するために、必要のないときはオフにします</string>
     <string name="open_settings">権限の設定を開く</string>
     <string name="service_enabled">通知の読み取り：有効</string>
-    <string name="service_disabled">通知の読み取り：無効</string>
+    <string name="service_disabled">通知リーダー：無効</string>
     <string name="show_history">通知履歴を表示</string>
     <string name="settings">SpeakThat! 設定</string>
     <string name="no_notifications">表示する通知はありません</string>
