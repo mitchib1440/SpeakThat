@@ -247,11 +247,11 @@
                         android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="12dp" />
 
-                    <!-- Language Section -->
+                    <!-- Language Preset Section -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Language &amp; Region"
+                        android:text="Language Preset"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="4dp"
@@ -260,13 +260,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Choose the language and accent. This uses the default voice for that region."
+                        android:text="Choose your language. This sets both the app interface and text-to-speech language at once for the best experience."
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
 
                     <Spinner
-                        android:id="@+id/languageSpinner"
+                        android:id="@+id/languagePresetSpinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
@@ -278,46 +278,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Most users only need to change this setting."
-                        android:textSize="13sp"
-                        android:textColor="@color/white_100"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginTop="-4dp"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:padding="8dp" />
-
-                    <!-- TTS Language Section -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="TTS Language"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp"
-                        android:textColor="@color/purple_card_text_primary" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Choose the language for app phrases (like 'notified you:'). This is separate from the TTS engine language above."
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="8dp" />
-
-                    <Spinner
-                        android:id="@+id/ttsLanguageSpinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:minHeight="48dp"
-                        android:background="@drawable/dropdown_background"
-                        android:popupBackground="?attr/colorSurface"
-                        android:padding="12dp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="This controls phrases like 'notified you:' and 'An app'. Set to match your preferred TTS language."
+                        android:text="This is all most users need. Use Advanced Voice Options below to customize individual settings."
                         android:textSize="13sp"
                         android:textColor="@color/white_100"
                         android:layout_marginBottom="16dp"
@@ -437,6 +398,34 @@
                                 android:layout_weight="1"
                                 android:background="@color/white_100" />
                         </LinearLayout>
+
+                        <!-- TTS Language Section (moved to Advanced) -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="TTS Language (Advanced)"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="4dp"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Override the language for app phrases (like 'notified you:'). Leave as default unless you want different languages for UI and TTS phrases."
+                            android:textSize="14sp"
+                            android:textColor="@color/purple_card_text_secondary"
+                            android:layout_marginBottom="8dp" />
+
+                        <Spinner
+                            android:id="@+id/ttsLanguageSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:minHeight="48dp"
+                            android:background="@drawable/spinner_background"
+                            android:popupBackground="?attr/colorSurface"
+                            android:padding="12dp" />
 
                         <!-- Voice Section -->
                         <TextView

@@ -41,7 +41,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔔 Notification Behavior"
+                        android:text="@string/section_notification_behavior"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary"
@@ -50,7 +50,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Control how notifications are handled when one is already being read"
+                        android:text="@string/behavior_notification_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
@@ -84,7 +84,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Most users should use: Smart Mode"
+                                android:text="@string/recommendation_smart_mode"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -116,7 +116,7 @@
                             android:id="@+id/radioInterrupt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Interrupt (stop current, read new immediately)"
+                            android:text="@string/behavior_interrupt_mode"
                             android:checked="true"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
@@ -127,7 +127,7 @@
                             android:id="@+id/radioQueue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Queue (finish current, then read new)"
+                            android:text="@string/behavior_queue_mode"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
                             app:buttonTint="@color/white_100"
@@ -137,7 +137,7 @@
                             android:id="@+id/radioSkip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Skip (ignore new notifications while reading)"
+                            android:text="@string/behavior_skip_mode"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
                             app:buttonTint="@color/white_100"
@@ -147,7 +147,7 @@
                             android:id="@+id/radioSmart"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Smart (priority apps interrupt, others queue)"
+                            android:text="@string/behavior_smart_mode"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
                             app:buttonTint="@color/white_100"
@@ -172,7 +172,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="⚡ Priority Apps"
+                            android:text="@string/behavior_priority_apps"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
@@ -181,7 +181,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="These apps will interrupt the current notification. All other apps will queue."
+                            android:text="@string/behavior_priority_apps_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="16dp" />
@@ -224,7 +224,7 @@
                                 android:id="@+id/btnAddPriorityApp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Add"
+                                android:text="@string/button_add"
                                 android:backgroundTint="@color/white_100"
                                 android:textColor="@color/purple_base" />
 
@@ -264,7 +264,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🎵 Media Behavior"
+                        android:text="@string/section_media_behavior"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary"
@@ -273,7 +273,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Control how notifications are handled when music or videos are playing"
+                        android:text="@string/behavior_media_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
@@ -307,7 +307,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Most users should use: Lower Audio"
+                                android:text="@string/recommendation_lower_audio"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -339,7 +339,7 @@
                             android:id="@+id/radioMediaIgnore"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Ignore - Continue as normal (current behavior)"
+                            android:text="@string/behavior_media_ignore"
                             android:checked="true"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
@@ -350,7 +350,7 @@
                             android:id="@+id/radioMediaPause"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Pause - Pause media while speaking"
+                            android:text="@string/behavior_media_pause"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
                             app:buttonTint="@color/white_100"
@@ -360,7 +360,7 @@
                             android:id="@+id/radioMediaDuck"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Lower Audio - Duck media volume temporarily"
+                            android:text="@string/behavior_media_lower"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
                             app:buttonTint="@color/white_100"
@@ -370,7 +370,7 @@
                             android:id="@+id/radioMediaSilence"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Silence - Don't speak while media is playing"
+                            android:text="@string/behavior_media_silence"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
                             app:buttonTint="@color/white_100"
@@ -383,7 +383,7 @@
                         android:id="@+id/pauseWarningText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="⚠️ Pause mode may not work on all devices due to system limitations."
+                        android:text="@string/behavior_pause_warning"
                         android:textSize="13sp"
                         android:textColor="@color/text_warning"
                         android:background="@color/warning_background"
@@ -409,7 +409,7 @@
                             android:id="@+id/duckingVolumeLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🔉 Ducking Volume"
+                            android:text="@string/behavior_ducking_volume"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
@@ -418,7 +418,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Set how quiet media should become during notifications"
+                            android:text="@string/behavior_ducking_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="16dp" />
@@ -434,7 +434,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="🔇"
+                                android:text="@string/volume_mute"
                                 android:textSize="16sp"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:layout_marginEnd="8dp" />
@@ -455,7 +455,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="🔊"
+                                android:text="@string/volume_loud"
                                 android:textSize="16sp"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:layout_marginStart="8dp" />
@@ -479,7 +479,7 @@
                             android:id="@+id/duckingWarningText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="⚠️ On some devices, lowering media volume may also lower the notification voice. If notifications are still hard to hear, try Pause mode or adjust your TTS settings."
+                            android:text="@string/behavior_ducking_warning"
                             android:textSize="13sp"
                             android:textColor="@color/text_warning"
                             android:background="@color/warning_background"

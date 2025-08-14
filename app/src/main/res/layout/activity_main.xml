@@ -37,7 +37,7 @@
             android:id="@+id/versionnumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="version x.x.x"
+            android:text="@string/main_version_placeholder"
             android:textAlignment="viewEnd"
             android:paddingTop="4dp"
             android:paddingBottom="0dp"
@@ -47,7 +47,7 @@
             android:id="@+id/credit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="by Mitchi"
+            android:text="@string/main_author"
             android:textAlignment="viewEnd"
             android:textSize="10sp"/>
 
@@ -101,7 +101,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="SpeakThat! Active"
+                                android:text="@string/main_service_active"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -112,7 +112,7 @@
                             android:id="@+id/textMasterSwitchStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tap to enable notification reading"
+                            android:text="@string/main_service_enable"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp"
@@ -176,7 +176,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Notification permissions:"
+                        android:text="@string/main_notification_permissions"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary" />

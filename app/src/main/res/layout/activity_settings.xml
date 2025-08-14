@@ -103,7 +103,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="⚙️ General Settings"
+                            android:text="@string/settings_general_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -111,7 +111,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="App preferences, theme settings"
+                            android:text="@string/settings_general_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
@@ -161,7 +161,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🎙️ Voice Settings"
+                            android:text="@string/settings_voice_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -169,7 +169,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Text-to-speech voice and speed"
+                            android:text="@string/settings_voice_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
@@ -219,7 +219,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🔔 Behavior Settings"
+                            android:text="@string/settings_behavior_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -227,7 +227,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="When and how notifications are read"
+                            android:text="@string/settings_behavior_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
@@ -277,7 +277,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🔍 Filter Settings"
+                            android:text="@string/settings_filter_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -285,7 +285,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Choose which apps to read"
+                            android:text="@string/settings_filter_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
@@ -335,7 +335,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🔧 Conditional Rules"
+                            android:text="@string/settings_rules_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -343,7 +343,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Configure Bluetooth, time schedules, etc"
+                            android:text="@string/settings_rules_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
