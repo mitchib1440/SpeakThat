@@ -42,7 +42,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:text="📜 Recent Notifications"
+                        android:text="@string/notification_history_recent"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="?android:attr/textColorPrimary" />
@@ -52,7 +52,7 @@
                         android:id="@+id/textHistory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Loading notification history..."
+                        android:text="@string/notification_history_loading"
                         android:textSize="14sp"
                         android:textColor="?android:attr/textColorSecondary"
                         android:lineSpacingExtra="4dp"
@@ -93,12 +93,12 @@
                             android:src="@drawable/help_24px"
                             android:contentDescription="Help"
                             android:layout_marginEnd="8dp"
-                            android:tint="?android:attr/textColorPrimary" />
+                            app:tint="?android:attr/textColorPrimary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Debug Information"
+                            android:text="@string/notification_history_debug_info"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="?android:attr/textColorPrimary" />
@@ -109,7 +109,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="This screen shows notifications that SpeakThat! has captured for debugging purposes. It helps you verify that the app is working correctly and see exactly what notifications are being read aloud."
+                        android:text="@string/notification_history_debug_description"
                         android:textSize="14sp"
                         android:textColor="?android:attr/textColorSecondary"
                         android:lineSpacingExtra="4dp" />

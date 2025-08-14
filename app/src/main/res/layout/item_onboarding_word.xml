@@ -31,6 +31,6 @@
         android:src="@drawable/ic_delete_24"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Remove word"
-        android:tint="@color/purple_card_text_primary" />
+        app:tint="@color/purple_card_text_primary" />
 
 </LinearLayout> 

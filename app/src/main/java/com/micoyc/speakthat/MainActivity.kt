@@ -171,6 +171,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Apply saved theme first
         applySavedTheme()
         
+        // Apply saved language/locale setting
+        applySavedLanguage()
+        
         // Initialize view binding
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -513,6 +516,60 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+    }
+    
+    private fun applySavedLanguage() {
+        // Get saved language from VoiceSettings preferences
+        val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+        val savedLanguage = voiceSettingsPrefs.getString("language", "en_US") ?: "en_US"
+        
+        try {
+            // Parse the locale string (e.g., "ja_JP" -> Locale("ja", "JP"))
+            val localeParts = savedLanguage.split("_")
+            val targetLocale = when {
+                localeParts.size >= 2 -> java.util.Locale(localeParts[0], localeParts[1])
+                localeParts.size == 1 -> java.util.Locale(localeParts[0])
+                else -> java.util.Locale.getDefault()
+            }
+            
+            // Check if we need to change the locale
+            val currentConfig = resources.configuration
+            val currentLocale = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                currentConfig.locales.get(0)
+            } else {
+                @Suppress("DEPRECATION")
+                currentConfig.locale
+            }
+            
+            if (currentLocale == null || 
+                !targetLocale.language.equals(currentLocale.language) ||
+                !targetLocale.country.equals(currentLocale.country)) {
+                
+                // Update the app's locale configuration
+                val config = android.content.res.Configuration(resources.configuration)
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    config.setLocale(targetLocale)
+                } else {
+                    @Suppress("DEPRECATION")
+                    config.locale = targetLocale
+                }
+                
+                // Apply the new configuration
+                resources.updateConfiguration(config, resources.displayMetrics)
+                
+                // Also update the default locale for this session
+                java.util.Locale.setDefault(targetLocale)
+                
+                // Show language change dialog instead of immediate recreate
+                showLanguageChangeDialog(targetLocale)
+                
+                com.micoyc.speakthat.InAppLogger.log("MainActivity", 
+                    "Applied saved language: ${targetLocale} (from: $savedLanguage)")
+            }
+        } catch (e: Exception) {
+            com.micoyc.speakthat.InAppLogger.log("MainActivity", 
+                "Error applying saved language: ${e.message}")
         }
     }
     
@@ -1124,6 +1181,58 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) == android.content.pm.PackageManager.PERMISSION_GRANTED
         } else {
             true // No permission needed for older Android versions
+        }
+    }
+    
+    /**
+     * Show language change dialog with options for user
+     */
+    private fun showLanguageChangeDialog(newLocale: java.util.Locale) {
+        val languageName = newLocale.getDisplayLanguage(newLocale)
+        val currentLanguageName = java.util.Locale.getDefault().getDisplayLanguage(java.util.Locale.getDefault())
+        
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.dialog_title_language_changed))
+            .setMessage(getString(R.string.dialog_message_language_changed, currentLanguageName, languageName))
+            .setPositiveButton(getString(R.string.button_restart_app)) { _, _ ->
+                // Restart the entire app to ensure all components use new language
+                restartApp()
+            }
+            .setNegativeButton(getString(R.string.button_apply_now)) { _, _ ->
+                // Just recreate current activity
+                recreate()
+            }
+            .setNeutralButton(getString(R.string.button_later)) { _, _ ->
+                // Do nothing - user can manually restart later
+                Toast.makeText(this, getString(R.string.toast_language_manual_restart), Toast.LENGTH_SHORT).show()
+            }
+            .setCancelable(false)
+            .show()
+        
+        InAppLogger.log("MainActivity", "Language change dialog shown: $currentLanguageName → $languageName")
+    }
+    
+    /**
+     * Restart the entire app to ensure all components use the new language
+     */
+    private fun restartApp() {
+        try {
+            // Create intent to restart the app
+            val intent = packageManager.getLaunchIntentForPackage(packageName)
+            intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            
+            // Show a brief message
+            Toast.makeText(this, getString(R.string.toast_language_restarting), Toast.LENGTH_SHORT).show()
+            
+            // Start the new instance and finish current one
+            startActivity(intent)
+            finish()
+            
+            InAppLogger.log("MainActivity", "App restart initiated for language change")
+        } catch (e: Exception) {
+            InAppLogger.logError("MainActivity", "Failed to restart app: ${e.message}")
+            // Fallback to recreate if restart fails
+            recreate()
         }
     }
     

@@ -41,7 +41,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🛠️ Debug Tools"
+                        android:text="@string/dev_debug_tools_title"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary"
@@ -50,7 +50,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tools for debugging and testing the app"
+                        android:text="@string/dev_debug_tools_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -66,7 +66,7 @@
                             android:id="@+id/btnShowHistory"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="📋 Show Notification History"
+                            android:text="@string/dev_notification_history"
                             android:background="@android:color/transparent"
                             android:textColor="@color/white_100"
                             style="@style/Widget.Material3.Button.TextButton" />
@@ -84,7 +84,7 @@
                             android:id="@+id/btnShowAnalytics"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="📊 Show Help Usage Analytics"
+                            android:text="@string/dev_analytics"
                             android:background="@android:color/transparent"
                             android:textColor="@color/white_100"
                             style="@style/Widget.Material3.Button.TextButton" />
@@ -102,7 +102,7 @@
                             android:id="@+id/btnBatteryReport"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="🔋 Battery Optimization Report"
+                            android:text="@string/dev_battery_report"
                             android:background="@android:color/transparent"
                             android:textColor="@color/white_100"
                             style="@style/Widget.Material3.Button.TextButton" />
@@ -120,7 +120,7 @@
                             android:id="@+id/btnRepairBlacklist"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="🛠️ Repair Word Blacklist"
+                            android:text="@string/dev_repair_blacklist"
                             android:background="@android:color/transparent"
                             android:textColor="@color/white_100"
                             style="@style/Widget.Material3.Button.TextButton" />
@@ -138,7 +138,7 @@
                             android:id="@+id/btnBackgroundMonitor"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="🛰️ Background Process Monitor"
+                            android:text="@string/dev_background_monitor"
                             android:background="@android:color/transparent"
                             android:textColor="@color/white_100"
                             style="@style/Widget.Material3.Button.TextButton" />
@@ -156,7 +156,7 @@
                             android:id="@+id/btnInstallationSourceDebug"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="🔍 Installation Source Debug"
+                            android:text="@string/dev_installation_debug"
                             android:background="@android:color/transparent"
                             android:textColor="@color/white_100"
                             style="@style/Widget.Material3.Button.TextButton" />
@@ -174,7 +174,7 @@
                             android:id="@+id/btnRuleSystemTest"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="🧪 Test Rule System"
+                            android:text="@string/dev_test_rules"
                             android:background="@android:color/transparent"
                             android:textColor="@color/white_100"
                             style="@style/Widget.Material3.Button.TextButton" />
@@ -204,7 +204,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📝 Logging Configuration"
+                        android:text="@string/dev_logging_configuration_title"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary"

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -10,7 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="⚡"
+        android:text="@string/item_priority_app_icon"
         android:textSize="20sp"
         android:layout_marginEnd="12dp" />
 
@@ -19,7 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Priority App Name"
+        android:text="@string/item_priority_app_name"
         android:textSize="16sp"
         android:textColor="?android:attr/textColorPrimary"
         android:layout_marginEnd="12dp" />
@@ -31,6 +32,6 @@
         android:src="@android:drawable/ic_menu_delete"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="Remove priority app"
-        android:tint="@android:color/holo_red_dark" />
+        app:tint="@android:color/holo_red_dark" />
 
 </LinearLayout> 

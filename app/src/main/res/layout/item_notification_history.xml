@@ -29,7 +29,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="App Name"
+                android:text="@string/item_notification_app_name"
                 android:textStyle="bold"
                 android:textSize="14sp"
                 android:textColor="?android:attr/textColorPrimary" />
@@ -38,7 +38,7 @@
                 android:id="@+id/textTimestamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12:34:56"
+                android:text="@string/item_notification_time"
                 android:textSize="12sp"
                 android:textColor="?android:attr/textColorSecondary" />
 
@@ -49,7 +49,7 @@
             android:id="@+id/textNotificationContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Notification content goes here..."
+            android:text="@string/item_notification_content"
             android:textSize="14sp"
             android:textColor="?android:attr/textColorPrimary"
             android:layout_marginBottom="12dp"
@@ -67,7 +67,7 @@
                 style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
-                android:text="🚫 Filter Similar"
+                android:text="@string/item_notification_filter"
                 android:textSize="12sp"
                 android:minWidth="120dp"
                 android:backgroundTint="@color/purple_300"

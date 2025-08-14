@@ -24,7 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Support &amp; Feedback"
+            android:text="@string/dialog_support_title"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="?android:attr/textColorPrimary" />
@@ -35,7 +35,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="How can we help you today? Choose the option that best describes your needs:"
+        android:text="@string/dialog_support_description"
         android:textSize="16sp"
         android:textColor="?android:attr/textColorSecondary"
         android:layout_marginBottom="24dp" />
@@ -84,7 +84,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Feature Request"
+                        android:text="@string/dialog_support_feature_request"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary" />
@@ -92,7 +92,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Suggest new features or improvements"
+                        android:text="@string/dialog_support_feature_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginTop="4dp" />
@@ -141,7 +141,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bug Report"
+                        android:text="@string/dialog_support_bug_report"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary" />
@@ -149,7 +149,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Report crashes, errors, or unexpected behavior"
+                        android:text="@string/dialog_support_bug_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginTop="4dp" />

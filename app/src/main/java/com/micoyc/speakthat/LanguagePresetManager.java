@@ -245,16 +245,78 @@ public class LanguagePresetManager {
             
             InAppLogger.log(TAG, "UI language changed successfully to: " + targetLocale.getDisplayLanguage());
             
-            // For proper UI language update, we should refresh the current activity
-            // This ensures all UI elements are updated to the new language
+            // For proper UI language update, we should show the language change dialog
+            // This gives users options for how to apply the language change
             if (context instanceof android.app.Activity) {
                 android.app.Activity activity = (android.app.Activity) context;
-                InAppLogger.log(TAG, "Refreshing activity to apply new UI language");
-                activity.recreate();
+                InAppLogger.log(TAG, "Language change detected - showing dialog in current activity");
+                
+                // Show the language change dialog directly in the current activity
+                showLanguageChangeDialog(activity, targetLocale);
             }
             
         } catch (Exception e) {
             InAppLogger.log(TAG, "Error applying UI language change: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Show language change dialog with options for user
+     */
+    private static void showLanguageChangeDialog(android.app.Activity activity, Locale newLocale) {
+        try {
+            String languageName = newLocale.getDisplayLanguage(newLocale);
+            String currentLanguageName = Locale.getDefault().getDisplayLanguage(Locale.getDefault());
+            
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(activity);
+            builder.setTitle(activity.getString(R.string.dialog_title_language_changed))
+                   .setMessage(activity.getString(R.string.dialog_message_language_changed, currentLanguageName, languageName))
+                   .setPositiveButton(activity.getString(R.string.button_restart_app), (dialog, which) -> {
+                       // Restart the entire app to ensure all components use new language
+                       restartApp(activity);
+                   })
+                   .setNegativeButton(activity.getString(R.string.button_apply_now), (dialog, which) -> {
+                       // Just recreate current activity
+                       activity.recreate();
+                   })
+                   .setNeutralButton(activity.getString(R.string.button_later), (dialog, which) -> {
+                       // Do nothing - user can manually restart later
+                       android.widget.Toast.makeText(activity, 
+                           activity.getString(R.string.toast_language_manual_restart), 
+                           android.widget.Toast.LENGTH_SHORT).show();
+                   })
+                   .setCancelable(false)
+                   .show();
+            
+            InAppLogger.log(TAG, "Language change dialog shown: " + currentLanguageName + " → " + languageName);
+        } catch (Exception e) {
+            InAppLogger.log(TAG, "Error showing language change dialog: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Restart the entire app to ensure all components use the new language
+     */
+    private static void restartApp(android.app.Activity activity) {
+        try {
+            // Create intent to restart the app
+            android.content.Intent intent = activity.getPackageManager().getLaunchIntentForPackage(activity.getPackageName());
+            intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP | android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+            
+            // Show a brief message
+            android.widget.Toast.makeText(activity, 
+                activity.getString(R.string.toast_language_restarting), 
+                android.widget.Toast.LENGTH_SHORT).show();
+            
+            // Start the new instance and finish current one
+            activity.startActivity(intent);
+            activity.finish();
+            
+            InAppLogger.log(TAG, "App restart initiated for language change");
+        } catch (Exception e) {
+            InAppLogger.log(TAG, "Failed to restart app: " + e.getMessage());
+            // Fallback to recreate if restart fails
+            activity.recreate();
         }
     }
     

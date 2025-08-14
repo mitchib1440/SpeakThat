@@ -37,7 +37,7 @@
                     android:id="@+id/textRuleName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Rule Name"
+                    android:text="@string/item_rule_name"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/purple_card_text_primary" />
@@ -46,7 +46,7 @@
                     android:id="@+id/textRuleSummary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Rule summary"
+                    android:text="@string/item_rule_summary"
                     android:textSize="14sp"
                     android:textColor="@color/purple_card_text_secondary"
                     android:layout_marginTop="2dp" />
@@ -89,7 +89,7 @@
                 android:id="@+id/textRuleDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="When screen is on, Quiet Hours will skip reading notifications"
+                android:text="@string/item_rule_example"
                 android:textSize="14sp"
                 android:textColor="@color/purple_card_text_secondary"
                 android:lineSpacingExtra="2dp"

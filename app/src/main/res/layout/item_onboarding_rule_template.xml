@@ -67,7 +67,7 @@
                 android:id="@+id/buttonAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add"
+                android:text="@string/item_onboarding_rule_template_add"
                 android:textSize="12sp"
                 android:background="@android:color/transparent"
                 android:textColor="@color/white_100"

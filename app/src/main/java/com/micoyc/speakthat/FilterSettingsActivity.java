@@ -1420,11 +1420,15 @@ public class FilterSettingsActivity extends AppCompatActivity {
         }
         
         if (exportItem != null) {
-            exportItem.setIconTintList(android.content.res.ColorStateList.valueOf(iconColor));
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                exportItem.setIconTintList(android.content.res.ColorStateList.valueOf(iconColor));
+            }
         }
         
         if (importItem != null) {
-            importItem.setIconTintList(android.content.res.ColorStateList.valueOf(iconColor));
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                importItem.setIconTintList(android.content.res.ColorStateList.valueOf(iconColor));
+            }
         }
         
         return true;

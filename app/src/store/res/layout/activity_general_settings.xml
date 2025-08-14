@@ -39,7 +39,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🎨 Theme"
+                        android:text="@string/general_theme_title"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_secondary"
@@ -62,7 +62,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Dark Mode"
+                                android:text="@string/general_dark_mode"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -70,7 +70,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Enable dark mode for this app"
+                                android:text="@string/general_dark_mode_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -135,7 +135,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Battery Optimization"
+                                android:text="@string/general_battery_optimization"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -143,7 +143,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Request battery optimization exemption"
+                                android:text="@string/general_battery_optimization_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -178,7 +178,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Auto-Start Service"
+                                android:text="@string/general_auto_start"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -186,7 +186,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Automatically start notification service on boot"
+                                android:text="@string/general_auto_start_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -223,7 +223,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Aggressive Background Processing"
+                                android:text="@string/general_aggressive_background"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -231,7 +231,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Process notifications more aggressively in background (uses more battery)"
+                                android:text="@string/general_aggressive_background_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -259,7 +259,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Service Restart Policy"
+                            android:text="@string/general_service_restart_policy"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
@@ -268,7 +268,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="When should the notification service automatically restart?"
+                            android:text="@string/general_service_restart_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="12dp" />
@@ -283,7 +283,7 @@
                                 android:id="@+id/radioRestartNever"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Never restart automatically"
+                                android:text="@string/general_never_restart"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:buttonTint="@color/radio_button_color"
@@ -294,7 +294,7 @@
                                 android:id="@+id/radioRestartOnCrash"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Restart only on crash"
+                                android:text="@string/general_restart_on_crash"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:buttonTint="@color/radio_button_color"
@@ -573,7 +573,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Clear All Data"
+                                android:text="@string/button_clear_all_data"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -621,7 +621,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🧪 Test Settings"
+                        android:text="@string/title_test_settings"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_secondary"

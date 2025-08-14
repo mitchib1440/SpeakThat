@@ -27,7 +27,7 @@
                 android:id="@+id/textPackageName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="com.twitter.android"
+                android:text="@string/item_custom_app_example_package"
                 android:textSize="12sp"
                 android:textColor="@color/purple_card_text_secondary"
                 android:fontFamily="monospace" />
@@ -36,7 +36,7 @@
                 android:id="@+id/textCustomName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Twitter"
+                android:text="@string/item_custom_app_example_name"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/purple_card_text_primary"

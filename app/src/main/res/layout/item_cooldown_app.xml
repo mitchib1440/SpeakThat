@@ -31,7 +31,7 @@
             android:id="@+id/appName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="App Name"
+            android:text="@string/item_cooldown_app_name"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="?android:attr/textColorPrimary"
@@ -42,7 +42,7 @@
             android:id="@+id/packageName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="com.example.app"
+            android:text="@string/item_cooldown_package"
             android:textSize="12sp"
             android:textColor="?android:attr/textColorSecondary"
             android:layout_marginBottom="8dp" />
@@ -61,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
-                android:text="No cooldown" />
+                android:text="@string/item_cooldown_no_cooldown" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,7 +72,7 @@
         android:id="@+id/btnDelete"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:text="🗑️"
+        android:text="@string/item_cooldown_delete"
         android:textSize="16sp"
         android:backgroundTint="@android:color/holo_red_light"
         android:textColor="@color/white_100"

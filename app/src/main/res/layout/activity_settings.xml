@@ -395,7 +395,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🛠️ Development Settings"
+                            android:text="@string/settings_development_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -403,7 +403,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Debug tools and logging system"
+                            android:text="@string/settings_development_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
@@ -453,7 +453,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🔄 Re-run Onboarding"
+                            android:text="@string/settings_rerun_onboarding"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -461,7 +461,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="See the app introduction again"
+                            android:text="@string/settings_rerun_onboarding_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
@@ -511,7 +511,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="💬 Support &amp; Feedback"
+                            android:text="@string/settings_support_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -519,7 +519,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Get help, report bugs, request features"
+                            android:text="@string/settings_support_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
@@ -569,7 +569,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="❤️ Donate"
+                            android:text="@string/settings_donate_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -577,7 +577,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Support development and keep the app free"
+                            android:text="@string/settings_donate_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />

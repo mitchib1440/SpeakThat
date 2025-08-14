@@ -29,7 +29,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Support SpeakThat!"
+                    android:text="@string/dialog_donate_title"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="?android:attr/textColorPrimary" />
@@ -40,7 +40,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hey! Mitchi here. A lot goes into making SpeakThat! I  handle the UI/UX design, quality assurance and testing, project management, distribution and publishing, app store compliance, and user support just to name a few!\n\nIf SpeakThat has been helpful for you, or if you would have paid for it, please consider supporting its development!\n\nEvery donation keeps this app totally free and open-source for everyone who needs it.\n\nThank you! ❤️"
+                android:text="@string/dialog_donate_message"
                 android:textSize="16sp"
                 android:textColor="?android:attr/textColorSecondary"
                 android:layout_marginBottom="24dp" />
@@ -90,7 +90,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Buy me a coffee"
+                                android:text="@string/dialog_donate_coffee"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -98,7 +98,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Quick one-time donation via Ko-fi"
+                                android:text="@string/dialog_donate_coffee_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="2dp" />
@@ -154,7 +154,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Become a Patron"
+                                android:text="@string/dialog_donate_patron"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -162,7 +162,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Monthly support with exclusive updates"
+                                android:text="@string/dialog_donate_patron_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="2dp" />

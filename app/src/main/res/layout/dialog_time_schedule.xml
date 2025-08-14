@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Time Range"
+            android:text="@string/time_schedule_range"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
@@ -39,7 +39,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Start Time"
+                    android:text="@string/time_schedule_start"
                     android:textSize="14sp"
                     android:textColor="@color/text_secondary"
                     android:layout_marginBottom="8dp" />
@@ -63,7 +63,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="End Time"
+                    android:text="@string/time_schedule_end"
                     android:textSize="14sp"
                     android:textColor="@color/text_secondary"
                     android:layout_marginBottom="8dp" />
@@ -83,7 +83,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Days of Week"
+            android:text="@string/time_schedule_days"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
@@ -98,7 +98,7 @@
                 android:id="@+id/checkBoxEveryDay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Every Day"
+                android:text="@string/time_schedule_every_day"
                 android:textSize="16sp"
                 android:textColor="@color/text_primary"
                 android:layout_marginBottom="8dp" />
@@ -113,7 +113,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Mon"
+                    android:text="@string/day_mon"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary" />
 
@@ -122,7 +122,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Tue"
+                    android:text="@string/day_tue"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary" />
 
@@ -131,7 +131,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Wed"
+                    android:text="@string/day_wed"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary" />
 
@@ -140,7 +140,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Thu"
+                    android:text="@string/day_thu"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary" />
 
@@ -157,7 +157,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Fri"
+                    android:text="@string/day_fri"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary" />
 
@@ -166,7 +166,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Sat"
+                    android:text="@string/day_sat"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary" />
 
@@ -175,7 +175,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Sun"
+                    android:text="@string/day_sun"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary" />
 

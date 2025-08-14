@@ -94,7 +94,7 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@drawable/speakthaticon"
-                                android:tint="@color/white_100"
+                                app:tint="@color/white_100"
                                 android:layout_marginEnd="8dp"
                                 android:contentDescription="@string/app_name" />
 
@@ -128,7 +128,7 @@
                                 android:layout_width="16dp"
                                 android:layout_height="16dp"
                                 android:src="@drawable/lightbulb_2_24px"
-                                android:tint="@color/white_100"
+                                app:tint="@color/white_100"
                                 android:layout_marginEnd="6dp"
                                 android:contentDescription="Battery tip icon" />
 
@@ -186,7 +186,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/close_24px"
-                        android:tint="@color/white_100"
+                        app:tint="@color/white_100"
                         android:layout_marginStart="8dp"
                         android:contentDescription="Permission status icon" />
 

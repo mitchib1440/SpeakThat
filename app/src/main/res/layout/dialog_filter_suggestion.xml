@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Filter Similar Notifications"
+        android:text="@string/dialog_filter_suggestion_title"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/text_secondary"
@@ -21,7 +21,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Original notification:"
+        android:text="@string/dialog_filter_suggestion_original"
         android:textSize="14sp"
         android:textStyle="bold"
         android:textColor="?android:attr/textColorPrimary"
@@ -39,7 +39,7 @@
             android:id="@+id/textOriginalNotification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sample notification text"
+            android:text="@string/dialog_filter_suggestion_sample"
             android:textSize="14sp"
             android:textColor="?android:attr/textColorPrimary"
             android:padding="12dp" />
@@ -50,7 +50,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose filter type:"
+        android:text="@string/dialog_filter_suggestion_choose"
         android:textSize="14sp"
         android:textStyle="bold"
         android:textColor="?android:attr/textColorPrimary"
@@ -184,7 +184,7 @@
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="@color/purple_200"
             android:layout_marginEnd="8dp" />
 

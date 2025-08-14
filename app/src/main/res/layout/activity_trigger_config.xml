@@ -40,7 +40,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📱 Screen State"
+                        android:text="@string/trigger_screen_state"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary"
@@ -49,7 +49,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Choose when this trigger should activate:"
+                        android:text="@string/trigger_screen_choose"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -71,14 +71,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Invert Condition"
+                                android:text="@string/trigger_invert_condition"
                                 android:textSize="16sp"
                                 android:textColor="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Trigger when condition is NOT met"
+                                android:text="@string/trigger_invert_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -129,7 +129,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🕐 Time Schedule"
+                        android:text="@string/trigger_time_schedule_title"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
@@ -138,7 +138,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Set the time range when this trigger should activate:"
+                        android:text="@string/trigger_time_schedule_description"
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -160,14 +160,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Invert Condition"
+                                android:text="@string/trigger_invert_condition"
                                 android:textSize="16sp"
                                 android:textColor="@color/text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Trigger when condition is NOT met"
+                                android:text="@string/trigger_invert_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/text_secondary" />
 
@@ -196,7 +196,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Start Time:"
+                            android:text="@string/trigger_start_time_label"
                             android:textSize="16sp"
                             android:textColor="@color/purple_card_text_primary"
                             android:layout_marginEnd="12dp" />
@@ -206,7 +206,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="09:00"
+                            android:text="@string/trigger_start_time_default"
                             android:textSize="16sp"
                             android:textColor="@color/purple_card_text_primary"
                             android:background="@drawable/bg_advanced_voice_section"
@@ -243,7 +243,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="End Time:"
+                            android:text="@string/trigger_end_time_label"
                             android:textSize="16sp"
                             android:textColor="@color/purple_card_text_primary"
                             android:layout_marginEnd="12dp" />
@@ -253,7 +253,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="17:00"
+                            android:text="@string/trigger_end_time_default"
                             android:textSize="16sp"
                             android:textColor="@color/purple_card_text_primary"
                             android:background="@drawable/bg_advanced_voice_section"
@@ -283,7 +283,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Days of Week:"
+                        android:text="@string/time_schedule_days"
                         android:textSize="16sp"
                         android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="8dp" />
@@ -331,7 +331,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📶 Bluetooth Device"
+                        android:text="@string/item_trigger_bluetooth_device"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary"
@@ -362,14 +362,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Invert Condition"
+                                android:text="@string/trigger_invert_condition"
                                 android:textSize="16sp"
                                 android:textColor="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Trigger when condition is NOT met"
+                                android:text="@string/trigger_invert_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -499,7 +499,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📶 WiFi Network"
+                        android:text="@string/dialog_title_wifi_networks"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary"
@@ -530,14 +530,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Invert Condition"
+                                android:text="@string/trigger_invert_condition"
                                 android:textSize="16sp"
                                 android:textColor="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Trigger when condition is NOT met"
+                                android:text="@string/trigger_invert_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
