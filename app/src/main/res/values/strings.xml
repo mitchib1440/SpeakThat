@@ -767,8 +767,146 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="general_service_restart_description">When should the notification service automatically restart?</string>
     <string name="general_never_restart">Never restart automatically</string>
     <string name="general_restart_on_crash">Restart only on crash</string>
+    <string name="general_restart_periodically">Restart periodically (every 6 hours)</string>
+    <string name="general_notification_settings_title">🔔 Notification Settings</string>
+    <string name="general_persistent_notification">Persistent Notification</string>
+    <string name="general_persistent_notification_description">Show a persistent notification when SpeakThat is active</string>
+    <string name="general_notification_while_reading">Notification While Reading</string>
+    <string name="general_notification_while_reading_description">Show a notification when TTS is actively reading</string>
+    <string name="general_data_management_title">💾 Data Management</string>
+    <string name="general_export_configuration">Export Configuration</string>
+    <string name="general_export_configuration_description">Save all settings to a file</string>
+    <string name="general_import_configuration">Import Configuration</string>
+    <string name="general_import_configuration_description">Load settings from a file</string>
+    <string name="general_reset_settings">Reset all settings to defaults</string>
+    <string name="general_verify_settings">Verify All Settings</string>
+    <string name="general_verify_settings_description">Run comprehensive test to verify all settings are working</string>
+    
+    <!-- Exception Configuration -->
+    <string name="exception_set_end_time">Set End Time</string>
+    <string name="exception_no_days_selected">No days selected</string>
+    <string name="exception_bluetooth_devices_title">Choose which Bluetooth devices should trigger this exception:</string>
+    <string name="exception_specific_devices">Specific Devices (one per line):</string>
+    <string name="exception_select_devices">Select Devices</string>
+    <string name="exception_wifi_networks_title">Choose which WiFi networks should trigger this exception:</string>
+    <string name="exception_specific_networks">Specific Networks (one per line):</string>
+    <string name="exception_select_networks">Select Networks</string>
+    
+    <!-- Rules Activity -->
+    <string name="rules_no_rules_created">No Rules Created</string>
+    <string name="rules_create_first_rule_description">Create your first rule to control when SpeakThat reads notifications based on your device state, time, or connections.</string>
+    <string name="rules_create_first_rule_button">Create Your First Rule</string>
+    
+    <!-- Rule Builder -->
+    <string name="rule_builder_logic_and">AND</string>
+    <string name="rule_builder_logic_or">OR</string>
+    <string name="rule_builder_logic_xor">XOR</string>
+    <string name="rule_builder_actions_title">🎯 Actions</string>
+    <string name="rule_builder_actions_description">What happens when the triggers are met</string>
+    <string name="rule_builder_exceptions_title">🚫 Exceptions</string>
+    <string name="rule_builder_exceptions_description">Conditions that override the triggers (optional)</string>
+    <string name="rule_builder_save_rule">Save Rule</string>
+    
+    <!-- Trigger Configuration -->
+    <string name="trigger_set_button">Set</string>
+    <string name="trigger_no_days_selected">No days selected</string>
+    <string name="trigger_bluetooth_devices_title">Choose which Bluetooth devices should trigger this rule:</string>
+    <string name="trigger_any_bluetooth_device">Any Bluetooth Device</string>
+    <string name="trigger_any_bluetooth_description">Trigger when any device is connected</string>
+    <string name="trigger_specific_devices">Specific Devices (one per line):</string>
+    <string name="trigger_select_devices">Select Devices</string>
+    <string name="trigger_wifi_networks_title">Choose which WiFi networks should trigger this rule:</string>
+    <string name="trigger_any_wifi_network">Any WiFi Network</string>
+    <string name="trigger_any_wifi_description">Trigger when connected to any network</string>
+    <string name="trigger_specific_networks">Specific Networks (one per line):</string>
+    <string name="trigger_select_networks">Select Networks</string>
+    
+        <!-- Wave Calibration -->
+    <string name="wave_calibration_recalibrate">Recalibrate</string>
+    <string name="wave_calibration_save_settings">This Works! Save Settings</string>
+    <string name="wave_calibration_disable">Turn Wave-to-Stop Off</string>
+    
+    <!-- Voice Settings - Audio Output -->
+    <string name="voice_audio_output_settings">🔊 Audio Output Settings</string>
+    <string name="voice_audio_output_description">Configure how notifications are played through your device\'s audio system.</string>
+    <string name="voice_audio_stream_type">Audio Stream Type</string>
+    <string name="voice_content_type">Content Type</string>
+    <string name="voice_content_type_description">Tells the system what kind of audio this is. Speech is recommended for notifications.</string>
+    <string name="voice_audio_recommendation">We recommend: Notification + Speech</string>
+    <string name="voice_preview_actions">🎵 Preview &amp; Actions</string>
+    <string name="voice_preview_button">Preview</string>
+    <string name="voice_test_settings">🔊 Test Voice Settings</string>
+    <string name="voice_reset_defaults">Reset to Defaults</string>
+    <string name="voice_preview_tip">Tip: Use the preview button to test how notifications will sound with your settings. All changes are saved automatically as you make them.</string>
+    
+    <!-- Filter Settings -->
+    <string name="filter_word_count">(0 words)</string>
+    <string name="filter_swap_description">Swap words in notifications for censoring or pronunciation fixes</string>
+    <string name="filter_swap_count">(0 swaps)</string>
+    <string name="filter_swap_tip">Tip: Use lowercase for case-insensitive matching. Leave \'Swap with\' empty to remove words entirely.</string>
+    <string name="filter_media_description">Automatically filter notifications for apps like YouTube that have both unwanted notifications (media controls) while allowing wanted notifications (like replies to your comments)</string>
+    <string name="filter_media_enable">Enable smart media notification filtering</string>
+    <string name="filter_media_apps_title">Filtered Media Apps:</string>
+    <string name="filter_media_apps_description">Apps that are automatically filtered for media notifications. Add media apps you want to filter out.</string>
+    <string name="filter_advanced_options">⚙️ Advanced Options</string>
+    <string name="filter_exception_apps_title">Exception Apps:</string>
+    <string name="filter_exception_apps_description">Apps that should never have notifications filtered (like YouTube for replies)</string>
+    <string name="filter_important_keywords_title">Important Keywords:</string>
+    <string name="filter_important_keywords_description">Words that indicate important notifications (like \'reply\', \'comment\')</string>
+    <string name="filter_media_info">Automatically filters out media controls while preserving important notifications. (Tap for more info)</string>
+    
+    <!-- Dialog Strings - Donate -->
+    <string name="donate_coffee">☕</string>
+    <string name="donate_theatre">🎭</string>
+    <string name="donate_octopus">🐙</string>
+    <string name="donate_bitcoin">₿</string>
+    <string name="donate_github_sponsors">GitHub Sponsors</string>
+    <string name="donate_github_description">Support open source development</string>
+    <string name="donate_bitcoin_title">Bitcoin (BTC)</string>
+    <string name="donate_bitcoin_description">Donate BTC via the Bitcoin network</string>
+    <string name="donate_privacy">🔒 Privacy: All donations are processed by their respective platforms. I don\'t collect or store any payment information.</string>
+    <string name="donate_friendly_message">Psst! You can also send a friendly email, a nice message always makes my day! :)</string>
+    
+    <!-- Dialog Strings - Filter Suggestion -->
+    <string name="filter_suggestion_smart_pattern">Smart pattern (recommended)</string>
+    <string name="filter_suggestion_smart_preview">Preview: Updates location...</string>
+    <string name="filter_suggestion_keywords">Keywords only</string>
+    <string name="filter_suggestion_keywords_preview">Preview: updating location</string>
+    <string name="filter_suggestion_exact_match">Exact text match</string>
+    <string name="filter_suggestion_exact_preview">Preview: Updating location at 2:30 PM...</string>
+    <string name="filter_suggestion_all_notifications">All notifications from this app</string>
+    <string name="filter_suggestion_all_preview">Preview: Block all Life360 notifications</string>
+    <string name="filter_suggestion_action">Action:</string>
+    <string name="filter_suggestion_block_completely">Block completely</string>
+    <string name="filter_suggestion_make_private">Make private</string>
+    <string name="filter_suggestion_create_filter">Create Filter</string>
     
     <!-- Dialog Strings - Support & Feedback -->
+    <string name="support_chat">💬</string>
+    <string name="support_lightbulb">💡</string>
+    <string name="support_bug">🐛</string>
+    <string name="support_question">❓</string>
+    <string name="support_general_title">General Support</string>
+    <string name="support_general_description">Get help with setup, usage, or general questions</string>
+    <string name="support_clipboard">📋</string>
+    <string name="support_include_logs">Include Debug Logs</string>
+    <string name="support_logs_description">Recommended for bug reports and technical issues. Debug logs help me identify and fix problems faster.\nLogs may contain information about your notification content! Please proofread the logs before sending.</string>
+    <string name="support_log_entries">Current log entries: 0</string>
+    <string name="support_logs_privacy">🔒 Privacy: Debug logs remain on your device unless you choose to share them. You can review the log content before sending any email.</string>
+    
+    <!-- Action Configuration -->
+    <string name="action_configure_voice_settings">Configure voice settings to apply when this rule is triggered:</string>
+    
+    <!-- Behavior Settings -->
+    <string name="behavior_speech_preview_example">Preview: Messages notified you: Mitchi: I heard you\'re using SpeakThat!</string>
+    
+    <!-- Rules Activity -->
+    <string name="rules_wrench_icon">🔧</string>
+    
+    <!-- Exception Configuration -->
+    <string name="exception_any_bluetooth_device">Any Bluetooth Device</string>
+    <string name="exception_any_wifi_network">Any WiFi Network</string>
+    
     <string name="dialog_support_title">Support &amp; Feedback</string>
     <string name="dialog_support_description">How can we help you today? Choose the option that best describes your needs:</string>
     <string name="dialog_support_feature_request">Feature Request</string>
@@ -1056,7 +1194,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="trigger_start_time_default">09:00</string>
     <string name="trigger_end_time_label">End Time:</string>
     <string name="trigger_end_time_default">17:00</string>
-    <string name="trigger_set_button">Set</string>
     
 
 

@@ -66,7 +66,7 @@
             android:id="@+id/radioPattern"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Smart pattern (recommended)"
+            android:text="@string/filter_suggestion_smart_pattern"
             android:checked="true"
             android:textSize="14sp" />
 
@@ -74,7 +74,7 @@
             android:id="@+id/textPatternPreview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Preview: Updates location..."
+            android:text="@string/filter_suggestion_smart_preview"
             android:textSize="12sp"
             android:textColor="?android:attr/textColorSecondary"
             android:layout_marginStart="32dp"
@@ -85,14 +85,14 @@
             android:id="@+id/radioKeywords"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Keywords only"
+            android:text="@string/filter_suggestion_keywords"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/textKeywordsPreview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Preview: updating location"
+            android:text="@string/filter_suggestion_keywords_preview"
             android:textSize="12sp"
             android:textColor="?android:attr/textColorSecondary"
             android:layout_marginStart="32dp"
@@ -103,14 +103,14 @@
             android:id="@+id/radioExact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Exact text match"
+            android:text="@string/filter_suggestion_exact_match"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/textExactPreview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Preview: Updating location at 2:30 PM..."
+            android:text="@string/filter_suggestion_exact_preview"
             android:textSize="12sp"
             android:textColor="?android:attr/textColorSecondary"
             android:layout_marginStart="32dp"
@@ -121,14 +121,14 @@
             android:id="@+id/radioAppSpecific"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="All notifications from this app"
+            android:text="@string/filter_suggestion_all_notifications"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/textAppSpecificPreview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Preview: Block all Life360 notifications"
+            android:text="@string/filter_suggestion_all_preview"
             android:textSize="12sp"
             android:textColor="?android:attr/textColorSecondary"
             android:layout_marginStart="32dp"
@@ -141,7 +141,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Action:"
+        android:text="@string/filter_suggestion_action"
         android:textSize="14sp"
         android:textStyle="bold"
         android:textColor="?android:attr/textColorPrimary"
@@ -158,7 +158,7 @@
             android:id="@+id/radioBlock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Block completely"
+            android:text="@string/filter_suggestion_block_completely"
             android:checked="true"
             android:textSize="14sp"
             android:layout_marginEnd="16dp" />
@@ -167,7 +167,7 @@
             android:id="@+id/radioPrivate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Make private"
+            android:text="@string/filter_suggestion_make_private"
             android:textSize="14sp" />
 
     </RadioGroup>
@@ -192,7 +192,7 @@
             android:id="@+id/btnCreateFilter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create Filter"
+            android:text="@string/filter_suggestion_create_filter"
             android:backgroundTint="@color/purple_200"
             android:textColor="@color/white_100" />
 

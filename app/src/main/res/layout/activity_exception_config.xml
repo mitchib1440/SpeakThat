@@ -284,7 +284,7 @@
                                 android:id="@+id/buttonEndTime"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Set End Time"
+                                android:text="@string/exception_set_end_time"
                                 android:background="@android:color/transparent"
                                 android:textColor="@color/white_100"
                                 style="@style/Widget.Material3.Button.TextButton" />
@@ -305,7 +305,7 @@
                         android:id="@+id/textSelectedDays"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="No days selected"
+                        android:text="@string/exception_no_days_selected"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:background="@drawable/bg_advanced_voice_section"
@@ -353,7 +353,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Choose which Bluetooth devices should trigger this exception:"
+                        android:text="@string/exception_bluetooth_devices_title"
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -404,7 +404,7 @@
                         android:id="@+id/switchAnyDevice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Any @string/item_trigger_bluetooth_device"
+                        android:text="@string/exception_any_bluetooth_device"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="16dp"
@@ -416,7 +416,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Specific Devices (one per line):"
+                        android:text="@string/exception_specific_devices"
                         android:textSize="14sp"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="8dp" />
@@ -442,7 +442,7 @@
                         android:id="@+id/buttonSelectDevices"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Select Devices"
+                        android:text="@string/exception_select_devices"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
                 </LinearLayout>
@@ -480,7 +480,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Choose which WiFi networks should trigger this exception:"
+                        android:text="@string/exception_wifi_networks_title"
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -531,7 +531,7 @@
                         android:id="@+id/switchAnyNetwork"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Any @string/dialog_title_wifi_networks"
+                        android:text="@string/exception_any_wifi_network"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="16dp"
@@ -543,7 +543,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Specific Networks (one per line):"
+                        android:text="@string/exception_specific_networks"
                         android:textSize="14sp"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="8dp" />
@@ -569,7 +569,7 @@
                         android:id="@+id/buttonSelectNetworks"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Select Networks"
+                        android:text="@string/exception_select_networks"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
                 </LinearLayout>
@@ -608,7 +608,7 @@
                     android:id="@+id/buttonCancel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="CANCEL"
+                    android:text="@string/button_cancel"
                     android:textColor="@color/white_100"
                     android:background="@android:color/transparent"
                     style="@style/Widget.Material3.Button.TextButton" />
@@ -636,7 +636,7 @@
                     android:id="@+id/buttonSave"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Save"
+                    android:text="@string/button_save"
                     android:textColor="@color/white_100"
                     android:background="@android:color/transparent"
                     style="@style/Widget.Material3.Button.TextButton" />

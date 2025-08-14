@@ -1713,7 +1713,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Allow readouts to continue when sensor is already covered (like in your pocket), but still stop when you cover it after the readout starts"
+                            android:text="@string/behavior_wave_pocket_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="16dp" />
@@ -2219,7 +2219,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Customize how notifications are spoken aloud using placeholders"
+                        android:text="@string/behavior_speech_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
@@ -2253,7 +2253,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Customize your notification experience"
+                                android:text="@string/behavior_speech_recommendation"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -2278,7 +2278,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Format Preset:"
+                        android:text="@string/behavior_speech_preset"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="8dp" />
@@ -2296,7 +2296,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Custom Format:"
+                        android:text="@string/behavior_speech_custom"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="8dp" />
@@ -2338,7 +2338,7 @@
                             android:id="@+id/textSpeechPreview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Preview: Messages notified you: Mitchi: I heard you're using SpeakThat!"
+                            android:text="@string/behavior_speech_preview_example"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_primary"
                             android:layout_marginBottom="8dp" />
@@ -2347,7 +2347,7 @@
                             android:id="@+id/btnTestSpeechTemplate"
                             android:layout_width="match_parent"
                             android:layout_height="36dp"
-                            android:text="Test"
+                            android:text="@string/button_test"
                             android:textSize="12sp"
                             android:textColor="@color/purple_card_text_primary"
                             android:backgroundTint="@android:color/transparent"
@@ -2361,7 +2361,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Common placeholders: {app}, {content}, {time}, {title}, {text}, {priority}, {category}"
+                        android:text="@string/behavior_speech_placeholders"
                         android:textSize="12sp"
                         android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="8dp" />

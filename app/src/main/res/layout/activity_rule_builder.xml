@@ -194,7 +194,7 @@
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="AND"
+                                android:text="@string/rule_builder_logic_and"
                                 android:textSize="12sp" />
 
                             <com.google.android.material.button.MaterialButton
@@ -202,7 +202,7 @@
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="OR"
+                                android:text="@string/rule_builder_logic_or"
                                 android:textSize="12sp" />
 
                             <com.google.android.material.button.MaterialButton
@@ -210,7 +210,7 @@
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="XOR"
+                                android:text="@string/rule_builder_logic_xor"
                                 android:textSize="12sp" />
 
                         </com.google.android.material.button.MaterialButtonToggleGroup>
@@ -255,7 +255,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="🎯 Actions"
+                            android:text="@string/rule_builder_actions_title"
                             android:textColor="@color/purple_card_text_primary"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -283,7 +283,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:text="What happens when the triggers are met"
+                        android:text="@string/rule_builder_actions_description"
                         android:textColor="@color/purple_card_text_secondary"
                         android:textSize="14sp" />
 
@@ -325,7 +325,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="🚫 Exceptions"
+                            android:text="@string/rule_builder_exceptions_title"
                             android:textColor="@color/purple_card_text_primary"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -353,7 +353,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:text="Conditions that override the triggers (optional)"
+                        android:text="@string/rule_builder_exceptions_description"
                         android:textColor="@color/purple_card_text_secondary"
                         android:textSize="14sp" />
 
@@ -387,7 +387,7 @@
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="AND"
+                                android:text="@string/rule_builder_logic_and"
                                 android:textSize="12sp" />
 
                             <com.google.android.material.button.MaterialButton
@@ -395,7 +395,7 @@
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="OR"
+                                android:text="@string/rule_builder_logic_or"
                                 android:textSize="12sp" />
 
                             <com.google.android.material.button.MaterialButton
@@ -403,7 +403,7 @@
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="XOR"
+                                android:text="@string/rule_builder_logic_xor"
                                 android:textSize="12sp" />
 
                         </com.google.android.material.button.MaterialButtonToggleGroup>
@@ -441,7 +441,7 @@
                         android:id="@+id/btnSaveRule"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Save Rule"
+                        android:text="@string/rule_builder_save_rule"
                         android:textColor="@color/white_100"
                         android:textSize="16sp"
                         android:textStyle="bold"

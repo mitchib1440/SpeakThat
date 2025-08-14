@@ -697,8 +697,146 @@
     <string name="general_service_restart_description">通知サービスはいつ自動的に再起動すべきか？</string>
     <string name="general_never_restart">自動再起動しない</string>
     <string name="general_restart_on_crash">クラッシュ時のみ再起動</string>
+    <string name="general_restart_periodically">定期的に再起動（6時間ごと）</string>
+    <string name="general_notification_settings_title">🔔 通知設定</string>
+    <string name="general_persistent_notification">永続通知</string>
+    <string name="general_persistent_notification_description">SpeakThatがアクティブな時に永続通知を表示</string>
+    <string name="general_notification_while_reading">読み上げ中の通知</string>
+    <string name="general_notification_while_reading_description">TTSがアクティブに読み上げている時に通知を表示</string>
+    <string name="general_data_management_title">💾 データ管理</string>
+    <string name="general_export_configuration">設定をエクスポート</string>
+    <string name="general_export_configuration_description">すべての設定をファイルに保存</string>
+    <string name="general_import_configuration">設定をインポート</string>
+    <string name="general_import_configuration_description">ファイルから設定を読み込み</string>
+    <string name="general_reset_settings">すべての設定をデフォルトにリセット</string>
+    <string name="general_verify_settings">すべての設定を確認</string>
+    <string name="general_verify_settings_description">包括的なテストを実行してすべての設定が正常に動作することを確認</string>
+    
+    <!-- Exception Configuration -->
+    <string name="exception_set_end_time">終了時刻を設定</string>
+    <string name="exception_no_days_selected">日が選択されていません</string>
+    <string name="exception_bluetooth_devices_title">この例外をトリガーするBluetoothデバイスを選択してください：</string>
+    <string name="exception_specific_devices">特定のデバイス（1行に1つ）：</string>
+    <string name="exception_select_devices">デバイスを選択</string>
+    <string name="exception_wifi_networks_title">この例外をトリガーするWiFiネットワークを選択してください：</string>
+    <string name="exception_specific_networks">特定のネットワーク（1行に1つ）：</string>
+    <string name="exception_select_networks">ネットワークを選択</string>
+    
+    <!-- Rules Activity -->
+    <string name="rules_no_rules_created">ルールが作成されていません</string>
+    <string name="rules_create_first_rule_description">デバイスの状態、時間、または接続に基づいてSpeakThatが通知を読み上げるタイミングを制御する最初のルールを作成してください。</string>
+    <string name="rules_create_first_rule_button">最初のルールを作成</string>
+    
+    <!-- Rule Builder -->
+    <string name="rule_builder_logic_and">AND</string>
+    <string name="rule_builder_logic_or">OR</string>
+    <string name="rule_builder_logic_xor">XOR</string>
+    <string name="rule_builder_actions_title">🎯 アクション</string>
+    <string name="rule_builder_actions_description">トリガーが満たされたときに何が起こるか</string>
+    <string name="rule_builder_exceptions_title">🚫 例外</string>
+    <string name="rule_builder_exceptions_description">トリガーをオーバーライドする条件（オプション）</string>
+    <string name="rule_builder_save_rule">ルールを保存</string>
+    
+    <!-- Trigger Configuration -->
+    <string name="trigger_set_button">設定</string>
+    <string name="trigger_no_days_selected">日が選択されていません</string>
+    <string name="trigger_bluetooth_devices_title">このルールをトリガーするBluetoothデバイスを選択してください：</string>
+    <string name="trigger_any_bluetooth_device">任意のBluetoothデバイス</string>
+    <string name="trigger_any_bluetooth_description">任意のデバイスが接続されたときにトリガー</string>
+    <string name="trigger_specific_devices">特定のデバイス（1行に1つ）：</string>
+    <string name="trigger_select_devices">デバイスを選択</string>
+    <string name="trigger_wifi_networks_title">このルールをトリガーするWiFiネットワークを選択してください：</string>
+    <string name="trigger_any_wifi_network">任意のWiFiネットワーク</string>
+    <string name="trigger_any_wifi_description">任意のネットワークに接続されたときにトリガー</string>
+    <string name="trigger_specific_networks">特定のネットワーク（1行に1つ）：</string>
+    <string name="trigger_select_networks">ネットワークを選択</string>
+    
+        <!-- Wave Calibration -->
+    <string name="wave_calibration_recalibrate">再キャリブレーション</string>
+    <string name="wave_calibration_save_settings">これで動作します！設定を保存</string>
+    <string name="wave_calibration_disable">ウェーブ停止機能をオフ</string>
+    
+    <!-- Voice Settings - Audio Output -->
+    <string name="voice_audio_output_settings">🔊 音声出力設定</string>
+    <string name="voice_audio_output_description">通知がデバイスの音声システムを通じて再生される方法を設定します。</string>
+    <string name="voice_audio_stream_type">音声ストリームタイプ</string>
+    <string name="voice_content_type">コンテンツタイプ</string>
+    <string name="voice_content_type_description">システムにどのような種類の音声かを伝えます。通知には音声が推奨されます。</string>
+    <string name="voice_audio_recommendation">推奨：通知 + 音声</string>
+    <string name="voice_preview_actions">🎵 プレビュー &amp; アクション</string>
+    <string name="voice_preview_button">プレビュー</string>
+    <string name="voice_test_settings">🔊 音声設定をテスト</string>
+    <string name="voice_reset_defaults">デフォルトにリセット</string>
+    <string name="voice_preview_tip">ヒント：プレビューボタンを使用して、設定した音声設定で通知がどのように聞こえるかをテストしてください。すべての変更は自動的に保存されます。</string>
+    
+    <!-- Filter Settings -->
+    <string name="filter_word_count">(0単語)</string>
+    <string name="filter_swap_description">通知の単語を検閲や発音修正のために交換</string>
+    <string name="filter_swap_count">(0交換)</string>
+    <string name="filter_swap_tip">ヒント：大文字小文字を区別しないマッチングには小文字を使用してください。\'Swap with\'を空にすると、単語を完全に削除できます。</string>
+    <string name="filter_media_description">YouTubeのようなアプリで、不要な通知（メディアコントロール）を自動的にフィルタリングし、必要な通知（コメントへの返信など）を許可</string>
+    <string name="filter_media_enable">スマートメディア通知フィルタリングを有効にする</string>
+    <string name="filter_media_apps_title">フィルタリングされたメディアアプリ：</string>
+    <string name="filter_media_apps_description">メディア通知用に自動的にフィルタリングされるアプリ。フィルタリングしたいメディアアプリを追加してください。</string>
+    <string name="filter_advanced_options">⚙️ 詳細オプション</string>
+    <string name="filter_exception_apps_title">例外アプリ：</string>
+    <string name="filter_exception_apps_description">通知がフィルタリングされるべきではないアプリ（返信用のYouTubeなど）</string>
+    <string name="filter_important_keywords_title">重要なキーワード：</string>
+    <string name="filter_important_keywords_description">重要な通知を示す単語（\'返信\'、\'コメント\'など）</string>
+    <string name="filter_media_info">メディアコントロールを自動的にフィルタリングし、重要な通知を保持します。（詳細はタップ）</string>
+    
+    <!-- Dialog Strings - Donate -->
+    <string name="donate_coffee">☕</string>
+    <string name="donate_theatre">🎭</string>
+    <string name="donate_octopus">🐙</string>
+    <string name="donate_bitcoin">₿</string>
+    <string name="donate_github_sponsors">GitHub Sponsors</string>
+    <string name="donate_github_description">オープンソース開発をサポート</string>
+    <string name="donate_bitcoin_title">Bitcoin (BTC)</string>
+    <string name="donate_bitcoin_description">Bitcoinネットワーク経由でBTCを寄付</string>
+    <string name="donate_privacy">🔒 プライバシー：すべての寄付はそれぞれのプラットフォームで処理されます。支払い情報を収集または保存することはありません。</string>
+    <string name="donate_friendly_message">ヒント！親切なメールを送ることもできます。素敵なメッセージはいつも私の一日を明るくします！ :)</string>
+    
+    <!-- Dialog Strings - Filter Suggestion -->
+    <string name="filter_suggestion_smart_pattern">スマートパターン（推奨）</string>
+    <string name="filter_suggestion_smart_preview">プレビュー：位置情報を更新中...</string>
+    <string name="filter_suggestion_keywords">キーワードのみ</string>
+    <string name="filter_suggestion_keywords_preview">プレビュー：位置情報を更新中</string>
+    <string name="filter_suggestion_exact_match">完全一致</string>
+    <string name="filter_suggestion_exact_preview">プレビュー：午後2:30に位置情報を更新中...</string>
+    <string name="filter_suggestion_all_notifications">このアプリからのすべての通知</string>
+    <string name="filter_suggestion_all_preview">プレビュー：すべてのLife360通知をブロック</string>
+    <string name="filter_suggestion_action">アクション：</string>
+    <string name="filter_suggestion_block_completely">完全にブロック</string>
+    <string name="filter_suggestion_make_private">プライベートにする</string>
+    <string name="filter_suggestion_create_filter">フィルターを作成</string>
     
     <!-- Dialog Strings - Support & Feedback -->
+    <string name="support_chat">💬</string>
+    <string name="support_lightbulb">💡</string>
+    <string name="support_bug">🐛</string>
+    <string name="support_question">❓</string>
+    <string name="support_general_title">一般的なサポート</string>
+    <string name="support_general_description">セットアップ、使用方法、または一般的な質問についてのヘルプ</string>
+    <string name="support_clipboard">📋</string>
+    <string name="support_include_logs">デバッグログを含める</string>
+    <string name="support_logs_description">バグレポートや技術的な問題に推奨されます。デバッグログは問題の特定と修正を迅速に行うのに役立ちます。\nログには通知内容の情報が含まれる場合があります！送信前にログを確認してください。</string>
+    <string name="support_log_entries">現在のログエントリ：0</string>
+    <string name="support_logs_privacy">🔒 プライバシー：デバッグログは共有を選択しない限りデバイスに残ります。メールを送信する前にログ内容を確認できます。</string>
+    
+    <!-- Action Configuration -->
+    <string name="action_configure_voice_settings">このルールがトリガーされたときに適用する音声設定を構成：</string>
+    
+    <!-- Behavior Settings -->
+    <string name="behavior_speech_preview_example">プレビュー：メッセージがあなたに通知しました：Mitchi: SpeakThatを使用していると聞きました！</string>
+    
+    <!-- Rules Activity -->
+    <string name="rules_wrench_icon">🔧</string>
+    
+    <!-- Exception Configuration -->
+    <string name="exception_any_bluetooth_device">任意のBluetoothデバイス</string>
+    <string name="exception_any_wifi_network">任意のWiFiネットワーク</string>
+    
     <string name="dialog_support_title">サポート &amp; フィードバック</string>
     <string name="dialog_support_description">今日はどのようなお手伝いができますか？あなたのニーズに最も適したオプションを選択してください：</string>
     <string name="dialog_support_feature_request">機能リクエスト</string>
@@ -987,7 +1125,6 @@
     <string name="trigger_start_time_default">09:00</string>
     <string name="trigger_end_time_label">終了時刻:</string>
     <string name="trigger_end_time_default">17:00</string>
-    <string name="trigger_set_button">設定</string>
     
 
 

@@ -114,7 +114,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="⚡ Performance"
+                        android:text="@string/general_app_behavior_title"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_secondary"
@@ -310,7 +310,7 @@
                                 android:id="@+id/radioRestartPeriodic"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Restart periodically (every 6 hours)"
+                                android:text="@string/general_restart_periodically"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:buttonTint="@color/radio_button_color"
@@ -345,7 +345,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔔 Notification Settings"
+                        android:text="@string/general_notification_settings_title"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_secondary"
@@ -368,7 +368,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Persistent Notification"
+                                android:text="@string/general_persistent_notification"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -376,7 +376,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Show a persistent notification when SpeakThat is active"
+                                android:text="@string/general_persistent_notification_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -412,7 +412,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Notification While Reading"
+                                android:text="@string/general_notification_while_reading"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -420,7 +420,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Show a notification when TTS is actively reading"
+                                android:text="@string/general_notification_while_reading_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -615,7 +615,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="💾 Data Management"
+                        android:text="@string/general_data_management_title"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_secondary"
@@ -642,7 +642,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Export Configuration"
+                                android:text="@string/general_export_configuration"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -650,7 +650,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Save all settings to a file"
+                                android:text="@string/general_export_configuration_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -660,7 +660,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="→"
+                            android:text="@string/arrow_right"
                             android:textSize="18sp"
                             android:textColor="@color/purple_card_text_secondary" />
 
@@ -687,7 +687,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Import Configuration"
+                                android:text="@string/general_import_configuration"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -695,7 +695,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Load settings from a file"
+                                android:text="@string/general_import_configuration_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -705,7 +705,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="→"
+                            android:text="@string/arrow_right"
                             android:textSize="18sp"
                             android:textColor="@color/purple_card_text_secondary" />
 
@@ -740,7 +740,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Reset all settings to defaults"
+                                android:text="@string/general_reset_settings"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -750,7 +750,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="→"
+                            android:text="@string/arrow_right"
                             android:textSize="18sp"
                             android:textColor="@color/purple_card_text_secondary" />
 
@@ -807,7 +807,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Verify All Settings"
+                                android:text="@string/general_verify_settings"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -815,7 +815,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Run comprehensive test to verify all settings are working"
+                                android:text="@string/general_verify_settings_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />

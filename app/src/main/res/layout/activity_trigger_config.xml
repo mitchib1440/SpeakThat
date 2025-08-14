@@ -222,7 +222,7 @@
                                 android:id="@+id/btnStartTime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Set"
+                                android:text="@string/trigger_set_button"
                                 android:textSize="14sp"
                                 android:background="@android:color/transparent"
                                 android:textColor="@color/white_100"
@@ -269,7 +269,7 @@
                                 android:id="@+id/btnEndTime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Set"
+                                android:text="@string/trigger_set_button"
                                 android:textSize="14sp"
                                 android:background="@android:color/transparent"
                                 android:textColor="@color/white_100"
@@ -292,7 +292,7 @@
                         android:id="@+id/textSelectedDays"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="No days selected"
+                        android:text="@string/trigger_no_days_selected"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:background="@drawable/bg_advanced_voice_section"
@@ -340,7 +340,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Choose which Bluetooth devices should trigger this rule:"
+                        android:text="@string/trigger_bluetooth_devices_title"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -404,14 +404,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Any Bluetooth Device"
+                                android:text="@string/trigger_any_bluetooth_device"
                                 android:textSize="16sp"
                                 android:textColor="@color/text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Trigger when any device is connected"
+                                android:text="@string/trigger_any_bluetooth_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/text_secondary" />
 
@@ -433,7 +433,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Specific Devices (one per line):"
+                        android:text="@string/trigger_specific_devices"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="8dp" />
@@ -465,7 +465,7 @@
                             android:id="@+id/btnSelectDevices"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Select Devices"
+                            android:text="@string/trigger_select_devices"
                             android:textSize="14sp"
                             android:background="@android:color/transparent"
                             android:textColor="@color/white_100"
@@ -508,7 +508,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Choose which WiFi networks should trigger this rule:"
+                        android:text="@string/trigger_wifi_networks_title"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -572,14 +572,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Any WiFi Network"
+                                android:text="@string/trigger_any_wifi_network"
                                 android:textSize="16sp"
                                 android:textColor="@color/text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Trigger when connected to any network"
+                                android:text="@string/trigger_any_wifi_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/text_secondary" />
 
@@ -601,7 +601,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Specific Networks (one per line):"
+                        android:text="@string/trigger_specific_networks"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="8dp" />
@@ -628,7 +628,7 @@
                         android:id="@+id/btnSelectNetworks"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Select Networks"
+                        android:text="@string/trigger_select_networks"
                         android:textSize="14sp"
                         style="@style/Widget.Material3.Button.OutlinedButton" />
 
@@ -667,7 +667,7 @@
                     android:id="@+id/btnCancel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Cancel"
+                    android:text="@string/button_cancel"
                     android:textSize="16sp"
                     android:textColor="@color/white_100"
                     android:background="@android:color/transparent"
@@ -696,7 +696,7 @@
                     android:id="@+id/btnSave"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Save"
+                    android:text="@string/button_save"
                     android:textSize="16sp"
                     android:textColor="@color/white_100"
                     android:background="@android:color/transparent"

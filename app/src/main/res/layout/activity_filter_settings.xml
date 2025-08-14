@@ -243,7 +243,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Search through your installed apps by name or package. Click a suggestion to add it instantly. (Tap for more info)"
+                                        android:text="@string/filter_search_description"
                                         android:textSize="12sp"
                                         android:textColor="@color/purple_card_text_primary" />
                                 </LinearLayout>
@@ -349,7 +349,7 @@
                             android:id="@+id/txtBlacklistCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="(0 words)"
+                            android:text="@string/filter_word_count"
                             android:textSize="12sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginEnd="8dp" />
@@ -470,7 +470,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Swap words in notifications for censoring or pronunciation fixes"
+                        android:text="@string/filter_swap_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -501,7 +501,7 @@
                             android:id="@+id/txtReplacementCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="(0 swaps)"
+                            android:text="@string/filter_swap_count"
                             android:textSize="12sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginEnd="8dp" />
@@ -619,7 +619,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Tip: Use lowercase for case-insensitive matching. Leave 'Swap with' empty to remove words entirely."
+                                android:text="@string/filter_swap_tip"
                                 android:textSize="12sp"
                                 android:textColor="@color/purple_card_text_primary" />
                         </LinearLayout>
@@ -666,7 +666,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Automatically filter notifications for apps like YouTube that have both unwanted notifications (media controls) while allowing wanted notifications (like replies to your comments)"
+                        android:text="@string/filter_media_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -693,7 +693,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Enable smart media notification filtering"
+                            android:text="@string/filter_media_enable"
                             android:textSize="16sp"
                             android:textColor="@color/purple_card_text_primary" />
 
@@ -711,7 +711,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Filtered Media Apps:"
+                            android:text="@string/filter_media_apps_title"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
                             android:layout_marginBottom="8dp" />
@@ -719,7 +719,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Apps that are automatically filtered for media notifications. Add media apps you want to filter out."
+                            android:text="@string/filter_media_apps_description"
                             android:textSize="12sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="12dp" />
@@ -808,7 +808,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="⚙️ Advanced Options"
+                                    android:text="@string/filter_advanced_options"
                                     android:textStyle="bold"
                                     android:textSize="16sp"
                                     android:textColor="@color/purple_card_text_primary" />
@@ -833,7 +833,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Exception Apps:"
+                                    android:text="@string/filter_exception_apps_title"
                                     android:textStyle="bold"
                                     android:textColor="@color/purple_card_text_primary"
                                     android:layout_marginBottom="8dp" />
@@ -841,7 +841,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Apps that should never have notifications filtered (like YouTube for replies)"
+                                    android:text="@string/filter_exception_apps_description"
                                     android:textSize="12sp"
                                     android:textColor="@color/purple_card_text_secondary"
                                     android:layout_marginBottom="8dp" />
@@ -912,7 +912,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Important Keywords:"
+                                    android:text="@string/filter_important_keywords_title"
                                     android:textStyle="bold"
                                     android:textColor="@color/purple_card_text_primary"
                                     android:layout_marginBottom="8dp" />
@@ -920,7 +920,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Words that indicate important notifications (like 'reply', 'comment')"
+                                    android:text="@string/filter_important_keywords_description"
                                     android:textSize="12sp"
                                     android:textColor="@color/purple_card_text_secondary"
                                     android:layout_marginBottom="8dp" />
@@ -1006,7 +1006,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Automatically filters out media controls while preserving important notifications. (Tap for more info)"
+                                android:text="@string/filter_media_info"
                                 android:textSize="12sp"
                                 android:textColor="@color/purple_card_text_primary" />
                         </LinearLayout>
