@@ -5,6 +5,7 @@
 [![IzzyOnDroid](https://img.shields.io/badge/IzzyOnDroid-Available-green?logo=android)](https://apt.izzysoft.de/fdroid/index/apk/com.micoyc.speakthat)
 [![License](https://img.shields.io/badge/License-GPL--3.0-green.svg)](LICENSE)
 [<img src="https://shields.rbtlog.dev/simple/com.micoyc.speakthat" alt="RB shield">](https://shields.rbtlog.dev/com.micoyc.speakthat)
+[![Crowdin](https://badges.crowdin.net/speakthat-notification-reader/localized.svg)](https://crowdin.com/project/speakthat-notification-reader)
 
 ## The Journey to get here!
 
