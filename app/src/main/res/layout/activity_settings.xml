@@ -479,64 +479,6 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Support & Feedback Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardSupportFeedback"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="@android:color/transparent"
-                app:strokeColor="@color/purple_200"
-                app:strokeWidth="0dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="20dp"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/gradient_card_subtle_right">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/settings_support_title"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/settings_support_description"
-                            android:textSize="14sp"
-                            android:textColor="@color/purple_card_text_secondary"
-                            android:layout_marginTop="4dp" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/arrow_right"
-                        android:textSize="24sp"
-                        android:textColor="@color/white_100" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
             <!-- Donate Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardDonate"
@@ -578,6 +520,64 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/settings_donate_description"
+                            android:textSize="14sp"
+                            android:textColor="@color/purple_card_text_secondary"
+                            android:layout_marginTop="4dp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/arrow_right"
+                        android:textSize="24sp"
+                        android:textColor="@color/white_100" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Support & Feedback Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSupportFeedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeColor="@color/purple_200"
+                app:strokeWidth="0dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/gradient_card_subtle_right">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_support_title"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_support_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
