@@ -60,7 +60,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/white_100"
                 android:background="@android:color/transparent"
-                app:cornerRadius="24dp"
+                app:cornerRadius="12dp"
                 android:paddingHorizontal="32dp"
                 android:paddingVertical="12dp"
                 style="@style/Widget.Material3.Button.TextButton" />

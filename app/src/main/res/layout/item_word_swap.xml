@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:text="@string/item_word_swap_from"
             android:textSize="16sp"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="@color/white_100"
             android:textStyle="bold"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:text="@string/item_word_swap_arrow"
             android:textSize="16sp"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="@color/white_100"
             android:textStyle="bold"
             android:layout_marginHorizontal="8dp" />
 
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:text="@string/item_word_swap_to"
             android:textSize="16sp"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="@color/white_100"
             android:textStyle="bold"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
@@ -65,7 +65,7 @@
         android:src="@drawable/ic_delete_24"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="Remove swap"
-        app:tint="@android:color/holo_red_dark"
+        app:tint="@color/white_100"
         android:padding="4dp" />
 
 </LinearLayout> 

@@ -267,9 +267,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/exception_set_start_time"
-                                android:background="@android:color/transparent"
-                                android:textColor="@color/white_100"
-                                style="@style/Widget.Material3.Button.TextButton" />
+                                style="@style/Widget.SpeakThat.Button.Primary" />
 
                         </FrameLayout>
 
@@ -285,9 +283,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/exception_set_end_time"
-                                android:background="@android:color/transparent"
-                                android:textColor="@color/white_100"
-                                style="@style/Widget.Material3.Button.TextButton" />
+                                style="@style/Widget.SpeakThat.Button.Primary" />
 
                         </FrameLayout>
 
@@ -443,7 +439,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/exception_select_devices"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        style="@style/Widget.SpeakThat.Button.Primary" />
 
                 </LinearLayout>
 
@@ -570,7 +566,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/exception_select_networks"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        style="@style/Widget.SpeakThat.Button.Primary" />
 
                 </LinearLayout>
 
@@ -595,7 +591,7 @@
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp">
 
@@ -623,7 +619,7 @@
             android:layout_weight="1"
             android:layout_marginStart="8dp"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp">
 

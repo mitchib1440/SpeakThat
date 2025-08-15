@@ -28,7 +28,7 @@
             android:focusable="true"
             android:background="?attr/selectableItemBackground"
             android:contentDescription="@string/app_name"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="0dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp" />
 

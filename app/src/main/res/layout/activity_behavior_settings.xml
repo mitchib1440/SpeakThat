@@ -1104,7 +1104,7 @@
                                 android:layout_height="24dp"
                                 android:max="25"
                                 android:progress="0"
-                                android:progressTint="@color/purple_200"
+                                android:progressTint="@color/white_100"
                                 android:progressBackgroundTint="@color/purple_300" />
 
                             <!-- Threshold Marker -->
@@ -1261,8 +1261,10 @@
                                 android:id="@+id/switchShakeTimeoutDisabled"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:thumbTint="@color/white_100"
-                                android:trackTint="@color/purple_300" />
+                                android:thumbTint="@color/switch_thumb_color"
+                                android:trackTint="@color/switch_track_color"
+                                app:thumbTint="@color/switch_thumb_color"
+                                app:trackTint="@color/switch_track_color" />
 
                         </LinearLayout>
 
@@ -1522,7 +1524,7 @@
                                 android:layout_height="24dp"
                                 android:max="10"
                                 android:progress="0"
-                                android:progressTint="@color/purple_200"
+                                android:progressTint="@color/white_100"
                                 android:progressBackgroundTint="@color/purple_300" />
 
                             <!-- Threshold Marker -->
@@ -1548,7 +1550,7 @@
                                 android:layout_weight="1"
                                 android:text="@string/behavior_wave_current_proximity"
                                 android:textSize="12sp"
-                                android:textColor="@color/purple_card_text_secondary"
+                                android:textColor="@color/white_100"
                                 android:id="@+id/textCurrentWave" />
 
                             <TextView
@@ -1580,7 +1582,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/behavior_wave_recalibrate"
                             android:textSize="14sp"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            style="@style/Widget.SpeakThat.Button.Secondary"
                             android:layout_marginBottom="16dp" />
 
                         <!-- Timeout Section -->
@@ -1689,8 +1691,10 @@
                                 android:id="@+id/switchWaveTimeoutDisabled"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:thumbTint="@color/white_100"
-                                android:trackTint="@color/purple_300" />
+                                android:thumbTint="@color/switch_thumb_color"
+                                android:trackTint="@color/switch_track_color"
+                                app:thumbTint="@color/switch_thumb_color"
+                                app:trackTint="@color/switch_track_color" />
 
                         </LinearLayout>
 
@@ -1737,8 +1741,10 @@
                                 android:id="@+id/switchPocketMode"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:thumbTint="@color/white_100"
-                                android:trackTint="@color/purple_300" />
+                                android:thumbTint="@color/switch_thumb_color"
+                                android:trackTint="@color/switch_track_color"
+                                app:thumbTint="@color/switch_thumb_color"
+                                app:trackTint="@color/switch_track_color" />
 
                         </LinearLayout>
 
@@ -1885,9 +1891,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:text="@string/add_custom_app_name"
-                        android:backgroundTint="#26000000"
-                        android:textColor="@color/white_100"
-                        android:layout_marginBottom="16dp" />
+                        android:layout_marginBottom="16dp"
+                        app:cornerRadius="12dp"
+                        style="@style/Widget.SpeakThat.Button.Primary" />
 
                     <!-- Custom App Names List -->
                     <androidx.recyclerview.widget.RecyclerView
@@ -2172,8 +2178,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
                             android:text="@string/button_add"
-                            android:backgroundTint="#26000000"
-                            android:textColor="@color/white_100" />
+                            app:cornerRadius="12dp"
+                            style="@style/Widget.SpeakThat.Button.Primary" />
 
                     </LinearLayout>
 
@@ -2349,11 +2355,8 @@
                             android:layout_height="36dp"
                             android:text="@string/button_test"
                             android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:backgroundTint="@android:color/transparent"
-                            android:strokeColor="@color/white_100"
-                            android:strokeWidth="1.0"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            app:cornerRadius="12dp"
+                            style="@style/Widget.SpeakThat.Button.Primary" />
 
                     </LinearLayout>
 

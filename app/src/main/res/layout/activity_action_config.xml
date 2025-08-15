@@ -120,9 +120,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/action_select_app"
-                            android:background="@android:color/transparent"
-                            android:textColor="@color/white_100"
-                            style="@style/Widget.Material3.Button.TextButton" />
+                            style="@style/Widget.SpeakThat.Button.Primary" />
 
                     </FrameLayout>
 
@@ -192,9 +190,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/action_select_app"
-                            android:background="@android:color/transparent"
-                            android:textColor="@color/white_100"
-                            style="@style/Widget.Material3.Button.TextButton" />
+                            style="@style/Widget.SpeakThat.Button.Primary" />
 
                     </FrameLayout>
 
@@ -291,7 +287,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp">
 
@@ -317,7 +313,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp">
 

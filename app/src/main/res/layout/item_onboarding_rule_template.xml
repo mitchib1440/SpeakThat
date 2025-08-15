@@ -69,12 +69,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/item_onboarding_rule_template_add"
                 android:textSize="12sp"
-                android:background="@android:color/transparent"
-                android:textColor="@color/white_100"
-                app:cornerRadius="16dp"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
-                style="@style/Widget.Material3.Button.TextButton" />
+                style="@style/Widget.SpeakThat.Button.Primary" />
 
         </FrameLayout>
 

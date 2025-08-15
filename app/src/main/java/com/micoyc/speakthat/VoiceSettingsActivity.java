@@ -1712,7 +1712,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         new android.app.AlertDialog.Builder(this)
                 .setTitle(R.string.dialog_title_audio_settings_help)
                 .setMessage(helpText)
-                .setPositiveButton("R.string.button_got_it", null)
+                .setPositiveButton(R.string.button_got_it, null)
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .show();
                 
@@ -1782,7 +1782,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         new android.app.AlertDialog.Builder(this)
                 .setTitle(R.string.dialog_title_advanced_voice_information)
                 .setMessage(infoText)
-                .setPositiveButton("R.string.button_got_it", null)
+                .setPositiveButton(R.string.button_got_it, null)
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .show();
                 

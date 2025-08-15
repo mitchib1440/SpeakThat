@@ -705,7 +705,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.dialog_title_format_test_results)
                 .setMessage(Html.fromHtml(testResults.toString(), Html.FROM_HTML_MODE_LEGACY))
-                .setPositiveButton("R.string.button_got_it", null)
+                .setPositiveButton(R.string.button_got_it, null)
                 .show();
     }
 
@@ -1846,7 +1846,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 boolean isTriggered = (currentWaveValue == 0) || (currentWaveValue <= threshold);
                 
                 if (isTriggered) {
-                    binding.textCurrentWave.setTextColor(getColor(android.R.color.holo_green_dark));
+                    binding.textCurrentWave.setTextColor(getColor(android.R.color.white));
                 } else {
                     binding.textCurrentWave.setTextColor(getColor(android.R.color.secondary_text_dark));
                 }
@@ -2098,7 +2098,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.dialog_title_custom_app_names)
                 .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
-                .setPositiveButton("R.string.button_got_it", null)
+                .setPositiveButton(R.string.button_got_it, null)
                 .show();
     }
 
@@ -2129,7 +2129,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.dialog_title_notification_cooldown)
                 .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
-                .setPositiveButton("R.string.button_got_it", null)
+                .setPositiveButton(R.string.button_got_it, null)
                 .show();
     }
     
@@ -2256,7 +2256,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.dialog_title_speech_formats_guide)
                 .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
-                .setPositiveButton("R.string.button_use_recommended", (dialog, which) -> {
+                .setPositiveButton(R.string.button_use_recommended, (dialog, which) -> {
                     // Track recommendation usage
                     trackDialogUsage("speech_template_recommended");
                     
@@ -2268,7 +2268,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                     
                     Toast.makeText(this, "Set to recommended format: Default", Toast.LENGTH_SHORT).show();
                 })
-                .setNegativeButton("R.string.button_got_it", null)
+                .setNegativeButton(R.string.button_got_it, null)
                 .show();
     }
 
@@ -2765,10 +2765,10 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         new MaterialAlertDialogBuilder(this)
             .setTitle(title)
             .setMessage(Html.fromHtml(message, Html.FROM_HTML_MODE_COMPACT))
-            .setPositiveButton("R.string.button_nevermind_keep_timeout", (dialog, which) -> {
+            .setPositiveButton(R.string.button_nevermind_keep_timeout, (dialog, which) -> {
                 // User chose to keep timeout enabled - do nothing
             })
-            .setNegativeButton("R.string.button_disable_timeout", (dialog, which) -> {
+            .setNegativeButton(R.string.button_disable_timeout, (dialog, which) -> {
                 // User confirmed - disable timeout
                 if (type.equals("shake")) {
                     isProgrammaticallySettingSwitch = true;
@@ -2802,7 +2802,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         new MaterialAlertDialogBuilder(this)
             .setTitle(title)
             .setMessage(Html.fromHtml(message, Html.FROM_HTML_MODE_COMPACT))
-            .setPositiveButton("R.string.button_got_it", null)
+            .setPositiveButton(R.string.button_got_it, null)
             .show();
     }
 } 

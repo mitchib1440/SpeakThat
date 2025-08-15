@@ -144,13 +144,11 @@
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnAddTrigger"
-                                style="@style/Widget.Material3.Button.TextButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/button_add"
-                                android:background="@android:color/transparent"
-                                android:textColor="@color/white_100"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                style="@style/Widget.SpeakThat.Button.Primary" />
 
                         </FrameLayout>
 
@@ -267,13 +265,11 @@
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnAddAction"
-                                style="@style/Widget.Material3.Button.TextButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/button_add"
-                                android:background="@android:color/transparent"
-                                android:textColor="@color/white_100"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                style="@style/Widget.SpeakThat.Button.Primary" />
 
                         </FrameLayout>
 
@@ -337,13 +333,11 @@
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnAddException"
-                                style="@style/Widget.Material3.Button.TextButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/button_add"
-                                android:background="@android:color/transparent"
-                                android:textColor="@color/white_100"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                style="@style/Widget.SpeakThat.Button.Primary" />
 
                         </FrameLayout>
 
