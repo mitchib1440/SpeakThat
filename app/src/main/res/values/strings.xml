@@ -280,6 +280,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_voice_test">This is how your notifications will sound with these voice settings.</string>
     
     <!-- Onboarding TTS -->
+    <string name="tts_onboarding_language_theme">Choose your preferred language and theme to get started with SpeakThat.</string>
     <string name="tts_onboarding_welcome">Welcome to SpeakThat! Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.</string>
     <string name="tts_onboarding_permission">SpeakThat needs permission to read your notifications aloud. Everything stays on your device and you control what gets read.</string>
     <string name="tts_onboarding_privacy">Your privacy matters. You control exactly what gets read aloud. Shake your phone to stop any announcement instantly. Everything stays on your device.</string>
@@ -951,7 +952,41 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_next">Next</string>
     
-
+    <!-- Language and Theme Onboarding -->
+    <string name="onboarding_language_theme_title">Language and Theme</string>
+    <string name="onboarding_language_theme_description">Choose which language SpeakThat should use. You can also enable dark mode if you\'d like.</string>
+    <string name="onboarding_language_section_title">Language</string>
+    <string name="onboarding_language_help_title">Is your language not listed?</string>
+    <string name="onboarding_language_help_description">I\'m working as hard as I can to support more languages. Please contribute translations to the Crowdin page if you can!</string>
+    <string name="onboarding_theme_section_title">Theme</string>
+    <string name="onboarding_theme_description">Use dark mode in this app</string>
+    <string name="onboarding_theme_light">Light Mode</string>
+    <string name="onboarding_theme_dark">Dark Mode</string>
+    
+    <!-- Onboarding Page Titles and Descriptions -->
+    <string name="onboarding_welcome_title">Welcome to SpeakThat!</string>
+    <string name="onboarding_welcome_description">Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.</string>
+    
+    <string name="onboarding_permission_title">Notification Access Required</string>
+    <string name="onboarding_permission_description">SpeakThat needs permission to read your notifications aloud.\n\n🔒 Everything stays on your device\n📱 No data is sent to us or anyone else\n⚙️ You control what gets read\n💬 We only read what you allow\n💡 Tip: In the list, tap \'SpeakThat\' to enable</string>
+    
+    <string name="onboarding_privacy_title">Your Privacy Matters</string>
+    <string name="onboarding_privacy_description">🔒 You control exactly what gets read aloud\n\n📱 Shake your phone to stop any announcement instantly\n\n⚙️ Filter apps, words, and notification types\n\n🔐 Everything stays on your device</string>
+    
+    <string name="onboarding_filters_title">Let\'s Set Up Basic Filters</string>
+    <string name="onboarding_filters_description">SpeakThat features a powerful filtering system that allows YOU to choose what gets read and what doesn\'t.\n\nLet\'s set up some basic privacy filters to get you started.</string>
+    
+    <string name="onboarding_apps_title">Block Sensitive Apps</string>
+    <string name="onboarding_apps_description">Type the name of an app you want me to NEVER read notifications from.\n\nCommon examples: banking apps, medical apps, dating apps</string>
+    
+    <string name="onboarding_words_title">Block Sensitive Words</string>
+    <string name="onboarding_words_description">Type words or phrases that you want me to NEVER read notifications containing!\n\nCommon examples: password, PIN, credit card, medical terms</string>
+    
+    <string name="onboarding_rules_title">Set Up Smart Rules</string>
+    <string name="onboarding_rules_description">Set up smart rules that automatically control when notifications are read based on your situation.\n\nFor example, only read notifications when headphones are connected, or skip notifications when the screen is on.</string>
+    
+    <string name="onboarding_complete_title">You\'re All Set!</string>
+    <string name="onboarding_complete_description">SpeakThat is ready to help you stay connected while keeping your eyes free!\n\n💡 You can add more filters anytime in the app settings.</string>
     
     <!-- Trigger Configuration -->
     <string name="trigger_screen_state">📱 Screen State</string>

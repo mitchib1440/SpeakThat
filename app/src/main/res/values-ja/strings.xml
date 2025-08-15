@@ -243,12 +243,14 @@
     <!-- Voice Settings Test -->
     <string name="tts_voice_test">これがこの音声設定での通知の聞こえ方です。</string>
     <!-- Onboarding TTS -->
+    <string name="tts_onboarding_language_theme">お好みの言語とテーマを選択してSpeakThatを始めましょう。</string>
     <string name="tts_onboarding_welcome">SpeakThatへようこそ！画面を見つめずに接続を保ちましょう。お使いの電話が通知を音読するので、重要なことに集中できます。</string>
     <string name="tts_onboarding_permission">SpeakThatは通知を音読するための許可が必要です。すべてはお使いのデバイスに保存され、何を読むかはあなたが制御します。</string>
     <string name="tts_onboarding_privacy">あなたのプライバシーは重要です。何が音読されるかを正確に制御できます。電話を振ると、どのアナウンスも即座に停止できます。すべてはお使いのデバイスに保存されます。</string>
     <string name="tts_onboarding_filters">基本的なプライバシーフィルターを設定して始めましょう。SpeakThatは何を読むか何を読まないかを選択できる強力なフィルタリングシステムを備えています。</string>
     <string name="tts_onboarding_apps">通知を読んでほしくないアプリの名前を入力してください。一般的な例には、銀行アプリ、医療アプリ、デートアプリが含まれます。</string>
     <string name="tts_onboarding_words">通知に含まれる読んでほしくない単語やフレーズを入力してください。一般的な例には、パスワード、PIN、クレジットカード、医療用語が含まれます。</string>
+    <string name="tts_onboarding_rules">状況に基づいて通知が読み上げられるタイミングを自動制御するスマートルールを設定します。例えば、ヘッドフォンが接続されている時のみ通知を読み上げる、または画面がオンの時は通知をスキップするなど。</string>
     <string name="tts_onboarding_complete">SpeakThatは目を自由に保ちながら接続を維持するお手伝いの準備ができています！アプリ設定でいつでもフィルターを追加できます。</string>
     <!-- Behavior Settings Speech Format Templates -->
     <string name="tts_behavior_default">デフォルトのフォーマット</string>
@@ -892,6 +894,42 @@
     <!-- Onboarding -->
     <string name="onboarding_skip">スキップ</string>
     <string name="onboarding_next">次へ</string>
+    
+    <!-- Language and Theme Onboarding -->
+    <string name="onboarding_language_theme_title">言語とテーマ</string>
+    <string name="onboarding_language_theme_description">SpeakThatが使用する言語を選択してください。必要に応じてダークモードを有効にすることもできます。</string>
+    <string name="onboarding_language_section_title">言語</string>
+    <string name="onboarding_language_help_title">お使いの言語がリストにありませんか？</string>
+    <string name="onboarding_language_help_description">できる限り多くの言語をサポートするよう努めています。可能でしたら、Crowdinページで翻訳にご協力ください！</string>
+    <string name="onboarding_theme_section_title">テーマ</string>
+    <string name="onboarding_theme_description">このアプリでダークモードを使用</string>
+    <string name="onboarding_theme_light">ライトモード</string>
+    <string name="onboarding_theme_dark">ダークモード</string>
+    
+    <!-- Onboarding Page Titles and Descriptions -->
+    <string name="onboarding_welcome_title">SpeakThatへようこそ！</string>
+    <string name="onboarding_welcome_description">画面を見つめずに接続を保ちましょう。お使いの電話が通知を音読するので、重要なことに集中できます。</string>
+    
+    <string name="onboarding_permission_title">通知アクセスが必要です</string>
+    <string name="onboarding_permission_description">SpeakThatは通知を音読するための許可が必要です。\n\n🔒 すべてはお使いのデバイスに保存されます\n📱 データは私たちや他の誰にも送信されません\n⚙️ 何を読むかはあなたが制御します\n💬 許可されたもののみを読みます\n💡 ヒント：リストで「SpeakThat」をタップして有効にしてください</string>
+    
+    <string name="onboarding_privacy_title">あなたのプライバシーは重要です</string>
+    <string name="onboarding_privacy_description">🔒 何が音読されるかを正確に制御できます\n\n📱 電話を振ると、どのアナウンスも即座に停止できます\n\n⚙️ アプリ、単語、通知タイプをフィルタリング\n\n🔐 すべてはお使いのデバイスに保存されます</string>
+    
+    <string name="onboarding_filters_title">基本的なフィルターを設定しましょう</string>
+    <string name="onboarding_filters_description">SpeakThatは何を読むか何を読まないかを選択できる強力なフィルタリングシステムを備えています。\n\n基本的なプライバシーフィルターを設定して始めましょう。</string>
+    
+    <string name="onboarding_apps_title">機密アプリをブロック</string>
+    <string name="onboarding_apps_description">通知を絶対に読んでほしくないアプリの名前を入力してください。\n\n一般的な例：銀行アプリ、医療アプリ、デートアプリ</string>
+    
+    <string name="onboarding_words_title">機密単語をブロック</string>
+    <string name="onboarding_words_description">通知に含まれる読んでほしくない単語やフレーズを入力してください！\n\n一般的な例：パスワード、PIN、クレジットカード、医療用語</string>
+    
+    <string name="onboarding_rules_title">スマートルールを設定</string>
+    <string name="onboarding_rules_description">状況に基づいて通知が読み上げられるタイミングを自動制御するスマートルールを設定します。\n\n例えば、ヘッドフォンが接続されている時のみ通知を読み上げる、または画面がオンの時は通知をスキップするなど。</string>
+    
+    <string name="onboarding_complete_title">準備完了です！</string>
+    <string name="onboarding_complete_description">SpeakThatは目を自由に保ちながら接続を維持するお手伝いの準備ができています！\n\n💡 アプリ設定でいつでもフィルターを追加できます。</string>
     
 
     

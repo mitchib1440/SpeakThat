@@ -203,6 +203,44 @@ public class LanguagePresetManager {
     }
     
     /**
+     * Apply a language preset for onboarding without showing restart dialog
+     * This method is specifically designed for use during onboarding to avoid interrupting the flow
+     */
+    public static void applyPresetForOnboarding(Context context, LanguagePreset preset) {
+        if (preset.isCustom) {
+            InAppLogger.log(TAG, "Custom preset selected - not overriding existing settings");
+            return;
+        }
+        
+        SharedPreferences prefs = context.getSharedPreferences("VoiceSettings", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        
+        // Apply the preset settings
+        editor.putString("language", preset.uiLocale);
+        editor.putString("tts_language", preset.ttsLanguage);
+        
+        // Clear specific voice to let system choose appropriate one for the language
+        if (preset.defaultVoice == null) {
+            editor.remove("voice_name");
+            InAppLogger.log(TAG, "Onboarding preset applied - cleared specific voice, letting system choose");
+        } else {
+            editor.putString("voice_name", preset.defaultVoice);
+            InAppLogger.log(TAG, "Onboarding preset applied - set specific voice: " + preset.defaultVoice);
+        }
+        
+        editor.apply();
+        
+        // Save the preset itself
+        saveCurrentPreset(context, preset);
+        
+        // Apply the UI language change immediately without showing dialog
+        applyUILanguageChangeForOnboarding(context, preset.uiLocale);
+        
+        InAppLogger.log(TAG, "Onboarding language preset applied: " + preset.displayName + 
+                       " (UI: " + preset.uiLocale + ", TTS: " + preset.ttsLanguage + ")");
+    }
+    
+    /**
      * Apply UI language change immediately to the current activity
      */
     private static void applyUILanguageChange(Context context, String uiLocale) {
@@ -257,6 +295,64 @@ public class LanguagePresetManager {
             
         } catch (Exception e) {
             InAppLogger.log(TAG, "Error applying UI language change: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Apply UI language change immediately for onboarding without showing restart dialog
+     */
+    private static void applyUILanguageChangeForOnboarding(Context context, String uiLocale) {
+        try {
+            // Parse the locale string (e.g., "ja_JP" -> Locale("ja", "JP"))
+            String[] localeParts = uiLocale.split("_");
+            Locale targetLocale;
+            if (localeParts.length >= 2) {
+                targetLocale = new Locale(localeParts[0], localeParts[1]);
+            } else if (localeParts.length == 1) {
+                targetLocale = new Locale(localeParts[0]);
+            } else {
+                targetLocale = Locale.getDefault();
+            }
+            
+            // Check if the target locale is already the current locale to avoid infinite loops
+            Configuration currentConfig = context.getResources().getConfiguration();
+            Locale currentLocale = currentConfig.getLocales().get(0);
+            
+            if (currentLocale != null && 
+                targetLocale.getLanguage().equals(currentLocale.getLanguage()) &&
+                targetLocale.getCountry().equals(currentLocale.getCountry())) {
+                InAppLogger.log(TAG, "Onboarding UI language already set to: " + targetLocale.toString() + " - skipping change");
+                return;
+            }
+            
+            InAppLogger.log(TAG, "Applying onboarding UI language change from " + 
+                           (currentLocale != null ? currentLocale.toString() : "null") + 
+                           " to: " + targetLocale.toString());
+            
+            // Update the app's locale configuration
+            Configuration config = new Configuration(context.getResources().getConfiguration());
+            config.setLocale(targetLocale);
+            
+            // Apply the new configuration
+            context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+            
+            // Also update the default locale for this session
+            Locale.setDefault(targetLocale);
+            
+            InAppLogger.log(TAG, "Onboarding UI language changed successfully to: " + targetLocale.getDisplayLanguage());
+            
+            // For onboarding, we need to recreate the current activity to apply the language change immediately
+            // This ensures the UI updates without interrupting the onboarding flow
+            if (context instanceof android.app.Activity) {
+                android.app.Activity activity = (android.app.Activity) context;
+                InAppLogger.log(TAG, "Recreating onboarding activity to apply language change: " + targetLocale.getDisplayLanguage());
+                
+                // Recreate the activity to apply the new language immediately
+                activity.recreate();
+            }
+            
+        } catch (Exception e) {
+            InAppLogger.log(TAG, "Error applying onboarding UI language change: " + e.getMessage());
         }
     }
     

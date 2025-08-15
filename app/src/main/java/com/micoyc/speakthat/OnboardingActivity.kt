@@ -26,8 +26,13 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var voiceSettingsPrefs: SharedPreferences? = null
     private val voiceSettingsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         when (key) {
-            "speech_rate", "pitch", "voice_name", "language", "audio_usage", "content_type" -> {
+            "speech_rate", "pitch", "voice_name", "audio_usage", "content_type" -> {
                 applyVoiceSettings()
+            }
+            "language", "tts_language" -> {
+                // For language changes, we need to reinitialize TTS to ensure it uses the new language
+                InAppLogger.log(TAG, "Language settings changed - reinitializing TTS")
+                reinitializeTtsWithCurrentSettings()
             }
         }
     }
@@ -61,9 +66,6 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
         voiceSettingsPrefs?.registerOnSharedPreferenceChangeListener(voiceSettingsListener)
         
-        // Initialize TTS
-        initializeTextToSpeech()
-        
         // Initialize view binding
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -74,6 +76,9 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         // Determine if we should skip the permission page
         skipPermissionPage = isNotificationServiceEnabled()
         setupOnboarding()
+        
+        // Initialize TTS after setup is complete to ensure language settings are loaded
+        initializeTextToSpeech()
     }
 
     private fun applySavedTheme(prefs: android.content.SharedPreferences) {
@@ -93,8 +98,31 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         val currentPage = binding.viewPager.currentItem
         updateButtonText(currentPage, adapter.itemCount)
         
+        // Refresh UI text to ensure it's in the correct language
+        adapter.refreshUIText()
+        
         // Speak current page content when resuming
         speakCurrentPageContent()
+    }
+    
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Save current page position for language change recreation
+        outState.putInt("current_page", binding.viewPager.currentItem)
+        outState.putBoolean("skip_permission_page", skipPermissionPage)
+    }
+    
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        // Restore current page position after language change recreation
+        val savedPage = savedInstanceState.getInt("current_page", 0)
+        val savedSkipPermission = savedInstanceState.getBoolean("skip_permission_page", false)
+        
+        // Only restore if the skip permission setting matches (to avoid page mismatch)
+        if (savedSkipPermission == skipPermissionPage) {
+            binding.viewPager.setCurrentItem(savedPage, false)
+            InAppLogger.log(TAG, "Restored onboarding page position: $savedPage")
+        }
     }
     
     override fun onPause() {
@@ -107,8 +135,19 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         textToSpeech = TextToSpeech(this, this)
     }
     
+    private fun reinitializeTtsWithCurrentSettings() {
+        // Shutdown existing TTS instance
+        textToSpeech?.shutdown()
+        isTtsInitialized = false
+        
+        // Create new TTS instance with current settings
+        textToSpeech = TextToSpeech(this, this)
+    }
+    
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
+            InAppLogger.log(TAG, "TTS onInit called with status: $status")
+            
             // Set audio stream to assistant usage to avoid triggering media detection
             textToSpeech?.setAudioAttributes(
                 android.media.AudioAttributes.Builder()
@@ -123,17 +162,25 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             isTtsInitialized = true
             InAppLogger.log(TAG, "TTS initialized successfully for onboarding")
             
-            // Speak welcome message
-            speakText(getLocalizedTtsString(R.string.tts_onboarding_welcome))
+            // Speak language/theme page message
+            speakText(getLocalizedTtsString(R.string.tts_onboarding_language_theme))
         } else {
-            InAppLogger.log(TAG, "TTS initialization failed")
+            InAppLogger.log(TAG, "TTS initialization failed with status: $status")
         }
     }
     
     private fun applyVoiceSettings() {
         textToSpeech?.let { tts ->
             voiceSettingsPrefs?.let { prefs ->
+                // Log the current language settings before applying
+                val currentLanguage = prefs.getString("language", "en_US")
+                val currentTtsLanguage = prefs.getString("tts_language", "en_US")
+                InAppLogger.log(TAG, "Applying voice settings - UI Language: $currentLanguage, TTS Language: $currentTtsLanguage")
+                
                 VoiceSettingsActivity.applyVoiceSettings(tts, prefs)
+                
+                // Log the result after applying
+                InAppLogger.log(TAG, "Voice settings applied successfully")
             }
         }
     }
@@ -153,28 +200,30 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         
         val currentPage = binding.viewPager.currentItem
         val pageContent = if (skipPermissionPage) {
-            // When permission page is skipped (7 pages total)
+            // When permission page is skipped (8 pages total - language/theme + 7 original)
             when (currentPage) {
-                0 -> getLocalizedTtsString(R.string.tts_onboarding_welcome)
-                1 -> getLocalizedTtsString(R.string.tts_onboarding_privacy)
-                2 -> getLocalizedTtsString(R.string.tts_onboarding_filters)
-                3 -> getLocalizedTtsString(R.string.tts_onboarding_apps)
-                4 -> getLocalizedTtsString(R.string.tts_onboarding_words)
-                5 -> getLocalizedTtsString(R.string.tts_onboarding_rules)
-                6 -> getLocalizedTtsString(R.string.tts_onboarding_complete)
-                else -> ""
-            }
-        } else {
-            // When permission page is included (8 pages total)
-            when (currentPage) {
-                0 -> getLocalizedTtsString(R.string.tts_onboarding_welcome)
-                1 -> getLocalizedTtsString(R.string.tts_onboarding_permission)
+                0 -> getLocalizedTtsString(R.string.tts_onboarding_language_theme) // Language/Theme page - dedicated message
+                1 -> getLocalizedTtsString(R.string.tts_onboarding_welcome)
                 2 -> getLocalizedTtsString(R.string.tts_onboarding_privacy)
                 3 -> getLocalizedTtsString(R.string.tts_onboarding_filters)
                 4 -> getLocalizedTtsString(R.string.tts_onboarding_apps)
                 5 -> getLocalizedTtsString(R.string.tts_onboarding_words)
                 6 -> getLocalizedTtsString(R.string.tts_onboarding_rules)
                 7 -> getLocalizedTtsString(R.string.tts_onboarding_complete)
+                else -> ""
+            }
+        } else {
+            // When permission page is included (9 pages total - language/theme + 8 original)
+            when (currentPage) {
+                0 -> getLocalizedTtsString(R.string.tts_onboarding_language_theme) // Language/Theme page - dedicated message
+                1 -> getLocalizedTtsString(R.string.tts_onboarding_welcome)
+                2 -> getLocalizedTtsString(R.string.tts_onboarding_permission)
+                3 -> getLocalizedTtsString(R.string.tts_onboarding_privacy)
+                4 -> getLocalizedTtsString(R.string.tts_onboarding_filters)
+                5 -> getLocalizedTtsString(R.string.tts_onboarding_apps)
+                6 -> getLocalizedTtsString(R.string.tts_onboarding_words)
+                7 -> getLocalizedTtsString(R.string.tts_onboarding_rules)
+                8 -> getLocalizedTtsString(R.string.tts_onboarding_complete)
                 else -> ""
             }
         }
@@ -234,7 +283,7 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrollStateChanged(state: Int) {
                 val currentPage = binding.viewPager.currentItem
-                if (!skipPermissionPage && currentPage == 1 && !isNotificationServiceEnabled()) {
+                if (!skipPermissionPage && currentPage == 2 && !isNotificationServiceEnabled()) { // Permission page is now at index 2
                     // Disable swiping on permission page if permission not granted
                     binding.viewPager.isUserInputEnabled = false
                 } else {
