@@ -87,7 +87,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:boxBackgroundMode="outline"
-                        android:hint="Enter rule name (e.g., Night Mode, Car Mode)">
+                        android:hint="@string/hint_rule_name">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editRuleName"

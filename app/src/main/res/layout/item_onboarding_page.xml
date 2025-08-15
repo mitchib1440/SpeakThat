@@ -58,7 +58,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Search for an app..."
+                android:hint="@string/hint_search_for_app"
                 app:boxBackgroundMode="outline"
                 app:boxStrokeColor="@color/white_100"
                 app:hintTextColor="@color/purple_card_text_secondary"
@@ -125,7 +125,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter a word to block..."
+                android:hint="@string/hint_enter_word_to_block"
                 app:boxBackgroundMode="outline"
                 app:boxStrokeColor="@color/white_100"
                 app:hintTextColor="@color/purple_card_text_secondary"

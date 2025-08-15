@@ -655,19 +655,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="settings_donate_title">❤️ Donate</string>
     <string name="settings_donate_description">Support development and keep the app free</string>
     
-    <!-- Critical Hardcoded Strings - App Categories -->
-    <string name="category_social_media">Social Media</string>
-    <string name="category_social_media_description">Social networking and community apps</string>
-    <string name="category_messaging">Messaging</string>
-    <string name="category_messaging_description">Chat and communication apps</string>
-    <string name="category_finance">Finance</string>
-    <string name="category_finance_description">Banking and financial apps</string>
-    <string name="category_health">Health</string>
-    <string name="category_health_description">Health and fitness apps</string>
-    <string name="category_entertainment">Entertainment</string>
-    <string name="category_entertainment_description">Media and entertainment apps</string>
-    <string name="category_games">Games</string>
-    <string name="category_games_description">Mobile games and gaming apps</string>
+
     
     <!-- Critical Hardcoded Strings - Other -->
     <string name="unknown_device">Unknown Device</string>
@@ -883,6 +871,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     
     <!-- Dialog Strings - Support & Feedback -->
     <string name="support_chat">💬</string>
+    <string name="icon_refresh">🔄</string>
     <string name="support_lightbulb">💡</string>
     <string name="support_bug">🐛</string>
     <string name="support_question">❓</string>
@@ -1212,4 +1201,252 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="specific_voice_warning_dialog_title">Multi-Language Voice Limitation</string>
     <string name="specific_voice_warning_dialog_message">SpeakThat currently only supports one voice at a time. This means:\n\n✅ What works well:\n• Notifications in the same language as your selected voice\n• Single-language usage scenarios\n• Most common notification patterns\n\n⚠️ Potential issues:\n• Notifications in different languages may sound garbled\n• Mixed-language content might be difficult to understand\n• Some characters or accents may not be pronounced correctly\n\n💡 Recommendations:\n• Choose a voice that matches your most common notification language\n• Consider using the Language &amp; Region setting instead of Specific Voice\n• Test with your actual notifications to ensure clarity\n\n🔮 Future plans:\n• Multi-language voice support is planned for future updates\n• Automatic language detection and voice switching\n• Better handling of mixed-language content\n\nFor now, the Language &amp; Region setting often works better for multi-language users as it automatically adapts to different content types.</string>
     <string name="specific_voice_warning_dialog_got_it">Got it</string>
+    
+    <!-- Hint Strings -->
+    <string name="hint_app_package_name">App Package Name</string>
+    <string name="hint_search_apps_or_package">Search apps or enter package name</string>
+    <string name="hint_device_addresses">Device addresses or names</string>
+    <string name="hint_network_ssids">Network SSIDs</string>
+    <string name="hint_word_to_blacklist">Word to blacklist</string>
+    <string name="hint_word_to_swap">Word to swap</string>
+    <string name="hint_swap_with_optional">Swap with (optional)</string>
+    <string name="hint_search_media_filter">Search apps to add to media filter</string>
+    <string name="hint_important_keyword">Important keyword (e.g., reply, comment)</string>
+    <string name="hint_rule_name">Enter rule name (e.g., Night Mode, Car Mode)</string>
+    <string name="hint_bluetooth_addresses">00:11:22:33:44:55&#10;AA:BB:CC:DD:EE:FF</string>
+    <string name="hint_wifi_networks">HomeWiFi&#10;OfficeNetwork</string>
+    <string name="hint_wifi_network_name">Enter WiFi network name</string>
+    <string name="hint_cooldown_time">Cooldown time</string>
+    <string name="hint_search_for_app">Search for an app...</string>
+    <string name="hint_enter_word_to_block">Enter a word to block...</string>
+    <string name="hint_enter_format_placeholders">Enter format with placeholders</string>
+    
+    <!-- Development Settings Hardcoded Strings -->
+    <string name="dev_configure_logging">Configure what gets logged for debugging</string>
+    <string name="dev_verbose_logging">Verbose Logging</string>
+    <string name="dev_verbose_logging_description">Show detailed debug information</string>
+    <string name="dev_filter_logging">Filter Logging</string>
+    <string name="dev_filter_logging_description">Log filtering decisions and results</string>
+    <string name="dev_user_action_logging">User Action Logging</string>
+    <string name="dev_user_action_logging_description">Log user interactions and button presses</string>
+    <string name="dev_system_event_logging">System Event Logging</string>
+    <string name="dev_system_event_logging_description">Log app lifecycle and system events</string>
+    <string name="dev_notification_logging">Notification Logging</string>
+    <string name="dev_notification_logging_description">Log notification processing events</string>
+    <string name="dev_sensitive_data_logging">Sensitive Data Logging</string>
+    <string name="dev_sensitive_data_logging_description">⚠️ Log sensitive information (disabled by default)</string>
+    <string name="dev_live_log_display">📊 Live Log Display</string>
+    <string name="dev_live_log_description">Real-time view of what\'s happening under the hood</string>
+    <string name="dev_view_crash_logs">📄 View Crash Logs</string>
+    <string name="dev_clear_crash_logs">🗑️ Clear Crash Logs</string>
+    <string name="dev_debug_crash_logs">🔍 Debug Crash Logs</string>
+    <string name="dev_starting_log_display">Starting log display...\nLogs will appear here in real-time.\n</string>
+    
+    <!-- AboutActivity Hardcoded Strings -->
+    <string name="tts_error_occurred">TTS error occurred</string>
+    <string name="tts_initialization_failed">TTS initialization failed</string>
+    
+    <!-- GeneralSettingsActivity Hardcoded Strings -->
+    <string name="storage_permission_required">Storage permission required for export</string>
+    <string name="theme_changed_title">Theme Changed</string>
+    <string name="theme_changed_message">The theme has been applied. For the best experience, you may want to restart the app.</string>
+    <string name="restart_now">Restart Now</string>
+    <string name="later">Later</string>
+    <string name="clear_all_data_title">Clear All Data</string>
+    <string name="clear_all_data_message">This will reset all settings to defaults and clear notification history.\n\nThis action cannot be undone.\n\nDo you want to continue?</string>
+    <string name="clear_all_data_button">Clear All Data</string>
+    <string name="export_failed">Export failed: %s</string>
+    <string name="configuration_exported_successfully">Configuration exported successfully</string>
+    <string name="configuration_imported_successfully">Configuration imported successfully: %s</string>
+    <string name="import_failed">Import failed: %s</string>
+    <string name="all_data_cleared_successfully">All data cleared successfully</string>
+    <string name="failed_to_clear_data">Failed to clear data: %s</string>
+    <string name="persistent_notification_enabled">Persistent notification enabled</string>
+    <string name="reading_notification_enabled">Reading notification enabled</string>
+    <string name="notification_permission_denied">Notification permission denied - feature will not work</string>
+    
+    <!-- AppAutoCompleteAdapter Hardcoded Strings -->
+    <string name="app_selector_sample_apps_loaded">Sample apps loaded:</string>
+    <string name="app_selector_google_maps_found" formatted="false">GOOGLE/MAPS APP FOUND: %s (%s)</string>
+    <string name="app_selector_total_apps">Total: %d apps</string>
+    <string name="app_filter_filtering_with">Filtering with: \'%s\'</string>
+    <string name="app_filter_match" formatted="false">MATCH: %s (%s) - name:%s pkg:%s</string>
+    <string name="app_filter_google_maps_candidate" formatted="false">GOOGLE MAPS CANDIDATE: %s (%s)</string>
+    <string name="app_filter_found_matches" formatted="false">Found %d matches for \'%s\'</string>
+    <string name="app_filter_no_filter_showing_all">No filter - showing all %d apps</string>
+    <string name="app_filter_publishing_results">Publishing %d results</string>
+    
+    <!-- CooldownAppAdapter Hardcoded Strings -->
+    <string name="cooldown_app_icon_url">https://cdn.simpleicons.org/%s</string>
+    
+    <!-- BootReceiver Hardcoded Strings -->
+    <string name="boot_receiver_tag">BootReceiver</string>
+    <string name="boot_receiver_prefs_name">SpeakThatPrefs</string>
+    <string name="boot_receiver_key_auto_start">auto_start_on_boot</string>
+    <string name="boot_receiver_key_master_switch">master_switch_enabled</string>
+    <string name="boot_receiver_boot_completed">Boot completed received</string>
+    <string name="boot_receiver_auto_start_enabled">Auto-start enabled, starting notification service</string>
+    <string name="boot_receiver_enabled_notification_listeners">enabled_notification_listeners</string>
+    <string name="boot_receiver_service_already_enabled">Notification service already enabled, no action needed</string>
+        <string name="boot_receiver_service_not_enabled">Notification service not enabled, user needs to grant permission</string>
+    
+    <!-- AppCategory String Resources -->
+    <string name="category_social_id">social</string>
+    <string name="category_social_display_name">Social Media</string>
+    <string name="category_social_description">Social networking and community apps</string>
+    <string name="category_messaging_id">messaging</string>
+    <string name="category_messaging_display_name">Messaging</string>
+    <string name="category_messaging_description">Chat and communication apps</string>
+    <string name="category_finance_id">finance</string>
+    <string name="category_finance_display_name">Finance</string>
+    <string name="category_finance_description">Banking and financial apps</string>
+    <string name="category_health_id">health</string>
+    <string name="category_health_display_name">Health &amp; Fitness</string>
+    <string name="category_health_description">Health, medical, and fitness apps</string>
+    <string name="category_entertainment_id">entertainment</string>
+    <string name="category_entertainment_display_name">Entertainment</string>
+    <string name="category_entertainment_description">Media and entertainment apps</string>
+    <string name="category_games_id">games</string>
+    <string name="category_games_display_name">Games</string>
+    <string name="category_games_description">Mobile games and gaming apps</string>
+    
+    <!-- App Package Names (for reference, these are typically not localized) -->
+    <string name="package_twitter">com.twitter.</string>
+    <string name="package_facebook">com.facebook.</string>
+    <string name="package_instagram">com.instagram.</string>
+    <string name="package_linkedin">com.linkedin.</string>
+    <string name="package_reddit">com.reddit.</string>
+    <string name="package_snapchat">com.snapchat.</string>
+    <string name="package_pinterest">com.pinterest.</string>
+    <string name="package_tumblr">com.tumblr</string>
+    <string name="package_weibo">com.weibo.</string>
+    <string name="package_line">jp.naver.line.</string>
+    <string name="package_tiktok">com.zhiliaoapp.musically</string>
+    <string name="package_glassdoor">com.glassdoor.</string>
+    <string name="package_indeed">com.indeed.</string>
+    <string name="package_discord">com.discord</string>
+    <string name="package_slack">com.slack</string>
+    <string name="package_meetup">com.meetup</string>
+    <string name="package_whatsapp">com.whatsapp</string>
+    <string name="package_facebook_messenger">com.facebook.messenger</string>
+    <string name="package_google_messages">com.google.android.apps.messaging</string>
+    <string name="package_telegram">org.telegram.</string>
+    <string name="package_viber">com.viber.</string>
+    <string name="package_skype">com.skype.</string>
+    <string name="package_gmail">com.google.android.gm</string>
+    <string name="package_outlook">com.microsoft.office.outlook</string>
+    <string name="package_yahoo_mail">com.yahoo.mobile.client.android.mail</string>
+    <string name="package_google_meet">com.google.android.apps.meetings</string>
+    <string name="package_zoom">us.zoom.</string>
+    <string name="package_microsoft_teams">com.microsoft.teams</string>
+    <string name="package_line_android">jp.naver.line.android</string>
+    <string name="package_kakaotalk">com.kakao.talk</string>
+    <string name="package_wechat">com.tencent.mm</string>
+    <string name="package_paypal">com.paypal.</string>
+    <string name="package_venmo">com.venmo.</string>
+    <string name="package_cash_app">com.squareup.cash</string>
+    <string name="package_google_wallet">com.google.android.apps.walletnfcrel</string>
+    <string name="package_bank_of_america">com.bankofamerica.</string>
+    <string name="package_chase">com.chase.</string>
+    <string name="package_wells_fargo">com.wellsfargo.</string>
+    <string name="package_us_bank">com.usbank.</string>
+    <string name="package_citibank">com.citibank.</string>
+    <string name="package_robinhood">com.robinhood.</string>
+    <string name="package_etrade">com.etrade.</string>
+    <string name="package_charles_schwab">com.schwab.</string>
+    <string name="package_fidelity">com.fidelity.</string>
+    <string name="package_coinbase">com.coinbase.</string>
+    <string name="package_binance">com.binance.</string>
+    <string name="package_mint">com.mint</string>
+    <string name="package_ynab">com.ynab</string>
+    <string name="package_fitbit">com.fitbit.</string>
+    <string name="package_google_fit">com.google.android.apps.fitness</string>
+    <string name="package_samsung_health">com.samsung.health</string>
+    <string name="package_garmin_connect">com.garmin.connect</string>
+    <string name="package_strava">com.strava</string>
+    <string name="package_medisafe">com.medisafe.</string>
+    <string name="package_myfitnesspal">com.myfitnesspal.</string>
+    <string name="package_noom">com.noom.</string>
+    <string name="package_weightwatchers">com.weightwatchers</string>
+    <string name="package_zocdoc">com.zocdoc.</string>
+    <string name="package_carezone">org.carezone.</string>
+    <string name="package_teladoc">com.teladoc.</string>
+    <string name="package_calm">com.calm.</string>
+    <string name="package_headspace">com.headspace.</string>
+    <string name="package_betterhelp">com.betterhelp</string>
+    <string name="package_glow">com.glow.android</string>
+    <string name="package_clue">com.clue.android</string>
+    
+    <!-- SharedPreferences Keys (these are typically not localized but kept for reference) -->
+    <string name="prefs_speakthat">SpeakThatPrefs</string>
+    <string name="prefs_voice_settings">VoiceSettings</string>
+    <string name="prefs_notification_history">NotificationHistory</string>
+    <string name="prefs_dark_mode">dark_mode</string>
+    <string name="prefs_persistent_notification">persistent_notification</string>
+    <string name="prefs_notification_while_reading">notification_while_reading</string>
+    <string name="prefs_auto_start_enabled">auto_start_enabled</string>
+    <string name="prefs_battery_optimization_enabled">battery_optimization_enabled</string>
+    <string name="prefs_aggressive_processing_enabled">aggressive_processing_enabled</string>
+    <string name="prefs_restart_policy">restart_policy</string>
+    <string name="prefs_tts_language">tts_language</string>
+    <string name="prefs_speech_rate">speech_rate</string>
+    <string name="prefs_pitch">pitch</string>
+    <string name="prefs_voice_name">voice_name</string>
+    <string name="prefs_language">language</string>
+    <string name="prefs_audio_usage">audio_usage</string>
+    <string name="prefs_content_type">content_type</string>
+    <string name="prefs_auto_start_on_boot">auto_start_on_boot</string>
+    <string name="prefs_master_switch_enabled">master_switch_enabled</string>
+    <string name="prefs_enabled_notification_listeners">enabled_notification_listeners</string>
+    
+    <!-- TTS Utterance IDs -->
+    <string name="tts_utterance_about_app">about_app</string>
+    
+    <!-- File Export/Import -->
+    <string name="export_filename_format">SpeakThat_Config_%s.json</string>
+    <string name="import_temp_filename">speakthat_import</string>
+    <string name="export_mime_type">application/json</string>
+    <string name="export_charset">UTF-8</string>
+    
+    <!-- Error Messages -->
+    <string name="error_unable_to_open_output_stream">Unable to open output stream for URI</string>
+    <string name="error_unable_to_open_input_stream">Unable to open input stream from URI</string>
+    
+    <!-- Log Messages -->
+    <string name="log_app_search_adapter_filtering" formatted="false">Filtering with \'%s\' - found %d results</string>
+    <string name="log_app_search_adapter_publishing">Publishing %d results</string>
+    <string name="log_app_selector_sample_apps">Sample apps loaded:</string>
+    <string name="log_app_selector_app_info" formatted="false">  %s (%s)</string>
+    <string name="log_app_selector_total">Total: %d apps</string>
+    <string name="log_app_filter_filtering">Filtering with: \'%s\'</string>
+    <string name="log_app_filter_match" formatted="false">MATCH: %s (%s) - name:%s pkg:%s</string>
+    <string name="log_app_filter_google_maps" formatted="false">GOOGLE MAPS CANDIDATE: %s (%s)</string>
+    <string name="log_app_filter_found_matches" formatted="false">Found %d matches for \'%s\'</string>
+    <string name="log_app_filter_no_filter">No filter - showing all %d apps</string>
+    <string name="log_app_filter_publishing">Publishing %d results</string>
+    <string name="log_boot_receiver_boot_completed">Boot completed received</string>
+    <string name="log_boot_receiver_auto_start">Auto-start enabled, starting notification service</string>
+    <string name="log_boot_receiver_service_enabled">Notification service already enabled</string>
+    <string name="log_boot_receiver_service_not_enabled">Notification service not enabled - user needs to grant permission</string>
+    
+    <!-- Date/Time Format -->
+    <string name="date_format_export">yyyy-MM-dd_HH-mm-ss</string>
+    
+    <!-- System Values -->
+    <string name="system_default">system</string>
+    <string name="restart_policy_never">never</string>
+    <string name="restart_policy_crash">crash</string>
+    <string name="restart_policy_periodic">periodic</string>
+    
+    <!-- MainActivity Hardcoded Strings -->
+    <string name="main_master_switch_enabled">SpeakThat will read notifications when active</string>
+    <string name="main_master_switch_disabled">SpeakThat is disabled - notifications will not be read</string>
+    <string name="main_notification_access_granted">SpeakThat has notification access</string>
+    <string name="main_tts_init_failed">TTS initialization failed. Some features may not work.</string>
+    <string name="main_tts_not_ready">TTS not ready. Please try again in a moment.</string>
+    <string name="main_tts_playback_failed">TTS playback failed</string>
+    <string name="main_notification_permission_granted">Notification permission granted</string>
+    <string name="main_notification_permission_denied">Notification permission denied - SpeakThat notifications may not appear</string>
+    <string name="main_notification_title_active">SpeakThat Active</string>
+    <string name="main_notification_content_tap_settings">Tap to open SpeakThat settings</string>
 </resources> 

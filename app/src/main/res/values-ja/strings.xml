@@ -813,6 +813,7 @@
     
     <!-- Dialog Strings - Support & Feedback -->
     <string name="support_chat">💬</string>
+    <string name="icon_refresh">🔄</string>
     <string name="support_lightbulb">💡</string>
     <string name="support_bug">🐛</string>
     <string name="support_question">❓</string>
@@ -1146,4 +1147,23 @@
     <string name="button_apply_now">今すぐ適用</string>
     <string name="toast_language_restarting">新しい言語でアプリを再起動中...</string>
     <string name="toast_language_manual_restart">アプリを再起動すると、言語が完全に適用されます</string>
+    
+    <!-- Hint Strings -->
+    <string name="hint_app_package_name">アプリパッケージ名</string>
+    <string name="hint_search_apps_or_package">アプリを検索するか、パッケージ名を入力</string>
+    <string name="hint_device_addresses">デバイスアドレスまたは名前</string>
+    <string name="hint_network_ssids">ネットワークSSID</string>
+    <string name="hint_word_to_blacklist">ブラックリストに追加する単語</string>
+    <string name="hint_word_to_swap">置換する単語</string>
+    <string name="hint_swap_with_optional">置換先（オプション）</string>
+    <string name="hint_search_media_filter">メディアフィルタに追加するアプリを検索</string>
+    <string name="hint_important_keyword">重要なキーワード（例：返信、コメント）</string>
+    <string name="hint_rule_name">ルール名を入力（例：夜間モード、車内モード）</string>
+    <string name="hint_bluetooth_addresses">00:11:22:33:44:55&#10;AA:BB:CC:DD:EE:FF</string>
+    <string name="hint_wifi_networks">ホームWiFi&#10;オフィスネットワーク</string>
+    <string name="hint_wifi_network_name">WiFiネットワーク名を入力</string>
+    <string name="hint_cooldown_time">クールダウン時間</string>
+    <string name="hint_search_for_app">アプリを検索...</string>
+    <string name="hint_enter_word_to_block">ブロックする単語を入力...</string>
+    <string name="hint_enter_format_placeholders">プレースホルダーを使用してフォーマットを入力</string>
 </resources>

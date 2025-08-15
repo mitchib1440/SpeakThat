@@ -96,10 +96,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                     
                     // Update status text
                     if (currentState) {
-                        binding.textMasterSwitchStatus.text = "SpeakThat will read notifications when active"
+                        binding.textMasterSwitchStatus.text = getString(R.string.main_master_switch_enabled)
                         binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.purple_200))
                     } else {
-                        binding.textMasterSwitchStatus.text = "SpeakThat is disabled - notifications will not be read"
+                        binding.textMasterSwitchStatus.text = getString(R.string.main_master_switch_disabled)
                         binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.red_200))
                     }
                     
@@ -366,10 +366,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         
         // Update master switch status text
         if (isMasterEnabled) {
-            binding.textMasterSwitchStatus.text = "SpeakThat will read notifications when active"
+            binding.textMasterSwitchStatus.text = getString(R.string.main_master_switch_enabled)
             binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_card_text_secondary))
         } else {
-            binding.textMasterSwitchStatus.text = "SpeakThat is disabled - notifications will not be read"
+            binding.textMasterSwitchStatus.text = getString(R.string.main_master_switch_disabled)
             binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_card_text_secondary))
         }
         
@@ -377,7 +377,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         if (isEnabled) {
             // Service is enabled - use check icon
             binding.iconPermissionStatus.setImageResource(R.drawable.check_24px)
-            binding.textPermissionStatus.text = "SpeakThat has notification access"
+            binding.textPermissionStatus.text = getString(R.string.main_notification_access_granted)
         } else {
             // Service is disabled - use close icon
             binding.iconPermissionStatus.setImageResource(R.drawable.close_24px)
@@ -474,8 +474,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                     
                     // Build notification
                     val notification = androidx.core.app.NotificationCompat.Builder(this, "SpeakThat_Channel")
-                        .setContentTitle("SpeakThat Active")
-                        .setContentText("Tap to open SpeakThat settings")
+                        .setContentTitle(getString(R.string.main_notification_title_active))
+                        .setContentText(getString(R.string.main_notification_content_tap_settings))
                         .setSmallIcon(R.drawable.speakthaticon)
                         .setOngoing(true) // Persistent notification
                         .setSilent(true) // Silent notification
@@ -633,7 +633,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             InAppLogger.logError("MainActivity", "TTS init failed on $deviceInfo")
             
             // Show user feedback
-            Toast.makeText(this, "TTS initialization failed. Some features may not work.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.main_tts_init_failed), Toast.LENGTH_LONG).show()
         }
     }
     
@@ -661,7 +661,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             }
             
             // Show user feedback
-            Toast.makeText(this, "TTS not ready. Please try again in a moment.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.main_tts_not_ready), Toast.LENGTH_SHORT).show()
             return
         }
         
@@ -745,7 +745,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             if (result == TextToSpeech.ERROR) {
                 Log.e(TAG, "TTS speak() returned ERROR")
                 InAppLogger.logError("MainActivity", "TTS speak() failed")
-                Toast.makeText(this, "TTS playback failed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.main_tts_playback_failed), Toast.LENGTH_SHORT).show()
             }
         } else {
             Log.e(TAG, "Cannot speak text - TTS not ready. Initialized: $isTtsInitialized, TTS: ${textToSpeech != null}")
@@ -1247,11 +1247,11 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 if (grantResults.isNotEmpty() && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
                     Log.d(TAG, "POST_NOTIFICATIONS permission granted")
                     InAppLogger.log("Permissions", "POST_NOTIFICATIONS permission granted")
-                    Toast.makeText(this, "Notification permission granted", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.main_notification_permission_granted), Toast.LENGTH_SHORT).show()
                 } else {
                     Log.w(TAG, "POST_NOTIFICATIONS permission denied")
                     InAppLogger.log("Permissions", "POST_NOTIFICATIONS permission denied")
-                    Toast.makeText(this, "Notification permission denied - SpeakThat notifications may not appear", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.main_notification_permission_denied), Toast.LENGTH_LONG).show()
                 }
             }
         }

@@ -424,7 +424,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Device addresses or names"
+                                                        android:hint="@string/hint_device_addresses"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_marginBottom="8dp">
 
@@ -551,7 +551,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Network SSIDs"
+                                                        android:hint="@string/hint_network_ssids"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_marginBottom="8dp">
 

@@ -89,7 +89,7 @@ public class CooldownAppAdapter extends RecyclerView.Adapter<CooldownAppAdapter.
         if (item.icon != null) {
             holder.appIcon.setImageDrawable(item.icon);
         } else if (item.iconSlug != null && !item.iconSlug.isEmpty()) {
-            String iconUrl = "https://cdn.simpleicons.org/" + item.iconSlug;
+            String iconUrl = String.format(context.getString(R.string.cooldown_app_icon_url), item.iconSlug);
             CoilImageLoader.loadSvg(holder.appIcon, iconUrl);
         } else {
             // Try to load icon from package manager (for device apps loaded from storage)

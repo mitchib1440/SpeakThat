@@ -24,7 +24,7 @@
         android:id="@+id/editWifiSsid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter WiFi network name"
+                        android:hint="@string/hint_wifi_network_name"
         android:inputType="text"
         android:maxLines="1"
         android:background="@drawable/dialog_input_background"

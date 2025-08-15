@@ -206,7 +206,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:minHeight="56dp"
-                                    android:hint="Search apps or enter package name"
+                                    android:hint="@string/hint_search_apps_or_package"
                                     android:inputType="text"
                                     android:completionThreshold="1"
                                     android:dropDownHeight="200dp"
@@ -1853,7 +1853,7 @@
                                 android:id="@+id/editAppPackage"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="App package name (e.g., com.twitter.android)"
+                                android:hint="@string/app_package_hint"
                                 android:inputType="text"
                                 android:textColor="@color/purple_card_text_primary" />
 
@@ -1872,7 +1872,7 @@
                                 android:id="@+id/editCustomAppName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Custom name (e.g., Twitter)"
+                                android:hint="@string/custom_name_hint"
                                 android:inputType="text"
                                 android:textColor="@color/purple_card_text_primary" />
 
@@ -2154,7 +2154,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:minHeight="56dp"
-                                android:hint="Search apps or enter package name"
+                                android:hint="@string/hint_search_apps_or_package"
                                 android:inputType="text"
                                 android:completionThreshold="1"
                                 android:dropDownHeight="200dp"
@@ -2314,7 +2314,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:minHeight="56dp"
-                            android:hint="Enter format with placeholders"
+                                                            android:hint="@string/hint_enter_format_placeholders"
                             android:inputType="textMultiLine"
                             android:maxLines="3"
                             android:textSize="16sp"

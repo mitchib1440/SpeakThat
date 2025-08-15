@@ -51,7 +51,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Cooldown time"
+                            android:hint="@string/hint_cooldown_time"
             app:boxBackgroundMode="outline"
             app:boxStrokeColor="@color/purple_200"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
