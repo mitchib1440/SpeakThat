@@ -125,11 +125,12 @@
         android:gravity="center"
         android:padding="32dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/rules_wrench_icon"
-            android:textSize="48sp"
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_rule_24"
+            android:tint="@color/white_100"
+            android:contentDescription="Rules icon"
             android:layout_marginBottom="24dp" />
 
         <TextView

@@ -433,7 +433,8 @@ class TemplateAdapter(
         val template = templates[position]
         
         holder.binding.apply {
-            textIcon.text = template.icon
+            imageIcon.setImageResource(template.iconDrawable)
+            imageIcon.setColorFilter(android.graphics.Color.WHITE)
             textTitle.text = template.name
             textDescription.text = template.description
             

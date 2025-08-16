@@ -94,6 +94,15 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
 
+                    <ImageView
+                        android:id="@+id/iconGeneralSettings"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_dark_mode_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_general_title" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -151,6 +160,15 @@
                     android:padding="20dp"
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
+
+                    <ImageView
+                        android:id="@+id/iconVoiceSettings"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_voice_selection_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_voice_title" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -210,6 +228,15 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
 
+                    <ImageView
+                        android:id="@+id/iconBehaviorSettings"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_notification_settings_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_behavior_title" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -268,6 +295,15 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
 
+                    <ImageView
+                        android:id="@+id/iconFilterSettings"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_filter_list_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_filter_title" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -325,6 +361,15 @@
                     android:padding="20dp"
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
+
+                    <ImageView
+                        android:id="@+id/iconConditionalRules"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_bluetooth_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_rules_title" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -386,6 +431,15 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
 
+                    <ImageView
+                        android:id="@+id/iconDevelopmentSettings"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_bugdroid_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_development_title" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -443,6 +497,15 @@
                     android:padding="20dp"
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
+
+                    <ImageView
+                        android:id="@+id/iconReRunOnboarding"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_laps_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_rerun_onboarding" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -502,6 +565,15 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
 
+                    <ImageView
+                        android:id="@+id/iconDonate"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_volunteer_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_donate_title" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -559,6 +631,15 @@
                     android:padding="20dp"
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
+
+                    <ImageView
+                        android:id="@+id/iconSupportFeedback"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_send_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_support_title" />
 
                     <LinearLayout
                         android:layout_width="0dp"

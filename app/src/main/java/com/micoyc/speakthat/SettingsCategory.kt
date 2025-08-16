@@ -6,7 +6,6 @@ data class SettingsCategory(
     val id: String,
     val title: String,
     val description: String,
-    val icon: String,
     val cardView: View,
     val onClickAction: () -> Unit
 ) 

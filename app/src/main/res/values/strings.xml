@@ -129,7 +129,7 @@ This feature is especially loved by people who get notifications during meetings
     <string name="got_it">Got it</string>
     
     <!-- Persistent/Silent Notification Filtering -->
-    <string name="persistent_notification_filtering_title">🔇 Persistent/Silent Notification Filtering</string>
+    <string name="persistent_notification_filtering_title">Persistent/Silent Notification Filtering</string>
     <string name="persistent_notification_filtering_description">Skip notifications that are persistent (ongoing) or silent (no sound/vibration)</string>
     <string name="enable_persistent_filtering">Enable persistent/silent notification filtering</string>
     <string name="persistent_filtering_help">💡 Persistent notifications are ongoing (like music controls, navigation, etc.) and silent notifications have no sound/vibration. This option helps reduce notification spam from background services.</string>
@@ -405,6 +405,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_title_speech_formats_guide">🗣️ Speech Formats - Complete Guide</string>
     <string name="dialog_title_honour_do_not_disturb">Honour Do Not Disturb</string>
     <string name="dialog_title_honour_phone_calls">Honour Phone Calls</string>
+    <string name="dialog_title_notification_deduplication">Notification Deduplication</string>
     <string name="dialog_title_honour_audio_mode">Honour Audio Mode</string>
     <string name="dialog_title_select_bluetooth_device">Select Bluetooth Device</string>
     <string name="dialog_title_remove_device">Remove Device</string>
@@ -445,7 +446,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_title_edit_word_swap">Edit Word Swap</string>
     <string name="dialog_title_import_filter_configuration">Import Filter Configuration</string>
     <string name="dialog_title_app_filter_help">📱 App Filter Help</string>
-    <string name="dialog_title_smart_media_filter">🎵 Smart Media Notification Filter</string>
+    <string name="dialog_title_smart_media_filter">Smart Media Notification Filter</string>
     
     <!-- Critical Hardcoded Strings - Dialog Messages -->
     <string name="dialog_message_theme_changed">The theme has been changed. For the best experience, you may want to restart the app manually.</string>
@@ -521,8 +522,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="button_re_detect">Re-detect</string>
     
     <!-- Layout Section Titles -->
-    <string name="section_notification_behavior">🔔 Notification Behavior</string>
-    <string name="section_media_behavior">🎵 Media Behavior</string>
+    <string name="section_notification_behavior">Notification Behavior</string>
+    <string name="section_media_behavior">Media Behavior</string>
     <string name="recommendation_smart_mode">Most users should use: Smart Mode</string>
     <string name="recommendation_lower_audio">Most users should use: Lower Audio</string>
     
@@ -570,7 +571,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_custom_apps_description">Customize how app names are spoken in notifications</string>
     <string name="behavior_custom_apps_example">Example: X app reads as Twitter</string>
     <string name="behavior_custom_apps_add">Add Custom App Name</string>
-    <string name="behavior_delay_title">⏱️ Delay Before Readout</string>
+    <string name="behavior_delay_title">Delay Before Readout</string>
     <string name="behavior_delay_description">Add a short delay before SpeakThat starts reading notifications</string>
     <string name="behavior_delay_recommendation">Most users should use: 2 seconds</string>
     <string name="behavior_delay_none">None - Start immediately</string>
@@ -578,10 +579,10 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_delay_2s">2 seconds - Recommended</string>
     <string name="behavior_delay_3s">3 seconds - Extra time to react</string>
     <string name="behavior_delay_benefits">✨ Benefits:\n\n• Avoids overlap with notification sounds\n• Gives you time to shake-to-cancel\n• Less jarring in quiet environments\n• Perfect for meetings and public spaces</string>
-    <string name="behavior_cooldown_title">⏰ Notification Cooldown</string>
+    <string name="behavior_cooldown_title">Notification Cooldown</string>
     <string name="behavior_cooldown_description">Prevent apps from having multiple notifications read within a specified time period</string>
     <string name="behavior_cooldown_recommendation">Great for: Apps that spam notifications</string>
-    <string name="behavior_speech_title">🗣️ Speech Format</string>
+    <string name="behavior_speech_title">Speech Format</string>
     <string name="behavior_speech_description">Customize how notifications are spoken aloud using placeholders</string>
     <string name="behavior_speech_recommendation">Customize your notification experience</string>
     <string name="behavior_speech_preset">Format Preset:</string>
@@ -597,16 +598,16 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="label_5m">5m</string>
     <string name="label_30_percent">30%</string>
     <string name="label_90_percent">90%</string>
-    <string name="volume_mute">🔇</string>
-    <string name="volume_loud">🔊</string>
+    <string name="volume_mute">Mute</string>
+    <string name="volume_loud">Loud</string>
     <string name="volume_30_percent">30%</string>
     
     <!-- Voice Settings Strings -->
-    <string name="voice_characteristics">🔊 Voice Characteristics</string>
+    <string name="voice_characteristics">Voice Characteristics</string>
     <string name="voice_speech_rate">Speech Rate</string>
     <string name="voice_pitch">Voice Pitch</string>
     <string name="voice_tts_volume">TTS Volume</string>
-    <string name="voice_language_section">🌍 Language &amp; Voice</string>
+    <string name="voice_language_section">Language &amp; Voice</string>
     <string name="voice_language_preset">Language Preset</string>
     <string name="voice_language_preset_description">Choose your language. This sets both the app interface and text-to-speech language at once for the best experience.</string>
     <string name="voice_preset_recommendation">This is all most users need. Use Advanced Voice Options below to customize individual settings.</string>
@@ -637,23 +638,23 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="main_notification_permissions">Notification permissions:</string>
     
     <!-- Settings Activity Strings -->
-    <string name="settings_general_title">⚙️ General Settings</string>
+    <string name="settings_general_title">General Settings</string>
     <string name="settings_general_description">App preferences, theme settings</string>
-    <string name="settings_voice_title">🎙️ Voice Settings</string>
+    <string name="settings_voice_title">Voice Settings</string>
     <string name="settings_voice_description">Text-to-speech voice and speed</string>
-    <string name="settings_behavior_title">🔔 Behavior Settings</string>
+    <string name="settings_behavior_title">Behavior Settings</string>
     <string name="settings_behavior_description">When and how notifications are read</string>
-    <string name="settings_filter_title">🔍 Filter Settings</string>
+    <string name="settings_filter_title">Filter Settings</string>
     <string name="settings_filter_description">Choose which apps to read</string>
-    <string name="settings_rules_title">🔧 Conditional Rules</string>
+    <string name="settings_rules_title">Conditional Rules</string>
     <string name="settings_rules_description">Configure Bluetooth, time schedules, etc</string>
-    <string name="settings_development_title">🛠️ Development Settings</string>
+    <string name="settings_development_title">Development Settings</string>
     <string name="settings_development_description">Debug tools and logging system</string>
-    <string name="settings_rerun_onboarding">🔄 Re-run Onboarding</string>
+    <string name="settings_rerun_onboarding">Re-run Onboarding</string>
     <string name="settings_rerun_onboarding_description">See the app introduction again</string>
-    <string name="settings_support_title">💬 Support &amp; Feedback</string>
+    <string name="settings_support_title">Support &amp; Feedback</string>
     <string name="settings_support_description">Get help, report bugs, request features</string>
-    <string name="settings_donate_title">❤️ Donate</string>
+    <string name="settings_donate_title">Donate</string>
     <string name="settings_donate_description">Support development and keep the app free</string>
     
 
@@ -675,28 +676,35 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_media_volume_tip">Tip: Lower values make media quieter during notifications</string>
     
     <!-- Behavior Settings - Do Not Disturb -->
-    <string name="section_honor_dnd">🔕 Honour Do Not Disturb</string>
+    <string name="section_honor_dnd">Honour Do Not Disturb</string>
     <string name="behavior_dnd_description">Respect your device\'s Do Not Disturb mode and silence notifications when enabled</string>
     <string name="behavior_dnd_recommendation">Most users should: Enable this feature</string>
     <string name="behavior_dnd_switch_label">Honour Do Not Disturb mode</string>
     <string name="behavior_dnd_benefits">✨ Benefits:\n\n• Respects your device\'s Do Not Disturb settings\n• Perfect for meetings, sleep, and quiet time\n• Works with scheduled DND and manual activation\n• Maintains your privacy and focus when needed</string>
     
     <!-- Behavior Settings - Phone Calls -->
-    <string name="section_honor_phone_calls">📞 Honour Phone Calls</string>
+    <string name="section_honor_phone_calls">Honour Phone Calls</string>
     <string name="behavior_phone_calls_description">Prevent notification readouts when you\'re on a phone call</string>
     <string name="behavior_phone_calls_recommendation">Most users should: Enable this feature</string>
     <string name="behavior_phone_calls_switch_label">Honour phone calls</string>
     <string name="behavior_phone_calls_benefits">✨ Benefits:\n\n• Prevents interruptions during important calls\n• Respects your conversation privacy\n• Works with all types of phone calls\n• Automatic detection of call state</string>
     
+    <!-- Behavior Settings - Notification Deduplication -->
+    <string name="section_notification_deduplication">Notification Deduplication</string>
+    <string name="behavior_deduplication_description">Prevent the same notification from being read multiple times in quick succession</string>
+    <string name="behavior_deduplication_recommendation">Enable if you experience duplicate notifications</string>
+    <string name="behavior_deduplication_switch_label">Enable notification deduplication</string>
+    <string name="behavior_deduplication_benefits">✨ Benefits:\n\n• Prevents annoying duplicate readouts\n• Saves battery by avoiding unnecessary TTS\n• Works automatically with 5-second window\n• Helps with apps that post multiple notifications</string>
+    
     <!-- Behavior Settings - Audio Mode -->
-    <string name="section_honor_audio_mode">🔇 Honour Audio Mode</string>
+    <string name="section_honor_audio_mode">Honour Audio Mode</string>
     <string name="behavior_audio_mode_description">Only read notifications when your device is in Sound mode (not Silent or Vibrate)</string>
     <string name="behavior_audio_mode_recommendation">Recommended: Enable this feature</string>
     <string name="behavior_audio_mode_switch_label">Honour audio mode (Sound only)</string>
     <string name="behavior_audio_mode_benefits">✨ Benefits:\n\n• Prevents unwanted audio when phone is muted\n• Respects your device\'s audio settings\n• Works with Silent and Vibrate modes\n• Ensures notifications only play when you can hear them</string>
     
     <!-- Behavior Settings - Shake to Stop -->
-    <string name="section_shake_to_stop">📳 Shake to Stop</string>
+    <string name="section_shake_to_stop">Shake to Stop</string>
     <string name="behavior_shake_description">Stop readouts instantly by shaking your device</string>
     <string name="behavior_shake_recommendation">Most users should: Enable this feature</string>
     <string name="behavior_shake_switch_label">Enable shake to stop</string>
@@ -727,7 +735,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="voice_test_button">Test Voice</string>
     
     <!-- Filter Settings Strings -->
-    <string name="filter_app_list_title">📱 App List Filtering</string>
+    <string name="filter_app_list_title">App List Filtering</string>
     <string name="filter_app_list_description">Control which apps can trigger notifications</string>
     <string name="filter_no_filtering">No app filtering</string>
     <string name="filter_whitelist">Whitelist (only selected apps)</string>
@@ -736,16 +744,16 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="filter_app_list_button">📋 App List</string>
     <string name="filter_app_count">(0 apps)</string>
     <string name="filter_search_description">Search through your installed apps by name or package. Click a suggestion to add it instantly. (Tap for more info)</string>
-    <string name="filter_word_blacklist_title">🚫 Word Blacklist</string>
+    <string name="filter_word_blacklist_title">Word Blacklist</string>
     <string name="filter_word_blacklist_description">Block or privatize notifications containing specific words</string>
     <string name="filter_word_blacklist_info">Block = skip entirely, Private = announce privately</string>
     <string name="filter_blacklisted_words">📋 Blacklisted Words</string>
     
     <!-- General Settings Strings -->
-    <string name="general_theme_title">🎨 Theme</string>
+    <string name="general_theme_title">Theme</string>
     <string name="general_dark_mode">Dark Mode</string>
     <string name="general_dark_mode_description">Enable dark mode for this app</string>
-    <string name="general_app_behavior_title">⚙️ App Behavior &amp; Performance</string>
+    <string name="general_app_behavior_title">App Behavior &amp; Performance</string>
     <string name="general_auto_start">Auto-start on Boot</string>
     <string name="general_auto_start_description">Automatically start the notification service when device boots</string>
     <string name="general_battery_optimization">Battery Optimization Exemption</string>
@@ -757,12 +765,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="general_never_restart">Never restart automatically</string>
     <string name="general_restart_on_crash">Restart only on crash</string>
     <string name="general_restart_periodically">Restart periodically (every 6 hours)</string>
-    <string name="general_notification_settings_title">🔔 Notification Settings</string>
+    <string name="general_notification_settings_title">Notification Settings</string>
     <string name="general_persistent_notification">Persistent Notification</string>
     <string name="general_persistent_notification_description">Show a persistent notification when SpeakThat is active</string>
     <string name="general_notification_while_reading">Notification While Reading</string>
     <string name="general_notification_while_reading_description">Show a notification when TTS is actively reading</string>
-    <string name="general_data_management_title">💾 Data Management</string>
+    <string name="general_data_management_title">Data Management</string>
     <string name="general_export_configuration">Export Configuration</string>
     <string name="general_export_configuration_description">Save all settings to a file</string>
     <string name="general_import_configuration">Import Configuration</string>
@@ -790,9 +798,9 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_builder_logic_and">AND</string>
     <string name="rule_builder_logic_or">OR</string>
     <string name="rule_builder_logic_xor">XOR</string>
-    <string name="rule_builder_actions_title">🎯 Actions</string>
+    <string name="rule_builder_actions_title">Actions</string>
     <string name="rule_builder_actions_description">What happens when the triggers are met</string>
-    <string name="rule_builder_exceptions_title">🚫 Exceptions</string>
+    <string name="rule_builder_exceptions_title">Exceptions</string>
     <string name="rule_builder_exceptions_description">Conditions that override the triggers (optional)</string>
     <string name="rule_builder_save_rule">Save Rule</string>
     
@@ -816,15 +824,15 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="wave_calibration_disable">Turn Wave-to-Stop Off</string>
     
     <!-- Voice Settings - Audio Output -->
-    <string name="voice_audio_output_settings">🔊 Audio Output Settings</string>
+    <string name="voice_audio_output_settings">Audio Output Settings</string>
     <string name="voice_audio_output_description">Configure how notifications are played through your device\'s audio system.</string>
     <string name="voice_audio_stream_type">Audio Stream Type</string>
     <string name="voice_content_type">Content Type</string>
     <string name="voice_content_type_description">Tells the system what kind of audio this is. Speech is recommended for notifications.</string>
-    <string name="voice_audio_recommendation">We recommend: Notification + Speech</string>
-    <string name="voice_preview_actions">🎵 Preview &amp; Actions</string>
+    <string name="voice_audio_recommendation">Recommended: Notification + Speech</string>
+    <string name="voice_preview_actions">Preview &amp; Actions</string>
     <string name="voice_preview_button">Preview</string>
-    <string name="voice_test_settings">🔊 Test Voice Settings</string>
+    <string name="voice_test_settings">Test Voice Settings</string>
     <string name="voice_reset_defaults">Reset to Defaults</string>
     <string name="voice_preview_tip">Tip: Use the preview button to test how notifications will sound with your settings. All changes are saved automatically as you make them.</string>
     
@@ -837,7 +845,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="filter_media_enable">Enable smart media notification filtering</string>
     <string name="filter_media_apps_title">Filtered Media Apps:</string>
     <string name="filter_media_apps_description">Apps that are automatically filtered for media notifications. Add media apps you want to filter out.</string>
-    <string name="filter_advanced_options">⚙️ Advanced Options</string>
+    <string name="filter_advanced_options">Advanced Options</string>
     <string name="filter_exception_apps_title">Exception Apps:</string>
     <string name="filter_exception_apps_description">Apps that should never have notifications filtered (like YouTube for replies)</string>
     <string name="filter_important_keywords_title">Important Keywords:</string>
@@ -891,7 +899,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_speech_preview_example">Preview: Messages notified you: Mitchi: I heard you\'re using SpeakThat!</string>
     
     <!-- Rules Activity -->
-    <string name="rules_wrench_icon">🔧</string>
+    <string name="rules_wrench_icon">Rules</string>
     
     <!-- Exception Configuration -->
     <string name="exception_any_bluetooth_device">Any Bluetooth Device</string>
@@ -943,7 +951,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_bluetooth_config_title">Bluetooth Configuration</string>
     
     <!-- Rules Activity -->
-    <string name="rules_title">🔧 Rules</string>
+    <string name="rules_title">Rules</string>
     <string name="rules_description">Create powerful rules to control when SpeakThat reads notifications based on your device state, time, and connections.</string>
     <string name="rules_enable">Enable Rules</string>
     <string name="rules_create_new">Create New Rule</string>
@@ -989,17 +997,17 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="onboarding_complete_description">SpeakThat is ready to help you stay connected while keeping your eyes free!\n\n💡 You can add more filters anytime in the app settings.</string>
     
     <!-- Trigger Configuration -->
-    <string name="trigger_screen_state">📱 Screen State</string>
+    <string name="trigger_screen_state">Screen State</string>
     <string name="trigger_screen_choose">Choose when this trigger should activate:</string>
     <string name="trigger_invert_condition">Invert Condition</string>
-    <string name="trigger_time_schedule">🕐 Time Schedule</string>
+    <string name="trigger_time_schedule">Time Schedule</string>
     <string name="trigger_time_description">Set the time range when this trigger should activate:</string>
     
     <!-- Rule Builder -->
-    <string name="rule_builder_info_icon">💡</string>
+    <string name="rule_builder_info_icon">Info</string>
     <string name="rule_builder_description">Rules check conditions for each notification. They don\'t remember state changes - they filter notifications in real-time.</string>
-    <string name="rule_builder_name_label">📝 Rule Name</string>
-    <string name="rule_builder_triggers_label">⚡ Triggers</string>
+    <string name="rule_builder_name_label">Rule Name</string>
+    <string name="rule_builder_triggers_label">Triggers</string>
     <string name="rule_builder_triggers_description">Conditions that must be met for this rule to activate</string>
     <string name="rule_builder_logic_label">Logic:</string>
     
@@ -1010,12 +1018,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="exception_time_choose">Choose when this exception should apply:</string>
     
     <!-- Action Configuration -->
-    <string name="action_disable_speakthat">🔇 Disable SpeakThat</string>
+    <string name="action_disable_speakthat">Disable SpeakThat</string>
     <string name="action_disable_description">This action will disable SpeakThat completely when the rule is triggered.</string>
-    <string name="action_enable_app_filter">✅ Enable App Filter</string>
+    <string name="action_enable_app_filter">Enable App Filter</string>
     <string name="action_enable_app_description">Select which app to enable filtering for:</string>
     <string name="action_select_app">Select App</string>
-    <string name="action_disable_app_filter">❌ Disable App Filter</string>
+    <string name="action_disable_app_filter">Disable App Filter</string>
     <string name="action_disable_app_description">Select which app to disable filtering for:</string>
     
     <!-- Wave Calibration -->
@@ -1030,7 +1038,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
 
     
     <!-- Bluetooth Condition -->
-    <string name="bluetooth_devices_title">📱 Bluetooth Devices</string>
+    <string name="bluetooth_devices_title">Bluetooth Devices</string>
     <string name="bluetooth_devices_description">Select Bluetooth devices that must be connected for notifications to be read.</string>
     <string name="bluetooth_selected_devices">Selected Devices</string>
     <string name="bluetooth_add_device">Add Bluetooth Device</string>
@@ -1171,7 +1179,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_timeout_current">Timeout: 30 seconds</string>
     <string name="behavior_disable_timeout">Disable timeout (not recommended)</string>
 
-    <string name="behavior_wave_to_stop_title">👋 Wave to Stop</string>
+    <string name="behavior_wave_to_stop_title">Wave to Stop</string>
     <string name="behavior_wave_to_stop_description">Stop readouts instantly by waving your hand in front of the device</string>
     <string name="behavior_great_for">Great for: Desk users &amp; accessibility</string>
     <string name="behavior_enable_wave_stop">Enable wave to stop</string>
@@ -1180,7 +1188,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Major Missing Section Titles -->
     <string name="behavior_custom_app_names_title">📱 Custom App Names</string>
     <string name="dev_logging_configuration_title">📝 Logging Configuration</string>
-    <string name="filter_word_swap_title">🔄 Word Swap</string>
+    <string name="filter_word_swap_title">Word Swap</string>
     <string name="filter_word_swaps_header">📋 Word Swaps</string>
     <string name="voice_language_preset_title">Language Preset</string>
     
