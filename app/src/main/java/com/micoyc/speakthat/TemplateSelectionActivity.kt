@@ -18,6 +18,8 @@ import com.micoyc.speakthat.databinding.ItemTemplateBinding
 import com.micoyc.speakthat.rules.RuleManager
 import com.micoyc.speakthat.rules.RuleTemplates
 import com.micoyc.speakthat.rules.RuleTemplate
+import com.micoyc.speakthat.rules.TriggerType
+import com.micoyc.speakthat.utils.WifiCapabilityChecker
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
@@ -203,6 +205,12 @@ class TemplateSelectionActivity : AppCompatActivity() {
     }
     
     private fun handleWifiNetworkSelection(template: RuleTemplate) {
+        // Check if we can resolve WiFi SSIDs
+        if (!WifiCapabilityChecker.canResolveWifiSSID(this)) {
+            showWifiCompatibilityWarning(template)
+            return
+        }
+        
         try {
             val wifiManager = getSystemService(Context.WIFI_SERVICE) as WifiManager
             
@@ -246,6 +254,28 @@ class TemplateSelectionActivity : AppCompatActivity() {
             InAppLogger.logError("TemplateSelectionActivity", "Error handling WiFi network selection: ${e.message}")
             showManualWifiInputDialog(template)
         }
+    }
+    
+    private fun showWifiCompatibilityWarning(template: RuleTemplate) {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Note on WiFi Compatibility")
+            .setMessage("SpeakThat was unable to resolve your current SSID. This is likely because your version of Android has security restrictions that prevent SpeakThat from identifying what network you're connected to.\n\nIt's not impossible, however. So if you're a better developer than me then please contribute on the GitHub.")
+            .setPositiveButton("Create Rule Anyway") { _, _ ->
+                // Create the rule with empty network list (will work with any WiFi)
+                createRuleFromTemplate(template, mapOf(
+                    "ssid" to "",
+                    "networkId" to -1
+                ))
+            }
+            .setNegativeButton("Nevermind", null)
+            .setNeutralButton("Open GitHub") { _, _ ->
+                // Open GitHub link
+                val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/mitchib1440/SpeakThat"))
+                startActivity(intent)
+            }
+            .create()
+        
+        dialog.show()
     }
     
     private fun showManualWifiInputDialog(template: RuleTemplate) {
@@ -353,6 +383,71 @@ class TemplateSelectionActivity : AppCompatActivity() {
     
     private fun createRuleFromTemplate(template: RuleTemplate, customData: Map<String, Any> = emptyMap()) {
         try {
+            // Check if this is a WiFi rule with specific networks and we can't resolve SSIDs
+            val hasWifiTrigger = template.triggers.any { it.type == TriggerType.WIFI_NETWORK }
+            val hasSpecificNetworks = customData.containsKey("ssid") && (customData["ssid"] as? String)?.isNotEmpty() == true
+            
+            if (hasWifiTrigger && hasSpecificNetworks) {
+                // Always show warning for WiFi rules with specific networks to inform about Android limitations
+                // This ensures users are aware that SSID detection may not work reliably in all situations
+                showWifiCompatibilityWarningBeforeCreation(template, customData)
+                return
+            }
+            
+            val rule = RuleTemplates.createRuleFromTemplate(template, customData)
+            
+            // Add the rule to the rule manager
+            val success = ruleManager.addRule(rule)
+            
+            // Enable Conditional Rules if it's not already enabled
+            if (success && !ruleManager.isRulesEnabled()) {
+                ruleManager.setRulesEnabled(true)
+                InAppLogger.logUserAction("Enabled Conditional Rules feature")
+            }
+            
+            if (success) {
+                InAppLogger.logUserAction("Rule created from template: ${template.name}")
+                
+                // Show success message and finish
+                AlertDialog.Builder(this)
+                    .setTitle("Rule Created!")
+                    .setMessage("Your rule '${template.name}' has been created successfully.")
+                    .setPositiveButton("OK") { _, _ ->
+                        InAppLogger.logDebug("TemplateSelectionActivity", "Rule created successfully, finishing activity")
+                        finish()
+                    }
+                    .show()
+            } else {
+                showErrorDialog("Failed to create rule. Please try again.")
+            }
+            
+        } catch (e: Exception) {
+            InAppLogger.logError("TemplateSelectionActivity", "Error creating rule from template: ${e.message}")
+            showErrorDialog("Error creating rule. Please try again.")
+        }
+    }
+    
+    private fun showWifiCompatibilityWarningBeforeCreation(template: RuleTemplate, customData: Map<String, Any>) {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.wifi_compatibility_warning_title))
+            .setMessage(getString(R.string.wifi_compatibility_warning_message))
+            .setPositiveButton(getString(R.string.wifi_compatibility_warning_create_anyway)) { _, _ ->
+                // Create the rule with the original data (user wants to proceed)
+                createRuleFromTemplateInternal(template, customData)
+            }
+            .setNegativeButton(getString(R.string.wifi_compatibility_warning_nevermind), null)
+            .setNeutralButton(getString(R.string.wifi_compatibility_warning_open_github)) { _, _ ->
+                // Open GitHub link
+                val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/mitchib1440/SpeakThat"))
+                startActivity(intent)
+            }
+            .create()
+        
+        dialog.show()
+    }
+    
+    private fun createRuleFromTemplateInternal(template: RuleTemplate, customData: Map<String, Any> = emptyMap()) {
+        try {
             val rule = RuleTemplates.createRuleFromTemplate(template, customData)
             
             // Add the rule to the rule manager
@@ -433,7 +528,8 @@ class TemplateAdapter(
         val template = templates[position]
         
         holder.binding.apply {
-            textIcon.text = template.icon
+            imageIcon.setImageResource(template.iconDrawable)
+            imageIcon.setColorFilter(android.graphics.Color.WHITE)
             textTitle.text = template.name
             textDescription.text = template.description
             

@@ -286,7 +286,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         
         if (hasCrashLogs) {
             binding.btnViewCrashLogs.setText("📄 View Crash Logs");
-            binding.btnClearCrashLogs.setText("🗑️ Clear Crash Logs");
+            binding.btnClearCrashLogs.setText("🗑️ " + getString(R.string.button_clear_crash_logs));
         }
         
         // Debug: Log the crash log status
@@ -309,13 +309,13 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         scrollView.addView(textView);
         
         builder.setView(scrollView);
-        builder.setPositiveButton("Export Crash Logs", (dialog, which) -> {
+        builder.setPositiveButton(R.string.button_export_crash_logs, (dialog, which) -> {
             exportCrashLogs();
         });
-        builder.setNeutralButton("Clear Crash Logs", (dialog, which) -> {
+        builder.setNeutralButton(R.string.button_clear_crash_logs, (dialog, which) -> {
             clearCrashLogs();
         });
-        builder.setNegativeButton("Close", null);
+        builder.setNegativeButton(R.string.button_close, null);
         
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -362,7 +362,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
                     fileShareIntent.putExtra(Intent.EXTRA_TEXT, "SpeakThat! Crash Logs attached as file.");
                     fileShareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     
-                    startActivity(Intent.createChooser(fileShareIntent, "Export Crash Logs as File"));
+                    startActivity(Intent.createChooser(fileShareIntent, getString(R.string.button_export_crash_logs) + " as File"));
                     
                     Toast.makeText(this, "Crash logs exported as file! File saved to: " + crashLogFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
                     InAppLogger.log("Development", "Crash logs exported as file: " + crashLogFile.getName());
@@ -379,7 +379,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
                 textShareIntent.putExtra(Intent.EXTRA_SUBJECT, "SpeakThat! Crash Logs - " + timestamp);
                 textShareIntent.putExtra(Intent.EXTRA_TEXT, logContent);
                 
-                startActivity(Intent.createChooser(textShareIntent, "Export Crash Logs as Text"));
+                startActivity(Intent.createChooser(textShareIntent, getString(R.string.button_export_crash_logs) + " as Text"));
                 
                 Toast.makeText(this, "Crash logs exported as text (file export failed)", Toast.LENGTH_LONG).show();
                 InAppLogger.log("Development", "Crash logs exported as text fallback");
@@ -395,15 +395,15 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
 
     private void clearCrashLogs() {
         new AlertDialog.Builder(this)
-            .setTitle("Clear Crash Logs")
+            .setTitle(R.string.button_clear_crash_logs)
             .setMessage("Are you sure you want to delete all crash logs? This action cannot be undone.")
-            .setPositiveButton("Clear", (dialog, which) -> {
+            .setPositiveButton(R.string.button_clear, (dialog, which) -> {
                 InAppLogger.clearCrashLogs();
                 updateCrashLogButtonVisibility();
                 Toast.makeText(this, "Crash logs cleared", Toast.LENGTH_SHORT).show();
                 InAppLogger.logUserAction("Crash logs cleared", "");
             })
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.button_cancel, null)
             .show();
     }
 
@@ -450,8 +450,8 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         scrollView.addView(textView);
         
         builder.setView(scrollView);
-        builder.setPositiveButton("Close", null);
-        builder.setNeutralButton("Force Test Crash", (dialog, which) -> {
+        builder.setPositiveButton(R.string.button_close, null);
+        builder.setNeutralButton(R.string.button_force_test_crash, (dialog, which) -> {
             // Force a test crash for debugging
             InAppLogger.log("Development", "User requested test crash");
             throw new RuntimeException("Test crash for debugging crash log system");
@@ -495,7 +495,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Notification History")
                    .setMessage("No notifications to display")
-                   .setPositiveButton("Close", (dialog, which) -> dialog.dismiss())
+                   .setPositiveButton(R.string.button_close, (dialog, which) -> dialog.dismiss())
                    .show();
         } else {
             showEnhancedNotificationHistory(notifications);
@@ -520,7 +520,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         
         builder.setView(dialogView)
-               .setPositiveButton("Close", (dialog, which) -> dialog.dismiss())
+               .setPositiveButton(R.string.button_close, (dialog, which) -> dialog.dismiss())
                .show();
     }
     
@@ -931,10 +931,10 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Help Usage Analytics")
                 .setMessage(analytics.toString())
-                .setPositiveButton("Clear Analytics", (dialog, which) -> {
+                .setPositiveButton(R.string.button_clear_analytics, (dialog, which) -> {
                     clearAnalytics();
                 })
-                .setNegativeButton("Close", null)
+                .setNegativeButton(R.string.button_close, null)
                 .show();
         
         InAppLogger.log("Development", "Analytics dialog viewed - Total usage: " + totalUsage);
@@ -943,7 +943,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
     private void clearAnalytics() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         
-        // Clear all analytics keys
+        // R.string.button_clear all analytics keys
         editor.remove("total_dialog_usage");
         editor.remove("dialog_usage_notification_behavior_info");
         editor.remove("dialog_usage_notification_behavior_recommended");
@@ -1066,10 +1066,10 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         scrollView.addView(textView);
         
         builder.setView(scrollView);
-        builder.setPositiveButton("Export Report", (dialog, which) -> {
+        builder.setPositiveButton(R.string.button_export_report, (dialog, which) -> {
             exportBatteryReport(report.toString());
         });
-        builder.setNegativeButton("Close", null);
+        builder.setNegativeButton(R.string.button_close, null);
         
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -1147,7 +1147,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("Repair Word Blacklist")
                 .setMessage(msg.toString())
-                .setPositiveButton("OK", null)
+                .setPositiveButton(R.string.button_ok, null)
                 .show();
             InAppLogger.log("Development", "Word blacklist comprehensively repaired. Block: " + cleanedBlock.size() + ", Private: " + cleanedPrivate.size());
 
@@ -1187,7 +1187,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Background Process Monitor")
                 .setMessage(status)
-                .setPositiveButton("OK", null)
+                .setPositiveButton(R.string.button_ok, null)
                 .show();
     }
 
@@ -1213,11 +1213,11 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Installation Source Debug")
                     .setMessage(message.toString())
-                    .setPositiveButton("Reset Cache", (dialog, which) -> {
+                    .setPositiveButton(R.string.button_reset_cache, (dialog, which) -> {
                         updateManager.resetGooglePlayDetectionCache();
                         Toast.makeText(this, "Cache reset. Re-run detection to see changes.", Toast.LENGTH_LONG).show();
                     })
-                    .setNegativeButton("Re-detect", (dialog, which) -> {
+                    .setNegativeButton(R.string.button_re_detect, (dialog, which) -> {
                         updateManager.resetGooglePlayDetectionCache();
                         // Force a fresh detection
                         boolean newResult = updateManager.isInstalledFromGooglePlay();
@@ -1225,7 +1225,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
                         // Show the updated debug info
                         showInstallationSourceDebug();
                     })
-                    .setNeutralButton("OK", null)
+                    .setNeutralButton(R.string.button_ok, null)
                     .show();
                     
             InAppLogger.log("Development", "Installation source debug dialog shown");
@@ -1252,7 +1252,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("🧪 Rule System Test Results");
                     builder.setMessage(summary);
-                    builder.setPositiveButton("OK", null);
+                    builder.setPositiveButton(R.string.button_ok, null);
                     
                     AlertDialog dialog = builder.create();
                     dialog.show();
@@ -1267,7 +1267,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("❌ Rule System Test Error");
                     builder.setMessage("Error running rule system test: " + e.getMessage());
-                    builder.setPositiveButton("OK", null);
+                    builder.setPositiveButton(R.string.button_ok, null);
                     
                     AlertDialog dialog = builder.create();
                     dialog.show();

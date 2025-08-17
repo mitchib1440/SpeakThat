@@ -28,7 +28,7 @@
             android:focusable="true"
             android:background="?attr/selectableItemBackground"
             android:contentDescription="@string/app_name"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="0dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp" />
 
@@ -37,7 +37,7 @@
             android:id="@+id/versionnumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="version x.x.x"
+            android:text="@string/main_version_placeholder"
             android:textAlignment="viewEnd"
             android:paddingTop="4dp"
             android:paddingBottom="0dp"
@@ -47,7 +47,7 @@
             android:id="@+id/credit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="by Mitchi"
+            android:text="@string/main_author"
             android:textAlignment="viewEnd"
             android:textSize="10sp"/>
 
@@ -84,31 +84,63 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🔊 SpeakThat! Active"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/speakthaticon"
+                                app:tint="@color/white_100"
+                                android:layout_marginEnd="8dp"
+                                android:contentDescription="@string/app_name" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/main_service_active"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
 
                         <TextView
                             android:id="@+id/textMasterSwitchStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tap to enable notification reading"
+                            android:text="@string/main_service_enable"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp"
                             android:layout_marginBottom="8dp"/>
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/master_switch_battery_tip"
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_secondary"
-                            android:layout_marginTop="2dp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                app:tint="@color/white_100"
+                                android:layout_marginEnd="6dp"
+                                android:contentDescription="Battery tip icon" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/master_switch_battery_tip_no_emoji"
+                                android:textSize="12sp"
+                                android:textColor="@color/purple_card_text_secondary"
+                                android:layout_marginTop="2dp" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -134,15 +166,31 @@
                     android:layout_marginBottom="16dp" />
 
                 <!-- Status Section -->
-                <TextView
-                    android:id="@+id/textServiceStatus"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Notification permissions: ❌"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/purple_card_text_primary"
-                    android:layout_marginBottom="8dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/main_notification_permissions"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/purple_card_text_primary" />
+
+                    <ImageView
+                        android:id="@+id/iconPermissionStatus"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/close_24px"
+                        app:tint="@color/white_100"
+                        android:layout_marginStart="8dp"
+                        android:contentDescription="Permission status icon" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/textPermissionStatus"

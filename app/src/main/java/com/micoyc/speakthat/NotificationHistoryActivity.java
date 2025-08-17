@@ -26,7 +26,7 @@ public class NotificationHistoryActivity extends AppCompatActivity {
         // Set up toolbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Notification History");
+            getSupportActionBar().setTitle(R.string.title_notification_history);
         }
 
         // Load notification history

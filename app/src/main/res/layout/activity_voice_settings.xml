@@ -38,20 +38,36 @@
                     android:padding="20dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔊 Voice Characteristics"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_tune_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Voice Characteristics"
+                            android:layout_marginEnd="16dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/voice_characteristics"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <!-- Speech Rate Section -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Speech Rate"
+                        android:text="@string/voice_speech_rate"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp"
@@ -67,7 +83,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0.1x"
+                            android:text="@string/label_0_1x"
                             android:textSize="12sp"
                             android:textColor="@color/purple_card_text_secondary" />
 
@@ -86,7 +102,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="3.0x"
+                            android:text="@string/label_3_0x"
                             android:textSize="12sp"
                             android:textColor="@color/purple_card_text_secondary" />
 
@@ -94,7 +110,7 @@
                             android:id="@+id/speechRateValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1.0x"
+                            android:text="@string/label_1_0x"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             android:layout_marginStart="12dp"
@@ -108,7 +124,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Voice Pitch"
+                        android:text="@string/voice_pitch"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp"
@@ -124,7 +140,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0.1x"
+                            android:text="@string/label_0_1x"
                             android:textSize="12sp"
                             android:textColor="@color/purple_card_text_secondary" />
 
@@ -143,7 +159,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="2.0x"
+                            android:text="@string/label_2_0x"
                             android:textSize="12sp"
                             android:textColor="@color/purple_card_text_secondary" />
 
@@ -151,7 +167,7 @@
                             android:id="@+id/pitchValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1.0x"
+                            android:text="@string/label_1_0x"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             android:layout_marginStart="12dp"
@@ -165,7 +181,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TTS Volume"
+                        android:text="@string/voice_tts_volume"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp"
@@ -180,7 +196,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0%"
+                            android:text="@string/label_0_percent"
                             android:textSize="12sp"
                             android:textColor="@color/purple_card_text_secondary" />
 
@@ -199,7 +215,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="100%"
+                            android:text="@string/label_100_percent"
                             android:textSize="12sp"
                             android:textColor="@color/purple_card_text_secondary" />
 
@@ -207,7 +223,7 @@
                             android:id="@+id/ttsVolumeValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="100%"
+                            android:text="@string/label_100_percent"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             android:layout_marginStart="12dp"
@@ -238,20 +254,36 @@
                     android:padding="20dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🌍 Language &amp; Voice"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
 
-                    <!-- Language Section -->
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_language_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Language &amp; Voice"
+                            android:layout_marginEnd="16dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/voice_language_section"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
+
+                    <!-- @string/voice_language_preset_title Section -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Language &amp; Region"
+                        android:text="@string/voice_language_preset_title"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="4dp"
@@ -260,13 +292,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Choose the language and accent. This uses the default voice for that region."
+                        android:text="@string/voice_language_preset_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
 
                     <Spinner
-                        android:id="@+id/languageSpinner"
+                        android:id="@+id/languagePresetSpinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
@@ -278,46 +310,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Most users only need to change this setting."
-                        android:textSize="13sp"
-                        android:textColor="@color/white_100"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginTop="-4dp"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:padding="8dp" />
-
-                    <!-- TTS Language Section -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="TTS Language"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp"
-                        android:textColor="@color/purple_card_text_primary" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Choose the language for app phrases (like 'notified you:'). This is separate from the TTS engine language above."
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="8dp" />
-
-                    <Spinner
-                        android:id="@+id/ttsLanguageSpinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:minHeight="48dp"
-                        android:background="@drawable/dropdown_background"
-                        android:popupBackground="?attr/colorSurface"
-                        android:padding="12dp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="This controls phrases like 'notified you:' and 'An app'. Set to match your preferred TTS language."
+                        android:text="@string/voice_preset_recommendation"
                         android:textSize="13sp"
                         android:textColor="@color/white_100"
                         android:layout_marginBottom="16dp"
@@ -355,7 +348,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Help Translate SpeakThat!"
+                                android:text="@string/voice_help_translate"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -363,7 +356,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Tap to send translation email"
+                                android:text="@string/voice_help_translate_description_button"
                                 android:textSize="12sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="2dp" />
@@ -373,7 +366,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="›"
+                            android:text="@string/arrow_right"
                             android:textSize="20sp"
                             android:textColor="@color/white_100" />
 
@@ -389,7 +382,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Show Advanced Voice Options"
+                            android:text="@string/voice_show_advanced"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginEnd="8dp" />
@@ -426,7 +419,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="⚙️ Advanced"
+                                android:text="@string/voice_advanced_label"
                                 android:textStyle="bold"
                                 android:textColor="@color/white_100"
                                 android:textSize="16sp"
@@ -438,11 +431,39 @@
                                 android:background="@color/white_100" />
                         </LinearLayout>
 
+                        <!-- TTS Language Section (moved to Advanced) -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/voice_tts_language_advanced"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="4dp"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/voice_tts_language_description"
+                            android:textSize="14sp"
+                            android:textColor="@color/purple_card_text_secondary"
+                            android:layout_marginBottom="8dp" />
+
+                        <Spinner
+                            android:id="@+id/ttsLanguageSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:minHeight="48dp"
+                            android:background="@drawable/spinner_background"
+                            android:popupBackground="?attr/colorSurface"
+                            android:padding="12dp" />
+
                         <!-- Voice Section -->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Specific Voice (Advanced)"
+                            android:text="@string/voice_specific_voice_advanced"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:layout_marginBottom="4dp"
@@ -455,13 +476,28 @@
                             android:gravity="center_vertical"
                             android:layout_marginBottom="8dp">
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Select a specific voice engine. This overrides the language setting above. ⚠️ For advanced users only."
-                                android:textSize="14sp"
-                                android:textColor="@color/purple_card_text_secondary" />
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+                                
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/voice_specific_voice_description"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/purple_card_text_secondary" />
+                                
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/warning_24px"
+                                    app:tint="@color/white_100"
+                                    android:layout_marginStart="6dp"
+                                    android:contentDescription="Warning icon" />
+                            </LinearLayout>
 
                             <ImageView
                                 android:id="@+id/btnVoiceInfo"
@@ -474,7 +510,7 @@
                                 android:foreground="?android:attr/selectableItemBackgroundBorderless"
                                 android:padding="4dp"
                                 android:layout_marginStart="8dp"
-                                android:tint="@color/white_100" />
+                                app:tint="@color/white_100" />
 
                         </LinearLayout>
 
@@ -511,7 +547,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Tap for details"
+                                android:text="@string/voice_tap_for_details"
                                 android:textSize="10sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -527,20 +563,36 @@
                             android:popupBackground="?attr/colorSurface"
                             android:padding="12dp" />
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="💡 Recommendation: Try the Language setting first. Only use Specific Voice if you need a particular voice engine.\n\nYou can always reset your settings below if you run into trouble!"
-                            android:textSize="14sp"
-                            android:textColor="@color/purple_card_text_secondary"
+                            android:orientation="horizontal"
+                            android:gravity="top"
                             android:background="?android:attr/selectableItemBackground"
                             android:padding="12dp"
-                            android:layout_marginBottom="24dp" />
+                            android:layout_marginBottom="24dp">
+                            
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                app:tint="@color/white_100"
+                                android:layout_marginEnd="6dp"
+                                android:layout_marginTop="2dp"
+                                android:contentDescription="Recommendation icon" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/voice_advanced_recommendation"
+                                android:textSize="14sp"
+                                android:textColor="@color/purple_card_text_secondary" />
+                        </LinearLayout>
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="You can always reset your settings below if you run into trouble!"
+                            android:text="@string/voice_reset_warning"
                             android:textSize="13sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="8dp"
@@ -569,19 +621,35 @@
                     android:padding="20dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔊 Audio Output Settings"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_mobile_speaker_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Audio Output Settings"
+                            android:layout_marginEnd="16dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/voice_audio_output_settings"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Configure how notifications are played through your device's audio system."
+                        android:text="@string/voice_audio_output_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -590,7 +658,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Audio Stream Type"
+                        android:text="@string/voice_audio_stream_type"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp"
@@ -610,7 +678,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Content Type"
+                        android:text="@string/voice_content_type"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="4dp"
@@ -619,7 +687,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tells the system what kind of audio this is. Speech is recommended for notifications."
+                        android:text="@string/voice_content_type_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
@@ -643,14 +711,29 @@
                         android:background="?android:attr/selectableItemBackground"
                         android:padding="12dp">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="💡 We recommend: Notification + Speech"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_secondary" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+                            
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                app:tint="@color/white_100"
+                                android:layout_marginEnd="6dp"
+                                android:contentDescription="Recommendation icon" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/voice_audio_recommendation"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_secondary" />
+                        </LinearLayout>
 
                         <ImageView
                             android:id="@+id/btnAudioHelp"
@@ -662,7 +745,7 @@
                             android:focusable="true"
                             android:foreground="?android:attr/selectableItemBackgroundBorderless"
                             android:padding="4dp"
-                            android:tint="@color/white_100" />
+                            app:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -687,20 +770,36 @@
                     android:padding="20dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🎵 Preview &amp; Actions"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_sound_sampler_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Preview &amp; Actions"
+                            android:layout_marginEnd="16dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/voice_preview_actions"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <!-- Preview Section -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Preview"
+                        android:text="@string/voice_preview_button"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp"
@@ -717,12 +816,11 @@
                             android:id="@+id/previewButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="🔊 Test Voice Settings"
+                            android:text="@string/voice_test_settings"
                             android:textSize="16sp"
-                            android:textColor="@color/white_100"
-                            android:background="@android:color/transparent"
                             android:padding="16dp"
-                            style="@style/Widget.Material3.Button.TextButton" />
+                            app:cornerRadius="12dp"
+                            style="@style/Widget.SpeakThat.Button.Primary" />
 
                     </LinearLayout>
 
@@ -734,20 +832,21 @@
                         android:gravity="center">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_advanced_voice_section"
                             android:padding="4dp">
 
                             <Button
                                 android:id="@+id/resetButton"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Reset to Defaults"
+                                android:text="@string/voice_reset_defaults"
                                 android:textSize="16sp"
                                 android:textColor="@color/white_100"
                                 android:background="@android:color/transparent"
                                 android:padding="12dp"
+                                app:cornerRadius="12dp"
                                 style="@style/Widget.Material3.Button.TextButton" />
 
                         </LinearLayout>
@@ -755,16 +854,31 @@
                     </LinearLayout>
 
                     <!-- Help Text -->
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="💡 Tip: Use the preview button to test how notifications will sound with your settings. All changes are saved automatically as you make them."
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
+                        android:orientation="horizontal"
+                        android:gravity="top"
                         android:layout_marginTop="24dp"
                         android:padding="16dp"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:drawablePadding="8dp" />
+                        android:background="?android:attr/selectableItemBackground">
+                        
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/lightbulb_2_24px"
+                            app:tint="@color/white_100"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginTop="2dp"
+                            android:contentDescription="Tip icon" />
+                        
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/voice_preview_tip"
+                            android:textSize="14sp"
+                            android:textColor="@color/purple_card_text_secondary" />
+                    </LinearLayout>
 
                 </LinearLayout>
 

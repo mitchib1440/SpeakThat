@@ -80,6 +80,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String KEY_COOLDOWN_APPS = "cooldown_apps"; // JSON string of cooldown app settings
     private static final String KEY_HONOUR_DO_NOT_DISTURB = "honour_do_not_disturb"; // boolean
     private static final String KEY_HONOUR_PHONE_CALLS = "honour_phone_calls"; // boolean
+    private static final String KEY_NOTIFICATION_DEDUPLICATION = "notification_deduplication"; // boolean
 
     private static final String KEY_SPEECH_TEMPLATE = "speech_template"; // Custom speech template
 
@@ -96,6 +97,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final int DEFAULT_DELAY_BEFORE_READOUT = 2; // 2 seconds
     private static final boolean DEFAULT_HONOUR_DO_NOT_DISTURB = true; // Default to honouring DND
     private static final boolean DEFAULT_HONOUR_PHONE_CALLS = true; // Default to honouring phone calls
+    private static final boolean DEFAULT_NOTIFICATION_DEDUPLICATION = false; // Default to disabled
 
 
     // Speech template constants
@@ -506,7 +508,13 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             saveHonourPhoneCalls(isChecked);
         });
         
-
+        // Set up Notification Deduplication toggle
+        binding.switchNotificationDeduplication.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveNotificationDeduplication(isChecked);
+        });
+        
+        // Set up Deduplication info button
+        binding.btnDeduplicationInfo.setOnClickListener(v -> showDeduplicationDialog());
         
         // Set up Audio Mode info button
         binding.btnAudioModeInfo.setOnClickListener(v -> showAudioModeDialog());
@@ -703,9 +711,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         }
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle("🧪 Format Test Results")
+        builder.setTitle(R.string.dialog_title_format_test_results)
                 .setMessage(Html.fromHtml(testResults.toString(), Html.FROM_HTML_MODE_LEGACY))
-                .setPositiveButton("Got it!", null)
+                .setPositiveButton(R.string.button_got_it, null)
                 .show();
     }
 
@@ -945,7 +953,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         boolean honourPhoneCalls = sharedPreferences.getBoolean(KEY_HONOUR_PHONE_CALLS, DEFAULT_HONOUR_PHONE_CALLS);
         binding.switchHonourPhoneCalls.setChecked(honourPhoneCalls);
         
-
+        // Load Notification Deduplication setting
+        boolean notificationDeduplication = sharedPreferences.getBoolean(KEY_NOTIFICATION_DEDUPLICATION, DEFAULT_NOTIFICATION_DEDUPLICATION);
+        binding.switchNotificationDeduplication.setChecked(notificationDeduplication);
         
         // Load speech template settings
         loadSpeechTemplateSettings();
@@ -1539,6 +1549,13 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         editor.apply();
         InAppLogger.log("BehaviorSettings", "Honour phone calls changed to: " + honour);
     }
+
+    private void saveNotificationDeduplication(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_NOTIFICATION_DEDUPLICATION, enabled);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Notification deduplication changed to: " + enabled);
+    }
     
 
 
@@ -1846,7 +1863,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 boolean isTriggered = (currentWaveValue == 0) || (currentWaveValue <= threshold);
                 
                 if (isTriggered) {
-                    binding.textCurrentWave.setTextColor(getColor(android.R.color.holo_green_dark));
+                    binding.textCurrentWave.setTextColor(getColor(android.R.color.white));
                 } else {
                     binding.textCurrentWave.setTextColor(getColor(android.R.color.secondary_text_dark));
                 }
@@ -2059,7 +2076,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "This feature was inspired by Touchless Notifications and helps create a more polished, less jarring notification experience.";
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle("Delay Before Readout")
+        builder.setTitle(R.string.dialog_title_delay_before_readout)
                 .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
                 .setPositiveButton(R.string.use_recommended, (dialog, which) -> {
                     // Track recommendation usage
@@ -2096,9 +2113,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "<b>Note:</b> This only affects how the app name is spoken, not the actual app name on your device.";
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle("Custom App Names")
+        builder.setTitle(R.string.dialog_title_custom_app_names)
                 .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
-                .setPositiveButton("Got it!", null)
+                .setPositiveButton(R.string.button_got_it, null)
                 .show();
     }
 
@@ -2127,9 +2144,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "<b>Note:</b> Only notifications from the same app are affected. Different apps can still send notifications normally.";
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle("Notification Cooldown")
+        builder.setTitle(R.string.dialog_title_notification_cooldown)
                 .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
-                .setPositiveButton("Got it!", null)
+                .setPositiveButton(R.string.button_got_it, null)
                 .show();
     }
     
@@ -2254,9 +2271,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "<b>💡 Remember that different apps present their notifications in different ways.</b><br><br>";
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle("🗣️ Speech Formats - Complete Guide")
+        builder.setTitle(R.string.dialog_title_speech_formats_guide)
                 .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
-                .setPositiveButton("Use Recommended", (dialog, which) -> {
+                .setPositiveButton(R.string.button_use_recommended, (dialog, which) -> {
                     // Track recommendation usage
                     trackDialogUsage("speech_template_recommended");
                     
@@ -2268,7 +2285,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                     
                     Toast.makeText(this, "Set to recommended format: Default", Toast.LENGTH_SHORT).show();
                 })
-                .setNegativeButton("Got it!", null)
+                .setNegativeButton(R.string.button_got_it, null)
                 .show();
     }
 
@@ -2292,7 +2309,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "<b>💡 Tip:</b> This feature works seamlessly with your device's existing Do Not Disturb settings. No additional configuration needed!";
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle("Honour Do Not Disturb")
+        builder.setTitle(R.string.dialog_title_honour_do_not_disturb)
                 .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
                 .setPositiveButton(R.string.use_recommended, (dialog, which) -> {
                     // Track recommendation usage
@@ -2327,7 +2344,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "<b>💡 Tip:</b> This feature works with your device's physical volume buttons and system settings. Perfect for users who frequently switch between audio modes!";
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle("Honour Audio Mode")
+        builder.setTitle(R.string.dialog_title_honour_audio_mode)
                 .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
                 .setPositiveButton(R.string.use_recommended, (dialog, which) -> {
                     // Track recommendation usage
@@ -2362,7 +2379,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "<b>💡 Tip:</b> This feature respects your conversation privacy and ensures you never miss important notifications due to call interruptions!";
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle("Honour Phone Calls")
+        builder.setTitle(R.string.dialog_title_honour_phone_calls)
                 .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
                 .setPositiveButton(R.string.use_recommended, (dialog, which) -> {
                     // Track recommendation usage
@@ -2373,6 +2390,33 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                     saveHonourPhoneCalls(true);
                 })
                 .setNegativeButton(R.string.got_it, null)
+                .show();
+    }
+
+    private void showDeduplicationDialog() {
+        // Track dialog usage for analytics
+        trackDialogUsage("deduplication_info");
+        
+        String htmlText = "Notification Deduplication prevents the same notification from being read multiple times:<br><br>" +
+                "<b>🎯 What it does:</b><br>" +
+                "When the same notification is posted multiple times in quick succession, SpeakThat will only read it once. This prevents annoying duplicate readouts.<br><br>" +
+                "<b>📱 When it's useful:</b><br>" +
+                "• <b>Duplicate notifications</b> - Some apps post the same notification multiple times<br>" +
+                "• <b>System updates</b> - Android may post notifications multiple times during updates<br>" +
+                "• <b>App restarts</b> - Apps may re-post notifications when restarting<br>" +
+                "• <b>Network issues</b> - Connectivity problems can cause duplicate notifications<br><br>" +
+                "<b>⚙️ How it works:</b><br>" +
+                "• Uses a 5-second window to detect duplicates<br>" +
+                "• Compares notification package, ID, and content hash<br>" +
+                "• Automatically cleans up old entries to save memory<br>" +
+                "• Logs when duplicates are detected for debugging<br>" +
+                "• Works with all notification types and apps<br><br>" +
+                "<b>💡 Tip:</b> Enable this if you experience duplicate notifications. Most users won't need this, but it's a quick fix for devices with notification issues!";
+        
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.dialog_title_notification_deduplication)
+                .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
+                .setPositiveButton(R.string.got_it, null)
                 .show();
     }
 
@@ -2765,10 +2809,10 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         new MaterialAlertDialogBuilder(this)
             .setTitle(title)
             .setMessage(Html.fromHtml(message, Html.FROM_HTML_MODE_COMPACT))
-            .setPositiveButton("Nevermind, keep the timeout enabled (Recommended)", (dialog, which) -> {
+            .setPositiveButton(R.string.button_nevermind_keep_timeout, (dialog, which) -> {
                 // User chose to keep timeout enabled - do nothing
             })
-            .setNegativeButton("Disable the timeout", (dialog, which) -> {
+            .setNegativeButton(R.string.button_disable_timeout, (dialog, which) -> {
                 // User confirmed - disable timeout
                 if (type.equals("shake")) {
                     isProgrammaticallySettingSwitch = true;
@@ -2802,7 +2846,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         new MaterialAlertDialogBuilder(this)
             .setTitle(title)
             .setMessage(Html.fromHtml(message, Html.FROM_HTML_MODE_COMPACT))
-            .setPositiveButton("Got it", null)
+            .setPositiveButton(R.string.button_got_it, null)
             .show();
     }
 } 

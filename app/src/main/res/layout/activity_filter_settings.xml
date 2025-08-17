@@ -38,19 +38,35 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📱 App List Filtering"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_apps_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="App List Filtering" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/filter_app_list_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Control which apps can trigger notifications"
+                        android:text="@string/filter_app_list_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -66,7 +82,7 @@
                             android:id="@+id/radioNone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="No app filtering"
+                            android:text="@string/filter_no_filtering"
                             android:textColor="@color/purple_card_text_primary"
                             android:buttonTint="@color/radio_button_color"
                             app:buttonTint="@color/radio_button_color"
@@ -76,7 +92,7 @@
                             android:id="@+id/radioWhitelist"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Whitelist (only selected apps)"
+                            android:text="@string/filter_whitelist"
                             android:textColor="@color/purple_card_text_primary"
                             android:buttonTint="@color/radio_button_color"
                             app:buttonTint="@color/radio_button_color"
@@ -86,7 +102,7 @@
                             android:id="@+id/radioBlacklist"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Blacklist (exclude selected apps)"
+                            android:text="@string/filter_blacklist"
                             android:textColor="@color/purple_card_text_primary"
                             android:buttonTint="@color/radio_button_color"
                             app:buttonTint="@color/radio_button_color"
@@ -105,7 +121,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Manage Apps:"
+                            android:text="@string/filter_manage_apps"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
                             android:layout_marginBottom="8dp" />
@@ -127,7 +143,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="📋 App List"
+                                android:text="@string/filter_app_list_button"
                                 android:textStyle="bold"
                                 android:textSize="16sp"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -136,7 +152,7 @@
                                 android:id="@+id/txtAppListCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="(0 apps)"
+                                android:text="@string/filter_app_count"
                                 android:textSize="12sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginEnd="8dp" />
@@ -187,7 +203,7 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:minHeight="56dp"
-                                            android:hint="Search apps or enter package name"
+                                            android:hint="@string/hint_search_apps_or_package"
                                             android:inputType="text"
                                             android:completionThreshold="1"
                                             android:dropDownHeight="200dp"
@@ -208,30 +224,44 @@
 
                                         <com.google.android.material.button.MaterialButton
                                             android:id="@+id/btnAddApp"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Add"
-                                            android:background="@android:color/transparent"
-                                            android:textColor="@color/white_100"
-                                            style="@style/Widget.Material3.Button.TextButton" />
+                                            style="@style/Widget.SpeakThat.Button.Primary"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:text="@string/button_add"
+                                            app:cornerRadius="12dp" />
 
                                     </FrameLayout>
 
                                 </LinearLayout>
 
                                 <!-- Manual Entry Option -->
-                                <TextView
+                                <LinearLayout
                                     android:id="@+id/txtAppFilterHelp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="💡 Search through your installed apps by name or package. Click a suggestion to add it instantly. (Tap for more info)"
-                                    android:textSize="12sp"
-                                    android:textColor="@color/purple_card_text_primary"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
                                     android:background="?android:attr/selectableItemBackground"
                                     android:padding="4dp"
                                     android:layout_marginBottom="8dp"
                                     android:clickable="true"
-                                    android:focusable="true" />
+                                    android:focusable="true">
+                                    
+                                    <ImageView
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:src="@drawable/lightbulb_2_24px"
+                                        app:tint="@color/white_100"
+                                        android:layout_marginEnd="6dp"
+                                        android:contentDescription="Help icon" />
+                                    
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/filter_search_description"
+                                        android:textSize="12sp"
+                                        android:textColor="@color/purple_card_text_primary" />
+                                </LinearLayout>
 
                             </LinearLayout>
 
@@ -268,30 +298,61 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🚫 Word Blacklist"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_spellcheck_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Word Blacklist" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/filter_word_blacklist_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Block or privatize notifications containing specific words"
+                        android:text="@string/filter_word_blacklist_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="💡 Block = skip entirely, Private = announce privately"
-                        android:textSize="12sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="16dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+                        
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/lightbulb_2_24px"
+                            app:tint="@color/white_100"
+                            android:layout_marginEnd="6dp"
+                            android:contentDescription="Info icon" />
+                        
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/filter_word_blacklist_info"
+                            android:textSize="12sp"
+                            android:textColor="@color/purple_card_text_secondary" />
+                    </LinearLayout>
 
                     <!-- Word Blacklist Header (Collapsible) -->
                     <LinearLayout
@@ -310,7 +371,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="📋 Blacklisted Words"
+                            android:text="@string/filter_blacklisted_words"
                             android:textStyle="bold"
                             android:textSize="16sp"
                             android:textColor="@color/purple_card_text_primary" />
@@ -319,7 +380,7 @@
                             android:id="@+id/txtBlacklistCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="(0 words)"
+                            android:text="@string/filter_word_count"
                             android:textSize="12sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginEnd="8dp" />
@@ -363,7 +424,7 @@
                                     android:id="@+id/editBlacklistWord"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="Word to blacklist"
+                                    android:hint="@string/hint_word_to_blacklist"
                                     android:inputType="text"
                                     android:textColor="@color/purple_card_text_primary"
                                     android:textColorHint="@color/white_100" />
@@ -392,10 +453,9 @@
                                 android:id="@+id/btnAddBlacklistWord"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@android:color/transparent"
-                                android:text="Add"
-                                android:textColor="@color/white_100"
-                                style="@style/Widget.Material3.Button.TextButton" />
+                                android:text="@string/button_add"
+                                app:cornerRadius="12dp"
+                                style="@style/Widget.SpeakThat.Button.Primary" />
 
                         </FrameLayout>
 
@@ -428,19 +488,35 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔄 Word Swap"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_match_word_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Word Swap" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/filter_word_swap_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Swap words in notifications for censoring or pronunciation fixes"
+                        android:text="@string/filter_swap_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -462,7 +538,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="📋 Word Swaps"
+                            android:text="@string/filter_word_swaps_header"
                             android:textStyle="bold"
                             android:textSize="16sp"
                             android:textColor="@color/purple_card_text_primary" />
@@ -471,7 +547,7 @@
                             android:id="@+id/txtReplacementCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="(0 swaps)"
+                            android:text="@string/filter_swap_count"
                             android:textSize="12sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginEnd="8dp" />
@@ -522,7 +598,7 @@
                                         android:id="@+id/editReplaceFrom"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:hint="Word to swap"
+                                        android:hint="@string/hint_word_to_swap"
                                         android:inputType="text"
                                         android:textColor="@color/purple_card_text_primary"
                                         android:textColorHint="@color/white_100" />
@@ -543,7 +619,7 @@
                                         android:id="@+id/editReplaceTo"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:hint="Swap with (optional)"
+                                        android:hint="@string/hint_swap_with_optional"
                                         android:inputType="text"
                                         android:textColor="@color/purple_card_text_primary"
                                         android:textColorHint="@color/white_100" />
@@ -560,24 +636,38 @@
 
                                 <com.google.android.material.button.MaterialButton
                                     android:id="@+id/btnAddReplacement"
-                                    style="@style/Widget.Material3.Button.TextButton"
                                     android:layout_width="match_parent"
                                     android:layout_height="48dp"
-                                    android:background="@android:color/transparent"
-                                    android:text="Add"
-                                    android:textColor="@color/white_100" />
+                                    android:text="@string/button_add"
+                                    app:cornerRadius="12dp"
+                                    style="@style/Widget.SpeakThat.Button.Primary" />
 
                             </FrameLayout>
 
                         </LinearLayout>
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="💡 Tip: Use lowercase for case-insensitive matching. Leave 'Swap with' empty to remove words entirely."
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:layout_marginBottom="12dp" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+                            
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                app:tint="@color/white_100"
+                                android:layout_marginEnd="6dp"
+                                android:contentDescription="Tip icon" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/filter_swap_tip"
+                                android:textSize="12sp"
+                                android:textColor="@color/purple_card_text_primary" />
+                        </LinearLayout>
 
                         <!-- Word Swaps -->
                         <androidx.recyclerview.widget.RecyclerView
@@ -609,19 +699,35 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🎵 Smart Media Notification Filter"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_youtube_plus_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Smart Media Notification Filter" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dialog_title_smart_media_filter"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Automatically filter notifications for apps like YouTube that have both unwanted notifications (media controls) while allowing wanted notifications (like replies to your comments)"
+                        android:text="@string/filter_media_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -648,7 +754,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Enable smart media notification filtering"
+                            android:text="@string/filter_media_enable"
                             android:textSize="16sp"
                             android:textColor="@color/purple_card_text_primary" />
 
@@ -666,7 +772,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Filtered Media Apps:"
+                            android:text="@string/filter_media_apps_title"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
                             android:layout_marginBottom="8dp" />
@@ -674,7 +780,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Apps that are automatically filtered for media notifications. Add media apps you want to filter out."
+                            android:text="@string/filter_media_apps_description"
                             android:textSize="12sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="12dp" />
@@ -701,7 +807,7 @@
                                      android:layout_width="match_parent"
                                      android:layout_height="wrap_content"
                                      android:minHeight="56dp"
-                                     android:hint="Search apps to add to media filter"
+                                     android:hint="@string/hint_search_media_filter"
                                      android:inputType="text"
                                      android:completionThreshold="1"
                                      android:dropDownHeight="200dp"
@@ -725,10 +831,8 @@
                                      android:id="@+id/btnRemoveFilteredMediaApp"
                                      android:layout_width="match_parent"
                                      android:layout_height="48dp"
-                                     android:text="Add"
-                                     android:background="@android:color/transparent"
-                                     android:textColor="@color/white_100"
-                                     style="@style/Widget.Material3.Button.TextButton" />
+                                     android:text="@string/button_add"
+                                     style="@style/Widget.SpeakThat.Button.Primary" />
 
                              </FrameLayout>
 
@@ -763,7 +867,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="⚙️ Advanced Options"
+                                    android:text="@string/filter_advanced_options"
                                     android:textStyle="bold"
                                     android:textSize="16sp"
                                     android:textColor="@color/purple_card_text_primary" />
@@ -788,7 +892,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Exception Apps:"
+                                    android:text="@string/filter_exception_apps_title"
                                     android:textStyle="bold"
                                     android:textColor="@color/purple_card_text_primary"
                                     android:layout_marginBottom="8dp" />
@@ -796,7 +900,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Apps that should never have notifications filtered (like YouTube for replies)"
+                                    android:text="@string/filter_exception_apps_description"
                                     android:textSize="12sp"
                                     android:textColor="@color/purple_card_text_secondary"
                                     android:layout_marginBottom="8dp" />
@@ -823,7 +927,7 @@
                                              android:layout_width="match_parent"
                                              android:layout_height="wrap_content"
                                              android:minHeight="56dp"
-                                             android:hint="Search apps or enter package name"
+                                             android:hint="@string/hint_search_apps_or_package"
                                              android:inputType="text"
                                              android:completionThreshold="1"
                                              android:dropDownHeight="200dp"
@@ -847,10 +951,8 @@
                                              android:id="@+id/btnAddMediaExceptedApp"
                                              android:layout_width="match_parent"
                                              android:layout_height="48dp"
-                                             android:text="Add"
-                                             android:background="@android:color/transparent"
-                                             android:textColor="@color/white_100"
-                                             style="@style/Widget.Material3.Button.TextButton" />
+                                             android:text="@string/button_add"
+                                             style="@style/Widget.SpeakThat.Button.Primary" />
 
                                      </FrameLayout>
 
@@ -867,7 +969,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Important Keywords:"
+                                    android:text="@string/filter_important_keywords_title"
                                     android:textStyle="bold"
                                     android:textColor="@color/purple_card_text_primary"
                                     android:layout_marginBottom="8dp" />
@@ -875,7 +977,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Words that indicate important notifications (like 'reply', 'comment')"
+                                    android:text="@string/filter_important_keywords_description"
                                     android:textSize="12sp"
                                     android:textColor="@color/purple_card_text_secondary"
                                     android:layout_marginBottom="8dp" />
@@ -901,7 +1003,7 @@
                                              android:id="@+id/editMediaImportantKeyword"
                                              android:layout_width="match_parent"
                                              android:layout_height="wrap_content"
-                                             android:hint="Important keyword (e.g., reply, comment)"
+                                             android:hint="@string/hint_important_keyword"
                                              android:inputType="text"
                                              android:textColor="@color/purple_card_text_primary"
                                              android:textColorHint="@color/white_100" />
@@ -918,10 +1020,8 @@
                                              android:id="@+id/btnAddMediaImportantKeyword"
                                              android:layout_width="match_parent"
                                              android:layout_height="48dp"
-                                             android:text="Add"
-                                             android:background="@android:color/transparent"
-                                             android:textColor="@color/white_100"
-                                             style="@style/Widget.Material3.Button.TextButton" />
+                                             android:text="@string/button_add"
+                                             style="@style/Widget.SpeakThat.Button.Primary" />
 
                                      </FrameLayout>
 
@@ -938,18 +1038,33 @@
                         </LinearLayout>
 
                         <!-- Help Text -->
-                        <TextView
+                        <LinearLayout
                             android:id="@+id/txtMediaFilterHelp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="💡 Automatically filters out media controls while preserving important notifications. (Tap for more info)"
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
                             android:background="?android:attr/selectableItemBackground"
                             android:padding="4dp"
                             android:layout_marginTop="8dp"
                             android:clickable="true"
-                            android:focusable="true" />
+                            android:focusable="true">
+                            
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                app:tint="@color/white_100"
+                                android:layout_marginEnd="6dp"
+                                android:contentDescription="Help icon" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/filter_media_info"
+                                android:textSize="12sp"
+                                android:textColor="@color/purple_card_text_primary" />
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -974,14 +1089,30 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/persistent_notification_filtering_title"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_notifications_paused"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Persistent/Silent Notification Filtering" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/persistent_notification_filtering_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"

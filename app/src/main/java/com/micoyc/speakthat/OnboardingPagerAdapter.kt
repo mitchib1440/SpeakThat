@@ -11,6 +11,8 @@ import com.micoyc.speakthat.databinding.ItemOnboardingPageBinding
 import com.micoyc.speakthat.rules.RuleTemplate
 import com.micoyc.speakthat.rules.TriggerConfigActivity
 import com.micoyc.speakthat.rules.TriggerType
+import com.micoyc.speakthat.LanguagePresetManager
+import com.micoyc.speakthat.utils.WifiCapabilityChecker
 
 class OnboardingPagerAdapter(
     private val skipPermissionPage: Boolean = false
@@ -18,86 +20,100 @@ class OnboardingPagerAdapter(
     
     private val pages = if (skipPermissionPage) listOf(
         OnboardingPage(
-            title = "Welcome to SpeakThat!",
-            description = "Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.",
+            titleResId = R.string.onboarding_language_theme_title,
+            descriptionResId = R.string.onboarding_language_theme_description,
+            icon = "🌍",
+            showLanguageSelector = true,
+            showThemeSelector = true
+        ),
+        OnboardingPage(
+            titleResId = R.string.onboarding_welcome_title,
+            descriptionResId = R.string.onboarding_welcome_description,
             icon = "🔊"
         ),
         OnboardingPage(
-            title = "Your Privacy Matters",
-            description = "🔒 You control exactly what gets read aloud\n\n📱 Shake your phone to stop any announcement instantly\n\n⚙️ Filter apps, words, and notification types\n\n🔐 Everything stays on your device",
+            titleResId = R.string.onboarding_privacy_title,
+            descriptionResId = R.string.onboarding_privacy_description,
             icon = "🔒"
         ),
         OnboardingPage(
-            title = "Let's Set Up Basic Filters",
-            description = "SpeakThat features a powerful filtering system that allows YOU to choose what gets read and what doesn't.\n\nLet's set up some basic privacy filters to get you started.",
+            titleResId = R.string.onboarding_filters_title,
+            descriptionResId = R.string.onboarding_filters_description,
             icon = "⚙️"
         ),
         OnboardingPage(
-            title = "Block Sensitive Apps",
-            description = "Type the name of an app you want me to NEVER read notifications from.\n\nCommon examples: banking apps, medical apps, dating apps",
+            titleResId = R.string.onboarding_apps_title,
+            descriptionResId = R.string.onboarding_apps_description,
             icon = "🚫",
             showAppSelector = true
         ),
         OnboardingPage(
-            title = "Block Sensitive Words",
-            description = "Type words or phrases that you want me to NEVER read notifications containing!\n\nCommon examples: password, PIN, credit card, medical terms",
+            titleResId = R.string.onboarding_words_title,
+            descriptionResId = R.string.onboarding_words_description,
             icon = "🔇",
             showWordSelector = true
         ),
         OnboardingPage(
-            title = "Set Up Smart Rules",
-            description = "Set up smart rules that automatically control when notifications are read based on your situation.\n\nFor example, only read notifications when headphones are connected, or skip notifications when the screen is on.",
+            titleResId = R.string.onboarding_rules_title,
+            descriptionResId = R.string.onboarding_rules_description,
             icon = "🧠",
             showRuleTemplates = true
         ),
         OnboardingPage(
-            title = "You're All Set!",
-            description = "SpeakThat is ready to help you stay connected while keeping your eyes free!\n\n💡 You can add more filters anytime in the app settings.",
+            titleResId = R.string.onboarding_complete_title,
+            descriptionResId = R.string.onboarding_complete_description,
             icon = "✅"
         )
     ) else listOf(
         OnboardingPage(
-            title = "Welcome to SpeakThat!",
-            description = "Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.",
+            titleResId = R.string.onboarding_language_theme_title,
+            descriptionResId = R.string.onboarding_language_theme_description,
+            icon = "🌍",
+            showLanguageSelector = true,
+            showThemeSelector = true
+        ),
+        OnboardingPage(
+            titleResId = R.string.onboarding_welcome_title,
+            descriptionResId = R.string.onboarding_welcome_description,
             icon = "🔊"
         ),
         OnboardingPage(
-            title = "Notification Access Required",
-            description = "SpeakThat needs permission to read your notifications aloud.\n\n🔒 Everything stays on your device\n📱 No data is sent to us or anyone else\n⚙️ You control what gets read\n💬 We only read what you allow\n💡 Tip: In the list, tap 'SpeakThat' to enable",
+            titleResId = R.string.onboarding_permission_title,
+            descriptionResId = R.string.onboarding_permission_description,
             icon = "🔔",
             showPermissionButton = true
         ),
         OnboardingPage(
-            title = "Your Privacy Matters",
-            description = "🔒 You control exactly what gets read aloud\n\n📱 Shake your phone to stop any announcement instantly\n\n⚙️ Filter apps, words, and notification types\n\n🔐 Everything stays on your device",
+            titleResId = R.string.onboarding_privacy_title,
+            descriptionResId = R.string.onboarding_privacy_description,
             icon = "🔒"
         ),
         OnboardingPage(
-            title = "Let's Set Up Basic Filters",
-            description = "SpeakThat features a powerful filtering system that allows YOU to choose what gets read and what doesn't.\n\nLet's set up some basic privacy filters to get you started.",
+            titleResId = R.string.onboarding_filters_title,
+            descriptionResId = R.string.onboarding_filters_description,
             icon = "⚙️"
         ),
         OnboardingPage(
-            title = "Block Sensitive Apps",
-            description = "Type the name of an app you want me to NEVER read notifications from.\n\nCommon examples: banking apps, medical apps, dating apps",
+            titleResId = R.string.onboarding_apps_title,
+            descriptionResId = R.string.onboarding_apps_description,
             icon = "🚫",
             showAppSelector = true
         ),
         OnboardingPage(
-            title = "Block Sensitive Words",
-            description = "Type words or phrases that you want me to NEVER read notifications containing!\n\nCommon examples: password, PIN, credit card, medical terms",
+            titleResId = R.string.onboarding_words_title,
+            descriptionResId = R.string.onboarding_words_description,
             icon = "🔇",
             showWordSelector = true
         ),
         OnboardingPage(
-            title = "Set Up Smart Rules",
-            description = "Set up smart rules that automatically control when notifications are read based on your situation.\n\nFor example, only read notifications when headphones are connected, or skip notifications when the screen is on.",
+            titleResId = R.string.onboarding_rules_title,
+            descriptionResId = R.string.onboarding_rules_description,
             icon = "🧠",
             showRuleTemplates = true
         ),
         OnboardingPage(
-            title = "You're All Set!",
-            description = "SpeakThat is ready to help you stay connected while keeping your eyes free!\n\n💡 You can add more filters anytime in the app settings.",
+            titleResId = R.string.onboarding_complete_title,
+            descriptionResId = R.string.onboarding_complete_description,
             icon = "✅"
         )
     )
@@ -115,13 +131,19 @@ class OnboardingPagerAdapter(
     
     override fun getItemCount(): Int = pages.size
     
-    class OnboardingViewHolder(private val binding: ItemOnboardingPageBinding) : 
+    fun refreshUIText() {
+        // Force a full rebind of all items to update text with new language
+        notifyDataSetChanged()
+        InAppLogger.log("OnboardingPagerAdapter", "UI text refreshed for language change")
+    }
+    
+    inner class OnboardingViewHolder(private val binding: ItemOnboardingPageBinding) : 
         RecyclerView.ViewHolder(binding.root) {
         
         fun bind(page: OnboardingPage) {
-            android.util.Log.d("OnboardingPagerAdapter", "Binding page: ${page.title}")
-            binding.textTitle.text = page.title
-            binding.textDescription.text = page.description
+            android.util.Log.d("OnboardingPagerAdapter", "Binding page with titleResId: ${page.titleResId}")
+            binding.textTitle.text = binding.root.context.getString(page.titleResId)
+            binding.textDescription.text = binding.root.context.getString(page.descriptionResId)
             binding.textIcon.text = page.icon
             
             // Show/hide permission button based on page
@@ -158,6 +180,22 @@ class OnboardingPagerAdapter(
                 setupRuleTemplates()
             } else {
                 binding.ruleTemplatesSection.visibility = android.view.View.GONE
+            }
+            
+            // Show/hide language selector section
+            if (page.showLanguageSelector) {
+                binding.languageSelectorSection.visibility = android.view.View.VISIBLE
+                setupLanguageSelector()
+            } else {
+                binding.languageSelectorSection.visibility = android.view.View.GONE
+            }
+            
+            // Show/hide theme selector section
+            if (page.showThemeSelector) {
+                binding.themeSelectorSection.visibility = android.view.View.VISIBLE
+                setupThemeSelector()
+            } else {
+                binding.themeSelectorSection.visibility = android.view.View.GONE
             }
         }
         
@@ -218,6 +256,77 @@ class OnboardingPagerAdapter(
             
             // Load existing words
             loadSelectedWords(selectedWordsAdapter)
+        }
+        
+        private fun setupLanguageSelector() {
+            // Get all available language presets (excluding custom)
+            val allPresets = LanguagePresetManager.getAllPresets()
+            val nonCustomPresets = allPresets.filter { !it.isCustom }
+            
+            // Create adapter with preset display names
+            val presetNames = nonCustomPresets.map { it.displayName }
+            
+            val presetAdapter = android.widget.ArrayAdapter(
+                binding.root.context,
+                android.R.layout.simple_spinner_item, 
+                presetNames
+            )
+            presetAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.languagePresetSpinner.adapter = presetAdapter
+            
+            // Get the currently selected language from settings
+            val voiceSettingsPrefs = binding.root.context.getSharedPreferences("VoiceSettings", android.content.Context.MODE_PRIVATE)
+            val currentLanguage = voiceSettingsPrefs.getString("language", "en_US")
+            
+            // Find the index of the currently selected language
+            val currentPresetIndex = nonCustomPresets.indexOfFirst { it.uiLocale == currentLanguage }
+            if (currentPresetIndex >= 0) {
+                // Set the spinner to the currently selected language
+                binding.languagePresetSpinner.setSelection(currentPresetIndex)
+                InAppLogger.log("OnboardingLanguageSelector", "Restored language selection to: ${nonCustomPresets[currentPresetIndex].displayName}")
+            }
+            
+            // Add listener to handle preset selection
+            binding.languagePresetSpinner.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
+                    if (position >= 0 && position < nonCustomPresets.size) {
+                        val selectedPreset = nonCustomPresets[position]
+                        InAppLogger.log("OnboardingLanguageSelector", "Language preset selected: ${selectedPreset.displayName}")
+                        
+                        // Apply the preset settings using the onboarding-specific method
+                        LanguagePresetManager.applyPresetForOnboarding(binding.root.context, selectedPreset)
+                        
+                        InAppLogger.log("OnboardingLanguageSelector", "Preset applied successfully: ${selectedPreset.displayName}")
+                    }
+                }
+                
+                override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {
+                    // Do nothing
+                }
+            }
+        }
+        
+        private fun setupThemeSelector() {
+            // Get current theme setting
+            val sharedPreferences = binding.root.context.getSharedPreferences("SpeakThatPrefs", android.content.Context.MODE_PRIVATE)
+            val isDarkMode = sharedPreferences.getBoolean("dark_mode", false)
+            
+            // Set initial state
+            binding.themeSwitch.isChecked = isDarkMode
+            
+            // Add listener to handle theme changes
+            binding.themeSwitch.setOnCheckedChangeListener { _, isChecked ->
+                sharedPreferences.edit().putBoolean("dark_mode", isChecked).apply()
+                
+                // Apply theme immediately
+                if (isChecked) {
+                    androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES)
+                } else {
+                    androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO)
+                }
+                
+                InAppLogger.log("OnboardingThemeSelector", "Theme changed to: ${if (isChecked) "dark" else "light"}")
+            }
         }
         
         private fun addAppToBlacklist(input: String) {
@@ -363,361 +472,446 @@ class OnboardingPagerAdapter(
             adapter.updateWords(currentWords.toList())
         }
         
-                                         private fun setupRuleTemplates() {
-                 // Initialize rule templates adapter with both callbacks
-                 val ruleTemplatesAdapter = OnboardingRuleTemplateAdapter(
-                     onTemplateSelected = { template ->
-                         addRuleFromTemplate(template)
-                     },
-                     onTemplateConfigured = { template, customData ->
-                         // This callback is not used in the simplified approach
-                         // The configuration is handled by the activity
-                     },
-                     onTemplateNeedsConfiguration = { template ->
-                         launchRuleConfiguration(template)
-                     }
-                 )
+        private fun setupRuleTemplates() {
+            // Initialize rule templates adapter with both callbacks
+            val ruleTemplatesAdapter = OnboardingRuleTemplateAdapter(
+                onTemplateSelected = { template ->
+                    addRuleFromTemplate(template)
+                },
+                onTemplateConfigured = { template, customData ->
+                    // This callback is not used in the simplified approach
+                    // The configuration is handled by the activity
+                },
+                onTemplateNeedsConfiguration = { template ->
+                    launchRuleConfiguration(template)
+                }
+            )
 
-                 // Set up RecyclerView for rule templates
-                 val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(binding.root.context)
-                 binding.recyclerRuleTemplates.layoutManager = layoutManager
-                 binding.recyclerRuleTemplates.adapter = ruleTemplatesAdapter
+            // Set up RecyclerView for rule templates
+            val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(binding.root.context)
+            binding.recyclerRuleTemplates.layoutManager = layoutManager
+            binding.recyclerRuleTemplates.adapter = ruleTemplatesAdapter
 
-                 // Load templates
-                 ruleTemplatesAdapter.loadTemplates(binding.root.context)
+            // Load templates
+            ruleTemplatesAdapter.loadTemplates(binding.root.context)
 
-                 InAppLogger.log("OnboardingRuleTemplates", "Rule templates section set up")
-             }
+            InAppLogger.log("OnboardingRuleTemplates", "Rule templates section set up")
+        }
         
-                    private fun addRuleFromTemplate(template: com.micoyc.speakthat.rules.RuleTemplate) {
-                try {
-                    // Create a rule from the template
-                    val rule = com.micoyc.speakthat.rules.RuleTemplates.createRuleFromTemplate(template)
-                    
-                    // Get the rule manager and add the rule
-                    val ruleManager = com.micoyc.speakthat.rules.RuleManager(binding.root.context)
-                    ruleManager.addRule(rule)
-                    
-                    // Enable Conditional Rules if it's not already enabled
-                    if (!ruleManager.isRulesEnabled()) {
-                        ruleManager.setRulesEnabled(true)
-                        InAppLogger.log("OnboardingRuleTemplates", "Enabled Conditional Rules feature")
-                    }
-                    
-                    InAppLogger.log("OnboardingRuleTemplates", "Added rule from template: ${template.name}")
-                    
-                    // Show a toast to confirm the rule was added
+        private fun addRuleFromTemplate(template: com.micoyc.speakthat.rules.RuleTemplate) {
+            try {
+                // Create a rule from the template
+                val rule = com.micoyc.speakthat.rules.RuleTemplates.createRuleFromTemplate(template)
+                
+                // Get the rule manager and add the rule
+                val ruleManager = com.micoyc.speakthat.rules.RuleManager(binding.root.context)
+                ruleManager.addRule(rule)
+                
+                // Enable Conditional Rules if it's not already enabled
+                if (!ruleManager.isRulesEnabled()) {
+                    ruleManager.setRulesEnabled(true)
+                    InAppLogger.log("OnboardingRuleTemplates", "Enabled Conditional Rules feature")
+                }
+                
+                InAppLogger.log("OnboardingRuleTemplates", "Added rule from template: ${template.name}")
+                
+                // Show a toast to confirm the rule was added
+                android.widget.Toast.makeText(
+                    binding.root.context,
+                    "Added rule: ${template.name}",
+                    android.widget.Toast.LENGTH_SHORT
+                ).show()
+                
+            } catch (e: Exception) {
+                InAppLogger.logError("OnboardingRuleTemplates", "Error adding rule from template: ${e.message}")
+                
+                // Show error toast
+                android.widget.Toast.makeText(
+                    binding.root.context,
+                    "Error adding rule. Please try again.",
+                    android.widget.Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        private fun launchRuleConfiguration(template: RuleTemplate) {
+            // Determine which trigger type to configure based on the template
+            val triggerType = template.triggers.firstOrNull()?.type
+            if (triggerType == null) {
+                InAppLogger.logError("OnboardingRuleTemplates", "No trigger found in template: ${template.name}")
+                return
+            }
+
+            InAppLogger.log("OnboardingRuleTemplates", "Launching inline configuration for template: ${template.name}, trigger type: $triggerType")
+
+            // Show appropriate configuration dialog based on trigger type
+            when (triggerType) {
+                TriggerType.BLUETOOTH_DEVICE -> showBluetoothConfigurationDialog(template)
+                TriggerType.TIME_SCHEDULE -> showTimeScheduleConfigurationDialog(template)
+                TriggerType.WIFI_NETWORK -> showWifiConfigurationDialog(template)
+                else -> {
+                    InAppLogger.logError("OnboardingRuleTemplates", "Unsupported trigger type: $triggerType")
                     android.widget.Toast.makeText(
                         binding.root.context,
-                        "Added rule: ${template.name}",
-                        android.widget.Toast.LENGTH_SHORT
-                    ).show()
-                    
-                } catch (e: Exception) {
-                    InAppLogger.logError("OnboardingRuleTemplates", "Error adding rule from template: ${e.message}")
-                    
-                    // Show error toast
-                    android.widget.Toast.makeText(
-                        binding.root.context,
-                        "Error adding rule. Please try again.",
+                        "Configuration not supported for this template type",
                         android.widget.Toast.LENGTH_SHORT
                     ).show()
                 }
             }
+        }
 
-
-
-            private fun launchRuleConfiguration(template: RuleTemplate) {
-                // Determine which trigger type to configure based on the template
-                val triggerType = template.triggers.firstOrNull()?.type
-                if (triggerType == null) {
-                    InAppLogger.logError("OnboardingRuleTemplates", "No trigger found in template: ${template.name}")
+        private fun showBluetoothConfigurationDialog(template: RuleTemplate) {
+            // Check permission first before showing dialog
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                if (binding.root.context.checkSelfPermission(android.Manifest.permission.BLUETOOTH_CONNECT) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                    // Request permission first
+                    if (binding.root.context is android.app.Activity) {
+                        (binding.root.context as android.app.Activity).requestPermissions(
+                            arrayOf(android.Manifest.permission.BLUETOOTH_CONNECT),
+                            1001
+                        )
+                    }
+                    android.widget.Toast.makeText(
+                        binding.root.context,
+                        "Bluetooth permission needed. Please grant permission and try again.",
+                        android.widget.Toast.LENGTH_LONG
+                    ).show()
                     return
                 }
-
-                InAppLogger.log("OnboardingRuleTemplates", "Launching inline configuration for template: ${template.name}, trigger type: $triggerType")
-
-                // Show appropriate configuration dialog based on trigger type
-                when (triggerType) {
-                    TriggerType.BLUETOOTH_DEVICE -> showBluetoothConfigurationDialog(template)
-                    TriggerType.TIME_SCHEDULE -> showTimeScheduleConfigurationDialog(template)
-                    TriggerType.WIFI_NETWORK -> showWifiConfigurationDialog(template)
-                    else -> {
-                        InAppLogger.logError("OnboardingRuleTemplates", "Unsupported trigger type: $triggerType")
-                        android.widget.Toast.makeText(
-                            binding.root.context,
-                            "Configuration not supported for this template type",
-                            android.widget.Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
             }
 
-            private fun showBluetoothConfigurationDialog(template: RuleTemplate) {
-                // Check permission first before showing dialog
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                    if (binding.root.context.checkSelfPermission(android.Manifest.permission.BLUETOOTH_CONNECT) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-                        // Request permission first
-                        if (binding.root.context is android.app.Activity) {
-                            (binding.root.context as android.app.Activity).requestPermissions(
-                                arrayOf(android.Manifest.permission.BLUETOOTH_CONNECT),
-                                1001
-                            )
-                        }
+            val dialogView = android.view.LayoutInflater.from(binding.root.context)
+                .inflate(R.layout.dialog_bluetooth_configuration, null)
+            
+            val dialog = androidx.appcompat.app.AlertDialog.Builder(binding.root.context)
+                .setTitle("Configure ${template.name}")
+                .setView(dialogView)
+                .setPositiveButton("Add Rule") { _, _ ->
+                    // Get selected devices and create rule
+                    val selectedDevices = getSelectedBluetoothDevices(dialogView)
+                    if (selectedDevices.isNotEmpty()) {
+                        val customData = mapOf("device_addresses" to selectedDevices)
+                        addRuleFromTemplateWithData(template, customData)
+                    } else {
+                        // If no devices selected, create rule with placeholder data
+                        val customData = mapOf("device_addresses" to setOf("placeholder_device"))
+                        addRuleFromTemplateWithData(template, customData)
                         android.widget.Toast.makeText(
                             binding.root.context,
-                            "Bluetooth permission needed. Please grant permission and try again.",
+                            "Rule added with placeholder. You can configure devices later in settings.",
                             android.widget.Toast.LENGTH_LONG
                         ).show()
-                        return
                     }
                 }
+                .setNegativeButton("Cancel", null)
+                .create()
 
-                val dialogView = android.view.LayoutInflater.from(binding.root.context)
-                    .inflate(R.layout.dialog_bluetooth_configuration, null)
-                
-                val dialog = androidx.appcompat.app.AlertDialog.Builder(binding.root.context)
-                    .setTitle("Configure ${template.name}")
-                    .setView(dialogView)
-                    .setPositiveButton("Add Rule") { _, _ ->
-                        // Get selected devices and create rule
-                        val selectedDevices = getSelectedBluetoothDevices(dialogView)
-                        if (selectedDevices.isNotEmpty()) {
-                            val customData = mapOf("device_addresses" to selectedDevices)
-                            addRuleFromTemplateWithData(template, customData)
-                        } else {
-                            // If no devices selected, create rule with placeholder data
-                            val customData = mapOf("device_addresses" to setOf("placeholder_device"))
-                            addRuleFromTemplateWithData(template, customData)
-                            android.widget.Toast.makeText(
-                                binding.root.context,
-                                "Rule added with placeholder. You can configure devices later in settings.",
-                                android.widget.Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                    .setNegativeButton("Cancel", null)
-                    .create()
+            // Set up Bluetooth device list
+            setupBluetoothDeviceList(dialogView)
+            
+            dialog.show()
+        }
 
-                // Set up Bluetooth device list
-                setupBluetoothDeviceList(dialogView)
-                
-                dialog.show()
-            }
-
-            private fun showTimeScheduleConfigurationDialog(template: RuleTemplate) {
-                val dialogView = android.view.LayoutInflater.from(binding.root.context)
-                    .inflate(R.layout.dialog_time_schedule_configuration, null)
-                
-                val dialog = androidx.appcompat.app.AlertDialog.Builder(binding.root.context)
-                    .setTitle("Configure ${template.name}")
-                    .setView(dialogView)
-                    .setPositiveButton("Add Rule") { _, _ ->
-                        // Get selected time and days
-                        val timeData = getSelectedTimeSchedule(dialogView)
-                        if (timeData.isNotEmpty()) {
-                            addRuleFromTemplateWithData(template, timeData)
-                        } else {
-                            android.widget.Toast.makeText(
-                                binding.root.context,
-                                "Please select time and days",
-                                android.widget.Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                    .setNegativeButton("Cancel", null)
-                    .create()
-
-                // Set up time pickers and day selection
-                setupTimeScheduleControls(dialogView)
-                
-                dialog.show()
-            }
-
-            private fun showWifiConfigurationDialog(template: RuleTemplate) {
-                val dialogView = android.view.LayoutInflater.from(binding.root.context)
-                    .inflate(R.layout.dialog_wifi_configuration, null)
-                
-                val dialog = androidx.appcompat.app.AlertDialog.Builder(binding.root.context)
-                    .setTitle("Configure ${template.name}")
-                    .setView(dialogView)
-                    .setPositiveButton("Add Rule") { _, _ ->
-                        // Get entered SSID
-                        val ssid = getEnteredWifiSsid(dialogView)
-                        if (ssid.isNotEmpty()) {
-                            val customData = mapOf("network_ssids" to setOf(ssid))
-                            addRuleFromTemplateWithData(template, customData)
-                        } else {
-                            android.widget.Toast.makeText(
-                                binding.root.context,
-                                "Please enter a WiFi network name",
-                                android.widget.Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                    .setNegativeButton("Cancel", null)
-                    .create()
-                
-                dialog.show()
-            }
-
-            private fun setupBluetoothDeviceList(dialogView: android.view.View) {
-                val recyclerView = dialogView.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recyclerBluetoothDevices)
-                val adapter = OnboardingBluetoothDeviceAdapter { device ->
-                    // Handle device selection
-                }
-                
-                recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(binding.root.context)
-                recyclerView.adapter = adapter
-                
-                // Load available Bluetooth devices
-                loadAvailableBluetoothDevices(adapter)
-            }
-
-            private fun setupTimeScheduleControls(dialogView: android.view.View) {
-                val timePickerStart = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerStart)
-                val timePickerEnd = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerEnd)
-                val checkBoxMonday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxMonday)
-                val checkBoxTuesday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxTuesday)
-                val checkBoxWednesday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxWednesday)
-                val checkBoxThursday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxThursday)
-                val checkBoxFriday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxFriday)
-                val checkBoxSaturday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSaturday)
-                val checkBoxSunday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSunday)
-
-                // Set default times (9 AM to 5 PM)
-                timePickerStart.hour = 9
-                timePickerStart.minute = 0
-                timePickerEnd.hour = 17
-                timePickerEnd.minute = 0
-
-                // Set default days (Monday to Friday)
-                checkBoxMonday.isChecked = true
-                checkBoxTuesday.isChecked = true
-                checkBoxWednesday.isChecked = true
-                checkBoxThursday.isChecked = true
-                checkBoxFriday.isChecked = true
-            }
-
-
-
-            private fun getSelectedBluetoothDevices(dialogView: android.view.View): Set<String> {
-                // Get selected device addresses from the adapter
-                val recyclerView = dialogView.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recyclerBluetoothDevices)
-                val adapter = recyclerView.adapter as? OnboardingBluetoothDeviceAdapter
-                return adapter?.getSelectedDevices() ?: emptySet()
-            }
-
-            private fun getSelectedTimeSchedule(dialogView: android.view.View): Map<String, Any> {
-                val timePickerStart = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerStart)
-                val timePickerEnd = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerEnd)
-                val checkBoxMonday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxMonday)
-                val checkBoxTuesday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxTuesday)
-                val checkBoxWednesday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxWednesday)
-                val checkBoxThursday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxThursday)
-                val checkBoxFriday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxFriday)
-                val checkBoxSaturday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSaturday)
-                val checkBoxSunday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSunday)
-
-                val selectedDays = mutableSetOf<Int>()
-                if (checkBoxMonday.isChecked) selectedDays.add(1)
-                if (checkBoxTuesday.isChecked) selectedDays.add(2)
-                if (checkBoxWednesday.isChecked) selectedDays.add(3)
-                if (checkBoxThursday.isChecked) selectedDays.add(4)
-                if (checkBoxFriday.isChecked) selectedDays.add(5)
-                if (checkBoxSaturday.isChecked) selectedDays.add(6)
-                if (checkBoxSunday.isChecked) selectedDays.add(7)
-
-                return mapOf(
-                    "startHour" to timePickerStart.hour,
-                    "startMinute" to timePickerStart.minute,
-                    "endHour" to timePickerEnd.hour,
-                    "endMinute" to timePickerEnd.minute,
-                    "selectedDays" to selectedDays
-                )
-            }
-
-            private fun getEnteredWifiSsid(dialogView: android.view.View): String {
-                // Get entered SSID from the EditText
-                val editText = dialogView.findViewById<android.widget.EditText>(R.id.editWifiSsid)
-                return editText.text?.toString()?.trim() ?: ""
-            }
-
-            private fun loadAvailableBluetoothDevices(adapter: OnboardingBluetoothDeviceAdapter) {
-                // Load available Bluetooth devices (permission already checked)
-                val bluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
-                if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) {
-                    try {
-                        val pairedDevices = bluetoothAdapter.bondedDevices
-                        adapter.updateDevices(pairedDevices.toList())
-                        InAppLogger.log("OnboardingBluetooth", "Loaded ${pairedDevices.size} Bluetooth devices")
-                    } catch (e: SecurityException) {
-                        InAppLogger.logError("OnboardingBluetooth", "Security exception accessing Bluetooth devices: ${e.message}")
+        private fun showTimeScheduleConfigurationDialog(template: RuleTemplate) {
+            val dialogView = android.view.LayoutInflater.from(binding.root.context)
+                .inflate(R.layout.dialog_time_schedule_configuration, null)
+            
+            val dialog = androidx.appcompat.app.AlertDialog.Builder(binding.root.context)
+                .setTitle("Configure ${template.name}")
+                .setView(dialogView)
+                .setPositiveButton("Add Rule") { _, _ ->
+                    // Get selected time and days
+                    val timeData = getSelectedTimeSchedule(dialogView)
+                    if (timeData.isNotEmpty()) {
+                        addRuleFromTemplateWithData(template, timeData)
+                    } else {
                         android.widget.Toast.makeText(
                             binding.root.context,
-                            "Permission denied to access Bluetooth devices",
+                            "Please select time and days",
                             android.widget.Toast.LENGTH_SHORT
                         ).show()
                     }
-                } else {
-                    android.widget.Toast.makeText(
-                        binding.root.context,
-                        "Bluetooth is not available or enabled",
-                        android.widget.Toast.LENGTH_SHORT
-                    ).show()
                 }
+                .setNegativeButton("Cancel", null)
+                .create()
+
+            // Set up time pickers and day selection
+            setupTimeScheduleControls(dialogView)
+            
+            dialog.show()
+        }
+
+        private fun showWifiConfigurationDialog(template: RuleTemplate) {
+            // Check if we can resolve WiFi SSIDs
+            if (!WifiCapabilityChecker.canResolveWifiSSID(binding.root.context)) {
+                showWifiCompatibilityWarningOnboarding(template)
+                return
             }
-
-
-
-            private fun addRuleFromTemplateWithData(template: RuleTemplate, customData: Map<String, Any>) {
-                try {
-                    // Create a rule from the template with custom data
-                    val rule = com.micoyc.speakthat.rules.RuleTemplates.createRuleFromTemplate(template, customData)
-                    
-                    // Get the rule manager and add the rule
-                    val ruleManager = com.micoyc.speakthat.rules.RuleManager(binding.root.context)
-                    ruleManager.addRule(rule)
-                    
-                    // Enable Conditional Rules if it's not already enabled
-                    if (!ruleManager.isRulesEnabled()) {
-                        ruleManager.setRulesEnabled(true)
-                        InAppLogger.log("OnboardingRuleTemplates", "Enabled Conditional Rules feature")
+            
+            val dialogView = android.view.LayoutInflater.from(binding.root.context)
+                .inflate(R.layout.dialog_wifi_configuration, null)
+            
+            val dialog = androidx.appcompat.app.AlertDialog.Builder(binding.root.context)
+                .setTitle("Configure ${template.name}")
+                .setView(dialogView)
+                .setPositiveButton("Add Rule") { _, _ ->
+                    // Get entered SSID
+                    val ssid = getEnteredWifiSsid(dialogView)
+                    if (ssid.isNotEmpty()) {
+                        val customData = mapOf("network_ssids" to setOf(ssid))
+                        addRuleFromTemplateWithData(template, customData)
+                    } else {
+                        android.widget.Toast.makeText(
+                            binding.root.context,
+                            "Please enter a WiFi network name",
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
                     }
-                    
-                    InAppLogger.log("OnboardingRuleTemplates", "Added configured rule from template: ${template.name}")
-                    
-                    // Show a toast to confirm the rule was added
+                }
+                .setNegativeButton("Cancel", null)
+                .create()
+            
+            dialog.show()
+        }
+        
+        private fun showWifiCompatibilityWarningOnboarding(template: RuleTemplate) {
+            val dialog = androidx.appcompat.app.AlertDialog.Builder(binding.root.context)
+                .setTitle("Note on WiFi Compatibility")
+                .setMessage("SpeakThat was unable to resolve your current SSID. This is likely because your version of Android has security restrictions that prevent SpeakThat from identifying what network you're connected to.\n\nIt's not impossible, however. So if you're a better developer than me then please contribute on the GitHub.")
+                .setPositiveButton("Add Rule Anyway") { _, _ ->
+                    // Create the rule with empty network list (will work with any WiFi)
+                    val customData = mapOf("network_ssids" to setOf<String>())
+                    addRuleFromTemplateWithData(template, customData)
+                }
+                .setNegativeButton("Nevermind", null)
+                .setNeutralButton("Open GitHub") { _, _ ->
+                    // Open GitHub link
+                    val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/mitchib1440/SpeakThat"))
+                    binding.root.context.startActivity(intent)
+                }
+                .create()
+            
+            dialog.show()
+        }
+
+        private fun setupBluetoothDeviceList(dialogView: android.view.View) {
+            val recyclerView = dialogView.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recyclerBluetoothDevices)
+            val adapter = OnboardingBluetoothDeviceAdapter { device ->
+                // Handle device selection
+            }
+            
+            recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(binding.root.context)
+            recyclerView.adapter = adapter
+            
+            // Load available Bluetooth devices
+            loadAvailableBluetoothDevices(adapter)
+        }
+
+        private fun setupTimeScheduleControls(dialogView: android.view.View) {
+            val timePickerStart = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerStart)
+            val timePickerEnd = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerEnd)
+            val checkBoxMonday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxMonday)
+            val checkBoxTuesday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxTuesday)
+            val checkBoxWednesday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxWednesday)
+            val checkBoxThursday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxThursday)
+            val checkBoxFriday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxFriday)
+            val checkBoxSaturday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSaturday)
+            val checkBoxSunday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSunday)
+
+            // Set default times (9 AM to 5 PM)
+            timePickerStart.hour = 9
+            timePickerStart.minute = 0
+            timePickerEnd.hour = 17
+            timePickerEnd.minute = 0
+
+            // Set default days (Monday to Friday)
+            checkBoxMonday.isChecked = true
+            checkBoxTuesday.isChecked = true
+            checkBoxWednesday.isChecked = true
+            checkBoxThursday.isChecked = true
+            checkBoxFriday.isChecked = true
+        }
+
+        private fun getSelectedBluetoothDevices(dialogView: android.view.View): Set<String> {
+            // Get selected device addresses from the adapter
+            val recyclerView = dialogView.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recyclerBluetoothDevices)
+            val adapter = recyclerView.adapter as? OnboardingBluetoothDeviceAdapter
+            return adapter?.getSelectedDevices() ?: emptySet()
+        }
+
+        private fun getSelectedTimeSchedule(dialogView: android.view.View): Map<String, Any> {
+            val timePickerStart = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerStart)
+            val timePickerEnd = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerEnd)
+            val checkBoxMonday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxMonday)
+            val checkBoxTuesday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxTuesday)
+            val checkBoxWednesday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxWednesday)
+            val checkBoxThursday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxThursday)
+            val checkBoxFriday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxFriday)
+            val checkBoxSaturday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSaturday)
+            val checkBoxSunday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSunday)
+
+            val selectedDays = mutableSetOf<Int>()
+            if (checkBoxMonday.isChecked) selectedDays.add(1)
+            if (checkBoxTuesday.isChecked) selectedDays.add(2)
+            if (checkBoxWednesday.isChecked) selectedDays.add(3)
+            if (checkBoxThursday.isChecked) selectedDays.add(4)
+            if (checkBoxFriday.isChecked) selectedDays.add(5)
+            if (checkBoxSaturday.isChecked) selectedDays.add(6)
+            if (checkBoxSunday.isChecked) selectedDays.add(7)
+
+            return mapOf(
+                "startHour" to timePickerStart.hour,
+                "startMinute" to timePickerStart.minute,
+                "endHour" to timePickerEnd.hour,
+                "endMinute" to timePickerEnd.minute,
+                "selectedDays" to selectedDays
+            )
+        }
+
+        private fun getEnteredWifiSsid(dialogView: android.view.View): String {
+            // Get entered SSID from the EditText
+            val editText = dialogView.findViewById<android.widget.EditText>(R.id.editWifiSsid)
+            return editText.text?.toString()?.trim() ?: ""
+        }
+
+        private fun loadAvailableBluetoothDevices(adapter: OnboardingBluetoothDeviceAdapter) {
+            // Load available Bluetooth devices (permission already checked)
+            val bluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
+            if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) {
+                try {
+                    val pairedDevices = bluetoothAdapter.bondedDevices
+                    adapter.updateDevices(pairedDevices.toList())
+                    InAppLogger.log("OnboardingBluetooth", "Loaded ${pairedDevices.size} Bluetooth devices")
+                } catch (e: SecurityException) {
+                    InAppLogger.logError("OnboardingBluetooth", "Security exception accessing Bluetooth devices: ${e.message}")
                     android.widget.Toast.makeText(
                         binding.root.context,
-                        "Added rule: ${template.name}",
-                        android.widget.Toast.LENGTH_SHORT
-                    ).show()
-                    
-                } catch (e: Exception) {
-                    InAppLogger.logError("OnboardingRuleTemplates", "Error adding configured rule from template: ${e.message}")
-                    
-                    // Show error toast
-                    android.widget.Toast.makeText(
-                        binding.root.context,
-                        "Error adding rule. Please try again.",
+                        "Permission denied to access Bluetooth devices",
                         android.widget.Toast.LENGTH_SHORT
                     ).show()
                 }
+            } else {
+                android.widget.Toast.makeText(
+                    binding.root.context,
+                    "Bluetooth is not available or enabled",
+                    android.widget.Toast.LENGTH_SHORT
+                ).show()
             }
+        }
+
+        private fun addRuleFromTemplateWithData(template: RuleTemplate, customData: Map<String, Any>) {
+            try {
+                // Check if this is a WiFi rule with specific networks and we can't resolve SSIDs
+                val hasWifiTrigger = template.triggers.any { it.type == TriggerType.WIFI_NETWORK }
+                val hasSpecificNetworks = customData.containsKey("network_ssids") && 
+                    (customData["network_ssids"] as? Set<String>)?.isNotEmpty() == true
+                
+                if (hasWifiTrigger && hasSpecificNetworks) {
+                    // Always show warning for WiFi rules with specific networks to inform about Android limitations
+                    // This ensures users are aware that SSID detection may not work reliably in all situations
+                    showWifiCompatibilityWarningBeforeCreationOnboarding(template, customData)
+                    return
+                }
+                
+                // Create a rule from the template with custom data
+                val rule = com.micoyc.speakthat.rules.RuleTemplates.createRuleFromTemplate(template, customData)
+                
+                // Get the rule manager and add the rule
+                val ruleManager = com.micoyc.speakthat.rules.RuleManager(binding.root.context)
+                ruleManager.addRule(rule)
+                
+                // Enable Conditional Rules if it's not already enabled
+                if (!ruleManager.isRulesEnabled()) {
+                    ruleManager.setRulesEnabled(true)
+                    InAppLogger.log("OnboardingRuleTemplates", "Enabled Conditional Rules feature")
+                }
+                
+                InAppLogger.log("OnboardingRuleTemplates", "Added configured rule from template: ${template.name}")
+                
+                // Show a toast to confirm the rule was added
+                android.widget.Toast.makeText(
+                    binding.root.context,
+                    "Added rule: ${template.name}",
+                    android.widget.Toast.LENGTH_SHORT
+                ).show()
+                
+            } catch (e: Exception) {
+                InAppLogger.logError("OnboardingRuleTemplates", "Error adding configured rule from template: ${e.message}")
+                
+                // Show error toast
+                android.widget.Toast.makeText(
+                    binding.root.context,
+                    "Error adding rule. Please try again.",
+                    android.widget.Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        
+        private fun showWifiCompatibilityWarningBeforeCreationOnboarding(template: RuleTemplate, customData: Map<String, Any>) {
+            val dialog = androidx.appcompat.app.AlertDialog.Builder(binding.root.context)
+                .setTitle(binding.root.context.getString(R.string.wifi_compatibility_warning_title))
+                .setMessage(binding.root.context.getString(R.string.wifi_compatibility_warning_message))
+                .setPositiveButton(binding.root.context.getString(R.string.wifi_compatibility_warning_add_anyway)) { _, _ ->
+                    // Create the rule with the original data (user wants to proceed)
+                    addRuleFromTemplateWithDataInternal(template, customData)
+                }
+                .setNegativeButton(binding.root.context.getString(R.string.wifi_compatibility_warning_nevermind), null)
+                .setNeutralButton(binding.root.context.getString(R.string.wifi_compatibility_warning_open_github)) { _, _ ->
+                    // Open GitHub link
+                    val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/mitchib1440/SpeakThat"))
+                    binding.root.context.startActivity(intent)
+                }
+                .create()
+            
+            dialog.show()
+        }
+        
+        private fun addRuleFromTemplateWithDataInternal(template: RuleTemplate, customData: Map<String, Any>) {
+            try {
+                // Create a rule from the template with custom data
+                val rule = com.micoyc.speakthat.rules.RuleTemplates.createRuleFromTemplate(template, customData)
+                
+                // Get the rule manager and add the rule
+                val ruleManager = com.micoyc.speakthat.rules.RuleManager(binding.root.context)
+                ruleManager.addRule(rule)
+                
+                // Enable Conditional Rules if it's not already enabled
+                if (!ruleManager.isRulesEnabled()) {
+                    ruleManager.setRulesEnabled(true)
+                    InAppLogger.log("OnboardingRuleTemplates", "Enabled Conditional Rules feature")
+                }
+                
+                InAppLogger.log("OnboardingRuleTemplates", "Added configured rule from template: ${template.name}")
+                
+                // Show a toast to confirm the rule was added
+                android.widget.Toast.makeText(
+                    binding.root.context,
+                    "Added rule: ${template.name}",
+                    android.widget.Toast.LENGTH_SHORT
+                ).show()
+                
+            } catch (e: Exception) {
+                InAppLogger.logError("OnboardingRuleTemplates", "Error adding configured rule from template: ${e.message}")
+                
+                // Show error toast
+                android.widget.Toast.makeText(
+                    binding.root.context,
+                    "Error adding rule. Please try again.",
+                    android.widget.Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
     
-
-    
-
-    
     data class OnboardingPage(
-        val title: String,
-        val description: String,
+        val titleResId: Int,
+        val descriptionResId: Int,
         val icon: String,
         val showPermissionButton: Boolean = false,
         val showAppSelector: Boolean = false,
         val showWordSelector: Boolean = false,
-        val showRuleTemplates: Boolean = false
+        val showRuleTemplates: Boolean = false,
+        val showLanguageSelector: Boolean = false,
+        val showThemeSelector: Boolean = false
     )
-} 
+}

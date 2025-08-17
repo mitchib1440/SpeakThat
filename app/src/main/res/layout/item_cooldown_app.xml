@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:padding="12dp"
     android:gravity="center_vertical"
-    android:background="?attr/colorSurface"
+    android:background="@drawable/darkened_overlay_background"
     android:layout_marginBottom="4dp">
 
     <!-- App Icon -->
@@ -15,7 +15,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginEnd="12dp"
-        android:src="@drawable/ic_app_default"
+        android:src="@drawable/ic_app_unknown"
         android:contentDescription="App icon" />
 
     <!-- App Info and Dropdown Container -->
@@ -31,10 +31,10 @@
             android:id="@+id/appName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="App Name"
+            android:text="@string/item_cooldown_app_name"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="@color/white_100"
             android:layout_marginBottom="4dp" />
 
         <!-- Package Name -->
@@ -42,18 +42,19 @@
             android:id="@+id/packageName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="com.example.app"
+            android:text="@string/item_cooldown_package"
             android:textSize="12sp"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="@color/white_200"
             android:layout_marginBottom="8dp" />
 
         <!-- Cooldown Time Dropdown -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Cooldown time"
+            android:hint="@string/hint_cooldown_time"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/purple_200"
+            app:boxStrokeColor="@color/white_200"
+            app:hintTextColor="@color/white_200"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
             <AutoCompleteTextView
@@ -61,23 +62,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
-                android:text="No cooldown" />
+                android:text="@string/item_cooldown_no_cooldown"
+                android:textColor="@color/white_100" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
     <!-- Delete Button -->
-    <com.google.android.material.button.MaterialButton
+    <ImageButton
         android:id="@+id/btnDelete"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:text="🗑️"
-        android:textSize="16sp"
-        android:backgroundTint="@android:color/holo_red_light"
-        android:textColor="@color/white_100"
-        style="@style/Widget.Material3.Button.IconButton"
-        app:icon="@drawable/ic_delete_24"
-        app:iconTint="@color/white_100" />
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_delete_24"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Remove word"
+        app:tint="@color/white_100"
+        android:padding="4dp" />
 
 </LinearLayout> 

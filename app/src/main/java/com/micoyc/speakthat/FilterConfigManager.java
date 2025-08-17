@@ -73,6 +73,10 @@ public class FilterConfigManager {
         public float ttsVolume;
         public String voiceName;
         public String language;
+        public String ttsLanguage;        // NEW: TTS-specific language setting
+        public String languagePreset;    // NEW: Selected language preset ID
+        public boolean isCustomPreset;   // NEW: Whether settings represent a custom preset
+        public boolean advancedEnabled;  // NEW: Whether advanced options are enabled
         public int audioUsage;
         public int contentType;
         
@@ -82,6 +86,10 @@ public class FilterConfigManager {
             this.ttsVolume = 1.0f;
             this.voiceName = "";
             this.language = "en_US";
+            this.ttsLanguage = "system";     // Default TTS language
+            this.languagePreset = "en_US";   // Default preset
+            this.isCustomPreset = false;     // Not custom by default
+            this.advancedEnabled = false;    // Advanced options off by default
             this.audioUsage = 0;
             this.contentType = 0;
         }
@@ -225,6 +233,10 @@ public class FilterConfigManager {
         config.voice.ttsVolume = voicePrefs.getFloat("tts_volume", 1.0f);
         config.voice.voiceName = voicePrefs.getString("voice_name", "");
         config.voice.language = voicePrefs.getString("language", "en_US");
+        config.voice.ttsLanguage = voicePrefs.getString("tts_language", "system");        // NEW
+        config.voice.languagePreset = voicePrefs.getString("language_preset", "en_US");  // NEW
+        config.voice.isCustomPreset = voicePrefs.getBoolean("is_custom_preset", false);  // NEW
+        config.voice.advancedEnabled = voicePrefs.getBoolean("show_advanced_voice", false); // NEW
         config.voice.audioUsage = voicePrefs.getInt("audio_usage", 0);
         config.voice.contentType = voicePrefs.getInt("content_type", 0);
         
@@ -284,6 +296,10 @@ public class FilterConfigManager {
         voice.put("ttsVolume", config.voice.ttsVolume);
         voice.put("voiceName", config.voice.voiceName);
         voice.put("language", config.voice.language);
+        voice.put("ttsLanguage", config.voice.ttsLanguage);           // NEW
+        voice.put("languagePreset", config.voice.languagePreset);   // NEW
+        voice.put("isCustomPreset", config.voice.isCustomPreset);   // NEW
+        voice.put("advancedEnabled", config.voice.advancedEnabled); // NEW
         voice.put("audioUsage", config.voice.audioUsage);
         voice.put("contentType", config.voice.contentType);
         json.put("voice", voice);
@@ -521,6 +537,40 @@ public class FilterConfigManager {
                     voiceEditor.putInt("content_type", voice.getInt("contentType"));
                     totalImported++;
                 }
+                
+                // NEW PRESET FIELDS (with backwards compatibility)
+                if (voice.has("ttsLanguage")) {
+                    voiceEditor.putString("tts_language", voice.getString("ttsLanguage"));
+                    totalImported++;
+                }
+                
+                if (voice.has("languagePreset")) {
+                    voiceEditor.putString("language_preset", voice.getString("languagePreset"));
+                    totalImported++;
+                } else {
+                    // Backwards compatibility: If no preset is specified, try to detect from language setting
+                    if (voice.has("language")) {
+                        String language = voice.getString("language");
+                        String ttsLanguage = voice.optString("ttsLanguage", "system");
+                        String voiceName = voice.optString("voiceName", "");
+                        
+                        // Use LanguagePresetManager to find best matching preset
+                        // This will be applied after preferences are saved
+                        voiceEditor.putString("_legacy_import_language", language);
+                        voiceEditor.putString("_legacy_import_tts_language", ttsLanguage);
+                        voiceEditor.putString("_legacy_import_voice_name", voiceName);
+                    }
+                }
+                
+                if (voice.has("isCustomPreset")) {
+                    voiceEditor.putBoolean("is_custom_preset", voice.getBoolean("isCustomPreset"));
+                    totalImported++;
+                }
+                
+                if (voice.has("advancedEnabled")) {
+                    voiceEditor.putBoolean("show_advanced_voice", voice.getBoolean("advancedEnabled"));
+                    totalImported++;
+                }
             }
             
             // Import behavior settings (if present)
@@ -670,6 +720,9 @@ public class FilterConfigManager {
             mainEditor.apply();
             voiceEditor.apply();
             
+            // Handle legacy import preset migration
+            processLegacyImportPresets(context);
+            
             // Log the import
             InAppLogger.log("FilterConfig", "Imported " + totalImported + " settings from full configuration");
             
@@ -735,5 +788,41 @@ public class FilterConfigManager {
         // For now, all 1.x versions are compatible
         // In the future, we can add more sophisticated version checking
         return version.startsWith("1.");
+    }
+    
+    /**
+     * Process legacy import settings and migrate them to the new preset system
+     */
+    private static void processLegacyImportPresets(Context context) {
+        SharedPreferences voicePrefs = context.getSharedPreferences("VoiceSettings", Context.MODE_PRIVATE);
+        
+        // Check if we have legacy import markers
+        if (voicePrefs.contains("_legacy_import_language")) {
+            String language = voicePrefs.getString("_legacy_import_language", "en_US");
+            String ttsLanguage = voicePrefs.getString("_legacy_import_tts_language", "system");
+            String voiceName = voicePrefs.getString("_legacy_import_voice_name", "");
+            
+            InAppLogger.log("FilterConfig", "Processing legacy import - Language: " + language + 
+                           ", TTS: " + ttsLanguage + ", Voice: " + voiceName);
+            
+            // Use LanguagePresetManager to find the best matching preset
+            LanguagePresetManager.LanguagePreset bestMatch = 
+                LanguagePresetManager.findBestMatch(language, ttsLanguage, voiceName);
+            
+            // Save the detected preset
+            SharedPreferences.Editor editor = voicePrefs.edit();
+            editor.putString("language_preset", bestMatch.id);
+            editor.putBoolean("is_custom_preset", bestMatch.isCustom);
+            
+            // Clean up the legacy markers
+            editor.remove("_legacy_import_language");
+            editor.remove("_legacy_import_tts_language");
+            editor.remove("_legacy_import_voice_name");
+            
+            editor.apply();
+            
+            InAppLogger.log("FilterConfig", "Legacy import migrated to preset: " + bestMatch.displayName + 
+                           " (custom: " + bestMatch.isCustom + ")");
+        }
     }
 } 

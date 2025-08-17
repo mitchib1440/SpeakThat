@@ -39,6 +39,7 @@ class SettingsActivity : AppCompatActivity() {
         setupSettingsCategories()
         setupAllSettings()
         setupClickListeners()
+        setupThemeIcon()
     }
 
     private fun applySavedTheme(prefs: android.content.SharedPreferences) {
@@ -99,7 +100,6 @@ class SettingsActivity : AppCompatActivity() {
                 id = "general",
                 title = "General Settings",
                 description = "App preferences, theme settings",
-                icon = "⚙️",
                 cardView = binding.cardGeneralSettings,
                 onClickAction = { startActivity(Intent(this, GeneralSettingsActivity::class.java)) }
             ),
@@ -107,7 +107,6 @@ class SettingsActivity : AppCompatActivity() {
                 id = "behavior",
                 title = "Behavior Settings",
                 description = "When and how notifications are read",
-                icon = "🔔",
                 cardView = binding.cardBehaviorSettings,
                 onClickAction = { startActivity(Intent(this, BehaviorSettingsActivity::class.java)) }
             ),
@@ -115,7 +114,6 @@ class SettingsActivity : AppCompatActivity() {
                 id = "voice",
                 title = "Voice Settings",
                 description = "Text-to-speech voice and speed",
-                icon = "🎙️",
                 cardView = binding.cardVoiceSettings,
                 onClickAction = { startActivity(Intent(this, VoiceSettingsActivity::class.java)) }
             ),
@@ -123,7 +121,6 @@ class SettingsActivity : AppCompatActivity() {
                 id = "filter",
                 title = "Filter Settings",
                 description = "Choose which apps to read",
-                icon = "🔍",
                 cardView = binding.cardFilterSettings,
                 onClickAction = { startActivity(Intent(this, FilterSettingsActivity::class.java)) }
             ),
@@ -131,7 +128,6 @@ class SettingsActivity : AppCompatActivity() {
                 id = "conditional",
                 title = "Conditional Rules",
                 description = "Advanced rules for when notifications are read",
-                icon = "🔧",
                 cardView = binding.cardConditionalRules,
                 onClickAction = { startActivity(Intent(this, RulesActivity::class.java)) }
             ),
@@ -139,7 +135,6 @@ class SettingsActivity : AppCompatActivity() {
                 id = "development",
                 title = "Development Settings",
                 description = "Debug tools and logging system",
-                icon = "🛠️",
                 cardView = binding.cardDevelopmentSettings,
                 onClickAction = { startActivity(Intent(this, DevelopmentSettingsActivity::class.java)) }
             ),
@@ -147,7 +142,6 @@ class SettingsActivity : AppCompatActivity() {
                 id = "onboarding",
                 title = "Re-run Onboarding",
                 description = "See the app introduction again",
-                icon = "🔄",
                 cardView = binding.cardReRunOnboarding,
                 onClickAction = { 
                     InAppLogger.logUserAction("Re-run onboarding selected")
@@ -158,7 +152,6 @@ class SettingsActivity : AppCompatActivity() {
                 id = "support",
                 title = "Support & Feedback",
                 description = "Get help, report bugs, request features",
-                icon = "💬",
                 cardView = binding.cardSupportFeedback,
                 onClickAction = { showSupportDialog() }
             )
@@ -460,6 +453,21 @@ class SettingsActivity : AppCompatActivity() {
             Toast.makeText(this, "Failed to copy address: ${e.message}", Toast.LENGTH_SHORT).show()
             InAppLogger.logError("Donate", "Failed to copy Bitcoin address: ${e.message}")
         }
+    }
+    
+    private fun setupThemeIcon() {
+        // Set the appropriate icon for General Settings based on current theme
+        val isDarkMode = resources.configuration.uiMode and 
+            android.content.res.Configuration.UI_MODE_NIGHT_MASK == 
+            android.content.res.Configuration.UI_MODE_NIGHT_YES
+        
+        val iconRes = if (isDarkMode) {
+            R.drawable.ic_light_mode_24
+        } else {
+            R.drawable.ic_dark_mode_24
+        }
+        
+        binding.iconGeneralSettings.setImageResource(iconRes)
     }
     
 

@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select Bluetooth devices:"
+        android:text="@string/bluetooth_config_select"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_marginBottom="8dp" />
@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose the devices you want to use for this rule. Only paired devices are shown."
+        android:text="@string/bluetooth_config_description"
         android:textSize="14sp"
         android:layout_marginBottom="16dp" />
 

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:ordering="sequentially">
+    
+    <!-- Flash sequence for letter 'e' - very fast staccato pattern with bright orange -->
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="80"
+        android:valueFrom="@color/logo_color"
+        android:valueTo="@android:color/holo_orange_light"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="60"
+        android:valueFrom="@android:color/holo_orange_light"
+        android:valueTo="@color/logo_color"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="70"
+        android:valueFrom="@color/logo_color"
+        android:valueTo="@android:color/holo_orange_light"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="50"
+        android:valueFrom="@android:color/holo_orange_light"
+        android:valueTo="@color/logo_color"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="90"
+        android:valueFrom="@color/logo_color"
+        android:valueTo="@android:color/holo_orange_light"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="fillColor"
+        android:duration="40"
+        android:valueFrom="@android:color/holo_orange_light"
+        android:valueTo="@color/logo_color"
+        android:valueType="colorType" />
+    
+</set>

@@ -58,7 +58,8 @@ class OnboardingRuleTemplateAdapter(
         fun bind(template: RuleTemplate) {
             binding.textTitle.text = template.name
             binding.textDescription.text = template.description
-            binding.textIcon.text = template.icon
+            binding.imageIcon.setImageResource(template.iconDrawable)
+            binding.imageIcon.setColorFilter(android.graphics.Color.WHITE)
 
             // Set up click listeners
             binding.root.setOnClickListener {

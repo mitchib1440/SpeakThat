@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -13,9 +14,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Word"
+        android:text="@string/item_word_filter_word"
         android:textSize="16sp"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="@color/white_100"
         android:layout_marginEnd="8dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
@@ -30,7 +31,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:minWidth="60dp" />
+        android:minWidth="60dp"
+        android:background="@drawable/spinner_background"
+        android:textColor="@color/white_100"/>
 
     <ImageButton
         android:id="@+id/buttonRemove"
@@ -39,7 +42,7 @@
         android:src="@drawable/ic_delete_24"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="Remove word"
-        android:tint="@android:color/holo_red_dark"
+        app:tint="@color/white_100"
         android:padding="4dp" />
 
 </LinearLayout> 

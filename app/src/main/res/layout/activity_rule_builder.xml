@@ -36,19 +36,20 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_marginEnd="12dp"
-                        android:text="💡"
-                        android:textSize="20sp" />
+                        android:src="@drawable/lightbulb_2_24px"
+                        android:tint="@color/white_100"
+                        android:contentDescription="Info icon" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:lineSpacingExtra="2dp"
-                        android:text="Rules check conditions for each notification. They don't remember state changes - they filter notifications in real-time."
+                        android:text="@string/rule_builder_description"
                         android:textColor="@color/purple_card_text_primary"
                         android:textSize="11dp" />
 
@@ -73,21 +74,37 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:text="📝 Rule Name"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="12dp"
+                            android:src="@drawable/ic_edit"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Edit icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rule_builder_name_label"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:boxBackgroundMode="outline"
-                        android:hint="Enter rule name (e.g., Night Mode, Car Mode)">
+                        android:hint="@string/hint_rule_name">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editRuleName"
@@ -128,14 +145,30 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="⚡ Triggers"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginEnd="12dp"
+                                android:src="@drawable/line_start_square_24px"
+                                android:tint="@color/white_100"
+                                android:contentDescription="Trigger icon" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/rule_builder_triggers_label"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
 
                         <FrameLayout
                             android:layout_width="wrap_content"
@@ -144,13 +177,11 @@
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnAddTrigger"
-                                style="@style/Widget.Material3.Button.TextButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Add"
-                                android:background="@android:color/transparent"
-                                android:textColor="@color/white_100"
-                                android:textSize="14sp" />
+                                android:text="@string/button_add"
+                                android:textSize="14sp"
+                                style="@style/Widget.SpeakThat.Button.Primary" />
 
                         </FrameLayout>
 
@@ -160,7 +191,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:text="Conditions that must be met for this rule to activate"
+                        android:text="@string/rule_builder_triggers_description"
                         android:textColor="@color/purple_card_text_secondary"
                         android:textSize="14sp" />
 
@@ -178,7 +209,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
-                            android:text="Logic:"
+                            android:text="@string/rule_builder_logic_label"
                             android:textColor="@color/purple_card_text_secondary"
                             android:textSize="14sp" />
 
@@ -194,7 +225,7 @@
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="AND"
+                                android:text="@string/rule_builder_logic_and"
                                 android:textSize="12sp" />
 
                             <com.google.android.material.button.MaterialButton
@@ -202,7 +233,7 @@
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="OR"
+                                android:text="@string/rule_builder_logic_or"
                                 android:textSize="12sp" />
 
                             <com.google.android.material.button.MaterialButton
@@ -210,7 +241,7 @@
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="XOR"
+                                android:text="@string/rule_builder_logic_xor"
                                 android:textSize="12sp" />
 
                         </com.google.android.material.button.MaterialButtonToggleGroup>
@@ -251,14 +282,30 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="🎯 Actions"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginEnd="12dp"
+                                android:src="@drawable/line_start_circle_24px"
+                                android:tint="@color/white_100"
+                                android:contentDescription="Action icon" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/rule_builder_actions_title"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
 
                         <FrameLayout
                             android:layout_width="wrap_content"
@@ -267,13 +314,11 @@
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnAddAction"
-                                style="@style/Widget.Material3.Button.TextButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Add"
-                                android:background="@android:color/transparent"
-                                android:textColor="@color/white_100"
-                                android:textSize="14sp" />
+                                android:text="@string/button_add"
+                                android:textSize="14sp"
+                                style="@style/Widget.SpeakThat.Button.Primary" />
 
                         </FrameLayout>
 
@@ -283,7 +328,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:text="What happens when the triggers are met"
+                        android:text="@string/rule_builder_actions_description"
                         android:textColor="@color/purple_card_text_secondary"
                         android:textSize="14sp" />
 
@@ -321,14 +366,30 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="🚫 Exceptions"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginEnd="12dp"
+                                android:src="@drawable/line_start_diamond_24px"
+                                android:tint="@color/white_100"
+                                android:contentDescription="Exception icon" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/rule_builder_exceptions_title"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
 
                         <FrameLayout
                             android:layout_width="wrap_content"
@@ -337,13 +398,11 @@
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnAddException"
-                                style="@style/Widget.Material3.Button.TextButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Add"
-                                android:background="@android:color/transparent"
-                                android:textColor="@color/white_100"
-                                android:textSize="14sp" />
+                                android:text="@string/button_add"
+                                android:textSize="14sp"
+                                style="@style/Widget.SpeakThat.Button.Primary" />
 
                         </FrameLayout>
 
@@ -353,7 +412,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:text="Conditions that override the triggers (optional)"
+                        android:text="@string/rule_builder_exceptions_description"
                         android:textColor="@color/purple_card_text_secondary"
                         android:textSize="14sp" />
 
@@ -371,7 +430,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
-                            android:text="Logic:"
+                            android:text="@string/rule_builder_logic_label"
                             android:textColor="@color/purple_card_text_secondary"
                             android:textSize="14sp" />
 
@@ -387,7 +446,7 @@
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="AND"
+                                android:text="@string/rule_builder_logic_and"
                                 android:textSize="12sp" />
 
                             <com.google.android.material.button.MaterialButton
@@ -395,7 +454,7 @@
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="OR"
+                                android:text="@string/rule_builder_logic_or"
                                 android:textSize="12sp" />
 
                             <com.google.android.material.button.MaterialButton
@@ -403,7 +462,7 @@
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="XOR"
+                                android:text="@string/rule_builder_logic_xor"
                                 android:textSize="12sp" />
 
                         </com.google.android.material.button.MaterialButtonToggleGroup>
@@ -441,7 +500,7 @@
                         android:id="@+id/btnSaveRule"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Save Rule"
+                        android:text="@string/rule_builder_save_rule"
                         android:textColor="@color/white_100"
                         android:textSize="16sp"
                         android:textStyle="bold"

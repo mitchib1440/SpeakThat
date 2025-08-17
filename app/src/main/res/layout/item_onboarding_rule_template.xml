@@ -22,14 +22,13 @@
         android:background="@drawable/gradient_card_subtle_right">
 
         <!-- Icon -->
-        <TextView
-            android:id="@+id/textIcon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:textSize="24sp"
+        <ImageView
+            android:id="@+id/imageIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:gravity="center"
-            android:textColor="@color/purple_card_text_primary"
-            android:layout_marginEnd="16dp" />
+            android:layout_marginEnd="16dp"
+            android:contentDescription="Template icon" />
 
         <!-- Content -->
         <LinearLayout
@@ -67,14 +66,11 @@
                 android:id="@+id/buttonAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add"
+                android:text="@string/item_onboarding_rule_template_add"
                 android:textSize="12sp"
-                android:background="@android:color/transparent"
-                android:textColor="@color/white_100"
-                app:cornerRadius="16dp"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
-                style="@style/Widget.Material3.Button.TextButton" />
+                style="@style/Widget.SpeakThat.Button.Primary" />
 
         </FrameLayout>
 

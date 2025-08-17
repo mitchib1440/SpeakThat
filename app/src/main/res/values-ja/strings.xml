@@ -10,6 +10,7 @@
     <string name="permission_needed">通知へのアクセスが必要です</string>
     <string name="permission_description">SpeakThat! は、読み上げのために通知にアクセスする必要があります。この権限はアプリが機能するために必要です。</string>
     <string name="master_switch_battery_tip">💡 バッテリーを節約するために不要な場合はオフにします</string>
+    <string name="master_switch_battery_tip_no_emoji">バッテリーを節約するために、必要のないときはオフにします</string>
     <string name="open_settings">権限の設定を開く</string>
     <string name="service_enabled">通知リーダー：有効</string>
     <string name="service_disabled">通知リーダー：無効</string>
@@ -106,7 +107,7 @@
     <string name="use_recommended">おすすめを使用する</string>
     <string name="got_it">了解</string>
     <!-- Persistent/Silent Notification Filtering -->
-    <string name="persistent_notification_filtering_title">🔇 永続/サイレント通知フィルタ</string>
+    <string name="persistent_notification_filtering_title">永続/サイレント通知フィルタ</string>
     <string name="persistent_notification_filtering_description">永続的(進行中)またはサイレント(音/振動なし)の通知をスキップ</string>
     <string name="enable_persistent_filtering">🔇 永続/サイレント通知フィルタ</string>
     <string name="persistent_filtering_help">💡 永続的な通知(音楽コントロール、ナビゲーションなど)は継続的で、サイレント通知には音や振動がありません。このオプションは、バックグラウンドサービスから通知が繰り返されるのを防ぎます。</string>
@@ -242,12 +243,14 @@
     <!-- Voice Settings Test -->
     <string name="tts_voice_test">これがこの音声設定での通知の聞こえ方です。</string>
     <!-- Onboarding TTS -->
+    <string name="tts_onboarding_language_theme">お好みの言語とテーマを選択してSpeakThatを始めましょう。</string>
     <string name="tts_onboarding_welcome">SpeakThatへようこそ！画面を見つめずに接続を保ちましょう。お使いの電話が通知を音読するので、重要なことに集中できます。</string>
     <string name="tts_onboarding_permission">SpeakThatは通知を音読するための許可が必要です。すべてはお使いのデバイスに保存され、何を読むかはあなたが制御します。</string>
     <string name="tts_onboarding_privacy">あなたのプライバシーは重要です。何が音読されるかを正確に制御できます。電話を振ると、どのアナウンスも即座に停止できます。すべてはお使いのデバイスに保存されます。</string>
     <string name="tts_onboarding_filters">基本的なプライバシーフィルターを設定して始めましょう。SpeakThatは何を読むか何を読まないかを選択できる強力なフィルタリングシステムを備えています。</string>
     <string name="tts_onboarding_apps">通知を読んでほしくないアプリの名前を入力してください。一般的な例には、銀行アプリ、医療アプリ、デートアプリが含まれます。</string>
     <string name="tts_onboarding_words">通知に含まれる読んでほしくない単語やフレーズを入力してください。一般的な例には、パスワード、PIN、クレジットカード、医療用語が含まれます。</string>
+    <string name="tts_onboarding_rules">状況に基づいて通知が読み上げられるタイミングを自動制御するスマートルールを設定します。例えば、ヘッドフォンが接続されている時のみ通知を読み上げる、または画面がオンの時は通知をスキップするなど。</string>
     <string name="tts_onboarding_complete">SpeakThatは目を自由に保ちながら接続を維持するお手伝いの準備ができています！アプリ設定でいつでもフィルターを追加できます。</string>
     <!-- Behavior Settings Speech Format Templates -->
     <string name="tts_behavior_default">デフォルトのフォーマット</string>
@@ -322,8 +325,8 @@
     <string name="rule_logic_separator">, </string>
     <string name="rule_logic_final_separator">, and </string>
     <!-- Critical Hardcoded Strings - Activity Titles -->
-    <string name="title_behavior_settings">Behavior Settings</string>
-    <string name="title_general_settings">General Settings</string>
+    <string name="title_behavior_settings">動作設定</string>
+    <string name="title_general_settings">一般設定</string>
     <string name="title_voice_settings">音声設定</string>
     <string name="title_filter_settings">フィルタ設定</string>
     <string name="title_test_settings">設定のテスト</string>
@@ -378,6 +381,167 @@
     <string name="dialog_title_invalid_app_package">Invalid App Package</string>
     <string name="dialog_title_edit_rule">Edit Rule</string>
     <string name="dialog_title_create_rule">Create Rule</string>
+    
+    <!-- Filter Settings Dialog Titles -->
+    <string name="dialog_title_edit_filtered_media_app">フィルターされたメディアアプリを編集</string>
+    <string name="dialog_title_edit_media_exception_app">メディア例外アプリを編集</string>
+    <string name="dialog_title_edit_media_important_keyword">メディア重要キーワードを編集</string>
+    <string name="dialog_title_edit_app_filter">アプリフィルターを編集</string>
+    <string name="dialog_title_edit_word_filter">単語フィルターを編集</string>
+    <string name="dialog_title_edit_word_swap">単語置換を編集</string>
+    <string name="dialog_title_import_filter_configuration">フィルター設定をインポート</string>
+    <string name="dialog_title_app_filter_help">📱 アプリフィルターヘルプ</string>
+    <string name="dialog_title_smart_media_filter">スマートメディア通知フィルター</string>
+    
+    <!-- Button Labels -->
+    <string name="button_save">保存</string>
+    <string name="button_cancel">キャンセル</string>
+    <string name="button_ok">OK</string>
+    <string name="button_close">閉じる</string>
+    <string name="button_clear">クリア</string>
+    <string name="button_export_crash_logs">クラッシュログをエクスポート</string>
+    <string name="button_clear_crash_logs">クラッシュログをクリア</string>
+    <string name="button_force_test_crash">テストクラッシュを強制実行</string>
+    <string name="button_clear_analytics">分析データをクリア</string>
+    <string name="button_export_report">レポートをエクスポート</string>
+    <string name="button_reset_cache">キャッシュをリセット</string>
+    <string name="button_re_detect">再検出</string>
+    
+    <!-- Layout Section Titles -->
+    <string name="section_notification_behavior">通知の動作</string>
+    <string name="section_media_behavior">メディアの動作</string>
+    <string name="recommendation_smart_mode">ほとんどのユーザーにはこれをお勧めします: スマートモード</string>
+    <string name="recommendation_lower_audio">ほとんどのユーザーにはこれをお勧めします: 音量を下げる</string>
+    
+    <!-- Behavior Settings Strings -->
+    <string name="behavior_notification_description">通知が既に読み上げられている時の処理方法を制御します</string>
+    <string name="behavior_media_description">音楽や動画の再生中に通知が来た時の処理方法を制御します</string>
+    <string name="behavior_interrupt_mode">割り込み（現在の読み上げを停止し、新しい通知をすぐに読む）</string>
+    <string name="behavior_queue_mode">キュー（現在の読み上げを完了してから、新しい通知を読む）</string>
+    <string name="behavior_skip_mode">スキップ（読み上げ中は新しい通知を無視する）</string>
+    <string name="behavior_smart_mode">スマート（優先アプリは割り込み、その他はキュー）</string>
+    <string name="behavior_priority_apps">⚡ 優先アプリ</string>
+    <string name="behavior_priority_apps_description">これらのアプリは現在の通知を中断します。その他のアプリはキューに入ります。</string>
+    <string name="behavior_media_ignore">無視 - 通常通り続行（現在の動作）</string>
+    <string name="behavior_media_pause">一時停止 - 読み上げ中はメディアを一時停止</string>
+    <string name="behavior_media_lower">音量を下げる - メディアの音量を一時的に下げる</string>
+    <string name="behavior_media_silence">無音 - メディア再生中は読み上げしない</string>
+    <string name="behavior_pause_warning">⚠️ 一時停止モードは、システムの制限により一部のデバイスで動作しない場合があります。</string>
+    <string name="behavior_ducking_volume">🔉 ダッキング音量</string>
+    <string name="behavior_ducking_description">通知中にメディアをどの程度静かにするかを設定</string>
+    <string name="behavior_ducking_warning">⚠️ 一部のデバイスでは、メディア音量を下げると通知音声も下がる場合があります。通知が聞き取りにくい場合は、一時停止モードを試すか、TTS設定を調整してください。</string>
+    <string name="behavior_ducking_tip">ヒント: 値を下げると通知中のメディアが静かになります</string>
+    <string name="behavior_calls_title">📞 電話を尊重</string>
+    <string name="behavior_calls_description">電話中は通知の読み上げを防ぎます</string>
+    <string name="behavior_calls_recommendation">ほとんどのユーザーにお勧め: この機能を有効にする</string>
+    <string name="behavior_calls_checkbox">電話を尊重</string>
+    <string name="behavior_calls_benefits">✨ メリット:\n\n• 重要な通話中の中断を防ぐ\n• 会話のプライバシーを尊重\n• すべてのタイプの電話で動作\n• 通話状態の自動検出</string>
+    <string name="behavior_audio_title">🔇 オーディオモードを尊重</string>
+    <string name="behavior_audio_description">デバイスがサウンドモードの時のみ通知を読み上げ（サイレントやバイブレートモードでは読み上げしない）</string>
+    <string name="behavior_audio_recommendation">推奨: この機能を有効にする</string>
+    <string name="behavior_audio_checkbox">オーディオモードを尊重（サウンドのみ）</string>
+    <string name="behavior_audio_benefits">✨ メリット:\n\n• 電話がミュートの時の不要な音声を防ぐ\n• デバイスのオーディオ設定を尊重\n• サイレントとバイブレートモードで動作\n• 聞こえる時のみ通知を再生</string>
+
+
+    <string name="behavior_shake_current">現在のシェイク: 0.0</string>
+    <string name="behavior_shake_threshold">閾値: 12.0</string>
+
+
+    <string name="behavior_wave_threshold">近接閾値</string>
+
+    <string name="behavior_wave_pocket">ポケットモード</string>
+    <string name="behavior_wave_pocket_description">センサーが既に覆われている時（ポケットの中など）は読み上げを続行しますが、読み上げ開始後に覆った場合は停止します</string>
+    <string name="behavior_wave_pocket_checkbox">センサーが覆われている時も読み上げを許可</string>
+    <string name="behavior_custom_apps_title">📱 カスタムアプリ名</string>
+    <string name="behavior_custom_apps_description">通知でのアプリ名の読み上げ方をカスタマイズ</string>
+    <string name="behavior_custom_apps_example">例: Xアプリを「Twitter」として読み上げ</string>
+    <string name="behavior_custom_apps_add">カスタムアプリ名を追加</string>
+    <string name="behavior_delay_title">読み上げ前の遅延</string>
+    <string name="behavior_delay_description">SpeakThatが通知の読み上げを開始する前に短い遅延を追加</string>
+    <string name="behavior_delay_recommendation">ほとんどのユーザーにお勧め: 2秒</string>
+    <string name="behavior_delay_none">なし - すぐに開始</string>
+    <string name="behavior_delay_1s">1秒 - 短い一時停止</string>
+    <string name="behavior_delay_2s">2秒 - 推奨</string>
+    <string name="behavior_delay_3s">3秒 - 反応する時間を追加</string>
+    <string name="behavior_delay_benefits">✨ メリット:\n\n• 通知音との重複を回避\n• シェイクでキャンセルする時間を提供\n• 静かな環境での突然感を軽減\n• 会議や公共の場所に最適</string>
+    <string name="behavior_cooldown_title">通知クールダウン</string>
+    <string name="behavior_cooldown_description">指定した時間内にアプリが複数の通知を読み上げることを防ぐ</string>
+    <string name="behavior_cooldown_recommendation">最適: スパム通知を送るアプリ</string>
+    <string name="behavior_speech_title">読み上げ形式</string>
+    <string name="behavior_speech_description">プレースホルダーを使用して通知の読み上げ方をカスタマイズ</string>
+    <string name="behavior_speech_recommendation">通知体験をカスタマイズ</string>
+    <string name="behavior_speech_preset">形式プリセット:</string>
+    <string name="behavior_speech_custom">カスタム形式:</string>
+    <string name="behavior_speech_preview">プレビュー: メッセージがあなたに通知しました: Mitchi: SpeakThatを使っていると聞きました！</string>
+    <string name="behavior_speech_placeholders">一般的なプレースホルダー: {app}, {content}, {time}, {title}, {text}, {priority}, {category}</string>
+    <string name="button_start_test">テスト開始</string>
+    <string name="button_test">テスト</string>
+    <string name="button_add">追加</string>
+    <string name="label_gentle">優しく</string>
+    <string name="label_strong">強く</string>
+    <string name="label_5s">5秒</string>
+    <string name="label_5m">5分</string>
+    <string name="label_30_percent">30%</string>
+    <string name="label_90_percent">90%</string>
+    <string name="volume_mute">ミュート</string>
+    <string name="volume_loud">大音量</string>
+    <string name="volume_30_percent">30%</string>
+    
+    <!-- Voice Settings Strings -->
+    <string name="voice_characteristics">音声特性</string>
+    <string name="voice_speech_rate">読み上げ速度</string>
+    <string name="voice_pitch">音声ピッチ</string>
+    <string name="voice_tts_volume">TTS音量</string>
+    <string name="voice_language_section">言語 &amp; 音声</string>
+    <string name="voice_language_preset">言語プリセット</string>
+    <string name="voice_language_preset_description">言語を選択してください。これにより、アプリのインターフェースとテキスト読み上げ言語が同時に設定され、最高の体験を提供します。</string>
+    <string name="voice_preset_recommendation">これはほとんどのユーザーに必要なすべてです。個別設定をカスタマイズするには、以下の高度な音声オプションを使用してください。</string>
+    <string name="voice_help_translate">SpeakThatの翻訳を手伝う！</string>
+    <string name="voice_help_translate_description">翻訳メールを送信するにはタップ</string>
+    <string name="voice_show_advanced">高度な音声オプションを表示</string>
+    <string name="voice_advanced_label">⚙️ 高度</string>
+    <string name="voice_tts_language_advanced">TTS言語（高度）</string>
+    <string name="voice_tts_language_description">アプリフレーズ（「通知しました:」など）の言語を上書きします。UIとTTSフレーズで異なる言語が必要でない限り、デフォルトのままにしてください。</string>
+    <string name="voice_specific_voice_advanced">特定の音声（高度）</string>
+    <string name="voice_specific_voice_description">特定の音声エンジンを選択します。これは上記の言語設定を上書きします。上級ユーザーのみ。</string>
+    <string name="voice_tap_for_details">詳細はタップ</string>
+    <string name="voice_advanced_recommendation">推奨: まず言語設定を試してください。特定の音声エンジンが必要な場合のみ特定の音声を使用してください。\n\n問題が発生した場合は、以下で設定をリセットできます！</string>
+    <string name="voice_reset_warning">問題が発生した場合は、以下で設定をリセットできます！</string>
+    <string name="label_0_1x">0.1倍</string>
+    <string name="label_3_0x">3.0倍</string>
+    <string name="label_1_0x">1.0倍</string>
+    <string name="label_2_0x">2.0倍</string>
+    <string name="label_0_percent">0%</string>
+    <string name="label_100_percent">100%</string>
+    <string name="arrow_right">›</string>
+    
+    <!-- Main Activity Strings -->
+    <string name="main_version_placeholder">バージョン x.x.x</string>
+    <string name="main_author">by Mitchi</string>
+    <string name="main_service_active">SpeakThat! アクティブ</string>
+    <string name="main_service_enable">通知読み上げを有効にするにはタップ</string>
+    <string name="main_notification_permissions">通知権限:</string>
+    
+    <!-- Settings Activity Strings -->
+    <string name="settings_general_title">一般設定</string>
+    <string name="settings_general_description">アプリの設定、テーマ設定</string>
+    <string name="settings_voice_title">音声設定</string>
+    <string name="settings_voice_description">テキスト読み上げ音声と速度</string>
+    <string name="settings_behavior_title">動作設定</string>
+    <string name="settings_behavior_description">通知をいつ、どのように読み上げるか</string>
+    <string name="settings_filter_title">フィルター設定</string>
+    <string name="settings_filter_description">読み上げるアプリを選択</string>
+    <string name="settings_rules_title">条件ルール</string>
+    <string name="settings_rules_description">Bluetooth、時間スケジュールなどを設定</string>
+    <string name="settings_development_title">開発設定</string>
+    <string name="settings_development_description">デバッグツールとログシステム</string>
+    <string name="settings_rerun_onboarding">オンボーディングを再実行</string>
+    <string name="settings_rerun_onboarding_description">アプリの紹介を再度見る</string>
+    <string name="settings_support_title">サポート &amp; フィードバック</string>
+    <string name="settings_support_description">ヘルプの取得、バグ報告、機能リクエスト</string>
+    <string name="settings_donate_title">寄付</string>
+    <string name="settings_donate_description">開発をサポートし、アプリを無料に保つ</string>
+    
     <!-- Critical Hardcoded Strings - Dialog Messages -->
     <string name="dialog_message_theme_changed">The theme has been changed. For the best experience, you may want to restart the app manually.</string>
     <string name="dialog_message_export_successful">Full configuration exported to:\n%s</string>
@@ -450,6 +614,562 @@
     <string name="select_configuration_file">設定ファイルを選択</string>
     <string name="save_rule">保存</string>
     <string name="update_rule">更新</string>
+    <!-- Behavior Settings - Media Volume -->
+    <string name="behavior_media_volume_tip">ヒント: 値を下げると通知中のメディア音量が小さくなります</string>
+    
+    <!-- Behavior Settings - Do Not Disturb -->
+    <string name="section_honor_dnd">マナーモードを尊重</string>
+    <string name="behavior_dnd_description">デバイスのマナーモードを尊重し、有効時は通知を静音にします</string>
+    <string name="behavior_dnd_recommendation">ほとんどのユーザーに推奨：この機能を有効にする</string>
+    <string name="behavior_dnd_switch_label">マナーモードを尊重</string>
+    <string name="behavior_dnd_benefits">✨ メリット:\n\n• デバイスのマナーモード設定を尊重\n• 会議、睡眠、静寂な時間に最適\n• スケジュールされたマナーモードと手動有効化に対応\n• 必要時にプライバシーと集中を維持</string>
+    
+    <!-- Behavior Settings - Phone Calls -->
+    <string name="section_honor_phone_calls">通話を尊重</string>
+    <string name="behavior_phone_calls_description">通話中は通知の読み上げを防止します</string>
+    
+    <!-- Behavior Settings - Notification Deduplication -->
+    <string name="section_notification_deduplication">通知の重複排除</string>
+    <string name="behavior_phone_calls_recommendation">ほとんどのユーザーに推奨：この機能を有効にする</string>
+    <string name="behavior_phone_calls_switch_label">通話を尊重</string>
+    <string name="behavior_phone_calls_benefits">✨ メリット:\n\n• 重要な通話中の中断を防止\n• 会話のプライバシーを尊重\n• すべての種類の通話に対応\n• 通話状態の自動検出</string>
+    
+    <!-- Behavior Settings - Audio Mode -->
+    <string name="section_honor_audio_mode">音量モードを尊重</string>
+    <string name="behavior_audio_mode_description">デバイスが音声モード時のみ通知を読み上げ（サイレントやバイブレートではない）</string>
+    <string name="behavior_audio_mode_recommendation">推奨：この機能を有効にする</string>
+    <string name="behavior_audio_mode_switch_label">音量モードを尊重（音声のみ）</string>
+    <string name="behavior_audio_mode_benefits">✨ メリット:\n\n• 電話がミュート時の不要な音声を防止\n• デバイスの音声設定を尊重\n• サイレントおよびバイブレートモードに対応\n• 聞こえる時のみ通知を再生</string>
+    
+    <!-- Behavior Settings - Shake to Stop -->
+    <string name="section_shake_to_stop">シェイクで停止</string>
+    <string name="behavior_shake_description">デバイスを振ることで読み上げを即座に停止</string>
+    <string name="behavior_shake_recommendation">ほとんどのユーザーに推奨：この機能を有効にする</string>
+    <string name="behavior_shake_switch_label">シェイクで停止を有効</string>
+    <string name="behavior_shake_intensity_label">シェイク強度</string>
+    <string name="behavior_shake_intensity_description">読み上げを停止するのに必要な振る強さを調整</string>
+    <string name="behavior_shake_test_label">シェイクテスト</string>
+    <string name="behavior_shake_test_description">シェイク強度をテストしてトリガー閾値を確認</string>
+    
+    <!-- Behavior Settings - Wave to Stop -->
+    <string name="section_wave_to_stop">👋 ウェーブで停止</string>
+    <string name="behavior_wave_description">近接センサーに手を振ることで読み上げを停止</string>
+    <string name="behavior_wave_recommendation">推奨：この機能を有効にする</string>
+    <string name="behavior_wave_switch_label">ウェーブで停止を有効</string>
+    <string name="behavior_wave_benefits">✨ メリット:\n\n• 読み上げを停止する無音ジェスチャー\n• 静かな環境で動作\n• 物理的接触不要\n• 素早く便利な操作</string>
+    
+    <!-- Behavior Settings - Additional Labels -->
+    <string name="label_calibrate">キャリブレート</string>
+    <string name="label_test_shake">シェイクテスト</string>
+    <string name="label_test_wave">ウェーブテスト</string>
+    
+    <!-- Voice Settings - Additional Strings -->
+    <string name="voice_help_translate_button">SpeakThat の翻訳を手伝う！</string>
+    <string name="voice_help_translate_description_button">翻訳メールを送信するにはタップ</string>
+    <string name="voice_advanced_options_show">高度な音声オプションを表示</string>
+    <string name="voice_tts_language_label">TTS 言語（高度）</string>
+    <string name="voice_specific_voice_label">特定の音声（高度）</string>
+    <string name="voice_reset_button">音声設定をリセット</string>
+    <string name="voice_test_button">音声テスト</string>
+    
+    <!-- Filter Settings Strings -->
+    <string name="filter_app_list_title">アプリリストフィルタリング</string>
+    <string name="filter_app_list_description">通知をトリガーできるアプリを制御</string>
+    <string name="filter_no_filtering">アプリフィルタリングなし</string>
+    <string name="filter_whitelist">ホワイトリスト（選択したアプリのみ）</string>
+    <string name="filter_blacklist">ブラックリスト（選択したアプリを除外）</string>
+    <string name="filter_manage_apps">アプリを管理：</string>
+    <string name="filter_app_list_button">📋 アプリリスト</string>
+    <string name="filter_app_count">（0 アプリ）</string>
+    <string name="filter_search_description">名前またはパッケージでインストール済みアプリを検索。提案をクリックして即座に追加。（詳細はタップ）</string>
+    <string name="filter_word_blacklist_title">単語ブラックリスト</string>
+    <string name="filter_word_blacklist_description">特定の単語を含む通知をブロックまたはプライベート化</string>
+    <string name="filter_word_blacklist_info">ブロック = 完全にスキップ、プライベート = 非公開でアナウンス</string>
+    <string name="filter_blacklisted_words">📋 ブラックリスト単語</string>
+    
+    <!-- General Settings Strings -->
+    <string name="general_theme_title">テーマ</string>
+    <string name="general_dark_mode">ダークモード</string>
+    <string name="general_dark_mode_description">このアプリのダークモードを有効にする</string>
+    <string name="general_app_behavior_title">アプリの動作とパフォーマンス</string>
+    <string name="general_auto_start">起動時に自動開始</string>
+    <string name="general_auto_start_description">デバイス起動時に通知サービスを自動的に開始</string>
+    <string name="general_battery_optimization">バッテリー最適化の除外</string>
+    <string name="general_battery_optimization_description">信頼性向上のためバッテリー最適化からアプリを除外</string>
+    <string name="general_aggressive_background">積極的なバックグラウンド処理</string>
+    <string name="general_aggressive_background_description">バックグラウンドでより積極的に通知を処理（バッテリー消費増加）</string>
+    <string name="general_service_restart_policy">サービス再起動ポリシー</string>
+    <string name="general_service_restart_description">通知サービスはいつ自動的に再起動すべきか？</string>
+    <string name="general_never_restart">自動再起動しない</string>
+    <string name="general_restart_on_crash">クラッシュ時のみ再起動</string>
+    <string name="general_restart_periodically">定期的に再起動（6時間ごと）</string>
+    <string name="general_notification_settings_title">通知設定</string>
+    <string name="general_persistent_notification">永続通知</string>
+    <string name="general_persistent_notification_description">SpeakThatがアクティブな時に永続通知を表示</string>
+    <string name="general_notification_while_reading">読み上げ中の通知</string>
+    <string name="general_notification_while_reading_description">TTSがアクティブに読み上げている時に通知を表示</string>
+    <string name="general_data_management_title">データ管理</string>
+    <string name="general_export_configuration">設定をエクスポート</string>
+    <string name="general_export_configuration_description">すべての設定をファイルに保存</string>
+    <string name="general_import_configuration">設定をインポート</string>
+    <string name="general_import_configuration_description">ファイルから設定を読み込み</string>
+    <string name="general_reset_settings">すべての設定をデフォルトにリセット</string>
+    <string name="general_verify_settings">すべての設定を確認</string>
+    <string name="general_verify_settings_description">包括的なテストを実行してすべての設定が正常に動作することを確認</string>
+    
+    <!-- Exception Configuration -->
+    <string name="exception_set_end_time">終了時刻を設定</string>
+    <string name="exception_no_days_selected">日が選択されていません</string>
+    <string name="exception_bluetooth_devices_title">この例外をトリガーするBluetoothデバイスを選択してください：</string>
+    <string name="exception_specific_devices">特定のデバイス（1行に1つ）：</string>
+    <string name="exception_select_devices">デバイスを選択</string>
+    <string name="exception_wifi_networks_title">この例外をトリガーするWiFiネットワークを選択してください：</string>
+    <string name="exception_specific_networks">特定のネットワーク（1行に1つ）：</string>
+    <string name="exception_select_networks">ネットワークを選択</string>
+    
+    <!-- Rules Activity -->
+    <string name="rules_no_rules_created">ルールが作成されていません</string>
+    <string name="rules_create_first_rule_description">デバイスの状態、時間、または接続に基づいてSpeakThatが通知を読み上げるタイミングを制御する最初のルールを作成してください。</string>
+    <string name="rules_create_first_rule_button">最初のルールを作成</string>
+    
+    <!-- Rule Builder -->
+    <string name="rule_builder_logic_and">AND</string>
+    <string name="rule_builder_logic_or">OR</string>
+    <string name="rule_builder_logic_xor">XOR</string>
+    <string name="rule_builder_actions_title">アクション</string>
+    <string name="rule_builder_actions_description">トリガーが満たされたときに何が起こるか</string>
+    <string name="rule_builder_exceptions_title">例外</string>
+    <string name="rule_builder_exceptions_description">トリガーをオーバーライドする条件（オプション）</string>
+    <string name="rule_builder_save_rule">ルールを保存</string>
+    
+    <!-- Trigger Configuration -->
+    <string name="trigger_set_button">設定</string>
+    <string name="trigger_no_days_selected">日が選択されていません</string>
+    <string name="trigger_bluetooth_devices_title">このルールをトリガーするBluetoothデバイスを選択してください：</string>
+    <string name="trigger_any_bluetooth_device">任意のBluetoothデバイス</string>
+    <string name="trigger_any_bluetooth_description">任意のデバイスが接続されたときにトリガー</string>
+    <string name="trigger_specific_devices">特定のデバイス（1行に1つ）：</string>
+    <string name="trigger_select_devices">デバイスを選択</string>
+    <string name="trigger_wifi_networks_title">このルールをトリガーするWiFiネットワークを選択してください：</string>
+    <string name="trigger_any_wifi_network">任意のWiFiネットワーク</string>
+    <string name="trigger_any_wifi_description">任意のネットワークに接続されたときにトリガー</string>
+    <string name="trigger_specific_networks">特定のネットワーク（1行に1つ）：</string>
+    <string name="trigger_select_networks">ネットワークを選択</string>
+    
+        <!-- Wave Calibration -->
+    <string name="wave_calibration_recalibrate">再キャリブレーション</string>
+    <string name="wave_calibration_save_settings">これで動作します！設定を保存</string>
+    <string name="wave_calibration_disable">ウェーブ停止機能をオフ</string>
+    
+    <!-- Voice Settings - Audio Output -->
+    <string name="voice_audio_output_settings">音声出力設定</string>
+    <string name="voice_audio_output_description">通知がデバイスの音声システムを通じて再生される方法を設定します。</string>
+    <string name="voice_audio_stream_type">音声ストリームタイプ</string>
+    <string name="voice_content_type">コンテンツタイプ</string>
+    <string name="voice_content_type_description">システムにどのような種類の音声かを伝えます。通知には音声が推奨されます。</string>
+    <string name="voice_audio_recommendation">推奨：通知 + 音声</string>
+    <string name="voice_preview_actions">プレビュー &amp; アクション</string>
+    <string name="voice_preview_button">プレビュー</string>
+    <string name="voice_test_settings">音声設定をテスト</string>
+    <string name="voice_reset_defaults">デフォルトにリセット</string>
+    <string name="voice_preview_tip">ヒント：プレビューボタンを使用して、設定した音声設定で通知がどのように聞こえるかをテストしてください。すべての変更は自動的に保存されます。</string>
+    
+    <!-- Filter Settings -->
+    <string name="filter_word_count">(0単語)</string>
+    <string name="filter_swap_description">通知の単語を検閲や発音修正のために交換</string>
+    <string name="filter_swap_count">(0交換)</string>
+    <string name="filter_swap_tip">ヒント：大文字小文字を区別しないマッチングには小文字を使用してください。\'Swap with\'を空にすると、単語を完全に削除できます。</string>
+    <string name="filter_media_description">YouTubeのようなアプリで、不要な通知（メディアコントロール）を自動的にフィルタリングし、必要な通知（コメントへの返信など）を許可</string>
+    <string name="filter_media_enable">スマートメディア通知フィルタリングを有効にする</string>
+    <string name="filter_media_apps_title">フィルタリングされたメディアアプリ：</string>
+    <string name="filter_media_apps_description">メディア通知用に自動的にフィルタリングされるアプリ。フィルタリングしたいメディアアプリを追加してください。</string>
+    <string name="filter_advanced_options">詳細オプション</string>
+    <string name="filter_exception_apps_title">例外アプリ：</string>
+    <string name="filter_exception_apps_description">通知がフィルタリングされるべきではないアプリ（返信用のYouTubeなど）</string>
+    <string name="filter_important_keywords_title">重要なキーワード：</string>
+    <string name="filter_important_keywords_description">重要な通知を示す単語（\'返信\'、\'コメント\'など）</string>
+    <string name="filter_media_info">メディアコントロールを自動的にフィルタリングし、重要な通知を保持します。（詳細はタップ）</string>
+    
+    <!-- Dialog Strings - Donate -->
+    <string name="donate_coffee">☕</string>
+    <string name="donate_theatre">🎭</string>
+    <string name="donate_octopus">🐙</string>
+    <string name="donate_bitcoin">₿</string>
+    <string name="donate_github_sponsors">GitHub Sponsors</string>
+    <string name="donate_github_description">オープンソース開発をサポート</string>
+    <string name="donate_bitcoin_title">Bitcoin (BTC)</string>
+    <string name="donate_bitcoin_description">Bitcoinネットワーク経由でBTCを寄付</string>
+    <string name="donate_privacy">🔒 プライバシー：すべての寄付はそれぞれのプラットフォームで処理されます。支払い情報を収集または保存することはありません。</string>
+    <string name="donate_friendly_message">ヒント！親切なメールを送ることもできます。素敵なメッセージはいつも私の一日を明るくします！ :)</string>
+    
+    <!-- Dialog Strings - Filter Suggestion -->
+    <string name="filter_suggestion_smart_pattern">スマートパターン（推奨）</string>
+    <string name="filter_suggestion_smart_preview">プレビュー：位置情報を更新中...</string>
+    <string name="filter_suggestion_keywords">キーワードのみ</string>
+    <string name="filter_suggestion_keywords_preview">プレビュー：位置情報を更新中</string>
+    <string name="filter_suggestion_exact_match">完全一致</string>
+    <string name="filter_suggestion_exact_preview">プレビュー：午後2:30に位置情報を更新中...</string>
+    <string name="filter_suggestion_all_notifications">このアプリからのすべての通知</string>
+    <string name="filter_suggestion_all_preview">プレビュー：すべてのLife360通知をブロック</string>
+    <string name="filter_suggestion_action">アクション：</string>
+    <string name="filter_suggestion_block_completely">完全にブロック</string>
+    <string name="filter_suggestion_make_private">プライベートにする</string>
+    <string name="filter_suggestion_create_filter">フィルターを作成</string>
+    
+    <!-- Dialog Strings - Support & Feedback -->
+    <string name="support_chat">💬</string>
+    <string name="icon_refresh">🔄</string>
+    <string name="support_lightbulb">💡</string>
+    <string name="support_bug">🐛</string>
+    <string name="support_question">❓</string>
+    <string name="support_general_title">一般的なサポート</string>
+    <string name="support_general_description">セットアップ、使用方法、または一般的な質問についてのヘルプ</string>
+    <string name="support_clipboard">📋</string>
+    <string name="support_include_logs">デバッグログを含める</string>
+    <string name="support_logs_description">バグレポートや技術的な問題に推奨されます。デバッグログは問題の特定と修正を迅速に行うのに役立ちます。\nログには通知内容の情報が含まれる場合があります！送信前にログを確認してください。</string>
+    <string name="support_log_entries">現在のログエントリ：0</string>
+    <string name="support_logs_privacy">🔒 プライバシー：デバッグログは共有を選択しない限りデバイスに残ります。メールを送信する前にログ内容を確認できます。</string>
+    
+    <!-- Action Configuration -->
+    <string name="action_configure_voice_settings">このルールがトリガーされたときに適用する音声設定を構成：</string>
+    
+    <!-- Behavior Settings -->
+    <string name="behavior_speech_preview_example">プレビュー：メッセージがあなたに通知しました：Mitchi: SpeakThatを使用していると聞きました！</string>
+    
+    <!-- Rules Activity -->
+    <string name="rules_wrench_icon">ルール</string>
+    
+    <!-- Exception Configuration -->
+    <string name="exception_any_bluetooth_device">任意のBluetoothデバイス</string>
+    <string name="exception_any_wifi_network">任意のWiFiネットワーク</string>
+    
+    <string name="dialog_support_title">サポート &amp; フィードバック</string>
+    <string name="dialog_support_description">今日はどのようなお手伝いができますか？あなたのニーズに最も適したオプションを選択してください：</string>
+    <string name="dialog_support_feature_request">機能リクエスト</string>
+    <string name="dialog_support_feature_description">新機能や改善を提案</string>
+    <string name="dialog_support_bug_report">バグレポート</string>
+    <string name="dialog_support_bug_description">クラッシュ、エラー、予期しない動作を報告</string>
+    
+    <!-- Dialog Strings - Donate -->
+    <string name="dialog_donate_title">SpeakThat をサポート！</string>
+    <string name="dialog_donate_message">こんにちは！Mitchi です。SpeakThat の制作には多くの作業が含まれています！UI/UX デザイン、品質保証とテスト、プロジェクト管理、配布と公開、アプリストアへの対応、ユーザーサポートなど、数え切れないほどの作業を担当しています！\n\nSpeakThat があなたのお役に立った場合、または有料でも購入していただけるような価値があると感じていただけた場合は、開発をサポートしていただければ幸いです！\n\nすべての寄付により、このアプリは必要とするすべての人にとって完全に無料でオープンソースのまま維持されます。\n\nありがとうございます！❤️</string>
+    <string name="dialog_donate_coffee">コーヒーをおごる</string>
+    <string name="dialog_donate_coffee_description">Ko-fi 経由でのクイック一回限りの寄付</string>
+    <string name="dialog_donate_patron">パトロンになる</string>
+    <string name="dialog_donate_patron_description">限定アップデート付きの月額サポート</string>
+    
+    <!-- Development Settings -->
+    <string name="dev_debug_tools_title">🛠️ デバッグツール</string>
+    <string name="dev_debug_tools_description">アプリのデバッグとテスト用ツール</string>
+    <string name="dev_notification_history">📋 通知履歴を表示</string>
+    <string name="dev_analytics">📊 ヘルプ使用分析を表示</string>
+    <string name="dev_battery_report">🔋 バッテリー最適化レポート</string>
+    <string name="dev_repair_blacklist">🛠️ 単語ブラックリストを修復</string>
+    <string name="dev_background_monitor">🛰️ バックグラウンドプロセスモニター</string>
+    <string name="dev_installation_debug">🔍 インストールソースデバッグ</string>
+    <string name="dev_test_rules">🧪 ルールシステムテスト</string>
+    
+    <!-- Notification History -->
+    <string name="notification_history_title">通知履歴</string>
+    <string name="notification_history_description">SpeakThat で処理された最近の通知</string>
+    <string name="notification_history_empty">表示する通知はありません</string>
+    <string name="notification_history_clear">履歴をクリア</string>
+    <string name="notification_history_recent">📜 最近の通知</string>
+    <string name="notification_history_loading">通知履歴を読み込み中...</string>
+    <string name="notification_history_debug_info">デバッグ情報</string>
+    <string name="notification_history_debug_description">この画面は、デバッグ目的で SpeakThat! がキャプチャした通知を表示します。アプリが正しく動作していることを確認し、読み上げられている通知を正確に確認するのに役立ちます。</string>
+    
+    <!-- Additional Dialog Strings -->
+    <string name="dialog_filter_suggestion_title">類似通知をフィルタ</string>
+    <string name="dialog_filter_suggestion_original">元の通知：</string>
+    <string name="dialog_filter_suggestion_sample">サンプル通知テキスト</string>
+    <string name="dialog_filter_suggestion_choose">フィルタタイプを選択：</string>
+    <string name="dialog_wifi_config_title">WiFi設定</string>
+    <string name="dialog_time_schedule_title">時間スケジュール設定</string>
+    <string name="dialog_bluetooth_config_title">Bluetooth設定</string>
+    
+    <!-- Rules Activity -->
+    <string name="rules_title">ルール</string>
+    <string name="rules_description">デバイスの状態、時間、接続に基づいて SpeakThat が通知を読み上げるタイミングを制御する強力なルールを作成。</string>
+    <string name="rules_enable">ルールを有効</string>
+    <string name="rules_create_new">新しいルールを作成</string>
+    
+    <!-- Onboarding -->
+    <string name="onboarding_skip">スキップ</string>
+    <string name="onboarding_next">次へ</string>
+    
+    <!-- Language and Theme Onboarding -->
+    <string name="onboarding_language_theme_title">言語とテーマ</string>
+    <string name="onboarding_language_theme_description">SpeakThatが使用する言語を選択してください。必要に応じてダークモードを有効にすることもできます。</string>
+    <string name="onboarding_language_section_title">言語</string>
+    <string name="onboarding_language_help_title">お使いの言語がリストにありませんか？</string>
+    <string name="onboarding_language_help_description">できる限り多くの言語をサポートするよう努めています。可能でしたら、Crowdinページで翻訳にご協力ください！</string>
+    <string name="onboarding_theme_section_title">テーマ</string>
+    <string name="onboarding_theme_description">このアプリでダークモードを使用</string>
+    <string name="onboarding_theme_light">ライトモード</string>
+    <string name="onboarding_theme_dark">ダークモード</string>
+    
+    <!-- Onboarding Page Titles and Descriptions -->
+    <string name="onboarding_welcome_title">SpeakThatへようこそ！</string>
+    <string name="onboarding_welcome_description">画面を見つめずに接続を保ちましょう。お使いの電話が通知を音読するので、重要なことに集中できます。</string>
+    
+    <string name="onboarding_permission_title">通知アクセスが必要です</string>
+    <string name="onboarding_permission_description">SpeakThatは通知を音読するための許可が必要です。\n\n🔒 すべてはお使いのデバイスに保存されます\n📱 データは私たちや他の誰にも送信されません\n⚙️ 何を読むかはあなたが制御します\n💬 許可されたもののみを読みます\n💡 ヒント：リストで「SpeakThat」をタップして有効にしてください</string>
+    
+    <string name="onboarding_privacy_title">あなたのプライバシーは重要です</string>
+    <string name="onboarding_privacy_description">🔒 何が音読されるかを正確に制御できます\n\n📱 電話を振ると、どのアナウンスも即座に停止できます\n\n⚙️ アプリ、単語、通知タイプをフィルタリング\n\n🔐 すべてはお使いのデバイスに保存されます</string>
+    
+    <string name="onboarding_filters_title">基本的なフィルターを設定しましょう</string>
+    <string name="onboarding_filters_description">SpeakThatは何を読むか何を読まないかを選択できる強力なフィルタリングシステムを備えています。\n\n基本的なプライバシーフィルターを設定して始めましょう。</string>
+    
+    <string name="onboarding_apps_title">機密アプリをブロック</string>
+    <string name="onboarding_apps_description">通知を絶対に読んでほしくないアプリの名前を入力してください。\n\n一般的な例：銀行アプリ、医療アプリ、デートアプリ</string>
+    
+    <string name="onboarding_words_title">機密単語をブロック</string>
+    <string name="onboarding_words_description">通知に含まれる読んでほしくない単語やフレーズを入力してください！\n\n一般的な例：パスワード、PIN、クレジットカード、医療用語</string>
+    
+    <string name="onboarding_rules_title">スマートルールを設定</string>
+    <string name="onboarding_rules_description">状況に基づいて通知が読み上げられるタイミングを自動制御するスマートルールを設定します。\n\n例えば、ヘッドフォンが接続されている時のみ通知を読み上げる、または画面がオンの時は通知をスキップするなど。</string>
+    
+    <string name="onboarding_complete_title">準備完了です！</string>
+    <string name="onboarding_complete_description">SpeakThatは目を自由に保ちながら接続を維持するお手伝いの準備ができています！\n\n💡 アプリ設定でいつでもフィルターを追加できます。</string>
+    
+
+    
+    <!-- Trigger Configuration -->
+    <string name="trigger_screen_state">画面状態</string>
+    <string name="trigger_screen_choose">このトリガーが作動するタイミングを選択：</string>
+    <string name="trigger_invert_condition">条件を反転</string>
+    <string name="trigger_time_schedule">時間スケジュール</string>
+    <string name="trigger_time_description">このトリガーが作動する時間範囲を設定：</string>
+    
+    <!-- Rule Builder -->
+    <string name="rule_builder_info_icon">情報</string>
+    <string name="rule_builder_description">ルールは各通知の条件をチェックします。状態変更を記憶せず、リアルタイムで通知をフィルタリングします。</string>
+    <string name="rule_builder_name_label">ルール名</string>
+    <string name="rule_builder_triggers_label">トリガー</string>
+    <string name="rule_builder_triggers_description">このルールを有効にするために満たす必要がある条件</string>
+    <string name="rule_builder_logic_label">ロジック：</string>
+    
+    <!-- Exception Configuration -->
+    <string name="exception_screen_state">画面状態</string>
+    <string name="exception_screen_choose">この例外が適用されるタイミングを選択：</string>
+
+    <string name="exception_time_schedule">時間スケジュール</string>
+    <string name="exception_time_choose">この例外が適用されるタイミングを選択：</string>
+    
+    <!-- Action Configuration -->
+    <string name="action_disable_speakthat">SpeakThat を無効</string>
+    <string name="action_disable_description">このアクションは、ルールがトリガーされた時に SpeakThat を完全に無効にします。</string>
+    <string name="action_enable_app_filter">アプリフィルタを有効</string>
+    <string name="action_enable_app_description">フィルタリングを有効にするアプリを選択：</string>
+    <string name="action_select_app">アプリを選択</string>
+    <string name="action_disable_app_filter">アプリフィルタを無効</string>
+    <string name="action_disable_app_description">フィルタリングを無効にするアプリを選択：</string>
+    
+    <!-- Wave Calibration -->
+    <string name="wave_calibration_title">ウェーブ検出セットアップ</string>
+    <string name="wave_calibration_description">デバイスを調整して手の振りを検出し、通知を静音</string>
+    <string name="wave_calibration_ready">ウェーブ検出のキャリブレーション準備完了</string>
+    <string name="wave_calibration_threshold">閾値：3.2cm（5.3cm の 60%）</string>
+    <string name="wave_calibration_how_it_works">💡 動作原理：</string>
+    <string name="wave_calibration_instructions">• 8秒間センサーに手を近づけたり遠ざけたりします\n• 50ms ごとにセンサー読み取り値を記録\n• キャリブレーションには最低20の読み取り値が必要\n• 検出された最大距離の60%に閾値を設定</string>
+    <string name="wave_calibration_start">キャリブレーション開始</string>
+    
+
+    
+    <!-- Bluetooth Condition -->
+    <string name="bluetooth_devices_title">Bluetooth デバイス</string>
+    <string name="bluetooth_devices_description">通知を読み上げるために接続必須の Bluetooth デバイスを選択。</string>
+    <string name="bluetooth_selected_devices">選択済みデバイス</string>
+    <string name="bluetooth_add_device">Bluetooth デバイスを追加</string>
+    <string name="bluetooth_how_it_works">動作原理</string>
+    <string name="bluetooth_instructions">• 選択されたデバイスのうち少なくとも1つが接続されている場合のみ通知が読み上げられます\n\n• デバイスが選択されていない場合、すべての通知が読み上げられます\n\n• デバイスはペアリングされ接続されている必要があります（検出されただけでは不十分）</string>
+    
+    <!-- Dialog Configuration Strings -->
+    <string name="wifi_config_enter_name">WiFi ネットワーク名を入力：</string>
+    <string name="wifi_config_description">WiFi ネットワークの正確な名前（SSID）を入力してください。大文字小文字を含めて完全に一致する必要があります。</string>
+    <string name="wifi_config_tip">💡 ヒント：WiFi 名は携帯電話の WiFi 設定で確認できます</string>
+    
+    <string name="bluetooth_config_select">Bluetooth デバイスを選択：</string>
+    <string name="bluetooth_config_description">このルールで使用するデバイスを選択してください。ペアリング済みのデバイスのみが表示されます。</string>
+    
+    <string name="time_schedule_set">時間スケジュールを設定：</string>
+    <string name="time_schedule_description">このルールがアクティブになる時間を選択してください。</string>
+    <string name="time_schedule_start">開始時刻：</string>
+    <string name="time_schedule_end">終了時刻：</string>
+    <string name="time_schedule_days">曜日：</string>
+    <string name="time_schedule_range">時間範囲</string>
+    <string name="time_schedule_every_day">毎日</string>
+    
+    <!-- Day Names -->
+    <string name="day_monday">月曜日</string>
+    <string name="day_tuesday">火曜日</string>
+    <string name="day_wednesday">水曜日</string>
+    <string name="day_thursday">木曜日</string>
+    <string name="day_friday">金曜日</string>
+    <string name="day_saturday">土曜日</string>
+    <string name="day_sunday">日曜日</string>
+    <string name="day_mon">月</string>
+    <string name="day_tue">火</string>
+    <string name="day_wed">水</string>
+    <string name="day_thu">木</string>
+    <string name="day_fri">金</string>
+    <string name="day_sat">土</string>
+    <string name="day_sun">日</string>
+    
+    <!-- Item Layout Strings -->
+    <string name="item_word_swap_from">置換前</string>
+    <string name="item_word_swap_to">置換後</string>
+    <string name="item_word_swap_arrow"> → </string>
+    
+    <string name="item_bluetooth_device_name">デバイス名</string>
+    <string name="item_bluetooth_mac_address">00:00:00:00:00:00</string>
+    
+    <string name="item_rule_name">ルール名</string>
+    <string name="item_rule_summary">ルール概要</string>
+    <string name="item_rule_example">画面がオンの時、クワイエットアワーが通知読み上げをスキップ</string>
+    
+    <string name="item_notification_app_name">アプリ名</string>
+    <string name="item_notification_time">12:34:56</string>
+    <string name="item_notification_content">通知内容がここに表示されます...</string>
+    <string name="item_notification_filter">類似をフィルタ</string>
+    
+    <string name="item_cooldown_app_name">アプリ名</string>
+    <string name="item_cooldown_package">com.example.app</string>
+    <string name="item_cooldown_no_cooldown">クールダウンなし</string>
+    <string name="item_cooldown_delete">🗑️</string>
+    
+    <!-- More Item Layout Strings -->
+    <string name="item_word_filter_word">単語</string>
+    <string name="item_priority_app_icon">⚡</string>
+    <string name="item_priority_app_name">優先アプリ名</string>
+    <string name="item_action_control">SpeakThat 制御</string>
+    <string name="item_action_disable">SpeakThat を無効</string>
+    <string name="item_app_filter_name">アプリ名</string>
+    <string name="item_app_filter_package">パッケージ名</string>
+    <string name="item_exception_name">例外名</string>
+    <string name="item_exception_summary">例外概要</string>
+    <string name="item_trigger_name">トリガー名</string>
+    <string name="item_trigger_summary">トリガー概要</string>
+    <string name="item_template_name">テンプレート名</string>
+    <string name="item_onboarding_rule_template_name">ルールテンプレート</string>
+    <string name="item_custom_app_name_label">アプリ名</string>
+    <string name="item_custom_app_package">com.example.package</string>
+    <string name="item_onboarding_page_title">ページタイトル</string>
+    <string name="item_onboarding_page_subtitle">ページサブタイトル</string>
+    <string name="item_onboarding_page_description">ページの説明がここに表示されます</string>
+    <string name="item_onboarding_page_button">続行</string>
+    
+    <!-- Dialog Strings -->
+    <string name="dialog_notification_history_title">通知履歴</string>
+    <string name="dialog_notification_history_description">最近の通知を表示</string>
+    
+    <!-- Builder Items -->
+    <string name="item_condition_builder_name">条件名</string>
+    <string name="item_condition_builder_summary">条件概要</string>
+    <string name="item_app_selector_name">アプリ名</string>
+    <string name="item_app_selector_package">com.example.app</string>
+    <string name="item_action_builder_name">アクション名</string>
+    <string name="item_action_builder_summary">アクション概要</string>
+    
+    <!-- Additional Item Strings -->
+    <string name="item_app_filter_private">非公開</string>
+    <string name="item_exception_time_schedule">時間スケジュール</string>
+    <string name="item_exception_time_range">19:00〜07:00の間</string>
+    <string name="item_trigger_bluetooth_device">Bluetooth デバイス</string>
+    <string name="item_trigger_bluetooth_connected">車の Bluetooth に接続</string>
+    
+    <!-- More Item Strings -->
+    <string name="item_template_arrow">→</string>
+    <string name="item_onboarding_rule_template_add">追加</string>
+    <string name="item_custom_app_example_package">com.twitter.android</string>
+    <string name="item_custom_app_example_name">Twitter</string>
+    <string name="item_onboarding_add_app">アプリを追加</string>
+    <string name="item_onboarding_add_word">単語を追加</string>
+    <string name="item_onboarding_choose_template">開始するルールテンプレートを選択：</string>
+    <string name="item_onboarding_notification_settings">通知設定を開く</string>
+    
+    <!-- Final Item Strings -->
+    <string name="dialog_notification_history_tap_info">\'類似をフィルタ\' をタップして、繰り返し通知のスマートフィルタを作成</string>
+    <string name="item_condition_builder_when">条件：</string>
+    <string name="item_condition_builder_remove">✕</string>
+    <string name="item_action_builder_remove">✕</string>
+    <string name="item_action_builder_then">アクション：</string>
+    
+    <!-- Behavior Settings Additional Strings -->
+    <string name="behavior_notification_filtering_title">📱 通知フィルタリング</string>
+    <string name="behavior_notification_filtering_description">通知フィルタリングと処理の高度なオプション</string>
+    <string name="behavior_battery_optimization_title">🔋 バッテリー最適化</string>
+    <string name="behavior_battery_optimization_description">電力消費とパフォーマンス設定の管理</string>
+    <string name="behavior_emergency_mode_title">🚨 緊急モード</string>
+    <string name="behavior_emergency_mode_description">重要な通知の緊急オーバーライド設定</string>
+    <string name="behavior_accessibility_title">♿ アクセシビリティ</string>
+    <string name="behavior_accessibility_description">アクセシビリティと使いやすさを向上させる設定</string>
+    <string name="behavior_advanced_features_title">🛠️ 高度な機能</string>
+    <string name="behavior_advanced_features_description">実験的機能とパワーユーザー向け機能</string>
+    
+    <!-- Wave/Shake Sensor Strings -->
+    <string name="behavior_current_shake">現在の振動: 0.0</string>
+    <string name="behavior_threshold_value">閾値: 12.0</string>
+    <string name="behavior_start_test">テスト開始</string>
+    <string name="behavior_timeout_settings">タイムアウト設定</string>
+    <string name="behavior_timeout_description">バッテリー節約のためジェスチャーを聞き取る時間を設定（自動停止まで）</string>
+    <string name="behavior_timeout_5s">5秒</string>
+    <string name="behavior_timeout_5m">5分</string>
+    <string name="behavior_timeout_current">タイムアウト: 30秒</string>
+    <string name="behavior_disable_timeout">タイムアウトを無効（非推奨）</string>
+
+    <string name="behavior_wave_to_stop_title">手を振って停止</string>
+    <string name="behavior_wave_to_stop_description">デバイスの前で手を振って読み上げを即座に停止</string>
+    <string name="behavior_great_for">最適な環境: デスクユーザー &amp; アクセシビリティ</string>
+    <string name="behavior_enable_wave_stop">手を振って停止を有効</string>
+    <string name="behavior_proximity_threshold">近接閾値</string>
+    
+    <!-- Major Missing Section Titles -->
+    <string name="behavior_custom_app_names_title">📱 カスタムアプリ名</string>
+    <string name="dev_logging_configuration_title">📝 ログ設定</string>
+    <string name="filter_word_swap_title">単語置換</string>
+    <string name="filter_word_swaps_header">📋 単語置換</string>
+    <string name="voice_language_preset_title">言語プリセット</string>
+    
+    <!-- Audio Ducking Warnings -->
+    <string name="behavior_audio_ducking_warning">オーディオダッキングはデバイスとAndroidバージョンによって動作が異なります。一部のデバイスでは特定のアプリやオーディオストリームが正しくダッキングされない場合があります。</string>
+    <string name="behavior_audio_ducking_tip">ダッキングが正常に動作しない場合：音声設定で異なるオーディオストリームを試してください（「音声通話」や「通知」が最適です）。音楽と一緒にTTSもダッキングされる可能性があるため、「メディア」ストリームは避けてください。</string>
+    <string name="behavior_audio_ducking_system">アプリは利用可能な場合は高度なシステムダッキングを自動的に使用し、最大の互換性のためにスムーズな手動ダッキングをバックアップとして使用します。</string>
+    <string name="behavior_audio_ducking_hint">ヒント: 値を下げると通知中のメディア音量が小さくなります</string>
+    
+    <!-- Wave Detection Settings -->
+    <string name="behavior_wave_threshold_description">手を振って停止をトリガーするセンサーの最大距離のパーセンテージを設定します（キャリブレーションが必要）</string>
+    <string name="behavior_wave_threshold_30">30%</string>
+    <string name="behavior_wave_threshold_90">90%</string>
+    <string name="behavior_wave_test_button">手振りテスト</string>
+    <string name="behavior_wave_test_description">手振り検出をテストします。バイナリセンサーは0（近い）または最大（遠い）を表示します。</string>
+    <string name="behavior_wave_sensor_info">スマートフォンによって動作が異なります - 「近い」や「遠い」のみを認識するものもあれば、その間の全てを認識するものもあります。\n \nこのバーが極値にのみ移動するのは正常です！</string>
+    <string name="behavior_wave_current_proximity">現在の近接距離: 5.0 cm</string>
+    <string name="behavior_wave_current_threshold">閾値: 5.0 cm</string>
+    <string name="behavior_wave_recalibrate">手振り検出を再キャリブレート</string>
+    
+    <!-- Rule Configuration - Exception Settings -->
+    <string name="exception_invert_condition">条件を反転</string>
+    <string name="exception_invert_description">条件が満たされない場合の例外</string>
+    <string name="exception_start_time_label">開始時刻:</string>
+    <string name="exception_start_time_default">19:00</string>
+    <string name="exception_end_time_label">終了時刻:</string>
+    <string name="exception_end_time_default">07:00</string>
+    <string name="exception_set_start_time">開始時刻を設定</string>
+    
+    <!-- Rule Configuration - Trigger Settings -->
+    <string name="trigger_invert_description">条件が満たされない場合にトリガー</string>
+    <string name="trigger_time_schedule_title">🕐 時間スケジュール</string>
+    <string name="trigger_time_schedule_description">このトリガーがアクティブになる時間範囲を設定:</string>
+    <string name="trigger_start_time_label">開始時刻:</string>
+    <string name="trigger_start_time_default">09:00</string>
+    <string name="trigger_end_time_label">終了時刻:</string>
+    <string name="trigger_end_time_default">17:00</string>
+    
+
+
     <!-- Conditional Rules - Trigger Strings -->
     <string name="rule_trigger_wifi_network">WiFiネットワークに接続: %1$s</string>
     <string name="rule_trigger_not_wifi_network">WiFiネットワークに接続していません： %1$s</string>
@@ -460,4 +1180,31 @@
     <!-- Conditional Rules - Exception Strings -->
     <string name="rule_exception_wifi_network">WiFiネットワークに接続: %1$s</string>
     <string name="rule_exception_not_wifi_network">WiFiネットワークに接続していません： %1$s</string>
+    
+    <!-- Language Change Dialog -->
+    <string name="dialog_title_language_changed">言語が変更されました</string>
+    <string name="dialog_message_language_changed">アプリの言語が%1$sから%2$sに変更されました。\n\n• 今すぐ適用：この画面をすぐに更新します\n• アプリを再起動：すべての画面とサービスが新しい言語を使用することを保証します\n\n最高の体験のために、アプリの再起動をお勧めします。</string>
+    <string name="button_restart_app">アプリを再起動</string>
+    <string name="button_apply_now">今すぐ適用</string>
+    <string name="toast_language_restarting">新しい言語でアプリを再起動中...</string>
+    <string name="toast_language_manual_restart">アプリを再起動すると、言語が完全に適用されます</string>
+    
+    <!-- Hint Strings -->
+    <string name="hint_app_package_name">アプリパッケージ名</string>
+    <string name="hint_search_apps_or_package">アプリを検索するか、パッケージ名を入力</string>
+    <string name="hint_device_addresses">デバイスアドレスまたは名前</string>
+    <string name="hint_network_ssids">ネットワークSSID</string>
+    <string name="hint_word_to_blacklist">ブラックリストに追加する単語</string>
+    <string name="hint_word_to_swap">置換する単語</string>
+    <string name="hint_swap_with_optional">置換先（オプション）</string>
+    <string name="hint_search_media_filter">メディアフィルタに追加するアプリを検索</string>
+    <string name="hint_important_keyword">重要なキーワード（例：返信、コメント）</string>
+    <string name="hint_rule_name">ルール名を入力（例：夜間モード、車内モード）</string>
+    <string name="hint_bluetooth_addresses">00:11:22:33:44:55&#10;AA:BB:CC:DD:EE:FF</string>
+    <string name="hint_wifi_networks">ホームWiFi&#10;オフィスネットワーク</string>
+    <string name="hint_wifi_network_name">WiFiネットワーク名を入力</string>
+    <string name="hint_cooldown_time">クールダウン時間</string>
+    <string name="hint_search_for_app">アプリを検索...</string>
+    <string name="hint_enter_word_to_block">ブロックする単語を入力...</string>
+    <string name="hint_enter_format_placeholders">プレースホルダーを使用してフォーマットを入力</string>
 </resources>

@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Enter WiFi Network Name:"
+        android:text="@string/wifi_config_enter_name"
         android:textStyle="bold"
         android:textSize="16sp"
         android:layout_marginBottom="8dp" />
@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Enter the exact name of your WiFi network (SSID). The name must match exactly, including case sensitivity."
+        android:text="@string/wifi_config_description"
         android:textSize="14sp"
         android:layout_marginBottom="16dp" />
 
@@ -24,7 +24,7 @@
         android:id="@+id/editWifiSsid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter WiFi network name"
+                        android:hint="@string/hint_wifi_network_name"
         android:inputType="text"
         android:maxLines="1"
         android:background="@drawable/dialog_input_background"
@@ -34,7 +34,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="💡 Tip: You can find your WiFi name in your phone's WiFi settings"
+        android:text="@string/wifi_config_tip"
         android:textSize="12sp"
         android:textColor="?android:attr/textColorSecondary"
         android:layout_marginTop="8dp" />

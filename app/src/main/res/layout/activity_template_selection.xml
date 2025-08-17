@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="📋 Choose a Rule Template"
+                android:text="@string/template_selection_title"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/purple_card_text_primary" />

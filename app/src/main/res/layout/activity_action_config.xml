@@ -40,7 +40,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔇 Disable SpeakThat"
+                        android:text="@string/action_disable_speakthat"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary"
@@ -50,7 +50,7 @@
                         android:id="@+id/textDisableSpeakThatInfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="This action will disable SpeakThat completely when the rule is triggered."
+                        android:text="@string/action_disable_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary" />
 
@@ -80,7 +80,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="✅ Enable App Filter"
+                        android:text="@string/action_enable_app_filter"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary"
@@ -89,7 +89,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Select which app to enable filtering for:"
+                        android:text="@string/action_enable_app_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -97,7 +97,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="App Package Name"
+                        android:hint="@string/hint_app_package_name"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_marginBottom="8dp">
 
@@ -119,10 +119,8 @@
                             android:id="@+id/btnSelectApp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Select App"
-                            android:background="@android:color/transparent"
-                            android:textColor="@color/white_100"
-                            style="@style/Widget.Material3.Button.TextButton" />
+                            android:text="@string/action_select_app"
+                            style="@style/Widget.SpeakThat.Button.Primary" />
 
                     </FrameLayout>
 
@@ -152,7 +150,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="❌ Disable App Filter"
+                        android:text="@string/action_disable_app_filter"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary"
@@ -161,7 +159,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Select which app to disable filtering for:"
+                        android:text="@string/action_disable_app_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -169,7 +167,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="App Package Name"
+                        android:hint="@string/hint_app_package_name"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_marginBottom="8dp">
 
@@ -191,10 +189,8 @@
                             android:id="@+id/btnSelectAppDisable"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Select App"
-                            android:background="@android:color/transparent"
-                            android:textColor="@color/white_100"
-                            style="@style/Widget.Material3.Button.TextButton" />
+                            android:text="@string/action_select_app"
+                            style="@style/Widget.SpeakThat.Button.Primary" />
 
                     </FrameLayout>
 
@@ -224,7 +220,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🎤 Change Voice Settings"
+                        android:text="@string/rule_action_change_voice_settings"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary"
@@ -233,7 +229,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Configure voice settings to apply when this rule is triggered:"
+                        android:text="@string/action_configure_voice_settings"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -242,7 +238,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Speech Rate:"
+                        android:text="@string/voice_speech_rate:"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="8dp" />
@@ -259,7 +255,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pitch:"
+                        android:text="@string/voice_pitch:"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="8dp" />
@@ -291,7 +287,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp">
 
@@ -305,7 +301,7 @@
                     style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cancel"
+                    android:text="@string/cancel"
                     android:textColor="@color/white_100"
                     android:background="@android:color/transparent" />
 
@@ -317,7 +313,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp">
 
@@ -330,7 +326,7 @@
                     android:id="@+id/btnSave"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Save"
+                    android:text="@string/button_save"
                     android:textColor="@color/white_100"
                     android:background="@android:color/transparent"
                     style="@style/Widget.Material3.Button.TextButton" />

@@ -94,6 +94,15 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
 
+                    <ImageView
+                        android:id="@+id/iconGeneralSettings"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_dark_mode_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_general_title" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -103,7 +112,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="⚙️ General Settings"
+                            android:text="@string/settings_general_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -111,7 +120,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="App preferences, theme settings"
+                            android:text="@string/settings_general_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
@@ -121,7 +130,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="›"
+                        android:text="@string/arrow_right"
                         android:textSize="24sp"
                         android:textColor="@color/white_100" />
 
@@ -152,6 +161,15 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
 
+                    <ImageView
+                        android:id="@+id/iconVoiceSettings"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_voice_selection_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_voice_title" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -161,7 +179,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🎙️ Voice Settings"
+                            android:text="@string/settings_voice_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -169,7 +187,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Text-to-speech voice and speed"
+                            android:text="@string/settings_voice_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
@@ -179,7 +197,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="›"
+                        android:text="@string/arrow_right"
                         android:textSize="24sp"
                         android:textColor="@color/white_100" />
 
@@ -210,6 +228,15 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
 
+                    <ImageView
+                        android:id="@+id/iconBehaviorSettings"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_notification_settings_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_behavior_title" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -219,7 +246,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🔔 Behavior Settings"
+                            android:text="@string/settings_behavior_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -227,7 +254,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="When and how notifications are read"
+                            android:text="@string/settings_behavior_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
@@ -237,7 +264,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="›"
+                        android:text="@string/arrow_right"
                         android:textSize="24sp"
                         android:textColor="@color/white_100" />
 
@@ -268,6 +295,15 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
 
+                    <ImageView
+                        android:id="@+id/iconFilterSettings"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_filter_list_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_filter_title" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -277,7 +313,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🔍 Filter Settings"
+                            android:text="@string/settings_filter_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -285,7 +321,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Choose which apps to read"
+                            android:text="@string/settings_filter_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
@@ -295,7 +331,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="›"
+                        android:text="@string/arrow_right"
                         android:textSize="24sp"
                         android:textColor="@color/white_100" />
 
@@ -326,6 +362,15 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
 
+                    <ImageView
+                        android:id="@+id/iconConditionalRules"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_bluetooth_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_rules_title" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -335,7 +380,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🔧 Conditional Rules"
+                            android:text="@string/settings_rules_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -343,7 +388,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Configure Bluetooth, time schedules, etc"
+                            android:text="@string/settings_rules_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
@@ -353,7 +398,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="›"
+                        android:text="@string/arrow_right"
                         android:textSize="24sp"
                         android:textColor="@color/white_100" />
 
@@ -386,6 +431,15 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
 
+                    <ImageView
+                        android:id="@+id/iconDevelopmentSettings"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_bugdroid_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_development_title" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -395,7 +449,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🛠️ Development Settings"
+                            android:text="@string/settings_development_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -403,7 +457,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Debug tools and logging system"
+                            android:text="@string/settings_development_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
@@ -413,7 +467,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="›"
+                        android:text="@string/arrow_right"
                         android:textSize="24sp"
                         android:textColor="@color/white_100" />
 
@@ -444,63 +498,14 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🔄 Re-run Onboarding"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="See the app introduction again"
-                            android:textSize="14sp"
-                            android:textColor="@color/purple_card_text_secondary"
-                            android:layout_marginTop="4dp" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="›"
-                        android:textSize="24sp"
-                        android:textColor="@color/white_100" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Support & Feedback Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardSupportFeedback"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="@android:color/transparent"
-                app:strokeColor="@color/purple_200"
-                app:strokeWidth="0dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="20dp"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/gradient_card_subtle_right">
+                    <ImageView
+                        android:id="@+id/iconReRunOnboarding"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_laps_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_rerun_onboarding" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -511,7 +516,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="💬 Support &amp; Feedback"
+                            android:text="@string/settings_rerun_onboarding"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -519,7 +524,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Get help, report bugs, request features"
+                            android:text="@string/settings_rerun_onboarding_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
@@ -529,7 +534,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="›"
+                        android:text="@string/arrow_right"
                         android:textSize="24sp"
                         android:textColor="@color/white_100" />
 
@@ -560,6 +565,15 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/gradient_card_subtle_right">
 
+                    <ImageView
+                        android:id="@+id/iconDonate"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_volunteer_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_donate_title" />
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -569,7 +583,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="❤️ Donate"
+                            android:text="@string/settings_donate_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -577,7 +591,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Support development and keep the app free"
+                            android:text="@string/settings_donate_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
@@ -587,7 +601,74 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="›"
+                        android:text="@string/arrow_right"
+                        android:textSize="24sp"
+                        android:textColor="@color/white_100" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Support & Feedback Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSupportFeedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeColor="@color/purple_200"
+                app:strokeWidth="0dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/gradient_card_subtle_right">
+
+                    <ImageView
+                        android:id="@+id/iconSupportFeedback"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_send_24"
+                        android:tint="@color/white_100"
+                        android:contentDescription="@string/settings_support_title" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_support_title"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_support_description"
+                            android:textSize="14sp"
+                            android:textColor="@color/purple_card_text_secondary"
+                            android:layout_marginTop="4dp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/arrow_right"
                         android:textSize="24sp"
                         android:textColor="@color/white_100" />
 

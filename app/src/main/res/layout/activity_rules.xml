@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="🔧 Rules"
+            android:text="@string/rules_title"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/purple_card_text_primary"
@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create powerful rules to control when SpeakThat reads notifications based on your device state, time, and connections."
+            android:text="@string/rules_description"
             android:textSize="14sp"
             android:textColor="@color/purple_card_text_secondary"
             android:layout_marginBottom="16dp" />
@@ -43,7 +43,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Enable Rules"
+                android:text="@string/rules_enable"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/purple_card_text_primary" />
@@ -101,7 +101,7 @@
                     android:id="@+id/btnAddRule"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Create New Rule"
+                    android:text="@string/rules_create_new"
                     android:textColor="@color/white_100"
                     android:background="@android:color/transparent"
                     android:padding="16dp"
@@ -125,17 +125,18 @@
         android:gravity="center"
         android:padding="32dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🔧"
-            android:textSize="48sp"
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_rule_24"
+            android:tint="@color/white_100"
+            android:contentDescription="Rules icon"
             android:layout_marginBottom="24dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No Rules Created"
+                            android:text="@string/rules_no_rules_created"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
@@ -145,7 +146,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create your first rule to control when SpeakThat reads notifications based on your device state, time, or connections."
+                            android:text="@string/rules_create_first_rule_description"
             android:textSize="16sp"
             android:textColor="@color/text_secondary"
             android:gravity="center"
@@ -171,7 +172,7 @@
                     android:id="@+id/btnAddFirstRule"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Create Your First Rule"
+                    android:text="@string/rules_create_first_rule_button"
                     android:textColor="@color/white_100"
                     android:background="@android:color/transparent"
                     android:padding="16dp"

@@ -44,7 +44,7 @@ class CategoryPreset private constructor(private val context: Context) {
             val type = object : TypeToken<List<AppCategory>>() {}.type
             gson.fromJson(json, type)
         } else {
-            AppCategory.getAllCategories()
+            AppCategory.getAllCategories(context)
         }
     }
 

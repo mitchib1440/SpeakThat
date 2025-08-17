@@ -554,13 +554,29 @@ data class Rule(
                 )
             }
             TriggerType.WIFI_NETWORK -> {
-                @Suppress("UNCHECKED_CAST")
-                val networkSSIDs = trigger.data["network_ssids"] as? Set<String> ?: emptySet()
-                val networkName = if (networkSSIDs.isEmpty()) "any WiFi network" else networkSSIDs.first()
-                if (trigger.inverted) {
-                    context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_disconnected, networkName)
+                // Handle both Set<String> and List<String> since JSON serialization converts Sets to Lists
+                val networkSSIDsData = trigger.data["network_ssids"]
+                val networkSSIDs = when (networkSSIDsData) {
+                    is Set<*> -> networkSSIDsData.filterIsInstance<String>().toSet()
+                    is List<*> -> networkSSIDsData.filterIsInstance<String>().toSet()
+                    else -> emptySet<String>()
+                }
+                
+                // Android 15+ limitation: We can't detect specific network names
+                if (networkSSIDs.isNotEmpty()) {
+                    // Show warning about Android 15+ limitation
+                    if (trigger.inverted) {
+                        context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_disconnected_android15, "any WiFi network")
+                    } else {
+                        context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_connected_android15, "any WiFi network")
+                    }
                 } else {
-                    context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_connected, networkName)
+                    // No specific networks selected - use generic WiFi state
+                    if (trigger.inverted) {
+                        context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_disconnected, "any WiFi network")
+                    } else {
+                        context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_connected, "any WiFi network")
+                    }
                 }
             }
         }
@@ -670,8 +686,13 @@ data class Rule(
                 )
             }
             ExceptionType.WIFI_NETWORK -> {
-                @Suppress("UNCHECKED_CAST")
-                val networkSSIDs = exception.data["network_ssids"] as? Set<String> ?: emptySet()
+                // Handle both Set<String> and List<String> since JSON serialization converts Sets to Lists
+                val networkSSIDsData = exception.data["network_ssids"]
+                val networkSSIDs = when (networkSSIDsData) {
+                    is Set<*> -> networkSSIDsData.filterIsInstance<String>().toSet()
+                    is List<*> -> networkSSIDsData.filterIsInstance<String>().toSet()
+                    else -> emptySet<String>()
+                }
                 val networkName = if (networkSSIDs.isEmpty()) "any WiFi network" else networkSSIDs.first()
                 if (exception.inverted) {
                     context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_disconnected, networkName)

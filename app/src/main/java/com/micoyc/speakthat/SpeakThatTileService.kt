@@ -122,11 +122,13 @@ class SpeakThatTileService : TileService() {
             // Update tile label
             qsTile.label = getString(R.string.quick_settings_tile_label)
             
-            // Update tile subtitle to show current status
-            qsTile.subtitle = if (isMasterEnabled) {
-                getString(R.string.quick_settings_tile_enabled)
-            } else {
-                getString(R.string.quick_settings_tile_disabled)
+            // Update tile subtitle to show current status (API 29+)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                qsTile.subtitle = if (isMasterEnabled) {
+                    getString(R.string.quick_settings_tile_enabled)
+                } else {
+                    getString(R.string.quick_settings_tile_disabled)
+                }
             }
             
             // Update tile icon (using the SpeakThat logo)

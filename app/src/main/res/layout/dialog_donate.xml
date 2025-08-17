@@ -29,7 +29,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Support SpeakThat!"
+                    android:text="@string/dialog_donate_title"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="?android:attr/textColorPrimary" />
@@ -40,7 +40,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hey! Mitchi here. A lot goes into making SpeakThat! I  handle the UI/UX design, quality assurance and testing, project management, distribution and publishing, app store compliance, and user support just to name a few!\n\nIf SpeakThat has been helpful for you, or if you would have paid for it, please consider supporting its development!\n\nEvery donation keeps this app totally free and open-source for everyone who needs it.\n\nThank you! ❤️"
+                android:text="@string/dialog_donate_message"
                 android:textSize="16sp"
                 android:textColor="?android:attr/textColorSecondary"
                 android:layout_marginBottom="24dp" />
@@ -58,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    app:cardCornerRadius="8dp"
+                    app:cardCornerRadius="12dp"
                     app:cardElevation="2dp"
                     app:cardBackgroundColor="@android:color/transparent"
                     app:strokeWidth="0dp"
@@ -77,7 +77,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="☕"
+                            android:text="@string/donate_coffee"
                             android:textSize="24sp"
                             android:layout_marginEnd="16dp" />
 
@@ -90,7 +90,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Buy me a coffee"
+                                android:text="@string/dialog_donate_coffee"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -98,7 +98,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Quick one-time donation via Ko-fi"
+                                android:text="@string/dialog_donate_coffee_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="2dp" />
@@ -108,7 +108,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="›"
+                            android:text="@string/arrow_right"
                             android:textSize="20sp"
                             android:textColor="@color/white_100" />
 
@@ -122,7 +122,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    app:cardCornerRadius="8dp"
+                    app:cardCornerRadius="12dp"
                     app:cardElevation="2dp"
                     app:cardBackgroundColor="@android:color/transparent"
                     app:strokeWidth="0dp"
@@ -141,7 +141,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🎭"
+                            android:text="@string/donate_theatre"
                             android:textSize="24sp"
                             android:layout_marginEnd="16dp" />
 
@@ -154,7 +154,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Become a Patron"
+                                android:text="@string/dialog_donate_patron"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -162,7 +162,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Monthly support with exclusive updates"
+                                android:text="@string/dialog_donate_patron_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="2dp" />
@@ -172,7 +172,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="›"
+                            android:text="@string/arrow_right"
                             android:textSize="20sp"
                             android:textColor="@color/white_100" />
 
@@ -186,7 +186,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    app:cardCornerRadius="8dp"
+                    app:cardCornerRadius="12dp"
                     app:cardElevation="2dp"
                     app:cardBackgroundColor="@android:color/transparent"
                     app:strokeWidth="0dp"
@@ -205,7 +205,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🐙"
+                            android:text="@string/donate_octopus"
                             android:textSize="24sp"
                             android:layout_marginEnd="16dp" />
 
@@ -218,7 +218,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="GitHub Sponsors"
+                                android:text="@string/donate_github_sponsors"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -226,7 +226,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Support open source development"
+                                android:text="@string/donate_github_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="2dp" />
@@ -236,7 +236,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="›"
+                            android:text="@string/arrow_right"
                             android:textSize="20sp"
                             android:textColor="@color/white_100" />
 
@@ -249,7 +249,7 @@
                     android:id="@+id/cardBitcoin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="8dp"
+                    app:cardCornerRadius="12dp"
                     app:cardElevation="2dp"
                     app:cardBackgroundColor="@android:color/transparent"
                     app:strokeWidth="0dp"
@@ -268,7 +268,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="₿"
+                            android:text="@string/donate_bitcoin"
                             android:textSize="24sp"
                             android:layout_marginEnd="16dp" />
 
@@ -281,7 +281,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Bitcoin (BTC)"
+                                android:text="@string/donate_bitcoin_title"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -289,7 +289,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Donate BTC via the Bitcoin network"
+                                android:text="@string/donate_bitcoin_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="2dp" />
@@ -299,7 +299,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="›"
+                            android:text="@string/arrow_right"
                             android:textSize="20sp"
                             android:textColor="@color/white_100" />
 
@@ -313,7 +313,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="🔒 Privacy: All donations are processed by their respective platforms. I don't collect or store any payment information."
+                android:text="@string/donate_privacy"
                 android:textSize="12sp"
                 android:textColor="?android:attr/textColorSecondary"
                 android:paddingLeft="12dp"
@@ -323,7 +323,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Psst! You can also send a friendly email, a nice message always makes my day! :)"
+                android:text="@string/donate_friendly_message"
                 android:textSize="12sp"
                 android:textColor="?android:attr/textColorSecondary"
                 android:paddingLeft="12dp"
@@ -345,7 +345,7 @@
             android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
+            android:text="@string/button_cancel"
             android:textColor="?android:attr/textColorSecondary"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_marginEnd="8dp" />

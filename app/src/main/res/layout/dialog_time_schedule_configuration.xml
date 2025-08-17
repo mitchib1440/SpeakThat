@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Set Time Schedule:"
+            android:text="@string/time_schedule_set"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Choose when this rule should be active."
+            android:text="@string/time_schedule_description"
             android:textSize="14sp"
             android:layout_marginBottom="16dp" />
 
@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Start Time:"
+            android:text="@string/time_schedule_start"
             android:textSize="14sp"
             android:textStyle="bold"
             android:layout_marginBottom="4dp" />
@@ -44,7 +44,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="End Time:"
+            android:text="@string/time_schedule_end"
             android:textSize="14sp"
             android:textStyle="bold"
             android:layout_marginBottom="4dp" />
@@ -60,7 +60,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Days of Week:"
+            android:text="@string/time_schedule_days"
             android:textSize="14sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
@@ -74,43 +74,43 @@
                 android:id="@+id/checkBoxMonday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Monday" />
+                android:text="@string/day_monday" />
 
             <CheckBox
                 android:id="@+id/checkBoxTuesday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tuesday" />
+                android:text="@string/day_tuesday" />
 
             <CheckBox
                 android:id="@+id/checkBoxWednesday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Wednesday" />
+                android:text="@string/day_wednesday" />
 
             <CheckBox
                 android:id="@+id/checkBoxThursday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Thursday" />
+                android:text="@string/day_thursday" />
 
             <CheckBox
                 android:id="@+id/checkBoxFriday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Friday" />
+                android:text="@string/day_friday" />
 
             <CheckBox
                 android:id="@+id/checkBoxSaturday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Saturday" />
+                android:text="@string/day_saturday" />
 
             <CheckBox
                 android:id="@+id/checkBoxSunday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sunday" />
+                android:text="@string/day_sunday" />
 
         </LinearLayout>
 

@@ -59,6 +59,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         setupPerformanceSettings();
         setupDataManagement();
         setupTestSettings();
+        setupThemeIcon();
     }
 
     private void applySavedTheme() {
@@ -127,6 +128,9 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO);
             }
             
+            // Update theme icon
+            setupThemeIcon();
+            
             // Show restart dialog
             new AlertDialog.Builder(this)
                 .setTitle("Theme Changed")
@@ -140,6 +144,16 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 .setNegativeButton("Later", null)
                 .show();
         });
+    }
+
+    private void setupThemeIcon() {
+        // Set the appropriate icon for Theme section based on current theme
+        boolean isDarkMode = (getResources().getConfiguration().uiMode & 
+            android.content.res.Configuration.UI_MODE_NIGHT_MASK) == 
+            android.content.res.Configuration.UI_MODE_NIGHT_YES;
+        
+        int iconRes = isDarkMode ? R.drawable.ic_light_mode_24 : R.drawable.ic_dark_mode_24;
+        binding.iconTheme.setImageResource(iconRes);
     }
 
     private void setupPerformanceSettings() {

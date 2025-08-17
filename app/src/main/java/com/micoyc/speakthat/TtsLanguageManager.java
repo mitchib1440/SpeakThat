@@ -179,7 +179,8 @@ public class TtsLanguageManager {
                 "tts_template_notified_you",
                 "tts_about_intro", 
                 "tts_voice_test",
-                "tts_onboarding_welcome"
+                "tts_onboarding_welcome",
+                "tts_onboarding_language_theme"
             };
             
             for (String stringName : testStrings) {

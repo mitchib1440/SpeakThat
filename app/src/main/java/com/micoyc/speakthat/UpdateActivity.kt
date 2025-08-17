@@ -142,8 +142,12 @@ class UpdateActivity : AppCompatActivity() {
      */
     private fun configureSystemUI() {
         // Use fitsSystemWindows for proper padding - this should handle the status bar automatically
-        @Suppress("DEPRECATION")
-        window.setDecorFitsSystemWindows(true)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(true)
+        } else {
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        }
     }
     
     /**

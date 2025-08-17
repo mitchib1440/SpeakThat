@@ -48,7 +48,7 @@ public class TestSettingsActivity extends AppCompatActivity {
         // Set up toolbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Test Settings");
+            getSupportActionBar().setTitle(R.string.title_test_settings);
         }
         
         // Run all tests

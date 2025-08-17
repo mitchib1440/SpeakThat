@@ -125,13 +125,13 @@ class AboutActivity : AppCompatActivity() {
                         override fun onError(utteranceId: String?) {
                             isSpeaking = false
                             updateButtonState()
-                            Toast.makeText(this@AboutActivity, "TTS error occurred", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@AboutActivity, getString(R.string.tts_error_occurred), Toast.LENGTH_SHORT).show()
                         }
                     })
                     
                     speakAboutApp()
                 } else {
-                    Toast.makeText(this, "TTS initialization failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.tts_initialization_failed), Toast.LENGTH_SHORT).show()
                 }
             }
         } else {
@@ -141,7 +141,7 @@ class AboutActivity : AppCompatActivity() {
     
     private fun speakAboutApp() {
         val aboutText = buildAboutText()
-        textToSpeech?.speak(aboutText, TextToSpeech.QUEUE_FLUSH, null, "about_app")
+        textToSpeech?.speak(aboutText, TextToSpeech.QUEUE_FLUSH, null, getString(R.string.tts_utterance_about_app))
     }
     
     private fun stopTTS() {
@@ -176,7 +176,7 @@ class AboutActivity : AppCompatActivity() {
         val version = getString(R.string.version_format_with_variant, packageInfo.versionName, buildVariant)
         
         // Get the user's TTS language setting
-        val ttsLanguageCode = voiceSettingsPrefs?.getString("tts_language", "system") ?: "system"
+        val ttsLanguageCode = voiceSettingsPrefs?.getString(getString(R.string.prefs_tts_language), getString(R.string.system_default)) ?: getString(R.string.system_default)
         
         return """
             ${TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_intro)} $version.

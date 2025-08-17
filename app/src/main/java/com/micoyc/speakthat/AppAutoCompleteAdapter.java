@@ -35,11 +35,11 @@ public class AppAutoCompleteAdapter extends ArrayAdapter<AppInfo> {
     }
     
     private void logSampleApps() {
-        InAppLogger.log("AppSelector", "Sample apps loaded:");
+        InAppLogger.log("AppSelector", context.getString(R.string.log_app_selector_sample_apps));
         int count = 0;
         for (AppInfo app : allApps) {
             if (count < 5) {
-                InAppLogger.log("AppSelector", "  " + app.appName + " (" + app.packageName + ")");
+                InAppLogger.log("AppSelector", String.format(context.getString(R.string.log_app_selector_app_info), app.appName, app.packageName));
                 count++;
             }
             
@@ -47,10 +47,10 @@ public class AppAutoCompleteAdapter extends ArrayAdapter<AppInfo> {
             if (app.appName.toLowerCase().contains("maps") || 
                 app.packageName.toLowerCase().contains("maps") ||
                 app.packageName.toLowerCase().contains("google")) {
-                InAppLogger.log("AppSelector", "GOOGLE/MAPS APP FOUND: " + app.appName + " (" + app.packageName + ")");
+                InAppLogger.log("AppSelector", String.format(context.getString(R.string.app_selector_google_maps_found), app.appName, app.packageName));
             }
         }
-        InAppLogger.log("AppSelector", "Total: " + allApps.size() + " apps");
+        InAppLogger.log("AppSelector", String.format(context.getString(R.string.app_selector_total_apps), allApps.size()));
     }
     
     @Override
@@ -112,7 +112,7 @@ public class AppAutoCompleteAdapter extends ArrayAdapter<AppInfo> {
                 filterText = constraint.toString().toLowerCase().trim();
                 
                 // Debug logging
-                InAppLogger.log("AppFilter", "Filtering with: '" + filterText + "'");
+                InAppLogger.log("AppFilter", String.format(context.getString(R.string.app_filter_filtering_with), filterText));
                 
                 for (AppInfo app : allApps) {
                     // Search in app name and package name
@@ -123,7 +123,7 @@ public class AppAutoCompleteAdapter extends ArrayAdapter<AppInfo> {
                         suggestions.add(app);
                         // Debug log matches
                         if (filterText.equals("map") || filterText.equals("maps")) {
-                            InAppLogger.log("AppFilter", "MATCH: " + app.appName + " (" + app.packageName + ") - name:" + nameMatch + " pkg:" + packageMatch);
+                            InAppLogger.log("AppFilter", String.format(context.getString(R.string.app_filter_match), app.appName, app.packageName, nameMatch, packageMatch));
                         }
                     }
                     
@@ -132,16 +132,16 @@ public class AppAutoCompleteAdapter extends ArrayAdapter<AppInfo> {
                         if (app.appName.toLowerCase().contains("maps") || 
                             app.packageName.toLowerCase().contains("maps") ||
                             app.packageName.toLowerCase().contains("google.android.apps.maps")) {
-                            InAppLogger.log("AppFilter", "GOOGLE MAPS CANDIDATE: " + app.appName + " (" + app.packageName + ")");
+                            InAppLogger.log("AppFilter", String.format(context.getString(R.string.app_filter_google_maps_candidate), app.appName, app.packageName));
                         }
                     }
                 }
                 
-                InAppLogger.log("AppFilter", "Found " + suggestions.size() + " matches for '" + filterText + "'");
+                InAppLogger.log("AppFilter", String.format(context.getString(R.string.app_filter_found_matches), suggestions.size(), filterText));
             } else {
                 // Show all apps when no filter
                 suggestions.addAll(allApps);
-                InAppLogger.log("AppFilter", "No filter - showing all " + suggestions.size() + " apps");
+                InAppLogger.log("AppFilter", String.format(context.getString(R.string.app_filter_no_filter_showing_all), suggestions.size()));
             }
             
             results.values = suggestions;
@@ -157,7 +157,7 @@ public class AppAutoCompleteAdapter extends ArrayAdapter<AppInfo> {
             }
             
             // Debug logging
-            InAppLogger.log("AppFilter", "Publishing " + filteredApps.size() + " results");
+            InAppLogger.log("AppFilter", String.format(context.getString(R.string.app_filter_publishing_results), filteredApps.size()));
             
             // Clear and re-add all items to the adapter
             clear();

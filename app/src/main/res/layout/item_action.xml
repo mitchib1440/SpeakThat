@@ -27,7 +27,7 @@
                 android:id="@+id/textActionType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="SpeakThat Control"
+                android:text="@string/item_action_control"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/purple_card_text_primary" />
@@ -36,7 +36,7 @@
                 android:id="@+id/textActionDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Disable SpeakThat"
+                android:text="@string/item_action_disable"
                 android:textSize="12sp"
                 android:textColor="@color/purple_card_text_secondary"
                 android:layout_marginTop="2dp" />
@@ -50,7 +50,7 @@
             android:src="@drawable/ic_edit"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:contentDescription="Edit action"
-            android:tint="@color/white_100"
+            app:tint="@color/white_100"
             android:layout_marginEnd="8dp" />
 
         <ImageButton
@@ -60,7 +60,7 @@
             android:src="@drawable/ic_delete_24"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:contentDescription="Remove action"
-            android:tint="@color/white_100" />
+            app:tint="@color/white_100" />
 
     </LinearLayout>
 

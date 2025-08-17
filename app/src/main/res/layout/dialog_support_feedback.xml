@@ -17,14 +17,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="💬"
+            android:text="@string/support_chat"
             android:textSize="28sp"
             android:layout_marginEnd="12dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Support &amp; Feedback"
+            android:text="@string/dialog_support_title"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="?android:attr/textColorPrimary" />
@@ -35,7 +35,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="How can we help you today? Choose the option that best describes your needs:"
+        android:text="@string/dialog_support_description"
         android:textSize="16sp"
         android:textColor="?android:attr/textColorSecondary"
         android:layout_marginBottom="24dp" />
@@ -71,7 +71,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="💡"
+                    android:text="@string/support_lightbulb"
                     android:textSize="24sp"
                     android:layout_marginEnd="16dp" />
 
@@ -84,7 +84,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Feature Request"
+                        android:text="@string/dialog_support_feature_request"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary" />
@@ -92,7 +92,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Suggest new features or improvements"
+                        android:text="@string/dialog_support_feature_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginTop="4dp" />
@@ -128,7 +128,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🐛"
+                    android:text="@string/support_bug"
                     android:textSize="24sp"
                     android:layout_marginEnd="16dp" />
 
@@ -141,7 +141,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bug Report"
+                        android:text="@string/dialog_support_bug_report"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary" />
@@ -149,7 +149,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Report crashes, errors, or unexpected behavior"
+                        android:text="@string/dialog_support_bug_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginTop="4dp" />
@@ -185,7 +185,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="❓"
+                    android:text="@string/support_question"
                     android:textSize="24sp"
                     android:layout_marginEnd="16dp" />
 
@@ -198,7 +198,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="General Support"
+                        android:text="@string/support_general_title"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary" />
@@ -206,7 +206,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Get help with setup, usage, or general questions"
+                        android:text="@string/support_general_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginTop="4dp" />
@@ -246,7 +246,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="📋"
+                    android:text="@string/support_clipboard"
                     android:textSize="20sp"
                     android:layout_marginEnd="12dp" />
 
@@ -254,7 +254,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Include Debug Logs"
+                    android:text="@string/support_include_logs"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/purple_card_text_primary" />
@@ -274,7 +274,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Recommended for bug reports and technical issues. Debug logs help me identify and fix problems faster.\nLogs may contain information about your notification content! Please proofread the email before you send it to me."
+                android:text="@string/support_logs_description"
                 android:textSize="14sp"
                 android:textColor="@color/purple_card_text_secondary"
                 android:layout_marginBottom="8dp" />
@@ -283,7 +283,7 @@
                 android:id="@+id/textLogInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Current log entries: 0"
+                android:text="@string/support_log_entries"
                 android:textSize="12sp"
                 android:textColor="@color/white_100"
                 android:textStyle="italic" />
@@ -296,7 +296,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="🔒 Privacy: Debug logs remain on your device unless you choose to share them. You can review the log content before sending any email."
+        android:text="@string/support_logs_privacy"
         android:textSize="12sp"
         android:textColor="?android:attr/textColorSecondary"
         android:padding="12dp"
@@ -313,7 +313,7 @@
             android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
+            android:text="@string/button_cancel"
             android:textColor="?android:attr/textColorSecondary"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_marginEnd="8dp" />

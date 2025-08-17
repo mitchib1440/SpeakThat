@@ -13,7 +13,7 @@ data class RuleTemplate(
     val id: String,
     val name: String,
     val description: String,
-    val icon: String,
+    val iconDrawable: Int,
     val triggers: List<TriggerTemplate>,
     val actions: List<ActionTemplate>,
     val requiresDeviceSelection: Boolean = false,
@@ -116,6 +116,19 @@ object RuleTemplates {
                     "days_of_week" to selectedDays
                 )
             }
+            TriggerType.WIFI_NETWORK -> {
+                // Convert ssid field to network_ssids format
+                val ssid = data["ssid"] as? String
+                val networkId = data["networkId"] as? Int
+                
+                InAppLogger.logDebug(TAG, "Converting WiFi data: ssid=$ssid, networkId=$networkId")
+                
+                if (ssid != null && ssid.isNotEmpty()) {
+                    mapOf("network_ssids" to setOf(ssid))
+                } else {
+                    emptyMap<String, Any>()
+                }
+            }
             else -> data
         }
     }
@@ -129,7 +142,7 @@ object RuleTemplates {
             id = "headphones_only",
             name = context.getString(R.string.template_headphones_only_name),
             description = context.getString(R.string.template_headphones_only_description),
-            icon = "🎧",
+            iconDrawable = R.drawable.ic_bluetooth_24,
             requiresDeviceSelection = true,
             deviceType = "bluetooth",
             triggers = listOf(
@@ -159,7 +172,7 @@ object RuleTemplates {
             id = "time_schedule",
             name = context.getString(R.string.template_time_schedule_name),
             description = context.getString(R.string.template_time_schedule_description),
-            icon = "⏰",
+            iconDrawable = R.drawable.ic_schedule_24,
             requiresDeviceSelection = true,
             deviceType = "time_schedule",
             triggers = listOf(
@@ -190,7 +203,7 @@ object RuleTemplates {
             id = "screen_off",
             name = context.getString(R.string.template_screen_off_name),
             description = context.getString(R.string.template_screen_off_description),
-            icon = "📱",
+            iconDrawable = R.drawable.ic_backlight_24,
             triggers = listOf(
                 TriggerTemplate(
                     type = TriggerType.SCREEN_STATE,
@@ -213,7 +226,7 @@ object RuleTemplates {
             id = "home_network",
             name = context.getString(R.string.template_home_network_name),
             description = context.getString(R.string.template_home_network_description),
-            icon = "🏠",
+            iconDrawable = R.drawable.ic_wifi_24,
             requiresDeviceSelection = true,
             deviceType = "wifi",
             triggers = listOf(

@@ -38,19 +38,35 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔔 Notification Behavior"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_traffic_jam_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Notification Behavior" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/section_notification_behavior"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Control how notifications are handled when one is already being read"
+                        android:text="@string/behavior_notification_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
@@ -79,12 +95,12 @@
                                 android:src="@drawable/lightbulb_2_24px"
                                 android:contentDescription="Tip"
                                 android:layout_marginEnd="6dp"
-                                android:tint="@color/purple_card_text_primary" />
+                                app:tint="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Most users should use: Smart Mode"
+                                android:text="@string/recommendation_smart_mode"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -101,7 +117,7 @@
                             android:focusable="true"
                             android:foreground="?android:attr/selectableItemBackgroundBorderless"
                             android:padding="4dp"
-                            android:tint="@color/white_100" />
+                            app:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -116,7 +132,7 @@
                             android:id="@+id/radioInterrupt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Interrupt (stop current, read new immediately)"
+                            android:text="@string/behavior_interrupt_mode"
                             android:checked="true"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
@@ -127,7 +143,7 @@
                             android:id="@+id/radioQueue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Queue (finish current, then read new)"
+                            android:text="@string/behavior_queue_mode"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
                             app:buttonTint="@color/white_100"
@@ -137,7 +153,7 @@
                             android:id="@+id/radioSkip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Skip (ignore new notifications while reading)"
+                            android:text="@string/behavior_skip_mode"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
                             app:buttonTint="@color/white_100"
@@ -147,7 +163,7 @@
                             android:id="@+id/radioSmart"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Smart (priority apps interrupt, others queue)"
+                            android:text="@string/behavior_smart_mode"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
                             app:buttonTint="@color/white_100"
@@ -172,7 +188,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="⚡ Priority Apps"
+                            android:text="@string/behavior_priority_apps"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
@@ -181,7 +197,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="These apps will interrupt the current notification. All other apps will queue."
+                            android:text="@string/behavior_priority_apps_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="16dp" />
@@ -206,7 +222,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:minHeight="56dp"
-                                    android:hint="Search apps or enter package name"
+                                    android:hint="@string/hint_search_apps_or_package"
                                     android:inputType="text"
                                     android:completionThreshold="1"
                                     android:dropDownHeight="200dp"
@@ -224,7 +240,7 @@
                                 android:id="@+id/btnAddPriorityApp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Add"
+                                android:text="@string/button_add"
                                 android:backgroundTint="@color/white_100"
                                 android:textColor="@color/purple_base" />
 
@@ -261,19 +277,35 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🎵 Media Behavior"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_replace_audio_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Media Behavior" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/section_media_behavior"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Control how notifications are handled when music or videos are playing"
+                        android:text="@string/behavior_media_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
@@ -302,12 +334,12 @@
                                 android:src="@drawable/lightbulb_2_24px"
                                 android:contentDescription="Tip"
                                 android:layout_marginEnd="6dp"
-                                android:tint="@color/purple_card_text_primary" />
+                                app:tint="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Most users should use: Lower Audio"
+                                android:text="@string/recommendation_lower_audio"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -324,7 +356,7 @@
                             android:focusable="true"
                             android:foreground="?android:attr/selectableItemBackgroundBorderless"
                             android:padding="4dp"
-                            android:tint="@color/white_100" />
+                            app:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -339,7 +371,7 @@
                             android:id="@+id/radioMediaIgnore"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Ignore - Continue as normal (current behavior)"
+                            android:text="@string/behavior_media_ignore"
                             android:checked="true"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
@@ -350,7 +382,7 @@
                             android:id="@+id/radioMediaPause"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Pause - Pause media while speaking"
+                            android:text="@string/behavior_media_pause"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
                             app:buttonTint="@color/white_100"
@@ -360,7 +392,7 @@
                             android:id="@+id/radioMediaDuck"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Lower Audio - Duck media volume temporarily"
+                            android:text="@string/behavior_media_lower"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
                             app:buttonTint="@color/white_100"
@@ -370,7 +402,7 @@
                             android:id="@+id/radioMediaSilence"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Silence - Don't speak while media is playing"
+                            android:text="@string/behavior_media_silence"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
                             app:buttonTint="@color/white_100"
@@ -383,7 +415,7 @@
                         android:id="@+id/pauseWarningText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="⚠️ Pause mode may not work on all devices due to system limitations."
+                        android:text="@string/behavior_pause_warning"
                         android:textSize="13sp"
                         android:textColor="@color/text_warning"
                         android:background="@color/warning_background"
@@ -409,7 +441,7 @@
                             android:id="@+id/duckingVolumeLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🔉 Ducking Volume"
+                            android:text="@string/behavior_ducking_volume"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
@@ -418,7 +450,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Set how quiet media should become during notifications"
+                            android:text="@string/behavior_ducking_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="16dp" />
@@ -434,7 +466,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="🔇"
+                                android:text="@string/volume_mute"
                                 android:textSize="16sp"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:layout_marginEnd="8dp" />
@@ -455,7 +487,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="🔊"
+                                android:text="@string/volume_loud"
                                 android:textSize="16sp"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:layout_marginStart="8dp" />
@@ -467,7 +499,7 @@
                             android:id="@+id/duckingVolumeValue"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="30%"
+                            android:text="@string/label_30_percent"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_primary"
                             android:textStyle="bold"
@@ -479,7 +511,7 @@
                             android:id="@+id/duckingWarningText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="⚠️ On some devices, lowering media volume may also lower the notification voice. If notifications are still hard to hear, try Pause mode or adjust your TTS settings."
+                            android:text="@string/behavior_ducking_warning"
                             android:textSize="13sp"
                             android:textColor="@color/text_warning"
                             android:background="@color/warning_background"
@@ -499,12 +531,12 @@
                                 android:src="@drawable/lightbulb_2_24px"
                                 android:contentDescription="Tip"
                                 android:layout_marginEnd="4dp"
-                                android:tint="@color/purple_card_text_secondary" />
+                                app:tint="@color/purple_card_text_secondary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Tip: Lower values make media quieter during notifications"
+                                android:text="@string/behavior_media_volume_tip"
                                 android:textSize="12sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:textStyle="italic" />
@@ -534,19 +566,35 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔕 Honour Do Not Disturb"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_do_not_disturb_off_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Honour Do Not Disturb" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/section_honor_dnd"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Respect your device's Do Not Disturb mode and silence notifications when enabled"
+                        android:text="@string/behavior_dnd_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
@@ -575,12 +623,12 @@
                                 android:src="@drawable/lightbulb_2_24px"
                                 android:contentDescription="Tip"
                                 android:layout_marginEnd="6dp"
-                                android:tint="@color/purple_card_text_primary" />
+                                app:tint="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Most users should: Enable this feature"
+                                android:text="@string/behavior_dnd_recommendation"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -597,7 +645,7 @@
                             android:focusable="true"
                             android:foreground="?android:attr/selectableItemBackgroundBorderless"
                             android:padding="4dp"
-                            android:tint="@color/white_100" />
+                            app:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -613,7 +661,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Honour Do Not Disturb mode"
+                            android:text="@string/behavior_dnd_switch_label"
                             android:textSize="16sp"
                             android:textColor="@color/purple_card_text_primary" />
 
@@ -633,7 +681,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="4dp"
-                        android:text="✨ Benefits:\n\n• Respects your device's Do Not Disturb settings\n• Perfect for meetings, sleep, and quiet time\n• Works with scheduled DND and manual activation\n• Maintains your privacy and focus when needed"
+                        android:text="@string/behavior_dnd_benefits"
                         android:textColor="@color/purple_card_text_secondary"
                         android:textSize="14sp" />
 
@@ -658,19 +706,35 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📞 Honour Phone Calls"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_phone_disabled_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Honour Phone Calls" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/section_honor_phone_calls"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Prevent notification readouts when you're on a phone call"
+                        android:text="@string/behavior_phone_calls_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
@@ -699,12 +763,12 @@
                                 android:src="@drawable/lightbulb_2_24px"
                                 android:contentDescription="Tip"
                                 android:layout_marginEnd="6dp"
-                                android:tint="@color/purple_card_text_primary" />
+                                app:tint="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Most users should: Enable this feature"
+                                android:text="@string/behavior_phone_calls_recommendation"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -721,7 +785,7 @@
                             android:focusable="true"
                             android:foreground="?android:attr/selectableItemBackgroundBorderless"
                             android:padding="4dp"
-                            android:tint="@color/white_100" />
+                            app:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -737,7 +801,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Honour phone calls"
+                            android:text="@string/behavior_phone_calls_switch_label"
                             android:textSize="16sp"
                             android:textColor="@color/purple_card_text_primary" />
 
@@ -756,7 +820,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="✨ Benefits:\n\n• Prevents interruptions during important calls\n• Respects your conversation privacy\n• Works with all types of phone calls\n• Automatic detection of call state"
+                        android:text="@string/behavior_phone_calls_benefits"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:lineSpacingExtra="4dp" />
@@ -765,9 +829,7 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-
-
-            <!-- Audio Mode Section -->
+            <!-- Notification Deduplication Section -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -784,19 +846,35 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔇 Honour Audio Mode"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_redo_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Notification Deduplication" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/section_notification_deduplication"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Only read notifications when your device is in Sound mode (not Silent or Vibrate)"
+                        android:text="@string/behavior_deduplication_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
@@ -825,12 +903,152 @@
                                 android:src="@drawable/lightbulb_2_24px"
                                 android:contentDescription="Tip"
                                 android:layout_marginEnd="6dp"
-                                android:tint="@color/purple_card_text_primary" />
+                                app:tint="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Recommended: Enable this feature"
+                                android:text="@string/behavior_deduplication_recommendation"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/btnDeduplicationInfo"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="More Info"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            app:tint="@color/white_100" />
+
+                    </LinearLayout>
+
+                    <!-- Deduplication Toggle -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/behavior_deduplication_switch_label"
+                            android:textSize="16sp"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switchNotificationDeduplication"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color" />
+
+                    </LinearLayout>
+
+                    <!-- Benefits Section -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/behavior_deduplication_benefits"
+                        android:textSize="14sp"
+                        android:textColor="@color/purple_card_text_secondary"
+                        android:lineSpacingExtra="4dp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Audio Mode Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="@drawable/gradient_card_subtle_right">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_mobile_sound_off_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Honour Audio Mode" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/section_honor_audio_mode"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/behavior_audio_mode_description"
+                        android:textSize="14sp"
+                        android:textColor="@color/purple_card_text_secondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Recommendation Box -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/bg_advanced_voice_section"
+                        android:padding="12dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="8dp">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:contentDescription="Tip"
+                                android:layout_marginEnd="6dp"
+                                app:tint="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/behavior_audio_mode_recommendation"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -847,7 +1065,7 @@
                             android:focusable="true"
                             android:foreground="?android:attr/selectableItemBackgroundBorderless"
                             android:padding="4dp"
-                            android:tint="@color/white_100" />
+                            app:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -863,7 +1081,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Honour audio mode (Sound only)"
+                            android:text="@string/behavior_audio_mode_switch_label"
                             android:textSize="16sp"
                             android:textColor="@color/purple_card_text_primary" />
 
@@ -882,7 +1100,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="✨ Benefits:\n\n• Prevents unwanted audio when phone is muted\n• Respects your device's audio settings\n• Works with Silent and Vibrate modes\n• Ensures notifications only play when you can hear them"
+                        android:text="@string/behavior_audio_mode_benefits"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:lineSpacingExtra="4dp" />
@@ -909,19 +1127,35 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📳 Shake to Stop"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_mobile_vibrate_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Shake to Stop" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/section_shake_to_stop"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Stop readouts instantly by shaking your device"
+                        android:text="@string/behavior_shake_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
@@ -950,12 +1184,12 @@
                                 android:src="@drawable/lightbulb_2_24px"
                                 android:contentDescription="Tip"
                                 android:layout_marginEnd="6dp"
-                                android:tint="@color/purple_card_text_primary" />
+                                app:tint="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Most users should: Enable this feature"
+                                android:text="@string/behavior_shake_recommendation"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -972,7 +1206,7 @@
                             android:focusable="true"
                             android:foreground="?android:attr/selectableItemBackgroundBorderless"
                             android:padding="4dp"
-                            android:tint="@color/white_100" />
+                            app:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -988,7 +1222,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Enable shake to stop"
+                            android:text="@string/behavior_shake_switch_label"
                             android:textSize="16sp"
                             android:textColor="@color/purple_card_text_primary" />
 
@@ -1021,7 +1255,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Shake Intensity"
+                            android:text="@string/behavior_shake_intensity_label"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
@@ -1030,7 +1264,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Adjust how hard you need to shake to stop readouts"
+                            android:text="@string/behavior_shake_intensity_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="16dp" />
@@ -1046,7 +1280,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Gentle"
+                                android:text="@string/label_gentle"
                                 android:textSize="12sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -1067,7 +1301,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Strong"
+                                android:text="@string/label_strong"
                                 android:textSize="12sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -1077,7 +1311,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Shake Test"
+                            android:text="@string/behavior_shake_test_label"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
@@ -1086,7 +1320,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Test your shake intensity and see the trigger threshold"
+                            android:text="@string/behavior_shake_test_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="16dp" />
@@ -1104,7 +1338,7 @@
                                 android:layout_height="24dp"
                                 android:max="25"
                                 android:progress="0"
-                                android:progressTint="@color/purple_200"
+                                android:progressTint="@color/white_100"
                                 android:progressBackgroundTint="@color/purple_300" />
 
                             <!-- Threshold Marker -->
@@ -1128,7 +1362,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Current shake: 0.0"
+                                android:text="@string/behavior_current_shake"
                                 android:textSize="12sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:id="@+id/textCurrentShake" />
@@ -1137,7 +1371,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Threshold: 12.0"
+                                android:text="@string/behavior_threshold_value"
                                 android:textSize="12sp"
                                 android:textColor="@color/white_100"
                                 android:gravity="end"
@@ -1150,7 +1384,7 @@
                             android:id="@+id/btnShakeTest"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Start Test"
+                            android:text="@string/behavior_start_test"
                             android:backgroundTint="@color/white_100"
                             android:textColor="@color/purple_base"
                             android:layout_marginBottom="16dp" />
@@ -1159,7 +1393,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Timeout Settings"
+                            android:text="@string/behavior_timeout_settings"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
@@ -1168,7 +1402,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Set how long to listen for gestures before automatically stopping (to save battery)"
+                            android:text="@string/behavior_timeout_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="16dp" />
@@ -1184,7 +1418,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="5s"
+                                android:text="@string/behavior_timeout_5s"
                                 android:textSize="12sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -1205,7 +1439,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="5m"
+                                android:text="@string/behavior_timeout_5m"
                                 android:textSize="12sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -1222,7 +1456,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Timeout: 30 seconds"
+                                android:text="@string/behavior_timeout_current"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:id="@+id/textShakeTimeout" />
@@ -1237,7 +1471,7 @@
                                 android:focusable="true"
                                 android:foreground="?android:attr/selectableItemBackgroundBorderless"
                                 android:padding="4dp"
-                                android:tint="@color/white_100" />
+                                app:tint="@color/white_100" />
 
                         </LinearLayout>
 
@@ -1253,7 +1487,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Disable timeout (not recommended)"
+                                android:text="@string/behavior_disable_timeout"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -1261,8 +1495,10 @@
                                 android:id="@+id/switchShakeTimeoutDisabled"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:thumbTint="@color/white_100"
-                                android:trackTint="@color/purple_300" />
+                                android:thumbTint="@color/switch_thumb_color"
+                                android:trackTint="@color/switch_track_color"
+                                app:thumbTint="@color/switch_thumb_color"
+                                app:trackTint="@color/switch_track_color" />
 
                         </LinearLayout>
 
@@ -1290,19 +1526,35 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="👋 Wave to Stop"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_hand_gesture_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Wave to Stop" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/behavior_wave_to_stop_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Stop readouts instantly by waving your hand in front of the device"
+                        android:text="@string/behavior_wave_to_stop_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
@@ -1331,12 +1583,12 @@
                                 android:src="@drawable/lightbulb_2_24px"
                                 android:contentDescription="Tip"
                                 android:layout_marginEnd="6dp"
-                                android:tint="@color/purple_card_text_primary" />
+                                app:tint="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Great for: Desk users &amp; accessibility"
+                                android:text="@string/behavior_great_for"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -1353,7 +1605,7 @@
                             android:focusable="true"
                             android:foreground="?android:attr/selectableItemBackgroundBorderless"
                             android:padding="4dp"
-                            android:tint="@color/white_100" />
+                            app:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -1369,7 +1621,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Enable wave to stop"
+                            android:text="@string/behavior_enable_wave_stop"
                             android:textSize="16sp"
                             android:textColor="@color/purple_card_text_primary" />
 
@@ -1398,11 +1650,11 @@
                             android:background="@color/white_200"
                             android:layout_marginVertical="16dp" />
 
-                        <!-- Proximity Threshold Section -->
+                        <!-- @string/behavior_proximity_threshold Section -->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Proximity Threshold"
+                            android:text="@string/behavior_proximity_threshold"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
@@ -1411,7 +1663,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Set the percentage of your sensor's maximum distance that will trigger wave-to-stop. (Requires calibration)"
+                            android:text="@string/behavior_wave_threshold_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="16dp" />
@@ -1427,7 +1679,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="30%"
+                                android:text="@string/behavior_wave_threshold_30"
                                 android:textSize="12sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -1448,17 +1700,17 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="90%"
+                                android:text="@string/behavior_wave_threshold_90"
                                 android:textSize="12sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
                         </LinearLayout>
 
-                        <!-- Wave Test Section -->
+                        <!-- @string/behavior_wave_test_button Section -->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Wave Test"
+                            android:text="@string/behavior_wave_test_button"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
@@ -1467,7 +1719,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Test your wave detection. Binary sensors show 0 (close) or max (far)."
+                            android:text="@string/behavior_wave_test_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="8dp" />
@@ -1496,12 +1748,12 @@
                                     android:src="@drawable/lightbulb_2_24px"
                                     android:contentDescription="Tip"
                                     android:layout_marginEnd="4dp"
-                                    android:tint="@color/purple_card_text_primary" />
+                                    app:tint="@color/purple_card_text_primary" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Different phones work differently - some only see 'near' or 'far', others see everything in between.\n \nIt's normal if this bar only goes to the extremes!"
+                                    android:text="@string/behavior_wave_sensor_info"
                                     android:textSize="12sp"
                                     android:textColor="@color/purple_card_text_primary" />
 
@@ -1522,7 +1774,7 @@
                                 android:layout_height="24dp"
                                 android:max="10"
                                 android:progress="0"
-                                android:progressTint="@color/purple_200"
+                                android:progressTint="@color/white_100"
                                 android:progressBackgroundTint="@color/purple_300" />
 
                             <!-- Threshold Marker -->
@@ -1546,16 +1798,16 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Current proximity: 5.0 cm"
+                                android:text="@string/behavior_wave_current_proximity"
                                 android:textSize="12sp"
-                                android:textColor="@color/purple_card_text_secondary"
+                                android:textColor="@color/white_100"
                                 android:id="@+id/textCurrentWave" />
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Threshold: 5.0 cm"
+                                android:text="@string/behavior_wave_current_threshold"
                                 android:textSize="12sp"
                                 android:textColor="@color/white_100"
                                 android:gravity="end"
@@ -1568,7 +1820,7 @@
                             android:id="@+id/btnWaveTest"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Start Test"
+                            android:text="@string/behavior_start_test"
                             android:backgroundTint="@color/white_100"
                             android:textColor="@color/purple_base"
                             android:layout_marginBottom="8dp" />
@@ -1578,16 +1830,16 @@
                             android:id="@+id/btnRecalibrateWave"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Recalibrate Wave Detection"
+                            android:text="@string/behavior_wave_recalibrate"
                             android:textSize="14sp"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            style="@style/Widget.SpeakThat.Button.Secondary"
                             android:layout_marginBottom="16dp" />
 
                         <!-- Timeout Section -->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Timeout Settings"
+                            android:text="@string/behavior_timeout_settings"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
@@ -1596,7 +1848,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Set how long to listen for gestures before automatically stopping (to save battery)"
+                            android:text="@string/behavior_timeout_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="16dp" />
@@ -1612,7 +1864,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="5s"
+                                android:text="@string/behavior_timeout_5s"
                                 android:textSize="12sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -1633,7 +1885,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="5m"
+                                android:text="@string/behavior_timeout_5m"
                                 android:textSize="12sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -1650,7 +1902,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Timeout: 30 seconds"
+                                android:text="@string/behavior_timeout_current"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:id="@+id/textWaveTimeout" />
@@ -1665,7 +1917,7 @@
                                 android:focusable="true"
                                 android:foreground="?android:attr/selectableItemBackgroundBorderless"
                                 android:padding="4dp"
-                                android:tint="@color/white_100" />
+                                app:tint="@color/white_100" />
 
                         </LinearLayout>
 
@@ -1681,7 +1933,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Disable timeout (not recommended)"
+                                android:text="@string/behavior_disable_timeout"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -1689,12 +1941,14 @@
                                 android:id="@+id/switchWaveTimeoutDisabled"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:thumbTint="@color/white_100"
-                                android:trackTint="@color/purple_300" />
+                                android:thumbTint="@color/switch_thumb_color"
+                                android:trackTint="@color/switch_track_color"
+                                app:thumbTint="@color/switch_thumb_color"
+                                app:trackTint="@color/switch_track_color" />
 
                         </LinearLayout>
 
-                        <!-- Pocket Mode Section -->
+                        <!-- @string/behavior_wave_pocket Section -->
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
@@ -1704,7 +1958,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Pocket Mode"
+                            android:text="@string/behavior_wave_pocket"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
@@ -1713,7 +1967,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Allow readouts to continue when sensor is already covered (like in your pocket), but still stop when you cover it after the readout starts"
+                            android:text="@string/behavior_wave_pocket_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="16dp" />
@@ -1729,7 +1983,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Allow readouts when sensor covered"
+                                android:text="@string/behavior_wave_pocket_checkbox"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -1737,8 +1991,10 @@
                                 android:id="@+id/switchPocketMode"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:thumbTint="@color/white_100"
-                                android:trackTint="@color/purple_300" />
+                                android:thumbTint="@color/switch_thumb_color"
+                                android:trackTint="@color/switch_track_color"
+                                app:thumbTint="@color/switch_thumb_color"
+                                app:trackTint="@color/switch_track_color" />
 
                         </LinearLayout>
 
@@ -1766,19 +2022,35 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📱 Custom App Names"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_twitter"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Custom App Names" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/custom_app_names_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Customize how app names are spoken in notifications"
+                        android:text="@string/custom_app_names_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
@@ -1807,12 +2079,12 @@
                                 android:src="@drawable/lightbulb_2_24px"
                                 android:contentDescription="Tip"
                                 android:layout_marginEnd="6dp"
-                                android:tint="@color/purple_card_text_primary" />
+                                app:tint="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Example: X app reads as Twitter"
+                                android:text="@string/custom_app_names_example"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -1829,11 +2101,11 @@
                             android:focusable="true"
                             android:foreground="?android:attr/selectableItemBackgroundBorderless"
                             android:padding="4dp"
-                            android:tint="@color/white_100" />
+                            app:tint="@color/white_100" />
 
                     </LinearLayout>
 
-                    <!-- Add Custom App Name -->
+                    <!-- @string/add_custom_app_name -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1853,7 +2125,7 @@
                                 android:id="@+id/editAppPackage"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="App package name (e.g., com.twitter.android)"
+                                android:hint="@string/app_package_hint"
                                 android:inputType="text"
                                 android:textColor="@color/purple_card_text_primary" />
 
@@ -1872,7 +2144,7 @@
                                 android:id="@+id/editCustomAppName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Custom name (e.g., Twitter)"
+                                android:hint="@string/custom_name_hint"
                                 android:inputType="text"
                                 android:textColor="@color/purple_card_text_primary" />
 
@@ -1884,10 +2156,10 @@
                         android:id="@+id/btnAddCustomAppName"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:text="Add Custom App Name"
-                        android:backgroundTint="#26000000"
-                        android:textColor="@color/white_100"
-                        android:layout_marginBottom="16dp" />
+                        android:text="@string/add_custom_app_name"
+                        android:layout_marginBottom="16dp"
+                        app:cornerRadius="12dp"
+                        style="@style/Widget.SpeakThat.Button.Primary" />
 
                     <!-- Custom App Names List -->
                     <androidx.recyclerview.widget.RecyclerView
@@ -1919,19 +2191,35 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="⏱️ Delay Before Readout"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_more_time_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Delay Before Readout" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/behavior_delay_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Add a short delay before SpeakThat starts reading notifications"
+                        android:text="@string/behavior_delay_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
@@ -1960,12 +2248,12 @@
                                 android:src="@drawable/lightbulb_2_24px"
                                 android:contentDescription="Tip"
                                 android:layout_marginEnd="6dp"
-                                android:tint="@color/purple_card_text_primary" />
+                                app:tint="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Most users should use: 2 seconds"
+                                android:text="@string/behavior_delay_recommendation"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -1982,7 +2270,7 @@
                             android:focusable="true"
                             android:foreground="?android:attr/selectableItemBackgroundBorderless"
                             android:padding="4dp"
-                            android:tint="@color/white_100" />
+                            app:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -1997,7 +2285,7 @@
                             android:id="@+id/radioDelayNone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="None - Start immediately"
+                            android:text="@string/behavior_delay_none"
                             android:checked="true"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
@@ -2008,7 +2296,7 @@
                             android:id="@+id/radioDelay1s"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1 second - Quick pause"
+                            android:text="@string/behavior_delay_1s"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
                             app:buttonTint="@color/white_100"
@@ -2018,7 +2306,7 @@
                             android:id="@+id/radioDelay2s"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="2 seconds - Recommended"
+                            android:text="@string/behavior_delay_2s"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
                             app:buttonTint="@color/white_100"
@@ -2028,7 +2316,7 @@
                             android:id="@+id/radioDelay3s"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="3 seconds - Extra time to react"
+                            android:text="@string/behavior_delay_3s"
                             android:layout_marginBottom="8dp"
                             android:buttonTint="@color/white_100"
                             app:buttonTint="@color/white_100"
@@ -2040,7 +2328,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="✨ Benefits:\n\n• Avoids overlap with notification sounds\n• Gives you time to shake-to-cancel\n• Less jarring in quiet environments\n• Perfect for meetings and public spaces"
+                        android:text="@string/behavior_delay_benefits"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:lineSpacingExtra="4dp" />
@@ -2067,19 +2355,35 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="⏰ Notification Cooldown"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_hourglass_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Notification Cooldown" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/behavior_cooldown_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Prevent apps from having multiple notifications read within a specified time period"
+                        android:text="@string/behavior_cooldown_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
@@ -2108,12 +2412,12 @@
                                 android:src="@drawable/lightbulb_2_24px"
                                 android:contentDescription="Tip"
                                 android:layout_marginEnd="6dp"
-                                android:tint="@color/purple_card_text_primary" />
+                                app:tint="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Great for: Apps that spam notifications"
+                                android:text="@string/behavior_cooldown_recommendation"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -2130,7 +2434,7 @@
                             android:focusable="true"
                             android:foreground="?android:attr/selectableItemBackgroundBorderless"
                             android:padding="4dp"
-                            android:tint="@color/white_100" />
+                            app:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -2154,7 +2458,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:minHeight="56dp"
-                                android:hint="Search apps or enter package name"
+                                android:hint="@string/hint_search_apps_or_package"
                                 android:inputType="text"
                                 android:completionThreshold="1"
                                 android:dropDownHeight="200dp"
@@ -2171,9 +2475,9 @@
                             android:id="@+id/btnAddCooldownApp"
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
-                            android:text="Add"
-                            android:backgroundTint="#26000000"
-                            android:textColor="@color/white_100" />
+                            android:text="@string/button_add"
+                            app:cornerRadius="12dp"
+                            style="@style/Widget.SpeakThat.Button.Primary" />
 
                     </LinearLayout>
 
@@ -2207,19 +2511,35 @@
                     android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🗣️ Speech Format"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:layout_marginBottom="16dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_space_bar_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Speech Format" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/behavior_speech_title"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Customize how notifications are spoken aloud using placeholders"
+                        android:text="@string/behavior_speech_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
@@ -2248,12 +2568,12 @@
                                 android:src="@drawable/lightbulb_2_24px"
                                 android:contentDescription="Tip"
                                 android:layout_marginEnd="6dp"
-                                android:tint="@color/purple_card_text_primary" />
+                                app:tint="@color/purple_card_text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Customize your notification experience"
+                                android:text="@string/behavior_speech_recommendation"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -2270,7 +2590,7 @@
                             android:focusable="true"
                             android:foreground="?android:attr/selectableItemBackgroundBorderless"
                             android:padding="4dp"
-                            android:tint="@color/white_100" />
+                            app:tint="@color/white_100" />
 
                     </LinearLayout>
 
@@ -2278,7 +2598,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Format Preset:"
+                        android:text="@string/behavior_speech_preset"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="8dp" />
@@ -2296,7 +2616,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Custom Format:"
+                        android:text="@string/behavior_speech_custom"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="8dp" />
@@ -2314,7 +2634,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:minHeight="56dp"
-                            android:hint="Enter format with placeholders"
+                                                            android:hint="@string/hint_enter_format_placeholders"
                             android:inputType="textMultiLine"
                             android:maxLines="3"
                             android:textSize="16sp"
@@ -2338,7 +2658,7 @@
                             android:id="@+id/textSpeechPreview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Preview: Messages notified you: Mitchi: I heard you're using SpeakThat!"
+                            android:text="@string/behavior_speech_preview_example"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_primary"
                             android:layout_marginBottom="8dp" />
@@ -2347,13 +2667,10 @@
                             android:id="@+id/btnTestSpeechTemplate"
                             android:layout_width="match_parent"
                             android:layout_height="36dp"
-                            android:text="Test"
+                            android:text="@string/button_test"
                             android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:backgroundTint="@android:color/transparent"
-                            android:strokeColor="@color/white_100"
-                            android:strokeWidth="1.0"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            app:cornerRadius="12dp"
+                            style="@style/Widget.SpeakThat.Button.Primary" />
 
                     </LinearLayout>
 
@@ -2361,7 +2678,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Common placeholders: {app}, {content}, {time}, {title}, {text}, {priority}, {category}"
+                        android:text="@string/behavior_speech_placeholders"
                         android:textSize="12sp"
                         android:textColor="@color/purple_card_text_primary"
                         android:layout_marginBottom="8dp" />

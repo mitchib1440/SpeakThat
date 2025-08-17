@@ -38,7 +38,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="📱 Bluetooth Devices"
+                        android:text="@string/bluetooth_devices_title"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
@@ -46,7 +46,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Select Bluetooth devices that must be connected for notifications to be read."
+                        android:text="@string/bluetooth_devices_description"
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
                 app:cardBackgroundColor="?attr/colorSurface">
 
@@ -73,7 +73,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Selected Devices"
+                        android:text="@string/bluetooth_selected_devices"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
@@ -90,7 +90,7 @@
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Add Bluetooth Device"
+                        android:text="@string/bluetooth_add_device"
                         android:textColor="@color/purple_200"
                         app:strokeColor="@color/purple_200"
                         app:strokeWidth="2dp" />
@@ -103,7 +103,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="8dp"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
                 app:cardBackgroundColor="@color/warning_background">
 
@@ -126,12 +126,12 @@
                             android:src="@drawable/help_24px"
                             android:contentDescription="Help"
                             android:layout_marginEnd="8dp"
-                            android:tint="@color/text_primary" />
+                            app:tint="@color/text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="How it works"
+                            android:text="@string/bluetooth_how_it_works"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary" />
@@ -141,7 +141,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="• Notifications will only be read when at least one selected device is connected\n\n• If no devices are selected, all notifications will be read\n\n• The device must be paired and connected (not just discovered)"
+                        android:text="@string/bluetooth_instructions"
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary"
                         android:lineSpacingExtra="4dp" />

@@ -13,22 +13,19 @@ import android.util.Log;
 public class BootReceiver extends BroadcastReceiver {
     
     private static final String TAG = "BootReceiver";
-    private static final String PREFS_NAME = "SpeakThatPrefs";
-    private static final String KEY_AUTO_START = "auto_start_on_boot";
-    private static final String KEY_MASTER_SWITCH_ENABLED = "master_switch_enabled";
     
     @Override
     public void onReceive(Context context, Intent intent) {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            Log.d(TAG, "Boot completed received");
+            Log.d(TAG, context.getString(R.string.log_boot_receiver_boot_completed));
             
             // Check if auto-start is enabled
-            SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-            boolean autoStartEnabled = prefs.getBoolean(KEY_AUTO_START, false);
-            boolean masterSwitchEnabled = prefs.getBoolean(KEY_MASTER_SWITCH_ENABLED, true);
+            SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.boot_receiver_prefs_name), Context.MODE_PRIVATE);
+            boolean autoStartEnabled = prefs.getBoolean(context.getString(R.string.boot_receiver_key_auto_start), false);
+            boolean masterSwitchEnabled = prefs.getBoolean(context.getString(R.string.boot_receiver_key_master_switch), true);
             
             if (autoStartEnabled && masterSwitchEnabled) {
-                Log.d(TAG, "Auto-start enabled, starting notification service");
+                Log.d(TAG, context.getString(R.string.log_boot_receiver_auto_start));
                 
                 // For NotificationListenerService, we don't need to start it manually
                 // The system will automatically start it when the user grants permission
@@ -37,7 +34,7 @@ public class BootReceiver extends BroadcastReceiver {
                     // Check if the notification listener service is enabled
                     String flat = android.provider.Settings.Secure.getString(
                         context.getContentResolver(), 
-                        "enabled_notification_listeners"
+                        context.getString(R.string.boot_receiver_enabled_notification_listeners)
                     );
                     
                     if (flat != null && !flat.isEmpty()) {
@@ -47,16 +44,16 @@ public class BootReceiver extends BroadcastReceiver {
                                 android.content.ComponentName.unflattenFromString(name);
                             if (componentName != null && 
                                 context.getPackageName().equals(componentName.getPackageName())) {
-                                Log.d(TAG, "Notification service already enabled, no action needed");
-                                InAppLogger.log("BootReceiver", "Notification service already enabled");
+                                Log.d(TAG, context.getString(R.string.log_boot_receiver_service_enabled));
+                                InAppLogger.log("BootReceiver", context.getString(R.string.log_boot_receiver_service_enabled));
                                 return;
                             }
                         }
                     }
                     
                     // If not enabled, log that user needs to grant permission
-                    Log.d(TAG, "Notification service not enabled, user needs to grant permission");
-                    InAppLogger.log("BootReceiver", "Notification service not enabled - user needs to grant permission");
+                    Log.d(TAG, context.getString(R.string.log_boot_receiver_service_not_enabled));
+                    InAppLogger.log("BootReceiver", context.getString(R.string.log_boot_receiver_service_not_enabled));
                     
                 } catch (Exception e) {
                     Log.e(TAG, "Error checking notification service status", e);

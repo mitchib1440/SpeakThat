@@ -37,14 +37,31 @@
                     android:background="@drawable/gradient_card_subtle_right">
 
                     <!-- Theme Section Header -->
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="🎨 Theme"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:id="@+id/iconTheme"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_dark_mode_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="@string/general_theme_title" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/general_theme_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_secondary" />
+
+                    </LinearLayout>
 
                     <!-- Dark Mode Toggle -->
                     <LinearLayout
@@ -63,7 +80,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Dark Mode"
+                                android:text="@string/general_dark_mode"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -71,7 +88,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Enable dark mode for this app"
+                                android:text="@string/general_dark_mode_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -111,14 +128,31 @@
                     android:padding="20dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="⚡ Performance"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:id="@+id/iconAppBehavior"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_mobile_gear_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="@string/general_app_behavior_title" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/general_app_behavior_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_secondary" />
+
+                    </LinearLayout>
 
                     <!-- Battery Optimization Toggle -->
                     <LinearLayout
@@ -137,7 +171,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Battery Optimization"
+                                android:text="@string/general_battery_optimization"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -145,7 +179,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Request battery optimization exemption"
+                                android:text="@string/general_battery_optimization_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -181,7 +215,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Auto-Start Service"
+                                android:text="@string/general_auto_start"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -189,7 +223,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Automatically start notification service on boot"
+                                android:text="@string/general_auto_start_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -227,7 +261,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Aggressive Background Processing"
+                                android:text="@string/general_aggressive_background"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -235,7 +269,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Process notifications more aggressively in background (uses more battery)"
+                                android:text="@string/general_aggressive_background_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -264,7 +298,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Service Restart Policy"
+                            android:text="@string/general_service_restart_policy"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
@@ -273,7 +307,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="When should the notification service automatically restart?"
+                            android:text="@string/general_service_restart_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="12dp" />
@@ -288,7 +322,7 @@
                                 android:id="@+id/radioRestartNever"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Never restart automatically"
+                                android:text="@string/general_never_restart"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:buttonTint="@color/radio_button_color"
@@ -299,7 +333,7 @@
                                 android:id="@+id/radioRestartOnCrash"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Restart only on crash"
+                                android:text="@string/general_restart_on_crash"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:buttonTint="@color/radio_button_color"
@@ -310,7 +344,7 @@
                                 android:id="@+id/radioRestartPeriodic"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Restart periodically (every 6 hours)"
+                                android:text="@string/general_restart_periodically"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:buttonTint="@color/radio_button_color"
@@ -342,14 +376,31 @@
                     android:padding="20dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="🔔 Notification Settings"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:id="@+id/iconNotificationSettings"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_notification_add_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="@string/general_notification_settings_title" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/general_notification_settings_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_secondary" />
+
+                    </LinearLayout>
 
                     <!-- Persistent Notification -->
                     <LinearLayout
@@ -368,7 +419,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Persistent Notification"
+                                android:text="@string/general_persistent_notification"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -376,7 +427,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Show a persistent notification when SpeakThat is active"
+                                android:text="@string/general_persistent_notification_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -412,7 +463,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Notification While Reading"
+                                android:text="@string/general_notification_while_reading"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -420,7 +471,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Show a notification when TTS is actively reading"
+                                android:text="@string/general_notification_while_reading_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -463,7 +514,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔄 Auto-Update Settings"
+                        android:text="@string/auto_update_settings"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_secondary"
@@ -486,7 +537,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Check for Updates"
+                                android:text="@string/check_for_updates_auto"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -494,7 +545,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Automatically check for app updates when you open the app"
+                                android:text="@string/check_for_updates_auto_desc"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -523,7 +574,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Check Frequency"
+                            android:text="@string/check_frequency"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
@@ -532,7 +583,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="How often should the app check for updates?"
+                            android:text="@string/check_frequency_desc"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="12dp" />
@@ -547,7 +598,7 @@
                                 android:id="@+id/radioUpdateDaily"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Daily"
+                                android:text="@string/update_daily"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:buttonTint="@color/radio_button_color"
@@ -558,7 +609,7 @@
                                 android:id="@+id/radioUpdateWeekly"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Weekly"
+                                android:text="@string/update_weekly"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:buttonTint="@color/radio_button_color"
@@ -569,7 +620,7 @@
                                 android:id="@+id/radioUpdateMonthly"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Monthly"
+                                android:text="@string/update_monthly"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:buttonTint="@color/radio_button_color"
@@ -580,7 +631,7 @@
                                 android:id="@+id/radioUpdateNever"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Never (manual only)"
+                                android:text="@string/update_never"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:buttonTint="@color/radio_button_color"
@@ -612,14 +663,31 @@
                     android:padding="20dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="💾 Data Management"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:id="@+id/iconDataManagement"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_settings_backup_restore_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="@string/general_data_management_title" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/general_data_management_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_secondary" />
+
+                    </LinearLayout>
 
                     <!-- Export Configuration -->
                     <LinearLayout
@@ -642,7 +710,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Export Configuration"
+                                android:text="@string/general_export_configuration"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -650,7 +718,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Save all settings to a file"
+                                android:text="@string/general_export_configuration_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -660,7 +728,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="→"
+                            android:text="@string/arrow_right"
                             android:textSize="18sp"
                             android:textColor="@color/purple_card_text_secondary" />
 
@@ -687,7 +755,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Import Configuration"
+                                android:text="@string/general_import_configuration"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -695,7 +763,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Load settings from a file"
+                                android:text="@string/general_import_configuration_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -705,7 +773,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="→"
+                            android:text="@string/arrow_right"
                             android:textSize="18sp"
                             android:textColor="@color/purple_card_text_secondary" />
 
@@ -732,7 +800,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Clear All Data"
+                                android:text="@string/button_clear_all_data"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -740,7 +808,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Reset all settings to defaults"
+                                android:text="@string/general_reset_settings"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -750,7 +818,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="→"
+                            android:text="@string/arrow_right"
                             android:textSize="18sp"
                             android:textColor="@color/purple_card_text_secondary" />
 
@@ -777,14 +845,31 @@
                     android:padding="20dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="🧪 Test Settings"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:id="@+id/iconTestSettings"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_experiment_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="@string/title_test_settings" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_test_settings"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_secondary" />
+
+                    </LinearLayout>
 
                     <!-- Test Settings Button -->
                     <LinearLayout
@@ -807,7 +892,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Verify All Settings"
+                                android:text="@string/general_verify_settings"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -815,7 +900,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Run comprehensive test to verify all settings are working"
+                                android:text="@string/general_verify_settings_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:layout_marginTop="4dp" />
@@ -825,7 +910,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="›"
+                            android:text="@string/arrow_right"
                             android:textSize="24sp"
                             android:textColor="@color/white_100" />
 

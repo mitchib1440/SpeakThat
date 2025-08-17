@@ -135,6 +135,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private val appCooldownTimestamps = HashMap<String, Long>() // packageName -> last notification timestamp
     private val appCooldownSettings = HashMap<String, Int>() // packageName -> cooldown seconds
     
+    // Deduplication tracking - prevent same notification from being processed multiple times
+    private val recentNotificationKeys = HashMap<String, Long>() // notificationKey -> timestamp
+    
     // TTS Recovery tracking
     private var ttsRecoveryAttempts = 0
     private var ttsRecoveryHandler: android.os.Handler? = null
@@ -173,6 +176,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Notification IDs
         private const val PERSISTENT_NOTIFICATION_ID = 1001
         private const val READING_NOTIFICATION_ID = 1002
+        
+        // Deduplication settings
+        private const val DEDUPLICATION_WINDOW_MS = 5000L // 5 seconds window for deduplication
         
         // Filter system keys
         private const val KEY_APP_LIST_MODE = "app_list_mode"
@@ -470,6 +476,29 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 
                 // Extract notification text
                 val notificationText = extractNotificationText(notification)
+                
+                // Check for duplicate notifications (only if deduplication is enabled)
+                val isDeduplicationEnabled = sharedPreferences?.getBoolean("notification_deduplication", false) ?: false
+                if (isDeduplicationEnabled) {
+                    val notificationKey = generateNotificationKey(packageName, sbn.id, notificationText)
+                    val currentTime = System.currentTimeMillis()
+                    
+                    // Clean up old entries from deduplication map
+                    recentNotificationKeys.entries.removeIf { (_, timestamp) ->
+                        currentTime - timestamp > DEDUPLICATION_WINDOW_MS
+                    }
+                    
+                    // Check if this notification was recently processed
+                    val lastProcessedTime = recentNotificationKeys[notificationKey]
+                    if (lastProcessedTime != null && currentTime - lastProcessedTime < DEDUPLICATION_WINDOW_MS) {
+                        Log.d(TAG, "Duplicate notification detected from $appName - skipping (processed ${currentTime - lastProcessedTime}ms ago)")
+                        InAppLogger.logFilter("Duplicate notification from $appName - skipping (processed ${currentTime - lastProcessedTime}ms ago)")
+                        return
+                    }
+                    
+                    // Mark this notification as processed
+                    recentNotificationKeys[notificationKey] = currentTime
+                }
                 
                 if (notificationText.isNotEmpty()) {
                     // SECURITY: Check sensitive data logging setting once for this notification
@@ -836,6 +865,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.e(TAG, "Error getting custom app name for $packageName", e)
             null
         }
+    }
+    
+    /**
+     * Generate a unique key for a notification to enable deduplication
+     * Uses package name, notification ID, and content hash to identify duplicates
+     */
+    private fun generateNotificationKey(packageName: String, notificationId: Int, content: String): String {
+        // Create a hash of the content to handle minor variations
+        val contentHash = content.hashCode()
+        return "${packageName}_${notificationId}_${contentHash}"
     }
     
     private fun extractNotificationText(notification: Notification): String {

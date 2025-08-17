@@ -208,6 +208,17 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "notification_deduplication",
+                title = "Notification Deduplication",
+                description = "Prevent duplicate notifications from being read multiple times",
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("deduplication", "duplicate", "notification", "same", "multiple", "times", "prevent", "avoid", "repeated", "duplicate notifications", "same notification", "multiple readouts"),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "persistent_notification",
                 title = "Persistent Notification",
                 description = "Show a persistent notification when SpeakThat is active",

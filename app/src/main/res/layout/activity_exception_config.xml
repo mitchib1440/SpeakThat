@@ -40,7 +40,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Screen State"
+                        android:text="@string/exception_screen_state"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
@@ -49,7 +49,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Choose when this exception should apply:"
+                        android:text="@string/exception_screen_choose"
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -71,14 +71,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Invert Condition"
+                                android:text="@string/exception_invert_condition"
                                 android:textSize="16sp"
                                 android:textColor="@color/text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Exception when condition is NOT met"
+                                android:text="@string/exception_invert_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/text_secondary" />
 
@@ -129,7 +129,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Time Schedule"
+                        android:text="@string/exception_time_schedule"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
@@ -138,7 +138,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Choose when this exception should apply:"
+                        android:text="@string/exception_screen_choose"
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -160,14 +160,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Invert Condition"
+                                android:text="@string/exception_invert_condition"
                                 android:textSize="16sp"
                                 android:textColor="@color/text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Exception when condition is NOT met"
+                                android:text="@string/exception_invert_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/text_secondary" />
 
@@ -201,7 +201,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Start Time:"
+                                android:text="@string/exception_start_time_label"
                                 android:textSize="14sp"
                                 android:textColor="@color/text_primary"
                                 android:layout_marginBottom="4dp" />
@@ -210,7 +210,7 @@
                                 android:id="@+id/textStartTime"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="19:00"
+                                android:text="@string/exception_start_time_default"
                                 android:textSize="16sp"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:background="@drawable/bg_advanced_voice_section"
@@ -229,7 +229,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="End Time:"
+                                android:text="@string/exception_end_time_label"
                                 android:textSize="14sp"
                                 android:textColor="@color/text_primary"
                                 android:layout_marginBottom="4dp" />
@@ -238,7 +238,7 @@
                                 android:id="@+id/textEndTime"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="07:00"
+                                android:text="@string/exception_end_time_default"
                                 android:textSize="16sp"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:background="@drawable/bg_advanced_voice_section"
@@ -266,10 +266,8 @@
                                 android:id="@+id/buttonStartTime"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Set Start Time"
-                                android:background="@android:color/transparent"
-                                android:textColor="@color/white_100"
-                                style="@style/Widget.Material3.Button.TextButton" />
+                                android:text="@string/exception_set_start_time"
+                                style="@style/Widget.SpeakThat.Button.Primary" />
 
                         </FrameLayout>
 
@@ -284,10 +282,8 @@
                                 android:id="@+id/buttonEndTime"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Set End Time"
-                                android:background="@android:color/transparent"
-                                android:textColor="@color/white_100"
-                                style="@style/Widget.Material3.Button.TextButton" />
+                                android:text="@string/exception_set_end_time"
+                                style="@style/Widget.SpeakThat.Button.Primary" />
 
                         </FrameLayout>
 
@@ -296,7 +292,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Days of Week:"
+                        android:text="@string/time_schedule_days"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="8dp" />
@@ -305,7 +301,7 @@
                         android:id="@+id/textSelectedDays"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="No days selected"
+                        android:text="@string/exception_no_days_selected"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:background="@drawable/bg_advanced_voice_section"
@@ -322,7 +318,7 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Bluetooth Device Configuration -->
+            <!-- @string/item_trigger_bluetooth_device Configuration -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardBluetooth"
                 android:layout_width="match_parent"
@@ -344,7 +340,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bluetooth Device"
+                        android:text="@string/item_trigger_bluetooth_device"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
@@ -353,7 +349,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Choose which Bluetooth devices should trigger this exception:"
+                        android:text="@string/exception_bluetooth_devices_title"
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -375,14 +371,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Invert Condition"
+                                android:text="@string/exception_invert_condition"
                                 android:textSize="16sp"
                                 android:textColor="@color/text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Exception when condition is NOT met"
+                                android:text="@string/exception_invert_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/text_secondary" />
 
@@ -404,7 +400,7 @@
                         android:id="@+id/switchAnyDevice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Any Bluetooth Device"
+                        android:text="@string/exception_any_bluetooth_device"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="16dp"
@@ -416,7 +412,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Specific Devices (one per line):"
+                        android:text="@string/exception_specific_devices"
                         android:textSize="14sp"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="8dp" />
@@ -424,7 +420,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Device addresses or names"
+                                                        android:hint="@string/hint_device_addresses"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_marginBottom="8dp">
 
@@ -442,14 +438,14 @@
                         android:id="@+id/buttonSelectDevices"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Select Devices"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        android:text="@string/exception_select_devices"
+                        style="@style/Widget.SpeakThat.Button.Primary" />
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- WiFi Network Configuration -->
+            <!-- @string/dialog_title_wifi_networks Configuration -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardWifi"
                 android:layout_width="match_parent"
@@ -471,7 +467,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="WiFi Network"
+                        android:text="@string/dialog_title_wifi_networks"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
@@ -480,7 +476,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Choose which WiFi networks should trigger this exception:"
+                        android:text="@string/exception_wifi_networks_title"
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -502,14 +498,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Invert Condition"
+                                android:text="@string/exception_invert_condition"
                                 android:textSize="16sp"
                                 android:textColor="@color/text_primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Exception when condition is NOT met"
+                                android:text="@string/exception_invert_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/text_secondary" />
 
@@ -531,7 +527,7 @@
                         android:id="@+id/switchAnyNetwork"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Any WiFi Network"
+                        android:text="@string/exception_any_wifi_network"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="16dp"
@@ -543,7 +539,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Specific Networks (one per line):"
+                        android:text="@string/exception_specific_networks"
                         android:textSize="14sp"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="8dp" />
@@ -551,7 +547,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Network SSIDs"
+                                                        android:hint="@string/hint_network_ssids"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_marginBottom="8dp">
 
@@ -569,8 +565,8 @@
                         android:id="@+id/buttonSelectNetworks"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Select Networks"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        android:text="@string/exception_select_networks"
+                        style="@style/Widget.SpeakThat.Button.Primary" />
 
                 </LinearLayout>
 
@@ -595,7 +591,7 @@
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp">
 
@@ -608,7 +604,7 @@
                     android:id="@+id/buttonCancel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="CANCEL"
+                    android:text="@string/button_cancel"
                     android:textColor="@color/white_100"
                     android:background="@android:color/transparent"
                     style="@style/Widget.Material3.Button.TextButton" />
@@ -623,7 +619,7 @@
             android:layout_weight="1"
             android:layout_marginStart="8dp"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp">
 
@@ -636,7 +632,7 @@
                     android:id="@+id/buttonSave"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Save"
+                    android:text="@string/button_save"
                     android:textColor="@color/white_100"
                     android:background="@android:color/transparent"
                     style="@style/Widget.Material3.Button.TextButton" />

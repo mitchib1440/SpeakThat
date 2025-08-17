@@ -59,6 +59,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         setupPerformanceSettings();
         setupDataManagement();
         setupTestSettings();
+        setupThemeIcon();
     }
 
     private void applySavedTheme() {
@@ -79,7 +80,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 if (isGranted) {
                     performExport();
                 } else {
-                    Toast.makeText(this, "Storage permission required for export", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.storage_permission_required), Toast.LENGTH_LONG).show();
                 }
             }
         );
@@ -114,11 +115,11 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     private void setupThemeSettings() {
         // Dark Mode Toggle
         MaterialSwitch darkModeSwitch = binding.switchDarkMode;
-        boolean isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        boolean isDarkMode = sharedPreferences.getBoolean(getString(R.string.prefs_dark_mode), false);
         darkModeSwitch.setChecked(isDarkMode);
 
         darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            sharedPreferences.edit().putBoolean("dark_mode", isChecked).apply();
+            sharedPreferences.edit().putBoolean(getString(R.string.prefs_dark_mode), isChecked).apply();
             
             // Apply theme immediately
             if (isChecked) {
@@ -127,25 +128,38 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO);
             }
             
+            // Update theme icon
+            setupThemeIcon();
+            
             // Show restart dialog
             new AlertDialog.Builder(this)
-                .setTitle("Theme Changed")
-                .setMessage("The theme has been applied. For the best experience, you may want to restart the app.")
-                .setPositiveButton("Restart Now", (dialog, which) -> {
+                .setTitle(getString(R.string.theme_changed_title))
+                .setMessage(getString(R.string.theme_changed_message))
+                .setPositiveButton(getString(R.string.restart_now), (dialog, which) -> {
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
                 })
-                .setNegativeButton("Later", null)
+                .setNegativeButton(getString(R.string.later), null)
                 .show();
         });
+    }
+
+    private void setupThemeIcon() {
+        // Set the appropriate icon for Theme section based on current theme
+        boolean isDarkMode = (getResources().getConfiguration().uiMode & 
+            android.content.res.Configuration.UI_MODE_NIGHT_MASK) == 
+            android.content.res.Configuration.UI_MODE_NIGHT_YES;
+        
+        int iconRes = isDarkMode ? R.drawable.ic_light_mode_24 : R.drawable.ic_dark_mode_24;
+        binding.iconTheme.setImageResource(iconRes);
     }
 
     private void setupPerformanceSettings() {
         // Persistent Notification Toggle
         MaterialSwitch persistentNotificationSwitch = binding.switchPersistentNotification;
-        boolean persistentNotificationEnabled = sharedPreferences.getBoolean("persistent_notification", false);
+        boolean persistentNotificationEnabled = sharedPreferences.getBoolean(getString(R.string.prefs_persistent_notification), false);
         persistentNotificationSwitch.setChecked(persistentNotificationEnabled);
 
         persistentNotificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -161,12 +175,12 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                     }
                 }
             }
-            sharedPreferences.edit().putBoolean("persistent_notification", isChecked).apply();
+            sharedPreferences.edit().putBoolean(getString(R.string.prefs_persistent_notification), isChecked).apply();
         });
 
         // Notification While Reading Toggle
         MaterialSwitch notificationWhileReadingSwitch = binding.switchNotificationWhileReading;
-        boolean notificationWhileReadingEnabled = sharedPreferences.getBoolean("notification_while_reading", false);
+        boolean notificationWhileReadingEnabled = sharedPreferences.getBoolean(getString(R.string.prefs_notification_while_reading), false);
         notificationWhileReadingSwitch.setChecked(notificationWhileReadingEnabled);
 
         notificationWhileReadingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -182,38 +196,38 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                     }
                 }
             }
-            sharedPreferences.edit().putBoolean("notification_while_reading", isChecked).apply();
+            sharedPreferences.edit().putBoolean(getString(R.string.prefs_notification_while_reading), isChecked).apply();
         });
 
         // Auto-Start Toggle
         MaterialSwitch autoStartSwitch = binding.switchAutoStart;
-        boolean autoStartEnabled = sharedPreferences.getBoolean("auto_start_enabled", true);
+        boolean autoStartEnabled = sharedPreferences.getBoolean(getString(R.string.prefs_auto_start_enabled), true);
         autoStartSwitch.setChecked(autoStartEnabled);
 
         autoStartSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            sharedPreferences.edit().putBoolean("auto_start_enabled", isChecked).apply();
+            sharedPreferences.edit().putBoolean(getString(R.string.prefs_auto_start_enabled), isChecked).apply();
         });
 
         // Battery Optimization Toggle
         MaterialSwitch batteryOptimizationSwitch = binding.switchBatteryOptimization;
-        boolean batteryOptimizationEnabled = sharedPreferences.getBoolean("battery_optimization_enabled", false);
+        boolean batteryOptimizationEnabled = sharedPreferences.getBoolean(getString(R.string.prefs_battery_optimization_enabled), false);
         batteryOptimizationSwitch.setChecked(batteryOptimizationEnabled);
 
         batteryOptimizationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            sharedPreferences.edit().putBoolean("battery_optimization_enabled", isChecked).apply();
+            sharedPreferences.edit().putBoolean(getString(R.string.prefs_battery_optimization_enabled), isChecked).apply();
         });
 
         // Aggressive Processing Toggle
         MaterialSwitch aggressiveProcessingSwitch = binding.switchAggressiveProcessing;
-        boolean aggressiveProcessingEnabled = sharedPreferences.getBoolean("aggressive_processing_enabled", false);
+        boolean aggressiveProcessingEnabled = sharedPreferences.getBoolean(getString(R.string.prefs_aggressive_processing_enabled), false);
         aggressiveProcessingSwitch.setChecked(aggressiveProcessingEnabled);
 
         aggressiveProcessingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            sharedPreferences.edit().putBoolean("aggressive_processing_enabled", isChecked).apply();
+            sharedPreferences.edit().putBoolean(getString(R.string.prefs_aggressive_processing_enabled), isChecked).apply();
         });
 
         // Service Restart Policy
-        String restartPolicy = sharedPreferences.getString("restart_policy", "never");
+        String restartPolicy = sharedPreferences.getString(getString(R.string.prefs_restart_policy), getString(R.string.restart_policy_never));
         switch (restartPolicy) {
             case "never":
                 binding.radioRestartNever.setChecked(true);
@@ -229,15 +243,15 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         binding.radioGroupRestartPolicy.setOnCheckedChangeListener((group, checkedId) -> {
             String policy;
             if (checkedId == R.id.radioRestartNever) {
-                policy = "never";
+                policy = getString(R.string.restart_policy_never);
             } else if (checkedId == R.id.radioRestartOnCrash) {
-                policy = "crash";
+                policy = getString(R.string.restart_policy_crash);
             } else if (checkedId == R.id.radioRestartPeriodic) {
-                policy = "periodic";
+                policy = getString(R.string.restart_policy_periodic);
             } else {
-                policy = "never";
+                policy = getString(R.string.restart_policy_never);
             }
-            sharedPreferences.edit().putString("restart_policy", policy).apply();
+            sharedPreferences.edit().putString(getString(R.string.prefs_restart_policy), policy).apply();
         });
     }
 
@@ -251,19 +265,19 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         binding.importConfigButton.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("application/json");
+            intent.setType(getString(R.string.export_mime_type));
             filePickerLauncher.launch(intent);
         });
 
         // Clear All Data
         binding.clearDataButton.setOnClickListener(v -> {
             new AlertDialog.Builder(this)
-                .setTitle("Clear All Data")
-                .setMessage("This will reset all settings to defaults and clear notification history.\n\nThis action cannot be undone.\n\nDo you want to continue?")
-                .setPositiveButton("Clear All Data", (dialog, which) -> {
+                .setTitle(getString(R.string.clear_all_data_title))
+                .setMessage(getString(R.string.clear_all_data_message))
+                .setPositiveButton(getString(R.string.clear_all_data_button), (dialog, which) -> {
                     clearAllData();
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show();
         });
     }
@@ -279,18 +293,18 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             String exportData = FilterConfigManager.exportFullConfiguration(this);
             
             // Create filename with timestamp
-            String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault()).format(new Date());
-            String filename = "SpeakThat_Config_" + timestamp + ".json";
+            String timestamp = new SimpleDateFormat(getString(R.string.date_format_export), Locale.getDefault()).format(new Date());
+            String filename = String.format(getString(R.string.export_filename_format), timestamp);
             
             // Launch file saver
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("application/json");
+            intent.setType(getString(R.string.export_mime_type));
             intent.putExtra(Intent.EXTRA_TITLE, filename);
             fileSaverLauncher.launch(intent);
             
         } catch (JSONException e) {
-            Toast.makeText(this, "Export failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, String.format(getString(R.string.export_failed), e.getMessage()), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -301,16 +315,16 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             
             // Write to file using ContentResolver
             try (java.io.OutputStream outputStream = getContentResolver().openOutputStream(uri)) {
-                if (outputStream == null) {
-                    throw new IOException("Unable to open output stream for URI");
-                }
-                outputStream.write(exportData.getBytes("UTF-8"));
+                            if (outputStream == null) {
+                throw new IOException(getString(R.string.error_unable_to_open_output_stream));
+            }
+            outputStream.write(exportData.getBytes(getString(R.string.export_charset)));
             }
             
-            Toast.makeText(this, "Configuration exported successfully", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.configuration_exported_successfully), Toast.LENGTH_LONG).show();
             
         } catch (Exception e) {
-            Toast.makeText(this, "Export failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, String.format(getString(R.string.export_failed), e.getMessage()), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -329,15 +343,15 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             FilterConfigManager.ImportResult result = FilterConfigManager.importFullConfiguration(this, content.toString());
             
             if (result.success) {
-                Toast.makeText(this, "Configuration imported successfully: " + result.message, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, String.format(getString(R.string.configuration_imported_successfully), result.message), Toast.LENGTH_LONG).show();
                 // Refresh the activity to show updated settings
                 recreate();
             } else {
-                Toast.makeText(this, "Import failed: " + result.message, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, String.format(getString(R.string.import_failed), result.message), Toast.LENGTH_LONG).show();
             }
             
         } catch (Exception e) {
-            Toast.makeText(this, "Import failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, String.format(getString(R.string.import_failed), e.getMessage()), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -345,11 +359,11 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         // Use ContentResolver to get input stream from URI
         try (java.io.InputStream inputStream = getContentResolver().openInputStream(uri)) {
             if (inputStream == null) {
-                throw new IOException("Unable to open input stream from URI");
+                throw new IOException(getString(R.string.error_unable_to_open_input_stream));
             }
             
             // Create a temporary file
-            File tempFile = File.createTempFile("speakthat_import", ".json", getCacheDir());
+            File tempFile = File.createTempFile(getString(R.string.import_temp_filename), ".json", getCacheDir());
             
             // Copy content to temp file
             try (java.io.FileOutputStream outputStream = new java.io.FileOutputStream(tempFile)) {
@@ -367,27 +381,27 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     private void clearAllData() {
         try {
             // Clear main preferences
-            SharedPreferences.Editor mainEditor = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE).edit();
+            SharedPreferences.Editor mainEditor = getSharedPreferences(getString(R.string.prefs_speakthat), MODE_PRIVATE).edit();
             mainEditor.clear();
             mainEditor.apply();
             
             // Clear voice settings
-            SharedPreferences.Editor voiceEditor = getSharedPreferences("VoiceSettings", MODE_PRIVATE).edit();
+            SharedPreferences.Editor voiceEditor = getSharedPreferences(getString(R.string.prefs_voice_settings), MODE_PRIVATE).edit();
             voiceEditor.clear();
             voiceEditor.apply();
             
             // Clear notification history
-            SharedPreferences.Editor historyEditor = getSharedPreferences("NotificationHistory", MODE_PRIVATE).edit();
+            SharedPreferences.Editor historyEditor = getSharedPreferences(getString(R.string.prefs_notification_history), MODE_PRIVATE).edit();
             historyEditor.clear();
             historyEditor.apply();
             
-            Toast.makeText(this, "All data cleared successfully", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.all_data_cleared_successfully), Toast.LENGTH_LONG).show();
             
             // Refresh the activity to show default settings
             recreate();
             
         } catch (Exception e) {
-            Toast.makeText(this, "Failed to clear data: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, String.format(getString(R.string.failed_to_clear_data), e.getMessage()), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -424,17 +438,17 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 if (requestCode == 1001) {
                     // Persistent notification
                     binding.switchPersistentNotification.setChecked(true);
-                    sharedPreferences.edit().putBoolean("persistent_notification", true).apply();
-                    Toast.makeText(this, "Persistent notification enabled", Toast.LENGTH_SHORT).show();
+                    sharedPreferences.edit().putBoolean(getString(R.string.prefs_persistent_notification), true).apply();
+                    Toast.makeText(this, getString(R.string.persistent_notification_enabled), Toast.LENGTH_SHORT).show();
                 } else if (requestCode == 1002) {
                     // Reading notification
                     binding.switchNotificationWhileReading.setChecked(true);
-                    sharedPreferences.edit().putBoolean("notification_while_reading", true).apply();
-                    Toast.makeText(this, "Reading notification enabled", Toast.LENGTH_SHORT).show();
+                    sharedPreferences.edit().putBoolean(getString(R.string.prefs_notification_while_reading), true).apply();
+                    Toast.makeText(this, getString(R.string.reading_notification_enabled), Toast.LENGTH_SHORT).show();
                 }
             } else {
                 // Permission denied
-                Toast.makeText(this, "Notification permission denied - feature will not work", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.notification_permission_denied), Toast.LENGTH_LONG).show();
             }
         }
     }

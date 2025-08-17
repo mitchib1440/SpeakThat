@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base theme for all activities - includes API 27+ specific attributes -->
+    <style name="Base.Theme.SpeakThat" parent="Theme.Material3.DayNight">
+        <!-- Transparent status bar background -->
+        <item name="android:statusBarColor">@color/transparent</item>
+        <!-- Primary colors -->
+        <item name="colorPrimary">@color/purple_100</item>
+        <item name="colorPrimaryVariant">@color/purple_200</item>
+        <item name="colorOnPrimary">@color/white_100</item>
+        <!-- Secondary colors -->
+        <item name="colorSecondary">@color/purple_200</item>
+        <item name="colorSecondaryVariant">@color/purple_300</item>
+        <item name="colorOnSecondary">@color/white_100</item>
+        <!-- Background colors -->
+        <item name="android:colorBackground">?attr/colorSurface</item>
+        <item name="colorBackground">@color/background_light</item>
+        <item name="colorSurface">@color/white_200</item>
+        <item name="colorOnSurface">@color/black_100</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="textColorTertiary">@color/text_tertiary</item>
+        <!-- System UI handling -->
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+</resources>

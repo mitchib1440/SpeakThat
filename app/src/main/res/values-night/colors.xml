@@ -9,6 +9,7 @@
     <color name="black_300">#2B2A29</color>
     <color name="purple_base">#31174C</color> <!-- Base purple for gradient cards -->
     <color name="purple_100">#312F32</color>
+    <color name="logo_color">#DFD9E6</color> <!-- white_200 for dark mode -->
     <color name="purple_200">#AB6ACF</color>
     <color name="purple_300">#B687D0</color>
     <!-- Gradient overlay colors -->

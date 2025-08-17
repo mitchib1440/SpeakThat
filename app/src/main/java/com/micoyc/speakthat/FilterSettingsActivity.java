@@ -118,7 +118,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         // Set up toolbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Filter Settings");
+            getSupportActionBar().setTitle(R.string.title_filter_settings);
         }
 
         initializeUI();
@@ -167,7 +167,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
                 "none".equals(mode) ? View.GONE : View.VISIBLE
             );
             
-            // Save setting
+            // R.string.button_save setting
             saveAppListMode(mode);
         });
 
@@ -765,7 +765,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
                 }
             }
             
-            // Save updated list
+            // R.string.button_save updated list
             saveFilteredMediaApps();
             filteredMediaAppsAdapter.notifyDataSetChanged();
             
@@ -794,7 +794,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
             // Remove from filtered media apps list
             filteredMediaAppsList.remove(position);
             
-            // Save updated list
+            // R.string.button_save updated list
             saveFilteredMediaApps();
             filteredMediaAppsAdapter.notifyDataSetChanged();
             
@@ -821,7 +821,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
 
     private void showEditFilteredMediaAppDialog(AppFilterItem item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Edit Filtered Media App");
+        builder.setTitle(R.string.dialog_title_edit_filtered_media_app);
         
         // Create input field
         final EditText input = new EditText(this);
@@ -834,7 +834,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         input.setPadding(50, 30, 50, 30);
         builder.setView(input);
         
-        builder.setPositiveButton("Save", (dialog, which) -> {
+        builder.setPositiveButton(R.string.button_save, (dialog, which) -> {
             String newPackageName = input.getText().toString().trim();
             if (!newPackageName.isEmpty()) {
                 // Check for duplicates (excluding current item)
@@ -858,13 +858,13 @@ public class FilterSettingsActivity extends AppCompatActivity {
             }
         });
         
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
         builder.show();
     }
     
     private void showEditMediaExceptedAppDialog(AppFilterItem item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Edit Media Exception App");
+        builder.setTitle(R.string.dialog_title_edit_media_exception_app);
         
         // Create input field
         final EditText input = new EditText(this);
@@ -877,7 +877,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         input.setPadding(50, 30, 50, 30);
         builder.setView(input);
         
-        builder.setPositiveButton("Save", (dialog, which) -> {
+        builder.setPositiveButton(R.string.button_save, (dialog, which) -> {
             String newPackageName = input.getText().toString().trim();
             if (!newPackageName.isEmpty()) {
                 // Check for duplicates (excluding current item)
@@ -898,13 +898,13 @@ public class FilterSettingsActivity extends AppCompatActivity {
             }
         });
         
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
         builder.show();
     }
     
     private void showEditMediaImportantKeywordDialog(WordFilterItem item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Edit Media Important Keyword");
+        builder.setTitle(R.string.dialog_title_edit_media_important_keyword);
         
         // Create input field
         final EditText input = new EditText(this);
@@ -917,7 +917,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         input.setPadding(50, 30, 50, 30);
         builder.setView(input);
         
-        builder.setPositiveButton("Save", (dialog, which) -> {
+        builder.setPositiveButton(R.string.button_save, (dialog, which) -> {
             String newKeyword = input.getText().toString().trim();
             if (!newKeyword.isEmpty()) {
                 // Check for duplicates (excluding current item)
@@ -938,13 +938,13 @@ public class FilterSettingsActivity extends AppCompatActivity {
             }
         });
         
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
         builder.show();
     }
 
     private void showEditAppDialog(AppFilterItem item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Edit App Filter");
+        builder.setTitle(R.string.dialog_title_edit_app_filter);
         
         // Create input field
         final EditText input = new EditText(this);
@@ -957,7 +957,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         input.setPadding(50, 30, 50, 30);
         builder.setView(input);
         
-        builder.setPositiveButton("Save", (dialog, which) -> {
+        builder.setPositiveButton(R.string.button_save, (dialog, which) -> {
             String newPackageName = input.getText().toString().trim();
             if (!newPackageName.isEmpty()) {
                 // Check for duplicates (excluding current item)
@@ -978,13 +978,13 @@ public class FilterSettingsActivity extends AppCompatActivity {
             }
         });
         
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
         builder.show();
     }
 
     private void showEditWordDialog(WordFilterItem item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Edit Word Filter");
+        builder.setTitle(R.string.dialog_title_edit_word_filter);
         
         // Create input field
         final EditText input = new EditText(this);
@@ -997,7 +997,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         input.setPadding(50, 30, 50, 30);
         builder.setView(input);
         
-        builder.setPositiveButton("Save", (dialog, which) -> {
+        builder.setPositiveButton(R.string.button_save, (dialog, which) -> {
             String newWord = input.getText().toString().trim();
             if (!newWord.isEmpty()) {
                 // Check for duplicates (excluding current item)
@@ -1018,13 +1018,13 @@ public class FilterSettingsActivity extends AppCompatActivity {
             }
         });
         
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
         builder.show();
     }
 
     private void showEditWordReplacementDialog(WordReplacementItem item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Edit Word Swap");
+        builder.setTitle(R.string.dialog_title_edit_word_swap);
         
         // Create layout for two input fields
         LinearLayout layout = new LinearLayout(this);
@@ -1058,7 +1058,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         
         builder.setView(layout);
         
-        builder.setPositiveButton("Save", (dialog, which) -> {
+        builder.setPositiveButton(R.string.button_save, (dialog, which) -> {
             String newFrom = inputFrom.getText().toString().trim();
             String newTo = inputTo.getText().toString().trim();
             
@@ -1094,7 +1094,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
             Toast.makeText(this, "Word swap updated", Toast.LENGTH_SHORT).show();
         });
         
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel());
         builder.show();
     }
 
@@ -1420,11 +1420,15 @@ public class FilterSettingsActivity extends AppCompatActivity {
         }
         
         if (exportItem != null) {
-            exportItem.setIconTintList(android.content.res.ColorStateList.valueOf(iconColor));
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                exportItem.setIconTintList(android.content.res.ColorStateList.valueOf(iconColor));
+            }
         }
         
         if (importItem != null) {
-            importItem.setIconTintList(android.content.res.ColorStateList.valueOf(iconColor));
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                importItem.setIconTintList(android.content.res.ColorStateList.valueOf(iconColor));
+            }
         }
         
         return true;
@@ -1477,10 +1481,10 @@ public class FilterSettingsActivity extends AppCompatActivity {
                 // Show success message with summary
                 String summary = FilterConfigManager.getFilterSummary(this);
                 new AlertDialog.Builder(this)
-                    .setTitle("Export Successful")
+                    .setTitle(R.string.dialog_title_export_successful)
                     .setMessage("Filter configuration exported to:\n" + exportFile.getAbsolutePath() + 
                                "\n\nExported settings:\n" + summary)
-                    .setPositiveButton("OK", null)
+                    .setPositiveButton(R.string.button_ok, null)
                     .show();
                 
                 InAppLogger.log("FilterConfig", "Filter configuration exported to " + filename);
@@ -1505,11 +1509,11 @@ public class FilterSettingsActivity extends AppCompatActivity {
     
     private void importFilterConfigDialog() {
         new AlertDialog.Builder(this)
-            .setTitle("Import Filter Configuration")
+            .setTitle(R.string.dialog_title_import_filter_configuration)
             .setMessage("This will replace your current filter settings with the imported configuration.\n\nCurrent settings:\n" + 
                        FilterConfigManager.getFilterSummary(this) + "\n\nDo you want to continue?")
-            .setPositiveButton("Select File", (dialog, which) -> openFilePicker())
-            .setNegativeButton("Cancel", null)
+            .setPositiveButton(R.string.button_select_file, (dialog, which) -> openFilePicker())
+            .setNegativeButton(R.string.button_cancel, null)
             .show();
     }
     
@@ -1548,18 +1552,18 @@ public class FilterSettingsActivity extends AppCompatActivity {
                 
                 // Show success dialog
                 new AlertDialog.Builder(this)
-                    .setTitle("Import Successful")
+                    .setTitle(R.string.dialog_title_import_successful)
                     .setMessage(result.message + "\n\nNew settings:\n" + FilterConfigManager.getFilterSummary(this))
-                    .setPositiveButton("OK", null)
+                    .setPositiveButton(R.string.button_ok, null)
                     .show();
                 
                 Toast.makeText(this, "Filter configuration imported successfully!", Toast.LENGTH_SHORT).show();
             } else {
                 // Show error dialog
                 new AlertDialog.Builder(this)
-                    .setTitle("Import Failed")
+                    .setTitle(R.string.dialog_title_import_failed)
                     .setMessage(result.message)
-                    .setPositiveButton("OK", null)
+                    .setPositiveButton(R.string.button_ok, null)
                     .show();
             }
             
@@ -1617,7 +1621,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
 
     private void showAppFilterHelp() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("📱 App Filter Help")
+        builder.setTitle(R.string.dialog_title_app_filter_help)
                .setMessage("How App Filtering Works:\n\n" +
                           "🔍 Search Function:\n" +
                           "• Search through your installed apps by name or package\n" +
@@ -1632,7 +1636,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
                           "• Works perfectly regardless of search results\n" +
                           "• Matches the actual package name from notifications\n" +
                           "• Test by adding an app, then checking if its notifications are filtered")
-               .setPositiveButton("Got it!", (dialog, which) -> dialog.dismiss())
+               .setPositiveButton(R.string.button_got_it, (dialog, which) -> dialog.dismiss())
                .show();
         
         InAppLogger.log("FilterSettings", "App filter help dialog shown");
@@ -1640,7 +1644,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     
     private void showMediaFilterHelp() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("🎵 Smart Media Notification Filter")
+        builder.setTitle(R.string.dialog_title_smart_media_filter)
                .setMessage("How Smart Media Detection Works:\n\n" +
                           "🔍 Reliable Detection Methods:\n" +
                           "• Media session flags (official Android media controls)\n" +
@@ -1663,7 +1667,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
                           "• Only blocks actual media control notifications\n" +
                           "• Works with persistent/silent notification filtering\n" +
                           "• Much more reliable than text-based detection")
-               .setPositiveButton("Got it!", (dialog, which) -> dialog.dismiss())
+               .setPositiveButton(R.string.button_got_it, (dialog, which) -> dialog.dismiss())
                .show();
         
         InAppLogger.log("FilterSettings", "Smart media filter help dialog shown");

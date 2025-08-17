@@ -53,7 +53,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private TextView pitchValue;
     private TextView ttsVolumeValue;
     private Spinner voiceSpinner;
-    private Spinner languageSpinner;
+    private Spinner languagePresetSpinner; // New preset-based spinner
     private Spinner audioUsageSpinner;
     private Spinner contentTypeSpinner;
     private Spinner ttsLanguageSpinner;
@@ -99,6 +99,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         switchAdvancedVoice.setChecked(showAdvanced);
         layoutAdvancedVoiceSection.setVisibility(showAdvanced ? View.VISIBLE : View.GONE);
         setupAdvancedSwitch();
+        
+        // Migrate to new preset system if needed
+        LanguagePresetManager.migrateToPresetSystem(this);
+        
         loadSavedSettings();
     }
 
@@ -120,7 +124,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         ttsVolumeSeekBar = findViewById(R.id.ttsVolumeSeekBar);
         ttsVolumeValue = findViewById(R.id.ttsVolumeValue);
         voiceSpinner = findViewById(R.id.voiceSpinner);
-        languageSpinner = findViewById(R.id.languageSpinner);
+        languagePresetSpinner = findViewById(R.id.languagePresetSpinner); // New preset spinner
         audioUsageSpinner = findViewById(R.id.audioUsageSpinner);
         contentTypeSpinner = findViewById(R.id.contentTypeSpinner);
         ttsLanguageSpinner = findViewById(R.id.ttsLanguageSpinner);
@@ -274,7 +278,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         availableLanguages.add(new Locale("pt", "BR")); // Portuguese (Brazil)
 
         setupVoiceSpinner();
-        setupLanguageSpinner();
+        setupLanguagePresetSpinner(); // New preset-based spinner
         setupTtsLanguageSpinner();
         setupAudioChannelSpinners();
     }
@@ -344,6 +348,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 } else {
                     currentVoice = null;
                     saveVoice(""); // Clear voice setting
+                }
+                
+                // Check if this change makes the settings custom when advanced mode is enabled
+                if (switchAdvancedVoice.isChecked()) {
+                    updatePresetSpinnerForAdvancedMode(true);
                 }
             }
 
@@ -581,32 +590,111 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         return null;
     }
 
-    private void setupLanguageSpinner() {
-        List<String> languageNames = new ArrayList<>();
-        for (Locale locale : availableLanguages) {
-            languageNames.add(locale.getDisplayName());
-        }
-
-        ArrayAdapter<String> languageAdapter = new ArrayAdapter<>(this,
-            android.R.layout.simple_spinner_item, languageNames);
-        languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        languageSpinner.setAdapter(languageAdapter);
+    /**
+     * Setup the new language preset spinner that combines UI and TTS language settings
+     */
+    private void setupLanguagePresetSpinner() {
+        InAppLogger.log("VoiceSettings", "Setting up language preset spinner");
         
-        // Add listener to save language selection automatically
-        languageSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+        // Get all available language presets
+        List<LanguagePresetManager.LanguagePreset> presets = LanguagePresetManager.getAllPresets();
+        
+        // Create adapter with preset display names
+        List<String> presetNames = new ArrayList<>();
+        for (LanguagePresetManager.LanguagePreset preset : presets) {
+            presetNames.add(preset.displayName);
+        }
+        
+        ArrayAdapter<String> presetAdapter = new ArrayAdapter<>(this,
+            android.R.layout.simple_spinner_item, presetNames);
+        presetAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        languagePresetSpinner.setAdapter(presetAdapter);
+        
+        InAppLogger.log("VoiceSettings", "Language preset spinner set up with " + presets.size() + " presets");
+        
+        // Add listener to handle preset selection
+        languagePresetSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                if (position >= 0 && position < availableLanguages.size()) {
-                    currentLanguage = availableLanguages.get(position);
-                    saveLanguage(currentLanguage.toString());
+                if (position >= 0 && position < presets.size()) {
+                    LanguagePresetManager.LanguagePreset selectedPreset = presets.get(position);
+                    InAppLogger.log("VoiceSettings", "Language preset selected: " + selectedPreset.displayName);
+                    
+                    // Don't apply preset if it's the custom preset - that just means user wants advanced control
+                    if (!selectedPreset.isCustom) {
+                        // Apply the preset settings
+                        LanguagePresetManager.applyPreset(VoiceSettingsActivity.this, selectedPreset);
+                        
+                        // Update the UI to reflect the preset changes
+                        updateUIFromPreset(selectedPreset);
+                        
+                        // CRITICAL: Reset TTS instance to ensure preview uses new language
+                        // This fixes the race condition where preview TTS gets stuck on old language
+                        resetTtsForPresetChange(selectedPreset);
+                        
+                        // If advanced options are enabled, check if we should disable them
+                        // (since user chose a preset, they might want to go back to simple mode)
+                        boolean advancedEnabled = switchAdvancedVoice.isChecked();
+                        if (advancedEnabled) {
+                            InAppLogger.log("VoiceSettings", "Preset selected while advanced options enabled - keeping advanced mode");
+                        }
+                        
+                        InAppLogger.log("VoiceSettings", "Preset applied successfully: " + selectedPreset.displayName);
+                    } else {
+                        InAppLogger.log("VoiceSettings", "Custom preset selected - enabling advanced options");
+                        // If user selects custom preset, show advanced options
+                        if (!switchAdvancedVoice.isChecked()) {
+                            switchAdvancedVoice.setChecked(true);
+                            layoutAdvancedVoiceSection.setVisibility(View.VISIBLE);
+                            saveAdvancedVoiceEnabled(true);
+                        }
+                    }
                 }
             }
 
             @Override
             public void onNothingSelected(android.widget.AdapterView<?> parent) {
-                // Keep current language
+                // Keep current preset
+                InAppLogger.log("VoiceSettings", "No preset selected - keeping current settings");
             }
         });
+    }
+    
+    /**
+     * Update the UI elements to reflect a selected preset (without triggering their listeners)
+     */
+    private void updateUIFromPreset(LanguagePresetManager.LanguagePreset preset) {
+        InAppLogger.log("VoiceSettings", "Updating UI from preset: " + preset.displayName);
+        
+        // Update current language for internal consistency
+        for (int i = 0; i < availableLanguages.size(); i++) {
+            if (availableLanguages.get(i).toString().equals(preset.uiLocale)) {
+                currentLanguage = availableLanguages.get(i);
+                break;
+            }
+        }
+        
+        // Update TTS language spinner (now in advanced options)
+        if (ttsLanguageSpinner != null && ttsLanguageSpinner.getAdapter() != null) {
+            List<TtsLanguageManager.TtsLanguage> supportedLanguages = TtsLanguageManager.getSupportedTtsLanguages(this);
+            String targetTtsLanguage = preset.ttsLanguage;
+            
+            for (int i = 0; i < supportedLanguages.size(); i++) {
+                TtsLanguageManager.TtsLanguage lang = supportedLanguages.get(i);
+                if (lang.localeCode.equals(targetTtsLanguage)) {
+                    ttsLanguageSpinner.setSelection(i);
+                    break;
+                }
+            }
+        }
+        
+        // Clear specific voice selection if preset doesn't specify one
+        if (preset.defaultVoice == null && voiceSpinner != null) {
+            voiceSpinner.setSelection(0); // Select "Default" option
+            currentVoice = null;
+        }
+        
+        InAppLogger.log("VoiceSettings", "UI updated to match preset: " + preset.displayName);
     }
 
     private void setupTtsLanguageSpinner() {
@@ -641,6 +729,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                     }
                     
                     saveTtsLanguage(languageCode);
+                    
+                    // Check if this change makes the settings custom when advanced mode is enabled
+                    if (switchAdvancedVoice.isChecked()) {
+                        updatePresetSpinnerForAdvancedMode(true);
+                    }
                 }
             }
 
@@ -717,19 +810,106 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 .setPositiveButton(getString(R.string.button_continue), (dialog, which) -> {
                         layoutAdvancedVoiceSection.setVisibility(View.VISIBLE);
                         saveAdvancedVoiceEnabled(true);
+                        updatePresetSpinnerForAdvancedMode(true);
                     })
                     .setNegativeButton(getString(R.string.cancel), (dialog, which) -> {
                         switchAdvancedVoice.setChecked(false);
                         layoutAdvancedVoiceSection.setVisibility(View.GONE);
                         saveAdvancedVoiceEnabled(false);
+                        updatePresetSpinnerForAdvancedMode(false);
                     })
                     .setCancelable(false)
                     .show();
             } else {
                 layoutAdvancedVoiceSection.setVisibility(View.GONE);
                 saveAdvancedVoiceEnabled(false);
+                updatePresetSpinnerForAdvancedMode(false);
             }
         });
+    }
+
+    /**
+     * Update the preset spinner behavior when advanced mode is enabled/disabled
+     */
+    private void updatePresetSpinnerForAdvancedMode(boolean advancedEnabled) {
+        InAppLogger.log("VoiceSettings", "Updating preset spinner for advanced mode: " + advancedEnabled);
+        
+        if (languagePresetSpinner == null) {
+            return;
+        }
+        
+        if (advancedEnabled) {
+            // When advanced mode is enabled, detect if current settings match a preset or are custom
+            LanguagePresetManager.LanguagePreset currentPreset = LanguagePresetManager.detectCurrentPreset(this);
+            
+            if (currentPreset.isCustom) {
+                // Settings are custom - show custom preset and grey out spinner
+                InAppLogger.log("VoiceSettings", "Advanced mode enabled with custom settings - showing custom preset");
+                setPresetSpinnerToCustom();
+                languagePresetSpinner.setEnabled(false);
+                languagePresetSpinner.setAlpha(0.6f); // Make it look disabled
+            } else {
+                // Settings still match a preset - keep it enabled but show the matching preset
+                InAppLogger.log("VoiceSettings", "Advanced mode enabled but settings match preset: " + currentPreset.displayName);
+                languagePresetSpinner.setEnabled(true);
+                languagePresetSpinner.setAlpha(1.0f);
+                setPresetSpinnerToPreset(currentPreset);
+            }
+        } else {
+            // When advanced mode is disabled, re-enable the preset spinner and revert to actual preset
+            InAppLogger.log("VoiceSettings", "Advanced mode disabled - re-enabling preset spinner and detecting actual preset");
+            languagePresetSpinner.setEnabled(true);
+            languagePresetSpinner.setAlpha(1.0f);
+            
+            // Force re-detection of current preset from actual settings (ignore advanced flag)
+            LanguagePresetManager.LanguagePreset currentPreset = LanguagePresetManager.detectCurrentPresetIgnoringAdvanced(this);
+            InAppLogger.log("VoiceSettings", "Detected preset after disabling advanced mode: " + currentPreset.displayName + " (custom: " + currentPreset.isCustom + ")");
+            
+            // Always revert to the detected preset, never show custom when advanced is off
+            if (currentPreset.isCustom) {
+                // If settings are truly custom, reset to a default preset rather than showing custom
+                LanguagePresetManager.LanguagePreset defaultPreset = LanguagePresetManager.getDefaultPreset();
+                InAppLogger.log("VoiceSettings", "Settings were custom but advanced mode disabled - reverting to default preset: " + defaultPreset.displayName);
+                setPresetSpinnerToPreset(defaultPreset);
+                LanguagePresetManager.applyPreset(this, defaultPreset);
+            } else {
+                setPresetSpinnerToPreset(currentPreset);
+            }
+        }
+    }
+    
+    /**
+     * Set the preset spinner to show the custom preset
+     */
+    private void setPresetSpinnerToCustom() {
+        if (languagePresetSpinner != null && languagePresetSpinner.getAdapter() != null) {
+            List<LanguagePresetManager.LanguagePreset> allPresets = LanguagePresetManager.getAllPresets();
+            
+            for (int i = 0; i < allPresets.size(); i++) {
+                if (allPresets.get(i).isCustom) {
+                    languagePresetSpinner.setSelection(i);
+                    InAppLogger.log("VoiceSettings", "Preset spinner set to custom at position " + i);
+                    break;
+                }
+            }
+        }
+    }
+    
+    /**
+     * Set the preset spinner to show a specific preset
+     */
+    private void setPresetSpinnerToPreset(LanguagePresetManager.LanguagePreset preset) {
+        if (languagePresetSpinner != null && languagePresetSpinner.getAdapter() != null) {
+            List<LanguagePresetManager.LanguagePreset> allPresets = LanguagePresetManager.getAllPresets();
+            
+            for (int i = 0; i < allPresets.size(); i++) {
+                if (allPresets.get(i).id.equals(preset.id)) {
+                    languagePresetSpinner.setSelection(i);
+                    InAppLogger.log("VoiceSettings", "Preset spinner set to " + preset.displayName + " at position " + i);
+                    break;
+                }
+            }
+        }
     }
 
     private void loadSavedSettings() {
@@ -774,11 +954,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             InAppLogger.log("VoiceSettings", "No saved voice, using default");
         }
 
-        // Load language
+        // Load language for internal use (currentLanguage variable)
         String savedLanguage = sharedPreferences.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE);
         for (int i = 0; i < availableLanguages.size(); i++) {
             if (availableLanguages.get(i).toString().equals(savedLanguage)) {
-                languageSpinner.setSelection(i);
                 currentLanguage = availableLanguages.get(i);
                 break;
             }
@@ -814,12 +993,51 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             InAppLogger.log("VoiceSettings", "Content type index out of bounds, using default: " + DEFAULT_CONTENT_TYPE);
         }
 
-
+        // Load language preset and set spinner accordingly
+        loadLanguagePreset();
 
         // Load advanced voice switch state
         boolean showAdvanced = sharedPreferences.getBoolean(KEY_SHOW_ADVANCED, false);
         switchAdvancedVoice.setChecked(showAdvanced);
         layoutAdvancedVoiceSection.setVisibility(showAdvanced ? View.VISIBLE : View.GONE);
+        
+        // Update preset spinner behavior based on advanced mode state
+        updatePresetSpinnerForAdvancedMode(showAdvanced);
+    }
+
+    /**
+     * Load the current language preset and set the preset spinner accordingly
+     */
+    private void loadLanguagePreset() {
+        InAppLogger.log("VoiceSettings", "Loading current language preset");
+        
+        // Get the current preset (either saved or detected from current settings)
+        LanguagePresetManager.LanguagePreset currentPreset = LanguagePresetManager.getCurrentPreset(this);
+        
+        // If no preset was saved, detect one from current settings
+        if (currentPreset == null) {
+            InAppLogger.log("VoiceSettings", "No saved preset found - detecting from current settings");
+            currentPreset = LanguagePresetManager.detectCurrentPreset(this);
+        }
+        
+        InAppLogger.log("VoiceSettings", "Current preset detected/loaded: " + currentPreset.displayName);
+        
+        // Set the preset spinner to match the current preset
+        if (languagePresetSpinner != null && languagePresetSpinner.getAdapter() != null) {
+            List<LanguagePresetManager.LanguagePreset> allPresets = LanguagePresetManager.getAllPresets();
+            
+            for (int i = 0; i < allPresets.size(); i++) {
+                LanguagePresetManager.LanguagePreset preset = allPresets.get(i);
+                if (preset.id.equals(currentPreset.id)) {
+                    languagePresetSpinner.setSelection(i);
+                    InAppLogger.log("VoiceSettings", "Language preset spinner set to position " + i + ": " + preset.displayName);
+                    break;
+                }
+            }
+        }
+        
+        // Save the current preset if it wasn't already saved
+        LanguagePresetManager.saveCurrentPreset(this, currentPreset);
     }
 
     /**
@@ -879,14 +1097,241 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             }
         }
 
-        // Get localized preview text
-        String previewText = TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_voice_test);
+        // Determine the effective language for preview text based on user's actual selections
+        // In advanced mode: respect user's TTS Language choice completely
+        // In preset mode: use the preset language
+        Locale effectiveLanguage = getEffectivePreviewLanguage();
+        
+        // Use simple preview text that matches the user's selected TTS language
+        // This prevents conflicts between TTS engine language and app localization language
+        String previewText = getSimplePreviewText(effectiveLanguage);
         textToSpeech.speak(previewText, TextToSpeech.QUEUE_FLUSH, null, "preview");
         
-        InAppLogger.log("VoiceSettings", "Voice preview played - Rate: " + currentSpeechRate + ", Pitch: " + currentPitch + ", Language: " + ttsLanguageCode);
+        InAppLogger.log("VoiceSettings", "Voice preview played - Rate: " + currentSpeechRate + ", Pitch: " + currentPitch + 
+                       ", User's TTS Language: " + (effectiveLanguage != null ? effectiveLanguage.toString() : "default") + 
+                       ", Preview Text: '" + previewText + "'");
     }
     
-
+    /**
+     * Determine the effective language for preview text based on user's TTS Language selection.
+     * Respects user choice completely - no smart overrides in advanced mode.
+     */
+    private Locale getEffectivePreviewLanguage() {
+        // Check if advanced mode is enabled
+        boolean isAdvancedMode = layoutAdvancedVoiceSection.getVisibility() == View.VISIBLE;
+        
+        if (isAdvancedMode) {
+            // Advanced mode: Use exactly what the user selected in TTS Language spinner
+            String userSelectedTtsLanguage = getUserSelectedTtsLanguage();
+            if (!"system".equals(userSelectedTtsLanguage)) {
+                Locale userLocale = parseLocaleFromCode(userSelectedTtsLanguage);
+                if (userLocale != null) {
+                    InAppLogger.log("VoiceSettings", "Advanced mode - using user's TTS language: " + userLocale.toString());
+                    return userLocale;
+                }
+            }
+        }
+        
+        // Preset mode or fallback: Use current language setting
+        if (currentLanguage != null) {
+            InAppLogger.log("VoiceSettings", "Preview using current language: " + currentLanguage.toString());
+            return currentLanguage;
+        }
+        
+        // Final fallback: Default to English
+        Locale defaultLocale = new Locale("en", "US");
+        InAppLogger.log("VoiceSettings", "Preview using default language: " + defaultLocale.toString());
+        return defaultLocale;
+    }
+    
+    /**
+     * Get the user's selected TTS Language from the spinner (what they actually chose)
+     */
+    private String getUserSelectedTtsLanguage() {
+        if (ttsLanguageSpinner.getAdapter() != null) {
+            int position = ttsLanguageSpinner.getSelectedItemPosition();
+            if (position >= 0 && position < ttsLanguageSpinner.getAdapter().getCount()) {
+                String selectedDisplayName = ttsLanguageSpinner.getAdapter().getItem(position).toString();
+                
+                // Convert display name to language code
+                List<TtsLanguageManager.TtsLanguage> supportedLanguages = TtsLanguageManager.getSupportedTtsLanguages(this);
+                for (TtsLanguageManager.TtsLanguage language : supportedLanguages) {
+                    if (language.displayName.equals(selectedDisplayName)) {
+                        InAppLogger.log("VoiceSettings", "User selected TTS language: " + selectedDisplayName + " (" + language.localeCode + ")");
+                        return language.localeCode;
+                    }
+                }
+            }
+        }
+        return "system"; // Default
+    }
+    
+    /**
+     * Parse a locale code (like "en_GB") into a Locale object
+     */
+    private Locale parseLocaleFromCode(String localeCode) {
+        if (localeCode == null || localeCode.equals("system")) {
+            return null;
+        }
+        
+        String[] parts = localeCode.split("_");
+        if (parts.length >= 2) {
+            return new Locale(parts[0], parts[1]);
+        } else if (parts.length == 1) {
+            return new Locale(parts[0]);
+        }
+        return null;
+    }
+    
+    /**
+     * Get simple preview text for the given language without affecting app localization.
+     * This prevents conflicts between TTS engine language and app locale changes.
+     */
+    private String getSimplePreviewText(Locale language) {
+        if (language == null) {
+            return "This is a voice test in English.";
+        }
+        
+        String langCode = language.getLanguage().toLowerCase();
+        String countryCode = language.getCountry().toLowerCase();
+        
+        // Provide appropriate preview text for each language
+        switch (langCode) {
+            case "en":
+                // English variants
+                if ("au".equals(countryCode)) {
+                    return "G'day! This is a voice test in Australian English.";
+                } else if ("gb".equals(countryCode) || "uk".equals(countryCode)) {
+                    return "Hello! This is a voice test in British English.";
+                } else if ("ca".equals(countryCode)) {
+                    return "Hello! This is a voice test in Canadian English, eh?";
+                } else {
+                    return "Hello! This is a voice test in American English.";
+                }
+                
+            case "ja":
+                return "こんにちは！これは日本語の音声テストです。";
+                
+            case "de":
+                return "Hallo! Dies ist ein Sprachtest auf Deutsch.";
+                
+            case "fr":
+                return "Bonjour ! Ceci est un test vocal en français.";
+                
+            case "es":
+                return "¡Hola! Esta es una prueba de voz en español.";
+                
+            case "it":
+                return "Ciao! Questo è un test vocale in italiano.";
+                
+            case "pt":
+                return "Olá! Este é um teste de voz em português.";
+                
+            case "nl":
+                return "Hallo! Dit is een stemtest in het Nederlands.";
+                
+            case "sv":
+                return "Hej! Detta är ett rösttest på svenska.";
+                
+            case "no":
+                return "Hei! Dette er en stemmetest på norsk.";
+                
+            case "da":
+                return "Hej! Dette er en stemmetest på dansk.";
+                
+            case "fi":
+                return "Hei! Tämä on äänentesti suomeksi.";
+                
+            case "ru":
+                return "Привет! Это голосовой тест на русском языке.";
+                
+            case "zh":
+                if ("tw".equals(countryCode) || "hk".equals(countryCode)) {
+                    return "你好！這是繁體中文的語音測試。";
+                } else {
+                    return "你好！这是简体中文的语音测试。";
+                }
+                
+            case "ko":
+                return "안녕하세요! 이것은 한국어 음성 테스트입니다.";
+                
+            case "ar":
+                return "مرحبا! هذا اختبار صوتي باللغة العربية.";
+                
+            case "hi":
+                return "नमस्ते! यह हिंदी में एक आवाज परीक्षण है।";
+                
+            case "th":
+                return "สวัสดี! นี่คือการทดสอบเสียงภาษาไทย";
+                
+            case "vi":
+                return "Xin chào! Đây là bài kiểm tra giọng nói tiếng Việt.";
+                
+            case "id":
+                return "Halo! Ini adalah tes suara dalam bahasa Indonesia.";
+                
+            case "tr":
+                return "Merhaba! Bu Türkçe bir ses testidir.";
+                
+            case "pl":
+                return "Cześć! To jest test głosu w języku polskim.";
+                
+            case "cs":
+                return "Ahoj! Toto je hlasový test v češtině.";
+                
+            case "hu":
+                return "Szia! Ez egy hangteszt magyar nyelven.";
+                
+            case "ro":
+                return "Salut! Acesta este un test vocal în română.";
+                
+            case "uk":
+                return "Привіт! Це голосовий тест українською мовою.";
+                
+            default:
+                return "Hello! This is a voice test.";
+        }
+    }
+    
+    /**
+     * Reset TTS instance when preset changes to ensure preview uses correct language.
+     * This fixes race conditions where the TTS instance gets stuck on the previous language.
+     */
+    private void resetTtsForPresetChange(LanguagePresetManager.LanguagePreset preset) {
+        if (textToSpeech != null) {
+            InAppLogger.log("VoiceSettings", "Resetting TTS instance for preset change to: " + preset.displayName);
+            
+            // Stop any ongoing speech
+            textToSpeech.stop();
+            
+            // Apply the new preset language directly to TTS instance
+            if (!preset.isCustom) {
+                // Parse the preset's UI locale
+                String[] langParts = preset.uiLocale.split("_");
+                Locale presetLocale;
+                if (langParts.length >= 2) {
+                    presetLocale = new Locale(langParts[0], langParts[1]);
+                } else if (langParts.length == 1) {
+                    presetLocale = new Locale(langParts[0]);
+                } else {
+                    presetLocale = new Locale("en", "US"); // Safe fallback
+                }
+                
+                // Apply the preset language directly
+                int langResult = textToSpeech.setLanguage(presetLocale);
+                InAppLogger.log("VoiceSettings", "TTS reset - preset language applied: " + presetLocale.toString() + 
+                               " (result: " + langResult + ")");
+                
+                // Update internal state to match
+                currentLanguage = presetLocale;
+            } else {
+                // For custom preset, use current settings
+                updateUIWithCurrentSettings();
+            }
+            
+            InAppLogger.log("VoiceSettings", "TTS instance reset complete for preset: " + preset.displayName);
+        }
+    }
 
     /**
      * Applies the current UI settings to the TTS instance for preview.
@@ -917,11 +1362,15 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         // This implements the override logic - specific voice takes complete precedence
         if (!specificVoiceSelected) {
             // No specific voice or voice selection failed - fall back to language setting
-            int languagePosition = languageSpinner.getSelectedItemPosition();
-            if (languagePosition >= 0 && languagePosition < availableLanguages.size()) {
-                currentLanguage = availableLanguages.get(languagePosition);
+            // Use the current language from the selected preset
+            if (currentLanguage != null) {
                 int langResult = textToSpeech.setLanguage(currentLanguage);
                 InAppLogger.log("VoiceSettings", "Preview: Language set to: " + currentLanguage.toString() + " (result: " + langResult + ")");
+            } else {
+                // Fallback to default if currentLanguage is somehow null
+                Locale defaultLocale = new Locale("en", "US");
+                int langResult = textToSpeech.setLanguage(defaultLocale);
+                InAppLogger.log("VoiceSettings", "Preview: Using default language: " + defaultLocale.toString() + " (result: " + langResult + ")");
             }
         } else {
             // Specific voice was successfully applied - skip language setting entirely
@@ -995,10 +1444,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         ttsVolumeSeekBar.setProgress((int) (DEFAULT_TTS_VOLUME * 100));
         ttsVolumeValue.setText(String.format("%.0f%%", DEFAULT_TTS_VOLUME * 100));
 
-        // Reset language spinner to English (United States)
+        // Reset current language to default for internal consistency
         for (int i = 0; i < availableLanguages.size(); i++) {
             if (availableLanguages.get(i).toString().equals(DEFAULT_LANGUAGE)) {
-                languageSpinner.setSelection(i);
+                currentLanguage = availableLanguages.get(i);
                 break;
             }
         }
@@ -1013,7 +1462,21 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             ttsLanguageSpinner.setSelection(0); // First item is always "Default (Use System Language)"
         }
 
-
+        // Reset language preset to default (English US)
+        if (languagePresetSpinner.getAdapter() != null && languagePresetSpinner.getAdapter().getCount() > 0) {
+            LanguagePresetManager.LanguagePreset defaultPreset = LanguagePresetManager.getDefaultPreset();
+            LanguagePresetManager.applyPreset(this, defaultPreset);
+            
+            // Set the spinner to the default preset
+            List<LanguagePresetManager.LanguagePreset> allPresets = LanguagePresetManager.getAllPresets();
+            for (int i = 0; i < allPresets.size(); i++) {
+                if (allPresets.get(i).id.equals(defaultPreset.id)) {
+                    languagePresetSpinner.setSelection(i);
+                    InAppLogger.log("VoiceSettings", "Reset: Language preset set to default: " + defaultPreset.displayName);
+                    break;
+                }
+            }
+        }
 
         // Hide advanced options by default
         switchAdvancedVoice.setChecked(false);
@@ -1247,9 +1710,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 "Alternative: Voice Call + Speech";
 
         new android.app.AlertDialog.Builder(this)
-                .setTitle("Audio Settings Help")
+                .setTitle(R.string.dialog_title_audio_settings_help)
                 .setMessage(helpText)
-                .setPositiveButton("Got it", null)
+                .setPositiveButton(R.string.button_got_it, null)
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .show();
                 
@@ -1317,9 +1780,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 "• Settings are saved automatically";
 
         new android.app.AlertDialog.Builder(this)
-                .setTitle("Advanced Voice Information")
+                .setTitle(R.string.dialog_title_advanced_voice_information)
                 .setMessage(infoText)
-                .setPositiveButton("Got it", null)
+                .setPositiveButton(R.string.button_got_it, null)
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .show();
                 

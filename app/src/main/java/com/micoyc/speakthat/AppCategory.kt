@@ -19,133 +19,133 @@ data class AppCategory(
 ) {
     companion object {
         // Predefined categories with comprehensive app lists
-        fun getSocialCategory() = AppCategory(
-            id = "social",
-            displayName = "Social Media",
-            description = "Social networking and community apps",
+        fun getSocialCategory(context: android.content.Context) = AppCategory(
+            id = context.getString(R.string.category_social_id),
+            displayName = context.getString(R.string.category_social_display_name),
+            description = context.getString(R.string.category_social_description),
             iconResId = android.R.drawable.ic_menu_share,
             filterMode = FilterMode.ALLOW,
             packagePatterns = listOf(
                 // Major social platforms
-                "com.twitter.",          // Twitter/X
-                "com.facebook.",         // Facebook
-                "com.instagram.",        // Instagram
-                "com.linkedin.",         // LinkedIn
-                "com.reddit.",           // Reddit
-                "com.snapchat.",         // Snapchat
-                "com.pinterest.",        // Pinterest
-                "com.tumblr",            // Tumblr
+                context.getString(R.string.package_twitter),
+                context.getString(R.string.package_facebook),
+                context.getString(R.string.package_instagram),
+                context.getString(R.string.package_linkedin),
+                context.getString(R.string.package_reddit),
+                context.getString(R.string.package_snapchat),
+                context.getString(R.string.package_pinterest),
+                context.getString(R.string.package_tumblr),
                 // Regional social apps
-                "com.weibo.",            // Weibo
-                "jp.naver.line.",        // LINE
-                "com.zhiliaoapp.musically", // TikTok
+                context.getString(R.string.package_weibo),
+                context.getString(R.string.package_line),
+                context.getString(R.string.package_tiktok),
                 // Professional networking
-                "com.glassdoor.",        // Glassdoor
-                "com.indeed.",           // Indeed
+                context.getString(R.string.package_glassdoor),
+                context.getString(R.string.package_indeed),
                 // Community platforms
-                "com.discord",           // Discord
-                "com.slack",             // Slack
-                "com.meetup"             // Meetup
+                context.getString(R.string.package_discord),
+                context.getString(R.string.package_slack),
+                context.getString(R.string.package_meetup)
             )
         )
 
-        fun getMessagingCategory() = AppCategory(
-            id = "messaging",
-            displayName = "Messaging",
-            description = "Chat and communication apps",
+        fun getMessagingCategory(context: android.content.Context) = AppCategory(
+            id = context.getString(R.string.category_messaging_id),
+            displayName = context.getString(R.string.category_messaging_display_name),
+            description = context.getString(R.string.category_messaging_description),
             iconResId = android.R.drawable.ic_dialog_email,
             filterMode = FilterMode.ALLOW,
             packagePatterns = listOf(
                 // Popular messaging apps
-                "com.whatsapp",          // WhatsApp
-                "com.facebook.messenger", // Facebook Messenger
-                "com.google.android.apps.messaging", // Google Messages
-                "org.telegram.",         // Telegram
-                "com.viber.",            // Viber
-                "com.skype.",            // Skype
+                context.getString(R.string.package_whatsapp),
+                context.getString(R.string.package_facebook_messenger),
+                context.getString(R.string.package_google_messages),
+                context.getString(R.string.package_telegram),
+                context.getString(R.string.package_viber),
+                context.getString(R.string.package_skype),
                 // Email clients
-                "com.google.android.gm",  // Gmail
-                "com.microsoft.office.outlook", // Outlook
-                "com.yahoo.mobile.client.android.mail", // Yahoo Mail
+                context.getString(R.string.package_gmail),
+                context.getString(R.string.package_outlook),
+                context.getString(R.string.package_yahoo_mail),
                 // Video chat
-                "com.google.android.apps.meetings", // Google Meet
-                "us.zoom.",              // Zoom
-                "com.microsoft.teams",    // Microsoft Teams
+                context.getString(R.string.package_google_meet),
+                context.getString(R.string.package_zoom),
+                context.getString(R.string.package_microsoft_teams),
                 // Regional messaging
-                "jp.naver.line.android", // LINE
-                "com.kakao.talk",        // KakaoTalk
-                "com.tencent.mm"         // WeChat
+                context.getString(R.string.package_line_android),
+                context.getString(R.string.package_kakaotalk),
+                context.getString(R.string.package_wechat)
             )
         )
 
-        fun getFinanceCategory() = AppCategory(
-            id = "finance",
-            displayName = "Finance",
-            description = "Banking and financial apps",
+        fun getFinanceCategory(context: android.content.Context) = AppCategory(
+            id = context.getString(R.string.category_finance_id),
+            displayName = context.getString(R.string.category_finance_display_name),
+            description = context.getString(R.string.category_finance_description),
             iconResId = android.R.drawable.ic_menu_recent_history,
             filterMode = FilterMode.PRIVATE,
             packagePatterns = listOf(
                 // Payment apps
-                "com.paypal.",           // PayPal
-                "com.venmo.",            // Venmo
-                "com.squareup.cash",     // Cash App
-                "com.google.android.apps.walletnfcrel", // Google Wallet
+                context.getString(R.string.package_paypal),
+                context.getString(R.string.package_venmo),
+                context.getString(R.string.package_cash_app),
+                context.getString(R.string.package_google_wallet),
                 // Banking apps
-                "com.bankofamerica.",    // Bank of America
-                "com.chase.",            // Chase
-                "com.wellsfargo.",       // Wells Fargo
-                "com.usbank.",           // US Bank
-                "com.citibank.",         // Citibank
+                context.getString(R.string.package_bank_of_america),
+                context.getString(R.string.package_chase),
+                context.getString(R.string.package_wells_fargo),
+                context.getString(R.string.package_us_bank),
+                context.getString(R.string.package_citibank),
                 // Investment apps
-                "com.robinhood.",        // Robinhood
-                "com.etrade.",           // E*TRADE
-                "com.schwab.",           // Charles Schwab
-                "com.fidelity.",         // Fidelity
+                context.getString(R.string.package_robinhood),
+                context.getString(R.string.package_etrade),
+                context.getString(R.string.package_charles_schwab),
+                context.getString(R.string.package_fidelity),
                 // Crypto
-                "com.coinbase.",         // Coinbase
-                "com.binance.",          // Binance
+                context.getString(R.string.package_coinbase),
+                context.getString(R.string.package_binance),
                 // Budgeting
-                "com.mint",              // Mint
-                "com.ynab"               // YNAB
+                context.getString(R.string.package_mint),
+                context.getString(R.string.package_ynab)
             )
         )
 
-        fun getHealthCategory() = AppCategory(
-            id = "health",
-            displayName = "Health & Fitness",
-            description = "Health, medical, and fitness apps",
+        fun getHealthCategory(context: android.content.Context) = AppCategory(
+            id = context.getString(R.string.category_health_id),
+            displayName = context.getString(R.string.category_health_display_name),
+            description = context.getString(R.string.category_health_description),
             iconResId = android.R.drawable.ic_menu_myplaces,
             filterMode = FilterMode.PRIVATE,
             packagePatterns = listOf(
                 // Fitness tracking
-                "com.fitbit.",           // Fitbit
-                "com.google.android.apps.fitness", // Google Fit
-                "com.samsung.health",    // Samsung Health
-                "com.garmin.connect",    // Garmin Connect
-                "com.strava",            // Strava
+                context.getString(R.string.package_fitbit),
+                context.getString(R.string.package_google_fit),
+                context.getString(R.string.package_samsung_health),
+                context.getString(R.string.package_garmin_connect),
+                context.getString(R.string.package_strava),
                 // Health tracking
-                "com.medisafe.",         // Medisafe
-                "com.myfitnesspal.",     // MyFitnessPal
-                "com.noom.",             // Noom
-                "com.weightwatchers",    // WeightWatchers
+                context.getString(R.string.package_medisafe),
+                context.getString(R.string.package_myfitnesspal),
+                context.getString(R.string.package_noom),
+                context.getString(R.string.package_weightwatchers),
                 // Medical
-                "com.zocdoc.",           // ZocDoc
-                "org.carezone.",         // CareZone
-                "com.teladoc.",          // Teladoc
+                context.getString(R.string.package_zocdoc),
+                context.getString(R.string.package_carezone),
+                context.getString(R.string.package_teladoc),
                 // Mental health
-                "com.calm.",             // Calm
-                "com.headspace.",        // Headspace
-                "com.betterhelp",        // BetterHelp
+                context.getString(R.string.package_calm),
+                context.getString(R.string.package_headspace),
+                context.getString(R.string.package_betterhelp),
                 // Period tracking
-                "com.glow.android",      // Glow
-                "com.clue.android"       // Clue
+                context.getString(R.string.package_glow),
+                context.getString(R.string.package_clue)
             )
         )
 
-        fun getEntertainmentCategory() = AppCategory(
-            id = "entertainment",
-            displayName = "Entertainment",
-            description = "Media and entertainment apps",
+        fun getEntertainmentCategory(context: android.content.Context) = AppCategory(
+            id = context.getString(R.string.category_entertainment_id),
+            displayName = context.getString(R.string.category_entertainment_display_name),
+            description = context.getString(R.string.category_entertainment_description),
             iconResId = android.R.drawable.ic_menu_view,
             filterMode = FilterMode.ALLOW,
             packagePatterns = listOf(
@@ -173,10 +173,10 @@ data class AppCategory(
             )
         )
 
-        fun getGamesCategory() = AppCategory(
-            id = "games",
-            displayName = "Games",
-            description = "Mobile games and gaming apps",
+        fun getGamesCategory(context: android.content.Context) = AppCategory(
+            id = context.getString(R.string.category_games_id),
+            displayName = context.getString(R.string.category_games_display_name),
+            description = context.getString(R.string.category_games_description),
             iconResId = android.R.drawable.ic_menu_manage,
             filterMode = FilterMode.BLOCK,
             packagePatterns = listOf(
@@ -203,13 +203,13 @@ data class AppCategory(
         )
 
         // Get all predefined categories
-        fun getAllCategories() = listOf(
-            getSocialCategory(),
-            getMessagingCategory(),
-            getFinanceCategory(),
-            getHealthCategory(),
-            getEntertainmentCategory(),
-            getGamesCategory()
+        fun getAllCategories(context: android.content.Context) = listOf(
+            getSocialCategory(context),
+            getMessagingCategory(context),
+            getFinanceCategory(context),
+            getHealthCategory(context),
+            getEntertainmentCategory(context),
+            getGamesCategory(context)
         )
     }
 } 

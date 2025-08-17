@@ -7,7 +7,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.micoyc.speakthat.InAppLogger
+import com.micoyc.speakthat.R
 import com.micoyc.speakthat.databinding.ActivityExceptionConfigBinding
+import com.micoyc.speakthat.utils.WifiCapabilityChecker
 import com.google.gson.Gson
 import java.util.*
 
@@ -510,7 +512,13 @@ class ExceptionConfigActivity : AppCompatActivity() {
                 }
                 
                 ExceptionType.WIFI_NETWORK -> {
-                    val networkSSIDs = exception.data["network_ssids"] as? Set<String> ?: emptySet()
+                    // Handle both Set<String> and List<String> since JSON serialization converts Sets to Lists
+                    val networkSSIDsData = exception.data["network_ssids"]
+                    val networkSSIDs = when (networkSSIDsData) {
+                        is Set<*> -> networkSSIDsData.filterIsInstance<String>().toSet()
+                        is List<*> -> networkSSIDsData.filterIsInstance<String>().toSet()
+                        else -> emptySet<String>()
+                    }
                     
                     // Temporarily remove listener to prevent interference during loading
                     binding.switchAnyNetwork.setOnCheckedChangeListener(null)
@@ -543,10 +551,53 @@ class ExceptionConfigActivity : AppCompatActivity() {
             ExceptionType.SCREEN_STATE -> createScreenStateException()
             ExceptionType.TIME_SCHEDULE -> createTimeScheduleException()
             ExceptionType.BLUETOOTH_DEVICE -> createBluetoothException()
-            ExceptionType.WIFI_NETWORK -> createWifiException()
+            ExceptionType.WIFI_NETWORK -> {
+                val wifiException = createWifiException()
+                
+                // Check if this is a WiFi exception with specific networks
+                val networkSSIDs = wifiException.data["network_ssids"] as? Set<String>
+                if (networkSSIDs?.isNotEmpty() == true) {
+                    // Always show warning for WiFi rules with specific networks to inform about Android limitations
+                    showWifiCompatibilityWarningBeforeSave(wifiException)
+                    return
+                }
+                
+                wifiException
+            }
             else -> return
         }
         
+        // Create a new intent for the result to avoid modifying the original intent
+        val resultIntent = android.content.Intent().apply {
+            putExtra(RESULT_EXCEPTION, exception.toJson())
+            putExtra(EXTRA_IS_EDITING, isEditing)
+        }
+        setResult(RESULT_OK, resultIntent)
+        
+        InAppLogger.logUserAction("Exception configured: ${exception.getLogMessage()}", "ExceptionConfigActivity")
+        finish()
+    }
+    
+    private fun showWifiCompatibilityWarningBeforeSave(exception: Exception) {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.wifi_compatibility_warning_title))
+            .setMessage(getString(R.string.wifi_compatibility_warning_message))
+            .setPositiveButton(getString(R.string.wifi_compatibility_warning_create_anyway)) { _, _ ->
+                // Save the exception with the original data (user wants to proceed)
+                saveExceptionInternal(exception)
+            }
+            .setNegativeButton(getString(R.string.wifi_compatibility_warning_nevermind), null)
+            .setNeutralButton(getString(R.string.wifi_compatibility_warning_open_github)) { _, _ ->
+                // Open GitHub link
+                val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/mitchib1440/SpeakThat"))
+                startActivity(intent)
+            }
+            .create()
+        
+        dialog.show()
+    }
+    
+    private fun saveExceptionInternal(exception: Exception) {
         // Create a new intent for the result to avoid modifying the original intent
         val resultIntent = android.content.Intent().apply {
             putExtra(RESULT_EXCEPTION, exception.toJson())

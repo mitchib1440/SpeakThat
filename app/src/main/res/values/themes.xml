@@ -22,8 +22,13 @@
         <item name="textColorTertiary">@color/text_tertiary</item>
         <!-- System UI handling -->
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        
+        <!-- Global corner radius for consistent UI elements -->
+        <item name="cornerRadius">12dp</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.SpeakThat.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.SpeakThat.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.SpeakThat.LargeComponent</item>
     </style>
 
     <style name="Theme.SpeakThat" parent="Base.Theme.SpeakThat" />
@@ -34,11 +39,52 @@
         <item name="windowNoTitle">true</item>
     </style>
     
+    <!-- Global Shape Appearances for consistent corner radius -->
+    <style name="ShapeAppearance.SpeakThat.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+    
+    <style name="ShapeAppearance.SpeakThat.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+    
+    <style name="ShapeAppearance.SpeakThat.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+    
     <!-- Custom TextInputLayout style with forced white hint text -->
     <style name="Widget.SpeakThat.TextInputLayout.WhiteHint" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="android:textColorHint">@color/white_100</item>
         <item name="hintTextColor">@color/white_100</item>
         <item name="placeholderTextColor">@color/white_100</item>
         <item name="boxStrokeColor">@color/white_100</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SpeakThat.MediumComponent</item>
+    </style>
+
+    <!-- Primary Button Style - White background with black text for buttons on purple gradients -->
+    <style name="Widget.SpeakThat.Button.Primary" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/white_100</item>
+        <item name="android:textColor">@color/black_100</item>
+        <item name="cornerRadius">12dp</item>
+    </style>
+
+    <!-- Secondary Button Style - Existing darkened overlay with white text for buttons on purple gradients -->
+    <style name="Widget.SpeakThat.Button.Secondary" parent="Widget.Material3.Button.TextButton">
+        <item name="backgroundTint">@color/black_overlay_15</item>
+        <item name="android:textColor">@color/white_100</item>
+        <item name="cornerRadius">12dp</item>
+    </style>
+    
+    <!-- Global MaterialCardView style for consistent corner radius -->
+    <style name="Widget.SpeakThat.CardView" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">12dp</item>
+    </style>
+    
+    <!-- Global Slider style for consistent corner radius -->
+    <style name="Widget.SpeakThat.Slider" parent="Widget.Material3.Slider">
+        <item name="trackCornerRadius">12dp</item>
     </style>
 </resources> 

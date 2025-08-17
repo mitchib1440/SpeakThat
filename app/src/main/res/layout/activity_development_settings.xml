@@ -41,7 +41,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🛠️ Debug Tools"
+                        android:text="@string/dev_debug_tools_title"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary"
@@ -50,7 +50,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tools for debugging and testing the app"
+                        android:text="@string/dev_debug_tools_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -66,7 +66,7 @@
                             android:id="@+id/btnShowHistory"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="📋 Show Notification History"
+                            android:text="@string/dev_notification_history"
                             android:background="@android:color/transparent"
                             android:textColor="@color/white_100"
                             style="@style/Widget.Material3.Button.TextButton" />
@@ -84,7 +84,7 @@
                             android:id="@+id/btnShowAnalytics"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="📊 Show Help Usage Analytics"
+                            android:text="@string/dev_analytics"
                             android:background="@android:color/transparent"
                             android:textColor="@color/white_100"
                             style="@style/Widget.Material3.Button.TextButton" />
@@ -102,7 +102,7 @@
                             android:id="@+id/btnBatteryReport"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="🔋 Battery Optimization Report"
+                            android:text="@string/dev_battery_report"
                             android:background="@android:color/transparent"
                             android:textColor="@color/white_100"
                             style="@style/Widget.Material3.Button.TextButton" />
@@ -120,7 +120,7 @@
                             android:id="@+id/btnRepairBlacklist"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="🛠️ Repair Word Blacklist"
+                            android:text="@string/dev_repair_blacklist"
                             android:background="@android:color/transparent"
                             android:textColor="@color/white_100"
                             style="@style/Widget.Material3.Button.TextButton" />
@@ -138,7 +138,7 @@
                             android:id="@+id/btnBackgroundMonitor"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="🛰️ Background Process Monitor"
+                            android:text="@string/dev_background_monitor"
                             android:background="@android:color/transparent"
                             android:textColor="@color/white_100"
                             style="@style/Widget.Material3.Button.TextButton" />
@@ -156,7 +156,7 @@
                             android:id="@+id/btnInstallationSourceDebug"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="🔍 Installation Source Debug"
+                            android:text="@string/dev_installation_debug"
                             android:background="@android:color/transparent"
                             android:textColor="@color/white_100"
                             style="@style/Widget.Material3.Button.TextButton" />
@@ -174,7 +174,7 @@
                             android:id="@+id/btnRuleSystemTest"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="🧪 Test Rule System"
+                            android:text="@string/dev_test_rules"
                             android:background="@android:color/transparent"
                             android:textColor="@color/white_100"
                             style="@style/Widget.Material3.Button.TextButton" />
@@ -204,7 +204,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📝 Logging Configuration"
+                        android:text="@string/dev_logging_configuration_title"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@color/purple_card_text_primary"
@@ -213,7 +213,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Configure what gets logged for debugging"
+                        android:text="@string/dev_configure_logging"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -235,7 +235,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Verbose Logging"
+                                android:text="@string/dev_verbose_logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -243,7 +243,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Show detailed debug information"
+                                android:text="@string/dev_verbose_logging_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -279,7 +279,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Filter Logging"
+                                android:text="@string/dev_filter_logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -287,7 +287,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Log filtering decisions and results"
+                                android:text="@string/dev_filter_logging_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -323,7 +323,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="User Action Logging"
+                                android:text="@string/dev_user_action_logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -331,7 +331,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Log user interactions and button presses"
+                                android:text="@string/dev_user_action_logging_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -367,7 +367,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="System Event Logging"
+                                android:text="@string/dev_system_event_logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -375,7 +375,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Log app lifecycle and system events"
+                                android:text="@string/dev_system_event_logging_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -411,7 +411,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Notification Logging"
+                                android:text="@string/dev_notification_logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -419,7 +419,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Log notification processing events"
+                                android:text="@string/dev_notification_logging_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -454,7 +454,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Sensitive Data Logging"
+                                android:text="@string/dev_sensitive_data_logging"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/purple_card_text_primary" />
@@ -462,7 +462,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="⚠️ Log sensitive information (disabled by default)"
+                                android:text="@string/dev_sensitive_data_logging_description"
                                 android:textSize="14sp"
                                 android:textColor="@color/purple_card_text_secondary" />
 
@@ -512,7 +512,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="📊 Live Log Display"
+                            android:text="@string/dev_live_log_display"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -579,7 +579,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Real-time view of what's happening under the hood"
+                        android:text="@string/dev_live_log_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
@@ -599,7 +599,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginEnd="8dp"
-                            android:text="📄 View Crash Logs"
+                            android:text="@string/dev_view_crash_logs"
                             android:textSize="12sp"
                             android:textColor="@color/red_100"
                             android:strokeColor="@color/red_100"
@@ -612,7 +612,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="8dp"
-                            android:text="🗑️ Clear Crash Logs"
+                            android:text="@string/dev_clear_crash_logs"
                             android:textSize="12sp"
                             android:textColor="@color/red_100"
                             android:strokeColor="@color/red_100"
@@ -640,7 +640,7 @@
                                 style="@style/Widget.Material3.Button.TonalButton"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="🔍 Debug Crash Logs"
+                                android:text="@string/dev_debug_crash_logs"
                                 android:textSize="12sp"
                                 android:background="@android:color/transparent"
                                 android:textColor="@color/white_100" />
@@ -661,7 +661,7 @@
                         android:textSize="11sp"
                         android:fontFamily="monospace"
                         android:scrollbars="vertical"
-                        android:text="Starting log display...\nLogs will appear here in real-time.\n"
+                        android:text="@string/dev_starting_log_display"
                         android:gravity="top|start"
                         android:lineSpacingExtra="2dp"
                         android:breakStrategy="simple" />

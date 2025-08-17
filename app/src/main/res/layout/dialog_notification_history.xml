@@ -11,7 +11,7 @@
         android:id="@+id/textHistoryTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Notification History"
+        android:text="@string/dialog_notification_history_title"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/text_secondary"
@@ -23,7 +23,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tap '🚫 Filter Similar' to create smart filters for repetitive notifications"
+        android:text="@string/dialog_notification_history_tap_info"
         android:textSize="12sp"
         android:textColor="?android:attr/textColorSecondary"
         android:gravity="center"
