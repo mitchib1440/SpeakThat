@@ -399,17 +399,17 @@
     <string name="button_delete">Delete</string>
     <string name="button_remove">Remove</string>
     <!-- Critical Hardcoded Strings - App Categories -->
-    <string name="category_social_media">Social Media</string>
-    <string name="category_social_media_description">Social networking and community apps</string>
-    <string name="category_messaging">Messaging</string>
+    <string name="category_social_display_name">Social Media</string>
+    <string name="category_social_description">Social networking and community apps</string>
+    <string name="category_messaging_display_name">Messaging</string>
     <string name="category_messaging_description">Chat and communication apps</string>
-    <string name="category_finance">Finance</string>
+    <string name="category_finance_display_name">Finance</string>
     <string name="category_finance_description">Banking and financial apps</string>
-    <string name="category_health">Health</string>
+    <string name="category_health_display_name">Health</string>
     <string name="category_health_description">Health and fitness apps</string>
-    <string name="category_entertainment">Entertainment</string>
+    <string name="category_entertainment_display_name">Entertainment</string>
     <string name="category_entertainment_description">Media and entertainment apps</string>
-    <string name="category_games">Games</string>
+    <string name="category_games_display_name">Games</string>
     <string name="category_games_description">Mobile games and gaming apps</string>
     <!-- Critical Hardcoded Strings - Other -->
     <string name="unknown_device">Unknown Device</string>

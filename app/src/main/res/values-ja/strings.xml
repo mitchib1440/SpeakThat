@@ -1,44 +1,44 @@
-<resources>
+﻿<resources>
     <string name="app_name">SpeakThat!</string>
-    <string name="service_name">SpeakThat 通知読み上げ</string>
+    <string name="service_name">SpeakThat é€šçŸ¥èª­ã¿ä¸Šã’</string>
     <!-- Permission Explanations for IzzyOnDroid/F-Droid -->
-    <string name="permission_request_install_packages">GitHubのリリースから新しいバージョンをインストールする自動更新システムに使用されます。 ユーザーが明示的に自動更新を有効にし、Google Play ストアからアプリがインストールされていない場合にのみ使用されます。</string>
-    <string name="permission_access_location">BluetoothとWiFiの条件フィルタ機能に必要です。 ユーザー定義ルールで近くのBluetoothデバイスとWiFiネットワークを検出するために使用されます。位置情報の追跡やデータ収集は行いません。</string>
-    <string name="permission_bluetooth_scan">Bluetooth条件フィルタに必要です。通知ルールで特定のBluetoothデバイスの接続をアプリが検出することを許可します。データの収集や送信は行いません。</string>
-    <string name="permission_nearby_wifi_devices">Android 13以降でWiFiネットワーク条件フィルタに必要です。ユーザー定義通知ルールでWiFiネットワークの変更を検出することをアプリに許可します。ネットワークデータは収集されません。</string>
-    <string name="permission_read_external_storage">アプリの設定と、設定ファイルのインポート/エクスポートに使用します。ユーザーは設定のバックアップと復元を許可します。個人データにはアクセスしません。</string>
-    <string name="permission_needed">通知へのアクセスが必要です</string>
-    <string name="permission_description">SpeakThat! は、読み上げのために通知にアクセスする必要があります。この権限はアプリが機能するために必要です。</string>
-    <string name="master_switch_battery_tip">💡 バッテリーを節約するために不要な場合はオフにします</string>
-    <string name="master_switch_battery_tip_no_emoji">バッテリーを節約するために、必要のないときはオフにします</string>
-    <string name="open_settings">権限の設定を開く</string>
-    <string name="service_enabled">通知リーダー：有効</string>
-    <string name="service_disabled">通知リーダー：無効</string>
-    <string name="show_history">通知履歴を表示</string>
-    <string name="settings">SpeakThat! 設定</string>
-    <string name="no_notifications">表示する通知はありません</string>
-    <string name="notification_history">通知履歴</string>
-    <string name="close">閉じる</string>
+    <string name="permission_request_install_packages">GitHubã®ãƒªãƒªãƒ¼ã‚¹ã‹ã‚‰æ–°ã—ã„ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹è‡ªå‹•æ›´æ–°ã‚·ã‚¹ãƒ†ãƒ ã«ä½¿ç”¨ã•ã‚Œã¾ã™ã€‚ ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒæ˜Žç¤ºçš„ã«è‡ªå‹•æ›´æ–°ã‚’æœ‰åŠ¹ã«ã—ã€Google Play ã‚¹ãƒˆã‚¢ã‹ã‚‰ã‚¢ãƒ—ãƒªãŒã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ãªã„å ´åˆã«ã®ã¿ä½¿ç”¨ã•ã‚Œã¾ã™ã€‚</string>
+    <string name="permission_access_location">Bluetoothã¨WiFiã®æ¡ä»¶ãƒ•ã‚£ãƒ«ã‚¿æ©Ÿèƒ½ã«å¿…è¦ã§ã™ã€‚ ãƒ¦ãƒ¼ã‚¶ãƒ¼å®šç¾©ãƒ«ãƒ¼ãƒ«ã§è¿‘ãã®Bluetoothãƒ‡ãƒã‚¤ã‚¹ã¨WiFiãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚’æ¤œå‡ºã™ã‚‹ãŸã‚ã«ä½¿ç”¨ã•ã‚Œã¾ã™ã€‚ä½ç½®æƒ…å ±ã®è¿½è·¡ã‚„ãƒ‡ãƒ¼ã‚¿åŽé›†ã¯è¡Œã„ã¾ã›ã‚“ã€‚</string>
+    <string name="permission_bluetooth_scan">Bluetoothæ¡ä»¶ãƒ•ã‚£ãƒ«ã‚¿ã«å¿…è¦ã§ã™ã€‚é€šçŸ¥ãƒ«ãƒ¼ãƒ«ã§ç‰¹å®šã®Bluetoothãƒ‡ãƒã‚¤ã‚¹ã®æŽ¥ç¶šã‚’ã‚¢ãƒ—ãƒªãŒæ¤œå‡ºã™ã‚‹ã“ã¨ã‚’è¨±å¯ã—ã¾ã™ã€‚ãƒ‡ãƒ¼ã‚¿ã®åŽé›†ã‚„é€ä¿¡ã¯è¡Œã„ã¾ã›ã‚“ã€‚</string>
+    <string name="permission_nearby_wifi_devices">Android 13ä»¥é™ã§WiFiãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯æ¡ä»¶ãƒ•ã‚£ãƒ«ã‚¿ã«å¿…è¦ã§ã™ã€‚ãƒ¦ãƒ¼ã‚¶ãƒ¼å®šç¾©é€šçŸ¥ãƒ«ãƒ¼ãƒ«ã§WiFiãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã®å¤‰æ›´ã‚’æ¤œå‡ºã™ã‚‹ã“ã¨ã‚’ã‚¢ãƒ—ãƒªã«è¨±å¯ã—ã¾ã™ã€‚ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãƒ‡ãƒ¼ã‚¿ã¯åŽé›†ã•ã‚Œã¾ã›ã‚“ã€‚</string>
+    <string name="permission_read_external_storage">ã‚¢ãƒ—ãƒªã®è¨­å®šã¨ã€è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚¤ãƒ³ãƒãƒ¼ãƒˆ/ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã«ä½¿ç”¨ã—ã¾ã™ã€‚ãƒ¦ãƒ¼ã‚¶ãƒ¼ã¯è¨­å®šã®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã¨å¾©å…ƒã‚’è¨±å¯ã—ã¾ã™ã€‚å€‹äººãƒ‡ãƒ¼ã‚¿ã«ã¯ã‚¢ã‚¯ã‚»ã‚¹ã—ã¾ã›ã‚“ã€‚</string>
+    <string name="permission_needed">é€šçŸ¥ã¸ã®ã‚¢ã‚¯ã‚»ã‚¹ãŒå¿…è¦ã§ã™</string>
+    <string name="permission_description">SpeakThat! ã¯ã€èª­ã¿ä¸Šã’ã®ãŸã‚ã«é€šçŸ¥ã«ã‚¢ã‚¯ã‚»ã‚¹ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚ã“ã®æ¨©é™ã¯ã‚¢ãƒ—ãƒªãŒæ©Ÿèƒ½ã™ã‚‹ãŸã‚ã«å¿…è¦ã§ã™ã€‚</string>
+    <string name="master_switch_battery_tip">ðŸ’¡ ãƒãƒƒãƒ†ãƒªãƒ¼ã‚’ç¯€ç´„ã™ã‚‹ãŸã‚ã«ä¸è¦ãªå ´åˆã¯ã‚ªãƒ•ã«ã—ã¾ã™</string>
+    <string name="master_switch_battery_tip_no_emoji">ãƒãƒƒãƒ†ãƒªãƒ¼ã‚’ç¯€ç´„ã™ã‚‹ãŸã‚ã«ã€å¿…è¦ã®ãªã„ã¨ãã¯ã‚ªãƒ•ã«ã—ã¾ã™</string>
+    <string name="open_settings">æ¨©é™ã®è¨­å®šã‚’é–‹ã</string>
+    <string name="service_enabled">é€šçŸ¥ãƒªãƒ¼ãƒ€ãƒ¼ï¼šæœ‰åŠ¹</string>
+    <string name="service_disabled">é€šçŸ¥ãƒªãƒ¼ãƒ€ãƒ¼ï¼šç„¡åŠ¹</string>
+    <string name="show_history">é€šçŸ¥å±¥æ­´ã‚’è¡¨ç¤º</string>
+    <string name="settings">SpeakThat! è¨­å®š</string>
+    <string name="no_notifications">è¡¨ç¤ºã™ã‚‹é€šçŸ¥ã¯ã‚ã‚Šã¾ã›ã‚“</string>
+    <string name="notification_history">é€šçŸ¥å±¥æ­´</string>
+    <string name="close">é–‰ã˜ã‚‹</string>
     <!-- Search Functionality -->
-    <string name="search_settings_hint">設定を検索...</string>
-    <string name="no_search_results">一致する設定は見つかりません</string>
+    <string name="search_settings_hint">è¨­å®šã‚’æ¤œç´¢...</string>
+    <string name="no_search_results">ä¸€è‡´ã™ã‚‹è¨­å®šã¯è¦‹ã¤ã‹ã‚Šã¾ã›ã‚“</string>
     <!-- Filter Settings -->
     <string-array name="blacklist_types">
-        <item>ブロック</item>
-        <item>プライベート</item>
+        <item>ãƒ–ãƒ­ãƒƒã‚¯</item>
+        <item>ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆ</item>
     </string-array>
     <!-- Cooldown Time Options -->
     <string-array name="cooldown_time_options">
-        <item>1秒</item>
-        <item>2秒</item>
-        <item>3秒</item>
-        <item>5秒</item>
-        <item>10秒</item>
-        <item>15秒</item>
-        <item>30秒</item>
-        <item>1分</item>
-        <item>2分</item>
-        <item>5分</item>
+        <item>1ç§’</item>
+        <item>2ç§’</item>
+        <item>3ç§’</item>
+        <item>5ç§’</item>
+        <item>10ç§’</item>
+        <item>15ç§’</item>
+        <item>30ç§’</item>
+        <item>1åˆ†</item>
+        <item>2åˆ†</item>
+        <item>5åˆ†</item>
     </string-array>
     <!-- Cooldown Time Values (corresponding to options above) -->
     <string-array name="cooldown_time_values">
@@ -54,264 +54,264 @@
         <item>300</item>
     </string-array>
     <!-- Behavior Settings Dialogs -->
-    <string name="notification_behavior_dialog_title">通知の動作オプション</string>
-    <string name="notification_behavior_dialog_message">通知が重複する場合にどう扱うか選択してください:
+    <string name="notification_behavior_dialog_title">é€šçŸ¥ã®å‹•ä½œã‚ªãƒ—ã‚·ãƒ§ãƒ³</string>
+    <string name="notification_behavior_dialog_message">é€šçŸ¥ãŒé‡è¤‡ã™ã‚‹å ´åˆã«ã©ã†æ‰±ã†ã‹é¸æŠžã—ã¦ãã ã•ã„:
 
-<b>🔄 割り込み</b> - 現在の通知を止めて新しい通知を即座に読み上げます。緊急の通知に最適です。
+<b>ðŸ”„ å‰²ã‚Šè¾¼ã¿</b> - ç¾åœ¨ã®é€šçŸ¥ã‚’æ­¢ã‚ã¦æ–°ã—ã„é€šçŸ¥ã‚’å³åº§ã«èª­ã¿ä¸Šã’ã¾ã™ã€‚ç·Šæ€¥ã®é€šçŸ¥ã«æœ€é©ã§ã™ã€‚
 
-<b>📋 待機</b> - 現在の通知が完了してから新しい通知を順番に読み上げます。漏れがありません。
+<b>ðŸ“‹ å¾…æ©Ÿ</b> - ç¾åœ¨ã®é€šçŸ¥ãŒå®Œäº†ã—ã¦ã‹ã‚‰æ–°ã—ã„é€šçŸ¥ã‚’é †ç•ªã«èª­ã¿ä¸Šã’ã¾ã™ã€‚æ¼ã‚ŒãŒã‚ã‚Šã¾ã›ã‚“ã€‚
 
-<b>⏭️ スキップ</b> - 通知を読み上げている間の新しい通知は無視します。シンプルですが、重要な通知を逃す可能性があります。
+<b>â­ï¸ ã‚¹ã‚­ãƒƒãƒ—</b> - é€šçŸ¥ã‚’èª­ã¿ä¸Šã’ã¦ã„ã‚‹é–“ã®æ–°ã—ã„é€šçŸ¥ã¯ç„¡è¦–ã—ã¾ã™ã€‚ã‚·ãƒ³ãƒ—ãƒ«ã§ã™ãŒã€é‡è¦ãªé€šçŸ¥ã‚’é€ƒã™å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™ã€‚
 
-<b>🧠 スマート (推奨)</b> - 優先アプリは割り込み、その他は待機します。緊急性と完全性の完璧なバランスを。
-スマートモードでは、他のアプリを待機させながら割り込みするべき緊急のアプリ(電話やメッセージなど)を選択できます。</string>
-    <string name="custom_app_names_title">アプリ名のカスタマイズ</string>
-    <string name="custom_app_names_description">通知でのアプリ名の読み方をカスタマイズします</string>
-    <string name="add_custom_app_name">カスタムアプリ名を追加</string>
-    <string name="app_package_hint">アプリパッケージ名（例：com.twitter.android）</string>
-    <string name="custom_name_hint">カスタム名（例：Twitter）</string>
-    <string name="custom_app_names_example">例：XアプリはTwitterと読む</string>
-    <string name="media_behavior_dialog_title">メディアの動作オプション</string>
-    <string name="media_behavior_dialog_message">音楽やビデオの再生中に通知をどう扱うか選択してください：
+<b>ðŸ§  ã‚¹ãƒžãƒ¼ãƒˆ (æŽ¨å¥¨)</b> - å„ªå…ˆã‚¢ãƒ—ãƒªã¯å‰²ã‚Šè¾¼ã¿ã€ãã®ä»–ã¯å¾…æ©Ÿã—ã¾ã™ã€‚ç·Šæ€¥æ€§ã¨å®Œå…¨æ€§ã®å®Œç’§ãªãƒãƒ©ãƒ³ã‚¹ã‚’ã€‚
+ã‚¹ãƒžãƒ¼ãƒˆãƒ¢ãƒ¼ãƒ‰ã§ã¯ã€ä»–ã®ã‚¢ãƒ—ãƒªã‚’å¾…æ©Ÿã•ã›ãªãŒã‚‰å‰²ã‚Šè¾¼ã¿ã™ã‚‹ã¹ãç·Šæ€¥ã®ã‚¢ãƒ—ãƒª(é›»è©±ã‚„ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãªã©)ã‚’é¸æŠžã§ãã¾ã™ã€‚</string>
+    <string name="custom_app_names_title">ã‚¢ãƒ—ãƒªåã®ã‚«ã‚¹ã‚¿ãƒžã‚¤ã‚º</string>
+    <string name="custom_app_names_description">é€šçŸ¥ã§ã®ã‚¢ãƒ—ãƒªåã®èª­ã¿æ–¹ã‚’ã‚«ã‚¹ã‚¿ãƒžã‚¤ã‚ºã—ã¾ã™</string>
+    <string name="add_custom_app_name">ã‚«ã‚¹ã‚¿ãƒ ã‚¢ãƒ—ãƒªåã‚’è¿½åŠ </string>
+    <string name="app_package_hint">ã‚¢ãƒ—ãƒªãƒ‘ãƒƒã‚±ãƒ¼ã‚¸åï¼ˆä¾‹ï¼šcom.twitter.androidï¼‰</string>
+    <string name="custom_name_hint">ã‚«ã‚¹ã‚¿ãƒ åï¼ˆä¾‹ï¼šTwitterï¼‰</string>
+    <string name="custom_app_names_example">ä¾‹ï¼šXã‚¢ãƒ—ãƒªã¯Twitterã¨èª­ã‚€</string>
+    <string name="media_behavior_dialog_title">ãƒ¡ãƒ‡ã‚£ã‚¢ã®å‹•ä½œã‚ªãƒ—ã‚·ãƒ§ãƒ³</string>
+    <string name="media_behavior_dialog_message">éŸ³æ¥½ã‚„ãƒ“ãƒ‡ã‚ªã®å†ç”Ÿä¸­ã«é€šçŸ¥ã‚’ã©ã†æ‰±ã†ã‹é¸æŠžã—ã¦ãã ã•ã„ï¼š
 
-<b>🎵 無視</b> - メディアに重ねて読み上げます。シンプルですが煩いかもしれません。
+<b>ðŸŽµ ç„¡è¦–</b> - ãƒ¡ãƒ‡ã‚£ã‚¢ã«é‡ã­ã¦èª­ã¿ä¸Šã’ã¾ã™ã€‚ã‚·ãƒ³ãƒ—ãƒ«ã§ã™ãŒç…©ã„ã‹ã‚‚ã—ã‚Œã¾ã›ã‚“ã€‚
 
-<b>⏸️ 停止</b> - 読み上げ中はメディアを完全に停止します。ポッドキャストにはおすすめですが、音楽の流れは止めてしまいます。
+<b>â¸ï¸ åœæ­¢</b> - èª­ã¿ä¸Šã’ä¸­ã¯ãƒ¡ãƒ‡ã‚£ã‚¢ã‚’å®Œå…¨ã«åœæ­¢ã—ã¾ã™ã€‚ãƒãƒƒãƒ‰ã‚­ãƒ£ã‚¹ãƒˆã«ã¯ãŠã™ã™ã‚ã§ã™ãŒã€éŸ³æ¥½ã®æµã‚Œã¯æ­¢ã‚ã¦ã—ã¾ã„ã¾ã™ã€‚
 
-<b>🔉 音量を下げる (推奨)</b> - 一時的にメディアの音量を下げて両方を聞き取れるようにします。最も自然な振る舞いになります。
+<b>ðŸ”‰ éŸ³é‡ã‚’ä¸‹ã’ã‚‹ (æŽ¨å¥¨)</b> - ä¸€æ™‚çš„ã«ãƒ¡ãƒ‡ã‚£ã‚¢ã®éŸ³é‡ã‚’ä¸‹ã’ã¦ä¸¡æ–¹ã‚’èžãå–ã‚Œã‚‹ã‚ˆã†ã«ã—ã¾ã™ã€‚æœ€ã‚‚è‡ªç„¶ãªæŒ¯ã‚‹èˆžã„ã«ãªã‚Šã¾ã™ã€‚
 
-<b>🔇 サイレント</b> - メディアの再生中は読み上げません。静かですが、重要な通知を逃すかもしれません。
+<b>ðŸ”‡ ã‚µã‚¤ãƒ¬ãƒ³ãƒˆ</b> - ãƒ¡ãƒ‡ã‚£ã‚¢ã®å†ç”Ÿä¸­ã¯èª­ã¿ä¸Šã’ã¾ã›ã‚“ã€‚é™ã‹ã§ã™ãŒã€é‡è¦ãªé€šçŸ¥ã‚’é€ƒã™ã‹ã‚‚ã—ã‚Œã¾ã›ã‚“ã€‚
 
-「音量を下げる」は、カーラジオのように振る舞います。読み上げ中は音量を下げ、戻します。音楽が好きで通知も知りたい場合に最適です。</string>
-    <string name="shake_to_stop_dialog_title">振って停止</string>
-    <string name="shake_to_stop_dialog_message">「振って停止」は、デバイスを振ることで、即座に静かにすることができます：
+ã€ŒéŸ³é‡ã‚’ä¸‹ã’ã‚‹ã€ã¯ã€ã‚«ãƒ¼ãƒ©ã‚¸ã‚ªã®ã‚ˆã†ã«æŒ¯ã‚‹èˆžã„ã¾ã™ã€‚èª­ã¿ä¸Šã’ä¸­ã¯éŸ³é‡ã‚’ä¸‹ã’ã€æˆ»ã—ã¾ã™ã€‚éŸ³æ¥½ãŒå¥½ãã§é€šçŸ¥ã‚‚çŸ¥ã‚ŠãŸã„å ´åˆã«æœ€é©ã§ã™ã€‚</string>
+    <string name="shake_to_stop_dialog_title">æŒ¯ã£ã¦åœæ­¢</string>
+    <string name="shake_to_stop_dialog_message">ã€ŒæŒ¯ã£ã¦åœæ­¢ã€ã¯ã€ãƒ‡ãƒã‚¤ã‚¹ã‚’æŒ¯ã‚‹ã“ã¨ã§ã€å³åº§ã«é™ã‹ã«ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ï¼š
 
-<b>✨ 何が便利か:</b>
-• 静かな場所で通知を止められる
-• 手が塞がっているときでもすぐに操作できる
-• 画面がオフのままでも機能する
-• ボタンを手探りしなくてもいい
+<b>âœ¨ ä½•ãŒä¾¿åˆ©ã‹:</b>
+â€¢ é™ã‹ãªå ´æ‰€ã§é€šçŸ¥ã‚’æ­¢ã‚ã‚‰ã‚Œã‚‹
+â€¢ æ‰‹ãŒå¡žãŒã£ã¦ã„ã‚‹ã¨ãã§ã‚‚ã™ãã«æ“ä½œã§ãã‚‹
+â€¢ ç”»é¢ãŒã‚ªãƒ•ã®ã¾ã¾ã§ã‚‚æ©Ÿèƒ½ã™ã‚‹
+â€¢ ãƒœã‚¿ãƒ³ã‚’æ‰‹æŽ¢ã‚Šã—ãªãã¦ã‚‚ã„ã„
 
-<b>🎯 どのように機能するか:</b>
-• デバイスをしっかり振る(サイコロのように)
-• 現在の通知が即座に止まる
-• 待機中の通知は全て消去される
-• 新しい通知は通常どおり機能する
+<b>ðŸŽ¯ ã©ã®ã‚ˆã†ã«æ©Ÿèƒ½ã™ã‚‹ã‹:</b>
+â€¢ ãƒ‡ãƒã‚¤ã‚¹ã‚’ã—ã£ã‹ã‚ŠæŒ¯ã‚‹(ã‚µã‚¤ã‚³ãƒ­ã®ã‚ˆã†ã«)
+â€¢ ç¾åœ¨ã®é€šçŸ¥ãŒå³åº§ã«æ­¢ã¾ã‚‹
+â€¢ å¾…æ©Ÿä¸­ã®é€šçŸ¥ã¯å…¨ã¦æ¶ˆåŽ»ã•ã‚Œã‚‹
+â€¢ æ–°ã—ã„é€šçŸ¥ã¯é€šå¸¸ã©ãŠã‚Šæ©Ÿèƒ½ã™ã‚‹
 
-<b>⚙️ カスタマイズ:</b>
-• 好みに合わせて感度を設定
-• メーターを見ながら振る強さをテストする
-• 弱い振動と強い振動のどちらでも機能する
+<b>âš™ï¸ ã‚«ã‚¹ã‚¿ãƒžã‚¤ã‚º:</b>
+â€¢ å¥½ã¿ã«åˆã‚ã›ã¦æ„Ÿåº¦ã‚’è¨­å®š
+â€¢ ãƒ¡ãƒ¼ã‚¿ãƒ¼ã‚’è¦‹ãªãŒã‚‰æŒ¯ã‚‹å¼·ã•ã‚’ãƒ†ã‚¹ãƒˆã™ã‚‹
+â€¢ å¼±ã„æŒ¯å‹•ã¨å¼·ã„æŒ¯å‹•ã®ã©ã¡ã‚‰ã§ã‚‚æ©Ÿèƒ½ã™ã‚‹
 
-この機能は、会議中や運転中に通知を受ける方に特に便利です。</string>
-    <string name="use_recommended">おすすめを使用する</string>
-    <string name="got_it">了解</string>
+ã“ã®æ©Ÿèƒ½ã¯ã€ä¼šè­°ä¸­ã‚„é‹è»¢ä¸­ã«é€šçŸ¥ã‚’å—ã‘ã‚‹æ–¹ã«ç‰¹ã«ä¾¿åˆ©ã§ã™ã€‚</string>
+    <string name="use_recommended">ãŠã™ã™ã‚ã‚’ä½¿ç”¨ã™ã‚‹</string>
+    <string name="got_it">äº†è§£</string>
     <!-- Persistent/Silent Notification Filtering -->
-    <string name="persistent_notification_filtering_title">永続/サイレント通知フィルタ</string>
-    <string name="persistent_notification_filtering_description">永続的(進行中)またはサイレント(音/振動なし)の通知をスキップ</string>
-    <string name="enable_persistent_filtering">🔇 永続/サイレント通知フィルタ</string>
-    <string name="persistent_filtering_help">💡 永続的な通知(音楽コントロール、ナビゲーションなど)は継続的で、サイレント通知には音や振動がありません。このオプションは、バックグラウンドサービスから通知が繰り返されるのを防ぎます。</string>
+    <string name="persistent_notification_filtering_title">æ°¸ç¶š/ã‚µã‚¤ãƒ¬ãƒ³ãƒˆé€šçŸ¥ãƒ•ã‚£ãƒ«ã‚¿</string>
+    <string name="persistent_notification_filtering_description">æ°¸ç¶šçš„(é€²è¡Œä¸­)ã¾ãŸã¯ã‚µã‚¤ãƒ¬ãƒ³ãƒˆ(éŸ³/æŒ¯å‹•ãªã—)ã®é€šçŸ¥ã‚’ã‚¹ã‚­ãƒƒãƒ—</string>
+    <string name="enable_persistent_filtering">ðŸ”‡ æ°¸ç¶š/ã‚µã‚¤ãƒ¬ãƒ³ãƒˆé€šçŸ¥ãƒ•ã‚£ãƒ«ã‚¿</string>
+    <string name="persistent_filtering_help">ðŸ’¡ æ°¸ç¶šçš„ãªé€šçŸ¥(éŸ³æ¥½ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã€ãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³ãªã©)ã¯ç¶™ç¶šçš„ã§ã€ã‚µã‚¤ãƒ¬ãƒ³ãƒˆé€šçŸ¥ã«ã¯éŸ³ã‚„æŒ¯å‹•ãŒã‚ã‚Šã¾ã›ã‚“ã€‚ã“ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã¯ã€ãƒãƒƒã‚¯ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰ã‚µãƒ¼ãƒ“ã‚¹ã‹ã‚‰é€šçŸ¥ãŒç¹°ã‚Šè¿”ã•ã‚Œã‚‹ã®ã‚’é˜²ãŽã¾ã™ã€‚</string>
     <!-- Individual Persistent Filtering Categories -->
-    <string name="filter_persistent_notifications">永続的な通知をフィルターする</string>
-    <string name="filter_silent_notifications">サイレント通知をフィルターする</string>
-    <string name="filter_foreground_services">フォアグラウンドサービスの通知をフィルター</string>
-    <string name="filter_low_priority">優先度の低い通知をフィルター</string>
-    <string name="filter_system_notifications">システム通知をフィルター</string>
+    <string name="filter_persistent_notifications">æ°¸ç¶šçš„ãªé€šçŸ¥ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã™ã‚‹</string>
+    <string name="filter_silent_notifications">ã‚µã‚¤ãƒ¬ãƒ³ãƒˆé€šçŸ¥ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã™ã‚‹</string>
+    <string name="filter_foreground_services">ãƒ•ã‚©ã‚¢ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰ã‚µãƒ¼ãƒ“ã‚¹ã®é€šçŸ¥ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼</string>
+    <string name="filter_low_priority">å„ªå…ˆåº¦ã®ä½Žã„é€šçŸ¥ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼</string>
+    <string name="filter_system_notifications">ã‚·ã‚¹ãƒ†ãƒ é€šçŸ¥ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼</string>
     <!-- Category Descriptions -->
-    <string name="persistent_notifications_desc">自動解除されない継続通知（音楽コントロール、ナビゲーション）</string>
-    <string name="silent_notifications_desc">音や振動のない通知</string>
-    <string name="foreground_services_desc">バックグラウンドサービスからの通知</string>
-    <string name="low_priority_desc">優先度が低い通知</string>
-    <string name="system_notifications_desc">システムアプリからの通知（Android、Googleサービス）</string>
+    <string name="persistent_notifications_desc">è‡ªå‹•è§£é™¤ã•ã‚Œãªã„ç¶™ç¶šé€šçŸ¥ï¼ˆéŸ³æ¥½ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã€ãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³ï¼‰</string>
+    <string name="silent_notifications_desc">éŸ³ã‚„æŒ¯å‹•ã®ãªã„é€šçŸ¥</string>
+    <string name="foreground_services_desc">ãƒãƒƒã‚¯ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰ã‚µãƒ¼ãƒ“ã‚¹ã‹ã‚‰ã®é€šçŸ¥</string>
+    <string name="low_priority_desc">å„ªå…ˆåº¦ãŒä½Žã„é€šçŸ¥</string>
+    <string name="system_notifications_desc">ã‚·ã‚¹ãƒ†ãƒ ã‚¢ãƒ—ãƒªã‹ã‚‰ã®é€šçŸ¥ï¼ˆAndroidã€Googleã‚µãƒ¼ãƒ“ã‚¹ï¼‰</string>
     <!-- Wave to Stop Feature -->
-    <string name="wave_to_stop_dialog_title">手振りで停止機能</string>
-    <string name="wave_to_stop_dialog_message">「手振りで停止」は、デバイスの前で手を振ることで即座に停止します：
+    <string name="wave_to_stop_dialog_title">æ‰‹æŒ¯ã‚Šã§åœæ­¢æ©Ÿèƒ½</string>
+    <string name="wave_to_stop_dialog_message">ã€Œæ‰‹æŒ¯ã‚Šã§åœæ­¢ã€ã¯ã€ãƒ‡ãƒã‚¤ã‚¹ã®å‰ã§æ‰‹ã‚’æŒ¯ã‚‹ã“ã¨ã§å³åº§ã«åœæ­¢ã—ã¾ã™ï¼š
 
-<b>✨ なぜ便利か:</b>
-• デバイスを振れないユーザーに最適
-• デスクやスタンドに乗せたデバイスに良い
-• 片手で機能する
-• デバイスが物理的に動く必要がない
-• 「振って停止」の替わりとして体の不自由な方にも
+<b>âœ¨ ãªãœä¾¿åˆ©ã‹:</b>
+â€¢ ãƒ‡ãƒã‚¤ã‚¹ã‚’æŒ¯ã‚Œãªã„ãƒ¦ãƒ¼ã‚¶ãƒ¼ã«æœ€é©
+â€¢ ãƒ‡ã‚¹ã‚¯ã‚„ã‚¹ã‚¿ãƒ³ãƒ‰ã«ä¹—ã›ãŸãƒ‡ãƒã‚¤ã‚¹ã«è‰¯ã„
+â€¢ ç‰‡æ‰‹ã§æ©Ÿèƒ½ã™ã‚‹
+â€¢ ãƒ‡ãƒã‚¤ã‚¹ãŒç‰©ç†çš„ã«å‹•ãå¿…è¦ãŒãªã„
+â€¢ ã€ŒæŒ¯ã£ã¦åœæ­¢ã€ã®æ›¿ã‚ã‚Šã¨ã—ã¦ä½“ã®ä¸è‡ªç”±ãªæ–¹ã«ã‚‚
 
-<b>🎯 どのように機能するか:</b>
-• デバイスの前で手を降る(ジェスチャーのように)
-• 近接センサーを使って手の動きを検知
-• 現在の通知が即座に停止
-• 待機中の通知は全て消去
-• 新しい通知は通常どおり機能します
+<b>ðŸŽ¯ ã©ã®ã‚ˆã†ã«æ©Ÿèƒ½ã™ã‚‹ã‹:</b>
+â€¢ ãƒ‡ãƒã‚¤ã‚¹ã®å‰ã§æ‰‹ã‚’é™ã‚‹(ã‚¸ã‚§ã‚¹ãƒãƒ£ãƒ¼ã®ã‚ˆã†ã«)
+â€¢ è¿‘æŽ¥ã‚»ãƒ³ã‚µãƒ¼ã‚’ä½¿ã£ã¦æ‰‹ã®å‹•ãã‚’æ¤œçŸ¥
+â€¢ ç¾åœ¨ã®é€šçŸ¥ãŒå³åº§ã«åœæ­¢
+â€¢ å¾…æ©Ÿä¸­ã®é€šçŸ¥ã¯å…¨ã¦æ¶ˆåŽ»
+â€¢ æ–°ã—ã„é€šçŸ¥ã¯é€šå¸¸ã©ãŠã‚Šæ©Ÿèƒ½ã—ã¾ã™
 
-<b>⚙️ カスタマイズ:</b>
-• 好みに合わせて感度を調整
-• メーターを見て手振りの検知をテストする
-• 異なる手の大きさや距離でも機能します
+<b>âš™ï¸ ã‚«ã‚¹ã‚¿ãƒžã‚¤ã‚º:</b>
+â€¢ å¥½ã¿ã«åˆã‚ã›ã¦æ„Ÿåº¦ã‚’èª¿æ•´
+â€¢ ãƒ¡ãƒ¼ã‚¿ãƒ¼ã‚’è¦‹ã¦æ‰‹æŒ¯ã‚Šã®æ¤œçŸ¥ã‚’ãƒ†ã‚¹ãƒˆã™ã‚‹
+â€¢ ç•°ãªã‚‹æ‰‹ã®å¤§ãã•ã‚„è·é›¢ã§ã‚‚æ©Ÿèƒ½ã—ã¾ã™
 
-この機能は、体の不自由な方や、デスクで使う方や、物理的な動きよりもジェスチャーを好む方に便利です。</string>
+ã“ã®æ©Ÿèƒ½ã¯ã€ä½“ã®ä¸è‡ªç”±ãªæ–¹ã‚„ã€ãƒ‡ã‚¹ã‚¯ã§ä½¿ã†æ–¹ã‚„ã€ç‰©ç†çš„ãªå‹•ãã‚ˆã‚Šã‚‚ã‚¸ã‚§ã‚¹ãƒãƒ£ãƒ¼ã‚’å¥½ã‚€æ–¹ã«ä¾¿åˆ©ã§ã™ã€‚</string>
     <!-- About Page -->
-    <string name="about">このアプリについて</string>
-    <string name="about_description_title">SpeakThat!について</string>
-    <string name="about_features_title">主な特徴</string>
-    <string name="about_developer_title">開発者</string>
-    <string name="about_license_title">ライセンス</string>
-    <string name="version_format">バージョン %s</string>
-    <string name="version_format_with_variant" formatted="false">バージョン %1$s (%2$s)</string>
+    <string name="about">ã“ã®ã‚¢ãƒ—ãƒªã«ã¤ã„ã¦</string>
+    <string name="about_description_title">SpeakThat!ã«ã¤ã„ã¦</string>
+    <string name="about_features_title">ä¸»ãªç‰¹å¾´</string>
+    <string name="about_developer_title">é–‹ç™ºè€…</string>
+    <string name="about_license_title">ãƒ©ã‚¤ã‚»ãƒ³ã‚¹</string>
+    <string name="version_format">ãƒãƒ¼ã‚¸ãƒ§ãƒ³ %s</string>
+    <string name="version_format_with_variant" formatted="false">ãƒãƒ¼ã‚¸ãƒ§ãƒ³ %1$s (%2$s)</string>
     <!-- Store Update Dialog -->
-    <string name="store_update_dialog_title">App Store経由で更新</string>
-    <string name="store_update_dialog_message">このバージョンの SpeakThat! は、アプリストア(F-Droid、Google Playストアなど)からアップデートを受け取ります。</string>
-    <string name="store_update_dialog_info">• アップデートはアプリストアから自動的に実行されます\n• アップデートが利用できるときは通知を受け取ります\n• 手動ダウンロードやインストールは必要ありません</string>
-    <string name="store_update_dialog_help_title">バージョンの自動アップデートが必要ですか？</string>
-    <string name="store_update_dialog_help_message">GitHubから直接自動アップデートを行いたい場合は、GitHubのバージョンをダウンロードしてください。このバージョンは同じですが、自動アップデート機能が含まれています。</string>
-    <string name="store_update_dialog_visit_github">GitHubを開く</string>
-    <string name="store_update_dialog_got_it">了解</string>
-    <string name="app_description">SpeakThat!は、テキスト読み上げを使用して通知を音声で知らせるオープンソースのAndroid通知リーダーです。マルチタスク中に操作、アクセシビリティ、通知を受けるのに最適です。</string>
-    <string name="app_features">リアルタイム通知読み取り、カスタマイズ可能な音声設定、スマート通知フィルタリング、アプリごとの制御、メディア対応動作、通知履歴追跡、振って停止と手振りで停止、読み上げフォーマットのカスタマイズ、ダークモードとライトモードのサポート、高度なロジックとスケジュールによる条件ルール、広告なし、オフラインで機能。</string>
-    <string name="developer_info">イギリスのソロ開発者であるMitchiが❤️を込めて開発しました。12年以上にわたって毎日通知リーダーをテストし使用してきた経験を活かしています。SpeakThat!は、DYNA Logixによって開発されたTouchless Notificationsに触発され、カスタマイズ可能な通知リーダーの遺産を継承することを目指しています。このプロジェクトはAI支援プログラミングによって加速されました。</string>
-    <string name="license_info">このプロジェクトはオープンソースで、GPL-3.0ライセンスの下で利用可能です。GitHubでライセンスの全文とソースコードを確認できます。貢献とフィードバックを歓迎します！</string>
-    <string name="read_about_app">アプリについてを読む</string>
-    <string name="stop_reading">読むのを停止する</string>
+    <string name="store_update_dialog_title">App StoreçµŒç”±ã§æ›´æ–°</string>
+    <string name="store_update_dialog_message">ã“ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã® SpeakThat! ã¯ã€ã‚¢ãƒ—ãƒªã‚¹ãƒˆã‚¢(F-Droidã€Google Playã‚¹ãƒˆã‚¢ãªã©)ã‹ã‚‰ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã‚’å—ã‘å–ã‚Šã¾ã™ã€‚</string>
+    <string name="store_update_dialog_info">â€¢ ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã¯ã‚¢ãƒ—ãƒªã‚¹ãƒˆã‚¢ã‹ã‚‰è‡ªå‹•çš„ã«å®Ÿè¡Œã•ã‚Œã¾ã™\nâ€¢ ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆãŒåˆ©ç”¨ã§ãã‚‹ã¨ãã¯é€šçŸ¥ã‚’å—ã‘å–ã‚Šã¾ã™\nâ€¢ æ‰‹å‹•ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã‚„ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã¯å¿…è¦ã‚ã‚Šã¾ã›ã‚“</string>
+    <string name="store_update_dialog_help_title">ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã®è‡ªå‹•ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆãŒå¿…è¦ã§ã™ã‹ï¼Ÿ</string>
+    <string name="store_update_dialog_help_message">GitHubã‹ã‚‰ç›´æŽ¥è‡ªå‹•ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã‚’è¡Œã„ãŸã„å ´åˆã¯ã€GitHubã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã—ã¦ãã ã•ã„ã€‚ã“ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã¯åŒã˜ã§ã™ãŒã€è‡ªå‹•ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆæ©Ÿèƒ½ãŒå«ã¾ã‚Œã¦ã„ã¾ã™ã€‚</string>
+    <string name="store_update_dialog_visit_github">GitHubã‚’é–‹ã</string>
+    <string name="store_update_dialog_got_it">äº†è§£</string>
+    <string name="app_description">SpeakThat!ã¯ã€ãƒ†ã‚­ã‚¹ãƒˆèª­ã¿ä¸Šã’ã‚’ä½¿ç”¨ã—ã¦é€šçŸ¥ã‚’éŸ³å£°ã§çŸ¥ã‚‰ã›ã‚‹ã‚ªãƒ¼ãƒ—ãƒ³ã‚½ãƒ¼ã‚¹ã®Androidé€šçŸ¥ãƒªãƒ¼ãƒ€ãƒ¼ã§ã™ã€‚ãƒžãƒ«ãƒã‚¿ã‚¹ã‚¯ä¸­ã«æ“ä½œã€ã‚¢ã‚¯ã‚»ã‚·ãƒ“ãƒªãƒ†ã‚£ã€é€šçŸ¥ã‚’å—ã‘ã‚‹ã®ã«æœ€é©ã§ã™ã€‚</string>
+    <string name="app_features">ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ é€šçŸ¥èª­ã¿å–ã‚Šã€ã‚«ã‚¹ã‚¿ãƒžã‚¤ã‚ºå¯èƒ½ãªéŸ³å£°è¨­å®šã€ã‚¹ãƒžãƒ¼ãƒˆé€šçŸ¥ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã€ã‚¢ãƒ—ãƒªã”ã¨ã®åˆ¶å¾¡ã€ãƒ¡ãƒ‡ã‚£ã‚¢å¯¾å¿œå‹•ä½œã€é€šçŸ¥å±¥æ­´è¿½è·¡ã€æŒ¯ã£ã¦åœæ­¢ã¨æ‰‹æŒ¯ã‚Šã§åœæ­¢ã€èª­ã¿ä¸Šã’ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆã®ã‚«ã‚¹ã‚¿ãƒžã‚¤ã‚ºã€ãƒ€ãƒ¼ã‚¯ãƒ¢ãƒ¼ãƒ‰ã¨ãƒ©ã‚¤ãƒˆãƒ¢ãƒ¼ãƒ‰ã®ã‚µãƒãƒ¼ãƒˆã€é«˜åº¦ãªãƒ­ã‚¸ãƒƒã‚¯ã¨ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«ã«ã‚ˆã‚‹æ¡ä»¶ãƒ«ãƒ¼ãƒ«ã€åºƒå‘Šãªã—ã€ã‚ªãƒ•ãƒ©ã‚¤ãƒ³ã§æ©Ÿèƒ½ã€‚</string>
+    <string name="developer_info">ã‚¤ã‚®ãƒªã‚¹ã®ã‚½ãƒ­é–‹ç™ºè€…ã§ã‚ã‚‹MitchiãŒâ¤ï¸ã‚’è¾¼ã‚ã¦é–‹ç™ºã—ã¾ã—ãŸã€‚12å¹´ä»¥ä¸Šã«ã‚ãŸã£ã¦æ¯Žæ—¥é€šçŸ¥ãƒªãƒ¼ãƒ€ãƒ¼ã‚’ãƒ†ã‚¹ãƒˆã—ä½¿ç”¨ã—ã¦ããŸçµŒé¨“ã‚’æ´»ã‹ã—ã¦ã„ã¾ã™ã€‚SpeakThat!ã¯ã€DYNA Logixã«ã‚ˆã£ã¦é–‹ç™ºã•ã‚ŒãŸTouchless Notificationsã«è§¦ç™ºã•ã‚Œã€ã‚«ã‚¹ã‚¿ãƒžã‚¤ã‚ºå¯èƒ½ãªé€šçŸ¥ãƒªãƒ¼ãƒ€ãƒ¼ã®éºç”£ã‚’ç¶™æ‰¿ã™ã‚‹ã“ã¨ã‚’ç›®æŒ‡ã—ã¦ã„ã¾ã™ã€‚ã“ã®ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯AIæ”¯æ´ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°ã«ã‚ˆã£ã¦åŠ é€Ÿã•ã‚Œã¾ã—ãŸã€‚</string>
+    <string name="license_info">ã“ã®ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ã‚ªãƒ¼ãƒ—ãƒ³ã‚½ãƒ¼ã‚¹ã§ã€GPL-3.0ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®ä¸‹ã§åˆ©ç”¨å¯èƒ½ã§ã™ã€‚GitHubã§ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®å…¨æ–‡ã¨ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã‚’ç¢ºèªã§ãã¾ã™ã€‚è²¢çŒ®ã¨ãƒ•ã‚£ãƒ¼ãƒ‰ãƒãƒƒã‚¯ã‚’æ­“è¿Žã—ã¾ã™ï¼</string>
+    <string name="read_about_app">ã‚¢ãƒ—ãƒªã«ã¤ã„ã¦ã‚’èª­ã‚€</string>
+    <string name="stop_reading">èª­ã‚€ã®ã‚’åœæ­¢ã™ã‚‹</string>
     <!-- TTS-specific strings (emoji-free and speech-optimized) -->
-    <string name="tts_app_intro">SpeakThat!へようこそ</string>
-    <string name="tts_description">SpeakThatは、テキスト読み上げを使用して通知を音声で知らせるオープンソースのAndroid通知リーダーです。ハンズフリー操作や、体の不自由な方が情報を得るのに最適です。</string>
-    <string name="tts_features_intro">主な機能:</string>
-    <string name="tts_features">リアルタイム通知読み取り、カスタマイズ可能な音声設定、スマート通知フィルタリング、アプリごとの制御、メディア対応動作、通知履歴追跡、振って停止と手振りで停止、読み上げフォーマットのカスタマイズ、ダークモードとライトモードのサポート、高度なロジックとスケジュールによる条件ルール、広告なし、オフラインで機能。</string>
-    <string name="tts_developer">イギリスのソロ開発者であるMitchiが愛を込めて開発しました。12年以上にわたって毎日通知リーダーをテストし使用してきた経験を活かしています。SpeakThat!は、DYNA Logixによって開発されたTouchless Notificationsに触発され、カスタマイズ可能な通知リーダーの遺産を継承することを目指しています。このプロジェクトはAI支援プログラミングによって加速されました。</string>
-    <string name="tts_license">このプロジェクトはオープンソースで、GPL-3.0ライセンスの下で利用可能です。GitHubでライセンスの全文とソースコードを確認できます。貢献とフィードバックを歓迎します！</string>
-    <string name="tts_thank_you">SpeakThat!をご利用いただき、ありがとうございます</string>
+    <string name="tts_app_intro">SpeakThat!ã¸ã‚ˆã†ã“ã</string>
+    <string name="tts_description">SpeakThatã¯ã€ãƒ†ã‚­ã‚¹ãƒˆèª­ã¿ä¸Šã’ã‚’ä½¿ç”¨ã—ã¦é€šçŸ¥ã‚’éŸ³å£°ã§çŸ¥ã‚‰ã›ã‚‹ã‚ªãƒ¼ãƒ—ãƒ³ã‚½ãƒ¼ã‚¹ã®Androidé€šçŸ¥ãƒªãƒ¼ãƒ€ãƒ¼ã§ã™ã€‚ãƒãƒ³ã‚ºãƒ•ãƒªãƒ¼æ“ä½œã‚„ã€ä½“ã®ä¸è‡ªç”±ãªæ–¹ãŒæƒ…å ±ã‚’å¾—ã‚‹ã®ã«æœ€é©ã§ã™ã€‚</string>
+    <string name="tts_features_intro">ä¸»ãªæ©Ÿèƒ½:</string>
+    <string name="tts_features">ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ é€šçŸ¥èª­ã¿å–ã‚Šã€ã‚«ã‚¹ã‚¿ãƒžã‚¤ã‚ºå¯èƒ½ãªéŸ³å£°è¨­å®šã€ã‚¹ãƒžãƒ¼ãƒˆé€šçŸ¥ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã€ã‚¢ãƒ—ãƒªã”ã¨ã®åˆ¶å¾¡ã€ãƒ¡ãƒ‡ã‚£ã‚¢å¯¾å¿œå‹•ä½œã€é€šçŸ¥å±¥æ­´è¿½è·¡ã€æŒ¯ã£ã¦åœæ­¢ã¨æ‰‹æŒ¯ã‚Šã§åœæ­¢ã€èª­ã¿ä¸Šã’ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆã®ã‚«ã‚¹ã‚¿ãƒžã‚¤ã‚ºã€ãƒ€ãƒ¼ã‚¯ãƒ¢ãƒ¼ãƒ‰ã¨ãƒ©ã‚¤ãƒˆãƒ¢ãƒ¼ãƒ‰ã®ã‚µãƒãƒ¼ãƒˆã€é«˜åº¦ãªãƒ­ã‚¸ãƒƒã‚¯ã¨ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«ã«ã‚ˆã‚‹æ¡ä»¶ãƒ«ãƒ¼ãƒ«ã€åºƒå‘Šãªã—ã€ã‚ªãƒ•ãƒ©ã‚¤ãƒ³ã§æ©Ÿèƒ½ã€‚</string>
+    <string name="tts_developer">ã‚¤ã‚®ãƒªã‚¹ã®ã‚½ãƒ­é–‹ç™ºè€…ã§ã‚ã‚‹MitchiãŒæ„›ã‚’è¾¼ã‚ã¦é–‹ç™ºã—ã¾ã—ãŸã€‚12å¹´ä»¥ä¸Šã«ã‚ãŸã£ã¦æ¯Žæ—¥é€šçŸ¥ãƒªãƒ¼ãƒ€ãƒ¼ã‚’ãƒ†ã‚¹ãƒˆã—ä½¿ç”¨ã—ã¦ããŸçµŒé¨“ã‚’æ´»ã‹ã—ã¦ã„ã¾ã™ã€‚SpeakThat!ã¯ã€DYNA Logixã«ã‚ˆã£ã¦é–‹ç™ºã•ã‚ŒãŸTouchless Notificationsã«è§¦ç™ºã•ã‚Œã€ã‚«ã‚¹ã‚¿ãƒžã‚¤ã‚ºå¯èƒ½ãªé€šçŸ¥ãƒªãƒ¼ãƒ€ãƒ¼ã®éºç”£ã‚’ç¶™æ‰¿ã™ã‚‹ã“ã¨ã‚’ç›®æŒ‡ã—ã¦ã„ã¾ã™ã€‚ã“ã®ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯AIæ”¯æ´ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°ã«ã‚ˆã£ã¦åŠ é€Ÿã•ã‚Œã¾ã—ãŸã€‚</string>
+    <string name="tts_license">ã“ã®ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ã‚ªãƒ¼ãƒ—ãƒ³ã‚½ãƒ¼ã‚¹ã§ã€GPL-3.0ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®ä¸‹ã§åˆ©ç”¨å¯èƒ½ã§ã™ã€‚GitHubã§ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®å…¨æ–‡ã¨ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã‚’ç¢ºèªã§ãã¾ã™ã€‚è²¢çŒ®ã¨ãƒ•ã‚£ãƒ¼ãƒ‰ãƒãƒƒã‚¯ã‚’æ­“è¿Žã—ã¾ã™ï¼</string>
+    <string name="tts_thank_you">SpeakThat!ã‚’ã”åˆ©ç”¨ã„ãŸã ãã€ã‚ã‚ŠãŒã¨ã†ã”ã–ã„ã¾ã™</string>
     <!-- Update System -->
-    <string name="check_for_updates">アップデートの確認</string>
-    <string name="update_checker">アップデートの確認</string>
-    <string name="checking_for_updates">アップデートを確認中...</string>
-    <string name="update_available">利用可能なアップデート： %s</string>
-    <string name="no_update_available">利用可能なアップデートはありません</string>
-    <string name="app_up_to_date">アプリは最新です！</string>
-    <string name="update_info">バージョン： %1$s\nサイズ： %2$s\nリリース日： %3$s</string>
-    <string name="download_update">アップデートをダウンロード</string>
-    <string name="download_confirmation">バージョン %sをダウンロードしますか? WiFi接続でない場合、モバイルデータを使用します。</string>
-    <string name="downloading_update">アップデートをダウンロード中...</string>
-    <string name="downloading_update_progress">アップデートをダウンロード中... %d%%</string>
-    <string name="download_complete">ダウンロード完了！</string>
-    <string name="install_update">アップデートをインストール</string>
-    <string name="view_release_notes">リリースノートを表示</string>
-    <string name="release_notes">リリースノート</string>
-    <string name="no_release_notes">リリースノートはありません</string>
-    <string name="check_again">もう一度確認</string>
-    <string name="update_check_failed">アップデートの確認に失敗しました</string>
-    <string name="download_failed">ダウンロードに失敗しました</string>
-    <string name="installation_failed">インストールに失敗しました</string>
-    <string name="invalid_apk_signature">無効なAPK署名</string>
-    <string name="signature_verification_failed">署名の検証に失敗しました</string>
-    <string name="update_privacy_notice">プライバシー: 更新チェックはバージョン番号のみを確認します。個人データの収集や送信は行いません。</string>
-    <string name="download">ダウンロード</string>
-    <string name="cancel">キャンセル</string>
+    <string name="check_for_updates">ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã®ç¢ºèª</string>
+    <string name="update_checker">ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã®ç¢ºèª</string>
+    <string name="checking_for_updates">ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã‚’ç¢ºèªä¸­...</string>
+    <string name="update_available">åˆ©ç”¨å¯èƒ½ãªã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆï¼š %s</string>
+    <string name="no_update_available">åˆ©ç”¨å¯èƒ½ãªã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã¯ã‚ã‚Šã¾ã›ã‚“</string>
+    <string name="app_up_to_date">ã‚¢ãƒ—ãƒªã¯æœ€æ–°ã§ã™ï¼</string>
+    <string name="update_info">ãƒãƒ¼ã‚¸ãƒ§ãƒ³ï¼š %1$s\nã‚µã‚¤ã‚ºï¼š %2$s\nãƒªãƒªãƒ¼ã‚¹æ—¥ï¼š %3$s</string>
+    <string name="download_update">ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰</string>
+    <string name="download_confirmation">ãƒãƒ¼ã‚¸ãƒ§ãƒ³ %sã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã—ã¾ã™ã‹? WiFiæŽ¥ç¶šã§ãªã„å ´åˆã€ãƒ¢ãƒã‚¤ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’ä½¿ç”¨ã—ã¾ã™ã€‚</string>
+    <string name="downloading_update">ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ä¸­...</string>
+    <string name="downloading_update_progress">ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ä¸­... %d%%</string>
+    <string name="download_complete">ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰å®Œäº†ï¼</string>
+    <string name="install_update">ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«</string>
+    <string name="view_release_notes">ãƒªãƒªãƒ¼ã‚¹ãƒŽãƒ¼ãƒˆã‚’è¡¨ç¤º</string>
+    <string name="release_notes">ãƒªãƒªãƒ¼ã‚¹ãƒŽãƒ¼ãƒˆ</string>
+    <string name="no_release_notes">ãƒªãƒªãƒ¼ã‚¹ãƒŽãƒ¼ãƒˆã¯ã‚ã‚Šã¾ã›ã‚“</string>
+    <string name="check_again">ã‚‚ã†ä¸€åº¦ç¢ºèª</string>
+    <string name="update_check_failed">ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã®ç¢ºèªã«å¤±æ•—ã—ã¾ã—ãŸ</string>
+    <string name="download_failed">ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã«å¤±æ•—ã—ã¾ã—ãŸ</string>
+    <string name="installation_failed">ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã«å¤±æ•—ã—ã¾ã—ãŸ</string>
+    <string name="invalid_apk_signature">ç„¡åŠ¹ãªAPKç½²å</string>
+    <string name="signature_verification_failed">ç½²åã®æ¤œè¨¼ã«å¤±æ•—ã—ã¾ã—ãŸ</string>
+    <string name="update_privacy_notice">ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼: æ›´æ–°ãƒã‚§ãƒƒã‚¯ã¯ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç•ªå·ã®ã¿ã‚’ç¢ºèªã—ã¾ã™ã€‚å€‹äººãƒ‡ãƒ¼ã‚¿ã®åŽé›†ã‚„é€ä¿¡ã¯è¡Œã„ã¾ã›ã‚“ã€‚</string>
+    <string name="download">ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰</string>
+    <string name="cancel">ã‚­ãƒ£ãƒ³ã‚»ãƒ«</string>
     <string name="ok">OK</string>
     <!-- Update Settings -->
-    <string name="auto_update_settings">自動アップデートの設定</string>
-    <string name="check_for_updates_auto">アップデートの確認</string>
-    <string name="check_for_updates_auto_desc">アプリを開いたときにアップデートを自動的に確認する</string>
-    <string name="check_frequency">確認の頻度</string>
-    <string name="check_frequency_desc">アプリのアップデートの確認頻度は？</string>
-    <string name="update_daily">毎日 (推奨)</string>
-    <string name="update_weekly">毎週</string>
-    <string name="update_monthly">毎月</string>
-    <string name="update_never">しない (手動のみ)</string>
+    <string name="auto_update_settings">è‡ªå‹•ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã®è¨­å®š</string>
+    <string name="check_for_updates_auto">ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã®ç¢ºèª</string>
+    <string name="check_for_updates_auto_desc">ã‚¢ãƒ—ãƒªã‚’é–‹ã„ãŸã¨ãã«ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã‚’è‡ªå‹•çš„ã«ç¢ºèªã™ã‚‹</string>
+    <string name="check_frequency">ç¢ºèªã®é »åº¦</string>
+    <string name="check_frequency_desc">ã‚¢ãƒ—ãƒªã®ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã®ç¢ºèªé »åº¦ã¯ï¼Ÿ</string>
+    <string name="update_daily">æ¯Žæ—¥ (æŽ¨å¥¨)</string>
+    <string name="update_weekly">æ¯Žé€±</string>
+    <string name="update_monthly">æ¯Žæœˆ</string>
+    <string name="update_never">ã—ãªã„ (æ‰‹å‹•ã®ã¿)</string>
     <!-- TTS Template Strings (for improved localization) -->
     <!-- These are complete sentence templates with placeholders for proper localization -->
-    <string name="tts_template_notified_you">{app}があなたに通知しました: {content}</string>
-    <string name="tts_template_reported">{app}が報告しました: {content}</string>
-    <string name="tts_template_saying">{app}からの通知、{content}と言っています</string>
-    <string name="tts_template_alerts_you">{app}があなたに警告します: {content}</string>
-    <string name="tts_template_update_from">{app}からの更新: {content}</string>
-    <string name="tts_template_notification">{app}の通知: {content}</string>
-    <string name="tts_template_new_notification">新しい通知: {app}: {content}</string>
-    <string name="tts_template_new_from">{app}からの新着: {content}</string>
-    <string name="tts_template_said">{app}が言いました: {content}</string>
-    <string name="tts_template_updated_you">{app}があなたを更新しました: {content}</string>
-    <string name="tts_template_new_notification_from">{app}からの新しい通知: {content}と言っています</string>
-    <string name="tts_template_new_update_from">{app}からの新しい更新: {content}</string>
-    <string name="tts_template_notification_from">{app}からの通知: {content}</string>
-    <string name="tts_template_says">{app}が言います: {content}</string>
-    <string name="tts_template_private_notification">{app}からのプライベート通知を受信しました</string>
+    <string name="tts_template_notified_you">{app}ãŒã‚ãªãŸã«é€šçŸ¥ã—ã¾ã—ãŸ: {content}</string>
+    <string name="tts_template_reported">{app}ãŒå ±å‘Šã—ã¾ã—ãŸ: {content}</string>
+    <string name="tts_template_saying">{app}ã‹ã‚‰ã®é€šçŸ¥ã€{content}ã¨è¨€ã£ã¦ã„ã¾ã™</string>
+    <string name="tts_template_alerts_you">{app}ãŒã‚ãªãŸã«è­¦å‘Šã—ã¾ã™: {content}</string>
+    <string name="tts_template_update_from">{app}ã‹ã‚‰ã®æ›´æ–°: {content}</string>
+    <string name="tts_template_notification">{app}ã®é€šçŸ¥: {content}</string>
+    <string name="tts_template_new_notification">æ–°ã—ã„é€šçŸ¥: {app}: {content}</string>
+    <string name="tts_template_new_from">{app}ã‹ã‚‰ã®æ–°ç€: {content}</string>
+    <string name="tts_template_said">{app}ãŒè¨€ã„ã¾ã—ãŸ: {content}</string>
+    <string name="tts_template_updated_you">{app}ãŒã‚ãªãŸã‚’æ›´æ–°ã—ã¾ã—ãŸ: {content}</string>
+    <string name="tts_template_new_notification_from">{app}ã‹ã‚‰ã®æ–°ã—ã„é€šçŸ¥: {content}ã¨è¨€ã£ã¦ã„ã¾ã™</string>
+    <string name="tts_template_new_update_from">{app}ã‹ã‚‰ã®æ–°ã—ã„æ›´æ–°: {content}</string>
+    <string name="tts_template_notification_from">{app}ã‹ã‚‰ã®é€šçŸ¥: {content}</string>
+    <string name="tts_template_says">{app}ãŒè¨€ã„ã¾ã™: {content}</string>
+    <string name="tts_template_private_notification">{app}ã‹ã‚‰ã®ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆé€šçŸ¥ã‚’å—ä¿¡ã—ã¾ã—ãŸ</string>
     <!-- TTS Context Templates - Complete sentences for different app contexts -->
     <!-- About Page TTS -->
-    <string name="tts_about_intro">SpeakThatへようこそ！</string>
-    <string name="tts_about_description">SpeakThatは、テキスト読み上げを使用して通知を音声でアナウンスするオープンソースのAndroid通知リーダーです。ハンズフリー操作、アクセシビリティ、マルチタスク中の情報把握に最適です。</string>
-    <string name="tts_about_features_intro">主な機能には以下が含まれます:</string>
-    <string name="tts_about_features">リアルタイム通知読み取り、カスタマイズ可能な音声設定、スマート通知フィルタリング、アプリ固有の制御、メディア対応動作、通知履歴追跡、振って停止と波で停止、カスタム音声フォーマット、ダークモードとライトモードのサポート、高度なロジックとスケジュールの条件付きルール、完全なオフライン機能。</string>
-    <string name="tts_about_developer">イギリスのソロ開発者であるミッチが愛を込めて開発しました。12年以上にわたって毎日通知リーダーをテストし使用してきた経験があります。SpeakThatは、もともとDYNA Logixによって開発されたTouchless Notificationsに触発され、カスタマイズ可能な通知リーダーの遺産を継承することを目指しています。このプロジェクトは人工知能支援プログラミングによって加速されました。</string>
-    <string name="tts_about_license">このプロジェクトはオープンソースで、GPL-3.0ライセンスの下で利用可能です。GitHubでライセンスの全文とソースコードを確認できます。貢献とフィードバックを歓迎します！</string>
-    <string name="tts_about_thank_you">SpeakThatをご利用いただき、ありがとうございます！</string>
+    <string name="tts_about_intro">SpeakThatã¸ã‚ˆã†ã“ãï¼</string>
+    <string name="tts_about_description">SpeakThatã¯ã€ãƒ†ã‚­ã‚¹ãƒˆèª­ã¿ä¸Šã’ã‚’ä½¿ç”¨ã—ã¦é€šçŸ¥ã‚’éŸ³å£°ã§ã‚¢ãƒŠã‚¦ãƒ³ã‚¹ã™ã‚‹ã‚ªãƒ¼ãƒ—ãƒ³ã‚½ãƒ¼ã‚¹ã®Androidé€šçŸ¥ãƒªãƒ¼ãƒ€ãƒ¼ã§ã™ã€‚ãƒãƒ³ã‚ºãƒ•ãƒªãƒ¼æ“ä½œã€ã‚¢ã‚¯ã‚»ã‚·ãƒ“ãƒªãƒ†ã‚£ã€ãƒžãƒ«ãƒã‚¿ã‚¹ã‚¯ä¸­ã®æƒ…å ±æŠŠæ¡ã«æœ€é©ã§ã™ã€‚</string>
+    <string name="tts_about_features_intro">ä¸»ãªæ©Ÿèƒ½ã«ã¯ä»¥ä¸‹ãŒå«ã¾ã‚Œã¾ã™:</string>
+    <string name="tts_about_features">ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ é€šçŸ¥èª­ã¿å–ã‚Šã€ã‚«ã‚¹ã‚¿ãƒžã‚¤ã‚ºå¯èƒ½ãªéŸ³å£°è¨­å®šã€ã‚¹ãƒžãƒ¼ãƒˆé€šçŸ¥ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã€ã‚¢ãƒ—ãƒªå›ºæœ‰ã®åˆ¶å¾¡ã€ãƒ¡ãƒ‡ã‚£ã‚¢å¯¾å¿œå‹•ä½œã€é€šçŸ¥å±¥æ­´è¿½è·¡ã€æŒ¯ã£ã¦åœæ­¢ã¨æ³¢ã§åœæ­¢ã€ã‚«ã‚¹ã‚¿ãƒ éŸ³å£°ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆã€ãƒ€ãƒ¼ã‚¯ãƒ¢ãƒ¼ãƒ‰ã¨ãƒ©ã‚¤ãƒˆãƒ¢ãƒ¼ãƒ‰ã®ã‚µãƒãƒ¼ãƒˆã€é«˜åº¦ãªãƒ­ã‚¸ãƒƒã‚¯ã¨ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«ã®æ¡ä»¶ä»˜ããƒ«ãƒ¼ãƒ«ã€å®Œå…¨ãªã‚ªãƒ•ãƒ©ã‚¤ãƒ³æ©Ÿèƒ½ã€‚</string>
+    <string name="tts_about_developer">ã‚¤ã‚®ãƒªã‚¹ã®ã‚½ãƒ­é–‹ç™ºè€…ã§ã‚ã‚‹ãƒŸãƒƒãƒãŒæ„›ã‚’è¾¼ã‚ã¦é–‹ç™ºã—ã¾ã—ãŸã€‚12å¹´ä»¥ä¸Šã«ã‚ãŸã£ã¦æ¯Žæ—¥é€šçŸ¥ãƒªãƒ¼ãƒ€ãƒ¼ã‚’ãƒ†ã‚¹ãƒˆã—ä½¿ç”¨ã—ã¦ããŸçµŒé¨“ãŒã‚ã‚Šã¾ã™ã€‚SpeakThatã¯ã€ã‚‚ã¨ã‚‚ã¨DYNA Logixã«ã‚ˆã£ã¦é–‹ç™ºã•ã‚ŒãŸTouchless Notificationsã«è§¦ç™ºã•ã‚Œã€ã‚«ã‚¹ã‚¿ãƒžã‚¤ã‚ºå¯èƒ½ãªé€šçŸ¥ãƒªãƒ¼ãƒ€ãƒ¼ã®éºç”£ã‚’ç¶™æ‰¿ã™ã‚‹ã“ã¨ã‚’ç›®æŒ‡ã—ã¦ã„ã¾ã™ã€‚ã“ã®ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯äººå·¥çŸ¥èƒ½æ”¯æ´ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°ã«ã‚ˆã£ã¦åŠ é€Ÿã•ã‚Œã¾ã—ãŸã€‚</string>
+    <string name="tts_about_license">ã“ã®ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ã‚ªãƒ¼ãƒ—ãƒ³ã‚½ãƒ¼ã‚¹ã§ã€GPL-3.0ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®ä¸‹ã§åˆ©ç”¨å¯èƒ½ã§ã™ã€‚GitHubã§ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®å…¨æ–‡ã¨ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã‚’ç¢ºèªã§ãã¾ã™ã€‚è²¢çŒ®ã¨ãƒ•ã‚£ãƒ¼ãƒ‰ãƒãƒƒã‚¯ã‚’æ­“è¿Žã—ã¾ã™ï¼</string>
+    <string name="tts_about_thank_you">SpeakThatã‚’ã”åˆ©ç”¨ã„ãŸã ãã€ã‚ã‚ŠãŒã¨ã†ã”ã–ã„ã¾ã™ï¼</string>
     <!-- Voice Settings Test -->
-    <string name="tts_voice_test">これがこの音声設定での通知の聞こえ方です。</string>
+    <string name="tts_voice_test">ã“ã‚ŒãŒã“ã®éŸ³å£°è¨­å®šã§ã®é€šçŸ¥ã®èžã“ãˆæ–¹ã§ã™ã€‚</string>
     <!-- Onboarding TTS -->
-    <string name="tts_onboarding_language_theme">お好みの言語とテーマを選択してSpeakThatを始めましょう。</string>
-    <string name="tts_onboarding_welcome">SpeakThatへようこそ！画面を見つめずに接続を保ちましょう。お使いの電話が通知を音読するので、重要なことに集中できます。</string>
-    <string name="tts_onboarding_permission">SpeakThatは通知を音読するための許可が必要です。すべてはお使いのデバイスに保存され、何を読むかはあなたが制御します。</string>
-    <string name="tts_onboarding_privacy">あなたのプライバシーは重要です。何が音読されるかを正確に制御できます。電話を振ると、どのアナウンスも即座に停止できます。すべてはお使いのデバイスに保存されます。</string>
-    <string name="tts_onboarding_filters">基本的なプライバシーフィルターを設定して始めましょう。SpeakThatは何を読むか何を読まないかを選択できる強力なフィルタリングシステムを備えています。</string>
-    <string name="tts_onboarding_apps">通知を読んでほしくないアプリの名前を入力してください。一般的な例には、銀行アプリ、医療アプリ、デートアプリが含まれます。</string>
-    <string name="tts_onboarding_words">通知に含まれる読んでほしくない単語やフレーズを入力してください。一般的な例には、パスワード、PIN、クレジットカード、医療用語が含まれます。</string>
-    <string name="tts_onboarding_rules">状況に基づいて通知が読み上げられるタイミングを自動制御するスマートルールを設定します。例えば、ヘッドフォンが接続されている時のみ通知を読み上げる、または画面がオンの時は通知をスキップするなど。</string>
-    <string name="tts_onboarding_complete">SpeakThatは目を自由に保ちながら接続を維持するお手伝いの準備ができています！アプリ設定でいつでもフィルターを追加できます。</string>
+    <string name="tts_onboarding_language_theme">ãŠå¥½ã¿ã®è¨€èªžã¨ãƒ†ãƒ¼ãƒžã‚’é¸æŠžã—ã¦SpeakThatã‚’å§‹ã‚ã¾ã—ã‚‡ã†ã€‚</string>
+    <string name="tts_onboarding_welcome">SpeakThatã¸ã‚ˆã†ã“ãï¼ç”»é¢ã‚’è¦‹ã¤ã‚ãšã«æŽ¥ç¶šã‚’ä¿ã¡ã¾ã—ã‚‡ã†ã€‚ãŠä½¿ã„ã®é›»è©±ãŒé€šçŸ¥ã‚’éŸ³èª­ã™ã‚‹ã®ã§ã€é‡è¦ãªã“ã¨ã«é›†ä¸­ã§ãã¾ã™ã€‚</string>
+    <string name="tts_onboarding_permission">SpeakThatã¯é€šçŸ¥ã‚’éŸ³èª­ã™ã‚‹ãŸã‚ã®è¨±å¯ãŒå¿…è¦ã§ã™ã€‚ã™ã¹ã¦ã¯ãŠä½¿ã„ã®ãƒ‡ãƒã‚¤ã‚¹ã«ä¿å­˜ã•ã‚Œã€ä½•ã‚’èª­ã‚€ã‹ã¯ã‚ãªãŸãŒåˆ¶å¾¡ã—ã¾ã™ã€‚</string>
+    <string name="tts_onboarding_privacy">ã‚ãªãŸã®ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ã¯é‡è¦ã§ã™ã€‚ä½•ãŒéŸ³èª­ã•ã‚Œã‚‹ã‹ã‚’æ­£ç¢ºã«åˆ¶å¾¡ã§ãã¾ã™ã€‚é›»è©±ã‚’æŒ¯ã‚‹ã¨ã€ã©ã®ã‚¢ãƒŠã‚¦ãƒ³ã‚¹ã‚‚å³åº§ã«åœæ­¢ã§ãã¾ã™ã€‚ã™ã¹ã¦ã¯ãŠä½¿ã„ã®ãƒ‡ãƒã‚¤ã‚¹ã«ä¿å­˜ã•ã‚Œã¾ã™ã€‚</string>
+    <string name="tts_onboarding_filters">åŸºæœ¬çš„ãªãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã‚’è¨­å®šã—ã¦å§‹ã‚ã¾ã—ã‚‡ã†ã€‚SpeakThatã¯ä½•ã‚’èª­ã‚€ã‹ä½•ã‚’èª­ã¾ãªã„ã‹ã‚’é¸æŠžã§ãã‚‹å¼·åŠ›ãªãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã‚·ã‚¹ãƒ†ãƒ ã‚’å‚™ãˆã¦ã„ã¾ã™ã€‚</string>
+    <string name="tts_onboarding_apps">é€šçŸ¥ã‚’èª­ã‚“ã§ã»ã—ããªã„ã‚¢ãƒ—ãƒªã®åå‰ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚ä¸€èˆ¬çš„ãªä¾‹ã«ã¯ã€éŠ€è¡Œã‚¢ãƒ—ãƒªã€åŒ»ç™‚ã‚¢ãƒ—ãƒªã€ãƒ‡ãƒ¼ãƒˆã‚¢ãƒ—ãƒªãŒå«ã¾ã‚Œã¾ã™ã€‚</string>
+    <string name="tts_onboarding_words">é€šçŸ¥ã«å«ã¾ã‚Œã‚‹èª­ã‚“ã§ã»ã—ããªã„å˜èªžã‚„ãƒ•ãƒ¬ãƒ¼ã‚ºã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚ä¸€èˆ¬çš„ãªä¾‹ã«ã¯ã€ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã€PINã€ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰ã€åŒ»ç™‚ç”¨èªžãŒå«ã¾ã‚Œã¾ã™ã€‚</string>
+    <string name="tts_onboarding_rules">çŠ¶æ³ã«åŸºã¥ã„ã¦é€šçŸ¥ãŒèª­ã¿ä¸Šã’ã‚‰ã‚Œã‚‹ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã‚’è‡ªå‹•åˆ¶å¾¡ã™ã‚‹ã‚¹ãƒžãƒ¼ãƒˆãƒ«ãƒ¼ãƒ«ã‚’è¨­å®šã—ã¾ã™ã€‚ä¾‹ãˆã°ã€ãƒ˜ãƒƒãƒ‰ãƒ•ã‚©ãƒ³ãŒæŽ¥ç¶šã•ã‚Œã¦ã„ã‚‹æ™‚ã®ã¿é€šçŸ¥ã‚’èª­ã¿ä¸Šã’ã‚‹ã€ã¾ãŸã¯ç”»é¢ãŒã‚ªãƒ³ã®æ™‚ã¯é€šçŸ¥ã‚’ã‚¹ã‚­ãƒƒãƒ—ã™ã‚‹ãªã©ã€‚</string>
+    <string name="tts_onboarding_complete">SpeakThatã¯ç›®ã‚’è‡ªç”±ã«ä¿ã¡ãªãŒã‚‰æŽ¥ç¶šã‚’ç¶­æŒã™ã‚‹ãŠæ‰‹ä¼ã„ã®æº–å‚™ãŒã§ãã¦ã„ã¾ã™ï¼ã‚¢ãƒ—ãƒªè¨­å®šã§ã„ã¤ã§ã‚‚ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã‚’è¿½åŠ ã§ãã¾ã™ã€‚</string>
     <!-- Behavior Settings Speech Format Templates -->
-    <string name="tts_behavior_default">デフォルトのフォーマット</string>
-    <string name="tts_behavior_minimal">最小のフォーマット</string>
-    <string name="tts_behavior_formal">堅いフォーマット</string>
-    <string name="tts_behavior_casual">カジュアルなフォーマット</string>
-    <string name="tts_behavior_time_aware">時刻付きフォーマット</string>
-    <string name="tts_behavior_content_only">コンテンツのみフォーマット</string>
-    <string name="tts_behavior_app_only">アプリのみフォーマット</string>
-    <string name="tts_behavior_varied">ランダムなフォーマット</string>
-    <string name="tts_behavior_custom">カスタムフォーマット</string>
+    <string name="tts_behavior_default">ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆ</string>
+    <string name="tts_behavior_minimal">æœ€å°ã®ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆ</string>
+    <string name="tts_behavior_formal">å …ã„ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆ</string>
+    <string name="tts_behavior_casual">ã‚«ã‚¸ãƒ¥ã‚¢ãƒ«ãªãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆ</string>
+    <string name="tts_behavior_time_aware">æ™‚åˆ»ä»˜ããƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆ</string>
+    <string name="tts_behavior_content_only">ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®ã¿ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆ</string>
+    <string name="tts_behavior_app_only">ã‚¢ãƒ—ãƒªã®ã¿ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆ</string>
+    <string name="tts_behavior_varied">ãƒ©ãƒ³ãƒ€ãƒ ãªãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆ</string>
+    <string name="tts_behavior_custom">ã‚«ã‚¹ã‚¿ãƒ ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆ</string>
     <!-- Speech Format Preset Templates -->
-    <string name="tts_format_default">{app}の通知: {content}</string>
+    <string name="tts_format_default">{app}ã®é€šçŸ¥: {content}</string>
     <string name="tts_format_minimal">{app}: {content}</string>
-    <string name="tts_format_formal">{app}からの通知: {content}</string>
-    <string name="tts_format_casual">{app}が言いました: {content}</string>
+    <string name="tts_format_formal">{app}ã‹ã‚‰ã®é€šçŸ¥: {content}</string>
+    <string name="tts_format_casual">{app}ãŒè¨€ã„ã¾ã—ãŸ: {content}</string>
     <string name="tts_format_time_aware">{app} {time}: {content}</string>
     <string name="tts_format_content_only">{content}</string>
     <string name="tts_format_app_only">{app}</string>
-    <string name="tts_format_varied">ランダム</string>
-    <string name="tts_format_custom">カスタム</string>
+    <string name="tts_format_varied">ãƒ©ãƒ³ãƒ€ãƒ </string>
+    <string name="tts_format_custom">ã‚«ã‚¹ã‚¿ãƒ </string>
     <!-- Rule Builder Templates -->
-    <string name="template_selection_title">テンプレートを選択</string>
-    <string name="template_selection_description">素早く開始するために事前に設定されたルールテンプレートを選択することもできますが、ゼロからカスタムルールを作成することもできます。</string>
-    <string name="create_custom_rule">カスタムルールを作成</string>
+    <string name="template_selection_title">ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’é¸æŠž</string>
+    <string name="template_selection_description">ç´ æ—©ãé–‹å§‹ã™ã‚‹ãŸã‚ã«äº‹å‰ã«è¨­å®šã•ã‚ŒãŸãƒ«ãƒ¼ãƒ«ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’é¸æŠžã™ã‚‹ã“ã¨ã‚‚ã§ãã¾ã™ãŒã€ã‚¼ãƒ­ã‹ã‚‰ã‚«ã‚¹ã‚¿ãƒ ãƒ«ãƒ¼ãƒ«ã‚’ä½œæˆã™ã‚‹ã“ã¨ã‚‚ã§ãã¾ã™ã€‚</string>
+    <string name="create_custom_rule">ã‚«ã‚¹ã‚¿ãƒ ãƒ«ãƒ¼ãƒ«ã‚’ä½œæˆ</string>
     <!-- Template Names -->
-    <string name="template_headphones_only_name">Bluetoothヘッドフォン</string>
-    <string name="template_headphones_only_description">Bluetoothヘッドフォンを選択してください。そのデバイスに接続しているとき、通知は読み上げません。</string>
-    <string name="template_time_schedule_name">サイレントタイム</string>
-    <string name="template_time_schedule_description">SpeakThatをサイレントにしたい開始時刻と終了時刻を選択してください</string>
-    <string name="template_screen_off_name">画面オフ時のみ</string>
-    <string name="template_screen_off_description">画面がオフの場合にのみ通知を読み上げます</string>
-    <string name="template_home_network_name">自宅のWiFiのみ</string>
-    <string name="template_home_network_description">自宅のWiFiネットワークを入力してください。通知は接続時にのみ読み上げます。</string>
+    <string name="template_headphones_only_name">Bluetoothãƒ˜ãƒƒãƒ‰ãƒ•ã‚©ãƒ³</string>
+    <string name="template_headphones_only_description">Bluetoothãƒ˜ãƒƒãƒ‰ãƒ•ã‚©ãƒ³ã‚’é¸æŠžã—ã¦ãã ã•ã„ã€‚ãã®ãƒ‡ãƒã‚¤ã‚¹ã«æŽ¥ç¶šã—ã¦ã„ã‚‹ã¨ãã€é€šçŸ¥ã¯èª­ã¿ä¸Šã’ã¾ã›ã‚“ã€‚</string>
+    <string name="template_time_schedule_name">ã‚µã‚¤ãƒ¬ãƒ³ãƒˆã‚¿ã‚¤ãƒ </string>
+    <string name="template_time_schedule_description">SpeakThatã‚’ã‚µã‚¤ãƒ¬ãƒ³ãƒˆã«ã—ãŸã„é–‹å§‹æ™‚åˆ»ã¨çµ‚äº†æ™‚åˆ»ã‚’é¸æŠžã—ã¦ãã ã•ã„</string>
+    <string name="template_screen_off_name">ç”»é¢ã‚ªãƒ•æ™‚ã®ã¿</string>
+    <string name="template_screen_off_description">ç”»é¢ãŒã‚ªãƒ•ã®å ´åˆã«ã®ã¿é€šçŸ¥ã‚’èª­ã¿ä¸Šã’ã¾ã™</string>
+    <string name="template_home_network_name">è‡ªå®…ã®WiFiã®ã¿</string>
+    <string name="template_home_network_description">è‡ªå®…ã®WiFiãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚é€šçŸ¥ã¯æŽ¥ç¶šæ™‚ã«ã®ã¿èª­ã¿ä¸Šã’ã¾ã™ã€‚</string>
     <!-- Template Trigger Descriptions -->
-    <string name="template_trigger_headphones_disconnected">Bluetoothヘッドフォンが切断されているとき</string>
-    <string name="template_trigger_time_between">10:00 PM から 8:00 AM</string>
-    <string name="template_trigger_screen_on">画面がオンのとき</string>
-    <string name="template_trigger_not_home_wifi">自宅のWiFiに接続されていないとき</string>
+    <string name="template_trigger_headphones_disconnected">Bluetoothãƒ˜ãƒƒãƒ‰ãƒ•ã‚©ãƒ³ãŒåˆ‡æ–­ã•ã‚Œã¦ã„ã‚‹ã¨ã</string>
+    <string name="template_trigger_time_between">10:00 PM ã‹ã‚‰ 8:00 AM</string>
+    <string name="template_trigger_screen_on">ç”»é¢ãŒã‚ªãƒ³ã®ã¨ã</string>
+    <string name="template_trigger_not_home_wifi">è‡ªå®…ã®WiFiã«æŽ¥ç¶šã•ã‚Œã¦ã„ãªã„ã¨ã</string>
     <!-- Template Action Descriptions -->
-    <string name="template_action_skip_notification">通知を読まない</string>
+    <string name="template_action_skip_notification">é€šçŸ¥ã‚’èª­ã¾ãªã„</string>
     <!-- Rule Natural Language Templates -->
-    <string name="rule_format_when_trigger_will_action">%1$sのとき、%2$sは%3$s</string>
-    <string name="rule_format_when_trigger_will_action_unless_exception">%1$sのとき、  %4$sでなければ%2$sは%3$s</string>
-    <string name="rule_format_when_trigger_will_action_unless_exceptions">%1$sのとき、  %4$sでなければ%2$sは%3$s</string>
+    <string name="rule_format_when_trigger_will_action">%1$sã®ã¨ãã€%2$sã¯%3$s</string>
+    <string name="rule_format_when_trigger_will_action_unless_exception">%1$sã®ã¨ãã€  %4$sã§ãªã‘ã‚Œã°%2$sã¯%3$s</string>
+    <string name="rule_format_when_trigger_will_action_unless_exceptions">%1$sã®ã¨ãã€  %4$sã§ãªã‘ã‚Œã°%2$sã¯%3$s</string>
     <!-- Rule Component Descriptions -->
-    <string name="rule_trigger_bluetooth_connected">Bluetoothデバイスが接続されている</string>
-    <string name="rule_trigger_bluetooth_disconnected">Bluetoothデバイスが切断されている</string>
-    <string name="rule_trigger_screen_on">画面がオン</string>
-    <string name="rule_trigger_screen_off">画面がオフ</string>
-    <string name="rule_trigger_time_between">時間が%1$sから%2$sまでのとき</string>
-    <string name="rule_trigger_wifi_connected">%1$s に接続</string>
-    <string name="rule_trigger_wifi_disconnected">%1$s に接続していない</string>
-    <string name="rule_trigger_multiple">複数の条件を満たしています</string>
-    <string name="rule_action_skip_notification">通知の読み上げをスキップ</string>
-    <string name="rule_action_enable_app_filter">%1$sのアプリフィルタを有効にする</string>
-    <string name="rule_action_disable_app_filter">%1$s のアプリフィルタを無効にする</string>
-    <string name="rule_action_change_voice_settings">音声の設定を変更</string>
-    <string name="rule_action_multiple">複数のアクションを実行</string>
-    <string name="rule_exception_bluetooth_connected">Bluetoothデバイスが接続されている</string>
-    <string name="rule_exception_bluetooth_disconnected">Bluetoothデバイスが切断されている</string>
+    <string name="rule_trigger_bluetooth_connected">Bluetoothãƒ‡ãƒã‚¤ã‚¹ãŒæŽ¥ç¶šã•ã‚Œã¦ã„ã‚‹</string>
+    <string name="rule_trigger_bluetooth_disconnected">Bluetoothãƒ‡ãƒã‚¤ã‚¹ãŒåˆ‡æ–­ã•ã‚Œã¦ã„ã‚‹</string>
+    <string name="rule_trigger_screen_on">ç”»é¢ãŒã‚ªãƒ³</string>
+    <string name="rule_trigger_screen_off">ç”»é¢ãŒã‚ªãƒ•</string>
+    <string name="rule_trigger_time_between">æ™‚é–“ãŒ%1$sã‹ã‚‰%2$sã¾ã§ã®ã¨ã</string>
+    <string name="rule_trigger_wifi_connected">%1$s ã«æŽ¥ç¶š</string>
+    <string name="rule_trigger_wifi_disconnected">%1$s ã«æŽ¥ç¶šã—ã¦ã„ãªã„</string>
+    <string name="rule_trigger_multiple">è¤‡æ•°ã®æ¡ä»¶ã‚’æº€ãŸã—ã¦ã„ã¾ã™</string>
+    <string name="rule_action_skip_notification">é€šçŸ¥ã®èª­ã¿ä¸Šã’ã‚’ã‚¹ã‚­ãƒƒãƒ—</string>
+    <string name="rule_action_enable_app_filter">%1$sã®ã‚¢ãƒ—ãƒªãƒ•ã‚£ãƒ«ã‚¿ã‚’æœ‰åŠ¹ã«ã™ã‚‹</string>
+    <string name="rule_action_disable_app_filter">%1$s ã®ã‚¢ãƒ—ãƒªãƒ•ã‚£ãƒ«ã‚¿ã‚’ç„¡åŠ¹ã«ã™ã‚‹</string>
+    <string name="rule_action_change_voice_settings">éŸ³å£°ã®è¨­å®šã‚’å¤‰æ›´</string>
+    <string name="rule_action_multiple">è¤‡æ•°ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’å®Ÿè¡Œ</string>
+    <string name="rule_exception_bluetooth_connected">Bluetoothãƒ‡ãƒã‚¤ã‚¹ãŒæŽ¥ç¶šã•ã‚Œã¦ã„ã‚‹</string>
+    <string name="rule_exception_bluetooth_disconnected">Bluetoothãƒ‡ãƒã‚¤ã‚¹ãŒåˆ‡æ–­ã•ã‚Œã¦ã„ã‚‹</string>
     <string name="rule_exception_screen_on">screen is on</string>
     <string name="rule_exception_screen_off">screen is off</string>
     <string name="rule_exception_time_between">time is between %1$s and %2$s</string>
@@ -325,222 +325,222 @@
     <string name="rule_logic_separator">, </string>
     <string name="rule_logic_final_separator">, and </string>
     <!-- Critical Hardcoded Strings - Activity Titles -->
-    <string name="title_behavior_settings">動作設定</string>
-    <string name="title_general_settings">一般設定</string>
-    <string name="title_voice_settings">音声設定</string>
-    <string name="title_filter_settings">フィルタ設定</string>
-    <string name="title_test_settings">設定のテスト</string>
-    <string name="title_notification_history">通知履歴</string>
-    <string name="title_bluetooth_devices">Bluetooth端末</string>
+    <string name="title_behavior_settings">å‹•ä½œè¨­å®š</string>
+    <string name="title_general_settings">ä¸€èˆ¬è¨­å®š</string>
+    <string name="title_voice_settings">éŸ³å£°è¨­å®š</string>
+    <string name="title_filter_settings">ãƒ•ã‚£ãƒ«ã‚¿è¨­å®š</string>
+    <string name="title_test_settings">è¨­å®šã®ãƒ†ã‚¹ãƒˆ</string>
+    <string name="title_notification_history">é€šçŸ¥å±¥æ­´</string>
+    <string name="title_bluetooth_devices">Bluetoothç«¯æœ«</string>
     <!-- Critical Hardcoded Strings - Dialog Titles -->
-    <string name="dialog_title_theme_changed">テーマを変更しました</string>
-    <string name="dialog_title_export_successful">正常にエクスポートしました</string>
-    <string name="dialog_title_export_failed">エクスポートに失敗しました</string>
-    <string name="dialog_title_import_full_config">全ての設定をインポート</string>
-    <string name="dialog_title_import_successful">正常にインスポートしました</string>
-    <string name="dialog_title_import_failed">インポートに失敗しました</string>
-    <string name="dialog_title_clear_all_data">全てのデータを消去</string>
-    <string name="dialog_title_data_cleared">データを消去しました</string>
-    <string name="dialog_title_clear_failed">消去に失敗しました</string>
-    <string name="dialog_title_advanced_voice_options">高度な音声オプション</string>
-    <string name="dialog_title_audio_settings_help">音声設定のヘルプ</string>
-    <string name="dialog_title_advanced_voice_information">高度な音声情報</string>
-    <string name="dialog_title_format_test_results">フォーマットのテスト結果</string>
-    <string name="dialog_title_delay_before_readout">読み上げ前の遅延</string>
-    <string name="dialog_title_custom_app_names">カスタムアプリ名</string>
-    <string name="dialog_title_notification_cooldown">通知のクールダウン時間</string>
-    <string name="dialog_title_speech_formats_guide">🗣️ 音声フォーマット - 完全ガイド</string>
-    <string name="dialog_title_honour_do_not_disturb">おやすみモードに配慮</string>
-    <string name="dialog_title_honour_audio_mode">マナー・サイレントに配慮</string>
-    <string name="dialog_title_select_bluetooth_device">Bluetoothデバイスを選択</string>
-    <string name="dialog_title_remove_device">デバイスを削除</string>
-    <string name="dialog_title_error">エラー</string>
-    <string name="dialog_title_bluetooth_not_available">Bluetoothが利用できません</string>
-    <string name="dialog_title_bluetooth_disabled">Bluetoothは無効です</string>
-    <string name="dialog_title_no_devices_found">デバイスが見つかりません</string>
-    <string name="dialog_title_select_bluetooth_devices">Bluetoothデバイスを選択</string>
-    <string name="dialog_title_wifi_disabled">WiFiが無効です</string>
-    <string name="dialog_title_wifi_networks">WiFiネットワーク</string>
-    <string name="dialog_title_no_networks_found">ネットワークが見つかりません</string>
-    <string name="dialog_title_select_wifi_networks">WiFiネットワークを選択</string>
-    <string name="dialog_title_enter_wifi_network">WiFiネットワークを入力</string>
-    <string name="dialog_title_set_quiet_hours">サイレントタイムを設定</string>
-    <string name="dialog_title_rule_created">ルールを作成しました！</string>
-    <string name="dialog_title_experimental_feature">実験的な機能</string>
-    <string name="dialog_title_delete_rule">ルールを削除</string>
-    <string name="dialog_title_invalid_rule_name">無効なルール名</string>
-    <string name="dialog_title_invalid_rule">無効なルール</string>
-    <string name="dialog_title_add_trigger">トリガーを追加</string>
-    <string name="dialog_title_add_action">アクションを追加</string>
-    <string name="dialog_title_add_exception">例外を追加</string>
-    <string name="dialog_title_remove_trigger">トリガーを削除</string>
-    <string name="dialog_title_remove_action">アクションを削除</string>
-    <string name="dialog_title_remove_exception">例外を削除</string>
-    <string name="dialog_title_coming_soon">準備中</string>
-    <string name="dialog_title_select_app">アプリを選択</string>
+    <string name="dialog_title_theme_changed">ãƒ†ãƒ¼ãƒžã‚’å¤‰æ›´ã—ã¾ã—ãŸ</string>
+    <string name="dialog_title_export_successful">æ­£å¸¸ã«ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã—ã¾ã—ãŸ</string>
+    <string name="dialog_title_export_failed">ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã«å¤±æ•—ã—ã¾ã—ãŸ</string>
+    <string name="dialog_title_import_full_config">å…¨ã¦ã®è¨­å®šã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆ</string>
+    <string name="dialog_title_import_successful">æ­£å¸¸ã«ã‚¤ãƒ³ã‚¹ãƒãƒ¼ãƒˆã—ã¾ã—ãŸ</string>
+    <string name="dialog_title_import_failed">ã‚¤ãƒ³ãƒãƒ¼ãƒˆã«å¤±æ•—ã—ã¾ã—ãŸ</string>
+    <string name="dialog_title_clear_all_data">å…¨ã¦ã®ãƒ‡ãƒ¼ã‚¿ã‚’æ¶ˆåŽ»</string>
+    <string name="dialog_title_data_cleared">ãƒ‡ãƒ¼ã‚¿ã‚’æ¶ˆåŽ»ã—ã¾ã—ãŸ</string>
+    <string name="dialog_title_clear_failed">æ¶ˆåŽ»ã«å¤±æ•—ã—ã¾ã—ãŸ</string>
+    <string name="dialog_title_advanced_voice_options">é«˜åº¦ãªéŸ³å£°ã‚ªãƒ—ã‚·ãƒ§ãƒ³</string>
+    <string name="dialog_title_audio_settings_help">éŸ³å£°è¨­å®šã®ãƒ˜ãƒ«ãƒ—</string>
+    <string name="dialog_title_advanced_voice_information">é«˜åº¦ãªéŸ³å£°æƒ…å ±</string>
+    <string name="dialog_title_format_test_results">ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆã®ãƒ†ã‚¹ãƒˆçµæžœ</string>
+    <string name="dialog_title_delay_before_readout">èª­ã¿ä¸Šã’å‰ã®é…å»¶</string>
+    <string name="dialog_title_custom_app_names">ã‚«ã‚¹ã‚¿ãƒ ã‚¢ãƒ—ãƒªå</string>
+    <string name="dialog_title_notification_cooldown">é€šçŸ¥ã®ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³æ™‚é–“</string>
+    <string name="dialog_title_speech_formats_guide">ðŸ—£ï¸ éŸ³å£°ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆ - å®Œå…¨ã‚¬ã‚¤ãƒ‰</string>
+    <string name="dialog_title_honour_do_not_disturb">ãŠã‚„ã™ã¿ãƒ¢ãƒ¼ãƒ‰ã«é…æ…®</string>
+    <string name="dialog_title_honour_audio_mode">ãƒžãƒŠãƒ¼ãƒ»ã‚µã‚¤ãƒ¬ãƒ³ãƒˆã«é…æ…®</string>
+    <string name="dialog_title_select_bluetooth_device">Bluetoothãƒ‡ãƒã‚¤ã‚¹ã‚’é¸æŠž</string>
+    <string name="dialog_title_remove_device">ãƒ‡ãƒã‚¤ã‚¹ã‚’å‰Šé™¤</string>
+    <string name="dialog_title_error">ã‚¨ãƒ©ãƒ¼</string>
+    <string name="dialog_title_bluetooth_not_available">BluetoothãŒåˆ©ç”¨ã§ãã¾ã›ã‚“</string>
+    <string name="dialog_title_bluetooth_disabled">Bluetoothã¯ç„¡åŠ¹ã§ã™</string>
+    <string name="dialog_title_no_devices_found">ãƒ‡ãƒã‚¤ã‚¹ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“</string>
+    <string name="dialog_title_select_bluetooth_devices">Bluetoothãƒ‡ãƒã‚¤ã‚¹ã‚’é¸æŠž</string>
+    <string name="dialog_title_wifi_disabled">WiFiãŒç„¡åŠ¹ã§ã™</string>
+    <string name="dialog_title_wifi_networks">WiFiãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯</string>
+    <string name="dialog_title_no_networks_found">ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“</string>
+    <string name="dialog_title_select_wifi_networks">WiFiãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚’é¸æŠž</string>
+    <string name="dialog_title_enter_wifi_network">WiFiãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚’å…¥åŠ›</string>
+    <string name="dialog_title_set_quiet_hours">ã‚µã‚¤ãƒ¬ãƒ³ãƒˆã‚¿ã‚¤ãƒ ã‚’è¨­å®š</string>
+    <string name="dialog_title_rule_created">ãƒ«ãƒ¼ãƒ«ã‚’ä½œæˆã—ã¾ã—ãŸï¼</string>
+    <string name="dialog_title_experimental_feature">å®Ÿé¨“çš„ãªæ©Ÿèƒ½</string>
+    <string name="dialog_title_delete_rule">ãƒ«ãƒ¼ãƒ«ã‚’å‰Šé™¤</string>
+    <string name="dialog_title_invalid_rule_name">ç„¡åŠ¹ãªãƒ«ãƒ¼ãƒ«å</string>
+    <string name="dialog_title_invalid_rule">ç„¡åŠ¹ãªãƒ«ãƒ¼ãƒ«</string>
+    <string name="dialog_title_add_trigger">ãƒˆãƒªã‚¬ãƒ¼ã‚’è¿½åŠ </string>
+    <string name="dialog_title_add_action">ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’è¿½åŠ </string>
+    <string name="dialog_title_add_exception">ä¾‹å¤–ã‚’è¿½åŠ </string>
+    <string name="dialog_title_remove_trigger">ãƒˆãƒªã‚¬ãƒ¼ã‚’å‰Šé™¤</string>
+    <string name="dialog_title_remove_action">ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’å‰Šé™¤</string>
+    <string name="dialog_title_remove_exception">ä¾‹å¤–ã‚’å‰Šé™¤</string>
+    <string name="dialog_title_coming_soon">æº–å‚™ä¸­</string>
+    <string name="dialog_title_select_app">ã‚¢ãƒ—ãƒªã‚’é¸æŠž</string>
     <string name="dialog_title_invalid_app_package">Invalid App Package</string>
     <string name="dialog_title_edit_rule">Edit Rule</string>
     <string name="dialog_title_create_rule">Create Rule</string>
     
     <!-- Filter Settings Dialog Titles -->
-    <string name="dialog_title_edit_filtered_media_app">フィルターされたメディアアプリを編集</string>
-    <string name="dialog_title_edit_media_exception_app">メディア例外アプリを編集</string>
-    <string name="dialog_title_edit_media_important_keyword">メディア重要キーワードを編集</string>
-    <string name="dialog_title_edit_app_filter">アプリフィルターを編集</string>
-    <string name="dialog_title_edit_word_filter">単語フィルターを編集</string>
-    <string name="dialog_title_edit_word_swap">単語置換を編集</string>
-    <string name="dialog_title_import_filter_configuration">フィルター設定をインポート</string>
-    <string name="dialog_title_app_filter_help">📱 アプリフィルターヘルプ</string>
-    <string name="dialog_title_smart_media_filter">スマートメディア通知フィルター</string>
+    <string name="dialog_title_edit_filtered_media_app">ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã•ã‚ŒãŸãƒ¡ãƒ‡ã‚£ã‚¢ã‚¢ãƒ—ãƒªã‚’ç·¨é›†</string>
+    <string name="dialog_title_edit_media_exception_app">ãƒ¡ãƒ‡ã‚£ã‚¢ä¾‹å¤–ã‚¢ãƒ—ãƒªã‚’ç·¨é›†</string>
+    <string name="dialog_title_edit_media_important_keyword">ãƒ¡ãƒ‡ã‚£ã‚¢é‡è¦ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã‚’ç·¨é›†</string>
+    <string name="dialog_title_edit_app_filter">ã‚¢ãƒ—ãƒªãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã‚’ç·¨é›†</string>
+    <string name="dialog_title_edit_word_filter">å˜èªžãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã‚’ç·¨é›†</string>
+    <string name="dialog_title_edit_word_swap">å˜èªžç½®æ›ã‚’ç·¨é›†</string>
+    <string name="dialog_title_import_filter_configuration">ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼è¨­å®šã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆ</string>
+    <string name="dialog_title_app_filter_help">ðŸ“± ã‚¢ãƒ—ãƒªãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ãƒ˜ãƒ«ãƒ—</string>
+    <string name="dialog_title_smart_media_filter">ã‚¹ãƒžãƒ¼ãƒˆãƒ¡ãƒ‡ã‚£ã‚¢é€šçŸ¥ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼</string>
     
     <!-- Button Labels -->
-    <string name="button_save">保存</string>
-    <string name="button_cancel">キャンセル</string>
+    <string name="button_save">ä¿å­˜</string>
+    <string name="button_cancel">ã‚­ãƒ£ãƒ³ã‚»ãƒ«</string>
     <string name="button_ok">OK</string>
-    <string name="button_close">閉じる</string>
-    <string name="button_clear">クリア</string>
-    <string name="button_export_crash_logs">クラッシュログをエクスポート</string>
-    <string name="button_clear_crash_logs">クラッシュログをクリア</string>
-    <string name="button_force_test_crash">テストクラッシュを強制実行</string>
-    <string name="button_clear_analytics">分析データをクリア</string>
-    <string name="button_export_report">レポートをエクスポート</string>
-    <string name="button_reset_cache">キャッシュをリセット</string>
-    <string name="button_re_detect">再検出</string>
+    <string name="button_close">é–‰ã˜ã‚‹</string>
+    <string name="button_clear">ã‚¯ãƒªã‚¢</string>
+    <string name="button_export_crash_logs">ã‚¯ãƒ©ãƒƒã‚·ãƒ¥ãƒ­ã‚°ã‚’ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ</string>
+    <string name="button_clear_crash_logs">ã‚¯ãƒ©ãƒƒã‚·ãƒ¥ãƒ­ã‚°ã‚’ã‚¯ãƒªã‚¢</string>
+    <string name="button_force_test_crash">ãƒ†ã‚¹ãƒˆã‚¯ãƒ©ãƒƒã‚·ãƒ¥ã‚’å¼·åˆ¶å®Ÿè¡Œ</string>
+    <string name="button_clear_analytics">åˆ†æžãƒ‡ãƒ¼ã‚¿ã‚’ã‚¯ãƒªã‚¢</string>
+    <string name="button_export_report">ãƒ¬ãƒãƒ¼ãƒˆã‚’ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ</string>
+    <string name="button_reset_cache">ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’ãƒªã‚»ãƒƒãƒˆ</string>
+    <string name="button_re_detect">å†æ¤œå‡º</string>
     
     <!-- Layout Section Titles -->
-    <string name="section_notification_behavior">通知の動作</string>
-    <string name="section_media_behavior">メディアの動作</string>
-    <string name="recommendation_smart_mode">ほとんどのユーザーにはこれをお勧めします: スマートモード</string>
-    <string name="recommendation_lower_audio">ほとんどのユーザーにはこれをお勧めします: 音量を下げる</string>
+    <string name="section_notification_behavior">é€šçŸ¥ã®å‹•ä½œ</string>
+    <string name="section_media_behavior">ãƒ¡ãƒ‡ã‚£ã‚¢ã®å‹•ä½œ</string>
+    <string name="recommendation_smart_mode">ã»ã¨ã‚“ã©ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ã«ã¯ã“ã‚Œã‚’ãŠå‹§ã‚ã—ã¾ã™: ã‚¹ãƒžãƒ¼ãƒˆãƒ¢ãƒ¼ãƒ‰</string>
+    <string name="recommendation_lower_audio">ã»ã¨ã‚“ã©ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ã«ã¯ã“ã‚Œã‚’ãŠå‹§ã‚ã—ã¾ã™: éŸ³é‡ã‚’ä¸‹ã’ã‚‹</string>
     
     <!-- Behavior Settings Strings -->
-    <string name="behavior_notification_description">通知が既に読み上げられている時の処理方法を制御します</string>
-    <string name="behavior_media_description">音楽や動画の再生中に通知が来た時の処理方法を制御します</string>
-    <string name="behavior_interrupt_mode">割り込み（現在の読み上げを停止し、新しい通知をすぐに読む）</string>
-    <string name="behavior_queue_mode">キュー（現在の読み上げを完了してから、新しい通知を読む）</string>
-    <string name="behavior_skip_mode">スキップ（読み上げ中は新しい通知を無視する）</string>
-    <string name="behavior_smart_mode">スマート（優先アプリは割り込み、その他はキュー）</string>
-    <string name="behavior_priority_apps">⚡ 優先アプリ</string>
-    <string name="behavior_priority_apps_description">これらのアプリは現在の通知を中断します。その他のアプリはキューに入ります。</string>
-    <string name="behavior_media_ignore">無視 - 通常通り続行（現在の動作）</string>
-    <string name="behavior_media_pause">一時停止 - 読み上げ中はメディアを一時停止</string>
-    <string name="behavior_media_lower">音量を下げる - メディアの音量を一時的に下げる</string>
-    <string name="behavior_media_silence">無音 - メディア再生中は読み上げしない</string>
-    <string name="behavior_pause_warning">⚠️ 一時停止モードは、システムの制限により一部のデバイスで動作しない場合があります。</string>
-    <string name="behavior_ducking_volume">🔉 ダッキング音量</string>
-    <string name="behavior_ducking_description">通知中にメディアをどの程度静かにするかを設定</string>
-    <string name="behavior_ducking_warning">⚠️ 一部のデバイスでは、メディア音量を下げると通知音声も下がる場合があります。通知が聞き取りにくい場合は、一時停止モードを試すか、TTS設定を調整してください。</string>
-    <string name="behavior_ducking_tip">ヒント: 値を下げると通知中のメディアが静かになります</string>
-    <string name="behavior_calls_title">📞 電話を尊重</string>
-    <string name="behavior_calls_description">電話中は通知の読み上げを防ぎます</string>
-    <string name="behavior_calls_recommendation">ほとんどのユーザーにお勧め: この機能を有効にする</string>
-    <string name="behavior_calls_checkbox">電話を尊重</string>
-    <string name="behavior_calls_benefits">✨ メリット:\n\n• 重要な通話中の中断を防ぐ\n• 会話のプライバシーを尊重\n• すべてのタイプの電話で動作\n• 通話状態の自動検出</string>
-    <string name="behavior_audio_title">🔇 オーディオモードを尊重</string>
-    <string name="behavior_audio_description">デバイスがサウンドモードの時のみ通知を読み上げ（サイレントやバイブレートモードでは読み上げしない）</string>
-    <string name="behavior_audio_recommendation">推奨: この機能を有効にする</string>
-    <string name="behavior_audio_checkbox">オーディオモードを尊重（サウンドのみ）</string>
-    <string name="behavior_audio_benefits">✨ メリット:\n\n• 電話がミュートの時の不要な音声を防ぐ\n• デバイスのオーディオ設定を尊重\n• サイレントとバイブレートモードで動作\n• 聞こえる時のみ通知を再生</string>
+    <string name="behavior_notification_description">é€šçŸ¥ãŒæ—¢ã«èª­ã¿ä¸Šã’ã‚‰ã‚Œã¦ã„ã‚‹æ™‚ã®å‡¦ç†æ–¹æ³•ã‚’åˆ¶å¾¡ã—ã¾ã™</string>
+    <string name="behavior_media_description">éŸ³æ¥½ã‚„å‹•ç”»ã®å†ç”Ÿä¸­ã«é€šçŸ¥ãŒæ¥ãŸæ™‚ã®å‡¦ç†æ–¹æ³•ã‚’åˆ¶å¾¡ã—ã¾ã™</string>
+    <string name="behavior_interrupt_mode">å‰²ã‚Šè¾¼ã¿ï¼ˆç¾åœ¨ã®èª­ã¿ä¸Šã’ã‚’åœæ­¢ã—ã€æ–°ã—ã„é€šçŸ¥ã‚’ã™ãã«èª­ã‚€ï¼‰</string>
+    <string name="behavior_queue_mode">ã‚­ãƒ¥ãƒ¼ï¼ˆç¾åœ¨ã®èª­ã¿ä¸Šã’ã‚’å®Œäº†ã—ã¦ã‹ã‚‰ã€æ–°ã—ã„é€šçŸ¥ã‚’èª­ã‚€ï¼‰</string>
+    <string name="behavior_skip_mode">ã‚¹ã‚­ãƒƒãƒ—ï¼ˆèª­ã¿ä¸Šã’ä¸­ã¯æ–°ã—ã„é€šçŸ¥ã‚’ç„¡è¦–ã™ã‚‹ï¼‰</string>
+    <string name="behavior_smart_mode">ã‚¹ãƒžãƒ¼ãƒˆï¼ˆå„ªå…ˆã‚¢ãƒ—ãƒªã¯å‰²ã‚Šè¾¼ã¿ã€ãã®ä»–ã¯ã‚­ãƒ¥ãƒ¼ï¼‰</string>
+    <string name="behavior_priority_apps">âš¡ å„ªå…ˆã‚¢ãƒ—ãƒª</string>
+    <string name="behavior_priority_apps_description">ã“ã‚Œã‚‰ã®ã‚¢ãƒ—ãƒªã¯ç¾åœ¨ã®é€šçŸ¥ã‚’ä¸­æ–­ã—ã¾ã™ã€‚ãã®ä»–ã®ã‚¢ãƒ—ãƒªã¯ã‚­ãƒ¥ãƒ¼ã«å…¥ã‚Šã¾ã™ã€‚</string>
+    <string name="behavior_media_ignore">ç„¡è¦– - é€šå¸¸é€šã‚Šç¶šè¡Œï¼ˆç¾åœ¨ã®å‹•ä½œï¼‰</string>
+    <string name="behavior_media_pause">ä¸€æ™‚åœæ­¢ - èª­ã¿ä¸Šã’ä¸­ã¯ãƒ¡ãƒ‡ã‚£ã‚¢ã‚’ä¸€æ™‚åœæ­¢</string>
+    <string name="behavior_media_lower">éŸ³é‡ã‚’ä¸‹ã’ã‚‹ - ãƒ¡ãƒ‡ã‚£ã‚¢ã®éŸ³é‡ã‚’ä¸€æ™‚çš„ã«ä¸‹ã’ã‚‹</string>
+    <string name="behavior_media_silence">ç„¡éŸ³ - ãƒ¡ãƒ‡ã‚£ã‚¢å†ç”Ÿä¸­ã¯èª­ã¿ä¸Šã’ã—ãªã„</string>
+    <string name="behavior_pause_warning">âš ï¸ ä¸€æ™‚åœæ­¢ãƒ¢ãƒ¼ãƒ‰ã¯ã€ã‚·ã‚¹ãƒ†ãƒ ã®åˆ¶é™ã«ã‚ˆã‚Šä¸€éƒ¨ã®ãƒ‡ãƒã‚¤ã‚¹ã§å‹•ä½œã—ãªã„å ´åˆãŒã‚ã‚Šã¾ã™ã€‚</string>
+    <string name="behavior_ducking_volume">ðŸ”‰ ãƒ€ãƒƒã‚­ãƒ³ã‚°éŸ³é‡</string>
+    <string name="behavior_ducking_description">é€šçŸ¥ä¸­ã«ãƒ¡ãƒ‡ã‚£ã‚¢ã‚’ã©ã®ç¨‹åº¦é™ã‹ã«ã™ã‚‹ã‹ã‚’è¨­å®š</string>
+    <string name="behavior_ducking_warning">âš ï¸ ä¸€éƒ¨ã®ãƒ‡ãƒã‚¤ã‚¹ã§ã¯ã€ãƒ¡ãƒ‡ã‚£ã‚¢éŸ³é‡ã‚’ä¸‹ã’ã‚‹ã¨é€šçŸ¥éŸ³å£°ã‚‚ä¸‹ãŒã‚‹å ´åˆãŒã‚ã‚Šã¾ã™ã€‚é€šçŸ¥ãŒèžãå–ã‚Šã«ãã„å ´åˆã¯ã€ä¸€æ™‚åœæ­¢ãƒ¢ãƒ¼ãƒ‰ã‚’è©¦ã™ã‹ã€TTSè¨­å®šã‚’èª¿æ•´ã—ã¦ãã ã•ã„ã€‚</string>
+    <string name="behavior_ducking_tip">ãƒ’ãƒ³ãƒˆ: å€¤ã‚’ä¸‹ã’ã‚‹ã¨é€šçŸ¥ä¸­ã®ãƒ¡ãƒ‡ã‚£ã‚¢ãŒé™ã‹ã«ãªã‚Šã¾ã™</string>
+    <string name="behavior_calls_title">ðŸ“ž é›»è©±ã‚’å°Šé‡</string>
+    <string name="behavior_calls_description">é›»è©±ä¸­ã¯é€šçŸ¥ã®èª­ã¿ä¸Šã’ã‚’é˜²ãŽã¾ã™</string>
+    <string name="behavior_calls_recommendation">ã»ã¨ã‚“ã©ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ã«ãŠå‹§ã‚: ã“ã®æ©Ÿèƒ½ã‚’æœ‰åŠ¹ã«ã™ã‚‹</string>
+    <string name="behavior_calls_checkbox">é›»è©±ã‚’å°Šé‡</string>
+    <string name="behavior_calls_benefits">âœ¨ ãƒ¡ãƒªãƒƒãƒˆ:\n\nâ€¢ é‡è¦ãªé€šè©±ä¸­ã®ä¸­æ–­ã‚’é˜²ã\nâ€¢ ä¼šè©±ã®ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ã‚’å°Šé‡\nâ€¢ ã™ã¹ã¦ã®ã‚¿ã‚¤ãƒ—ã®é›»è©±ã§å‹•ä½œ\nâ€¢ é€šè©±çŠ¶æ…‹ã®è‡ªå‹•æ¤œå‡º</string>
+    <string name="behavior_audio_title">ðŸ”‡ ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ¢ãƒ¼ãƒ‰ã‚’å°Šé‡</string>
+    <string name="behavior_audio_description">ãƒ‡ãƒã‚¤ã‚¹ãŒã‚µã‚¦ãƒ³ãƒ‰ãƒ¢ãƒ¼ãƒ‰ã®æ™‚ã®ã¿é€šçŸ¥ã‚’èª­ã¿ä¸Šã’ï¼ˆã‚µã‚¤ãƒ¬ãƒ³ãƒˆã‚„ãƒã‚¤ãƒ–ãƒ¬ãƒ¼ãƒˆãƒ¢ãƒ¼ãƒ‰ã§ã¯èª­ã¿ä¸Šã’ã—ãªã„ï¼‰</string>
+    <string name="behavior_audio_recommendation">æŽ¨å¥¨: ã“ã®æ©Ÿèƒ½ã‚’æœ‰åŠ¹ã«ã™ã‚‹</string>
+    <string name="behavior_audio_checkbox">ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ¢ãƒ¼ãƒ‰ã‚’å°Šé‡ï¼ˆã‚µã‚¦ãƒ³ãƒ‰ã®ã¿ï¼‰</string>
+    <string name="behavior_audio_benefits">âœ¨ ãƒ¡ãƒªãƒƒãƒˆ:\n\nâ€¢ é›»è©±ãŒãƒŸãƒ¥ãƒ¼ãƒˆã®æ™‚ã®ä¸è¦ãªéŸ³å£°ã‚’é˜²ã\nâ€¢ ãƒ‡ãƒã‚¤ã‚¹ã®ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªè¨­å®šã‚’å°Šé‡\nâ€¢ ã‚µã‚¤ãƒ¬ãƒ³ãƒˆã¨ãƒã‚¤ãƒ–ãƒ¬ãƒ¼ãƒˆãƒ¢ãƒ¼ãƒ‰ã§å‹•ä½œ\nâ€¢ èžã“ãˆã‚‹æ™‚ã®ã¿é€šçŸ¥ã‚’å†ç”Ÿ</string>
 
 
-    <string name="behavior_shake_current">現在のシェイク: 0.0</string>
-    <string name="behavior_shake_threshold">閾値: 12.0</string>
+    <string name="behavior_shake_current">ç¾åœ¨ã®ã‚·ã‚§ã‚¤ã‚¯: 0.0</string>
+    <string name="behavior_shake_threshold">é–¾å€¤: 12.0</string>
 
 
-    <string name="behavior_wave_threshold">近接閾値</string>
+    <string name="behavior_wave_threshold">è¿‘æŽ¥é–¾å€¤</string>
 
-    <string name="behavior_wave_pocket">ポケットモード</string>
-    <string name="behavior_wave_pocket_description">センサーが既に覆われている時（ポケットの中など）は読み上げを続行しますが、読み上げ開始後に覆った場合は停止します</string>
-    <string name="behavior_wave_pocket_checkbox">センサーが覆われている時も読み上げを許可</string>
-    <string name="behavior_custom_apps_title">📱 カスタムアプリ名</string>
-    <string name="behavior_custom_apps_description">通知でのアプリ名の読み上げ方をカスタマイズ</string>
-    <string name="behavior_custom_apps_example">例: Xアプリを「Twitter」として読み上げ</string>
-    <string name="behavior_custom_apps_add">カスタムアプリ名を追加</string>
-    <string name="behavior_delay_title">読み上げ前の遅延</string>
-    <string name="behavior_delay_description">SpeakThatが通知の読み上げを開始する前に短い遅延を追加</string>
-    <string name="behavior_delay_recommendation">ほとんどのユーザーにお勧め: 2秒</string>
-    <string name="behavior_delay_none">なし - すぐに開始</string>
-    <string name="behavior_delay_1s">1秒 - 短い一時停止</string>
-    <string name="behavior_delay_2s">2秒 - 推奨</string>
-    <string name="behavior_delay_3s">3秒 - 反応する時間を追加</string>
-    <string name="behavior_delay_benefits">✨ メリット:\n\n• 通知音との重複を回避\n• シェイクでキャンセルする時間を提供\n• 静かな環境での突然感を軽減\n• 会議や公共の場所に最適</string>
-    <string name="behavior_cooldown_title">通知クールダウン</string>
-    <string name="behavior_cooldown_description">指定した時間内にアプリが複数の通知を読み上げることを防ぐ</string>
-    <string name="behavior_cooldown_recommendation">最適: スパム通知を送るアプリ</string>
-    <string name="behavior_speech_title">読み上げ形式</string>
-    <string name="behavior_speech_description">プレースホルダーを使用して通知の読み上げ方をカスタマイズ</string>
-    <string name="behavior_speech_recommendation">通知体験をカスタマイズ</string>
-    <string name="behavior_speech_preset">形式プリセット:</string>
-    <string name="behavior_speech_custom">カスタム形式:</string>
-    <string name="behavior_speech_preview">プレビュー: メッセージがあなたに通知しました: Mitchi: SpeakThatを使っていると聞きました！</string>
-    <string name="behavior_speech_placeholders">一般的なプレースホルダー: {app}, {content}, {time}, {title}, {text}, {priority}, {category}</string>
-    <string name="button_start_test">テスト開始</string>
-    <string name="button_test">テスト</string>
-    <string name="button_add">追加</string>
-    <string name="label_gentle">優しく</string>
-    <string name="label_strong">強く</string>
-    <string name="label_5s">5秒</string>
-    <string name="label_5m">5分</string>
+    <string name="behavior_wave_pocket">ãƒã‚±ãƒƒãƒˆãƒ¢ãƒ¼ãƒ‰</string>
+    <string name="behavior_wave_pocket_description">ã‚»ãƒ³ã‚µãƒ¼ãŒæ—¢ã«è¦†ã‚ã‚Œã¦ã„ã‚‹æ™‚ï¼ˆãƒã‚±ãƒƒãƒˆã®ä¸­ãªã©ï¼‰ã¯èª­ã¿ä¸Šã’ã‚’ç¶šè¡Œã—ã¾ã™ãŒã€èª­ã¿ä¸Šã’é–‹å§‹å¾Œã«è¦†ã£ãŸå ´åˆã¯åœæ­¢ã—ã¾ã™</string>
+    <string name="behavior_wave_pocket_checkbox">ã‚»ãƒ³ã‚µãƒ¼ãŒè¦†ã‚ã‚Œã¦ã„ã‚‹æ™‚ã‚‚èª­ã¿ä¸Šã’ã‚’è¨±å¯</string>
+    <string name="behavior_custom_apps_title">ðŸ“± ã‚«ã‚¹ã‚¿ãƒ ã‚¢ãƒ—ãƒªå</string>
+    <string name="behavior_custom_apps_description">é€šçŸ¥ã§ã®ã‚¢ãƒ—ãƒªåã®èª­ã¿ä¸Šã’æ–¹ã‚’ã‚«ã‚¹ã‚¿ãƒžã‚¤ã‚º</string>
+    <string name="behavior_custom_apps_example">ä¾‹: Xã‚¢ãƒ—ãƒªã‚’ã€ŒTwitterã€ã¨ã—ã¦èª­ã¿ä¸Šã’</string>
+    <string name="behavior_custom_apps_add">ã‚«ã‚¹ã‚¿ãƒ ã‚¢ãƒ—ãƒªåã‚’è¿½åŠ </string>
+    <string name="behavior_delay_title">èª­ã¿ä¸Šã’å‰ã®é…å»¶</string>
+    <string name="behavior_delay_description">SpeakThatãŒé€šçŸ¥ã®èª­ã¿ä¸Šã’ã‚’é–‹å§‹ã™ã‚‹å‰ã«çŸ­ã„é…å»¶ã‚’è¿½åŠ </string>
+    <string name="behavior_delay_recommendation">ã»ã¨ã‚“ã©ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ã«ãŠå‹§ã‚: 2ç§’</string>
+    <string name="behavior_delay_none">ãªã— - ã™ãã«é–‹å§‹</string>
+    <string name="behavior_delay_1s">1ç§’ - çŸ­ã„ä¸€æ™‚åœæ­¢</string>
+    <string name="behavior_delay_2s">2ç§’ - æŽ¨å¥¨</string>
+    <string name="behavior_delay_3s">3ç§’ - åå¿œã™ã‚‹æ™‚é–“ã‚’è¿½åŠ </string>
+    <string name="behavior_delay_benefits">âœ¨ ãƒ¡ãƒªãƒƒãƒˆ:\n\nâ€¢ é€šçŸ¥éŸ³ã¨ã®é‡è¤‡ã‚’å›žé¿\nâ€¢ ã‚·ã‚§ã‚¤ã‚¯ã§ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã™ã‚‹æ™‚é–“ã‚’æä¾›\nâ€¢ é™ã‹ãªç’°å¢ƒã§ã®çªç„¶æ„Ÿã‚’è»½æ¸›\nâ€¢ ä¼šè­°ã‚„å…¬å…±ã®å ´æ‰€ã«æœ€é©</string>
+    <string name="behavior_cooldown_title">é€šçŸ¥ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³</string>
+    <string name="behavior_cooldown_description">æŒ‡å®šã—ãŸæ™‚é–“å†…ã«ã‚¢ãƒ—ãƒªãŒè¤‡æ•°ã®é€šçŸ¥ã‚’èª­ã¿ä¸Šã’ã‚‹ã“ã¨ã‚’é˜²ã</string>
+    <string name="behavior_cooldown_recommendation">æœ€é©: ã‚¹ãƒ‘ãƒ é€šçŸ¥ã‚’é€ã‚‹ã‚¢ãƒ—ãƒª</string>
+    <string name="behavior_speech_title">èª­ã¿ä¸Šã’å½¢å¼</string>
+    <string name="behavior_speech_description">ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ãƒ¼ã‚’ä½¿ç”¨ã—ã¦é€šçŸ¥ã®èª­ã¿ä¸Šã’æ–¹ã‚’ã‚«ã‚¹ã‚¿ãƒžã‚¤ã‚º</string>
+    <string name="behavior_speech_recommendation">é€šçŸ¥ä½“é¨“ã‚’ã‚«ã‚¹ã‚¿ãƒžã‚¤ã‚º</string>
+    <string name="behavior_speech_preset">å½¢å¼ãƒ—ãƒªã‚»ãƒƒãƒˆ:</string>
+    <string name="behavior_speech_custom">ã‚«ã‚¹ã‚¿ãƒ å½¢å¼:</string>
+    <string name="behavior_speech_preview">ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼: ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒã‚ãªãŸã«é€šçŸ¥ã—ã¾ã—ãŸ: Mitchi: SpeakThatã‚’ä½¿ã£ã¦ã„ã‚‹ã¨èžãã¾ã—ãŸï¼</string>
+    <string name="behavior_speech_placeholders">ä¸€èˆ¬çš„ãªãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ãƒ¼: {app}, {content}, {time}, {title}, {text}, {priority}, {category}</string>
+    <string name="button_start_test">ãƒ†ã‚¹ãƒˆé–‹å§‹</string>
+    <string name="button_test">ãƒ†ã‚¹ãƒˆ</string>
+    <string name="button_add">è¿½åŠ </string>
+    <string name="label_gentle">å„ªã—ã</string>
+    <string name="label_strong">å¼·ã</string>
+    <string name="label_5s">5ç§’</string>
+    <string name="label_5m">5åˆ†</string>
     <string name="label_30_percent">30%</string>
     <string name="label_90_percent">90%</string>
-    <string name="volume_mute">ミュート</string>
-    <string name="volume_loud">大音量</string>
+    <string name="volume_mute">ãƒŸãƒ¥ãƒ¼ãƒˆ</string>
+    <string name="volume_loud">å¤§éŸ³é‡</string>
     <string name="volume_30_percent">30%</string>
     
     <!-- Voice Settings Strings -->
-    <string name="voice_characteristics">音声特性</string>
-    <string name="voice_speech_rate">読み上げ速度</string>
-    <string name="voice_pitch">音声ピッチ</string>
-    <string name="voice_tts_volume">TTS音量</string>
-    <string name="voice_language_section">言語 &amp; 音声</string>
-    <string name="voice_language_preset">言語プリセット</string>
-    <string name="voice_language_preset_description">言語を選択してください。これにより、アプリのインターフェースとテキスト読み上げ言語が同時に設定され、最高の体験を提供します。</string>
-    <string name="voice_preset_recommendation">これはほとんどのユーザーに必要なすべてです。個別設定をカスタマイズするには、以下の高度な音声オプションを使用してください。</string>
-    <string name="voice_help_translate">SpeakThatの翻訳を手伝う！</string>
-    <string name="voice_help_translate_description">翻訳メールを送信するにはタップ</string>
-    <string name="voice_show_advanced">高度な音声オプションを表示</string>
-    <string name="voice_advanced_label">⚙️ 高度</string>
-    <string name="voice_tts_language_advanced">TTS言語（高度）</string>
-    <string name="voice_tts_language_description">アプリフレーズ（「通知しました:」など）の言語を上書きします。UIとTTSフレーズで異なる言語が必要でない限り、デフォルトのままにしてください。</string>
-    <string name="voice_specific_voice_advanced">特定の音声（高度）</string>
-    <string name="voice_specific_voice_description">特定の音声エンジンを選択します。これは上記の言語設定を上書きします。上級ユーザーのみ。</string>
-    <string name="voice_tap_for_details">詳細はタップ</string>
-    <string name="voice_advanced_recommendation">推奨: まず言語設定を試してください。特定の音声エンジンが必要な場合のみ特定の音声を使用してください。\n\n問題が発生した場合は、以下で設定をリセットできます！</string>
-    <string name="voice_reset_warning">問題が発生した場合は、以下で設定をリセットできます！</string>
-    <string name="label_0_1x">0.1倍</string>
-    <string name="label_3_0x">3.0倍</string>
-    <string name="label_1_0x">1.0倍</string>
-    <string name="label_2_0x">2.0倍</string>
+    <string name="voice_characteristics">éŸ³å£°ç‰¹æ€§</string>
+    <string name="voice_speech_rate">èª­ã¿ä¸Šã’é€Ÿåº¦</string>
+    <string name="voice_pitch">éŸ³å£°ãƒ”ãƒƒãƒ</string>
+    <string name="voice_tts_volume">TTSéŸ³é‡</string>
+    <string name="voice_language_section">è¨€èªž &amp; éŸ³å£°</string>
+    <string name="voice_language_preset">è¨€èªžãƒ—ãƒªã‚»ãƒƒãƒˆ</string>
+    <string name="voice_language_preset_description">è¨€èªžã‚’é¸æŠžã—ã¦ãã ã•ã„ã€‚ã“ã‚Œã«ã‚ˆã‚Šã€ã‚¢ãƒ—ãƒªã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã¨ãƒ†ã‚­ã‚¹ãƒˆèª­ã¿ä¸Šã’è¨€èªžãŒåŒæ™‚ã«è¨­å®šã•ã‚Œã€æœ€é«˜ã®ä½“é¨“ã‚’æä¾›ã—ã¾ã™ã€‚</string>
+    <string name="voice_preset_recommendation">ã“ã‚Œã¯ã»ã¨ã‚“ã©ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ã«å¿…è¦ãªã™ã¹ã¦ã§ã™ã€‚å€‹åˆ¥è¨­å®šã‚’ã‚«ã‚¹ã‚¿ãƒžã‚¤ã‚ºã™ã‚‹ã«ã¯ã€ä»¥ä¸‹ã®é«˜åº¦ãªéŸ³å£°ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’ä½¿ç”¨ã—ã¦ãã ã•ã„ã€‚</string>
+    <string name="voice_help_translate">SpeakThatã®ç¿»è¨³ã‚’æ‰‹ä¼ã†ï¼</string>
+    <string name="voice_help_translate_description">ç¿»è¨³ãƒ¡ãƒ¼ãƒ«ã‚’é€ä¿¡ã™ã‚‹ã«ã¯ã‚¿ãƒƒãƒ—</string>
+    <string name="voice_show_advanced">é«˜åº¦ãªéŸ³å£°ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’è¡¨ç¤º</string>
+    <string name="voice_advanced_label">âš™ï¸ é«˜åº¦</string>
+    <string name="voice_tts_language_advanced">TTSè¨€èªžï¼ˆé«˜åº¦ï¼‰</string>
+    <string name="voice_tts_language_description">ã‚¢ãƒ—ãƒªãƒ•ãƒ¬ãƒ¼ã‚ºï¼ˆã€Œé€šçŸ¥ã—ã¾ã—ãŸ:ã€ãªã©ï¼‰ã®è¨€èªžã‚’ä¸Šæ›¸ãã—ã¾ã™ã€‚UIã¨TTSãƒ•ãƒ¬ãƒ¼ã‚ºã§ç•°ãªã‚‹è¨€èªžãŒå¿…è¦ã§ãªã„é™ã‚Šã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã¾ã¾ã«ã—ã¦ãã ã•ã„ã€‚</string>
+    <string name="voice_specific_voice_advanced">ç‰¹å®šã®éŸ³å£°ï¼ˆé«˜åº¦ï¼‰</string>
+    <string name="voice_specific_voice_description">ç‰¹å®šã®éŸ³å£°ã‚¨ãƒ³ã‚¸ãƒ³ã‚’é¸æŠžã—ã¾ã™ã€‚ã“ã‚Œã¯ä¸Šè¨˜ã®è¨€èªžè¨­å®šã‚’ä¸Šæ›¸ãã—ã¾ã™ã€‚ä¸Šç´šãƒ¦ãƒ¼ã‚¶ãƒ¼ã®ã¿ã€‚</string>
+    <string name="voice_tap_for_details">è©³ç´°ã¯ã‚¿ãƒƒãƒ—</string>
+    <string name="voice_advanced_recommendation">æŽ¨å¥¨: ã¾ãšè¨€èªžè¨­å®šã‚’è©¦ã—ã¦ãã ã•ã„ã€‚ç‰¹å®šã®éŸ³å£°ã‚¨ãƒ³ã‚¸ãƒ³ãŒå¿…è¦ãªå ´åˆã®ã¿ç‰¹å®šã®éŸ³å£°ã‚’ä½¿ç”¨ã—ã¦ãã ã•ã„ã€‚\n\nå•é¡ŒãŒç™ºç”Ÿã—ãŸå ´åˆã¯ã€ä»¥ä¸‹ã§è¨­å®šã‚’ãƒªã‚»ãƒƒãƒˆã§ãã¾ã™ï¼</string>
+    <string name="voice_reset_warning">å•é¡ŒãŒç™ºç”Ÿã—ãŸå ´åˆã¯ã€ä»¥ä¸‹ã§è¨­å®šã‚’ãƒªã‚»ãƒƒãƒˆã§ãã¾ã™ï¼</string>
+    <string name="label_0_1x">0.1å€</string>
+    <string name="label_3_0x">3.0å€</string>
+    <string name="label_1_0x">1.0å€</string>
+    <string name="label_2_0x">2.0å€</string>
     <string name="label_0_percent">0%</string>
     <string name="label_100_percent">100%</string>
-    <string name="arrow_right">›</string>
+    <string name="arrow_right">â€º</string>
     
     <!-- Main Activity Strings -->
-    <string name="main_version_placeholder">バージョン x.x.x</string>
+    <string name="main_version_placeholder">ãƒãƒ¼ã‚¸ãƒ§ãƒ³ x.x.x</string>
     <string name="main_author">by Mitchi</string>
-    <string name="main_service_active">SpeakThat! アクティブ</string>
-    <string name="main_service_enable">通知読み上げを有効にするにはタップ</string>
-    <string name="main_notification_permissions">通知権限:</string>
+    <string name="main_service_active">SpeakThat! ã‚¢ã‚¯ãƒ†ã‚£ãƒ–</string>
+    <string name="main_service_enable">é€šçŸ¥èª­ã¿ä¸Šã’ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã«ã¯ã‚¿ãƒƒãƒ—</string>
+    <string name="main_notification_permissions">é€šçŸ¥æ¨©é™:</string>
     
     <!-- Settings Activity Strings -->
-    <string name="settings_general_title">一般設定</string>
-    <string name="settings_general_description">アプリの設定、テーマ設定</string>
-    <string name="settings_voice_title">音声設定</string>
-    <string name="settings_voice_description">テキスト読み上げ音声と速度</string>
-    <string name="settings_behavior_title">動作設定</string>
-    <string name="settings_behavior_description">通知をいつ、どのように読み上げるか</string>
-    <string name="settings_filter_title">フィルター設定</string>
-    <string name="settings_filter_description">読み上げるアプリを選択</string>
-    <string name="settings_rules_title">条件ルール</string>
-    <string name="settings_rules_description">Bluetooth、時間スケジュールなどを設定</string>
-    <string name="settings_development_title">開発設定</string>
-    <string name="settings_development_description">デバッグツールとログシステム</string>
-    <string name="settings_rerun_onboarding">オンボーディングを再実行</string>
-    <string name="settings_rerun_onboarding_description">アプリの紹介を再度見る</string>
-    <string name="settings_support_title">サポート &amp; フィードバック</string>
-    <string name="settings_support_description">ヘルプの取得、バグ報告、機能リクエスト</string>
-    <string name="settings_donate_title">寄付</string>
-    <string name="settings_donate_description">開発をサポートし、アプリを無料に保つ</string>
+    <string name="settings_general_title">ä¸€èˆ¬è¨­å®š</string>
+    <string name="settings_general_description">ã‚¢ãƒ—ãƒªã®è¨­å®šã€ãƒ†ãƒ¼ãƒžè¨­å®š</string>
+    <string name="settings_voice_title">éŸ³å£°è¨­å®š</string>
+    <string name="settings_voice_description">ãƒ†ã‚­ã‚¹ãƒˆèª­ã¿ä¸Šã’éŸ³å£°ã¨é€Ÿåº¦</string>
+    <string name="settings_behavior_title">å‹•ä½œè¨­å®š</string>
+    <string name="settings_behavior_description">é€šçŸ¥ã‚’ã„ã¤ã€ã©ã®ã‚ˆã†ã«èª­ã¿ä¸Šã’ã‚‹ã‹</string>
+    <string name="settings_filter_title">ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼è¨­å®š</string>
+    <string name="settings_filter_description">èª­ã¿ä¸Šã’ã‚‹ã‚¢ãƒ—ãƒªã‚’é¸æŠž</string>
+    <string name="settings_rules_title">æ¡ä»¶ãƒ«ãƒ¼ãƒ«</string>
+    <string name="settings_rules_description">Bluetoothã€æ™‚é–“ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«ãªã©ã‚’è¨­å®š</string>
+    <string name="settings_development_title">é–‹ç™ºè¨­å®š</string>
+    <string name="settings_development_description">ãƒ‡ãƒãƒƒã‚°ãƒ„ãƒ¼ãƒ«ã¨ãƒ­ã‚°ã‚·ã‚¹ãƒ†ãƒ </string>
+    <string name="settings_rerun_onboarding">ã‚ªãƒ³ãƒœãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚’å†å®Ÿè¡Œ</string>
+    <string name="settings_rerun_onboarding_description">ã‚¢ãƒ—ãƒªã®ç´¹ä»‹ã‚’å†åº¦è¦‹ã‚‹</string>
+    <string name="settings_support_title">ã‚µãƒãƒ¼ãƒˆ &amp; ãƒ•ã‚£ãƒ¼ãƒ‰ãƒãƒƒã‚¯</string>
+    <string name="settings_support_description">ãƒ˜ãƒ«ãƒ—ã®å–å¾—ã€ãƒã‚°å ±å‘Šã€æ©Ÿèƒ½ãƒªã‚¯ã‚¨ã‚¹ãƒˆ</string>
+    <string name="settings_donate_title">å¯„ä»˜</string>
+    <string name="settings_donate_description">é–‹ç™ºã‚’ã‚µãƒãƒ¼ãƒˆã—ã€ã‚¢ãƒ—ãƒªã‚’ç„¡æ–™ã«ä¿ã¤</string>
     
     <!-- Critical Hardcoded Strings - Dialog Messages -->
     <string name="dialog_message_theme_changed">The theme has been changed. For the best experience, you may want to restart the app manually.</string>
@@ -591,620 +591,622 @@
     <string name="button_create_rule">Create Rule</string>
     <string name="button_manual_input">Manual Input</string>
     <string name="button_i_understand">I Understand</string>
-    <string name="button_delete">削除</string>
-    <string name="button_remove">削除</string>
+    <string name="button_delete">å‰Šé™¤</string>
+    <string name="button_remove">å‰Šé™¤</string>
     <!-- Critical Hardcoded Strings - App Categories -->
-    <string name="category_social_media">ソーシャルメディア</string>
-    <string name="category_social_media_description">SNSアプリ</string>
-    <string name="category_messaging">メッセージ</string>
-    <string name="category_messaging_description">チャットとコミュニケーションアプリ</string>
-    <string name="category_finance">金融</string>
-    <string name="category_finance_description">銀行・金融アプリ</string>
-    <string name="category_health">健康</string>
-    <string name="category_health_description">健康とフィットネスアプリ</string>
-    <string name="category_entertainment">エンターテイメント</string>
-    <string name="category_entertainment_description">メディアとエンターテイメントアプリ</string>
-    <string name="category_games">ゲーム</string>
-    <string name="category_games_description">モバイルゲームとゲームアプリ</string>
+    <string name="category_social_display_name">ã‚½ãƒ¼ã‚·ãƒ£ãƒ«ãƒ¡ãƒ‡ã‚£ã‚¢</string>
+    <string name="category_social_description">SNSã‚¢ãƒ—ãƒª</string>
+    <string name="category_messaging_display_name">ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸</string>
+    <string name="category_messaging_description">ãƒãƒ£ãƒƒãƒˆã¨ã‚³ãƒŸãƒ¥ãƒ‹ã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚¢ãƒ—ãƒª</string>
+    <string name="category_finance_display_name">é‡‘èž</string>
+    <string name="category_finance_description">éŠ€è¡Œãƒ»é‡‘èžã‚¢ãƒ—ãƒª</string>
+    <string name="category_health_display_name">å¥åº·</string>
+    <string name="category_health_description">å¥åº·ã¨ãƒ•ã‚£ãƒƒãƒˆãƒã‚¹ã‚¢ãƒ—ãƒª</string>
+    <string name="category_entertainment_display_name">ã‚¨ãƒ³ã‚¿ãƒ¼ãƒ†ã‚¤ãƒ¡ãƒ³ãƒˆ</string>
+    <string name="category_entertainment_description">ãƒ¡ãƒ‡ã‚£ã‚¢ã¨ã‚¨ãƒ³ã‚¿ãƒ¼ãƒ†ã‚¤ãƒ¡ãƒ³ãƒˆã‚¢ãƒ—ãƒª</string>
+    <string name="category_games_display_name">ã‚²ãƒ¼ãƒ </string>
+    <string name="category_games_description">ãƒ¢ãƒã‚¤ãƒ«ã‚²ãƒ¼ãƒ ã¨ã‚²ãƒ¼ãƒ ã‚¢ãƒ—ãƒª</string>
     <!-- Critical Hardcoded Strings - Other -->
-    <string name="unknown_device">不明なデバイス</string>
-    <string name="export_full_config_text">%sに設定のバックアップが完了しました</string>
-    <string name="export_full_config_chooser">全ての設定をエクスポート</string>
-    <string name="export_full_config_text_chooser">全ての設定をテキストでエクスポート</string>
-    <string name="select_configuration_file">設定ファイルを選択</string>
-    <string name="save_rule">保存</string>
-    <string name="update_rule">更新</string>
+    <string name="unknown_device">ä¸æ˜Žãªãƒ‡ãƒã‚¤ã‚¹</string>
+    <string name="export_full_config_text">%sã«è¨­å®šã®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãŒå®Œäº†ã—ã¾ã—ãŸ</string>
+    <string name="export_full_config_chooser">å…¨ã¦ã®è¨­å®šã‚’ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ</string>
+    <string name="export_full_config_text_chooser">å…¨ã¦ã®è¨­å®šã‚’ãƒ†ã‚­ã‚¹ãƒˆã§ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ</string>
+    <string name="select_configuration_file">è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’é¸æŠž</string>
+    <string name="save_rule">ä¿å­˜</string>
+    <string name="update_rule">æ›´æ–°</string>
     <!-- Behavior Settings - Media Volume -->
-    <string name="behavior_media_volume_tip">ヒント: 値を下げると通知中のメディア音量が小さくなります</string>
+    <string name="behavior_media_volume_tip">ãƒ’ãƒ³ãƒˆ: å€¤ã‚’ä¸‹ã’ã‚‹ã¨é€šçŸ¥ä¸­ã®ãƒ¡ãƒ‡ã‚£ã‚¢éŸ³é‡ãŒå°ã•ããªã‚Šã¾ã™</string>
     
     <!-- Behavior Settings - Do Not Disturb -->
-    <string name="section_honor_dnd">マナーモードを尊重</string>
-    <string name="behavior_dnd_description">デバイスのマナーモードを尊重し、有効時は通知を静音にします</string>
-    <string name="behavior_dnd_recommendation">ほとんどのユーザーに推奨：この機能を有効にする</string>
-    <string name="behavior_dnd_switch_label">マナーモードを尊重</string>
-    <string name="behavior_dnd_benefits">✨ メリット:\n\n• デバイスのマナーモード設定を尊重\n• 会議、睡眠、静寂な時間に最適\n• スケジュールされたマナーモードと手動有効化に対応\n• 必要時にプライバシーと集中を維持</string>
+    <string name="section_honor_dnd">ãƒžãƒŠãƒ¼ãƒ¢ãƒ¼ãƒ‰ã‚’å°Šé‡</string>
+    <string name="behavior_dnd_description">ãƒ‡ãƒã‚¤ã‚¹ã®ãƒžãƒŠãƒ¼ãƒ¢ãƒ¼ãƒ‰ã‚’å°Šé‡ã—ã€æœ‰åŠ¹æ™‚ã¯é€šçŸ¥ã‚’é™éŸ³ã«ã—ã¾ã™</string>
+    <string name="behavior_dnd_recommendation">ã»ã¨ã‚“ã©ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ã«æŽ¨å¥¨ï¼šã“ã®æ©Ÿèƒ½ã‚’æœ‰åŠ¹ã«ã™ã‚‹</string>
+    <string name="behavior_dnd_switch_label">ãƒžãƒŠãƒ¼ãƒ¢ãƒ¼ãƒ‰ã‚’å°Šé‡</string>
+    <string name="behavior_dnd_benefits">âœ¨ ãƒ¡ãƒªãƒƒãƒˆ:\n\nâ€¢ ãƒ‡ãƒã‚¤ã‚¹ã®ãƒžãƒŠãƒ¼ãƒ¢ãƒ¼ãƒ‰è¨­å®šã‚’å°Šé‡\nâ€¢ ä¼šè­°ã€ç¡çœ ã€é™å¯‚ãªæ™‚é–“ã«æœ€é©\nâ€¢ ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«ã•ã‚ŒãŸãƒžãƒŠãƒ¼ãƒ¢ãƒ¼ãƒ‰ã¨æ‰‹å‹•æœ‰åŠ¹åŒ–ã«å¯¾å¿œ\nâ€¢ å¿…è¦æ™‚ã«ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ã¨é›†ä¸­ã‚’ç¶­æŒ</string>
     
     <!-- Behavior Settings - Phone Calls -->
-    <string name="section_honor_phone_calls">通話を尊重</string>
-    <string name="behavior_phone_calls_description">通話中は通知の読み上げを防止します</string>
+    <string name="section_honor_phone_calls">é€šè©±ã‚’å°Šé‡</string>
+    <string name="behavior_phone_calls_description">é€šè©±ä¸­ã¯é€šçŸ¥ã®èª­ã¿ä¸Šã’ã‚’é˜²æ­¢ã—ã¾ã™</string>
     
     <!-- Behavior Settings - Notification Deduplication -->
-    <string name="section_notification_deduplication">通知の重複排除</string>
-    <string name="behavior_phone_calls_recommendation">ほとんどのユーザーに推奨：この機能を有効にする</string>
-    <string name="behavior_phone_calls_switch_label">通話を尊重</string>
-    <string name="behavior_phone_calls_benefits">✨ メリット:\n\n• 重要な通話中の中断を防止\n• 会話のプライバシーを尊重\n• すべての種類の通話に対応\n• 通話状態の自動検出</string>
+    <string name="section_notification_deduplication">é€šçŸ¥ã®é‡è¤‡æŽ’é™¤</string>
+    <string name="behavior_phone_calls_recommendation">ã»ã¨ã‚“ã©ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ã«æŽ¨å¥¨ï¼šã“ã®æ©Ÿèƒ½ã‚’æœ‰åŠ¹ã«ã™ã‚‹</string>
+    <string name="behavior_phone_calls_switch_label">é€šè©±ã‚’å°Šé‡</string>
+    <string name="behavior_phone_calls_benefits">âœ¨ ãƒ¡ãƒªãƒƒãƒˆ:\n\nâ€¢ é‡è¦ãªé€šè©±ä¸­ã®ä¸­æ–­ã‚’é˜²æ­¢\nâ€¢ ä¼šè©±ã®ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ã‚’å°Šé‡\nâ€¢ ã™ã¹ã¦ã®ç¨®é¡žã®é€šè©±ã«å¯¾å¿œ\nâ€¢ é€šè©±çŠ¶æ…‹ã®è‡ªå‹•æ¤œå‡º</string>
     
     <!-- Behavior Settings - Audio Mode -->
-    <string name="section_honor_audio_mode">音量モードを尊重</string>
-    <string name="behavior_audio_mode_description">デバイスが音声モード時のみ通知を読み上げ（サイレントやバイブレートではない）</string>
-    <string name="behavior_audio_mode_recommendation">推奨：この機能を有効にする</string>
-    <string name="behavior_audio_mode_switch_label">音量モードを尊重（音声のみ）</string>
-    <string name="behavior_audio_mode_benefits">✨ メリット:\n\n• 電話がミュート時の不要な音声を防止\n• デバイスの音声設定を尊重\n• サイレントおよびバイブレートモードに対応\n• 聞こえる時のみ通知を再生</string>
+    <string name="section_honor_audio_mode">éŸ³é‡ãƒ¢ãƒ¼ãƒ‰ã‚’å°Šé‡</string>
+    <string name="behavior_audio_mode_description">ãƒ‡ãƒã‚¤ã‚¹ãŒéŸ³å£°ãƒ¢ãƒ¼ãƒ‰æ™‚ã®ã¿é€šçŸ¥ã‚’èª­ã¿ä¸Šã’ï¼ˆã‚µã‚¤ãƒ¬ãƒ³ãƒˆã‚„ãƒã‚¤ãƒ–ãƒ¬ãƒ¼ãƒˆã§ã¯ãªã„ï¼‰</string>
+    <string name="behavior_audio_mode_recommendation">æŽ¨å¥¨ï¼šã“ã®æ©Ÿèƒ½ã‚’æœ‰åŠ¹ã«ã™ã‚‹</string>
+    <string name="behavior_audio_mode_switch_label">éŸ³é‡ãƒ¢ãƒ¼ãƒ‰ã‚’å°Šé‡ï¼ˆéŸ³å£°ã®ã¿ï¼‰</string>
+    <string name="behavior_audio_mode_benefits">âœ¨ ãƒ¡ãƒªãƒƒãƒˆ:\n\nâ€¢ é›»è©±ãŒãƒŸãƒ¥ãƒ¼ãƒˆæ™‚ã®ä¸è¦ãªéŸ³å£°ã‚’é˜²æ­¢\nâ€¢ ãƒ‡ãƒã‚¤ã‚¹ã®éŸ³å£°è¨­å®šã‚’å°Šé‡\nâ€¢ ã‚µã‚¤ãƒ¬ãƒ³ãƒˆãŠã‚ˆã³ãƒã‚¤ãƒ–ãƒ¬ãƒ¼ãƒˆãƒ¢ãƒ¼ãƒ‰ã«å¯¾å¿œ\nâ€¢ èžã“ãˆã‚‹æ™‚ã®ã¿é€šçŸ¥ã‚’å†ç”Ÿ</string>
     
     <!-- Behavior Settings - Shake to Stop -->
-    <string name="section_shake_to_stop">シェイクで停止</string>
-    <string name="behavior_shake_description">デバイスを振ることで読み上げを即座に停止</string>
-    <string name="behavior_shake_recommendation">ほとんどのユーザーに推奨：この機能を有効にする</string>
-    <string name="behavior_shake_switch_label">シェイクで停止を有効</string>
-    <string name="behavior_shake_intensity_label">シェイク強度</string>
-    <string name="behavior_shake_intensity_description">読み上げを停止するのに必要な振る強さを調整</string>
-    <string name="behavior_shake_test_label">シェイクテスト</string>
-    <string name="behavior_shake_test_description">シェイク強度をテストしてトリガー閾値を確認</string>
+    <string name="section_shake_to_stop">ã‚·ã‚§ã‚¤ã‚¯ã§åœæ­¢</string>
+    <string name="behavior_shake_description">ãƒ‡ãƒã‚¤ã‚¹ã‚’æŒ¯ã‚‹ã“ã¨ã§èª­ã¿ä¸Šã’ã‚’å³åº§ã«åœæ­¢</string>
+    <string name="behavior_shake_recommendation">ã»ã¨ã‚“ã©ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ã«æŽ¨å¥¨ï¼šã“ã®æ©Ÿèƒ½ã‚’æœ‰åŠ¹ã«ã™ã‚‹</string>
+    <string name="behavior_shake_switch_label">ã‚·ã‚§ã‚¤ã‚¯ã§åœæ­¢ã‚’æœ‰åŠ¹</string>
+    <string name="behavior_shake_intensity_label">ã‚·ã‚§ã‚¤ã‚¯å¼·åº¦</string>
+    <string name="behavior_shake_intensity_description">èª­ã¿ä¸Šã’ã‚’åœæ­¢ã™ã‚‹ã®ã«å¿…è¦ãªæŒ¯ã‚‹å¼·ã•ã‚’èª¿æ•´</string>
+    <string name="behavior_shake_test_label">ã‚·ã‚§ã‚¤ã‚¯ãƒ†ã‚¹ãƒˆ</string>
+    <string name="behavior_shake_test_description">ã‚·ã‚§ã‚¤ã‚¯å¼·åº¦ã‚’ãƒ†ã‚¹ãƒˆã—ã¦ãƒˆãƒªã‚¬ãƒ¼é–¾å€¤ã‚’ç¢ºèª</string>
     
     <!-- Behavior Settings - Wave to Stop -->
-    <string name="section_wave_to_stop">👋 ウェーブで停止</string>
-    <string name="behavior_wave_description">近接センサーに手を振ることで読み上げを停止</string>
-    <string name="behavior_wave_recommendation">推奨：この機能を有効にする</string>
-    <string name="behavior_wave_switch_label">ウェーブで停止を有効</string>
-    <string name="behavior_wave_benefits">✨ メリット:\n\n• 読み上げを停止する無音ジェスチャー\n• 静かな環境で動作\n• 物理的接触不要\n• 素早く便利な操作</string>
+    <string name="section_wave_to_stop">ðŸ‘‹ ã‚¦ã‚§ãƒ¼ãƒ–ã§åœæ­¢</string>
+    <string name="behavior_wave_description">è¿‘æŽ¥ã‚»ãƒ³ã‚µãƒ¼ã«æ‰‹ã‚’æŒ¯ã‚‹ã“ã¨ã§èª­ã¿ä¸Šã’ã‚’åœæ­¢</string>
+    <string name="behavior_wave_recommendation">æŽ¨å¥¨ï¼šã“ã®æ©Ÿèƒ½ã‚’æœ‰åŠ¹ã«ã™ã‚‹</string>
+    <string name="behavior_wave_switch_label">ã‚¦ã‚§ãƒ¼ãƒ–ã§åœæ­¢ã‚’æœ‰åŠ¹</string>
+    <string name="behavior_wave_benefits">âœ¨ ãƒ¡ãƒªãƒƒãƒˆ:\n\nâ€¢ èª­ã¿ä¸Šã’ã‚’åœæ­¢ã™ã‚‹ç„¡éŸ³ã‚¸ã‚§ã‚¹ãƒãƒ£ãƒ¼\nâ€¢ é™ã‹ãªç’°å¢ƒã§å‹•ä½œ\nâ€¢ ç‰©ç†çš„æŽ¥è§¦ä¸è¦\nâ€¢ ç´ æ—©ãä¾¿åˆ©ãªæ“ä½œ</string>
     
     <!-- Behavior Settings - Additional Labels -->
-    <string name="label_calibrate">キャリブレート</string>
-    <string name="label_test_shake">シェイクテスト</string>
-    <string name="label_test_wave">ウェーブテスト</string>
+    <string name="label_calibrate">ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ãƒˆ</string>
+    <string name="label_test_shake">ã‚·ã‚§ã‚¤ã‚¯ãƒ†ã‚¹ãƒˆ</string>
+    <string name="label_test_wave">ã‚¦ã‚§ãƒ¼ãƒ–ãƒ†ã‚¹ãƒˆ</string>
     
     <!-- Voice Settings - Additional Strings -->
-    <string name="voice_help_translate_button">SpeakThat の翻訳を手伝う！</string>
-    <string name="voice_help_translate_description_button">翻訳メールを送信するにはタップ</string>
-    <string name="voice_advanced_options_show">高度な音声オプションを表示</string>
-    <string name="voice_tts_language_label">TTS 言語（高度）</string>
-    <string name="voice_specific_voice_label">特定の音声（高度）</string>
-    <string name="voice_reset_button">音声設定をリセット</string>
-    <string name="voice_test_button">音声テスト</string>
+    <string name="voice_help_translate_button">SpeakThat ã®ç¿»è¨³ã‚’æ‰‹ä¼ã†ï¼</string>
+    <string name="voice_help_translate_description_button">ç¿»è¨³ãƒ¡ãƒ¼ãƒ«ã‚’é€ä¿¡ã™ã‚‹ã«ã¯ã‚¿ãƒƒãƒ—</string>
+    <string name="voice_advanced_options_show">é«˜åº¦ãªéŸ³å£°ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’è¡¨ç¤º</string>
+    <string name="voice_tts_language_label">TTS è¨€èªžï¼ˆé«˜åº¦ï¼‰</string>
+    <string name="voice_specific_voice_label">ç‰¹å®šã®éŸ³å£°ï¼ˆé«˜åº¦ï¼‰</string>
+    <string name="voice_reset_button">éŸ³å£°è¨­å®šã‚’ãƒªã‚»ãƒƒãƒˆ</string>
+    <string name="voice_test_button">éŸ³å£°ãƒ†ã‚¹ãƒˆ</string>
     
     <!-- Filter Settings Strings -->
-    <string name="filter_app_list_title">アプリリストフィルタリング</string>
-    <string name="filter_app_list_description">通知をトリガーできるアプリを制御</string>
-    <string name="filter_no_filtering">アプリフィルタリングなし</string>
-    <string name="filter_whitelist">ホワイトリスト（選択したアプリのみ）</string>
-    <string name="filter_blacklist">ブラックリスト（選択したアプリを除外）</string>
-    <string name="filter_manage_apps">アプリを管理：</string>
-    <string name="filter_app_list_button">📋 アプリリスト</string>
-    <string name="filter_app_count">（0 アプリ）</string>
-    <string name="filter_search_description">名前またはパッケージでインストール済みアプリを検索。提案をクリックして即座に追加。（詳細はタップ）</string>
-    <string name="filter_word_blacklist_title">単語ブラックリスト</string>
-    <string name="filter_word_blacklist_description">特定の単語を含む通知をブロックまたはプライベート化</string>
-    <string name="filter_word_blacklist_info">ブロック = 完全にスキップ、プライベート = 非公開でアナウンス</string>
-    <string name="filter_blacklisted_words">📋 ブラックリスト単語</string>
+    <string name="filter_app_list_title">ã‚¢ãƒ—ãƒªãƒªã‚¹ãƒˆãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°</string>
+    <string name="filter_app_list_description">é€šçŸ¥ã‚’ãƒˆãƒªã‚¬ãƒ¼ã§ãã‚‹ã‚¢ãƒ—ãƒªã‚’åˆ¶å¾¡</string>
+    <string name="filter_no_filtering">ã‚¢ãƒ—ãƒªãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ãªã—</string>
+    <string name="filter_whitelist">ãƒ›ãƒ¯ã‚¤ãƒˆãƒªã‚¹ãƒˆï¼ˆé¸æŠžã—ãŸã‚¢ãƒ—ãƒªã®ã¿ï¼‰</string>
+    <string name="filter_blacklist">ãƒ–ãƒ©ãƒƒã‚¯ãƒªã‚¹ãƒˆï¼ˆé¸æŠžã—ãŸã‚¢ãƒ—ãƒªã‚’é™¤å¤–ï¼‰</string>
+    <string name="filter_manage_apps">ã‚¢ãƒ—ãƒªã‚’ç®¡ç†ï¼š</string>
+    <string name="filter_app_list_button">ðŸ“‹ ã‚¢ãƒ—ãƒªãƒªã‚¹ãƒˆ</string>
+    <string name="filter_app_count">ï¼ˆ0 ã‚¢ãƒ—ãƒªï¼‰</string>
+    <string name="filter_search_description">åå‰ã¾ãŸã¯ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã§ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«æ¸ˆã¿ã‚¢ãƒ—ãƒªã‚’æ¤œç´¢ã€‚ææ¡ˆã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã¦å³åº§ã«è¿½åŠ ã€‚ï¼ˆè©³ç´°ã¯ã‚¿ãƒƒãƒ—ï¼‰</string>
+    <string name="filter_word_blacklist_title">å˜èªžãƒ–ãƒ©ãƒƒã‚¯ãƒªã‚¹ãƒˆ</string>
+    <string name="filter_word_blacklist_description">ç‰¹å®šã®å˜èªžã‚’å«ã‚€é€šçŸ¥ã‚’ãƒ–ãƒ­ãƒƒã‚¯ã¾ãŸã¯ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆåŒ–</string>
+    <string name="filter_word_blacklist_info">ãƒ–ãƒ­ãƒƒã‚¯ = å®Œå…¨ã«ã‚¹ã‚­ãƒƒãƒ—ã€ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆ = éžå…¬é–‹ã§ã‚¢ãƒŠã‚¦ãƒ³ã‚¹</string>
+    <string name="filter_blacklisted_words">ðŸ“‹ ãƒ–ãƒ©ãƒƒã‚¯ãƒªã‚¹ãƒˆå˜èªž</string>
     
     <!-- General Settings Strings -->
-    <string name="general_theme_title">テーマ</string>
-    <string name="general_dark_mode">ダークモード</string>
-    <string name="general_dark_mode_description">このアプリのダークモードを有効にする</string>
-    <string name="general_app_behavior_title">アプリの動作とパフォーマンス</string>
-    <string name="general_auto_start">起動時に自動開始</string>
-    <string name="general_auto_start_description">デバイス起動時に通知サービスを自動的に開始</string>
-    <string name="general_battery_optimization">バッテリー最適化の除外</string>
-    <string name="general_battery_optimization_description">信頼性向上のためバッテリー最適化からアプリを除外</string>
-    <string name="general_aggressive_background">積極的なバックグラウンド処理</string>
-    <string name="general_aggressive_background_description">バックグラウンドでより積極的に通知を処理（バッテリー消費増加）</string>
-    <string name="general_service_restart_policy">サービス再起動ポリシー</string>
-    <string name="general_service_restart_description">通知サービスはいつ自動的に再起動すべきか？</string>
-    <string name="general_never_restart">自動再起動しない</string>
-    <string name="general_restart_on_crash">クラッシュ時のみ再起動</string>
-    <string name="general_restart_periodically">定期的に再起動（6時間ごと）</string>
-    <string name="general_notification_settings_title">通知設定</string>
-    <string name="general_persistent_notification">永続通知</string>
-    <string name="general_persistent_notification_description">SpeakThatがアクティブな時に永続通知を表示</string>
-    <string name="general_notification_while_reading">読み上げ中の通知</string>
-    <string name="general_notification_while_reading_description">TTSがアクティブに読み上げている時に通知を表示</string>
-    <string name="general_data_management_title">データ管理</string>
-    <string name="general_export_configuration">設定をエクスポート</string>
-    <string name="general_export_configuration_description">すべての設定をファイルに保存</string>
-    <string name="general_import_configuration">設定をインポート</string>
-    <string name="general_import_configuration_description">ファイルから設定を読み込み</string>
-    <string name="general_reset_settings">すべての設定をデフォルトにリセット</string>
-    <string name="general_verify_settings">すべての設定を確認</string>
-    <string name="general_verify_settings_description">包括的なテストを実行してすべての設定が正常に動作することを確認</string>
+    <string name="general_theme_title">ãƒ†ãƒ¼ãƒž</string>
+    <string name="general_dark_mode">ãƒ€ãƒ¼ã‚¯ãƒ¢ãƒ¼ãƒ‰</string>
+    <string name="general_dark_mode_description">ã“ã®ã‚¢ãƒ—ãƒªã®ãƒ€ãƒ¼ã‚¯ãƒ¢ãƒ¼ãƒ‰ã‚’æœ‰åŠ¹ã«ã™ã‚‹</string>
+    <string name="general_app_behavior_title">ã‚¢ãƒ—ãƒªã®å‹•ä½œã¨ãƒ‘ãƒ•ã‚©ãƒ¼ãƒžãƒ³ã‚¹</string>
+    <string name="general_auto_start">èµ·å‹•æ™‚ã«è‡ªå‹•é–‹å§‹</string>
+    <string name="general_auto_start_description">ãƒ‡ãƒã‚¤ã‚¹èµ·å‹•æ™‚ã«é€šçŸ¥ã‚µãƒ¼ãƒ“ã‚¹ã‚’è‡ªå‹•çš„ã«é–‹å§‹</string>
+    <string name="general_battery_optimization">ãƒãƒƒãƒ†ãƒªãƒ¼æœ€é©åŒ–ã®é™¤å¤–</string>
+    <string name="general_battery_optimization_description">ä¿¡é ¼æ€§å‘ä¸Šã®ãŸã‚ãƒãƒƒãƒ†ãƒªãƒ¼æœ€é©åŒ–ã‹ã‚‰ã‚¢ãƒ—ãƒªã‚’é™¤å¤–</string>
+    <string name="general_aggressive_background">ç©æ¥µçš„ãªãƒãƒƒã‚¯ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰å‡¦ç†</string>
+    <string name="general_aggressive_background_description">ãƒãƒƒã‚¯ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰ã§ã‚ˆã‚Šç©æ¥µçš„ã«é€šçŸ¥ã‚’å‡¦ç†ï¼ˆãƒãƒƒãƒ†ãƒªãƒ¼æ¶ˆè²»å¢—åŠ ï¼‰</string>
+    <string name="general_service_restart_policy">ã‚µãƒ¼ãƒ“ã‚¹å†èµ·å‹•ãƒãƒªã‚·ãƒ¼</string>
+    <string name="general_service_restart_description">é€šçŸ¥ã‚µãƒ¼ãƒ“ã‚¹ã¯ã„ã¤è‡ªå‹•çš„ã«å†èµ·å‹•ã™ã¹ãã‹ï¼Ÿ</string>
+    <string name="general_never_restart">è‡ªå‹•å†èµ·å‹•ã—ãªã„</string>
+    <string name="general_restart_on_crash">ã‚¯ãƒ©ãƒƒã‚·ãƒ¥æ™‚ã®ã¿å†èµ·å‹•</string>
+    <string name="general_restart_periodically">å®šæœŸçš„ã«å†èµ·å‹•ï¼ˆ6æ™‚é–“ã”ã¨ï¼‰</string>
+    <string name="general_notification_settings_title">é€šçŸ¥è¨­å®š</string>
+    <string name="general_persistent_notification">æ°¸ç¶šé€šçŸ¥</string>
+    <string name="general_persistent_notification_description">SpeakThatãŒã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªæ™‚ã«æ°¸ç¶šé€šçŸ¥ã‚’è¡¨ç¤º</string>
+    <string name="general_notification_while_reading">èª­ã¿ä¸Šã’ä¸­ã®é€šçŸ¥</string>
+    <string name="general_notification_while_reading_description">TTSãŒã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«èª­ã¿ä¸Šã’ã¦ã„ã‚‹æ™‚ã«é€šçŸ¥ã‚’è¡¨ç¤º</string>
+    <string name="general_data_management_title">ãƒ‡ãƒ¼ã‚¿ç®¡ç†</string>
+    <string name="general_export_configuration">è¨­å®šã‚’ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆ</string>
+    <string name="general_export_configuration_description">ã™ã¹ã¦ã®è¨­å®šã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜</string>
+    <string name="general_import_configuration">è¨­å®šã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆ</string>
+    <string name="general_import_configuration_description">ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰è¨­å®šã‚’èª­ã¿è¾¼ã¿</string>
+    <string name="general_reset_settings">ã™ã¹ã¦ã®è¨­å®šã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«ãƒªã‚»ãƒƒãƒˆ</string>
+    <string name="general_verify_settings">ã™ã¹ã¦ã®è¨­å®šã‚’ç¢ºèª</string>
+    <string name="general_verify_settings_description">åŒ…æ‹¬çš„ãªãƒ†ã‚¹ãƒˆã‚’å®Ÿè¡Œã—ã¦ã™ã¹ã¦ã®è¨­å®šãŒæ­£å¸¸ã«å‹•ä½œã™ã‚‹ã“ã¨ã‚’ç¢ºèª</string>
     
     <!-- Exception Configuration -->
-    <string name="exception_set_end_time">終了時刻を設定</string>
-    <string name="exception_no_days_selected">日が選択されていません</string>
-    <string name="exception_bluetooth_devices_title">この例外をトリガーするBluetoothデバイスを選択してください：</string>
-    <string name="exception_specific_devices">特定のデバイス（1行に1つ）：</string>
-    <string name="exception_select_devices">デバイスを選択</string>
-    <string name="exception_wifi_networks_title">この例外をトリガーするWiFiネットワークを選択してください：</string>
-    <string name="exception_specific_networks">特定のネットワーク（1行に1つ）：</string>
-    <string name="exception_select_networks">ネットワークを選択</string>
+    <string name="exception_set_end_time">çµ‚äº†æ™‚åˆ»ã‚’è¨­å®š</string>
+    <string name="exception_no_days_selected">æ—¥ãŒé¸æŠžã•ã‚Œã¦ã„ã¾ã›ã‚“</string>
+    <string name="exception_bluetooth_devices_title">ã“ã®ä¾‹å¤–ã‚’ãƒˆãƒªã‚¬ãƒ¼ã™ã‚‹Bluetoothãƒ‡ãƒã‚¤ã‚¹ã‚’é¸æŠžã—ã¦ãã ã•ã„ï¼š</string>
+    <string name="exception_specific_devices">ç‰¹å®šã®ãƒ‡ãƒã‚¤ã‚¹ï¼ˆ1è¡Œã«1ã¤ï¼‰ï¼š</string>
+    <string name="exception_select_devices">ãƒ‡ãƒã‚¤ã‚¹ã‚’é¸æŠž</string>
+    <string name="exception_wifi_networks_title">ã“ã®ä¾‹å¤–ã‚’ãƒˆãƒªã‚¬ãƒ¼ã™ã‚‹WiFiãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚’é¸æŠžã—ã¦ãã ã•ã„ï¼š</string>
+    <string name="exception_specific_networks">ç‰¹å®šã®ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ï¼ˆ1è¡Œã«1ã¤ï¼‰ï¼š</string>
+    <string name="exception_select_networks">ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚’é¸æŠž</string>
     
     <!-- Rules Activity -->
-    <string name="rules_no_rules_created">ルールが作成されていません</string>
-    <string name="rules_create_first_rule_description">デバイスの状態、時間、または接続に基づいてSpeakThatが通知を読み上げるタイミングを制御する最初のルールを作成してください。</string>
-    <string name="rules_create_first_rule_button">最初のルールを作成</string>
+    <string name="rules_no_rules_created">ãƒ«ãƒ¼ãƒ«ãŒä½œæˆã•ã‚Œã¦ã„ã¾ã›ã‚“</string>
+    <string name="rules_create_first_rule_description">ãƒ‡ãƒã‚¤ã‚¹ã®çŠ¶æ…‹ã€æ™‚é–“ã€ã¾ãŸã¯æŽ¥ç¶šã«åŸºã¥ã„ã¦SpeakThatãŒé€šçŸ¥ã‚’èª­ã¿ä¸Šã’ã‚‹ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã‚’åˆ¶å¾¡ã™ã‚‹æœ€åˆã®ãƒ«ãƒ¼ãƒ«ã‚’ä½œæˆã—ã¦ãã ã•ã„ã€‚</string>
+    <string name="rules_create_first_rule_button">æœ€åˆã®ãƒ«ãƒ¼ãƒ«ã‚’ä½œæˆ</string>
     
     <!-- Rule Builder -->
     <string name="rule_builder_logic_and">AND</string>
     <string name="rule_builder_logic_or">OR</string>
     <string name="rule_builder_logic_xor">XOR</string>
-    <string name="rule_builder_actions_title">アクション</string>
-    <string name="rule_builder_actions_description">トリガーが満たされたときに何が起こるか</string>
-    <string name="rule_builder_exceptions_title">例外</string>
-    <string name="rule_builder_exceptions_description">トリガーをオーバーライドする条件（オプション）</string>
-    <string name="rule_builder_save_rule">ルールを保存</string>
+    <string name="rule_builder_actions_title">ã‚¢ã‚¯ã‚·ãƒ§ãƒ³</string>
+    <string name="rule_builder_actions_description">ãƒˆãƒªã‚¬ãƒ¼ãŒæº€ãŸã•ã‚ŒãŸã¨ãã«ä½•ãŒèµ·ã“ã‚‹ã‹</string>
+    <string name="rule_builder_exceptions_title">ä¾‹å¤–</string>
+    <string name="rule_builder_exceptions_description">ãƒˆãƒªã‚¬ãƒ¼ã‚’ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã™ã‚‹æ¡ä»¶ï¼ˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ï¼‰</string>
+    <string name="rule_builder_save_rule">ãƒ«ãƒ¼ãƒ«ã‚’ä¿å­˜</string>
     
     <!-- Trigger Configuration -->
-    <string name="trigger_set_button">設定</string>
-    <string name="trigger_no_days_selected">日が選択されていません</string>
-    <string name="trigger_bluetooth_devices_title">このルールをトリガーするBluetoothデバイスを選択してください：</string>
-    <string name="trigger_any_bluetooth_device">任意のBluetoothデバイス</string>
-    <string name="trigger_any_bluetooth_description">任意のデバイスが接続されたときにトリガー</string>
-    <string name="trigger_specific_devices">特定のデバイス（1行に1つ）：</string>
-    <string name="trigger_select_devices">デバイスを選択</string>
-    <string name="trigger_wifi_networks_title">このルールをトリガーするWiFiネットワークを選択してください：</string>
-    <string name="trigger_any_wifi_network">任意のWiFiネットワーク</string>
-    <string name="trigger_any_wifi_description">任意のネットワークに接続されたときにトリガー</string>
-    <string name="trigger_specific_networks">特定のネットワーク（1行に1つ）：</string>
-    <string name="trigger_select_networks">ネットワークを選択</string>
+    <string name="trigger_set_button">è¨­å®š</string>
+    <string name="trigger_no_days_selected">æ—¥ãŒé¸æŠžã•ã‚Œã¦ã„ã¾ã›ã‚“</string>
+    <string name="trigger_bluetooth_devices_title">ã“ã®ãƒ«ãƒ¼ãƒ«ã‚’ãƒˆãƒªã‚¬ãƒ¼ã™ã‚‹Bluetoothãƒ‡ãƒã‚¤ã‚¹ã‚’é¸æŠžã—ã¦ãã ã•ã„ï¼š</string>
+    <string name="trigger_any_bluetooth_device">ä»»æ„ã®Bluetoothãƒ‡ãƒã‚¤ã‚¹</string>
+    <string name="trigger_any_bluetooth_description">ä»»æ„ã®ãƒ‡ãƒã‚¤ã‚¹ãŒæŽ¥ç¶šã•ã‚ŒãŸã¨ãã«ãƒˆãƒªã‚¬ãƒ¼</string>
+    <string name="trigger_specific_devices">ç‰¹å®šã®ãƒ‡ãƒã‚¤ã‚¹ï¼ˆ1è¡Œã«1ã¤ï¼‰ï¼š</string>
+    <string name="trigger_select_devices">ãƒ‡ãƒã‚¤ã‚¹ã‚’é¸æŠž</string>
+    <string name="trigger_wifi_networks_title">ã“ã®ãƒ«ãƒ¼ãƒ«ã‚’ãƒˆãƒªã‚¬ãƒ¼ã™ã‚‹WiFiãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚’é¸æŠžã—ã¦ãã ã•ã„ï¼š</string>
+    <string name="trigger_any_wifi_network">ä»»æ„ã®WiFiãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯</string>
+    <string name="trigger_any_wifi_description">ä»»æ„ã®ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã«æŽ¥ç¶šã•ã‚ŒãŸã¨ãã«ãƒˆãƒªã‚¬ãƒ¼</string>
+    <string name="trigger_specific_networks">ç‰¹å®šã®ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ï¼ˆ1è¡Œã«1ã¤ï¼‰ï¼š</string>
+    <string name="trigger_select_networks">ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚’é¸æŠž</string>
     
         <!-- Wave Calibration -->
-    <string name="wave_calibration_recalibrate">再キャリブレーション</string>
-    <string name="wave_calibration_save_settings">これで動作します！設定を保存</string>
-    <string name="wave_calibration_disable">ウェーブ停止機能をオフ</string>
+    <string name="wave_calibration_recalibrate">å†ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³</string>
+    <string name="wave_calibration_save_settings">ã“ã‚Œã§å‹•ä½œã—ã¾ã™ï¼è¨­å®šã‚’ä¿å­˜</string>
+    <string name="wave_calibration_disable">ã‚¦ã‚§ãƒ¼ãƒ–åœæ­¢æ©Ÿèƒ½ã‚’ã‚ªãƒ•</string>
     
     <!-- Voice Settings - Audio Output -->
-    <string name="voice_audio_output_settings">音声出力設定</string>
-    <string name="voice_audio_output_description">通知がデバイスの音声システムを通じて再生される方法を設定します。</string>
-    <string name="voice_audio_stream_type">音声ストリームタイプ</string>
-    <string name="voice_content_type">コンテンツタイプ</string>
-    <string name="voice_content_type_description">システムにどのような種類の音声かを伝えます。通知には音声が推奨されます。</string>
-    <string name="voice_audio_recommendation">推奨：通知 + 音声</string>
-    <string name="voice_preview_actions">プレビュー &amp; アクション</string>
-    <string name="voice_preview_button">プレビュー</string>
-    <string name="voice_test_settings">音声設定をテスト</string>
-    <string name="voice_reset_defaults">デフォルトにリセット</string>
-    <string name="voice_preview_tip">ヒント：プレビューボタンを使用して、設定した音声設定で通知がどのように聞こえるかをテストしてください。すべての変更は自動的に保存されます。</string>
+    <string name="voice_audio_output_settings">éŸ³å£°å‡ºåŠ›è¨­å®š</string>
+    <string name="voice_audio_output_description">é€šçŸ¥ãŒãƒ‡ãƒã‚¤ã‚¹ã®éŸ³å£°ã‚·ã‚¹ãƒ†ãƒ ã‚’é€šã˜ã¦å†ç”Ÿã•ã‚Œã‚‹æ–¹æ³•ã‚’è¨­å®šã—ã¾ã™ã€‚</string>
+    <string name="voice_audio_stream_type">éŸ³å£°ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚¿ã‚¤ãƒ—</string>
+    <string name="voice_content_type">ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¿ã‚¤ãƒ—</string>
+    <string name="voice_content_type_description">ã‚·ã‚¹ãƒ†ãƒ ã«ã©ã®ã‚ˆã†ãªç¨®é¡žã®éŸ³å£°ã‹ã‚’ä¼ãˆã¾ã™ã€‚é€šçŸ¥ã«ã¯éŸ³å£°ãŒæŽ¨å¥¨ã•ã‚Œã¾ã™ã€‚</string>
+    <string name="voice_audio_recommendation">æŽ¨å¥¨ï¼šé€šçŸ¥ + éŸ³å£°</string>
+    <string name="voice_preview_actions">ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ &amp; ã‚¢ã‚¯ã‚·ãƒ§ãƒ³</string>
+    <string name="voice_preview_button">ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼</string>
+    <string name="voice_test_settings">éŸ³å£°è¨­å®šã‚’ãƒ†ã‚¹ãƒˆ</string>
+    <string name="voice_reset_defaults">ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«ãƒªã‚»ãƒƒãƒˆ</string>
+    <string name="voice_preview_tip">ãƒ’ãƒ³ãƒˆï¼šãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ãƒœã‚¿ãƒ³ã‚’ä½¿ç”¨ã—ã¦ã€è¨­å®šã—ãŸéŸ³å£°è¨­å®šã§é€šçŸ¥ãŒã©ã®ã‚ˆã†ã«èžã“ãˆã‚‹ã‹ã‚’ãƒ†ã‚¹ãƒˆã—ã¦ãã ã•ã„ã€‚ã™ã¹ã¦ã®å¤‰æ›´ã¯è‡ªå‹•çš„ã«ä¿å­˜ã•ã‚Œã¾ã™ã€‚</string>
     
     <!-- Filter Settings -->
-    <string name="filter_word_count">(0単語)</string>
-    <string name="filter_swap_description">通知の単語を検閲や発音修正のために交換</string>
-    <string name="filter_swap_count">(0交換)</string>
-    <string name="filter_swap_tip">ヒント：大文字小文字を区別しないマッチングには小文字を使用してください。\'Swap with\'を空にすると、単語を完全に削除できます。</string>
-    <string name="filter_media_description">YouTubeのようなアプリで、不要な通知（メディアコントロール）を自動的にフィルタリングし、必要な通知（コメントへの返信など）を許可</string>
-    <string name="filter_media_enable">スマートメディア通知フィルタリングを有効にする</string>
-    <string name="filter_media_apps_title">フィルタリングされたメディアアプリ：</string>
-    <string name="filter_media_apps_description">メディア通知用に自動的にフィルタリングされるアプリ。フィルタリングしたいメディアアプリを追加してください。</string>
-    <string name="filter_advanced_options">詳細オプション</string>
-    <string name="filter_exception_apps_title">例外アプリ：</string>
-    <string name="filter_exception_apps_description">通知がフィルタリングされるべきではないアプリ（返信用のYouTubeなど）</string>
-    <string name="filter_important_keywords_title">重要なキーワード：</string>
-    <string name="filter_important_keywords_description">重要な通知を示す単語（\'返信\'、\'コメント\'など）</string>
-    <string name="filter_media_info">メディアコントロールを自動的にフィルタリングし、重要な通知を保持します。（詳細はタップ）</string>
+    <string name="filter_word_count">(0å˜èªž)</string>
+    <string name="filter_swap_description">é€šçŸ¥ã®å˜èªžã‚’æ¤œé–²ã‚„ç™ºéŸ³ä¿®æ­£ã®ãŸã‚ã«äº¤æ›</string>
+    <string name="filter_swap_count">(0äº¤æ›)</string>
+    <string name="filter_swap_tip">ãƒ’ãƒ³ãƒˆï¼šå¤§æ–‡å­—å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„ãƒžãƒƒãƒãƒ³ã‚°ã«ã¯å°æ–‡å­—ã‚’ä½¿ç”¨ã—ã¦ãã ã•ã„ã€‚\'Swap with\'ã‚’ç©ºã«ã™ã‚‹ã¨ã€å˜èªžã‚’å®Œå…¨ã«å‰Šé™¤ã§ãã¾ã™ã€‚</string>
+    <string name="filter_media_description">YouTubeã®ã‚ˆã†ãªã‚¢ãƒ—ãƒªã§ã€ä¸è¦ãªé€šçŸ¥ï¼ˆãƒ¡ãƒ‡ã‚£ã‚¢ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ï¼‰ã‚’è‡ªå‹•çš„ã«ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã—ã€å¿…è¦ãªé€šçŸ¥ï¼ˆã‚³ãƒ¡ãƒ³ãƒˆã¸ã®è¿”ä¿¡ãªã©ï¼‰ã‚’è¨±å¯</string>
+    <string name="filter_media_enable">ã‚¹ãƒžãƒ¼ãƒˆãƒ¡ãƒ‡ã‚£ã‚¢é€šçŸ¥ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã‚’æœ‰åŠ¹ã«ã™ã‚‹</string>
+    <string name="filter_media_apps_title">ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã•ã‚ŒãŸãƒ¡ãƒ‡ã‚£ã‚¢ã‚¢ãƒ—ãƒªï¼š</string>
+    <string name="filter_media_apps_description">ãƒ¡ãƒ‡ã‚£ã‚¢é€šçŸ¥ç”¨ã«è‡ªå‹•çš„ã«ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã•ã‚Œã‚‹ã‚¢ãƒ—ãƒªã€‚ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã—ãŸã„ãƒ¡ãƒ‡ã‚£ã‚¢ã‚¢ãƒ—ãƒªã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚</string>
+    <string name="filter_advanced_options">è©³ç´°ã‚ªãƒ—ã‚·ãƒ§ãƒ³</string>
+    <string name="filter_exception_apps_title">ä¾‹å¤–ã‚¢ãƒ—ãƒªï¼š</string>
+    <string name="filter_exception_apps_description">é€šçŸ¥ãŒãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã•ã‚Œã‚‹ã¹ãã§ã¯ãªã„ã‚¢ãƒ—ãƒªï¼ˆè¿”ä¿¡ç”¨ã®YouTubeãªã©ï¼‰</string>
+    <string name="filter_important_keywords_title">é‡è¦ãªã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ï¼š</string>
+    <string name="filter_important_keywords_description">é‡è¦ãªé€šçŸ¥ã‚’ç¤ºã™å˜èªžï¼ˆ\'è¿”ä¿¡\'ã€\'ã‚³ãƒ¡ãƒ³ãƒˆ\'ãªã©ï¼‰</string>
+    <string name="filter_media_info">ãƒ¡ãƒ‡ã‚£ã‚¢ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚’è‡ªå‹•çš„ã«ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã—ã€é‡è¦ãªé€šçŸ¥ã‚’ä¿æŒã—ã¾ã™ã€‚ï¼ˆè©³ç´°ã¯ã‚¿ãƒƒãƒ—ï¼‰</string>
     
     <!-- Dialog Strings - Donate -->
-    <string name="donate_coffee">☕</string>
-    <string name="donate_theatre">🎭</string>
-    <string name="donate_octopus">🐙</string>
-    <string name="donate_bitcoin">₿</string>
+    <string name="donate_coffee">â˜•</string>
+    <string name="donate_theatre">ðŸŽ­</string>
+    <string name="donate_octopus">ðŸ™</string>
+    <string name="donate_bitcoin">â‚¿</string>
     <string name="donate_github_sponsors">GitHub Sponsors</string>
-    <string name="donate_github_description">オープンソース開発をサポート</string>
+    <string name="donate_github_description">ã‚ªãƒ¼ãƒ—ãƒ³ã‚½ãƒ¼ã‚¹é–‹ç™ºã‚’ã‚µãƒãƒ¼ãƒˆ</string>
     <string name="donate_bitcoin_title">Bitcoin (BTC)</string>
-    <string name="donate_bitcoin_description">Bitcoinネットワーク経由でBTCを寄付</string>
-    <string name="donate_privacy">🔒 プライバシー：すべての寄付はそれぞれのプラットフォームで処理されます。支払い情報を収集または保存することはありません。</string>
-    <string name="donate_friendly_message">ヒント！親切なメールを送ることもできます。素敵なメッセージはいつも私の一日を明るくします！ :)</string>
+    <string name="donate_bitcoin_description">Bitcoinãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯çµŒç”±ã§BTCã‚’å¯„ä»˜</string>
+    <string name="donate_privacy">ðŸ”’ ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ï¼šã™ã¹ã¦ã®å¯„ä»˜ã¯ãã‚Œãžã‚Œã®ãƒ—ãƒ©ãƒƒãƒˆãƒ•ã‚©ãƒ¼ãƒ ã§å‡¦ç†ã•ã‚Œã¾ã™ã€‚æ”¯æ‰•ã„æƒ…å ±ã‚’åŽé›†ã¾ãŸã¯ä¿å­˜ã™ã‚‹ã“ã¨ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚</string>
+    <string name="donate_friendly_message">ãƒ’ãƒ³ãƒˆï¼è¦ªåˆ‡ãªãƒ¡ãƒ¼ãƒ«ã‚’é€ã‚‹ã“ã¨ã‚‚ã§ãã¾ã™ã€‚ç´ æ•µãªãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¯ã„ã¤ã‚‚ç§ã®ä¸€æ—¥ã‚’æ˜Žã‚‹ãã—ã¾ã™ï¼ :)</string>
     
     <!-- Dialog Strings - Filter Suggestion -->
-    <string name="filter_suggestion_smart_pattern">スマートパターン（推奨）</string>
-    <string name="filter_suggestion_smart_preview">プレビュー：位置情報を更新中...</string>
-    <string name="filter_suggestion_keywords">キーワードのみ</string>
-    <string name="filter_suggestion_keywords_preview">プレビュー：位置情報を更新中</string>
-    <string name="filter_suggestion_exact_match">完全一致</string>
-    <string name="filter_suggestion_exact_preview">プレビュー：午後2:30に位置情報を更新中...</string>
-    <string name="filter_suggestion_all_notifications">このアプリからのすべての通知</string>
-    <string name="filter_suggestion_all_preview">プレビュー：すべてのLife360通知をブロック</string>
-    <string name="filter_suggestion_action">アクション：</string>
-    <string name="filter_suggestion_block_completely">完全にブロック</string>
-    <string name="filter_suggestion_make_private">プライベートにする</string>
-    <string name="filter_suggestion_create_filter">フィルターを作成</string>
+    <string name="filter_suggestion_smart_pattern">ã‚¹ãƒžãƒ¼ãƒˆãƒ‘ã‚¿ãƒ¼ãƒ³ï¼ˆæŽ¨å¥¨ï¼‰</string>
+    <string name="filter_suggestion_smart_preview">ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ï¼šä½ç½®æƒ…å ±ã‚’æ›´æ–°ä¸­...</string>
+    <string name="filter_suggestion_keywords">ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã®ã¿</string>
+    <string name="filter_suggestion_keywords_preview">ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ï¼šä½ç½®æƒ…å ±ã‚’æ›´æ–°ä¸­</string>
+    <string name="filter_suggestion_exact_match">å®Œå…¨ä¸€è‡´</string>
+    <string name="filter_suggestion_exact_preview">ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ï¼šåˆå¾Œ2:30ã«ä½ç½®æƒ…å ±ã‚’æ›´æ–°ä¸­...</string>
+    <string name="filter_suggestion_all_notifications">ã“ã®ã‚¢ãƒ—ãƒªã‹ã‚‰ã®ã™ã¹ã¦ã®é€šçŸ¥</string>
+    <string name="filter_suggestion_all_preview">ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ï¼šã™ã¹ã¦ã®Life360é€šçŸ¥ã‚’ãƒ–ãƒ­ãƒƒã‚¯</string>
+    <string name="filter_suggestion_action">ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ï¼š</string>
+    <string name="filter_suggestion_block_completely">å®Œå…¨ã«ãƒ–ãƒ­ãƒƒã‚¯</string>
+    <string name="filter_suggestion_make_private">ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆã«ã™ã‚‹</string>
+    <string name="filter_suggestion_create_filter">ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã‚’ä½œæˆ</string>
     
     <!-- Dialog Strings - Support & Feedback -->
-    <string name="support_chat">💬</string>
-    <string name="icon_refresh">🔄</string>
-    <string name="support_lightbulb">💡</string>
-    <string name="support_bug">🐛</string>
-    <string name="support_question">❓</string>
-    <string name="support_general_title">一般的なサポート</string>
-    <string name="support_general_description">セットアップ、使用方法、または一般的な質問についてのヘルプ</string>
-    <string name="support_clipboard">📋</string>
-    <string name="support_include_logs">デバッグログを含める</string>
-    <string name="support_logs_description">バグレポートや技術的な問題に推奨されます。デバッグログは問題の特定と修正を迅速に行うのに役立ちます。\nログには通知内容の情報が含まれる場合があります！送信前にログを確認してください。</string>
-    <string name="support_log_entries">現在のログエントリ：0</string>
-    <string name="support_logs_privacy">🔒 プライバシー：デバッグログは共有を選択しない限りデバイスに残ります。メールを送信する前にログ内容を確認できます。</string>
+    <string name="support_chat">ðŸ’¬</string>
+    <string name="icon_refresh">ðŸ”„</string>
+    <string name="support_lightbulb">ðŸ’¡</string>
+    <string name="support_bug">ðŸ›</string>
+    <string name="support_question">â“</string>
+    <string name="support_general_title">ä¸€èˆ¬çš„ãªã‚µãƒãƒ¼ãƒˆ</string>
+    <string name="support_general_description">ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ã€ä½¿ç”¨æ–¹æ³•ã€ã¾ãŸã¯ä¸€èˆ¬çš„ãªè³ªå•ã«ã¤ã„ã¦ã®ãƒ˜ãƒ«ãƒ—</string>
+    <string name="support_clipboard">ðŸ“‹</string>
+    <string name="support_include_logs">ãƒ‡ãƒãƒƒã‚°ãƒ­ã‚°ã‚’å«ã‚ã‚‹</string>
+    <string name="support_logs_description">ãƒã‚°ãƒ¬ãƒãƒ¼ãƒˆã‚„æŠ€è¡“çš„ãªå•é¡Œã«æŽ¨å¥¨ã•ã‚Œã¾ã™ã€‚ãƒ‡ãƒãƒƒã‚°ãƒ­ã‚°ã¯å•é¡Œã®ç‰¹å®šã¨ä¿®æ­£ã‚’è¿…é€Ÿã«è¡Œã†ã®ã«å½¹ç«‹ã¡ã¾ã™ã€‚\nãƒ­ã‚°ã«ã¯é€šçŸ¥å†…å®¹ã®æƒ…å ±ãŒå«ã¾ã‚Œã‚‹å ´åˆãŒã‚ã‚Šã¾ã™ï¼é€ä¿¡å‰ã«ãƒ­ã‚°ã‚’ç¢ºèªã—ã¦ãã ã•ã„ã€‚</string>
+    <string name="support_log_entries">ç¾åœ¨ã®ãƒ­ã‚°ã‚¨ãƒ³ãƒˆãƒªï¼š0</string>
+    <string name="support_logs_privacy">ðŸ”’ ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ï¼šãƒ‡ãƒãƒƒã‚°ãƒ­ã‚°ã¯å…±æœ‰ã‚’é¸æŠžã—ãªã„é™ã‚Šãƒ‡ãƒã‚¤ã‚¹ã«æ®‹ã‚Šã¾ã™ã€‚ãƒ¡ãƒ¼ãƒ«ã‚’é€ä¿¡ã™ã‚‹å‰ã«ãƒ­ã‚°å†…å®¹ã‚’ç¢ºèªã§ãã¾ã™ã€‚</string>
     
     <!-- Action Configuration -->
-    <string name="action_configure_voice_settings">このルールがトリガーされたときに適用する音声設定を構成：</string>
+    <string name="action_configure_voice_settings">ã“ã®ãƒ«ãƒ¼ãƒ«ãŒãƒˆãƒªã‚¬ãƒ¼ã•ã‚ŒãŸã¨ãã«é©ç”¨ã™ã‚‹éŸ³å£°è¨­å®šã‚’æ§‹æˆï¼š</string>
     
     <!-- Behavior Settings -->
-    <string name="behavior_speech_preview_example">プレビュー：メッセージがあなたに通知しました：Mitchi: SpeakThatを使用していると聞きました！</string>
+    <string name="behavior_speech_preview_example">ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ï¼šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒã‚ãªãŸã«é€šçŸ¥ã—ã¾ã—ãŸï¼šMitchi: SpeakThatã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹ã¨èžãã¾ã—ãŸï¼</string>
     
     <!-- Rules Activity -->
-    <string name="rules_wrench_icon">ルール</string>
+    <string name="rules_wrench_icon">ãƒ«ãƒ¼ãƒ«</string>
     
     <!-- Exception Configuration -->
-    <string name="exception_any_bluetooth_device">任意のBluetoothデバイス</string>
-    <string name="exception_any_wifi_network">任意のWiFiネットワーク</string>
+    <string name="exception_any_bluetooth_device">ä»»æ„ã®Bluetoothãƒ‡ãƒã‚¤ã‚¹</string>
+    <string name="exception_any_wifi_network">ä»»æ„ã®WiFiãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯</string>
     
-    <string name="dialog_support_title">サポート &amp; フィードバック</string>
-    <string name="dialog_support_description">今日はどのようなお手伝いができますか？あなたのニーズに最も適したオプションを選択してください：</string>
-    <string name="dialog_support_feature_request">機能リクエスト</string>
-    <string name="dialog_support_feature_description">新機能や改善を提案</string>
-    <string name="dialog_support_bug_report">バグレポート</string>
-    <string name="dialog_support_bug_description">クラッシュ、エラー、予期しない動作を報告</string>
+    <string name="dialog_support_title">ã‚µãƒãƒ¼ãƒˆ &amp; ãƒ•ã‚£ãƒ¼ãƒ‰ãƒãƒƒã‚¯</string>
+    <string name="dialog_support_description">ä»Šæ—¥ã¯ã©ã®ã‚ˆã†ãªãŠæ‰‹ä¼ã„ãŒã§ãã¾ã™ã‹ï¼Ÿã‚ãªãŸã®ãƒ‹ãƒ¼ã‚ºã«æœ€ã‚‚é©ã—ãŸã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’é¸æŠžã—ã¦ãã ã•ã„ï¼š</string>
+    <string name="dialog_support_feature_request">æ©Ÿèƒ½ãƒªã‚¯ã‚¨ã‚¹ãƒˆ</string>
+    <string name="dialog_support_feature_description">æ–°æ©Ÿèƒ½ã‚„æ”¹å–„ã‚’ææ¡ˆ</string>
+    <string name="dialog_support_bug_report">ãƒã‚°ãƒ¬ãƒãƒ¼ãƒˆ</string>
+    <string name="dialog_support_bug_description">ã‚¯ãƒ©ãƒƒã‚·ãƒ¥ã€ã‚¨ãƒ©ãƒ¼ã€äºˆæœŸã—ãªã„å‹•ä½œã‚’å ±å‘Š</string>
     
     <!-- Dialog Strings - Donate -->
-    <string name="dialog_donate_title">SpeakThat をサポート！</string>
-    <string name="dialog_donate_message">こんにちは！Mitchi です。SpeakThat の制作には多くの作業が含まれています！UI/UX デザイン、品質保証とテスト、プロジェクト管理、配布と公開、アプリストアへの対応、ユーザーサポートなど、数え切れないほどの作業を担当しています！\n\nSpeakThat があなたのお役に立った場合、または有料でも購入していただけるような価値があると感じていただけた場合は、開発をサポートしていただければ幸いです！\n\nすべての寄付により、このアプリは必要とするすべての人にとって完全に無料でオープンソースのまま維持されます。\n\nありがとうございます！❤️</string>
-    <string name="dialog_donate_coffee">コーヒーをおごる</string>
-    <string name="dialog_donate_coffee_description">Ko-fi 経由でのクイック一回限りの寄付</string>
-    <string name="dialog_donate_patron">パトロンになる</string>
-    <string name="dialog_donate_patron_description">限定アップデート付きの月額サポート</string>
+    <string name="dialog_donate_title">SpeakThat ã‚’ã‚µãƒãƒ¼ãƒˆï¼</string>
+    <string name="dialog_donate_message">ã“ã‚“ã«ã¡ã¯ï¼Mitchi ã§ã™ã€‚SpeakThat ã®åˆ¶ä½œã«ã¯å¤šãã®ä½œæ¥­ãŒå«ã¾ã‚Œã¦ã„ã¾ã™ï¼UI/UX ãƒ‡ã‚¶ã‚¤ãƒ³ã€å“è³ªä¿è¨¼ã¨ãƒ†ã‚¹ãƒˆã€ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆç®¡ç†ã€é…å¸ƒã¨å…¬é–‹ã€ã‚¢ãƒ—ãƒªã‚¹ãƒˆã‚¢ã¸ã®å¯¾å¿œã€ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚µãƒãƒ¼ãƒˆãªã©ã€æ•°ãˆåˆ‡ã‚Œãªã„ã»ã©ã®ä½œæ¥­ã‚’æ‹…å½“ã—ã¦ã„ã¾ã™ï¼\n\nSpeakThat ãŒã‚ãªãŸã®ãŠå½¹ã«ç«‹ã£ãŸå ´åˆã€ã¾ãŸã¯æœ‰æ–™ã§ã‚‚è³¼å…¥ã—ã¦ã„ãŸã ã‘ã‚‹ã‚ˆã†ãªä¾¡å€¤ãŒã‚ã‚‹ã¨æ„Ÿã˜ã¦ã„ãŸã ã‘ãŸå ´åˆã¯ã€é–‹ç™ºã‚’ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ãŸã ã‘ã‚Œã°å¹¸ã„ã§ã™ï¼\n\nã™ã¹ã¦ã®å¯„ä»˜ã«ã‚ˆã‚Šã€ã“ã®ã‚¢ãƒ—ãƒªã¯å¿…è¦ã¨ã™ã‚‹ã™ã¹ã¦ã®äººã«ã¨ã£ã¦å®Œå…¨ã«ç„¡æ–™ã§ã‚ªãƒ¼ãƒ—ãƒ³ã‚½ãƒ¼ã‚¹ã®ã¾ã¾ç¶­æŒã•ã‚Œã¾ã™ã€‚\n\nã‚ã‚ŠãŒã¨ã†ã”ã–ã„ã¾ã™ï¼â¤ï¸</string>
+    <string name="dialog_donate_coffee">ã‚³ãƒ¼ãƒ’ãƒ¼ã‚’ãŠã”ã‚‹</string>
+    <string name="dialog_donate_coffee_description">Ko-fi çµŒç”±ã§ã®ã‚¯ã‚¤ãƒƒã‚¯ä¸€å›žé™ã‚Šã®å¯„ä»˜</string>
+    <string name="dialog_donate_patron">ãƒ‘ãƒˆãƒ­ãƒ³ã«ãªã‚‹</string>
+    <string name="dialog_donate_patron_description">é™å®šã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆä»˜ãã®æœˆé¡ã‚µãƒãƒ¼ãƒˆ</string>
     
     <!-- Development Settings -->
-    <string name="dev_debug_tools_title">🛠️ デバッグツール</string>
-    <string name="dev_debug_tools_description">アプリのデバッグとテスト用ツール</string>
-    <string name="dev_notification_history">📋 通知履歴を表示</string>
-    <string name="dev_analytics">📊 ヘルプ使用分析を表示</string>
-    <string name="dev_battery_report">🔋 バッテリー最適化レポート</string>
-    <string name="dev_repair_blacklist">🛠️ 単語ブラックリストを修復</string>
-    <string name="dev_background_monitor">🛰️ バックグラウンドプロセスモニター</string>
-    <string name="dev_installation_debug">🔍 インストールソースデバッグ</string>
-    <string name="dev_test_rules">🧪 ルールシステムテスト</string>
+    <string name="dev_debug_tools_title">ðŸ› ï¸ ãƒ‡ãƒãƒƒã‚°ãƒ„ãƒ¼ãƒ«</string>
+    <string name="dev_debug_tools_description">ã‚¢ãƒ—ãƒªã®ãƒ‡ãƒãƒƒã‚°ã¨ãƒ†ã‚¹ãƒˆç”¨ãƒ„ãƒ¼ãƒ«</string>
+    <string name="dev_notification_history">ðŸ“‹ é€šçŸ¥å±¥æ­´ã‚’è¡¨ç¤º</string>
+    <string name="dev_analytics">ðŸ“Š ãƒ˜ãƒ«ãƒ—ä½¿ç”¨åˆ†æžã‚’è¡¨ç¤º</string>
+    <string name="dev_battery_report">ðŸ”‹ ãƒãƒƒãƒ†ãƒªãƒ¼æœ€é©åŒ–ãƒ¬ãƒãƒ¼ãƒˆ</string>
+    <string name="dev_repair_blacklist">ðŸ› ï¸ å˜èªžãƒ–ãƒ©ãƒƒã‚¯ãƒªã‚¹ãƒˆã‚’ä¿®å¾©</string>
+    <string name="dev_background_monitor">ðŸ›°ï¸ ãƒãƒƒã‚¯ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰ãƒ—ãƒ­ã‚»ã‚¹ãƒ¢ãƒ‹ã‚¿ãƒ¼</string>
+    <string name="dev_installation_debug">ðŸ” ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã‚½ãƒ¼ã‚¹ãƒ‡ãƒãƒƒã‚°</string>
+    <string name="dev_test_rules">ðŸ§ª ãƒ«ãƒ¼ãƒ«ã‚·ã‚¹ãƒ†ãƒ ãƒ†ã‚¹ãƒˆ</string>
     
     <!-- Notification History -->
-    <string name="notification_history_title">通知履歴</string>
-    <string name="notification_history_description">SpeakThat で処理された最近の通知</string>
-    <string name="notification_history_empty">表示する通知はありません</string>
-    <string name="notification_history_clear">履歴をクリア</string>
-    <string name="notification_history_recent">📜 最近の通知</string>
-    <string name="notification_history_loading">通知履歴を読み込み中...</string>
-    <string name="notification_history_debug_info">デバッグ情報</string>
-    <string name="notification_history_debug_description">この画面は、デバッグ目的で SpeakThat! がキャプチャした通知を表示します。アプリが正しく動作していることを確認し、読み上げられている通知を正確に確認するのに役立ちます。</string>
+    <string name="notification_history_title">é€šçŸ¥å±¥æ­´</string>
+    <string name="notification_history_description">SpeakThat ã§å‡¦ç†ã•ã‚ŒãŸæœ€è¿‘ã®é€šçŸ¥</string>
+    <string name="notification_history_empty">è¡¨ç¤ºã™ã‚‹é€šçŸ¥ã¯ã‚ã‚Šã¾ã›ã‚“</string>
+    <string name="notification_history_clear">å±¥æ­´ã‚’ã‚¯ãƒªã‚¢</string>
+    <string name="notification_history_recent">ðŸ“œ æœ€è¿‘ã®é€šçŸ¥</string>
+    <string name="notification_history_loading">é€šçŸ¥å±¥æ­´ã‚’èª­ã¿è¾¼ã¿ä¸­...</string>
+    <string name="notification_history_debug_info">ãƒ‡ãƒãƒƒã‚°æƒ…å ±</string>
+    <string name="notification_history_debug_description">ã“ã®ç”»é¢ã¯ã€ãƒ‡ãƒãƒƒã‚°ç›®çš„ã§ SpeakThat! ãŒã‚­ãƒ£ãƒ—ãƒãƒ£ã—ãŸé€šçŸ¥ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚ã‚¢ãƒ—ãƒªãŒæ­£ã—ãå‹•ä½œã—ã¦ã„ã‚‹ã“ã¨ã‚’ç¢ºèªã—ã€èª­ã¿ä¸Šã’ã‚‰ã‚Œã¦ã„ã‚‹é€šçŸ¥ã‚’æ­£ç¢ºã«ç¢ºèªã™ã‚‹ã®ã«å½¹ç«‹ã¡ã¾ã™ã€‚</string>
     
     <!-- Additional Dialog Strings -->
-    <string name="dialog_filter_suggestion_title">類似通知をフィルタ</string>
-    <string name="dialog_filter_suggestion_original">元の通知：</string>
-    <string name="dialog_filter_suggestion_sample">サンプル通知テキスト</string>
-    <string name="dialog_filter_suggestion_choose">フィルタタイプを選択：</string>
-    <string name="dialog_wifi_config_title">WiFi設定</string>
-    <string name="dialog_time_schedule_title">時間スケジュール設定</string>
-    <string name="dialog_bluetooth_config_title">Bluetooth設定</string>
+    <string name="dialog_filter_suggestion_title">é¡žä¼¼é€šçŸ¥ã‚’ãƒ•ã‚£ãƒ«ã‚¿</string>
+    <string name="dialog_filter_suggestion_original">å…ƒã®é€šçŸ¥ï¼š</string>
+    <string name="dialog_filter_suggestion_sample">ã‚µãƒ³ãƒ—ãƒ«é€šçŸ¥ãƒ†ã‚­ã‚¹ãƒˆ</string>
+    <string name="dialog_filter_suggestion_choose">ãƒ•ã‚£ãƒ«ã‚¿ã‚¿ã‚¤ãƒ—ã‚’é¸æŠžï¼š</string>
+    <string name="dialog_wifi_config_title">WiFiè¨­å®š</string>
+    <string name="dialog_time_schedule_title">æ™‚é–“ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«è¨­å®š</string>
+    <string name="dialog_bluetooth_config_title">Bluetoothè¨­å®š</string>
     
     <!-- Rules Activity -->
-    <string name="rules_title">ルール</string>
-    <string name="rules_description">デバイスの状態、時間、接続に基づいて SpeakThat が通知を読み上げるタイミングを制御する強力なルールを作成。</string>
-    <string name="rules_enable">ルールを有効</string>
-    <string name="rules_create_new">新しいルールを作成</string>
+    <string name="rules_title">ãƒ«ãƒ¼ãƒ«</string>
+    <string name="rules_description">ãƒ‡ãƒã‚¤ã‚¹ã®çŠ¶æ…‹ã€æ™‚é–“ã€æŽ¥ç¶šã«åŸºã¥ã„ã¦ SpeakThat ãŒé€šçŸ¥ã‚’èª­ã¿ä¸Šã’ã‚‹ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã‚’åˆ¶å¾¡ã™ã‚‹å¼·åŠ›ãªãƒ«ãƒ¼ãƒ«ã‚’ä½œæˆã€‚</string>
+    <string name="rules_enable">ãƒ«ãƒ¼ãƒ«ã‚’æœ‰åŠ¹</string>
+    <string name="rules_create_new">æ–°ã—ã„ãƒ«ãƒ¼ãƒ«ã‚’ä½œæˆ</string>
     
     <!-- Onboarding -->
-    <string name="onboarding_skip">スキップ</string>
-    <string name="onboarding_next">次へ</string>
+    <string name="onboarding_skip">ã‚¹ã‚­ãƒƒãƒ—</string>
+    <string name="onboarding_next">æ¬¡ã¸</string>
     
     <!-- Language and Theme Onboarding -->
-    <string name="onboarding_language_theme_title">言語とテーマ</string>
-    <string name="onboarding_language_theme_description">SpeakThatが使用する言語を選択してください。必要に応じてダークモードを有効にすることもできます。</string>
-    <string name="onboarding_language_section_title">言語</string>
-    <string name="onboarding_language_help_title">お使いの言語がリストにありませんか？</string>
-    <string name="onboarding_language_help_description">できる限り多くの言語をサポートするよう努めています。可能でしたら、Crowdinページで翻訳にご協力ください！</string>
-    <string name="onboarding_theme_section_title">テーマ</string>
-    <string name="onboarding_theme_description">このアプリでダークモードを使用</string>
-    <string name="onboarding_theme_light">ライトモード</string>
-    <string name="onboarding_theme_dark">ダークモード</string>
+    <string name="onboarding_language_theme_title">è¨€èªžã¨ãƒ†ãƒ¼ãƒž</string>
+    <string name="onboarding_language_theme_description">SpeakThatãŒä½¿ç”¨ã™ã‚‹è¨€èªžã‚’é¸æŠžã—ã¦ãã ã•ã„ã€‚å¿…è¦ã«å¿œã˜ã¦ãƒ€ãƒ¼ã‚¯ãƒ¢ãƒ¼ãƒ‰ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã“ã¨ã‚‚ã§ãã¾ã™ã€‚</string>
+    <string name="onboarding_language_section_title">è¨€èªž</string>
+    <string name="onboarding_language_help_title">ãŠä½¿ã„ã®è¨€èªžãŒãƒªã‚¹ãƒˆã«ã‚ã‚Šã¾ã›ã‚“ã‹ï¼Ÿ</string>
+    <string name="onboarding_language_help_description">ã§ãã‚‹é™ã‚Šå¤šãã®è¨€èªžã‚’ã‚µãƒãƒ¼ãƒˆã™ã‚‹ã‚ˆã†åŠªã‚ã¦ã„ã¾ã™ã€‚å¯èƒ½ã§ã—ãŸã‚‰ã€Crowdinãƒšãƒ¼ã‚¸ã§ç¿»è¨³ã«ã”å”åŠ›ãã ã•ã„ï¼</string>
+    <string name="onboarding_theme_section_title">ãƒ†ãƒ¼ãƒž</string>
+    <string name="onboarding_theme_description">ã“ã®ã‚¢ãƒ—ãƒªã§ãƒ€ãƒ¼ã‚¯ãƒ¢ãƒ¼ãƒ‰ã‚’ä½¿ç”¨</string>
+    <string name="onboarding_theme_light">ãƒ©ã‚¤ãƒˆãƒ¢ãƒ¼ãƒ‰</string>
+    <string name="onboarding_theme_dark">ãƒ€ãƒ¼ã‚¯ãƒ¢ãƒ¼ãƒ‰</string>
     
     <!-- Onboarding Page Titles and Descriptions -->
-    <string name="onboarding_welcome_title">SpeakThatへようこそ！</string>
-    <string name="onboarding_welcome_description">画面を見つめずに接続を保ちましょう。お使いの電話が通知を音読するので、重要なことに集中できます。</string>
+    <string name="onboarding_welcome_title">SpeakThatã¸ã‚ˆã†ã“ãï¼</string>
+    <string name="onboarding_welcome_description">ç”»é¢ã‚’è¦‹ã¤ã‚ãšã«æŽ¥ç¶šã‚’ä¿ã¡ã¾ã—ã‚‡ã†ã€‚ãŠä½¿ã„ã®é›»è©±ãŒé€šçŸ¥ã‚’éŸ³èª­ã™ã‚‹ã®ã§ã€é‡è¦ãªã“ã¨ã«é›†ä¸­ã§ãã¾ã™ã€‚</string>
     
-    <string name="onboarding_permission_title">通知アクセスが必要です</string>
-    <string name="onboarding_permission_description">SpeakThatは通知を音読するための許可が必要です。\n\n🔒 すべてはお使いのデバイスに保存されます\n📱 データは私たちや他の誰にも送信されません\n⚙️ 何を読むかはあなたが制御します\n💬 許可されたもののみを読みます\n💡 ヒント：リストで「SpeakThat」をタップして有効にしてください</string>
+    <string name="onboarding_permission_title">é€šçŸ¥ã‚¢ã‚¯ã‚»ã‚¹ãŒå¿…è¦ã§ã™</string>
+    <string name="onboarding_permission_description">SpeakThatã¯é€šçŸ¥ã‚’éŸ³èª­ã™ã‚‹ãŸã‚ã®è¨±å¯ãŒå¿…è¦ã§ã™ã€‚\n\nðŸ”’ ã™ã¹ã¦ã¯ãŠä½¿ã„ã®ãƒ‡ãƒã‚¤ã‚¹ã«ä¿å­˜ã•ã‚Œã¾ã™\nðŸ“± ãƒ‡ãƒ¼ã‚¿ã¯ç§ãŸã¡ã‚„ä»–ã®èª°ã«ã‚‚é€ä¿¡ã•ã‚Œã¾ã›ã‚“\nâš™ï¸ ä½•ã‚’èª­ã‚€ã‹ã¯ã‚ãªãŸãŒåˆ¶å¾¡ã—ã¾ã™\nðŸ’¬ è¨±å¯ã•ã‚ŒãŸã‚‚ã®ã®ã¿ã‚’èª­ã¿ã¾ã™\nðŸ’¡ ãƒ’ãƒ³ãƒˆï¼šãƒªã‚¹ãƒˆã§ã€ŒSpeakThatã€ã‚’ã‚¿ãƒƒãƒ—ã—ã¦æœ‰åŠ¹ã«ã—ã¦ãã ã•ã„</string>
     
-    <string name="onboarding_privacy_title">あなたのプライバシーは重要です</string>
-    <string name="onboarding_privacy_description">🔒 何が音読されるかを正確に制御できます\n\n📱 電話を振ると、どのアナウンスも即座に停止できます\n\n⚙️ アプリ、単語、通知タイプをフィルタリング\n\n🔐 すべてはお使いのデバイスに保存されます</string>
+    <string name="onboarding_privacy_title">ã‚ãªãŸã®ãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ã¯é‡è¦ã§ã™</string>
+    <string name="onboarding_privacy_description">ðŸ”’ ä½•ãŒéŸ³èª­ã•ã‚Œã‚‹ã‹ã‚’æ­£ç¢ºã«åˆ¶å¾¡ã§ãã¾ã™\n\nðŸ“± é›»è©±ã‚’æŒ¯ã‚‹ã¨ã€ã©ã®ã‚¢ãƒŠã‚¦ãƒ³ã‚¹ã‚‚å³åº§ã«åœæ­¢ã§ãã¾ã™\n\nâš™ï¸ ã‚¢ãƒ—ãƒªã€å˜èªžã€é€šçŸ¥ã‚¿ã‚¤ãƒ—ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°\n\nðŸ” ã™ã¹ã¦ã¯ãŠä½¿ã„ã®ãƒ‡ãƒã‚¤ã‚¹ã«ä¿å­˜ã•ã‚Œã¾ã™</string>
     
-    <string name="onboarding_filters_title">基本的なフィルターを設定しましょう</string>
-    <string name="onboarding_filters_description">SpeakThatは何を読むか何を読まないかを選択できる強力なフィルタリングシステムを備えています。\n\n基本的なプライバシーフィルターを設定して始めましょう。</string>
+    <string name="onboarding_filters_title">åŸºæœ¬çš„ãªãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã‚’è¨­å®šã—ã¾ã—ã‚‡ã†</string>
+    <string name="onboarding_filters_description">SpeakThatã¯ä½•ã‚’èª­ã‚€ã‹ä½•ã‚’èª­ã¾ãªã„ã‹ã‚’é¸æŠžã§ãã‚‹å¼·åŠ›ãªãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã‚·ã‚¹ãƒ†ãƒ ã‚’å‚™ãˆã¦ã„ã¾ã™ã€‚\n\nåŸºæœ¬çš„ãªãƒ—ãƒ©ã‚¤ãƒã‚·ãƒ¼ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã‚’è¨­å®šã—ã¦å§‹ã‚ã¾ã—ã‚‡ã†ã€‚</string>
     
-    <string name="onboarding_apps_title">機密アプリをブロック</string>
-    <string name="onboarding_apps_description">通知を絶対に読んでほしくないアプリの名前を入力してください。\n\n一般的な例：銀行アプリ、医療アプリ、デートアプリ</string>
+    <string name="onboarding_apps_title">æ©Ÿå¯†ã‚¢ãƒ—ãƒªã‚’ãƒ–ãƒ­ãƒƒã‚¯</string>
+    <string name="onboarding_apps_description">é€šçŸ¥ã‚’çµ¶å¯¾ã«èª­ã‚“ã§ã»ã—ããªã„ã‚¢ãƒ—ãƒªã®åå‰ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚\n\nä¸€èˆ¬çš„ãªä¾‹ï¼šéŠ€è¡Œã‚¢ãƒ—ãƒªã€åŒ»ç™‚ã‚¢ãƒ—ãƒªã€ãƒ‡ãƒ¼ãƒˆã‚¢ãƒ—ãƒª</string>
     
-    <string name="onboarding_words_title">機密単語をブロック</string>
-    <string name="onboarding_words_description">通知に含まれる読んでほしくない単語やフレーズを入力してください！\n\n一般的な例：パスワード、PIN、クレジットカード、医療用語</string>
+    <string name="onboarding_words_title">æ©Ÿå¯†å˜èªžã‚’ãƒ–ãƒ­ãƒƒã‚¯</string>
+    <string name="onboarding_words_description">é€šçŸ¥ã«å«ã¾ã‚Œã‚‹èª­ã‚“ã§ã»ã—ããªã„å˜èªžã‚„ãƒ•ãƒ¬ãƒ¼ã‚ºã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ï¼\n\nä¸€èˆ¬çš„ãªä¾‹ï¼šãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã€PINã€ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆã‚«ãƒ¼ãƒ‰ã€åŒ»ç™‚ç”¨èªž</string>
     
-    <string name="onboarding_rules_title">スマートルールを設定</string>
-    <string name="onboarding_rules_description">状況に基づいて通知が読み上げられるタイミングを自動制御するスマートルールを設定します。\n\n例えば、ヘッドフォンが接続されている時のみ通知を読み上げる、または画面がオンの時は通知をスキップするなど。</string>
+    <string name="onboarding_rules_title">ã‚¹ãƒžãƒ¼ãƒˆãƒ«ãƒ¼ãƒ«ã‚’è¨­å®š</string>
+    <string name="onboarding_rules_description">çŠ¶æ³ã«åŸºã¥ã„ã¦é€šçŸ¥ãŒèª­ã¿ä¸Šã’ã‚‰ã‚Œã‚‹ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã‚’è‡ªå‹•åˆ¶å¾¡ã™ã‚‹ã‚¹ãƒžãƒ¼ãƒˆãƒ«ãƒ¼ãƒ«ã‚’è¨­å®šã—ã¾ã™ã€‚\n\nä¾‹ãˆã°ã€ãƒ˜ãƒƒãƒ‰ãƒ•ã‚©ãƒ³ãŒæŽ¥ç¶šã•ã‚Œã¦ã„ã‚‹æ™‚ã®ã¿é€šçŸ¥ã‚’èª­ã¿ä¸Šã’ã‚‹ã€ã¾ãŸã¯ç”»é¢ãŒã‚ªãƒ³ã®æ™‚ã¯é€šçŸ¥ã‚’ã‚¹ã‚­ãƒƒãƒ—ã™ã‚‹ãªã©ã€‚</string>
     
-    <string name="onboarding_complete_title">準備完了です！</string>
-    <string name="onboarding_complete_description">SpeakThatは目を自由に保ちながら接続を維持するお手伝いの準備ができています！\n\n💡 アプリ設定でいつでもフィルターを追加できます。</string>
+    <string name="onboarding_complete_title">æº–å‚™å®Œäº†ã§ã™ï¼</string>
+    <string name="onboarding_complete_description">SpeakThatã¯ç›®ã‚’è‡ªç”±ã«ä¿ã¡ãªãŒã‚‰æŽ¥ç¶šã‚’ç¶­æŒã™ã‚‹ãŠæ‰‹ä¼ã„ã®æº–å‚™ãŒã§ãã¦ã„ã¾ã™ï¼\n\nðŸ’¡ ã‚¢ãƒ—ãƒªè¨­å®šã§ã„ã¤ã§ã‚‚ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã‚’è¿½åŠ ã§ãã¾ã™ã€‚</string>
     
 
     
     <!-- Trigger Configuration -->
-    <string name="trigger_screen_state">画面状態</string>
-    <string name="trigger_screen_choose">このトリガーが作動するタイミングを選択：</string>
-    <string name="trigger_invert_condition">条件を反転</string>
-    <string name="trigger_time_schedule">時間スケジュール</string>
-    <string name="trigger_time_description">このトリガーが作動する時間範囲を設定：</string>
+    <string name="trigger_screen_state">ç”»é¢çŠ¶æ…‹</string>
+    <string name="trigger_screen_choose">ã“ã®ãƒˆãƒªã‚¬ãƒ¼ãŒä½œå‹•ã™ã‚‹ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã‚’é¸æŠžï¼š</string>
+    <string name="trigger_invert_condition">æ¡ä»¶ã‚’åè»¢</string>
+    <string name="trigger_time_schedule">æ™‚é–“ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«</string>
+    <string name="trigger_time_description">ã“ã®ãƒˆãƒªã‚¬ãƒ¼ãŒä½œå‹•ã™ã‚‹æ™‚é–“ç¯„å›²ã‚’è¨­å®šï¼š</string>
     
     <!-- Rule Builder -->
-    <string name="rule_builder_info_icon">情報</string>
-    <string name="rule_builder_description">ルールは各通知の条件をチェックします。状態変更を記憶せず、リアルタイムで通知をフィルタリングします。</string>
-    <string name="rule_builder_name_label">ルール名</string>
-    <string name="rule_builder_triggers_label">トリガー</string>
-    <string name="rule_builder_triggers_description">このルールを有効にするために満たす必要がある条件</string>
-    <string name="rule_builder_logic_label">ロジック：</string>
+    <string name="rule_builder_info_icon">æƒ…å ±</string>
+    <string name="rule_builder_description">ãƒ«ãƒ¼ãƒ«ã¯å„é€šçŸ¥ã®æ¡ä»¶ã‚’ãƒã‚§ãƒƒã‚¯ã—ã¾ã™ã€‚çŠ¶æ…‹å¤‰æ›´ã‚’è¨˜æ†¶ã›ãšã€ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ ã§é€šçŸ¥ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã—ã¾ã™ã€‚</string>
+    <string name="rule_builder_name_label">ãƒ«ãƒ¼ãƒ«å</string>
+    <string name="rule_builder_triggers_label">ãƒˆãƒªã‚¬ãƒ¼</string>
+    <string name="rule_builder_triggers_description">ã“ã®ãƒ«ãƒ¼ãƒ«ã‚’æœ‰åŠ¹ã«ã™ã‚‹ãŸã‚ã«æº€ãŸã™å¿…è¦ãŒã‚ã‚‹æ¡ä»¶</string>
+    <string name="rule_builder_logic_label">ãƒ­ã‚¸ãƒƒã‚¯ï¼š</string>
     
     <!-- Exception Configuration -->
-    <string name="exception_screen_state">画面状態</string>
-    <string name="exception_screen_choose">この例外が適用されるタイミングを選択：</string>
+    <string name="exception_screen_state">ç”»é¢çŠ¶æ…‹</string>
+    <string name="exception_screen_choose">ã“ã®ä¾‹å¤–ãŒé©ç”¨ã•ã‚Œã‚‹ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã‚’é¸æŠžï¼š</string>
 
-    <string name="exception_time_schedule">時間スケジュール</string>
-    <string name="exception_time_choose">この例外が適用されるタイミングを選択：</string>
+    <string name="exception_time_schedule">æ™‚é–“ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«</string>
+    <string name="exception_time_choose">ã“ã®ä¾‹å¤–ãŒé©ç”¨ã•ã‚Œã‚‹ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã‚’é¸æŠžï¼š</string>
     
     <!-- Action Configuration -->
-    <string name="action_disable_speakthat">SpeakThat を無効</string>
-    <string name="action_disable_description">このアクションは、ルールがトリガーされた時に SpeakThat を完全に無効にします。</string>
-    <string name="action_enable_app_filter">アプリフィルタを有効</string>
-    <string name="action_enable_app_description">フィルタリングを有効にするアプリを選択：</string>
-    <string name="action_select_app">アプリを選択</string>
-    <string name="action_disable_app_filter">アプリフィルタを無効</string>
-    <string name="action_disable_app_description">フィルタリングを無効にするアプリを選択：</string>
+    <string name="action_disable_speakthat">SpeakThat ã‚’ç„¡åŠ¹</string>
+    <string name="action_disable_description">ã“ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã¯ã€ãƒ«ãƒ¼ãƒ«ãŒãƒˆãƒªã‚¬ãƒ¼ã•ã‚ŒãŸæ™‚ã« SpeakThat ã‚’å®Œå…¨ã«ç„¡åŠ¹ã«ã—ã¾ã™ã€‚</string>
+    <string name="action_enable_app_filter">ã‚¢ãƒ—ãƒªãƒ•ã‚£ãƒ«ã‚¿ã‚’æœ‰åŠ¹</string>
+    <string name="action_enable_app_description">ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‚¢ãƒ—ãƒªã‚’é¸æŠžï¼š</string>
+    <string name="action_select_app">ã‚¢ãƒ—ãƒªã‚’é¸æŠž</string>
+    <string name="action_disable_app_filter">ã‚¢ãƒ—ãƒªãƒ•ã‚£ãƒ«ã‚¿ã‚’ç„¡åŠ¹</string>
+    <string name="action_disable_app_description">ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã‚’ç„¡åŠ¹ã«ã™ã‚‹ã‚¢ãƒ—ãƒªã‚’é¸æŠžï¼š</string>
     
     <!-- Wave Calibration -->
-    <string name="wave_calibration_title">ウェーブ検出セットアップ</string>
-    <string name="wave_calibration_description">デバイスを調整して手の振りを検出し、通知を静音</string>
-    <string name="wave_calibration_ready">ウェーブ検出のキャリブレーション準備完了</string>
-    <string name="wave_calibration_threshold">閾値：3.2cm（5.3cm の 60%）</string>
-    <string name="wave_calibration_how_it_works">💡 動作原理：</string>
-    <string name="wave_calibration_instructions">• 8秒間センサーに手を近づけたり遠ざけたりします\n• 50ms ごとにセンサー読み取り値を記録\n• キャリブレーションには最低20の読み取り値が必要\n• 検出された最大距離の60%に閾値を設定</string>
-    <string name="wave_calibration_start">キャリブレーション開始</string>
+    <string name="wave_calibration_title">ã‚¦ã‚§ãƒ¼ãƒ–æ¤œå‡ºã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—</string>
+    <string name="wave_calibration_description">ãƒ‡ãƒã‚¤ã‚¹ã‚’èª¿æ•´ã—ã¦æ‰‹ã®æŒ¯ã‚Šã‚’æ¤œå‡ºã—ã€é€šçŸ¥ã‚’é™éŸ³</string>
+    <string name="wave_calibration_ready">ã‚¦ã‚§ãƒ¼ãƒ–æ¤œå‡ºã®ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³æº–å‚™å®Œäº†</string>
+    <string name="wave_calibration_threshold">é–¾å€¤ï¼š3.2cmï¼ˆ5.3cm ã® 60%ï¼‰</string>
+    <string name="wave_calibration_how_it_works">ðŸ’¡ å‹•ä½œåŽŸç†ï¼š</string>
+    <string name="wave_calibration_instructions">â€¢ 8ç§’é–“ã‚»ãƒ³ã‚µãƒ¼ã«æ‰‹ã‚’è¿‘ã¥ã‘ãŸã‚Šé ã–ã‘ãŸã‚Šã—ã¾ã™\nâ€¢ 50ms ã”ã¨ã«ã‚»ãƒ³ã‚µãƒ¼èª­ã¿å–ã‚Šå€¤ã‚’è¨˜éŒ²\nâ€¢ ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã«ã¯æœ€ä½Ž20ã®èª­ã¿å–ã‚Šå€¤ãŒå¿…è¦\nâ€¢ æ¤œå‡ºã•ã‚ŒãŸæœ€å¤§è·é›¢ã®60%ã«é–¾å€¤ã‚’è¨­å®š</string>
+    <string name="wave_calibration_start">ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹</string>
     
 
     
     <!-- Bluetooth Condition -->
-    <string name="bluetooth_devices_title">Bluetooth デバイス</string>
-    <string name="bluetooth_devices_description">通知を読み上げるために接続必須の Bluetooth デバイスを選択。</string>
-    <string name="bluetooth_selected_devices">選択済みデバイス</string>
-    <string name="bluetooth_add_device">Bluetooth デバイスを追加</string>
-    <string name="bluetooth_how_it_works">動作原理</string>
-    <string name="bluetooth_instructions">• 選択されたデバイスのうち少なくとも1つが接続されている場合のみ通知が読み上げられます\n\n• デバイスが選択されていない場合、すべての通知が読み上げられます\n\n• デバイスはペアリングされ接続されている必要があります（検出されただけでは不十分）</string>
+    <string name="bluetooth_devices_title">Bluetooth ãƒ‡ãƒã‚¤ã‚¹</string>
+    <string name="bluetooth_devices_description">é€šçŸ¥ã‚’èª­ã¿ä¸Šã’ã‚‹ãŸã‚ã«æŽ¥ç¶šå¿…é ˆã® Bluetooth ãƒ‡ãƒã‚¤ã‚¹ã‚’é¸æŠžã€‚</string>
+    <string name="bluetooth_selected_devices">é¸æŠžæ¸ˆã¿ãƒ‡ãƒã‚¤ã‚¹</string>
+    <string name="bluetooth_add_device">Bluetooth ãƒ‡ãƒã‚¤ã‚¹ã‚’è¿½åŠ </string>
+    <string name="bluetooth_how_it_works">å‹•ä½œåŽŸç†</string>
+    <string name="bluetooth_instructions">â€¢ é¸æŠžã•ã‚ŒãŸãƒ‡ãƒã‚¤ã‚¹ã®ã†ã¡å°‘ãªãã¨ã‚‚1ã¤ãŒæŽ¥ç¶šã•ã‚Œã¦ã„ã‚‹å ´åˆã®ã¿é€šçŸ¥ãŒèª­ã¿ä¸Šã’ã‚‰ã‚Œã¾ã™\n\nâ€¢ ãƒ‡ãƒã‚¤ã‚¹ãŒé¸æŠžã•ã‚Œã¦ã„ãªã„å ´åˆã€ã™ã¹ã¦ã®é€šçŸ¥ãŒèª­ã¿ä¸Šã’ã‚‰ã‚Œã¾ã™\n\nâ€¢ ãƒ‡ãƒã‚¤ã‚¹ã¯ãƒšã‚¢ãƒªãƒ³ã‚°ã•ã‚ŒæŽ¥ç¶šã•ã‚Œã¦ã„ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ï¼ˆæ¤œå‡ºã•ã‚ŒãŸã ã‘ã§ã¯ä¸ååˆ†ï¼‰</string>
     
     <!-- Dialog Configuration Strings -->
-    <string name="wifi_config_enter_name">WiFi ネットワーク名を入力：</string>
-    <string name="wifi_config_description">WiFi ネットワークの正確な名前（SSID）を入力してください。大文字小文字を含めて完全に一致する必要があります。</string>
-    <string name="wifi_config_tip">💡 ヒント：WiFi 名は携帯電話の WiFi 設定で確認できます</string>
+    <string name="wifi_config_enter_name">WiFi ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯åã‚’å…¥åŠ›ï¼š</string>
+    <string name="wifi_config_description">WiFi ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã®æ­£ç¢ºãªåå‰ï¼ˆSSIDï¼‰ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚å¤§æ–‡å­—å°æ–‡å­—ã‚’å«ã‚ã¦å®Œå…¨ã«ä¸€è‡´ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚</string>
+    <string name="wifi_config_tip">ðŸ’¡ ãƒ’ãƒ³ãƒˆï¼šWiFi åã¯æºå¸¯é›»è©±ã® WiFi è¨­å®šã§ç¢ºèªã§ãã¾ã™</string>
     
-    <string name="bluetooth_config_select">Bluetooth デバイスを選択：</string>
-    <string name="bluetooth_config_description">このルールで使用するデバイスを選択してください。ペアリング済みのデバイスのみが表示されます。</string>
+    <string name="bluetooth_config_select">Bluetooth ãƒ‡ãƒã‚¤ã‚¹ã‚’é¸æŠžï¼š</string>
+    <string name="bluetooth_config_description">ã“ã®ãƒ«ãƒ¼ãƒ«ã§ä½¿ç”¨ã™ã‚‹ãƒ‡ãƒã‚¤ã‚¹ã‚’é¸æŠžã—ã¦ãã ã•ã„ã€‚ãƒšã‚¢ãƒªãƒ³ã‚°æ¸ˆã¿ã®ãƒ‡ãƒã‚¤ã‚¹ã®ã¿ãŒè¡¨ç¤ºã•ã‚Œã¾ã™ã€‚</string>
     
-    <string name="time_schedule_set">時間スケジュールを設定：</string>
-    <string name="time_schedule_description">このルールがアクティブになる時間を選択してください。</string>
-    <string name="time_schedule_start">開始時刻：</string>
-    <string name="time_schedule_end">終了時刻：</string>
-    <string name="time_schedule_days">曜日：</string>
-    <string name="time_schedule_range">時間範囲</string>
-    <string name="time_schedule_every_day">毎日</string>
+    <string name="time_schedule_set">æ™‚é–“ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’è¨­å®šï¼š</string>
+    <string name="time_schedule_description">ã“ã®ãƒ«ãƒ¼ãƒ«ãŒã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ãªã‚‹æ™‚é–“ã‚’é¸æŠžã—ã¦ãã ã•ã„ã€‚</string>
+    <string name="time_schedule_start">é–‹å§‹æ™‚åˆ»ï¼š</string>
+    <string name="time_schedule_end">çµ‚äº†æ™‚åˆ»ï¼š</string>
+    <string name="time_schedule_days">æ›œæ—¥ï¼š</string>
+    <string name="time_schedule_range">æ™‚é–“ç¯„å›²</string>
+    <string name="time_schedule_every_day">æ¯Žæ—¥</string>
     
     <!-- Day Names -->
-    <string name="day_monday">月曜日</string>
-    <string name="day_tuesday">火曜日</string>
-    <string name="day_wednesday">水曜日</string>
-    <string name="day_thursday">木曜日</string>
-    <string name="day_friday">金曜日</string>
-    <string name="day_saturday">土曜日</string>
-    <string name="day_sunday">日曜日</string>
-    <string name="day_mon">月</string>
-    <string name="day_tue">火</string>
-    <string name="day_wed">水</string>
-    <string name="day_thu">木</string>
-    <string name="day_fri">金</string>
-    <string name="day_sat">土</string>
-    <string name="day_sun">日</string>
+    <string name="day_monday">æœˆæ›œæ—¥</string>
+    <string name="day_tuesday">ç«æ›œæ—¥</string>
+    <string name="day_wednesday">æ°´æ›œæ—¥</string>
+    <string name="day_thursday">æœ¨æ›œæ—¥</string>
+    <string name="day_friday">é‡‘æ›œæ—¥</string>
+    <string name="day_saturday">åœŸæ›œæ—¥</string>
+    <string name="day_sunday">æ—¥æ›œæ—¥</string>
+    <string name="day_mon">æœˆ</string>
+    <string name="day_tue">ç«</string>
+    <string name="day_wed">æ°´</string>
+    <string name="day_thu">æœ¨</string>
+    <string name="day_fri">é‡‘</string>
+    <string name="day_sat">åœŸ</string>
+    <string name="day_sun">æ—¥</string>
     
     <!-- Item Layout Strings -->
-    <string name="item_word_swap_from">置換前</string>
-    <string name="item_word_swap_to">置換後</string>
-    <string name="item_word_swap_arrow"> → </string>
+    <string name="item_word_swap_from">ç½®æ›å‰</string>
+    <string name="item_word_swap_to">ç½®æ›å¾Œ</string>
+    <string name="item_word_swap_arrow"> â†’ </string>
     
-    <string name="item_bluetooth_device_name">デバイス名</string>
+    <string name="item_bluetooth_device_name">ãƒ‡ãƒã‚¤ã‚¹å</string>
     <string name="item_bluetooth_mac_address">00:00:00:00:00:00</string>
     
-    <string name="item_rule_name">ルール名</string>
-    <string name="item_rule_summary">ルール概要</string>
-    <string name="item_rule_example">画面がオンの時、クワイエットアワーが通知読み上げをスキップ</string>
+    <string name="item_rule_name">ãƒ«ãƒ¼ãƒ«å</string>
+    <string name="item_rule_summary">ãƒ«ãƒ¼ãƒ«æ¦‚è¦</string>
+    <string name="item_rule_example">ç”»é¢ãŒã‚ªãƒ³ã®æ™‚ã€ã‚¯ãƒ¯ã‚¤ã‚¨ãƒƒãƒˆã‚¢ãƒ¯ãƒ¼ãŒé€šçŸ¥èª­ã¿ä¸Šã’ã‚’ã‚¹ã‚­ãƒƒãƒ—</string>
     
-    <string name="item_notification_app_name">アプリ名</string>
+    <string name="item_notification_app_name">ã‚¢ãƒ—ãƒªå</string>
     <string name="item_notification_time">12:34:56</string>
-    <string name="item_notification_content">通知内容がここに表示されます...</string>
-    <string name="item_notification_filter">類似をフィルタ</string>
+    <string name="item_notification_content">é€šçŸ¥å†…å®¹ãŒã“ã“ã«è¡¨ç¤ºã•ã‚Œã¾ã™...</string>
+    <string name="item_notification_filter">é¡žä¼¼ã‚’ãƒ•ã‚£ãƒ«ã‚¿</string>
     
-    <string name="item_cooldown_app_name">アプリ名</string>
+    <string name="item_cooldown_app_name">ã‚¢ãƒ—ãƒªå</string>
     <string name="item_cooldown_package">com.example.app</string>
-    <string name="item_cooldown_no_cooldown">クールダウンなし</string>
-    <string name="item_cooldown_delete">🗑️</string>
+    <string name="item_cooldown_no_cooldown">ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³ãªã—</string>
+    <string name="item_cooldown_delete">ðŸ—‘ï¸</string>
     
     <!-- More Item Layout Strings -->
-    <string name="item_word_filter_word">単語</string>
-    <string name="item_priority_app_icon">⚡</string>
-    <string name="item_priority_app_name">優先アプリ名</string>
-    <string name="item_action_control">SpeakThat 制御</string>
-    <string name="item_action_disable">SpeakThat を無効</string>
-    <string name="item_app_filter_name">アプリ名</string>
-    <string name="item_app_filter_package">パッケージ名</string>
-    <string name="item_exception_name">例外名</string>
-    <string name="item_exception_summary">例外概要</string>
-    <string name="item_trigger_name">トリガー名</string>
-    <string name="item_trigger_summary">トリガー概要</string>
-    <string name="item_template_name">テンプレート名</string>
-    <string name="item_onboarding_rule_template_name">ルールテンプレート</string>
-    <string name="item_custom_app_name_label">アプリ名</string>
+    <string name="item_word_filter_word">å˜èªž</string>
+    <string name="item_priority_app_icon">âš¡</string>
+    <string name="item_priority_app_name">å„ªå…ˆã‚¢ãƒ—ãƒªå</string>
+    <string name="item_action_control">SpeakThat åˆ¶å¾¡</string>
+    <string name="item_action_disable">SpeakThat ã‚’ç„¡åŠ¹</string>
+    <string name="item_app_filter_name">ã‚¢ãƒ—ãƒªå</string>
+    <string name="item_app_filter_package">ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸å</string>
+    <string name="item_exception_name">ä¾‹å¤–å</string>
+    <string name="item_exception_summary">ä¾‹å¤–æ¦‚è¦</string>
+    <string name="item_trigger_name">ãƒˆãƒªã‚¬ãƒ¼å</string>
+    <string name="item_trigger_summary">ãƒˆãƒªã‚¬ãƒ¼æ¦‚è¦</string>
+    <string name="item_template_name">ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå</string>
+    <string name="item_onboarding_rule_template_name">ãƒ«ãƒ¼ãƒ«ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ</string>
+    <string name="item_custom_app_name_label">ã‚¢ãƒ—ãƒªå</string>
     <string name="item_custom_app_package">com.example.package</string>
-    <string name="item_onboarding_page_title">ページタイトル</string>
-    <string name="item_onboarding_page_subtitle">ページサブタイトル</string>
-    <string name="item_onboarding_page_description">ページの説明がここに表示されます</string>
-    <string name="item_onboarding_page_button">続行</string>
+    <string name="item_onboarding_page_title">ãƒšãƒ¼ã‚¸ã‚¿ã‚¤ãƒˆãƒ«</string>
+    <string name="item_onboarding_page_subtitle">ãƒšãƒ¼ã‚¸ã‚µãƒ–ã‚¿ã‚¤ãƒˆãƒ«</string>
+    <string name="item_onboarding_page_description">ãƒšãƒ¼ã‚¸ã®èª¬æ˜ŽãŒã“ã“ã«è¡¨ç¤ºã•ã‚Œã¾ã™</string>
+    <string name="item_onboarding_page_button">ç¶šè¡Œ</string>
     
     <!-- Dialog Strings -->
-    <string name="dialog_notification_history_title">通知履歴</string>
-    <string name="dialog_notification_history_description">最近の通知を表示</string>
+    <string name="dialog_notification_history_title">é€šçŸ¥å±¥æ­´</string>
+    <string name="dialog_notification_history_description">æœ€è¿‘ã®é€šçŸ¥ã‚’è¡¨ç¤º</string>
     
     <!-- Builder Items -->
-    <string name="item_condition_builder_name">条件名</string>
-    <string name="item_condition_builder_summary">条件概要</string>
-    <string name="item_app_selector_name">アプリ名</string>
+    <string name="item_condition_builder_name">æ¡ä»¶å</string>
+    <string name="item_condition_builder_summary">æ¡ä»¶æ¦‚è¦</string>
+    <string name="item_app_selector_name">ã‚¢ãƒ—ãƒªå</string>
     <string name="item_app_selector_package">com.example.app</string>
-    <string name="item_action_builder_name">アクション名</string>
-    <string name="item_action_builder_summary">アクション概要</string>
+    <string name="item_action_builder_name">ã‚¢ã‚¯ã‚·ãƒ§ãƒ³å</string>
+    <string name="item_action_builder_summary">ã‚¢ã‚¯ã‚·ãƒ§ãƒ³æ¦‚è¦</string>
     
     <!-- Additional Item Strings -->
-    <string name="item_app_filter_private">非公開</string>
-    <string name="item_exception_time_schedule">時間スケジュール</string>
-    <string name="item_exception_time_range">19:00〜07:00の間</string>
-    <string name="item_trigger_bluetooth_device">Bluetooth デバイス</string>
-    <string name="item_trigger_bluetooth_connected">車の Bluetooth に接続</string>
+    <string name="item_app_filter_private">éžå…¬é–‹</string>
+    <string name="item_exception_time_schedule">æ™‚é–“ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«</string>
+    <string name="item_exception_time_range">19:00ã€œ07:00ã®é–“</string>
+    <string name="item_trigger_bluetooth_device">Bluetooth ãƒ‡ãƒã‚¤ã‚¹</string>
+    <string name="item_trigger_bluetooth_connected">è»Šã® Bluetooth ã«æŽ¥ç¶š</string>
     
     <!-- More Item Strings -->
-    <string name="item_template_arrow">→</string>
-    <string name="item_onboarding_rule_template_add">追加</string>
+    <string name="item_template_arrow">â†’</string>
+    <string name="item_onboarding_rule_template_add">è¿½åŠ </string>
     <string name="item_custom_app_example_package">com.twitter.android</string>
     <string name="item_custom_app_example_name">Twitter</string>
-    <string name="item_onboarding_add_app">アプリを追加</string>
-    <string name="item_onboarding_add_word">単語を追加</string>
-    <string name="item_onboarding_choose_template">開始するルールテンプレートを選択：</string>
-    <string name="item_onboarding_notification_settings">通知設定を開く</string>
+    <string name="item_onboarding_add_app">ã‚¢ãƒ—ãƒªã‚’è¿½åŠ </string>
+    <string name="item_onboarding_add_word">å˜èªžã‚’è¿½åŠ </string>
+    <string name="item_onboarding_choose_template">é–‹å§‹ã™ã‚‹ãƒ«ãƒ¼ãƒ«ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’é¸æŠžï¼š</string>
+    <string name="item_onboarding_notification_settings">é€šçŸ¥è¨­å®šã‚’é–‹ã</string>
     
     <!-- Final Item Strings -->
-    <string name="dialog_notification_history_tap_info">\'類似をフィルタ\' をタップして、繰り返し通知のスマートフィルタを作成</string>
-    <string name="item_condition_builder_when">条件：</string>
-    <string name="item_condition_builder_remove">✕</string>
-    <string name="item_action_builder_remove">✕</string>
-    <string name="item_action_builder_then">アクション：</string>
+    <string name="dialog_notification_history_tap_info">\'é¡žä¼¼ã‚’ãƒ•ã‚£ãƒ«ã‚¿\' ã‚’ã‚¿ãƒƒãƒ—ã—ã¦ã€ç¹°ã‚Šè¿”ã—é€šçŸ¥ã®ã‚¹ãƒžãƒ¼ãƒˆãƒ•ã‚£ãƒ«ã‚¿ã‚’ä½œæˆ</string>
+    <string name="item_condition_builder_when">æ¡ä»¶ï¼š</string>
+    <string name="item_condition_builder_remove">âœ•</string>
+    <string name="item_action_builder_remove">âœ•</string>
+    <string name="item_action_builder_then">ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ï¼š</string>
     
     <!-- Behavior Settings Additional Strings -->
-    <string name="behavior_notification_filtering_title">📱 通知フィルタリング</string>
-    <string name="behavior_notification_filtering_description">通知フィルタリングと処理の高度なオプション</string>
-    <string name="behavior_battery_optimization_title">🔋 バッテリー最適化</string>
-    <string name="behavior_battery_optimization_description">電力消費とパフォーマンス設定の管理</string>
-    <string name="behavior_emergency_mode_title">🚨 緊急モード</string>
-    <string name="behavior_emergency_mode_description">重要な通知の緊急オーバーライド設定</string>
-    <string name="behavior_accessibility_title">♿ アクセシビリティ</string>
-    <string name="behavior_accessibility_description">アクセシビリティと使いやすさを向上させる設定</string>
-    <string name="behavior_advanced_features_title">🛠️ 高度な機能</string>
-    <string name="behavior_advanced_features_description">実験的機能とパワーユーザー向け機能</string>
+    <string name="behavior_notification_filtering_title">ðŸ“± é€šçŸ¥ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°</string>
+    <string name="behavior_notification_filtering_description">é€šçŸ¥ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã¨å‡¦ç†ã®é«˜åº¦ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³</string>
+    <string name="behavior_battery_optimization_title">ðŸ”‹ ãƒãƒƒãƒ†ãƒªãƒ¼æœ€é©åŒ–</string>
+    <string name="behavior_battery_optimization_description">é›»åŠ›æ¶ˆè²»ã¨ãƒ‘ãƒ•ã‚©ãƒ¼ãƒžãƒ³ã‚¹è¨­å®šã®ç®¡ç†</string>
+    <string name="behavior_emergency_mode_title">ðŸš¨ ç·Šæ€¥ãƒ¢ãƒ¼ãƒ‰</string>
+    <string name="behavior_emergency_mode_description">é‡è¦ãªé€šçŸ¥ã®ç·Šæ€¥ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰è¨­å®š</string>
+    <string name="behavior_accessibility_title">â™¿ ã‚¢ã‚¯ã‚»ã‚·ãƒ“ãƒªãƒ†ã‚£</string>
+    <string name="behavior_accessibility_description">ã‚¢ã‚¯ã‚»ã‚·ãƒ“ãƒªãƒ†ã‚£ã¨ä½¿ã„ã‚„ã™ã•ã‚’å‘ä¸Šã•ã›ã‚‹è¨­å®š</string>
+    <string name="behavior_advanced_features_title">ðŸ› ï¸ é«˜åº¦ãªæ©Ÿèƒ½</string>
+    <string name="behavior_advanced_features_description">å®Ÿé¨“çš„æ©Ÿèƒ½ã¨ãƒ‘ãƒ¯ãƒ¼ãƒ¦ãƒ¼ã‚¶ãƒ¼å‘ã‘æ©Ÿèƒ½</string>
     
     <!-- Wave/Shake Sensor Strings -->
-    <string name="behavior_current_shake">現在の振動: 0.0</string>
-    <string name="behavior_threshold_value">閾値: 12.0</string>
-    <string name="behavior_start_test">テスト開始</string>
-    <string name="behavior_timeout_settings">タイムアウト設定</string>
-    <string name="behavior_timeout_description">バッテリー節約のためジェスチャーを聞き取る時間を設定（自動停止まで）</string>
-    <string name="behavior_timeout_5s">5秒</string>
-    <string name="behavior_timeout_5m">5分</string>
-    <string name="behavior_timeout_current">タイムアウト: 30秒</string>
-    <string name="behavior_disable_timeout">タイムアウトを無効（非推奨）</string>
+    <string name="behavior_current_shake">ç¾åœ¨ã®æŒ¯å‹•: 0.0</string>
+    <string name="behavior_threshold_value">é–¾å€¤: 12.0</string>
+    <string name="behavior_start_test">ãƒ†ã‚¹ãƒˆé–‹å§‹</string>
+    <string name="behavior_timeout_settings">ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆè¨­å®š</string>
+    <string name="behavior_timeout_description">ãƒãƒƒãƒ†ãƒªãƒ¼ç¯€ç´„ã®ãŸã‚ã‚¸ã‚§ã‚¹ãƒãƒ£ãƒ¼ã‚’èžãå–ã‚‹æ™‚é–“ã‚’è¨­å®šï¼ˆè‡ªå‹•åœæ­¢ã¾ã§ï¼‰</string>
+    <string name="behavior_timeout_5s">5ç§’</string>
+    <string name="behavior_timeout_5m">5åˆ†</string>
+    <string name="behavior_timeout_current">ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ: 30ç§’</string>
+    <string name="behavior_disable_timeout">ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã‚’ç„¡åŠ¹ï¼ˆéžæŽ¨å¥¨ï¼‰</string>
 
-    <string name="behavior_wave_to_stop_title">手を振って停止</string>
-    <string name="behavior_wave_to_stop_description">デバイスの前で手を振って読み上げを即座に停止</string>
-    <string name="behavior_great_for">最適な環境: デスクユーザー &amp; アクセシビリティ</string>
-    <string name="behavior_enable_wave_stop">手を振って停止を有効</string>
-    <string name="behavior_proximity_threshold">近接閾値</string>
+    <string name="behavior_wave_to_stop_title">æ‰‹ã‚’æŒ¯ã£ã¦åœæ­¢</string>
+    <string name="behavior_wave_to_stop_description">ãƒ‡ãƒã‚¤ã‚¹ã®å‰ã§æ‰‹ã‚’æŒ¯ã£ã¦èª­ã¿ä¸Šã’ã‚’å³åº§ã«åœæ­¢</string>
+    <string name="behavior_great_for">æœ€é©ãªç’°å¢ƒ: ãƒ‡ã‚¹ã‚¯ãƒ¦ãƒ¼ã‚¶ãƒ¼ &amp; ã‚¢ã‚¯ã‚»ã‚·ãƒ“ãƒªãƒ†ã‚£</string>
+    <string name="behavior_enable_wave_stop">æ‰‹ã‚’æŒ¯ã£ã¦åœæ­¢ã‚’æœ‰åŠ¹</string>
+    <string name="behavior_proximity_threshold">è¿‘æŽ¥é–¾å€¤</string>
     
     <!-- Major Missing Section Titles -->
-    <string name="behavior_custom_app_names_title">📱 カスタムアプリ名</string>
-    <string name="dev_logging_configuration_title">📝 ログ設定</string>
-    <string name="filter_word_swap_title">単語置換</string>
-    <string name="filter_word_swaps_header">📋 単語置換</string>
-    <string name="voice_language_preset_title">言語プリセット</string>
+    <string name="behavior_custom_app_names_title">ðŸ“± ã‚«ã‚¹ã‚¿ãƒ ã‚¢ãƒ—ãƒªå</string>
+    <string name="dev_logging_configuration_title">ðŸ“ ãƒ­ã‚°è¨­å®š</string>
+    <string name="filter_word_swap_title">å˜èªžç½®æ›</string>
+    <string name="filter_word_swaps_header">ðŸ“‹ å˜èªžç½®æ›</string>
+    <string name="voice_language_preset_title">è¨€èªžãƒ—ãƒªã‚»ãƒƒãƒˆ</string>
     
     <!-- Audio Ducking Warnings -->
-    <string name="behavior_audio_ducking_warning">オーディオダッキングはデバイスとAndroidバージョンによって動作が異なります。一部のデバイスでは特定のアプリやオーディオストリームが正しくダッキングされない場合があります。</string>
-    <string name="behavior_audio_ducking_tip">ダッキングが正常に動作しない場合：音声設定で異なるオーディオストリームを試してください（「音声通話」や「通知」が最適です）。音楽と一緒にTTSもダッキングされる可能性があるため、「メディア」ストリームは避けてください。</string>
-    <string name="behavior_audio_ducking_system">アプリは利用可能な場合は高度なシステムダッキングを自動的に使用し、最大の互換性のためにスムーズな手動ダッキングをバックアップとして使用します。</string>
-    <string name="behavior_audio_ducking_hint">ヒント: 値を下げると通知中のメディア音量が小さくなります</string>
+    <string name="behavior_audio_ducking_warning">ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ€ãƒƒã‚­ãƒ³ã‚°ã¯ãƒ‡ãƒã‚¤ã‚¹ã¨Androidãƒãƒ¼ã‚¸ãƒ§ãƒ³ã«ã‚ˆã£ã¦å‹•ä½œãŒç•°ãªã‚Šã¾ã™ã€‚ä¸€éƒ¨ã®ãƒ‡ãƒã‚¤ã‚¹ã§ã¯ç‰¹å®šã®ã‚¢ãƒ—ãƒªã‚„ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚¹ãƒˆãƒªãƒ¼ãƒ ãŒæ­£ã—ããƒ€ãƒƒã‚­ãƒ³ã‚°ã•ã‚Œãªã„å ´åˆãŒã‚ã‚Šã¾ã™ã€‚</string>
+    <string name="behavior_audio_ducking_tip">ãƒ€ãƒƒã‚­ãƒ³ã‚°ãŒæ­£å¸¸ã«å‹•ä½œã—ãªã„å ´åˆï¼šéŸ³å£°è¨­å®šã§ç•°ãªã‚‹ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’è©¦ã—ã¦ãã ã•ã„ï¼ˆã€ŒéŸ³å£°é€šè©±ã€ã‚„ã€Œé€šçŸ¥ã€ãŒæœ€é©ã§ã™ï¼‰ã€‚éŸ³æ¥½ã¨ä¸€ç·’ã«TTSã‚‚ãƒ€ãƒƒã‚­ãƒ³ã‚°ã•ã‚Œã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ã€ã€Œãƒ¡ãƒ‡ã‚£ã‚¢ã€ã‚¹ãƒˆãƒªãƒ¼ãƒ ã¯é¿ã‘ã¦ãã ã•ã„ã€‚</string>
+    <string name="behavior_audio_ducking_system">ã‚¢ãƒ—ãƒªã¯åˆ©ç”¨å¯èƒ½ãªå ´åˆã¯é«˜åº¦ãªã‚·ã‚¹ãƒ†ãƒ ãƒ€ãƒƒã‚­ãƒ³ã‚°ã‚’è‡ªå‹•çš„ã«ä½¿ç”¨ã—ã€æœ€å¤§ã®äº’æ›æ€§ã®ãŸã‚ã«ã‚¹ãƒ ãƒ¼ã‚ºãªæ‰‹å‹•ãƒ€ãƒƒã‚­ãƒ³ã‚°ã‚’ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã¨ã—ã¦ä½¿ç”¨ã—ã¾ã™ã€‚</string>
+    <string name="behavior_audio_ducking_hint">ãƒ’ãƒ³ãƒˆ: å€¤ã‚’ä¸‹ã’ã‚‹ã¨é€šçŸ¥ä¸­ã®ãƒ¡ãƒ‡ã‚£ã‚¢éŸ³é‡ãŒå°ã•ããªã‚Šã¾ã™</string>
     
     <!-- Wave Detection Settings -->
-    <string name="behavior_wave_threshold_description">手を振って停止をトリガーするセンサーの最大距離のパーセンテージを設定します（キャリブレーションが必要）</string>
+    <string name="behavior_wave_threshold_description">æ‰‹ã‚’æŒ¯ã£ã¦åœæ­¢ã‚’ãƒˆãƒªã‚¬ãƒ¼ã™ã‚‹ã‚»ãƒ³ã‚µãƒ¼ã®æœ€å¤§è·é›¢ã®ãƒ‘ãƒ¼ã‚»ãƒ³ãƒ†ãƒ¼ã‚¸ã‚’è¨­å®šã—ã¾ã™ï¼ˆã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãŒå¿…è¦ï¼‰</string>
     <string name="behavior_wave_threshold_30">30%</string>
     <string name="behavior_wave_threshold_90">90%</string>
-    <string name="behavior_wave_test_button">手振りテスト</string>
-    <string name="behavior_wave_test_description">手振り検出をテストします。バイナリセンサーは0（近い）または最大（遠い）を表示します。</string>
-    <string name="behavior_wave_sensor_info">スマートフォンによって動作が異なります - 「近い」や「遠い」のみを認識するものもあれば、その間の全てを認識するものもあります。\n \nこのバーが極値にのみ移動するのは正常です！</string>
-    <string name="behavior_wave_current_proximity">現在の近接距離: 5.0 cm</string>
-    <string name="behavior_wave_current_threshold">閾値: 5.0 cm</string>
-    <string name="behavior_wave_recalibrate">手振り検出を再キャリブレート</string>
+    <string name="behavior_wave_test_button">æ‰‹æŒ¯ã‚Šãƒ†ã‚¹ãƒˆ</string>
+    <string name="behavior_wave_test_description">æ‰‹æŒ¯ã‚Šæ¤œå‡ºã‚’ãƒ†ã‚¹ãƒˆã—ã¾ã™ã€‚ãƒã‚¤ãƒŠãƒªã‚»ãƒ³ã‚µãƒ¼ã¯0ï¼ˆè¿‘ã„ï¼‰ã¾ãŸã¯æœ€å¤§ï¼ˆé ã„ï¼‰ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚</string>
+    <string name="behavior_wave_sensor_info">ã‚¹ãƒžãƒ¼ãƒˆãƒ•ã‚©ãƒ³ã«ã‚ˆã£ã¦å‹•ä½œãŒç•°ãªã‚Šã¾ã™ - ã€Œè¿‘ã„ã€ã‚„ã€Œé ã„ã€ã®ã¿ã‚’èªè­˜ã™ã‚‹ã‚‚ã®ã‚‚ã‚ã‚Œã°ã€ãã®é–“ã®å…¨ã¦ã‚’èªè­˜ã™ã‚‹ã‚‚ã®ã‚‚ã‚ã‚Šã¾ã™ã€‚\n \nã“ã®ãƒãƒ¼ãŒæ¥µå€¤ã«ã®ã¿ç§»å‹•ã™ã‚‹ã®ã¯æ­£å¸¸ã§ã™ï¼</string>
+    <string name="behavior_wave_current_proximity">ç¾åœ¨ã®è¿‘æŽ¥è·é›¢: 5.0 cm</string>
+    <string name="behavior_wave_current_threshold">é–¾å€¤: 5.0 cm</string>
+    <string name="behavior_wave_recalibrate">æ‰‹æŒ¯ã‚Šæ¤œå‡ºã‚’å†ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ãƒˆ</string>
     
     <!-- Rule Configuration - Exception Settings -->
-    <string name="exception_invert_condition">条件を反転</string>
-    <string name="exception_invert_description">条件が満たされない場合の例外</string>
-    <string name="exception_start_time_label">開始時刻:</string>
+    <string name="exception_invert_condition">æ¡ä»¶ã‚’åè»¢</string>
+    <string name="exception_invert_description">æ¡ä»¶ãŒæº€ãŸã•ã‚Œãªã„å ´åˆã®ä¾‹å¤–</string>
+    <string name="exception_start_time_label">é–‹å§‹æ™‚åˆ»:</string>
     <string name="exception_start_time_default">19:00</string>
-    <string name="exception_end_time_label">終了時刻:</string>
+    <string name="exception_end_time_label">çµ‚äº†æ™‚åˆ»:</string>
     <string name="exception_end_time_default">07:00</string>
-    <string name="exception_set_start_time">開始時刻を設定</string>
+    <string name="exception_set_start_time">é–‹å§‹æ™‚åˆ»ã‚’è¨­å®š</string>
     
     <!-- Rule Configuration - Trigger Settings -->
-    <string name="trigger_invert_description">条件が満たされない場合にトリガー</string>
-    <string name="trigger_time_schedule_title">🕐 時間スケジュール</string>
-    <string name="trigger_time_schedule_description">このトリガーがアクティブになる時間範囲を設定:</string>
-    <string name="trigger_start_time_label">開始時刻:</string>
+    <string name="trigger_invert_description">æ¡ä»¶ãŒæº€ãŸã•ã‚Œãªã„å ´åˆã«ãƒˆãƒªã‚¬ãƒ¼</string>
+    <string name="trigger_time_schedule_title">ðŸ• æ™‚é–“ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«</string>
+    <string name="trigger_time_schedule_description">ã“ã®ãƒˆãƒªã‚¬ãƒ¼ãŒã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ãªã‚‹æ™‚é–“ç¯„å›²ã‚’è¨­å®š:</string>
+    <string name="trigger_start_time_label">é–‹å§‹æ™‚åˆ»:</string>
     <string name="trigger_start_time_default">09:00</string>
-    <string name="trigger_end_time_label">終了時刻:</string>
+    <string name="trigger_end_time_label">çµ‚äº†æ™‚åˆ»:</string>
     <string name="trigger_end_time_default">17:00</string>
     
 
 
     <!-- Conditional Rules - Trigger Strings -->
-    <string name="rule_trigger_wifi_network">WiFiネットワークに接続: %1$s</string>
-    <string name="rule_trigger_not_wifi_network">WiFiネットワークに接続していません： %1$s</string>
+    <string name="rule_trigger_wifi_network">WiFiãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã«æŽ¥ç¶š: %1$s</string>
+    <string name="rule_trigger_not_wifi_network">WiFiãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã«æŽ¥ç¶šã—ã¦ã„ã¾ã›ã‚“ï¼š %1$s</string>
     <!-- Conditional Rules - Action Strings -->
-    <string name="rule_action_read_notification">通知を読む</string>
-    <string name="rule_action_skip_app">アプリからの通知をスキップ： %1$s</string>
-    <string name="rule_action_read_app">アプリからの通知を読む： %1$s</string>
+    <string name="rule_action_read_notification">é€šçŸ¥ã‚’èª­ã‚€</string>
+    <string name="rule_action_skip_app">ã‚¢ãƒ—ãƒªã‹ã‚‰ã®é€šçŸ¥ã‚’ã‚¹ã‚­ãƒƒãƒ—ï¼š %1$s</string>
+    <string name="rule_action_read_app">ã‚¢ãƒ—ãƒªã‹ã‚‰ã®é€šçŸ¥ã‚’èª­ã‚€ï¼š %1$s</string>
     <!-- Conditional Rules - Exception Strings -->
-    <string name="rule_exception_wifi_network">WiFiネットワークに接続: %1$s</string>
-    <string name="rule_exception_not_wifi_network">WiFiネットワークに接続していません： %1$s</string>
+    <string name="rule_exception_wifi_network">WiFiãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã«æŽ¥ç¶š: %1$s</string>
+    <string name="rule_exception_not_wifi_network">WiFiãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã«æŽ¥ç¶šã—ã¦ã„ã¾ã›ã‚“ï¼š %1$s</string>
     
     <!-- Language Change Dialog -->
-    <string name="dialog_title_language_changed">言語が変更されました</string>
-    <string name="dialog_message_language_changed">アプリの言語が%1$sから%2$sに変更されました。\n\n• 今すぐ適用：この画面をすぐに更新します\n• アプリを再起動：すべての画面とサービスが新しい言語を使用することを保証します\n\n最高の体験のために、アプリの再起動をお勧めします。</string>
-    <string name="button_restart_app">アプリを再起動</string>
-    <string name="button_apply_now">今すぐ適用</string>
-    <string name="toast_language_restarting">新しい言語でアプリを再起動中...</string>
-    <string name="toast_language_manual_restart">アプリを再起動すると、言語が完全に適用されます</string>
+    <string name="dialog_title_language_changed">è¨€èªžãŒå¤‰æ›´ã•ã‚Œã¾ã—ãŸ</string>
+    <string name="dialog_message_language_changed">ã‚¢ãƒ—ãƒªã®è¨€èªžãŒ%1$sã‹ã‚‰%2$sã«å¤‰æ›´ã•ã‚Œã¾ã—ãŸã€‚\n\nâ€¢ ä»Šã™ãé©ç”¨ï¼šã“ã®ç”»é¢ã‚’ã™ãã«æ›´æ–°ã—ã¾ã™\nâ€¢ ã‚¢ãƒ—ãƒªã‚’å†èµ·å‹•ï¼šã™ã¹ã¦ã®ç”»é¢ã¨ã‚µãƒ¼ãƒ“ã‚¹ãŒæ–°ã—ã„è¨€èªžã‚’ä½¿ç”¨ã™ã‚‹ã“ã¨ã‚’ä¿è¨¼ã—ã¾ã™\n\næœ€é«˜ã®ä½“é¨“ã®ãŸã‚ã«ã€ã‚¢ãƒ—ãƒªã®å†èµ·å‹•ã‚’ãŠå‹§ã‚ã—ã¾ã™ã€‚</string>
+    <string name="button_restart_app">ã‚¢ãƒ—ãƒªã‚’å†èµ·å‹•</string>
+    <string name="button_apply_now">ä»Šã™ãé©ç”¨</string>
+    <string name="toast_language_restarting">æ–°ã—ã„è¨€èªžã§ã‚¢ãƒ—ãƒªã‚’å†èµ·å‹•ä¸­...</string>
+    <string name="toast_language_manual_restart">ã‚¢ãƒ—ãƒªã‚’å†èµ·å‹•ã™ã‚‹ã¨ã€è¨€èªžãŒå®Œå…¨ã«é©ç”¨ã•ã‚Œã¾ã™</string>
     
     <!-- Hint Strings -->
-    <string name="hint_app_package_name">アプリパッケージ名</string>
-    <string name="hint_search_apps_or_package">アプリを検索するか、パッケージ名を入力</string>
-    <string name="hint_device_addresses">デバイスアドレスまたは名前</string>
-    <string name="hint_network_ssids">ネットワークSSID</string>
-    <string name="hint_word_to_blacklist">ブラックリストに追加する単語</string>
-    <string name="hint_word_to_swap">置換する単語</string>
-    <string name="hint_swap_with_optional">置換先（オプション）</string>
-    <string name="hint_search_media_filter">メディアフィルタに追加するアプリを検索</string>
-    <string name="hint_important_keyword">重要なキーワード（例：返信、コメント）</string>
-    <string name="hint_rule_name">ルール名を入力（例：夜間モード、車内モード）</string>
+    <string name="hint_app_package_name">ã‚¢ãƒ—ãƒªãƒ‘ãƒƒã‚±ãƒ¼ã‚¸å</string>
+    <string name="hint_search_apps_or_package">ã‚¢ãƒ—ãƒªã‚’æ¤œç´¢ã™ã‚‹ã‹ã€ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸åã‚’å…¥åŠ›</string>
+    <string name="hint_device_addresses">ãƒ‡ãƒã‚¤ã‚¹ã‚¢ãƒ‰ãƒ¬ã‚¹ã¾ãŸã¯åå‰</string>
+    <string name="hint_network_ssids">ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯SSID</string>
+    <string name="hint_word_to_blacklist">ãƒ–ãƒ©ãƒƒã‚¯ãƒªã‚¹ãƒˆã«è¿½åŠ ã™ã‚‹å˜èªž</string>
+    <string name="hint_word_to_swap">ç½®æ›ã™ã‚‹å˜èªž</string>
+    <string name="hint_swap_with_optional">ç½®æ›å…ˆï¼ˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ï¼‰</string>
+    <string name="hint_search_media_filter">ãƒ¡ãƒ‡ã‚£ã‚¢ãƒ•ã‚£ãƒ«ã‚¿ã«è¿½åŠ ã™ã‚‹ã‚¢ãƒ—ãƒªã‚’æ¤œç´¢</string>
+    <string name="hint_important_keyword">é‡è¦ãªã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ï¼ˆä¾‹ï¼šè¿”ä¿¡ã€ã‚³ãƒ¡ãƒ³ãƒˆï¼‰</string>
+    <string name="hint_rule_name">ãƒ«ãƒ¼ãƒ«åã‚’å…¥åŠ›ï¼ˆä¾‹ï¼šå¤œé–“ãƒ¢ãƒ¼ãƒ‰ã€è»Šå†…ãƒ¢ãƒ¼ãƒ‰ï¼‰</string>
     <string name="hint_bluetooth_addresses">00:11:22:33:44:55&#10;AA:BB:CC:DD:EE:FF</string>
-    <string name="hint_wifi_networks">ホームWiFi&#10;オフィスネットワーク</string>
-    <string name="hint_wifi_network_name">WiFiネットワーク名を入力</string>
-    <string name="hint_cooldown_time">クールダウン時間</string>
-    <string name="hint_search_for_app">アプリを検索...</string>
-    <string name="hint_enter_word_to_block">ブロックする単語を入力...</string>
-    <string name="hint_enter_format_placeholders">プレースホルダーを使用してフォーマットを入力</string>
+    <string name="hint_wifi_networks">ãƒ›ãƒ¼ãƒ WiFi&#10;ã‚ªãƒ•ã‚£ã‚¹ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯</string>
+    <string name="hint_wifi_network_name">WiFiãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯åã‚’å…¥åŠ›</string>
+    <string name="hint_cooldown_time">ã‚¯ãƒ¼ãƒ«ãƒ€ã‚¦ãƒ³æ™‚é–“</string>
+    <string name="hint_search_for_app">ã‚¢ãƒ—ãƒªã‚’æ¤œç´¢...</string>
+    <string name="hint_enter_word_to_block">ãƒ–ãƒ­ãƒƒã‚¯ã™ã‚‹å˜èªžã‚’å…¥åŠ›...</string>
+    <string name="hint_enter_format_placeholders">ãƒ—ãƒ¬ãƒ¼ã‚¹ãƒ›ãƒ«ãƒ€ãƒ¼ã‚’ä½¿ç”¨ã—ã¦ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆã‚’å…¥åŠ›</string>
 </resources>
+
+

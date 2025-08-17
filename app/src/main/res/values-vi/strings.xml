@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SpeakThat!</string>
     <string name="service_name">SpeakThat Notification Reader</string>
@@ -10,7 +10,7 @@
     <string name="permission_read_external_storage">Used for importing/exporting app settings and configuration files. Allows users to backup and restore their settings. No personal data is accessed.</string>
     <string name="permission_needed">Notification Access Required</string>
     <string name="permission_description">SpeakThat! needs access to your notifications to read them aloud. This permission is required for the app to function.</string>
-    <string name="master_switch_battery_tip">💡 Turn off when not needed to save battery</string>
+    <string name="master_switch_battery_tip">ðŸ’¡ Turn off when not needed to save battery</string>
     <string name="open_settings">Permission Settings</string>
     <string name="service_enabled">Notification Reader: Enabled</string>
     <string name="service_disabled">Notification Reader: Disabled</string>
@@ -57,13 +57,13 @@
     <string name="notification_behavior_dialog_title">Notification Behavior Options</string>
     <string name="notification_behavior_dialog_message">Choose how SpeakThat handles multiple notifications:
 
-<b>🔄 Interrupt</b> - Stops current notification and reads new one immediately. Best for urgent notifications.
+<b>ðŸ”„ Interrupt</b> - Stops current notification and reads new one immediately. Best for urgent notifications.
 
-<b>📋 Queue</b> - Finishes current notification, then reads new ones in order. Nothing gets missed.
+<b>ðŸ“‹ Queue</b> - Finishes current notification, then reads new ones in order. Nothing gets missed.
 
-<b>⏭️ Skip</b> - Ignores new notifications while reading. Simple but you might miss important ones.
+<b>â­ï¸ Skip</b> - Ignores new notifications while reading. Simple but you might miss important ones.
 
-<b>🧠 Smart (Recommended)</b> - Priority apps interrupt, others queue. Perfect balance of urgency and completeness.
+<b>ðŸ§  Smart (Recommended)</b> - Priority apps interrupt, others queue. Perfect balance of urgency and completeness.
 
 Smart mode lets you choose which apps are urgent enough to interrupt (like calls, messages) while other apps wait their turn.</string>
     <string name="custom_app_names_title">Custom App Names</string>
@@ -75,43 +75,43 @@ Smart mode lets you choose which apps are urgent enough to interrupt (like calls
     <string name="media_behavior_dialog_title">Media Behavior Options</string>
     <string name="media_behavior_dialog_message">Choose how SpeakThat handles notifications while music/videos play:
 
-<b>🎵 Ignore</b> - Speaks over your media. Simple but can be disruptive.
+<b>ðŸŽµ Ignore</b> - Speaks over your media. Simple but can be disruptive.
 
-<b>⏸️ Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow.
+<b>â¸ï¸ Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow.
 
-<b>🔉 Lower Audio (Recommended)</b> - Temporarily reduces media volume so you can hear both. Most natural experience.
+<b>ðŸ”‰ Lower Audio (Recommended)</b> - Temporarily reduces media volume so you can hear both. Most natural experience.
 
-<b>🔇 Silence</b> - Doesn\'t speak while media plays. Quiet but you might miss important notifications.
+<b>ðŸ”‡ Silence</b> - Doesn\'t speak while media plays. Quiet but you might miss important notifications.
 
 Lower Audio works like a car radio - it ducks the music down when speaking, then brings it back up. Perfect for music lovers who still want notifications.</string>
     <string name="shake_to_stop_dialog_title">Shake to Stop Feature</string>
     <string name="shake_to_stop_dialog_message">Shake to Stop lets you instantly silence SpeakThat by shaking your device:
 
-<b>✨ Why it\'s helpful:</b>
-• Stop embarrassing notifications in quiet places
-• Quick control when your hands are busy
-• Works even when screen is off
-• No fumbling for buttons
+<b>âœ¨ Why it\'s helpful:</b>
+â€¢ Stop embarrassing notifications in quiet places
+â€¢ Quick control when your hands are busy
+â€¢ Works even when screen is off
+â€¢ No fumbling for buttons
 
-<b>🎯 How it works:</b>
-• Shake your device firmly (like a dice shake)
-• Current notification stops immediately
-• Queued notifications are cleared
-• New notifications work normally
+<b>ðŸŽ¯ How it works:</b>
+â€¢ Shake your device firmly (like a dice shake)
+â€¢ Current notification stops immediately
+â€¢ Queued notifications are cleared
+â€¢ New notifications work normally
 
-<b>⚙️ Customization:</b>
-• Adjust sensitivity for your preference
-• Test your shake strength with the meter
-• Works great for both gentle and vigorous shakers
+<b>âš™ï¸ Customization:</b>
+â€¢ Adjust sensitivity for your preference
+â€¢ Test your shake strength with the meter
+â€¢ Works great for both gentle and vigorous shakers
 
 This feature is especially loved by people who get notifications during meetings, movies, or while driving.</string>
     <string name="use_recommended">Use Recommended</string>
     <string name="got_it">Got it</string>
     <!-- Persistent/Silent Notification Filtering -->
-    <string name="persistent_notification_filtering_title">🔇 Persistent/Silent Notification Filtering</string>
+    <string name="persistent_notification_filtering_title">ðŸ”‡ Persistent/Silent Notification Filtering</string>
     <string name="persistent_notification_filtering_description">Skip notifications that are persistent (ongoing) or silent (no sound/vibration)</string>
     <string name="enable_persistent_filtering">Enable persistent/silent notification filtering</string>
-    <string name="persistent_filtering_help">💡 Persistent notifications are ongoing (like music controls, navigation, etc.) and silent notifications have no sound/vibration. This option helps reduce notification spam from background services.</string>
+    <string name="persistent_filtering_help">ðŸ’¡ Persistent notifications are ongoing (like music controls, navigation, etc.) and silent notifications have no sound/vibration. This option helps reduce notification spam from background services.</string>
     <!-- Individual Persistent Filtering Categories -->
     <string name="filter_persistent_notifications">Filter persistent notifications</string>
     <string name="filter_silent_notifications">Filter silent notifications</string>
@@ -128,24 +128,24 @@ This feature is especially loved by people who get notifications during meetings
     <string name="wave_to_stop_dialog_title">Wave to Stop Feature</string>
     <string name="wave_to_stop_dialog_message">Wave to Stop lets you instantly silence SpeakThat by waving your hand in front of the device:
 
-<b>✨ Why it\'s helpful:</b>
-• Perfect for users who can\'t shake their device
-• Great for phones on desks or mounts
-• Works with one hand
-• No physical device movement needed
-• Accessibility-friendly alternative to shake
+<b>âœ¨ Why it\'s helpful:</b>
+â€¢ Perfect for users who can\'t shake their device
+â€¢ Great for phones on desks or mounts
+â€¢ Works with one hand
+â€¢ No physical device movement needed
+â€¢ Accessibility-friendly alternative to shake
 
-<b>🎯 How it works:</b>
-• Wave your hand in front of the device (like a magic gesture)
-• Uses the proximity sensor to detect hand movement
-• Current notification stops immediately
-• Queued notifications are cleared
-• New notifications work normally
+<b>ðŸŽ¯ How it works:</b>
+â€¢ Wave your hand in front of the device (like a magic gesture)
+â€¢ Uses the proximity sensor to detect hand movement
+â€¢ Current notification stops immediately
+â€¢ Queued notifications are cleared
+â€¢ New notifications work normally
 
-<b>⚙️ Customization:</b>
-• Adjust sensitivity for your preference
-• Test your wave detection with the meter
-• Works great for different hand sizes and distances
+<b>âš™ï¸ Customization:</b>
+â€¢ Adjust sensitivity for your preference
+â€¢ Test your wave detection with the meter
+â€¢ Works great for different hand sizes and distances
 
 This feature is especially useful for accessibility, desk users, and anyone who prefers gesture control over physical movement.</string>
     <!-- About Page -->
@@ -159,14 +159,14 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Store Update Dialog -->
     <string name="store_update_dialog_title">Updates via App Store</string>
     <string name="store_update_dialog_message">This version of SpeakThat! receives updates through your app store (F-Droid, Google Play Store, etc.).</string>
-    <string name="store_update_dialog_info">• Updates are automatically handled by your app store\n• You\'ll receive notifications when updates are available\n• No manual download or installation required</string>
+    <string name="store_update_dialog_info">â€¢ Updates are automatically handled by your app store\nâ€¢ You\'ll receive notifications when updates are available\nâ€¢ No manual download or installation required</string>
     <string name="store_update_dialog_help_title">Need the auto-update version?</string>
     <string name="store_update_dialog_help_message">If you want automatic updates directly from GitHub, you can download the GitHub version instead. This version is identical but includes auto-update functionality.</string>
     <string name="store_update_dialog_visit_github">Visit GitHub</string>
     <string name="store_update_dialog_got_it">Got it</string>
     <string name="app_description">SpeakThat! is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="app_features">• Real-time notification reading\n• Customizable voice settings\n• Smart notification filtering\n• App-specific controls\n• Media-aware behavior\n• Notification history\n• Shake/Wave to stop\n• Custom speech formatting\n• Dark/Light theme support\n• Conditional rules for advanced logic and schedules\n• Fully ad-free and offline functionality</string>
-    <string name="developer_info">Developed with ❤️ by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day.\n\nSpeakThat! was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers.\n\nThis project was accelerated by AI-assisted programming.</string>
+    <string name="app_features">â€¢ Real-time notification reading\nâ€¢ Customizable voice settings\nâ€¢ Smart notification filtering\nâ€¢ App-specific controls\nâ€¢ Media-aware behavior\nâ€¢ Notification history\nâ€¢ Shake/Wave to stop\nâ€¢ Custom speech formatting\nâ€¢ Dark/Light theme support\nâ€¢ Conditional rules for advanced logic and schedules\nâ€¢ Fully ad-free and offline functionality</string>
+    <string name="developer_info">Developed with â¤ï¸ by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day.\n\nSpeakThat! was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers.\n\nThis project was accelerated by AI-assisted programming.</string>
     <string name="license_info">This project is open source and available under the GPL-3.0 License.\n\nYou can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
     <string name="read_about_app">Read About App</string>
     <string name="stop_reading">Stop Reading</string>
@@ -348,7 +348,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_title_delay_before_readout">Delay Before Readout</string>
     <string name="dialog_title_custom_app_names">Custom App Names</string>
     <string name="dialog_title_notification_cooldown">Notification Cooldown</string>
-    <string name="dialog_title_speech_formats_guide">🗣️ Speech Formats - Complete Guide</string>
+    <string name="dialog_title_speech_formats_guide">ðŸ—£ï¸ Speech Formats - Complete Guide</string>
     <string name="dialog_title_honour_do_not_disturb">Honour Do Not Disturb</string>
     <string name="dialog_title_honour_audio_mode">Honour Audio Mode</string>
     <string name="dialog_title_select_bluetooth_device">Select Bluetooth Device</string>
@@ -432,17 +432,17 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="button_delete">Delete</string>
     <string name="button_remove">Remove</string>
     <!-- Critical Hardcoded Strings - App Categories -->
-    <string name="category_social_media">Social Media</string>
-    <string name="category_social_media_description">Social networking and community apps</string>
-    <string name="category_messaging">Messaging</string>
+    <string name="category_social_display_name">Social Media</string>
+    <string name="category_social_description">Social networking and community apps</string>
+    <string name="category_messaging_display_name">Messaging</string>
     <string name="category_messaging_description">Chat and communication apps</string>
-    <string name="category_finance">Finance</string>
+    <string name="category_finance_display_name">Finance</string>
     <string name="category_finance_description">Banking and financial apps</string>
-    <string name="category_health">Health</string>
+    <string name="category_health_display_name">Health</string>
     <string name="category_health_description">Health and fitness apps</string>
-    <string name="category_entertainment">Entertainment</string>
+    <string name="category_entertainment_display_name">Entertainment</string>
     <string name="category_entertainment_description">Media and entertainment apps</string>
-    <string name="category_games">Games</string>
+    <string name="category_games_display_name">Games</string>
     <string name="category_games_description">Mobile games and gaming apps</string>
     <!-- Critical Hardcoded Strings - Other -->
     <string name="unknown_device">Unknown Device</string>
@@ -463,3 +463,5 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
 </resources>
+
+
