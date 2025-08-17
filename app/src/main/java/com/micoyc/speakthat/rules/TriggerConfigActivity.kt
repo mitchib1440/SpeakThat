@@ -8,7 +8,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.micoyc.speakthat.InAppLogger
+import com.micoyc.speakthat.R
 import com.micoyc.speakthat.databinding.ActivityTriggerConfigBinding
+import com.micoyc.speakthat.utils.WifiCapabilityChecker
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -122,6 +124,11 @@ class TriggerConfigActivity : AppCompatActivity() {
     private fun setupWifiUI() {
         binding.cardWifi.visibility = View.VISIBLE
         
+        // Check if we can resolve WiFi SSIDs
+        if (!WifiCapabilityChecker.canResolveWifiSSID(this)) {
+            showWifiCompatibilityWarning()
+        }
+        
         // Set up WiFi options
         binding.switchAnyNetwork.setOnCheckedChangeListener { _, isChecked ->
             binding.editNetworkSSIDs.isEnabled = !isChecked
@@ -133,6 +140,26 @@ class TriggerConfigActivity : AppCompatActivity() {
         binding.btnSelectNetworks.setOnClickListener {
             showWifiNetworkSelection()
         }
+    }
+    
+    private fun showWifiCompatibilityWarning() {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Note on WiFi Compatibility")
+            .setMessage("SpeakThat was unable to resolve your current SSID. This is likely because your version of Android has security restrictions that prevent SpeakThat from identifying what network you're connected to.\n\nIt's not impossible, however. So if you're a better developer than me then please contribute on the GitHub.")
+            .setPositiveButton("Create Anyway") { _, _ ->
+                // User wants to create the rule anyway
+            }
+            .setNegativeButton("Nevermind") { _, _ ->
+                // User wants to go back
+            }
+            .setNeutralButton("Open GitHub") { _, _ ->
+                // Open GitHub link
+                val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/mitchib1440/SpeakThat"))
+                startActivity(intent)
+            }
+            .create()
+        
+        dialog.show()
     }
     
     private fun setupDaySelection() {
@@ -585,7 +612,13 @@ class TriggerConfigActivity : AppCompatActivity() {
                 }
                 
                 TriggerType.WIFI_NETWORK -> {
-                    val networkSSIDs = trigger.data["network_ssids"] as? Set<String> ?: emptySet()
+                    // Handle both Set<String> and List<String> since JSON serialization converts Sets to Lists
+                    val networkSSIDsData = trigger.data["network_ssids"]
+                    val networkSSIDs = when (networkSSIDsData) {
+                        is Set<*> -> networkSSIDsData.filterIsInstance<String>().toSet()
+                        is List<*> -> networkSSIDsData.filterIsInstance<String>().toSet()
+                        else -> emptySet<String>()
+                    }
                     
                     // Temporarily remove listener to prevent interference during loading
                     binding.switchAnyNetwork.setOnCheckedChangeListener(null)
@@ -618,10 +651,53 @@ class TriggerConfigActivity : AppCompatActivity() {
             TriggerType.SCREEN_STATE -> createScreenStateTrigger()
             TriggerType.TIME_SCHEDULE -> createTimeScheduleTrigger()
             TriggerType.BLUETOOTH_DEVICE -> createBluetoothTrigger()
-            TriggerType.WIFI_NETWORK -> createWifiTrigger()
+            TriggerType.WIFI_NETWORK -> {
+                val wifiTrigger = createWifiTrigger()
+                
+                // Check if this is a WiFi trigger with specific networks
+                val networkSSIDs = wifiTrigger.data["network_ssids"] as? Set<String>
+                if (networkSSIDs?.isNotEmpty() == true) {
+                    // Always show warning for WiFi rules with specific networks to inform about Android limitations
+                    showWifiCompatibilityWarningBeforeSave(wifiTrigger)
+                    return
+                }
+                
+                wifiTrigger
+            }
             else -> return
         }
         
+        // Create a new intent for the result to avoid modifying the original intent
+        val resultIntent = android.content.Intent().apply {
+            putExtra(RESULT_TRIGGER, trigger.toJson())
+            putExtra(EXTRA_IS_EDITING, isEditing)
+        }
+        setResult(RESULT_OK, resultIntent)
+        
+        InAppLogger.logUserAction("Trigger configured: ${trigger.getLogMessage()}", "TriggerConfigActivity")
+        finish()
+    }
+    
+    private fun showWifiCompatibilityWarningBeforeSave(trigger: Trigger) {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.wifi_compatibility_warning_title))
+            .setMessage(getString(R.string.wifi_compatibility_warning_message))
+            .setPositiveButton(getString(R.string.wifi_compatibility_warning_create_anyway)) { _, _ ->
+                // Save the trigger with the original data (user wants to proceed)
+                saveTriggerInternal(trigger)
+            }
+            .setNegativeButton(getString(R.string.wifi_compatibility_warning_nevermind), null)
+            .setNeutralButton(getString(R.string.wifi_compatibility_warning_open_github)) { _, _ ->
+                // Open GitHub link
+                val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/mitchib1440/SpeakThat"))
+                startActivity(intent)
+            }
+            .create()
+        
+        dialog.show()
+    }
+    
+    private fun saveTriggerInternal(trigger: Trigger) {
         // Create a new intent for the result to avoid modifying the original intent
         val resultIntent = android.content.Intent().apply {
             putExtra(RESULT_TRIGGER, trigger.toJson())

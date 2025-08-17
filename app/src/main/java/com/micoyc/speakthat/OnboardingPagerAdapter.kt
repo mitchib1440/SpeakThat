@@ -12,6 +12,7 @@ import com.micoyc.speakthat.rules.RuleTemplate
 import com.micoyc.speakthat.rules.TriggerConfigActivity
 import com.micoyc.speakthat.rules.TriggerType
 import com.micoyc.speakthat.LanguagePresetManager
+import com.micoyc.speakthat.utils.WifiCapabilityChecker
 
 class OnboardingPagerAdapter(
     private val skipPermissionPage: Boolean = false
@@ -641,6 +642,12 @@ class OnboardingPagerAdapter(
         }
 
         private fun showWifiConfigurationDialog(template: RuleTemplate) {
+            // Check if we can resolve WiFi SSIDs
+            if (!WifiCapabilityChecker.canResolveWifiSSID(binding.root.context)) {
+                showWifiCompatibilityWarningOnboarding(template)
+                return
+            }
+            
             val dialogView = android.view.LayoutInflater.from(binding.root.context)
                 .inflate(R.layout.dialog_wifi_configuration, null)
             
@@ -662,6 +669,26 @@ class OnboardingPagerAdapter(
                     }
                 }
                 .setNegativeButton("Cancel", null)
+                .create()
+            
+            dialog.show()
+        }
+        
+        private fun showWifiCompatibilityWarningOnboarding(template: RuleTemplate) {
+            val dialog = androidx.appcompat.app.AlertDialog.Builder(binding.root.context)
+                .setTitle("Note on WiFi Compatibility")
+                .setMessage("SpeakThat was unable to resolve your current SSID. This is likely because your version of Android has security restrictions that prevent SpeakThat from identifying what network you're connected to.\n\nIt's not impossible, however. So if you're a better developer than me then please contribute on the GitHub.")
+                .setPositiveButton("Add Rule Anyway") { _, _ ->
+                    // Create the rule with empty network list (will work with any WiFi)
+                    val customData = mapOf("network_ssids" to setOf<String>())
+                    addRuleFromTemplateWithData(template, customData)
+                }
+                .setNegativeButton("Nevermind", null)
+                .setNeutralButton("Open GitHub") { _, _ ->
+                    // Open GitHub link
+                    val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/mitchib1440/SpeakThat"))
+                    binding.root.context.startActivity(intent)
+                }
                 .create()
             
             dialog.show()
@@ -773,6 +800,73 @@ class OnboardingPagerAdapter(
         }
 
         private fun addRuleFromTemplateWithData(template: RuleTemplate, customData: Map<String, Any>) {
+            try {
+                // Check if this is a WiFi rule with specific networks and we can't resolve SSIDs
+                val hasWifiTrigger = template.triggers.any { it.type == TriggerType.WIFI_NETWORK }
+                val hasSpecificNetworks = customData.containsKey("network_ssids") && 
+                    (customData["network_ssids"] as? Set<String>)?.isNotEmpty() == true
+                
+                if (hasWifiTrigger && hasSpecificNetworks) {
+                    // Always show warning for WiFi rules with specific networks to inform about Android limitations
+                    // This ensures users are aware that SSID detection may not work reliably in all situations
+                    showWifiCompatibilityWarningBeforeCreationOnboarding(template, customData)
+                    return
+                }
+                
+                // Create a rule from the template with custom data
+                val rule = com.micoyc.speakthat.rules.RuleTemplates.createRuleFromTemplate(template, customData)
+                
+                // Get the rule manager and add the rule
+                val ruleManager = com.micoyc.speakthat.rules.RuleManager(binding.root.context)
+                ruleManager.addRule(rule)
+                
+                // Enable Conditional Rules if it's not already enabled
+                if (!ruleManager.isRulesEnabled()) {
+                    ruleManager.setRulesEnabled(true)
+                    InAppLogger.log("OnboardingRuleTemplates", "Enabled Conditional Rules feature")
+                }
+                
+                InAppLogger.log("OnboardingRuleTemplates", "Added configured rule from template: ${template.name}")
+                
+                // Show a toast to confirm the rule was added
+                android.widget.Toast.makeText(
+                    binding.root.context,
+                    "Added rule: ${template.name}",
+                    android.widget.Toast.LENGTH_SHORT
+                ).show()
+                
+            } catch (e: Exception) {
+                InAppLogger.logError("OnboardingRuleTemplates", "Error adding configured rule from template: ${e.message}")
+                
+                // Show error toast
+                android.widget.Toast.makeText(
+                    binding.root.context,
+                    "Error adding rule. Please try again.",
+                    android.widget.Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        
+        private fun showWifiCompatibilityWarningBeforeCreationOnboarding(template: RuleTemplate, customData: Map<String, Any>) {
+            val dialog = androidx.appcompat.app.AlertDialog.Builder(binding.root.context)
+                .setTitle(binding.root.context.getString(R.string.wifi_compatibility_warning_title))
+                .setMessage(binding.root.context.getString(R.string.wifi_compatibility_warning_message))
+                .setPositiveButton(binding.root.context.getString(R.string.wifi_compatibility_warning_add_anyway)) { _, _ ->
+                    // Create the rule with the original data (user wants to proceed)
+                    addRuleFromTemplateWithDataInternal(template, customData)
+                }
+                .setNegativeButton(binding.root.context.getString(R.string.wifi_compatibility_warning_nevermind), null)
+                .setNeutralButton(binding.root.context.getString(R.string.wifi_compatibility_warning_open_github)) { _, _ ->
+                    // Open GitHub link
+                    val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/mitchib1440/SpeakThat"))
+                    binding.root.context.startActivity(intent)
+                }
+                .create()
+            
+            dialog.show()
+        }
+        
+        private fun addRuleFromTemplateWithDataInternal(template: RuleTemplate, customData: Map<String, Any>) {
             try {
                 // Create a rule from the template with custom data
                 val rule = com.micoyc.speakthat.rules.RuleTemplates.createRuleFromTemplate(template, customData)

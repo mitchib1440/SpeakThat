@@ -116,6 +116,19 @@ object RuleTemplates {
                     "days_of_week" to selectedDays
                 )
             }
+            TriggerType.WIFI_NETWORK -> {
+                // Convert ssid field to network_ssids format
+                val ssid = data["ssid"] as? String
+                val networkId = data["networkId"] as? Int
+                
+                InAppLogger.logDebug(TAG, "Converting WiFi data: ssid=$ssid, networkId=$networkId")
+                
+                if (ssid != null && ssid.isNotEmpty()) {
+                    mapOf("network_ssids" to setOf(ssid))
+                } else {
+                    emptyMap<String, Any>()
+                }
+            }
             else -> data
         }
     }

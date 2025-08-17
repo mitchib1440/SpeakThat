@@ -352,6 +352,16 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_trigger_time_between">time is between %1$s and %2$s</string>
     <string name="rule_trigger_wifi_connected">connected to %1$s</string>
     <string name="rule_trigger_wifi_disconnected">not connected to %1$s</string>
+    <string name="rule_trigger_wifi_connected_android15">connected to %1$s (Android 15+: any WiFi)</string>
+    <string name="rule_trigger_wifi_disconnected_android15">not connected to %1$s (Android 15+: any WiFi)</string>
+    
+    <!-- WiFi Compatibility Warning -->
+    <string name="wifi_compatibility_warning_title">Note on WiFi Compatibility</string>
+    <string name="wifi_compatibility_warning_message">Some Android versions have security restrictions that prevent apps from detecting specific WiFi network names. While SpeakThat can currently detect your WiFi network, this functionality may not work reliably in all situations (especially when the app is in the background).\n\nThe rule will fall back to detecting WiFi connection state if SSID detection fails, but it may not work exactly as expected.\n\nIt\'s not impossible to implement properly, however. So if you\'re a better developer than me then please contribute on the GitHub.</string>
+    <string name="wifi_compatibility_warning_create_anyway">Create Rule Anyway</string>
+    <string name="wifi_compatibility_warning_add_anyway">Add Rule Anyway</string>
+    <string name="wifi_compatibility_warning_nevermind">Nevermind</string>
+    <string name="wifi_compatibility_warning_open_github">Open GitHub</string>
     <string name="rule_trigger_multiple">multiple conditions are met</string>
     
     <string name="rule_action_skip_notification">skip reading notifications</string>
@@ -669,8 +679,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="update_rule">update</string>
     
     <!-- Conditional Rules - Trigger Strings -->
-    <string name="rule_trigger_wifi_network">Connected to WiFi network: %1$s</string>
-    <string name="rule_trigger_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <string name="rule_trigger_wifi_network">WiFi network in range: %1$s</string>
+    <string name="rule_trigger_not_wifi_network">WiFi network not in range: %1$s</string>
     
     <!-- Behavior Settings - Media Volume -->
     <string name="behavior_media_volume_tip">Tip: Lower values make media quieter during notifications</string>
@@ -1235,8 +1245,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_action_read_app">Read notifications from app: %1$s</string>
     
     <!-- Conditional Rules - Exception Strings -->
-    <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
-    <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <string name="rule_exception_wifi_network">WiFi network in range: %1$s</string>
+    <string name="rule_exception_not_wifi_network">WiFi network not in range: %1$s</string>
     
     <!-- Multi-Language Voice Warning -->
     <string name="specific_voice_warning">Multi-language limitation</string>
