@@ -3,6 +3,7 @@ package com.micoyc.speakthat
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -42,9 +43,97 @@ class RuleBuilderActivity : AppCompatActivity() {
     companion object {
         private const val PREFS_NAME = "SpeakThatPrefs"
         private const val KEY_DARK_MODE = "dark_mode"
-        private const val REQUEST_TRIGGER_CONFIG = 1001
-        private const val REQUEST_ACTION_CONFIG = 1002
-        private const val REQUEST_EXCEPTION_CONFIG = 1003
+    }
+    
+    // Activity Result launchers
+    private val triggerConfigLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            result.data?.let { intent ->
+                val triggerJson = intent.getStringExtra(TriggerConfigActivity.RESULT_TRIGGER)
+                if (triggerJson != null) {
+                    val trigger = Trigger.fromJson(triggerJson)
+                    if (trigger != null) {
+                        // Check if we're editing an existing trigger
+                        val isEditing = intent.getBooleanExtra(TriggerConfigActivity.EXTRA_IS_EDITING, false)
+                        if (isEditing) {
+                            // Find and update the existing trigger
+                            val existingTriggers = triggerAdapter.getTriggers().toMutableList()
+                            val index = existingTriggers.indexOfFirst { it.id == trigger.id }
+                            if (index != -1) {
+                                existingTriggers[index] = trigger
+                                triggerAdapter.updateTriggers(existingTriggers)
+                            }
+                        } else {
+                            // Add new trigger
+                            triggerAdapter.addTrigger(trigger)
+                        }
+                        InAppLogger.logUserAction("Trigger configured: ${trigger.getLogMessage()}", "RuleBuilderActivity")
+                    }
+                }
+            }
+        }
+    }
+    
+    private val actionConfigLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            result.data?.let { intent ->
+                val actionJson = intent.getStringExtra(ActionConfigActivity.RESULT_ACTION)
+                if (actionJson != null) {
+                    val action = Action.fromJson(actionJson)
+                    if (action != null) {
+                        // Check if we're editing an existing action
+                        val isEditing = intent.getBooleanExtra(ActionConfigActivity.EXTRA_IS_EDITING, false)
+                        if (isEditing) {
+                            // Find and update the existing action
+                            val existingActions = actionAdapter.getActions().toMutableList()
+                            val index = existingActions.indexOfFirst { it.id == action.id }
+                            if (index != -1) {
+                                existingActions[index] = action
+                                actionAdapter.updateActions(existingActions)
+                            }
+                        } else {
+                            // Add new action
+                            actionAdapter.addAction(action)
+                        }
+                        InAppLogger.logUserAction("Action configured: ${action.getLogMessage()}", "RuleBuilderActivity")
+                    }
+                }
+            }
+        }
+    }
+    
+    private val exceptionConfigLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            result.data?.let { intent ->
+                val exceptionJson = intent.getStringExtra(ExceptionConfigActivity.RESULT_EXCEPTION)
+                if (exceptionJson != null) {
+                    val exception = Exception.fromJson(exceptionJson)
+                    if (exception != null) {
+                        // Check if we're editing an existing exception
+                        val isEditing = intent.getBooleanExtra(ExceptionConfigActivity.EXTRA_IS_EDITING, false)
+                        if (isEditing) {
+                            // Find and update the existing exception
+                            val existingExceptions = exceptionAdapter.getExceptions().toMutableList()
+                            val index = existingExceptions.indexOfFirst { it.id == exception.id }
+                            if (index != -1) {
+                                existingExceptions[index] = exception
+                                exceptionAdapter.updateExceptions(existingExceptions)
+                            }
+                        } else {
+                            // Add new exception
+                            exceptionAdapter.addException(exception)
+                        }
+                        InAppLogger.logUserAction("Exception configured: ${exception.getLogMessage()}", "RuleBuilderActivity")
+                    }
+                }
+            }
+        }
     }
     
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -393,7 +482,7 @@ class RuleBuilderActivity : AppCompatActivity() {
             }
         }
         
-        startActivityForResult(intent, REQUEST_TRIGGER_CONFIG)
+        triggerConfigLauncher.launch(intent)
     }
     
     // Action methods
@@ -422,7 +511,7 @@ class RuleBuilderActivity : AppCompatActivity() {
             }
         }
         
-        startActivityForResult(intent, REQUEST_ACTION_CONFIG)
+        actionConfigLauncher.launch(intent)
     }
 
     private fun launchExceptionConfig(exceptionType: ExceptionType, existingException: Exception?) {
@@ -434,7 +523,7 @@ class RuleBuilderActivity : AppCompatActivity() {
             }
         }
         
-        startActivityForResult(intent, REQUEST_EXCEPTION_CONFIG)
+        exceptionConfigLauncher.launch(intent)
     }
     
     // Exception methods
@@ -516,86 +605,10 @@ class RuleBuilderActivity : AppCompatActivity() {
             .show()
     }
     
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: android.content.Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        
-        if (requestCode == REQUEST_TRIGGER_CONFIG && resultCode == RESULT_OK) {
-            data?.let { intent: android.content.Intent ->
-                val triggerJson = intent.getStringExtra(TriggerConfigActivity.RESULT_TRIGGER)
-                if (triggerJson != null) {
-                    val trigger = Trigger.fromJson(triggerJson)
-                    if (trigger != null) {
-                        // Check if we're editing an existing trigger
-                        val isEditing = intent.getBooleanExtra(TriggerConfigActivity.EXTRA_IS_EDITING, false)
-                        if (isEditing) {
-                            // Find and update the existing trigger
-                            val existingTriggers = triggerAdapter.getTriggers().toMutableList()
-                            val index = existingTriggers.indexOfFirst { it.id == trigger.id }
-                            if (index != -1) {
-                                existingTriggers[index] = trigger
-                                triggerAdapter.updateTriggers(existingTriggers)
-                            }
-                        } else {
-                            // Add new trigger
-                            triggerAdapter.addTrigger(trigger)
-                        }
-                        InAppLogger.logUserAction("Trigger configured: ${trigger.getLogMessage()}", "RuleBuilderActivity")
-                    }
-                }
-            }
-        } else if (requestCode == REQUEST_ACTION_CONFIG && resultCode == RESULT_OK) {
-            data?.let { intent: android.content.Intent ->
-                val actionJson = intent.getStringExtra(ActionConfigActivity.RESULT_ACTION)
-                if (actionJson != null) {
-                    val action = Action.fromJson(actionJson)
-                    if (action != null) {
-                        // Check if we're editing an existing action
-                        val isEditing = intent.getBooleanExtra(ActionConfigActivity.EXTRA_IS_EDITING, false)
-                        if (isEditing) {
-                            // Find and update the existing action
-                            val existingActions = actionAdapter.getActions().toMutableList()
-                            val index = existingActions.indexOfFirst { it.id == action.id }
-                            if (index != -1) {
-                                existingActions[index] = action
-                                actionAdapter.updateActions(existingActions)
-                            }
-                        } else {
-                            // Add new action
-                            actionAdapter.addAction(action)
-                        }
-                        InAppLogger.logUserAction("Action configured: ${action.getLogMessage()}", "RuleBuilderActivity")
-                    }
-                }
-            }
-        } else if (requestCode == REQUEST_EXCEPTION_CONFIG && resultCode == RESULT_OK) {
-            data?.let { intent: android.content.Intent ->
-                val exceptionJson = intent.getStringExtra(ExceptionConfigActivity.RESULT_EXCEPTION)
-                if (exceptionJson != null) {
-                    val exception = Exception.fromJson(exceptionJson)
-                    if (exception != null) {
-                        // Check if we're editing an existing exception
-                        val isEditing = intent.getBooleanExtra(ExceptionConfigActivity.EXTRA_IS_EDITING, false)
-                        if (isEditing) {
-                            // Find and update the existing exception
-                            val existingExceptions = exceptionAdapter.getExceptions().toMutableList()
-                            val index = existingExceptions.indexOfFirst { it.id == exception.id }
-                            if (index != -1) {
-                                existingExceptions[index] = exception
-                                exceptionAdapter.updateExceptions(existingExceptions)
-                            }
-                        } else {
-                            // Add new exception
-                            exceptionAdapter.addException(exception)
-                        }
-                        InAppLogger.logUserAction("Exception configured: ${exception.getLogMessage()}", "RuleBuilderActivity")
-                    }
-                }
-            }
-        }
-    }
+
     
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        finish()
         return true
     }
 

@@ -478,7 +478,7 @@ class OnboardingPagerAdapter(
                 onTemplateSelected = { template ->
                     addRuleFromTemplate(template)
                 },
-                onTemplateConfigured = { template, customData ->
+                onTemplateConfigured = { _, _ ->
                     // This callback is not used in the simplified approach
                     // The configuration is handled by the activity
                 },
@@ -696,7 +696,7 @@ class OnboardingPagerAdapter(
 
         private fun setupBluetoothDeviceList(dialogView: android.view.View) {
             val recyclerView = dialogView.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recyclerBluetoothDevices)
-            val adapter = OnboardingBluetoothDeviceAdapter { device ->
+            val adapter = OnboardingBluetoothDeviceAdapter { _ ->
                 // Handle device selection
             }
             
@@ -715,8 +715,6 @@ class OnboardingPagerAdapter(
             val checkBoxWednesday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxWednesday)
             val checkBoxThursday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxThursday)
             val checkBoxFriday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxFriday)
-            val checkBoxSaturday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSaturday)
-            val checkBoxSunday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSunday)
 
             // Set default times (9 AM to 5 PM)
             timePickerStart.hour = 9
@@ -776,7 +774,8 @@ class OnboardingPagerAdapter(
 
         private fun loadAvailableBluetoothDevices(adapter: OnboardingBluetoothDeviceAdapter) {
             // Load available Bluetooth devices (permission already checked)
-            val bluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
+            val bluetoothManager = binding.root.context.getSystemService(android.content.Context.BLUETOOTH_SERVICE) as android.bluetooth.BluetoothManager
+            val bluetoothAdapter = bluetoothManager.adapter
             if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) {
                 try {
                     val pairedDevices = bluetoothAdapter.bondedDevices

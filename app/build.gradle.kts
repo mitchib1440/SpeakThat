@@ -66,10 +66,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        viewBinding = true
-        buildConfig = true  // Enable BuildConfig generation
-    }
+                buildFeatures {
+                viewBinding = true
+                buildConfig = true  // Enable BuildConfig generation
+            }
 
     // Configure APK output file naming
     applicationVariants.all {

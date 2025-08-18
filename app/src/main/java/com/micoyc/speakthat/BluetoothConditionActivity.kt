@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -25,7 +26,17 @@ class BluetoothConditionActivity : AppCompatActivity() {
         private const val PREFS_NAME = "SpeakThatPrefs"
         private const val KEY_DARK_MODE = "dark_mode"
         private const val KEY_BLUETOOTH_ALLOWED_DEVICES = "bluetooth_allowed_devices"
-        private const val REQUEST_ENABLE_BLUETOOTH = 1
+    }
+    
+    // Activity Result API for Bluetooth enable request
+    private val bluetoothEnableLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            showDeviceSelectionDialog()
+        } else {
+            showErrorDialog("Bluetooth must be enabled to select devices")
+        }
     }
     
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +93,7 @@ class BluetoothConditionActivity : AppCompatActivity() {
         
         if (!bluetoothAdapter.isEnabled) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BLUETOOTH)
+            bluetoothEnableLauncher.launch(enableBtIntent)
             return
         }
         
@@ -161,20 +172,10 @@ class BluetoothConditionActivity : AppCompatActivity() {
             .show()
     }
     
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        
-        if (requestCode == REQUEST_ENABLE_BLUETOOTH) {
-            if (resultCode == RESULT_OK) {
-                showDeviceSelectionDialog()
-            } else {
-                showErrorDialog("Bluetooth must be enabled to select devices")
-            }
-        }
-    }
+
     
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        finish()
         return true
     }
 } 
