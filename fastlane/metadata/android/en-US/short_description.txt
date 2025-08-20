@@ -1,1 +1,1 @@
-Notification reader with a focus on customisation
+The world's most comprehensive notification reader

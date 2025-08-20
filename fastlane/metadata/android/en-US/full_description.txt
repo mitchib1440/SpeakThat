@@ -1,1 +1,50 @@
-<p>Turn your notifications into speech - Hands-Free, Eyes-Free, Effortless!</p><p><i>SpeakThat!</i> is designed for everyone—including users with visual impairments, low vision, or reading difficulties. It reads your notifications aloud, providing hands-free, eyes-free access to important information.</p><p>Beyond its uses for accessibility, it’s also perfect for when you’re driving, cooking, exercising, or simply can’t look at your phone.</p><p><b>Why SpeakThat!?</b></p><ul><li>🎯 Smart &amp; Personalized!<ul><li>Advanced filtering lets you choose exactly which apps to hear</li><li>Smart Rules automatically adapt to your daily routine</li><li>Priority settings ensure important notifications come first</li><li>Word replacement makes notifications clearer and more natural</li></ul></li><li>🚗 Perfect for Active Lifestyles!<ul><li>Hands-free operation while driving or commuting</li><li>Stay informed during workouts without breaking focus</li><li>Kitchen-friendly - hear messages while cooking</li><li>Accessibility support for vision-impaired users</li></ul></li><li>🛡️ Privacy-First Design!<ul><li>All processing happens locally on your device</li><li>No data sent to external servers</li><li>Complete control over what gets read aloud</li><li>Private mode for sensitive notifications</li></ul></li><li>⚙️Powerful Customization!<ul><li>Choose from multiple voice engines and languages</li><li>Adjust speech speed and volume to your preference</li><li>Filter out spam and unwanted notifications automatically</li></ul></li></ul><p><b>🚀 Key Features:</b></p><ul><li>Fully Comprehensive Filtering! You decide what gets read and what doesn’t. You can blacklist/whitelist certain apps, block readouts for notifications containing certain words, and filter types of notifications. (Such as disabling silent, low-priority, or persistent)</li><li>Master Control! One-touch enable/disable puts you in complete control. Perfect for meetings, quiet time, or when you need focus.</li><li>Private Notifications! Notifications containing words you deem to be &quot;private&quot; will only be announced by their app name - not the contents of the notification.</li><li>App Name Replacements! Do you still call ’X’ ’Twitter’? So can SpeakThat! Add app package names and select how the app name should be announced. Perfect for confusing rebrands that nobody asked for.</li><li>Shake-to-Stop &amp; Wave-to-Stop! Is a readout happening at a bad time? Turn on one of these settings and you’ll have a new set of ways to silence SpeakThat! quickly and easily, without even unlocking your phone.</li><li>Word Swap! Transform abbreviations and technical terms into natural speech. &quot;BTW&quot; or &quot;LOL&quot; and similar abbreviations can be said in full if you so wish.</li></ul><p><b>🔒 Privacy &amp; Security</b></p><p>SpeakThat! does not send your data anywhere unless you submit a bug report (and even then it’s optional!) The app operates <em>entirely</em> on your device - no cloud processing, no data collection, no external servers. What happens on your phone, stays on your phone. SpeakThat! will soon be open-source, so you can verify these claims for yourself!</p><p><b>🌟 Perfect For:</b></p><ul><li>Accessibility Users - Audio-first notification experience</li><li>Drivers &amp; Commuters - Stay connected safely</li><li>Athletes &amp; Fitness Enthusiasts - Never miss important notifications</li><li>Busy Professionals - Multitask without missing beats</li><li>Parents - Hear school or family updates while busy</li><li>Anyone who wants a smarter relationship with their phone</li></ul><p><b>Note:</b> SpeakThat! requires notification access permission to function. This permission is used solely to read notifications aloud and is never used to collect or transmit your data.</p>
+<p>Turn your notifications into speech!</p>
+
+<p>SpeakThat! is an Android app that reads your incoming notifications out loud using text-to-speech. Unlike alternatives, SpeakThat gives you COMPLETE control over what gets read and what doesn't.</p>
+
+<p>No ads, no subscriptions, just speech.</p>
+
+<p><b>Why SpeakThat!?</b></p>
+<ul>
+<li>Modern user interface</li>
+<li>Persistent Notification option</li>
+<li>Notification While Reading</li>
+<li>Settings Import/Export</li>
+<li>Speech Rate control</li>
+<li>Voice Pitch control</li>
+<li>TTS Volume control</li>
+<li>Full Localisation support both with TTS and the UI (Help me translate the app on CrowdIn!)</li>
+<li>Audio Output Settings</li>
+<li>Notification Behaviour (Decide what happens when multiple notifications arrive at once)</li>
+<li>Media Behaviour (Decide how SpeakThat sounds when you have music playing)</li>
+<li>Honour Do Not Disturb</li>
+<li>Honour Phone Calls</li>
+<li>Honour Audio Mode</li>
+<li>Notification Deduplication</li>
+<li>Shake to Stop (with customisable sensitivity)</li>
+<li>Wave to Stop (with customisable sensitivity)</li>
+<li>Custom App Names (Useful for renaming X back to Twitter)</li>
+<li>Delay Before Readout</li>
+<li>Notification Cooldown</li>
+<li>Custom Speech Formatting</li>
+<li>App List Filtering (Blacklist/Whitelist certain apps)</li>
+<li>Word Blacklist</li>
+<li>Word Swap</li>
+<li>Smart Media Notification Filtering</li>
+<li>Persistent/Silent Notification Filtering</li>
+<li>Bluetooth Headphones detection (Only read when headphones are connected)</li>
+<li>Time Schedule support (Don't read at certain times)</li>
+<li>Screen State detection (Don't read when screen on)</li>
+<li>Full technical support and feature requests both in-app and via GitHub</li>
+<li>All processing happens entirely on your device</li>
+</ul>
+
+<p><b>Beautiful, Intuitive Design!</b></p>
+<p>SpeakThat! features a modern, accessible interface that's both powerful and easy to use. Dark mode support, large touch targets, and clear visual feedback make setup a breeze.</p>
+
+<p>SpeakThat! does not send your data anywhere unless you submit a bug report (and even then it's optional!) The app operates <em>entirely</em> on your device - no cloud processing, no data collection, no external servers. What happens on your phone, stays on your phone.</p>
+
+<p>Perfect for accessibility, drivers &amp; commuters, athletes &amp; fitness enthusiasts, busy professionals, parents and caregivers, and anyone who wants a smarter relationship with their phone.</p>
+
+<p><b>Continuous Improvement</b></p>
+<p>SpeakThat! is constantly adding new features and improvements based on user feedback. The perks of an app being made by someone who genuinely uses it every day!</p>
