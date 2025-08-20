@@ -110,6 +110,16 @@ public class LanguagePresetManager {
             false
         ));
         
+        // Dutch - complete UI translations available
+        presets.add(new LanguagePreset(
+            "nl_NL", 
+            "Nederlands (Nederland)", 
+            "nl_NL", 
+            "nl_NL", 
+            null,  // Let system choose best Dutch voice
+            false
+        ));
+        
         // Custom preset - represents user's advanced customizations
         presets.add(new LanguagePreset(
             "custom", 

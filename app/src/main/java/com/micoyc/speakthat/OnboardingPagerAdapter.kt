@@ -149,10 +149,20 @@ class OnboardingPagerAdapter(
             // Show/hide permission button based on page
             if (page.showPermissionButton) {
                 binding.buttonPermission.visibility = android.view.View.VISIBLE
-                binding.buttonPermission.text = "Open Notification Settings"
+                binding.buttonPermission.text = binding.root.context.getString(R.string.item_onboarding_notification_settings)
                 binding.buttonPermission.setOnClickListener {
-                    val intent = android.content.Intent(android.provider.Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
-                    binding.root.context.startActivity(intent)
+                    try {
+                        val intent = android.content.Intent(android.provider.Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+                        binding.root.context.startActivity(intent)
+                        InAppLogger.log("OnboardingPagerAdapter", "Opening notification settings")
+                    } catch (e: Exception) {
+                        InAppLogger.logError("OnboardingPagerAdapter", "Failed to open notification settings: ${e.message}")
+                        android.widget.Toast.makeText(
+                            binding.root.context,
+                            "Failed to open notification settings",
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             } else {
                 binding.buttonPermission.visibility = android.view.View.GONE

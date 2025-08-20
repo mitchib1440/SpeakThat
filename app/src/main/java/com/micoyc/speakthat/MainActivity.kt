@@ -861,6 +861,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             
             if (isTriggered) {
                 val maxRange = proximitySensor?.maximumRange ?: 5.0f
+                val significantChange = maxRange * 0.3f
                 val distanceFromMax = maxRange - proximityValue
                 
                 Log.d(TAG, "Wave detected in MainActivity! Stopping TTS. Proximity: $proximityValue cm, threshold: $waveThreshold cm, maxRange: $maxRange cm, distanceFromMax: $distanceFromMax cm")
@@ -870,6 +871,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 // Log proximity values for debugging (but not too frequently)
                 if (System.currentTimeMillis() % 1000 < 100) { // Log ~10% of the time
                     val maxRange = proximitySensor?.maximumRange ?: 5.0f
+                    val significantChange = maxRange * 0.3f
                     val distanceFromMax = maxRange - proximityValue
                     Log.d(TAG, "Proximity sensor reading: $proximityValue cm (threshold: $waveThreshold cm, maxRange: $maxRange cm, distanceFromMax: $distanceFromMax cm)")
                 }

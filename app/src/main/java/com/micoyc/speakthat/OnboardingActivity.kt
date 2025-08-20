@@ -93,8 +93,38 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     
     override fun onResume() {
         super.onResume()
-        // Force a full rebind to ensure permission button is visible and text updates
-        adapter.notifyDataSetChanged()
+        
+        // Check if permission status has changed since we last checked
+        val currentPermissionStatus = isNotificationServiceEnabled()
+        val permissionStatusChanged = (skipPermissionPage != currentPermissionStatus)
+        
+        if (permissionStatusChanged) {
+            InAppLogger.log(TAG, "Permission status changed: skipPermissionPage=$skipPermissionPage, currentPermissionStatus=$currentPermissionStatus")
+            skipPermissionPage = currentPermissionStatus
+            
+            // Recreate the adapter with the new permission status
+            adapter = if (skipPermissionPage) {
+                OnboardingPagerAdapter(skipPermissionPage = true)
+            } else {
+                OnboardingPagerAdapter()
+            }
+            binding.viewPager.adapter = adapter
+            
+            // Update page indicator for the new page count
+            setupPageIndicator(adapter.itemCount)
+            
+            // Reset to first page if we were on a page that no longer exists
+            val maxPage = adapter.itemCount - 1
+            if (binding.viewPager.currentItem > maxPage) {
+                binding.viewPager.setCurrentItem(0, false)
+            }
+            
+            InAppLogger.log(TAG, "Adapter recreated due to permission status change. New page count: ${adapter.itemCount}")
+        } else {
+            // Force a full rebind to ensure permission button is visible and text updates
+            adapter.notifyDataSetChanged()
+        }
+        
         val currentPage = binding.viewPager.currentItem
         updateButtonText(currentPage, adapter.itemCount)
         
@@ -343,12 +373,11 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
         
         // Disable Next button on permission page if permissions not granted
-        if (!skipPermissionPage && currentPage == 1) { // Permission page
+        if (!skipPermissionPage && currentPage == 2) { // Permission page is at index 2 (third page)
             val hasPermission = isNotificationServiceEnabled()
             binding.buttonNext.isEnabled = hasPermission
-            if (!hasPermission) {
-                binding.buttonNext.text = "Grant Permission First"
-            }
+            // Keep the button text as "Next" but disable it when permission not granted
+            // The separate permission button handles opening settings
         } else {
             binding.buttonNext.isEnabled = true
         }
