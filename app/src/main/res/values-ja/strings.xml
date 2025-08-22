@@ -232,8 +232,8 @@ SpeakThatは、テキスト読み上げを使用して通知を音声で知ら�
     <string name="check_for_updates_auto_desc">アプリを開いたときにアップデートを自動的に確認する</string>
     <string name="check_frequency">確認の頻度</string>
     <string name="check_frequency_desc">アプリのアップデートの確認頻度は？</string>
-    <string name="update_daily">毎日 (推奨)</string>
-    <string name="update_weekly">毎週</string>
+    <string name="update_daily">毎日</string>
+    <string name="update_weekly">毎週 (推奨)</string>
     <string name="update_monthly">毎月</string>
     <string name="update_never">しない (手動のみ)</string>
     <!-- TTS Template Strings (for improved localization) -->

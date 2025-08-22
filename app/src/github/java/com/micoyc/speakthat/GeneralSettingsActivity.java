@@ -57,6 +57,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         
         setupThemeSettings();
         setupPerformanceSettings();
+        setupAutoUpdateSettings();
         setupDataManagement();
         setupTestSettings();
         setupThemeIcon();
@@ -252,6 +253,55 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 policy = "never";
             }
             sharedPreferences.edit().putString("restart_policy", policy).apply();
+        });
+    }
+
+    private void setupAutoUpdateSettings() {
+        // Auto-Update Toggle - Default to ON (true)
+        MaterialSwitch autoUpdateSwitch = binding.switchAutoUpdate;
+        boolean autoUpdateEnabled = sharedPreferences.getBoolean("auto_update_enabled", true);
+        autoUpdateSwitch.setChecked(autoUpdateEnabled);
+
+        autoUpdateSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean("auto_update_enabled", isChecked).apply();
+        });
+
+        // Update Check Frequency - Default to Weekly
+        String updateFrequency = sharedPreferences.getString("update_check_frequency", "weekly");
+        switch (updateFrequency) {
+            case "daily":
+                binding.radioUpdateDaily.setChecked(true);
+                break;
+            case "weekly":
+                binding.radioUpdateWeekly.setChecked(true);
+                break;
+            case "monthly":
+                binding.radioUpdateMonthly.setChecked(true);
+                break;
+            case "never":
+                binding.radioUpdateNever.setChecked(true);
+                break;
+            default:
+                // Default to weekly if no value is set
+                binding.radioUpdateWeekly.setChecked(true);
+                sharedPreferences.edit().putString("update_check_frequency", "weekly").apply();
+                break;
+        }
+
+        binding.radioGroupUpdateFrequency.setOnCheckedChangeListener((group, checkedId) -> {
+            String frequency;
+            if (checkedId == R.id.radioUpdateDaily) {
+                frequency = "daily";
+            } else if (checkedId == R.id.radioUpdateWeekly) {
+                frequency = "weekly";
+            } else if (checkedId == R.id.radioUpdateMonthly) {
+                frequency = "monthly";
+            } else if (checkedId == R.id.radioUpdateNever) {
+                frequency = "never";
+            } else {
+                frequency = "weekly"; // Default fallback
+            }
+            sharedPreferences.edit().putString("update_check_frequency", frequency).apply();
         });
     }
 
