@@ -304,8 +304,19 @@ class TemplateSelectionActivity : AppCompatActivity() {
     }
     
     private fun handleTimeScheduleSelection(template: RuleTemplate) {
+        // Determine which layout to use based on screen size
+        val displayMetrics = resources.displayMetrics
+        val screenHeight = displayMetrics.heightPixels
+        val screenWidth = displayMetrics.widthPixels
+        
+        // Use compact layout for very small screens
+        val layoutResId = when {
+            screenHeight < 600 || screenWidth < 400 -> R.layout.dialog_time_schedule_compact
+            else -> R.layout.dialog_time_schedule
+        }
+        
         // Create a custom dialog for time and day selection
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_time_schedule, null)
+        val dialogView = LayoutInflater.from(this).inflate(layoutResId, null)
         
         // Set up time pickers
         val timePickerStart = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerStart)
@@ -338,7 +349,7 @@ class TemplateSelectionActivity : AppCompatActivity() {
             checkBoxSunday.isChecked = isChecked
         }
         
-        // Create dialog with proper sizing for time pickers
+        // Create dialog with adaptive sizing for different screen sizes
         val dialog = AlertDialog.Builder(this)
             .setTitle("Set Quiet Hours")
             .setMessage("Choose the time range and days when you don't want notifications read:")
@@ -368,16 +379,34 @@ class TemplateSelectionActivity : AppCompatActivity() {
             .setNegativeButton("Cancel", null)
             .create()
         
-        // Show dialog and then adjust its width to use more screen space
+        // Show dialog and then adjust its size based on screen dimensions
         dialog.show()
         
-        // Ensure dialog uses adequate width for time pickers
+        // Ensure dialog uses adaptive sizing for different screen sizes
         val window = dialog.window
         if (window != null) {
-            val displayMetrics = resources.displayMetrics
-            val width = (displayMetrics.widthPixels * 0.95).toInt() // Use 95% of screen width
-            val height = android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-            window.setLayout(width, height)
+            val dialogDisplayMetrics = resources.displayMetrics
+            val dialogScreenHeight = dialogDisplayMetrics.heightPixels
+            val dialogScreenWidth = dialogDisplayMetrics.widthPixels
+            
+            // Calculate adaptive width and height based on screen size
+            val width = when {
+                dialogScreenWidth < 600 -> (dialogScreenWidth * 0.98).toInt() // Very small screens: use almost full width
+                dialogScreenWidth < 800 -> (dialogScreenWidth * 0.95).toInt() // Small screens: use 95% width
+                else -> (dialogScreenWidth * 0.90).toInt() // Larger screens: use 90% width
+            }
+            
+            // Calculate adaptive height based on screen height
+            val maxDialogHeight = when {
+                dialogScreenHeight < 800 -> (dialogScreenHeight * 0.85).toInt() // Very small screens: limit to 85% of screen height
+                dialogScreenHeight < 1200 -> (dialogScreenHeight * 0.80).toInt() // Small screens: limit to 80% of screen height
+                else -> android.view.ViewGroup.LayoutParams.WRAP_CONTENT // Larger screens: use wrap content
+            }
+            
+            window.setLayout(width, maxDialogHeight)
+            
+            // Log the adaptive sizing for debugging
+            InAppLogger.logDebug("TemplateSelectionActivity", "Dialog sizing: screen=${dialogScreenWidth}x${dialogScreenHeight}, dialog=${width}x${maxDialogHeight}")
         }
     }
     

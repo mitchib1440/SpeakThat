@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Technical strings that should NEVER be translated.
+These include preference keys, internal identifiers, package names, etc.
+This file should NOT have corresponding files in values-XX directories.
+-->
+<resources translatable="false">
+
+    <!-- SharedPreferences Keys -->
+    <string name="prefs_speakthat">SpeakThatPrefs</string>
+    <string name="prefs_voice_settings">VoiceSettings</string>
+    <string name="prefs_notification_history">NotificationHistory</string>
+    <string name="prefs_dark_mode">dark_mode</string>
+    <string name="prefs_persistent_notification">persistent_notification</string>
+    <string name="prefs_notification_while_reading">notification_while_reading</string>
+    <string name="prefs_auto_start_enabled">auto_start_enabled</string>
+    <string name="prefs_battery_optimization_enabled">battery_optimization_enabled</string>
+    <string name="prefs_aggressive_processing_enabled">aggressive_processing_enabled</string>
+    <string name="prefs_restart_policy">restart_policy</string>
+    <string name="prefs_tts_language">tts_language</string>
+    <string name="prefs_speech_rate">speech_rate</string>
+    <string name="prefs_pitch">pitch</string>
+    <string name="prefs_voice_name">voice_name</string>
+    <string name="prefs_language">language</string>
+    <string name="prefs_audio_usage">audio_usage</string>
+    <string name="prefs_content_type">content_type</string>
+    <string name="prefs_auto_start_on_boot">auto_start_on_boot</string>
+    <string name="prefs_master_switch_enabled">master_switch_enabled</string>
+    <string name="prefs_enabled_notification_listeners">enabled_notification_listeners</string>
+
+    <!-- TTS Utterance IDs -->
+    <string name="tts_utterance_about_app">about_app</string>
+
+    <!-- File Export/Import -->
+    <string name="export_filename_format">SpeakThat_Config_%s.json</string>
+    <string name="import_temp_filename">speakthat_import</string>
+    <string name="export_mime_type">application/json</string>
+    <string name="export_charset">UTF-8</string>
+
+    <!-- Package Names for App Detection -->
+    <string name="package_youtube">com.google.android.youtube</string>
+    <string name="package_youtube_music">com.google.android.apps.youtube.music</string>
+    <string name="package_spotify">com.spotify.music</string>
+    <string name="package_google_play_music">com.google.android.music</string>
+    <string name="package_amazon_music">com.amazon.mp3</string>
+    <string name="package_apple_music">com.apple.android.music</string>
+    <string name="package_tidal">com.aspiro.tidal</string>
+    <string name="package_deezer">deezer.android.app</string>
+    <string name="package_soundcloud">com.soundcloud.android</string>
+    <string name="package_pandora">com.pandora.android</string>
+    <string name="package_iheartradio">com.clearchannel.iheartradio.controller</string>
+    <string name="package_tunein">tunein.player</string>
+    <string name="package_podcasts">com.google.android.apps.podcasts</string>
+    <string name="package_pocket_casts">au.com.shiftyjelly.pocketcasts</string>
+    <string name="package_overcast">fm.overcast</string>
+    <string name="package_stitcher">com.stitcher.app</string>
+    <string name="package_audible">com.audible.application</string>
+    <string name="package_audiobooks">com.audiobooks</string>
+    <string name="package_libro_fm">fm.libro.librofm</string>
+    <string name="package_kindle">com.amazon.kindle</string>
+    <string name="package_netflix">com.netflix.mediaclient</string>
+    <string name="package_disney_plus">com.disney.disneyplus</string>
+    <string name="package_prime_video">com.amazon.avod.thirdpartyclient</string>
+    <string name="package_hulu">com.hulu.plus</string>
+    <string name="package_hbo_max">com.hbo.hbonow</string>
+    <string name="package_paramount_plus">com.cbs.app</string>
+    <string name="package_peacock">com.peacocktv.peacockandroid</string>
+    <string name="package_apple_tv">com.apple.atve.androidtv.appletv</string>
+    <string name="package_twitch">tv.twitch.android.app</string>
+    <string name="package_crunchyroll">com.crunchyroll.crunchyroid</string>
+    <string name="package_funimation">com.funimation.funimationapp</string>
+    <string name="package_vrv">com.ellation.vrv</string>
+    <string name="package_tiktok">com.zhiliaoapp.musically</string>
+    <string name="package_instagram">com.instagram.android</string>
+    <string name="package_snapchat">com.snapchat.android</string>
+    <string name="package_facebook">com.facebook.katana</string>
+    <string name="package_messenger">com.facebook.orca</string>
+    <string name="package_whatsapp">com.whatsapp</string>
+    <string name="package_telegram">org.telegram.messenger</string>
+    <string name="package_signal">org.thoughtcrime.securesms</string>
+    <string name="package_discord">com.discord</string>
+    <string name="package_slack">com.Slack</string>
+    <string name="package_teams">com.microsoft.teams</string>
+    <string name="package_zoom">us.zoom.videomeetings</string>
+    <string name="package_skype">com.skype.raider</string>
+    <string name="package_google_meet">com.google.android.apps.meetings</string>
+    <string name="package_webex">com.cisco.webex.meetings</string>
+    <string name="package_twitter">com.twitter.android</string>
+    <string name="package_x">com.twitter.android</string>
+    <string name="package_linkedin">com.linkedin.android</string>
+    <string name="package_reddit">com.reddit.frontpage</string>
+    <string name="package_tumblr">com.tumblr</string>
+    <string name="package_pinterest">com.pinterest</string>
+    <string name="package_mastodon">org.joinmastodon.android</string>
+    <string name="package_gmail">com.google.android.gm</string>
+    <string name="package_outlook">com.microsoft.office.outlook</string>
+    <string name="package_yahoo_mail">com.yahoo.mobile.client.android.mail</string>
+    <string name="package_protonmail">ch.protonmail.android</string>
+    <string name="package_tutanota">de.tutao.tutanota</string>
+    <string name="package_samsung_email">com.samsung.android.email.provider</string>
+    <string name="package_spark_email">com.readdle.spark</string>
+    <string name="package_bluemail">me.bluemail.mail</string>
+    <string name="package_k9_mail">com.fsck.k9</string>
+    <string name="package_thunderbird">net.thunderbird.android</string>
+    <string name="package_google_calendar">com.google.android.calendar</string>
+    <string name="package_outlook_calendar">com.microsoft.office.outlook</string>
+    <string name="package_samsung_calendar">com.samsung.android.calendar</string>
+    <string name="package_fantastical">com.flexibits.fantastical2</string>
+    <string name="package_any_do">com.anydo</string>
+    <string name="package_todoist">com.todoist</string>
+    <string name="package_microsoft_to_do">com.microsoft.todos</string>
+    <string name="package_google_tasks">com.google.android.apps.tasks</string>
+    <string name="package_ticktick">com.ticktick.task</string>
+    <string name="package_wunderlist">com.wunderkinder.wunderlistandroid</string>
+    <string name="package_trello">com.trello</string>
+    <string name="package_asana">com.asana.app</string>
+    <string name="package_notion">notion.id</string>
+    <string name="package_evernote">com.evernote</string>
+    <string name="package_onenote">com.microsoft.office.onenote</string>
+    <string name="package_google_keep">com.google.android.keep</string>
+    <string name="package_samsung_notes">com.samsung.android.app.notes</string>
+    <string name="package_apple_notes">com.apple.Notes</string>
+    <string name="package_uber">com.ubercab</string>
+    <string name="package_lyft">com.lyft.android</string>
+    <string name="package_google_maps">com.google.android.apps.maps</string>
+    <string name="package_waze">com.waze</string>
+    <string name="package_apple_maps">com.apple.Maps</string>
+    <string name="package_uber_eats">com.ubercab.eats</string>
+    <string name="package_doordash">com.dd.doordash</string>
+    <string name="package_grubhub">com.grubhub.android</string>
+    <string name="package_postmates">com.postmates.android</string>
+    <string name="package_seamless">com.seamless.eatr</string>
+    <string name="package_just_eat">com.justeat.app.uk</string>
+    <string name="package_deliveroo">com.deliveroo.orderapp</string>
+    <string name="package_foodpanda">com.foodpanda.android</string>
+    <string name="package_amazon_shopping">com.amazon.mShop.android.shopping</string>
+    <string name="package_ebay">com.ebay.mobile</string>
+    <string name="package_etsy">com.etsy.android</string>
+    <string name="package_walmart">com.walmart.android</string>
+    <string name="package_target">com.target.ui</string>
+    <string name="package_costco">com.costco.app.android</string>
+    <string name="package_home_depot">com.homedepot.app</string>
+    <string name="package_lowes">com.lowes.android</string>
+    <string name="package_best_buy">com.bestbuy.android</string>
+    <string name="package_paypal">com.paypal.android.p2pmobile</string>
+    <string name="package_venmo">com.venmo</string>
+    <string name="package_cash_app">com.squareup.cash</string>
+    <string name="package_zelle">com.zellepay.zelle</string>
+    <string name="package_google_pay">com.google.android.apps.nfc.payment</string>
+    <string name="package_samsung_pay">com.samsung.android.spay</string>
+    <string name="package_apple_pay">com.apple.ApplePay</string>
+    <string name="package_google_wallet">com.google.android.apps.walletnfcrel</string>
+    <string name="package_bank_of_america">com.bankofamerica.</string>
+    <string name="package_chase">com.chase.</string>
+    <string name="package_wells_fargo">com.wellsfargo.</string>
+    <string name="package_us_bank">com.usbank.</string>
+    <string name="package_citibank">com.citibank.</string>
+    <string name="package_robinhood">com.robinhood.</string>
+    <string name="package_etrade">com.etrade.</string>
+    <string name="package_charles_schwab">com.schwab.</string>
+    <string name="package_fidelity">com.fidelity.</string>
+    <string name="package_coinbase">com.coinbase.</string>
+    <string name="package_binance">com.binance.</string>
+    <string name="package_mint">com.mint</string>
+    <string name="package_ynab">com.ynab</string>
+    <string name="package_fitbit">com.fitbit.</string>
+    <string name="package_google_fit">com.google.android.apps.fitness</string>
+    <string name="package_samsung_health">com.samsung.health</string>
+    <string name="package_garmin_connect">com.garmin.connect</string>
+    <string name="package_strava">com.strava</string>
+    <string name="package_medisafe">com.medisafe.</string>
+    <string name="package_myfitnesspal">com.myfitnesspal.</string>
+    <string name="package_noom">com.noom.</string>
+    <string name="package_weightwatchers">com.weightwatchers</string>
+    <string name="package_zocdoc">com.zocdoc.</string>
+    <string name="package_carezone">org.carezone.</string>
+    <string name="package_teladoc">com.teladoc.</string>
+    <string name="package_calm">com.calm.</string>
+    <string name="package_headspace">com.headspace.</string>
+    <string name="package_betterhelp">com.betterhelp</string>
+    <string name="package_glow">com.glow.android</string>
+    <string name="package_clue">com.clue.android</string>
+    
+    <!-- Additional package names that were missed -->
+    <string name="package_weibo">com.weibo.</string>
+    <string name="package_line">jp.naver.line.</string>
+    <string name="package_glassdoor">com.glassdoor.</string>
+    <string name="package_indeed">com.indeed.</string>
+    <string name="package_meetup">com.meetup</string>
+    <string name="package_facebook_messenger">com.facebook.messenger</string>
+    <string name="package_google_messages">com.google.android.apps.messaging</string>
+    <string name="package_viber">com.viber.</string>
+    <string name="package_microsoft_teams">com.microsoft.teams</string>
+    <string name="package_line_android">jp.naver.line.android</string>
+    <string name="package_kakaotalk">com.kakao.talk</string>
+    <string name="package_wechat">com.tencent.mm</string>
+
+    <!-- AppCategory IDs (internal identifiers, not translatable) -->
+    <string name="category_social_id">social</string>
+    <string name="category_messaging_id">messaging</string>
+    <string name="category_finance_id">finance</string>
+    <string name="category_health_id">health</string>
+    <string name="category_entertainment_id">entertainment</string>
+    <string name="category_games_id">games</string>
+
+    <!-- Other technical strings from the codebase -->
+    <string name="cooldown_app_icon_url">https://cdn.simpleicons.org/%s</string>
+    <string name="boot_receiver_tag">BootReceiver</string>
+    <string name="boot_receiver_prefs_name">SpeakThatPrefs</string>
+    <string name="boot_receiver_key_auto_start">auto_start_on_boot</string>
+    <string name="boot_receiver_key_master_switch">master_switch_enabled</string>
+    <string name="boot_receiver_boot_completed">Boot completed received</string>
+    <string name="boot_receiver_auto_start_enabled">Auto-start enabled, starting notification service</string>
+    <string name="boot_receiver_enabled_notification_listeners">enabled_notification_listeners</string>
+    <string name="boot_receiver_service_already_enabled">Notification service already enabled, no action needed</string>
+    <string name="boot_receiver_service_not_enabled">Notification service not enabled, user needs to grant permission</string>
+
+</resources>

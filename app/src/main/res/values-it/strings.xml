@@ -465,4 +465,3 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
 </resources>
 
-

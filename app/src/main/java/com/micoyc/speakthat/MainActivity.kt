@@ -66,9 +66,14 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     private var voiceSettingsPrefs: SharedPreferences? = null
     private val voiceSettingsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         when (key) {
-            "speech_rate", "pitch", "voice_name", "language", "audio_usage", "content_type" -> {
+            "speech_rate", "pitch", "voice_name", "audio_usage", "content_type" -> {
                 applyVoiceSettings()
                 Log.d(TAG, "MainActivity voice settings updated: $key")
+            }
+            "language", "tts_language" -> {
+                // For language changes, we need to reinitialize TTS to ensure it uses the new language
+                InAppLogger.log("MainActivity", "Language settings changed - reinitializing TTS")
+                reinitializeTtsWithCurrentSettings()
             }
         }
     }
@@ -590,6 +595,15 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun initializeTextToSpeech() {
+        textToSpeech = TextToSpeech(this, this)
+    }
+    
+    private fun reinitializeTtsWithCurrentSettings() {
+        // Shutdown existing TTS instance
+        textToSpeech?.shutdown()
+        isTtsInitialized = false
+        
+        // Create new TTS instance with current settings
         textToSpeech = TextToSpeech(this, this)
     }
     

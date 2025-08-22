@@ -19,8 +19,13 @@ class AboutActivity : AppCompatActivity() {
     private var voiceSettingsPrefs: android.content.SharedPreferences? = null
     private val voiceSettingsListener = android.content.SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         when (key) {
-            "speech_rate", "pitch", "voice_name", "language", "audio_usage", "content_type" -> {
+            "speech_rate", "pitch", "voice_name", "audio_usage", "content_type" -> {
                 applyVoiceSettings()
+            }
+            "language", "tts_language" -> {
+                // For language changes, we need to reinitialize TTS to ensure it uses the new language
+                InAppLogger.log("AboutActivity", "Language settings changed - reinitializing TTS")
+                reinitializeTtsWithCurrentSettings()
             }
         }
     }
@@ -170,26 +175,85 @@ class AboutActivity : AppCompatActivity() {
         }
     }
     
+    private fun reinitializeTtsWithCurrentSettings() {
+        // Stop any current speech
+        textToSpeech?.stop()
+        isSpeaking = false
+        updateButtonState()
+        
+        // Shutdown existing TTS instance
+        textToSpeech?.shutdown()
+        
+        // Create new TTS instance with current settings
+        textToSpeech = TextToSpeech(this) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                // Set audio stream to assistant usage to avoid triggering media detection
+                textToSpeech?.setAudioAttributes(
+                    android.media.AudioAttributes.Builder()
+                        .setUsage(android.media.AudioAttributes.USAGE_ASSISTANT)
+                        .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                        .build()
+                )
+                
+                // Apply saved voice settings (which will handle language/voice selection)
+                applyVoiceSettings()
+                
+                // Set up utterance progress listener
+                textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+                    override fun onStart(utteranceId: String?) {
+                        isSpeaking = true
+                        updateButtonState()
+                    }
+                    
+                    override fun onDone(utteranceId: String?) {
+                        isSpeaking = false
+                        updateButtonState()
+                    }
+                    
+                    override fun onError(utteranceId: String?) {
+                        isSpeaking = false
+                        updateButtonState()
+                        Toast.makeText(this@AboutActivity, getString(R.string.tts_error_occurred), Toast.LENGTH_SHORT).show()
+                    }
+                })
+                
+                InAppLogger.log("AboutActivity", "TTS reinitialized successfully with new language settings")
+            } else {
+                InAppLogger.log("AboutActivity", "TTS reinitialization failed with status: $status")
+                Toast.makeText(this@AboutActivity, getString(R.string.tts_initialization_failed), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    
     private fun buildAboutText(): String {
         val packageInfo = packageManager.getPackageInfo(packageName, 0)
         val buildVariant = InAppLogger.getBuildVariantInfo()
         val version = getString(R.string.version_format_with_variant, packageInfo.versionName, buildVariant)
         
         // Get the user's TTS language setting
-        val ttsLanguageCode = voiceSettingsPrefs?.getString(getString(R.string.prefs_tts_language), getString(R.string.system_default)) ?: getString(R.string.system_default)
+        // Use hardcoded preference key to avoid localization issues
+        val ttsLanguageCode = voiceSettingsPrefs?.getString("tts_language", getString(R.string.system_default)) ?: getString(R.string.system_default)
+        
+        val introText = TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_intro)
+        val descriptionText = TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_description)
+        val featuresIntroText = TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_features_intro)
+        val featuresText = TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_features)
+        val developerText = TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_developer)
+        val licenseText = TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_license)
+        val thankYouText = TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_thank_you)
         
         return """
-            ${TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_intro)} $version.
+            $introText $version.
             
-            ${TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_description)}
+            $descriptionText
             
-            ${TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_features_intro)} ${TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_features)}
+            $featuresIntroText $featuresText
             
-            ${TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_developer)}
+            $developerText
             
-            ${TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_license)}
+            $licenseText
             
-            ${TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, R.string.tts_about_thank_you)}
+            $thankYouText
         """.trimIndent()
     }
     
