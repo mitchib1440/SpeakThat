@@ -27,7 +27,7 @@ And so after a few failed versions, I'm pleased to introduce SpeakThat! The noti
 
 - **Reads notifications aloud** from any app, with customizable filters
 - **Privacy-first:**
-  - Nothing is sent to us or anyone else
+  - Nothing is sent to me or anyone else
   - All processing happens on your device
   - You control exactly what gets read
 - **App filtering:**
@@ -39,7 +39,7 @@ And so after a few failed versions, I'm pleased to introduce SpeakThat! The noti
 - **Smart onboarding:**
   - Guided setup for privacy and permissions
 - **Accessible UI:**
-  - Makes use of the Material 3 design system
+  - Makes e of the Material 3 design system
   - Large buttons, clear text, and support for screen readers
   - Works in both portrait and landscape
 - **Customizable voice settings:**
