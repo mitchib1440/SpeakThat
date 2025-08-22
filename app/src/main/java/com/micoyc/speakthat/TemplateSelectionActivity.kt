@@ -22,6 +22,7 @@ import com.micoyc.speakthat.rules.TriggerType
 import com.micoyc.speakthat.utils.WifiCapabilityChecker
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.LinearLayout
 
 class TemplateSelectionActivity : AppCompatActivity() {
     
@@ -304,110 +305,12 @@ class TemplateSelectionActivity : AppCompatActivity() {
     }
     
     private fun handleTimeScheduleSelection(template: RuleTemplate) {
-        // Determine which layout to use based on screen size
-        val displayMetrics = resources.displayMetrics
-        val screenHeight = displayMetrics.heightPixels
-        val screenWidth = displayMetrics.widthPixels
-        
-        // Use compact layout for very small screens
-        val layoutResId = when {
-            screenHeight < 600 || screenWidth < 400 -> R.layout.dialog_time_schedule_compact
-            else -> R.layout.dialog_time_schedule
+        // Use DialogFragment for better lifecycle management and sizing
+        val dialogFragment = TimeScheduleDialogFragment.newInstance(template) { selectedTemplate, customData ->
+            createRuleFromTemplate(selectedTemplate, customData)
         }
         
-        // Create a custom dialog for time and day selection
-        val dialogView = LayoutInflater.from(this).inflate(layoutResId, null)
-        
-        // Set up time pickers
-        val timePickerStart = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerStart)
-        val timePickerEnd = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerEnd)
-        
-        // Set default times (10 PM to 8 AM)
-        timePickerStart.hour = 22
-        timePickerStart.minute = 0
-        timePickerEnd.hour = 8
-        timePickerEnd.minute = 0
-        
-        // Set up day checkboxes
-        val checkBoxMonday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxMonday)
-        val checkBoxTuesday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxTuesday)
-        val checkBoxWednesday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxWednesday)
-        val checkBoxThursday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxThursday)
-        val checkBoxFriday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxFriday)
-        val checkBoxSaturday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSaturday)
-        val checkBoxSunday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSunday)
-        val checkBoxEveryDay = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxEveryDay)
-        
-        // Set up "Every Day" checkbox to control all others
-        checkBoxEveryDay.setOnCheckedChangeListener { _, isChecked ->
-            checkBoxMonday.isChecked = isChecked
-            checkBoxTuesday.isChecked = isChecked
-            checkBoxWednesday.isChecked = isChecked
-            checkBoxThursday.isChecked = isChecked
-            checkBoxFriday.isChecked = isChecked
-            checkBoxSaturday.isChecked = isChecked
-            checkBoxSunday.isChecked = isChecked
-        }
-        
-        // Create dialog with adaptive sizing for different screen sizes
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("Set Quiet Hours")
-            .setMessage("Choose the time range and days when you don't want notifications read:")
-            .setView(dialogView)
-            .setPositiveButton("Create Rule") { _, _ ->
-                // Collect selected days
-                val selectedDays = mutableSetOf<Int>()
-                if (checkBoxMonday.isChecked) selectedDays.add(1)
-                if (checkBoxTuesday.isChecked) selectedDays.add(2)
-                if (checkBoxWednesday.isChecked) selectedDays.add(3)
-                if (checkBoxThursday.isChecked) selectedDays.add(4)
-                if (checkBoxFriday.isChecked) selectedDays.add(5)
-                if (checkBoxSaturday.isChecked) selectedDays.add(6)
-                if (checkBoxSunday.isChecked) selectedDays.add(7)
-                
-                // Create custom data for the rule
-                val customData = mapOf(
-                    "startHour" to timePickerStart.hour,
-                    "startMinute" to timePickerStart.minute,
-                    "endHour" to timePickerEnd.hour,
-                    "endMinute" to timePickerEnd.minute,
-                    "selectedDays" to selectedDays
-                )
-                
-                createRuleFromTemplate(template, customData)
-            }
-            .setNegativeButton("Cancel", null)
-            .create()
-        
-        // Show dialog and then adjust its size based on screen dimensions
-        dialog.show()
-        
-        // Ensure dialog uses adaptive sizing for different screen sizes
-        val window = dialog.window
-        if (window != null) {
-            val dialogDisplayMetrics = resources.displayMetrics
-            val dialogScreenHeight = dialogDisplayMetrics.heightPixels
-            val dialogScreenWidth = dialogDisplayMetrics.widthPixels
-            
-            // Calculate adaptive width and height based on screen size
-            val width = when {
-                dialogScreenWidth < 600 -> (dialogScreenWidth * 0.98).toInt() // Very small screens: use almost full width
-                dialogScreenWidth < 800 -> (dialogScreenWidth * 0.95).toInt() // Small screens: use 95% width
-                else -> (dialogScreenWidth * 0.90).toInt() // Larger screens: use 90% width
-            }
-            
-            // Calculate adaptive height based on screen height
-            val maxDialogHeight = when {
-                dialogScreenHeight < 800 -> (dialogScreenHeight * 0.85).toInt() // Very small screens: limit to 85% of screen height
-                dialogScreenHeight < 1200 -> (dialogScreenHeight * 0.80).toInt() // Small screens: limit to 80% of screen height
-                else -> android.view.ViewGroup.LayoutParams.WRAP_CONTENT // Larger screens: use wrap content
-            }
-            
-            window.setLayout(width, maxDialogHeight)
-            
-            // Log the adaptive sizing for debugging
-            InAppLogger.logDebug("TemplateSelectionActivity", "Dialog sizing: screen=${dialogScreenWidth}x${dialogScreenHeight}, dialog=${width}x${maxDialogHeight}")
-        }
+        dialogFragment.show(supportFragmentManager, "TimeScheduleDialog")
     }
     
     private fun createRuleFromTemplate(template: RuleTemplate, customData: Map<String, Any> = emptyMap()) {

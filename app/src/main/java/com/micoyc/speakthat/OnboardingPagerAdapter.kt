@@ -676,10 +676,11 @@ class OnboardingPagerAdapter(
                     else -> (dialogScreenWidth * 0.90).toInt() // Larger screens: use 90% width
                 }
                 
-                // Calculate adaptive height based on screen height
+                // Calculate adaptive height based on screen height - more aggressive for small screens
                 val maxDialogHeight = when {
-                    dialogScreenHeight < 800 -> (dialogScreenHeight * 0.85).toInt() // Very small screens: limit to 85% of screen height
-                    dialogScreenHeight < 1200 -> (dialogScreenHeight * 0.80).toInt() // Small screens: limit to 80% of screen height
+                    dialogScreenHeight < 600 -> (dialogScreenHeight * 0.70).toInt() // Very small screens: limit to 70% of screen height
+                    dialogScreenHeight < 800 -> (dialogScreenHeight * 0.75).toInt() // Small screens: limit to 75% of screen height
+                    dialogScreenHeight < 1200 -> (dialogScreenHeight * 0.80).toInt() // Medium screens: limit to 80% of screen height
                     else -> android.view.ViewGroup.LayoutParams.WRAP_CONTENT // Larger screens: use wrap content
                 }
                 
