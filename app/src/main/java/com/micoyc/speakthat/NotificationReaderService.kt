@@ -534,10 +534,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     // SECURITY: Check sensitive data logging setting once for this notification
                     val isSensitiveDataLoggingEnabled = sharedPreferences?.getBoolean("log_sensitive_data", false) ?: false
                     
-                    // SECURITY: Don't log original content for private apps (unless sensitive data logging is enabled for testing)
-                    val isAppPrivate = privateApps.contains(packageName)
+                    // Apply filtering first to determine final privacy status
+                    val filterResult = applyFilters(packageName, appName, notificationText, sbn)
                     
-                    if (isAppPrivate) {
+                    // SECURITY: Check if the final result is private (either app-level or word-level)
+                    val isAppPrivate = privateApps.contains(packageName)
+                    val isWordPrivate = filterResult.processedText.contains("private notification") || filterResult.processedText.contains("You received a private notification")
+                    val isPrivateContent = isAppPrivate || isWordPrivate
+                    
+                    // Log notification content based on privacy status and sensitive data logging setting
+                    if (isPrivateContent) {
                         if (isSensitiveDataLoggingEnabled) {
                             // SECURITY EXCEPTION: Only for development/testing with explicit user consent
                             Log.d(TAG, "New notification from $appName: $notificationText [SENSITIVE DATA LOGGING ENABLED]")
@@ -550,9 +556,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         Log.d(TAG, "New notification from $appName: $notificationText")
                         InAppLogger.logNotification("Processing notification from $appName: $notificationText")
                     }
-                    
-                    // Apply filtering
-                    val filterResult = applyFilters(packageName, appName, notificationText, sbn)
                     
                     if (filterResult.shouldSpeak) {
                         // Determine final app name (private apps become "An app")
@@ -1388,8 +1391,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 // When any private word is detected, replace the entire notification text with a private message
                 // This ensures complete privacy - no partial content is revealed
                 processedText = getLocalizedTemplate("private_notification", appName, "")
-                Log.d(TAG, "Private word '$privateWord' detected - entire notification made private")
-                InAppLogger.logFilter("Made notification private due to word: $privateWord")
+                
+                // SECURITY: Check sensitive data logging setting for word filtering logs
+                val isSensitiveDataLoggingEnabled = sharedPreferences?.getBoolean("log_sensitive_data", false) ?: false
+                if (isSensitiveDataLoggingEnabled) {
+                    Log.d(TAG, "Private word '$privateWord' detected - entire notification made private [SENSITIVE DATA LOGGING ENABLED]")
+                    InAppLogger.logFilter("Made notification private due to word: $privateWord [SENSITIVE DATA LOGGING ENABLED]")
+                } else {
+                    Log.d(TAG, "Private word detected - entire notification made private [WORD REDACTED]")
+                    InAppLogger.logFilter("Made notification private due to word: [REDACTED]")
+                }
                 break // Exit loop since entire text is now private
             }
         }

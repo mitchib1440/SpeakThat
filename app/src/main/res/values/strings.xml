@@ -70,7 +70,7 @@
     </string-array>
 
     <!-- Behavior Settings Dialogs -->
-    <string name="notification_behavior_dialog_title">Notification Behavior Options</string>
+    <string name="notification_behavior_dialog_title">Notification Behaviour Options</string>
     <string name="notification_behavior_dialog_message">Choose how SpeakThat handles multiple notifications:
 
 <b>🔄 Interrupt</b> - Stops current notification and reads new one immediately. Best for urgent notifications.
@@ -90,7 +90,7 @@ Smart mode lets you choose which apps are urgent enough to interrupt (like calls
     <string name="custom_name_hint">Custom name (e.g., Twitter)</string>
     <string name="custom_app_names_example">Example: X app reads as Twitter</string>
     
-    <string name="media_behavior_dialog_title">Media Behavior Options</string>
+    <string name="media_behavior_dialog_title">Media Behaviour Options</string>
     <string name="media_behavior_dialog_message">Choose how SpeakThat handles notifications while music/videos play:
 
 <b>🎵 Ignore</b> - Speaks over your media. Simple but can be disruptive.
@@ -191,7 +191,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="store_update_dialog_visit_github">Visit GitHub</string>
     <string name="store_update_dialog_got_it">Got it</string>
     <string name="app_description">SpeakThat! is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="app_features">• Real-time notification reading\n• Customizable voice settings\n• Smart notification filtering\n• App-specific controls\n• Media-aware behavior\n• Notification history\n• Shake/Wave to stop\n• Custom speech formatting\n• Dark/Light theme support\n• Conditional rules for advanced logic and schedules\n• Fully ad-free and offline functionality</string>
+    <string name="app_features">• Real-time notification reading\n• Customizable voice settings\n• Smart notification filtering\n• App-specific controls\n• Media-aware behaviour\n• Notification history\n• Shake/Wave to stop\n• Custom speech formatting\n• Dark/Light theme support\n• Conditional rules for advanced logic and schedules\n• Fully ad-free and offline functionality</string>
     <string name="developer_info">Developed with ❤️ by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day.\n\nSpeakThat! was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers.\n\nThis project was accelerated by AI-assisted programming.</string>
     <string name="license_info">This project is open source and available under the GPL-3.0 License.\n\nYou can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
     
@@ -202,7 +202,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_app_intro">Welcome to SpeakThat!</string>
     <string name="tts_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
     <string name="tts_features_intro">Key features include:</string>
-    <string name="tts_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and fully ad-free, offline functionality.</string>
+    <string name="tts_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behaviour, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and fully ad-free, offline functionality.</string>
     <string name="tts_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
     <string name="tts_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
     <string name="tts_thank_you">Thank you for using SpeakThat!</string>
@@ -243,8 +243,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="check_for_updates_auto_desc">Automatically check for app updates when you open the app</string>
     <string name="check_frequency">Check Frequency</string>
     <string name="check_frequency_desc">How often should the app check for updates?</string>
-    <string name="update_daily">Daily (recommended)</string>
-    <string name="update_weekly">Weekly</string>
+    <string name="update_daily">Daily</string>
+    <string name="update_weekly">Weekly (recommended)</string>
     <string name="update_monthly">Monthly</string>
     <string name="update_never">Never (manual only)</string>
     
@@ -271,7 +271,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_about_intro">Welcome to SpeakThat!</string>
     <string name="tts_about_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
     <string name="tts_about_features_intro">Key features include:</string>
-    <string name="tts_about_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and full ad-free, offline functionality.</string>
+    <string name="tts_about_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behaviour, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and full ad-free, offline functionality.</string>
     <string name="tts_about_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
     <string name="tts_about_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
     <string name="tts_about_thank_you">Thank you for using SpeakThat!</string>
@@ -387,7 +387,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_logic_final_separator">, and </string>
     
     <!-- Critical Hardcoded Strings - Activity Titles -->
-    <string name="title_behavior_settings">Behavior Settings</string>
+    <string name="title_behavior_settings">Behaviour Settings</string>
     <string name="title_general_settings">General Settings</string>
     <string name="title_voice_settings">Voice Settings</string>
     <string name="title_filter_settings">Filter Settings</string>
@@ -532,8 +532,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="button_re_detect">Re-detect</string>
     
     <!-- Layout Section Titles -->
-    <string name="section_notification_behavior">Notification Behavior</string>
-    <string name="section_media_behavior">Media Behavior</string>
+    <string name="section_notification_behavior">Notification Behaviour</string>
+    <string name="section_media_behavior">Media Behaviour</string>
     <string name="recommendation_smart_mode">Most users should use: Smart Mode</string>
     <string name="recommendation_lower_audio">Most users should use: Lower Audio</string>
     
@@ -546,7 +546,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_smart_mode">Smart (priority apps interrupt, others queue)</string>
     <string name="behavior_priority_apps">⚡ Priority Apps</string>
     <string name="behavior_priority_apps_description">These apps will interrupt the current notification. All other apps will queue.</string>
-    <string name="behavior_media_ignore">Ignore - Continue as normal (current behavior)</string>
+    <string name="behavior_media_ignore">Ignore - Continue as normal</string>
     <string name="behavior_media_pause">Pause - Pause media while speaking</string>
     <string name="behavior_media_lower">Lower Audio - Duck media volume temporarily</string>
     <string name="behavior_media_silence">Silence - Don\'t speak while media is playing</string>
@@ -577,7 +577,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_wave_pocket">Pocket Mode</string>
     <string name="behavior_wave_pocket_description">Allow readouts to continue when sensor is already covered (like in your pocket), but still stop when you cover it after the readout starts</string>
     <string name="behavior_wave_pocket_checkbox">Allow readouts when sensor covered</string>
-    <string name="behavior_custom_apps_title">📱 Custom App Names</string>
+    <string name="behavior_custom_apps_title">Custom App Names</string>
     <string name="behavior_custom_apps_description">Customize how app names are spoken in notifications</string>
     <string name="behavior_custom_apps_example">Example: X app reads as Twitter</string>
     <string name="behavior_custom_apps_add">Add Custom App Name</string>
@@ -652,7 +652,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="settings_general_description">App preferences, theme settings</string>
     <string name="settings_voice_title">Voice Settings</string>
     <string name="settings_voice_description">Text-to-speech voice and speed</string>
-    <string name="settings_behavior_title">Behavior Settings</string>
+    <string name="settings_behavior_title">Behaviour Settings</string>
     <string name="settings_behavior_description">When and how notifications are read</string>
     <string name="settings_filter_title">Filter Settings</string>
     <string name="settings_filter_description">Choose which apps to read</string>
@@ -763,7 +763,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="general_theme_title">Theme</string>
     <string name="general_dark_mode">Dark Mode</string>
     <string name="general_dark_mode_description">Enable dark mode for this app</string>
-    <string name="general_app_behavior_title">App Behavior &amp; Performance</string>
+    <string name="general_app_behavior_title">App Behaviour &amp; Performance</string>
     <string name="general_auto_start">Auto-start on Boot</string>
     <string name="general_auto_start_description">Automatically start the notification service when device boots</string>
     <string name="general_battery_optimization">Battery Optimization Exemption</string>
@@ -920,7 +920,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_support_feature_request">Feature Request</string>
     <string name="dialog_support_feature_description">Suggest new features or improvements</string>
     <string name="dialog_support_bug_report">Bug Report</string>
-    <string name="dialog_support_bug_description">Report crashes, errors, or unexpected behavior</string>
+    <string name="dialog_support_bug_description">Report crashes, errors, or unexpected behaviour</string>
     
     <!-- Dialog Strings - Donate -->
     <string name="dialog_donate_title">Support SpeakThat!</string>
@@ -1329,137 +1329,24 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="app_filter_no_filter_showing_all">No filter - showing all %d apps</string>
     <string name="app_filter_publishing_results">Publishing %d results</string>
     
-    <!-- CooldownAppAdapter Hardcoded Strings -->
-    <string name="cooldown_app_icon_url">https://cdn.simpleicons.org/%s</string>
-    
-    <!-- BootReceiver Hardcoded Strings -->
-    <string name="boot_receiver_tag">BootReceiver</string>
-    <string name="boot_receiver_prefs_name">SpeakThatPrefs</string>
-    <string name="boot_receiver_key_auto_start">auto_start_on_boot</string>
-    <string name="boot_receiver_key_master_switch">master_switch_enabled</string>
-    <string name="boot_receiver_boot_completed">Boot completed received</string>
-    <string name="boot_receiver_auto_start_enabled">Auto-start enabled, starting notification service</string>
-    <string name="boot_receiver_enabled_notification_listeners">enabled_notification_listeners</string>
-    <string name="boot_receiver_service_already_enabled">Notification service already enabled, no action needed</string>
-        <string name="boot_receiver_service_not_enabled">Notification service not enabled, user needs to grant permission</string>
+    <!-- Technical hardcoded strings moved to strings_technical.xml -->
     
     <!-- AppCategory String Resources -->
-    <string name="category_social_id">social</string>
     <string name="category_social_display_name">Social Media</string>
     <string name="category_social_description">Social networking and community apps</string>
-    <string name="category_messaging_id">messaging</string>
     <string name="category_messaging_display_name">Messaging</string>
     <string name="category_messaging_description">Chat and communication apps</string>
-    <string name="category_finance_id">finance</string>
     <string name="category_finance_display_name">Finance</string>
     <string name="category_finance_description">Banking and financial apps</string>
-    <string name="category_health_id">health</string>
     <string name="category_health_display_name">Health &amp; Fitness</string>
     <string name="category_health_description">Health, medical, and fitness apps</string>
-    <string name="category_entertainment_id">entertainment</string>
     <string name="category_entertainment_display_name">Entertainment</string>
     <string name="category_entertainment_description">Media and entertainment apps</string>
-    <string name="category_games_id">games</string>
     <string name="category_games_display_name">Games</string>
     <string name="category_games_description">Mobile games and gaming apps</string>
     
-    <!-- App Package Names (for reference, these are typically not localized) -->
-    <string name="package_twitter">com.twitter.</string>
-    <string name="package_facebook">com.facebook.</string>
-    <string name="package_instagram">com.instagram.</string>
-    <string name="package_linkedin">com.linkedin.</string>
-    <string name="package_reddit">com.reddit.</string>
-    <string name="package_snapchat">com.snapchat.</string>
-    <string name="package_pinterest">com.pinterest.</string>
-    <string name="package_tumblr">com.tumblr</string>
-    <string name="package_weibo">com.weibo.</string>
-    <string name="package_line">jp.naver.line.</string>
-    <string name="package_tiktok">com.zhiliaoapp.musically</string>
-    <string name="package_glassdoor">com.glassdoor.</string>
-    <string name="package_indeed">com.indeed.</string>
-    <string name="package_discord">com.discord</string>
-    <string name="package_slack">com.slack</string>
-    <string name="package_meetup">com.meetup</string>
-    <string name="package_whatsapp">com.whatsapp</string>
-    <string name="package_facebook_messenger">com.facebook.messenger</string>
-    <string name="package_google_messages">com.google.android.apps.messaging</string>
-    <string name="package_telegram">org.telegram.</string>
-    <string name="package_viber">com.viber.</string>
-    <string name="package_skype">com.skype.</string>
-    <string name="package_gmail">com.google.android.gm</string>
-    <string name="package_outlook">com.microsoft.office.outlook</string>
-    <string name="package_yahoo_mail">com.yahoo.mobile.client.android.mail</string>
-    <string name="package_google_meet">com.google.android.apps.meetings</string>
-    <string name="package_zoom">us.zoom.</string>
-    <string name="package_microsoft_teams">com.microsoft.teams</string>
-    <string name="package_line_android">jp.naver.line.android</string>
-    <string name="package_kakaotalk">com.kakao.talk</string>
-    <string name="package_wechat">com.tencent.mm</string>
-    <string name="package_paypal">com.paypal.</string>
-    <string name="package_venmo">com.venmo.</string>
-    <string name="package_cash_app">com.squareup.cash</string>
-    <string name="package_google_wallet">com.google.android.apps.walletnfcrel</string>
-    <string name="package_bank_of_america">com.bankofamerica.</string>
-    <string name="package_chase">com.chase.</string>
-    <string name="package_wells_fargo">com.wellsfargo.</string>
-    <string name="package_us_bank">com.usbank.</string>
-    <string name="package_citibank">com.citibank.</string>
-    <string name="package_robinhood">com.robinhood.</string>
-    <string name="package_etrade">com.etrade.</string>
-    <string name="package_charles_schwab">com.schwab.</string>
-    <string name="package_fidelity">com.fidelity.</string>
-    <string name="package_coinbase">com.coinbase.</string>
-    <string name="package_binance">com.binance.</string>
-    <string name="package_mint">com.mint</string>
-    <string name="package_ynab">com.ynab</string>
-    <string name="package_fitbit">com.fitbit.</string>
-    <string name="package_google_fit">com.google.android.apps.fitness</string>
-    <string name="package_samsung_health">com.samsung.health</string>
-    <string name="package_garmin_connect">com.garmin.connect</string>
-    <string name="package_strava">com.strava</string>
-    <string name="package_medisafe">com.medisafe.</string>
-    <string name="package_myfitnesspal">com.myfitnesspal.</string>
-    <string name="package_noom">com.noom.</string>
-    <string name="package_weightwatchers">com.weightwatchers</string>
-    <string name="package_zocdoc">com.zocdoc.</string>
-    <string name="package_carezone">org.carezone.</string>
-    <string name="package_teladoc">com.teladoc.</string>
-    <string name="package_calm">com.calm.</string>
-    <string name="package_headspace">com.headspace.</string>
-    <string name="package_betterhelp">com.betterhelp</string>
-    <string name="package_glow">com.glow.android</string>
-    <string name="package_clue">com.clue.android</string>
-    
-    <!-- SharedPreferences Keys (these are typically not localized but kept for reference) -->
-    <string name="prefs_speakthat">SpeakThatPrefs</string>
-    <string name="prefs_voice_settings">VoiceSettings</string>
-    <string name="prefs_notification_history">NotificationHistory</string>
-    <string name="prefs_dark_mode">dark_mode</string>
-    <string name="prefs_persistent_notification">persistent_notification</string>
-    <string name="prefs_notification_while_reading">notification_while_reading</string>
-    <string name="prefs_auto_start_enabled">auto_start_enabled</string>
-    <string name="prefs_battery_optimization_enabled">battery_optimization_enabled</string>
-    <string name="prefs_aggressive_processing_enabled">aggressive_processing_enabled</string>
-    <string name="prefs_restart_policy">restart_policy</string>
-    <string name="prefs_tts_language">tts_language</string>
-    <string name="prefs_speech_rate">speech_rate</string>
-    <string name="prefs_pitch">pitch</string>
-    <string name="prefs_voice_name">voice_name</string>
-    <string name="prefs_language">language</string>
-    <string name="prefs_audio_usage">audio_usage</string>
-    <string name="prefs_content_type">content_type</string>
-    <string name="prefs_auto_start_on_boot">auto_start_on_boot</string>
-    <string name="prefs_master_switch_enabled">master_switch_enabled</string>
-    <string name="prefs_enabled_notification_listeners">enabled_notification_listeners</string>
-    
-    <!-- TTS Utterance IDs -->
-    <string name="tts_utterance_about_app">about_app</string>
-    
-    <!-- File Export/Import -->
-    <string name="export_filename_format">SpeakThat_Config_%s.json</string>
-    <string name="import_temp_filename">speakthat_import</string>
-    <string name="export_mime_type">application/json</string>
-    <string name="export_charset">UTF-8</string>
+    <!-- Technical strings (preference keys, package names, etc.) have been moved to strings_technical.xml -->
+    <!-- This prevents them from being translated by CrowdIn -->
     
     <!-- Error Messages -->
     <string name="error_unable_to_open_output_stream">Unable to open output stream for URI</string>

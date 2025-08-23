@@ -232,8 +232,8 @@ SpeakThatは、テキスト読み上げを使用して通知を音声で知ら�
     <string name="check_for_updates_auto_desc">アプリを開いたときにアップデートを自動的に確認する</string>
     <string name="check_frequency">確認の頻度</string>
     <string name="check_frequency_desc">アプリのアップデートの確認頻度は？</string>
-    <string name="update_daily">毎日 (推奨)</string>
-    <string name="update_weekly">毎週</string>
+    <string name="update_daily">毎日</string>
+    <string name="update_weekly">毎週 (推奨)</string>
     <string name="update_monthly">毎月</string>
     <string name="update_never">しない (手動のみ)</string>
     <!-- TTS Template Strings (for improved localization) -->
@@ -1485,140 +1485,32 @@ Notification permission denied - feature will not work
     <string name="app_filter_found_matches" formatted="false">Found %d matches for \'%s\'</string>
     <string name="app_filter_no_filter_showing_all">No filter - showing all %d apps</string>
     <string name="app_filter_publishing_results">Publishing %d results</string>
-    <!-- CooldownAppAdapter Hardcoded Strings -->
-    <string name="cooldown_app_icon_url">https://cdn.simpleicons.org/%s</string>
-    <!-- BootReceiver Hardcoded Strings -->
-    <string name="boot_receiver_tag">BootReceiver</string>
-    <string name="boot_receiver_prefs_name">SpeakThatPrefs</string>
-    <string name="boot_receiver_key_auto_start">auto_start_on_boot</string>
-    <string name="boot_receiver_key_master_switch">master_switch_enabled</string>
-    <string name="boot_receiver_boot_completed">Boot completed received</string>
-    <string name="boot_receiver_auto_start_enabled">Auto-start enabled, starting notification service</string>
-    <string name="boot_receiver_enabled_notification_listeners">enabled_notification_listeners</string>
-    <string name="boot_receiver_service_already_enabled">
-Notification service already enabled, no action needed
-</string>
-    <string name="boot_receiver_service_not_enabled">
-Notification service not enabled, user needs to grant permission
-</string>
-    <!-- AppCategory String Resources -->
-    <string name="category_social_id">social</string>
+            <!-- AppCategory String Resources -->
     <string name="category_social_display_name">Social Media</string>
     <string name="category_social_description">Social networking and community apps</string>
-    <string name="category_messaging_id">messaging</string>
     <string name="category_messaging_display_name">Messaging</string>
     <string name="category_messaging_description">チャットとコミュニケーションアプリ</string>
-    <string name="category_finance_id">finance</string>
     <string name="category_finance_display_name">Finance</string>
     <string name="category_finance_description">銀行・金融アプリ</string>
-    <string name="category_health_id">health</string>
     <string name="category_health_display_name">Health &amp; Fitness</string>
     <string name="category_health_description">健康とフィットネスアプリ</string>
-    <string name="category_entertainment_id">entertainment</string>
     <string name="category_entertainment_display_name">Entertainment</string>
     <string name="category_entertainment_description">メディアとエンターテイメントアプリ</string>
-    <string name="category_games_id">games</string>
     <string name="category_games_display_name">Games</string>
     <string name="category_games_description">モバイルゲームとゲームアプリ</string>
-    <!--
-     App Package Names (for reference, these are typically not localized)
-    -->
-    <string name="package_twitter">com.twitter.</string>
-    <string name="package_facebook">com.facebook.</string>
-    <string name="package_instagram">com.instagram.</string>
-    <string name="package_linkedin">com.linkedin.</string>
-    <string name="package_reddit">com.reddit.</string>
-    <string name="package_snapchat">com.snapchat.</string>
-    <string name="package_pinterest">com.pinterest.</string>
-    <string name="package_tumblr">com.tumblr</string>
-    <string name="package_weibo">com.weibo.</string>
+        <string name="package_weibo">com.weibo.</string>
     <string name="package_line">jp.naver.line.</string>
-    <string name="package_tiktok">com.zhiliaoapp.musically</string>
     <string name="package_glassdoor">com.glassdoor.</string>
     <string name="package_indeed">com.indeed.</string>
-    <string name="package_discord">com.discord</string>
-    <string name="package_slack">com.slack</string>
     <string name="package_meetup">com.meetup</string>
-    <string name="package_whatsapp">com.whatsapp</string>
     <string name="package_facebook_messenger">com.facebook.messenger</string>
     <string name="package_google_messages">com.google.android.apps.messaging</string>
-    <string name="package_telegram">org.telegram.</string>
     <string name="package_viber">com.viber.</string>
-    <string name="package_skype">com.skype.</string>
-    <string name="package_gmail">com.google.android.gm</string>
-    <string name="package_outlook">com.microsoft.office.outlook</string>
-    <string name="package_yahoo_mail">com.yahoo.mobile.client.android.mail</string>
-    <string name="package_google_meet">com.google.android.apps.meetings</string>
-    <string name="package_zoom">us.zoom.</string>
     <string name="package_microsoft_teams">com.microsoft.teams</string>
     <string name="package_line_android">jp.naver.line.android</string>
     <string name="package_kakaotalk">com.kakao.talk</string>
     <string name="package_wechat">com.tencent.mm</string>
-    <string name="package_paypal">com.paypal.</string>
-    <string name="package_venmo">com.venmo.</string>
-    <string name="package_cash_app">com.squareup.cash</string>
-    <string name="package_google_wallet">com.google.android.apps.walletnfcrel</string>
-    <string name="package_bank_of_america">com.bankofamerica.</string>
-    <string name="package_chase">com.chase.</string>
-    <string name="package_wells_fargo">com.wellsfargo.</string>
-    <string name="package_us_bank">com.usbank.</string>
-    <string name="package_citibank">com.citibank.</string>
-    <string name="package_robinhood">com.robinhood.</string>
-    <string name="package_etrade">com.etrade.</string>
-    <string name="package_charles_schwab">com.schwab.</string>
-    <string name="package_fidelity">com.fidelity.</string>
-    <string name="package_coinbase">com.coinbase.</string>
-    <string name="package_binance">com.binance.</string>
-    <string name="package_mint">com.mint</string>
-    <string name="package_ynab">com.ynab</string>
-    <string name="package_fitbit">com.fitbit.</string>
-    <string name="package_google_fit">com.google.android.apps.fitness</string>
-    <string name="package_samsung_health">com.samsung.health</string>
-    <string name="package_garmin_connect">com.garmin.connect</string>
-    <string name="package_strava">com.strava</string>
-    <string name="package_medisafe">com.medisafe.</string>
-    <string name="package_myfitnesspal">com.myfitnesspal.</string>
-    <string name="package_noom">com.noom.</string>
-    <string name="package_weightwatchers">com.weightwatchers</string>
-    <string name="package_zocdoc">com.zocdoc.</string>
-    <string name="package_carezone">org.carezone.</string>
-    <string name="package_teladoc">com.teladoc.</string>
-    <string name="package_calm">com.calm.</string>
-    <string name="package_headspace">com.headspace.</string>
-    <string name="package_betterhelp">com.betterhelp</string>
-    <string name="package_glow">com.glow.android</string>
-    <string name="package_clue">com.clue.android</string>
-    <!--
-     SharedPreferences Keys (these are typically not localized but kept for reference)
-    -->
-    <string name="prefs_speakthat">SpeakThatPrefs</string>
-    <string name="prefs_voice_settings">VoiceSettings</string>
-    <string name="prefs_notification_history">NotificationHistory</string>
-    <string name="prefs_dark_mode">dark_mode</string>
-    <string name="prefs_persistent_notification">persistent_notification</string>
-    <string name="prefs_notification_while_reading">notification_while_reading</string>
-    <string name="prefs_auto_start_enabled">auto_start_enabled</string>
-    <string name="prefs_battery_optimization_enabled">battery_optimization_enabled</string>
-    <string name="prefs_aggressive_processing_enabled">aggressive_processing_enabled</string>
-    <string name="prefs_restart_policy">restart_policy</string>
-    <string name="prefs_tts_language">tts_language</string>
-    <string name="prefs_speech_rate">speech_rate</string>
-    <string name="prefs_pitch">pitch</string>
-    <string name="prefs_voice_name">voice_name</string>
-    <string name="prefs_language">language</string>
-    <string name="prefs_audio_usage">audio_usage</string>
-    <string name="prefs_content_type">content_type</string>
-    <string name="prefs_auto_start_on_boot">auto_start_on_boot</string>
-    <string name="prefs_master_switch_enabled">master_switch_enabled</string>
-    <string name="prefs_enabled_notification_listeners">enabled_notification_listeners</string>
-    <!-- TTS Utterance IDs -->
-    <string name="tts_utterance_about_app">about_app</string>
-    <!-- File Export/Import -->
-    <string name="export_filename_format">SpeakThat_Config_%s.json</string>
-    <string name="import_temp_filename">speakthat_import</string>
-    <string name="export_mime_type">application/json</string>
-    <string name="export_charset">UTF-8</string>
-    <!-- Error Messages -->
+                <!-- Error Messages -->
     <string name="error_unable_to_open_output_stream">Unable to open output stream for URI</string>
     <string name="error_unable_to_open_input_stream">Unable to open input stream from URI</string>
     <!-- Log Messages -->

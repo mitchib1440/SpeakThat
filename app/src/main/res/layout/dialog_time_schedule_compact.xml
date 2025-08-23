@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:maxHeight="300dp"
+    android:maxHeight="280dp"
     android:fillViewport="true"
     android:scrollbars="vertical"
     android:fadeScrollbars="false">
@@ -11,40 +11,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="12dp">
 
         <!-- Time Selection Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/time_schedule_range"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="6dp" />
 
-        <!-- Time pickers in vertical layout for better space utilization -->
+        <!-- Time pickers in horizontal layout for compact design -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="16dp">
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
 
             <!-- Start Time -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:layout_marginBottom="12dp">
+                android:layout_marginEnd="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/time_schedule_start"
-                    android:textSize="14sp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_secondary"
-                    android:layout_marginBottom="4dp" />
+                    android:layout_marginBottom="2dp" />
 
                 <TimePicker
                     android:id="@+id/timePickerStart"
@@ -57,18 +58,20 @@
 
             <!-- End Time -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:layout_marginStart="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/time_schedule_end"
-                    android:textSize="14sp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_secondary"
-                    android:layout_marginBottom="4dp" />
+                    android:layout_marginBottom="2dp" />
 
                 <TimePicker
                     android:id="@+id/timePickerEnd"
@@ -86,10 +89,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/time_schedule_days"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="6dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -101,14 +104,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/time_schedule_every_day"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textColor="@color/text_primary"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="6dp" />
 
+            <!-- Days in 2 rows for better space utilization -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="4dp">
 
                 <CheckBox
                     android:id="@+id/checkBoxMonday"
@@ -116,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/day_mon"
-                    android:textSize="14sp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_primary" />
 
                 <CheckBox
@@ -125,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/day_tue"
-                    android:textSize="14sp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_primary" />
 
                 <CheckBox
@@ -134,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/day_wed"
-                    android:textSize="14sp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_primary" />
 
                 <CheckBox
@@ -143,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/day_thu"
-                    android:textSize="14sp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_primary" />
 
             </LinearLayout>
@@ -151,8 +156,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="4dp">
+                android:orientation="horizontal">
 
                 <CheckBox
                     android:id="@+id/checkBoxFriday"
@@ -160,7 +164,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/day_fri"
-                    android:textSize="14sp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_primary" />
 
                 <CheckBox
@@ -169,7 +173,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/day_sat"
-                    android:textSize="14sp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_primary" />
 
                 <CheckBox
@@ -178,7 +182,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/day_sun"
-                    android:textSize="14sp"
+                    android:textSize="13sp"
                     android:textColor="@color/text_primary" />
 
                 <View
@@ -192,4 +196,4 @@
 
     </LinearLayout>
 
-</ScrollView> 
+</ScrollView>

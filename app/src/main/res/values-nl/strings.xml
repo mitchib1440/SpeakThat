@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<resources>
+﻿<resources>
     <string name="app_name">SpeakThat!</string>
     <string name="service_name">SpeakThat! Meldingslezer</string>
     <!-- Quick Settings Tile -->
@@ -10,15 +9,31 @@
     <string name="quick_settings_tile_disabled_toast">SpeakThat! uitgeschakeld via Snelle Instellingen</string>
     <string name="quick_settings_tile_error_toast">Fout bij het omschakelen van SpeakThat!</string>
     <!-- Permission Explanations for IzzyOnDroid/F-Droid -->
-    <string name="permission_request_install_packages">Word gebruikt om automatisch nieuwe versies van GitHub uitgaven te installeren. Word alleen gebruikt wanneer de gebruiker automatisch bijwerken ingesteld heeft en de app niet is geïnstalleerd vanuit de Google Play Store.</string>
-    <string name="permission_access_location">Vereist voor de voorwaardelijke  Bluetooth en WiFi filterfuncties. Word gebruikt om nabije Bluetooth-apparaten en WiFi-netwerken te detecteren voor gebruikers-gedefinieerde regels. De locatie word niet gevolgd en we verzamelen geen data.</string>
-    <string name="permission_bluetooth_scan">Vereist voor voorwaardelijke Bluetooth filtering. Hiermee kan de app detecteren wanneer specifieke Bluetooth-apparaten zijn verbonden voor notificatieregels. Er worden geen gegevens verzameld of verzonden.</string>
-    <string name="permission_nearby_wifi_devices">Vereist voor voorwaardelijke Wi-Fi-netwerk filtering op Android 13+. Hiermee kan de app WiFi-netwerkwijzigingen detecteren voor gebruikers-gedefinieerde meldingsregels. Er worden geen netwerkgegevens verzameld.</string>
-    <string name="permission_read_external_storage">Gebruikt voor het importeren/exporteren van app instellingen en configuratie bestanden. Hiermee kunnen gebruikers van hun instellingen een back-up maken en herstellen. Persoonlijke gegevens worden niet meegenomen.</string>
+    <string name="permission_request_install_packages">
+Word gebruikt om automatisch nieuwe versies van GitHub uitgaven te installeren. Word alleen gebruikt wanneer de gebruiker automatisch bijwerken ingesteld heeft en de app niet is geïnstalleerd vanuit de Google Play Store.
+</string>
+    <string name="permission_access_location">
+Vereist voor de voorwaardelijke Bluetooth en WiFi filterfuncties. Word gebruikt om nabije Bluetooth-apparaten en WiFi-netwerken te detecteren voor gebruikers-gedefinieerde regels. De locatie word niet gevolgd en we verzamelen geen data.
+</string>
+    <string name="permission_bluetooth_scan">
+Vereist voor voorwaardelijke Bluetooth filtering. Hiermee kan de app detecteren wanneer specifieke Bluetooth-apparaten zijn verbonden voor notificatieregels. Er worden geen gegevens verzameld of verzonden.
+</string>
+    <string name="permission_nearby_wifi_devices">
+Vereist voor voorwaardelijke Wi-Fi-netwerk filtering op Android 13+. Hiermee kan de app WiFi-netwerkwijzigingen detecteren voor gebruikers-gedefinieerde meldingsregels. Er worden geen netwerkgegevens verzameld.
+</string>
+    <string name="permission_read_external_storage">
+Gebruikt voor het importeren/exporteren van app instellingen en configuratie bestanden. Hiermee kunnen gebruikers van hun instellingen een back-up maken en herstellen. Persoonlijke gegevens worden niet meegenomen.
+</string>
     <string name="permission_needed">Toegang tot meldingen vereist</string>
-    <string name="permission_description">SpreakThat! heeft toegang nodig tot uw meldingen om ze hardop te lezen. Zonder deze toestemming werkt de app niet.</string>
-    <string name="master_switch_battery_tip">💡 Uitschakelen als dat niet nodig is om batterij te besparen</string>
-    <string name="master_switch_battery_tip_no_emoji">Uitschakelen als dat niet nodig is om batterij te besparen</string>
+    <string name="permission_description">
+SpreakThat! heeft toegang nodig tot uw meldingen om ze hardop te lezen. Zonder deze toestemming werkt de app niet.
+</string>
+    <string name="master_switch_battery_tip">
+💡 Uitschakelen als dat niet nodig is om batterij te besparen
+</string>
+    <string name="master_switch_battery_tip_no_emoji">
+Uitschakelen als dat niet nodig is om batterij te besparen
+</string>
     <string name="open_settings">Machtigingsinstellingen</string>
     <string name="service_enabled">Melding lezer: ingeschakeld</string>
     <string name="service_disabled">Melding lezer: uitgeschakeld</string>
@@ -48,7 +63,9 @@
         <item>2 minuten</item>
         <item>5 minuten</item>
     </string-array>
-    <!-- Cooldown Time Values (corresponding to options above) -->
+    <!--
+     Cooldown Time Values (corresponding to options above)
+    -->
     <string-array name="cooldown_time_values">
         <item>1</item>
         <item>2</item>
@@ -63,63 +80,58 @@
     </string-array>
     <!-- Behavior Settings Dialogs -->
     <string name="notification_behavior_dialog_title">Opties voor meldingsgedrag</string>
-    <string name="notification_behavior_dialog_message">Kies hoe SpeakThat! omgaat met meerdere meldingen:
-
-<b>🔄 Onderbreken</b> - Stopt de huidige melding en spreekt meteen de nieuwe. Goed voor urgente meldingen.
-
-<b>📋 Wachtrij</b> - werkt de huidige melding af en spreekt dan de nieuwe op volgorde uit. Je mist niets.
-
-<b>⏭️ Overslaan</b> - Slaat nieuwe meldingen over terwijl de huidige uitgesproken wordt. Simpel, maar misschien mis je belangrijke meldingen.
-
-<b>🧠 Slim (Aanbevolen)</b> - geprioriteerde apps onderbreken, anderen wachten. Perfecte balans tussen urgentie en volledigheid.
-
-In de slimme modus kies je zelf welke apps urgent genoeg zijn om te onderbreken (zoals gesprekken, berichten) terwijl andere apps op hun beurt wachten.</string>
+    <string name="notification_behavior_dialog_message">
+Kies hoe SpeakThat! omgaat met meerdere meldingen:
+<b>🔄 Onderbreken</b>
+- Stopt de huidige melding en spreekt meteen de nieuwe. Goed voor urgente meldingen.
+<b>📋 Wachtrij</b>
+- werkt de huidige melding af en spreekt dan de nieuwe op volgorde uit. Je mist niets.
+<b>⏭️ Overslaan</b>
+- Slaat nieuwe meldingen over terwijl de huidige uitgesproken wordt. Simpel, maar misschien mis je belangrijke meldingen.
+<b>🧠 Slim (Aanbevolen)</b>
+- geprioriteerde apps onderbreken, anderen wachten. Perfecte balans tussen urgentie en volledigheid. In de slimme modus kies je zelf welke apps urgent genoeg zijn om te onderbreken (zoals gesprekken, berichten) terwijl andere apps op hun beurt wachten.
+</string>
     <string name="custom_app_names_title">Aangepaste app-namen</string>
-    <string name="custom_app_names_description">Aanpassen hoe app-namen worden uitgesproken in meldingen</string>
+    <string name="custom_app_names_description">
+Aanpassen hoe app-namen worden uitgesproken in meldingen
+</string>
     <string name="add_custom_app_name">Aangepaste app-naam toevoegen</string>
     <string name="app_package_hint">App-pakket-naam (bijv. com.twitter.android)</string>
     <string name="custom_name_hint">Aangepaste naam (bijv. Twitter)</string>
     <string name="custom_app_names_example">Voorbeeld: X app leest als Twitter</string>
     <string name="media_behavior_dialog_title">Media Gedragsopties</string>
-    <string name="media_behavior_dialog_message">Kies hoe SpeakThat! meldingen uitspreekt wanneer muziek of video word afgespeeld:
-
-<b>🎵 Negeren</b> - Spreek over je media. Simpel maar kan storend zijn.
-
-<b>⏸️ Pauzeer</b>  - Pauzeer je media terwijl SpeakThat! spreekt. Goed voor podcasts, maar onderbreekt de muziekstroom.
-
-<b>🔉 Lager Audiovolume (aanbevolen)</b> - Vermindert tijdelijk je mediavolume zodat je beiden kunt horen. Meest natuurlijke ervaring.
-
-<b>🔇 Stilte</b> - Spreek niet terwijl je media speelt. Rustig, maar je mist misschien belangrijke meldingen.
-
-Lager Audiovolume werkt als een autoradio - het zet de muziek zachter als Speakthat! spreekt en zet het daarna terug. Perfect voor muziekliefhebbers die nog steeds meldingen willen horen.</string>
+    <string name="media_behavior_dialog_message">
+Kies hoe SpeakThat! meldingen uitspreekt wanneer muziek of video word afgespeeld:
+<b>🎵 Negeren</b>
+- Spreek over je media. Simpel maar kan storend zijn.
+<b>⏸️ Pauzeer</b>
+- Pauzeer je media terwijl SpeakThat! spreekt. Goed voor podcasts, maar onderbreekt de muziekstroom.
+<b>🔉 Lager Audiovolume (aanbevolen)</b>
+- Vermindert tijdelijk je mediavolume zodat je beiden kunt horen. Meest natuurlijke ervaring.
+<b>🔇 Stilte</b>
+- Spreek niet terwijl je media speelt. Rustig, maar je mist misschien belangrijke meldingen. Lager Audiovolume werkt als een autoradio - het zet de muziek zachter als Speakthat! spreekt en zet het daarna terug. Perfect voor muziekliefhebbers die nog steeds meldingen willen horen.
+</string>
     <string name="shake_to_stop_dialog_title">Schudden om te Stoppen Functie</string>
-    <string name="shake_to_stop_dialog_message">Schudden om te Stoppen stopt de uitspraak meteen wanneer je jouw apparaat schudt.
-
+    <string name="shake_to_stop_dialog_message">
+Schudden om te Stoppen stopt de uitspraak meteen wanneer je jouw apparaat schudt.
 <b>✨ Waarom werkt dit:</b>
-• Stopt gênante meldingen op rustige plaatsen
-• Snelle controle als je met iets bezig bent
-• Werkt ook als het scherm uit staat
-• Geen gezoek naar de juiste toets
-
+• Stopt gênante meldingen op rustige plaatsen • Snelle controle als je met iets bezig bent • Werkt ook als het scherm uit staat • Geen gezoek naar de juiste toets
 <b>🎯 Hoe werkt dit:</b>
-• Schudt je apparaat stevig (zoals een dobbelsteen)
-• De huidige melding stopt meteen
-• Aankomende meldingen worden verwijdert
-• Nieuwe meldingen werken gewoon
-
+• Schudt je apparaat stevig (zoals een dobbelsteen) • De huidige melding stopt meteen • Aankomende meldingen worden verwijdert • Nieuwe meldingen werken gewoon
 <b>⚙️ Aanpassingen:</b>
-• Pas de gevoeligheid aan naar jouw voorkeur
-• Test jouw schudkracht met de meter
-• Werkt goed voor zowel zachte- als harde schudders.
-
-Deze mogelijkheid word gewaardeerd door mensen die in een vergadering zitten, in de bioscoop, of onderweg zijn.</string>
+• Pas de gevoeligheid aan naar jouw voorkeur • Test jouw schudkracht met de meter • Werkt goed voor zowel zachte- als harde schudders. Deze mogelijkheid word gewaardeerd door mensen die in een vergadering zitten, in de bioscoop, of onderweg zijn.
+</string>
     <string name="use_recommended">Aanbevolen gebruiken</string>
     <string name="got_it">Begrepen</string>
     <!-- Persistent/Silent Notification Filtering -->
     <string name="persistent_notification_filtering_title">Aanhoudende/Stille melding Filteren</string>
-    <string name="persistent_notification_filtering_description">Meldingen die aanhouden (actief) of stil zijn overslaan (geen geluid/trillingen)</string>
+    <string name="persistent_notification_filtering_description">
+Meldingen die aanhouden (actief) of stil zijn overslaan (geen geluid/trillingen)
+</string>
     <string name="enable_persistent_filtering">Schakel aanhoudende/stille meldingen filtering in</string>
-    <string name="persistent_filtering_help">💡 Aanhoudende meldingen zijn actief (zoals muziek besturen, navigatie, enz.) en stille meldingen hebben geen geluid/trilling. Deze optie helpt spam van achtergronddiensten te verminderen.</string>
+    <string name="persistent_filtering_help">
+💡 Aanhoudende meldingen zijn actief (zoals muziek besturen, navigatie, enz.) en stille meldingen hebben geen geluid/trilling. Deze optie helpt spam van achtergronddiensten te verminderen.
+</string>
     <!-- Individual Persistent Filtering Categories -->
     <string name="filter_persistent_notifications">Filter aanhoudende meldingen</string>
     <string name="filter_silent_notifications">Filter stille meldingen</string>
@@ -127,35 +139,26 @@ Deze mogelijkheid word gewaardeerd door mensen die in een vergadering zitten, in
     <string name="filter_low_priority">Filter notificaties met lage prioriteit</string>
     <string name="filter_system_notifications">Filter systeem meldingen</string>
     <!-- Category Descriptions -->
-    <string name="persistent_notifications_desc">Lopende meldingen die niet automatisch verdwijnen (muziekbediening, navigatie)</string>
+    <string name="persistent_notifications_desc">
+Lopende meldingen die niet automatisch verdwijnen (muziekbediening, navigatie)
+</string>
     <string name="silent_notifications_desc">Meldingen zonder geluid of trilling</string>
     <string name="foreground_services_desc">Meldingen van lopende achtergronddiensten</string>
     <string name="low_priority_desc">Meldingen met minimale- of lage prioriteit</string>
-    <string name="system_notifications_desc">Meldingen van systeem apps (Android, Google diensten)</string>
+    <string name="system_notifications_desc">
+Meldingen van systeem apps (Android, Google diensten)
+</string>
     <!-- Wave to Stop Feature -->
     <string name="wave_to_stop_dialog_title">Zwaaien om te Stoppen functie</string>
-    <string name="wave_to_stop_dialog_message">Door Zwaaien voor Stoppen kun je SpeakThat! meteen stoppen door met jouw hand voor het apparaat te zwaaien:
-
+    <string name="wave_to_stop_dialog_message">
+Door Zwaaien voor Stoppen kun je SpeakThat! meteen stoppen door met jouw hand voor het apparaat te zwaaien:
 <b>✨ Waarom helpt dit:</b>
-• Perfect als je het apparaat niet kunt schudden
-• Goed voor apparaten die liggen of in een houder zitten
-• Werkt met één hand
-• Het apparaat hoeft niet te bewegen
-• Toegankelijkheids-vriendelijk alternatief voor schudden
-
+• Perfect als je het apparaat niet kunt schudden • Goed voor apparaten die liggen of in een houder zitten • Werkt met één hand • Het apparaat hoeft niet te bewegen • Toegankelijkheids-vriendelijk alternatief voor schudden
 <b>🎯 Hoe werkt het:</b>
-• Zwaai met jouw hand voor het apparaat (zoals een magisch gebaar)
-• Gebruikt de nabijheidssensor om de handbeweging te detecteren
-• Huidige melding stopt meteen
-• Wachtende meldingen worden verwijderd
-• Nieuwe meldingen werken gewoon
-
+• Zwaai met jouw hand voor het apparaat (zoals een magisch gebaar) • Gebruikt de nabijheidssensor om de handbeweging te detecteren • Huidige melding stopt meteen • Wachtende meldingen worden verwijderd • Nieuwe meldingen werken gewoon
 <b>⚙️ Aanpassingen:</b>
-• Pas de gevoeligheid aan naar jouw wens
-• Test jouw zwaai-detectie met de meter
-• Werkt goed met verschillende handgroottes en afstanden
-
-Deze functie werkt bijzonder goed voor toegankelijkheid, bureau gebruikers en iedereen die liever gebaren gebruikt dan schudden.</string>
+• Pas de gevoeligheid aan naar jouw wens • Test jouw zwaai-detectie met de meter • Werkt goed met verschillende handgroottes en afstanden Deze functie werkt bijzonder goed voor toegankelijkheid, bureau gebruikers en iedereen die liever gebaren gebruikt dan schudden.
+</string>
     <!-- About Page -->
     <string name="about">Over</string>
     <string name="about_description_title">Over SpreakThat!</string>
@@ -166,25 +169,49 @@ Deze functie werkt bijzonder goed voor toegankelijkheid, bureau gebruikers en ie
     <string name="version_format_with_variant" formatted="false">Versie %1$s (%2$s)</string>
     <!-- Store Update Dialog -->
     <string name="store_update_dialog_title">Bijwerken via App Store</string>
-    <string name="store_update_dialog_message">Deze versie van SpeakThat! word bijgewerkt via uw app store (F-Droid, Google Play Store, enz.).</string>
-    <string name="store_update_dialog_info">• Updates worden automatisch afgehandeld door uw app store\n• U ontvangt meldingen wanneer er updates beschikbaar zijn\n• Geen handmatige download of installatie vereist</string>
+    <string name="store_update_dialog_message">
+Deze versie van SpeakThat! word bijgewerkt via uw app store (F-Droid, Google Play Store, enz.).
+</string>
+    <string name="store_update_dialog_info">
+• Updates worden automatisch afgehandeld door uw app store\n• U ontvangt meldingen wanneer er updates beschikbaar zijn\n• Geen handmatige download of installatie vereist
+</string>
     <string name="store_update_dialog_help_title">Automatische update versie nodig?</string>
-    <string name="store_update_dialog_help_message">Als u automatische updates wilt rechtstreeks vanuit GitHub, kunt u in plaats daarvan de GitHub versie downloaden. Deze versie is identiek maar bevat automatisch update-functionaliteit.</string>
+    <string name="store_update_dialog_help_message">
+Als u automatische updates wilt rechtstreeks vanuit GitHub, kunt u in plaats daarvan de GitHub versie downloaden. Deze versie is identiek maar bevat automatisch update-functionaliteit.
+</string>
     <string name="store_update_dialog_visit_github">Bezoek GitHub</string>
     <string name="store_update_dialog_got_it">Begrepen</string>
-    <string name="app_description">SpeakThat is een open-source Android meldingslezer die uw meldingen hardop voorleest met behulp van tekst-naar-spraak. Perfect voor hands-free bediening, toegankelijkheid en geïnformeerd blijven tijdens multitasking.</string>
-    <string name="app_features">• ala minuut meldingslezen\n• Aanpasbare spraakinstellingen\n• Slim filteren\n• App-specifieke bediening\n• Media-bewust gedrag\n• Meldingsgeschiedenis\n• Schud/Zwaai om te stoppen\n• Aangepaste spraakopmaak\n• Donker/Licht thema ondersteuning\n• Voorwaardelijke regels voor geavanceerde logica en schema\'s\n• Volledig advertentievrij en offline functionaliteit</string>
-    <string name="developer_info">Met liefde ontwikkeld door Michi, een onafhankelijke ontwikkelaar uit het Verenigd Koninkrijk met meer dan 12 jaar ervaring in het dagelijks testen en gebruiken van een meldingslezer. .\n\nSpeakThat! is geïnspireerd door Touchless Notifications, oorspronkelijk ontwikkeld door DYNA Logix, en streeft ernaar de erfenis van aanpasbare meldingslezer voort te zetten. .\n\nDit project is versneld door AI-ondersteunde programmering.</string>
-    <string name="license_info">Dit project is open source en beschikbaar onder de GPL-3.0 licentie.\n\nJe kunt de volledige licentietekst en broncode bekijken op GitHub. Bijdragen en feedback zijn welkom!</string>
+    <string name="app_description">
+SpeakThat is een open-source Android meldingslezer die uw meldingen hardop voorleest met behulp van tekst-naar-spraak. Perfect voor hands-free bediening, toegankelijkheid en geïnformeerd blijven tijdens multitasking.
+</string>
+    <string name="app_features">
+• ala minuut meldingslezen\n• Aanpasbare spraakinstellingen\n• Slim filteren\n• App-specifieke bediening\n• Media-bewust gedrag\n• Meldingsgeschiedenis\n• Schud/Zwaai om te stoppen\n• Aangepaste spraakopmaak\n• Donker/Licht thema ondersteuning\n• Voorwaardelijke regels voor geavanceerde logica en schema\'s\n• Volledig advertentievrij en offline functionaliteit
+</string>
+    <string name="developer_info">
+Met liefde ontwikkeld door Michi, een onafhankelijke ontwikkelaar uit het Verenigd Koninkrijk met meer dan 12 jaar ervaring in het dagelijks testen en gebruiken van een meldingslezer. .\n\nSpeakThat! is geïnspireerd door Touchless Notifications, oorspronkelijk ontwikkeld door DYNA Logix, en streeft ernaar de erfenis van aanpasbare meldingslezer voort te zetten. .\n\nDit project is versneld door AI-ondersteunde programmering.
+</string>
+    <string name="license_info">
+Dit project is open source en beschikbaar onder de GPL-3.0 licentie.\n\nJe kunt de volledige licentietekst en broncode bekijken op GitHub. Bijdragen en feedback zijn welkom!
+</string>
     <string name="read_about_app">Lees over de app</string>
     <string name="stop_reading">Stop met lezen</string>
-    <!-- TTS-specific strings (emoji-free and speech-optimized) -->
+    <!--
+     TTS-specific strings (emoji-free and speech-optimized)
+    -->
     <string name="tts_app_intro">Welkom bij SpeakThat!</string>
-    <string name="tts_description">SpeakThat is een open-source Android meldingslezer die uw meldingen hardop voorleest met behulp van tekst-naar-spraak. Perfect voor hands-free bediening, toegankelijkheid en geïnformeerd blijven tijdens multitasking.</string>
+    <string name="tts_description">
+SpeakThat is een open-source Android meldingslezer die uw meldingen hardop voorleest met behulp van tekst-naar-spraak. Perfect voor hands-free bediening, toegankelijkheid en geïnformeerd blijven tijdens multitasking.
+</string>
     <string name="tts_features_intro">Belangrijkste functies omvatten:</string>
-    <string name="tts_features">Real-time meldingslezen, aanpasbare steminstellingen, slimme meldingsfiltering, specifieke app-controle, media-bewust gedrag, meldingsgeschiedenis volgen, schudden voor stoppen en zwaaien voor stoppen, aangepaste stemformattering, ondersteuning voor donkere en lichte modus, voorwaardelijke regels voor geavanceerde logica en planning, en volledige advertentievrije en offline functionaliteit.</string>
-    <string name="tts_developer">Met liefde ontwikkeld door Michi, een onafhankelijke ontwikkelaar uit het Verenigd Koninkrijk met meer dan 12 jaar ervaring in het dagelijks testen en gebruiken van een meldingslezer. SpeakThat! is geïnspireerd door Touchless Notifications, oorspronkelijk ontwikkeld door DYNA Logix, en streeft ernaar de erfenis van aanpasbare meldingslezer voort te zetten. Dit project is versneld door AI-ondersteunde programmering.</string>
-    <string name="tts_license">Dit project is open-source en beschikbaar onder de GPL-3.0 licentie. U kunt de volledige licentietekst en broncode bekijken op GitHub. Bijdragen en feedback zijn welkom!</string>
+    <string name="tts_features">
+Real-time meldingslezen, aanpasbare steminstellingen, slimme meldingsfiltering, specifieke app-controle, media-bewust gedrag, meldingsgeschiedenis volgen, schudden voor stoppen en zwaaien voor stoppen, aangepaste stemformattering, ondersteuning voor donkere en lichte modus, voorwaardelijke regels voor geavanceerde logica en planning, en volledige advertentievrije en offline functionaliteit.
+</string>
+    <string name="tts_developer">
+Met liefde ontwikkeld door Michi, een onafhankelijke ontwikkelaar uit het Verenigd Koninkrijk met meer dan 12 jaar ervaring in het dagelijks testen en gebruiken van een meldingslezer. SpeakThat! is geïnspireerd door Touchless Notifications, oorspronkelijk ontwikkeld door DYNA Logix, en streeft ernaar de erfenis van aanpasbare meldingslezer voort te zetten. Dit project is versneld door AI-ondersteunde programmering.
+</string>
+    <string name="tts_license">
+Dit project is open-source en beschikbaar onder de GPL-3.0 licentie. U kunt de volledige licentietekst en broncode bekijken op GitHub. Bijdragen en feedback zijn welkom!
+</string>
     <string name="tts_thank_you">Bedankt voor het gebruik van SpeakThat!</string>
     <!-- Update System -->
     <string name="check_for_updates">Op updates controleren</string>
@@ -195,7 +222,9 @@ Deze functie werkt bijzonder goed voor toegankelijkheid, bureau gebruikers en ie
     <string name="app_up_to_date">Uw app is up-to-date</string>
     <string name="update_info">Versie: %1$s\nGrootte: %2$s\nUitgebracht: %3$s</string>
     <string name="download_update">Update downloaden</string>
-    <string name="download_confirmation">Versie %sdownloaden? Dit zal mobiele data gebruiken als je niet op WiFi zit.</string>
+    <string name="download_confirmation">
+Versie %sdownloaden? Dit zal mobiele data gebruiken als je niet op WiFi zit.
+</string>
     <string name="downloading_update">Update aan het downloaden...</string>
     <string name="downloading_update_progress">Update aan het downloaden... %d%%</string>
     <string name="download_complete">Download compleet</string>
@@ -209,14 +238,18 @@ Deze functie werkt bijzonder goed voor toegankelijkheid, bureau gebruikers en ie
     <string name="installation_failed">Installatie mislukt</string>
     <string name="invalid_apk_signature">Ongeldige APK handtekening</string>
     <string name="signature_verification_failed">Handtekening controle mislukt</string>
-    <string name="update_privacy_notice">Privacy: Update controleert alleen versienummers. Er worden geen persoonlijke gegevens verzameld of verzonden.</string>
+    <string name="update_privacy_notice">
+Privacy: Update controleert alleen versienummers. Er worden geen persoonlijke gegevens verzameld of verzonden.
+</string>
     <string name="download">Download</string>
     <string name="cancel">Annuleer</string>
     <string name="ok">OK</string>
     <!-- Update Settings -->
     <string name="auto_update_settings">Instellingen voor automatisch bijwerken</string>
     <string name="check_for_updates_auto">Zoek naar updates</string>
-    <string name="check_for_updates_auto_desc">Automatisch controleren op app-updates wanneer u de app opent</string>
+    <string name="check_for_updates_auto_desc">
+Automatisch controleren op app-updates wanneer u de app opent
+</string>
     <string name="check_frequency">Controleer frequentie</string>
     <string name="check_frequency_desc">Hoe vaak moet de app controleren op updates?</string>
     <string name="update_daily">Dagelijks (aanbevolen)</string>
@@ -224,7 +257,9 @@ Deze functie werkt bijzonder goed voor toegankelijkheid, bureau gebruikers en ie
     <string name="update_monthly">Maandelijks</string>
     <string name="update_never">Nooit (alleen handmatig)</string>
     <!-- TTS Template Strings (for improved localization) -->
-    <!-- These are complete sentence templates with placeholders for proper localization -->
+    <!--
+     These are complete sentence templates with placeholders for proper localization
+    -->
     <string name="tts_template_notified_you">{app} heeft u een melding gegeven: {content}</string>
     <string name="tts_template_reported">{app} heeft gerapporteerd: {content}</string>
     <string name="tts_template_saying">Melding van {app}, {content} zegt</string>
@@ -240,27 +275,57 @@ Deze functie werkt bijzonder goed voor toegankelijkheid, bureau gebruikers en ie
     <string name="tts_template_notification_from">Melding van {app}: {content}</string>
     <string name="tts_template_says">{app} zegt: {content}</string>
     <string name="tts_template_private_notification">U heeft een privé-melding ontvangen van {app}</string>
-    <!-- TTS Context Templates - Complete sentences for different app contexts -->
+    <!--
+     TTS Context Templates - Complete sentences for different app contexts
+    -->
     <!-- About Page TTS -->
     <string name="tts_about_intro">Welkom bij SpeakThat!</string>
-    <string name="tts_about_description">SpeakThat! is een open-source Android meldingslezer die uw meldingen hardop voorleest met behulp van tekst-naar-spraak. Perfect voor hands-free bediening, toegankelijkheid en geïnformeerd blijven tijdens multitasking.</string>
+    <string name="tts_about_description">
+SpeakThat! is een open-source Android meldingslezer die uw meldingen hardop voorleest met behulp van tekst-naar-spraak. Perfect voor hands-free bediening, toegankelijkheid en geïnformeerd blijven tijdens multitasking.
+</string>
     <string name="tts_about_features_intro">Belangrijkste functies omvatten:</string>
-    <string name="tts_about_features">Real-time meldingslezen, aanpasbare steminstellingen, slimme meldingsfiltering, specifieke app-controle, media-bewust gedrag, meldingsgeschiedenis tracking, schud-om-te-stoppen en zwaai-om-te-stoppen, aangepaste stemformattering, ondersteuning voor donkere en lichte modus, voorwaardelijke regels voor geavanceerde logica en planning, en volledige advertentievrije en offline functionaliteit.</string>
-    <string name="tts_about_developer">Met liefde ontwikkeld door Michi, een onafhankelijke ontwikkelaar uit het Verenigd Koninkrijk met meer dan 12 jaar ervaring in het dagelijks testen en gebruiken van een meldingslezer. SpeakThat! is geïnspireerd door Touchless Notifications, oorspronkelijk ontwikkeld door DYNA Logix, en streeft ernaar de erfenis van aanpasbare meldingslezer voort te zetten. Dit project is versneld door AI-ondersteunde programmering.</string>
-    <string name="tts_about_license">Dit project is open-source en beschikbaar onder de GPL-3.0 licentie. U kunt de volledige licentietekst en broncode bekijken op GitHub. Bijdragen en feedback zijn welkom!</string>
+    <string name="tts_about_features">
+Real-time meldingslezen, aanpasbare steminstellingen, slimme meldingsfiltering, specifieke app-controle, media-bewust gedrag, meldingsgeschiedenis tracking, schud-om-te-stoppen en zwaai-om-te-stoppen, aangepaste stemformattering, ondersteuning voor donkere en lichte modus, voorwaardelijke regels voor geavanceerde logica en planning, en volledige advertentievrije en offline functionaliteit.
+</string>
+    <string name="tts_about_developer">
+Met liefde ontwikkeld door Michi, een onafhankelijke ontwikkelaar uit het Verenigd Koninkrijk met meer dan 12 jaar ervaring in het dagelijks testen en gebruiken van een meldingslezer. SpeakThat! is geïnspireerd door Touchless Notifications, oorspronkelijk ontwikkeld door DYNA Logix, en streeft ernaar de erfenis van aanpasbare meldingslezer voort te zetten. Dit project is versneld door AI-ondersteunde programmering.
+</string>
+    <string name="tts_about_license">
+Dit project is open-source en beschikbaar onder de GPL-3.0 licentie. U kunt de volledige licentietekst en broncode bekijken op GitHub. Bijdragen en feedback zijn welkom!
+</string>
     <string name="tts_about_thank_you">Bedankt voor het gebruik van SpeakThat!</string>
     <!-- Voice Settings Test -->
-    <string name="tts_voice_test">Dit is hoe uw meldingen zullen klinken met deze steminstellingen.</string>
+    <string name="tts_voice_test">
+Dit is hoe uw meldingen zullen klinken met deze steminstellingen.
+</string>
     <!-- Onboarding TTS -->
-    <string name="tts_onboarding_language_theme">Kies uw voorkeurstaal en thema om te beginnen met SpeakThat!.</string>
-    <string name="tts_onboarding_welcome">Welkom bij SpeakThat! Blijf verbonden zonder naar het scherm te staren. Uw telefoon zal meldingen hardop voorlezen zodat u zich kunt concentreren op wat belangrijk is.</string>
-    <string name="tts_onboarding_permission">SpeakThat!! heeft toestemming nodig om uw meldingen hardop voor te lezen. Alles wordt op uw apparaat opgeslagen en u controleert wat wordt voorgelezen.</string>
-    <string name="tts_onboarding_privacy">Uw privacy is zeer belangrijk. U controleert precies wat hardop wordt voorgelezen. Schud uw telefoon om elke melding onmiddellijk te stoppen. Alles wordt op uw apparaat opgeslagen.</string>
-    <string name="tts_onboarding_filters">Laten we enkele basis privacy-filters instellen om te beginnen. SpeakThat! heeft een krachtig filtersysteem dat u in staat stelt te kiezen wat wordt voorgelezen en wat niet.</string>
-    <string name="tts_onboarding_apps">Voer de namen in van apps waarvan u nooit wilt dat ik de meldingen voorlees. Veelvoorkomende voorbeelden zijn bankapps, medische apps en dating-apps.</string>
-    <string name="tts_onboarding_words">Voer woorden of zinnen in waarvan u nooit wilt dat ik meldingen voorlees. Veelvoorkomende voorbeelden zijn wachtwoorden, PIN-codes, creditcards en medische termen.</string>
-    <string name="tts_onboarding_rules">Stel slimme regels in die automatisch bepalen wanneer meldingen worden gelezen op basis van uw situatie. Bijvoorbeeld, alleen lezen van meldingen bij een hoofdtelefoon of overslaan van meldingen wanneer het scherm aan is.</string>
-    <string name="tts_onboarding_complete">SpeakThat! is klaar om u te helpen verbonden te blijven terwijl uw zicht vrij blijft! U kunt op elk moment meer filters toevoegen in de app-instellingen.</string>
+    <string name="tts_onboarding_language_theme">
+Kies uw voorkeurstaal en thema om te beginnen met SpeakThat!.
+</string>
+    <string name="tts_onboarding_welcome">
+Welkom bij SpeakThat! Blijf verbonden zonder naar het scherm te staren. Uw telefoon zal meldingen hardop voorlezen zodat u zich kunt concentreren op wat belangrijk is.
+</string>
+    <string name="tts_onboarding_permission">
+SpeakThat!! heeft toestemming nodig om uw meldingen hardop voor te lezen. Alles wordt op uw apparaat opgeslagen en u controleert wat wordt voorgelezen.
+</string>
+    <string name="tts_onboarding_privacy">
+Uw privacy is zeer belangrijk. U controleert precies wat hardop wordt voorgelezen. Schud uw telefoon om elke melding onmiddellijk te stoppen. Alles wordt op uw apparaat opgeslagen.
+</string>
+    <string name="tts_onboarding_filters">
+Laten we enkele basis privacy-filters instellen om te beginnen. SpeakThat! heeft een krachtig filtersysteem dat u in staat stelt te kiezen wat wordt voorgelezen en wat niet.
+</string>
+    <string name="tts_onboarding_apps">
+Voer de namen in van apps waarvan u nooit wilt dat ik de meldingen voorlees. Veelvoorkomende voorbeelden zijn bankapps, medische apps en dating-apps.
+</string>
+    <string name="tts_onboarding_words">
+Voer woorden of zinnen in waarvan u nooit wilt dat ik meldingen voorlees. Veelvoorkomende voorbeelden zijn wachtwoorden, PIN-codes, creditcards en medische termen.
+</string>
+    <string name="tts_onboarding_rules">
+Stel slimme regels in die automatisch bepalen wanneer meldingen worden gelezen op basis van uw situatie. Bijvoorbeeld, alleen lezen van meldingen bij een hoofdtelefoon of overslaan van meldingen wanneer het scherm aan is.
+</string>
+    <string name="tts_onboarding_complete">
+SpeakThat! is klaar om u te helpen verbonden te blijven terwijl uw zicht vrij blijft! U kunt op elk moment meer filters toevoegen in de app-instellingen.
+</string>
     <!-- Behavior Settings Speech Format Templates -->
     <string name="tts_behavior_default">Standaard opmaak</string>
     <string name="tts_behavior_minimal">Minimale opmaak</string>
@@ -283,17 +348,27 @@ Deze functie werkt bijzonder goed voor toegankelijkheid, bureau gebruikers en ie
     <string name="tts_format_custom">AANGEPAST</string>
     <!-- Rule Builder Templates -->
     <string name="template_selection_title">Een sjabloon kiezen</string>
-    <string name="template_selection_description">Selecteer een vooraf geconfigureerde regelsjabloon om snel te beginnen, of maak een aangepaste regel vanaf het begin.</string>
+    <string name="template_selection_description">
+Selecteer een vooraf geconfigureerde regelsjabloon om snel te beginnen, of maak een aangepaste regel vanaf het begin.
+</string>
     <string name="create_custom_rule">Aangepaste regel maken</string>
     <!-- Template Names -->
     <string name="template_headphones_only_name">Bluetooth koptelefoon</string>
-    <string name="template_headphones_only_description">Selecteer uw Bluetooth-koptelefoons, en meldingen zullen ALLEEN worden gelezen wanneer ze verbonden zijn met uw telefoon</string>
+    <string name="template_headphones_only_description">
+Selecteer uw Bluetooth-koptelefoons, en meldingen zullen ALLEEN worden gelezen wanneer ze verbonden zijn met uw telefoon
+</string>
     <string name="template_time_schedule_name">Stille uren</string>
-    <string name="template_time_schedule_description">Selecteer twee tijden waartussen u wilt dat SpreakThat! stil blijft </string>
+    <string name="template_time_schedule_description">
+Selecteer twee tijden waartussen u wilt dat SpreakThat! stil blijft
+</string>
     <string name="template_screen_off_name">Alleen wanneer het scherm uit is</string>
-    <string name="template_screen_off_description">Meldingen worden alleen gelezen als je scherm uit is</string>
+    <string name="template_screen_off_description">
+Meldingen worden alleen gelezen als je scherm uit is
+</string>
     <string name="template_home_network_name">Alleen op WiFi Thuis </string>
-    <string name="template_home_network_description">Voer uw WiFi-netwerk Thuis in en meldingen worden alleen gelezen wanneer u ermee verbonden bent</string>
+    <string name="template_home_network_description">
+Voer uw WiFi-netwerk Thuis in en meldingen worden alleen gelezen wanneer u ermee verbonden bent
+</string>
     <!-- Template Trigger Descriptions -->
     <string name="template_trigger_headphones_disconnected">Als Bluetooth hoofdtelefoon wordt losgekoppeld</string>
     <string name="template_trigger_time_between">Tussen 22:00 en 8:00 uur</string>
@@ -317,7 +392,9 @@ Deze functie werkt bijzonder goed voor toegankelijkheid, bureau gebruikers en ie
     <string name="rule_trigger_wifi_disconnected_android15">niet verbonden met %1$s (Android 15+: elk WiFi)</string>
     <!-- WiFi Compatibility Warning -->
     <string name="wifi_compatibility_warning_title">Opmerking over WiFi compatibiliteit</string>
-    <string name="wifi_compatibility_warning_message">Sommige Android versies hebben beveiligingsbeperkingen die voorkomen dat apps specifieke WiFi-netwerknamen detecteren. Hoewel SpeakThat! op dit moment uw WiFi-netwerk kan detecteren, werkt deze functie mogelijk niet betrouwbaar in alle situaties (vooral wanneer de app zich op de achtergrond bevindt).\n\nDe regel zal alsnog de WiFi connectie status detecteren als SSID detectie mislukt, maar het werkt mogelijk niet precies zoals verwacht.\n\nHet is echter niet onmogelijk om het goed te implementeren. Dus als je een betere ontwikkelaar bent dan ik, draag dan bij op GitHub.</string>
+    <string name="wifi_compatibility_warning_message">
+Sommige Android versies hebben beveiligingsbeperkingen die voorkomen dat apps specifieke WiFi-netwerknamen detecteren. Hoewel SpeakThat! op dit moment uw WiFi-netwerk kan detecteren, werkt deze functie mogelijk niet betrouwbaar in alle situaties (vooral wanneer de app zich op de achtergrond bevindt).\n\nDe regel zal alsnog de WiFi connectie status detecteren als SSID detectie mislukt, maar het werkt mogelijk niet precies zoals verwacht.\n\nHet is echter niet onmogelijk om het goed te implementeren. Dus als je een betere ontwikkelaar bent dan ik, draag dan bij op GitHub.
+</string>
     <string name="wifi_compatibility_warning_create_anyway">Regel toch aanmaken</string>
     <string name="wifi_compatibility_warning_add_anyway">Regel toch toevoegen</string>
     <string name="wifi_compatibility_warning_nevermind">Laat maar</string>
@@ -412,48 +489,84 @@ Deze functie werkt bijzonder goed voor toegankelijkheid, bureau gebruikers en ie
     <string name="dialog_title_app_filter_help">📱 App Filterhulp</string>
     <string name="dialog_title_smart_media_filter">Slimme media melding filter</string>
     <!-- Critical Hardcoded Strings - Dialog Messages -->
-    <string name="dialog_message_theme_changed">Het thema is veranderd. Voor de beste ervaring kan je de app handmatig herstarten.</string>
+    <string name="dialog_message_theme_changed">
+Het thema is veranderd. Voor de beste ervaring kan je de app handmatig herstarten.
+</string>
     <string name="dialog_message_export_successful">Volledige configuratie geëxporteerd naar:\n%s</string>
-    <string name="dialog_message_export_successful_text">Configuratie geëxporteerd als tekst (aanmaken van bestand mislukt)</string>
+    <string name="dialog_message_export_successful_text">
+Configuratie geëxporteerd als tekst (aanmaken van bestand mislukt)
+</string>
     <string name="dialog_message_export_failed">Kan de configuratie niet exporteren: %s</string>
-    <string name="dialog_message_import_full_config">Dit zal je huidige instellingen vervangen door de geïmporteerde configuratie.\n\nWilt u doorgaan?</string>
+    <string name="dialog_message_import_full_config">
+Dit zal je huidige instellingen vervangen door de geïmporteerde configuratie.\n\nWilt u doorgaan?
+</string>
     <string name="dialog_message_import_successful">%s</string>
     <string name="dialog_message_import_failed">%s</string>
     <string name="dialog_message_import_failed_read">Bestand lezen mislukt: %s</string>
-    <string name="dialog_message_clear_all_data">Dit zal alle instellingen herstellen naar standaardinstellingen en wist de meldingsgeschiedenis.\n\nDeze actie kan niet ongedaan worden.\n\nWilt u doorgaan?</string>
-    <string name="dialog_message_data_cleared">Alle instellingen zijn teruggezet naar de standaardwaardes en meldingsgeschiedenis is gewist.</string>
+    <string name="dialog_message_clear_all_data">
+Dit zal alle instellingen herstellen naar standaardinstellingen en wist de meldingsgeschiedenis.\n\nDeze actie kan niet ongedaan worden.\n\nWilt u doorgaan?
+</string>
+    <string name="dialog_message_data_cleared">
+Alle instellingen zijn teruggezet naar de standaardwaardes en meldingsgeschiedenis is gewist.
+</string>
     <string name="dialog_message_clear_failed">Gegevens wissen mislukt: %s</string>
-    <string name="dialog_message_advanced_voice_options">Deze instellingen zijn voor gebruikers die korrelige controle over de stem en accent nodig hebben.\n\n99% van de gebruikers zou alleen de hoofdtaaloptie moeten wijzigen.\n\nAls je problemen ondervindt, kun je altijd teruggaan naar de standaardwaarden.</string>
+    <string name="dialog_message_advanced_voice_options">
+Deze instellingen zijn voor gebruikers die korrelige controle over de stem en accent nodig hebben.\n\n99% van de gebruikers zou alleen de hoofdtaaloptie moeten wijzigen.\n\nAls je problemen ondervindt, kun je altijd teruggaan naar de standaardwaarden.
+</string>
     <string name="dialog_message_bluetooth_not_available">Bluetooth is niet beschikbaar op dit apparaat.</string>
     <string name="dialog_message_bluetooth_disabled">Schakel Bluetooth in om apparaten te selecteren.</string>
-    <string name="dialog_message_no_devices_found">Geen gekoppelde Bluetooth-apparaten gevonden. Koppel eerst enkele apparaten.</string>
+    <string name="dialog_message_no_devices_found">
+Geen gekoppelde Bluetooth-apparaten gevonden. Koppel eerst enkele apparaten.
+</string>
     <string name="dialog_message_wifi_disabled">Schakel WiFi in om netwerken te selecteren.</string>
-    <string name="dialog_message_wifi_networks">Kan WiFi-netwerken niet automatisch detecteren. Voer de WiFi-netwerknamen (SSIDs) per regel handmatig in.\n\nOpmerking: U kunt ook proberen om locatieservices en locatierechten in te schakelen om automatisch netwerken te detecteren.</string>
-    <string name="dialog_message_no_networks_found">Geen wifi-netwerken gevonden. Maak eerst verbinding met enkele netwerken of voer de netwerknamen handmatig in.</string>
+    <string name="dialog_message_wifi_networks">
+Kan WiFi-netwerken niet automatisch detecteren. Voer de WiFi-netwerknamen (SSIDs) per regel handmatig in.\n\nOpmerking: U kunt ook proberen om locatieservices en locatierechten in te schakelen om automatisch netwerken te detecteren.
+</string>
+    <string name="dialog_message_no_networks_found">
+Geen wifi-netwerken gevonden. Maak eerst verbinding met enkele netwerken of voer de netwerknamen handmatig in.
+</string>
     <string name="dialog_message_enter_wifi_network">Voer de naam van uw WiFi-netwerk in:</string>
-    <string name="dialog_message_set_quiet_hours">Kies het tijdsbereik en de dagen wanneer je geen meldingen wilt lezen:</string>
+    <string name="dialog_message_set_quiet_hours">
+Kies het tijdsbereik en de dagen wanneer je geen meldingen wilt lezen:
+</string>
     <string name="dialog_message_rule_created">Uw regel \'%s\' is succesvol gemaakt.</string>
-    <string name="dialog_message_experimental_feature">Regels zijn experimenteel. Als u problemen ondervindt, kunt u ze uitschakelen in de instellingen. Uw bestaande filters en privacy-instellingen worden altijd gerespecteerd.</string>
-    <string name="dialog_message_delete_rule">Weet u zeker dat u de regel \'%s \' wilt verwijderen?</string>
+    <string name="dialog_message_experimental_feature">
+Regels zijn experimenteel. Als u problemen ondervindt, kunt u ze uitschakelen in de instellingen. Uw bestaande filters en privacy-instellingen worden altijd gerespecteerd.
+</string>
+    <string name="dialog_message_delete_rule">
+Weet u zeker dat u de regel \'%s \' wilt verwijderen?
+</string>
     <string name="dialog_message_invalid_rule_name">Voer een naam in voor deze regel.</string>
     <string name="dialog_message_invalid_rule">Los de volgende problemen op:\n\n%s</string>
     <string name="dialog_message_save_rule_failed">%s regel mislukt. Probeer het opnieuw.</string>
-    <string name="dialog_message_remove_trigger">Weet je zeker dat je deze activering wil verwijderen?</string>
+    <string name="dialog_message_remove_trigger">
+Weet je zeker dat je deze activering wil verwijderen?
+</string>
     <string name="dialog_message_remove_action">Weet u zeker dat u deze actie wilt verwijderen?</string>
-    <string name="dialog_message_remove_exception">Weet u zeker dat u deze uitzondering wilt verwijderen?</string>
-    <string name="dialog_message_coming_soon">%s configuratie zal in de volgende fase worden geïmplementeerd.</string>
-    <string name="dialog_message_select_app">Voer de naam van het app-pakket in (bijv. com.whatsapp):</string>
+    <string name="dialog_message_remove_exception">
+Weet u zeker dat u deze uitzondering wilt verwijderen?
+</string>
+    <string name="dialog_message_coming_soon">
+%s configuratie zal in de volgende fase worden geïmplementeerd.
+</string>
+    <string name="dialog_message_select_app">
+Voer de naam van het app-pakket in (bijv. com.whatsapp):
+</string>
     <string name="dialog_message_invalid_app_package">Voer een app-pakketnaam in.</string>
     <string name="dialog_message_remove_device">%s uit de lijst verwijderen?</string>
     <string name="dialog_message_select_bluetooth_device">Kies het Bluetooth-apparaat voor deze regel:</string>
     <string name="dialog_message_select_wifi_network">Kies het WiFi netwerk voor deze regel:</string>
     <!-- Language Change Dialog -->
     <string name="dialog_title_language_changed">Taal veranderd</string>
-    <string name="dialog_message_language_changed">De app taal is veranderd van %1$s naar %2$s.\n\n• Pas nu toe: update dit scherm onmiddellijk\n• Herstart App: verzekert dat alle schermen en diensten de nieuwe taal gebruiken\n\nVoor de beste ervaring raden we aan de app opnieuw te starten.</string>
+    <string name="dialog_message_language_changed">
+De app taal is veranderd van %1$s naar %2$s.\n\n• Pas nu toe: update dit scherm onmiddellijk\n• Herstart App: verzekert dat alle schermen en diensten de nieuwe taal gebruiken\n\nVoor de beste ervaring raden we aan de app opnieuw te starten.
+</string>
     <string name="button_restart_app">Herstart App</string>
     <string name="button_apply_now">Nu toepassen</string>
     <string name="toast_language_restarting">App opnieuw opstarten met nieuwe taal...</string>
-    <string name="toast_language_manual_restart">Taal zal volledig worden toegepast wanneer u de app opnieuw opstart</string>
+    <string name="toast_language_manual_restart">
+Taal zal volledig worden toegepast wanneer u de app opnieuw opstart
+</string>
     <!-- Critical Hardcoded Strings - Button Labels -->
     <string name="button_restart_now">Nu opnieuw opstarten</string>
     <string name="button_later">Later</string>
@@ -485,737 +598,1019 @@ Deze functie werkt bijzonder goed voor toegankelijkheid, bureau gebruikers en ie
     <string name="section_notification_behavior">Meldingsgedrag</string>
     <string name="section_media_behavior">Media gedrag</string>
     <string name="recommendation_smart_mode">De meeste gebruikers gebruiken: Slimme Mode</string>
-    <string name="recommendation_lower_audio">De meeste gebruikers gebruiken: Verlaag Audiovolume</string>
+    <string name="recommendation_lower_audio">
+De meeste gebruikers gebruiken: Verlaag Audiovolume
+</string>
     <!-- Behavior Settings Strings -->
-    <string name="behavior_notification_description">Bepaal hoe meldingen worden afgehandeld wanneer er al één wordt gelezen</string>
-    <string name="behavior_media_description">Bepaal hoe meldingen worden afgehandeld wanneer muziek of video\'s worden afgespeeld</string>
+    <string name="behavior_notification_description">
+Bepaal hoe meldingen worden afgehandeld wanneer er al één wordt gelezen
+</string>
+    <string name="behavior_media_description">
+Bepaal hoe meldingen worden afgehandeld wanneer muziek of video\'s worden afgespeeld
+</string>
     <string name="behavior_interrupt_mode">Onderbreek (stop huidige, lees nieuwe nu)</string>
     <string name="behavior_queue_mode">Wachtrij (huidige afronden, dan nieuwe lezen)</string>
-    <string name="behavior_skip_mode">Overslaan (negeer nieuwe meldingen tijdens het lezen)</string>
-    <string name="behavior_smart_mode">Slim (stoppen met prioriteits-apps, zet anderen in wachtrij)</string>
+    <string name="behavior_skip_mode">
+Overslaan (negeer nieuwe meldingen tijdens het lezen)
+</string>
+    <string name="behavior_smart_mode">
+Slim (stoppen met prioriteits-apps, zet anderen in wachtrij)
+</string>
     <string name="behavior_priority_apps">⚡ Prioriteits-apps</string>
-    <string name="behavior_priority_apps_description">Deze apps onderbreken de huidige melding. Alle andere apps worden in de wachtrij geplaatst.</string>
+    <string name="behavior_priority_apps_description">
+Deze apps onderbreken de huidige melding. Alle andere apps worden in de wachtrij geplaatst.
+</string>
     <string name="behavior_media_ignore">Negeer - Doorgaan als normaal (huidige gedrag)</string>
-    <string name="behavior_media_pause">Pauze - media pauzeren terwijl melding gelezen wordt</string>
+    <string name="behavior_media_pause">
+Pauze - media pauzeren terwijl melding gelezen wordt
+</string>
     <string name="behavior_media_lower">Lager audiovolume - tijdelijk lager mediavolume</string>
     <string name="behavior_media_silence">Stilte - Spreek niet terwijl er media speelt</string>
-    <string name="behavior_pause_warning">⚠️ Pauze modus werkt mogelijk niet op alle apparaten vanwege systeembeperkingen.</string>
+    <string name="behavior_pause_warning">
+⚠️ Pauze modus werkt mogelijk niet op alle apparaten vanwege systeembeperkingen.
+</string>
     <string name="behavior_ducking_volume">🔉 Verlagingsvolume</string>
-    <string name="behavior_ducking_description">Instellen hoe stil media moeten worden tijdens meldingen</string>
-    <string name="behavior_ducking_warning">⚠️ Op sommige apparaten kan het verlagen van het mediavolume ook de stem van de melding verlagen. Als meldingen nog steeds moeilijk te beluisteren zijn, probeer de Pauzeren modus of pas je TTS instellingen aan.</string>
-    <string name="behavior_ducking_tip">Tip: Lagere waarden maken media stiller tijdens meldingen</string>
+    <string name="behavior_ducking_description">
+Instellen hoe stil media moeten worden tijdens meldingen
+</string>
+    <string name="behavior_ducking_warning">
+⚠️ Op sommige apparaten kan het verlagen van het mediavolume ook de stem van de melding verlagen. Als meldingen nog steeds moeilijk te beluisteren zijn, probeer de Pauzeren modus of pas je TTS instellingen aan.
+</string>
+    <string name="behavior_ducking_tip">
+Tip: Lagere waarden maken media stiller tijdens meldingen
+</string>
     <string name="behavior_calls_title">📞 Eerbiedig telefoongesprekken</string>
-    <string name="behavior_calls_description">Voorkom uitlezen van meldingen tijdens een telefoongesprek</string>
-    <string name="behavior_calls_recommendation">Voor de meeste gebruikers: deze functie inschakelen</string>
+    <string name="behavior_calls_description">
+Voorkom uitlezen van meldingen tijdens een telefoongesprek
+</string>
+    <string name="behavior_calls_recommendation">
+Voor de meeste gebruikers: deze functie inschakelen
+</string>
     <string name="behavior_calls_checkbox">Eerbiedig telefoongesprekken</string>
-    <string name="behavior_calls_benefits">✨ Voordelen:\n\n• Voorkom onderbrekingen tijdens belangrijke gesprekken\n• Respecteert uw gespreksprivacy\n• Werkt met alle soorten telefoongesprekken\n• Automatische detectie van de belstatus</string>
+    <string name="behavior_calls_benefits">
+✨ Voordelen:\n\n• Voorkom onderbrekingen tijdens belangrijke gesprekken\n• Respecteert uw gespreksprivacy\n• Werkt met alle soorten telefoongesprekken\n• Automatische detectie van de belstatus
+</string>
     <string name="behavior_audio_title">🔇 Eerbiedig Audiomodus</string>
-    <string name="behavior_audio_description">Lees alleen meldingen wanneer je apparaat in geluidmodus staat (niet stil of trillen)</string>
+    <string name="behavior_audio_description">
+Lees alleen meldingen wanneer je apparaat in geluidmodus staat (niet stil of trillen)
+</string>
     <string name="behavior_audio_recommendation">Aanbevolen: Schakel deze functie in</string>
     <string name="behavior_audio_checkbox">Eerbiedig audiomodus (alleen geluid)</string>
-    <string name="behavior_audio_benefits">✨ Voordelen:\n\n• Voorkomt ongewenste audio wanneer telefoon is gedempt\n• Respecteert de audio-instellingen van uw apparaat\n• Werkt met stille en trillingsmodus\n• Zorgt ervoor dat meldingen alleen worden afgespeeld als u ze kunt horen</string>
+    <string name="behavior_audio_benefits">
+✨ Voordelen:\n\n• Voorkomt ongewenste audio wanneer telefoon is gedempt\n• Respecteert de audio-instellingen van uw apparaat\n• Werkt met stille en trillingsmodus\n• Zorgt ervoor dat meldingen alleen worden afgespeeld als u ze kunt horen
+</string>
     <string name="behavior_shake_current">Huidige schuding: 0,0</string>
     <string name="behavior_shake_threshold">Drempel: 12.0</string>
     <string name="behavior_timeout_display">Time-out 30 seconden</string>
     <string name="behavior_timeout_disable">Schakel time-out uit (niet aanbevolen)</string>
     <string name="behavior_wave_threshold">Nabijheidsgrenswaarde</string>
     <string name="behavior_wave_pocket">Broekzak modus</string>
-    <string name="behavior_wave_pocket_description">readouts toestaan om door te gaan als de sensor al afgedekt is (zoals in je zak), maar stopt nog steeds als je deze afdekt nadat de readout begint</string>
+    <string name="behavior_wave_pocket_description">
+readouts toestaan om door te gaan als de sensor al afgedekt is (zoals in je zak), maar stopt nog steeds als je deze afdekt nadat de readout begint
+</string>
     <string name="behavior_wave_pocket_checkbox">Uitlezingen toestaan wanneer de sensor bedekt is</string>
     <string name="behavior_custom_apps_title">📱 Aangepaste app-namen</string>
-    <string name="behavior_custom_apps_description">Aanpassen hoe app-namen worden uitgesproken in meldingen</string>
+    <string name="behavior_custom_apps_description">
+Aanpassen hoe app-namen worden uitgesproken in meldingen
+</string>
     <string name="behavior_custom_apps_example">Voorbeeld: X app leest als Twitter</string>
     <string name="behavior_custom_apps_add">Aangepaste app-naam toevoegen</string>
-    <string name="behavior_delay_title">Delay Before Readout</string>
-    <string name="behavior_delay_description">Add a short delay before SpeakThat starts reading notifications</string>
-    <string name="behavior_delay_recommendation">Most users should use: 2 seconds</string>
-    <string name="behavior_delay_none">None - Start immediately</string>
-    <string name="behavior_delay_1s">1 second - Quick pause</string>
-    <string name="behavior_delay_2s">2 seconds - Recommended</string>
-    <string name="behavior_delay_3s">3 seconds - Extra time to react</string>
-    <string name="behavior_delay_benefits">✨ Benefits:\n\n• Avoids overlap with notification sounds\n• Gives you time to shake-to-cancel\n• Less jarring in quiet environments\n• Perfect for meetings and public spaces</string>
-    <string name="behavior_cooldown_title">Notification Cooldown</string>
-    <string name="behavior_cooldown_description">Prevent apps from having multiple notifications read within a specified time period</string>
-    <string name="behavior_cooldown_recommendation">Great for: Apps that spam notifications</string>
-    <string name="behavior_speech_title">Speech Format</string>
-    <string name="behavior_speech_description">Customize how notifications are spoken aloud using placeholders</string>
-    <string name="behavior_speech_recommendation">Customize your notification experience</string>
-    <string name="behavior_speech_preset">Format Preset:</string>
-    <string name="behavior_speech_custom">Custom Format:</string>
-    <string name="behavior_speech_preview">Preview: Messages notified you: Mitchi: I heard you\'re using SpeakThat!</string>
-    <string name="behavior_speech_placeholders">Common placeholders: {app}, {content}, {time}, {title}, {text}, {priority}, {category}</string>
+    <string name="behavior_delay_title">Vertraging voor oplezen</string>
+    <string name="behavior_delay_description">
+Voeg een korte vertraging toe voordat SpeakThat! begint met het lezen van meldingen
+</string>
+    <string name="behavior_delay_recommendation">De meeste gebruikers gebruiken: 2 seconden</string>
+    <string name="behavior_delay_none">Geen - onmiddellijk beginnen</string>
+    <string name="behavior_delay_1s">1 seconde - Snelle pauze</string>
+    <string name="behavior_delay_2s">2 seconden - Aanbevolen</string>
+    <string name="behavior_delay_3s">3 seconden - Extra tijd om te reageren</string>
+    <string name="behavior_delay_benefits">
+✨ Voordelen:\n\n• Vermijd overlap met meldingsgeluiden\n• Geeft je tijd om\nte annuleren • Minder storend in stille omgevingen\n• Perfect voor vergaderingen en openbare ruimtes
+</string>
+    <string name="behavior_cooldown_title">Meldings afkoeltijd</string>
+    <string name="behavior_cooldown_description">
+Voorkom dat apps meerdere meldingen oplezen binnen een bepaalde periode
+</string>
+    <string name="behavior_cooldown_recommendation">Geweldig: Apps die spammeldingen sturen</string>
+    <string name="behavior_speech_title">Spraakstijl</string>
+    <string name="behavior_speech_description">
+Aanpassen hoe meldingen hardop worden gesproken met behulp van tijdelijke aanduidingen
+</string>
+    <string name="behavior_speech_recommendation">Pas je meldingservaring aan</string>
+    <string name="behavior_speech_preset">Opmaak Voorinstelling:</string>
+    <string name="behavior_speech_custom">Aangepaste opmaak:</string>
+    <string name="behavior_speech_preview">
+Voorbeeld: Berichten hebben je een melding gegeven: Mitchi, ik heb gehoord dat je SpeakThat! gebruikt!
+</string>
+    <string name="behavior_speech_placeholders">
+Gewone aanduidingen: {app}, {content}, {time}, {title}, {text}, {priority}, {category}
+</string>
     <string name="button_start_test">Start Test</string>
     <string name="button_test">Test</string>
-    <string name="button_add">Add</string>
-    <string name="label_gentle">Gentle</string>
-    <string name="label_strong">Strong</string>
-    <string name="label_5s">5s</string>
-    <string name="label_5m">5m</string>
+    <string name="button_add">Toevoegen</string>
+    <string name="label_gentle">Zacht</string>
+    <string name="label_strong">Sterk</string>
+    <string name="label_5s">5 sec.</string>
+    <string name="label_5m">5 min.</string>
     <string name="label_30_percent">30%</string>
     <string name="label_90_percent">90%</string>
-    <string name="volume_mute">Mute</string>
-    <string name="volume_loud">Loud</string>
+    <string name="volume_mute">Dempen</string>
+    <string name="volume_loud">Luid</string>
     <string name="volume_30_percent">30%</string>
     <!-- Voice Settings Strings -->
-    <string name="voice_characteristics">Voice Characteristics</string>
-    <string name="voice_speech_rate">Speech Rate</string>
-    <string name="voice_pitch">Voice Pitch</string>
+    <string name="voice_characteristics">Stem kenmerken</string>
+    <string name="voice_speech_rate">Spreeksnelheid</string>
+    <string name="voice_pitch">Toonhoogte stem</string>
     <string name="voice_tts_volume">TTS Volume</string>
-    <string name="voice_language_section">Language &amp; Voice</string>
-    <string name="voice_language_preset">Language Preset</string>
-    <string name="voice_language_preset_description">Choose your language. This sets both the app interface and text-to-speech language at once for the best experience.</string>
-    <string name="voice_preset_recommendation">This is all most users need. Use Advanced Voice Options below to customize individual settings.</string>
-    <string name="voice_help_translate">Help Translate SpeakThat!</string>
-    <string name="voice_help_translate_description">Tap to send translation email</string>
-    <string name="voice_show_advanced">Show Advanced Voice Options</string>
-    <string name="voice_advanced_label">⚙️ Advanced</string>
-    <string name="voice_tts_language_advanced">TTS Language (Advanced)</string>
-    <string name="voice_tts_language_description">Override the language for app phrases (like \'notified you:\'). Leave as default unless you want different languages for UI and TTS phrases.</string>
-    <string name="voice_specific_voice_advanced">Specific Voice (Advanced)</string>
-    <string name="voice_specific_voice_description">Select a specific voice engine. This overrides the language setting above. For advanced users only.</string>
-    <string name="voice_tap_for_details">Tap for details</string>
-    <string name="voice_advanced_recommendation">Recommendation: Try the Language setting first. Only use Specific Voice if you need a particular voice engine.\n\nYou can always reset your settings below if you run into trouble!</string>
-    <string name="voice_reset_warning">You can always reset your settings below if you run into trouble!</string>
-    <string name="label_0_1x">0.1x</string>
+    <string name="voice_language_section">Taal &amp; Stem</string>
+    <string name="voice_language_preset">Taal voorinstelling</string>
+    <string name="voice_language_preset_description">
+Kies uw taal. Dit stelt zowel de app interface als de tekst-naar-spraak taal tegelijk in voor de beste ervaring.
+</string>
+    <string name="voice_preset_recommendation">
+Dit hebben de meeste gebruikers nodig. Gebruik de geavanceerde spraakopties hieronder om de individuele instellingen aan te passen.
+</string>
+    <string name="voice_help_translate">Help SpreakThat! vertalen!</string>
+    <string name="voice_help_translate_description">Tik om e-mail voor vertaling te verzenden</string>
+    <string name="voice_show_advanced">Toon geavanceerde stemopties</string>
+    <string name="voice_advanced_label">⚙️ Geavanceerd</string>
+    <string name="voice_tts_language_advanced">TTS Taal (Geavanceerd)</string>
+    <string name="voice_tts_language_description">
+Overschrijf de taal voor app-zinnen (zoals \'kennisgeving:\'). Laat op standaard staan tenzij u verschillende talen wilt voor UI en TTS.
+</string>
+    <string name="voice_specific_voice_advanced">Specifieke stem (Geavanceerd)</string>
+    <string name="voice_specific_voice_description">
+Selecteer een specifieke stem engine. Dit overschrijft de taalinstelling hierboven. Alleen voor gevorderde gebruikers.
+</string>
+    <string name="voice_tap_for_details">Tik voor details</string>
+    <string name="voice_advanced_recommendation">
+Aanbeveling: Probeer eerst de taalinstellingen. Gebruik de specifieke stem alleen als je een bepaalde stemmachine nodig hebt.\n\nJe kunt hieronder altijd je instellingen terugzetten als je problemen ondervindt!
+</string>
+    <string name="voice_reset_warning">
+Je kunt hieronder je instellingen altijd opnieuw instellen als je in de problemen komt!
+</string>
+    <string name="label_0_1x">0,1x</string>
     <string name="label_3_0x">3.0x</string>
-    <string name="label_1_0x">1.0x</string>
-    <string name="label_2_0x">2.0x</string>
+    <string name="label_1_0x">1,0x</string>
+    <string name="label_2_0x">2,0x</string>
     <string name="label_0_percent">0%</string>
     <string name="label_100_percent">100%</string>
     <string name="arrow_right">›</string>
     <!-- Main Activity Strings -->
-    <string name="main_version_placeholder">version x.x.x</string>
-    <string name="main_author">by Mitchi</string>
-    <string name="main_service_active">SpeakThat! Active</string>
-    <string name="main_service_enable">Tap to enable notification reading</string>
-    <string name="main_notification_permissions">Notification permissions:</string>
+    <string name="main_version_placeholder">versie x.x.x</string>
+    <string name="main_author">door Mitchi</string>
+    <string name="main_service_active">SpreakThat! Actief</string>
+    <string name="main_service_enable">Tik om het oplezen van meldingen in te schakelen</string>
+    <string name="main_notification_permissions">Machtiging voor meldingen</string>
     <!-- Settings Activity Strings -->
-    <string name="settings_general_title">General Settings</string>
-    <string name="settings_general_description">App preferences, theme settings</string>
-    <string name="settings_voice_title">Voice Settings</string>
-    <string name="settings_voice_description">Text-to-speech voice and speed</string>
-    <string name="settings_behavior_title">Behavior Settings</string>
-    <string name="settings_behavior_description">When and how notifications are read</string>
-    <string name="settings_filter_title">Filter Settings</string>
-    <string name="settings_filter_description">Choose which apps to read</string>
-    <string name="settings_rules_title">Conditional Rules</string>
-    <string name="settings_rules_description">Configure Bluetooth, time schedules, etc</string>
-    <string name="settings_development_title">Development Settings</string>
-    <string name="settings_development_description">Debug tools and logging system</string>
-    <string name="settings_rerun_onboarding">Re-run Onboarding</string>
-    <string name="settings_rerun_onboarding_description">See the app introduction again</string>
-    <string name="settings_support_title">Support &amp; Feedback</string>
-    <string name="settings_support_description">Get help, report bugs, request features</string>
-    <string name="settings_donate_title">Donate</string>
-    <string name="settings_donate_description">Support development and keep the app free</string>
+    <string name="settings_general_title">Algemene instellingen</string>
+    <string name="settings_general_description">App voorkeuren, thema-instellingen</string>
+    <string name="settings_voice_title">Stem Instellingen</string>
+    <string name="settings_voice_description">Tekst-naar-spraak en snelheid</string>
+    <string name="settings_behavior_title">Gedragsinstellingen</string>
+    <string name="settings_behavior_description">Wanneer en hoe meldingen worden opgelezen</string>
+    <string name="settings_filter_title">Filterinstellingen</string>
+    <string name="settings_filter_description">Kies welke apps je wilt lezen</string>
+    <string name="settings_rules_title">Voorwaardelijke regels</string>
+    <string name="settings_rules_description">Configureer Bluetooth, tijd schema\'s, etc</string>
+    <string name="settings_development_title">Ontwikkelingsinstellingen</string>
+    <string name="settings_development_description">Foutopsporingsgereedschap en logging systeem</string>
+    <string name="settings_rerun_onboarding">Onboarding opnieuw uitvoeren</string>
+    <string name="settings_rerun_onboarding_description">Bekijk de app introductie opnieuw</string>
+    <string name="settings_support_title">Ondersteuning &amp; Feedback</string>
+    <string name="settings_support_description">Hulp krijgen, bugs rapporteren, functies verzoeken</string>
+    <string name="settings_donate_title">Doneren</string>
+    <string name="settings_donate_description">Ondersteun de ontwikkeling en houd de app gratis</string>
     <!-- Critical Hardcoded Strings - Other -->
-    <string name="unknown_device">Unknown Device</string>
-    <string name="export_full_config_text">Complete configuration backup created on %s</string>
-    <string name="export_full_config_chooser">Export Full Configuration</string>
-    <string name="export_full_config_text_chooser">Export Full Configuration as Text</string>
-    <string name="select_configuration_file">Select Configuration File</string>
-    <string name="save_rule">save</string>
-    <string name="update_rule">update</string>
+    <string name="unknown_device">Onbekend apparaat</string>
+    <string name="export_full_config_text">Volledige configuratie back-up gemaakt op %s</string>
+    <string name="export_full_config_chooser">Volledige configuratie exporteren</string>
+    <string name="export_full_config_text_chooser">Exporteer volledige configuratie als tekst</string>
+    <string name="select_configuration_file">Selecteer configuratiebestand</string>
+    <string name="save_rule">opslaan</string>
+    <string name="update_rule">Bijwerken</string>
     <!-- Conditional Rules - Trigger Strings -->
-    <string name="rule_trigger_wifi_network">WiFi network in range: %1$s</string>
-    <string name="rule_trigger_not_wifi_network">WiFi network not in range: %1$s</string>
+    <string name="rule_trigger_wifi_network">Wifi-netwerk binnen bereik: %1$s</string>
+    <string name="rule_trigger_not_wifi_network">Wifi-netwerk niet binnen bereik: %1$s</string>
     <!-- Behavior Settings - Media Volume -->
-    <string name="behavior_media_volume_tip">Tip: Lower values make media quieter during notifications</string>
+    <string name="behavior_media_volume_tip">
+Tip: Lagere waarden maken media stiller tijdens meldingen
+</string>
     <!-- Behavior Settings - Do Not Disturb -->
-    <string name="section_honor_dnd">Honour Do Not Disturb</string>
-    <string name="behavior_dnd_description">Respect your device\'s Do Not Disturb mode and silence notifications when enabled</string>
-    <string name="behavior_dnd_recommendation">Most users should: Enable this feature</string>
-    <string name="behavior_dnd_switch_label">Honour Do Not Disturb mode</string>
-    <string name="behavior_dnd_benefits">✨ Benefits:\n\n• Respects your device\'s Do Not Disturb settings\n• Perfect for meetings, sleep, and quiet time\n• Works with scheduled DND and manual activation\n• Maintains your privacy and focus when needed</string>
+    <string name="section_honor_dnd">Eerbiedig Niet Storen</string>
+    <string name="behavior_dnd_description">
+Respecteer de modus \'Niet storen\' en meldingen dempen wanneer ingeschakeld
+</string>
+    <string name="behavior_dnd_recommendation">
+Voor de meeste gebruikers: deze functie inschakelen
+</string>
+    <string name="behavior_dnd_switch_label">Eerbiedig Niet Storen</string>
+    <string name="behavior_dnd_benefits">
+✨ Voordelen:\n\n• Respecteert de \"Niet Storen\" instelling van je apparaat \n• Perfect voor vergaderen, slaapstand, en stille tijd\n• Werkt met geplande \"Niet Storen\" mode en handmatige activering\n• Behoudt uw privacy en focus wanneer nodig
+</string>
     <!-- Behavior Settings - Phone Calls -->
-    <string name="section_honor_phone_calls">Honour Phone Calls</string>
-    <string name="behavior_phone_calls_description">Prevent notification readouts when you\'re on a phone call</string>
-    <string name="behavior_phone_calls_recommendation">Most users should: Enable this feature</string>
-    <string name="behavior_phone_calls_switch_label">Honour phone calls</string>
-    <string name="behavior_phone_calls_benefits">✨ Benefits:\n\n• Prevents interruptions during important calls\n• Respects your conversation privacy\n• Works with all types of phone calls\n• Automatic detection of call state</string>
+    <string name="section_honor_phone_calls">Eerbiedig telefoongesprekken</string>
+    <string name="behavior_phone_calls_description">
+Voorkom uitlezen van meldingen tijdens een telefoongesprek
+</string>
+    <string name="behavior_phone_calls_recommendation">
+Voor de meeste gebruikers: deze functie inschakelen
+</string>
+    <string name="behavior_phone_calls_switch_label">Eerbiedig telefoongesprekken</string>
+    <string name="behavior_phone_calls_benefits">
+✨ Voordelen:\n\n• Voorkom onderbrekingen tijdens belangrijke gesprekken\n• Respecteert uw gespreksprivacy\n• Werkt met alle soorten telefoongesprekken\n• Automatische detectie van de belstatus
+</string>
     <!-- Behavior Settings - Notification Deduplication -->
-    <string name="section_notification_deduplication">Notification Deduplication</string>
-    <string name="behavior_deduplication_description">Prevent the same notification from being read multiple times in quick succession</string>
-    <string name="behavior_deduplication_recommendation">Enable if you experience duplicate notifications</string>
-    <string name="behavior_deduplication_switch_label">Enable notification deduplication</string>
-    <string name="behavior_deduplication_benefits">✨ Benefits:\n\n• Prevents annoying duplicate readouts\n• Saves battery by avoiding unnecessary TTS\n• Works automatically with 5-second window\n• Helps with apps that post multiple notifications</string>
+    <string name="section_notification_deduplication">Meldingsontdubbeling</string>
+    <string name="behavior_deduplication_description">
+Voorkomen dat dezelfde melding meerdere keren snel achter elkaar wordt gelezen
+</string>
+    <string name="behavior_deduplication_recommendation">Inschakelen als u dubbele meldingen ervaart</string>
+    <string name="behavior_deduplication_switch_label">Meldingsontdubbeling inschakelen</string>
+    <string name="behavior_deduplication_benefits">
+✨ Voordelen:\n\n• Voorkom vervelende dubbele uitlezingen\n• Bespaart batterij door onnodige meldingen te voorkomen\n• Werkt automatisch binnen een 5-seconde tijdsbestek\n• Helpt met apps die meerdere meldingen plaatsen
+</string>
     <!-- Behavior Settings - Audio Mode -->
-    <string name="section_honor_audio_mode">Honour Audio Mode</string>
-    <string name="behavior_audio_mode_description">Only read notifications when your device is in Sound mode (not Silent or Vibrate)</string>
-    <string name="behavior_audio_mode_recommendation">Recommended: Enable this feature</string>
-    <string name="behavior_audio_mode_switch_label">Honour audio mode (Sound only)</string>
-    <string name="behavior_audio_mode_benefits">✨ Benefits:\n\n• Prevents unwanted audio when phone is muted\n• Respects your device\'s audio settings\n• Works with Silent and Vibrate modes\n• Ensures notifications only play when you can hear them</string>
+    <string name="section_honor_audio_mode">Eerbiedig Audiomodus</string>
+    <string name="behavior_audio_mode_description">
+Lees alleen meldingen wanneer je apparaat in geluidmodus staat (niet op stil of trillen)
+</string>
+    <string name="behavior_audio_mode_recommendation">Aanbevolen: Schakel deze functie in</string>
+    <string name="behavior_audio_mode_switch_label">Eerbiedig audiomodus (alleen geluid)</string>
+    <string name="behavior_audio_mode_benefits">
+✨ Voordelen:\n\n• Voorkomt ongewenste audio wanneer telefoon is gedempt\n• Respecteert de audio-instellingen van uw apparaat\n• Werkt met stille en trillingsmodus\n• Zorgt ervoor dat meldingen alleen worden afgespeeld als u ze kunt horen
+</string>
     <!-- Behavior Settings - Shake to Stop -->
-    <string name="section_shake_to_stop">Shake to Stop</string>
-    <string name="behavior_shake_description">Stop readouts instantly by shaking your device</string>
-    <string name="behavior_shake_recommendation">Most users should: Enable this feature</string>
-    <string name="behavior_shake_switch_label">Enable shake to stop</string>
-    <string name="behavior_shake_intensity_label">Shake Intensity</string>
-    <string name="behavior_shake_intensity_description">Adjust how hard you need to shake to stop readouts</string>
-    <string name="behavior_shake_test_label">Shake Test</string>
-    <string name="behavior_shake_test_description">Test your shake intensity and see the trigger threshold</string>
+    <string name="section_shake_to_stop">Schudden om te stoppen</string>
+    <string name="behavior_shake_description">
+Oplezen onmiddellijk stoppen door uw apparaat te schudden
+</string>
+    <string name="behavior_shake_recommendation">
+Voor de meeste gebruikers: deze functie inschakelen
+</string>
+    <string name="behavior_shake_switch_label">Schudden om te stoppen inschakelen</string>
+    <string name="behavior_shake_intensity_label">Intensiteit van het schudden</string>
+    <string name="behavior_shake_intensity_description">
+Pas aan hoe hard u moet schudden om de uitlezingen te stoppen
+</string>
+    <string name="behavior_shake_test_label">Schud Test</string>
+    <string name="behavior_shake_test_description">
+Test de intensiteit van het schudden en bekijk de drempelwaarde
+</string>
     <!-- Behavior Settings - Wave to Stop -->
-    <string name="section_wave_to_stop">👋 Wave to Stop</string>
-    <string name="behavior_wave_description">Stop readouts by waving your hand over the proximity sensor</string>
-    <string name="behavior_wave_recommendation">Recommended: Enable this feature</string>
-    <string name="behavior_wave_switch_label">Enable wave to stop</string>
-    <string name="behavior_wave_benefits">✨ Benefits:\n\n• Silent gesture to stop readouts\n• Works in quiet environments\n• No physical contact required\n• Quick and convenient control</string>
+    <string name="section_wave_to_stop">👋 Zwaaien om te stoppen</string>
+    <string name="behavior_wave_description">
+Stop uitlezingen door uw hand over de nabijheidssensor te zwaaien
+</string>
+    <string name="behavior_wave_recommendation">Aanbevolen: Schakel deze functie in</string>
+    <string name="behavior_wave_switch_label">Activeer Zwaaien om te stoppen</string>
+    <string name="behavior_wave_benefits">
+✨ Voordelen:\n\n• Stil gebaar om te stoppen met uitlezen\n• Werkt in stille omgevingen\n• Geen fysiek contact nodig\n• Snel en makkelijke controle
+</string>
     <!-- Behavior Settings - Additional Labels -->
-    <string name="label_calibrate">Calibrate</string>
-    <string name="label_test_shake">Test Shake</string>
-    <string name="label_test_wave">Test Wave</string>
+    <string name="label_calibrate">Kalibreer</string>
+    <string name="label_test_shake">Test schudden</string>
+    <string name="label_test_wave">Testen zwaaien</string>
     <!-- Voice Settings - Additional Strings -->
-    <string name="voice_help_translate_button">Help Translate SpeakThat!</string>
-    <string name="voice_help_translate_description_button">Tap to send translation email</string>
-    <string name="voice_advanced_options_show">Show Advanced Voice Options</string>
-    <string name="voice_tts_language_label">TTS Language (Advanced)</string>
-    <string name="voice_specific_voice_label">Specific Voice (Advanced)</string>
-    <string name="voice_reset_button">Reset Voice Settings</string>
-    <string name="voice_test_button">Test Voice</string>
+    <string name="voice_help_translate_button">Help SpreakThat! vertalen!</string>
+    <string name="voice_help_translate_description_button">Tik om e-mail voor vertaling te verzenden</string>
+    <string name="voice_advanced_options_show">Toon geavanceerde stemopties</string>
+    <string name="voice_tts_language_label">TTS Taal (Geavanceerd)</string>
+    <string name="voice_specific_voice_label">Specifieke stem (Geavanceerd)</string>
+    <string name="voice_reset_button">Spraakinstellingen opnieuw instellen</string>
+    <string name="voice_test_button">Stem testen</string>
     <!-- Filter Settings Strings -->
-    <string name="filter_app_list_title">App List Filtering</string>
-    <string name="filter_app_list_description">Control which apps can trigger notifications</string>
-    <string name="filter_no_filtering">No app filtering</string>
-    <string name="filter_whitelist">Whitelist (only selected apps)</string>
-    <string name="filter_blacklist">Blacklist (exclude selected apps)</string>
-    <string name="filter_manage_apps">Manage Apps:</string>
-    <string name="filter_app_list_button">📋 App List</string>
+    <string name="filter_app_list_title">App lijst filteren</string>
+    <string name="filter_app_list_description">Bepaal welke apps meldingen kunnen activeren</string>
+    <string name="filter_no_filtering">Geen app filteren</string>
+    <string name="filter_whitelist">Witte lijst (alleen geselecteerde apps)</string>
+    <string name="filter_blacklist">Zwarte lijst (uitsluiten van geselecteerde apps)</string>
+    <string name="filter_manage_apps">Apps beheren</string>
+    <string name="filter_app_list_button">📋 App lijst</string>
     <string name="filter_app_count">(0 apps)</string>
-    <string name="filter_search_description">Search through your installed apps by name or package. Click a suggestion to add it instantly. (Tap for more info)</string>
-    <string name="filter_word_blacklist_title">Word Blacklist</string>
-    <string name="filter_word_blacklist_description">Block or privatize notifications containing specific words</string>
-    <string name="filter_word_blacklist_info">Block = skip entirely, Private = announce privately</string>
-    <string name="filter_blacklisted_words">📋 Blacklisted Words</string>
+    <string name="filter_search_description">
+Zoek door uw geïnstalleerde apps op naam of pakket. Klik op een suggestie om het direct toe te voegen. (Tik voor meer informatie)
+</string>
+    <string name="filter_word_blacklist_title">Zwarte lijst woorden </string>
+    <string name="filter_word_blacklist_description">
+Blokkeer of privatiseer meldingen met specifieke woorden
+</string>
+    <string name="filter_word_blacklist_info">
+Block = Sla volledig over, Privé = kondig privaat aan
+</string>
+    <string name="filter_blacklisted_words">📋 Geblokkeerde woorden</string>
     <!-- General Settings Strings -->
-    <string name="general_theme_title">Theme</string>
-    <string name="general_dark_mode">Dark Mode</string>
-    <string name="general_dark_mode_description">Enable dark mode for this app</string>
-    <string name="general_app_behavior_title">App Behavior &amp; Performance</string>
-    <string name="general_auto_start">Auto-start on Boot</string>
-    <string name="general_auto_start_description">Automatically start the notification service when device boots</string>
-    <string name="general_battery_optimization">Battery Optimization Exemption</string>
-    <string name="general_battery_optimization_description">Exclude app from battery optimization for better reliability</string>
-    <string name="general_aggressive_background">Aggressive Background Processing</string>
-    <string name="general_aggressive_background_description">Process notifications more aggressively in background (uses more battery)</string>
-    <string name="general_service_restart_policy">Service Restart Policy</string>
-    <string name="general_service_restart_description">When should the notification service automatically restart?</string>
-    <string name="general_never_restart">Never restart automatically</string>
-    <string name="general_restart_on_crash">Restart only on crash</string>
-    <string name="general_restart_periodically">Restart periodically (every 6 hours)</string>
-    <string name="general_notification_settings_title">Notification Settings</string>
-    <string name="general_persistent_notification">Persistent Notification</string>
-    <string name="general_persistent_notification_description">Show a persistent notification when SpeakThat is active</string>
-    <string name="general_notification_while_reading">Notification While Reading</string>
-    <string name="general_notification_while_reading_description">Show a notification when TTS is actively reading</string>
-    <string name="general_data_management_title">Data Management</string>
-    <string name="general_export_configuration">Export Configuration</string>
-    <string name="general_export_configuration_description">Save all settings to a file</string>
-    <string name="general_import_configuration">Import Configuration</string>
-    <string name="general_import_configuration_description">Load settings from a file</string>
-    <string name="general_reset_settings">Reset all settings to defaults</string>
-    <string name="general_verify_settings">Verify All Settings</string>
-    <string name="general_verify_settings_description">Run comprehensive test to verify all settings are working</string>
+    <string name="general_theme_title">Thema</string>
+    <string name="general_dark_mode">Donkere Modus</string>
+    <string name="general_dark_mode_description">Donkere modus voor deze app inschakelen</string>
+    <string name="general_app_behavior_title">App Gedrag &amp; Prestatie</string>
+    <string name="general_auto_start">Automatisch starten bij opstarten</string>
+    <string name="general_auto_start_description">
+Automatisch de meldingsservice starten wanneer het apparaat opstart
+</string>
+    <string name="general_battery_optimization">Uitzondering accuoptimalisatie</string>
+    <string name="general_battery_optimization_description">
+App uitsluiten van batterijoptimalisatie voor betere betrouwbaarheid
+</string>
+    <string name="general_aggressive_background">Agressieve achtergrondverwerking</string>
+    <string name="general_aggressive_background_description">
+Verwerk meldingen agressiever op de achtergrond (gebruikt meer batterij)
+</string>
+    <string name="general_service_restart_policy">Service herstart beleid</string>
+    <string name="general_service_restart_description">
+Wanneer moet de meldingsservice automatisch herstarten?
+</string>
+    <string name="general_never_restart">Nooit automatisch herstarten</string>
+    <string name="general_restart_on_crash">Alleen herstarten bij crash</string>
+    <string name="general_restart_periodically">Herstart periodiek (elke 6 uur)</string>
+    <string name="general_notification_settings_title">Meldingsinstellingen</string>
+    <string name="general_persistent_notification">Aanhoudende melding</string>
+    <string name="general_persistent_notification_description">
+Toon een aanhoudende melding wanneer SpreakThat! actief is
+</string>
+    <string name="general_notification_while_reading">Melding tijdens lezen</string>
+    <string name="general_notification_while_reading_description">
+Melding weergeven wanneer TTS actief aan het lezen is
+</string>
+    <string name="general_data_management_title">Gegevensbeheer</string>
+    <string name="general_export_configuration">Exporteer Configuratie</string>
+    <string name="general_export_configuration_description">Alle instellingen opslaan in een bestand</string>
+    <string name="general_import_configuration">Configuratie importeren</string>
+    <string name="general_import_configuration_description">Instellingen laden uit een bestand</string>
+    <string name="general_reset_settings">
+Alle instellingen terugzetten naar standaardwaarden
+</string>
+    <string name="general_verify_settings">Controleer alle instellingen</string>
+    <string name="general_verify_settings_description">
+Voer uitgebreide test uit om te controleren of alle instellingen werken
+</string>
     <!-- Exception Configuration -->
-    <string name="exception_set_end_time">Set End Time</string>
-    <string name="exception_no_days_selected">No days selected</string>
-    <string name="exception_bluetooth_devices_title">Choose which Bluetooth devices should trigger this exception:</string>
-    <string name="exception_specific_devices">Specific Devices (one per line):</string>
-    <string name="exception_select_devices">Select Devices</string>
-    <string name="exception_wifi_networks_title">Choose which WiFi networks should trigger this exception:</string>
-    <string name="exception_specific_networks">Specific Networks (one per line):</string>
-    <string name="exception_select_networks">Select Networks</string>
+    <string name="exception_set_end_time">Stel de eindtijd in</string>
+    <string name="exception_no_days_selected">Geen dagen geselecteerd</string>
+    <string name="exception_bluetooth_devices_title">
+Kies welke Bluetooth-apparaten deze uitzondering moeten activeren:
+</string>
+    <string name="exception_specific_devices">Specifieke apparaten (één per regel):</string>
+    <string name="exception_select_devices">Selecteer apparaten</string>
+    <string name="exception_wifi_networks_title">
+Kies welke WiFi-netwerken deze uitzondering moeten activeren:
+</string>
+    <string name="exception_specific_networks">Specifieke netwerken (één per regel):</string>
+    <string name="exception_select_networks">Selecteer netwerken</string>
     <!-- Rules Activity -->
-    <string name="rules_no_rules_created">No Rules Created</string>
-    <string name="rules_create_first_rule_description">Create your first rule to control when SpeakThat reads notifications based on your device state, time, or connections.</string>
-    <string name="rules_create_first_rule_button">Create Your First Rule</string>
+    <string name="rules_no_rules_created">Geen regels aangemaakt</string>
+    <string name="rules_create_first_rule_description">
+Maak uw eerste regel om te bepalen wanneer SpeakThat! meldingen leest op basis van uw apparaattoestand, tijd of verbindingen.
+</string>
+    <string name="rules_create_first_rule_button">Maak uw eerste regel</string>
     <!-- Rule Builder -->
-    <string name="rule_builder_logic_and">AND</string>
-    <string name="rule_builder_logic_or">OR</string>
-    <string name="rule_builder_logic_xor">XOR</string>
-    <string name="rule_builder_actions_title">Actions</string>
-    <string name="rule_builder_actions_description">What happens when the triggers are met</string>
-    <string name="rule_builder_exceptions_title">Exceptions</string>
-    <string name="rule_builder_exceptions_description">Conditions that override the triggers (optional)</string>
-    <string name="rule_builder_save_rule">Save Rule</string>
+    <string name="rule_builder_logic_and">EN</string>
+    <string name="rule_builder_logic_or">OF</string>
+    <string name="rule_builder_logic_xor">HETZIJ/OF</string>
+    <string name="rule_builder_actions_title">Acties</string>
+    <string name="rule_builder_actions_description">
+Wat gebeurt er als er aan de voorwaarden wordt voldaan
+</string>
+    <string name="rule_builder_exceptions_title">Uitzonderingen</string>
+    <string name="rule_builder_exceptions_description">Uitzonderingen op de voorwaarden (optioneel) </string>
+    <string name="rule_builder_save_rule">Regel opslaan</string>
     <!-- Trigger Configuration -->
-    <string name="trigger_set_button">Set</string>
-    <string name="trigger_no_days_selected">No days selected</string>
-    <string name="trigger_bluetooth_devices_title">Choose which Bluetooth devices should trigger this rule:</string>
-    <string name="trigger_any_bluetooth_device">Any Bluetooth Device</string>
-    <string name="trigger_any_bluetooth_description">Trigger when any device is connected</string>
-    <string name="trigger_specific_devices">Specific Devices (one per line):</string>
-    <string name="trigger_select_devices">Select Devices</string>
-    <string name="trigger_wifi_networks_title">Choose which WiFi networks should trigger this rule:</string>
-    <string name="trigger_any_wifi_network">Any WiFi Network</string>
-    <string name="trigger_any_wifi_description">Trigger when connected to any network</string>
-    <string name="trigger_specific_networks">Specific Networks (one per line):</string>
-    <string name="trigger_select_networks">Select Networks</string>
+    <string name="trigger_set_button">Instellen</string>
+    <string name="trigger_no_days_selected">Geen dagen geselecteerd</string>
+    <string name="trigger_bluetooth_devices_title">
+Kies welke Bluetooth-apparaten deze regel moeten activeren:
+</string>
+    <string name="trigger_any_bluetooth_device">Elk Bluetooth-apparaat</string>
+    <string name="trigger_any_bluetooth_description">Activeer wanneer een apparaat is aangesloten</string>
+    <string name="trigger_specific_devices">Specifieke apparaten (één per regel):</string>
+    <string name="trigger_select_devices">Selecteer apparaten</string>
+    <string name="trigger_wifi_networks_title">
+Kies welke WiFi-netwerken deze regel moeten activeren:
+</string>
+    <string name="trigger_any_wifi_network">Elk wifi-netwerk</string>
+    <string name="trigger_any_wifi_description">Activeer wanneer verbonden met een netwerk</string>
+    <string name="trigger_specific_networks">Specifieke netwerken (één per regel):</string>
+    <string name="trigger_select_networks">Selecteer netwerken</string>
     <!-- Wave Calibration -->
-    <string name="wave_calibration_recalibrate">Recalibrate</string>
-    <string name="wave_calibration_save_settings">This Works! Save Settings</string>
-    <string name="wave_calibration_disable">Turn Wave-to-Stop Off</string>
+    <string name="wave_calibration_recalibrate">Opnieuw kalibreren</string>
+    <string name="wave_calibration_save_settings">Dit werk! Instellingen opslaan</string>
+    <string name="wave_calibration_disable">Zet Zwaaien om te Stoppen uit</string>
     <!-- Voice Settings - Audio Output -->
-    <string name="voice_audio_output_settings">Audio Output Settings</string>
-    <string name="voice_audio_output_description">Configure how notifications are played through your device\'s audio system.</string>
-    <string name="voice_audio_stream_type">Audio Stream Type</string>
-    <string name="voice_content_type">Content Type</string>
-    <string name="voice_content_type_description">Tells the system what kind of audio this is. Speech is recommended for notifications.</string>
-    <string name="voice_audio_recommendation">Recommended: Notification + Speech</string>
-    <string name="voice_preview_actions">Preview &amp; Actions</string>
-    <string name="voice_preview_button">Preview</string>
-    <string name="voice_test_settings">Test Voice Settings</string>
-    <string name="voice_reset_defaults">Reset to Defaults</string>
-    <string name="voice_preview_tip">Tip: Use the preview button to test how notifications will sound with your settings. All changes are saved automatically as you make them.</string>
+    <string name="voice_audio_output_settings">Audio-uitvoer instellingen</string>
+    <string name="voice_audio_output_description">
+Stel in hoe meldingen worden afgespeeld via het audiosysteem van je apparaat.
+</string>
+    <string name="voice_audio_stream_type">Type audio-stream</string>
+    <string name="voice_content_type">Inhoudstype</string>
+    <string name="voice_content_type_description">
+Vertelt het systeem wat voor soort audio dit is. Spreken wordt aanbevolen voor meldingen.
+</string>
+    <string name="voice_audio_recommendation">Aanbevolen: Melding + spraak</string>
+    <string name="voice_preview_actions">Voorbeeld &amp; Acties</string>
+    <string name="voice_preview_button">Voorbeeld</string>
+    <string name="voice_test_settings">Spraakinstellingen testen</string>
+    <string name="voice_reset_defaults">Standaardwaarden terugzetten</string>
+    <string name="voice_preview_tip">
+Tip: Gebruik de voorbeeldknop om te testen hoe meldingen klinken bij je instellingen. Alle wijzigingen worden automatisch opgeslagen zodra je ze maakt.
+</string>
     <!-- Filter Settings -->
-    <string name="filter_word_count">(0 words)</string>
-    <string name="filter_swap_description">Swap words in notifications for censoring or pronunciation fixes</string>
-    <string name="filter_swap_count">(0 swaps)</string>
-    <string name="filter_swap_tip">Tip: Use lowercase for case-insensitive matching. Leave \'Swap with\' empty to remove words entirely.</string>
-    <string name="filter_media_description">Automatically filter notifications for apps like YouTube that have both unwanted notifications (media controls) while allowing wanted notifications (like replies to your comments)</string>
-    <string name="filter_media_enable">Enable smart media notification filtering</string>
-    <string name="filter_media_apps_title">Filtered Media Apps:</string>
-    <string name="filter_media_apps_description">Apps that are automatically filtered for media notifications. Add media apps you want to filter out.</string>
-    <string name="filter_advanced_options">Advanced Options</string>
-    <string name="filter_exception_apps_title">Exception Apps:</string>
-    <string name="filter_exception_apps_description">Apps that should never have notifications filtered (like YouTube for replies)</string>
-    <string name="filter_important_keywords_title">Important Keywords:</string>
-    <string name="filter_important_keywords_description">Words that indicate important notifications (like \'reply\', \'comment\')</string>
-    <string name="filter_media_info">Automatically filters out media controls while preserving important notifications. (Tap for more info)</string>
+    <string name="filter_word_count">(0 woorden)</string>
+    <string name="filter_swap_description">
+Woorden omzetten in notificaties voor censuur of uitspraak verbeteringen
+</string>
+    <string name="filter_swap_count">(0 uitwisselingen)</string>
+    <string name="filter_swap_tip">
+Tip: Gebruik kleine letters voor hoofdletterongevoelige koppeling. Laat \'Wissel met\' leeg om woorden volledig te verwijderen.
+</string>
+    <string name="filter_media_description">
+Automatisch filteren van meldingen voor apps zoals YouTube die zowel ongewenste meldingen (media controles) hebben terwijl u gewenste meldingen toestaat (zoals antwoorden op uw reacties)
+</string>
+    <string name="filter_media_enable">Slimme media meldingen filteren inschakelen</string>
+    <string name="filter_media_apps_title">Gefilterde media-apps:</string>
+    <string name="filter_media_apps_description">
+Apps die automatisch worden gefilterd voor media-meldingen. Voeg media-apps toe die u wilt filteren.
+</string>
+    <string name="filter_advanced_options">Geavanceerde Opties</string>
+    <string name="filter_exception_apps_title">Uitzondering Apps:</string>
+    <string name="filter_exception_apps_description">
+Apps die nooit meldingen gefilterd zouden moeten hebben (zoals YouTube voor antwoorden)
+</string>
+    <string name="filter_important_keywords_title">Belangrijke sleutelwoorden:</string>
+    <string name="filter_important_keywords_description">
+Woorden die belangrijke meldingen aangeven (zoals \'antwoord\', \'commentaar\')
+</string>
+    <string name="filter_media_info">
+Mediabediening automatisch uitfilteren met behoud van belangrijke meldingen. (Tik voor meer informatie)
+</string>
     <!-- Dialog Strings - Donate -->
     <string name="donate_coffee">☕</string>
     <string name="donate_theatre">🎭</string>
     <string name="donate_octopus">🐙</string>
     <string name="donate_bitcoin">₿</string>
-    <string name="donate_github_sponsors">GitHub Sponsors</string>
-    <string name="donate_github_description">Support open source development</string>
+    <string name="donate_github_sponsors">GitHub-sponsors</string>
+    <string name="donate_github_description">Ondersteuning voor open source ontwikkeling</string>
     <string name="donate_bitcoin_title">Bitcoin (BTC)</string>
-    <string name="donate_bitcoin_description">Donate BTC via the Bitcoin network</string>
-    <string name="donate_privacy">🔒 Privacy: All donations are processed by their respective platforms. I don\'t collect or store any payment information.</string>
-    <string name="donate_friendly_message">Psst! You can also send a friendly email, a nice message always makes my day! :)</string>
+    <string name="donate_bitcoin_description">Doneer BTC via het Bitcoin-netwerk</string>
+    <string name="donate_privacy">
+🔒 Privacy: alle donaties worden verwerkt door hun respectievelijke platforms. Ik verzamelt of sla geen betalingsinformatie op.
+</string>
+    <string name="donate_friendly_message">
+Psst! Je kunt ook een vriendelijke e-mail versturen, een leuk bericht maakt altijd mijn dag! :)
+</string>
     <!-- Dialog Strings - Filter Suggestion -->
-    <string name="filter_suggestion_smart_pattern">Smart pattern (recommended)</string>
-    <string name="filter_suggestion_smart_preview">Preview: Updates location...</string>
-    <string name="filter_suggestion_keywords">Keywords only</string>
-    <string name="filter_suggestion_keywords_preview">Preview: updating location</string>
-    <string name="filter_suggestion_exact_match">Exact text match</string>
-    <string name="filter_suggestion_exact_preview">Preview: Updating location at 2:30 PM...</string>
-    <string name="filter_suggestion_all_notifications">All notifications from this app</string>
-    <string name="filter_suggestion_all_preview">Preview: Block all Life360 notifications</string>
-    <string name="filter_suggestion_action">Action:</string>
-    <string name="filter_suggestion_block_completely">Block completely</string>
-    <string name="filter_suggestion_make_private">Make private</string>
-    <string name="filter_suggestion_create_filter">Create Filter</string>
+    <string name="filter_suggestion_smart_pattern">Slim patroon (aanbevolen)</string>
+    <string name="filter_suggestion_smart_preview">Voorbeeld: locatie bijwerken...</string>
+    <string name="filter_suggestion_keywords">Alleen Sleutelwoorden</string>
+    <string name="filter_suggestion_keywords_preview">Voorbeeld: locatie bijwerken</string>
+    <string name="filter_suggestion_exact_match">Exacte tekstovereenkomst</string>
+    <string name="filter_suggestion_exact_preview">Voorbeeld: Locatie bijwerken om 2:30 PM ...</string>
+    <string name="filter_suggestion_all_notifications">Alle meldingen van deze app</string>
+    <string name="filter_suggestion_all_preview">Voorbeeld: Alle Life360 meldingen blokkeren</string>
+    <string name="filter_suggestion_action">Actie:</string>
+    <string name="filter_suggestion_block_completely">Volledig blokkeren</string>
+    <string name="filter_suggestion_make_private">Privé maken</string>
+    <string name="filter_suggestion_create_filter">Filter maken</string>
     <!-- Dialog Strings - Support & Feedback -->
     <string name="support_chat">💬</string>
     <string name="icon_refresh">🔄</string>
     <string name="support_lightbulb">💡</string>
     <string name="support_bug">🐛</string>
     <string name="support_question">❓</string>
-    <string name="support_general_title">General Support</string>
-    <string name="support_general_description">Get help with setup, usage, or general questions</string>
+    <string name="support_general_title">Algemene ondersteuning</string>
+    <string name="support_general_description">
+Krijg hulp bij de installatie, gebruik of algemene vragen
+</string>
     <string name="support_clipboard">📋</string>
-    <string name="support_include_logs">Include Debug Logs</string>
-    <string name="support_logs_description">Recommended for bug reports and technical issues. Debug logs help me identify and fix problems faster.\nLogs may contain information about your notification content! Please proofread the logs before sending.</string>
-    <string name="support_log_entries">Current log entries: 0</string>
-    <string name="support_logs_privacy">🔒 Privacy: Debug logs remain on your device unless you choose to share them. You can review the log content before sending any email.</string>
+    <string name="support_include_logs">Foutopsporingslogboek bijvoegen</string>
+    <string name="support_logs_description">
+Aanbevolen voor foutrapporten en technische problemen. foutopsporingslogs helpen me problemen sneller te identificeren en op te lossen.\nLogs kunnen informatie bevatten over de inhoud van uw meldingen! Lees eerst de logs voordat u deze verstuurt.
+</string>
+    <string name="support_log_entries">Huidige logboekvermeldingen: 0</string>
+    <string name="support_logs_privacy">
+🔒 Privacy: de foutopsporingslogs blijven op je apparaat tenzij je ervoor kiest ze te delen. Je kunt de log inhoud bekijken voordat je een e-mail verstuurt.
+</string>
     <!-- Action Configuration -->
-    <string name="action_configure_voice_settings">Configure voice settings to apply when this rule is triggered:</string>
+    <string name="action_configure_voice_settings">
+Stem-instellingen aanpassen wanneer deze regel wordt geactiveerd:
+</string>
     <!-- Behavior Settings -->
-    <string name="behavior_speech_preview_example">Preview: Messages notified you: Mitchi: I heard you\'re using SpeakThat!</string>
+    <string name="behavior_speech_preview_example">
+Voorbeeld: Berichten hebben je een melding gegeven: Mitchi, ik heb gehoord dat je SpeakThat! gebruikt!
+</string>
     <!-- Rules Activity -->
-    <string name="rules_wrench_icon">Rules</string>
+    <string name="rules_wrench_icon">Regels</string>
     <!-- Exception Configuration -->
-    <string name="exception_any_bluetooth_device">Any Bluetooth Device</string>
-    <string name="exception_any_wifi_network">Any WiFi Network</string>
-    <string name="dialog_support_title">Support &amp; Feedback</string>
-    <string name="dialog_support_description">How can we help you today? Choose the option that best describes your needs:</string>
-    <string name="dialog_support_feature_request">Feature Request</string>
-    <string name="dialog_support_feature_description">Suggest new features or improvements</string>
-    <string name="dialog_support_bug_report">Bug Report</string>
-    <string name="dialog_support_bug_description">Report crashes, errors, or unexpected behavior</string>
+    <string name="exception_any_bluetooth_device">Elk Bluetooth-apparaat</string>
+    <string name="exception_any_wifi_network">Elk wifi-netwerk</string>
+    <string name="dialog_support_title">Ondersteuning &amp; Feedback</string>
+    <string name="dialog_support_description">
+Hoe kunnen we u vandaag helpen? Kies de optie die het beste uw behoeften beschrijft:
+</string>
+    <string name="dialog_support_feature_request">Suggestie voor nieuwe feature</string>
+    <string name="dialog_support_feature_description">Nieuwe functies of verbeteringen voorstellen</string>
+    <string name="dialog_support_bug_report">Fout melden</string>
+    <string name="dialog_support_bug_description">Rapporteer crashes, fouten of onverwacht gedrag</string>
     <!-- Dialog Strings - Donate -->
-    <string name="dialog_donate_title">Support SpeakThat!</string>
-    <string name="dialog_donate_message">Hey! Mitchi here. A lot goes into making SpeakThat! I  handle the UI/UX design, quality assurance and testing, project management, distribution and publishing, app store compliance, and user support just to name a few!\n\nIf SpeakThat has been helpful for you, or if you would have paid for it, please consider supporting its development!\n\nEvery donation keeps this app totally free and open-source for everyone who needs it.\n\nThank you! ❤️</string>
-    <string name="dialog_donate_coffee">Buy me a coffee</string>
-    <string name="dialog_donate_coffee_description">Quick one-time donation via Ko-fi</string>
-    <string name="dialog_donate_patron">Become a Patron</string>
-    <string name="dialog_donate_patron_description">Monthly support with exclusive updates</string>
+    <string name="dialog_donate_title">Steun SpreakThat!</string>
+    <string name="dialog_donate_message">
+Hey! Mitchi hier. Het kost veel om SpeakThat maken! Ik ontwerp de gebruikersinterface, kwaliteitsgarantie en testen, projectbeheer, distributie en publicatie, app store compliance en gebruikersondersteuning om er maar een paar te noemen!\n\nAls SpeakThat! handig is geweest voor jou of als je het zou hebben betaald, overweeg dan de ontwikkeling ervan te ondersteunen!\n\nElke donatie houdt deze app volledig gratis en open-source voor iedereen die het nodig heeft.\n\nDank je! ❤️
+</string>
+    <string name="dialog_donate_coffee">Koop een kopje koffie voor mij</string>
+    <string name="dialog_donate_coffee_description">Snelle eenmalige donatie via Ko-fi</string>
+    <string name="dialog_donate_patron">Word een supporter!</string>
+    <string name="dialog_donate_patron_description">Maandelijkse ondersteuning met exclusieve updates</string>
     <!-- Development Settings -->
-    <string name="dev_debug_tools_title">🛠️ Debug Tools</string>
-    <string name="dev_debug_tools_description">Tools for debugging and testing the app</string>
-    <string name="dev_notification_history">📋 Show Notification History</string>
-    <string name="dev_analytics">📊 Show Help Usage Analytics</string>
-    <string name="dev_battery_report">🔋 Battery Optimization Report</string>
-    <string name="dev_repair_blacklist">🛠️ Repair Word Blacklist</string>
-    <string name="dev_background_monitor">🛰️ Background Process Monitor</string>
-    <string name="dev_installation_debug">🔍 Installation Source Debug</string>
-    <string name="dev_test_rules">🧪 Test Rule System</string>
+    <string name="dev_debug_tools_title">🛠️ Foutopsporing gereedschappen</string>
+    <string name="dev_debug_tools_description">
+Gereedschappen voor foutopsporing en testen van de app
+</string>
+    <string name="dev_notification_history">📋 Toon Meldingsgeschiedenis</string>
+    <string name="dev_analytics">📊 Help gebruiksanalyse weergeven</string>
+    <string name="dev_battery_report">🔋 Batterijoptimalisatie Rapport</string>
+    <string name="dev_repair_blacklist">Zwarte lijst woorden repareren</string>
+    <string name="dev_background_monitor">:satelliite: Achtergrondproces monitoren</string>
+    <string name="dev_installation_debug">🔍 Installatie bron foutopsporing</string>
+    <string name="dev_test_rules">🧪 Test Regel systeem</string>
     <!-- Notification History -->
-    <string name="notification_history_title">Notification History</string>
-    <string name="notification_history_description">Recent notifications processed by SpeakThat</string>
-    <string name="notification_history_empty">No notifications to display</string>
-    <string name="notification_history_clear">Clear History</string>
-    <string name="notification_history_recent">📜 Recent Notifications</string>
-    <string name="notification_history_loading">Loading notification history...</string>
-    <string name="notification_history_debug_info">Debug Information</string>
-    <string name="notification_history_debug_description">This screen shows notifications that SpeakThat! has captured for debugging purposes. It helps you verify that the app is working correctly and see exactly what notifications are being read aloud.</string>
+    <string name="notification_history_title">Meldingsgeschiedenis</string>
+    <string name="notification_history_description">Recente meldingen verwerkt door SpeakThat!</string>
+    <string name="notification_history_empty">Geen meldingen om weer te geven</string>
+    <string name="notification_history_clear">Geschiedenis verwijderen</string>
+    <string name="notification_history_recent">📜 Recente meldingen</string>
+    <string name="notification_history_loading">Meldingsgeschiedenis wordt geladen...</string>
+    <string name="notification_history_debug_info">Foutopsporings informatie</string>
+    <string name="notification_history_debug_description">
+Dit scherm toont meldingen die SpeakThat heeft vastgelegd voor foutopsporing. Het helpt je te controleren of de app goed werkt en precies te zien welke meldingen hardop worden gelezen.
+</string>
     <!-- Additional Dialog Strings -->
-    <string name="dialog_filter_suggestion_title">Filter Similar Notifications</string>
-    <string name="dialog_filter_suggestion_original">Original notification:</string>
-    <string name="dialog_filter_suggestion_sample">Sample notification text</string>
-    <string name="dialog_filter_suggestion_choose">Choose filter type:</string>
-    <string name="dialog_wifi_config_title">WiFi Configuration</string>
-    <string name="dialog_time_schedule_title">Time Schedule Configuration</string>
-    <string name="dialog_bluetooth_config_title">Bluetooth Configuration</string>
+    <string name="dialog_filter_suggestion_title">Filter vergelijkbare meldingen</string>
+    <string name="dialog_filter_suggestion_original">Originele melding:</string>
+    <string name="dialog_filter_suggestion_sample">Voorbeeld berichttekst</string>
+    <string name="dialog_filter_suggestion_choose">Kies filtertype:</string>
+    <string name="dialog_wifi_config_title">WiFi Configuratie</string>
+    <string name="dialog_time_schedule_title">Tijdschema configuratie</string>
+    <string name="dialog_bluetooth_config_title">Bluetooth configuratie</string>
     <!-- Rules Activity -->
-    <string name="rules_title">Rules</string>
-    <string name="rules_description">Create powerful rules to control when SpeakThat reads notifications based on your device state, time, and connections.</string>
-    <string name="rules_enable">Enable Rules</string>
-    <string name="rules_create_new">Create New Rule</string>
+    <string name="rules_title">Regels</string>
+    <string name="rules_description">
+Maak krachtige regels om te bepalen wanneer SpeakThat! meldingen leest op basis van jouw apparaattoestand, tijd en verbindingen.
+</string>
+    <string name="rules_enable">Regels inschakelen</string>
+    <string name="rules_create_new">Maak een nieuwe regel</string>
     <!-- Onboarding -->
-    <string name="onboarding_skip">Skip</string>
-    <string name="onboarding_next">Next</string>
+    <string name="onboarding_skip">Overslaan</string>
+    <string name="onboarding_next">Volgende</string>
     <!-- Language and Theme Onboarding -->
-    <string name="onboarding_language_theme_title">Language and Theme</string>
-    <string name="onboarding_language_theme_description">Choose which language SpeakThat should use. You can also enable dark mode if you\'d like.</string>
-    <string name="onboarding_language_section_title">Language</string>
-    <string name="onboarding_language_help_title">Is your language not listed?</string>
-    <string name="onboarding_language_help_description">I\'m working as hard as I can to support more languages. Please contribute translations to the Crowdin page if you can!</string>
-    <string name="onboarding_theme_section_title">Theme</string>
-    <string name="onboarding_theme_description">Use dark mode in this app</string>
-    <string name="onboarding_theme_light">Light Mode</string>
-    <string name="onboarding_theme_dark">Dark Mode</string>
+    <string name="onboarding_language_theme_title">Taal en thema</string>
+    <string name="onboarding_language_theme_description">
+Kies welke taal SpreakThat! moet gebruiken. Je kunt ook de donkere modus inschakelen als je wilt.
+</string>
+    <string name="onboarding_language_section_title">Taal</string>
+    <string name="onboarding_language_help_title">Staat uw taal er niet tussen?</string>
+    <string name="onboarding_language_help_description">
+Ik werk zo hard als ik kan om meer talen te ondersteunen. Gelieve vertalingen bij te dragen aan de Crowdin-pagina als u kunt!
+</string>
+    <string name="onboarding_theme_section_title">Thema</string>
+    <string name="onboarding_theme_description">Donkere modus voor deze app inschakelen</string>
+    <string name="onboarding_theme_light">Lichte modus</string>
+    <string name="onboarding_theme_dark">Donkere Modus</string>
     <!-- Onboarding Page Titles and Descriptions -->
-    <string name="onboarding_welcome_title">Welcome to SpeakThat!</string>
-    <string name="onboarding_welcome_description">Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.</string>
-    <string name="onboarding_permission_title">Notification Access Required</string>
-    <string name="onboarding_permission_description">SpeakThat needs permission to read your notifications aloud.\n\n🔒 Everything stays on your device\n📱 No data is sent to us or anyone else\n⚙️ You control what gets read\n💬 We only read what you allow\n💡 Tip: In the list, tap \'SpeakThat\' to enable</string>
-    <string name="onboarding_privacy_title">Your Privacy Matters</string>
-    <string name="onboarding_privacy_description">🔒 You control exactly what gets read aloud\n\n📱 Shake your phone to stop any announcement instantly\n\n⚙️ Filter apps, words, and notification types\n\n🔐 Everything stays on your device</string>
-    <string name="onboarding_filters_title">Let\'s Set Up Basic Filters</string>
-    <string name="onboarding_filters_description">SpeakThat features a powerful filtering system that allows YOU to choose what gets read and what doesn\'t.\n\nLet\'s set up some basic privacy filters to get you started.</string>
-    <string name="onboarding_apps_title">Block Sensitive Apps</string>
-    <string name="onboarding_apps_description">Type the name of an app you want me to NEVER read notifications from.\n\nCommon examples: banking apps, medical apps, dating apps</string>
-    <string name="onboarding_words_title">Block Sensitive Words</string>
-    <string name="onboarding_words_description">Type words or phrases that you want me to NEVER read notifications containing!\n\nCommon examples: password, PIN, credit card, medical terms</string>
-    <string name="onboarding_rules_title">Set Up Smart Rules</string>
-    <string name="onboarding_rules_description">Set up smart rules that automatically control when notifications are read based on your situation.\n\nFor example, only read notifications when headphones are connected, or skip notifications when the screen is on.</string>
-    <string name="onboarding_complete_title">You\'re All Set!</string>
-    <string name="onboarding_complete_description">SpeakThat is ready to help you stay connected while keeping your eyes free!\n\n💡 You can add more filters anytime in the app settings.</string>
+    <string name="onboarding_welcome_title">Welkom bij SpeakThat!</string>
+    <string name="onboarding_welcome_description">
+Blijf betrokken zonder op je scherm te staren. Je telefoon leest meldingen hardop, zodat je je kunt concentreren op wat belangrijk is.
+</string>
+    <string name="onboarding_permission_title">Toegang tot meldingen vereist</string>
+    <string name="onboarding_permission_description">
+SpeakThat! heeft toestemming nodig om meldingen hardop te lezen.\n\n🔒 Alles blijft op jouw apparaat\n📱 Er worden geen gegevens naar ons verzonden of iemand anders\n⚙️ Jij bepaalt wat gelezen wordt\n💬 We lezen alleen wat jij toestaat\n💡 Tip: Tik op \'SpeakThat!\' in de lijst om in te schakelen
+</string>
+    <string name="onboarding_privacy_title">Jouw Privacy is Belangrijk</string>
+    <string name="onboarding_privacy_description">
+🔒 jij bepaalt precies wat er voorgelezen wordt\n\n📱 Schud je telefoon om elke aankondiging direct te stoppen\n\n⚙️ Filter apps, woorden, en meldingstypen\n\n🔐 Alles blijft op uw apparaat
+</string>
+    <string name="onboarding_filters_title">Laten we de basis filters instellen</string>
+    <string name="onboarding_filters_description">
+SpreakThat! beschikt over een krachtig filtersysteem waarmee JIJ kan kiezen wat er gelezen wordt en wat niet.\n\nLaten we een paar basis privacyfilters instellen om te beginnen.
+</string>
+    <string name="onboarding_apps_title">Gevoelige apps blokkeren</string>
+    <string name="onboarding_apps_description">
+Typ de naam van een app waarvan je wilt dat ik NOOIT meldingen lees.\n\nvoorkomende voorbeelden: bankapps, medische apps, dating-apps
+</string>
+    <string name="onboarding_words_title">Gevoelige woorden blokkeren</string>
+    <string name="onboarding_words_description">
+Voer woorden of zinnen in waarvan je nooit wilt dat ik meldingen voorlees. Veelvoorkomende voorbeelden zijn wachtwoorden, PIN-codes, creditcards en medische termen
+</string>
+    <string name="onboarding_rules_title">Slimme regels instellen</string>
+    <string name="onboarding_rules_description">
+Stel slimme regels in die automatisch bepalen wanneer meldingen worden gelezen op basis van uw situatie.\n\nBijvoorbeeld, alleen berichten lezen wanneer een hoofdtelefoon is aangesloten, of meldingen overslaan wanneer het scherm aan is.
+</string>
+    <string name="onboarding_complete_title">Je Bent Klaar!</string>
+    <string name="onboarding_complete_description">
+SpeakThat! is klaar om u te helpen verbonden te blijven terwijl uw zicht vrij blijft! U kunt op elk moment meer filters toevoegen in de app-instellingen.
+</string>
     <!-- Trigger Configuration -->
-    <string name="trigger_screen_state">Screen State</string>
-    <string name="trigger_screen_choose">Choose when this trigger should activate:</string>
-    <string name="trigger_invert_condition">Invert Condition</string>
-    <string name="trigger_time_schedule">Time Schedule</string>
-    <string name="trigger_time_description">Set the time range when this trigger should activate:</string>
+    <string name="trigger_screen_state">Schermstatus</string>
+    <string name="trigger_screen_choose">
+Kies wanneer deze voorwaarde geactiveerd moet worden:
+</string>
+    <string name="trigger_invert_condition">Conditie omdraaien</string>
+    <string name="trigger_time_schedule">Tijdschema</string>
+    <string name="trigger_time_description">
+Stel het tijdsbereik in wanneer deze voorwaarde geactiveerd moet worden:
+</string>
     <!-- Rule Builder -->
-    <string name="rule_builder_info_icon">Info</string>
-    <string name="rule_builder_description">Rules check conditions for each notification. They don\'t remember state changes - they filter notifications in real-time.</string>
-    <string name="rule_builder_name_label">Rule Name</string>
-    <string name="rule_builder_triggers_label">Triggers</string>
-    <string name="rule_builder_triggers_description">Conditions that must be met for this rule to activate</string>
-    <string name="rule_builder_logic_label">Logic:</string>
+    <string name="rule_builder_info_icon">Informatie</string>
+    <string name="rule_builder_description">
+Regels controleren voorwaarden voor elke melding. Ze onthouden de statuswijzigingen niet - ze filteren meldingen in real-time.
+</string>
+    <string name="rule_builder_name_label">Regel naam</string>
+    <string name="rule_builder_triggers_label">Voorwaarden</string>
+    <string name="rule_builder_triggers_description">
+Voorwaarden waaraan moet worden voldaan om deze regel te activeren
+</string>
+    <string name="rule_builder_logic_label">Logisch:</string>
     <!-- Exception Configuration -->
-    <string name="exception_screen_state">Screen State</string>
-    <string name="exception_screen_choose">Choose when this exception should apply:</string>
-    <string name="exception_time_schedule">Time Schedule</string>
-    <string name="exception_time_choose">Choose when this exception should apply:</string>
+    <string name="exception_screen_state">Schermstatus</string>
+    <string name="exception_screen_choose">
+Kies wanneer deze uitzondering van toepassing moet zijn:
+</string>
+    <string name="exception_time_schedule">Tijdschema</string>
+    <string name="exception_time_choose">
+Kies wanneer deze uitzondering van toepassing moet zijn:
+</string>
     <!-- Action Configuration -->
-    <string name="action_disable_speakthat">Disable SpeakThat</string>
-    <string name="action_disable_description">This action will disable SpeakThat completely when the rule is triggered.</string>
-    <string name="action_enable_app_filter">Enable App Filter</string>
-    <string name="action_enable_app_description">Select which app to enable filtering for:</string>
-    <string name="action_select_app">Select App</string>
-    <string name="action_disable_app_filter">Disable App Filter</string>
-    <string name="action_disable_app_description">Select which app to disable filtering for:</string>
+    <string name="action_disable_speakthat">SpreakThat! uitschakelen</string>
+    <string name="action_disable_description">
+Deze actie zal SpeakThat! volledig uitschakelen wanneer de regel wordt geactiveerd.
+</string>
+    <string name="action_enable_app_filter">App-filter inschakelen</string>
+    <string name="action_enable_app_description">
+Selecteer voor welke app filtering in te schakelen:
+</string>
+    <string name="action_select_app">Selecteer App</string>
+    <string name="action_disable_app_filter">App filter uitschakelen</string>
+    <string name="action_disable_app_description">
+Selecteer voor welke app filtering uit te schakelen:
+</string>
     <!-- Wave Calibration -->
-    <string name="wave_calibration_title">Wave Detection Setup</string>
-    <string name="wave_calibration_description">Calibrate your device to detect hand waves and silence notifications</string>
-    <string name="wave_calibration_ready">Ready to calibrate wave detection</string>
-    <string name="wave_calibration_threshold">Threshold: 3.2cm (60% of 5.3cm)</string>
-    <string name="wave_calibration_how_it_works">💡 How it works:</string>
-    <string name="wave_calibration_instructions">• Move your hand closer and farther from the sensor for 8 seconds\n• We\'ll record sensor readings every 50ms\n• Need at least 20 readings for calibration\n• Set threshold to 60% of maximum distance detected</string>
-    <string name="wave_calibration_start">Start Calibration</string>
+    <string name="wave_calibration_title">Zwaai-detectie Setup</string>
+    <string name="wave_calibration_description">
+Kalibreer je apparaat om zwaaien en stilte meldingen te detecteren
+</string>
+    <string name="wave_calibration_ready">Klaar om zwaai-detectie te kalibreren</string>
+    <string name="wave_calibration_threshold">Drempel: 3.2cm (60% van 5,3cm)</string>
+    <string name="wave_calibration_how_it_works">💡 Hoe het werkt:</string>
+    <string name="wave_calibration_instructions">
+• Beweeg je hand 8 seconden dichter en verder van de sensor\n• We nemen sensormetingen elke 50 ms op\n• Ten minste 20 metingen zijn nodig voor kalibratie\n• Stel drempelwaarde in op 60% van de maximaal gedetecteerde afstand
+</string>
+    <string name="wave_calibration_start">Start het kalibreren</string>
     <!-- Bluetooth Condition -->
-    <string name="bluetooth_devices_title">Bluetooth Devices</string>
-    <string name="bluetooth_devices_description">Select Bluetooth devices that must be connected for notifications to be read.</string>
-    <string name="bluetooth_selected_devices">Selected Devices</string>
-    <string name="bluetooth_add_device">Add Bluetooth Device</string>
-    <string name="bluetooth_how_it_works">How it works</string>
-    <string name="bluetooth_instructions">• Notifications will only be read when at least one selected device is connected\n\n• If no devices are selected, all notifications will be read\n\n• The device must be paired and connected (not just discovered)</string>
+    <string name="bluetooth_devices_title">Bluetooth-apparaten</string>
+    <string name="bluetooth_devices_description">
+Selecteer Bluetooth-apparaten die moeten zijn aangesloten om meldingen te kunnen lezen.
+</string>
+    <string name="bluetooth_selected_devices">Geselecteerde apparaten</string>
+    <string name="bluetooth_add_device">Bluetooth-apparaat toevoegen</string>
+    <string name="bluetooth_how_it_works">Hoe het werkt</string>
+    <string name="bluetooth_instructions">
+• Meldingen worden alleen gelezen wanneer tenminste één geselecteerd apparaat is aangesloten\n\n• Als er geen apparaten zijn geselecteerd, worden alle meldingen gelezen\n\n• Het apparaat moet worden gekoppeld en verbonden (niet alleen ontdekt)
+</string>
     <!-- Dialog Configuration Strings -->
-    <string name="wifi_config_enter_name">Enter WiFi Network Name:</string>
-    <string name="wifi_config_description">Enter the exact name of your WiFi network (SSID). The name must match exactly, including case sensitivity.</string>
-    <string name="wifi_config_tip">💡 Tip: You can find your WiFi name in your phone\'s WiFi settings</string>
-    <string name="bluetooth_config_select">Select Bluetooth devices:</string>
-    <string name="bluetooth_config_description">Choose the devices you want to use for this rule. Only paired devices are shown.</string>
-    <string name="time_schedule_set">Set Time Schedule:</string>
-    <string name="time_schedule_description">Choose when this rule should be active.</string>
-    <string name="time_schedule_start">Start Time:</string>
-    <string name="time_schedule_end">End Time:</string>
-    <string name="time_schedule_days">Days of Week:</string>
-    <string name="time_schedule_range">Time Range</string>
-    <string name="time_schedule_every_day">Every Day</string>
+    <string name="wifi_config_enter_name">Voer WiFi-netwerknaam in:</string>
+    <string name="wifi_config_description">
+Voer de exacte naam van uw WiFi-netwerk (SSID) in. De naam moet exact overeenkomen, let op hoofdlettergevoeligheid.
+</string>
+    <string name="wifi_config_tip">
+💡 Tip: Je kunt je wifi-naam vinden in de WiFi-instellingen van je telefoon
+</string>
+    <string name="bluetooth_config_select">Selecteer Bluetooth-apparaten:</string>
+    <string name="bluetooth_config_description">
+Kies de apparaten die u wilt gebruiken voor deze regel. Alleen gekoppelde apparaten worden weergegeven.
+</string>
+    <string name="time_schedule_set">Tijdschema instellen:</string>
+    <string name="time_schedule_description">Kies wanneer deze regel actief moet zijn.</string>
+    <string name="time_schedule_start">Starttijd</string>
+    <string name="time_schedule_end">Eindtijd:</string>
+    <string name="time_schedule_days">Dagen van de week</string>
+    <string name="time_schedule_range">Tijdsbereik</string>
+    <string name="time_schedule_every_day">Elke dag</string>
     <!-- Day Names -->
-    <string name="day_monday">Monday</string>
-    <string name="day_tuesday">Tuesday</string>
-    <string name="day_wednesday">Wednesday</string>
-    <string name="day_thursday">Thursday</string>
-    <string name="day_friday">Friday</string>
-    <string name="day_saturday">Saturday</string>
-    <string name="day_sunday">Sunday</string>
-    <string name="day_mon">Mon</string>
-    <string name="day_tue">Tue</string>
-    <string name="day_wed">Wed</string>
-    <string name="day_thu">Thu</string>
-    <string name="day_fri">Fri</string>
-    <string name="day_sat">Sat</string>
-    <string name="day_sun">Sun</string>
+    <string name="day_monday">Maandag</string>
+    <string name="day_tuesday">Dinsdag</string>
+    <string name="day_wednesday">Woensdag</string>
+    <string name="day_thursday">Donderdag</string>
+    <string name="day_friday">Vrijdag</string>
+    <string name="day_saturday">Zaterdag</string>
+    <string name="day_sunday">Zondag</string>
+    <string name="day_mon">Ma</string>
+    <string name="day_tue">Di</string>
+    <string name="day_wed">Wo</string>
+    <string name="day_thu">Do</string>
+    <string name="day_fri">Vr</string>
+    <string name="day_sat">Za</string>
+    <string name="day_sun">Zo</string>
     <!-- Item Layout Strings -->
-    <string name="item_word_swap_from">From</string>
-    <string name="item_word_swap_to">To</string>
+    <string name="item_word_swap_from">Van</string>
+    <string name="item_word_swap_to">Naar</string>
     <string name="item_word_swap_arrow"> → </string>
-    <string name="item_bluetooth_device_name">Device Name</string>
+    <string name="item_bluetooth_device_name">Apparaat Naam</string>
     <string name="item_bluetooth_mac_address">00:00:00:00:00:00</string>
-    <string name="item_rule_name">Rule Name</string>
-    <string name="item_rule_summary">Rule summary</string>
-    <string name="item_rule_example">When screen is on, Quiet Hours will skip reading notifications</string>
-    <string name="item_notification_app_name">App Name</string>
+    <string name="item_rule_name">Regel naam</string>
+    <string name="item_rule_summary">Regel samenvatting</string>
+    <string name="item_rule_example">
+Als het scherm aan is, worden geen lmeldingen meer gelezen tijdens stille uren
+</string>
+    <string name="item_notification_app_name">Toepassingsnaam</string>
     <string name="item_notification_time">12:34:56</string>
-    <string name="item_notification_content">Notification content goes here...</string>
-    <string name="item_notification_filter">🚫 Filter Similar</string>
-    <string name="item_cooldown_app_name">App Name</string>
-    <string name="item_cooldown_package">com.example.app</string>
-    <string name="item_cooldown_no_cooldown">No cooldown</string>
+    <string name="item_notification_content">Notificatie inhoud hoort hier...</string>
+    <string name="item_notification_filter">:verboden: Filter gelijksoortig</string>
+    <string name="item_cooldown_app_name">Toepassingsnaam</string>
+    <string name="item_cooldown_package">com.voorbeeld.app</string>
+    <string name="item_cooldown_no_cooldown">Geen afkoeltijd</string>
     <string name="item_cooldown_delete">🗑️</string>
     <!-- More Item Layout Strings -->
-    <string name="item_word_filter_word">Word</string>
+    <string name="item_word_filter_word">Woord</string>
     <string name="item_priority_app_icon">⚡</string>
-    <string name="item_priority_app_name">Priority App Name</string>
-    <string name="item_action_control">SpeakThat Control</string>
-    <string name="item_action_disable">Disable SpeakThat</string>
-    <string name="item_app_filter_name">App Name</string>
-    <string name="item_app_filter_package">Package Name</string>
-    <string name="item_exception_name">Exception Name</string>
-    <string name="item_exception_summary">Exception summary</string>
-    <string name="item_trigger_name">Trigger Name</string>
-    <string name="item_trigger_summary">Trigger summary</string>
-    <string name="item_template_name">Template Name</string>
-    <string name="item_onboarding_rule_template_name">Rule Template</string>
-    <string name="item_custom_app_name_label">App Name</string>
-    <string name="item_custom_app_package">com.example.package</string>
-    <string name="item_onboarding_page_title">Page Title</string>
-    <string name="item_onboarding_page_subtitle">Page subtitle</string>
-    <string name="item_onboarding_page_description">Page description goes here</string>
-    <string name="item_onboarding_page_button">Continue</string>
+    <string name="item_priority_app_name">Prioriteits-app naam</string>
+    <string name="item_action_control">SpreakThat! Controle </string>
+    <string name="item_action_disable">SpreakThat! uitschakelen</string>
+    <string name="item_app_filter_name">Toepassingsnaam</string>
+    <string name="item_app_filter_package">Pakketnaam</string>
+    <string name="item_exception_name">Uitzonderingsnaam</string>
+    <string name="item_exception_summary">Uitzonderingssamenvatting </string>
+    <string name="item_trigger_name">Voorwaarde naam</string>
+    <string name="item_trigger_summary">Voorwaarde samenvatting</string>
+    <string name="item_template_name">Sjabloonnaam</string>
+    <string name="item_onboarding_rule_template_name">Regel sjabloon</string>
+    <string name="item_custom_app_name_label">Toepassingsnaam</string>
+    <string name="item_custom_app_package">com.voorbeeld.pakket</string>
+    <string name="item_onboarding_page_title">Pagina titel</string>
+    <string name="item_onboarding_page_subtitle">Pagina ondertitel</string>
+    <string name="item_onboarding_page_description">Paginabeschrijving hoort hier</string>
+    <string name="item_onboarding_page_button">Doorgaan</string>
     <!-- Dialog Strings -->
-    <string name="dialog_notification_history_title">Notification History</string>
-    <string name="dialog_notification_history_description">View recent notifications</string>
+    <string name="dialog_notification_history_title">Meldingsgeschiedenis</string>
+    <string name="dialog_notification_history_description">Recente meldingen bekijken</string>
     <!-- Builder Items -->
-    <string name="item_condition_builder_name">Condition Name</string>
-    <string name="item_condition_builder_summary">Condition summary</string>
-    <string name="item_app_selector_name">App Name</string>
-    <string name="item_app_selector_package">com.example.app</string>
-    <string name="item_action_builder_name">Action Name</string>
-    <string name="item_action_builder_summary">Action summary</string>
+    <string name="item_condition_builder_name">Naam van voorwaarde</string>
+    <string name="item_condition_builder_summary">Overzicht van voorwaarde</string>
+    <string name="item_app_selector_name">Toepassingsnaam</string>
+    <string name="item_app_selector_package">com.voorbeeld.app</string>
+    <string name="item_action_builder_name">Actienaam</string>
+    <string name="item_action_builder_summary">Samenvatting actie</string>
     <!-- Additional Item Strings -->
-    <string name="item_app_filter_private">Private</string>
-    <string name="item_exception_time_schedule">Time Schedule</string>
-    <string name="item_exception_time_range">Between 19:00 and 07:00</string>
-    <string name="item_trigger_bluetooth_device">Bluetooth Device</string>
-    <string name="item_trigger_bluetooth_connected">Connected to Car Bluetooth</string>
+    <string name="item_app_filter_private">Privé</string>
+    <string name="item_exception_time_schedule">Tijdschema</string>
+    <string name="item_exception_time_range">Tussen 19:00 en 07:00</string>
+    <string name="item_trigger_bluetooth_device">Bluetooth-apparaat</string>
+    <string name="item_trigger_bluetooth_connected">Verbonden met Auto Bluetooth</string>
     <!-- More Item Strings -->
     <string name="item_template_arrow">→</string>
-    <string name="item_onboarding_rule_template_add">Add</string>
+    <string name="item_onboarding_rule_template_add">Toevoegen</string>
     <string name="item_custom_app_example_package">com.twitter.android</string>
     <string name="item_custom_app_example_name">Twitter</string>
-    <string name="item_onboarding_add_app">Add App</string>
-    <string name="item_onboarding_add_word">Add Word</string>
-    <string name="item_onboarding_choose_template">Choose a rule template to get started:</string>
-    <string name="item_onboarding_notification_settings">Open Notification Settings</string>
+    <string name="item_onboarding_add_app">App toevoegen</string>
+    <string name="item_onboarding_add_word">Woord toevoegen</string>
+    <string name="item_onboarding_choose_template">Kies een regelsjabloon om te beginnen:</string>
+    <string name="item_onboarding_notification_settings">Meldingsinstellingen openen</string>
     <!-- Final Item Strings -->
-    <string name="dialog_notification_history_tap_info">Tap \'🚫 Filter Similar\' to create smart filters for repetitive notifications</string>
-    <string name="item_condition_builder_when">When </string>
+    <string name="dialog_notification_history_tap_info">
+Tik op \':verboden: Filter gelijkaardig\' om slimme filters te maken voor herhalende meldingen
+</string>
+    <string name="item_condition_builder_when">Wanneer </string>
     <string name="item_condition_builder_remove">✕</string>
     <string name="item_action_builder_remove">✕</string>
-    <string name="item_action_builder_then">Then </string>
+    <string name="item_action_builder_then">Dan </string>
     <!-- Behavior Settings Additional Strings -->
-    <string name="behavior_notification_filtering_title">📱 Notification Filtering</string>
-    <string name="behavior_notification_filtering_description">Advanced options for filtering and processing notifications</string>
-    <string name="behavior_battery_optimization_title">🔋 Battery Optimization</string>
-    <string name="behavior_battery_optimization_description">Manage power consumption and performance settings</string>
-    <string name="behavior_emergency_mode_title">🚨 Emergency Mode</string>
-    <string name="behavior_emergency_mode_description">Emergency override settings for critical notifications</string>
-    <string name="behavior_accessibility_title">♿ Accessibility</string>
-    <string name="behavior_accessibility_description">Settings to improve accessibility and ease of use</string>
-    <string name="behavior_advanced_features_title">🛠️ Advanced Features</string>
-    <string name="behavior_advanced_features_description">Experimental and power user features</string>
+    <string name="behavior_notification_filtering_title">📱 Meldingen filteren</string>
+    <string name="behavior_notification_filtering_description">
+Geavanceerde opties voor het filteren en verwerken van meldingen
+</string>
+    <string name="behavior_battery_optimization_title">Batterij optimalisatie</string>
+    <string name="behavior_battery_optimization_description">Beheer stroomverbruik en prestatieinstellingen</string>
+    <string name="behavior_emergency_mode_title">🚨 Nood Modus</string>
+    <string name="behavior_emergency_mode_description">
+Nood instellingen voor overschrijven van kritieke meldingen
+</string>
+    <string name="behavior_accessibility_title">:wheelstoel_symbol: Toegankelijkheid</string>
+    <string name="behavior_accessibility_description">
+Instellingen om de toegankelijkheid en gebruiksgemak te verbeteren
+</string>
+    <string name="behavior_advanced_features_title">🛠️ Geavanceerde functies</string>
+    <string name="behavior_advanced_features_description">Experimentele en intensieve gebruikers functies</string>
     <!-- Wave/Shake Sensor Strings -->
-    <string name="behavior_current_shake">Current shake: 0.0</string>
-    <string name="behavior_threshold_value">Threshold: 12.0</string>
+    <string name="behavior_current_shake">Huidige schuding: 0,0</string>
+    <string name="behavior_threshold_value">Drempel: 12.0</string>
     <string name="behavior_start_test">Start Test</string>
-    <string name="behavior_timeout_settings">Timeout Settings</string>
-    <string name="behavior_timeout_description">Set how long to listen for gestures before automatically stopping (to save battery)</string>
-    <string name="behavior_timeout_5s">5s</string>
-    <string name="behavior_timeout_5m">5m</string>
-    <string name="behavior_timeout_current">Timeout: 30 seconds</string>
-    <string name="behavior_disable_timeout">Disable timeout (not recommended)</string>
-    <string name="behavior_wave_to_stop_title">Wave to Stop</string>
-    <string name="behavior_wave_to_stop_description">Stop readouts instantly by waving your hand in front of the device</string>
-    <string name="behavior_great_for">Great for: Desk users &amp; accessibility</string>
-    <string name="behavior_enable_wave_stop">Enable wave to stop</string>
-    <string name="behavior_proximity_threshold">Proximity Threshold</string>
+    <string name="behavior_timeout_settings">Time-out instellingen</string>
+    <string name="behavior_timeout_description">
+Stel in hoe lang naar bewegingen gezocht wordt voordat het automatisch stopt (om de batterij te besparen)
+</string>
+    <string name="behavior_timeout_5s">5 sec.</string>
+    <string name="behavior_timeout_5m">5 min.</string>
+    <string name="behavior_timeout_current">Time-out 30 seconden</string>
+    <string name="behavior_disable_timeout">Schakel time-out uit (niet aanbevolen)</string>
+    <string name="behavior_wave_to_stop_title">Zwaaien om te Stoppen</string>
+    <string name="behavior_wave_to_stop_description">
+Stop meteen met voorlezen door je hand voor het apparaat te zwaaien
+</string>
+    <string name="behavior_great_for">Goed voor: Bureau gebruikers &amp; toegankelijkheid</string>
+    <string name="behavior_enable_wave_stop">Activeer Zwaaien om te Stoppen</string>
+    <string name="behavior_proximity_threshold">Nabijheidsgrenswaarde</string>
     <!-- Major Missing Section Titles -->
-    <string name="behavior_custom_app_names_title">📱 Custom App Names</string>
-    <string name="dev_logging_configuration_title">📝 Logging Configuration</string>
-    <string name="filter_word_swap_title">Word Swap</string>
-    <string name="filter_word_swaps_header">📋 Word Swaps</string>
-    <string name="voice_language_preset_title">Language Preset</string>
-    <!-- Audio Ducking Warnings (I see these in your screenshots) -->
-    <string name="behavior_audio_ducking_warning">Audio ducking works differently across devices and Android versions. Some devices may not duck certain apps or audio streams properly.</string>
-    <string name="behavior_audio_ducking_tip">If ducking isn\'t working well: Try different audio streams in Voice Settings (\'Voice Call\' or \'Notification\' often work best). Avoid \'Media\' stream as it may duck your TTS along with your music.</string>
-    <string name="behavior_audio_ducking_system">The app automatically uses advanced system ducking when available, with smooth manual ducking as backup for maximum compatibility.</string>
-    <string name="behavior_audio_ducking_hint">ヒント: 値を下げると通知中のメディア音量が小さくなります</string>
+    <string name="behavior_custom_app_names_title">📱 Aangepaste app-namen</string>
+    <string name="dev_logging_configuration_title">📝 Logging configuratie</string>
+    <string name="filter_word_swap_title">Wissel woorden</string>
+    <string name="filter_word_swaps_header">📋 Woordwisselingen</string>
+    <string name="voice_language_preset_title">Taal voorinstelling</string>
+    <!--
+     Audio Ducking Warnings (I see these in your screenshots)
+    -->
+    <string name="behavior_audio_ducking_warning">
+Audio-verlagen werkt anders op verschillende apparaten en Android-versies. Sommige apparaten verlagen mogelijk bepaalde apps of audiostreams niet naar behoren.
+</string>
+    <string name="behavior_audio_ducking_tip">
+Als verlaging niet goed werkt: Probeer verschillende audiostreams in spraakinstellingen (\'Spraakoproep\' of \'Melding\' werkt het beste). Vermijd \'Media\' stream omdat het je TTS kan verlagen samen met je muziek.
+</string>
+    <string name="behavior_audio_ducking_system">
+De app maakt automatisch gebruik van geavanceerde systeem verlaging indien beschikbaar, met een soepele handmatige verlaging als back-up voor maximale compatibiliteit.
+</string>
+    <string name="behavior_audio_ducking_hint">
+Tip: Als u de waarde verlaagt, wordt het mediavolume tijdens meldingen verminderd
+</string>
     <!-- Wave Detection Settings -->
-    <string name="behavior_wave_threshold_description">Set the percentage of your sensor\'s maximum distance that will trigger wave-to-stop. (Requires calibration)</string>
+    <string name="behavior_wave_threshold_description">
+Stel het percentage in van jouw sensor\'s maximale afstand waarbij Zwaaien om te Stoppen nog geactiveerd wordt (Vereist kalibratie)
+</string>
     <string name="behavior_wave_threshold_30">30%</string>
     <string name="behavior_wave_threshold_90">90%</string>
-    <string name="behavior_wave_test_button">Wave Test</string>
-    <string name="behavior_wave_test_description">Test your wave detection. Binary sensors show 0 (close) or max (far).</string>
-    <string name="behavior_wave_sensor_info">Different phones work differently - some only see \'near\' or \'far\', others see everything in between.\n \nIt\'s normal if this bar only goes to the extremes!</string>
-    <string name="behavior_wave_current_proximity">Current proximity: 5.0 cm</string>
-    <string name="behavior_wave_current_threshold">Threshold: 5.0 cm</string>
-    <string name="behavior_wave_recalibrate">Recalibrate Wave Detection</string>
+    <string name="behavior_wave_test_button">Zwaai Test</string>
+    <string name="behavior_wave_test_description">
+Test jouw zwaai detectie. Binaire sensoren laten 0 (dicht) of max (veraf) zien.
+</string>
+    <string name="behavior_wave_sensor_info">
+Verschillende telefoons werken anders - sommige zien alleen \'dichtbij\' of \'veraf\', andere zien alles daartussenin.\n \nHet is normaal als deze balk alleen naar de uitersten gaat!
+</string>
+    <string name="behavior_wave_current_proximity">Huidige nabijheid: 5.0 cm</string>
+    <string name="behavior_wave_current_threshold">Drempel: 5,0 cm</string>
+    <string name="behavior_wave_recalibrate">Zwaai detectie herkalibreren</string>
     <!-- Rule Configuration - Exception Settings -->
-    <string name="exception_invert_condition">Invert Condition</string>
-    <string name="exception_invert_description">Exception when condition is NOT met</string>
-    <string name="exception_start_time_label">Start Time:</string>
+    <string name="exception_invert_condition">Conditie omdraaien</string>
+    <string name="exception_invert_description">
+Uitzondering wanneer NIET aan de voorwaarde is voldaan
+</string>
+    <string name="exception_start_time_label">Starttijd</string>
     <string name="exception_start_time_default">19:00</string>
-    <string name="exception_end_time_label">End Time:</string>
+    <string name="exception_end_time_label">Eindtijd:</string>
     <string name="exception_end_time_default">07:00</string>
-    <string name="exception_set_start_time">Set Start Time</string>
+    <string name="exception_set_start_time">Stel begintijd in</string>
     <!-- Rule Configuration - Trigger Settings -->
-    <string name="trigger_invert_description">Trigger when condition is NOT met</string>
-    <string name="trigger_time_schedule_title">🕐 Time Schedule</string>
-    <string name="trigger_time_schedule_description">Set the time range when this trigger should activate:</string>
-    <string name="trigger_start_time_label">Start Time:</string>
+    <string name="trigger_invert_description">
+Activeer wanneer NIET aan de voorwaarde wordt voldaan
+</string>
+    <string name="trigger_time_schedule_title">🕐 Tijdschema</string>
+    <string name="trigger_time_schedule_description">
+Stel het tijdsbereik in wanneer deze voorwaarde geactiveerd moet zijn:
+</string>
+    <string name="trigger_start_time_label">Starttijd</string>
     <string name="trigger_start_time_default">09:00</string>
-    <string name="trigger_end_time_label">End Time:</string>
+    <string name="trigger_end_time_label">Eindtijd:</string>
     <string name="trigger_end_time_default">17:00</string>
     <!-- Conditional Rules - Action Strings -->
-    <string name="rule_action_read_notification">Read the notification</string>
-    <string name="rule_action_skip_app">Skip notifications from app: %1$s</string>
-    <string name="rule_action_read_app">Read notifications from app: %1$s</string>
+    <string name="rule_action_read_notification">Lees de melding</string>
+    <string name="rule_action_skip_app">Meldingen van de app overslaan: %1$s</string>
+    <string name="rule_action_read_app">Lees meldingen van de app: %1$s</string>
     <!-- Conditional Rules - Exception Strings -->
-    <string name="rule_exception_wifi_network">WiFi network in range: %1$s</string>
-    <string name="rule_exception_not_wifi_network">WiFi network not in range: %1$s</string>
+    <string name="rule_exception_wifi_network">Wifi-netwerk binnen bereik: %1$s</string>
+    <string name="rule_exception_not_wifi_network">Wifi-netwerk niet binnen bereik: %1$s</string>
     <!-- Multi-Language Voice Warning -->
-    <string name="specific_voice_warning">Multi-language limitation</string>
-    <string name="specific_voice_warning_description">SpeakThat only supports one voice at a time. If you receive notifications in multiple languages, some may sound garbled.</string>
-    <string name="specific_voice_warning_dialog_title">Multi-Language Voice Limitation</string>
-    <string name="specific_voice_warning_dialog_message">SpeakThat currently only supports one voice at a time. This means:\n\n✅ What works well:\n• Notifications in the same language as your selected voice\n• Single-language usage scenarios\n• Most common notification patterns\n\n⚠️ Potential issues:\n• Notifications in different languages may sound garbled\n• Mixed-language content might be difficult to understand\n• Some characters or accents may not be pronounced correctly\n\n💡 Recommendations:\n• Choose a voice that matches your most common notification language\n• Consider using the Language &amp; Region setting instead of Specific Voice\n• Test with your actual notifications to ensure clarity\n\n🔮 Future plans:\n• Multi-language voice support is planned for future updates\n• Automatic language detection and voice switching\n• Better handling of mixed-language content\n\nFor now, the Language &amp; Region setting often works better for multi-language users as it automatically adapts to different content types.</string>
-    <string name="specific_voice_warning_dialog_got_it">Got it</string>
+    <string name="specific_voice_warning">Meertalige beperking</string>
+    <string name="specific_voice_warning_description">
+SpreakThat! ondersteunt slechts één stem per keer. Als je meldingen ontvangt in meerdere talen, kunnen sommigen vervormd klinken.
+</string>
+    <string name="specific_voice_warning_dialog_title">Meertalige stem beperking</string>
+    <string name="specific_voice_warning_dialog_message">
+SpeakThat! ondersteunt op het moment één stem per keer. Dit betekend:\n\n✅ Wat goed werkt:\n• Meldingen in dezelfde taal als jouw geselecteerde stem\n•Één-talige gebruiksscenario\'s\n•Meest voorkomende meldingspatronen\n\n⚠️Mogelijke fouten:\n• Meldingen in verschillende talen kunnen vervormd klinken\n• Gemengde taalinhoud kan moeilijk te begrijpen zijn\n• Sommige letters of accenten kunnen niet goed uitgesproken worden\n\n💡Aanbevelingen:\n• Kies een stem die met jouw gebruikelijke meldingstaal overeenkomt\n• Overweeg de taal &amp; Regioinstellingen in plaats van een specifieke stem\n• Test met jouw echte meldingen om duidelijkheid te verzekeren\n\n 🔮Toekomstige plannen:\n• Meertalige stemmen ondersteuning staat gepland voor toekomstige updates\n• Automatische taal herkening en stem wisseling\n• Betere verwerking van gemengde taalinhoud\n\nVoor nu werkt de taal &amp; Regioinstellingen meestal beter voor meertalige gebruikers omdat het zich automatisch aanpast aan verschillende inhoudstypes.
+</string>
+    <string name="specific_voice_warning_dialog_got_it">Begrepen</string>
     <!-- Hint Strings -->
-    <string name="hint_app_package_name">App Package Name</string>
-    <string name="hint_search_apps_or_package">Search apps or enter package name</string>
-    <string name="hint_device_addresses">Device addresses or names</string>
-    <string name="hint_network_ssids">Network SSIDs</string>
-    <string name="hint_word_to_blacklist">Word to blacklist</string>
-    <string name="hint_word_to_swap">Word to swap</string>
-    <string name="hint_swap_with_optional">Swap with (optional)</string>
-    <string name="hint_search_media_filter">Search apps to add to media filter</string>
-    <string name="hint_important_keyword">Important keyword (e.g., reply, comment)</string>
-    <string name="hint_rule_name">Enter rule name (e.g., Night Mode, Car Mode)</string>
-    <string name="hint_bluetooth_addresses">00:11:22:33:44:55&#10;AA:BB:CC:DD:EE:FF</string>
-    <string name="hint_wifi_networks">HomeWiFi&#10;OfficeNetwork</string>
-    <string name="hint_wifi_network_name">Enter WiFi network name</string>
-    <string name="hint_cooldown_time">Cooldown time</string>
-    <string name="hint_search_for_app">Search for an app...</string>
-    <string name="hint_enter_word_to_block">Enter a word to block...</string>
-    <string name="hint_enter_format_placeholders">Enter format with placeholders</string>
+    <string name="hint_app_package_name">App-pakketnaam</string>
+    <string name="hint_search_apps_or_package">Zoek apps of voer pakketnaam in</string>
+    <string name="hint_device_addresses">Apparaatadressen of namen</string>
+    <string name="hint_network_ssids">Netwerk SSID\'s</string>
+    <string name="hint_word_to_blacklist">Woord om op de zwarte lijst te zetten</string>
+    <string name="hint_word_to_swap">Woord om te wisselen</string>
+    <string name="hint_swap_with_optional">Wissel met (optioneel)</string>
+    <string name="hint_search_media_filter">Apps zoeken om toe te voegen aan mediafilter</string>
+    <string name="hint_important_keyword">Belangrijke trefwoord (bijv. antwoord, commentaar)</string>
+    <string name="hint_rule_name">Voer regelnaam in (bijv. Nachtmodus, Auto Modus)</string>
+    <string name="hint_bluetooth_addresses">00:11:22:33:44:55 AA:BB:CC:DD:EE:FF</string>
+    <string name="hint_wifi_networks">ThuisWiFi WerkNetwerk</string>
+    <string name="hint_wifi_network_name">Voer WiFi-netwerknaam in</string>
+    <string name="hint_cooldown_time">Afkoeltijd</string>
+    <string name="hint_search_for_app">Zoek naar een app...</string>
+    <string name="hint_enter_word_to_block">Voer een woord in om te blokkeren...</string>
+    <string name="hint_enter_format_placeholders">Voer het formaat in met plaatsaanduiders</string>
     <!-- Development Settings Hardcoded Strings -->
-    <string name="dev_configure_logging">Configure what gets logged for debugging</string>
-    <string name="dev_verbose_logging">Verbose Logging</string>
-    <string name="dev_verbose_logging_description">Show detailed debug information</string>
-    <string name="dev_filter_logging">Filter Logging</string>
-    <string name="dev_filter_logging_description">Log filtering decisions and results</string>
-    <string name="dev_user_action_logging">User Action Logging</string>
-    <string name="dev_user_action_logging_description">Log user interactions and button presses</string>
-    <string name="dev_system_event_logging">System Event Logging</string>
-    <string name="dev_system_event_logging_description">Log app lifecycle and system events</string>
-    <string name="dev_notification_logging">Notification Logging</string>
-    <string name="dev_notification_logging_description">Log notification processing events</string>
-    <string name="dev_sensitive_data_logging">Sensitive Data Logging</string>
-    <string name="dev_sensitive_data_logging_description">⚠️ Log sensitive information (disabled by default)</string>
-    <string name="dev_live_log_display">📊 Live Log Display</string>
-    <string name="dev_live_log_description">Real-time view of what\'s happening under the hood</string>
-    <string name="dev_view_crash_logs">📄 View Crash Logs</string>
-    <string name="dev_clear_crash_logs">🗑️ Clear Crash Logs</string>
-    <string name="dev_debug_crash_logs">🔍 Debug Crash Logs</string>
-    <string name="dev_starting_log_display">Starting log display...\nLogs will appear here in real-time.\n</string>
+    <string name="dev_configure_logging">Configureer wat er gelogd wordt voor foutopsporing</string>
+    <string name="dev_verbose_logging">Uitgebreide logging</string>
+    <string name="dev_verbose_logging_description">Toon gedetailleerde foutopsporingsinformatie</string>
+    <string name="dev_filter_logging">Loggen filteren</string>
+    <string name="dev_filter_logging_description">Log filterbesluiten en resultaten</string>
+    <string name="dev_user_action_logging">Gebruikersactie logging</string>
+    <string name="dev_user_action_logging_description">
+Gebruikersinteracties en indrukken van knoppen registreren
+</string>
+    <string name="dev_system_event_logging">Systeem gebeurtenisregistratie</string>
+    <string name="dev_system_event_logging_description">Log app levensduur en systeemgebeurtenissen</string>
+    <string name="dev_notification_logging">Meldingslogging</string>
+    <string name="dev_notification_logging_description">Meldingsverwerkingsgebeurtenissen registreren</string>
+    <string name="dev_sensitive_data_logging">Gevoelige gegevensregistratie</string>
+    <string name="dev_sensitive_data_logging_description">
+⚠️ Log gevoelige informatie (standaard uitgeschakeld)
+</string>
+    <string name="dev_live_log_display">📊 Weergave Live Log</string>
+    <string name="dev_live_log_description">
+Real-time overzicht van wat er onder de motorkap gebeurt
+</string>
+    <string name="dev_view_crash_logs">📄 Bekijk Crash-logs</string>
+    <string name="dev_clear_crash_logs">🗑️ Verwijder Crash-logs</string>
+    <string name="dev_debug_crash_logs">🔍 Foutopsporing van Crash-logs</string>
+    <string name="dev_starting_log_display">
+Start log weergave...\nLogs zullen hier in real-time verschijnen.\n
+</string>
     <!-- AboutActivity Hardcoded Strings -->
-    <string name="tts_error_occurred">TTS error occurred</string>
-    <string name="tts_initialization_failed">TTS initialization failed</string>
+    <string name="tts_error_occurred">TTS fout opgetreden</string>
+    <string name="tts_initialization_failed">TTS initialisatie mislukt</string>
     <!-- GeneralSettingsActivity Hardcoded Strings -->
-    <string name="storage_permission_required">Storage permission required for export</string>
-    <string name="theme_changed_title">Theme Changed</string>
-    <string name="theme_changed_message">The theme has been applied. For the best experience, you may want to restart the app.</string>
-    <string name="restart_now">Restart Now</string>
+    <string name="storage_permission_required">Opslagmachtiging vereist voor exporteren</string>
+    <string name="theme_changed_title">Thema gewijzigd</string>
+    <string name="theme_changed_message">
+Het thema is toegepast. Voor de beste ervaring kun je de app opnieuw starten.
+</string>
+    <string name="restart_now">Nu opnieuw opstarten</string>
     <string name="later">Later</string>
-    <string name="clear_all_data_title">Clear All Data</string>
-    <string name="clear_all_data_message">This will reset all settings to defaults and clear notification history.\n\nThis action cannot be undone.\n\nDo you want to continue?</string>
-    <string name="clear_all_data_button">Clear All Data</string>
-    <string name="export_failed">Export failed: %s</string>
-    <string name="configuration_exported_successfully">Configuration exported successfully</string>
-    <string name="configuration_imported_successfully">Configuration imported successfully: %s</string>
-    <string name="import_failed">Import failed: %s</string>
-    <string name="all_data_cleared_successfully">All data cleared successfully</string>
-    <string name="failed_to_clear_data">Failed to clear data: %s</string>
-    <string name="persistent_notification_enabled">Persistent notification enabled</string>
-    <string name="reading_notification_enabled">Reading notification enabled</string>
-    <string name="notification_permission_denied">Notification permission denied - feature will not work</string>
+    <string name="clear_all_data_title">Wis alle gegevens</string>
+    <string name="clear_all_data_message">
+Dit zal alle instellingen herstellen naar standaardinstellingen en wist de meldingsgeschiedenis.\n\nDeze actie kan niet ongedaan worden.\n\nWilt u doorgaan?
+</string>
+    <string name="clear_all_data_button">Wis alle gegevens</string>
+    <string name="export_failed">Exporteren mislukt</string>
+    <string name="configuration_exported_successfully">Configuratie succesvol geëxporteerd</string>
+    <string name="configuration_imported_successfully">Configuratie succesvol geïmporteerd: %s</string>
+    <string name="import_failed">Importeren mislukt: %s</string>
+    <string name="all_data_cleared_successfully">Alle gegevens succesvol gewist</string>
+    <string name="failed_to_clear_data">Gegevens wissen mislukt: %s</string>
+    <string name="persistent_notification_enabled">Aanhoudende melding ingeschakeld</string>
+    <string name="reading_notification_enabled">Melding lezen ingeschakeld</string>
+    <string name="notification_permission_denied">Meldingstoegang geweigerd - functie werkt niet</string>
     <!-- AppAutoCompleteAdapter Hardcoded Strings -->
-    <string name="app_selector_sample_apps_loaded">Sample apps loaded:</string>
-    <string name="app_selector_google_maps_found" formatted="false">GOOGLE/MAPS APP FOUND: %s (%s)</string>
-    <string name="app_selector_total_apps">Total: %d apps</string>
-    <string name="app_filter_filtering_with">Filtering with: \'%s\'</string>
-    <string name="app_filter_match" formatted="false">MATCH: %s (%s) - name:%s pkg:%s</string>
-    <string name="app_filter_google_maps_candidate" formatted="false">GOOGLE MAPS CANDIDATE: %s (%s)</string>
-    <string name="app_filter_found_matches" formatted="false">Found %d matches for \'%s\'</string>
-    <string name="app_filter_no_filter_showing_all">No filter - showing all %d apps</string>
-    <string name="app_filter_publishing_results">Publishing %d results</string>
+    <string name="app_selector_sample_apps_loaded">Voorbeeld-apps geladen:</string>
+    <string name="app_selector_google_maps_found" formatted="false">GOOGLE/MAPS APP GEVONDEN: %s (%s)</string>
+    <string name="app_selector_total_apps">Totaal: %d apps</string>
+    <string name="app_filter_filtering_with">Filteren met: \'%s\'</string>
+    <string name="app_filter_match" formatted="false">OVEREENKOMST: %s (%s) - naam:%s pkg:%s</string>
+    <string name="app_filter_google_maps_candidate" formatted="false">GOOGLE MAPS KANDIDAAT: %s (%s)</string>
+    <string name="app_filter_found_matches" formatted="false">Gevonden %d overeenkomsten voor \'%s\'</string>
+    <string name="app_filter_no_filter_showing_all">Geen filter - toont alle %d apps</string>
+    <string name="app_filter_publishing_results">Publicatie van %d resultaten</string>
     <!-- CooldownAppAdapter Hardcoded Strings -->
     <string name="cooldown_app_icon_url">https://cdn.simpleicons.org/%s</string>
     <!-- BootReceiver Hardcoded Strings -->
-    <string name="boot_receiver_tag">BootReceiver</string>
-    <string name="boot_receiver_prefs_name">SpeakThatPrefs</string>
-    <string name="boot_receiver_key_auto_start">auto_start_on_boot</string>
-    <string name="boot_receiver_key_master_switch">master_switch_enabled</string>
-    <string name="boot_receiver_boot_completed">Boot completed received</string>
-    <string name="boot_receiver_auto_start_enabled">Auto-start enabled, starting notification service</string>
-    <string name="boot_receiver_enabled_notification_listeners">enabled_notification_listeners</string>
-    <string name="boot_receiver_service_already_enabled">Notification service already enabled, no action needed</string>
-    <string name="boot_receiver_service_not_enabled">Notification service not enabled, user needs to grant permission</string>
+    <string name="boot_receiver_tag">OpstartOntvanger</string>
+    <string name="boot_receiver_prefs_name">SpreakThatPrefs</string>
+    <string name="boot_receiver_key_auto_start">Automatisch_opstarten_bij_opstarten</string>
+    <string name="boot_receiver_key_master_switch">master_switch_ingeschakeld</string>
+    <string name="boot_receiver_boot_completed">Opstarten voltooid ontvangen</string>
+    <string name="boot_receiver_auto_start_enabled">Auto-start ingeschakeld, start meldingsservice</string>
+    <string name="boot_receiver_enabled_notification_listeners">schakel_meldingsluisteraars_in</string>
+    <string name="boot_receiver_service_already_enabled">
+Melding service is al ingeschakeld, er is geen actie nodig
+</string>
+    <string name="boot_receiver_service_not_enabled">
+Melding service niet ingeschakeld, gebruiker moet toestemming geven
+</string>
     <!-- AppCategory String Resources -->
-    <string name="category_social_id">social</string>
-    <string name="category_social_display_name">Social Media</string>
-    <string name="category_social_description">Social networking and community apps</string>
-    <string name="category_messaging_id">messaging</string>
-    <string name="category_messaging_display_name">Messaging</string>
-    <string name="category_messaging_description">Chat and communication apps</string>
-    <string name="category_finance_id">finance</string>
-    <string name="category_finance_display_name">Finance</string>
-    <string name="category_finance_description">Banking and financial apps</string>
-    <string name="category_health_id">health</string>
-    <string name="category_health_display_name">Health &amp; Fitness</string>
-    <string name="category_health_description">Health, medical, and fitness apps</string>
-    <string name="category_entertainment_id">entertainment</string>
-    <string name="category_entertainment_display_name">Entertainment</string>
-    <string name="category_entertainment_description">Media and entertainment apps</string>
-    <string name="category_games_id">games</string>
-    <string name="category_games_display_name">Games</string>
-    <string name="category_games_description">Mobile games and gaming apps</string>
-    <!-- App Package Names (for reference, these are typically not localized) -->
+    <string name="category_social_id">sociaal</string>
+    <string name="category_social_display_name">Sociale media</string>
+    <string name="category_social_description">Sociale netwerk- en community-apps</string>
+    <string name="category_messaging_id">berichtenverkeer</string>
+    <string name="category_messaging_display_name">Berichtenverkeer</string>
+    <string name="category_messaging_description">Chat- en communicatie-apps</string>
+    <string name="category_finance_id">financiën</string>
+    <string name="category_finance_display_name">Financiën</string>
+    <string name="category_finance_description">Bank- en financiële apps</string>
+    <string name="category_health_id">gezondheid</string>
+    <string name="category_health_display_name">Gezondheid &amp; fitness</string>
+    <string name="category_health_description">Gezondheids-, medische en fitness-apps</string>
+    <string name="category_entertainment_id">vermaak</string>
+    <string name="category_entertainment_display_name">Vermaak</string>
+    <string name="category_entertainment_description">Media en entertainment-apps</string>
+    <string name="category_games_id">spellen</string>
+    <string name="category_games_display_name">Spellen</string>
+    <string name="category_games_description">Mobiele games en gaming apps</string>
+    <!--
+     App Package Names (for reference, these are typically not localized)
+    -->
     <string name="package_twitter">com.twitter.</string>
     <string name="package_facebook">com.facebook.</string>
     <string name="package_instagram">com.instagram.</string>
@@ -1281,69 +1676,83 @@ Deze functie werkt bijzonder goed voor toegankelijkheid, bureau gebruikers en ie
     <string name="package_betterhelp">com.betterhelp</string>
     <string name="package_glow">com.glow.android</string>
     <string name="package_clue">com.clue.android</string>
-    <!-- SharedPreferences Keys (these are typically not localized but kept for reference) -->
+    <!--
+     SharedPreferences Keys (these are typically not localized but kept for reference)
+    -->
     <string name="prefs_speakthat">SpeakThatPrefs</string>
     <string name="prefs_voice_settings">VoiceSettings</string>
-    <string name="prefs_notification_history">NotificationHistory</string>
-    <string name="prefs_dark_mode">dark_mode</string>
-    <string name="prefs_persistent_notification">persistent_notification</string>
-    <string name="prefs_notification_while_reading">notification_while_reading</string>
-    <string name="prefs_auto_start_enabled">auto_start_enabled</string>
-    <string name="prefs_battery_optimization_enabled">battery_optimization_enabled</string>
-    <string name="prefs_aggressive_processing_enabled">aggressive_processing_enabled</string>
-    <string name="prefs_restart_policy">restart_policy</string>
-    <string name="prefs_tts_language">tts_language</string>
-    <string name="prefs_speech_rate">speech_rate</string>
-    <string name="prefs_pitch">pitch</string>
-    <string name="prefs_voice_name">voice_name</string>
-    <string name="prefs_language">language</string>
-    <string name="prefs_audio_usage">audio_usage</string>
-    <string name="prefs_content_type">content_type</string>
-    <string name="prefs_auto_start_on_boot">auto_start_on_boot</string>
-    <string name="prefs_master_switch_enabled">master_switch_enabled</string>
-    <string name="prefs_enabled_notification_listeners">enabled_notification_listeners</string>
+    <string name="prefs_notification_history">Notificatiegeschiedenis</string>
+    <string name="prefs_dark_mode">donker_modus</string>
+    <string name="prefs_persistent_notification">persistente melding</string>
+    <string name="prefs_notification_while_reading">melding_onder het_lezen</string>
+    <string name="prefs_auto_start_enabled">auto_start_ingeschakeld</string>
+    <string name="prefs_battery_optimization_enabled">battery_optimalisatie_ingeschakeld</string>
+    <string name="prefs_aggressive_processing_enabled">aggressive_processing_ingeschakeld</string>
+    <string name="prefs_restart_policy">herstart_beleid</string>
+    <string name="prefs_tts_language">tts_taal</string>
+    <string name="prefs_speech_rate">spraak_snelheid</string>
+    <string name="prefs_pitch">toonhoogte</string>
+    <string name="prefs_voice_name">stem_naam</string>
+    <string name="prefs_language">taal</string>
+    <string name="prefs_audio_usage">audio_gebruik</string>
+    <string name="prefs_content_type">inhoudstype</string>
+    <string name="prefs_auto_start_on_boot">Automatisch_opstarten_bij_opstarten</string>
+    <string name="prefs_master_switch_enabled">master_switch_ingeschakeld</string>
+    <string name="prefs_enabled_notification_listeners">schakel_meldingsluisteraars_in</string>
     <!-- TTS Utterance IDs -->
-    <string name="tts_utterance_about_app">about_app</string>
+    <string name="tts_utterance_about_app">over_app</string>
     <!-- File Export/Import -->
-    <string name="export_filename_format">SpeakThat_Config_%s.json</string>
-    <string name="import_temp_filename">speakthat_import</string>
+    <string name="export_filename_format">SpreakThat_Config_%s.json</string>
+    <string name="import_temp_filename">spreekt dat_import</string>
     <string name="export_mime_type">application/json</string>
     <string name="export_charset">UTF-8</string>
     <!-- Error Messages -->
-    <string name="error_unable_to_open_output_stream">Unable to open output stream for URI</string>
-    <string name="error_unable_to_open_input_stream">Unable to open input stream from URI</string>
+    <string name="error_unable_to_open_output_stream">
+Niet in staat om de uitvoer stream te openen voor URI
+</string>
+    <string name="error_unable_to_open_input_stream">Kan de invoerstroom niet openen via URI</string>
     <!-- Log Messages -->
-    <string name="log_app_search_adapter_filtering" formatted="false">Filtering with \'%s\' - found %d results</string>
-    <string name="log_app_search_adapter_publishing">Publishing %d results</string>
-    <string name="log_app_selector_sample_apps">Sample apps loaded:</string>
-    <string name="log_app_selector_app_info" formatted="false">  %s (%s)</string>
-    <string name="log_app_selector_total">Total: %d apps</string>
-    <string name="log_app_filter_filtering">Filtering with: \'%s\'</string>
-    <string name="log_app_filter_match" formatted="false">MATCH: %s (%s) - name:%s pkg:%s</string>
-    <string name="log_app_filter_google_maps" formatted="false">GOOGLE MAPS CANDIDATE: %s (%s)</string>
-    <string name="log_app_filter_found_matches" formatted="false">Found %d matches for \'%s\'</string>
-    <string name="log_app_filter_no_filter">No filter - showing all %d apps</string>
-    <string name="log_app_filter_publishing">Publishing %d results</string>
-    <string name="log_boot_receiver_boot_completed">Boot completed received</string>
-    <string name="log_boot_receiver_auto_start">Auto-start enabled, starting notification service</string>
-    <string name="log_boot_receiver_service_enabled">Notification service already enabled</string>
-    <string name="log_boot_receiver_service_not_enabled">Notification service not enabled - user needs to grant permission</string>
+    <string name="log_app_search_adapter_filtering" formatted="false">Filteren met \'%s\' - gevonden %d resultaten</string>
+    <string name="log_app_search_adapter_publishing">Publicatie van %d resultaten</string>
+    <string name="log_app_selector_sample_apps">Voorbeeld-apps geladen:</string>
+    <string name="log_app_selector_app_info" formatted="false"> %s (%s)</string>
+    <string name="log_app_selector_total">Totaal: %d apps</string>
+    <string name="log_app_filter_filtering">Filteren met: \'%s\'</string>
+    <string name="log_app_filter_match" formatted="false">OVEREENKOMST: %s (%s) - naam:%s pkg:%s</string>
+    <string name="log_app_filter_google_maps" formatted="false">GOOGLE MAPS KANDIDAAT: %s (%s)</string>
+    <string name="log_app_filter_found_matches" formatted="false">Gevonden %d overeenkomsten voor \'%s\'</string>
+    <string name="log_app_filter_no_filter">Geen filter - toont alle %d apps</string>
+    <string name="log_app_filter_publishing">Publicatie van %d resultaten</string>
+    <string name="log_boot_receiver_boot_completed">Opstarten voltooid ontvangen</string>
+    <string name="log_boot_receiver_auto_start">Auto-start ingeschakeld, start meldingsservice</string>
+    <string name="log_boot_receiver_service_enabled">Notificatie service is al ingeschakeld</string>
+    <string name="log_boot_receiver_service_not_enabled">
+Melding service niet ingeschakeld, gebruiker moet toestemming geven
+</string>
     <!-- Date/Time Format -->
-    <string name="date_format_export">yyyy-MM-dd_HH-mm-ss</string>
+    <string name="date_format_export">jjjj-MM-dd_UU-mm-ss</string>
     <!-- System Values -->
-    <string name="system_default">system</string>
-    <string name="restart_policy_never">never</string>
+    <string name="system_default">systeem</string>
+    <string name="restart_policy_never">nooit</string>
     <string name="restart_policy_crash">crash</string>
-    <string name="restart_policy_periodic">periodic</string>
+    <string name="restart_policy_periodic">periodiek</string>
     <!-- MainActivity Hardcoded Strings -->
-    <string name="main_master_switch_enabled">SpeakThat will read notifications when active</string>
-    <string name="main_master_switch_disabled">SpeakThat is disabled - notifications will not be read</string>
-    <string name="main_notification_access_granted">SpeakThat has notification access</string>
-    <string name="main_tts_init_failed">TTS initialization failed. Some features may not work.</string>
-    <string name="main_tts_not_ready">TTS not ready. Please try again in a moment.</string>
-    <string name="main_tts_playback_failed">TTS playback failed</string>
-    <string name="main_notification_permission_granted">Notification permission granted</string>
-    <string name="main_notification_permission_denied">Notification permission denied - SpeakThat notifications may not appear</string>
-    <string name="main_notification_title_active">SpeakThat Active</string>
-    <string name="main_notification_content_tap_settings">Tap to open SpeakThat settings</string>
+    <string name="main_master_switch_enabled">SpreakThat! zal meldingen lezen wanneer actief</string>
+    <string name="main_master_switch_disabled">
+SpreakThat! is uitgeschakeld - meldingen worden niet gelezen
+</string>
+    <string name="main_notification_access_granted">SpreakThat! heeft toegang tot meldingen</string>
+    <string name="main_tts_init_failed">
+TTS initialisatie mislukt. Sommige functies werken mogelijk niet.
+</string>
+    <string name="main_tts_not_ready">
+TTS niet klaar. Probeer het over enkele ogenblikken opnieuw.
+</string>
+    <string name="main_tts_playback_failed">TTS afspelen mislukt</string>
+    <string name="main_notification_permission_granted">Meldingsmachtiging verleend</string>
+    <string name="main_notification_permission_denied">
+Meldingsmachtiging geweigerd - SpeakThat! meldingen worden mogelijk niet weergegeven
+</string>
+    <string name="main_notification_title_active">SpreakThat! Actief</string>
+    <string name="main_notification_content_tap_settings">Tik om SpreakThat! instellingen te openen</string>
 </resources>

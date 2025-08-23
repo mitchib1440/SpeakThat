@@ -623,8 +623,19 @@ class OnboardingPagerAdapter(
         }
 
         private fun showTimeScheduleConfigurationDialog(template: RuleTemplate) {
+            // Determine which layout to use based on screen size
+            val displayMetrics = binding.root.context.resources.displayMetrics
+            val screenHeight = displayMetrics.heightPixels
+            val screenWidth = displayMetrics.widthPixels
+            
+            // Use compact layout for very small screens
+            val layoutResId = when {
+                screenHeight < 600 || screenWidth < 400 -> R.layout.dialog_time_schedule_compact
+                else -> R.layout.dialog_time_schedule_configuration
+            }
+            
             val dialogView = android.view.LayoutInflater.from(binding.root.context)
-                .inflate(R.layout.dialog_time_schedule_configuration, null)
+                .inflate(layoutResId, null)
             
             val dialog = androidx.appcompat.app.AlertDialog.Builder(binding.root.context)
                 .setTitle("Configure ${template.name}")
@@ -648,7 +659,36 @@ class OnboardingPagerAdapter(
             // Set up time pickers and day selection
             setupTimeScheduleControls(dialogView)
             
+            // Show dialog and then adjust its size based on screen dimensions
             dialog.show()
+            
+            // Ensure dialog uses adaptive sizing for different screen sizes
+            val window = dialog.window
+            if (window != null) {
+                val dialogDisplayMetrics = binding.root.context.resources.displayMetrics
+                val dialogScreenHeight = dialogDisplayMetrics.heightPixels
+                val dialogScreenWidth = dialogDisplayMetrics.widthPixels
+                
+                // Calculate adaptive width and height based on screen size
+                val width = when {
+                    dialogScreenWidth < 600 -> (dialogScreenWidth * 0.98).toInt() // Very small screens: use almost full width
+                    dialogScreenWidth < 800 -> (dialogScreenWidth * 0.95).toInt() // Small screens: use 95% width
+                    else -> (dialogScreenWidth * 0.90).toInt() // Larger screens: use 90% width
+                }
+                
+                // Calculate adaptive height based on screen height - more aggressive for small screens
+                val maxDialogHeight = when {
+                    dialogScreenHeight < 600 -> (dialogScreenHeight * 0.70).toInt() // Very small screens: limit to 70% of screen height
+                    dialogScreenHeight < 800 -> (dialogScreenHeight * 0.75).toInt() // Small screens: limit to 75% of screen height
+                    dialogScreenHeight < 1200 -> (dialogScreenHeight * 0.80).toInt() // Medium screens: limit to 80% of screen height
+                    else -> android.view.ViewGroup.LayoutParams.WRAP_CONTENT // Larger screens: use wrap content
+                }
+                
+                window.setLayout(width, maxDialogHeight)
+                
+                // Log the adaptive sizing for debugging
+                InAppLogger.logDebug("OnboardingPagerAdapter", "Dialog sizing: screen=${dialogScreenWidth}x${dialogScreenHeight}, dialog=${width}x${maxDialogHeight}")
+            }
         }
 
         private fun showWifiConfigurationDialog(template: RuleTemplate) {

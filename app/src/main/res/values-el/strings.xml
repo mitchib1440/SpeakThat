@@ -211,8 +211,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="check_for_updates_auto_desc">Automatically check for app updates when you open the app</string>
     <string name="check_frequency">Check Frequency</string>
     <string name="check_frequency_desc">How often should the app check for updates?</string>
-    <string name="update_daily">Daily (recommended)</string>
-    <string name="update_weekly">Weekly</string>
+    <string name="update_daily">Daily</string>
+    <string name="update_weekly">Weekly (recommended)</string>
     <string name="update_monthly">Monthly</string>
     <string name="update_never">Never (manual only)</string>
     <!-- TTS Template Strings (for improved localization) -->
@@ -463,5 +463,4 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
 </resources>
-
 

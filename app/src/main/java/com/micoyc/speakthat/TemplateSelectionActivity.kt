@@ -22,6 +22,7 @@ import com.micoyc.speakthat.rules.TriggerType
 import com.micoyc.speakthat.utils.WifiCapabilityChecker
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.LinearLayout
 
 class TemplateSelectionActivity : AppCompatActivity() {
     
@@ -304,81 +305,12 @@ class TemplateSelectionActivity : AppCompatActivity() {
     }
     
     private fun handleTimeScheduleSelection(template: RuleTemplate) {
-        // Create a custom dialog for time and day selection
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_time_schedule, null)
-        
-        // Set up time pickers
-        val timePickerStart = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerStart)
-        val timePickerEnd = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerEnd)
-        
-        // Set default times (10 PM to 8 AM)
-        timePickerStart.hour = 22
-        timePickerStart.minute = 0
-        timePickerEnd.hour = 8
-        timePickerEnd.minute = 0
-        
-        // Set up day checkboxes
-        val checkBoxMonday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxMonday)
-        val checkBoxTuesday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxTuesday)
-        val checkBoxWednesday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxWednesday)
-        val checkBoxThursday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxThursday)
-        val checkBoxFriday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxFriday)
-        val checkBoxSaturday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSaturday)
-        val checkBoxSunday = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSunday)
-        val checkBoxEveryDay = dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxEveryDay)
-        
-        // Set up "Every Day" checkbox to control all others
-        checkBoxEveryDay.setOnCheckedChangeListener { _, isChecked ->
-            checkBoxMonday.isChecked = isChecked
-            checkBoxTuesday.isChecked = isChecked
-            checkBoxWednesday.isChecked = isChecked
-            checkBoxThursday.isChecked = isChecked
-            checkBoxFriday.isChecked = isChecked
-            checkBoxSaturday.isChecked = isChecked
-            checkBoxSunday.isChecked = isChecked
+        // Use DialogFragment for better lifecycle management and sizing
+        val dialogFragment = TimeScheduleDialogFragment.newInstance(template) { selectedTemplate, customData ->
+            createRuleFromTemplate(selectedTemplate, customData)
         }
         
-        // Create dialog with proper sizing for time pickers
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("Set Quiet Hours")
-            .setMessage("Choose the time range and days when you don't want notifications read:")
-            .setView(dialogView)
-            .setPositiveButton("Create Rule") { _, _ ->
-                // Collect selected days
-                val selectedDays = mutableSetOf<Int>()
-                if (checkBoxMonday.isChecked) selectedDays.add(1)
-                if (checkBoxTuesday.isChecked) selectedDays.add(2)
-                if (checkBoxWednesday.isChecked) selectedDays.add(3)
-                if (checkBoxThursday.isChecked) selectedDays.add(4)
-                if (checkBoxFriday.isChecked) selectedDays.add(5)
-                if (checkBoxSaturday.isChecked) selectedDays.add(6)
-                if (checkBoxSunday.isChecked) selectedDays.add(7)
-                
-                // Create custom data for the rule
-                val customData = mapOf(
-                    "startHour" to timePickerStart.hour,
-                    "startMinute" to timePickerStart.minute,
-                    "endHour" to timePickerEnd.hour,
-                    "endMinute" to timePickerEnd.minute,
-                    "selectedDays" to selectedDays
-                )
-                
-                createRuleFromTemplate(template, customData)
-            }
-            .setNegativeButton("Cancel", null)
-            .create()
-        
-        // Show dialog and then adjust its width to use more screen space
-        dialog.show()
-        
-        // Ensure dialog uses adequate width for time pickers
-        val window = dialog.window
-        if (window != null) {
-            val displayMetrics = resources.displayMetrics
-            val width = (displayMetrics.widthPixels * 0.95).toInt() // Use 95% of screen width
-            val height = android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-            window.setLayout(width, height)
-        }
+        dialogFragment.show(supportFragmentManager, "TimeScheduleDialog")
     }
     
     private fun createRuleFromTemplate(template: RuleTemplate, customData: Map<String, Any> = emptyMap()) {
