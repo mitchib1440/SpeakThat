@@ -1498,18 +1498,7 @@ Notification permission denied - feature will not work
     <string name="category_entertainment_description">メディアとエンターテイメントアプリ</string>
     <string name="category_games_display_name">Games</string>
     <string name="category_games_description">モバイルゲームとゲームアプリ</string>
-        <string name="package_weibo">com.weibo.</string>
-    <string name="package_line">jp.naver.line.</string>
-    <string name="package_glassdoor">com.glassdoor.</string>
-    <string name="package_indeed">com.indeed.</string>
-    <string name="package_meetup">com.meetup</string>
-    <string name="package_facebook_messenger">com.facebook.messenger</string>
-    <string name="package_google_messages">com.google.android.apps.messaging</string>
-    <string name="package_viber">com.viber.</string>
-    <string name="package_microsoft_teams">com.microsoft.teams</string>
-    <string name="package_line_android">jp.naver.line.android</string>
-    <string name="package_kakaotalk">com.kakao.talk</string>
-    <string name="package_wechat">com.tencent.mm</string>
+
                 <!-- Error Messages -->
     <string name="error_unable_to_open_output_stream">Unable to open output stream for URI</string>
     <string name="error_unable_to_open_input_stream">Unable to open input stream from URI</string>
