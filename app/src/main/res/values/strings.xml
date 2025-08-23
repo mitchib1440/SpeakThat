@@ -577,7 +577,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_wave_pocket">Pocket Mode</string>
     <string name="behavior_wave_pocket_description">Allow readouts to continue when sensor is already covered (like in your pocket), but still stop when you cover it after the readout starts</string>
     <string name="behavior_wave_pocket_checkbox">Allow readouts when sensor covered</string>
-    <string name="behavior_custom_apps_title">📱 Custom App Names</string>
+    <string name="behavior_custom_apps_title">Custom App Names</string>
     <string name="behavior_custom_apps_description">Customize how app names are spoken in notifications</string>
     <string name="behavior_custom_apps_example">Example: X app reads as Twitter</string>
     <string name="behavior_custom_apps_add">Add Custom App Name</string>
