@@ -80,6 +80,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     // Media behavior settings
     private var originalMusicVolume = -1 // Store original volume for restoration
+    private var originalAudioMode = -1 // Store original audio mode for restoration
     private var audioFocusRequest: android.media.AudioFocusRequest? = null
     private var pausedMediaSessions = mutableListOf<MediaController>() // Track paused media sessions for resume
     
@@ -2474,7 +2475,31 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 .build()
             
             val result = audioManager.requestAudioFocus(audioFocusRequest!!)
-            result == android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED
+            Log.d(TAG, "Audio focus request result for VOICE_COMMUNICATION: $result")
+            InAppLogger.log("Service", "Audio focus request result for VOICE_COMMUNICATION: $result")
+            
+            when (result) {
+                android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED -> {
+                    Log.d(TAG, "Audio focus GRANTED for VOICE_COMMUNICATION")
+                    InAppLogger.log("Service", "Audio focus GRANTED for VOICE_COMMUNICATION")
+                    true
+                }
+                android.media.AudioManager.AUDIOFOCUS_REQUEST_FAILED -> {
+                    Log.d(TAG, "Audio focus FAILED for VOICE_COMMUNICATION")
+                    InAppLogger.log("Service", "Audio focus FAILED for VOICE_COMMUNICATION")
+                    false
+                }
+                android.media.AudioManager.AUDIOFOCUS_REQUEST_DELAYED -> {
+                    Log.d(TAG, "Audio focus DELAYED for VOICE_COMMUNICATION")
+                    InAppLogger.log("Service", "Audio focus DELAYED for VOICE_COMMUNICATION")
+                    true // Treat delayed as granted
+                }
+                else -> {
+                    Log.d(TAG, "Audio focus UNKNOWN result for VOICE_COMMUNICATION: $result")
+                    InAppLogger.log("Service", "Audio focus UNKNOWN result for VOICE_COMMUNICATION: $result")
+                    false
+                }
+            }
         } else {
             // Use deprecated method for older versions with VOICE_CALL stream
             @Suppress("DEPRECATION")
@@ -2483,7 +2508,26 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 android.media.AudioManager.STREAM_VOICE_CALL,
                 android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT
             )
-            result == android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED
+            Log.d(TAG, "Audio focus request result for STREAM_VOICE_CALL (legacy): $result")
+            InAppLogger.log("Service", "Audio focus request result for STREAM_VOICE_CALL (legacy): $result")
+            
+            when (result) {
+                android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED -> {
+                    Log.d(TAG, "Audio focus GRANTED for STREAM_VOICE_CALL")
+                    InAppLogger.log("Service", "Audio focus GRANTED for STREAM_VOICE_CALL")
+                    true
+                }
+                android.media.AudioManager.AUDIOFOCUS_REQUEST_FAILED -> {
+                    Log.d(TAG, "Audio focus FAILED for STREAM_VOICE_CALL")
+                    InAppLogger.log("Service", "Audio focus FAILED for STREAM_VOICE_CALL")
+                    false
+                }
+                else -> {
+                    Log.d(TAG, "Audio focus UNKNOWN result for STREAM_VOICE_CALL: $result")
+                    InAppLogger.log("Service", "Audio focus UNKNOWN result for STREAM_VOICE_CALL: $result")
+                    false
+                }
+            }
         }
     }
     
@@ -3013,6 +3057,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             // "ignore" and "silence" don't need cleanup
         }
+        
+        // Restore original audio mode if it was changed for speakerphone
+        if (originalAudioMode != -1) {
+            try {
+                audioManager.mode = originalAudioMode
+                Log.d(TAG, "Restored audio mode to $originalAudioMode")
+                InAppLogger.log("Service", "Restored audio mode to $originalAudioMode")
+                originalAudioMode = -1
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to restore audio mode during cleanup", e)
+                InAppLogger.logError("Service", "Failed to restore audio mode: ${e.message}")
+            }
+        }
     }
     
     /**
@@ -3071,6 +3128,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 }
             }
             // "ignore" and "silence" don't need cleanup
+        }
+        
+        // Restore original audio mode if it was changed for speakerphone
+        if (originalAudioMode != -1) {
+            try {
+                audioManager.mode = originalAudioMode
+                Log.d(TAG, "Restored audio mode to $originalAudioMode during delayed cleanup")
+                InAppLogger.log("Service", "Restored audio mode to $originalAudioMode during delayed cleanup")
+                originalAudioMode = -1
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to restore audio mode during delayed cleanup", e)
+                InAppLogger.logError("Service", "Failed to restore audio mode during delayed cleanup: ${e.message}")
+            }
         }
     }
 
@@ -3226,9 +3296,39 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Handle speakerphone routing for VOICE_CALL stream
         if (ttsUsage == android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION && speakerphoneEnabled) {
             try {
-                // Log current speakerphone state
+                // Log current speakerphone state and audio mode
                 val currentSpeakerphoneState = audioManager.isSpeakerphoneOn
-                InAppLogger.log("Service", "Current speakerphone state: $currentSpeakerphoneState")
+                val currentAudioMode = audioManager.mode
+                InAppLogger.log("Service", "Current speakerphone state: $currentSpeakerphoneState, audio mode: $currentAudioMode")
+                
+                // Check if we already have an audio focus request that might conflict
+                if (audioFocusRequest != null) {
+                    InAppLogger.log("Service", "Warning: Existing audio focus request detected - releasing it to avoid conflicts with VOICE_CALL audio focus")
+                    // Release existing audio focus to avoid conflicts
+                    releaseAudioFocus()
+                }
+                
+                // Also check for enhanced ducking focus requests that might conflict
+                if (enhancedDuckingFocusRequest != null) {
+                    InAppLogger.log("Service", "Warning: Enhanced ducking audio focus request detected - releasing it to avoid conflicts with VOICE_CALL audio focus")
+                    try {
+                        audioManager.abandonAudioFocusRequest(enhancedDuckingFocusRequest!!)
+                        enhancedDuckingFocusRequest = null
+                        isUsingEnhancedDucking = false
+                    } catch (e: Exception) {
+                        InAppLogger.logError("Service", "Failed to release enhanced ducking audio focus: ${e.message}")
+                    }
+                }
+                
+                // Store original audio mode for restoration
+                if (originalAudioMode == -1) {
+                    originalAudioMode = currentAudioMode
+                    InAppLogger.log("Service", "Stored original audio mode: $originalAudioMode")
+                }
+                
+                // Set audio mode to MODE_IN_COMMUNICATION for proper VOICE_CALL handling
+                audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
+                InAppLogger.log("Service", "Set audio mode to MODE_IN_COMMUNICATION for VOICE_CALL stream")
                 
                 // Request audio focus with VOICE_COMMUNICATION usage to match TTS
                 val focusGranted = requestAudioFocusForVoiceCall()
@@ -3239,15 +3339,47 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 }
                 
                 // Enable speakerphone with proper error handling
+                InAppLogger.log("Service", "Attempting to enable speakerphone...")
                 audioManager.isSpeakerphoneOn = true
+                InAppLogger.log("Service", "Called audioManager.isSpeakerphoneOn = true")
+                
+                // If audio focus failed, try an alternative approach for some devices
+                if (!focusGranted) {
+                    InAppLogger.log("Service", "Audio focus failed - trying alternative speakerphone approach")
+                    // Some devices allow speakerphone control without audio focus
+                    // Try setting audio mode again and speakerphone
+                    try {
+                        audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
+                        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                            audioManager.isSpeakerphoneOn = true
+                            InAppLogger.log("Service", "Alternative speakerphone attempt completed")
+                        }, 50)
+                    } catch (e: Exception) {
+                        InAppLogger.logError("Service", "Alternative speakerphone approach failed: ${e.message}")
+                    }
+                }
+                
+                // Check immediate state
+                val immediateState = audioManager.isSpeakerphoneOn
+                InAppLogger.log("Service", "Immediate speakerphone state after setting: $immediateState")
                 
                 // Add a small delay to allow speakerphone state to take effect
                 android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
                     // Verify speakerphone was actually enabled
-                    if (audioManager.isSpeakerphoneOn) {
+                    val delayedState = audioManager.isSpeakerphoneOn
+                    InAppLogger.log("Service", "Speakerphone state after 100ms delay: $delayedState")
+                    
+                    if (delayedState) {
                         InAppLogger.log("Service", "Speakerphone successfully enabled for VOICE_CALL stream")
                     } else {
                         InAppLogger.logError("Service", "Speakerphone was not enabled despite successful call")
+                        // Try to understand why - check if we have the right permissions
+                        try {
+                            val hasModifyAudioSettings = checkSelfPermission(android.Manifest.permission.MODIFY_AUDIO_SETTINGS) == android.content.pm.PackageManager.PERMISSION_GRANTED
+                            InAppLogger.log("Service", "MODIFY_AUDIO_SETTINGS permission: $hasModifyAudioSettings")
+                        } catch (e: Exception) {
+                            InAppLogger.logError("Service", "Failed to check MODIFY_AUDIO_SETTINGS permission: ${e.message}")
+                        }
                     }
                 }, 100) // 100ms delay
             } catch (e: Exception) {
