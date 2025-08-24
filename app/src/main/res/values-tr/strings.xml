@@ -1,46 +1,71 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<resources>
+﻿<resources>
     <string name="app_name">SpeakThat!</string>
-    <string name="service_name">SpeakThat Notification Reader</string>
+    <string name="service_name">SpeakThat Bildirim Okuyucu</string>
+    <!-- Quick Settings Tile -->
+    <string name="quick_settings_tile_label">SpeakThat</string>
+    <string name="quick_settings_tile_enabled">Etkin</string>
+    <string name="quick_settings_tile_disabled">Devre Dışı</string>
+    <string name="quick_settings_tile_enabled_toast">SpeakThat Hızlı Ayarlar üzerinden etkinleştirildi</string>
+    <string name="quick_settings_tile_disabled_toast">
+SpeakThat Hızlı Ayarlar üzerinden devre dışı bırakıldı
+</string>
+    <string name="quick_settings_tile_error_toast">SpeakThat durumu değiştirilirken hata oluştu</string>
     <!-- Permission Explanations for IzzyOnDroid/F-Droid -->
-    <string name="permission_request_install_packages">Used for auto-update system to install new versions from GitHub releases. Only used when user explicitly enables auto-updates and app was not installed from Google Play Store.</string>
-    <string name="permission_access_location">Required for Bluetooth and WiFi conditional filtering features. Used to detect nearby Bluetooth devices and WiFi networks for user-defined rules. No location tracking or data collection.</string>
-    <string name="permission_bluetooth_scan">Required for Bluetooth conditional filtering. Allows the app to detect when specific Bluetooth devices are connected for notification rules. No data is collected or transmitted.</string>
-    <string name="permission_nearby_wifi_devices">Required for WiFi network conditional filtering on Android 13+. Allows the app to detect WiFi network changes for user-defined notification rules. No network data is collected.</string>
-    <string name="permission_read_external_storage">Used for importing/exporting app settings and configuration files. Allows users to backup and restore their settings. No personal data is accessed.</string>
-    <string name="permission_needed">Notification Access Required</string>
-    <string name="permission_description">SpeakThat! needs access to your notifications to read them aloud. This permission is required for the app to function.</string>
-    <string name="master_switch_battery_tip">ðŸ’¡ Turn off when not needed to save battery</string>
-    <string name="open_settings">Permission Settings</string>
-    <string name="service_enabled">Notification Reader: Enabled</string>
-    <string name="service_disabled">Notification Reader: Disabled</string>
-    <string name="show_history">Show Notification History</string>
-    <string name="settings">SpeakThat! Settings</string>
-    <string name="no_notifications">No notifications to display</string>
-    <string name="notification_history">Notification History</string>
-    <string name="close">Close</string>
+    <string name="permission_request_install_packages">
+Yeni sürümleri GitHub sürümlerinden yüklemek için otomatik güncelleme sisteminde kullanılır. Yalnızca kullanıcı otomatik güncellemeleri açıkça etkinleştirdiğinde ve uygulama Google Play Store\'dan yüklenmediğinde kullanılır.
+</string>
+    <string name="permission_access_location">
+Bluetooth ve WiFi koşullu filtreleme özellikleri için gereklidir. Kullanıcı tanımlı kurallar için yakındaki Bluetooth cihazlarını ve WiFi ağlarını algılamak için kullanılır. Konum takibi veya veri toplama yapılmaz.
+</string>
+    <string name="permission_bluetooth_scan">
+Bluetooth koşullu filtreleme için gereklidir. Uygulamanın, bildirim kuralları için belirli Bluetooth cihazlarının ne zaman bağlandığını algılamasına olanak tanır. Veri toplanmaz veya iletilmez.
+</string>
+    <string name="permission_nearby_wifi_devices">
+Android 13+ üzerinde WiFi ağı koşullu filtreleme için gereklidir. Uygulamanın, kullanıcı tanımlı bildirim kuralları için WiFi ağı değişikliklerini algılamasına olanak tanır. Ağ verisi toplanmaz.
+</string>
+    <string name="permission_read_external_storage">
+Uygulama ayarlarını ve yapılandırma dosyalarını içe/dışa aktarmak için kullanılır. Kullanıcıların ayarlarını yedeklemesine ve geri yüklemesine olanak tanır. Kişisel verilere erişilmez.
+</string>
+    <string name="permission_needed">Bildirim Erişimi Gerekli</string>
+    <string name="permission_description">
+SpeakThat!, bildirimlerinizi sesli okuyabilmek için erişim iznine ihtiyaç duyar. Bu izin, uygulamanın çalışabilmesi için gereklidir.
+</string>
+    <string name="master_switch_battery_tip">
+💡 Pil tasarrufu için ihtiyaç duymadığınızda kapatın
+</string>
+    <string name="master_switch_battery_tip_no_emoji">Pil tasarrufu için ihtiyaç duymadığınızda kapatın</string>
+    <string name="open_settings">İzin Ayarları</string>
+    <string name="service_enabled">Bildirim Okuyucu: Etkin</string>
+    <string name="service_disabled">Bildirim Okuyucu: Devre Dışı</string>
+    <string name="show_history">Bildirim Geçmişini Göster</string>
+    <string name="settings">SpeakThat! Ayarları</string>
+    <string name="no_notifications">Görüntülenecek bildirim yok</string>
+    <string name="notification_history">Bildirim Geçmişi</string>
+    <string name="close">Kapat</string>
     <!-- Search Functionality -->
-    <string name="search_settings_hint">Search settings...</string>
-    <string name="no_search_results">No matching settings found</string>
+    <string name="search_settings_hint">Ayarları ara...</string>
+    <string name="no_search_results">Eşleşen ayar bulunamadı</string>
     <!-- Filter Settings -->
     <string-array name="blacklist_types">
-        <item>Block</item>
-        <item>Private</item>
+        <item>Engelle</item>
+        <item>Özel</item>
     </string-array>
     <!-- Cooldown Time Options -->
     <string-array name="cooldown_time_options">
-        <item>1 second</item>
-        <item>2 seconds</item>
-        <item>3 seconds</item>
-        <item>5 seconds</item>
-        <item>10 seconds</item>
-        <item>15 seconds</item>
-        <item>30 seconds</item>
-        <item>1 minute</item>
-        <item>2 minutes</item>
-        <item>5 minutes</item>
+        <item>1 saniye</item>
+        <item>2 saniye</item>
+        <item>3 saniye</item>
+        <item>5 saniye</item>
+        <item>10 saniye</item>
+        <item>15 saniye</item>
+        <item>30 saniye</item>
+        <item>1 dakika</item>
+        <item>2 dakika</item>
+        <item>5 dakika</item>
     </string-array>
-    <!-- Cooldown Time Values (corresponding to options above) -->
+    <!--
+     Cooldown Time Values (corresponding to options above)
+    -->
     <string-array name="cooldown_time_values">
         <item>1</item>
         <item>2</item>
@@ -54,413 +79,1676 @@
         <item>300</item>
     </string-array>
     <!-- Behavior Settings Dialogs -->
-    <string name="notification_behavior_dialog_title">Notification Behavior Options</string>
-    <string name="notification_behavior_dialog_message">Choose how SpeakThat handles multiple notifications:
-
-<b>ðŸ”„ Interrupt</b> - Stops current notification and reads new one immediately. Best for urgent notifications.
-
-<b>ðŸ“‹ Queue</b> - Finishes current notification, then reads new ones in order. Nothing gets missed.
-
-<b>â­ï¸ Skip</b> - Ignores new notifications while reading. Simple but you might miss important ones.
-
-<b>ðŸ§  Smart (Recommended)</b> - Priority apps interrupt, others queue. Perfect balance of urgency and completeness.
-
-Smart mode lets you choose which apps are urgent enough to interrupt (like calls, messages) while other apps wait their turn.</string>
-    <string name="custom_app_names_title">Custom App Names</string>
-    <string name="custom_app_names_description">Customize how app names are spoken in notifications</string>
-    <string name="add_custom_app_name">Add Custom App Name</string>
-    <string name="app_package_hint">App package name (e.g., com.twitter.android)</string>
-    <string name="custom_name_hint">Custom name (e.g., Twitter)</string>
-    <string name="custom_app_names_example">Example: X app reads as Twitter</string>
-    <string name="media_behavior_dialog_title">Media Behavior Options</string>
-    <string name="media_behavior_dialog_message">Choose how SpeakThat handles notifications while music/videos play:
-
-<b>ðŸŽµ Ignore</b> - Speaks over your media. Simple but can be disruptive.
-
-<b>â¸ï¸ Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow.
-
-<b>ðŸ”‰ Lower Audio (Recommended)</b> - Temporarily reduces media volume so you can hear both. Most natural experience.
-
-<b>ðŸ”‡ Silence</b> - Doesn\'t speak while media plays. Quiet but you might miss important notifications.
-
-Lower Audio works like a car radio - it ducks the music down when speaking, then brings it back up. Perfect for music lovers who still want notifications.</string>
-    <string name="shake_to_stop_dialog_title">Shake to Stop Feature</string>
-    <string name="shake_to_stop_dialog_message">Shake to Stop lets you instantly silence SpeakThat by shaking your device:
-
-<b>âœ¨ Why it\'s helpful:</b>
-â€¢ Stop embarrassing notifications in quiet places
-â€¢ Quick control when your hands are busy
-â€¢ Works even when screen is off
-â€¢ No fumbling for buttons
-
-<b>ðŸŽ¯ How it works:</b>
-â€¢ Shake your device firmly (like a dice shake)
-â€¢ Current notification stops immediately
-â€¢ Queued notifications are cleared
-â€¢ New notifications work normally
-
-<b>âš™ï¸ Customization:</b>
-â€¢ Adjust sensitivity for your preference
-â€¢ Test your shake strength with the meter
-â€¢ Works great for both gentle and vigorous shakers
-
-This feature is especially loved by people who get notifications during meetings, movies, or while driving.</string>
-    <string name="use_recommended">Use Recommended</string>
-    <string name="got_it">Got it</string>
+    <string name="notification_behavior_dialog_title">Bildirim Davranışı Seçenekleri</string>
+    <string name="notification_behavior_dialog_message">
+SpeakThat\'in birden fazla bildirimi nasıl yöneteceğini seçin:
+<b>🔄 Kes</b>
+- Mevcut bildirimi durdurur ve yenisini hemen okur. Acil bildirimler için en iyisidir.
+<b>📋 Sıraya Al</b>
+- Mevcut bildirimi bitirir, ardından yenilerini sırayla okur. Hiçbir şey kaçırılmaz.
+<b>⏭️ Atla</b>
+- Okuma sırasında yeni bildirimleri yok sayar. Basittir ama önemli olanları kaçırabilirsiniz.
+<b>🧠 Akıllı (Önerilen)</b>
+- Öncelikli uygulamalar araya girer, diğerleri sıraya alınır. Aciliyet ve bütünlük arasında mükemmel denge. Akıllı mod, hangi uygulamaların araya girecek kadar acil olduğunu (aramalar, mesajlar gibi) seçmenize olanak tanırken, diğer uygulamalar sıralarını bekler.
+</string>
+    <string name="custom_app_names_title">Özel Uygulama Adları</string>
+    <string name="custom_app_names_description">
+Bildirimlerde uygulama adlarının nasıl okunacağını özelleştirin
+</string>
+    <string name="add_custom_app_name">Özel Uygulama Adı Ekle</string>
+    <string name="app_package_hint">Uygulama paket adı (örn. com.twitter.android)</string>
+    <string name="custom_name_hint">Özel ad (örn. Twitter)</string>
+    <string name="custom_app_names_example">Örnek: X uygulaması, Twitter olarak okunur</string>
+    <string name="media_behavior_dialog_title">Medya Davranışı Seçenekleri</string>
+    <string name="media_behavior_dialog_message">
+Müzik/video oynatılırken SpeakThat\'in bildirimleri nasıl yöneteceğini seçin:
+<b>🎵 Yoksay</b>
+- Medyanızın üzerine konuşur. Basittir ama rahatsız edici olabilir.
+<b>⏸️ Duraklat</b>
+- Konuşurken medyayı tamamen duraklatır. Podcast\'ler için iyidir, ancak müzik akışını keser.
+<b>🔉 Sesi Kıs (Önerilen)</b>
+- Her ikisini de duyabilmeniz için medya sesini geçici olarak azaltır. En doğal deneyim.
+<b>🔇 Sessize Al</b>
+- Medya oynatılırken konuşmaz. Sessizdir ama önemli bildirimleri kaçırabilirsiniz. Sesi Kısma özelliği, araba radyosu gibi çalışır - konuşurken müziği kısar, sonra tekrar yükseltir. Bildirimleri duymak isteyen müzik severler için mükemmeldir.
+</string>
+    <string name="shake_to_stop_dialog_title">Sallayarak Durdurma Özelliği</string>
+    <string name="shake_to_stop_dialog_message">
+Sallayarak Durdurma, cihazınızı sallayarak SpeakThat\'i anında susturmanızı sağlar:
+<b>✨ Neden faydalı:</b>
+• Sessiz yerlerde utanç verici bildirimleri durdurun • Elleriniz meşgulken hızlı kontrol • Ekran kapalıyken bile çalışır • Düğmelerle uğraşmanıza gerek kalmaz
+<b>🎯 Nasıl çalışır:</b>
+• Cihazınızı sıkıca sallayın (zar sallar gibi) • Mevcut bildirim anında durur • Sıradaki bildirimler temizlenir • Yeni bildirimler normal şekilde çalışır
+<b>⚙️ Özelleştirme:</b>
+• Hassasiyeti tercihinize göre ayarlayın • Sallama gücünüzü gösterge ile test edin • Hem hafif hem de kuvvetli sallamalar için harika çalışır Bu özellik özellikle toplantılarda, filmlerde veya araba kullanırken bildirim alan kişiler tarafından sevilmektedir.
+</string>
+    <string name="use_recommended">Önerileni Kullan</string>
+    <string name="got_it">Anladım</string>
     <!-- Persistent/Silent Notification Filtering -->
-    <string name="persistent_notification_filtering_title">ðŸ”‡ Persistent/Silent Notification Filtering</string>
-    <string name="persistent_notification_filtering_description">Skip notifications that are persistent (ongoing) or silent (no sound/vibration)</string>
-    <string name="enable_persistent_filtering">Enable persistent/silent notification filtering</string>
-    <string name="persistent_filtering_help">ðŸ’¡ Persistent notifications are ongoing (like music controls, navigation, etc.) and silent notifications have no sound/vibration. This option helps reduce notification spam from background services.</string>
+    <string name="persistent_notification_filtering_title">Kalıcı/Sessiz Bildirim Filtreleme</string>
+    <string name="persistent_notification_filtering_description">
+Kalıcı (devam eden) veya sessiz (ses/titreşim olmayan) bildirimleri atlayın
+</string>
+    <string name="enable_persistent_filtering">Kalıcı/sessiz bildirim filtrelemeyi etkinleştir</string>
+    <string name="persistent_filtering_help">
+💡 Kalıcı bildirimler devam edenlerdir (müzik kontrolleri, navigasyon vb.) ve sessiz bildirimlerin sesi/titreşimi yoktur. Bu seçenek, arka plan hizmetlerinden gelen bildirim spam\'ini azaltmaya yardımcı olur.
+</string>
     <!-- Individual Persistent Filtering Categories -->
-    <string name="filter_persistent_notifications">Filter persistent notifications</string>
-    <string name="filter_silent_notifications">Filter silent notifications</string>
-    <string name="filter_foreground_services">Filter foreground service notifications</string>
-    <string name="filter_low_priority">Filter low priority notifications</string>
-    <string name="filter_system_notifications">Filter system notifications</string>
+    <string name="filter_persistent_notifications">Kalıcı bildirimleri filtrele</string>
+    <string name="filter_silent_notifications">Sessiz bildirimleri filtrele</string>
+    <string name="filter_foreground_services">Ön plan hizmeti bildirimlerini filtrele</string>
+    <string name="filter_low_priority">Düşük öncelikli bildirimleri filtrele</string>
+    <string name="filter_system_notifications">Sistem bildirimlerini filtrele</string>
     <!-- Category Descriptions -->
-    <string name="persistent_notifications_desc">Ongoing notifications that don\'t auto-dismiss (music controls, navigation)</string>
-    <string name="silent_notifications_desc">Notifications with no sound or vibration</string>
-    <string name="foreground_services_desc">Notifications from ongoing background services</string>
-    <string name="low_priority_desc">Notifications with minimum or low priority level</string>
-    <string name="system_notifications_desc">Notifications from system apps (Android, Google services)</string>
+    <string name="persistent_notifications_desc">
+Otomatik olarak kapanmayan devam eden bildirimler (müzik kontrolleri, navigasyon)
+</string>
+    <string name="silent_notifications_desc">Ses veya titreşimi olmayan bildirimler</string>
+    <string name="foreground_services_desc">
+Devam eden arka plan hizmetlerinden gelen bildirimler
+</string>
+    <string name="low_priority_desc">
+Minimum veya düşük öncelik seviyesine sahip bildirimler
+</string>
+    <string name="system_notifications_desc">
+Sistem uygulamalarından gelen bildirimler (Android, Google hizmetleri)
+</string>
     <!-- Wave to Stop Feature -->
-    <string name="wave_to_stop_dialog_title">Wave to Stop Feature</string>
-    <string name="wave_to_stop_dialog_message">Wave to Stop lets you instantly silence SpeakThat by waving your hand in front of the device:
-
-<b>âœ¨ Why it\'s helpful:</b>
-â€¢ Perfect for users who can\'t shake their device
-â€¢ Great for phones on desks or mounts
-â€¢ Works with one hand
-â€¢ No physical device movement needed
-â€¢ Accessibility-friendly alternative to shake
-
-<b>ðŸŽ¯ How it works:</b>
-â€¢ Wave your hand in front of the device (like a magic gesture)
-â€¢ Uses the proximity sensor to detect hand movement
-â€¢ Current notification stops immediately
-â€¢ Queued notifications are cleared
-â€¢ New notifications work normally
-
-<b>âš™ï¸ Customization:</b>
-â€¢ Adjust sensitivity for your preference
-â€¢ Test your wave detection with the meter
-â€¢ Works great for different hand sizes and distances
-
-This feature is especially useful for accessibility, desk users, and anyone who prefers gesture control over physical movement.</string>
+    <string name="wave_to_stop_dialog_title">El Sallayarak Durdurma Özelliği</string>
+    <string name="wave_to_stop_dialog_message">
+El Sallayarak Durdurma, elinizi cihazın önünde sallayarak SpeakThat\'i anında susturmanızı sağlar:
+<b>✨ Neden faydalı:</b>
+• Cihazını sallayamayan kullanıcılar için mükemmel • Masada veya tutucuda duran telefonlar için harika • Tek elle çalışır • Cihazı fiziksel olarak hareket ettirmeye gerek yok • Sallamaya erişilebilirlik dostu bir alternatif
+<b>🎯 Nasıl çalışır:</b>
+• Elinizi cihazın önünde sallayın (sihirli bir hareket gibi) • El hareketini algılamak için yakınlık sensörünü kullanır • Mevcut bildirim anında durur • Sıradaki bildirimler temizlenir • Yeni bildirimler normal şekilde çalışır
+<b>⚙️ Özelleştirme:</b>
+• Hassasiyeti tercihinize göre ayarlayın • El sallama algılamanızı gösterge ile test edin • Farklı el boyutları ve mesafeler için harika çalışır Bu özellik özellikle erişilebilirlik, masa başı kullanıcıları ve fiziksel hareket yerine jest kontrolünü tercih eden herkes için kullanışlıdır.
+</string>
     <!-- About Page -->
-    <string name="about">About</string>
-    <string name="about_description_title">About SpeakThat!</string>
-    <string name="about_features_title">Key Features</string>
-    <string name="about_developer_title">Developer</string>
-    <string name="about_license_title">License</string>
-    <string name="version_format">Version %s</string>
-    <string name="version_format_with_variant" formatted="false">Version %1$s (%2$s)</string>
+    <string name="about">Hakkında</string>
+    <string name="about_description_title">SpeakThat! Hakkında</string>
+    <string name="about_features_title">Temel Özellikler</string>
+    <string name="about_developer_title">Geliştirici</string>
+    <string name="about_license_title">Lisans</string>
+    <string name="version_format">Sürüm %s</string>
+    <string name="version_format_with_variant" formatted="false">Sürüm %1$s (%2$s)</string>
     <!-- Store Update Dialog -->
-    <string name="store_update_dialog_title">Updates via App Store</string>
-    <string name="store_update_dialog_message">This version of SpeakThat! receives updates through your app store (F-Droid, Google Play Store, etc.).</string>
-    <string name="store_update_dialog_info">â€¢ Updates are automatically handled by your app store\nâ€¢ You\'ll receive notifications when updates are available\nâ€¢ No manual download or installation required</string>
-    <string name="store_update_dialog_help_title">Need the auto-update version?</string>
-    <string name="store_update_dialog_help_message">If you want automatic updates directly from GitHub, you can download the GitHub version instead. This version is identical but includes auto-update functionality.</string>
-    <string name="store_update_dialog_visit_github">Visit GitHub</string>
-    <string name="store_update_dialog_got_it">Got it</string>
-    <string name="app_description">SpeakThat! is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="app_features">â€¢ Real-time notification reading\nâ€¢ Customizable voice settings\nâ€¢ Smart notification filtering\nâ€¢ App-specific controls\nâ€¢ Media-aware behavior\nâ€¢ Notification history\nâ€¢ Shake/Wave to stop\nâ€¢ Custom speech formatting\nâ€¢ Dark/Light theme support\nâ€¢ Conditional rules for advanced logic and schedules\nâ€¢ Fully ad-free and offline functionality</string>
-    <string name="developer_info">Developed with â¤ï¸ by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day.\n\nSpeakThat! was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers.\n\nThis project was accelerated by AI-assisted programming.</string>
-    <string name="license_info">This project is open source and available under the GPL-3.0 License.\n\nYou can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
-    <string name="read_about_app">Read About App</string>
-    <string name="stop_reading">Stop Reading</string>
-    <!-- TTS-specific strings (emoji-free and speech-optimized) -->
-    <string name="tts_app_intro">Welcome to SpeakThat!</string>
-    <string name="tts_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="tts_features_intro">Key features include:</string>
-    <string name="tts_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and fully ad-free, offline functionality.</string>
-    <string name="tts_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
-    <string name="tts_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
-    <string name="tts_thank_you">Thank you for using SpeakThat!</string>
+    <string name="store_update_dialog_title">Uygulama Mağazası Üzerinden Güncellemeler</string>
+    <string name="store_update_dialog_message">
+SpeakThat!\'in bu sürümü, güncellemeleri uygulama mağazanız (F-Droid, Google Play Store vb.) üzerinden alır.
+</string>
+    <string name="store_update_dialog_info">
+• Güncellemeler uygulama mağazanız tarafından otomatik olarak yönetilir\n• Güncellemeler mevcut olduğunda bildirim alırsınız\n• Manuel indirme veya kurulum gerekmez
+</string>
+    <string name="store_update_dialog_help_title">Otomatik güncelleme sürümüne mi ihtiyacınız var?</string>
+    <string name="store_update_dialog_help_message">
+Doğrudan GitHub\'dan otomatik güncellemeler istiyorsanız, bunun yerine GitHub sürümünü indirebilirsiniz. Bu sürüm aynıdır ancak otomatik güncelleme işlevselliğini içerir.
+</string>
+    <string name="store_update_dialog_visit_github">GitHub\'ı Ziyaret Et</string>
+    <string name="store_update_dialog_got_it">Anladım</string>
+    <string name="app_description">
+SpeakThat!, metin okuma teknolojisini kullanarak bildirimlerinizi sesli olarak duyuran açık kaynaklı bir Android Bildirim Okuyucusudur. Eller serbest kullanım, erişilebilirlik ve çoklu görev sırasında bilgi sahibi olmak için mükemmeldir.
+</string>
+    <string name="app_features">
+• Gerçek zamanlı bildirim okuma\n• Özelleştirilebilir ses ayarları\n• Akıllı bildirim filtreleme\n• Uygulamaya özel kontroller\n• Medyaya duyarlı davranış\n• Bildirim geçmişi\n• Sallayarak/El Sallayarak durdurma\n• Özel konuşma formatlama\n• Koyu/Açık tema desteği\n• Gelişmiş mantık ve zamanlamalar için koşullu kurallar\n• Tamamen reklamsız ve çevrimdışı işlevsellik
+</string>
+    <string name="developer_info">
+İngiltere\'den, 12 yılı aşkın süredir her gün bildirim okuyucularını test edip kullanan tek bir geliştirici olan Mitchi tarafından ❤️ ile geliştirildi.\n\nSpeakThat!, ilk olarak DYNA Logix tarafından geliştirilen Touchless Notifications\'tan ilham aldı ve özelleştirilebilir bildirim okuyucularının mirasını devam ettirmeyi amaçlıyor.\n\nBu proje, yapay zeka destekli programlama ile hızlandırıldı.
+</string>
+    <string name="license_info">
+Bu proje açık kaynaklıdır ve GPL-3.0 Lisansı altında mevcuttur.\n\nLisans metninin tamamını ve kaynak kodunu GitHub\'da görüntüleyebilirsiniz. Katkı ve geri bildirimleriniz memnuniyetle karşılanır!
+</string>
+    <string name="read_about_app">Uygulama Hakkında Oku</string>
+    <string name="stop_reading">Okumayı Durdur</string>
+    <!--
+     TTS-specific strings (emoji-free and speech-optimized)
+    -->
+    <string name="tts_app_intro">SpeakThat\'e hoş geldiniz!</string>
+    <string name="tts_description">
+SpeakThat, metin okuma teknolojisini kullanarak bildirimlerinizi sesli olarak duyuran açık kaynaklı bir Android Bildirim Okuyucusudur. Eller serbest kullanım, erişilebilirlik ve çoklu görev sırasında bilgi sahibi olmak için mükemmeldir.
+</string>
+    <string name="tts_features_intro">Temel özellikler şunları içerir:</string>
+    <string name="tts_features">
+Gerçek zamanlı bildirim okuma, özelleştirilebilir ses ayarları, akıllı bildirim filtreleme, uygulamaya özel kontroller, medyaya duyarlı davranış, bildirim geçmişi takibi, Sallayarak Durdurma ve El Sallayarak Durdurma, özel konuşma formatlama, koyu mod ve açık mod desteği, gelişmiş mantık ve zamanlamalar için koşullu kurallar ve tamamen reklamsız, çevrimdışı işlevsellik.
+</string>
+    <string name="tts_developer">
+İngiltere\'den, 12 yılı aşkın süredir her gün bildirim okuyucularını test edip kullanan tek bir geliştirici olan Mitchi tarafından sevgiyle geliştirildi. SpeakThat, ilk olarak DYNA Logix tarafından geliştirilen Touchless Notifications\'tan ilham aldı ve özelleştirilebilir bildirim okuyucularının mirasını devam ettirmeyi amaçlıyor. Bu proje, Yapay Zeka destekli programlama ile hızlandırıldı.
+</string>
+    <string name="tts_license">
+Bu proje açık kaynaklıdır ve GPL-3.0 Lisansı altında mevcuttur. Lisans metninin tamamını ve kaynak kodunu GitHub\'da görüntüleyebilirsiniz. Katkı ve geri bildirimleriniz memnuniyetle karşılanır!
+</string>
+    <string name="tts_thank_you">SpeakThat kullandığınız için teşekkür ederiz!</string>
     <!-- Update System -->
-    <string name="check_for_updates">Check for Updates</string>
-    <string name="update_checker">Update Checker</string>
-    <string name="checking_for_updates">Checking for updates...</string>
-    <string name="update_available">Update Available: %s</string>
-    <string name="no_update_available">No Update Available</string>
-    <string name="app_up_to_date">Your app is up to date!</string>
-    <string name="update_info">Version: %1$s\nSize: %2$s\nReleased: %3$s</string>
-    <string name="download_update">Download Update</string>
-    <string name="download_confirmation">Download version %s? This will use mobile data if not on WiFi.</string>
-    <string name="downloading_update">Downloading update...</string>
-    <string name="downloading_update_progress">Downloading update... %d%%</string>
-    <string name="download_complete">Download complete!</string>
-    <string name="install_update">Install Update</string>
-    <string name="view_release_notes">View Release Notes</string>
-    <string name="release_notes">Release Notes</string>
-    <string name="no_release_notes">No release notes available</string>
-    <string name="check_again">Check Again</string>
-    <string name="update_check_failed">Failed to check for updates</string>
-    <string name="download_failed">Download failed</string>
-    <string name="installation_failed">Installation failed</string>
-    <string name="invalid_apk_signature">Invalid APK signature</string>
-    <string name="signature_verification_failed">Signature verification failed</string>
-    <string name="update_privacy_notice">Privacy: Update checks only verify version numbers. No personal data is collected or transmitted.</string>
-    <string name="download">Download</string>
-    <string name="cancel">Cancel</string>
-    <string name="ok">OK</string>
+    <string name="check_for_updates">Güncellemeleri Kontrol Et</string>
+    <string name="update_checker">Güncelleme Denetleyicisi</string>
+    <string name="checking_for_updates">Güncellemeler kontrol ediliyor...</string>
+    <string name="update_available">Güncelleme Mevcut: %s</string>
+    <string name="no_update_available">Güncelleme Mevcut Değil</string>
+    <string name="app_up_to_date">Uygulamanız güncel!</string>
+    <string name="update_info">Sürüm: %1$s\nBoyut: %2$s\nYayınlanma: %3$s</string>
+    <string name="download_update">Güncellemeyi İndir</string>
+    <string name="download_confirmation">
+%s sürümü indirilsin mi? WiFi\'ye bağlı değilseniz mobil veri kullanılacaktır.
+</string>
+    <string name="downloading_update">Güncelleme indiriliyor...</string>
+    <string name="downloading_update_progress">Güncelleme indiriliyor... %d%%</string>
+    <string name="download_complete">İndirme tamamlandı!</string>
+    <string name="install_update">Güncellemeyi Yükle</string>
+    <string name="view_release_notes">Sürüm Notlarını Görüntüle</string>
+    <string name="release_notes">Sürüm Notları</string>
+    <string name="no_release_notes">Sürüm notu mevcut değil</string>
+    <string name="check_again">Tekrar Kontrol Et</string>
+    <string name="update_check_failed">Güncellemeler kontrol edilemedi</string>
+    <string name="download_failed">İndirme başarısız oldu</string>
+    <string name="installation_failed">Yükleme başarısız oldu</string>
+    <string name="invalid_apk_signature">Geçersiz APK imzası</string>
+    <string name="signature_verification_failed">İmza doğrulaması başarısız oldu</string>
+    <string name="update_privacy_notice">
+Gizlilik: Güncelleme kontrolleri yalnızca sürüm numaralarını doğrular. Kişisel veri toplanmaz veya iletilmez.
+</string>
+    <string name="download">İndir</string>
+    <string name="cancel">İptal</string>
+    <string name="ok">Tamam</string>
     <!-- Update Settings -->
-    <string name="auto_update_settings">Auto-Update Settings</string>
-    <string name="check_for_updates_auto">Check for Updates</string>
-    <string name="check_for_updates_auto_desc">Automatically check for app updates when you open the app</string>
-    <string name="check_frequency">Check Frequency</string>
-    <string name="check_frequency_desc">How often should the app check for updates?</string>
-    <string name="update_daily">Daily</string>
-    <string name="update_weekly">Weekly (recommended)</string>
-    <string name="update_monthly">Monthly</string>
-    <string name="update_never">Never (manual only)</string>
+    <string name="auto_update_settings">Otomatik Güncelleme Ayarları</string>
+    <string name="check_for_updates_auto">Güncellemeleri Kontrol Et</string>
+    <string name="check_for_updates_auto_desc">
+Uygulamayı açtığınızda otomatik olarak uygulama güncellemelerini kontrol et
+</string>
+    <string name="check_frequency">Kontrol Sıklığı</string>
+    <string name="check_frequency_desc">Uygulama ne sıklıkla güncelleme kontrolü yapmalı?</string>
+    <string name="update_daily">Günlük (önerilen)</string>
+    <string name="update_weekly">Haftalık</string>
+    <string name="update_monthly">Aylık</string>
+    <string name="update_never">Asla (sadece manuel)</string>
     <!-- TTS Template Strings (for improved localization) -->
-    <!-- These are complete sentence templates with placeholders for proper localization -->
-    <string name="tts_template_notified_you">{app} notified you: {content}</string>
-    <string name="tts_template_reported">{app} reported: {content}</string>
-    <string name="tts_template_saying">Notification from {app}, saying {content}</string>
-    <string name="tts_template_alerts_you">{app} alerts you: {content}</string>
-    <string name="tts_template_update_from">Update from {app}: {content}</string>
-    <string name="tts_template_notification">{app} notification: {content}</string>
-    <string name="tts_template_new_notification">New notification: {app}: {content}</string>
-    <string name="tts_template_new_from">New from {app}: {content}</string>
-    <string name="tts_template_said">{app} said: {content}</string>
-    <string name="tts_template_updated_you">{app} updated you: {content}</string>
-    <string name="tts_template_new_notification_from">New notification from {app}: saying: {content}</string>
-    <string name="tts_template_new_update_from">New update from {app}: {content}</string>
-    <string name="tts_template_notification_from">Notification from {app}: {content}</string>
-    <string name="tts_template_says">{app} says: {content}</string>
-    <string name="tts_template_private_notification">You received a private notification from {app}</string>
-    <!-- TTS Context Templates - Complete sentences for different app contexts -->
+    <!--
+     These are complete sentence templates with placeholders for proper localization
+    -->
+    <string name="tts_template_notified_you">{app} bildirdi: {content}</string>
+    <string name="tts_template_reported">{app} rapor etti: {content}</string>
+    <string name="tts_template_saying">{app} uygulamasından bildirim, diyor ki: {content}</string>
+    <string name="tts_template_alerts_you">{app} sizi uyarıyor: {content}</string>
+    <string name="tts_template_update_from">{app} uygulamasından güncelleme: {content}</string>
+    <string name="tts_template_notification">{app} bildirimi: {content}</string>
+    <string name="tts_template_new_notification">Yeni bildirim: {app}: {content}</string>
+    <string name="tts_template_new_from">{app} uygulamasından yeni: {content}</string>
+    <string name="tts_template_said">{app} dedi ki: {content}</string>
+    <string name="tts_template_updated_you">{app} sizi bilgilendirdi: {content}</string>
+    <string name="tts_template_new_notification_from">
+{app} uygulamasından yeni bildirim, diyor ki: {content}
+</string>
+    <string name="tts_template_new_update_from">{app} uygulamasından yeni güncelleme: {content}</string>
+    <string name="tts_template_notification_from">{app} uygulamasından bildirim: {content}</string>
+    <string name="tts_template_says">{app} diyor ki: {content}</string>
+    <string name="tts_template_private_notification">{app} uygulamasından özel bir bildirim aldınız</string>
+    <!--
+     TTS Context Templates - Complete sentences for different app contexts
+    -->
     <!-- About Page TTS -->
-    <string name="tts_about_intro">Welcome to SpeakThat!</string>
-    <string name="tts_about_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="tts_about_features_intro">Key features include:</string>
-    <string name="tts_about_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and full ad-free, offline functionality.</string>
-    <string name="tts_about_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
-    <string name="tts_about_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
-    <string name="tts_about_thank_you">Thank you for using SpeakThat!</string>
+    <string name="tts_about_intro">SpeakThat\'e hoş geldiniz!</string>
+    <string name="tts_about_description">
+SpeakThat, metin okuma teknolojisini kullanarak bildirimlerinizi sesli olarak duyuran açık kaynaklı bir Android Bildirim Okuyucusudur. Eller serbest kullanım, erişilebilirlik ve çoklu görev sırasında bilgi sahibi olmak için mükemmeldir.
+</string>
+    <string name="tts_about_features_intro">Temel özellikler şunları içerir:</string>
+    <string name="tts_about_features">
+Gerçek zamanlı bildirim okuma, özelleştirilebilir ses ayarları, akıllı bildirim filtreleme, uygulamaya özel kontroller, medyaya duyarlı davranış, bildirim geçmişi takibi, Sallayarak Durdurma ve El Sallayarak Durdurma, özel konuşma formatlama, koyu mod ve açık mod desteği, gelişmiş mantık ve zamanlamalar için koşullu kurallar ve tamamen reklamsız, çevrimdışı işlevsellik.
+</string>
+    <string name="tts_about_developer">
+İngiltere\'den, 12 yılı aşkın süredir her gün bildirim okuyucularını test edip kullanan tek bir geliştirici olan Mitchi tarafından sevgiyle geliştirildi. SpeakThat, ilk olarak DYNA Logix tarafından geliştirilen Touchless Notifications\'tan ilham aldı ve özelleştirilebilir bildirim okuyucularının mirasını devam ettirmeyi amaçlıyor. Bu proje, Yapay Zeka destekli programlama ile hızlandırıldı.
+</string>
+    <string name="tts_about_license">
+Bu proje açık kaynaklıdır ve GPL-3.0 Lisansı altında mevcuttur. Lisans metninin tamamını ve kaynak kodunu GitHub\'da görüntüleyebilirsiniz. Katkı ve geri bildirimleriniz memnuniyetle karşılanır!
+</string>
+    <string name="tts_about_thank_you">SpeakThat kullandığınız için teşekkür ederiz!</string>
     <!-- Voice Settings Test -->
-    <string name="tts_voice_test">This is how your notifications will sound with these voice settings.</string>
+    <string name="tts_voice_test">
+Bildirimleriniz bu ses ayarlarıyla böyle duyulacak.
+</string>
     <!-- Onboarding TTS -->
-    <string name="tts_onboarding_welcome">Welcome to SpeakThat! Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.</string>
-    <string name="tts_onboarding_permission">SpeakThat needs permission to read your notifications aloud. Everything stays on your device and you control what gets read.</string>
-    <string name="tts_onboarding_privacy">Your privacy matters. You control exactly what gets read aloud. Shake your phone to stop any announcement instantly. Everything stays on your device.</string>
-    <string name="tts_onboarding_filters">Let\'s set up some basic privacy filters to get you started. SpeakThat features a powerful filtering system that allows you to choose what gets read and what doesn\'t.</string>
-    <string name="tts_onboarding_apps">Type the name of an app you want me to never read notifications from. Common examples include banking apps, medical apps, and dating apps.</string>
-    <string name="tts_onboarding_words">Type words or phrases that you want me to never read notifications containing. Common examples include password, PIN, credit card, and medical terms.</string>
-    <string name="tts_onboarding_complete">SpeakThat is ready to help you stay connected while keeping your eyes free! You can add more filters anytime in the app settings.</string>
+    <string name="tts_onboarding_language_theme">
+SpeakThat\'e başlamak için tercih ettiğiniz dili ve temayı seçin.
+</string>
+    <string name="tts_onboarding_welcome">
+SpeakThat\'e hoş geldiniz! Ekranınıza bakmadan bağlantıda kalın. Telefonunuz bildirimleri sesli okuyacak, böylece siz de önemli olan şeylere odaklanabilirsiniz.
+</string>
+    <string name="tts_onboarding_permission">
+SpeakThat\'in bildirimlerinizi sesli okumak için izne ihtiyacı var. Her şey cihazınızda kalır ve neyin okunacağını siz kontrol edersiniz.
+</string>
+    <string name="tts_onboarding_privacy">
+Gizliliğiniz önemlidir. Neyin sesli okunacağını tam olarak siz kontrol edersiniz. Herhangi bir anonsu anında durdurmak için telefonunuzu sallayın. Her şey cihazınızda kalır.
+</string>
+    <string name="tts_onboarding_filters">
+Başlamanız için bazı temel gizlilik filtreleri ayarlayalım. SpeakThat, neyin okunup neyin okunmayacağını seçmenize olanak tanıyan güçlü bir filtreleme sistemine sahiptir.
+</string>
+    <string name="tts_onboarding_apps">
+Bildirimlerini asla okumamı istemediğiniz bir uygulamanın adını yazın. Yaygın örnekler arasında bankacılık uygulamaları, tıbbi uygulamalar ve flört uygulamaları bulunur.
+</string>
+    <string name="tts_onboarding_words">
+İçeren bildirimleri asla okumamı istemediğiniz kelimeleri veya ifadeleri yazın. Yaygın örnekler arasında şifre, PIN, kredi kartı ve tıbbi terimler bulunur.
+</string>
+    <string name="tts_onboarding_rules">
+Durumunuza göre bildirimlerin ne zaman okunacağını otomatik olarak kontrol eden akıllı kurallar oluşturun. Örneğin, yalnızca kulaklık bağlıyken bildirimleri oku veya ekran açıkken bildirimleri atla.
+</string>
+    <string name="tts_onboarding_complete">
+SpeakThat, gözlerinizi serbest bırakarak bağlantıda kalmanıza yardımcı olmaya hazır! Uygulama ayarlarından istediğiniz zaman daha fazla filtre ekleyebilirsiniz.
+</string>
     <!-- Behavior Settings Speech Format Templates -->
-    <string name="tts_behavior_default">Default format</string>
+    <string name="tts_behavior_default">Varsayılan format</string>
     <string name="tts_behavior_minimal">Minimal format</string>
-    <string name="tts_behavior_formal">Formal format</string>
-    <string name="tts_behavior_casual">Casual format</string>
-    <string name="tts_behavior_time_aware">Time aware format</string>
-    <string name="tts_behavior_content_only">Content only format</string>
-    <string name="tts_behavior_app_only">App only format</string>
-    <string name="tts_behavior_varied">Varied format</string>
-    <string name="tts_behavior_custom">Custom format</string>
+    <string name="tts_behavior_formal">Resmi format</string>
+    <string name="tts_behavior_casual">Günlük format</string>
+    <string name="tts_behavior_time_aware">Zamana duyarlı format</string>
+    <string name="tts_behavior_content_only">Sadece içerik formatı</string>
+    <string name="tts_behavior_app_only">Sadece uygulama formatı</string>
+    <string name="tts_behavior_varied">Değişken format</string>
+    <string name="tts_behavior_custom">Özel format</string>
     <!-- Speech Format Preset Templates -->
-    <string name="tts_format_default">{app} notified you: {content}</string>
+    <string name="tts_format_default">{app} bildirdi: {content}</string>
     <string name="tts_format_minimal">{app}: {content}</string>
-    <string name="tts_format_formal">Notification from {app}: {content}</string>
-    <string name="tts_format_casual">{app} says: {content}</string>
-    <string name="tts_format_time_aware">{app} at {time}: {content}</string>
+    <string name="tts_format_formal">{app} uygulamasından bildirim: {content}</string>
+    <string name="tts_format_casual">{app} diyor ki: {content}</string>
+    <string name="tts_format_time_aware">{app}, saat {time}: {content}</string>
     <string name="tts_format_content_only">{content}</string>
     <string name="tts_format_app_only">{app}</string>
-    <string name="tts_format_varied">VARIED</string>
-    <string name="tts_format_custom">CUSTOM</string>
+    <string name="tts_format_varied">DEĞİŞKEN</string>
+    <string name="tts_format_custom">ÖZEL</string>
     <!-- Rule Builder Templates -->
-    <string name="template_selection_title">Choose a Template</string>
-    <string name="template_selection_description">Select a pre-configured rule template to get started quickly, or create a custom rule from scratch.</string>
-    <string name="create_custom_rule">Create Custom Rule</string>
+    <string name="template_selection_title">Bir Şablon Seçin</string>
+    <string name="template_selection_description">
+Hızlı bir başlangıç için önceden yapılandırılmış bir kural şablonu seçin veya sıfırdan özel bir kural oluşturun.
+</string>
+    <string name="create_custom_rule">Özel Kural Oluştur</string>
     <!-- Template Names -->
-    <string name="template_headphones_only_name">Bluetooth Headphones</string>
-    <string name="template_headphones_only_description">Select your Bluetooth headphones, and notifications will ONLY be read when they are connected to your phone</string>
-    <string name="template_time_schedule_name">Quiet Hours</string>
-    <string name="template_time_schedule_description">Select two times you want SpeakThat to remain silent between</string>
-    <string name="template_screen_off_name">Only when Screen Off</string>
-    <string name="template_screen_off_description">Notifications will only be read if your screen is off</string>
-    <string name="template_home_network_name">Only on Home WiFi</string>
-    <string name="template_home_network_description">Enter your Home WiFi network and notifications will only be read when you\'re connected to it</string>
+    <string name="template_headphones_only_name">Bluetooth Kulaklık</string>
+    <string name="template_headphones_only_description">
+Bluetooth kulaklığınızı seçin, bildirimler SADECE telefonunuza bağlıyken okunacaktır
+</string>
+    <string name="template_time_schedule_name">Sessiz Saatler</string>
+    <string name="template_time_schedule_description">
+SpeakThat\'in sessiz kalmasını istediğiniz iki zaman dilimini seçin
+</string>
+    <string name="template_screen_off_name">Sadece Ekran Kapalıyken</string>
+    <string name="template_screen_off_description">Bildirimler sadece ekranınız kapalıysa okunacaktır</string>
+    <string name="template_home_network_name">Sadece Ev WiFi Ağına Bağlıyken</string>
+    <string name="template_home_network_description">
+Ev WiFi ağınızı girin, bildirimler sadece bu ağa bağlıyken okunacaktır
+</string>
     <!-- Template Trigger Descriptions -->
-    <string name="template_trigger_headphones_disconnected">When Bluetooth headphones are disconnected</string>
-    <string name="template_trigger_time_between">Between 10:00 PM and 8:00 AM</string>
-    <string name="template_trigger_screen_on">When screen is turned on</string>
-    <string name="template_trigger_not_home_wifi">When not connected to Home WiFi</string>
+    <string name="template_trigger_headphones_disconnected">Bluetooth kulaklık bağlantısı kesildiğinde</string>
+    <string name="template_trigger_time_between">22:00 ile 08:00 arasında</string>
+    <string name="template_trigger_screen_on">Ekran açıldığında</string>
+    <string name="template_trigger_not_home_wifi">Ev WiFi ağına bağlı değilken</string>
     <!-- Template Action Descriptions -->
-    <string name="template_action_skip_notification">Don\'t read notifications</string>
+    <string name="template_action_skip_notification">Bildirimleri okuma</string>
     <!-- Rule Natural Language Templates -->
-    <string name="rule_format_when_trigger_will_action">When %1$s, %2$s will %3$s</string>
-    <string name="rule_format_when_trigger_will_action_unless_exception">When %1$s, %2$s will %3$s unless %4$s</string>
-    <string name="rule_format_when_trigger_will_action_unless_exceptions">When %1$s, %2$s will %3$s unless %4$s</string>
+    <string name="rule_format_when_trigger_will_action">%1$s olduğunda, %2$s, %3$s yapacak</string>
+    <string name="rule_format_when_trigger_will_action_unless_exception">%1$s olduğunda, %2$s, %4$s olmadıkça %3$s yapacak</string>
+    <string name="rule_format_when_trigger_will_action_unless_exceptions">%1$s olduğunda, %2$s, %4$s olmadıkça %3$s yapacak</string>
     <!-- Rule Component Descriptions -->
-    <string name="rule_trigger_bluetooth_connected">Bluetooth device is connected</string>
-    <string name="rule_trigger_bluetooth_disconnected">Bluetooth device is disconnected</string>
-    <string name="rule_trigger_screen_on">screen is on</string>
-    <string name="rule_trigger_screen_off">screen is off</string>
-    <string name="rule_trigger_time_between">time is between %1$s and %2$s</string>
-    <string name="rule_trigger_wifi_connected">connected to %1$s</string>
-    <string name="rule_trigger_wifi_disconnected">not connected to %1$s</string>
-    <string name="rule_trigger_multiple">multiple conditions are met</string>
-    <string name="rule_action_skip_notification">skip reading notifications</string>
-    <string name="rule_action_enable_app_filter">enable app filtering for %1$s</string>
-    <string name="rule_action_disable_app_filter">disable app filtering for %1$s</string>
-    <string name="rule_action_change_voice_settings">change voice settings</string>
-    <string name="rule_action_multiple">perform multiple actions</string>
-    <string name="rule_exception_bluetooth_connected">Bluetooth device is connected</string>
-    <string name="rule_exception_bluetooth_disconnected">Bluetooth device is disconnected</string>
-    <string name="rule_exception_screen_on">screen is on</string>
-    <string name="rule_exception_screen_off">screen is off</string>
-    <string name="rule_exception_time_between">time is between %1$s and %2$s</string>
-    <string name="rule_exception_wifi_connected">connected to %1$s</string>
-    <string name="rule_exception_wifi_disconnected">not connected to %1$s</string>
-    <string name="rule_exception_multiple">multiple exceptions apply</string>
+    <string name="rule_trigger_bluetooth_connected">Bluetooth cihazı bağlandığında</string>
+    <string name="rule_trigger_bluetooth_disconnected">Bluetooth cihazının bağlantısı kesildiğinde</string>
+    <string name="rule_trigger_screen_on">ekran açıkken</string>
+    <string name="rule_trigger_screen_off">ekran kapalıyken</string>
+    <string name="rule_trigger_time_between">zaman %1$s ile %2$s arasındayken</string>
+    <string name="rule_trigger_wifi_connected">%1$s ağına bağlıyken</string>
+    <string name="rule_trigger_wifi_disconnected">%1$s ağına bağlı değilken</string>
+    <string name="rule_trigger_wifi_connected_android15">
+%1$s ağına bağlıyken (Android 15+: herhangi bir WiFi)
+</string>
+    <string name="rule_trigger_wifi_disconnected_android15">
+%1$s ağına bağlı değilken (Android 15+: herhangi bir WiFi)
+</string>
+    <!-- WiFi Compatibility Warning -->
+    <string name="wifi_compatibility_warning_title">WiFi Uyumluluğu Notu</string>
+    <string name="wifi_compatibility_warning_message">
+Bazı Android sürümleri, uygulamaların belirli WiFi ağ adlarını algılamasını engelleyen güvenlik kısıtlamalarına sahiptir. SpeakThat şu anda WiFi ağınızı algılayabilse de, bu işlevsellik her durumda (özellikle uygulama arka plandayken) güvenilir bir şekilde çalışmayabilir.\n\nAğ adı (SSID) algılaması başarısız olursa kural, WiFi bağlantı durumunu algılamaya dönecektir, ancak tam olarak beklendiği gibi çalışmayabilir.\n\nAncak bunu düzgün bir şekilde uygulamak imkansız değil. Eğer benden daha iyi bir geliştiriciyseniz, lütfen GitHub\'da katkıda bulunun.
+</string>
+    <string name="wifi_compatibility_warning_create_anyway">Yine de Kural Oluştur</string>
+    <string name="wifi_compatibility_warning_add_anyway">Yine de Kural Ekle</string>
+    <string name="wifi_compatibility_warning_nevermind">Vazgeç</string>
+    <string name="wifi_compatibility_warning_open_github">GitHub\'ı Aç</string>
+    <string name="rule_trigger_multiple">birden fazla koşul karşılandığında</string>
+    <string name="rule_action_skip_notification">bildirimleri okumayı atla</string>
+    <string name="rule_action_enable_app_filter">%1$s için uygulama filtrelemeyi etkinleştir</string>
+    <string name="rule_action_disable_app_filter">%1$s için uygulama filtrelemeyi devre dışı bırak</string>
+    <string name="rule_action_change_voice_settings">ses ayarlarını değiştir</string>
+    <string name="rule_action_multiple">birden fazla eylem gerçekleştir</string>
+    <string name="rule_exception_bluetooth_connected">Bluetooth cihazı bağlıysa</string>
+    <string name="rule_exception_bluetooth_disconnected">Bluetooth cihazının bağlantısı kesilmişse</string>
+    <string name="rule_exception_screen_on">ekran açıksa</string>
+    <string name="rule_exception_screen_off">ekran kapalıysa</string>
+    <string name="rule_exception_time_between">zaman %1$s ile %2$s arasındaysa</string>
+    <string name="rule_exception_wifi_connected">%1$s ağına bağlıysa</string>
+    <string name="rule_exception_wifi_disconnected">%1$s ağına bağlı değilse</string>
+    <string name="rule_exception_multiple">birden fazla istisna geçerliyse</string>
     <!-- Logic Connectors -->
-    <string name="rule_logic_and">and</string>
-    <string name="rule_logic_or">or</string>
-    <string name="rule_logic_xor">either</string>
+    <string name="rule_logic_and">ve</string>
+    <string name="rule_logic_or">veya</string>
+    <string name="rule_logic_xor">ya da</string>
     <string name="rule_logic_separator">, </string>
-    <string name="rule_logic_final_separator">, and </string>
+    <string name="rule_logic_final_separator">, ve </string>
     <!-- Critical Hardcoded Strings - Activity Titles -->
-    <string name="title_behavior_settings">Behavior Settings</string>
-    <string name="title_general_settings">General Settings</string>
-    <string name="title_voice_settings">Voice Settings</string>
-    <string name="title_filter_settings">Filter Settings</string>
-    <string name="title_test_settings">Test Settings</string>
-    <string name="title_notification_history">Notification History</string>
-    <string name="title_bluetooth_devices">Bluetooth Devices</string>
+    <string name="title_behavior_settings">Davranış Ayarları</string>
+    <string name="title_general_settings">Genel Ayarlar</string>
+    <string name="title_voice_settings">Ses Ayarları</string>
+    <string name="title_filter_settings">Filtre Ayarları</string>
+    <string name="title_test_settings">Test Ayarları</string>
+    <string name="title_notification_history">Bildirim Geçmişi</string>
+    <string name="title_bluetooth_devices">Bluetooth Cihazları</string>
     <!-- Critical Hardcoded Strings - Dialog Titles -->
-    <string name="dialog_title_theme_changed">Theme Changed</string>
-    <string name="dialog_title_export_successful">Export Successful</string>
-    <string name="dialog_title_export_failed">Export Failed</string>
-    <string name="dialog_title_import_full_config">Import Full Configuration</string>
-    <string name="dialog_title_import_successful">Import Successful</string>
-    <string name="dialog_title_import_failed">Import Failed</string>
-    <string name="dialog_title_clear_all_data">Clear All Data</string>
-    <string name="dialog_title_data_cleared">Data Cleared</string>
-    <string name="dialog_title_clear_failed">Clear Failed</string>
-    <string name="dialog_title_advanced_voice_options">Advanced Voice Options</string>
-    <string name="dialog_title_audio_settings_help">Audio Settings Help</string>
-    <string name="dialog_title_advanced_voice_information">Advanced Voice Information</string>
-    <string name="dialog_title_format_test_results">ðŸ§ª Format Test Results</string>
-    <string name="dialog_title_delay_before_readout">Delay Before Readout</string>
-    <string name="dialog_title_custom_app_names">Custom App Names</string>
-    <string name="dialog_title_notification_cooldown">Notification Cooldown</string>
-    <string name="dialog_title_speech_formats_guide">ðŸ—£ï¸ Speech Formats - Complete Guide</string>
-    <string name="dialog_title_honour_do_not_disturb">Honour Do Not Disturb</string>
-    <string name="dialog_title_honour_audio_mode">Honour Audio Mode</string>
-    <string name="dialog_title_select_bluetooth_device">Select Bluetooth Device</string>
-    <string name="dialog_title_remove_device">Remove Device</string>
-    <string name="dialog_title_error">Error</string>
-    <string name="dialog_title_bluetooth_not_available">Bluetooth Not Available</string>
-    <string name="dialog_title_bluetooth_disabled">Bluetooth Disabled</string>
-    <string name="dialog_title_no_devices_found">No Devices Found</string>
-    <string name="dialog_title_select_bluetooth_devices">Select Bluetooth Devices</string>
-    <string name="dialog_title_wifi_disabled">WiFi Disabled</string>
-    <string name="dialog_title_wifi_networks">WiFi Networks</string>
-    <string name="dialog_title_no_networks_found">No Networks Found</string>
-    <string name="dialog_title_select_wifi_networks">Select WiFi Networks</string>
-    <string name="dialog_title_enter_wifi_network">Enter WiFi Network</string>
-    <string name="dialog_title_set_quiet_hours">Set Quiet Hours</string>
-    <string name="dialog_title_rule_created">Rule Created!</string>
-    <string name="dialog_title_experimental_feature">Experimental Feature</string>
-    <string name="dialog_title_delete_rule">Delete Rule</string>
-    <string name="dialog_title_invalid_rule_name">Invalid Rule Name</string>
-    <string name="dialog_title_invalid_rule">Invalid Rule</string>
-    <string name="dialog_title_add_trigger">Add Trigger</string>
-    <string name="dialog_title_add_action">Add Action</string>
-    <string name="dialog_title_add_exception">Add Exception</string>
-    <string name="dialog_title_remove_trigger">Remove Trigger</string>
-    <string name="dialog_title_remove_action">Remove Action</string>
-    <string name="dialog_title_remove_exception">Remove Exception</string>
-    <string name="dialog_title_coming_soon">Coming Soon</string>
-    <string name="dialog_title_select_app">Select App</string>
-    <string name="dialog_title_invalid_app_package">Invalid App Package</string>
-    <string name="dialog_title_edit_rule">Edit Rule</string>
-    <string name="dialog_title_create_rule">Create Rule</string>
+    <string name="dialog_title_theme_changed">Tema Değiştirildi</string>
+    <string name="dialog_title_export_successful">Dışa Aktarma Başarılı</string>
+    <string name="dialog_title_export_failed">Dışa Aktarma Başarısız</string>
+    <string name="dialog_title_import_full_config">Tam Yapılandırmayı İçe Aktar</string>
+    <string name="dialog_title_import_successful">İçe Aktarma Başarılı</string>
+    <string name="dialog_title_import_failed">İçe Aktarma Başarısız</string>
+    <string name="dialog_title_clear_all_data">Tüm Verileri Temizle</string>
+    <string name="dialog_title_data_cleared">Veriler Temizlendi</string>
+    <string name="dialog_title_clear_failed">Temizleme Başarısız</string>
+    <string name="dialog_title_advanced_voice_options">Gelişmiş Ses Seçenekleri</string>
+    <string name="dialog_title_audio_settings_help">Ses Ayarları Yardımı</string>
+    <string name="dialog_title_advanced_voice_information">Gelişmiş Ses Bilgileri</string>
+    <string name="dialog_title_format_test_results">🧪 Format Test Sonuçları</string>
+    <string name="dialog_title_delay_before_readout">Okumadan Önce Gecikme</string>
+    <string name="dialog_title_custom_app_names">Özel Uygulama Adları</string>
+    <string name="dialog_title_notification_cooldown">Bildirim Bekleme Süresi</string>
+    <string name="dialog_title_speech_formats_guide">🗣️ Konuşma Formatları - Tam Kılavuz</string>
+    <string name="dialog_title_honour_do_not_disturb">Rahatsız Etmeyin Moduna Uy</string>
+    <string name="dialog_title_honour_phone_calls">Telefon Aramalarına Uy</string>
+    <string name="dialog_title_notification_deduplication">Bildirim Tekrarını Önleme</string>
+    <string name="dialog_title_honour_audio_mode">Ses Moduna Uy</string>
+    <string name="dialog_title_select_bluetooth_device">Bluetooth Cihazı Seç</string>
+    <string name="dialog_title_remove_device">Cihazı Kaldır</string>
+    <string name="dialog_title_error">Hata</string>
+    <string name="dialog_title_bluetooth_not_available">Bluetooth Kullanılamıyor</string>
+    <string name="dialog_title_bluetooth_disabled">Bluetooth Devre Dışı</string>
+    <string name="dialog_title_no_devices_found">Cihaz Bulunamadı</string>
+    <string name="dialog_title_select_bluetooth_devices">Bluetooth Cihazları Seç</string>
+    <string name="dialog_title_wifi_disabled">WiFi Devre Dışı</string>
+    <string name="dialog_title_wifi_networks">WiFi Ağları</string>
+    <string name="dialog_title_no_networks_found">Ağ Bulunamadı</string>
+    <string name="dialog_title_select_wifi_networks">WiFi Ağları Seç</string>
+    <string name="dialog_title_enter_wifi_network">WiFi Ağı Gir</string>
+    <string name="dialog_title_set_quiet_hours">Sessiz Saatleri Ayarla</string>
+    <string name="dialog_title_rule_created">Kural Oluşturuldu!</string>
+    <string name="dialog_title_experimental_feature">Deneysel Özellik</string>
+    <string name="dialog_title_delete_rule">Kuralı Sil</string>
+    <string name="dialog_title_invalid_rule_name">Geçersiz Kural Adı</string>
+    <string name="dialog_title_invalid_rule">Geçersiz Kural</string>
+    <string name="dialog_title_add_trigger">Tetikleyici Ekle</string>
+    <string name="dialog_title_add_action">Eylem Ekle</string>
+    <string name="dialog_title_add_exception">İstisna Ekle</string>
+    <string name="dialog_title_remove_trigger">Tetikleyiciyi Kaldır</string>
+    <string name="dialog_title_remove_action">Eylemi Kaldır</string>
+    <string name="dialog_title_remove_exception">İstisnayı Kaldır</string>
+    <string name="dialog_title_coming_soon">Yakında Gelecek</string>
+    <string name="dialog_title_select_app">Uygulama Seç</string>
+    <string name="dialog_title_invalid_app_package">Geçersiz Uygulama Paketi</string>
+    <string name="dialog_title_edit_rule">Kuralı Düzenle</string>
+    <string name="dialog_title_create_rule">Kural Oluştur</string>
+    <!-- Filter Settings Dialog Titles -->
+    <string name="dialog_title_edit_filtered_media_app">Filtrelenmiş Medya Uygulamasını Düzenle</string>
+    <string name="dialog_title_edit_media_exception_app">Medya İstisna Uygulamasını Düzenle</string>
+    <string name="dialog_title_edit_media_important_keyword">Önemli Medya Anahtar Kelimesini Düzenle</string>
+    <string name="dialog_title_edit_app_filter">Uygulama Filtresini Düzenle</string>
+    <string name="dialog_title_edit_word_filter">Kelime Filtresini Düzenle</string>
+    <string name="dialog_title_edit_word_swap">Kelime Değişimini Düzenle</string>
+    <string name="dialog_title_import_filter_configuration">Filtre Yapılandırmasını İçe Aktar</string>
+    <string name="dialog_title_app_filter_help">📱 Uygulama Filtresi Yardımı</string>
+    <string name="dialog_title_smart_media_filter">Akıllı Medya Bildirim Filtresi</string>
     <!-- Critical Hardcoded Strings - Dialog Messages -->
-    <string name="dialog_message_theme_changed">The theme has been changed. For the best experience, you may want to restart the app manually.</string>
-    <string name="dialog_message_export_successful">Full configuration exported to:\n%s</string>
-    <string name="dialog_message_export_successful_text">Configuration exported as text (file creation failed)</string>
-    <string name="dialog_message_export_failed">Failed to export configuration: %s</string>
-    <string name="dialog_message_import_full_config">This will replace your current settings with the imported configuration.\n\nDo you want to continue?</string>
+    <string name="dialog_message_theme_changed">
+Tema değiştirildi. En iyi deneyim için uygulamayı manuel olarak yeniden başlatmanız önerilir.
+</string>
+    <string name="dialog_message_export_successful">Tam yapılandırma şu konuma dışa aktarıldı:\n%s</string>
+    <string name="dialog_message_export_successful_text">
+Yapılandırma metin olarak dışa aktarıldı (dosya oluşturma başarısız oldu)
+</string>
+    <string name="dialog_message_export_failed">Yapılandırma dışa aktarılamadı: %s</string>
+    <string name="dialog_message_import_full_config">
+Bu işlem, mevcut ayarlarınızı içe aktarılan yapılandırma ile değiştirecektir.\n\nDevam etmek istiyor musunuz?
+</string>
     <string name="dialog_message_import_successful">%s</string>
     <string name="dialog_message_import_failed">%s</string>
-    <string name="dialog_message_import_failed_read">Failed to read file: %s</string>
-    <string name="dialog_message_clear_all_data">This will reset all settings to defaults and clear notification history.\n\nThis action cannot be undone.\n\nDo you want to continue?</string>
-    <string name="dialog_message_data_cleared">All settings have been reset to defaults and notification history has been cleared.</string>
-    <string name="dialog_message_clear_failed">Failed to clear data: %s</string>
-    <string name="dialog_message_advanced_voice_options">These settings are for users who need granular control over the voice and accent.\n\n99% of users should only change the main Language option.\n\nIf you run into trouble, you can always reset to defaults.</string>
-    <string name="dialog_message_bluetooth_not_available">Bluetooth is not available on this device.</string>
-    <string name="dialog_message_bluetooth_disabled">Please enable Bluetooth to select devices.</string>
-    <string name="dialog_message_no_devices_found">No paired Bluetooth devices found. Please pair some devices first.</string>
-    <string name="dialog_message_wifi_disabled">Please enable WiFi to select networks.</string>
-    <string name="dialog_message_wifi_networks">Unable to automatically detect WiFi networks. Please manually enter WiFi network names (SSIDs) one per line.\n\nNote: You can also try enabling location services and granting location permissions to automatically detect networks.</string>
-    <string name="dialog_message_no_networks_found">No WiFi networks found. Please connect to some networks first or manually enter network names.</string>
-    <string name="dialog_message_enter_wifi_network">Enter the name of your WiFi network:</string>
-    <string name="dialog_message_set_quiet_hours">Choose the time range and days when you don\'t want notifications read:</string>
-    <string name="dialog_message_rule_created">Your rule \'%s\' has been created successfully.</string>
-    <string name="dialog_message_experimental_feature">Rules are experimental. If you experience issues, you can disable them in settings. Your existing filters and privacy settings will always be respected.</string>
-    <string name="dialog_message_delete_rule">Are you sure you want to delete the rule \'%s\'?</string>
-    <string name="dialog_message_invalid_rule_name">Please enter a name for this rule.</string>
-    <string name="dialog_message_invalid_rule">Please fix the following issues:\n\n%s</string>
-    <string name="dialog_message_save_rule_failed">Failed to %s rule. Please try again.</string>
-    <string name="dialog_message_remove_trigger">Are you sure you want to remove this trigger?</string>
-    <string name="dialog_message_remove_action">Are you sure you want to remove this action?</string>
-    <string name="dialog_message_remove_exception">Are you sure you want to remove this exception?</string>
-    <string name="dialog_message_coming_soon">%s configuration will be implemented in the next phase.</string>
-    <string name="dialog_message_select_app">Enter the app package name (e.g., com.whatsapp):</string>
-    <string name="dialog_message_invalid_app_package">Please enter an app package name.</string>
-    <string name="dialog_message_remove_device">Remove %s from the list?</string>
-    <string name="dialog_message_select_bluetooth_device">Choose the Bluetooth device for this rule:</string>
-    <string name="dialog_message_select_wifi_network">Choose the WiFi network for this rule:</string>
+    <string name="dialog_message_import_failed_read">Dosya okunamadı: %s</string>
+    <string name="dialog_message_clear_all_data">
+Bu, tüm ayarları varsayılanlara sıfırlayacak ve bildirim geçmişini temizleyecektir.\n\nBu işlem geri alınamaz.\n\nDevam etmek istiyor musunuz?
+</string>
+    <string name="dialog_message_data_cleared">
+Tüm ayarlar varsayılanlara sıfırlandı ve bildirim geçmişi temizlendi.
+</string>
+    <string name="dialog_message_clear_failed">Veri temizlenemedi: %s</string>
+    <string name="dialog_message_advanced_voice_options">
+Bu ayarlar, ses ve aksan üzerinde ayrıntılı kontrole ihtiyaç duyan kullanıcılar içindir.\n\nKullanıcıların %99\'u yalnızca ana Dil seçeneğini değiştirmelidir.\n\nSorun yaşarsanız, her zaman varsayılanlara sıfırlayabilirsiniz.
+</string>
+    <string name="dialog_message_bluetooth_not_available">Bu cihazda Bluetooth mevcut değil.</string>
+    <string name="dialog_message_bluetooth_disabled">
+Cihazları seçmek için lütfen Bluetooth\'u etkinleştirin.
+</string>
+    <string name="dialog_message_no_devices_found">
+Eşleştirilmiş Bluetooth cihazı bulunamadı. Lütfen önce bazı cihazları eşleştirin.
+</string>
+    <string name="dialog_message_wifi_disabled">Ağları seçmek için lütfen WiFi\'yi etkinleştirin.</string>
+    <string name="dialog_message_wifi_networks">
+WiFi ağları otomatik olarak algılanamıyor. Lütfen WiFi ağ adlarını (SSID\'ler) her satıra bir tane olacak şekilde manuel olarak girin.\n\nNot: Ağları otomatik olarak algılamak için konum servislerini etkinleştirmeyi ve konum izinlerini vermeyi de deneyebilirsiniz.
+</string>
+    <string name="dialog_message_no_networks_found">
+WiFi ağı bulunamadı. Lütfen önce bazı ağlara bağlanın veya ağ adlarını manuel olarak girin.
+</string>
+    <string name="dialog_message_enter_wifi_network">WiFi ağınızın adını girin:</string>
+    <string name="dialog_message_set_quiet_hours">
+Bildirimlerin okunmasını istemediğiniz zaman aralığını ve günleri seçin:
+</string>
+    <string name="dialog_message_rule_created">\'%s\' kuralınız başarıyla oluşturuldu.</string>
+    <string name="dialog_message_experimental_feature">
+Kurallar deneyseldir. Sorun yaşarsanız, ayarlardan devre dışı bırakabilirsiniz. Mevcut filtreleriniz ve gizlilik ayarlarınız her zaman dikkate alınacaktır.
+</string>
+    <string name="dialog_message_delete_rule">
+\'%s\' kuralını silmek istediğinizden emin misiniz?
+</string>
+    <string name="dialog_message_invalid_rule_name">Lütfen bu kural için bir ad girin.</string>
+    <string name="dialog_message_invalid_rule">Lütfen aşağıdaki sorunları düzeltin:\n\n%s</string>
+    <string name="dialog_message_save_rule_failed">
+Kural %s işlemi başarısız oldu. Lütfen tekrar deneyin.
+</string>
+    <string name="dialog_message_remove_trigger">
+Bu tetikleyiciyi kaldırmak istediğinizden emin misiniz?
+</string>
+    <string name="dialog_message_remove_action">Bu eylemi kaldırmak istediğinizden emin misiniz?</string>
+    <string name="dialog_message_remove_exception">
+Bu istisnayı kaldırmak istediğinizden emin misiniz?
+</string>
+    <string name="dialog_message_coming_soon">
+%s yapılandırması bir sonraki aşamada uygulanacaktır.
+</string>
+    <string name="dialog_message_select_app">Uygulama paket adını girin (örn. com.whatsapp):</string>
+    <string name="dialog_message_invalid_app_package">Lütfen bir uygulama paket adı girin.</string>
+    <string name="dialog_message_remove_device">%s cihazı listeden kaldırılsın mı?</string>
+    <string name="dialog_message_select_bluetooth_device">Bu kural için Bluetooth cihazını seçin:</string>
+    <string name="dialog_message_select_wifi_network">Bu kural için WiFi ağını seçin:</string>
+    <!-- Language Change Dialog -->
+    <string name="dialog_title_language_changed">Dil Değiştirildi</string>
+    <string name="dialog_message_language_changed">
+Uygulama dili %1$s dilinden %2$s diline değiştirildi.\n\n• Şimdi Uygula: Bu ekranı hemen günceller\n• Uygulamayı Yeniden Başlat: Tüm ekranların ve servislerin yeni dili kullanmasını sağlar\n\nEn iyi deneyim için uygulamayı yeniden başlatmanızı öneririz.
+</string>
+    <string name="button_restart_app">Uygulamayı Yeniden Başlat</string>
+    <string name="button_apply_now">Şimdi Uygula</string>
+    <string name="toast_language_restarting">Uygulama yeni dille yeniden başlatılıyor...</string>
+    <string name="toast_language_manual_restart">
+Dil, uygulamayı yeniden başlattığınızda tam olarak uygulanacaktır
+</string>
     <!-- Critical Hardcoded Strings - Button Labels -->
-    <string name="button_restart_now">Restart Now</string>
-    <string name="button_later">Later</string>
-    <string name="button_select_file">Select File</string>
-    <string name="button_clear_all_data">Clear All Data</string>
-    <string name="button_continue">Continue</string>
-    <string name="button_got_it">Got it!</string>
-    <string name="button_use_recommended">Use Recommended</string>
-    <string name="button_nevermind_keep_timeout">Keep the timeout enabled (Recommended)</string>
-    <string name="button_disable_timeout">Disable the timeout</string>
-    <string name="button_create_rule">Create Rule</string>
-    <string name="button_manual_input">Manual Input</string>
-    <string name="button_i_understand">I Understand</string>
-    <string name="button_delete">Delete</string>
-    <string name="button_remove">Remove</string>
-    <!-- Critical Hardcoded Strings - App Categories -->
-    <string name="category_social_display_name">Social Media</string>
-    <string name="category_social_description">Social networking and community apps</string>
-    <string name="category_messaging_display_name">Messaging</string>
-    <string name="category_messaging_description">Chat and communication apps</string>
-    <string name="category_finance_display_name">Finance</string>
-    <string name="category_finance_description">Banking and financial apps</string>
-    <string name="category_health_display_name">Health</string>
-    <string name="category_health_description">Health and fitness apps</string>
-    <string name="category_entertainment_display_name">Entertainment</string>
-    <string name="category_entertainment_description">Media and entertainment apps</string>
-    <string name="category_games_display_name">Games</string>
-    <string name="category_games_description">Mobile games and gaming apps</string>
+    <string name="button_restart_now">Şimdi Yeniden Başlat</string>
+    <string name="button_later">Daha Sonra</string>
+    <string name="button_select_file">Dosya Seç</string>
+    <string name="button_clear_all_data">Tüm Verileri Temizle</string>
+    <string name="button_continue">Devam Et</string>
+    <string name="button_got_it">Anladım!</string>
+    <string name="button_use_recommended">Önerileni Kullan</string>
+    <string name="button_nevermind_keep_timeout">Zaman aşımını etkin tut (Önerilen)</string>
+    <string name="button_disable_timeout">Zaman aşımını devre dışı bırak</string>
+    <string name="button_create_rule">Kural Oluştur</string>
+    <string name="button_manual_input">Manuel Giriş</string>
+    <string name="button_i_understand">Anlıyorum</string>
+    <string name="button_delete">Sil</string>
+    <string name="button_remove">Kaldır</string>
+    <string name="button_save">Kaydet</string>
+    <string name="button_cancel">İptal</string>
+    <string name="button_ok">Tamam</string>
+    <string name="button_close">Kapat</string>
+    <string name="button_clear">Temizle</string>
+    <string name="button_export_crash_logs">Kilitlenme Günlüklerini Dışa Aktar</string>
+    <string name="button_clear_crash_logs">Kilitlenme Günlüklerini Temizle</string>
+    <string name="button_force_test_crash">Test Kilitlenmesini Zorla</string>
+    <string name="button_clear_analytics">Analizleri Temizle</string>
+    <string name="button_export_report">Raporu Dışa Aktar</string>
+    <string name="button_reset_cache">Önbelleği Sıfırla</string>
+    <string name="button_re_detect">Yeniden Algıla</string>
+    <!-- Layout Section Titles -->
+    <string name="section_notification_behavior">Bildirim Davranışı</string>
+    <string name="section_media_behavior">Medya Davranışı</string>
+    <string name="recommendation_smart_mode">Çoğu kullanıcı şunu kullanmalı: Akıllı Mod</string>
+    <string name="recommendation_lower_audio">Çoğu kullanıcı şunu kullanmalı: Sesi Kıs</string>
+    <!-- Behavior Settings Strings -->
+    <string name="behavior_notification_description">
+Biri zaten okunurken bildirimlerin nasıl ele alınacağını kontrol edin
+</string>
+    <string name="behavior_media_description">
+Müzik veya video oynatılırken bildirimlerin nasıl ele alınacağını kontrol edin
+</string>
+    <string name="behavior_interrupt_mode">Kes (mevcut olanı durdur, yenisini hemen oku)</string>
+    <string name="behavior_queue_mode">Sıraya al (mevcut olanı bitir, sonra yenisini oku)</string>
+    <string name="behavior_skip_mode">Atla (okurken yeni bildirimleri yoksay)</string>
+    <string name="behavior_smart_mode">
+Akıllı (öncelikli uygulamalar araya girer, diğerleri sıraya alınır)
+</string>
+    <string name="behavior_priority_apps">⚡ Öncelikli Uygulamalar</string>
+    <string name="behavior_priority_apps_description">
+Bu uygulamalar mevcut bildirimi kesecektir. Diğer tüm uygulamalar sıraya alınacaktır.
+</string>
+    <string name="behavior_media_ignore">Yoksay - Normal şekilde devam et (mevcut davranış)</string>
+    <string name="behavior_media_pause">Duraklat - Konuşurken medyayı duraklat</string>
+    <string name="behavior_media_lower">Sesi Kıs - Medya sesini geçici olarak düşür</string>
+    <string name="behavior_media_silence">Sessize Al - Medya oynatılırken konuşma</string>
+    <string name="behavior_pause_warning">
+⚠️ Duraklatma modu sistem sınırlamaları nedeniyle tüm cihazlarda çalışmayabilir.
+</string>
+    <string name="behavior_ducking_volume">🔉 Sesi Kısma Düzeyi</string>
+    <string name="behavior_ducking_description">
+Bildirimler sırasında medyanın ne kadar sessiz olacağını ayarlayın
+</string>
+    <string name="behavior_ducking_warning">
+⚠️ Bazı cihazlarda, medya sesini düşürmek bildirim sesini de düşürebilir. Bildirimler hala zor duyuluyorsa, Duraklat modunu deneyin veya TTS ayarlarınızı düzenleyin.
+</string>
+    <string name="behavior_ducking_tip">
+İpucu: Düşük değerler, bildirimler sırasında medyayı daha sessiz yapar
+</string>
+    <string name="behavior_calls_title">📞 Telefon Aramalarına Uy</string>
+    <string name="behavior_calls_description">
+Telefon görüşmesi yaparken bildirimlerin okunmasını önleyin
+</string>
+    <string name="behavior_calls_recommendation">
+Çoğu kullanıcı şunu yapmalı: Bu özelliği etkinleştir
+</string>
+    <string name="behavior_calls_checkbox">Telefon aramalarına uy</string>
+    <string name="behavior_calls_benefits">
+✨ Faydaları:\n\n• Önemli aramalar sırasında kesintileri önler\n• Konuşma gizliliğinize saygı duyar\n• Her tür telefon görüşmesiyle çalışır\n• Arama durumunu otomatik olarak algılar
+</string>
+    <string name="behavior_audio_title">🔇 Ses Moduna Uy</string>
+    <string name="behavior_audio_description">
+Bildirimleri yalnızca cihazınız Ses modundayken (Sessiz veya Titreşim değil) okuyun
+</string>
+    <string name="behavior_audio_recommendation">Önerilen: Bu özelliği etkinleştirin</string>
+    <string name="behavior_audio_checkbox">Ses moduna uy (sadece Ses)</string>
+    <string name="behavior_audio_benefits">
+✨ Faydaları:\n\n• Telefon sessizdeyken istenmeyen sesleri önler\n• Cihazınızın ses ayarlarına saygı duyar\n• Sessiz ve Titreşim modlarıyla çalışır\n• Bildirimlerin yalnızca duyabileceğiniz zaman çalmasını sağlar
+</string>
+    <string name="behavior_shake_current">Mevcut sallama: 0.0</string>
+    <string name="behavior_shake_threshold">Eşik: 12.0</string>
+    <string name="behavior_timeout_display">Zaman aşımı: 30 saniye</string>
+    <string name="behavior_timeout_disable">Zaman aşımını devre dışı bırak (önerilmez)</string>
+    <string name="behavior_wave_threshold">Yakınlık Eşiği</string>
+    <string name="behavior_wave_pocket">Cep Modu</string>
+    <string name="behavior_wave_pocket_description">
+Okumaların, sensör zaten kapalıyken (cebinizdeyken gibi) devam etmesine izin verin, ancak okuma başladıktan sonra kapattığınızda yine de durdurun
+</string>
+    <string name="behavior_wave_pocket_checkbox">Sensör kapalıyken okumalara izin ver</string>
+    <string name="behavior_custom_apps_title">📱 Özel Uygulama Adları</string>
+    <string name="behavior_custom_apps_description">
+Bildirimlerde uygulama adlarının nasıl okunacağını özelleştirin
+</string>
+    <string name="behavior_custom_apps_example">Örnek: X uygulaması, Twitter olarak okunur</string>
+    <string name="behavior_custom_apps_add">Özel Uygulama Adı Ekle</string>
+    <string name="behavior_delay_title">Okumadan Önce Gecikme</string>
+    <string name="behavior_delay_description">
+SpeakThat bildirimleri okumaya başlamadan önce kısa bir gecikme ekleyin
+</string>
+    <string name="behavior_delay_recommendation">Çoğu kullanıcı şunu kullanmalı: 2 saniye</string>
+    <string name="behavior_delay_none">Yok - Hemen başla</string>
+    <string name="behavior_delay_1s">1 saniye - Hızlı bir duraklama</string>
+    <string name="behavior_delay_2s">2 saniye - Önerilen</string>
+    <string name="behavior_delay_3s">3 saniye - Tepki vermek için ekstra zaman</string>
+    <string name="behavior_delay_benefits">
+✨ Faydaları:\n\n• Bildirim sesleriyle çakışmayı önler\n• Sallayarak iptal etmek için size zaman tanır\n• Sessiz ortamlarda daha az rahatsız edicidir\n• Toplantılar ve halka açık alanlar için mükemmeldir
+</string>
+    <string name="behavior_cooldown_title">Bildirim Bekleme Süresi</string>
+    <string name="behavior_cooldown_description">
+Uygulamaların belirli bir süre içinde birden fazla bildiriminin okunmasını önleyin
+</string>
+    <string name="behavior_cooldown_recommendation">
+Şunlar için harika: Sürekli bildirim gönderen uygulamalar
+</string>
+    <string name="behavior_speech_title">Konuşma Formatı</string>
+    <string name="behavior_speech_description">
+Yer tutucuları kullanarak bildirimlerin nasıl sesli okunacağını özelleştirin
+</string>
+    <string name="behavior_speech_recommendation">Bildirim deneyiminizi kişiselleştirin</string>
+    <string name="behavior_speech_preset">Format Hazır Ayarı:</string>
+    <string name="behavior_speech_custom">Özel Format:</string>
+    <string name="behavior_speech_preview">
+Önizleme: Mesajlar bildirdi: Mitchi: SpeakThat kullandığını duydum!
+</string>
+    <string name="behavior_speech_placeholders">
+Yaygın yer tutucular: {app}, {content}, {time}, {title}, {text}, {priority}, {category}
+</string>
+    <string name="button_start_test">Testi Başlat</string>
+    <string name="button_test">Test Et</string>
+    <string name="button_add">Ekle</string>
+    <string name="label_gentle">Hassas</string>
+    <string name="label_strong">Güçlü</string>
+    <string name="label_5s">5sn</string>
+    <string name="label_5m">5dk</string>
+    <string name="label_30_percent">%30</string>
+    <string name="label_90_percent">%90</string>
+    <string name="volume_mute">Sessiz</string>
+    <string name="volume_loud">Yüksek Ses</string>
+    <string name="volume_30_percent">%30</string>
+    <!-- Voice Settings Strings -->
+    <string name="voice_characteristics">Ses Özellikleri</string>
+    <string name="voice_speech_rate">Konuşma Hızı</string>
+    <string name="voice_pitch">Ses Tonu</string>
+    <string name="voice_tts_volume">TTS Ses Seviyesi</string>
+    <string name="voice_language_section">Dil ve Ses</string>
+    <string name="voice_language_preset">Dil Hazır Ayarı</string>
+    <string name="voice_language_preset_description">
+Dilinizi seçin. Bu, en iyi deneyim için hem uygulama arayüzünü hem de metin okuma dilini aynı anda ayarlar.
+</string>
+    <string name="voice_preset_recommendation">
+Çoğu kullanıcının ihtiyacı olan tek şey budur. Bireysel ayarları özelleştirmek için aşağıdaki Gelişmiş Ses Seçeneklerini kullanın.
+</string>
+    <string name="voice_help_translate">SpeakThat\'i Çevirmeye Yardım Edin!</string>
+    <string name="voice_help_translate_description">Çeviri e-postası göndermek için dokunun</string>
+    <string name="voice_show_advanced">Gelişmiş Ses Seçeneklerini Göster</string>
+    <string name="voice_advanced_label">⚙️ Gelişmiş</string>
+    <string name="voice_tts_language_advanced">TTS Dili (Gelişmiş)</string>
+    <string name="voice_tts_language_description">
+Uygulama ifadeleri için (\'bildirdi:\' gibi) dili geçersiz kılın. Arayüz ve TTS ifadeleri için farklı diller istemiyorsanız varsayılan olarak bırakın.
+</string>
+    <string name="voice_specific_voice_advanced">Belirli Ses (Gelişmiş)</string>
+    <string name="voice_specific_voice_description">
+Belirli bir ses motoru seçin. Bu, yukarıdaki dil ayarını geçersiz kılar. Yalnızca ileri düzey kullanıcılar içindir.
+</string>
+    <string name="voice_tap_for_details">Ayrıntılar için dokunun</string>
+    <string name="voice_advanced_recommendation">
+Öneri: Önce Dil ayarını deneyin. Yalnızca belirli bir ses motoruna ihtiyacınız varsa Belirli Ses seçeneğini kullanın.\n\nSorun yaşarsanız ayarlarınızı her zaman aşağıdan sıfırlayabilirsiniz!
+</string>
+    <string name="voice_reset_warning">
+Sorun yaşarsanız ayarlarınızı her zaman aşağıdan sıfırlayabilirsiniz!
+</string>
+    <string name="label_0_1x">0.1x</string>
+    <string name="label_3_0x">3.0x</string>
+    <string name="label_1_0x">1.0x</string>
+    <string name="label_2_0x">2.0x</string>
+    <string name="label_0_percent">%0</string>
+    <string name="label_100_percent">%100</string>
+    <string name="arrow_right">›</string>
+    <!-- Main Activity Strings -->
+    <string name="main_version_placeholder">sürüm x.x.x</string>
+    <string name="main_author">Mitchi tarafından</string>
+    <string name="main_service_active">SpeakThat! Aktif</string>
+    <string name="main_service_enable">Bildirim okumayı etkinleştirmek için dokunun</string>
+    <string name="main_notification_permissions">Bildirim izinleri:</string>
+    <!-- Settings Activity Strings -->
+    <string name="settings_general_title">Genel Ayarlar</string>
+    <string name="settings_general_description">Uygulama tercihleri, tema ayarları</string>
+    <string name="settings_voice_title">Ses Ayarları</string>
+    <string name="settings_voice_description">Metin okuma sesi ve hızı</string>
+    <string name="settings_behavior_title">Davranış Ayarları</string>
+    <string name="settings_behavior_description">Bildirimlerin ne zaman ve nasıl okunacağı</string>
+    <string name="settings_filter_title">Filtre Ayarları</string>
+    <string name="settings_filter_description">Hangi uygulamaların okunacağını seçin</string>
+    <string name="settings_rules_title">Koşullu Kurallar</string>
+    <string name="settings_rules_description">Bluetooth, zaman çizelgeleri vb. yapılandırın</string>
+    <string name="settings_development_title">Geliştirici Ayarları</string>
+    <string name="settings_development_description">Hata ayıklama araçları ve günlük sistemi</string>
+    <string name="settings_rerun_onboarding">Tanıtımı Yeniden Başlat</string>
+    <string name="settings_rerun_onboarding_description">Uygulama tanıtımını tekrar görün</string>
+    <string name="settings_support_title">Destek ve Geri Bildirim</string>
+    <string name="settings_support_description">Yardım alın, hata bildirin, özellik talep edin</string>
+    <string name="settings_donate_title">Bağış Yap</string>
+    <string name="settings_donate_description">
+Geliştirmeyi destekleyin ve uygulamayı ücretsiz tutun
+</string>
     <!-- Critical Hardcoded Strings - Other -->
-    <string name="unknown_device">Unknown Device</string>
-    <string name="export_full_config_text">Complete configuration backup created on %s</string>
-    <string name="export_full_config_chooser">Export Full Configuration</string>
-    <string name="export_full_config_text_chooser">Export Full Configuration as Text</string>
-    <string name="select_configuration_file">Select Configuration File</string>
-    <string name="save_rule">save</string>
-    <string name="update_rule">update</string>
+    <string name="unknown_device">Bilinmeyen Cihaz</string>
+    <string name="export_full_config_text">%s tarihinde oluşturulan tam yapılandırma yedeği</string>
+    <string name="export_full_config_chooser">Tam Yapılandırmayı Dışa Aktar</string>
+    <string name="export_full_config_text_chooser">Tam Yapılandırmayı Metin Olarak Dışa Aktar</string>
+    <string name="select_configuration_file">Yapılandırma Dosyası Seç</string>
+    <string name="save_rule">kaydet</string>
+    <string name="update_rule">güncelle</string>
     <!-- Conditional Rules - Trigger Strings -->
-    <string name="rule_trigger_wifi_network">Connected to WiFi network: %1$s</string>
-    <string name="rule_trigger_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <string name="rule_trigger_wifi_network">WiFi ağı menzilde: %1$s</string>
+    <string name="rule_trigger_not_wifi_network">WiFi ağı menzilde değil: %1$s</string>
+    <!-- Behavior Settings - Media Volume -->
+    <string name="behavior_media_volume_tip">
+İpucu: Düşük değerler, bildirimler sırasında medyayı daha sessiz yapar
+</string>
+    <!-- Behavior Settings - Do Not Disturb -->
+    <string name="section_honor_dnd">Rahatsız Etmeyin Moduna Uy</string>
+    <string name="behavior_dnd_description">
+Cihazınızın Rahatsız Etmeyin moduna uyun ve etkinleştirildiğinde bildirimleri susturun
+</string>
+    <string name="behavior_dnd_recommendation">
+Çoğu kullanıcı şunu yapmalı: Bu özelliği etkinleştir
+</string>
+    <string name="behavior_dnd_switch_label">Rahatsız Etmeyin moduna uy</string>
+    <string name="behavior_dnd_benefits">
+✨ Faydaları:\n\n• Cihazınızın Rahatsız Etmeyin ayarlarına saygı duyar\n• Toplantılar, uyku ve sessiz zamanlar için mükemmeldir\n• Zamanlanmış DND ve manuel etkinleştirme ile çalışır\n• Gerektiğinde gizliliğinizi ve odaklanmanızı korur
+</string>
+    <!-- Behavior Settings - Phone Calls -->
+    <string name="section_honor_phone_calls">Telefon Aramalarına Uy</string>
+    <string name="behavior_phone_calls_description">
+Telefon görüşmesi yaparken bildirimlerin okunmasını önleyin
+</string>
+    <string name="behavior_phone_calls_recommendation">
+Çoğu kullanıcı şunu yapmalı: Bu özelliği etkinleştir
+</string>
+    <string name="behavior_phone_calls_switch_label">Telefon aramalarına uy</string>
+    <string name="behavior_phone_calls_benefits">
+✨ Faydaları:\n\n• Önemli aramalar sırasında kesintileri önler\n• Konuşma gizliliğinize saygı duyar\n• Her tür telefon görüşmesiyle çalışır\n• Arama durumunu otomatik olarak algılar
+</string>
+    <!-- Behavior Settings - Notification Deduplication -->
+    <string name="section_notification_deduplication">Bildirim Tekrarını Önleme</string>
+    <string name="behavior_deduplication_description">
+Aynı bildirimin kısa aralıklarla birden çok kez okunmasını önleyin
+</string>
+    <string name="behavior_deduplication_recommendation">Yinelenen bildirimler yaşıyorsanız etkinleştirin</string>
+    <string name="behavior_deduplication_switch_label">Bildirim tekrarını önlemeyi etkinleştir</string>
+    <string name="behavior_deduplication_benefits">
+✨ Faydaları:\n\n• Rahatsız edici yinelenen okumaları önler\n• Gereksiz TTS\'den kaçınarak pil tasarrufu sağlar\n• 5 saniyelik bir pencereyle otomatik olarak çalışır\n• Birden fazla bildirim gönderen uygulamalara yardımcı olur
+</string>
+    <!-- Behavior Settings - Audio Mode -->
+    <string name="section_honor_audio_mode">Ses Moduna Uy</string>
+    <string name="behavior_audio_mode_description">
+Bildirimleri yalnızca cihazınız Ses modundayken (Sessiz veya Titreşim değil) okuyun
+</string>
+    <string name="behavior_audio_mode_recommendation">Önerilen: Bu özelliği etkinleştirin</string>
+    <string name="behavior_audio_mode_switch_label">Ses moduna uy (sadece Ses)</string>
+    <string name="behavior_audio_mode_benefits">
+✨ Faydaları:\n\n• Telefon sessizdeyken istenmeyen sesleri önler\n• Cihazınızın ses ayarlarına saygı duyar\n• Sessiz ve Titreşim modlarıyla çalışır\n• Bildirimlerin yalnızca duyabileceğiniz zaman çalmasını sağlar
+</string>
+    <!-- Behavior Settings - Shake to Stop -->
+    <string name="section_shake_to_stop">Sallayarak Durdur</string>
+    <string name="behavior_shake_description">Cihazınızı sallayarak okumaları anında durdurun</string>
+    <string name="behavior_shake_recommendation">
+Çoğu kullanıcı şunu yapmalı: Bu özelliği etkinleştir
+</string>
+    <string name="behavior_shake_switch_label">Sallayarak durdurmayı etkinleştir</string>
+    <string name="behavior_shake_intensity_label">Sallama Şiddeti</string>
+    <string name="behavior_shake_intensity_description">
+Okumaları durdurmak için ne kadar sert sallamanız gerektiğini ayarlayın
+</string>
+    <string name="behavior_shake_test_label">Sallama Testi</string>
+    <string name="behavior_shake_test_description">
+Sallama şiddetinizi test edin ve tetikleme eşiğini görün
+</string>
+    <!-- Behavior Settings - Wave to Stop -->
+    <string name="section_wave_to_stop">👋 El Sallayarak Durdur</string>
+    <string name="behavior_wave_description">
+Elinizi yakınlık sensörünün üzerinden geçirerek okumaları durdurun
+</string>
+    <string name="behavior_wave_recommendation">Önerilen: Bu özelliği etkinleştirin</string>
+    <string name="behavior_wave_switch_label">El sallayarak durdurmayı etkinleştir</string>
+    <string name="behavior_wave_benefits">
+✨ Faydaları:\n\n• Okumaları durdurmak için sessiz bir hareket\n• Sessiz ortamlarda çalışır\n• Fiziksel temas gerekmez\n• Hızlı ve kullanışlı kontrol
+</string>
+    <!-- Behavior Settings - Additional Labels -->
+    <string name="label_calibrate">Kalibre Et</string>
+    <string name="label_test_shake">Sallamayı Test Et</string>
+    <string name="label_test_wave">El Sallamayı Test Et</string>
+    <!-- Voice Settings - Additional Strings -->
+    <string name="voice_help_translate_button">SpeakThat\'i Çevirmeye Yardım Edin!</string>
+    <string name="voice_help_translate_description_button">Çeviri e-postası göndermek için dokunun</string>
+    <string name="voice_advanced_options_show">Gelişmiş Ses Seçeneklerini Göster</string>
+    <string name="voice_tts_language_label">TTS Dili (Gelişmiş)</string>
+    <string name="voice_specific_voice_label">Belirli Ses (Gelişmiş)</string>
+    <string name="voice_reset_button">Ses Ayarlarını Sıfırla</string>
+    <string name="voice_test_button">Sesi Test Et</string>
+    <!-- Filter Settings Strings -->
+    <string name="filter_app_list_title">Uygulama Listesi Filtreleme</string>
+    <string name="filter_app_list_description">
+Hangi uygulamaların bildirim tetikleyebileceğini kontrol edin
+</string>
+    <string name="filter_no_filtering">Uygulama filtresi yok</string>
+    <string name="filter_whitelist">Beyaz Liste (yalnızca seçili uygulamalar)</string>
+    <string name="filter_blacklist">Kara Liste (seçili uygulamaları hariç tut)</string>
+    <string name="filter_manage_apps">Uygulamaları Yönet:</string>
+    <string name="filter_app_list_button">📋 Uygulama Listesi</string>
+    <string name="filter_app_count">(0 uygulama)</string>
+    <string name="filter_search_description">
+Yüklü uygulamalarınızı ada veya pakete göre arayın. Anında eklemek için bir öneriye tıklayın. (Daha fazla bilgi için dokunun)
+</string>
+    <string name="filter_word_blacklist_title">Kelime Kara Listesi</string>
+    <string name="filter_word_blacklist_description">
+Belirli kelimeler içeren bildirimleri engelleyin veya özelleştirin
+</string>
+    <string name="filter_word_blacklist_info">Engelle = tamamen atla, Özel = özel olarak duyur</string>
+    <string name="filter_blacklisted_words">📋 Kara Listeye Alınan Kelimeler</string>
+    <!-- General Settings Strings -->
+    <string name="general_theme_title">Tema</string>
+    <string name="general_dark_mode">Koyu Mod</string>
+    <string name="general_dark_mode_description">Bu uygulama için koyu modu etkinleştir</string>
+    <string name="general_app_behavior_title">Uygulama Davranışı ve Performansı</string>
+    <string name="general_auto_start">Açılışta Otomatik Başlat</string>
+    <string name="general_auto_start_description">
+Cihaz açıldığında bildirim hizmetini otomatik olarak başlat
+</string>
+    <string name="general_battery_optimization">Pil Optimizasyonu Muafiyeti</string>
+    <string name="general_battery_optimization_description">
+Daha iyi güvenilirlik için uygulamayı pil optimizasyonundan hariç tut
+</string>
+    <string name="general_aggressive_background">Agresif Arka Plan İşlemi</string>
+    <string name="general_aggressive_background_description">
+Bildirimleri arka planda daha agresif bir şekilde işle (daha fazla pil kullanır)
+</string>
+    <string name="general_service_restart_policy">Hizmet Yeniden Başlatma Politikası</string>
+    <string name="general_service_restart_description">
+Bildirim hizmeti ne zaman otomatik olarak yeniden başlamalı?
+</string>
+    <string name="general_never_restart">Asla otomatik olarak yeniden başlatma</string>
+    <string name="general_restart_on_crash">Yalnızca kilitlenme durumunda yeniden başlat</string>
+    <string name="general_restart_periodically">Periyodik olarak yeniden başlat (her 6 saatte bir)</string>
+    <string name="general_notification_settings_title">Bildirim Ayarları</string>
+    <string name="general_persistent_notification">Kalıcı Bildirim</string>
+    <string name="general_persistent_notification_description">SpeakThat aktifken kalıcı bir bildirim göster</string>
+    <string name="general_notification_while_reading">Okuma Sırasında Bildirim</string>
+    <string name="general_notification_while_reading_description">
+TTS aktif olarak okuma yaparken bir bildirim göster
+</string>
+    <string name="general_data_management_title">Veri Yönetimi</string>
+    <string name="general_export_configuration">Yapılandırmayı Dışa Aktar</string>
+    <string name="general_export_configuration_description">Tüm ayarları bir dosyaya kaydet</string>
+    <string name="general_import_configuration">Yapılandırmayı İçe Aktar</string>
+    <string name="general_import_configuration_description">Ayarları bir dosyadan yükle</string>
+    <string name="general_reset_settings">Tüm ayarları varsayılanlara sıfırla</string>
+    <string name="general_verify_settings">Tüm Ayarları Doğrula</string>
+    <string name="general_verify_settings_description">
+Tüm ayarların çalıştığını doğrulamak için kapsamlı bir test çalıştır
+</string>
+    <!-- Exception Configuration -->
+    <string name="exception_set_end_time">Bitiş Zamanını Ayarla</string>
+    <string name="exception_no_days_selected">Gün seçilmedi</string>
+    <string name="exception_bluetooth_devices_title">
+Bu istisnayı hangi Bluetooth cihazlarının tetiklemesi gerektiğini seçin:
+</string>
+    <string name="exception_specific_devices">Belirli Cihazlar (her satıra bir tane):</string>
+    <string name="exception_select_devices">Cihazları Seç</string>
+    <string name="exception_wifi_networks_title">
+Bu istisnayı hangi WiFi ağlarının tetiklemesi gerektiğini seçin:
+</string>
+    <string name="exception_specific_networks">Belirli Ağlar (her satıra bir tane):</string>
+    <string name="exception_select_networks">Ağları Seç</string>
+    <!-- Rules Activity -->
+    <string name="rules_no_rules_created">Hiç Kural Oluşturulmadı</string>
+    <string name="rules_create_first_rule_description">
+Cihazınızın durumuna, zamana veya bağlantılara göre SpeakThat\'in ne zaman bildirim okuyacağını kontrol etmek için ilk kuralınızı oluşturun.
+</string>
+    <string name="rules_create_first_rule_button">İlk Kuralınızı Oluşturun</string>
+    <!-- Rule Builder -->
+    <string name="rule_builder_logic_and">VE</string>
+    <string name="rule_builder_logic_or">VEYA</string>
+    <string name="rule_builder_logic_xor">YA DA</string>
+    <string name="rule_builder_actions_title">Eylemler</string>
+    <string name="rule_builder_actions_description">Tetikleyiciler karşılandığında ne olacağı</string>
+    <string name="rule_builder_exceptions_title">İstisnalar</string>
+    <string name="rule_builder_exceptions_description">
+Tetikleyicileri geçersiz kılan koşullar (isteğe bağlı)
+</string>
+    <string name="rule_builder_save_rule">Kuralı Kaydet</string>
+    <!-- Trigger Configuration -->
+    <string name="trigger_set_button">Ayarla</string>
+    <string name="trigger_no_days_selected">Gün seçilmedi</string>
+    <string name="trigger_bluetooth_devices_title">
+Bu kuralı hangi Bluetooth cihazlarının tetiklemesi gerektiğini seçin:
+</string>
+    <string name="trigger_any_bluetooth_device">Herhangi Bir Bluetooth Cihazı</string>
+    <string name="trigger_any_bluetooth_description">Herhangi bir cihaz bağlandığında tetikle</string>
+    <string name="trigger_specific_devices">Belirli Cihazlar (her satıra bir tane):</string>
+    <string name="trigger_select_devices">Cihazları Seç</string>
+    <string name="trigger_wifi_networks_title">
+Bu kuralı hangi WiFi ağlarının tetiklemesi gerektiğini seçin:
+</string>
+    <string name="trigger_any_wifi_network">Herhangi Bir WiFi Ağı</string>
+    <string name="trigger_any_wifi_description">Herhangi bir ağa bağlandığında tetikle</string>
+    <string name="trigger_specific_networks">Belirli Ağlar (her satıra bir tane):</string>
+    <string name="trigger_select_networks">Ağları Seç</string>
+    <!-- Wave Calibration -->
+    <string name="wave_calibration_recalibrate">Yeniden Kalibre Et</string>
+    <string name="wave_calibration_save_settings">Bu Çalışıyor! Ayarları Kaydet</string>
+    <string name="wave_calibration_disable">El Sallayarak Durdurmayı Kapat</string>
+    <!-- Voice Settings - Audio Output -->
+    <string name="voice_audio_output_settings">Ses Çıkışı Ayarları</string>
+    <string name="voice_audio_output_description">
+Bildirimlerin cihazınızın ses sistemi üzerinden nasıl çalınacağını yapılandırın.
+</string>
+    <string name="voice_audio_stream_type">Ses Akışı Türü</string>
+    <string name="voice_content_type">İçerik Türü</string>
+    <string name="voice_content_type_description">
+Sisteme bunun ne tür bir ses olduğunu söyler. Bildirimler için Konuşma önerilir.
+</string>
+    <string name="voice_audio_recommendation">Önerilen: Bildirim + Konuşma</string>
+    <string name="voice_preview_actions">Önizleme ve Eylemler</string>
+    <string name="voice_preview_button">Önizleme</string>
+    <string name="voice_test_settings">Ses Ayarlarını Test Et</string>
+    <string name="voice_reset_defaults">Varsayılanlara Sıfırla</string>
+    <string name="voice_preview_tip">
+İpucu: Ayarlarınızla bildirimlerin nasıl duyulacağını test etmek için önizleme düğmesini kullanın. Tüm değişiklikler siz yaptıkça otomatik olarak kaydedilir.
+</string>
+    <!-- Filter Settings -->
+    <string name="filter_word_count">(0 kelime)</string>
+    <string name="filter_swap_description">
+Sansürleme veya telaffuz düzeltmeleri için bildirimlerdeki kelimeleri değiştirin
+</string>
+    <string name="filter_swap_count">(0 değişim)</string>
+    <string name="filter_swap_tip">
+İpucu: Büyük/küçük harfe duyarsız eşleştirme için küçük harf kullanın. Kelimeleri tamamen kaldırmak için \'Şununla değiştir\' alanını boş bırakın.
+</string>
+    <string name="filter_media_description">
+YouTube gibi hem istenmeyen bildirimlere (medya kontrolleri) sahip olan hem de istenen bildirimlere (yorumlarınıza gelen yanıtlar gibi) izin veren uygulamalar için bildirimleri otomatik olarak filtreleyin
+</string>
+    <string name="filter_media_enable">Akıllı medya bildirim filtrelemesini etkinleştir</string>
+    <string name="filter_media_apps_title">Filtrelenmiş Medya Uygulamaları:</string>
+    <string name="filter_media_apps_description">
+Medya bildirimleri için otomatik olarak filtrelenen uygulamalar. Filtrelemek istediğiniz medya uygulamalarını ekleyin.
+</string>
+    <string name="filter_advanced_options">Gelişmiş Seçenekler</string>
+    <string name="filter_exception_apps_title">İstisna Uygulamaları:</string>
+    <string name="filter_exception_apps_description">
+Bildirimleri asla filtrelenmemesi gereken uygulamalar (yanıtlar için YouTube gibi)
+</string>
+    <string name="filter_important_keywords_title">Önemli Anahtar Kelimeler:</string>
+    <string name="filter_important_keywords_description">
+Önemli bildirimleri belirten kelimeler (\'yanıtla\', \'yorum\' gibi)
+</string>
+    <string name="filter_media_info">
+Önemli bildirimleri korurken medya kontrollerini otomatik olarak filtreler. (Daha fazla bilgi için dokunun)
+</string>
+    <!-- Dialog Strings - Donate -->
+    <string name="donate_coffee">☕</string>
+    <string name="donate_theatre">🎭</string>
+    <string name="donate_octopus">🐙</string>
+    <string name="donate_bitcoin">₿</string>
+    <string name="donate_github_sponsors">GitHub Sponsorları</string>
+    <string name="donate_github_description">Açık kaynak geliştirmeyi destekleyin</string>
+    <string name="donate_bitcoin_title">Bitcoin (BTC)</string>
+    <string name="donate_bitcoin_description">Bitcoin ağı üzerinden BTC bağışlayın</string>
+    <string name="donate_privacy">
+🔒 Gizlilik: Tüm bağışlar ilgili platformlar tarafından işlenir. Herhangi bir ödeme bilgisi toplamıyorum veya saklamıyorum.
+</string>
+    <string name="donate_friendly_message">
+Not: Ayrıca dostça bir e-posta gönderebilirsiniz, güzel bir mesaj her zaman günümü güzelleştirir! :)
+</string>
+    <!-- Dialog Strings - Filter Suggestion -->
+    <string name="filter_suggestion_smart_pattern">Akıllı desen (önerilen)</string>
+    <string name="filter_suggestion_smart_preview">Önizleme: Konum güncelleniyor...</string>
+    <string name="filter_suggestion_keywords">Sadece anahtar kelimeler</string>
+    <string name="filter_suggestion_keywords_preview">Önizleme: konum güncelleniyor</string>
+    <string name="filter_suggestion_exact_match">Tam metin eşleşmesi</string>
+    <string name="filter_suggestion_exact_preview">Önizleme: Konum saat 14:30\'da güncelleniyor...</string>
+    <string name="filter_suggestion_all_notifications">Bu uygulamadan gelen tüm bildirimler</string>
+    <string name="filter_suggestion_all_preview">Önizleme: Tüm Life360 bildirimlerini engelle</string>
+    <string name="filter_suggestion_action">Eylem:</string>
+    <string name="filter_suggestion_block_completely">Tamamen engelle</string>
+    <string name="filter_suggestion_make_private">Özel yap</string>
+    <string name="filter_suggestion_create_filter">Filtre Oluştur</string>
+    <!-- Dialog Strings - Support & Feedback -->
+    <string name="support_chat">💬</string>
+    <string name="icon_refresh">🔄</string>
+    <string name="support_lightbulb">💡</string>
+    <string name="support_bug">🐛</string>
+    <string name="support_question">❓</string>
+    <string name="support_general_title">Genel Destek</string>
+    <string name="support_general_description">
+Kurulum, kullanım veya genel sorularla ilgili yardım alın
+</string>
+    <string name="support_clipboard">📋</string>
+    <string name="support_include_logs">Hata Ayıklama Günlüklerini Dahil Et</string>
+    <string name="support_logs_description">
+Hata raporları ve teknik sorunlar için önerilir. Hata ayıklama günlükleri, sorunları daha hızlı tanımlamama ve düzeltmeme yardımcı olur.\nGünlükler, bildirim içeriğiniz hakkında bilgi içerebilir! Lütfen göndermeden önce günlükleri gözden geçirin.
+</string>
+    <string name="support_log_entries">Mevcut günlük girdileri: 0</string>
+    <string name="support_logs_privacy">
+🔒 Gizlilik: Hata ayıklama günlükleri, siz paylaşmayı seçmediğiniz sürece cihazınızda kalır. Herhangi bir e-posta göndermeden önce günlük içeriğini inceleyebilirsiniz.
+</string>
+    <!-- Action Configuration -->
+    <string name="action_configure_voice_settings">
+Bu kural tetiklendiğinde uygulanacak ses ayarlarını yapılandırın:
+</string>
+    <!-- Behavior Settings -->
+    <string name="behavior_speech_preview_example">
+Önizleme: Mesajlar bildirdi: Mitchi: SpeakThat kullandığını duydum!
+</string>
+    <!-- Rules Activity -->
+    <string name="rules_wrench_icon">Kurallar</string>
+    <!-- Exception Configuration -->
+    <string name="exception_any_bluetooth_device">Herhangi Bir Bluetooth Cihazı</string>
+    <string name="exception_any_wifi_network">Herhangi Bir WiFi Ağı</string>
+    <string name="dialog_support_title">Destek ve Geri Bildirim</string>
+    <string name="dialog_support_description">
+Bugün size nasıl yardımcı olabiliriz? İhtiyaçlarınızı en iyi tanımlayan seçeneği seçin:
+</string>
+    <string name="dialog_support_feature_request">Özellik İsteği</string>
+    <string name="dialog_support_feature_description">Yeni özellikler veya iyileştirmeler önerin</string>
+    <string name="dialog_support_bug_report">Hata Raporu</string>
+    <string name="dialog_support_bug_description">
+Kilitlenmeleri, hataları veya beklenmedik davranışları bildirin
+</string>
+    <!-- Dialog Strings - Donate -->
+    <string name="dialog_donate_title">SpeakThat\'i Destekleyin!</string>
+    <string name="dialog_donate_message">
+Merhaba! Ben Mitchi. SpeakThat\'i yapmak için çok çaba harcıyorum. Arayüz/kullanıcı deneyimi tasarımı, kalite güvence ve test, proje yönetimi, dağıtım ve yayınlama, uygulama mağazası uyumluluğu ve kullanıcı desteği gibi birçok konuyu bizzat yönetiyorum!\n\nEğer SpeakThat sizin için faydalı olduysa veya bu uygulama için para ödemeyi düşündüyseniz, lütfen gelişimini desteklemeyi düşünün!\n\nHer bağış, bu uygulamanın ihtiyacı olan herkes için tamamen ücretsiz ve açık kaynaklı kalmasını sağlar.\n\nTeşekkür ederim! ❤️
+</string>
+    <string name="dialog_donate_coffee">Bana bir kahve ısmarla</string>
+    <string name="dialog_donate_coffee_description">Ko-fi üzerinden hızlı tek seferlik bağış</string>
+    <string name="dialog_donate_patron">Patron Ol</string>
+    <string name="dialog_donate_patron_description">Aylık destek ve özel güncellemeler</string>
+    <!-- Development Settings -->
+    <string name="dev_debug_tools_title">🛠️ Hata Ayıklama Araçları</string>
+    <string name="dev_debug_tools_description">Uygulamayı hata ayıklama ve test etme araçları</string>
+    <string name="dev_notification_history">📋 Bildirim Geçmişini Göster</string>
+    <string name="dev_analytics">📊 Yardım Kullanım Analizlerini Göster</string>
+    <string name="dev_battery_report">🔋 Pil Optimizasyon Raporu</string>
+    <string name="dev_repair_blacklist">🛠️ Kelime Kara Listesini Onar</string>
+    <string name="dev_background_monitor">🛰️ Arka Plan İşlem Monitörü</string>
+    <string name="dev_installation_debug">🔍 Kurulum Kaynağı Hata Ayıklama</string>
+    <string name="dev_test_rules">🧪 Kural Sistemini Test Et</string>
+    <!-- Notification History -->
+    <string name="notification_history_title">Bildirim Geçmişi</string>
+    <string name="notification_history_description">SpeakThat tarafından işlenen son bildirimler</string>
+    <string name="notification_history_empty">Görüntülenecek bildirim yok</string>
+    <string name="notification_history_clear">Geçmişi Temizle</string>
+    <string name="notification_history_recent">📜 Son Bildirimler</string>
+    <string name="notification_history_loading">Bildirim geçmişi yükleniyor...</string>
+    <string name="notification_history_debug_info">Hata Ayıklama Bilgileri</string>
+    <string name="notification_history_debug_description">
+Bu ekran, SpeakThat!\'in hata ayıklama amacıyla yakaladığı bildirimleri gösterir. Uygulamanın doğru çalıştığını doğrulamanıza ve tam olarak hangi bildirimlerin sesli okunduğunu görmenize yardımcı olur.
+</string>
+    <!-- Additional Dialog Strings -->
+    <string name="dialog_filter_suggestion_title">Benzer Bildirimleri Filtrele</string>
+    <string name="dialog_filter_suggestion_original">Orijinal bildirim:</string>
+    <string name="dialog_filter_suggestion_sample">Örnek bildirim metni</string>
+    <string name="dialog_filter_suggestion_choose">Filtre türünü seçin:</string>
+    <string name="dialog_wifi_config_title">WiFi Yapılandırması</string>
+    <string name="dialog_time_schedule_title">Zaman Çizelgesi Yapılandırması</string>
+    <string name="dialog_bluetooth_config_title">Bluetooth Yapılandırması</string>
+    <!-- Rules Activity -->
+    <string name="rules_title">Kurallar</string>
+    <string name="rules_description">
+Cihaz durumunuza, zamana ve bağlantılara göre SpeakThat\'in ne zaman bildirim okuyacağını kontrol etmek için güçlü kurallar oluşturun.
+</string>
+    <string name="rules_enable">Kuralları Etkinleştir</string>
+    <string name="rules_create_new">Yeni Kural Oluştur</string>
+    <!-- Onboarding -->
+    <string name="onboarding_skip">Atla</string>
+    <string name="onboarding_next">İleri</string>
+    <!-- Language and Theme Onboarding -->
+    <string name="onboarding_language_theme_title">Dil ve Tema</string>
+    <string name="onboarding_language_theme_description">
+SpeakThat\'in hangi dili kullanması gerektiğini seçin. İsterseniz koyu modu da etkinleştirebilirsiniz.
+</string>
+    <string name="onboarding_language_section_title">Dil</string>
+    <string name="onboarding_language_help_title">Diliniz listede yok mu?</string>
+    <string name="onboarding_language_help_description">
+Daha fazla dili desteklemek için elimden geldiğince çok çalışıyorum. Mümkünse lütfen Crowdin sayfasına çeviri katkısında bulunun!
+</string>
+    <string name="onboarding_theme_section_title">Tema</string>
+    <string name="onboarding_theme_description">Bu uygulamada koyu modu kullan</string>
+    <string name="onboarding_theme_light">Açık Mod</string>
+    <string name="onboarding_theme_dark">Koyu Mod</string>
+    <!-- Onboarding Page Titles and Descriptions -->
+    <string name="onboarding_welcome_title">SpeakThat\'e Hoş Geldiniz!</string>
+    <string name="onboarding_welcome_description">
+Ekranınıza bakmadan bağlantıda kalın. Telefonunuz bildirimleri sesli okuyacak, böylece siz de önemli olan şeylere odaklanabilirsiniz.
+</string>
+    <string name="onboarding_permission_title">Bildirim Erişimi Gerekli</string>
+    <string name="onboarding_permission_description">
+SpeakThat\'in bildirimlerinizi sesli okumak için izne ihtiyacı var.\n\n🔒 Her şey cihazınızda kalır\n📱 Bize veya başkasına veri gönderilmez\n⚙️ Neyin okunacağını siz kontrol edersiniz\n💬 Yalnızca izin verdiğiniz şeyleri okuruz\n💡 İpucu: Listede \'SpeakThat\'e dokunarak etkinleştirin
+</string>
+    <string name="onboarding_privacy_title">Gizliliğiniz Önemlidir</string>
+    <string name="onboarding_privacy_description">
+🔒 Neyin sesli okunacağını tam olarak siz kontrol edersiniz\n\n📱 Herhangi bir anonsu anında durdurmak için telefonunuzu sallayın\n\n⚙️ Uygulamaları, kelimeleri ve bildirim türlerini filtreleyin\n\n🔐 Her şey cihazınızda kalır
+</string>
+    <string name="onboarding_filters_title">Temel Filtreleri Ayarlayalım</string>
+    <string name="onboarding_filters_description">
+SpeakThat, neyin okunup neyin okunmayacağını SİZİN seçmenize olanak tanıyan güçlü bir filtreleme sistemine sahiptir.\n\nBaşlamanız için bazı temel gizlilik filtreleri ayarlayalım.
+</string>
+    <string name="onboarding_apps_title">Hassas Uygulamaları Engelle</string>
+    <string name="onboarding_apps_description">
+Bildirimlerini ASLA okumamı istemediğiniz bir uygulamanın adını yazın.\n\nYaygın örnekler: bankacılık uygulamaları, tıbbi uygulamalar, flört uygulamaları
+</string>
+    <string name="onboarding_words_title">Hassas Kelimeleri Engelle</string>
+    <string name="onboarding_words_description">
+İçeren bildirimleri ASLA okumamı istemediğiniz kelimeleri veya ifadeleri yazın!\n\nYaygın örnekler: şifre, PIN, kredi kartı, tıbbi terimler
+</string>
+    <string name="onboarding_rules_title">Akıllı Kurallar Oluşturun</string>
+    <string name="onboarding_rules_description">
+Durumunuza göre bildirimlerin ne zaman okunacağını otomatik olarak kontrol eden akıllı kurallar oluşturun.\n\nÖrneğin, yalnızca kulaklık bağlıyken bildirimleri oku veya ekran açıkken bildirimleri atla.
+</string>
+    <string name="onboarding_complete_title">Her Şey Hazır!</string>
+    <string name="onboarding_complete_description">
+SpeakThat, gözlerinizi serbest bırakarak bağlantıda kalmanıza yardımcı olmaya hazır!\n\n💡 Uygulama ayarlarından istediğiniz zaman daha fazla filtre ekleyebilirsiniz.
+</string>
+    <!-- Trigger Configuration -->
+    <string name="trigger_screen_state">Ekran Durumu</string>
+    <string name="trigger_screen_choose">Bu tetikleyicinin ne zaman etkinleşeceğini seçin:</string>
+    <string name="trigger_invert_condition">Koşulu Ters Çevir</string>
+    <string name="trigger_time_schedule">Zaman Çizelgesi</string>
+    <string name="trigger_time_description">
+Bu tetikleyicinin etkin olacağı zaman aralığını ayarlayın:
+</string>
+    <!-- Rule Builder -->
+    <string name="rule_builder_info_icon">Bilgi</string>
+    <string name="rule_builder_description">
+Kurallar her bildirim için koşulları kontrol eder. Durum değişikliklerini hatırlamazlar - bildirimleri gerçek zamanlı olarak filtrelerler.
+</string>
+    <string name="rule_builder_name_label">Kural Adı</string>
+    <string name="rule_builder_triggers_label">Tetikleyiciler</string>
+    <string name="rule_builder_triggers_description">
+Bu kuralın etkinleşmesi için karşılanması gereken koşullar
+</string>
+    <string name="rule_builder_logic_label">Mantık:</string>
+    <!-- Exception Configuration -->
+    <string name="exception_screen_state">Ekran Durumu</string>
+    <string name="exception_screen_choose">Bu istisnanın ne zaman uygulanacağını seçin:</string>
+    <string name="exception_time_schedule">Zaman Çizelgesi</string>
+    <string name="exception_time_choose">Bu istisnanın ne zaman uygulanacağını seçin:</string>
+    <!-- Action Configuration -->
+    <string name="action_disable_speakthat">SpeakThat\'i Devre Dışı Bırak</string>
+    <string name="action_disable_description">
+Bu eylem, kural tetiklendiğinde SpeakThat\'i tamamen devre dışı bırakacaktır.
+</string>
+    <string name="action_enable_app_filter">Uygulama Filtresini Etkinleştir</string>
+    <string name="action_enable_app_description">
+Filtrelemeyi etkinleştirmek için hangi uygulamayı seçeceğinizi belirtin:
+</string>
+    <string name="action_select_app">Uygulama Seç</string>
+    <string name="action_disable_app_filter">Uygulama Filtresini Devre Dışı Bırak</string>
+    <string name="action_disable_app_description">
+Filtrelemeyi devre dışı bırakmak için hangi uygulamayı seçeceğinizi belirtin:
+</string>
+    <!-- Wave Calibration -->
+    <string name="wave_calibration_title">El Sallama Algılama Kurulumu</string>
+    <string name="wave_calibration_description">
+Cihazınızı el sallamalarını algılayacak ve bildirimleri susturacak şekilde kalibre edin
+</string>
+    <string name="wave_calibration_ready">El sallama algılamasını kalibre etmeye hazır</string>
+    <string name="wave_calibration_threshold">Eşik: 3.2cm (5.3cm\'nin %60\'ı)</string>
+    <string name="wave_calibration_how_it_works">💡 Nasıl çalışır:</string>
+    <string name="wave_calibration_instructions">
+• Elinizi 8 saniye boyunca sensöre yaklaştırıp uzaklaştırın\n• Her 50ms\'de sensör okumalarını kaydedeceğiz\n• Kalibrasyon için en az 20 okuma gerekiyor\n• Eşik, algılanan maksimum mesafenin %60\'ına ayarlanacak
+</string>
+    <string name="wave_calibration_start">Kalibrasyonu Başlat</string>
+    <!-- Bluetooth Condition -->
+    <string name="bluetooth_devices_title">Bluetooth Cihazları</string>
+    <string name="bluetooth_devices_description">
+Bildirimlerin okunması için bağlı olması gereken Bluetooth cihazlarını seçin.
+</string>
+    <string name="bluetooth_selected_devices">Seçili Cihazlar</string>
+    <string name="bluetooth_add_device">Bluetooth Cihazı Ekle</string>
+    <string name="bluetooth_how_it_works">Nasıl çalışır</string>
+    <string name="bluetooth_instructions">
+• Bildirimler yalnızca seçilen cihazlardan en az biri bağlıyken okunacaktır\n\n• Hiçbir cihaz seçilmezse tüm bildirimler okunacaktır\n\n• Cihaz eşleştirilmiş ve bağlı olmalıdır (sadece keşfedilmiş değil)
+</string>
+    <!-- Dialog Configuration Strings -->
+    <string name="wifi_config_enter_name">WiFi Ağ Adını Girin:</string>
+    <string name="wifi_config_description">
+WiFi ağınızın tam adını (SSID) girin. Ad, büyük/küçük harf duyarlılığı dahil olmak üzere tam olarak eşleşmelidir.
+</string>
+    <string name="wifi_config_tip">
+💡 İpucu: WiFi adınızı telefonunuzun WiFi ayarlarında bulabilirsiniz
+</string>
+    <string name="bluetooth_config_select">Bluetooth cihazlarını seçin:</string>
+    <string name="bluetooth_config_description">
+Bu kural için kullanmak istediğiniz cihazları seçin. Yalnızca eşleştirilmiş cihazlar gösterilir.
+</string>
+    <string name="time_schedule_set">Zaman Çizelgesini Ayarla:</string>
+    <string name="time_schedule_description">Bu kuralın ne zaman aktif olacağını seçin.</string>
+    <string name="time_schedule_start">Başlangıç Saati:</string>
+    <string name="time_schedule_end">Bitiş Saati:</string>
+    <string name="time_schedule_days">Haftanın Günleri:</string>
+    <string name="time_schedule_range">Zaman Aralığı</string>
+    <string name="time_schedule_every_day">Her Gün</string>
+    <!-- Day Names -->
+    <string name="day_monday">Pazartesi</string>
+    <string name="day_tuesday">Salı</string>
+    <string name="day_wednesday">Çarşamba</string>
+    <string name="day_thursday">Perşembe</string>
+    <string name="day_friday">Cuma</string>
+    <string name="day_saturday">Cumartesi</string>
+    <string name="day_sunday">Pazar</string>
+    <string name="day_mon">Pzt</string>
+    <string name="day_tue">Sal</string>
+    <string name="day_wed">Çar</string>
+    <string name="day_thu">Per</string>
+    <string name="day_fri">Cum</string>
+    <string name="day_sat">Cmt</string>
+    <string name="day_sun">Paz</string>
+    <!-- Item Layout Strings -->
+    <string name="item_word_swap_from">Kaynak</string>
+    <string name="item_word_swap_to">Hedef</string>
+    <string name="item_word_swap_arrow"> → </string>
+    <string name="item_bluetooth_device_name">Cihaz Adı</string>
+    <string name="item_bluetooth_mac_address">00:00:00:00:00:00</string>
+    <string name="item_rule_name">Kural Adı</string>
+    <string name="item_rule_summary">Kural özeti</string>
+    <string name="item_rule_example">
+Ekran açıkken, Sessiz Saatler bildirim okumayı atlayacak
+</string>
+    <string name="item_notification_app_name">Uygulama Adı</string>
+    <string name="item_notification_time">12:34:56</string>
+    <string name="item_notification_content">Bildirim içeriği buraya gelecek...</string>
+    <string name="item_notification_filter">🚫 Benzerleri Filtrele</string>
+    <string name="item_cooldown_app_name">Uygulama Adı</string>
+    <string name="item_cooldown_package">com.example.app</string>
+    <string name="item_cooldown_no_cooldown">Bekleme süresi yok</string>
+    <string name="item_cooldown_delete">🗑️</string>
+    <!-- More Item Layout Strings -->
+    <string name="item_word_filter_word">Kelime</string>
+    <string name="item_priority_app_icon">⚡</string>
+    <string name="item_priority_app_name">Öncelikli Uygulama Adı</string>
+    <string name="item_action_control">SpeakThat Kontrolü</string>
+    <string name="item_action_disable">SpeakThat\'i Devre Dışı Bırak</string>
+    <string name="item_app_filter_name">Uygulama Adı</string>
+    <string name="item_app_filter_package">Paket Adı</string>
+    <string name="item_exception_name">İstisna Adı</string>
+    <string name="item_exception_summary">İstisna özeti</string>
+    <string name="item_trigger_name">Tetikleyici Adı</string>
+    <string name="item_trigger_summary">Tetikleyici özeti</string>
+    <string name="item_template_name">Şablon Adı</string>
+    <string name="item_onboarding_rule_template_name">Kural Şablonu</string>
+    <string name="item_custom_app_name_label">Uygulama Adı</string>
+    <string name="item_custom_app_package">com.example.package</string>
+    <string name="item_onboarding_page_title">Sayfa Başlığı</string>
+    <string name="item_onboarding_page_subtitle">Sayfa alt başlığı</string>
+    <string name="item_onboarding_page_description">Sayfa açıklaması buraya gelecek</string>
+    <string name="item_onboarding_page_button">Devam Et</string>
+    <!-- Dialog Strings -->
+    <string name="dialog_notification_history_title">Bildirim Geçmişi</string>
+    <string name="dialog_notification_history_description">Son bildirimleri görüntüle</string>
+    <!-- Builder Items -->
+    <string name="item_condition_builder_name">Koşul Adı</string>
+    <string name="item_condition_builder_summary">Koşul özeti</string>
+    <string name="item_app_selector_name">Uygulama Adı</string>
+    <string name="item_app_selector_package">com.example.app</string>
+    <string name="item_action_builder_name">Eylem Adı</string>
+    <string name="item_action_builder_summary">Eylem özeti</string>
+    <!-- Additional Item Strings -->
+    <string name="item_app_filter_private">Özel</string>
+    <string name="item_exception_time_schedule">Zaman Çizelgesi</string>
+    <string name="item_exception_time_range">19:00 ile 07:00 arası</string>
+    <string name="item_trigger_bluetooth_device">Bluetooth Cihazı</string>
+    <string name="item_trigger_bluetooth_connected">Araç Bluetooth\'una bağlı</string>
+    <!-- More Item Strings -->
+    <string name="item_template_arrow">→</string>
+    <string name="item_onboarding_rule_template_add">Ekle</string>
+    <string name="item_custom_app_example_package">com.twitter.android</string>
+    <string name="item_custom_app_example_name">Twitter</string>
+    <string name="item_onboarding_add_app">Uygulama Ekle</string>
+    <string name="item_onboarding_add_word">Kelime Ekle</string>
+    <string name="item_onboarding_choose_template">Başlamak için bir kural şablonu seçin:</string>
+    <string name="item_onboarding_notification_settings">Bildirim Ayarlarını Aç</string>
+    <!-- Final Item Strings -->
+    <string name="dialog_notification_history_tap_info">
+Tekrarlayan bildirimler için akıllı filtreler oluşturmak için \'🚫 Benzerleri Filtrele\'ye dokunun
+</string>
+    <string name="item_condition_builder_when">Eğer </string>
+    <string name="item_condition_builder_remove">✕</string>
+    <string name="item_action_builder_remove">✕</string>
+    <string name="item_action_builder_then">O zaman </string>
+    <!-- Behavior Settings Additional Strings -->
+    <string name="behavior_notification_filtering_title">📱 Bildirim Filtreleme</string>
+    <string name="behavior_notification_filtering_description">
+Bildirimleri filtreleme ve işleme için gelişmiş seçenekler
+</string>
+    <string name="behavior_battery_optimization_title">🔋 Pil Optimizasyonu</string>
+    <string name="behavior_battery_optimization_description">Güç tüketimi ve performans ayarlarını yönetin</string>
+    <string name="behavior_emergency_mode_title">🚨 Acil Durum Modu</string>
+    <string name="behavior_emergency_mode_description">
+Kritik bildirimler için acil durum geçersiz kılma ayarları
+</string>
+    <string name="behavior_accessibility_title">♿ Erişilebilirlik</string>
+    <string name="behavior_accessibility_description">
+Erişilebilirliği ve kullanım kolaylığını artırmaya yönelik ayarlar
+</string>
+    <string name="behavior_advanced_features_title">🛠️ Gelişmiş Özellikler</string>
+    <string name="behavior_advanced_features_description">Deneysel ve ileri düzey kullanıcı özellikleri</string>
+    <!-- Wave/Shake Sensor Strings -->
+    <string name="behavior_current_shake">Mevcut sallama: 0.0</string>
+    <string name="behavior_threshold_value">Eşik: 12.0</string>
+    <string name="behavior_start_test">Testi Başlat</string>
+    <string name="behavior_timeout_settings">Zaman Aşımı Ayarları</string>
+    <string name="behavior_timeout_description">
+Hareketleri dinleme süresini ayarlayın (pil tasarrufu için)
+</string>
+    <string name="behavior_timeout_5s">5sn</string>
+    <string name="behavior_timeout_5m">5dk</string>
+    <string name="behavior_timeout_current">Zaman aşımı: 30 saniye</string>
+    <string name="behavior_disable_timeout">Zaman aşımını devre dışı bırak (önerilmez)</string>
+    <string name="behavior_wave_to_stop_title">El Sallayarak Durdur</string>
+    <string name="behavior_wave_to_stop_description">
+Elinizi cihazın önünde sallayarak okumaları anında durdurun
+</string>
+    <string name="behavior_great_for">
+Şunlar için harika: Masa kullanıcıları ve erişilebilirlik
+</string>
+    <string name="behavior_enable_wave_stop">El sallayarak durdurmayı etkinleştir</string>
+    <string name="behavior_proximity_threshold">Yakınlık Eşiği</string>
+    <!-- Major Missing Section Titles -->
+    <string name="behavior_custom_app_names_title">📱 Özel Uygulama Adları</string>
+    <string name="dev_logging_configuration_title">📝 Günlük Yapılandırması</string>
+    <string name="filter_word_swap_title">Kelime Değiştirme</string>
+    <string name="filter_word_swaps_header">📋 Kelime Değişimleri</string>
+    <string name="voice_language_preset_title">Dil Hazır Ayarı</string>
+    <!--
+     Audio Ducking Warnings (I see these in your screenshots)
+    -->
+    <string name="behavior_audio_ducking_warning">
+Ses kısma özelliği cihazlar ve Android sürümleri arasında farklı çalışır. Bazı cihazlar belirli uygulamaları veya ses akışlarını düzgün bir şekilde kısamayabilir.
+</string>
+    <string name="behavior_audio_ducking_tip">
+Ses kısma iyi çalışmıyorsa: Ses Ayarlarında farklı ses akışlarını deneyin (\'Sesli Arama\' veya \'Bildirim\' genellikle en iyi sonucu verir). \'Medya\' akışından kaçının, çünkü müziğinizle birlikte TTS sesinizi de kısabilir.
+</string>
+    <string name="behavior_audio_ducking_system">
+Uygulama, mevcut olduğunda otomatik olarak gelişmiş sistem ses kısma özelliğini kullanır ve maksimum uyumluluk için yedek olarak pürüzsüz manuel ses kısma özelliğini kullanır.
+</string>
+    <string name="behavior_audio_ducking_hint">
+İpucu: Değeri düşürmek bildirim sırasında medya sesini azaltır
+</string>
+    <!-- Wave Detection Settings -->
+    <string name="behavior_wave_threshold_description">
+Sensörünüzün maksimum mesafesinin yüzde kaçının el sallayarak durdurmayı tetikleyeceğini ayarlayın. (Kalibrasyon gerektirir)
+</string>
+    <string name="behavior_wave_threshold_30">%30</string>
+    <string name="behavior_wave_threshold_90">%90</string>
+    <string name="behavior_wave_test_button">El Sallama Testi</string>
+    <string name="behavior_wave_test_description">
+El sallama algılamanızı test edin. İkili sensörler 0 (yakın) veya maksimum (uzak) gösterir.
+</string>
+    <string name="behavior_wave_sensor_info">
+Farklı telefonlar farklı çalışır - bazıları yalnızca \'yakın\' veya \'uzak\' görür, diğerleri aradaki her şeyi görür.\n \nBu çubuğun yalnızca uç noktalara gitmesi normaldir!
+</string>
+    <string name="behavior_wave_current_proximity">Mevcut yakınlık: 5.0 cm</string>
+    <string name="behavior_wave_current_threshold">Eşik: 5.0 cm</string>
+    <string name="behavior_wave_recalibrate">El Sallama Algılamasını Yeniden Kalibre Et</string>
+    <!-- Rule Configuration - Exception Settings -->
+    <string name="exception_invert_condition">Koşulu Ters Çevir</string>
+    <string name="exception_invert_description">Koşul karşılanmadığında istisna</string>
+    <string name="exception_start_time_label">Başlangıç Saati:</string>
+    <string name="exception_start_time_default">19:00</string>
+    <string name="exception_end_time_label">Bitiş Saati:</string>
+    <string name="exception_end_time_default">07:00</string>
+    <string name="exception_set_start_time">Başlangıç Zamanını Ayarla</string>
+    <!-- Rule Configuration - Trigger Settings -->
+    <string name="trigger_invert_description">Koşul karşılanmadığında tetikle</string>
+    <string name="trigger_time_schedule_title">🕐 Zaman Çizelgesi</string>
+    <string name="trigger_time_schedule_description">
+Bu tetikleyicinin etkin olacağı zaman aralığını ayarlayın:
+</string>
+    <string name="trigger_start_time_label">Başlangıç Saati:</string>
+    <string name="trigger_start_time_default">09:00</string>
+    <string name="trigger_end_time_label">Bitiş Saati:</string>
+    <string name="trigger_end_time_default">17:00</string>
     <!-- Conditional Rules - Action Strings -->
-    <string name="rule_action_read_notification">Read the notification</string>
-    <string name="rule_action_skip_app">Skip notifications from app: %1$s</string>
-    <string name="rule_action_read_app">Read notifications from app: %1$s</string>
+    <string name="rule_action_read_notification">Bildirimi oku</string>
+    <string name="rule_action_skip_app">Uygulamadan gelen bildirimleri atla: %1$s</string>
+    <string name="rule_action_read_app">Uygulamadan gelen bildirimleri oku: %1$s</string>
     <!-- Conditional Rules - Exception Strings -->
-    <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
-    <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <string name="rule_exception_wifi_network">WiFi ağı menzilde: %1$s</string>
+    <string name="rule_exception_not_wifi_network">WiFi ağı menzilde değil: %1$s</string>
+    <!-- Multi-Language Voice Warning -->
+    <string name="specific_voice_warning">Çoklu dil sınırlaması</string>
+    <string name="specific_voice_warning_description">
+SpeakThat aynı anda yalnızca bir sesi destekler. Birden fazla dilde bildirim alırsanız, bazıları bozuk ses çıkarabilir.
+</string>
+    <string name="specific_voice_warning_dialog_title">Çok Dilli Ses Sınırlaması</string>
+    <string name="specific_voice_warning_dialog_message">
+SpeakThat şu anda aynı anda yalnızca bir sesi desteklemektedir. Bu şu anlama gelir:\n\n✅ İyi çalışanlar:\n• Seçtiğiniz sesle aynı dildeki bildirimler\n• Tek dilli kullanım senaryoları\n• En yaygın bildirim desenleri\n\n⚠️ Olası sorunlar:\n• Farklı dillerdeki bildirimler bozuk ses çıkarabilir\n• Karışık dilli içeriklerin anlaşılması zor olabilir\n• Bazı karakterler veya aksanlar doğru telaffuz edilmeyebilir\n\n💡 Öneriler:\n• En yaygın bildirim dilinize uyan bir ses seçin\n• Belirli Ses yerine Dil ve Bölge ayarını kullanmayı düşünün\n• Anlaşılırlığı sağlamak için gerçek bildirimlerinizle test edin\n\n🔮 Gelecek planları:\n• Çok dilli ses desteği gelecekteki güncellemeler için planlanmaktadır\n• Otomatik dil algılama ve ses değiştirme\n• Karışık dilli içeriğin daha iyi işlenmesi\n\nŞimdilik, Dil ve Bölge ayarı, farklı içerik türlerine otomatik olarak uyum sağladığı için çok dilli kullanıcılar için genellikle daha iyi çalışır.
+</string>
+    <string name="specific_voice_warning_dialog_got_it">Anladım</string>
+    <!-- Hint Strings -->
+    <string name="hint_app_package_name">Uygulama Paket Adı</string>
+    <string name="hint_search_apps_or_package">Uygulamaları arayın veya paket adı girin</string>
+    <string name="hint_device_addresses">Cihaz adresleri veya adları</string>
+    <string name="hint_network_ssids">Ağ SSID\'leri</string>
+    <string name="hint_word_to_blacklist">Kara listeye alınacak kelime</string>
+    <string name="hint_word_to_swap">Değiştirilecek kelime</string>
+    <string name="hint_swap_with_optional">Şununla değiştir (isteğe bağlı)</string>
+    <string name="hint_search_media_filter">Medya filtresine eklemek için uygulama ara</string>
+    <string name="hint_important_keyword">Önemli anahtar kelime (örn. yanıtla, yorum)</string>
+    <string name="hint_rule_name">Kural adı girin (örn. Gece Modu, Araba Modu)</string>
+    <string name="hint_bluetooth_addresses">00:11:22:33:44:55\nAA:BB:CC:DD:EE:FF</string>
+    <string name="hint_wifi_networks">EvWiFi\nOfisAgi</string>
+    <string name="hint_wifi_network_name">WiFi ağ adını girin</string>
+    <string name="hint_cooldown_time">Bekleme süresi</string>
+    <string name="hint_search_for_app">Bir uygulama arayın...</string>
+    <string name="hint_enter_word_to_block">Engellenecek bir kelime girin...</string>
+    <string name="hint_enter_format_placeholders">Yer tutucularla format girin</string>
+    <!-- Development Settings Hardcoded Strings -->
+    <string name="dev_configure_logging">
+Hata ayıklama için nelerin günlüğe kaydedileceğini yapılandırın
+</string>
+    <string name="dev_verbose_logging">Ayrıntılı Günlük Kaydı</string>
+    <string name="dev_verbose_logging_description">Ayrıntılı hata ayıklama bilgilerini göster</string>
+    <string name="dev_filter_logging">Filtre Günlük Kaydı</string>
+    <string name="dev_filter_logging_description">
+Filtreleme kararlarını ve sonuçlarını günlüğe kaydet
+</string>
+    <string name="dev_user_action_logging">Kullanıcı Eylemi Günlük Kaydı</string>
+    <string name="dev_user_action_logging_description">
+Kullanıcı etkileşimlerini ve düğme basımlarını günlüğe kaydet
+</string>
+    <string name="dev_system_event_logging">Sistem Olayı Günlük Kaydı</string>
+    <string name="dev_system_event_logging_description">
+Uygulama yaşam döngüsünü ve sistem olaylarını günlüğe kaydet
+</string>
+    <string name="dev_notification_logging">Bildirim Günlük Kaydı</string>
+    <string name="dev_notification_logging_description">Bildirim işleme olaylarını günlüğe kaydet</string>
+    <string name="dev_sensitive_data_logging">Hassas Veri Günlük Kaydı</string>
+    <string name="dev_sensitive_data_logging_description">
+⚠️ Hassas bilgileri günlüğe kaydet (varsayılan olarak devre dışı)
+</string>
+    <string name="dev_live_log_display">📊 Canlı Günlük Ekranı</string>
+    <string name="dev_live_log_description">
+Arka planda neler olup bittiğini gerçek zamanlı olarak görüntüleyin
+</string>
+    <string name="dev_view_crash_logs">📄 Kilitlenme Günlüklerini Görüntüle</string>
+    <string name="dev_clear_crash_logs">🗑️ Kilitlenme Günlüklerini Temizle</string>
+    <string name="dev_debug_crash_logs">🔍 Kilitlenme Günlüklerini Hata Ayıkla</string>
+    <string name="dev_starting_log_display">
+Günlük ekranı başlatılıyor...\nGünlükler burada gerçek zamanlı olarak görünecektir.\n
+</string>
+    <!-- AboutActivity Hardcoded Strings -->
+    <string name="tts_error_occurred">TTS hatası oluştu</string>
+    <string name="tts_initialization_failed">TTS başlatılamadı</string>
+    <!-- GeneralSettingsActivity Hardcoded Strings -->
+    <string name="storage_permission_required">Dışa aktarma için depolama izni gerekli</string>
+    <string name="theme_changed_title">Tema Değiştirildi</string>
+    <string name="theme_changed_message">
+Tema uygulandı. En iyi deneyim için uygulamayı yeniden başlatmanız önerilir.
+</string>
+    <string name="restart_now">Şimdi Yeniden Başlat</string>
+    <string name="later">Daha Sonra</string>
+    <string name="clear_all_data_title">Tüm Verileri Temizle</string>
+    <string name="clear_all_data_message">
+Bu, tüm ayarları varsayılanlara sıfırlayacak ve bildirim geçmişini temizleyecektir.\n\nBu işlem geri alınamaz.\n\nDevam etmek istiyor musunuz?
+</string>
+    <string name="clear_all_data_button">Tüm Verileri Temizle</string>
+    <string name="export_failed">Dışa aktarma başarısız oldu: %s</string>
+    <string name="configuration_exported_successfully">Yapılandırma başarıyla dışa aktarıldı</string>
+    <string name="configuration_imported_successfully">Yapılandırma başarıyla içe aktarıldı: %s</string>
+    <string name="import_failed">İçe aktarma başarısız oldu: %s</string>
+    <string name="all_data_cleared_successfully">Tüm veriler başarıyla temizlendi</string>
+    <string name="failed_to_clear_data">Veri temizlenemedi: %s</string>
+    <string name="persistent_notification_enabled">Kalıcı bildirim etkinleştirildi</string>
+    <string name="reading_notification_enabled">Okuma bildirimi etkinleştirildi</string>
+    <string name="notification_permission_denied">Bildirim izni reddedildi - özellik çalışmayacak</string>
+    <!-- AppAutoCompleteAdapter Hardcoded Strings -->
+    <string name="app_selector_sample_apps_loaded">Örnek uygulamalar yüklendi:</string>
+    <string name="app_selector_google_maps_found" formatted="false">GOOGLE/HARİTALAR UYGULAMASI BULUNDU: %s (%s)</string>
+    <string name="app_selector_total_apps">Toplam: %d uygulama</string>
+    <string name="app_filter_filtering_with">Şununla filtreleniyor: \'%s\'</string>
+    <string name="app_filter_match" formatted="false">EŞLEŞME: %s (%s) - ad:%s paket:%s</string>
+    <string name="app_filter_google_maps_candidate" formatted="false">GOOGLE HARİTALAR ADAYI: %s (%s)</string>
+    <string name="app_filter_found_matches" formatted="false">\'%s\' için %d eşleşme bulundu</string>
+    <string name="app_filter_no_filter_showing_all">Filtre yok - tüm %d uygulama gösteriliyor</string>
+    <string name="app_filter_publishing_results">%d sonuç yayınlanıyor</string>
+    <!-- CooldownAppAdapter Hardcoded Strings -->
+    <string name="cooldown_app_icon_url">https://cdn.simpleicons.org/%s</string>
+    <!-- BootReceiver Hardcoded Strings -->
+    <string name="boot_receiver_tag">BootReceiver</string>
+    <string name="boot_receiver_prefs_name">SpeakThatPrefs</string>
+    <string name="boot_receiver_key_auto_start">auto_start_on_boot</string>
+    <string name="boot_receiver_key_master_switch">master_switch_enabled</string>
+    <string name="boot_receiver_boot_completed">Açılış tamamlandı bilgisi alındı</string>
+    <string name="boot_receiver_auto_start_enabled">
+Otomatik başlatma etkin, bildirim hizmeti başlatılıyor
+</string>
+    <string name="boot_receiver_enabled_notification_listeners">enabled_notification_listeners</string>
+    <string name="boot_receiver_service_already_enabled">Bildirim hizmeti zaten etkin, işlem gerekmiyor</string>
+    <string name="boot_receiver_service_not_enabled">
+Bildirim hizmeti etkin değil, kullanıcının izin vermesi gerekiyor
+</string>
+    <!-- AppCategory String Resources -->
+    <string name="category_social_id">social</string>
+    <string name="category_social_display_name">Sosyal Medya</string>
+    <string name="category_social_description">Sosyal ağ ve topluluk uygulamaları</string>
+    <string name="category_messaging_id">messaging</string>
+    <string name="category_messaging_display_name">Mesajlaşma</string>
+    <string name="category_messaging_description">Sohbet ve iletişim uygulamaları</string>
+    <string name="category_finance_id">finance</string>
+    <string name="category_finance_display_name">Finans</string>
+    <string name="category_finance_description">Bankacılık ve finans uygulamaları</string>
+    <string name="category_health_id">health</string>
+    <string name="category_health_display_name">Sağlık ve Fitness</string>
+    <string name="category_health_description">Sağlık, tıp ve fitness uygulamaları</string>
+    <string name="category_entertainment_id">entertainment</string>
+    <string name="category_entertainment_display_name">Eğlence</string>
+    <string name="category_entertainment_description">Medya ve eğlence uygulamaları</string>
+    <string name="category_games_id">games</string>
+    <string name="category_games_display_name">Oyunlar</string>
+    <string name="category_games_description">Mobil oyunlar ve oyun uygulamaları</string>
+    <!--
+     App Package Names (for reference, these are typically not localized)
+    -->
+    <string name="package_twitter">com.twitter.</string>
+    <string name="package_facebook">com.facebook.</string>
+    <string name="package_instagram">com.instagram.</string>
+    <string name="package_linkedin">com.linkedin.</string>
+    <string name="package_reddit">com.reddit.</string>
+    <string name="package_snapchat">com.snapchat.</string>
+    <string name="package_pinterest">com.pinterest.</string>
+    <string name="package_tumblr">com.tumblr</string>
+    <string name="package_weibo">com.weibo.</string>
+    <string name="package_line">jp.naver.line.</string>
+    <string name="package_tiktok">com.zhiliaoapp.musically</string>
+    <string name="package_glassdoor">com.glassdoor.</string>
+    <string name="package_indeed">com.indeed.</string>
+    <string name="package_discord">com.discord</string>
+    <string name="package_slack">com.slack</string>
+    <string name="package_meetup">com.meetup</string>
+    <string name="package_whatsapp">com.whatsapp</string>
+    <string name="package_facebook_messenger">com.facebook.messenger</string>
+    <string name="package_google_messages">com.google.android.apps.messaging</string>
+    <string name="package_telegram">org.telegram.</string>
+    <string name="package_viber">com.viber.</string>
+    <string name="package_skype">com.skype.</string>
+    <string name="package_gmail">com.google.android.gm</string>
+    <string name="package_outlook">com.microsoft.office.outlook</string>
+    <string name="package_yahoo_mail">com.yahoo.mobile.client.android.mail</string>
+    <string name="package_google_meet">com.google.android.apps.meetings</string>
+    <string name="package_zoom">us.zoom.</string>
+    <string name="package_microsoft_teams">com.microsoft.teams</string>
+    <string name="package_line_android">jp.naver.line.android</string>
+    <string name="package_kakaotalk">com.kakao.talk</string>
+    <string name="package_wechat">com.tencent.mm</string>
+    <string name="package_paypal">com.paypal.</string>
+    <string name="package_venmo">com.venmo.</string>
+    <string name="package_cash_app">com.squareup.cash</string>
+    <string name="package_google_wallet">com.google.android.apps.walletnfcrel</string>
+    <string name="package_bank_of_america">com.bankofamerica.</string>
+    <string name="package_chase">com.chase.</string>
+    <string name="package_wells_fargo">com.wellsfargo.</string>
+    <string name="package_us_bank">com.usbank.</string>
+    <string name="package_citibank">com.citibank.</string>
+    <string name="package_robinhood">com.robinhood.</string>
+    <string name="package_etrade">com.etrade.</string>
+    <string name="package_charles_schwab">com.schwab.</string>
+    <string name="package_fidelity">com.fidelity.</string>
+    <string name="package_coinbase">com.coinbase.</string>
+    <string name="package_binance">com.binance.</string>
+    <string name="package_mint">com.mint</string>
+    <string name="package_ynab">com.ynab</string>
+    <string name="package_fitbit">com.fitbit.</string>
+    <string name="package_google_fit">com.google.android.apps.fitness</string>
+    <string name="package_samsung_health">com.samsung.health</string>
+    <string name="package_garmin_connect">com.garmin.connect</string>
+    <string name="package_strava">com.strava</string>
+    <string name="package_medisafe">com.medisafe.</string>
+    <string name="package_myfitnesspal">com.myfitnesspal.</string>
+    <string name="package_noom">com.noom.</string>
+    <string name="package_weightwatchers">com.weightwatchers</string>
+    <string name="package_zocdoc">com.zocdoc.</string>
+    <string name="package_carezone">org.carezone.</string>
+    <string name="package_teladoc">com.teladoc.</string>
+    <string name="package_calm">com.calm.</string>
+    <string name="package_headspace">com.headspace.</string>
+    <string name="package_betterhelp">com.betterhelp</string>
+    <string name="package_glow">com.glow.android</string>
+    <string name="package_clue">com.clue.android</string>
+    <!--
+     SharedPreferences Keys (these are typically not localized but kept for reference)
+    -->
+    <string name="prefs_speakthat">SpeakThatPrefs</string>
+    <string name="prefs_voice_settings">VoiceSettings</string>
+    <string name="prefs_notification_history">NotificationHistory</string>
+    <string name="prefs_dark_mode">dark_mode</string>
+    <string name="prefs_persistent_notification">persistent_notification</string>
+    <string name="prefs_notification_while_reading">notification_while_reading</string>
+    <string name="prefs_auto_start_enabled">auto_start_enabled</string>
+    <string name="prefs_battery_optimization_enabled">battery_optimization_enabled</string>
+    <string name="prefs_aggressive_processing_enabled">aggressive_processing_enabled</string>
+    <string name="prefs_restart_policy">restart_policy</string>
+    <string name="prefs_tts_language">tts_language</string>
+    <string name="prefs_speech_rate">speech_rate</string>
+    <string name="prefs_pitch">pitch</string>
+    <string name="prefs_voice_name">voice_name</string>
+    <string name="prefs_language">language</string>
+    <string name="prefs_audio_usage">audio_usage</string>
+    <string name="prefs_content_type">content_type</string>
+    <string name="prefs_auto_start_on_boot">auto_start_on_boot</string>
+    <string name="prefs_master_switch_enabled">master_switch_enabled</string>
+    <string name="prefs_enabled_notification_listeners">enabled_notification_listeners</string>
+    <!-- TTS Utterance IDs -->
+    <string name="tts_utterance_about_app">about_app</string>
+    <!-- File Export/Import -->
+    <string name="export_filename_format">SpeakThat_Config_%s.json</string>
+    <string name="import_temp_filename">speakthat_import</string>
+    <string name="export_mime_type">application/json</string>
+    <string name="export_charset">UTF-8</string>
+    <!-- Error Messages -->
+    <string name="error_unable_to_open_output_stream">URI için çıkış akışı açılamıyor</string>
+    <string name="error_unable_to_open_input_stream">URI\'den giriş akışı açılamıyor</string>
+    <!-- Log Messages -->
+    <string name="log_app_search_adapter_filtering" formatted="false">\'%s\' ile filtreleniyor - %d sonuç bulundu</string>
+    <string name="log_app_search_adapter_publishing">%d sonuç yayınlanıyor</string>
+    <string name="log_app_selector_sample_apps">Örnek uygulamalar yüklendi:</string>
+    <string name="log_app_selector_app_info" formatted="false"> %s (%s)</string>
+    <string name="log_app_selector_total">Toplam: %d uygulama</string>
+    <string name="log_app_filter_filtering">Şununla filtreleniyor: \'%s\'</string>
+    <string name="log_app_filter_match" formatted="false">EŞLEŞME: %s (%s) - ad:%s paket:%s</string>
+    <string name="log_app_filter_google_maps" formatted="false">GOOGLE HARİTALAR ADAYI: %s (%s)</string>
+    <string name="log_app_filter_found_matches" formatted="false">\'%s\' için %d eşleşme bulundu</string>
+    <string name="log_app_filter_no_filter">Filtre yok - tüm %d uygulama gösteriliyor</string>
+    <string name="log_app_filter_publishing">%d sonuç yayınlanıyor</string>
+    <string name="log_boot_receiver_boot_completed">Açılış tamamlandı bilgisi alındı</string>
+    <string name="log_boot_receiver_auto_start">
+Otomatik başlatma etkin, bildirim hizmeti başlatılıyor
+</string>
+    <string name="log_boot_receiver_service_enabled">Bildirim hizmeti zaten etkin</string>
+    <string name="log_boot_receiver_service_not_enabled">
+Bildirim hizmeti etkin değil - kullanıcının izin vermesi gerekiyor
+</string>
+    <!-- Date/Time Format -->
+    <string name="date_format_export">yyyy-MM-dd_HH-mm-ss</string>
+    <!-- System Values -->
+    <string name="system_default">sistem</string>
+    <string name="restart_policy_never">asla</string>
+    <string name="restart_policy_crash">kilitlenme</string>
+    <string name="restart_policy_periodic">periyodik</string>
+    <!-- MainActivity Hardcoded Strings -->
+    <string name="main_master_switch_enabled">SpeakThat, aktif olduğunda bildirimleri okuyacak</string>
+    <string name="main_master_switch_disabled">SpeakThat devre dışı - bildirimler okunmayacak</string>
+    <string name="main_notification_access_granted">SpeakThat\'in bildirim erişimi var</string>
+    <string name="main_tts_init_failed">TTS başlatılamadı. Bazı özellikler çalışmayabilir.</string>
+    <string name="main_tts_not_ready">
+TTS hazır değil. Lütfen bir an sonra tekrar deneyin.
+</string>
+    <string name="main_tts_playback_failed">TTS oynatma başarısız oldu</string>
+    <string name="main_notification_permission_granted">Bildirim izni verildi</string>
+    <string name="main_notification_permission_denied">
+Bildirim izni reddedildi - SpeakThat bildirimleri görünmeyebilir
+</string>
+    <string name="main_notification_title_active">SpeakThat Aktif</string>
+    <string name="main_notification_content_tap_settings">SpeakThat ayarlarını açmak için dokunun</string>
 </resources>
-
