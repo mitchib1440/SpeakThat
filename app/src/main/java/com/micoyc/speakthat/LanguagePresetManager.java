@@ -120,6 +120,16 @@ public class LanguagePresetManager {
             false
         ));
         
+        // Turkish - complete UI translations available
+        presets.add(new LanguagePreset(
+            "tr_TR", 
+            "Türkçe (Türkiye)", 
+            "tr_TR", 
+            "tr_TR", 
+            null,  // Let system choose best Turkish voice
+            false
+        ));
+        
         // Custom preset - represents user's advanced customizations
         presets.add(new LanguagePreset(
             "custom", 

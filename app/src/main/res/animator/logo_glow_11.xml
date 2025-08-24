@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:ordering="sequentially">
+    
+    <!-- Glow sequence for exclamation mark - pulsing bright blue glow -->
+    <objectAnimator
+        android:propertyName="strokeColor"
+        android:duration="120"
+        android:valueFrom="@android:color/transparent"
+        android:valueTo="@android:color/holo_blue_light"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="strokeWidth"
+        android:duration="120"
+        android:valueFrom="0"
+        android:valueTo="3"
+        android:valueType="floatType" />
+    
+    <objectAnimator
+        android:propertyName="strokeColor"
+        android:duration="80"
+        android:valueFrom="@android:color/holo_blue_light"
+        android:valueTo="@android:color/holo_blue_dark"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="strokeWidth"
+        android:duration="80"
+        android:valueFrom="3"
+        android:valueTo="6"
+        android:valueType="floatType" />
+    
+    <objectAnimator
+        android:propertyName="strokeColor"
+        android:duration="60"
+        android:valueFrom="@android:color/holo_blue_dark"
+        android:valueTo="@android:color/holo_blue_light"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="strokeWidth"
+        android:duration="60"
+        android:valueFrom="6"
+        android:valueTo="3"
+        android:valueType="floatType" />
+    
+    <objectAnimator
+        android:propertyName="strokeColor"
+        android:duration="120"
+        android:valueFrom="@android:color/holo_blue_light"
+        android:valueTo="@android:color/transparent"
+        android:valueType="colorType" />
+    
+    <objectAnimator
+        android:propertyName="strokeWidth"
+        android:duration="120"
+        android:valueFrom="3"
+        android:valueTo="0"
+        android:valueType="floatType" />
+    
+</set>
