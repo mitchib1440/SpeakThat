@@ -702,6 +702,59 @@
                         android:popupBackground="?attr/colorSurface"
                         android:padding="12dp" />
 
+                    <!-- Speakerphone Option for VOICE_CALL -->
+                    <LinearLayout
+                        android:id="@+id/speakerphoneOptionLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_mobile_speaker_24"
+                            android:tint="@color/white_100"
+                            android:layout_marginEnd="12dp"
+                            android:contentDescription="Speakerphone icon" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/voice_speakerphone_option"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/voice_speakerphone_description"
+                                android:textSize="14sp"
+                                android:textColor="@color/purple_card_text_secondary" />
+
+                        </LinearLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/speakerphoneSwitch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color" />
+
+                    </LinearLayout>
+
                     <!-- Audio Channel Help Text -->
                     <LinearLayout
                         android:layout_width="match_parent"

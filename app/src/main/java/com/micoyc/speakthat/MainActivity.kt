@@ -758,7 +758,22 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 }
             })
             
-            val result = textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "easter_egg")
+            // Create volume bundle with proper volume parameters
+            val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+            val ttsVolume = voiceSettingsPrefs.getFloat("tts_volume", 1.0f)
+            val ttsUsageIndex = voiceSettingsPrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
+            val speakerphoneEnabled = voiceSettingsPrefs.getBoolean("speakerphone_enabled", false)
+            val ttsUsage = when (ttsUsageIndex) {
+                0 -> android.media.AudioAttributes.USAGE_MEDIA
+                1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
+                2 -> android.media.AudioAttributes.USAGE_ALARM
+                3 -> android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION
+                4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+                else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+            }
+            val volumeParams = VoiceSettingsActivity.createVolumeBundle(ttsVolume, ttsUsage, speakerphoneEnabled)
+            
+            val result = textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, volumeParams, "easter_egg")
             if (result == TextToSpeech.ERROR) {
                 Log.e(TAG, "TTS speak() returned ERROR")
                 InAppLogger.logError("MainActivity", "TTS speak() failed")

@@ -1910,6 +1910,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "Cancelled pending delayed readout due to $triggerType")
         }
         
+        // Disable speakerphone if it was enabled
+        try {
+            if (audioManager.isSpeakerphoneOn) {
+                audioManager.isSpeakerphoneOn = false
+                InAppLogger.log("Service", "Speakerphone disabled after stopping speech")
+            }
+        } catch (e: Exception) {
+            InAppLogger.logError("Service", "Failed to disable speakerphone: ${e.message}")
+        }
+        
         // Clean up media behavior effects
         cleanupMediaBehavior()
         
@@ -2445,6 +2455,35 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             Log.w(TAG, guidance)
             InAppLogger.log("MediaBehavior", "Known device issues detected: ${knownIssues.joinToString(", ")}")
+        }
+    }
+    
+    private fun requestAudioFocusForVoiceCall(): Boolean {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            // Use AudioFocusRequest for API 26+ with VOICE_COMMUNICATION usage
+            audioFocusRequest = android.media.AudioFocusRequest.Builder(android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
+                .setAudioAttributes(
+                    android.media.AudioAttributes.Builder()
+                        .setUsage(android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION)
+                        .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                        .build()
+                )
+                .setOnAudioFocusChangeListener { focusChange ->
+                    handleAudioFocusChange(focusChange)
+                }
+                .build()
+            
+            val result = audioManager.requestAudioFocus(audioFocusRequest!!)
+            result == android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED
+        } else {
+            // Use deprecated method for older versions with VOICE_CALL stream
+            @Suppress("DEPRECATION")
+            val result = audioManager.requestAudioFocus(
+                { focusChange -> handleAudioFocusChange(focusChange) },
+                android.media.AudioManager.STREAM_VOICE_CALL,
+                android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT
+            )
+            result == android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED
         }
     }
     
@@ -3170,11 +3209,62 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Register shake listener now that we're about to speak
         registerShakeListener()
         
+        // Create volume bundle with proper volume parameters
+        val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+        val ttsVolume = voicePrefs.getFloat("tts_volume", 1.0f)
+        val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
+        val speakerphoneEnabled = voicePrefs.getBoolean("speakerphone_enabled", false)
+        val ttsUsage = when (ttsUsageIndex) {
+            0 -> android.media.AudioAttributes.USAGE_MEDIA
+            1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
+            2 -> android.media.AudioAttributes.USAGE_ALARM
+            3 -> android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION
+            4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+            else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+        }
+        
+        // Handle speakerphone routing for VOICE_CALL stream
+        if (ttsUsage == android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION && speakerphoneEnabled) {
+            try {
+                // Log current speakerphone state
+                val currentSpeakerphoneState = audioManager.isSpeakerphoneOn
+                InAppLogger.log("Service", "Current speakerphone state: $currentSpeakerphoneState")
+                
+                // Request audio focus with VOICE_COMMUNICATION usage to match TTS
+                val focusGranted = requestAudioFocusForVoiceCall()
+                if (focusGranted) {
+                    InAppLogger.log("Service", "Audio focus granted for VOICE_CALL, enabling speakerphone")
+                } else {
+                    InAppLogger.log("Service", "Audio focus not granted for VOICE_CALL, but attempting speakerphone anyway")
+                }
+                
+                // Enable speakerphone with proper error handling
+                audioManager.isSpeakerphoneOn = true
+                
+                // Add a small delay to allow speakerphone state to take effect
+                android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                    // Verify speakerphone was actually enabled
+                    if (audioManager.isSpeakerphoneOn) {
+                        InAppLogger.log("Service", "Speakerphone successfully enabled for VOICE_CALL stream")
+                    } else {
+                        InAppLogger.logError("Service", "Speakerphone was not enabled despite successful call")
+                    }
+                }, 100) // 100ms delay
+            } catch (e: Exception) {
+                InAppLogger.logError("Service", "Failed to enable speakerphone: ${e.message}")
+            }
+        }
+        
+        // Log TTS settings for debugging
+        InAppLogger.log("Service", "TTS settings - Volume: ${ttsVolume * 100}%, Usage: $ttsUsage, Speakerphone: $speakerphoneEnabled")
+        
+        val volumeParams = VoiceSettingsActivity.createVolumeBundle(ttsVolume, ttsUsage, speakerphoneEnabled)
+        
         // Speak with queue mode FLUSH to interrupt any previous speech
-        Log.d(TAG, "Calling TTS.speak()...")
-        val speakResult = textToSpeech?.speak(speechText, TextToSpeech.QUEUE_FLUSH, null, "notification_utterance")
+        Log.d(TAG, "Calling TTS.speak() with volume: ${ttsVolume * 100}%...")
+        val speakResult = textToSpeech?.speak(speechText, TextToSpeech.QUEUE_FLUSH, volumeParams, "notification_utterance")
         Log.d(TAG, "TTS.speak() returned: $speakResult")
-        InAppLogger.log("Service", "TTS.speak() called, result: $speakResult")
+        InAppLogger.log("Service", "TTS.speak() called with volume ${ttsVolume * 100}%, result: $speakResult")
         
         // Check if speak() failed
         if (speakResult == TextToSpeech.ERROR) {
@@ -3205,6 +3295,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     // Unregister shake listener since we're done speaking
                     unregisterShakeListener()
                     
+                    // Disable speakerphone if it was enabled
+                    try {
+                        if (audioManager.isSpeakerphoneOn) {
+                            audioManager.isSpeakerphoneOn = false
+                            InAppLogger.log("Service", "Speakerphone disabled after speech completion")
+                        }
+                    } catch (e: Exception) {
+                        InAppLogger.logError("Service", "Failed to disable speakerphone: ${e.message}")
+                    }
+                    
                     InAppLogger.logTTSEvent("TTS completed", "Utterance finished")
                     
                     // Track notification read for review reminder
@@ -3227,6 +3327,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     hideReadingNotification()
                     
                     unregisterShakeListener()
+                    
+                    // Disable speakerphone if it was enabled
+                    try {
+                        if (audioManager.isSpeakerphoneOn) {
+                            audioManager.isSpeakerphoneOn = false
+                            InAppLogger.log("Service", "Speakerphone disabled after TTS error")
+                        }
+                    } catch (e: Exception) {
+                        InAppLogger.logError("Service", "Failed to disable speakerphone: ${e.message}")
+                    }
+                    
                     Log.e(TAG, "TTS error occurred")
                     InAppLogger.logTTSEvent("TTS error", "Utterance failed")
                     

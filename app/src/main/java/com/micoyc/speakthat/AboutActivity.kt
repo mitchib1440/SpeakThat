@@ -146,7 +146,22 @@ class AboutActivity : AppCompatActivity() {
     
     private fun speakAboutApp() {
         val aboutText = buildAboutText()
-        textToSpeech?.speak(aboutText, TextToSpeech.QUEUE_FLUSH, null, getString(R.string.tts_utterance_about_app))
+        
+        // Create volume bundle with proper volume parameters
+        val ttsVolume = voiceSettingsPrefs?.getFloat("tts_volume", 1.0f) ?: 1.0f
+        val ttsUsageIndex = voiceSettingsPrefs?.getInt("audio_usage", 4) ?: 4 // Default to ASSISTANT index
+        val speakerphoneEnabled = voiceSettingsPrefs?.getBoolean("speakerphone_enabled", false) ?: false
+        val ttsUsage = when (ttsUsageIndex) {
+            0 -> android.media.AudioAttributes.USAGE_MEDIA
+            1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
+            2 -> android.media.AudioAttributes.USAGE_ALARM
+            3 -> android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION
+            4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+            else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+        }
+        val volumeParams = VoiceSettingsActivity.createVolumeBundle(ttsVolume, ttsUsage, speakerphoneEnabled)
+        
+        textToSpeech?.speak(aboutText, TextToSpeech.QUEUE_FLUSH, volumeParams, getString(R.string.tts_utterance_about_app))
     }
     
     private fun stopTTS() {

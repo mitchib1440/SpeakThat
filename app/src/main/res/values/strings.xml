@@ -857,6 +857,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="voice_content_type">Content Type</string>
     <string name="voice_content_type_description">Tells the system what kind of audio this is. Speech is recommended for notifications.</string>
     <string name="voice_audio_recommendation">Recommended: Notification + Speech</string>
+    <string name="voice_speakerphone_option">Use Speakerphone for Voice Call</string>
+    <string name="voice_speakerphone_description">Route Voice Call audio to speaker instead of earpiece for louder volume</string>
     <string name="voice_preview_actions">Preview &amp; Actions</string>
     <string name="voice_preview_button">Preview</string>
     <string name="voice_test_settings">Test Voice Settings</string>

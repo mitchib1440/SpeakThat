@@ -229,8 +229,23 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         if (isTtsInitialized && textToSpeech != null && !isMuted) {
             // Stop any current speech first
             textToSpeech?.stop()
+            
+            // Create volume bundle with proper volume parameters
+            val ttsVolume = voiceSettingsPrefs?.getFloat("tts_volume", 1.0f) ?: 1.0f
+            val ttsUsageIndex = voiceSettingsPrefs?.getInt("audio_usage", 4) ?: 4 // Default to ASSISTANT index
+            val speakerphoneEnabled = voiceSettingsPrefs?.getBoolean("speakerphone_enabled", false) ?: false
+            val ttsUsage = when (ttsUsageIndex) {
+                0 -> android.media.AudioAttributes.USAGE_MEDIA
+                1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
+                2 -> android.media.AudioAttributes.USAGE_ALARM
+                3 -> android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION
+                4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+                else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+            }
+            val volumeParams = VoiceSettingsActivity.createVolumeBundle(ttsVolume, ttsUsage, speakerphoneEnabled)
+            
             // Then speak the new text
-            textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "onboarding_utterance")
+            textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, volumeParams, "onboarding_utterance")
             InAppLogger.log(TAG, "Speaking: ${text.take(50)}...")
         }
     }

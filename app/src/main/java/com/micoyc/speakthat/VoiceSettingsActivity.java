@@ -35,6 +35,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private static final String KEY_CONTENT_TYPE = "content_type";
     private static final String KEY_SHOW_ADVANCED = "show_advanced_voice";
     private static final String KEY_TTS_LANGUAGE = "tts_language";
+    private static final String KEY_SPEAKERPHONE_ENABLED = "speakerphone_enabled";
 
 
     // Default values
@@ -63,6 +64,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private ImageView btnVoiceInfo;
     private MaterialSwitch switchAdvancedVoice;
     private LinearLayout layoutAdvancedVoiceSection;
+    private LinearLayout speakerphoneOptionLayout;
+    private MaterialSwitch speakerphoneSwitch;
 
     // TTS and data
     private TextToSpeech textToSpeech;
@@ -133,6 +136,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         btnVoiceInfo = findViewById(R.id.btnVoiceInfo);
         switchAdvancedVoice = findViewById(R.id.switchAdvancedVoice);
         layoutAdvancedVoiceSection = findViewById(R.id.layoutAdvancedVoiceSection);
+        speakerphoneOptionLayout = findViewById(R.id.speakerphoneOptionLayout);
+        speakerphoneSwitch = findViewById(R.id.speakerphoneSwitch);
         
         // Set up audio help button
         ImageView btnAudioHelp = findViewById(R.id.btnAudioHelp);
@@ -765,11 +770,13 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             @Override
             public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
                 saveAudioUsage(position);
+                updateSpeakerphoneOptionVisibility(position);
             }
 
             @Override
             public void onNothingSelected(android.widget.AdapterView<?> parent) {
                 saveAudioUsage(DEFAULT_AUDIO_USAGE);
+                updateSpeakerphoneOptionVisibility(DEFAULT_AUDIO_USAGE);
             }
         });
 
@@ -797,6 +804,26 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 saveContentType(DEFAULT_CONTENT_TYPE);
             }
         });
+        
+        // Setup speakerphone switch
+        speakerphoneSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveSpeakerphoneEnabled(isChecked);
+            InAppLogger.log("VoiceSettings", "Speakerphone option " + (isChecked ? "enabled" : "disabled"));
+        });
+    }
+    
+    /**
+     * Update the visibility of the speakerphone option based on audio usage selection
+     */
+    private void updateSpeakerphoneOptionVisibility(int audioUsageIndex) {
+        // Only show speakerphone option for VOICE_CALL stream (index 3)
+        if (audioUsageIndex == 3) {
+            speakerphoneOptionLayout.setVisibility(View.VISIBLE);
+            InAppLogger.log("VoiceSettings", "Showing speakerphone option for VOICE_CALL stream");
+        } else {
+            speakerphoneOptionLayout.setVisibility(View.GONE);
+            InAppLogger.log("VoiceSettings", "Hiding speakerphone option for non-VOICE_CALL stream");
+        }
     }
 
     private void setupAdvancedSwitch() {
@@ -1003,6 +1030,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         
         // Update preset spinner behavior based on advanced mode state
         updatePresetSpinnerForAdvancedMode(showAdvanced);
+        
+        // Load speakerphone setting and update visibility
+        boolean speakerphoneEnabled = sharedPreferences.getBoolean(KEY_SPEAKERPHONE_ENABLED, false);
+        speakerphoneSwitch.setChecked(speakerphoneEnabled);
+        updateSpeakerphoneOptionVisibility(audioUsage);
     }
 
     /**
@@ -1105,7 +1137,13 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         // Use simple preview text that matches the user's selected TTS language
         // This prevents conflicts between TTS engine language and app localization language
         String previewText = getSimplePreviewText(effectiveLanguage);
-        textToSpeech.speak(previewText, TextToSpeech.QUEUE_FLUSH, null, "preview");
+        
+        // Create volume bundle with proper volume parameters
+        int audioUsage = getAudioUsageFromIndex(audioUsageSpinner.getSelectedItemPosition());
+        boolean speakerphoneEnabled = speakerphoneSwitch.isChecked();
+        Bundle volumeParams = createVolumeBundle(currentTtsVolume, audioUsage, speakerphoneEnabled);
+        
+        textToSpeech.speak(previewText, TextToSpeech.QUEUE_FLUSH, volumeParams, "preview");
         
         InAppLogger.log("VoiceSettings", "Voice preview played - Rate: " + currentSpeechRate + ", Pitch: " + currentPitch + 
                        ", User's TTS Language: " + (effectiveLanguage != null ? effectiveLanguage.toString() : "default") + 
@@ -1407,6 +1445,14 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             .build();
             
         textToSpeech.setAudioAttributes(audioAttributes);
+        
+        // Log the applied settings including volume
+        InAppLogger.log("VoiceSettings", "Audio attributes applied - Usage: " + audioUsage + ", Content: " + contentType + ", Volume: " + (currentTtsVolume * 100) + "%");
+        
+        // Special handling for VOICE_CALL stream - warn about potential volume issues
+        if (audioUsage == android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION) {
+            InAppLogger.log("VoiceSettings", "VOICE_CALL stream selected - this may route to earpiece and be quiet. Consider using speakerphone or different stream.");
+        }
     }
 
     private int getAudioUsageFromIndex(int index) {
@@ -1504,42 +1550,67 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     }
 
     /**
-     * CRITICAL: Public method to apply voice settings to any TTS instance.
-     * This is the main method used by NotificationReaderService and other components.
+     * Creates a Bundle with volume parameters for TTS speak calls.
+     * This is the proper way to control TTS volume in Android.
      * 
-     * IMPLEMENTATION DETAILS:
-     * 1. If a specific voice is selected, it completely overrides any language setting
-     * 2. If no specific voice, falls back to language setting
-     * 3. If no language setting, uses system default
-     * 4. If system default fails, falls back to US English
+     * @param ttsVolume Volume level (0.0 to 1.0)
+     * @param audioUsage The audio usage type to determine volume boost
+     * @param speakerphoneEnabled Whether speakerphone is enabled for VOICE_CALL stream
+     * @return Bundle with volume parameters
+     */
+    public static Bundle createVolumeBundle(float ttsVolume, int audioUsage, boolean speakerphoneEnabled) {
+        Bundle params = new Bundle();
+        
+        // Apply base volume
+        params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, ttsVolume);
+        
+        // Special handling for VOICE_CALL stream
+        if (audioUsage == android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION) {
+            if (speakerphoneEnabled) {
+                // If speakerphone is enabled, use a different approach
+                // We'll handle speakerphone routing in the service using AudioManager
+                InAppLogger.log("VoiceSettings", "VOICE_CALL stream with speakerphone enabled - will route to speaker via AudioManager");
+            } else {
+                // VOICE_CALL stream routes to earpiece by default, which is very quiet
+                // Boost the volume by 2.5x to compensate for earpiece routing
+                float boostedVolume = Math.min(1.0f, ttsVolume * 2.5f);
+                params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, boostedVolume);
+                InAppLogger.log("VoiceSettings", "VOICE_CALL stream detected - boosting volume from " + (ttsVolume * 100) + "% to " + (boostedVolume * 100) + "%");
+            }
+        }
+        
+        return params;
+    }
+
+    /**
+     * CRITICAL: Applies voice settings to a TTS instance.
+     * This method is called by the service and other activities to ensure consistent voice settings.
      * 
-     * This ensures consistent behavior across all app components.
+     * The voice settings will respect the override logic (specific voice > language).
+     * 
+     * @param tts The TextToSpeech instance to configure
+     * @param prefs SharedPreferences containing voice settings
      */
     public static void applyVoiceSettings(TextToSpeech tts, SharedPreferences prefs) {
-        if (tts == null || prefs == null) return;
+        if (tts == null || prefs == null) {
+            InAppLogger.log("VoiceSettings", "Cannot apply voice settings - TTS or prefs is null");
+            return;
+        }
 
-        // Load all voice settings from preferences
+        // Load settings from preferences
+        float ttsVolume = prefs.getFloat(KEY_TTS_VOLUME, DEFAULT_TTS_VOLUME);
         float speechRate = prefs.getFloat(KEY_SPEECH_RATE, DEFAULT_SPEECH_RATE);
         float pitch = prefs.getFloat(KEY_PITCH, DEFAULT_PITCH);
-        float ttsVolume = prefs.getFloat(KEY_TTS_VOLUME, DEFAULT_TTS_VOLUME);
         String voiceName = prefs.getString(KEY_VOICE_NAME, "");
         String language = prefs.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE);
-
-        InAppLogger.log("VoiceSettings", "Applying voice settings - Rate: " + speechRate + ", Pitch: " + pitch + ", Volume: " + (ttsVolume * 100) + "%, Voice: " + voiceName + ", Language: " + language);
-
-        // Apply speech rate and pitch (these don't conflict with voice/language settings)
+        
+        // Apply basic TTS settings
         tts.setSpeechRate(speechRate);
         tts.setPitch(pitch);
-
-        // CRITICAL: Apply language setting with proper override logic
-        // The order is important - check for specific voice first, then fall back to language
+        
+        // Apply language setting first (may be overridden by specific voice)
         boolean languageApplied = false;
-        if (!voiceName.isEmpty()) {
-            // CRITICAL: Skip language setting if we have a specific voice
-            // The specific voice will completely override any language setting
-            // This ensures the user's voice choice is always respected
-            InAppLogger.log("VoiceSettings", "Skipping language setting - specific voice will override it");
-        } else if (!language.isEmpty() && !language.equals("")) {
+        if (voiceName.isEmpty()) {
             // No specific voice selected - apply the language setting
             // Parse language string (e.g., "en_US" -> Locale("en", "US"))
             Locale targetLocale = null;
@@ -1556,19 +1627,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             languageApplied = (langResult == TextToSpeech.LANG_AVAILABLE || langResult == TextToSpeech.LANG_COUNTRY_AVAILABLE || langResult == TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE);
             InAppLogger.log("VoiceSettings", "Language set to: " + targetLocale.toString() + " (result: " + langResult + ", success: " + languageApplied + ")");
         } else {
-            // No specific voice and no language setting - use system default as fallback
-            int langResult = tts.setLanguage(Locale.getDefault());
-            languageApplied = (langResult == TextToSpeech.LANG_AVAILABLE || langResult == TextToSpeech.LANG_COUNTRY_AVAILABLE || langResult == TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE);
-            InAppLogger.log("VoiceSettings", "Using system default language: " + Locale.getDefault().toString() + " (result: " + langResult + ", success: " + languageApplied + ")");
-            
-            // CRITICAL: If system default fails, fallback to US English
-            // This ensures the app always has a working language setting
-            if (!languageApplied) {
-                InAppLogger.log("VoiceSettings", "System default language failed, falling back to US English");
-                tts.setLanguage(Locale.US);
-            }
+            InAppLogger.log("VoiceSettings", "Skipping language setting - specific voice will override it");
         }
-
+        
         // CRITICAL: Apply specific voice if we have one
         // This completely overrides any language setting that was applied above
         // This is the core of the voice override feature
@@ -1586,19 +1647,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                     if (voice.getName().equals(voiceName)) {
                         int voiceResult = tts.setVoice(voice);
                         voiceApplied = (voiceResult == TextToSpeech.SUCCESS);
-                        InAppLogger.log("VoiceSettings", "Specific voice set to: " + voice.getName() + " (result: " + voiceResult + ", success: " + voiceApplied + ")");
-                        if (voiceApplied) {
-                            // CRITICAL: This is the key message - specific voice overrides language
-                            InAppLogger.log("VoiceSettings", "Note: Specific voice overrides language setting");
-                        } else {
-                            InAppLogger.log("VoiceSettings", "WARNING: Voice selection failed despite finding the voice");
-                        }
+                        InAppLogger.log("VoiceSettings", "Specific voice applied: " + voiceName + " (result: " + voiceResult + ", success: " + voiceApplied + ")");
                         break;
                     }
                 }
                 
-                // CRITICAL: If exact voice not found, try language-based fallback
-                // This provides a robust fallback system for when specific voices are unavailable
                 if (!voiceApplied) {
                     InAppLogger.log("VoiceSettings", "Specific voice not found: " + voiceName + " (available voices: " + voices.size() + ")");
                     
@@ -1654,7 +1707,15 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             .build();
             
         tts.setAudioAttributes(audioAttributes);
+        
+        // Store the volume and audio usage for use in speak calls
+        // Note: Volume is applied through Bundle parameters in speak() calls, not here
         InAppLogger.log("VoiceSettings", "Audio attributes applied - Usage: " + audioUsage + ", Content: " + contentType + ", Volume: " + (ttsVolume * 100) + "%");
+        
+        // Special handling for VOICE_CALL stream - warn about potential volume issues
+        if (audioUsage == android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION) {
+            InAppLogger.log("VoiceSettings", "VOICE_CALL stream selected - this may route to earpiece and be quiet. Volume will be boosted automatically.");
+        }
     }
 
     private static int getAudioUsageFromIndexStatic(int index) {
@@ -1704,6 +1765,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 "• Avoid 'Media' stream as it may duck your TTS with your music\n" +
                 "• Different apps respond differently to audio ducking\n" +
                 "• The app automatically chooses the best ducking method for your device\n\n" +
+                "🔊 Voice Call Stream Note:\n" +
+                "• Voice Call stream routes to earpiece by default (quiet for privacy)\n" +
+                "• Enable 'Use Speakerphone' option for louder volume\n" +
+                "• Volume is automatically boosted when speakerphone is disabled\n\n" +
                 
                 "🎯 Recommended Settings\n" +
                 "For best results: Notification + Speech\n" +
@@ -1880,6 +1945,13 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         editor.putFloat(KEY_TTS_VOLUME, volume);
         editor.apply();
         InAppLogger.log("VoiceSettings", "TTS volume saved: " + (volume * 100) + "%");
+    }
+    
+    private void saveSpeakerphoneEnabled(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_SPEAKERPHONE_ENABLED, enabled);
+        editor.apply();
+        InAppLogger.log("VoiceSettings", "Speakerphone option saved: " + enabled);
     }
 
 
