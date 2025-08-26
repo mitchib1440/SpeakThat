@@ -550,7 +550,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_media_pause">Pause - Pause media while speaking</string>
     <string name="behavior_media_lower">Lower Audio - Duck media volume temporarily</string>
     <string name="behavior_media_silence">Silence - Don\'t speak while media is playing</string>
-    <string name="behavior_pause_warning">⚠️ Pause mode may not work on all devices due to system limitations.</string>
+    <string name="behavior_pause_warning">✅ Pause mode now uses direct media control for better compatibility with modern media apps.</string>
+    <string name="behavior_pause_warning_detailed">✅ Pause mode now uses direct media control for better compatibility with modern media apps.\n\n🔧 How it works:\n• Attempts direct media session control (works with most modern apps)\n• Falls back to audio focus requests if direct control fails\n• Falls back to volume reduction (10%) as final option\n• Automatically restores media state after TTS completes\n\n💡 Works best with modern media apps like Spotify, YouTube Music, etc. For maximum compatibility, \'Lower Audio\' mode remains a reliable alternative.</string>
     <string name="behavior_ducking_volume">🔉 Ducking Volume</string>
     <string name="behavior_ducking_description">Set how quiet media should become during notifications</string>
     <string name="behavior_ducking_warning">⚠️ On some devices, lowering media volume may also lower the notification voice. If notifications are still hard to hear, try Pause mode or adjust your TTS settings.</string>

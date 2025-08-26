@@ -23,6 +23,8 @@
     <!-- Permission to use text-to-speech -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
+
+
     <!-- Permission for auto-start on boot -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     

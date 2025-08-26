@@ -461,6 +461,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             // Show/hide pause warning
             boolean showPauseWarning = MEDIA_BEHAVIOR_PAUSE.equals(mediaBehavior);
             binding.pauseWarningText.setVisibility(showPauseWarning ? View.VISIBLE : View.GONE);
+            if (showPauseWarning) {
+                binding.pauseWarningText.setText(getString(R.string.behavior_pause_warning_detailed));
+            }
             
             // Save setting
             saveMediaBehavior(mediaBehavior);
@@ -1973,7 +1976,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         
         String htmlText = "Choose how SpeakThat handles notifications while music/videos play:<br><br>" +
                 "<b>🎵 Ignore</b> - Speaks over your media. Simple but can be disruptive.<br><br>" +
-                "<b>⏸️ Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow.<br><br>" +
+                "<b>⏸️ Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow. <i>Now with improved compatibility and fallback strategies.</i><br><br>" +
                 "<b>🔉 Lower Audio (Recommended)</b> - Temporarily reduces media volume so you can hear both. Most natural experience.<br><br>" +
                 "<b>🔇 Silence</b> - Doesn't speak while media plays. Quiet but you might miss important notifications.<br><br>" +
                 "Lower Audio works like a car radio - it ducks the music down when speaking, then brings it back up. Perfect for music lovers who still want notifications.";
