@@ -182,7 +182,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val READING_NOTIFICATION_ID = 1002
         
         // Deduplication settings
-        private const val DEDUPLICATION_WINDOW_MS = 10000L // 10 seconds window for deduplication (increased from 5s)
+        private const val DEDUPLICATION_WINDOW_MS = 30000L // 30 seconds window for deduplication (increased to handle notification updates)
         
         // Filter system keys
         private const val KEY_APP_LIST_MODE = "app_list_mode"
@@ -489,8 +489,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 // Extract notification text
                 val notificationText = extractNotificationText(notification)
                 
+                // Log notification details for debugging
+                Log.d(TAG, "Processing notification - Package: $packageName, ID: ${sbn.id}, Text: '${notificationText.take(100)}...'")
+                
                 // Check for duplicate notifications (only if deduplication is enabled)
-                val isDeduplicationEnabled = sharedPreferences?.getBoolean("notification_deduplication", false) ?: false
+                val isDeduplicationEnabled = sharedPreferences?.getBoolean("notification_deduplication", true) ?: true
                 if (isDeduplicationEnabled) {
                     val notificationKey = generateNotificationKey(packageName, sbn.id, notificationText)
                     val currentTime = System.currentTimeMillis()
@@ -518,17 +521,29 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     Log.d(TAG, "Deduplication: Added notification key for $appName (key: $notificationKey)")
                     Log.d(TAG, "Deduplication map size: ${recentNotificationKeys.size}")
                     
-                    // Additional content-based deduplication for problematic apps
+                    // Enhanced content-based deduplication for all apps (not just problematic ones)
+                    // This helps catch notification updates that might have slightly different content
+                    val contentKey = generateContentKey(packageName, notificationText)
+                    val lastContentTime = recentNotificationKeys[contentKey]
+                    if (lastContentTime != null && currentTime - lastContentTime < DEDUPLICATION_WINDOW_MS) {
+                        val timeSinceLastContent = currentTime - lastContentTime
+                        Log.d(TAG, "Content-based duplicate detected from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
+                        InAppLogger.logFilter("Content-based duplicate from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
+                        return
+                    }
+                    recentNotificationKeys[contentKey] = currentTime
+                    
+                    // Additional app-specific deduplication for known problematic apps
                     if (isProblematicApp(packageName)) {
-                        val contentKey = generateContentKey(packageName, notificationText)
-                        val lastContentTime = recentNotificationKeys[contentKey]
-                        if (lastContentTime != null && currentTime - lastContentTime < DEDUPLICATION_WINDOW_MS) {
-                            val timeSinceLastContent = currentTime - lastContentTime
-                            Log.d(TAG, "Content-based duplicate detected from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
-                            InAppLogger.logFilter("Content-based duplicate from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
+                        val appSpecificKey = "app_${packageName}_${sbn.id}"
+                        val lastAppSpecificTime = recentNotificationKeys[appSpecificKey]
+                        if (lastAppSpecificTime != null && currentTime - lastAppSpecificTime < DEDUPLICATION_WINDOW_MS) {
+                            val timeSinceLastAppSpecific = currentTime - lastAppSpecificTime
+                            Log.d(TAG, "App-specific duplicate detected from $appName - skipping (processed ${timeSinceLastAppSpecific}ms ago)")
+                            InAppLogger.logFilter("App-specific duplicate from $appName - skipping (processed ${timeSinceLastAppSpecific}ms ago)")
                             return
                         }
-                        recentNotificationKeys[contentKey] = currentTime
+                        recentNotificationKeys[appSpecificKey] = currentTime
                     }
                 } else {
                     Log.d(TAG, "Deduplication is disabled - processing all notifications")
@@ -906,8 +921,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     /**
      * Generate a unique key for a notification to enable deduplication
-     * Uses package name, notification ID, content hash, and timestamp to identify duplicates
-     * Improved to handle cases where apps reuse notification IDs
+     * Uses package name, notification ID, and content hash to identify duplicates
+     * Removed timestamp to better handle notification updates
      */
     private fun generateNotificationKey(packageName: String, notificationId: Int, content: String): String {
         // Create a more robust hash of the content using SHA-256
@@ -920,23 +935,26 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             content.hashCode().toString()
         }
         
-        // Include timestamp to handle cases where apps reuse notification IDs
-        val timestamp = System.currentTimeMillis() / 1000 // Use seconds to group similar timestamps
-        return "${packageName}_${notificationId}_${contentHash}_${timestamp}"
+        // Remove timestamp to better handle notification updates
+        // Use package name, notification ID, and content hash only
+        return "${packageName}_${notificationId}_${contentHash}"
     }
     
     /**
      * Generate a content-based key for additional deduplication
-     * Used for problematic apps that reuse notification IDs frequently
+     * Used for all apps to catch notification updates with similar content
      */
     private fun generateContentKey(packageName: String, content: String): String {
+        // Normalize content for better deduplication (remove extra whitespace, normalize case)
+        val normalizedContent = content.trim().replace(Regex("\\s+"), " ").lowercase()
+        
         val contentHash = try {
             val digest = java.security.MessageDigest.getInstance("SHA-256")
-            val hashBytes = digest.digest(content.toByteArray())
-            hashBytes.take(4).joinToString("") { "%02x".format(it) } // Use first 4 bytes as hex string
+            val hashBytes = digest.digest(normalizedContent.toByteArray())
+            hashBytes.take(6).joinToString("") { "%02x".format(it) } // Use first 6 bytes as hex string for better uniqueness
         } catch (e: Exception) {
             Log.e(TAG, "Error generating content hash, falling back to hashCode", e)
-            content.hashCode().toString()
+            normalizedContent.hashCode().toString()
         }
         return "content_${packageName}_${contentHash}"
     }
