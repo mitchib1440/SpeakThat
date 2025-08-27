@@ -81,6 +81,8 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String KEY_HONOUR_DO_NOT_DISTURB = "honour_do_not_disturb"; // boolean
     private static final String KEY_HONOUR_PHONE_CALLS = "honour_phone_calls"; // boolean
     private static final String KEY_NOTIFICATION_DEDUPLICATION = "notification_deduplication"; // boolean
+    private static final String KEY_DISMISSAL_MEMORY_ENABLED = "dismissal_memory_enabled"; // boolean
+    private static final String KEY_DISMISSAL_MEMORY_TIMEOUT = "dismissal_memory_timeout"; // int (minutes)
 
     private static final String KEY_SPEECH_TEMPLATE = "speech_template"; // Custom speech template
 
@@ -98,6 +100,8 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final boolean DEFAULT_HONOUR_DO_NOT_DISTURB = true; // Default to honouring DND
     private static final boolean DEFAULT_HONOUR_PHONE_CALLS = true; // Default to honouring phone calls
     private static final boolean DEFAULT_NOTIFICATION_DEDUPLICATION = false; // Default to disabled
+    private static final boolean DEFAULT_DISMISSAL_MEMORY_ENABLED = true; // Default to enabled (most users benefit)
+    private static final int DEFAULT_DISMISSAL_MEMORY_TIMEOUT = 15; // Default to 15 minutes
 
 
     // Speech template constants
@@ -518,6 +522,32 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         
         // Set up Deduplication info button
         binding.btnDeduplicationInfo.setOnClickListener(v -> showDeduplicationDialog());
+        
+        // Set up Dismissal Memory toggle
+        binding.switchDismissalMemory.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveDismissalMemoryEnabled(isChecked);
+            binding.dismissalMemorySettingsSection.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        });
+        
+        // Set up Dismissal Memory timeout radio buttons
+        binding.dismissalMemoryTimeoutGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            int timeoutMinutes = DEFAULT_DISMISSAL_MEMORY_TIMEOUT; // default
+            if (checkedId == R.id.radioDismissalMemory5min) {
+                timeoutMinutes = 5;
+            } else if (checkedId == R.id.radioDismissalMemory15min) {
+                timeoutMinutes = 15;
+            } else if (checkedId == R.id.radioDismissalMemory30min) {
+                timeoutMinutes = 30;
+            } else if (checkedId == R.id.radioDismissalMemory1hour) {
+                timeoutMinutes = 60;
+            }
+            
+            // Save setting
+            saveDismissalMemoryTimeout(timeoutMinutes);
+        });
+        
+        // Set up Dismissal Memory info button
+        binding.btnDismissalMemoryInfo.setOnClickListener(v -> showDismissalMemoryDialog());
         
         // Set up Audio Mode info button
         binding.btnAudioModeInfo.setOnClickListener(v -> showAudioModeDialog());
@@ -959,6 +989,30 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Load Notification Deduplication setting
         boolean notificationDeduplication = sharedPreferences.getBoolean(KEY_NOTIFICATION_DEDUPLICATION, DEFAULT_NOTIFICATION_DEDUPLICATION);
         binding.switchNotificationDeduplication.setChecked(notificationDeduplication);
+        
+        // Load Dismissal Memory settings
+        boolean dismissalMemoryEnabled = sharedPreferences.getBoolean(KEY_DISMISSAL_MEMORY_ENABLED, DEFAULT_DISMISSAL_MEMORY_ENABLED);
+        binding.switchDismissalMemory.setChecked(dismissalMemoryEnabled);
+        binding.dismissalMemorySettingsSection.setVisibility(dismissalMemoryEnabled ? View.VISIBLE : View.GONE);
+        
+        int dismissalMemoryTimeout = sharedPreferences.getInt(KEY_DISMISSAL_MEMORY_TIMEOUT, DEFAULT_DISMISSAL_MEMORY_TIMEOUT);
+        switch (dismissalMemoryTimeout) {
+            case 5:
+                binding.radioDismissalMemory5min.setChecked(true);
+                break;
+            case 15:
+                binding.radioDismissalMemory15min.setChecked(true);
+                break;
+            case 30:
+                binding.radioDismissalMemory30min.setChecked(true);
+                break;
+            case 60:
+                binding.radioDismissalMemory1hour.setChecked(true);
+                break;
+            default:
+                binding.radioDismissalMemory15min.setChecked(true); // fallback to default
+                break;
+        }
         
         // Load speech template settings
         loadSpeechTemplateSettings();
@@ -1558,6 +1612,20 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         editor.putBoolean(KEY_NOTIFICATION_DEDUPLICATION, enabled);
         editor.apply();
         InAppLogger.log("BehaviorSettings", "Notification deduplication changed to: " + enabled);
+    }
+
+    private void saveDismissalMemoryEnabled(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_DISMISSAL_MEMORY_ENABLED, enabled);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Dismissal memory enabled changed to: " + enabled);
+    }
+
+    private void saveDismissalMemoryTimeout(int timeoutMinutes) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_DISMISSAL_MEMORY_TIMEOUT, timeoutMinutes);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Dismissal memory timeout changed to: " + timeoutMinutes + " minutes");
     }
     
 
@@ -2418,6 +2486,19 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.dialog_title_notification_deduplication)
+                .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
+                .setPositiveButton(R.string.got_it, null)
+                .show();
+    }
+
+    private void showDismissalMemoryDialog() {
+        // Track dialog usage for analytics
+        trackDialogUsage("dismissal_memory_info");
+        
+        String htmlText = getString(R.string.dialog_dismissal_memory_explanation);
+        
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.dialog_title_dismissal_memory)
                 .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
                 .setPositiveButton(R.string.got_it, null)
                 .show();

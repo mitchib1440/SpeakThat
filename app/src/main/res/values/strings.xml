@@ -707,6 +707,22 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_deduplication_switch_label">Enable notification deduplication</string>
     <string name="behavior_deduplication_benefits">✨ Benefits:\n\n• Prevents annoying duplicate readouts\n• Saves battery by avoiding unnecessary TTS\n• Works automatically with 5-second window\n• Helps with apps that post multiple notifications</string>
     
+    <!-- Behavior Settings - Dismissal Memory -->
+    <string name="section_dismissal_memory">Dismissal Memory</string>
+    <string name="behavior_dismissal_memory_description">Remember dismissed notifications to prevent re-reading them</string>
+    <string name="behavior_dismissal_memory_recommendation">Enable if notifications get read again after dismissal</string>
+    <string name="behavior_dismissal_memory_switch_label">Enable dismissal memory</string>
+    <string name="behavior_dismissal_memory_benefits">✨ Benefits:\n\n• Prevents re-reading dismissed notifications\n• Stops notifications from being read after you dismiss them\n• Configurable memory duration (5 min to 1 hour)\n• Automatic cleanup to save memory and battery</string>
+    <string name="behavior_dismissal_memory_timeout_label">Memory duration</string>
+    <string name="behavior_dismissal_memory_timeout_description">How long to remember dismissed notifications</string>
+    <string name="behavior_dismissal_memory_timeout_5min">5 minutes</string>
+    <string name="behavior_dismissal_memory_timeout_15min">15 minutes</string>
+    <string name="behavior_dismissal_memory_timeout_30min">30 minutes</string>
+    <string name="behavior_dismissal_memory_timeout_1hour">1 hour</string>
+    <string name="behavior_dismissal_memory_info_button">ℹ️</string>
+    <string name="dialog_title_dismissal_memory">Dismissal Memory</string>
+    <string name="dialog_dismissal_memory_explanation"><![CDATA[Dismissal Memory prevents notifications from being read again after you dismiss them:<br><br><b>What it does:</b><br>When you dismiss a notification, SpeakThat remembers it for a configurable period. If the same notification content appears again during this time, it will not be read aloud.<br><br><b>When it is useful:</b><br>• <b>Dismissed notifications</b> - Prevents re-reading after you swipe them away<br>• <b>App updates</b> - Some apps re-post notifications after updates<br>• <b>System refreshes</b> - Android may re-post notifications during system events<br>• <b>Network reconnections</b> - Apps may re-post notifications when connectivity is restored<br><br><b>How it works:</b><br>• Tracks dismissed notifications by content hash<br>• Configurable memory duration (5 min to 1 hour)<br>• Automatic cleanup to prevent memory bloat<br>• Battery-friendly with efficient storage<br>• Detailed logging for troubleshooting<br><br><b>Tip:</b> Enable this if you experience notifications being read again after dismissal. Most users will benefit from this feature!]]></string>
+    
     <!-- Behavior Settings - Audio Mode -->
     <string name="section_honor_audio_mode">Honour Audio Mode</string>
     <string name="behavior_audio_mode_description">Only read notifications when your device is in Sound mode (not Silent or Vibrate)</string>

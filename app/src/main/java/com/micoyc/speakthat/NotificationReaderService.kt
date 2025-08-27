@@ -142,6 +142,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     // Deduplication tracking - prevent same notification from being processed multiple times
     private val recentNotificationKeys = HashMap<String, Long>() // notificationKey -> timestamp
     
+    // Dismissal memory tracking - prevent re-reading dismissed notifications
+    private val dismissedNotificationKeys = HashMap<String, Long>() // contentHash -> dismissal timestamp
+    private var dismissalMemoryCleanupHandler: android.os.Handler? = null
+    private var dismissalMemoryCleanupRunnable: Runnable? = null
+    private val DISMISSAL_MEMORY_CLEANUP_INTERVAL_MS = 300000L // 5 minutes
+    private val MAX_DISMISSAL_MEMORY_ENTRIES = 1000 // Prevent memory bloat
+    
     // TTS Recovery tracking
     private var ttsRecoveryAttempts = 0
     private var ttsRecoveryHandler: android.os.Handler? = null
@@ -183,6 +190,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Deduplication settings
         private const val DEDUPLICATION_WINDOW_MS = 30000L // 30 seconds window for deduplication (increased to handle notification updates)
+        
+        // Dismissal memory settings
+        private const val KEY_DISMISSAL_MEMORY_ENABLED = "dismissal_memory_enabled"
+        private const val KEY_DISMISSAL_MEMORY_TIMEOUT = "dismissal_memory_timeout"
+        private const val DEFAULT_DISMISSAL_MEMORY_ENABLED = true
+        private const val DEFAULT_DISMISSAL_MEMORY_TIMEOUT_MINUTES = 15
         
         // Filter system keys
         private const val KEY_APP_LIST_MODE = "app_list_mode"
@@ -328,6 +341,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             startPeriodicHealthCheck()
             Log.d(TAG, "Periodic TTS health check started")
             
+            // Start dismissal memory cleanup
+            startDismissalMemoryCleanup()
+            
             Log.d(TAG, "NotificationReaderService initialization completed successfully")
             InAppLogger.log("Service", "Service initialization completed successfully")
             
@@ -397,6 +413,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Clear deduplication cache
             recentNotificationKeys.clear()
             Log.d(TAG, "Cleared deduplication cache during cleanup")
+            
+            // Clear dismissal memory cache
+            dismissedNotificationKeys.clear()
+            Log.d(TAG, "Cleared dismissal memory cache during cleanup")
+            
+            // Stop dismissal memory cleanup
+            stopDismissalMemoryCleanup()
             
             // Hide all SpeakThat notifications
             hidePersistentNotification()
@@ -549,6 +572,34 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     Log.d(TAG, "Deduplication is disabled - processing all notifications")
                 }
                 
+                // Check dismissal memory - prevent re-reading recently dismissed notifications
+                val isDismissalMemoryEnabled = sharedPreferences?.getBoolean(KEY_DISMISSAL_MEMORY_ENABLED, DEFAULT_DISMISSAL_MEMORY_ENABLED) ?: DEFAULT_DISMISSAL_MEMORY_ENABLED
+                if (isDismissalMemoryEnabled) {
+                    try {
+                        val currentTime = System.currentTimeMillis()
+                        val dismissalContentHash = generateDismissalContentHash(packageName, notificationText)
+                        val dismissalTimeoutMinutes = sharedPreferences?.getInt(KEY_DISMISSAL_MEMORY_TIMEOUT, DEFAULT_DISMISSAL_MEMORY_TIMEOUT_MINUTES) ?: DEFAULT_DISMISSAL_MEMORY_TIMEOUT_MINUTES
+                        val dismissalTimeoutMs = dismissalTimeoutMinutes * 60 * 1000L
+                        
+                        // Check if this content was recently dismissed
+                        val dismissalTime = dismissedNotificationKeys[dismissalContentHash]
+                        if (dismissalTime != null && currentTime - dismissalTime < dismissalTimeoutMs) {
+                            val timeSinceDismissal = currentTime - dismissalTime
+                            val timeSinceDismissalMinutes = timeSinceDismissal / (60 * 1000)
+                            Log.d(TAG, "Dismissed notification detected from $appName - skipping (dismissed ${timeSinceDismissalMinutes} minutes ago)")
+                            Log.d(TAG, "Dismissal memory: Content hash: $dismissalContentHash, Timeout: ${dismissalTimeoutMinutes} minutes")
+                            InAppLogger.logFilter("Dismissed notification from $appName - skipping (dismissed ${timeSinceDismissalMinutes} minutes ago)")
+                            return
+                        }
+                    } catch (e: Exception) {
+                        // Graceful degradation: if dismissal memory fails, continue processing
+                        Log.e(TAG, "Error in dismissal memory check - continuing with notification processing", e)
+                        InAppLogger.logError("Service", "Dismissal memory check failed - continuing: " + e.message)
+                    }
+                } else {
+                    Log.d(TAG, "Dismissal memory disabled - processing all notifications")
+                }
+                
                 if (notificationText.isNotEmpty()) {
                     // SECURITY: Check sensitive data logging setting once for this notification
                     val isSensitiveDataLoggingEnabled = sharedPreferences?.getBoolean("log_sensitive_data", false) ?: false
@@ -609,7 +660,57 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
         super.onNotificationRemoved(sbn)
-        // We don't need to do anything when notifications are removed for now
+        
+        try {
+            // Skip our own notifications
+            if (sbn.packageName == this.packageName) {
+                return
+            }
+            
+            // Check if dismissal memory is enabled
+            val isDismissalMemoryEnabled = sharedPreferences?.getBoolean(KEY_DISMISSAL_MEMORY_ENABLED, DEFAULT_DISMISSAL_MEMORY_ENABLED) ?: DEFAULT_DISMISSAL_MEMORY_ENABLED
+            if (!isDismissalMemoryEnabled) {
+                Log.d(TAG, "Dismissal memory disabled - not tracking dismissed notification from ${sbn.packageName}")
+                return
+            }
+            
+            // Extract notification content for tracking
+            val notificationText = extractNotificationText(sbn.notification)
+            if (notificationText.isEmpty()) {
+                Log.d(TAG, "Dismissed notification has empty content - not tracking")
+                return
+            }
+            
+            // Generate content hash for dismissal tracking
+            val contentHash = generateDismissalContentHash(sbn.packageName, notificationText)
+            val currentTime = System.currentTimeMillis()
+            
+            // Add to dismissed notifications map with memory management
+            dismissedNotificationKeys[contentHash] = currentTime
+            
+            // Memory management: if we exceed the limit, remove oldest entries
+            if (dismissedNotificationKeys.size > MAX_DISMISSAL_MEMORY_ENTRIES) {
+                val entriesToRemove = dismissedNotificationKeys.size - MAX_DISMISSAL_MEMORY_ENTRIES
+                val oldestEntries = dismissedNotificationKeys.entries.sortedBy { it.value }.take(entriesToRemove)
+                oldestEntries.forEach { (key, _) ->
+                    dismissedNotificationKeys.remove(key)
+                }
+                Log.d(TAG, "Dismissal memory limit reached - removed $entriesToRemove oldest entries")
+                InAppLogger.log("Service", "Dismissal memory cleanup: removed $entriesToRemove oldest entries due to limit")
+            }
+            
+            // Log the dismissal for debugging
+            val appName = getAppName(sbn.packageName)
+            Log.d(TAG, "Notification dismissed from $appName - tracking for dismissal memory (hash: $contentHash)")
+            InAppLogger.logFilter("Notification dismissed from $appName - tracking for dismissal memory")
+            
+            // Log dismissal memory stats
+            Log.d(TAG, "Dismissal memory stats - Total tracked: ${dismissedNotificationKeys.size}")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error tracking dismissed notification", e)
+            InAppLogger.logError("Service", "Error tracking dismissed notification: ${e.message}")
+        }
     }
     
     private fun initializeTextToSpeech() {
@@ -814,6 +915,90 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         InAppLogger.log("Service", "Periodic TTS health check stopped")
     }
     
+    /**
+     * Start periodic dismissal memory cleanup
+     * Removes old dismissed notification entries to prevent memory bloat
+     */
+    private fun startDismissalMemoryCleanup() {
+        try {
+            // Create handler if it doesn't exist
+            if (dismissalMemoryCleanupHandler == null) {
+                dismissalMemoryCleanupHandler = android.os.Handler(android.os.Looper.getMainLooper())
+            }
+            
+            // Create cleanup runnable
+            dismissalMemoryCleanupRunnable = Runnable {
+                try {
+                    cleanupDismissalMemory()
+                    
+                    // Schedule next cleanup
+                    dismissalMemoryCleanupHandler?.postDelayed(dismissalMemoryCleanupRunnable!!, DISMISSAL_MEMORY_CLEANUP_INTERVAL_MS)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error in dismissal memory cleanup", e)
+                    InAppLogger.logError("Service", "Error in dismissal memory cleanup: " + e.message)
+                }
+            }
+            
+            // Start the first cleanup
+            dismissalMemoryCleanupHandler?.postDelayed(dismissalMemoryCleanupRunnable!!, DISMISSAL_MEMORY_CLEANUP_INTERVAL_MS)
+            Log.d(TAG, "Dismissal memory cleanup started (every ${DISMISSAL_MEMORY_CLEANUP_INTERVAL_MS / 1000} seconds)")
+            InAppLogger.log("Service", "Dismissal memory cleanup started (every ${DISMISSAL_MEMORY_CLEANUP_INTERVAL_MS / 1000} seconds)")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error starting dismissal memory cleanup", e)
+            InAppLogger.logError("Service", "Error starting dismissal memory cleanup: " + e.message)
+        }
+    }
+    
+    /**
+     * Stop periodic dismissal memory cleanup
+     */
+    private fun stopDismissalMemoryCleanup() {
+        dismissalMemoryCleanupRunnable?.let { runnable ->
+            dismissalMemoryCleanupHandler?.removeCallbacks(runnable)
+            dismissalMemoryCleanupRunnable = null
+        }
+        dismissalMemoryCleanupHandler = null
+        Log.d(TAG, "Dismissal memory cleanup stopped")
+        InAppLogger.log("Service", "Dismissal memory cleanup stopped")
+    }
+    
+    /**
+     * Clean up old dismissed notification entries
+     * Removes entries that are older than the configured timeout
+     */
+    private fun cleanupDismissalMemory() {
+        try {
+            val currentTime = System.currentTimeMillis()
+            val timeoutMinutes = sharedPreferences?.getInt(KEY_DISMISSAL_MEMORY_TIMEOUT, DEFAULT_DISMISSAL_MEMORY_TIMEOUT_MINUTES) ?: DEFAULT_DISMISSAL_MEMORY_TIMEOUT_MINUTES
+            val timeoutMs = timeoutMinutes * 60 * 1000L
+            
+            // Count entries before cleanup
+            val entriesBeforeCleanup = dismissedNotificationKeys.size
+            
+            // Remove expired entries
+            val expiredEntries = dismissedNotificationKeys.entries.removeIf { (_, dismissalTime) ->
+                currentTime - dismissalTime > timeoutMs
+            }
+            
+            // Log cleanup results
+            val entriesAfterCleanup = dismissedNotificationKeys.size
+            val entriesRemoved = entriesBeforeCleanup - entriesAfterCleanup
+            
+            if (entriesRemoved > 0) {
+                Log.d(TAG, "Dismissal memory cleanup: Removed $entriesRemoved expired entries (timeout: ${timeoutMinutes} minutes)")
+                InAppLogger.log("Service", "Dismissal memory cleanup: Removed $entriesRemoved expired entries")
+            }
+            
+            // Log current stats
+            Log.d(TAG, "Dismissal memory stats: $entriesAfterCleanup active entries, timeout: ${timeoutMinutes} minutes")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error during dismissal memory cleanup", e)
+            InAppLogger.logError("Service", "Error during dismissal memory cleanup: " + e.message)
+        }
+    }
+    
     override fun onInit(status: Int) {
         try {
             Log.d(TAG, "TTS onInit called with status: $status")
@@ -957,6 +1142,46 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             normalizedContent.hashCode().toString()
         }
         return "content_${packageName}_${contentHash}"
+    }
+    
+    /**
+     * Generate a content hash for dismissal memory tracking
+     * Uses package name and normalized content to identify dismissed notifications
+     * More aggressive normalization for better dismissal detection
+     */
+    private fun generateDismissalContentHash(packageName: String, content: String): String {
+        try {
+            // Normalize content more aggressively for dismissal tracking
+            // Remove extra whitespace, normalize case, and remove common punctuation
+            val normalizedContent = content.trim()
+                .replace(Regex("\\s+"), " ") // Normalize whitespace
+                .lowercase() // Normalize case
+                .replace(Regex("[.,!?;:]"), "") // Remove common punctuation
+                .trim() // Final trim
+            
+            // Fallback for empty content
+            if (normalizedContent.isEmpty()) {
+                Log.w(TAG, "Empty content after normalization - using package name only for dismissal hash")
+                return "dismissal_${packageName}_empty"
+            }
+            
+            val contentHash = try {
+                val digest = java.security.MessageDigest.getInstance("SHA-256")
+                val hashBytes = digest.digest(normalizedContent.toByteArray())
+                hashBytes.take(8).joinToString("") { "%02x".format(it) } // Use first 8 bytes as hex string
+            } catch (e: Exception) {
+                Log.e(TAG, "Error generating dismissal content hash, falling back to hashCode", e)
+                normalizedContent.hashCode().toString()
+            }
+            
+            // Include package name in hash for app-specific dismissal tracking
+            return "dismissal_${packageName}_${contentHash}"
+            
+        } catch (e: Exception) {
+            // Ultimate fallback: use package name and content length
+            Log.e(TAG, "Critical error generating dismissal content hash, using fallback", e)
+            return "dismissal_${packageName}_fallback_${content.length}"
+        }
     }
     
     /**
