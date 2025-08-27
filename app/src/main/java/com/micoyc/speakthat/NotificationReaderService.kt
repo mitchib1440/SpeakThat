@@ -3207,6 +3207,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     
                     InAppLogger.logTTSEvent("TTS completed", "Utterance finished")
                     
+                    // Track notification read for review reminder
+                    trackNotificationReadForReview()
+                    
                     // Clean up media behavior effects (with delay for smooth restoration)
                     cleanupMediaBehaviorDelayed()
                     
@@ -3748,6 +3751,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         } catch (e: Exception) {
             Log.e(TAG, "Error stopping TTS", e)
             InAppLogger.logError("Notifications", "Error stopping TTS: ${e.message}")
+        }
+    }
+    
+    /**
+     * Track notification read for review reminder
+     */
+    private fun trackNotificationReadForReview() {
+        try {
+            // Track notification read directly using ReviewReminderManager
+            val reviewManager = ReviewReminderManager.getInstance(this)
+            reviewManager.incrementNotificationsRead()
+            
+            Log.d(TAG, "Notification read tracked for review reminder")
+        } catch (e: Exception) {
+            Log.d(TAG, "Could not track notification read for review reminder: ${e.message}")
         }
     }
 

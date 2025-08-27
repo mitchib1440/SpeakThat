@@ -215,6 +215,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Check for updates automatically (if enabled)
         Log.d(TAG, "About to check for updates automatically")
         checkForUpdatesIfEnabled()
+        
+        // Initialize review reminder and track app session
+        initializeReviewReminder()
     }
     
 
@@ -1269,6 +1272,32 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 }
             }
         }
+    }
+    
+    /**
+     * Initialize review reminder and track app session
+     */
+    private fun initializeReviewReminder() {
+        val reviewManager = ReviewReminderManager.getInstance(this)
+        
+        // Track this app session
+        reviewManager.incrementAppSession()
+        
+        // Check if we should show the reminder (with a small delay to avoid showing immediately)
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (reviewManager.shouldShowReminder()) {
+                reviewManager.showReminderDialog()
+            }
+        }, 2000) // 2 second delay to let the app settle
+    }
+    
+    /**
+     * Track notification read for review reminder
+     * This should be called when a notification is successfully read aloud
+     */
+    fun trackNotificationRead() {
+        val reviewManager = ReviewReminderManager.getInstance(this)
+        reviewManager.incrementNotificationsRead()
     }
 
 } 

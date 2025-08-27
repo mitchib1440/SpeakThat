@@ -1406,4 +1406,14 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="main_notification_permission_denied">Notification permission denied - SpeakThat notifications may not appear</string>
     <string name="main_notification_title_active">SpeakThat Active</string>
     <string name="main_notification_content_tap_settings">Tap to open SpeakThat settings</string>
+    
+    <!-- Review Reminder Strings -->
+    <string name="review_reminder_title">Enjoying SpeakThat?</string>
+    <string name="review_reminder_message">If you find SpeakThat helpful, please consider leaving a review on the Google Play Store. Your feedback helps other users discover the app and supports future development.</string>
+    <string name="review_reminder_rate_now">Rate Now</string>
+    <string name="review_reminder_later">Maybe Later</string>
+    <string name="review_reminder_never">Don\'t Ask Again</string>
+    <string name="dev_test_review_reminder">🧪 Test Review Reminder</string>
+    <string name="dev_reset_review_reminder">🔄 Reset Review Reminder</string>
+    <string name="dev_review_reminder_stats">📊 Review Reminder Stats</string>
 </resources> 

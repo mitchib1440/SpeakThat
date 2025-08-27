@@ -274,6 +274,15 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         // Add Rule System Test button
         binding.btnRuleSystemTest.setOnClickListener(v -> testRuleSystem());
         
+        // Add Review Reminder Test button
+        binding.btnTestReviewReminder.setOnClickListener(v -> testReviewReminder());
+        
+        // Add Reset Review Reminder button
+        binding.btnResetReviewReminder.setOnClickListener(v -> resetReviewReminder());
+        
+        // Add Review Reminder Stats button
+        binding.btnReviewReminderStats.setOnClickListener(v -> showReviewReminderStats());
+        
         // Add welcome message
         InAppLogger.log("Development", "Development Settings opened");
     }
@@ -1276,5 +1285,75 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
                 });
             }
         }).start();
+    }
+    
+    private void testReviewReminder() {
+        InAppLogger.log("Development", "Testing review reminder dialog");
+        
+        try {
+            ReviewReminderManager reviewManager = ReviewReminderManager.Companion.getInstance(this);
+            reviewManager.showReminderDialog();
+            
+            Toast.makeText(this, "Review reminder dialog shown", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            InAppLogger.logError("Development", "Error testing review reminder: " + e.getMessage());
+            
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("❌ Review Reminder Test Error");
+            builder.setMessage("Error testing review reminder: " + e.getMessage());
+            builder.setPositiveButton(R.string.button_ok, null);
+            builder.show();
+        }
+    }
+    
+    private void resetReviewReminder() {
+        InAppLogger.log("Development", "Resetting review reminder state");
+        
+        try {
+            ReviewReminderManager reviewManager = ReviewReminderManager.Companion.getInstance(this);
+            reviewManager.resetReminderState();
+            
+            Toast.makeText(this, "Review reminder state reset", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            InAppLogger.logError("Development", "Error resetting review reminder: " + e.getMessage());
+            
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("❌ Review Reminder Reset Error");
+            builder.setMessage("Error resetting review reminder: " + e.getMessage());
+            builder.setPositiveButton(R.string.button_ok, null);
+            builder.show();
+        }
+    }
+    
+    private void showReviewReminderStats() {
+        InAppLogger.log("Development", "Showing review reminder statistics");
+        
+        try {
+            ReviewReminderManager reviewManager = ReviewReminderManager.Companion.getInstance(this);
+            java.util.Map<String, Object> stats = reviewManager.getReminderStats();
+            
+            StringBuilder statsText = new StringBuilder();
+            statsText.append("📊 Review Reminder Statistics\n");
+            statsText.append("============================\n\n");
+            
+            for (java.util.Map.Entry<String, Object> entry : stats.entrySet()) {
+                statsText.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+            }
+            
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("📊 Review Reminder Statistics");
+            builder.setMessage(statsText.toString());
+            builder.setPositiveButton(R.string.button_ok, null);
+            builder.show();
+            
+        } catch (Exception e) {
+            InAppLogger.logError("Development", "Error showing review reminder stats: " + e.getMessage());
+            
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("❌ Review Reminder Stats Error");
+            builder.setMessage("Error showing review reminder stats: " + e.getMessage());
+            builder.setPositiveButton(R.string.button_ok, null);
+            builder.show();
+        }
     }
 }
