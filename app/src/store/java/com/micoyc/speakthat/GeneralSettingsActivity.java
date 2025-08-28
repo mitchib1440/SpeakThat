@@ -58,7 +58,6 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         setupThemeSettings();
         setupPerformanceSettings();
         setupDataManagement();
-        setupTestSettings();
         setupThemeIcon();
     }
 
@@ -405,12 +404,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         }
     }
 
-    private void setupTestSettings() {
-        binding.testSettingsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, TestSettingsActivity.class);
-            startActivity(intent);
-        });
-    }
+
 
     private void performExportWithPermissionCheck() {
         // For Android 11+ (API 30+), we don't need WRITE_EXTERNAL_STORAGE for app-specific files

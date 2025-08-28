@@ -234,6 +234,24 @@
                             style="@style/Widget.Material3.Button.TextButton" />
 
                     </FrameLayout>
+
+                    <!-- Test Settings Button -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_advanced_voice_section">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnTestSettings"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_test_settings"
+                            android:background="@android:color/transparent"
+                            android:textColor="@color/white_100"
+                            style="@style/Widget.Material3.Button.TextButton" />
+
+                    </FrameLayout>
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>

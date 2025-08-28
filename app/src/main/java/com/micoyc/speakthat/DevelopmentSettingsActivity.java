@@ -283,6 +283,12 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         // Add Review Reminder Stats button
         binding.btnReviewReminderStats.setOnClickListener(v -> showReviewReminderStats());
         
+        // Add Test Settings button
+        binding.btnTestSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(this, TestSettingsActivity.class);
+            startActivity(intent);
+        });
+        
         // Add welcome message
         InAppLogger.log("Development", "Development Settings opened");
     }

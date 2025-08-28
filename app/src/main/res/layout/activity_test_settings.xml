@@ -7,21 +7,103 @@
     android:background="?attr/colorBackground"
     android:fitsSystemWindows="true">
 
+    <!-- Interactive Test Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="@drawable/bg_advanced_voice_section">
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTestTTS"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:text="@string/test_settings_btn_tts"
+            android:textSize="12sp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/white_100"
+            style="@style/Widget.Material3.Button.TextButton" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTestShake"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:text="@string/test_settings_btn_shake"
+            android:textSize="12sp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/white_100"
+            style="@style/Widget.Material3.Button.TextButton" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTestNotifications"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:text="@string/test_settings_btn_filters"
+            android:textSize="12sp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/white_100"
+            style="@style/Widget.Material3.Button.TextButton" />
+
+    </LinearLayout>
+
+    <!-- Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="@drawable/bg_advanced_voice_section">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRefresh"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:text="@string/test_settings_btn_refresh"
+            android:textSize="12sp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/white_100"
+            style="@style/Widget.Material3.Button.TextButton" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnExport"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:text="@string/test_settings_btn_export"
+            android:textSize="12sp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/white_100"
+            style="@style/Widget.Material3.Button.TextButton" />
+
+    </LinearLayout>
+
+    <!-- Test Results -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:padding="16dp">
 
         <TextView
             android:id="@+id/testResults"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="@color/text_primary"
             android:fontFamily="monospace"
-            android:lineSpacingExtra="2dp" />
+            android:lineSpacingExtra="1dp"
+            android:scrollbars="vertical" />
 
     </ScrollView>
 

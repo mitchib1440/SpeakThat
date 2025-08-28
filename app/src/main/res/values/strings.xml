@@ -750,6 +750,13 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="label_test_shake">Test Shake</string>
     <string name="label_test_wave">Test Wave</string>
     
+    <!-- Test Settings Buttons -->
+    <string name="test_settings_btn_tts">Test TTS</string>
+    <string name="test_settings_btn_shake">Test Shake</string>
+    <string name="test_settings_btn_filters">Test Filters</string>
+    <string name="test_settings_btn_refresh">Refresh</string>
+    <string name="test_settings_btn_export">Export</string>
+    
     <!-- Voice Settings - Additional Strings -->
     <string name="voice_help_translate_button">Help Translate SpeakThat!</string>
     <string name="voice_help_translate_description_button">Tap to send translation email</string>
