@@ -24,6 +24,7 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var textToSpeech: TextToSpeech? = null
     private var isTtsInitialized = false
     private var voiceSettingsPrefs: SharedPreferences? = null
+    private var isMuted = false
     private val voiceSettingsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         when (key) {
             "speech_rate", "pitch", "voice_name", "audio_usage", "content_type" -> {
@@ -131,7 +132,10 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         // Refresh UI text to ensure it's in the correct language
         adapter.refreshUIText()
         
-        // Speak current page content when resuming
+        // Update mute button icon to ensure it's correct
+        updateMuteButtonIcon()
+        
+        // Speak current page content when resuming (only if not muted)
         speakCurrentPageContent()
     }
     
@@ -140,6 +144,7 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         // Save current page position for language change recreation
         outState.putInt("current_page", binding.viewPager.currentItem)
         outState.putBoolean("skip_permission_page", skipPermissionPage)
+        outState.putBoolean("is_muted", isMuted)
     }
     
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -147,12 +152,17 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         // Restore current page position after language change recreation
         val savedPage = savedInstanceState.getInt("current_page", 0)
         val savedSkipPermission = savedInstanceState.getBoolean("skip_permission_page", false)
+        val savedMuted = savedInstanceState.getBoolean("is_muted", false)
         
         // Only restore if the skip permission setting matches (to avoid page mismatch)
         if (savedSkipPermission == skipPermissionPage) {
             binding.viewPager.setCurrentItem(savedPage, false)
             InAppLogger.log(TAG, "Restored onboarding page position: $savedPage")
         }
+        
+        // Restore mute state
+        isMuted = savedMuted
+        updateMuteButtonIcon()
     }
     
     override fun onPause() {
@@ -216,12 +226,35 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
     
     private fun speakText(text: String) {
-        if (isTtsInitialized && textToSpeech != null) {
+        if (isTtsInitialized && textToSpeech != null && !isMuted) {
             // Stop any current speech first
             textToSpeech?.stop()
             // Then speak the new text
             textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "onboarding_utterance")
             InAppLogger.log(TAG, "Speaking: ${text.take(50)}...")
+        }
+    }
+    
+    private fun toggleMute() {
+        isMuted = !isMuted
+        updateMuteButtonIcon()
+        
+        if (isMuted) {
+            // Stop any current speech when muting
+            textToSpeech?.stop()
+            InAppLogger.log(TAG, "Onboarding TTS muted")
+        } else {
+            InAppLogger.log(TAG, "Onboarding TTS unmuted")
+            // Speak the current page content when unmuting
+            speakCurrentPageContent()
+        }
+    }
+    
+    private fun updateMuteButtonIcon() {
+        if (isMuted) {
+            binding.buttonMute.setImageResource(R.drawable.ic_volume_off_24)
+        } else {
+            binding.buttonMute.setImageResource(R.drawable.ic_volume_up_24)
         }
     }
     
@@ -290,6 +323,10 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         // Set up button listeners
         binding.buttonSkip.setOnClickListener {
             completeOnboarding()
+        }
+        
+        binding.buttonMute.setOnClickListener {
+            toggleMute()
         }
         
         binding.buttonNext.setOnClickListener {

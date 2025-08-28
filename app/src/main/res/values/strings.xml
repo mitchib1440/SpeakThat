@@ -986,6 +986,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Onboarding -->
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_next">Next</string>
+    <string name="onboarding_mute_button">Mute</string>
     
     <!-- Language and Theme Onboarding -->
     <string name="onboarding_language_theme_title">Language and Theme</string>

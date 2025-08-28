@@ -7,20 +7,46 @@
     android:background="?attr/colorBackground"
     android:fitsSystemWindows="true">
 
-    <!-- Skip button -->
-    <TextView
-        android:id="@+id/buttonSkip"
-        android:layout_width="wrap_content"
+    <!-- Top buttons row -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_margin="16dp"
-        android:text="@string/onboarding_skip"
-        android:textColor="@color/text_secondary"
-        android:textSize="16sp"
-        android:padding="8dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <!-- Mute button -->
+        <ImageView
+            android:id="@+id/buttonMute"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_volume_up_24"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="@string/onboarding_mute_button"
+            android:padding="8dp" />
+
+        <!-- Spacer to push skip button to the right -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <!-- Skip button -->
+        <TextView
+            android:id="@+id/buttonSkip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/onboarding_skip"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
 
     <!-- ViewPager2 for onboarding pages -->
     <androidx.viewpager2.widget.ViewPager2
