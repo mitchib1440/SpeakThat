@@ -147,10 +147,13 @@ class AboutActivity : AppCompatActivity() {
     private fun speakAboutApp() {
         val aboutText = buildAboutText()
         
-        // Create volume bundle with proper volume parameters
+        // CRITICAL: Apply audio attributes to TTS instance before creating volume bundle
+        // This ensures the audio usage matches what we pass to createVolumeBundle
         val ttsVolume = voiceSettingsPrefs?.getFloat("tts_volume", 1.0f) ?: 1.0f
         val ttsUsageIndex = voiceSettingsPrefs?.getInt("audio_usage", 4) ?: 4 // Default to ASSISTANT index
+        val contentTypeIndex = voiceSettingsPrefs?.getInt("content_type", 0) ?: 0 // Default to SPEECH
         val speakerphoneEnabled = voiceSettingsPrefs?.getBoolean("speakerphone_enabled", false) ?: false
+        
         val ttsUsage = when (ttsUsageIndex) {
             0 -> android.media.AudioAttributes.USAGE_MEDIA
             1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
@@ -159,6 +162,25 @@ class AboutActivity : AppCompatActivity() {
             4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
             else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
         }
+        
+        val contentType = when (contentTypeIndex) {
+            0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+            1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+            2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+            3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+            else -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+        }
+        
+        // Apply audio attributes to TTS instance
+        val audioAttributes = android.media.AudioAttributes.Builder()
+            .setUsage(ttsUsage)
+            .setContentType(contentType)
+            .build()
+            
+        textToSpeech?.setAudioAttributes(audioAttributes)
+        InAppLogger.log("AboutActivity", "Audio attributes applied - Usage: $ttsUsage, Content: $contentType")
+        
+        // Create volume bundle with proper volume parameters
         val volumeParams = VoiceSettingsActivity.createVolumeBundle(ttsVolume, ttsUsage, speakerphoneEnabled)
         
         textToSpeech?.speak(aboutText, TextToSpeech.QUEUE_FLUSH, volumeParams, getString(R.string.tts_utterance_about_app))

@@ -3330,58 +3330,74 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
                 InAppLogger.log("Service", "Set audio mode to MODE_IN_COMMUNICATION for VOICE_CALL stream")
                 
-                // Request audio focus with VOICE_COMMUNICATION usage to match TTS
-                val focusGranted = requestAudioFocusForVoiceCall()
-                if (focusGranted) {
-                    InAppLogger.log("Service", "Audio focus granted for VOICE_CALL, enabling speakerphone")
-                } else {
-                    InAppLogger.log("Service", "Audio focus not granted for VOICE_CALL, but attempting speakerphone anyway")
-                }
-                
-                // Enable speakerphone with proper error handling
-                InAppLogger.log("Service", "Attempting to enable speakerphone...")
-                audioManager.isSpeakerphoneOn = true
-                InAppLogger.log("Service", "Called audioManager.isSpeakerphoneOn = true")
-                
-                // If audio focus failed, try an alternative approach for some devices
-                if (!focusGranted) {
-                    InAppLogger.log("Service", "Audio focus failed - trying alternative speakerphone approach")
-                    // Some devices allow speakerphone control without audio focus
-                    // Try setting audio mode again and speakerphone
-                    try {
-                        audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
-                        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                            audioManager.isSpeakerphoneOn = true
-                            InAppLogger.log("Service", "Alternative speakerphone attempt completed")
-                        }, 50)
-                    } catch (e: Exception) {
-                        InAppLogger.logError("Service", "Alternative speakerphone approach failed: ${e.message}")
-                    }
-                }
-                
-                // Check immediate state
-                val immediateState = audioManager.isSpeakerphoneOn
-                InAppLogger.log("Service", "Immediate speakerphone state after setting: $immediateState")
-                
-                // Add a small delay to allow speakerphone state to take effect
+                // Add a longer delay before requesting audio focus to ensure audio mode is fully set
                 android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                    // Verify speakerphone was actually enabled
-                    val delayedState = audioManager.isSpeakerphoneOn
-                    InAppLogger.log("Service", "Speakerphone state after 100ms delay: $delayedState")
-                    
-                    if (delayedState) {
-                        InAppLogger.log("Service", "Speakerphone successfully enabled for VOICE_CALL stream")
+                    // Request audio focus with VOICE_COMMUNICATION usage to match TTS
+                    val focusGranted = requestAudioFocusForVoiceCall()
+                    if (focusGranted) {
+                        InAppLogger.log("Service", "Audio focus granted for VOICE_CALL, enabling speakerphone")
                     } else {
-                        InAppLogger.logError("Service", "Speakerphone was not enabled despite successful call")
-                        // Try to understand why - check if we have the right permissions
+                        InAppLogger.log("Service", "Audio focus not granted for VOICE_CALL, but attempting speakerphone anyway")
+                    }
+                    
+                    // Enable speakerphone with proper error handling
+                    InAppLogger.log("Service", "Attempting to enable speakerphone...")
+                    audioManager.isSpeakerphoneOn = true
+                    InAppLogger.log("Service", "Called audioManager.isSpeakerphoneOn = true")
+                    
+                    // If audio focus failed, try an alternative approach for some devices
+                    if (!focusGranted) {
+                        InAppLogger.log("Service", "Audio focus failed - trying alternative speakerphone approach")
+                        // Some devices allow speakerphone control without audio focus
+                        // Try setting audio mode again and speakerphone
                         try {
-                            val hasModifyAudioSettings = checkSelfPermission(android.Manifest.permission.MODIFY_AUDIO_SETTINGS) == android.content.pm.PackageManager.PERMISSION_GRANTED
-                            InAppLogger.log("Service", "MODIFY_AUDIO_SETTINGS permission: $hasModifyAudioSettings")
+                            audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
+                            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                                audioManager.isSpeakerphoneOn = true
+                                InAppLogger.log("Service", "Alternative speakerphone attempt completed")
+                            }, 100) // Increased delay from 50ms to 100ms
                         } catch (e: Exception) {
-                            InAppLogger.logError("Service", "Failed to check MODIFY_AUDIO_SETTINGS permission: ${e.message}")
+                            InAppLogger.logError("Service", "Alternative speakerphone approach failed: ${e.message}")
                         }
                     }
-                }, 100) // 100ms delay
+                    
+                    // Check immediate state
+                    val immediateState = audioManager.isSpeakerphoneOn
+                    InAppLogger.log("Service", "Immediate speakerphone state after setting: $immediateState")
+                    
+                    // Add a longer delay to allow speakerphone state to take effect
+                    android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                        // Verify speakerphone was actually enabled
+                        val delayedState = audioManager.isSpeakerphoneOn
+                        InAppLogger.log("Service", "Speakerphone state after 200ms delay: $delayedState")
+                        
+                        if (delayedState) {
+                            InAppLogger.log("Service", "Speakerphone successfully enabled for VOICE_CALL stream")
+                        } else {
+                            InAppLogger.logError("Service", "Speakerphone was not enabled despite successful call")
+                            // Try to understand why - check if we have the right permissions
+                            try {
+                                val hasModifyAudioSettings = checkSelfPermission(android.Manifest.permission.MODIFY_AUDIO_SETTINGS) == android.content.pm.PackageManager.PERMISSION_GRANTED
+                                InAppLogger.log("Service", "MODIFY_AUDIO_SETTINGS permission: $hasModifyAudioSettings")
+                                
+                                // Try one more time with a different approach
+                                if (!hasModifyAudioSettings) {
+                                    InAppLogger.logError("Service", "Missing MODIFY_AUDIO_SETTINGS permission - speakerphone may not work")
+                                } else {
+                                    InAppLogger.log("Service", "Permission granted but speakerphone still not working - trying final attempt")
+                                    // Try setting speakerphone again with a longer delay
+                                    android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                                        audioManager.isSpeakerphoneOn = true
+                                        val finalState = audioManager.isSpeakerphoneOn
+                                        InAppLogger.log("Service", "Final speakerphone attempt result: $finalState")
+                                    }, 300) // 300ms delay for final attempt
+                                }
+                            } catch (e: Exception) {
+                                InAppLogger.logError("Service", "Failed to check MODIFY_AUDIO_SETTINGS permission: ${e.message}")
+                            }
+                        }
+                    }, 200) // Increased delay from 100ms to 200ms
+                }, 200) // 200ms delay before requesting audio focus to ensure audio mode is fully set
             } catch (e: Exception) {
                 InAppLogger.logError("Service", "Failed to enable speakerphone: ${e.message}")
             }
@@ -3442,8 +3458,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     // Track notification read for review reminder
                     trackNotificationReadForReview()
                     
-                    // Clean up media behavior effects (with delay for smooth restoration)
-                    cleanupMediaBehaviorDelayed()
+                    // Clean up media behavior effects with proper delay to avoid premature volume reduction
+                    // This allows the TTS to complete naturally and gives time for any audio effects to settle
+                    android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                        cleanupMediaBehaviorDelayed()
+                    }, 1000) // 1 second delay to ensure TTS is fully complete
                     
                     // Process next item in queue if any
                     processNotificationQueue()
@@ -3476,8 +3495,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     // Attempt recovery for utterance errors
                     attemptTtsRecovery("Utterance error: $utteranceId")
                     
-                    // Clean up media behavior effects
-                    cleanupMediaBehavior()
+                    // Clean up media behavior effects with delay to avoid premature volume reduction
+                    android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                        cleanupMediaBehavior()
+                    }, 1000) // 1 second delay to ensure cleanup doesn't interfere with any ongoing audio
                     
                     // Process next item in queue if any
                     processNotificationQueue()

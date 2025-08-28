@@ -1138,8 +1138,20 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         // This prevents conflicts between TTS engine language and app localization language
         String previewText = getSimplePreviewText(effectiveLanguage);
         
-        // Create volume bundle with proper volume parameters
+        // CRITICAL: Apply audio attributes to TTS instance before creating volume bundle
+        // This ensures the audio usage matches what we pass to createVolumeBundle
         int audioUsage = getAudioUsageFromIndex(audioUsageSpinner.getSelectedItemPosition());
+        int contentType = getContentTypeFromIndex(contentTypeSpinner.getSelectedItemPosition());
+        
+        android.media.AudioAttributes audioAttributes = new android.media.AudioAttributes.Builder()
+            .setUsage(audioUsage)
+            .setContentType(contentType)
+            .build();
+            
+        textToSpeech.setAudioAttributes(audioAttributes);
+        InAppLogger.log("VoiceSettings", "Preview: Audio attributes applied - Usage: " + audioUsage + ", Content: " + contentType);
+        
+        // Create volume bundle with proper volume parameters
         boolean speakerphoneEnabled = speakerphoneSwitch.isChecked();
         Bundle volumeParams = createVolumeBundle(currentTtsVolume, audioUsage, speakerphoneEnabled);
         
@@ -1564,7 +1576,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         // Apply base volume
         params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, ttsVolume);
         
-        // Special handling for VOICE_CALL stream
+        // Volume boosting logic for different audio usage types
         if (audioUsage == android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION) {
             if (speakerphoneEnabled) {
                 // If speakerphone is enabled, use a different approach
@@ -1572,11 +1584,26 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 InAppLogger.log("VoiceSettings", "VOICE_CALL stream with speakerphone enabled - will route to speaker via AudioManager");
             } else {
                 // VOICE_CALL stream routes to earpiece by default, which is very quiet
-                // Boost the volume by 2.5x to compensate for earpiece routing
-                float boostedVolume = Math.min(1.0f, ttsVolume * 2.5f);
+                // Boost the volume by 4.0x to compensate for earpiece routing
+                float boostedVolume = Math.min(1.0f, ttsVolume * 4.0f);
                 params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, boostedVolume);
-                InAppLogger.log("VoiceSettings", "VOICE_CALL stream detected - boosting volume from " + (ttsVolume * 100) + "% to " + (boostedVolume * 100) + "%");
+                InAppLogger.log("VoiceSettings", "VOICE_CALL stream detected - boosting volume from " + (ttsVolume * 100) + "% to " + (boostedVolume * 100) + "% for earpiece routing");
             }
+        } else if (audioUsage == android.media.AudioAttributes.USAGE_NOTIFICATION) {
+            // NOTIFICATION stream can be quiet on some devices, apply moderate boost
+            float boostedVolume = Math.min(1.0f, ttsVolume * 2.0f);
+            params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, boostedVolume);
+            InAppLogger.log("VoiceSettings", "NOTIFICATION stream detected - boosting volume from " + (ttsVolume * 100) + "% to " + (boostedVolume * 100) + "% for better audibility");
+        } else if (audioUsage == android.media.AudioAttributes.USAGE_ALARM) {
+            // ALARM stream can be quiet on some devices, apply moderate boost
+            float boostedVolume = Math.min(1.0f, ttsVolume * 2.5f);
+            params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, boostedVolume);
+            InAppLogger.log("VoiceSettings", "ALARM stream detected - boosting volume from " + (ttsVolume * 100) + "% to " + (boostedVolume * 100) + "% for better audibility");
+        } else if (audioUsage == android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE) {
+            // ASSISTANCE_NAVIGATION_GUIDANCE can be quiet, apply moderate boost
+            float boostedVolume = Math.min(1.0f, ttsVolume * 1.5f);
+            params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, boostedVolume);
+            InAppLogger.log("VoiceSettings", "ASSISTANCE_NAVIGATION_GUIDANCE stream detected - boosting volume from " + (ttsVolume * 100) + "% to " + (boostedVolume * 100) + "% for better audibility");
         }
         
         return params;
@@ -1768,7 +1795,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 "🔊 Voice Call Stream Note:\n" +
                 "• Voice Call stream routes to earpiece by default (quiet for privacy)\n" +
                 "• Enable 'Use Speakerphone' option for louder volume\n" +
-                "• Volume is automatically boosted when speakerphone is disabled\n\n" +
+                "• Volume is automatically boosted when speakerphone is disabled\n" +
+                "• If still too quiet, try 'Notification' or 'Assistance' streams instead\n\n" +
                 
                 "🎯 Recommended Settings\n" +
                 "For best results: Notification + Speech\n" +
