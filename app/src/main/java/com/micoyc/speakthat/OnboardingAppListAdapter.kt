@@ -37,7 +37,7 @@ class OnboardingAppListAdapter(private val onRemoveClick: (String) -> Unit) :
         private val packageName: TextView = itemView.findViewById(R.id.packageName)
         private val deleteButton: ImageButton = itemView.findViewById(R.id.buttonDelete)
         
-        fun bind(app: String, position: Int) {
+        fun bind(app: String, _position: Int) {
             // Get app display name and icon
             val appDisplayName = try {
                 val packageManager = itemView.context.packageManager

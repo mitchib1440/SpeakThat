@@ -864,6 +864,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
+        @Suppress("DEPRECATION")
         onBackPressed()
         return true
     }

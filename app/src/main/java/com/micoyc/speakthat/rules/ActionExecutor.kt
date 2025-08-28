@@ -94,8 +94,7 @@ class ActionExecutor(private val context: Context) {
                 )
             }
             
-            // Get current app list mode and apps
-            val currentMode = sharedPreferences.getString("app_list_mode", "none") ?: "none"
+            // Get current app list
             val currentApps = sharedPreferences.getStringSet("app_list", emptySet()) ?: emptySet()
             
             val newApps = currentApps.toMutableSet()

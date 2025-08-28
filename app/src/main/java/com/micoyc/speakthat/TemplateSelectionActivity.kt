@@ -169,7 +169,7 @@ class TemplateSelectionActivity : AppCompatActivity() {
             InAppLogger.logDebug("TemplateSelectionActivity", "Empty device names: $emptyNames")
             
             // Create a custom dialog with ListView instead of setItems
-            val dialogView = LayoutInflater.from(this).inflate(android.R.layout.select_dialog_item, null)
+            LayoutInflater.from(this).inflate(android.R.layout.select_dialog_item, null)
             val listView = android.widget.ListView(this).apply {
                 adapter = android.widget.ArrayAdapter(this@TemplateSelectionActivity, android.R.layout.simple_list_item_1, deviceNames)
                 setOnItemClickListener { _, _, position, _ ->
@@ -434,6 +434,7 @@ class TemplateSelectionActivity : AppCompatActivity() {
     }
     
     override fun onSupportNavigateUp(): Boolean {
+        @Suppress("DEPRECATION")
         onBackPressed()
         return true
     }

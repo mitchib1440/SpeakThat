@@ -564,6 +564,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 }
                 
                 // Apply the new configuration
+                @Suppress("DEPRECATION")
                 resources.updateConfiguration(config, resources.displayMetrics)
                 
                 // Also update the default locale for this session
@@ -744,12 +745,14 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                     InAppLogger.logTTSEvent("MainActivity TTS started", text.take(50))
                 }
                 
+                @Suppress("DEPRECATION")
                 override fun onDone(utteranceId: String?) {
                     // Stop shake listening when TTS completes
                     stopShakeListening()
                     InAppLogger.logTTSEvent("MainActivity TTS completed", "Easter egg finished")
                 }
                 
+                @Suppress("DEPRECATION")
                 override fun onError(utteranceId: String?) {
                     // Stop shake listening even on error
                     stopShakeListening()
@@ -914,7 +917,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             
             if (isTriggered) {
                 val maxRange = proximitySensor?.maximumRange ?: 5.0f
-                val significantChange = maxRange * 0.3f
                 val distanceFromMax = maxRange - proximityValue
                 
                 Log.d(TAG, "Wave detected in MainActivity! Stopping TTS. Proximity: $proximityValue cm, threshold: $waveThreshold cm, maxRange: $maxRange cm, distanceFromMax: $distanceFromMax cm")
@@ -924,7 +926,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 // Log proximity values for debugging (but not too frequently)
                 if (System.currentTimeMillis() % 1000 < 100) { // Log ~10% of the time
                     val maxRange = proximitySensor?.maximumRange ?: 5.0f
-                    val significantChange = maxRange * 0.3f
                     val distanceFromMax = maxRange - proximityValue
                     Log.d(TAG, "Proximity sensor reading: $proximityValue cm (threshold: $waveThreshold cm, maxRange: $maxRange cm, distanceFromMax: $distanceFromMax cm)")
                 }

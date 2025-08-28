@@ -237,16 +237,19 @@ class AboutActivity : AppCompatActivity() {
                 
                 // Set up utterance progress listener
                 textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+                    @Suppress("DEPRECATION")
                     override fun onStart(utteranceId: String?) {
                         isSpeaking = true
                         updateButtonState()
                     }
                     
+                    @Suppress("DEPRECATION")
                     override fun onDone(utteranceId: String?) {
                         isSpeaking = false
                         updateButtonState()
                     }
                     
+                    @Suppress("DEPRECATION")
                     override fun onError(utteranceId: String?) {
                         isSpeaking = false
                         updateButtonState()

@@ -950,6 +950,7 @@ class TriggerConfigActivity : AppCompatActivity() {
     }
     
     override fun onSupportNavigateUp(): Boolean {
+        @Suppress("DEPRECATION")
         onBackPressed()
         return true
     }

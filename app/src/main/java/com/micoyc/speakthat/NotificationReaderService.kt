@@ -978,7 +978,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             val entriesBeforeCleanup = dismissedNotificationKeys.size
             
             // Remove expired entries
-            val expiredEntries = dismissedNotificationKeys.entries.removeIf { (_, dismissalTime) ->
+            dismissedNotificationKeys.entries.removeIf { (_, dismissalTime) ->
                 currentTime - dismissalTime > timeoutMs
             }
             
@@ -1516,9 +1516,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Load speech template
         speechTemplate = sharedPreferences?.getString(KEY_SPEECH_TEMPLATE, "{app} notified you: {content}") ?: "{app} notified you: {content}"
         
-        // Load notification settings
-        val isPersistentNotificationEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_NOTIFICATION, false) ?: false
-        val isNotificationWhileReadingEnabled = sharedPreferences?.getBoolean(KEY_NOTIFICATION_WHILE_READING, false) ?: false
+        // Load notification settings (values used in other parts of the service)
+        sharedPreferences?.getBoolean(KEY_PERSISTENT_NOTIFICATION, false) ?: false
+        sharedPreferences?.getBoolean(KEY_NOTIFICATION_WHILE_READING, false) ?: false
         
         Log.d(TAG, "Filter settings loaded - appMode: $appListMode, apps: ${appList.size}, blocked words: ${blockedWords.size}, replacements: ${wordReplacements.size}")
         Log.d(TAG, "Behavior settings loaded - mode: $notificationBehavior, priority apps: ${priorityApps.size}")
@@ -1672,7 +1672,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         return FilterResult(true, processedText, "Word filtering applied")
     }
     
-    private fun applyConditionalFiltering(packageName: String, appName: String, text: String): FilterResult {
+    private fun applyConditionalFiltering(_packageName: String, _appName: String, text: String): FilterResult {
         try {
             // Check if rules system is enabled
             if (!::ruleManager.isInitialized) {
@@ -1967,7 +1967,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * - If you revisit this code, check for new Android APIs or device-specific workarounds, but be aware that most limitations are outside app control.
      * - See BehaviorSettingsActivity and VoiceSettingsActivity for user guidance and warnings.
      */
-    private fun handleMediaBehavior(appName: String, text: String, sbn: StatusBarNotification? = null): Boolean {
+    private fun handleMediaBehavior(appName: String, _text: String, sbn: StatusBarNotification? = null): Boolean {
         val isMusicActive = audioManager.isMusicActive
         Log.d(TAG, "Media behavior check - isMusicActive: $isMusicActive, mediaBehavior: $mediaBehavior, isCurrentlySpeaking: $isCurrentlySpeaking")
         
@@ -2248,43 +2248,42 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             if (controllers.isEmpty()) {
                 Log.d(TAG, "No active media sessions found")
                 InAppLogger.log("MediaBehavior", "No active media sessions found")
-                return false
-            }
-            
-            var pausedAny = false
-            pausedMediaSessions.clear() // Clear previous sessions
-            
-            for (controller in controllers) {
-                try {
-                    val playbackState = controller.playbackState
-                    if (playbackState != null && playbackState.state == android.media.session.PlaybackState.STATE_PLAYING) {
-                        Log.d(TAG, "Pausing media session: ${controller.packageName}")
-                        InAppLogger.log("MediaBehavior", "Pausing media session: ${controller.packageName}")
-                        
-                        controller.transportControls.pause()
-                        pausedMediaSessions.add(controller)
-                        pausedAny = true
+                false
+            } else {
+                var pausedAny = false
+                pausedMediaSessions.clear() // Clear previous sessions
+                
+                for (controller in controllers) {
+                    try {
+                        val playbackState = controller.playbackState
+                        if (playbackState != null && playbackState.state == android.media.session.PlaybackState.STATE_PLAYING) {
+                            Log.d(TAG, "Pausing media session: ${controller.packageName}")
+                            InAppLogger.log("MediaBehavior", "Pausing media session: ${controller.packageName}")
+                            
+                            controller.transportControls.pause()
+                            pausedMediaSessions.add(controller)
+                            pausedAny = true
+                        }
+                    } catch (e: Exception) {
+                        Log.w(TAG, "Failed to pause media session: ${controller.packageName}", e)
+                        InAppLogger.logError("MediaBehavior", "Failed to pause media session: ${controller.packageName} - ${e.message}")
                     }
-                } catch (e: Exception) {
-                    Log.w(TAG, "Failed to pause media session: ${controller.packageName}", e)
-                    InAppLogger.logError("MediaBehavior", "Failed to pause media session: ${controller.packageName} - ${e.message}")
+                }
+                
+                if (pausedAny) {
+                    Log.d(TAG, "Successfully paused ${pausedMediaSessions.size} media session(s)")
+                    InAppLogger.log("MediaBehavior", "Successfully paused ${pausedMediaSessions.size} media session(s)")
+                    true
+                } else {
+                    Log.d(TAG, "No playing media sessions found to pause")
+                    InAppLogger.log("MediaBehavior", "No playing media sessions found to pause")
+                    false
                 }
             }
-            
-            if (pausedAny) {
-                Log.d(TAG, "Successfully paused ${pausedMediaSessions.size} media session(s)")
-                InAppLogger.log("MediaBehavior", "Successfully paused ${pausedMediaSessions.size} media session(s)")
-                return true
-            } else {
-                Log.d(TAG, "No playing media sessions found to pause")
-                InAppLogger.log("MediaBehavior", "No playing media sessions found to pause")
-                return false
-            }
-            
         } catch (e: Exception) {
             Log.e(TAG, "Media session control failed", e)
             InAppLogger.logError("MediaBehavior", "Media session control failed: ${e.message}")
-            return false
+            false
         }
     }
     
@@ -3469,6 +3468,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 }
             }
             
+            @Suppress("DEPRECATION")
             override fun onError(utteranceId: String?) {
                 if (utteranceId == "notification_utterance") {
                     Log.e(TAG, "TTS utterance error: $utteranceId")

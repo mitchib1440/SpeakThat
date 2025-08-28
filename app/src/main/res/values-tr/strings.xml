@@ -189,7 +189,7 @@ Doğrudan GitHub\'dan otomatik güncellemeler istiyorsanız, bunun yerine GitHub
 SpeakThat!, metin okuma teknolojisini kullanarak bildirimlerinizi sesli olarak duyuran açık kaynaklı bir Android Bildirim Okuyucusudur. Eller serbest kullanım, erişilebilirlik ve çoklu görev sırasında bilgi sahibi olmak için mükemmeldir.
 </string>
     <string name="app_features">
-• Gerçek zamanlı bildirim okuma\n• Özelleştirilebilir ses ayarları\n• Akıllı bildirim filtreleme\n• Uygulamaya özel kontroller\n• Medyaya duyarlı davranış\n• Bildirim geçmişi\n• Sallayarak/El Sallayarak durdurma\n• Özel konuşma formatlama\n• Koyu/Açık tema desteği\n• Gelişmiş mantık ve zamanlamalar için koşullu kurallar\n• Tamamen reklamsız ve çevrimdışı işlevsellik
+• Gerçek zamanlı bildirim okuma\n• Özelleştirilebilir ses ayarları\n• Akıllı bildirim filtreleme\n• Uygulamaya özel kontroller\n• Medyaya duyarlı davranış\n• Bildirim geçmişi\n• Durdurmak için salla/el salla\n• Özel konuşma biçimlendirme\n• Koyu/Açık tema desteği\n• Gelişmiş mantık ve zamanlamalar için koşullu kurallar\n• Tamamen reklamsız ve çevrimdışı işlevsellik
 </string>
     <string name="developer_info">
 İngiltere\'den, 12 yılı aşkın süredir her gün bildirim okuyucularını test edip kullanan tek bir geliştirici olan Mitchi tarafından ❤️ ile geliştirildi.\n\nSpeakThat!, ilk olarak DYNA Logix tarafından geliştirilen Touchless Notifications\'tan ilham aldı ve özelleştirilebilir bildirim okuyucularının mirasını devam ettirmeyi amaçlıyor.\n\nBu proje, yapay zeka destekli programlama ile hızlandırıldı.
@@ -208,7 +208,7 @@ SpeakThat, metin okuma teknolojisini kullanarak bildirimlerinizi sesli olarak du
 </string>
     <string name="tts_features_intro">Temel özellikler şunları içerir:</string>
     <string name="tts_features">
-Gerçek zamanlı bildirim okuma, özelleştirilebilir ses ayarları, akıllı bildirim filtreleme, uygulamaya özel kontroller, medyaya duyarlı davranış, bildirim geçmişi takibi, Sallayarak Durdurma ve El Sallayarak Durdurma, özel konuşma formatlama, koyu mod ve açık mod desteği, gelişmiş mantık ve zamanlamalar için koşullu kurallar ve tamamen reklamsız, çevrimdışı işlevsellik.
+Gerçek zamanlı bildirim okuma, özelleştirilebilir ses ayarları, akıllı bildirim filtreleme, uygulamaya özel kontroller, medyaya duyarlı davranış, bildirim geçmişi takibi, Sallayarak ve El Sallayarak Durdurma, özel konuşma biçimlendirme, koyu mod ve açık mod desteği, gelişmiş mantık ve zamanlamalar için koşullu kurallar ve tamamen reklamsız, çevrimdışı işlevsellik.
 </string>
     <string name="tts_developer">
 İngiltere\'den, 12 yılı aşkın süredir her gün bildirim okuyucularını test edip kullanan tek bir geliştirici olan Mitchi tarafından sevgiyle geliştirildi. SpeakThat, ilk olarak DYNA Logix tarafından geliştirilen Touchless Notifications\'tan ilham aldı ve özelleştirilebilir bildirim okuyucularının mirasını devam ettirmeyi amaçlıyor. Bu proje, Yapay Zeka destekli programlama ile hızlandırıldı.
@@ -256,8 +256,8 @@ Uygulamayı açtığınızda otomatik olarak uygulama güncellemelerini kontrol 
 </string>
     <string name="check_frequency">Kontrol Sıklığı</string>
     <string name="check_frequency_desc">Uygulama ne sıklıkla güncelleme kontrolü yapmalı?</string>
-    <string name="update_daily">Günlük (önerilen)</string>
-    <string name="update_weekly">Haftalık</string>
+    <string name="update_daily">Günlük</string>
+    <string name="update_weekly">Haftalık (önerilen)</string>
     <string name="update_monthly">Aylık</string>
     <string name="update_never">Asla (sadece manuel)</string>
     <!-- TTS Template Strings (for improved localization) -->
@@ -291,7 +291,7 @@ SpeakThat, metin okuma teknolojisini kullanarak bildirimlerinizi sesli olarak du
 </string>
     <string name="tts_about_features_intro">Temel özellikler şunları içerir:</string>
     <string name="tts_about_features">
-Gerçek zamanlı bildirim okuma, özelleştirilebilir ses ayarları, akıllı bildirim filtreleme, uygulamaya özel kontroller, medyaya duyarlı davranış, bildirim geçmişi takibi, Sallayarak Durdurma ve El Sallayarak Durdurma, özel konuşma formatlama, koyu mod ve açık mod desteği, gelişmiş mantık ve zamanlamalar için koşullu kurallar ve tamamen reklamsız, çevrimdışı işlevsellik.
+Gerçek zamanlı bildirim okuma, özelleştirilebilir ses ayarları, akıllı bildirim filtreleme, uygulamaya özel kontroller, medyaya duyarlı davranış, bildirim geçmişi takibi, Sallayarak ve El Sallayarak Durdurma, özel konuşma biçimlendirme, koyu mod ve açık mod desteği, gelişmiş mantık ve zamanlamalar için koşullu kurallar ve tamamen reklamsız, çevrimdışı işlevsellik.
 </string>
     <string name="tts_about_developer">
 İngiltere\'den, 12 yılı aşkın süredir her gün bildirim okuyucularını test edip kullanan tek bir geliştirici olan Mitchi tarafından sevgiyle geliştirildi. SpeakThat, ilk olarak DYNA Logix tarafından geliştirilen Touchless Notifications\'tan ilham aldı ve özelleştirilebilir bildirim okuyucularının mirasını devam ettirmeyi amaçlıyor. Bu proje, Yapay Zeka destekli programlama ile hızlandırıldı.
@@ -626,7 +626,7 @@ Akıllı (öncelikli uygulamalar araya girer, diğerleri sıraya alınır)
     <string name="behavior_priority_apps_description">
 Bu uygulamalar mevcut bildirimi kesecektir. Diğer tüm uygulamalar sıraya alınacaktır.
 </string>
-    <string name="behavior_media_ignore">Yoksay - Normal şekilde devam et (mevcut davranış)</string>
+    <string name="behavior_media_ignore">Yoksay - Normal şekilde devam et</string>
     <string name="behavior_media_pause">Duraklat - Konuşurken medyayı duraklat</string>
     <string name="behavior_media_lower">Sesi Kıs - Medya sesini geçici olarak düşür</string>
     <string name="behavior_media_silence">Sessize Al - Medya oynatılırken konuşma</string>
@@ -670,7 +670,7 @@ Bildirimleri yalnızca cihazınız Ses modundayken (Sessiz veya Titreşim değil
 Okumaların, sensör zaten kapalıyken (cebinizdeyken gibi) devam etmesine izin verin, ancak okuma başladıktan sonra kapattığınızda yine de durdurun
 </string>
     <string name="behavior_wave_pocket_checkbox">Sensör kapalıyken okumalara izin ver</string>
-    <string name="behavior_custom_apps_title">📱 Özel Uygulama Adları</string>
+    <string name="behavior_custom_apps_title">Özel Uygulama Adları</string>
     <string name="behavior_custom_apps_description">
 Bildirimlerde uygulama adlarının nasıl okunacağını özelleştirin
 </string>
@@ -906,7 +906,7 @@ Belirli kelimeler içeren bildirimleri engelleyin veya özelleştirin
     <string name="general_theme_title">Tema</string>
     <string name="general_dark_mode">Koyu Mod</string>
     <string name="general_dark_mode_description">Bu uygulama için koyu modu etkinleştir</string>
-    <string name="general_app_behavior_title">Uygulama Davranışı ve Performansı</string>
+    <string name="general_app_behavior_title">Uygulama Davranışı &amp; Performansı</string>
     <string name="general_auto_start">Açılışta Otomatik Başlat</string>
     <string name="general_auto_start_description">
 Cihaz açıldığında bildirim hizmetini otomatik olarak başlat
@@ -1000,8 +1000,6 @@ Bu kuralı hangi WiFi ağlarının tetiklemesi gerektiğini seçin:
 Bildirimlerin cihazınızın ses sistemi üzerinden nasıl çalınacağını yapılandırın.
 </string>
     <string name="voice_audio_stream_type">Ses Akışı Türü</string>
-    <string name="voice_stream_volume">Stream Volume</string>
-    <string name="voice_stream_volume_description">Control the volume level for the selected audio stream. This affects the device\'s volume for this stream type.</string>
     <string name="voice_content_type">İçerik Türü</string>
     <string name="voice_content_type_description">
 Sisteme bunun ne tür bir ses olduğunu söyler. Bildirimler için Konuşma önerilir.
@@ -1111,7 +1109,7 @@ Bugün size nasıl yardımcı olabiliriz? İhtiyaçlarınızı en iyi tanımlaya
     <string name="dialog_support_feature_description">Yeni özellikler veya iyileştirmeler önerin</string>
     <string name="dialog_support_bug_report">Hata Raporu</string>
     <string name="dialog_support_bug_description">
-Kilitlenmeleri, hataları veya beklenmedik davranışları bildirin
+Kilitlenmeleri, hataları veya beklenmedik davranışları bildir
 </string>
     <!-- Dialog Strings - Donate -->
     <string name="dialog_donate_title">SpeakThat\'i Destekleyin!</string>
@@ -1572,139 +1570,28 @@ Bu, tüm ayarları varsayılanlara sıfırlayacak ve bildirim geçmişini temizl
     <string name="app_filter_found_matches" formatted="false">\'%s\' için %d eşleşme bulundu</string>
     <string name="app_filter_no_filter_showing_all">Filtre yok - tüm %d uygulama gösteriliyor</string>
     <string name="app_filter_publishing_results">%d sonuç yayınlanıyor</string>
-    <!-- CooldownAppAdapter Hardcoded Strings -->
-    <string name="cooldown_app_icon_url">https://cdn.simpleicons.org/%s</string>
-    <!-- BootReceiver Hardcoded Strings -->
-    <string name="boot_receiver_tag">BootReceiver</string>
-    <string name="boot_receiver_prefs_name">SpeakThatPrefs</string>
-    <string name="boot_receiver_key_auto_start">auto_start_on_boot</string>
-    <string name="boot_receiver_key_master_switch">master_switch_enabled</string>
-    <string name="boot_receiver_boot_completed">Açılış tamamlandı bilgisi alındı</string>
-    <string name="boot_receiver_auto_start_enabled">
-Otomatik başlatma etkin, bildirim hizmeti başlatılıyor
-</string>
-    <string name="boot_receiver_enabled_notification_listeners">enabled_notification_listeners</string>
-    <string name="boot_receiver_service_already_enabled">Bildirim hizmeti zaten etkin, işlem gerekmiyor</string>
-    <string name="boot_receiver_service_not_enabled">
-Bildirim hizmeti etkin değil, kullanıcının izin vermesi gerekiyor
-</string>
+    <!--
+     Technical hardcoded strings moved to strings_technical.xml
+    -->
     <!-- AppCategory String Resources -->
-    <string name="category_social_id">social</string>
     <string name="category_social_display_name">Sosyal Medya</string>
     <string name="category_social_description">Sosyal ağ ve topluluk uygulamaları</string>
-    <string name="category_messaging_id">messaging</string>
     <string name="category_messaging_display_name">Mesajlaşma</string>
     <string name="category_messaging_description">Sohbet ve iletişim uygulamaları</string>
-    <string name="category_finance_id">finance</string>
     <string name="category_finance_display_name">Finans</string>
     <string name="category_finance_description">Bankacılık ve finans uygulamaları</string>
-    <string name="category_health_id">health</string>
     <string name="category_health_display_name">Sağlık ve Fitness</string>
     <string name="category_health_description">Sağlık, tıp ve fitness uygulamaları</string>
-    <string name="category_entertainment_id">entertainment</string>
     <string name="category_entertainment_display_name">Eğlence</string>
     <string name="category_entertainment_description">Medya ve eğlence uygulamaları</string>
-    <string name="category_games_id">games</string>
     <string name="category_games_display_name">Oyunlar</string>
     <string name="category_games_description">Mobil oyunlar ve oyun uygulamaları</string>
     <!--
-     App Package Names (for reference, these are typically not localized)
+     Technical strings (preference keys, package names, etc.) have been moved to strings_technical.xml
     -->
-    <string name="package_twitter">com.twitter.</string>
-    <string name="package_facebook">com.facebook.</string>
-    <string name="package_instagram">com.instagram.</string>
-    <string name="package_linkedin">com.linkedin.</string>
-    <string name="package_reddit">com.reddit.</string>
-    <string name="package_snapchat">com.snapchat.</string>
-    <string name="package_pinterest">com.pinterest.</string>
-    <string name="package_tumblr">com.tumblr</string>
-    <string name="package_weibo">com.weibo.</string>
-    <string name="package_line">jp.naver.line.</string>
-    <string name="package_tiktok">com.zhiliaoapp.musically</string>
-    <string name="package_glassdoor">com.glassdoor.</string>
-    <string name="package_indeed">com.indeed.</string>
-    <string name="package_discord">com.discord</string>
-    <string name="package_slack">com.slack</string>
-    <string name="package_meetup">com.meetup</string>
-    <string name="package_whatsapp">com.whatsapp</string>
-    <string name="package_facebook_messenger">com.facebook.messenger</string>
-    <string name="package_google_messages">com.google.android.apps.messaging</string>
-    <string name="package_telegram">org.telegram.</string>
-    <string name="package_viber">com.viber.</string>
-    <string name="package_skype">com.skype.</string>
-    <string name="package_gmail">com.google.android.gm</string>
-    <string name="package_outlook">com.microsoft.office.outlook</string>
-    <string name="package_yahoo_mail">com.yahoo.mobile.client.android.mail</string>
-    <string name="package_google_meet">com.google.android.apps.meetings</string>
-    <string name="package_zoom">us.zoom.</string>
-    <string name="package_microsoft_teams">com.microsoft.teams</string>
-    <string name="package_line_android">jp.naver.line.android</string>
-    <string name="package_kakaotalk">com.kakao.talk</string>
-    <string name="package_wechat">com.tencent.mm</string>
-    <string name="package_paypal">com.paypal.</string>
-    <string name="package_venmo">com.venmo.</string>
-    <string name="package_cash_app">com.squareup.cash</string>
-    <string name="package_google_wallet">com.google.android.apps.walletnfcrel</string>
-    <string name="package_bank_of_america">com.bankofamerica.</string>
-    <string name="package_chase">com.chase.</string>
-    <string name="package_wells_fargo">com.wellsfargo.</string>
-    <string name="package_us_bank">com.usbank.</string>
-    <string name="package_citibank">com.citibank.</string>
-    <string name="package_robinhood">com.robinhood.</string>
-    <string name="package_etrade">com.etrade.</string>
-    <string name="package_charles_schwab">com.schwab.</string>
-    <string name="package_fidelity">com.fidelity.</string>
-    <string name="package_coinbase">com.coinbase.</string>
-    <string name="package_binance">com.binance.</string>
-    <string name="package_mint">com.mint</string>
-    <string name="package_ynab">com.ynab</string>
-    <string name="package_fitbit">com.fitbit.</string>
-    <string name="package_google_fit">com.google.android.apps.fitness</string>
-    <string name="package_samsung_health">com.samsung.health</string>
-    <string name="package_garmin_connect">com.garmin.connect</string>
-    <string name="package_strava">com.strava</string>
-    <string name="package_medisafe">com.medisafe.</string>
-    <string name="package_myfitnesspal">com.myfitnesspal.</string>
-    <string name="package_noom">com.noom.</string>
-    <string name="package_weightwatchers">com.weightwatchers</string>
-    <string name="package_zocdoc">com.zocdoc.</string>
-    <string name="package_carezone">org.carezone.</string>
-    <string name="package_teladoc">com.teladoc.</string>
-    <string name="package_calm">com.calm.</string>
-    <string name="package_headspace">com.headspace.</string>
-    <string name="package_betterhelp">com.betterhelp</string>
-    <string name="package_glow">com.glow.android</string>
-    <string name="package_clue">com.clue.android</string>
     <!--
-     SharedPreferences Keys (these are typically not localized but kept for reference)
+     This prevents them from being translated by CrowdIn
     -->
-    <string name="prefs_speakthat">SpeakThatPrefs</string>
-    <string name="prefs_voice_settings">VoiceSettings</string>
-    <string name="prefs_notification_history">NotificationHistory</string>
-    <string name="prefs_dark_mode">dark_mode</string>
-    <string name="prefs_persistent_notification">persistent_notification</string>
-    <string name="prefs_notification_while_reading">notification_while_reading</string>
-    <string name="prefs_auto_start_enabled">auto_start_enabled</string>
-    <string name="prefs_battery_optimization_enabled">battery_optimization_enabled</string>
-    <string name="prefs_aggressive_processing_enabled">aggressive_processing_enabled</string>
-    <string name="prefs_restart_policy">restart_policy</string>
-    <string name="prefs_tts_language">tts_language</string>
-    <string name="prefs_speech_rate">speech_rate</string>
-    <string name="prefs_pitch">pitch</string>
-    <string name="prefs_voice_name">voice_name</string>
-    <string name="prefs_language">language</string>
-    <string name="prefs_audio_usage">audio_usage</string>
-    <string name="prefs_content_type">content_type</string>
-    <string name="prefs_auto_start_on_boot">auto_start_on_boot</string>
-    <string name="prefs_master_switch_enabled">master_switch_enabled</string>
-    <string name="prefs_enabled_notification_listeners">enabled_notification_listeners</string>
-    <!-- TTS Utterance IDs -->
-    <string name="tts_utterance_about_app">about_app</string>
-    <!-- File Export/Import -->
-    <string name="export_filename_format">SpeakThat_Config_%s.json</string>
-    <string name="import_temp_filename">speakthat_import</string>
-    <string name="export_mime_type">application/json</string>
-    <string name="export_charset">UTF-8</string>
     <!-- Error Messages -->
     <string name="error_unable_to_open_output_stream">URI için çıkış akışı açılamıyor</string>
     <string name="error_unable_to_open_input_stream">URI\'den giriş akışı açılamıyor</string>

@@ -79,7 +79,7 @@ Uitschakelen als dat niet nodig is om batterij te besparen
         <item>300</item>
     </string-array>
     <!-- Behavior Settings Dialogs -->
-    <string name="notification_behavior_dialog_title">Opties voor meldingsgedrag</string>
+    <string name="notification_behavior_dialog_title">Notificatie Gedrag Opties</string>
     <string name="notification_behavior_dialog_message">
 Kies hoe SpeakThat! omgaat met meerdere meldingen:
 <b>🔄 Onderbreken</b>
@@ -99,7 +99,7 @@ Aanpassen hoe app-namen worden uitgesproken in meldingen
     <string name="app_package_hint">App-pakket-naam (bijv. com.twitter.android)</string>
     <string name="custom_name_hint">Aangepaste naam (bijv. Twitter)</string>
     <string name="custom_app_names_example">Voorbeeld: X app leest als Twitter</string>
-    <string name="media_behavior_dialog_title">Media Gedragsopties</string>
+    <string name="media_behavior_dialog_title">Media Gedrag Opties</string>
     <string name="media_behavior_dialog_message">
 Kies hoe SpeakThat! meldingen uitspreekt wanneer muziek of video word afgespeeld:
 <b>🎵 Negeren</b>
@@ -185,7 +185,7 @@ Als u automatische updates wilt rechtstreeks vanuit GitHub, kunt u in plaats daa
 SpeakThat is een open-source Android meldingslezer die uw meldingen hardop voorleest met behulp van tekst-naar-spraak. Perfect voor hands-free bediening, toegankelijkheid en geïnformeerd blijven tijdens multitasking.
 </string>
     <string name="app_features">
-• ala minuut meldingslezen\n• Aanpasbare spraakinstellingen\n• Slim filteren\n• App-specifieke bediening\n• Media-bewust gedrag\n• Meldingsgeschiedenis\n• Schud/Zwaai om te stoppen\n• Aangepaste spraakopmaak\n• Donker/Licht thema ondersteuning\n• Voorwaardelijke regels voor geavanceerde logica en schema\'s\n• Volledig advertentievrij en offline functionaliteit
+• Real-time notificatielezen\n• Aanpasbare spraakinstellingen\n• Slim filteren\n• App-specifieke besturingselementen\n• Media-bewust gedrag\n• Berichtgeschiedenis\n• Shake/Wave om te stoppen\n• Aangepaste spraakopmaak\n• Donker/Licht thema ondersteuning\n• Voorwaardelijke regels voor geavanceerde logica en schema\'s\n• Volledig advertentievrij en offline functionaliteit
 </string>
     <string name="developer_info">
 Met liefde ontwikkeld door Michi, een onafhankelijke ontwikkelaar uit het Verenigd Koninkrijk met meer dan 12 jaar ervaring in het dagelijks testen en gebruiken van een meldingslezer. .\n\nSpeakThat! is geïnspireerd door Touchless Notifications, oorspronkelijk ontwikkeld door DYNA Logix, en streeft ernaar de erfenis van aanpasbare meldingslezer voort te zetten. .\n\nDit project is versneld door AI-ondersteunde programmering.
@@ -204,7 +204,7 @@ SpeakThat is een open-source Android meldingslezer die uw meldingen hardop voorl
 </string>
     <string name="tts_features_intro">Belangrijkste functies omvatten:</string>
     <string name="tts_features">
-Real-time meldingslezen, aanpasbare steminstellingen, slimme meldingsfiltering, specifieke app-controle, media-bewust gedrag, meldingsgeschiedenis volgen, schudden voor stoppen en zwaaien voor stoppen, aangepaste stemformattering, ondersteuning voor donkere en lichte modus, voorwaardelijke regels voor geavanceerde logica en planning, en volledige advertentievrije en offline functionaliteit.
+Real-time kennisgeving lezen, aanpasbare spraakinstellingen, slimme filteren, app-specifieke besturen, media-bewust gedrag, opvolgen van kennisgevingsgeschiedenis, Schud voor Stop en Wave aan Stop, aangepaste spraakopmaak, donkere modus en ondersteuning voor lichte modus. voorwaardelijke regels voor geavanceerde logica en schema\'s, en volledig advertentievrije, offline functionaliteit.
 </string>
     <string name="tts_developer">
 Met liefde ontwikkeld door Michi, een onafhankelijke ontwikkelaar uit het Verenigd Koninkrijk met meer dan 12 jaar ervaring in het dagelijks testen en gebruiken van een meldingslezer. SpeakThat! is geïnspireerd door Touchless Notifications, oorspronkelijk ontwikkeld door DYNA Logix, en streeft ernaar de erfenis van aanpasbare meldingslezer voort te zetten. Dit project is versneld door AI-ondersteunde programmering.
@@ -252,8 +252,8 @@ Automatisch controleren op app-updates wanneer u de app opent
 </string>
     <string name="check_frequency">Controleer frequentie</string>
     <string name="check_frequency_desc">Hoe vaak moet de app controleren op updates?</string>
-    <string name="update_daily">Dagelijks (aanbevolen)</string>
-    <string name="update_weekly">Wekelijks</string>
+    <string name="update_daily">Dagelijks</string>
+    <string name="update_weekly">Wekelijks (aanbevolen)</string>
     <string name="update_monthly">Maandelijks</string>
     <string name="update_never">Nooit (alleen handmatig)</string>
     <!-- TTS Template Strings (for improved localization) -->
@@ -285,7 +285,7 @@ SpeakThat! is een open-source Android meldingslezer die uw meldingen hardop voor
 </string>
     <string name="tts_about_features_intro">Belangrijkste functies omvatten:</string>
     <string name="tts_about_features">
-Real-time meldingslezen, aanpasbare steminstellingen, slimme meldingsfiltering, specifieke app-controle, media-bewust gedrag, meldingsgeschiedenis tracking, schud-om-te-stoppen en zwaai-om-te-stoppen, aangepaste stemformattering, ondersteuning voor donkere en lichte modus, voorwaardelijke regels voor geavanceerde logica en planning, en volledige advertentievrije en offline functionaliteit.
+Real-time kennisgeving lezen, aanpasbare spraakinstellingen, slimme filteren, app-specifieke besturen, media-bewust gedrag, opvolgen van kennisgevingsgeschiedenis, Schud voor Stop en Wave aan Stop, aangepaste spraakopmaak, donkere modus en ondersteuning voor lichte modus. voorwaardelijke regels voor geavanceerde logica en schema\'s, en volledige advertentievrije, offline functionaliteit.
 </string>
     <string name="tts_about_developer">
 Met liefde ontwikkeld door Michi, een onafhankelijke ontwikkelaar uit het Verenigd Koninkrijk met meer dan 12 jaar ervaring in het dagelijks testen en gebruiken van een meldingslezer. SpeakThat! is geïnspireerd door Touchless Notifications, oorspronkelijk ontwikkeld door DYNA Logix, en streeft ernaar de erfenis van aanpasbare meldingslezer voort te zetten. Dit project is versneld door AI-ondersteunde programmering.
@@ -420,7 +420,7 @@ Sommige Android versies hebben beveiligingsbeperkingen die voorkomen dat apps sp
     <string name="rule_logic_separator">, </string>
     <string name="rule_logic_final_separator">, en </string>
     <!-- Critical Hardcoded Strings - Activity Titles -->
-    <string name="title_behavior_settings">Gedragsinstellingen</string>
+    <string name="title_behavior_settings">Gedrag instellingen</string>
     <string name="title_general_settings">Algemene instellingen</string>
     <string name="title_voice_settings">Stem Instellingen</string>
     <string name="title_filter_settings">Filterinstellingen</string>
@@ -595,7 +595,7 @@ Taal zal volledig worden toegepast wanneer u de app opnieuw opstart
     <string name="button_reset_cache">Cache resetten</string>
     <string name="button_re_detect">Opnieuw detecteren</string>
     <!-- Layout Section Titles -->
-    <string name="section_notification_behavior">Meldingsgedrag</string>
+    <string name="section_notification_behavior">Notificatie gedrag</string>
     <string name="section_media_behavior">Media gedrag</string>
     <string name="recommendation_smart_mode">De meeste gebruikers gebruiken: Slimme Mode</string>
     <string name="recommendation_lower_audio">
@@ -620,7 +620,7 @@ Slim (stoppen met prioriteits-apps, zet anderen in wachtrij)
     <string name="behavior_priority_apps_description">
 Deze apps onderbreken de huidige melding. Alle andere apps worden in de wachtrij geplaatst.
 </string>
-    <string name="behavior_media_ignore">Negeer - Doorgaan als normaal (huidige gedrag)</string>
+    <string name="behavior_media_ignore">Negeer - Doorgaan als normaal</string>
     <string name="behavior_media_pause">
 Pauze - media pauzeren terwijl melding gelezen wordt
 </string>
@@ -666,7 +666,7 @@ Lees alleen meldingen wanneer je apparaat in geluidmodus staat (niet stil of tri
 readouts toestaan om door te gaan als de sensor al afgedekt is (zoals in je zak), maar stopt nog steeds als je deze afdekt nadat de readout begint
 </string>
     <string name="behavior_wave_pocket_checkbox">Uitlezingen toestaan wanneer de sensor bedekt is</string>
-    <string name="behavior_custom_apps_title">📱 Aangepaste app-namen</string>
+    <string name="behavior_custom_apps_title">Aangepaste app-namen</string>
     <string name="behavior_custom_apps_description">
 Aanpassen hoe app-namen worden uitgesproken in meldingen
 </string>
@@ -764,7 +764,7 @@ Je kunt hieronder je instellingen altijd opnieuw instellen als je in de probleme
     <string name="settings_general_description">App voorkeuren, thema-instellingen</string>
     <string name="settings_voice_title">Stem Instellingen</string>
     <string name="settings_voice_description">Tekst-naar-spraak en snelheid</string>
-    <string name="settings_behavior_title">Gedragsinstellingen</string>
+    <string name="settings_behavior_title">Gedrag instellingen</string>
     <string name="settings_behavior_description">Wanneer en hoe meldingen worden opgelezen</string>
     <string name="settings_filter_title">Filterinstellingen</string>
     <string name="settings_filter_description">Kies welke apps je wilt lezen</string>
@@ -900,7 +900,7 @@ Block = Sla volledig over, Privé = kondig privaat aan
     <string name="general_theme_title">Thema</string>
     <string name="general_dark_mode">Donkere Modus</string>
     <string name="general_dark_mode_description">Donkere modus voor deze app inschakelen</string>
-    <string name="general_app_behavior_title">App Gedrag &amp; Prestatie</string>
+    <string name="general_app_behavior_title">App gedrag &amp; Prestatie</string>
     <string name="general_auto_start">Automatisch starten bij opstarten</string>
     <string name="general_auto_start_description">
 Automatisch de meldingsservice starten wanneer het apparaat opstart
@@ -998,8 +998,6 @@ Kies welke WiFi-netwerken deze regel moeten activeren:
 Stel in hoe meldingen worden afgespeeld via het audiosysteem van je apparaat.
 </string>
     <string name="voice_audio_stream_type">Type audio-stream</string>
-    <string name="voice_stream_volume">Stream Volume</string>
-    <string name="voice_stream_volume_description">Control the volume level for the selected audio stream. This affects the device\'s volume for this stream type.</string>
     <string name="voice_content_type">Inhoudstype</string>
     <string name="voice_content_type_description">
 Vertelt het systeem wat voor soort audio dit is. Spreken wordt aanbevolen voor meldingen.
@@ -1572,8 +1570,59 @@ Dit zal alle instellingen herstellen naar standaardinstellingen en wist de meldi
     <string name="app_filter_found_matches" formatted="false">Gevonden %d overeenkomsten voor \'%s\'</string>
     <string name="app_filter_no_filter_showing_all">Geen filter - toont alle %d apps</string>
     <string name="app_filter_publishing_results">Publicatie van %d resultaten</string>
-
-s -->
+    <!--
+     Technical hardcoded strings moved to strings_technical.xml
+    -->
+    <!-- AppCategory String Resources -->
+    <string name="category_social_display_name">Sociale media</string>
+    <string name="category_social_description">Sociale netwerk- en community-apps</string>
+    <string name="category_messaging_display_name">Berichtenverkeer</string>
+    <string name="category_messaging_description">Chat- en communicatie-apps</string>
+    <string name="category_finance_display_name">Financiën</string>
+    <string name="category_finance_description">Bank- en financiële apps</string>
+    <string name="category_health_display_name">Gezondheid &amp; fitness</string>
+    <string name="category_health_description">Gezondheids-, medische en fitness-apps</string>
+    <string name="category_entertainment_display_name">Vermaak</string>
+    <string name="category_entertainment_description">Media en entertainment-apps</string>
+    <string name="category_games_display_name">Spellen</string>
+    <string name="category_games_description">Mobiele games en gaming apps</string>
+    <!--
+     Technical strings (preference keys, package names, etc.) have been moved to strings_technical.xml
+    -->
+    <!--
+     This prevents them from being translated by CrowdIn
+    -->
+    <!-- Error Messages -->
+    <string name="error_unable_to_open_output_stream">
+Niet in staat om de uitvoer stream te openen voor URI
+</string>
+    <string name="error_unable_to_open_input_stream">Kan de invoerstroom niet openen via URI</string>
+    <!-- Log Messages -->
+    <string name="log_app_search_adapter_filtering" formatted="false">Filteren met \'%s\' - gevonden %d resultaten</string>
+    <string name="log_app_search_adapter_publishing">Publicatie van %d resultaten</string>
+    <string name="log_app_selector_sample_apps">Voorbeeld-apps geladen:</string>
+    <string name="log_app_selector_app_info" formatted="false"> %s (%s)</string>
+    <string name="log_app_selector_total">Totaal: %d apps</string>
+    <string name="log_app_filter_filtering">Filteren met: \'%s\'</string>
+    <string name="log_app_filter_match" formatted="false">OVEREENKOMST: %s (%s) - naam:%s pkg:%s</string>
+    <string name="log_app_filter_google_maps" formatted="false">GOOGLE MAPS KANDIDAAT: %s (%s)</string>
+    <string name="log_app_filter_found_matches" formatted="false">Gevonden %d overeenkomsten voor \'%s\'</string>
+    <string name="log_app_filter_no_filter">Geen filter - toont alle %d apps</string>
+    <string name="log_app_filter_publishing">Publicatie van %d resultaten</string>
+    <string name="log_boot_receiver_boot_completed">Opstarten voltooid ontvangen</string>
+    <string name="log_boot_receiver_auto_start">Auto-start ingeschakeld, start meldingsservice</string>
+    <string name="log_boot_receiver_service_enabled">Notificatie service is al ingeschakeld</string>
+    <string name="log_boot_receiver_service_not_enabled">
+Melding service niet ingeschakeld, gebruiker moet toestemming geven
+</string>
+    <!-- Date/Time Format -->
+    <string name="date_format_export">jjjj-MM-dd_UU-mm-ss</string>
+    <!-- System Values -->
+    <string name="system_default">systeem</string>
+    <string name="restart_policy_never">nooit</string>
+    <string name="restart_policy_crash">crash</string>
+    <string name="restart_policy_periodic">periodiek</string>
+    <!-- MainActivity Hardcoded Strings -->
     <string name="main_master_switch_enabled">SpreakThat! zal meldingen lezen wanneer actief</string>
     <string name="main_master_switch_disabled">
 SpreakThat! is uitgeschakeld - meldingen worden niet gelezen

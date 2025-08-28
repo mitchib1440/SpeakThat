@@ -450,6 +450,7 @@ object InAppLogger {
     }
     
     @JvmStatic
+    @Suppress("DEPRECATION")
     fun getInstallationSource(context: android.content.Context): String {
         return try {
             val installerPackageName = context.packageManager.getInstallerPackageName(context.packageName)
@@ -476,6 +477,7 @@ object InAppLogger {
     }
     
     @JvmStatic
+    @Suppress("DEPRECATION")
     fun getAppVersionInfo(context: android.content.Context): String {
         return try {
             val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)

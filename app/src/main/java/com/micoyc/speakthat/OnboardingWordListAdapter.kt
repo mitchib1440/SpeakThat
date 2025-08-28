@@ -34,7 +34,7 @@ class OnboardingWordListAdapter(private val onRemoveClick: (String) -> Unit) :
         private val wordText: TextView = itemView.findViewById(R.id.wordText)
         private val deleteButton: ImageButton = itemView.findViewById(R.id.buttonDelete)
         
-        fun bind(word: String, position: Int) {
+        fun bind(word: String, _position: Int) {
             wordText.text = word
             
             // Set up delete button - pass the word instead of position

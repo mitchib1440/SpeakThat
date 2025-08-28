@@ -130,6 +130,16 @@ public class LanguagePresetManager {
             false
         ));
         
+        // Spanish - complete UI translations available
+        presets.add(new LanguagePreset(
+            "es_ES", 
+            "Español (España)", 
+            "es_ES", 
+            "es_ES", 
+            null,  // Let system choose best Spanish voice
+            false
+        ));
+        
         // Custom preset - represents user's advanced customizations
         presets.add(new LanguagePreset(
             "custom", 
