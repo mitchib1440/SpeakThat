@@ -1,6 +1,7 @@
 package com.micoyc.speakthat;
 
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
@@ -50,9 +51,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private SeekBar speechRateSeekBar;
     private SeekBar pitchSeekBar;
     private SeekBar ttsVolumeSeekBar;
+    private SeekBar streamVolumeSeekBar;
     private TextView speechRateValue;
     private TextView pitchValue;
     private TextView ttsVolumeValue;
+    private TextView streamVolumeValue;
     private Spinner voiceSpinner;
     private Spinner languagePresetSpinner; // New preset-based spinner
     private Spinner audioUsageSpinner;
@@ -73,6 +76,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private List<Voice> availableVoices = new ArrayList<>();
     private List<Locale> availableLanguages = new ArrayList<>();
     private SharedPreferences sharedPreferences;
+    private AudioManager audioManager;
 
     // Current settings
     private float currentSpeechRate = DEFAULT_SPEECH_RATE;
@@ -126,6 +130,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         pitchValue = findViewById(R.id.pitchValue);
         ttsVolumeSeekBar = findViewById(R.id.ttsVolumeSeekBar);
         ttsVolumeValue = findViewById(R.id.ttsVolumeValue);
+        streamVolumeSeekBar = findViewById(R.id.streamVolumeSeekBar);
+        streamVolumeValue = findViewById(R.id.streamVolumeValue);
         voiceSpinner = findViewById(R.id.voiceSpinner);
         languagePresetSpinner = findViewById(R.id.languagePresetSpinner); // New preset spinner
         audioUsageSpinner = findViewById(R.id.audioUsageSpinner);
@@ -138,6 +144,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         layoutAdvancedVoiceSection = findViewById(R.id.layoutAdvancedVoiceSection);
         speakerphoneOptionLayout = findViewById(R.id.speakerphoneOptionLayout);
         speakerphoneSwitch = findViewById(R.id.speakerphoneSwitch);
+        
+        // Initialize AudioManager
+        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         
         // Set up audio help button
         ImageView btnAudioHelp = findViewById(R.id.btnAudioHelp);
@@ -234,6 +243,24 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                     applyAudioAttributes();
                     // Save immediately when user changes the setting
                     saveTtsVolume(currentTtsVolume);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        // Stream Volume SeekBar (0 to 100)
+        streamVolumeSeekBar.setMax(100);
+        streamVolumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                streamVolumeValue.setText(String.format("%d%%", progress));
+                if (fromUser) {
+                    updateStreamVolume(progress);
                 }
             }
 
@@ -771,12 +798,14 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
                 saveAudioUsage(position);
                 updateSpeakerphoneOptionVisibility(position);
+                updateStreamVolumeDisplay();
             }
 
             @Override
             public void onNothingSelected(android.widget.AdapterView<?> parent) {
                 saveAudioUsage(DEFAULT_AUDIO_USAGE);
                 updateSpeakerphoneOptionVisibility(DEFAULT_AUDIO_USAGE);
+                updateStreamVolumeDisplay();
             }
         });
 
@@ -823,6 +852,68 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         } else {
             speakerphoneOptionLayout.setVisibility(View.GONE);
             InAppLogger.log("VoiceSettings", "Hiding speakerphone option for non-VOICE_CALL stream");
+        }
+    }
+
+    /**
+     * Update the stream volume display to reflect the current volume of the selected audio stream
+     */
+    private void updateStreamVolumeDisplay() {
+        int audioUsageIndex = audioUsageSpinner.getSelectedItemPosition();
+        int streamType = getStreamTypeFromAudioUsage(audioUsageIndex);
+        
+        int currentVolume = audioManager.getStreamVolume(streamType);
+        int maxVolume = audioManager.getStreamMaxVolume(streamType);
+        int volumePercentage = maxVolume > 0 ? (currentVolume * 100) / maxVolume : 0;
+        
+        streamVolumeSeekBar.setProgress(volumePercentage);
+        streamVolumeValue.setText(String.format("%d%%", volumePercentage));
+        
+        InAppLogger.log("VoiceSettings", "Updated stream volume display - Stream: " + getStreamTypeName(streamType) + 
+                       ", Volume: " + currentVolume + "/" + maxVolume + " (" + volumePercentage + "%)");
+    }
+
+    /**
+     * Update the device's volume for the currently selected audio stream
+     */
+    private void updateStreamVolume(int volumePercentage) {
+        int audioUsageIndex = audioUsageSpinner.getSelectedItemPosition();
+        int streamType = getStreamTypeFromAudioUsage(audioUsageIndex);
+        
+        int maxVolume = audioManager.getStreamMaxVolume(streamType);
+        int newVolume = (volumePercentage * maxVolume) / 100;
+        
+        audioManager.setStreamVolume(streamType, newVolume, 0);
+        
+        InAppLogger.log("VoiceSettings", "Updated stream volume - Stream: " + getStreamTypeName(streamType) + 
+                       ", Volume: " + newVolume + "/" + maxVolume + " (" + volumePercentage + "%)");
+    }
+
+    /**
+     * Convert audio usage index to Android stream type
+     */
+    private int getStreamTypeFromAudioUsage(int audioUsageIndex) {
+        switch (audioUsageIndex) {
+            case 0: return AudioManager.STREAM_MUSIC;      // Media
+            case 1: return AudioManager.STREAM_NOTIFICATION; // Notification
+            case 2: return AudioManager.STREAM_ALARM;      // Alarm
+            case 3: return AudioManager.STREAM_VOICE_CALL; // Voice Call
+            case 4: return AudioManager.STREAM_SYSTEM;     // Assistance (using SYSTEM as closest match)
+            default: return AudioManager.STREAM_NOTIFICATION;
+        }
+    }
+
+    /**
+     * Get a human-readable name for the stream type
+     */
+    private String getStreamTypeName(int streamType) {
+        switch (streamType) {
+            case AudioManager.STREAM_MUSIC: return "Media";
+            case AudioManager.STREAM_NOTIFICATION: return "Notification";
+            case AudioManager.STREAM_ALARM: return "Alarm";
+            case AudioManager.STREAM_VOICE_CALL: return "Voice Call";
+            case AudioManager.STREAM_SYSTEM: return "System";
+            default: return "Unknown";
         }
     }
 
@@ -1035,6 +1126,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         boolean speakerphoneEnabled = sharedPreferences.getBoolean(KEY_SPEAKERPHONE_ENABLED, false);
         speakerphoneSwitch.setChecked(speakerphoneEnabled);
         updateSpeakerphoneOptionVisibility(audioUsage);
+        
+        // Initialize stream volume display
+        updateStreamVolumeDisplay();
     }
 
     /**

@@ -626,9 +626,6 @@ Pauze - media pauzeren terwijl melding gelezen wordt
 </string>
     <string name="behavior_media_lower">Lager audiovolume - tijdelijk lager mediavolume</string>
     <string name="behavior_media_silence">Stilte - Spreek niet terwijl er media speelt</string>
-    <string name="behavior_pause_warning">
-⚠️ Pauze modus werkt mogelijk niet op alle apparaten vanwege systeembeperkingen.
-</string>
     <string name="behavior_ducking_volume">🔉 Verlagingsvolume</string>
     <string name="behavior_ducking_description">
 Instellen hoe stil media moeten worden tijdens meldingen
@@ -1001,6 +998,8 @@ Kies welke WiFi-netwerken deze regel moeten activeren:
 Stel in hoe meldingen worden afgespeeld via het audiosysteem van je apparaat.
 </string>
     <string name="voice_audio_stream_type">Type audio-stream</string>
+    <string name="voice_stream_volume">Stream Volume</string>
+    <string name="voice_stream_volume_description">Control the volume level for the selected audio stream. This affects the device\'s volume for this stream type.</string>
     <string name="voice_content_type">Inhoudstype</string>
     <string name="voice_content_type_description">
 Vertelt het systeem wat voor soort audio dit is. Spreken wordt aanbevolen voor meldingen.

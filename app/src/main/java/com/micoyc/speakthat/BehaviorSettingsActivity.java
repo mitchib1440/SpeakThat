@@ -462,12 +462,6 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                         "Avoid 'Media' stream as it may duck your TTS along with your music.\n\n" +
                         "🔧 The app automatically uses advanced system ducking when available, with smooth manual ducking as backup for maximum compatibility.");
             }
-            // Show/hide pause warning
-            boolean showPauseWarning = MEDIA_BEHAVIOR_PAUSE.equals(mediaBehavior);
-            binding.pauseWarningText.setVisibility(showPauseWarning ? View.VISIBLE : View.GONE);
-            if (showPauseWarning) {
-                binding.pauseWarningText.setText(getString(R.string.behavior_pause_warning_detailed));
-            }
             
             // Save setting
             saveMediaBehavior(mediaBehavior);

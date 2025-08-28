@@ -582,9 +582,6 @@ These apps will interrupt the current notification. All other apps will queue.
     <string name="behavior_media_pause">Pause - Pause media while speaking</string>
     <string name="behavior_media_lower">Lower Audio - Duck media volume temporarily</string>
     <string name="behavior_media_silence">Silence - Don\'t speak while media is playing</string>
-    <string name="behavior_pause_warning">
-⚠️ Pause mode may not work on all devices due to system limitations.
-</string>
     <string name="behavior_ducking_volume">🔉 Ducking Volume</string>
     <string name="behavior_ducking_description">
 Set how quiet media should become during notifications
@@ -939,6 +936,8 @@ Choose which WiFi networks should trigger this rule:
 通知がデバイスの音声システムを通じて再生される方法を設定します。
 </string>
     <string name="voice_audio_stream_type">Audio Stream Type</string>
+    <string name="voice_stream_volume">Stream Volume</string>
+    <string name="voice_stream_volume_description">Control the volume level for the selected audio stream. This affects the device\'s volume for this stream type.</string>
     <string name="voice_content_type">Content Type</string>
     <string name="voice_content_type_description">
 Tells the system what kind of audio this is. Speech is recommended for notifications.

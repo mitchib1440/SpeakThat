@@ -674,6 +674,56 @@
                         android:popupBackground="?attr/colorSurface"
                         android:padding="12dp" />
 
+                    <!-- Stream Volume -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/voice_stream_volume"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp"
+                        android:textColor="@color/purple_card_text_primary" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/voice_stream_volume_description"
+                        android:textSize="14sp"
+                        android:textColor="@color/purple_card_text_secondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <SeekBar
+                            android:id="@+id/streamVolumeSeekBar"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="16dp"
+                            android:max="100"
+                            android:progress="50"
+                            android:progressTint="@color/white_100"
+                            android:thumbTint="@color/white_100"
+                            android:splitTrack="false" />
+
+                        <TextView
+                            android:id="@+id/streamVolumeValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="50%"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white_100"
+                            android:minWidth="40dp"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
                     <!-- Content Type -->
                     <TextView
                         android:layout_width="match_parent"

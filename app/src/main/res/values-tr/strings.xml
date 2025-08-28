@@ -630,9 +630,6 @@ Bu uygulamalar mevcut bildirimi kesecektir. Diğer tüm uygulamalar sıraya alı
     <string name="behavior_media_pause">Duraklat - Konuşurken medyayı duraklat</string>
     <string name="behavior_media_lower">Sesi Kıs - Medya sesini geçici olarak düşür</string>
     <string name="behavior_media_silence">Sessize Al - Medya oynatılırken konuşma</string>
-    <string name="behavior_pause_warning">
-⚠️ Duraklatma modu sistem sınırlamaları nedeniyle tüm cihazlarda çalışmayabilir.
-</string>
     <string name="behavior_ducking_volume">🔉 Sesi Kısma Düzeyi</string>
     <string name="behavior_ducking_description">
 Bildirimler sırasında medyanın ne kadar sessiz olacağını ayarlayın
@@ -1003,6 +1000,8 @@ Bu kuralı hangi WiFi ağlarının tetiklemesi gerektiğini seçin:
 Bildirimlerin cihazınızın ses sistemi üzerinden nasıl çalınacağını yapılandırın.
 </string>
     <string name="voice_audio_stream_type">Ses Akışı Türü</string>
+    <string name="voice_stream_volume">Stream Volume</string>
+    <string name="voice_stream_volume_description">Control the volume level for the selected audio stream. This affects the device\'s volume for this stream type.</string>
     <string name="voice_content_type">İçerik Türü</string>
     <string name="voice_content_type_description">
 Sisteme bunun ne tür bir ses olduğunu söyler. Bildirimler için Konuşma önerilir.

@@ -410,19 +410,6 @@
 
                     </RadioGroup>
 
-                    <!-- Pause Limitation Warning -->
-                    <TextView
-                        android:id="@+id/pauseWarningText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/behavior_pause_warning"
-                        android:textSize="13sp"
-                        android:textColor="@color/text_warning"
-                        android:background="@color/warning_background"
-                        android:padding="8dp"
-                        android:visibility="gone"
-                        android:gravity="center" />
-
                     <!-- Ducking Volume Controls (hidden by default) -->
                     <LinearLayout
                         android:id="@+id/duckingVolumeContainer"
