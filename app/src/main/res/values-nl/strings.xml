@@ -106,10 +106,10 @@ Kies hoe SpeakThat! meldingen uitspreekt wanneer muziek of video word afgespeeld
 - Spreek over je media. Simpel maar kan storend zijn.
 <b>⏸️ Pauzeer</b>
 - Pauzeer je media terwijl SpeakThat! spreekt. Goed voor podcasts, maar onderbreekt de muziekstroom.
-<b>🔉 Lager Audiovolume (aanbevolen)</b>
-- Vermindert tijdelijk je mediavolume zodat je beiden kunt horen. Meest natuurlijke ervaring.
+<b>🔉 Lager Audiovolume</b>
+- Vermindert tijdelijk je mediavolume zodat je beiden kunt horen.
 <b>🔇 Stilte</b>
-- Spreek niet terwijl je media speelt. Rustig, maar je mist misschien belangrijke meldingen. Lager Audiovolume werkt als een autoradio - het zet de muziek zachter als Speakthat! spreekt en zet het daarna terug. Perfect voor muziekliefhebbers die nog steeds meldingen willen horen.
+- Spreek niet terwijl je media speelt. Rustig, maar je mist misschien belangrijke meldingen. Lager Audiovolume werkt als een autoradio - het zet de muziek zachter als Speakthat! spreekt en zet het daarna terug.
 </string>
     <string name="shake_to_stop_dialog_title">Schudden om te Stoppen Functie</string>
     <string name="shake_to_stop_dialog_message">
@@ -599,7 +599,7 @@ Taal zal volledig worden toegepast wanneer u de app opnieuw opstart
     <string name="section_media_behavior">Media gedrag</string>
     <string name="recommendation_smart_mode">De meeste gebruikers gebruiken: Slimme Mode</string>
     <string name="recommendation_lower_audio">
-De meeste gebruikers gebruiken: Verlaag Audiovolume
+De meeste gebruikers gebruiken: Pauze
 </string>
     <!-- Behavior Settings Strings -->
     <string name="behavior_notification_description">
@@ -1641,4 +1641,12 @@ Meldingsmachtiging geweigerd - SpeakThat! meldingen worden mogelijk niet weergeg
 </string>
     <string name="main_notification_title_active">SpreakThat! Actief</string>
     <string name="main_notification_content_tap_settings">Tik om SpreakThat! instellingen te openen</string>
+    
+    <!-- Audio Ducking Feature -->
+    <string name="dev_enable_audio_ducking">Audio Ducking Inschakelen</string>
+    <string name="dev_enable_audio_ducking_description">Heractiveer de "Lager audiovolume" radioknop in Media Gedrag instellingen. Deze functie is tijdelijk uitgeschakeld vanwege apparaatcompatibiliteitsproblemen.</string>
+    <string name="audio_ducking_disabled_title">Audio Ducking Tijdelijk Uitgeschakeld</string>
+    <string name="audio_ducking_disabled_message">Vanwege inconsistenties in hoe verschillende apparaten Audio Focus verzoeken verwerken, is de "Lager audiovolume" optie standaard tijdelijk uitgeschakeld. Als je kunt helpen om deze functie werkend te krijgen, draag dan bij aan dit project op GitHub. Je kunt deze functie opnieuw inschakelen voor ontwikkelings- of experimentele doeleinden door naar Ontwikkelingsinstellingen → Audio Ducking Inschakelen te gaan. Het kan op sommige apparaten werken, maar ik kan geen algemene ondersteuning bieden.</string>
+    <string name="audio_ducking_disabled_ok">Begrepen</string>
+    <string name="audio_ducking_disabled_enable">Audio Ducking Inschakelen</string>
 </resources>

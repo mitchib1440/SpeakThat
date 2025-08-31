@@ -4,4 +4,12 @@
     <string name="update_channel">GitHub</string>
     <string name="update_message">Auto-updates enabled via GitHub</string>
     <string name="update_button_text">Check for Updates</string>
+    
+    <!-- Audio Ducking Feature -->
+    <string name="dev_enable_audio_ducking">Enable Audio Ducking</string>
+    <string name="dev_enable_audio_ducking_description">Re-enable the Lower Audio radio button in Media Behaviour settings. This feature has been temporarily disabled due to device compatibility issues.</string>
+    <string name="audio_ducking_disabled_title">Audio Ducking Temporarily Disabled</string>
+    <string name="audio_ducking_disabled_message">Due to inconsistencies with how different devices handle Audio Focus requests, the Lower Audio option has been temporarily disabled by default. If you are able to help get this feature working, please contribute to this project on GitHub. You can re-enable this feature for development or experimentation purposes by going into Development Settings -> Enable Audio Ducking. It may work on some devices, but I cannot offer general support for it at this time.</string>
+    <string name="audio_ducking_disabled_ok">Got it</string>
+    <string name="audio_ducking_disabled_enable">Enable Audio Ducking</string>
 </resources> 

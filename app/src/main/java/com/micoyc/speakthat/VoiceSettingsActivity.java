@@ -1822,16 +1822,20 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         int audioUsage = getAudioUsageFromIndexStatic(audioUsageIndex);
         int contentType = getContentTypeFromIndexStatic(contentTypeIndex);
         
+        // CRITICAL FIX: Always use CONTENT_TYPE_SPEECH for TTS to prevent it from being ducked
+        // The user's content_type preference is for other audio contexts, not for TTS
+        int ttsContentType = android.media.AudioAttributes.CONTENT_TYPE_SPEECH;
+        
         android.media.AudioAttributes audioAttributes = new android.media.AudioAttributes.Builder()
             .setUsage(audioUsage)
-            .setContentType(contentType)
+            .setContentType(ttsContentType)
             .build();
             
         tts.setAudioAttributes(audioAttributes);
         
         // Store the volume and audio usage for use in speak calls
         // Note: Volume is applied through Bundle parameters in speak() calls, not here
-        InAppLogger.log("VoiceSettings", "Audio attributes applied - Usage: " + audioUsage + ", Content: " + contentType + ", Volume: " + (ttsVolume * 100) + "%");
+        InAppLogger.log("VoiceSettings", "Audio attributes applied - Usage: " + audioUsage + ", Content: " + ttsContentType + " (forced SPEECH), Volume: " + (ttsVolume * 100) + "%");
         
         // Special handling for VOICE_CALL stream - warn about potential volume issues
         if (audioUsage == android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION) {

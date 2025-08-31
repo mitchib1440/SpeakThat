@@ -388,15 +388,38 @@
                             app:buttonTint="@color/white_100"
                             android:textColor="@color/purple_card_text_primary" />
 
-                        <RadioButton
-                            android:id="@+id/radioMediaDuck"
-                            android:layout_width="wrap_content"
+                        <!-- Lower Audio option with info button -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/behavior_media_lower"
-                            android:layout_marginBottom="8dp"
-                            android:buttonTint="@color/white_100"
-                            app:buttonTint="@color/white_100"
-                            android:textColor="@color/purple_card_text_primary" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="8dp">
+
+                            <RadioButton
+                                android:id="@+id/radioMediaDuck"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/behavior_media_lower"
+                                android:buttonTint="@color/radio_button_color"
+                                app:buttonTint="@color/radio_button_color"
+                                android:textColor="@color/radio_button_text_color" />
+
+                            <ImageButton
+                                android:id="@+id/btnAudioDuckingInfo"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/help_24px"
+                                android:contentDescription="Audio Ducking Info"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                                android:padding="4dp"
+                                android:visibility="gone"
+                                app:tint="@color/white_100" />
+
+                        </LinearLayout>
 
                         <RadioButton
                             android:id="@+id/radioMediaSilence"
@@ -409,6 +432,8 @@
                             android:textColor="@color/purple_card_text_primary" />
 
                     </RadioGroup>
+
+
 
                     <!-- Ducking Volume Controls (hidden by default) -->
                     <LinearLayout

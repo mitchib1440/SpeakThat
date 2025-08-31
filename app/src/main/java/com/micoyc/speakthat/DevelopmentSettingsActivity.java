@@ -50,6 +50,8 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
     private static final String KEY_LOG_USER_ACTIONS = "log_user_actions";
     private static final String KEY_LOG_SYSTEM_EVENTS = "log_system_events";
     private static final String KEY_LOG_SENSITIVE_DATA = "log_sensitive_data";
+    private static final String KEY_DISABLE_MEDIA_FALLBACK = "disable_media_fallback";
+    private static final String KEY_ENABLE_AUDIO_DUCKING = "enable_audio_ducking";
 
     private boolean isLogAutoRefreshPaused = false;
     private Runnable logUpdateRunnable;
@@ -253,6 +255,16 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             saveLogSensitiveData(isChecked);
             InAppLogger.setLogSensitiveData(isChecked);
             InAppLogger.log("Development", "Sensitive data logging " + (isChecked ? "enabled" : "disabled"));
+        });
+        
+        binding.switchDisableMediaFallback.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveDisableMediaFallback(isChecked);
+            InAppLogger.log("Development", "Media behavior fallback " + (isChecked ? "disabled" : "enabled"));
+        });
+        
+        binding.switchEnableAudioDucking.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveEnableAudioDucking(isChecked);
+            InAppLogger.log("Development", "Audio ducking " + (isChecked ? "enabled" : "disabled"));
         });
         
         // Set up log display
@@ -494,6 +506,8 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         boolean logUserActions = sharedPreferences.getBoolean(KEY_LOG_USER_ACTIONS, true); // Default to enabled
         boolean logSystemEvents = sharedPreferences.getBoolean(KEY_LOG_SYSTEM_EVENTS, true); // Default to enabled
         boolean logSensitiveData = sharedPreferences.getBoolean(KEY_LOG_SENSITIVE_DATA, false); // Default to disabled
+        boolean disableMediaFallback = sharedPreferences.getBoolean(KEY_DISABLE_MEDIA_FALLBACK, false); // Default to disabled
+        boolean enableAudioDucking = sharedPreferences.getBoolean(KEY_ENABLE_AUDIO_DUCKING, false); // Default to disabled
         
         binding.switchVerboseLogging.setChecked(verboseLogging);
         binding.switchLogFilters.setChecked(logFilters);
@@ -501,6 +515,8 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         binding.switchLogUserActions.setChecked(logUserActions);
         binding.switchLogSystemEvents.setChecked(logSystemEvents);
         binding.switchLogSensitiveData.setChecked(logSensitiveData);
+        binding.switchDisableMediaFallback.setChecked(disableMediaFallback);
+        binding.switchEnableAudioDucking.setChecked(enableAudioDucking);
     }
 
     private void showNotificationHistory() {
@@ -847,6 +863,18 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
     private void saveLogSensitiveData(boolean enabled) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_LOG_SENSITIVE_DATA, enabled);
+        editor.apply();
+    }
+
+    private void saveDisableMediaFallback(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_DISABLE_MEDIA_FALLBACK, enabled);
+        editor.apply();
+    }
+
+    private void saveEnableAudioDucking(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_ENABLE_AUDIO_DUCKING, enabled);
         editor.apply();
     }
 

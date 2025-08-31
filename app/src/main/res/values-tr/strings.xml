@@ -106,10 +106,10 @@ Müzik/video oynatılırken SpeakThat\'in bildirimleri nasıl yöneteceğini se�
 - Medyanızın üzerine konuşur. Basittir ama rahatsız edici olabilir.
 <b>⏸️ Duraklat</b>
 - Konuşurken medyayı tamamen duraklatır. Podcast\'ler için iyidir, ancak müzik akışını keser.
-<b>🔉 Sesi Kıs (Önerilen)</b>
-- Her ikisini de duyabilmeniz için medya sesini geçici olarak azaltır. En doğal deneyim.
+<b>🔉 Sesi Kıs</b>
+- Her ikisini de duyabilmeniz için medya sesini geçici olarak azaltır.
 <b>🔇 Sessize Al</b>
-- Medya oynatılırken konuşmaz. Sessizdir ama önemli bildirimleri kaçırabilirsiniz. Sesi Kısma özelliği, araba radyosu gibi çalışır - konuşurken müziği kısar, sonra tekrar yükseltir. Bildirimleri duymak isteyen müzik severler için mükemmeldir.
+- Medya oynatılırken konuşmaz. Sessizdir ama önemli bildirimleri kaçırabilirsiniz. Sesi Kısma özelliği, araba radyosu gibi çalışır - konuşurken müziği kısar, sonra tekrar yükseltir.
 </string>
     <string name="shake_to_stop_dialog_title">Sallayarak Durdurma Özelliği</string>
     <string name="shake_to_stop_dialog_message">
@@ -608,7 +608,7 @@ Dil, uygulamayı yeniden başlattığınızda tam olarak uygulanacaktır
     <string name="section_notification_behavior">Bildirim Davranışı</string>
     <string name="section_media_behavior">Medya Davranışı</string>
     <string name="recommendation_smart_mode">Çoğu kullanıcı şunu kullanmalı: Akıllı Mod</string>
-    <string name="recommendation_lower_audio">Çoğu kullanıcı şunu kullanmalı: Sesi Kıs</string>
+    <string name="recommendation_lower_audio">Çoğu kullanıcı şunu kullanmalı: Sesi Duraklat</string>
     <!-- Behavior Settings Strings -->
     <string name="behavior_notification_description">
 Biri zaten okunurken bildirimlerin nasıl ele alınacağını kontrol edin
@@ -1637,4 +1637,12 @@ Bildirim izni reddedildi - SpeakThat bildirimleri görünmeyebilir
 </string>
     <string name="main_notification_title_active">SpeakThat Aktif</string>
     <string name="main_notification_content_tap_settings">SpeakThat ayarlarını açmak için dokunun</string>
+    
+    <!-- Audio Ducking Feature -->
+    <string name="dev_enable_audio_ducking">Ses Kısma Özelliğini Etkinleştir</string>
+    <string name="dev_enable_audio_ducking_description">Medya Davranış ayarlarında "Ses Seviyesini Düşür" radyo düğmesini yeniden etkinleştir. Bu özellik cihaz uyumluluk sorunları nedeniyle geçici olarak devre dışı bırakılmıştır.</string>
+    <string name="audio_ducking_disabled_title">Ses Kısma Özelliği Geçici Olarak Devre Dışı</string>
+    <string name="audio_ducking_disabled_message">Farklı cihazların Ses Odaklama isteklerini nasıl işlediği konusundaki tutarsızlıklar nedeniyle, "Ses Seviyesini Düşür" seçeneği varsayılan olarak geçici olarak devre dışı bırakılmıştır. Bu özelliği çalışır hale getirmeye yardımcı olabilirseniz, lütfen GitHub\'da bu projeye katkıda bulunun. Bu özelliği geliştirme veya deneme amaçlı olarak yeniden etkinleştirebilirsiniz, bunun için Geliştirici Ayarları → Ses Kısma Özelliğini Etkinleştir\'e gidin. Bazı cihazlarda çalışabilir, ancak genel destek sunamıyorum.</string>
+    <string name="audio_ducking_disabled_ok">Anladım</string>
+    <string name="audio_ducking_disabled_enable">Ses Kısma Özelliğini Etkinleştir</string>
 </resources>

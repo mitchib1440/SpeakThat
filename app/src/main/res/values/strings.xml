@@ -97,11 +97,11 @@ Smart mode lets you choose which apps are urgent enough to interrupt (like calls
 
 <b>⏸️ Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow.
 
-<b>🔉 Lower Audio (Recommended)</b> - Temporarily reduces media volume so you can hear both. Most natural experience.
+<b>🔉 Lower Audio</b> - Temporarily reduces media volume so you can hear both.
 
 <b>🔇 Silence</b> - Doesn\'t speak while media plays. Quiet but you might miss important notifications.
 
-Lower Audio works like a car radio - it ducks the music down when speaking, then brings it back up. Perfect for music lovers who still want notifications.</string>
+Lower Audio works like a car radio - it ducks the music down when speaking, then brings it back up.</string>
     
     <string name="shake_to_stop_dialog_title">Shake to Stop Feature</string>
     <string name="shake_to_stop_dialog_message">Shake to Stop lets you instantly silence SpeakThat by shaking your device:
@@ -535,7 +535,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="section_notification_behavior">Notification Behaviour</string>
     <string name="section_media_behavior">Media Behaviour</string>
     <string name="recommendation_smart_mode">Most users should use: Smart Mode</string>
-    <string name="recommendation_lower_audio">Most users should use: Lower Audio</string>
+    <string name="recommendation_lower_audio">Most users should use: Pause</string>
     
     <!-- Behavior Settings Strings -->
     <string name="behavior_notification_description">Control how notifications are handled when one is already being read</string>
@@ -1315,6 +1315,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dev_notification_logging_description">Log notification processing events</string>
     <string name="dev_sensitive_data_logging">Sensitive Data Logging</string>
     <string name="dev_sensitive_data_logging_description">⚠️ Log sensitive information (disabled by default)</string>
+    <string name="dev_disable_media_fallback">Disable Media Behavior Fallback</string>
+    <string name="dev_disable_media_fallback_description">Disable fallback methods for media behavior. If a feature doesn\'t work, it won\'t try alternatives. Helps isolate issues. Note: When disabled, duck mode will fall back to pause mode if ducking fails. If both fail, notifications will still be read without audio focus.</string>
     <string name="dev_live_log_display">📊 Live Log Display</string>
     <string name="dev_live_log_description">Real-time view of what\'s happening under the hood</string>
     <string name="dev_view_crash_logs">📄 View Crash Logs</string>

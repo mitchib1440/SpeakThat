@@ -108,10 +108,10 @@ Elige cómo SpeakThat maneja las notificaciones mientras reproduce músicas/víd
 - Habla sobre el multimedia. Simple pero puede ser disruptiva.
 <b>⏸️ Pausar</b>
 - Pausa el multimedia mientras habla. Bueno para podcasts, pero interrumpe el flujo de música.
-<b>🔉 Audio bajo (recomendado)</b>
-- Reduce temporalmente el volumen multimedia para que pueda escuchar ambos. Experiencia más natural.
+<b>🔉 Audio bajo</b>
+- Reduce temporalmente el volumen multimedia para que pueda escuchar ambos.
 <b>🔇 Silenciar</b>
-- No habla mientras se reproduce el multimedia. Tranquilo, pero puede que pierdas importantes notificaciones. Bajo audio funciona como una radio para un coche. Cuando hablas, se atenúa la música y se vuelve a subir. Perfecto para los amantes de la música que todavía quieren notificaciones.
+- No habla mientras se reproduce el multimedia. Tranquilo, pero puede que pierdas importantes notificaciones. Bajo audio funciona como una radio para un coche. Cuando hablas, se atenúa la música y se vuelve a subir.
 </string>
     <string name="shake_to_stop_dialog_title">Función sacudir para detener</string>
     <string name="shake_to_stop_dialog_message">
@@ -610,7 +610,7 @@ Mantener el tiempo de espera activado (Recomendado)
     <string name="recommendation_smart_mode">
 La mayoría de usuarios deben usar: Modo inteligente
 </string>
-    <string name="recommendation_lower_audio">La mayoría de los usuarios deben usar: Audio bajo</string>
+    <string name="recommendation_lower_audio">La mayoría de los usuarios deben usar: Pausar Audio</string>
     <!-- Behavior Settings Strings -->
     <string name="behavior_notification_description">
 Controla cómo se manejan las notificaciones cuando ya se está leyendo una
@@ -1669,4 +1669,12 @@ Permiso de notificación denegado - Las notificaciones pueden no aparecer
 </string>
     <string name="main_notification_title_active">SpeakThat activo</string>
     <string name="main_notification_content_tap_settings">Toca para abrir la configuración de SpeakThat</string>
+    
+    <!-- Audio Ducking Feature -->
+    <string name="dev_enable_audio_ducking">Habilitar Reducción de Audio</string>
+    <string name="dev_enable_audio_ducking_description">Rehabilitar el botón de radio "Bajar Audio" en la configuración de Comportamiento de Medios. Esta función ha sido temporalmente deshabilitada debido a problemas de compatibilidad de dispositivos.</string>
+    <string name="audio_ducking_disabled_title">Reducción de Audio Temporalmente Deshabilitada</string>
+    <string name="audio_ducking_disabled_message">Debido a inconsistencias en cómo diferentes dispositivos manejan las solicitudes de Enfoque de Audio, la opción "Bajar Audio" ha sido temporalmente deshabilitada por defecto. Si puedes ayudar a que esta función funcione, por favor contribuye a este proyecto en GitHub. Puedes rehabilitar esta función para propósitos de desarrollo o experimentación yendo a Configuración de Desarrollo → Habilitar Reducción de Audio. Puede funcionar en algunos dispositivos, pero no puedo ofrecer soporte general para ello en este momento.</string>
+    <string name="audio_ducking_disabled_ok">Entendido</string>
+    <string name="audio_ducking_disabled_enable">Habilitar Reducción de Audio</string>
 </resources>

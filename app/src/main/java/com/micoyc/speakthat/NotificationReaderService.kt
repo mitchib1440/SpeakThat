@@ -249,6 +249,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         fun getRecentNotifications(): List<NotificationData> {
             return notificationHistory.toList()
         }
+        
+        /**
+         * Check if media behavior fallback is disabled in development settings
+         */
+        fun isMediaFallbackDisabled(context: Context): Boolean {
+            return try {
+                val prefs = context.getSharedPreferences("SpeakThatPrefs", Context.MODE_PRIVATE)
+                prefs.getBoolean("disable_media_fallback", false)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error checking media fallback setting", e)
+                false // Default to enabled if error
+            }
+        }
     }
     
     data class NotificationData(
@@ -2031,6 +2044,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     Log.w(TAG, "Audio focus denied - trying fallback strategies")
                     InAppLogger.log("MediaBehavior", "Audio focus denied - attempting fallback strategies")
                     
+                    // Check if fallback is disabled in development settings
+                    if (isMediaFallbackDisabled(this)) {
+                        Log.w(TAG, "Media fallback disabled in development settings - not trying fallback strategies")
+                        InAppLogger.log("MediaBehavior", "Media fallback disabled in development settings - audio focus denied, no fallback attempted")
+                        return false
+                    }
+                    
                     // Fallback 1: Try manual volume reduction as a "soft pause"
                     val fallbackSuccess = trySoftPauseFallback()
                     if (fallbackSuccess) {
@@ -2068,6 +2088,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     InAppLogger.log("MediaBehavior", "System ducking activated successfully")
                     return true
                 } else {
+                    // Log device-specific ducking failure for compatibility tracking
+                    Log.w(TAG, "=== DUCKING DEBUG: Enhanced ducking failed on ${android.os.Build.MODEL} (Android ${android.os.Build.VERSION.SDK_INT}) ===")
+                    InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Enhanced ducking failed on ${android.os.Build.MODEL} (Android ${android.os.Build.VERSION.SDK_INT}) - device may not support ducking ===")
                                 // TRICK: Give the system time to honor the audio focus request before checking
             Log.d(TAG, "=== DUCKING DEBUG: Starting 200ms delay to let system audio policy take effect ===")
             InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Starting 200ms delay for system audio policy ===")
@@ -2098,6 +2121,37 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             Log.d(TAG, "=== DUCKING DEBUG: Enhanced ducking failed and music still loud ($volumePercentage%) - falling back to manual volume control ===")
             InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Falling back to manual ducking - music volume: $volumePercentage% ===")
+            
+                            // Check if fallback is disabled in development settings
+                if (isMediaFallbackDisabled(this)) {
+                    Log.w(TAG, "=== DUCKING DEBUG: Media fallback disabled in development settings - enhanced ducking failed ===")
+                    InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Media fallback disabled in development settings - enhanced ducking failed ===")
+                    
+                    // CRITICAL FIX: Instead of blocking the notification entirely, fall back to "Pause Audio" mode
+                    // This ensures the notification is still read even when ducking fails on devices that don't support it
+                    Log.w(TAG, "=== DUCKING DEBUG: Falling back to Pause Audio mode since ducking failed and fallbacks are disabled ===")
+                    InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Falling back to Pause Audio mode since ducking failed on ${android.os.Build.MODEL} ===")
+                    
+                    // Try pause mode as a fallback when ducking fails
+                    val pauseModeSuccess = requestAudioFocusForSpeech()
+                    if (pauseModeSuccess) {
+                        Log.d(TAG, "=== DUCKING DEBUG: Pause mode fallback successful - notification will be read ===")
+                        InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Pause mode fallback successful - notification will be read ===")
+                        return true
+                    } else {
+                        // CRITICAL FIX: Even when both audio focus methods fail, allow the notification to be read
+                        // This prevents notifications from being completely blocked on devices with strict audio policies
+                        Log.w(TAG, "=== DUCKING DEBUG: Both ducking and pause mode failed - allowing notification to be read without audio focus ===")
+                        InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Both ducking and pause mode failed on ${android.os.Build.MODEL} - reading notification without audio focus ===")
+                        
+                        // Log detailed diagnostic information for debugging
+                        logAudioFocusDiagnostics()
+                        
+                        // Return true to allow the notification to be read, even without audio focus
+                        // This ensures notifications are never completely blocked due to audio focus issues
+                        return true
+                    }
+                }
                     
                     // Step 2: Fall back to manual ducking (existing implementation)
                     val ducked = duckMediaVolume()
@@ -2625,6 +2679,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             
             // Re-apply audio attributes to TTS instance
+            // CRITICAL: Always use CONTENT_TYPE_SPEECH to prevent TTS from being ducked
             val audioAttributes = android.media.AudioAttributes.Builder()
                 .setUsage(ttsUsage)
                 .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
@@ -2734,8 +2789,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             val currentVolume = audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
             val maxVolume = audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)
             
-<<<<<<< Updated upstream
-=======
             // Get TTS settings for diagnostics
             val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
             val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
@@ -2755,8 +2808,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Enhanced diagnostics for ducking issues
             Log.d(TAG, "=== DUCKING DEBUG: Manual ducking diagnostics - TTS usage index: $ttsUsageIndex, TTS usage constant: $ttsUsage ===")
             InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Manual ducking diagnostics - TTS usage index: $ttsUsageIndex, TTS usage constant: $ttsUsage, Media volume: $currentVolume/$maxVolume ===")
-            
->>>>>>> Stashed changes
             // Store original volume for restoration
             if (originalMusicVolume == -1) {
                 originalMusicVolume = currentVolume
@@ -3260,7 +3311,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Get TTS audio attributes from voice settings
             val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
             val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
-            val ttsContentIndex = voicePrefs.getInt("content_type", 0) // Default to SPEECH index
             
             // Convert index to actual usage constant (matching VoiceSettingsActivity)
             val ttsUsage = when (ttsUsageIndex) {
@@ -3272,13 +3322,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE // Safe fallback
             }
             
-            val ttsContent = when (ttsContentIndex) {
-                0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
-                1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
-                2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
-                3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
-                else -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH // Safe fallback
-            }
+            // CRITICAL FIX: Always use CONTENT_TYPE_SPEECH for TTS to prevent it from being ducked
+            // The user's content_type preference is for other audio contexts, not for TTS
+            val ttsContent = android.media.AudioAttributes.CONTENT_TYPE_SPEECH
             
             Log.d(TAG, "=== DUCKING DEBUG: Enhanced ducking - TTS usage index: $ttsUsageIndex -> usage constant: $ttsUsage ===")
             InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Enhanced ducking - TTS usage: $ttsUsage (index: $ttsUsageIndex) ===")
@@ -3989,6 +4035,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // CRITICAL: Promote service to foreground for audio focus compatibility on Android 12+
         // This is essential for audio focus requests to be granted when the app is not in the foreground
         promoteToForegroundService()
+        
+        // Add a small delay to ensure the system recognizes the foreground service status
+        // This is critical for audio focus requests to be granted on Android 12+
+        try {
+            Thread.sleep(100) // 100ms delay
+            Log.d(TAG, "=== DUCKING DEBUG: 100ms delay after foreground promotion completed ===")
+            InAppLogger.log("Service", "=== DUCKING DEBUG: 100ms delay after foreground promotion completed ===")
+        } catch (e: InterruptedException) {
+            Log.d(TAG, "=== DUCKING DEBUG: Foreground promotion delay interrupted ===")
+            InAppLogger.log("Service", "=== DUCKING DEBUG: Foreground promotion delay interrupted ===")
+        }
         
         // Show reading notification if enabled
         showReadingNotification(currentAppName, currentSpeechText)
@@ -4750,11 +4807,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             val foregroundNotification = createForegroundNotification()
             
             // Start foreground service
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                startForeground(FOREGROUND_SERVICE_ID, foregroundNotification, android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK)
-            } else {
-                startForeground(FOREGROUND_SERVICE_ID, foregroundNotification)
-            }
+            // The foreground service type is already declared in the manifest as "mediaPlayback"
+            // which is the correct type for audio focus compatibility
+            startForeground(FOREGROUND_SERVICE_ID, foregroundNotification)
+            Log.d(TAG, "Service started as foreground with manifest-declared mediaPlayback type")
+            InAppLogger.log("Service", "Service started as foreground with manifest-declared mediaPlayback type")
             
             Log.d(TAG, "Service promoted to foreground successfully")
             InAppLogger.log("Service", "Service promoted to foreground successfully")

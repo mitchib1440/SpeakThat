@@ -76,15 +76,15 @@ Smart mode lets you choose which apps are urgent enough to interrupt (like calls
     <string name="media_behavior_dialog_title">Media Behavior Options</string>
     <string name="media_behavior_dialog_message">Choose how SpeakThat handles notifications while music/videos play:
 
-<b>ðŸŽµ Ignore</b> - Speaks over your media. Simple but can be disruptive.
+<b>🎵 Ignore</b> - Speaks over your media. Simple but can be disruptive.
 
-<b>â¸ï¸ Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow.
+<b>⏸️ Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow.
 
-<b>ðŸ”‰ Lower Audio (Recommended)</b> - Temporarily reduces media volume so you can hear both. Most natural experience.
+<b>🔉 Lower Audio</b> - Temporarily reduces media volume so you can hear both.
 
-<b>ðŸ”‡ Silence</b> - Doesn\'t speak while media plays. Quiet but you might miss important notifications.
+<b>🔇 Silence</b> - Doesn\'t speak while media plays. Quiet but you might miss important notifications.
 
-Lower Audio works like a car radio - it ducks the music down when speaking, then brings it back up. Perfect for music lovers who still want notifications.</string>
+Lower Audio works like a car radio - it ducks the music down when speaking, then brings it back up.</string>
     <string name="shake_to_stop_dialog_title">Shake to Stop Feature</string>
     <string name="shake_to_stop_dialog_message">Shake to Stop lets you instantly silence SpeakThat by shaking your device:
 
@@ -463,5 +463,13 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Conditional Rules - Exception Strings -->
     <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    
+    <!-- Audio Ducking Feature -->
+    <string name="dev_enable_audio_ducking">Enable Audio Ducking</string>
+    <string name="dev_enable_audio_ducking_description">Re-enable the Lower Audio radio button in Media Behaviour settings. This feature has been temporarily disabled due to device compatibility issues.</string>
+    <string name="audio_ducking_disabled_title">Audio Ducking Temporarily Disabled</string>
+    <string name="audio_ducking_disabled_message">Due to inconsistencies with how different devices handle Audio Focus requests, the Lower Audio option has been temporarily disabled by default. If you are able to help get this feature working, please contribute to this project on GitHub. You can re-enable this feature for development or experimentation purposes by going into Development Settings -> Enable Audio Ducking. It may work on some devices, but I cannot offer general support for it at this time.</string>
+    <string name="audio_ducking_disabled_ok">Got it</string>
+    <string name="audio_ducking_disabled_enable">Enable Audio Ducking</string>
 </resources>
 

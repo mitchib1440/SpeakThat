@@ -100,10 +100,10 @@ SpeakThat! は、読み上げのために通知にアクセスする必要があ
 - メディアに重ねて読み上げます。シンプルですが煩いかもしれません。
 <b>⏸️ 停止</b>
 - 読み上げ中はメディアを完全に停止します。ポッドキャストにはおすすめですが、音楽の流れは止めてしまいます。
-<b>🔉 音量を下げる (推奨)</b>
-- 一時的にメディアの音量を下げて両方を聞き取れるようにします。最も自然な振る舞いになります。
+<b>🔉 音量を下げる</b>
+- 一時的にメディアの音量を下げて両方を聞き取れるようにします。
 <b>🔇 サイレント</b>
-- メディアの再生中は読み上げません。静かですが、重要な通知を逃すかもしれません。 「音量を下げる」は、カーラジオのように振る舞います。読み上げ中は音量を下げ、戻します。音楽が好きで通知も知りたい場合に最適です。
+- メディアの再生中は読み上げません。静かですが、重要な通知を逃すかもしれません。 「音量を下げる」は、カーラジオのように振る舞います。読み上げ中は音量を下げ、戻します。
 </string>
     <string name="shake_to_stop_dialog_title">振って停止</string>
     <string name="shake_to_stop_dialog_message">
@@ -562,7 +562,7 @@ Rules are experimental. If you experience issues, you can disable them in settin
     <string name="section_notification_behavior">Notification Behavior</string>
     <string name="section_media_behavior">Media Behavior</string>
     <string name="recommendation_smart_mode">Most users should use: Smart Mode</string>
-    <string name="recommendation_lower_audio">Most users should use: Lower Audio</string>
+    <string name="recommendation_lower_audio">Most users should use: Pause</string>
     <!-- Behavior Settings Strings -->
     <string name="behavior_notification_description">
 Control how notifications are handled when one is already being read
@@ -1543,4 +1543,12 @@ Notification permission denied - SpeakThat notifications may not appear
 </string>
     <string name="main_notification_title_active">SpeakThat Active</string>
     <string name="main_notification_content_tap_settings">Tap to open SpeakThat settings</string>
+    
+    <!-- Audio Ducking Feature -->
+    <string name="dev_enable_audio_ducking">オーディオダッキングを有効にする</string>
+    <string name="dev_enable_audio_ducking_description">メディア動作設定で「音量を下げる」ラジオボタンを再有効化します。この機能はデバイスの互換性の問題により一時的に無効化されています。</string>
+    <string name="audio_ducking_disabled_title">オーディオダッキングが一時的に無効化されています</string>
+    <string name="audio_ducking_disabled_message">異なるデバイスでのオーディオフォーカス要求の処理方法に一貫性がないため、「音量を下げる」オプションはデフォルトで一時的に無効化されています。この機能を動作させるお手伝いができる場合は、GitHubでこのプロジェクトに貢献してください。開発や実験目的でこの機能を再有効化するには、開発者設定 → オーディオダッキングを有効にするに移動してください。一部のデバイスでは動作する可能性がありますが、一般的なサポートは提供できません。</string>
+    <string name="audio_ducking_disabled_ok">了解</string>
+    <string name="audio_ducking_disabled_enable">オーディオダッキングを有効にする</string>
 </resources>
