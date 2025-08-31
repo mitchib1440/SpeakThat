@@ -349,7 +349,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "Initializing handlers...")
             delayHandler = android.os.Handler(android.os.Looper.getMainLooper())
             sensorTimeoutHandler = android.os.Handler(android.os.Looper.getMainLooper())
-            Log.d(TAG, "Handlers initialized")
+            Log.d(TAG, "Handlers initialized - delayHandler: ${delayHandler != null}, sensorTimeoutHandler: ${sensorTimeoutHandler != null}")
             
             // Start periodic TTS health check
             Log.d(TAG, "Starting periodic TTS health check...")
@@ -530,6 +530,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 // Log notification details for debugging
                 Log.d(TAG, "Processing notification - Package: $packageName, ID: ${sbn.id}, Text: '${notificationText.take(100)}...'")
                 
+                // Additional logging for Gmail notifications to help debug the issue
+                if (packageName == "com.google.android.gm") {
+                    Log.d(TAG, "Gmail notification detected - ID: ${sbn.id}, Post time: ${sbn.postTime}, Update time: ${System.currentTimeMillis()}")
+                    InAppLogger.logSystemEvent("Gmail notification", "ID: ${sbn.id}, Content: '${notificationText.take(50)}...'")
+                }
+                
                 // Check for duplicate notifications (only if deduplication is enabled)
                 val isDeduplicationEnabled = sharedPreferences?.getBoolean("notification_deduplication", true) ?: true
                 if (isDeduplicationEnabled) {
@@ -569,6 +575,25 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         InAppLogger.logFilter("Content-based duplicate from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
                         return
                     }
+                    
+                    // Special handling for Gmail: use a more lenient deduplication approach
+                    // Gmail updates notifications rather than creating new ones, so we need to be more careful
+                    if (packageName == "com.google.android.gm") {
+                        // For Gmail, also check if we recently processed a notification with the same ID
+                        // This helps prevent re-reading the same notification when it gets updated
+                        val gmailIdKey = "gmail_id_${sbn.id}"
+                        val lastGmailIdTime = recentNotificationKeys[gmailIdKey]
+                        if (lastGmailIdTime != null && currentTime - lastGmailIdTime < DEDUPLICATION_WINDOW_MS) {
+                            val timeSinceLastGmailId = currentTime - lastGmailIdTime
+                            Log.d(TAG, "Gmail notification ID recently processed - skipping (processed ${timeSinceLastGmailId}ms ago)")
+                            InAppLogger.logFilter("Gmail notification ID recently processed - skipping (processed ${timeSinceLastGmailId}ms ago)")
+                            return
+                        }
+                        recentNotificationKeys[gmailIdKey] = currentTime
+                    }
+                    
+                    // Only add to recent keys if we're actually going to process this notification
+                    // This prevents race conditions in batch processing
                     recentNotificationKeys[contentKey] = currentTime
                     
                     // Additional app-specific deduplication for known problematic apps
@@ -619,6 +644,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     // SECURITY: Check sensitive data logging setting once for this notification
                     val isSensitiveDataLoggingEnabled = sharedPreferences?.getBoolean("log_sensitive_data", false) ?: false
                     
+                    // Log the notification being processed for debugging
+                    Log.d(TAG, "Processing notification from $appName: '$notificationText' (ID: ${sbn?.id}, time: ${System.currentTimeMillis()})")
+                    
                     // Apply filtering first to determine final privacy status
                     val filterResult = applyFilters(packageName, appName, notificationText, sbn)
                     
@@ -645,6 +673,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     if (filterResult.shouldSpeak) {
                         // Determine final app name (private apps become "An app")
                         val finalAppName = if (isAppPrivate) "An app" else appName
+                        
+                        // Log the notification that will be spoken for debugging
+                        Log.d(TAG, "Will speak notification from $finalAppName: '${filterResult.processedText.take(100)}...' (ID: ${sbn?.id})")
                         
                         // Add to history
                         addToHistory(finalAppName, packageName, filterResult.processedText)
@@ -1222,6 +1253,47 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Log the available notification content for debugging
         Log.d(TAG, "Notification content - Title: '$title', Text: '$text', BigText: '$bigText', Summary: '$summaryText', Info: '$infoText'")
         
+        // Special handling for Gmail notifications to better handle their update behavior
+        // Gmail often updates a single notification with new content rather than creating new notifications
+        if (extras.getString("android.template")?.contains("gmail") == true || 
+            title.contains("Gmail", ignoreCase = true) ||
+            summaryText.contains("new message", ignoreCase = true) ||
+            text.contains("new message", ignoreCase = true)) {
+            
+            Log.d(TAG, "Detected Gmail-style notification - applying special content extraction logic")
+            
+            // For Gmail-style notifications, prioritize the most recent content
+            // Gmail typically puts the latest email content in bigText
+            return when {
+                bigText.isNotEmpty() && !bigText.contains("new message", ignoreCase = true) -> {
+                    // If bigText contains actual email content (not just "3 new messages"), use it
+                    Log.d(TAG, "Gmail: Using bigText as primary content: '$bigText'")
+                    bigText
+                }
+                text.isNotEmpty() && !text.contains("new message", ignoreCase = true) -> {
+                    // If text contains actual email content, use it
+                    Log.d(TAG, "Gmail: Using text as primary content: '$text'")
+                    text
+                }
+                title.isNotEmpty() && text.isNotEmpty() -> {
+                    // Fallback: combine title and text, but filter out generic "new messages" text
+                    val combinedText = if (text.contains("new message", ignoreCase = true)) {
+                        title
+                    } else {
+                        "$title: $text"
+                    }
+                    Log.d(TAG, "Gmail: Using combined title/text: '$combinedText'")
+                    combinedText
+                }
+                else -> {
+                    // Last resort: use whatever content is available
+                    val fallbackContent = bigText.ifEmpty { text.ifEmpty { title.ifEmpty { summaryText.ifEmpty { infoText } } } }
+                    Log.d(TAG, "Gmail: Using fallback content: '$fallbackContent'")
+                    fallbackContent
+                }
+            }
+        }
+        
         // Enhanced logic to ensure title is always included when available
         // This fixes the issue where notifications with both title and bigText would lose the title
         // The previous logic prioritized bigText over title, but bigText often doesn't include the title
@@ -1388,7 +1460,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 shakeTimeoutSeconds > 0 && waveTimeoutSeconds > 0 -> maxOf(shakeTimeoutSeconds, waveTimeoutSeconds)
                 shakeTimeoutSeconds > 0 -> shakeTimeoutSeconds
                 waveTimeoutSeconds > 0 -> waveTimeoutSeconds
-                else -> 30 // Fallback (shouldn't reach here)
+                else -> 60 // Increased fallback timeout from 30 to 60 seconds
             }
             
             // Cancel any previous timeout
@@ -1396,10 +1468,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             sensorTimeoutRunnable = Runnable {
                 Log.w(TAG, "Sensor listener timeout reached after ${effectiveTimeout}s! Forcibly unregistering sensors.")
                 InAppLogger.logWarning(TAG, "Sensor listener timeout reached after ${effectiveTimeout}s! Forcibly unregistering sensors.")
+                InAppLogger.logSystemEvent("Sensor timeout triggered", "Sensors forcibly unregistered after ${effectiveTimeout}s")
                 unregisterShakeListener()
             }
-            sensorTimeoutHandler?.postDelayed(sensorTimeoutRunnable!!, (effectiveTimeout * 1000).toLong())
-            Log.d(TAG, "Sensor timeout scheduled for ${effectiveTimeout} seconds")
+            
+            // Safety check to ensure handler is initialized
+            if (sensorTimeoutHandler != null) {
+                sensorTimeoutHandler?.postDelayed(sensorTimeoutRunnable!!, (effectiveTimeout * 1000).toLong())
+                Log.d(TAG, "Sensor timeout scheduled for ${effectiveTimeout} seconds")
+            } else {
+                Log.e(TAG, "Sensor timeout handler is null - cannot schedule timeout!")
+                InAppLogger.logError("Service", "Sensor timeout handler is null - cannot schedule timeout")
+            }
         } else {
             Log.d(TAG, "Sensor timeout disabled by user settings")
         }
@@ -1412,6 +1492,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Cancel timeout
         sensorTimeoutRunnable?.let { sensorTimeoutHandler?.removeCallbacks(it) }
         sensorTimeoutRunnable = null
+        
+        // Log sensor state for debugging
+        Log.d(TAG, "Sensor unregistration complete - shake enabled: $isShakeToStopEnabled, wave enabled: $isWaveToStopEnabled")
     }
     
     // Call this method when settings change
@@ -1863,6 +1946,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Proximity sensor returns distance in cm
             val proximityValue = event.values[0]
             
+            // Log proximity sensor values for debugging (but limit frequency to avoid spam)
+            if (System.currentTimeMillis() % 5000 < 100) { // Log roughly every 5 seconds
+                Log.d(TAG, "Proximity sensor reading: $proximityValue cm, threshold: $waveThreshold cm, enabled: $isWaveToStopEnabled")
+            }
+            
             // Handle different proximity sensor behaviors:
             // Some sensors return 0 when close, others return actual distance
             val isTriggered = if (proximityValue == 0f) {
@@ -1898,6 +1986,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     return
                 } else {
                     Log.d(TAG, "Wave detected! Stopping TTS. Proximity value: $proximityValue cm, threshold: $waveThreshold cm, pocket mode: $isPocketModeEnabled, was covered at start: $wasSensorCoveredAtStart, has been uncovered: $hasSensorBeenUncovered")
+                    InAppLogger.logSystemEvent("Wave detected", "Proximity: ${proximityValue}cm, threshold: ${waveThreshold}cm")
                     stopSpeaking("wave")
                 }
             }

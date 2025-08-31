@@ -105,15 +105,29 @@ object RuleTemplates {
                 val endMinute = data["endMinute"] as? Int ?: 0
                 val selectedDays = data["selectedDays"] as? Set<Int> ?: emptySet()
                 
+                // Convert 1-based days (Monday=1, Tuesday=2, ..., Sunday=7) to 0-based days (Sunday=0, Monday=1, ..., Saturday=6)
+                val convertedDays = selectedDays.map { day ->
+                    when (day) {
+                        1 -> 1  // Monday stays 1
+                        2 -> 2  // Tuesday stays 2
+                        3 -> 3  // Wednesday stays 3
+                        4 -> 4  // Thursday stays 4
+                        5 -> 5  // Friday stays 5
+                        6 -> 6  // Saturday stays 6
+                        7 -> 0  // Sunday becomes 0
+                        else -> day
+                    }
+                }.toSet()
+                
                 val startTimeMillis = (startHour * 60 * 60 * 1000L) + (startMinute * 60 * 1000L)
                 val endTimeMillis = (endHour * 60 * 60 * 1000L) + (endMinute * 60 * 1000L)
                 
-                InAppLogger.logDebug(TAG, "Converting time data: ${startHour}:${startMinute} -> ${startTimeMillis}ms, ${endHour}:${endMinute} -> ${endTimeMillis}ms, days: $selectedDays")
+                InAppLogger.logDebug(TAG, "Converting time data: ${startHour}:${startMinute} -> ${startTimeMillis}ms, ${endHour}:${endMinute} -> ${endTimeMillis}ms, original days: $selectedDays, converted days: $convertedDays")
                 
                 mapOf(
                     "start_time" to startTimeMillis,
                     "end_time" to endTimeMillis,
-                    "days_of_week" to selectedDays
+                    "days_of_week" to convertedDays
                 )
             }
             TriggerType.WIFI_NETWORK -> {

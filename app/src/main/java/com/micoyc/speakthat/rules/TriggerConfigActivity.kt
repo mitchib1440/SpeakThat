@@ -535,9 +535,23 @@ class TriggerConfigActivity : AppCompatActivity() {
                     
                     InAppLogger.logDebug("TriggerConfigActivity", "Time display set - start: ${String.format("%02d:%02d", startHour, startMinute)}, end: ${String.format("%02d:%02d", endHour, endMinute)}")
                     
+                    // Convert 0-based days from stored rule to Calendar constants (1-based) for UI
+                    val convertedDays = daysOfWeek.map { day ->
+                        when (day) {
+                            0 -> java.util.Calendar.SUNDAY    // Sunday (0) -> Calendar.SUNDAY
+                            1 -> java.util.Calendar.MONDAY    // Monday (1) -> Calendar.MONDAY
+                            2 -> java.util.Calendar.TUESDAY   // Tuesday (2) -> Calendar.TUESDAY
+                            3 -> java.util.Calendar.WEDNESDAY // Wednesday (3) -> Calendar.WEDNESDAY
+                            4 -> java.util.Calendar.THURSDAY  // Thursday (4) -> Calendar.THURSDAY
+                            5 -> java.util.Calendar.FRIDAY    // Friday (5) -> Calendar.FRIDAY
+                            6 -> java.util.Calendar.SATURDAY  // Saturday (6) -> Calendar.SATURDAY
+                            else -> day
+                        }
+                    }
+                    
                     // Set selected days
                     selectedDays.clear()
-                    selectedDays.addAll(daysOfWeek)
+                    selectedDays.addAll(convertedDays)
                     
                     InAppLogger.logDebug("TriggerConfigActivity", "Selected days loaded: $selectedDays")
                     
@@ -736,8 +750,19 @@ class TriggerConfigActivity : AppCompatActivity() {
         val startTime = startTimeMillis ?: 0L
         val endTime = endTimeMillis ?: 0L
         
-        // Get selected days
-        val daysOfWeek = selectedDays.toSet()
+        // Convert Calendar constants (1-based) to 0-based days for RuleEvaluator
+        val daysOfWeek = selectedDays.map { day ->
+            when (day) {
+                java.util.Calendar.MONDAY -> 1    // Monday stays 1
+                java.util.Calendar.TUESDAY -> 2   // Tuesday stays 2
+                java.util.Calendar.WEDNESDAY -> 3 // Wednesday stays 3
+                java.util.Calendar.THURSDAY -> 4  // Thursday stays 4
+                java.util.Calendar.FRIDAY -> 5    // Friday stays 5
+                java.util.Calendar.SATURDAY -> 6  // Saturday stays 6
+                java.util.Calendar.SUNDAY -> 0    // Sunday becomes 0
+                else -> day
+            }
+        }.toSet()
         
         val startHour = (startTime / (60 * 60 * 1000)).toInt()
         val startMinute = ((startTime % (60 * 60 * 1000)) / (60 * 1000)).toInt()
