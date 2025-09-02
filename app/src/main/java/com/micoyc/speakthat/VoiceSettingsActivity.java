@@ -56,6 +56,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private TextView pitchValue;
     private TextView ttsVolumeValue;
     private TextView streamVolumeValue;
+    private TextView ttsVolumeWarning;
     private Spinner voiceSpinner;
     private Spinner languagePresetSpinner; // New preset-based spinner
     private Spinner audioUsageSpinner;
@@ -130,6 +131,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         pitchValue = findViewById(R.id.pitchValue);
         ttsVolumeSeekBar = findViewById(R.id.ttsVolumeSeekBar);
         ttsVolumeValue = findViewById(R.id.ttsVolumeValue);
+        ttsVolumeWarning = findViewById(R.id.ttsVolumeWarning);
         streamVolumeSeekBar = findViewById(R.id.streamVolumeSeekBar);
         streamVolumeValue = findViewById(R.id.streamVolumeValue);
         voiceSpinner = findViewById(R.id.voiceSpinner);
@@ -231,13 +233,21 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        // TTS Volume SeekBar (0.0 to 1.0)
-        ttsVolumeSeekBar.setMax(100); // 0.0 to 1.0 in 0.01 increments
+        // TTS Volume SeekBar (0.0 to 1.5)
+        ttsVolumeSeekBar.setMax(150); // 0.0 to 1.5 in 0.01 increments
         ttsVolumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 currentTtsVolume = progress / 100.0f;
                 ttsVolumeValue.setText(String.format("%.0f%%", currentTtsVolume * 100));
+                
+                // Show/hide volume boost warning
+                if (progress > 100) {
+                    ttsVolumeWarning.setVisibility(View.VISIBLE);
+                } else {
+                    ttsVolumeWarning.setVisibility(View.GONE);
+                }
+                
                 if (fromUser && isTtsReady) {
                     // Apply volume through audio attributes
                     applyAudioAttributes();
@@ -1046,6 +1056,13 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         int volumeProgress = (int) (currentTtsVolume * 100);
         ttsVolumeSeekBar.setProgress(volumeProgress);
         ttsVolumeValue.setText(String.format("%.0f%%", currentTtsVolume * 100));
+        
+        // Show/hide volume boost warning based on current volume
+        if (volumeProgress > 100) {
+            ttsVolumeWarning.setVisibility(View.VISIBLE);
+        } else {
+            ttsVolumeWarning.setVisibility(View.GONE);
+        }
 
         // Load voice
         String savedVoiceName = sharedPreferences.getString(KEY_VOICE_NAME, "");
@@ -1595,6 +1612,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         pitchSeekBar.setProgress((int) ((DEFAULT_PITCH - 0.1f) * 100));
         ttsVolumeSeekBar.setProgress((int) (DEFAULT_TTS_VOLUME * 100));
         ttsVolumeValue.setText(String.format("%.0f%%", DEFAULT_TTS_VOLUME * 100));
+        
+        // Hide volume boost warning when resetting to default (100%)
+        ttsVolumeWarning.setVisibility(View.GONE);
 
         // Reset current language to default for internal consistency
         for (int i = 0; i < availableLanguages.size(); i++) {
@@ -1659,7 +1679,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
      * Creates a Bundle with volume parameters for TTS speak calls.
      * This is the proper way to control TTS volume in Android.
      * 
-     * @param ttsVolume Volume level (0.0 to 1.0)
+     * @param ttsVolume Volume level (0.0 to 1.5)
      * @param audioUsage The audio usage type to determine volume boost
      * @param speakerphoneEnabled Whether speakerphone is enabled for VOICE_CALL stream
      * @return Bundle with volume parameters
@@ -1671,6 +1691,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, ttsVolume);
         
         // Volume boosting logic for different audio usage types
+        // Note: With extended volume range (0.0 to 1.5), we allow higher boosted volumes
+        // but still cap them at reasonable levels to prevent excessive distortion
         if (audioUsage == android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION) {
             if (speakerphoneEnabled) {
                 // If speakerphone is enabled, use a different approach
@@ -1679,23 +1701,27 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             } else {
                 // VOICE_CALL stream routes to earpiece by default, which is very quiet
                 // Boost the volume by 4.0x to compensate for earpiece routing
-                float boostedVolume = Math.min(1.0f, ttsVolume * 4.0f);
+                // Cap at 2.0f to prevent excessive distortion even with extended range
+                float boostedVolume = Math.min(2.0f, ttsVolume * 4.0f);
                 params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, boostedVolume);
                 InAppLogger.log("VoiceSettings", "VOICE_CALL stream detected - boosting volume from " + (ttsVolume * 100) + "% to " + (boostedVolume * 100) + "% for earpiece routing");
             }
         } else if (audioUsage == android.media.AudioAttributes.USAGE_NOTIFICATION) {
             // NOTIFICATION stream can be quiet on some devices, apply moderate boost
-            float boostedVolume = Math.min(1.0f, ttsVolume * 2.0f);
+            // Cap at 1.8f to prevent excessive distortion
+            float boostedVolume = Math.min(1.8f, ttsVolume * 2.0f);
             params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, boostedVolume);
             InAppLogger.log("VoiceSettings", "NOTIFICATION stream detected - boosting volume from " + (ttsVolume * 100) + "% to " + (boostedVolume * 100) + "% for better audibility");
         } else if (audioUsage == android.media.AudioAttributes.USAGE_ALARM) {
             // ALARM stream can be quiet on some devices, apply moderate boost
-            float boostedVolume = Math.min(1.0f, ttsVolume * 2.5f);
+            // Cap at 2.0f to prevent excessive distortion
+            float boostedVolume = Math.min(2.0f, ttsVolume * 2.5f);
             params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, boostedVolume);
             InAppLogger.log("VoiceSettings", "ALARM stream detected - boosting volume from " + (ttsVolume * 100) + "% to " + (boostedVolume * 100) + "% for better audibility");
         } else if (audioUsage == android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE) {
             // ASSISTANCE_NAVIGATION_GUIDANCE can be quiet, apply moderate boost
-            float boostedVolume = Math.min(1.0f, ttsVolume * 1.5f);
+            // Cap at 1.8f to prevent excessive distortion
+            float boostedVolume = Math.min(1.8f, ttsVolume * 1.5f);
             params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, boostedVolume);
             InAppLogger.log("VoiceSettings", "ASSISTANCE_NAVIGATION_GUIDANCE stream detected - boosting volume from " + (ttsVolume * 100) + "% to " + (boostedVolume * 100) + "% for better audibility");
         }

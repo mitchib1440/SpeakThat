@@ -637,6 +637,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="label_2_0x">2.0x</string>
     <string name="label_0_percent">0%</string>
     <string name="label_100_percent">100%</string>
+    <string name="label_150_percent">150%</string>
+    <string name="voice_tts_volume_boost_warning">⚠️ Volume above 100% may cause audio distortion</string>
     <string name="arrow_right">›</string>
     
     <!-- Main Activity Strings -->

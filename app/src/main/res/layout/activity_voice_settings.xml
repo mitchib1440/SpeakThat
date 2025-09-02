@@ -206,7 +206,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginHorizontal="8dp"
-                            android:max="100"
+                            android:max="150"
                             android:progress="100"
                             android:progressTint="@color/white_100"
                             android:thumbTint="@color/white_100"
@@ -215,7 +215,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/label_100_percent"
+                            android:text="@string/label_150_percent"
                             android:textSize="12sp"
                             android:textColor="@color/purple_card_text_secondary" />
 
@@ -232,6 +232,18 @@
                             android:textColor="@color/white_100" />
 
                     </LinearLayout>
+
+                    <!-- Volume Boost Warning -->
+                    <TextView
+                        android:id="@+id/ttsVolumeWarning"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/voice_tts_volume_boost_warning"
+                        android:textSize="12sp"
+                        android:textColor="@color/white_200"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
