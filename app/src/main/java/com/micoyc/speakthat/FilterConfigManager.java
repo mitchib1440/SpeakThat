@@ -103,6 +103,7 @@ public class FilterConfigManager {
         public int shakeTimeoutSeconds;
         public String mediaBehavior;
         public int duckingVolume;
+        public String duckingFallbackStrategy;
         public int delayBeforeReadout;
         public boolean honourDoNotDisturb;
         public boolean honourPhoneCalls; // Add honour phone calls setting
@@ -124,6 +125,7 @@ public class FilterConfigManager {
             this.shakeTimeoutSeconds = 30;
             this.mediaBehavior = "ignore";
             this.duckingVolume = 30;
+            this.duckingFallbackStrategy = "manual";
             this.delayBeforeReadout = 0;
             this.honourDoNotDisturb = true;
             this.honourPhoneCalls = true; // Default to true for safety
@@ -248,6 +250,7 @@ public class FilterConfigManager {
         config.behavior.shakeTimeoutSeconds = prefs.getInt("shake_timeout_seconds", 30);
         config.behavior.mediaBehavior = prefs.getString("media_behavior", "ignore");
         config.behavior.duckingVolume = prefs.getInt("ducking_volume", 30);
+        config.behavior.duckingFallbackStrategy = prefs.getString("ducking_fallback_strategy", "manual");
         config.behavior.delayBeforeReadout = prefs.getInt("delay_before_readout", 0);
         config.behavior.honourDoNotDisturb = prefs.getBoolean("honour_do_not_disturb", true);
         config.behavior.honourPhoneCalls = prefs.getBoolean("honour_phone_calls", true); // Add honour phone calls
@@ -313,6 +316,7 @@ public class FilterConfigManager {
         behavior.put("shakeTimeoutSeconds", config.behavior.shakeTimeoutSeconds);
         behavior.put("mediaBehavior", config.behavior.mediaBehavior);
         behavior.put("duckingVolume", config.behavior.duckingVolume);
+        behavior.put("duckingFallbackStrategy", config.behavior.duckingFallbackStrategy);
         behavior.put("delayBeforeReadout", config.behavior.delayBeforeReadout);
         behavior.put("honourDoNotDisturb", config.behavior.honourDoNotDisturb);
         behavior.put("honourPhoneCalls", config.behavior.honourPhoneCalls); // Add honour phone calls
@@ -616,6 +620,11 @@ public class FilterConfigManager {
                 
                 if (behavior.has("duckingVolume")) {
                     mainEditor.putInt("ducking_volume", behavior.getInt("duckingVolume"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("duckingFallbackStrategy")) {
+                    mainEditor.putString("ducking_fallback_strategy", behavior.getString("duckingFallbackStrategy"));
                     totalImported++;
                 }
                 

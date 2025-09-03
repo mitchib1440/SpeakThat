@@ -26,6 +26,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.slider.Slider;
 import com.micoyc.speakthat.databinding.ActivityBehaviorSettingsBinding;
+import com.micoyc.speakthat.InAppLogger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -447,78 +448,38 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             if (checkedId == R.id.radioMediaPause) {
                 mediaBehavior = MEDIA_BEHAVIOR_PAUSE;
             } else if (checkedId == R.id.radioMediaDuck) {
-                // Check if audio ducking is enabled in developer settings
-                boolean audioDuckingEnabled = sharedPreferences.getBoolean("enable_audio_ducking", false);
-                if (!audioDuckingEnabled) {
-                    // Show dialog explaining why it's disabled
-                    showAudioDuckingDisabledDialog();
-                    // Revert to previous selection
-                    String currentMediaBehavior = sharedPreferences.getString(KEY_MEDIA_BEHAVIOR, DEFAULT_MEDIA_BEHAVIOR);
-                    switch (currentMediaBehavior) {
-                        case MEDIA_BEHAVIOR_PAUSE:
-                            binding.radioMediaPause.setChecked(true);
-                            break;
-                        case MEDIA_BEHAVIOR_DUCK:
-                            binding.radioMediaDuck.setChecked(true);
-                            break;
-                        case MEDIA_BEHAVIOR_SILENCE:
-                            binding.radioMediaSilence.setChecked(true);
-                            break;
-                        default: // MEDIA_BEHAVIOR_IGNORE
-                            binding.radioMediaIgnore.setChecked(true);
-                            break;
-                    }
-                    return;
-                }
+                // Lower Audio is now always available - show enhanced warning
                 mediaBehavior = MEDIA_BEHAVIOR_DUCK;
             } else if (checkedId == R.id.radioMediaSilence) {
                 mediaBehavior = MEDIA_BEHAVIOR_SILENCE;
             }
             
-            // Show/hide ducking volume controls and warning
+            // Show/hide ducking volume controls and enhanced warning
             boolean showDucking = MEDIA_BEHAVIOR_DUCK.equals(mediaBehavior);
             binding.duckingVolumeContainer.setVisibility(showDucking ? View.VISIBLE : View.GONE);
             binding.duckingWarningText.setVisibility(showDucking ? View.VISIBLE : View.GONE);
             if (showDucking) {
-                binding.duckingWarningText.setText("⚠️ Audio ducking works differently across devices and Android versions. Some devices may not duck certain apps or audio streams properly.\n\n" +
-                        "💡 If ducking isn't working well: Try different audio streams in Voice Settings ('Voice Call' or 'Notification' often work best). " +
-                        "Avoid 'Media' stream as it may duck your TTS along with your music.\n\n" +
-                        "🔧 The app automatically uses advanced system ducking when available, with smooth manual ducking as backup for maximum compatibility.");
+                // Use the enhanced warning text from strings
+                binding.duckingWarningText.setText(getString(R.string.behavior_ducking_enhanced_warning) + "\n\n" +
+                        getString(R.string.behavior_ducking_device_tip) + "\n\n" +
+                        getString(R.string.behavior_ducking_fallback_tip));
             }
             
             // Save setting
             saveMediaBehavior(mediaBehavior);
         });
 
-        // Set up click listener for the audio ducking info button
-        binding.btnAudioDuckingInfo.setOnClickListener(v -> {
-            showAudioDuckingDisabledDialog();
-        });
 
-        // Set up click listener for the radioMediaDuck button (since it's wrapped in LinearLayout)
-        binding.radioMediaDuck.setOnClickListener(v -> {
-            // Check if audio ducking is enabled in developer settings
-            boolean audioDuckingEnabled = sharedPreferences.getBoolean("enable_audio_ducking", false);
-            if (!audioDuckingEnabled) {
-                // Show dialog explaining why it's disabled
-                showAudioDuckingDisabledDialog();
-                return;
+
+
+
+        // Set up ducking fallback strategy radio buttons
+        binding.duckingFallbackGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            String fallbackStrategy = "manual"; // default
+            if (checkedId == R.id.radioFallbackPause) {
+                fallbackStrategy = "pause";
             }
-            
-            // If enabled, manually handle the radio button selection
-            binding.mediaBehaviorGroup.clearCheck();
-            binding.radioMediaDuck.setChecked(true);
-            
-            // Show ducking volume controls
-            binding.duckingVolumeContainer.setVisibility(View.VISIBLE);
-            binding.duckingWarningText.setVisibility(View.VISIBLE);
-            binding.duckingWarningText.setText("⚠️ Audio ducking works differently across devices and Android versions. Some devices may not duck certain apps or audio streams properly.\n\n" +
-                    "💡 If ducking isn't working well: Try different audio streams in Voice Settings ('Voice Call' or 'Notification' often work best). " +
-                    "Avoid 'Media' stream as it may duck your TTS along with your music.\n\n" +
-                    "🔧 The app automatically uses advanced system ducking when available, with smooth manual ducking as backup for maximum compatibility.");
-            
-            // Save setting
-            saveMediaBehavior(MEDIA_BEHAVIOR_DUCK);
+            saveDuckingFallbackStrategy(fallbackStrategy);
         });
 
         // Set up ducking volume slider
@@ -976,16 +937,6 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Load media behavior settings
         String savedMediaBehavior = sharedPreferences.getString(KEY_MEDIA_BEHAVIOR, DEFAULT_MEDIA_BEHAVIOR);
         
-        // Check if audio ducking is enabled in developer settings
-        boolean audioDuckingEnabled = sharedPreferences.getBoolean("enable_audio_ducking", false);
-        
-        // If saved behavior is duck but audio ducking is disabled, switch to pause
-        if (MEDIA_BEHAVIOR_DUCK.equals(savedMediaBehavior) && !audioDuckingEnabled) {
-            savedMediaBehavior = MEDIA_BEHAVIOR_PAUSE;
-            // Save the new default
-            saveMediaBehavior(MEDIA_BEHAVIOR_PAUSE);
-        }
-        
         switch (savedMediaBehavior) {
             case MEDIA_BEHAVIOR_PAUSE:
                 binding.radioMediaPause.setChecked(true);
@@ -994,6 +945,11 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             case MEDIA_BEHAVIOR_DUCK:
                 binding.radioMediaDuck.setChecked(true);
                 binding.duckingVolumeContainer.setVisibility(View.VISIBLE);
+                // Show enhanced warning for Lower Audio
+                binding.duckingWarningText.setVisibility(View.VISIBLE);
+                binding.duckingWarningText.setText(getString(R.string.behavior_ducking_enhanced_warning) + "\n\n" +
+                        getString(R.string.behavior_ducking_device_tip) + "\n\n" +
+                        getString(R.string.behavior_ducking_fallback_tip));
                 break;
             case MEDIA_BEHAVIOR_SILENCE:
                 binding.radioMediaSilence.setChecked(true);
@@ -1005,16 +961,21 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 break;
         }
         
-        // Disable Lower Audio radio button if audio ducking is not enabled
-        binding.radioMediaDuck.setEnabled(audioDuckingEnabled);
-        
-        // Show/hide info button based on audio ducking state
-        binding.btnAudioDuckingInfo.setVisibility(audioDuckingEnabled ? View.GONE : View.VISIBLE);
+        // Lower Audio is now always available - no need to disable
+        binding.radioMediaDuck.setEnabled(true);
 
         // Load ducking volume
         int savedDuckingVolume = sharedPreferences.getInt(KEY_DUCKING_VOLUME, DEFAULT_DUCKING_VOLUME);
         binding.duckingVolumeSeekBar.setValue(savedDuckingVolume);
         updateDuckingVolumeDisplay(savedDuckingVolume);
+
+        // Load ducking fallback strategy
+        String savedFallbackStrategy = loadDuckingFallbackStrategy();
+        if ("pause".equals(savedFallbackStrategy)) {
+            binding.radioFallbackPause.setChecked(true);
+        } else {
+            binding.radioFallbackManual.setChecked(true);
+        }
 
         // Load delay before readout settings
         int savedDelay = sharedPreferences.getInt(KEY_DELAY_BEFORE_READOUT, DEFAULT_DELAY_BEFORE_READOUT);
@@ -2023,18 +1984,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         super.onResume();
         
         // Check if audio ducking setting has changed
-        boolean audioDuckingEnabled = sharedPreferences.getBoolean("enable_audio_ducking", false);
-        binding.radioMediaDuck.setEnabled(audioDuckingEnabled);
-        
-        // Show/hide info button based on audio ducking state
-        binding.btnAudioDuckingInfo.setVisibility(audioDuckingEnabled ? View.GONE : View.VISIBLE);
-        
-        // If audio ducking was disabled and user had Lower Audio selected, switch to Pause
-        if (!audioDuckingEnabled && binding.radioMediaDuck.isChecked()) {
-            binding.radioMediaPause.setChecked(true);
-            saveMediaBehavior(MEDIA_BEHAVIOR_PAUSE);
-            binding.duckingVolumeContainer.setVisibility(View.GONE);
-        }
+
         
         InAppLogger.logAppLifecycle("Behavior Settings resumed", "BehaviorSettingsActivity");
     }
@@ -2133,7 +2083,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "<b>⏸️ Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow. <i>Now with improved compatibility and fallback strategies.</i><br><br>" +
                 "<b>🔉 Lower Audio</b> - Temporarily reduces media volume so you can hear both.<br><br>" +
                 "<b>🔇 Silence</b> - Doesn't speak while media plays. Quiet but you might miss important notifications.<br><br>" +
-                "Lower Audio is temporarily disabled as of SpeakThat! v1.4.5. This is due to technical limitations that I was unable to find a way around. I recommend using the Pause mode instead, though I welcome all developer help!";
+                "Lower Audio is HIGHLY dependent on your device. Some devices do not support it all the time for third party apps!<br>" +
+                "Pause is recommended for better reliability!";
+
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle("Media Behavior Options")
@@ -2599,9 +2551,19 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 .setMessage(R.string.audio_ducking_disabled_message)
                 .setPositiveButton(R.string.audio_ducking_disabled_ok, null)
                 .setNegativeButton(R.string.audio_ducking_disabled_enable, (dialog, which) -> {
-                    // Open development settings
-                    Intent intent = new Intent(this, DevelopmentSettingsActivity.class);
-                    startActivity(intent);
+                    // Enable Lower Audio directly
+                    binding.mediaBehaviorGroup.clearCheck();
+                    binding.radioMediaDuck.setChecked(true);
+                    
+                    // Show ducking volume controls with enhanced warning
+                    binding.duckingVolumeContainer.setVisibility(View.VISIBLE);
+                    binding.duckingWarningText.setVisibility(View.VISIBLE);
+                    binding.duckingWarningText.setText(getString(R.string.behavior_ducking_enhanced_warning) + "\n\n" +
+                            getString(R.string.behavior_ducking_device_tip) + "\n\n" +
+                            getString(R.string.behavior_ducking_fallback_tip));
+                    
+                    // Save setting
+                    saveMediaBehavior(MEDIA_BEHAVIOR_DUCK);
                 })
                 .show();
     }
@@ -2622,6 +2584,26 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         savePriorityApps();
         
         Toast.makeText(this, "Added common priority apps. You can remove or add more as needed.", Toast.LENGTH_LONG).show();
+    }
+
+
+
+    /**
+     * Save the ducking fallback strategy preference
+     */
+    private void saveDuckingFallbackStrategy(String strategy) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("ducking_fallback_strategy", strategy);
+        editor.apply();
+        
+        InAppLogger.log("LowerAudio", "Ducking fallback strategy saved: " + strategy);
+    }
+
+    /**
+     * Load the ducking fallback strategy preference
+     */
+    private String loadDuckingFallbackStrategy() {
+        return sharedPreferences.getString("ducking_fallback_strategy", "manual");
     }
 
     private void trackDialogUsage(String dialogType) {

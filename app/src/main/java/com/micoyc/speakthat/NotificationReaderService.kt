@@ -42,6 +42,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var isCurrentlySpeaking = false
     private var currentSpeechText = ""
     private var currentAppName = ""
+    private var currentTtsText = ""
     
     // Cached system services for performance
     private val audioManager by lazy { getSystemService(AUDIO_SERVICE) as AudioManager }
@@ -187,7 +188,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Notification IDs
         private const val PERSISTENT_NOTIFICATION_ID = 1001
-        private const val READING_NOTIFICATION_ID = 1002
         private const val FOREGROUND_SERVICE_ID = 1003
         
         // Deduplication settings
@@ -438,7 +438,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             // Hide all SpeakThat notifications
             hidePersistentNotification()
-            hideReadingNotification()
+            // hideReadingNotification()
             
             Log.d(TAG, "NotificationReaderService cleanup completed")
             InAppLogger.log("Service", "Service cleanup completed")
@@ -2001,6 +2001,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         textToSpeech?.stop()
         isCurrentlySpeaking = false
         
+        // Clear current notification variables
+        currentSpeechText = ""
+        currentAppName = ""
+        currentTtsText = ""
+        
         // Unregister shake listener since we're no longer speaking
         unregisterShakeListener()
         
@@ -2027,8 +2032,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Clean up media behavior effects
         cleanupMediaBehavior()
         
-        // Hide reading notification since we're no longer speaking
-        hideReadingNotification()
+        // Reading notification is now integrated into foreground notification
+        // hideReadingNotification()
+        
+        // CRITICAL: Stop foreground service when TTS is manually stopped
+        // This ensures the foreground service notification is properly removed
+        stopForegroundService()
         
         Log.d(TAG, "TTS stopped due to $triggerType")
         InAppLogger.logTTSEvent("TTS stopped by $triggerType", "User interrupted speech")
@@ -2041,6 +2050,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private fun stopCurrentSpeech() {
         textToSpeech?.stop()
         isCurrentlySpeaking = false
+        
+        // Clear current notification variables
+        currentSpeechText = ""
+        currentAppName = ""
+        currentTtsText = ""
         unregisterShakeListener()
         
         // CRITICAL: Stop foreground service when TTS is interrupted
@@ -2049,8 +2063,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Clean up media behavior effects
         cleanupMediaBehavior()
         
-        // Hide reading notification since we're no longer speaking
-        hideReadingNotification()
+        // Reading notification is now integrated into foreground notification
+        // hideReadingNotification()
         
         Log.d(TAG, "Current TTS speech stopped by audio focus change")
         InAppLogger.logTTSEvent("TTS stopped by audio focus", "Focus loss interrupted speech")
@@ -2690,7 +2704,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 android.media.AudioManager.STREAM_VOICE_CALL,
                 android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT
             )
-            Log.d(TAG, "Audio focus request result for STREAM_VOICE_CALL (legacy): $result")
+             Log.d(TAG, "Audio focus request result for STREAM_VOICE_CALL (legacy): $result")
             InAppLogger.log("Service", "Audio focus request result for STREAM_VOICE_CALL (legacy): $result")
             
             when (result) {
@@ -4093,15 +4107,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (effectiveDelay > 0) {
             Log.d(TAG, "Delaying speech by ${effectiveDelay}s")
             pendingReadoutRunnable = Runnable {
-                executeSpeech(speechText)
+                executeSpeech(speechText, appName, text)
             }
             delayHandler?.postDelayed(pendingReadoutRunnable!!, (effectiveDelay * 1000).toLong())
         } else {
-            executeSpeech(speechText)
+            executeSpeech(speechText, appName, text)
         }
     }
     
-    private fun executeSpeech(speechText: String) {
+    private fun executeSpeech(speechText: String, appName: String, originalText: String) {
         Log.d(TAG, "=== DUCKING DEBUG: executeSpeech called with text: ${speechText.take(50)}... ===")
         InAppLogger.log("Service", "=== DUCKING DEBUG: executeSpeech called with text: ${speechText.take(50)}... ===")
         
@@ -4121,6 +4135,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         isCurrentlySpeaking = true
         
+        // Set the current app name and text for the reading notification
+        currentAppName = appName
+        currentSpeechText = originalText
+        currentTtsText = speechText
+        
         // CRITICAL: Promote service to foreground for audio focus compatibility on Android 12+
         // This is essential for audio focus requests to be granted when the app is not in the foreground
         promoteToForegroundService()
@@ -4136,8 +4155,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             InAppLogger.log("Service", "=== DUCKING DEBUG: Foreground promotion delay interrupted ===")
         }
         
-        // Show reading notification if enabled
-        showReadingNotification(currentAppName, currentSpeechText)
+        // Show reading notification if enabled (now integrated into foreground notification)
+        // showReadingNotification(currentAppName, currentSpeechText)
         
         // Set pocket mode tracking variables
         if (isPocketModeEnabled) {
@@ -4346,7 +4365,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     InAppLogger.log("Service", "=== DUCKING DEBUG: TTS completed - Music volume: $currentVolume/$maxVolume ===")
                     
                     // Hide reading notification
-                    hideReadingNotification()
+                    // hideReadingNotification()
                     
                     // CRITICAL: Stop foreground service when TTS completes
                     // This is essential for proper cleanup and to avoid keeping the service in foreground unnecessarily
@@ -4388,7 +4407,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     isCurrentlySpeaking = false
                     
                     // Hide reading notification
-                    hideReadingNotification()
+                    // hideReadingNotification()
                     
                     // CRITICAL: Stop foreground service when TTS completes (even on error)
                     stopForegroundService()
@@ -4769,104 +4788,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
-    /**
-     * Show notification while TTS is reading
-     */
-    private fun showReadingNotification(appName: String, content: String) {
-        try {
-            val isNotificationWhileReadingEnabled = sharedPreferences?.getBoolean(KEY_NOTIFICATION_WHILE_READING, false) ?: false
-            if (!isNotificationWhileReadingEnabled) {
-                Log.d(TAG, "Reading notification disabled in settings")
-                return
-            }
-            
-            // Check notification permission for Android 13+
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-                    Log.w(TAG, "POST_NOTIFICATIONS permission not granted - cannot show reading notification")
-                    InAppLogger.logError("Notifications", "POST_NOTIFICATIONS permission not granted")
-                    return
-                }
-            }
-            
-            // Create notification channel for Android O+
-            createNotificationChannel()
-            
-            // Create intent for opening SpeakThat
-            val openAppIntent = Intent(this, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-            }
-            val openAppPendingIntent = PendingIntent.getActivity(
-                this, 0, openAppIntent, 
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
-            
-            // Create intent for stopping TTS
-            val stopTtsIntent = Intent(this, NotificationReaderService::class.java).apply {
-                action = "STOP_TTS"
-            }
-            val stopTtsPendingIntent = PendingIntent.getService(
-                this, 0, stopTtsIntent, 
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
-            
-            // Build notification
-            val notification = NotificationCompat.Builder(this, "SpeakThat_Channel")
-                .setContentTitle("SpeakThat Reading")
-                .setContentText("$appName: $content")
-                .setSmallIcon(R.drawable.speakthaticon)
-                .setOngoing(false) // Temporary notification
-                .setSilent(true) // Silent notification
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(openAppPendingIntent)
-                .addAction(
-                    R.drawable.speakthaticon,
-                    "Shut Up!",
-                    stopTtsPendingIntent
-                )
-                .addAction(
-                    R.drawable.speakthaticon,
-                    "Open SpeakThat!",
-                    openAppPendingIntent
-                )
-                .setAutoCancel(true) // Auto-dismiss when tapped
-                .build()
-            
-            // Show notification
-            notificationManager.notify(READING_NOTIFICATION_ID, notification)
-            Log.d(TAG, "Reading notification shown for $appName with ID: $READING_NOTIFICATION_ID")
-            InAppLogger.log("Notifications", "Reading notification shown for $appName with ID: $READING_NOTIFICATION_ID")
-            
-            // Verify notification was actually posted
-            val activeNotifications = notificationManager.activeNotifications
-            val ourNotification = activeNotifications.find { it.id == READING_NOTIFICATION_ID }
-            if (ourNotification != null) {
-                Log.d(TAG, "Reading notification verified as active")
-                InAppLogger.log("Notifications", "Reading notification verified as active")
-            } else {
-                Log.w(TAG, "Reading notification not found in active notifications")
-                InAppLogger.logError("Notifications", "Reading notification not found in active notifications")
-            }
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "Error showing reading notification", e)
-            InAppLogger.logError("Notifications", "Error showing reading notification: ${e.message}")
-        }
-    }
+
     
-    /**
-     * Hide reading notification
-     */
-    private fun hideReadingNotification() {
-        try {
-            notificationManager.cancel(READING_NOTIFICATION_ID)
-            Log.d(TAG, "Reading notification hidden")
-            InAppLogger.log("Notifications", "Reading notification hidden")
-        } catch (e: Exception) {
-            Log.e(TAG, "Error hiding reading notification", e)
-            InAppLogger.logError("Notifications", "Error hiding reading notification: ${e.message}")
-        }
-    }
+
     
     /**
      * Promote service to foreground during TTS playback to enable audio focus on Android 12+
@@ -4892,8 +4816,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "Promoting service to foreground for audio focus compatibility")
             InAppLogger.log("Service", "Promoting service to foreground for audio focus compatibility")
             
-            // Create a simple foreground notification
-            val foregroundNotification = createForegroundNotification()
+            // Create a detailed foreground notification with reading content
+            val foregroundNotification = createForegroundNotification(currentAppName, currentSpeechText, currentTtsText)
             
             // Start foreground service
             // The foreground service type is already declared in the manifest as "mediaPlayback"
@@ -4928,9 +4852,34 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     /**
-     * Create a simple notification for foreground service
+     * Smart truncation function for notification text
+     * Truncates text to a reasonable length while preserving readability
      */
-    private fun createForegroundNotification(): Notification {
+    private fun truncateForNotification(text: String, maxLength: Int = 200): String {
+        return if (text.length <= maxLength) {
+            text
+        } else {
+            // Try to find a good breaking point (space, punctuation, etc.)
+            val truncated = text.take(maxLength - 3) // Leave room for "..."
+            val lastSpaceIndex = truncated.lastIndexOf(' ')
+            val lastPunctuationIndex = truncated.lastIndexOf('.')
+            val lastCommaIndex = truncated.lastIndexOf(',')
+            
+            // Find the best breaking point
+            val breakIndex = maxOf(lastSpaceIndex, lastPunctuationIndex, lastCommaIndex)
+            
+            if (breakIndex > maxLength * 0.7) { // Only use if it's not too early
+                text.take(breakIndex + 1) + "..."
+            } else {
+                truncated + "..."
+            }
+        }
+    }
+    
+    /**
+     * Create a detailed notification for foreground service that shows what's being read
+     */
+    private fun createForegroundNotification(appName: String = "", content: String = "", ttsText: String = ""): Notification {
         // Create notification channel for Android O+
         createNotificationChannel()
         
@@ -4943,17 +4892,66 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         
-        // Build foreground notification
-        return NotificationCompat.Builder(this, "SpeakThat_Channel")
-            .setContentTitle("SpeakThat")
-            .setContentText("Reading notifications aloud")
+        // Create intent for stopping TTS
+        val stopTtsIntent = Intent(this, NotificationReaderService::class.java).apply {
+            action = "STOP_TTS"
+        }
+        val stopTtsPendingIntent = PendingIntent.getService(
+            this, 0, stopTtsIntent, 
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        
+        // Build foreground notification with detailed content
+        val notificationBuilder = NotificationCompat.Builder(this, "SpeakThat_Channel")
+            .setContentTitle("SpeakThat Reading")
             .setSmallIcon(R.drawable.speakthaticon)
-            .setOngoing(true) // Persistent notification
+            .setOngoing(true) // Persistent notification (required for foreground service)
             .setSilent(true) // Silent notification
-            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(openAppPendingIntent)
             .setAutoCancel(false) // Don't auto-dismiss
-            .build()
+        
+        // Add detailed content if available
+        if (appName.isNotEmpty() && ttsText.isNotEmpty()) {
+            val truncatedTtsText = truncateForNotification(ttsText)
+            val notificationText = "$appName: $truncatedTtsText"
+            
+            notificationBuilder
+                .setContentText(notificationText)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
+                .addAction(
+                    R.drawable.speakthaticon,
+                    "Shut Up!",
+                    stopTtsPendingIntent
+                )
+                .addAction(
+                    R.drawable.speakthaticon,
+                    "Open SpeakThat!",
+                    openAppPendingIntent
+                )
+        } else if (appName.isNotEmpty() && content.isNotEmpty()) {
+            // Fallback to original content if TTS text is not available
+            val truncatedContent = truncateForNotification(content)
+            val notificationText = "$appName: $truncatedContent"
+            
+            notificationBuilder
+                .setContentText(notificationText)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
+                .addAction(
+                    R.drawable.speakthaticon,
+                    "Shut Up!",
+                    stopTtsPendingIntent
+                )
+                .addAction(
+                    R.drawable.speakthaticon,
+                    "Open SpeakThat!",
+                    openAppPendingIntent
+                )
+        } else {
+            notificationBuilder.setContentText("Reading notifications aloud")
+        }
+        
+        return notificationBuilder.build()
     }
     
     /**
@@ -5006,12 +5004,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             isCurrentlySpeaking = false
             currentSpeechText = ""
             currentAppName = ""
+            currentTtsText = ""
             
             // Clear notification queue
             notificationQueue.clear()
             
-            // Hide reading notification
-            hideReadingNotification()
+            // Reading notification is now integrated into foreground notification
+            // hideReadingNotification()
+            
+            // CRITICAL: Stop foreground service when TTS is manually stopped
+            // This ensures the foreground service notification is properly removed
+            stopForegroundService()
             
             Log.d(TAG, "TTS stopped via notification action")
             InAppLogger.log("Notifications", "TTS stopped via notification action")

@@ -1,11 +1,11 @@
 package com.micoyc.speakthat;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,11 +18,13 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.micoyc.speakthat.databinding.ActivityDevelopmentSettingsBinding;
 import com.micoyc.speakthat.rules.RuleSystemTest;
 import java.io.File;
@@ -51,7 +53,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
     private static final String KEY_LOG_SYSTEM_EVENTS = "log_system_events";
     private static final String KEY_LOG_SENSITIVE_DATA = "log_sensitive_data";
     private static final String KEY_DISABLE_MEDIA_FALLBACK = "disable_media_fallback";
-    private static final String KEY_ENABLE_AUDIO_DUCKING = "enable_audio_ducking";
 
     private boolean isLogAutoRefreshPaused = false;
     private Runnable logUpdateRunnable;
@@ -212,6 +213,9 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         // Set up debug crash log button
         binding.btnDebugCrashLogs.setOnClickListener(v -> showCrashLogDebugInfo());
         
+        // Set up test Lower Audio button
+        binding.btnTestLowerAudio.setOnClickListener(v -> testLowerAudioCompatibility());
+        
 
         
         // Set up analytics button
@@ -262,10 +266,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             InAppLogger.log("Development", "Media behavior fallback " + (isChecked ? "disabled" : "enabled"));
         });
         
-        binding.switchEnableAudioDucking.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            saveEnableAudioDucking(isChecked);
-            InAppLogger.log("Development", "Audio ducking " + (isChecked ? "enabled" : "disabled"));
-        });
+
         
         // Set up log display
         binding.textLogDisplay.setMovementMethod(new ScrollingMovementMethod());
@@ -507,7 +508,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         boolean logSystemEvents = sharedPreferences.getBoolean(KEY_LOG_SYSTEM_EVENTS, true); // Default to enabled
         boolean logSensitiveData = sharedPreferences.getBoolean(KEY_LOG_SENSITIVE_DATA, false); // Default to disabled
         boolean disableMediaFallback = sharedPreferences.getBoolean(KEY_DISABLE_MEDIA_FALLBACK, false); // Default to disabled
-        boolean enableAudioDucking = sharedPreferences.getBoolean(KEY_ENABLE_AUDIO_DUCKING, false); // Default to disabled
         
         binding.switchVerboseLogging.setChecked(verboseLogging);
         binding.switchLogFilters.setChecked(logFilters);
@@ -516,7 +516,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         binding.switchLogSystemEvents.setChecked(logSystemEvents);
         binding.switchLogSensitiveData.setChecked(logSensitiveData);
         binding.switchDisableMediaFallback.setChecked(disableMediaFallback);
-        binding.switchEnableAudioDucking.setChecked(enableAudioDucking);
     }
 
     private void showNotificationHistory() {
@@ -872,11 +871,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    private void saveEnableAudioDucking(boolean enabled) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(KEY_ENABLE_AUDIO_DUCKING, enabled);
-        editor.apply();
-    }
+
 
     private void toggleLogPause() {
         // DEPRECATED: Auto-refresh is no longer used
@@ -1389,5 +1384,64 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             builder.setPositiveButton(R.string.button_ok, null);
             builder.show();
         }
+    }
+    
+    /**
+     * Test Lower Audio compatibility by attempting to request audio focus
+     * This helps users understand if their device supports the Lower Audio feature
+     */
+    private void testLowerAudioCompatibility() {
+        // Show testing dialog
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        AlertDialog testingDialog = builder.setTitle(R.string.behavior_ducking_test_title)
+                .setMessage(R.string.behavior_ducking_test_message)
+                .setCancelable(false)
+                .show();
+
+        // Run the audio focus test on a background thread to avoid blocking the UI
+        new Thread(() -> {
+            // Attempt to request audio focus to test compatibility
+            AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            AudioManager.OnAudioFocusChangeListener testListener = new AudioManager.OnAudioFocusChangeListener() {
+                @Override
+                public void onAudioFocusChange(int focusChange) {
+                    // This is just for testing, we don't need to handle focus changes
+                }
+            };
+
+            // Request audio focus with ducking
+            int result = audioManager.requestAudioFocus(testListener, 
+                    AudioManager.STREAM_MUSIC, 
+                    AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+
+            // CRITICAL: Always release audio focus after testing
+            audioManager.abandonAudioFocus(testListener);
+
+            // Show results on the main thread
+            runOnUiThread(() -> {
+                // Dismiss the testing dialog
+                testingDialog.dismiss();
+
+                // Show result dialog
+                MaterialAlertDialogBuilder resultBuilder = new MaterialAlertDialogBuilder(this);
+                if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                    resultBuilder.setTitle(R.string.behavior_ducking_test_success_title)
+                            .setMessage(R.string.behavior_ducking_test_success)
+                            .setPositiveButton(R.string.audio_ducking_disabled_ok, null);
+                    
+                    // Log successful test
+                    InAppLogger.log("LowerAudioTest", "Audio focus test successful - device supports Lower Audio well");
+                } else {
+                    resultBuilder.setTitle(R.string.behavior_ducking_test_warning_title)
+                            .setMessage(R.string.behavior_ducking_test_warning)
+                            .setPositiveButton(R.string.audio_ducking_disabled_ok, null);
+                    
+                    // Log failed test
+                    InAppLogger.log("LowerAudioTest", "Audio focus test failed - device may have limited Lower Audio support");
+                }
+                
+                resultBuilder.show();
+            });
+        }).start();
     }
 }

@@ -554,6 +554,34 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_ducking_description">Set how quiet media should become during notifications</string>
     <string name="behavior_ducking_warning">⚠️ On some devices, lowering media volume may also lower the notification voice. If notifications are still hard to hear, try Pause mode or adjust your TTS settings.</string>
     <string name="behavior_ducking_tip">Tip: Lower values make media quieter during notifications</string>
+    
+    <!-- Audio Ducking Enhanced Warning -->
+    <string name="behavior_ducking_enhanced_warning">⚠️ Lower Audio works differently across devices and Android versions. Some devices may not duck certain apps or audio streams properly.</string>
+    <string name="behavior_ducking_device_tip">💡 If ducking isn\'t working well: Try different audio streams in Voice Settings (\'Voice Call\' or \'Notification\' often work best). Avoid \'Media\' stream as it may duck your TTS along with your music.</string>
+    <string name="behavior_ducking_fallback_tip">🔧 The app automatically uses advanced system ducking when available, with smooth manual ducking as backup for maximum compatibility.</string>
+    
+    <!-- Audio Ducking Test and Fallback -->
+    <string name="behavior_ducking_test_title">Test Lower Audio Compatibility</string>
+    <string name="behavior_ducking_test_message">Testing if your device supports audio focus requests properly...</string>
+    <string name="behavior_ducking_test_success">✅ Your device supports Lower Audio well!</string>
+    <string name="behavior_ducking_test_warning">⚠️ Your device may have limited support for Lower Audio. Some apps may not respond to volume changes properly.</string>
+    <string name="behavior_ducking_test_button">Test Lower Audio</string>
+    <string name="behavior_ducking_test_success_title">Test Complete</string>
+    <string name="behavior_ducking_test_warning_title">Test Complete</string>
+    
+    <!-- Audio Ducking Fallback Options -->
+    <string name="behavior_ducking_fallback_title">Fallback Strategy</string>
+    <string name="behavior_ducking_fallback_description">Choose what happens when audio focus fails on your device</string>
+    <string name="behavior_ducking_fallback_manual">Manual Volume Control</string>
+    <string name="behavior_ducking_fallback_pause">Pause Media Instead</string>
+    <string name="behavior_ducking_fallback_manual_desc">Use manual volume adjustment (may not work on all devices)</string>
+    <string name="behavior_ducking_fallback_pause_desc">Pause media completely when audio focus fails (more reliable)</string>
+    
+    <!-- Audio Ducking Disabled Dialog -->
+    <string name="audio_ducking_disabled_title">Lower Audio Feature</string>
+    <string name="audio_ducking_disabled_message">Lower Audio works differently across devices. Some devices may not respond to volume changes properly, which could affect your TTS volume.\n\nYou can still enable this feature, but be aware it may not work consistently on all devices.</string>
+    <string name="audio_ducking_disabled_ok">Got it</string>
+    <string name="audio_ducking_disabled_enable">Enable Lower Audio</string>
     <string name="behavior_calls_title">📞 Honour Phone Calls</string>
     <string name="behavior_calls_description">Prevent notification readouts when you\'re on a phone call</string>
     <string name="behavior_calls_recommendation">Most users should: Enable this feature</string>

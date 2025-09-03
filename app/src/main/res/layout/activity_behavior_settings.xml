@@ -388,38 +388,15 @@
                             app:buttonTint="@color/white_100"
                             android:textColor="@color/purple_card_text_primary" />
 
-                        <!-- Lower Audio option with info button -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <RadioButton
+                            android:id="@+id/radioMediaDuck"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginBottom="8dp">
-
-                            <RadioButton
-                                android:id="@+id/radioMediaDuck"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="@string/behavior_media_lower"
-                                android:buttonTint="@color/radio_button_color"
-                                app:buttonTint="@color/radio_button_color"
-                                android:textColor="@color/radio_button_text_color" />
-
-                            <ImageButton
-                                android:id="@+id/btnAudioDuckingInfo"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:src="@drawable/help_24px"
-                                android:contentDescription="Audio Ducking Info"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                                android:padding="4dp"
-                                android:visibility="gone"
-                                app:tint="@color/white_100" />
-
-                        </LinearLayout>
+                            android:text="@string/behavior_media_lower"
+                            android:layout_marginBottom="8dp"
+                            android:buttonTint="@color/white_100"
+                            app:buttonTint="@color/white_100"
+                            android:textColor="@color/purple_card_text_primary" />
 
                         <RadioButton
                             android:id="@+id/radioMediaSilence"
@@ -517,6 +494,82 @@
                             android:textStyle="bold"
                             android:gravity="center"
                             android:layout_marginBottom="8dp" />
+
+
+
+                        <!-- Fallback Strategy Section -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginBottom="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/behavior_ducking_fallback_title"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:layout_marginBottom="4dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/behavior_ducking_fallback_description"
+                                android:textSize="12sp"
+                                android:textColor="@color/purple_card_text_secondary"
+                                android:layout_marginBottom="8dp" />
+
+                            <RadioGroup
+                                android:id="@+id/duckingFallbackGroup"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <RadioButton
+                                    android:id="@+id/radioFallbackManual"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_ducking_fallback_manual"
+                                    android:textSize="12sp"
+                                    android:buttonTint="@color/white_100"
+                                    app:buttonTint="@color/white_100"
+                                    android:textColor="@color/purple_card_text_primary"
+                                    android:layout_marginBottom="4dp" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_ducking_fallback_manual_desc"
+                                    android:textSize="10sp"
+                                    android:textColor="@color/purple_card_text_secondary"
+                                    android:layout_marginStart="24dp"
+                                    android:layout_marginBottom="8dp" />
+
+                                <RadioButton
+                                    android:id="@+id/radioFallbackPause"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_ducking_fallback_pause"
+                                    android:textSize="12sp"
+                                    android:buttonTint="@color/white_100"
+                                    app:buttonTint="@color/white_100"
+                                    android:textColor="@color/purple_card_text_primary"
+                                    android:layout_marginBottom="4dp" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_ducking_fallback_pause_desc"
+                                    android:textSize="10sp"
+                                    android:textColor="@color/purple_card_text_secondary"
+                                    android:layout_marginStart="24dp"
+                                    android:layout_marginBottom="8dp" />
+
+                            </RadioGroup>
+
+                        </LinearLayout>
 
                         <!-- Ducking Limitation Warning -->
                         <TextView
