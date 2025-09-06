@@ -7,6 +7,10 @@
         <intent>
             <action android:name="android.intent.action.MAIN" />
         </intent>
+        <!-- Allow querying TTS services (required for Android 11+ and especially Android 15) -->
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
     </queries>
 
     <!-- Permission to access notifications -->

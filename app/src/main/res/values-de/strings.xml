@@ -463,5 +463,20 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Conditional Rules - Exception Strings -->
     <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    
+    <!-- AboutActivity Hardcoded Strings -->
+    <string name="tts_error_occurred">TTS-Fehler aufgetreten</string>
+    <string name="tts_initialization_failed">TTS-Initialisierung fehlgeschlagen</string>
+    
+    <!-- Enhanced TTS Error Messages for Android 15+ -->
+    <string name="tts_init_failed_android15">TTS-Initialisierung auf Android 15 fehlgeschlagen. Dies kann auf Systembeschränkungen zurückzuführen sein.</string>
+    <string name="tts_init_failed_service_unavailable">TTS-Dienst ist nicht verfügbar. Bitte überprüfen Sie Ihre TTS-Einstellungen.</string>
+    <string name="tts_init_failed_permissions">TTS-Initialisierung aufgrund fehlender Berechtigungen fehlgeschlagen. Bitte starten Sie die App neu.</string>
+    <string name="tts_init_failed_recovery_attempts">TTS-Wiederherstellung nach mehreren Versuchen fehlgeschlagen. Bitte starten Sie die App neu oder überprüfen Sie die TTS-Einstellungen.</string>
+    <string name="tts_init_failed_generic">TTS-Initialisierung fehlgeschlagen. Einige Funktionen funktionieren möglicherweise nicht ordnungsgemäß.</string>
+    <string name="tts_recovery_in_progress">Versuche TTS-Dienst wiederherzustellen...</string>
+    <string name="tts_recovery_successful">TTS-Dienst erfolgreich wiederhergestellt!</string>
+    <string name="tts_troubleshooting_title">TTS-Fehlerbehebung</string>
+    <string name="tts_troubleshooting_message">Wenn TTS weiterhin fehlschlägt:\n\n1. Überprüfen Sie Einstellungen > Barrierefreiheit > Text-zu-Sprache-Ausgabe\n2. Stellen Sie sicher, dass Google TTS installiert und als Standard eingestellt ist\n3. Starten Sie die App neu\n4. Starten Sie Ihr Gerät neu, wenn das Problem weiterhin besteht</string>
 </resources>
 

@@ -241,9 +241,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Cooldown settings
         private const val KEY_COOLDOWN_APPS = "cooldown_apps"
         
-        // TTS Recovery settings
-        private const val MAX_TTS_RECOVERY_ATTEMPTS = 3
+        // TTS Recovery settings - Enhanced for Android 15 compatibility
+        private const val MAX_TTS_RECOVERY_ATTEMPTS = 5 // Increased for Android 15
         private const val TTS_RECOVERY_DELAY_MS = 2000L // 2 seconds between attempts
+        private const val TTS_RECOVERY_DELAY_ANDROID15_MS = 5000L // 5 seconds for Android 15
+        private const val TTS_INIT_TIMEOUT_MS = 10000L // 10 seconds timeout
+        private const val TTS_INIT_TIMEOUT_ANDROID15_MS = 15000L // 15 seconds for Android 15
         
         @JvmStatic
         fun getRecentNotifications(): List<NotificationData> {
@@ -759,18 +762,91 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
+    /**
+     * Get a human-readable error message for TTS initialization status codes
+     */
+    private fun getTtsErrorMessage(status: Int): String {
+        return when (status) {
+            TextToSpeech.ERROR -> "TTS engine error"
+            TextToSpeech.ERROR_NOT_INSTALLED_YET -> "TTS engine not installed"
+            TextToSpeech.ERROR_OUTPUT -> "TTS output error"
+            TextToSpeech.ERROR_SERVICE -> "TTS service error"
+            TextToSpeech.ERROR_SYNTHESIS -> "TTS synthesis error"
+            TextToSpeech.ERROR_INVALID_REQUEST -> "Invalid TTS request"
+            TextToSpeech.ERROR_NETWORK -> "TTS network error"
+            TextToSpeech.ERROR_NETWORK_TIMEOUT -> "TTS network timeout"
+            -1 -> if (isAndroid15OrHigher()) {
+                "TTS service not accessible (Android 15 restriction)"
+            } else {
+                "TTS service not accessible"
+            }
+            else -> "Unknown TTS error (status: $status)"
+        }
+    }
+    
+    /**
+     * Check if the device is running Android 15 (API 35) or higher
+     */
+    private fun isAndroid15OrHigher(): Boolean {
+        return android.os.Build.VERSION.SDK_INT >= 35
+    }
+    
+    /**
+     * Get the appropriate timeout for TTS initialization based on Android version
+     */
+    private fun getTtsInitTimeout(): Long {
+        return if (isAndroid15OrHigher()) {
+            TTS_INIT_TIMEOUT_ANDROID15_MS
+        } else {
+            TTS_INIT_TIMEOUT_MS
+        }
+    }
+    
+    /**
+     * Get the appropriate recovery delay based on Android version
+     */
+    private fun getTtsRecoveryDelay(): Long {
+        return if (isAndroid15OrHigher()) {
+            TTS_RECOVERY_DELAY_ANDROID15_MS
+        } else {
+            TTS_RECOVERY_DELAY_MS
+        }
+    }
+    
     private fun initializeTextToSpeech() {
         try {
-            Log.d(TAG, "Starting TTS initialization...")
-            InAppLogger.log("Service", "Starting TTS initialization")
+            val timeout = getTtsInitTimeout()
+            val isAndroid15 = isAndroid15OrHigher()
+            
+            Log.d(TAG, "Starting TTS initialization... (Android ${android.os.Build.VERSION.SDK_INT}, timeout: ${timeout}ms)")
+            InAppLogger.log("Service", "Starting TTS initialization (Android ${android.os.Build.VERSION.SDK_INT}, timeout: ${timeout}ms)")
+            
+            // Check if TTS service is available before attempting initialization
+            if (isAndroid15) {
+                try {
+                    val ttsIntent = android.content.Intent(android.speech.tts.TextToSpeech.Engine.INTENT_ACTION_TTS_SERVICE)
+                    val resolveInfo = packageManager.resolveService(ttsIntent, android.content.pm.PackageManager.MATCH_DEFAULT_ONLY)
+                    if (resolveInfo == null) {
+                        Log.e(TAG, "No TTS service available on Android 15")
+                        InAppLogger.logError("Service", "No TTS service available on Android 15")
+                        attemptTtsRecovery("No TTS service available")
+                        return
+                    }
+                    Log.d(TAG, "TTS service found: ${resolveInfo.serviceInfo.packageName}")
+                    InAppLogger.log("Service", "TTS service found: ${resolveInfo.serviceInfo.packageName}")
+                } catch (e: Exception) {
+                    Log.w(TAG, "Could not check TTS service availability", e)
+                    InAppLogger.log("Service", "Could not check TTS service availability: ${e.message}")
+                }
+            }
             
             textToSpeech = TextToSpeech(this, this)
             
             // Add a timeout to detect if TTS initialization hangs
             android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
                 if (!isTtsInitialized) {
-                    Log.e(TAG, "TTS initialization timed out after 10 seconds")
-                    InAppLogger.logError("Service", "TTS initialization timed out - attempting recovery")
+                    Log.e(TAG, "TTS initialization timed out after ${timeout}ms")
+                    InAppLogger.logError("Service", "TTS initialization timed out after ${timeout}ms - attempting recovery")
                     
                     // Try to reinitialize TTS
                     try {
@@ -782,9 +858,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     } catch (e: Exception) {
                         Log.e(TAG, "TTS reinitialization failed", e)
                         InAppLogger.logError("Service", "TTS reinitialization failed: " + e.message)
+                        attemptTtsRecovery("Reinitialization failed: ${e.message}")
                     }
                 }
-            }, 10000) // 10 second timeout
+            }, timeout)
             
             Log.d(TAG, "TTS initialization started")
             InAppLogger.log("Service", "TTS initialization started")
@@ -792,6 +869,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         } catch (e: Exception) {
             Log.e(TAG, "Error in initializeTextToSpeech", e)
             InAppLogger.logError("Service", "TTS initialization error: " + e.message)
+            attemptTtsRecovery("Initialization exception: ${e.message}")
         }
     }
     
@@ -800,6 +878,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      */
     private fun attemptTtsRecovery(reason: String) {
         val currentTime = System.currentTimeMillis()
+        val isAndroid15 = isAndroid15OrHigher()
         
         // Reset recovery attempts if it's been more than 5 minutes since last failure
         if (currentTime - lastTtsFailureTime > 300000) { // 5 minutes
@@ -817,13 +896,22 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         ttsRecoveryAttempts++
-        Log.w(TAG, "Attempting TTS recovery #$ttsRecoveryAttempts (reason: $reason)")
-        InAppLogger.log("Service", "Attempting TTS recovery #$ttsRecoveryAttempts (reason: $reason)")
+        Log.w(TAG, "Attempting TTS recovery #$ttsRecoveryAttempts (reason: $reason, Android ${android.os.Build.VERSION.SDK_INT})")
+        InAppLogger.log("Service", "Attempting TTS recovery #$ttsRecoveryAttempts (reason: $reason, Android ${android.os.Build.VERSION.SDK_INT})")
         
         // Cancel any existing recovery attempt
         ttsRecoveryRunnable?.let { runnable ->
             ttsRecoveryHandler?.removeCallbacks(runnable)
         }
+        
+        // Calculate exponential backoff delay
+        val baseDelay = getTtsRecoveryDelay()
+        val exponentialDelay = baseDelay * (1 shl (ttsRecoveryAttempts - 1)) // 2^(attempt-1) * baseDelay
+        val maxDelay = if (isAndroid15) 30000L else 15000L // Cap at 30s for Android 15, 15s for others
+        val actualDelay = minOf(exponentialDelay, maxDelay)
+        
+        Log.d(TAG, "TTS recovery delay: ${actualDelay}ms (base: ${baseDelay}ms, exponential: ${exponentialDelay}ms)")
+        InAppLogger.log("Service", "TTS recovery delay: ${actualDelay}ms")
         
         // Schedule recovery attempt
         ttsRecoveryHandler = android.os.Handler(android.os.Looper.getMainLooper())
@@ -844,17 +932,42 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 textToSpeech = null
                 isTtsInitialized = false
                 
-                // 3. Wait a moment for cleanup
-                Thread.sleep(500)
+                // 3. Wait longer for cleanup on Android 15
+                val cleanupDelay = if (isAndroid15) 1000L else 500L
+                Thread.sleep(cleanupDelay)
                 
-                // 4. Reinitialize TTS
+                // 4. Check TTS service availability on Android 15
+                if (isAndroid15) {
+                    try {
+                        val ttsIntent = android.content.Intent(android.speech.tts.TextToSpeech.Engine.INTENT_ACTION_TTS_SERVICE)
+                        val resolveInfo = packageManager.resolveService(ttsIntent, android.content.pm.PackageManager.MATCH_DEFAULT_ONLY)
+                        if (resolveInfo == null) {
+                            Log.e(TAG, "No TTS service available during recovery attempt #$ttsRecoveryAttempts")
+                            InAppLogger.logError("Service", "No TTS service available during recovery attempt #$ttsRecoveryAttempts")
+                            
+                            // Try again if we haven't exceeded max attempts
+                            if (ttsRecoveryAttempts < MAX_TTS_RECOVERY_ATTEMPTS) {
+                                attemptTtsRecovery("No TTS service available")
+                            }
+                            return@Runnable
+                        }
+                        Log.d(TAG, "TTS service found during recovery: ${resolveInfo.serviceInfo.packageName}")
+                        InAppLogger.log("Service", "TTS service found during recovery: ${resolveInfo.serviceInfo.packageName}")
+                    } catch (e: Exception) {
+                        Log.w(TAG, "Could not check TTS service availability during recovery", e)
+                        InAppLogger.log("Service", "Could not check TTS service availability during recovery: ${e.message}")
+                    }
+                }
+                
+                // 5. Reinitialize TTS
                 textToSpeech = TextToSpeech(this, this)
                 
-                // 5. Set up another timeout for this recovery attempt
+                // 6. Set up timeout for this recovery attempt
+                val timeout = getTtsInitTimeout()
                 android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
                     if (!isTtsInitialized) {
-                        Log.e(TAG, "TTS recovery attempt #$ttsRecoveryAttempts timed out")
-                        InAppLogger.logError("Service", "TTS recovery attempt #$ttsRecoveryAttempts timed out")
+                        Log.e(TAG, "TTS recovery attempt #$ttsRecoveryAttempts timed out after ${timeout}ms")
+                        InAppLogger.logError("Service", "TTS recovery attempt #$ttsRecoveryAttempts timed out after ${timeout}ms")
                         
                         // Try again if we haven't exceeded max attempts
                         if (ttsRecoveryAttempts < MAX_TTS_RECOVERY_ATTEMPTS) {
@@ -866,7 +979,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         ttsRecoveryAttempts = 0
                         consecutiveTtsFailures = 0
                     }
-                }, 10000) // 10 second timeout
+                }, timeout)
                 
             } catch (e: Exception) {
                 Log.e(TAG, "Error during TTS recovery attempt #$ttsRecoveryAttempts", e)
@@ -874,12 +987,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 
                 // Try again if we haven't exceeded max attempts
                 if (ttsRecoveryAttempts < MAX_TTS_RECOVERY_ATTEMPTS) {
-                    attemptTtsRecovery("Recovery error")
+                    attemptTtsRecovery("Recovery error: ${e.message}")
                 }
             }
         }
         
-        ttsRecoveryHandler?.postDelayed(ttsRecoveryRunnable!!, TTS_RECOVERY_DELAY_MS)
+        ttsRecoveryHandler?.postDelayed(ttsRecoveryRunnable!!, actualDelay)
     }
     
     /**
@@ -1094,11 +1207,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 consecutiveTtsFailures = 0
                 
             } else {
-                Log.e(TAG, "TextToSpeech initialization failed with status: $status")
-                InAppLogger.logError("Service", "TextToSpeech initialization failed with status: $status")
+                val errorMessage = getTtsErrorMessage(status)
+                Log.e(TAG, "TextToSpeech initialization failed with status: $status - $errorMessage")
+                InAppLogger.logError("Service", "TextToSpeech initialization failed with status: $status - $errorMessage")
                 
                 // Attempt recovery for initialization failures
-                attemptTtsRecovery("Initialization failed with status: $status")
+                attemptTtsRecovery("Initialization failed with status: $status - $errorMessage")
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error in TTS onInit", e)

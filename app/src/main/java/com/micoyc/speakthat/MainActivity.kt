@@ -641,17 +641,90 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             InAppLogger.logTTSEvent("TTS initialized successfully", "MainActivity")
             Log.d(TAG, "TextToSpeech initialized successfully for MainActivity")
         } else {
-            Log.e(TAG, "TextToSpeech initialization failed with status: $status")
-            InAppLogger.logTTSEvent("TTS initialization failed", "Status: $status")
+            val errorMessage = getTtsErrorMessage(status)
+            Log.e(TAG, "TextToSpeech initialization failed with status: $status - $errorMessage")
+            InAppLogger.logTTSEvent("TTS initialization failed", "Status: $status - $errorMessage")
             
             // Log device info for debugging
             val deviceInfo = "Device: ${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}, " +
                            "Android: ${android.os.Build.VERSION.RELEASE} (API ${android.os.Build.VERSION.SDK_INT})"
             Log.e(TAG, "Device info: $deviceInfo")
-            InAppLogger.logError("MainActivity", "TTS init failed on $deviceInfo")
+            InAppLogger.logError("MainActivity", "TTS init failed on $deviceInfo - $errorMessage")
             
-            // Show user feedback
-            Toast.makeText(this, getString(R.string.main_tts_init_failed), Toast.LENGTH_LONG).show()
+            // Show appropriate user feedback based on error type
+            showTtsErrorFeedback(status, errorMessage)
+        }
+    }
+    
+    /**
+     * Get a human-readable error message for TTS initialization status codes
+     */
+    private fun getTtsErrorMessage(status: Int): String {
+        return when (status) {
+            TextToSpeech.ERROR -> "TTS engine error"
+            TextToSpeech.ERROR_NOT_INSTALLED_YET -> "TTS engine not installed"
+            TextToSpeech.ERROR_OUTPUT -> "TTS output error"
+            TextToSpeech.ERROR_SERVICE -> "TTS service error"
+            TextToSpeech.ERROR_SYNTHESIS -> "TTS synthesis error"
+            TextToSpeech.ERROR_INVALID_REQUEST -> "Invalid TTS request"
+            TextToSpeech.ERROR_NETWORK -> "TTS network error"
+            TextToSpeech.ERROR_NETWORK_TIMEOUT -> "TTS network timeout"
+            -1 -> if (android.os.Build.VERSION.SDK_INT >= 35) {
+                "TTS service not accessible (Android 15 restriction)"
+            } else {
+                "TTS service not accessible"
+            }
+            else -> "Unknown TTS error (status: $status)"
+        }
+    }
+    
+    /**
+     * Show appropriate user feedback based on TTS error type
+     */
+    private fun showTtsErrorFeedback(status: Int, @Suppress("UNUSED_PARAMETER") errorMessage: String) {
+        val message = when (status) {
+            -1 -> if (android.os.Build.VERSION.SDK_INT >= 35) {
+                getString(R.string.tts_init_failed_android15)
+            } else {
+                getString(R.string.tts_init_failed_service_unavailable)
+            }
+            TextToSpeech.ERROR_NOT_INSTALLED_YET -> getString(R.string.tts_init_failed_service_unavailable)
+            else -> getString(R.string.tts_init_failed_generic)
+        }
+        
+        // Show toast with error message
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        
+        // For Android 15 and critical errors, show a dialog with troubleshooting info
+        if (android.os.Build.VERSION.SDK_INT >= 35 || status == -1 || status == TextToSpeech.ERROR_NOT_INSTALLED_YET) {
+            showTtsTroubleshootingDialog()
+        }
+    }
+    
+    /**
+     * Show a dialog with TTS troubleshooting information
+     */
+    private fun showTtsTroubleshootingDialog() {
+        try {
+            android.app.AlertDialog.Builder(this)
+                .setTitle(getString(R.string.tts_troubleshooting_title))
+                .setMessage(getString(R.string.tts_troubleshooting_message))
+                .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                .setNegativeButton("Settings") { _, _ ->
+                    // Open TTS settings
+                    try {
+                        val intent = android.content.Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Could not open accessibility settings", e)
+                        Toast.makeText(this, "Could not open settings", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .show()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error showing TTS troubleshooting dialog", e)
+            // Fallback to just showing the toast
+            Toast.makeText(this, getString(R.string.tts_troubleshooting_message), Toast.LENGTH_LONG).show()
         }
     }
     

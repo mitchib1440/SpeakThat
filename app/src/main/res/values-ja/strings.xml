@@ -1450,6 +1450,17 @@ Starting log display...\nLogs will appear here in real-time.\n
     <!-- AboutActivity Hardcoded Strings -->
     <string name="tts_error_occurred">TTS error occurred</string>
     <string name="tts_initialization_failed">TTS initialization failed</string>
+    
+    <!-- Enhanced TTS Error Messages for Android 15+ -->
+    <string name="tts_init_failed_android15">Android 15でTTS初期化に失敗しました。システム制限が原因の可能性があります。</string>
+    <string name="tts_init_failed_service_unavailable">TTSサービスが利用できません。TTS設定を確認してください。</string>
+    <string name="tts_init_failed_permissions">権限不足によりTTS初期化に失敗しました。アプリを再起動してください。</string>
+    <string name="tts_init_failed_recovery_attempts">複数回の試行後もTTS回復に失敗しました。アプリを再起動するかTTS設定を確認してください。</string>
+    <string name="tts_init_failed_generic">TTS初期化に失敗しました。一部の機能が正常に動作しない可能性があります。</string>
+    <string name="tts_recovery_in_progress">TTSサービスの回復を試行中...</string>
+    <string name="tts_recovery_successful">TTSサービスの回復に成功しました！</string>
+    <string name="tts_troubleshooting_title">TTSトラブルシューティング</string>
+    <string name="tts_troubleshooting_message">TTSが引き続き失敗する場合：\n\n1. 設定 > アクセシビリティ > テキスト読み上げ出力を確認\n2. Google TTSがインストールされ、デフォルトに設定されていることを確認\n3. アプリを再起動\n4. 問題が続く場合はデバイスを再起動</string>
     <!-- GeneralSettingsActivity Hardcoded Strings -->
     <string name="storage_permission_required">Storage permission required for export</string>
     <string name="theme_changed_title">Theme Changed</string>

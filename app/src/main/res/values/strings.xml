@@ -1358,6 +1358,17 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_error_occurred">TTS error occurred</string>
     <string name="tts_initialization_failed">TTS initialization failed</string>
     
+    <!-- Enhanced TTS Error Messages for Android 15+ -->
+    <string name="tts_init_failed_android15">TTS initialization failed on Android 15. This may be due to system restrictions.</string>
+    <string name="tts_init_failed_service_unavailable">TTS service is not available. Please check your TTS settings.</string>
+    <string name="tts_init_failed_permissions">TTS initialization failed due to missing permissions. Please restart the app.</string>
+    <string name="tts_init_failed_recovery_attempts">TTS recovery failed after multiple attempts. Please restart the app or check TTS settings.</string>
+    <string name="tts_init_failed_generic">TTS initialization failed. Some features may not work properly.</string>
+    <string name="tts_recovery_in_progress">Attempting to recover TTS service...</string>
+    <string name="tts_recovery_successful">TTS service recovered successfully!</string>
+    <string name="tts_troubleshooting_title">TTS Troubleshooting</string>
+    <string name="tts_troubleshooting_message">If TTS continues to fail:\n\n1. Check Settings > Accessibility > Text-to-Speech Output\n2. Ensure Google TTS is installed and set as default\n3. Restart the app\n4. Restart your device if the problem persists</string>
+    
     <!-- GeneralSettingsActivity Hardcoded Strings -->
     <string name="storage_permission_required">Storage permission required for export</string>
     <string name="theme_changed_title">Theme Changed</string>
