@@ -140,6 +140,16 @@ public class LanguagePresetManager {
             false
         ));
         
+        // German - complete UI translations available
+        presets.add(new LanguagePreset(
+            "de_DE", 
+            "Deutsch (Deutschland)", 
+            "de_DE", 
+            "de_DE", 
+            null,  // Let system choose best German voice
+            false
+        ));
+        
         // Custom preset - represents user's advanced customizations
         presets.add(new LanguagePreset(
             "custom", 
