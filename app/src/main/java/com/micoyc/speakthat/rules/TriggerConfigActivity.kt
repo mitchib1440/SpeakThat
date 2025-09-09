@@ -359,13 +359,17 @@ class TriggerConfigActivity : AppCompatActivity() {
         }
         
         try {
+            InAppLogger.log("TriggerConfig", "Starting WiFi network selection")
             val wifiManager = applicationContext.getSystemService(android.content.Context.WIFI_SERVICE) as android.net.wifi.WifiManager
             
             if (!wifiManager.isWifiEnabled) {
+                InAppLogger.log("TriggerConfig", "WiFi is disabled - showing dialog")
                 AlertDialog.Builder(this)
                     .setTitle("WiFi Disabled")
                     .setMessage("Please enable WiFi to select networks.")
-                    .setPositiveButton("OK", null)
+                    .setPositiveButton("OK") { _, _ ->
+                        InAppLogger.logUserAction("WiFi disabled dialog dismissed")
+                    }
                     .show()
                 return
             }
@@ -375,6 +379,7 @@ class TriggerConfigActivity : AppCompatActivity() {
             
             // Method 1: Try to get configured networks (works on older Android versions)
             if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.Q) {
+                InAppLogger.log("TriggerConfig", "Using configured networks method for WiFi detection")
                 @Suppress("DEPRECATION")
                 val configuredNetworks = wifiManager.configuredNetworks
                 if (configuredNetworks != null) {
@@ -382,17 +387,22 @@ class TriggerConfigActivity : AppCompatActivity() {
                         @Suppress("DEPRECATION")
                         network.SSID.removeSurrounding("\"")
                     })
+                    InAppLogger.log("TriggerConfig", "Found ${availableNetworks.size} configured WiFi networks")
                 }
             }
             
             // Method 2: Try to get scan results (requires location permission on newer versions)
             if (availableNetworks.isEmpty()) {
+                InAppLogger.log("TriggerConfig", "Using scan results method for WiFi detection")
                 try {
                     val scanResults = wifiManager.scanResults
                     if (scanResults.isNotEmpty()) {
                         availableNetworks.addAll(scanResults.map { result ->
                             result.SSID.removeSurrounding("\"")
                         }.distinct())
+                        InAppLogger.log("TriggerConfig", "Found ${availableNetworks.size} WiFi networks from scan results")
+                    } else {
+                        InAppLogger.log("TriggerConfig", "No WiFi networks found in scan results")
                     }
                 } catch (e: SecurityException) {
                     InAppLogger.logDebug("TriggerConfigActivity", "Cannot access scan results: ${e.message}")
@@ -401,10 +411,12 @@ class TriggerConfigActivity : AppCompatActivity() {
             
             // Method 3: If still no networks, show manual entry dialog
             if (availableNetworks.isEmpty()) {
+                InAppLogger.log("TriggerConfig", "No WiFi networks detected - showing manual entry dialog")
                 AlertDialog.Builder(this)
                     .setTitle("WiFi Networks")
                     .setMessage("Unable to automatically detect WiFi networks. Please manually enter WiFi network names (SSIDs) one per line.\n\nNote: You can also try enabling location services and granting location permission to automatically detect nearby networks.")
                     .setPositiveButton("OK") { _, _ ->
+                        InAppLogger.logUserAction("WiFi manual entry dialog - OK clicked")
                         binding.editNetworkSSIDs.requestFocus()
                     }
                     .show()
@@ -415,10 +427,13 @@ class TriggerConfigActivity : AppCompatActivity() {
             val uniqueNetworks = availableNetworks.filter { it.isNotEmpty() }.distinct().sorted()
             
             if (uniqueNetworks.isEmpty()) {
+                InAppLogger.log("TriggerConfig", "No valid WiFi networks found after filtering")
                 AlertDialog.Builder(this)
                     .setTitle("No Networks Found")
                     .setMessage("No WiFi networks found. Please connect to some networks first or manually enter network names.")
-                    .setPositiveButton("OK", null)
+                    .setPositiveButton("OK") { _, _ ->
+                        InAppLogger.logUserAction("No WiFi networks found dialog dismissed")
+                    }
                     .show()
                 return
             }
@@ -905,6 +920,7 @@ class TriggerConfigActivity : AppCompatActivity() {
     }
     
     private fun requestBluetoothPermissions() {
+        InAppLogger.log("TriggerConfig", "Requesting Bluetooth permissions")
         val permissions = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
             arrayOf(
                 android.Manifest.permission.BLUETOOTH_CONNECT,
@@ -921,6 +937,7 @@ class TriggerConfigActivity : AppCompatActivity() {
     }
     
     private fun requestWifiPermissions() {
+        InAppLogger.log("TriggerConfig", "Requesting WiFi permissions")
         val permissions = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
             arrayOf(android.Manifest.permission.NEARBY_WIFI_DEVICES)
         } else {

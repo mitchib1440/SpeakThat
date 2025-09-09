@@ -738,6 +738,42 @@
 
                     </LinearLayout>
 
+                    <!-- External Crash Logs Section -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginBottom="16dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnExportExternalCrashLogs"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            android:text="Export External Crash Logs"
+                            android:textSize="12sp"
+                            android:textColor="@color/red_100"
+                            android:strokeColor="@color/red_100"
+                            android:visibility="gone" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnOpenCrashLogsFolder"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
+                            android:text="Open Crash Logs Folder"
+                            android:textSize="12sp"
+                            android:textColor="@color/red_100"
+                            android:strokeColor="@color/red_100"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
                     <!-- Debug Buttons (temporary) -->
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -786,6 +822,30 @@
                             android:textColor="@color/white_100"
                             app:icon="@drawable/ic_play_arrow_24"
                             app:iconTint="@color/white_100"
+                            app:iconGravity="textStart"
+                            app:iconPadding="8dp" />
+
+                    </LinearLayout>
+
+                    <!-- Crash Test Button (DANGER ZONE) -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginBottom="16dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnTestCrash"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="💥 Test Crash (DANGER)"
+                            android:textSize="12sp"
+                            android:textColor="@color/red_100"
+                            app:strokeColor="@color/red_100"
+                            app:icon="@drawable/warning_24px"
+                            app:iconTint="@color/red_100"
                             app:iconGravity="textStart"
                             app:iconPadding="8dp" />
 

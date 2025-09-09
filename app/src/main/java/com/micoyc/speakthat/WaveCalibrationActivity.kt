@@ -74,7 +74,9 @@ class WaveCalibrationActivity : AppCompatActivity(), SensorEventListener {
             Log.d(TAG, "WaveCalibrationActivity onCreate completed successfully")
         } catch (e: Exception) {
             Log.e(TAG, "WaveCalibrationActivity onCreate failed", e)
+            InAppLogger.logError("WaveCalibration", "Activity creation failed: ${e.message}")
             Toast.makeText(this, "Failed to initialize calibration: ${e.message}", Toast.LENGTH_LONG).show()
+            InAppLogger.logUserAction("Wave calibration initialization failed - user feedback shown")
             finish()
         }
     }
@@ -112,18 +114,22 @@ class WaveCalibrationActivity : AppCompatActivity(), SensorEventListener {
     
     private fun setupUI() {
         binding.btnStartCalibration.setOnClickListener {
+            InAppLogger.logUserAction("Wave calibration start button clicked")
             startCalibration()
         }
         
         binding.btnRecalibrate.setOnClickListener {
+            InAppLogger.logUserAction("Wave calibration recalibrate button clicked")
             startCalibration()
         }
         
         binding.btnConfirm.setOnClickListener {
+            InAppLogger.logUserAction("Wave calibration confirm button clicked")
             saveCalibrationAndFinish()
         }
         
         binding.btnDisable.setOnClickListener {
+            InAppLogger.logUserAction("Wave calibration disable button clicked")
             disableWaveToStop()
         }
         
@@ -391,6 +397,7 @@ class WaveCalibrationActivity : AppCompatActivity(), SensorEventListener {
         InAppLogger.log("WaveCalibration", "Calibration saved successfully - Max: ${maxDistance}cm, Threshold: ${calculatedThreshold}cm")
         
         Toast.makeText(this, "Wave detection calibrated successfully!", Toast.LENGTH_SHORT).show()
+        InAppLogger.logUserAction("Wave calibration completed successfully - user feedback shown")
         setResult(RESULT_OK)
         
         // Add a small delay to ensure the result is set before finishing
@@ -409,6 +416,7 @@ class WaveCalibrationActivity : AppCompatActivity(), SensorEventListener {
         Log.d(TAG, "Wave-to-stop disabled by user")
         
         Toast.makeText(this, "Wave-to-stop disabled", Toast.LENGTH_SHORT).show()
+        InAppLogger.logUserAction("Wave-to-stop disabled - user feedback shown")
         setResult(RESULT_CANCELED)
         finish()
     }

@@ -79,6 +79,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Development Settings");
         }
 
+        InAppLogger.logAppLifecycle("Development Settings created", "DevelopmentSettingsActivity");
         initializeUI();
         loadSettings();
         // Don't start log updates in onCreate - wait for onResume
@@ -209,12 +210,17 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         // Set up crash log controls
         binding.btnViewCrashLogs.setOnClickListener(v -> showCrashLogs());
         binding.btnClearCrashLogs.setOnClickListener(v -> clearCrashLogs());
+        binding.btnExportExternalCrashLogs.setOnClickListener(v -> exportExternalCrashLogs());
+        binding.btnOpenCrashLogsFolder.setOnClickListener(v -> openCrashLogsFolder());
         
         // Set up debug crash log button
         binding.btnDebugCrashLogs.setOnClickListener(v -> showCrashLogDebugInfo());
         
         // Set up test Lower Audio button
         binding.btnTestLowerAudio.setOnClickListener(v -> testLowerAudioCompatibility());
+        
+        // Set up crash test button
+        binding.btnTestCrash.setOnClickListener(v -> testCrash());
         
 
         
@@ -309,16 +315,26 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
     private void updateCrashLogButtonVisibility() {
         // Show crash log buttons only if crash logs exist
         boolean hasCrashLogs = InAppLogger.hasCrashLogs();
+        boolean hasExternalCrashLogs = InAppLogger.hasExternalCrashLogs();
+        
         binding.btnViewCrashLogs.setVisibility(hasCrashLogs ? View.VISIBLE : View.GONE);
         binding.btnClearCrashLogs.setVisibility(hasCrashLogs ? View.VISIBLE : View.GONE);
+        binding.btnExportExternalCrashLogs.setVisibility(hasExternalCrashLogs ? View.VISIBLE : View.GONE);
+        binding.btnOpenCrashLogsFolder.setVisibility(hasExternalCrashLogs ? View.VISIBLE : View.GONE);
         
         if (hasCrashLogs) {
             binding.btnViewCrashLogs.setText("📄 View Crash Logs");
             binding.btnClearCrashLogs.setText("🗑️ " + getString(R.string.button_clear_crash_logs));
         }
         
+        if (hasExternalCrashLogs) {
+            java.util.List<java.io.File> externalCrashLogs = InAppLogger.getExternalCrashLogs();
+            binding.btnExportExternalCrashLogs.setText("📤 Export External (" + externalCrashLogs.size() + ")");
+            binding.btnOpenCrashLogsFolder.setText("📁 Open Folder");
+        }
+        
         // Debug: Log the crash log status
-        InAppLogger.log("Development", "Crash log status check - Has crash logs: " + hasCrashLogs);
+        InAppLogger.log("Development", "Crash log status check - Has crash logs: " + hasCrashLogs + ", Has external crash logs: " + hasExternalCrashLogs);
     }
 
     private void showCrashLogs() {
@@ -434,26 +450,157 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             .setNegativeButton(R.string.button_cancel, null)
             .show();
     }
+    
+    private void exportExternalCrashLogs() {
+        try {
+            java.util.List<java.io.File> externalCrashLogs = InAppLogger.getExternalCrashLogs();
+            if (externalCrashLogs.isEmpty()) {
+                Toast.makeText(this, "No external crash logs found", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
+            // Create a combined crash log file
+            String timestamp = new java.text.SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", java.util.Locale.getDefault()).format(new java.util.Date());
+            StringBuilder combinedContent = new StringBuilder();
+            
+            combinedContent.append("SpeakThat! External Crash Logs Export\n");
+            combinedContent.append("Generated: ").append(new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(new java.util.Date())).append("\n");
+            combinedContent.append("Total Crash Logs: ").append(externalCrashLogs.size()).append("\n");
+            combinedContent.append("===========================================\n\n");
+            
+            for (java.io.File crashFile : externalCrashLogs) {
+                combinedContent.append("=== ").append(crashFile.getName()).append(" ===\n");
+                combinedContent.append("Created: ").append(new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(new java.util.Date(crashFile.lastModified()))).append("\n");
+                combinedContent.append("Size: ").append(crashFile.length()).append(" bytes\n");
+                combinedContent.append("Path: ").append(crashFile.getAbsolutePath()).append("\n\n");
+                
+                try {
+                    String content = new String(java.nio.file.Files.readAllBytes(crashFile.toPath()));
+                    combinedContent.append(content);
+                } catch (Exception e) {
+                    combinedContent.append("Error reading file: ").append(e.getMessage()).append("\n");
+                }
+                combinedContent.append("\n\n");
+            }
+            
+            // Create and share the combined file
+            java.io.File exportFile = FileExportHelper.createExportFile(this, "exports", "SpeakThat_All_Crash_Logs_" + timestamp + ".txt", combinedContent.toString());
+            
+            if (exportFile != null) {
+                android.net.Uri fileUri = androidx.core.content.FileProvider.getUriForFile(
+                    this,
+                    getApplicationContext().getPackageName() + ".fileprovider",
+                    exportFile
+                );
+                
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "SpeakThat! All Crash Logs - " + timestamp);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "SpeakThat! All crash logs attached. Please send this to the developer for analysis.");
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                
+                startActivity(Intent.createChooser(shareIntent, "Export All Crash Logs"));
+                
+                Toast.makeText(this, "All crash logs exported! File saved to: " + exportFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                InAppLogger.log("Development", "All external crash logs exported: " + exportFile.getName());
+            } else {
+                Toast.makeText(this, "Failed to create export file", Toast.LENGTH_SHORT).show();
+                InAppLogger.logError("Development", "Failed to create external crash logs export file");
+            }
+            
+        } catch (Exception e) {
+            Toast.makeText(this, "Failed to export external crash logs: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            InAppLogger.logError("Development", "Failed to export external crash logs: " + e.getMessage());
+        }
+    }
+    
+    private void openCrashLogsFolder() {
+        try {
+            String crashLogsDir = InAppLogger.getExternalCrashLogsDirectory();
+            if (crashLogsDir == null) {
+                Toast.makeText(this, "Crash logs directory not available", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
+            java.io.File crashLogsFolder = new java.io.File(crashLogsDir);
+            if (!crashLogsFolder.exists()) {
+                Toast.makeText(this, "Crash logs folder does not exist", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
+            android.net.Uri folderUri = androidx.core.content.FileProvider.getUriForFile(
+                this,
+                getApplicationContext().getPackageName() + ".fileprovider",
+                crashLogsFolder
+            );
+            
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(folderUri, "resource/folder");
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            
+            try {
+                startActivity(intent);
+                InAppLogger.log("Development", "Opened crash logs folder: " + crashLogsDir);
+            } catch (Exception e) {
+                // Fallback: show folder path in a dialog
+                new AlertDialog.Builder(this)
+                    .setTitle("Crash Logs Folder")
+                    .setMessage("Crash logs are stored in:\n\n" + crashLogsDir + "\n\nYou can access this folder using a file manager app.")
+                    .setPositiveButton("Copy Path", (dialog, which) -> {
+                        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(android.content.Context.CLIPBOARD_SERVICE);
+                        android.content.ClipData clip = android.content.ClipData.newPlainText("Crash Logs Path", crashLogsDir);
+                        clipboard.setPrimaryClip(clip);
+                        Toast.makeText(this, "Path copied to clipboard", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Close", null)
+                    .show();
+                
+                InAppLogger.log("Development", "Showed crash logs folder path: " + crashLogsDir);
+            }
+            
+        } catch (Exception e) {
+            Toast.makeText(this, "Failed to open crash logs folder: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            InAppLogger.logError("Development", "Failed to open crash logs folder: " + e.getMessage());
+        }
+    }
 
     private void showCrashLogDebugInfo() {
         // Get detailed crash log status information
         boolean hasCrashLogs = InAppLogger.hasCrashLogs();
+        boolean hasExternalCrashLogs = InAppLogger.hasExternalCrashLogs();
         String crashLogs = InAppLogger.getCrashLogs();
+        java.util.List<java.io.File> externalCrashLogs = InAppLogger.getExternalCrashLogs();
+        String externalCrashLogsDir = InAppLogger.getExternalCrashLogsDirectory();
         
         StringBuilder debugInfo = new StringBuilder();
         debugInfo.append("=== CRASH LOG DEBUG INFO ===\n\n");
-        debugInfo.append("Has Crash Logs: ").append(hasCrashLogs).append("\n");
+        debugInfo.append("Internal Crash Logs: ").append(hasCrashLogs).append("\n");
+        debugInfo.append("External Crash Logs: ").append(hasExternalCrashLogs).append("\n");
+        debugInfo.append("External Crash Log Count: ").append(externalCrashLogs.size()).append("\n");
+        debugInfo.append("External Crash Logs Directory: ").append(externalCrashLogsDir != null ? externalCrashLogsDir : "Not available").append("\n");
         debugInfo.append("Crash Log Content Length: ").append(crashLogs.length()).append(" characters\n");
         debugInfo.append("Logger Initialized: ").append(InAppLogger.getLogCount() > 0).append("\n");
         debugInfo.append("Current Log Count: ").append(InAppLogger.getLogCount()).append("\n\n");
         
+        if (hasExternalCrashLogs && !externalCrashLogs.isEmpty()) {
+            debugInfo.append("--- EXTERNAL CRASH LOGS ---\n");
+            for (java.io.File crashFile : externalCrashLogs) {
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+                debugInfo.append("• ").append(crashFile.getName()).append(" (").append(sdf.format(new java.util.Date(crashFile.lastModified()))).append(")\n");
+                debugInfo.append("  Size: ").append(crashFile.length()).append(" bytes\n");
+                debugInfo.append("  Path: ").append(crashFile.getAbsolutePath()).append("\n");
+            }
+            debugInfo.append("\n");
+        }
+        
         if (hasCrashLogs) {
-            debugInfo.append("--- CRASH LOG PREVIEW ---\n");
+            debugInfo.append("--- INTERNAL CRASH LOG PREVIEW ---\n");
             debugInfo.append(crashLogs.length() > 500 ? 
                 crashLogs.substring(0, 500) + "...\n[TRUNCATED]" : 
                 crashLogs);
         } else {
-            debugInfo.append("--- NO CRASH LOGS FOUND ---\n");
+            debugInfo.append("--- NO INTERNAL CRASH LOGS FOUND ---\n");
             debugInfo.append("Possible reasons:\n");
             debugInfo.append("• No crashes have occurred\n");
             debugInfo.append("• Crash occurred before logger initialization\n");
@@ -627,6 +774,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         
         Toast.makeText(this, "Filter created! Similar notifications will be " + action + " (" + type + ")", 
                       Toast.LENGTH_LONG).show();
+        InAppLogger.logUserAction("Filter creation success toast shown: " + action + " (" + type + ")", "");
         
         String logDetails = filterType == NotificationFilterHelper.FilterType.APP_SPECIFIC 
             ? "Package: " + suggestion.packageName + " (" + suggestion.appName + ")"
@@ -833,42 +981,49 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_VERBOSE_LOGGING, enabled);
         editor.apply();
+        InAppLogger.log("Development", "Verbose logging setting saved: " + enabled);
     }
 
     private void saveLogFilters(boolean enabled) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_LOG_FILTERS, enabled);
         editor.apply();
+        InAppLogger.log("Development", "Log filters setting saved: " + enabled);
     }
 
     private void saveLogNotifications(boolean enabled) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_LOG_NOTIFICATIONS, enabled);
         editor.apply();
+        InAppLogger.log("Development", "Log notifications setting saved: " + enabled);
     }
 
     private void saveLogUserActions(boolean enabled) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_LOG_USER_ACTIONS, enabled);
         editor.apply();
+        InAppLogger.log("Development", "Log user actions setting saved: " + enabled);
     }
 
     private void saveLogSystemEvents(boolean enabled) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_LOG_SYSTEM_EVENTS, enabled);
         editor.apply();
+        InAppLogger.log("Development", "Log system events setting saved: " + enabled);
     }
 
     private void saveLogSensitiveData(boolean enabled) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_LOG_SENSITIVE_DATA, enabled);
         editor.apply();
+        InAppLogger.log("Development", "Log sensitive data setting saved: " + enabled);
     }
 
     private void saveDisableMediaFallback(boolean enabled) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_DISABLE_MEDIA_FALLBACK, enabled);
         editor.apply();
+        InAppLogger.log("Development", "Disable media fallback setting saved: " + enabled);
     }
 
 
@@ -882,10 +1037,12 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             // If there are new logs, refresh immediately
             refreshLogs();
             Toast.makeText(this, "New logs found and refreshed!", Toast.LENGTH_SHORT).show();
+            InAppLogger.logUserAction("Log refresh - new logs found toast shown", "");
         } else {
             // If no new logs, just refresh to show current state
             refreshLogs();
             Toast.makeText(this, "Logs refreshed - no new entries", Toast.LENGTH_SHORT).show();
+            InAppLogger.logUserAction("Log refresh - no new entries toast shown", "");
         }
         
         InAppLogger.log("Development", "Manual log check triggered - new logs: " + hasNewLogs);
@@ -1254,12 +1411,14 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
                     .setPositiveButton(R.string.button_reset_cache, (dialog, which) -> {
                         updateManager.resetGooglePlayDetectionCache();
                         Toast.makeText(this, "Cache reset. Re-run detection to see changes.", Toast.LENGTH_LONG).show();
+                        InAppLogger.logUserAction("Installation source cache reset toast shown", "");
                     })
                     .setNegativeButton(R.string.button_re_detect, (dialog, which) -> {
                         updateManager.resetGooglePlayDetectionCache();
                         // Force a fresh detection
                         boolean newResult = updateManager.isInstalledFromGooglePlay();
                         Toast.makeText(this, "Re-detection complete. Result: " + newResult, Toast.LENGTH_LONG).show();
+                        InAppLogger.logUserAction("Installation source re-detection complete toast shown: " + newResult, "");
                         // Show the updated debug info
                         showInstallationSourceDebug();
                     })
@@ -1324,6 +1483,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             reviewManager.showReminderDialog();
             
             Toast.makeText(this, "Review reminder dialog shown", Toast.LENGTH_SHORT).show();
+            InAppLogger.logUserAction("Review reminder test dialog shown toast", "");
         } catch (Exception e) {
             InAppLogger.logError("Development", "Error testing review reminder: " + e.getMessage());
             
@@ -1343,6 +1503,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             reviewManager.resetReminderState();
             
             Toast.makeText(this, "Review reminder state reset", Toast.LENGTH_SHORT).show();
+            InAppLogger.logUserAction("Review reminder state reset toast shown", "");
         } catch (Exception e) {
             InAppLogger.logError("Development", "Error resetting review reminder: " + e.getMessage());
             
@@ -1443,5 +1604,33 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
                 resultBuilder.show();
             });
         }).start();
+    }
+    
+    private void testCrash() {
+        // Show confirmation dialog with strong warning
+        new AlertDialog.Builder(this)
+            .setTitle("💥 Test Crash - DANGER ZONE")
+            .setMessage("This will intentionally crash the app for development and debugging purposes.\n\n" +
+                       "⚠️ WARNING: This will immediately terminate the app!\n" +
+                       "⚠️ Make sure you have saved any important work!\n" +
+                       "⚠️ The crash will be logged and can be used to test the crash logging system.\n\n" +
+                       "Are you absolutely sure you know what you're doing?")
+            .setPositiveButton("YES, CRASH THE APP", (dialog, which) -> {
+                // Log the intentional crash for debugging
+                InAppLogger.log("CrashTest", "Intentional crash triggered by user for testing purposes");
+                InAppLogger.logSystemEvent("Crash Test", "User initiated crash test from development settings");
+                
+                // Show a brief "crashing..." message
+                Toast.makeText(this, "💥 CRASHING IN 2 SECONDS...", Toast.LENGTH_SHORT).show();
+                
+                // Delay the crash slightly to allow the toast to show
+                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                    // Create a fatal exception that will be caught by the crash handler
+                    throw new RuntimeException("Intentional crash for testing crash logging system - triggered from development settings");
+                }, 2000);
+            })
+            .setNegativeButton("Cancel", null)
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show();
     }
 }

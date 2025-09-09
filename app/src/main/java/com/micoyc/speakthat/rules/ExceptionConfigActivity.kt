@@ -303,13 +303,17 @@ class ExceptionConfigActivity : AppCompatActivity() {
         }
         
         try {
+            InAppLogger.log("ExceptionConfig", "Starting WiFi network selection")
             val wifiManager = applicationContext.getSystemService(android.content.Context.WIFI_SERVICE) as android.net.wifi.WifiManager
             
             if (!wifiManager.isWifiEnabled) {
+                InAppLogger.log("ExceptionConfig", "WiFi is disabled - showing dialog")
                 AlertDialog.Builder(this)
                     .setTitle("WiFi Disabled")
                     .setMessage("Please enable WiFi to select networks.")
-                    .setPositiveButton("OK", null)
+                    .setPositiveButton("OK") { _, _ ->
+                        InAppLogger.logUserAction("WiFi disabled dialog dismissed")
+                    }
                     .show()
                 return
             }

@@ -4591,32 +4591,38 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 mediaBehavior = sharedPreferences?.getString(KEY_MEDIA_BEHAVIOR, "ignore") ?: "ignore"
                 duckingVolume = sharedPreferences?.getInt(KEY_DUCKING_VOLUME, 30) ?: 30
                 Log.d(TAG, "Media behavior settings updated - mode: $mediaBehavior, ducking volume: $duckingVolume%")
+                InAppLogger.log("Service", "Media behavior settings updated - mode: $mediaBehavior, ducking volume: $duckingVolume%")
             }
             KEY_APP_LIST_MODE, KEY_APP_LIST, KEY_APP_PRIVATE_FLAGS, 
             KEY_WORD_BLACKLIST, KEY_WORD_BLACKLIST_PRIVATE, KEY_WORD_REPLACEMENTS -> {
                 // Reload filter settings
                 loadFilterSettings()
                 Log.d(TAG, "Filter settings updated")
+                InAppLogger.log("Service", "Filter settings updated")
             }
             KEY_SHAKE_TO_STOP_ENABLED, KEY_SHAKE_THRESHOLD, KEY_SHAKE_TIMEOUT_SECONDS, KEY_WAVE_TIMEOUT_SECONDS, "pocket_mode_enabled" -> {
                 // Reload shake and wave settings
                 refreshSettings()
                 Log.d(TAG, "Shake/wave settings updated")
+                InAppLogger.log("Service", "Shake/wave settings updated")
             }
             KEY_DELAY_BEFORE_READOUT -> {
                 // Reload delay settings
                 delayBeforeReadout = sharedPreferences?.getInt(KEY_DELAY_BEFORE_READOUT, 0) ?: 0
                 Log.d(TAG, "Delay settings updated - delay: ${delayBeforeReadout}s")
+                InAppLogger.log("Service", "Delay settings updated - delay: ${delayBeforeReadout}s")
             }
             KEY_MEDIA_FILTERING_ENABLED, KEY_MEDIA_FILTER_EXCEPTED_APPS, KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, KEY_MEDIA_FILTERED_APPS, KEY_MEDIA_FILTERED_APPS_PRIVATE -> {
                 // Reload media filtering settings
                 loadFilterSettings()
                 Log.d(TAG, "Media filtering settings updated")
+                InAppLogger.log("Service", "Media filtering settings updated")
             }
             KEY_PERSISTENT_FILTERING_ENABLED -> {
                 // Reload persistent filtering settings
                 isPersistentFilteringEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_FILTERING_ENABLED, true) ?: true
                 Log.d(TAG, "Persistent filtering enabled updated: $isPersistentFilteringEnabled")
+                InAppLogger.log("Service", "Persistent filtering enabled updated: $isPersistentFilteringEnabled")
             }
             "filter_persistent", "filter_silent", "filter_foreground_services", "filter_low_priority", "filter_system_notifications" -> {
                 // Reload persistent filtering category settings
@@ -4626,15 +4632,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 filterLowPriority = sharedPreferences?.getBoolean("filter_low_priority", false) ?: false
                 filterSystemNotifications = sharedPreferences?.getBoolean("filter_system_notifications", false) ?: false
                 Log.d(TAG, "Persistent filtering category settings updated - persistent: $filterPersistent, silent: $filterSilent, foreground: $filterForegroundServices, low: $filterLowPriority, system: $filterSystemNotifications")
+                InAppLogger.log("Service", "Persistent filtering category settings updated - persistent: $filterPersistent, silent: $filterSilent, foreground: $filterForegroundServices, low: $filterLowPriority, system: $filterSystemNotifications")
             }
             KEY_COOLDOWN_APPS -> {
                 loadCooldownSettings()
                 Log.d(TAG, "Cooldown settings updated - apps: ${appCooldownSettings.size}")
+                InAppLogger.log("Service", "Cooldown settings updated - apps: ${appCooldownSettings.size}")
             }
             KEY_SPEECH_TEMPLATE -> {
                 // Reload speech template
                 speechTemplate = sharedPreferences?.getString(KEY_SPEECH_TEMPLATE, "{app} notified you: {content}") ?: "{app} notified you: {content}"
                 Log.d(TAG, "Speech template updated")
+                InAppLogger.log("Service", "Speech template updated")
             }
             KEY_PERSISTENT_NOTIFICATION -> {
                 // Handle persistent notification setting change
@@ -5125,6 +5134,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             // Reading notification is now integrated into foreground notification
             // hideReadingNotification()
+            
+            // CRITICAL: Clean up media behavior effects (resume paused media)
+            cleanupMediaBehavior()
             
             // CRITICAL: Stop foreground service when TTS is manually stopped
             // This ensures the foreground service notification is properly removed
