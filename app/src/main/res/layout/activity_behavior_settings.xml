@@ -2283,6 +2283,137 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Press to Stop Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="@drawable/gradient_card_subtle_right">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_volume_up_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Press to Stop" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/behavior_press_to_stop_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/behavior_press_to_stop_description"
+                        android:textSize="14sp"
+                        android:textColor="@color/purple_card_text_secondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Permission Requirement Box -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/bg_advanced_voice_section"
+                        android:padding="12dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="8dp">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/warning_24px"
+                                android:contentDescription="Permission Required"
+                                android:layout_marginEnd="6dp"
+                                app:tint="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/behavior_requires_accessibility_permission"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/btnPressToStopInfo"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="More Info"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            app:tint="@color/white_100" />
+
+                    </LinearLayout>
+
+                    <!-- Press to Stop Toggle -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/behavior_enable_press_stop"
+                            android:textSize="16sp"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switchPressToStop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- App Name Customization Section -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"

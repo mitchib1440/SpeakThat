@@ -368,6 +368,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Show persistent notification if enabled and master switch is on
             checkAndShowPersistentNotification()
             
+            // Register broadcast receiver for accessibility service
+            registerAccessibilityBroadcastReceiver()
+            
         } catch (e: Exception) {
             Log.e(TAG, "Critical error during service initialization", e)
             InAppLogger.logError("Service", "Critical initialization error: " + e.message)
@@ -428,6 +431,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Unregister voice settings listener
             voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
             
+            // Unregister accessibility broadcast receiver
+            unregisterAccessibilityBroadcastReceiver()
+            
             // Clear deduplication cache
             recentNotificationKeys.clear()
             Log.d(TAG, "Cleared deduplication cache during cleanup")
@@ -449,6 +455,55 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         } catch (e: Exception) {
             Log.e(TAG, "Error during service cleanup", e)
             InAppLogger.logError("Service", "Error during service cleanup: " + e.message)
+        }
+    }
+    
+    /**
+     * Register broadcast receiver for accessibility service communication
+     */
+    private fun registerAccessibilityBroadcastReceiver() {
+        try {
+            val filter = android.content.IntentFilter("com.micoyc.speakthat.STOP_READING")
+            // Use RECEIVER_NOT_EXPORTED since this is for internal app communication only
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                registerReceiver(accessibilityBroadcastReceiver, filter, android.content.Context.RECEIVER_NOT_EXPORTED)
+            } else {
+                registerReceiver(accessibilityBroadcastReceiver, filter)
+            }
+            Log.d(TAG, "Accessibility broadcast receiver registered")
+            InAppLogger.log("Service", "Accessibility broadcast receiver registered")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error registering accessibility broadcast receiver", e)
+            InAppLogger.logError("Service", "Error registering accessibility broadcast receiver: " + e.message)
+        }
+    }
+    
+    /**
+     * Unregister broadcast receiver for accessibility service communication
+     */
+    private fun unregisterAccessibilityBroadcastReceiver() {
+        try {
+            unregisterReceiver(accessibilityBroadcastReceiver)
+            Log.d(TAG, "Accessibility broadcast receiver unregistered")
+            InAppLogger.log("Service", "Accessibility broadcast receiver unregistered")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error unregistering accessibility broadcast receiver", e)
+            InAppLogger.logError("Service", "Error unregistering accessibility broadcast receiver: " + e.message)
+        }
+    }
+    
+    /**
+     * Broadcast receiver for accessibility service communication
+     */
+    private val accessibilityBroadcastReceiver = object : android.content.BroadcastReceiver() {
+        override fun onReceive(context: android.content.Context?, intent: android.content.Intent?) {
+            when (intent?.action) {
+                "com.micoyc.speakthat.STOP_READING" -> {
+                    Log.d(TAG, "Received STOP_READING broadcast from accessibility service")
+                    InAppLogger.log("Service", "Received STOP_READING broadcast from accessibility service")
+                    stopSpeaking("accessibility service")
+                }
+            }
         }
     }
     

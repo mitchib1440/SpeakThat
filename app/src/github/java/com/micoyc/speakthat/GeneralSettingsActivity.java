@@ -57,6 +57,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         
         setupThemeSettings();
         setupPerformanceSettings();
+        setupAccessibilityPermission();
         setupAutoUpdateSettings();
         setupDataManagement();
         setupThemeIcon();
@@ -302,6 +303,70 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             }
             sharedPreferences.edit().putString("update_check_frequency", frequency).apply();
         });
+    }
+
+    private void setupAccessibilityPermission() {
+        // Accessibility Permission Button
+        // Using findViewById instead of binding due to binding generation issue
+        android.view.View accessibilityButton = findViewById(R.id.buttonAccessibilityPermission);
+        if (accessibilityButton != null) {
+            accessibilityButton.setOnClickListener(v -> {
+                // Check if accessibility service is already enabled
+                if (isAccessibilityServiceEnabled()) {
+                    // Already enabled - show success message
+                    Toast.makeText(this, getString(R.string.accessibility_permission_granted), Toast.LENGTH_SHORT).show();
+                } else {
+                    // Not enabled - show explanation and guide user to settings
+                    showAccessibilityPermissionDialog();
+                }
+            });
+        }
+    }
+    
+    /**
+     * Check if the accessibility service is enabled
+     * Similar to how notification listener permission is checked
+     */
+    private boolean isAccessibilityServiceEnabled() {
+        String packageName = getPackageName();
+        String serviceName = packageName + "/com.micoyc.speakthat.SpeakThatAccessibilityService";
+        
+        String enabledServices = android.provider.Settings.Secure.getString(getContentResolver(), 
+            android.provider.Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+        
+        if (enabledServices != null && !enabledServices.isEmpty()) {
+            String[] services = enabledServices.split(":");
+            for (String service : services) {
+                if (service.equals(serviceName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Show dialog explaining accessibility permission and guide user to enable it
+     */
+    private void showAccessibilityPermissionDialog() {
+        new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.accessibility_permission_explanation_title))
+            .setMessage(getString(R.string.accessibility_permission_explanation_message))
+            .setPositiveButton(getString(R.string.accessibility_permission_open_settings), (dialog, which) -> {
+                // Try to open the specific accessibility service settings first
+                try {
+                    Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                    startActivity(intent);
+                    Toast.makeText(this, "Please find 'SpeakThat Accessibility' in the list and enable it", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    // Fallback to general accessibility settings
+                    Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                    startActivity(intent);
+                    Toast.makeText(this, getString(R.string.accessibility_permission_request), Toast.LENGTH_LONG).show();
+                }
+            })
+            .setNegativeButton(getString(R.string.accessibility_permission_cancel), null)
+            .show();
     }
 
     private void setupDataManagement() {

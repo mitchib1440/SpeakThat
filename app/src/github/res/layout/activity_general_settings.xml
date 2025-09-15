@@ -242,7 +242,50 @@
 
                     </LinearLayout>
 
+                    <!-- Accessibility Permission -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="12dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:id="@+id/buttonAccessibilityPermission">
 
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/general_accessibility_permission"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/general_accessibility_permission_description"
+                                android:textSize="14sp"
+                                android:textColor="@color/purple_card_text_secondary"
+                                android:layout_marginTop="4dp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/arrow_right"
+                            android:textSize="18sp"
+                            android:textColor="@color/purple_card_text_secondary" />
+
+                    </LinearLayout>
 
                     <!-- Background Processing -->
                     <LinearLayout

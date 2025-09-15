@@ -73,6 +73,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String KEY_WAVE_TO_STOP_ENABLED = "wave_to_stop_enabled";
     private static final String KEY_WAVE_THRESHOLD = "wave_threshold";
     private static final String KEY_WAVE_TIMEOUT_SECONDS = "wave_timeout_seconds";
+    private static final String KEY_PRESS_TO_STOP_ENABLED = "press_to_stop_enabled";
     private static final String KEY_POCKET_MODE_ENABLED = "pocket_mode_enabled";
     private static final String KEY_MEDIA_BEHAVIOR = "media_behavior";
     private static final String KEY_DUCKING_VOLUME = "ducking_volume";
@@ -264,6 +265,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.btnDoNotDisturbInfo.setOnClickListener(v -> showDoNotDisturbDialog());
         binding.btnShakeToStopInfo.setOnClickListener(v -> showShakeToStopDialog());
         binding.btnWaveToStopInfo.setOnClickListener(v -> showWaveToStopDialog());
+        binding.btnPressToStopInfo.setOnClickListener(v -> showPressToStopDialog());
         binding.btnDelayInfo.setOnClickListener(v -> showDelayDialog());
         binding.btnAppNamesInfo.setOnClickListener(v -> showCustomAppNamesDialog());
         binding.btnCooldownInfo.setOnClickListener(v -> showCooldownDialog());
@@ -371,6 +373,20 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Set up wave recalibration button
         binding.btnRecalibrateWave.setOnClickListener(v -> {
             launchWaveCalibration();
+        });
+
+        // Set up press to stop toggle
+        binding.switchPressToStop.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Check if accessibility permission is granted
+                if (!isAccessibilityServiceEnabled()) {
+                    // Show dialog explaining accessibility permission requirement
+                    showAccessibilityPermissionRequiredDialog();
+                    buttonView.setChecked(false);
+                    return;
+                }
+            }
+            savePressToStopEnabled(isChecked);
         });
 
         // Set up shake timeout slider
@@ -929,6 +945,14 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             isProgrammaticallySettingSwitch = false;
         }
         updateWaveTimeoutDisplay(waveTimeoutSeconds);
+
+        // Load press to stop settings
+        boolean pressEnabled = sharedPreferences.getBoolean(KEY_PRESS_TO_STOP_ENABLED, false);
+        binding.switchPressToStop.setChecked(pressEnabled);
+        
+        // Disable the switch if accessibility permission is not granted
+        boolean hasAccessibilityPermission = isAccessibilityServiceEnabled();
+        binding.switchPressToStop.setEnabled(hasAccessibilityPermission);
 
         // Load pocket mode setting
         boolean pocketModeEnabled = sharedPreferences.getBoolean(KEY_POCKET_MODE_ENABLED, false);
@@ -1510,6 +1534,12 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private void saveWaveToStopEnabled(boolean enabled) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_WAVE_TO_STOP_ENABLED, enabled);
+        editor.apply();
+    }
+
+    private void savePressToStopEnabled(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_PRESS_TO_STOP_ENABLED, enabled);
         editor.apply();
     }
 
@@ -2162,6 +2192,32 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 .show();
     }
 
+    private void showPressToStopDialog() {
+        // Track dialog usage for analytics
+        trackDialogUsage("press_to_stop_info");
+        
+        String htmlText = getString(R.string.press_to_stop_dialog_message);
+        
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(getString(R.string.press_to_stop_dialog_title))
+                .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
+                .setPositiveButton(R.string.got_it, null)
+                .show();
+    }
+
+    private void showAccessibilityPermissionRequiredDialog() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.accessibility_permission_required_title))
+                .setMessage(getString(R.string.accessibility_permission_required_message))
+                .setPositiveButton(getString(R.string.open_accessibility_settings), (dialog, which) -> {
+                    // Open accessibility settings
+                    Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                    startActivity(intent);
+                })
+                .setNegativeButton(getString(R.string.cancel), null)
+                .show();
+    }
+
     private void showDelayDialog() {
         // Track dialog usage for analytics
         trackDialogUsage("delay_info");
@@ -2604,6 +2660,28 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
      */
     private String loadDuckingFallbackStrategy() {
         return sharedPreferences.getString("ducking_fallback_strategy", "manual");
+    }
+
+    /**
+     * Check if the accessibility service is enabled
+     * Similar to how notification listener permission is checked
+     */
+    private boolean isAccessibilityServiceEnabled() {
+        String packageName = getPackageName();
+        String serviceName = packageName + "/com.micoyc.speakthat.SpeakThatAccessibilityService";
+        
+        String enabledServices = android.provider.Settings.Secure.getString(getContentResolver(), 
+            android.provider.Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+        
+        if (enabledServices != null && !enabledServices.isEmpty()) {
+            String[] services = enabledServices.split(":");
+            for (String service : services) {
+                if (service.equals(serviceName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void trackDialogUsage(String dialogType) {
