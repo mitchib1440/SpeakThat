@@ -863,11 +863,11 @@ This permission is completely optional. Core app functionality works without it.
     
     <!-- Press to Stop Strings -->
     <string name="behavior_press_to_stop_title">Press to Stop</string>
-    <string name="behavior_press_to_stop_description">Stop notification reading by pressing both volume buttons simultaneously. Requires accessibility permission.</string>
+        <string name="behavior_press_to_stop_description">Stop notification reading by pressing both volume buttons simultaneously. Normal volume control still works. Requires accessibility permission.</string>
     <string name="behavior_enable_press_stop">Enable Press to Stop</string>
     <string name="behavior_requires_accessibility_permission">Requires Accessibility Permission</string>
     <string name="press_to_stop_dialog_title">Press to Stop</string>
-    <string name="press_to_stop_dialog_message">Press both volume buttons simultaneously to stop notification reading.<br/><br/><b>🎯 Perfect for hands-free control:</b><br/>• Works from anywhere in the system<br/>• No need to look at the screen<br/>• Quick and reliable<br/><br/><b>⚠️ Requires Accessibility Permission:</b><br/>This feature needs the accessibility permission to detect volume button presses. You can enable it in General Settings.</string>
+        <string name="press_to_stop_dialog_message">Press both volume buttons simultaneously to stop notification reading.<br/><br/><b>🎯 Perfect for hands-free control:</b><br/>• Works from anywhere in the system<br/>• No need to look at the screen<br/>• Quick and reliable<br/>• Normal volume control still works<br/><br/><b>⚠️ Requires Accessibility Permission:</b><br/>This feature needs the accessibility permission to detect volume button presses. You can enable it in General Settings.</string>
     <string name="accessibility_permission_required_title">Accessibility Permission Required</string>
     <string name="accessibility_permission_required_message">Press to Stop requires the accessibility permission to detect volume button presses. Please enable it in General Settings first.</string>
     <string name="open_accessibility_settings">Open Accessibility Settings</string>

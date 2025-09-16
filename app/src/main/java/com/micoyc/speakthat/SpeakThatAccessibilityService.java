@@ -23,6 +23,13 @@ public class SpeakThatAccessibilityService extends AccessibilityService {
     
     private static final String TAG = "SpeakThatAccessibility";
     
+    // Track volume button states for simultaneous press detection
+    private boolean volumeUpPressed = false;
+    private boolean volumeDownPressed = false;
+    private long lastVolumeUpTime = 0;
+    private long lastVolumeDownTime = 0;
+    private static final long SIMULTANEOUS_PRESS_THRESHOLD = 500; // 500ms window
+    
     @Override
     public void onServiceConnected() {
         Log.d(TAG, "Accessibility service connected");
@@ -51,27 +58,58 @@ public class SpeakThatAccessibilityService extends AccessibilityService {
     protected boolean onKeyEvent(KeyEvent event) {
         Log.d(TAG, "Key event received: " + event.getKeyCode() + ", action: " + event.getAction());
         
-        // Handle key events (like volume buttons)
+        // Handle volume button events for simultaneous press detection
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
             switch (event.getKeyCode()) {
                 case KeyEvent.KEYCODE_VOLUME_UP:
                     Log.d(TAG, "Volume UP button pressed");
-                    handleVolumeButtonPress();
-                    return true; // Consume the event
+                    volumeUpPressed = true;
+                    lastVolumeUpTime = System.currentTimeMillis();
+                    checkForSimultaneousPress();
+                    return false; // Let normal volume control work
                 case KeyEvent.KEYCODE_VOLUME_DOWN:
                     Log.d(TAG, "Volume DOWN button pressed");
-                    handleVolumeButtonPress();
-                    return true; // Consume the event
+                    volumeDownPressed = true;
+                    lastVolumeDownTime = System.currentTimeMillis();
+                    checkForSimultaneousPress();
+                    return false; // Let normal volume control work
+            }
+        } else if (event.getAction() == KeyEvent.ACTION_UP) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_VOLUME_UP:
+                    Log.d(TAG, "Volume UP button released");
+                    volumeUpPressed = false;
+                    break;
+                case KeyEvent.KEYCODE_VOLUME_DOWN:
+                    Log.d(TAG, "Volume DOWN button released");
+                    volumeDownPressed = false;
+                    break;
             }
         }
         return super.onKeyEvent(event);
     }
     
     /**
-     * Handle volume button press to stop/pause notification reading
+     * Check if both volume buttons are pressed simultaneously
      */
-    private void handleVolumeButtonPress() {
-        Log.d(TAG, "Volume button pressed - checking if Press to Stop is enabled");
+    private void checkForSimultaneousPress() {
+        long currentTime = System.currentTimeMillis();
+        
+        // Check if both buttons are currently pressed and within the time threshold
+        boolean bothPressed = volumeUpPressed && volumeDownPressed;
+        boolean withinThreshold = Math.abs(lastVolumeUpTime - lastVolumeDownTime) <= SIMULTANEOUS_PRESS_THRESHOLD;
+        
+        if (bothPressed && withinThreshold) {
+            Log.d(TAG, "Both volume buttons pressed simultaneously - checking if Press to Stop is enabled");
+            handleSimultaneousVolumePress();
+        }
+    }
+    
+    /**
+     * Handle simultaneous volume button press to stop notification reading
+     */
+    private void handleSimultaneousVolumePress() {
+        Log.d(TAG, "Simultaneous volume button press detected - checking if Press to Stop is enabled");
         
         // Check if Press to Stop is enabled in settings
         android.content.SharedPreferences prefs = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE);
@@ -83,8 +121,12 @@ public class SpeakThatAccessibilityService extends AccessibilityService {
             // Send broadcast to NotificationReaderService to stop TTS
             Intent intent = new Intent("com.micoyc.speakthat.STOP_READING");
             sendBroadcast(intent);
+            
+            // Reset button states to prevent multiple triggers
+            volumeUpPressed = false;
+            volumeDownPressed = false;
         } else {
-            Log.d(TAG, "Press to Stop is disabled - ignoring volume button press");
+            Log.d(TAG, "Press to Stop is disabled - ignoring simultaneous volume button press");
         }
     }
     
