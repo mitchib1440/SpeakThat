@@ -949,10 +949,19 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
 
         // Load press to stop settings
         boolean pressEnabled = sharedPreferences.getBoolean(KEY_PRESS_TO_STOP_ENABLED, false);
-        binding.switchPressToStop.setChecked(pressEnabled);
-        
-        // Disable the switch if accessibility permission is not granted
         boolean hasAccessibilityPermission = isAccessibilityServiceEnabled();
+        
+        // Only enable the switch if accessibility permission is granted
+        // If permission is not granted, force the setting to false
+        if (!hasAccessibilityPermission && pressEnabled) {
+            // Permission was revoked - disable the feature and save the change
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(KEY_PRESS_TO_STOP_ENABLED, false);
+            editor.apply();
+            pressEnabled = false;
+        }
+        
+        binding.switchPressToStop.setChecked(pressEnabled);
         binding.switchPressToStop.setEnabled(hasAccessibilityPermission);
 
         // Load pocket mode setting

@@ -35,10 +35,14 @@ public class SpeakThatAccessibilityService extends AccessibilityService {
         Log.d(TAG, "Accessibility service connected");
         
         // Read current Press to Stop setting for debugging
+        // Note: The service will automatically disable key event processing if the feature is turned off
         try {
             android.content.SharedPreferences prefs = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE);
             boolean pressToStopEnabled = prefs.getBoolean("press_to_stop_enabled", false);
             Log.d(TAG, "Press to Stop setting: " + pressToStopEnabled);
+            if (!pressToStopEnabled) {
+                Log.d(TAG, "Press to Stop is disabled - key events will be passed through to system");
+            }
         } catch (Exception e) {
             Log.e(TAG, "Error reading settings: " + e.getMessage());
         }
@@ -67,6 +71,13 @@ public class SpeakThatAccessibilityService extends AccessibilityService {
     @Override
     protected boolean onKeyEvent(KeyEvent event) {
         Log.d(TAG, "Key event received: " + event.getKeyCode() + ", action: " + event.getAction());
+
+        // Early exit if Press to Stop is disabled to save resources
+        android.content.SharedPreferences prefs = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE);
+        boolean pressToStopEnabled = prefs.getBoolean("press_to_stop_enabled", false);
+        if (!pressToStopEnabled) {
+            return super.onKeyEvent(event); // Let system handle the event normally
+        }
 
         // Handle volume button events for simultaneous press detection
         if (event.getAction() == KeyEvent.ACTION_DOWN) {

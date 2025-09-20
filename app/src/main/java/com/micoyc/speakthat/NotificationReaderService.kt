@@ -32,6 +32,7 @@ import java.util.HashSet
 import java.util.Locale
 import kotlin.collections.ArrayList
 import com.micoyc.speakthat.rules.RuleManager
+import com.micoyc.speakthat.AccessibilityUtils
 
 class NotificationReaderService : NotificationListenerService(), TextToSpeech.OnInitListener, SensorEventListener, SharedPreferences.OnSharedPreferenceChangeListener {
     
@@ -2610,11 +2611,27 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     /**
      * Attempt direct media session control to pause active media playback.
      * This is the strongest approach for pausing media, bypassing audio focus limitations.
+     * 
+     * ACCESSIBILITY ENHANCEMENT: When accessibility permission is granted, this method
+     * also attempts to send direct media control intents for more reliable pausing.
      */
     private fun tryMediaSessionPause(): Boolean {
         return try {
             Log.d(TAG, "Attempting direct media session control to pause media")
             InAppLogger.log("MediaBehavior", "Attempting direct media session control")
+            
+            // ACCESSIBILITY ENHANCEMENT: Try direct media control intents first if accessibility is available
+            if (AccessibilityUtils.shouldUseEnhancedAudioControl(this)) {
+                Log.d(TAG, "Accessibility permission available - attempting enhanced media control")
+                InAppLogger.log("MediaBehavior", "Accessibility permission available - using enhanced media control")
+                
+                val enhancedPauseSuccess = tryAccessibilityEnhancedMediaPause()
+                if (enhancedPauseSuccess) {
+                    Log.d(TAG, "Accessibility-enhanced media pause successful")
+                    InAppLogger.log("MediaBehavior", "Accessibility-enhanced media pause successful")
+                    return true
+                }
+            }
             
             val mediaSessionManager = getSystemService(Context.MEDIA_SESSION_SERVICE) as MediaSessionManager
             // Use the notification listener service-specific method to bypass permission restrictions
@@ -2659,6 +2676,50 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         } catch (e: Exception) {
             Log.e(TAG, "Media session control failed", e)
             InAppLogger.logError("MediaBehavior", "Media session control failed: ${e.message}")
+            false
+        }
+    }
+    
+    /**
+     * ACCESSIBILITY ENHANCED: Attempt to pause media using direct media control intents
+     * 
+     * This method uses accessibility service privileges to send direct media control
+     * intents, which can be more reliable than media session control on some devices.
+     * 
+     * @return true if media was successfully paused, false otherwise
+     */
+    private fun tryAccessibilityEnhancedMediaPause(): Boolean {
+        return try {
+            Log.d(TAG, "Attempting accessibility-enhanced media pause with direct intents")
+            InAppLogger.log("MediaBehavior", "Attempting accessibility-enhanced media pause")
+            
+            // Send direct media pause intent - this works better with accessibility permission
+            val pauseIntent = Intent(android.content.Intent.ACTION_MEDIA_BUTTON).apply {
+                putExtra(android.content.Intent.EXTRA_KEY_EVENT, 
+                    android.view.KeyEvent(android.view.KeyEvent.ACTION_DOWN, android.view.KeyEvent.KEYCODE_MEDIA_PAUSE))
+            }
+            
+            // Send the intent to all media apps
+            sendBroadcast(pauseIntent)
+            
+            // Also try the play/pause toggle intent
+            val playPauseIntent = Intent(android.content.Intent.ACTION_MEDIA_BUTTON).apply {
+                putExtra(android.content.Intent.EXTRA_KEY_EVENT,
+                    android.view.KeyEvent(android.view.KeyEvent.ACTION_DOWN, android.view.KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE))
+            }
+            
+            sendBroadcast(playPauseIntent)
+            
+            Log.d(TAG, "Accessibility-enhanced media pause intents sent")
+            InAppLogger.log("MediaBehavior", "Accessibility-enhanced media pause intents sent")
+            
+            // Give the system time to process the intents
+            Thread.sleep(100)
+            
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "Accessibility-enhanced media pause failed", e)
+            InAppLogger.logError("MediaBehavior", "Accessibility-enhanced media pause failed: ${e.message}")
             false
         }
     }
@@ -3389,7 +3450,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
             val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4)
             
-            val ttsUsage = when (ttsUsageIndex) {
+            val fallbackTtsUsage = when (ttsUsageIndex) {
                 0 -> android.media.AudioAttributes.USAGE_MEDIA
                 1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
                 2 -> android.media.AudioAttributes.USAGE_ALARM
@@ -3398,11 +3459,27 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
             }
             
+            // ACCESSIBILITY ENHANCEMENT: Use enhanced audio attributes when accessibility permission is available
+            val (ttsUsage, ttsContent) = AccessibilityUtils.getEnhancedAudioAttributes(
+                this, 
+                fallbackTtsUsage, 
+                android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+            )
+            
             Log.d(TAG, "Trying alternative ducking focus with TTS usage: $ttsUsage")
             InAppLogger.log("MediaBehavior", "Trying alternative ducking focus strategy")
             
+            if (AccessibilityUtils.shouldUseEnhancedAudioControl(this)) {
+                Log.d(TAG, "Using accessibility-enhanced alternative ducking focus")
+                InAppLogger.log("MediaBehavior", "Accessibility-enhanced alternative ducking focus")
+            }
+            
             // TRICK: Try using USAGE_ALARM for TTS during ducking - some devices handle this better
-            val alternativeUsage = if (ttsUsage == android.media.AudioAttributes.USAGE_MEDIA) {
+            // But prioritize accessibility-enhanced usage if available
+            val alternativeUsage = if (AccessibilityUtils.shouldUseEnhancedAudioControl(this)) {
+                // When accessibility is available, use the enhanced usage directly
+                ttsUsage
+            } else if (ttsUsage == android.media.AudioAttributes.USAGE_MEDIA) {
                 android.media.AudioAttributes.USAGE_ALARM
             } else {
                 ttsUsage
@@ -3411,13 +3488,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Create audio attributes for alternative ducking focus
             val alternativeAudioAttributes = android.media.AudioAttributes.Builder()
                 .setUsage(alternativeUsage)
-                .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                .setContentType(ttsContent)
                 .build()
             
-            // Create focus request for alternative ducking
-            val alternativeFocusRequest = android.media.AudioFocusRequest.Builder(
+            // ACCESSIBILITY ENHANCEMENT: Use enhanced audio focus flags when accessibility permission is available
+            val focusFlags = AccessibilityUtils.getEnhancedAudioFocusFlags(
+                this,
                 android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
             )
+            
+            // Create focus request for alternative ducking
+            val alternativeFocusRequest = android.media.AudioFocusRequest.Builder(focusFlags)
                 .setAudioAttributes(alternativeAudioAttributes)
                 .setOnAudioFocusChangeListener { focusChange ->
                     handleAlternativeDuckingFocusChange(focusChange)
@@ -3595,7 +3676,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
             
             // Convert index to actual usage constant (matching VoiceSettingsActivity)
-            val ttsUsage = when (ttsUsageIndex) {
+            val fallbackTtsUsage = when (ttsUsageIndex) {
                 0 -> android.media.AudioAttributes.USAGE_MEDIA
                 1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
                 2 -> android.media.AudioAttributes.USAGE_ALARM
@@ -3604,9 +3685,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE // Safe fallback
             }
             
-            // CRITICAL FIX: Always use CONTENT_TYPE_SPEECH for TTS to prevent it from being ducked
-            // The user's content_type preference is for other audio contexts, not for TTS
-            val ttsContent = android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+            // ACCESSIBILITY ENHANCEMENT: Use enhanced audio attributes when accessibility permission is available
+            val (ttsUsage, ttsContent) = AccessibilityUtils.getEnhancedAudioAttributes(
+                this, 
+                fallbackTtsUsage, 
+                android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+            )
+            
+            if (AccessibilityUtils.shouldUseEnhancedAudioControl(this)) {
+                Log.d(TAG, "=== DUCKING DEBUG: Using accessibility-enhanced audio attributes - Usage: $ttsUsage, Content: $ttsContent ===")
+                InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Accessibility-enhanced ducking - Usage: $ttsUsage ===")
+            } else {
+                Log.d(TAG, "=== DUCKING DEBUG: Using standard audio attributes - Usage: $ttsUsage, Content: $ttsContent ===")
+                InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Standard ducking - Usage: $ttsUsage ===")
+            }
             
             Log.d(TAG, "=== DUCKING DEBUG: Enhanced ducking - TTS usage index: $ttsUsageIndex -> usage constant: $ttsUsage ===")
             InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Enhanced ducking - TTS usage: $ttsUsage (index: $ttsUsageIndex) ===")
@@ -3624,9 +3716,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "=== DUCKING DEBUG: Creating enhanced ducking focus request ===")
             InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Creating enhanced ducking focus request ===")
             
-            enhancedDuckingFocusRequest = android.media.AudioFocusRequest.Builder(
+            // ACCESSIBILITY ENHANCEMENT: Use enhanced audio focus flags when accessibility permission is available
+            val focusFlags = AccessibilityUtils.getEnhancedAudioFocusFlags(
+                this,
                 android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
             )
+            
+            if (AccessibilityUtils.shouldUseEnhancedAudioControl(this)) {
+                Log.d(TAG, "=== DUCKING DEBUG: Using accessibility-enhanced focus flags: $focusFlags ===")
+                InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Accessibility-enhanced focus flags: $focusFlags ===")
+            }
+            
+            enhancedDuckingFocusRequest = android.media.AudioFocusRequest.Builder(focusFlags)
                 .setAudioAttributes(ttsAudioAttributes)
                 .setOnAudioFocusChangeListener { focusChange ->
                     Log.d(TAG, "=== DUCKING DEBUG: Enhanced ducking focus change listener called with: $focusChange ===")

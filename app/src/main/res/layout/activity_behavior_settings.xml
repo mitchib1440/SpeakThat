@@ -2311,7 +2311,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginEnd="16dp"
-                            android:src="@drawable/ic_volume_up_24"
+                            android:src="@drawable/ic_mobile_hand_24"
                             android:tint="@color/white_100"
                             android:contentDescription="Press to Stop" />
 
