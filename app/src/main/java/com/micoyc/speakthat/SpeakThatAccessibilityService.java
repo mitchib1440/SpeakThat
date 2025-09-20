@@ -34,16 +34,26 @@ public class SpeakThatAccessibilityService extends AccessibilityService {
     public void onServiceConnected() {
         Log.d(TAG, "Accessibility service connected");
         
-        // Configure the service
+        // Read current Press to Stop setting for debugging
+        try {
+            android.content.SharedPreferences prefs = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE);
+            boolean pressToStopEnabled = prefs.getBoolean("press_to_stop_enabled", false);
+            Log.d(TAG, "Press to Stop setting: " + pressToStopEnabled);
+        } catch (Exception e) {
+            Log.e(TAG, "Error reading settings: " + e.getMessage());
+        }
+        
+        // Configure the accessibility service
+        // FLAG_REQUEST_FILTER_KEY_EVENTS is crucial for intercepting hardware key events
         AccessibilityServiceInfo info = new AccessibilityServiceInfo();
-        info.eventTypes = AccessibilityEvent.TYPE_VIEW_CLICKED | 
+        info.eventTypes = AccessibilityEvent.TYPE_VIEW_CLICKED |
                          AccessibilityEvent.TYPE_VIEW_FOCUSED;
         info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
         info.flags = AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS |
                     AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS |
-                    AccessibilityServiceInfo.FLAG_REQUEST_FILTER_KEY_EVENTS;
+                    AccessibilityServiceInfo.FLAG_REQUEST_FILTER_KEY_EVENTS; // Essential for key event interception
         info.notificationTimeout = 100;
-        
+
         setServiceInfo(info);
         Log.d(TAG, "Accessibility service configured with key event filtering");
     }
@@ -57,7 +67,7 @@ public class SpeakThatAccessibilityService extends AccessibilityService {
     @Override
     protected boolean onKeyEvent(KeyEvent event) {
         Log.d(TAG, "Key event received: " + event.getKeyCode() + ", action: " + event.getAction());
-        
+
         // Handle volume button events for simultaneous press detection
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
             switch (event.getKeyCode()) {
@@ -91,42 +101,59 @@ public class SpeakThatAccessibilityService extends AccessibilityService {
     
     /**
      * Check if both volume buttons are pressed simultaneously
+     * 
+     * This method determines if both volume buttons are currently pressed and
+     * if they were pressed within the time threshold to be considered "simultaneous".
+     * This prevents accidental triggers from slightly staggered button presses.
      */
     private void checkForSimultaneousPress() {
-        long currentTime = System.currentTimeMillis();
-        
         // Check if both buttons are currently pressed and within the time threshold
         boolean bothPressed = volumeUpPressed && volumeDownPressed;
         boolean withinThreshold = Math.abs(lastVolumeUpTime - lastVolumeDownTime) <= SIMULTANEOUS_PRESS_THRESHOLD;
-        
+
+        Log.d(TAG, "Simultaneous press check - Both: " + bothPressed + ", Within threshold: " + withinThreshold);
+
         if (bothPressed && withinThreshold) {
-            Log.d(TAG, "Both volume buttons pressed simultaneously - checking if Press to Stop is enabled");
+            Log.d(TAG, "SIMULTANEOUS PRESS DETECTED!");
             handleSimultaneousVolumePress();
         }
     }
     
     /**
      * Handle simultaneous volume button press to stop notification reading
+     * 
+     * This method is called when both volume buttons are pressed simultaneously.
+     * It checks if the "Press to Stop" feature is enabled in settings, and if so,
+     * sends a broadcast to the NotificationReaderService to stop the current TTS.
+     * 
+     * The broadcast is sent with explicit package targeting to ensure it reaches
+     * the correct app instance, even in multi-user or multi-process scenarios.
      */
     private void handleSimultaneousVolumePress() {
-        Log.d(TAG, "Simultaneous volume button press detected - checking if Press to Stop is enabled");
+        Log.d(TAG, "Handling simultaneous volume press");
         
         // Check if Press to Stop is enabled in settings
         android.content.SharedPreferences prefs = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE);
         boolean pressToStopEnabled = prefs.getBoolean("press_to_stop_enabled", false);
         
+        Log.d(TAG, "Press to Stop enabled: " + pressToStopEnabled);
+        
         if (pressToStopEnabled) {
-            Log.d(TAG, "Press to Stop is enabled - stopping notification reading");
+            Log.d(TAG, "Sending STOP_READING broadcast");
             
             // Send broadcast to NotificationReaderService to stop TTS
+            // Explicit package targeting ensures the broadcast reaches our app
             Intent intent = new Intent("com.micoyc.speakthat.STOP_READING");
+            intent.setPackage("com.micoyc.speakthat");
             sendBroadcast(intent);
+            
+            Log.d(TAG, "STOP_READING broadcast sent successfully");
             
             // Reset button states to prevent multiple triggers
             volumeUpPressed = false;
             volumeDownPressed = false;
         } else {
-            Log.d(TAG, "Press to Stop is disabled - ignoring simultaneous volume button press");
+            Log.d(TAG, "Press to Stop disabled - ignoring simultaneous volume button press");
         }
     }
     

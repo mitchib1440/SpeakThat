@@ -450,9 +450,26 @@ public class TestSettingsActivity extends AppCompatActivity {
         return false;
     }
     
+    /**
+     * Check if the accessibility service is enabled
+     * 
+     * @return true if the accessibility service is enabled, false otherwise
+     */
     private boolean isAccessibilityServiceEnabled() {
-        // This would need to be implemented based on your accessibility service
-        // For now, return a placeholder
+        String packageName = getPackageName();
+        String serviceName = packageName + "/com.micoyc.speakthat.SpeakThatAccessibilityService";
+        
+        String enabledServices = android.provider.Settings.Secure.getString(getContentResolver(), 
+            android.provider.Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+        
+        if (enabledServices != null && !enabledServices.isEmpty()) {
+            String[] services = enabledServices.split(":");
+            for (String service : services) {
+                if (service.equals(serviceName)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
     

@@ -460,6 +460,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     /**
      * Register broadcast receiver for accessibility service communication
+     * 
+     * This method registers a broadcast receiver to listen for STOP_READING broadcasts
+     * from the accessibility service. The receiver is registered with RECEIVER_NOT_EXPORTED
+     * flag for security, ensuring it only receives broadcasts from within the same app.
      */
     private fun registerAccessibilityBroadcastReceiver() {
         try {
@@ -471,10 +475,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 registerReceiver(accessibilityBroadcastReceiver, filter)
             }
             Log.d(TAG, "Accessibility broadcast receiver registered")
-            InAppLogger.log("Service", "Accessibility broadcast receiver registered")
         } catch (e: Exception) {
             Log.e(TAG, "Error registering accessibility broadcast receiver", e)
-            InAppLogger.logError("Service", "Error registering accessibility broadcast receiver: " + e.message)
         }
     }
     
@@ -485,23 +487,31 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         try {
             unregisterReceiver(accessibilityBroadcastReceiver)
             Log.d(TAG, "Accessibility broadcast receiver unregistered")
-            InAppLogger.log("Service", "Accessibility broadcast receiver unregistered")
         } catch (e: Exception) {
             Log.e(TAG, "Error unregistering accessibility broadcast receiver", e)
-            InAppLogger.logError("Service", "Error unregistering accessibility broadcast receiver: " + e.message)
         }
     }
     
     /**
      * Broadcast receiver for accessibility service communication
+     * 
+     * This receiver listens for broadcasts from the SpeakThatAccessibilityService
+     * to handle advanced control features like "Press to Stop" functionality.
+     * 
+     * The receiver is registered with RECEIVER_NOT_EXPORTED flag for security,
+     * ensuring it only receives broadcasts from within the same app.
      */
     private val accessibilityBroadcastReceiver = object : android.content.BroadcastReceiver() {
         override fun onReceive(context: android.content.Context?, intent: android.content.Intent?) {
+            Log.d(TAG, "Accessibility broadcast received - Action: ${intent?.action}")
+            
             when (intent?.action) {
                 "com.micoyc.speakthat.STOP_READING" -> {
                     Log.d(TAG, "Received STOP_READING broadcast from accessibility service")
-                    InAppLogger.log("Service", "Received STOP_READING broadcast from accessibility service")
                     stopSpeaking("accessibility service")
+                }
+                else -> {
+                    Log.d(TAG, "Unknown accessibility broadcast action: ${intent?.action}")
                 }
             }
         }

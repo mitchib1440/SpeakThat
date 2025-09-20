@@ -379,7 +379,8 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.switchPressToStop.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 // Check if accessibility permission is granted
-                if (!isAccessibilityServiceEnabled()) {
+                boolean hasPermission = isAccessibilityServiceEnabled();
+                if (!hasPermission) {
                     // Show dialog explaining accessibility permission requirement
                     showAccessibilityPermissionRequiredDialog();
                     buttonView.setChecked(false);
@@ -1537,6 +1538,11 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         editor.apply();
     }
 
+    /**
+     * Save the Press to Stop setting to SharedPreferences
+     * 
+     * @param enabled true to enable Press to Stop, false to disable
+     */
     private void savePressToStopEnabled(boolean enabled) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_PRESS_TO_STOP_ENABLED, enabled);
@@ -2664,7 +2670,12 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
 
     /**
      * Check if the accessibility service is enabled
-     * Similar to how notification listener permission is checked
+     * 
+     * This method checks if the SpeakThatAccessibilityService is enabled in the
+     * Android accessibility settings. It's similar to how notification listener
+     * permission is checked.
+     * 
+     * @return true if the accessibility service is enabled, false otherwise
      */
     private boolean isAccessibilityServiceEnabled() {
         String packageName = getPackageName();
