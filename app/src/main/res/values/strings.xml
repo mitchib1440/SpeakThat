@@ -132,7 +132,7 @@ This feature is especially loved by people who get notifications during meetings
     <string name="persistent_notification_filtering_title">Persistent/Silent Notification Filtering</string>
     <string name="persistent_notification_filtering_description">Skip notifications that are persistent (ongoing) or silent (no sound/vibration)</string>
     <string name="enable_persistent_filtering">Enable persistent/silent notification filtering</string>
-    <string name="persistent_filtering_help">💡 Persistent notifications are ongoing (like music controls, navigation, etc.) and silent notifications have no sound/vibration. This option helps reduce notification spam from background services.</string>
+    <string name="persistent_filtering_help">Persistent notifications are ongoing (like music controls, navigation, etc.) and silent notifications have no sound/vibration. This option helps reduce notification spam from background services.</string>
     
     <!-- Individual Persistent Filtering Categories -->
     <string name="filter_persistent_notifications">Filter persistent notifications</string>
@@ -938,6 +938,18 @@ This permission is completely optional. Core app functionality works without it.
     <string name="filter_swap_description">Swap words in notifications for censoring or pronunciation fixes</string>
     <string name="filter_swap_count">(0 swaps)</string>
     <string name="filter_swap_tip">Tip: Use lowercase for case-insensitive matching. Leave \'Swap with\' empty to remove words entirely.</string>
+    
+    <!-- URL Handling -->
+    <string name="url_handling_title">URL Handling</string>
+    <string name="url_handling_description">Control how web links are read aloud in notifications</string>
+    <string name="url_handling_read_full">Read full link</string>
+    <string name="url_handling_domain_only">Read domain only</string>
+    <string name="url_handling_dont_read">Don\'t read</string>
+    <string name="url_handling_example">Example: https://www.speakthat.app/subdirectory → speakthat.app</string>
+    <string name="url_handling_custom_text_title">Custom Replacement Text</string>
+    <string name="url_handling_custom_text_description">What to say instead of URLs (leave empty to omit entirely)</string>
+    <string name="url_handling_custom_text_hint">e.g., \'web link\', \'link to site\', or leave blank to omit</string>
+    
     <string name="filter_media_description">Automatically filter notifications for apps like YouTube that have both unwanted notifications (media controls) while allowing wanted notifications (like replies to your comments)</string>
     <string name="filter_media_enable">Enable smart media notification filtering</string>
     <string name="filter_media_apps_title">Filtered Media Apps:</string>

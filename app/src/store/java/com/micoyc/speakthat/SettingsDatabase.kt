@@ -345,6 +345,17 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "url_handling",
+                title = "URL Handling",
+                description = "Control how web links are read aloud in notifications",
+                category = "filter",
+                categoryTitle = "Filter Settings",
+                categoryIcon = "🔍",
+                settingType = SettingType.CARD,
+                searchKeywords = listOf("url", "link", "web", "domain", "website", "http", "https", "www", "shorten", "omit"),
+                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "media_filtering",
                 title = "Smart Media Notification Filter",
                 description = "Filter out actual media control notifications",

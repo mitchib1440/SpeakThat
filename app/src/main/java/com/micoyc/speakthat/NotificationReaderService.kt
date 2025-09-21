@@ -56,6 +56,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var blockedWords: Set<String> = emptySet()
     private var privateWords: Set<String> = emptySet()
     private var wordReplacements: Map<String, String> = emptyMap()
+    private var urlHandlingMode = DEFAULT_URL_HANDLING_MODE
+    private var urlReplacementText = DEFAULT_URL_REPLACEMENT_TEXT
     private var priorityApps: Set<String> = emptySet()
     private var notificationBehavior = "interrupt"
     private var mediaBehavior = "ignore"
@@ -242,6 +244,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Cooldown settings
         private const val KEY_COOLDOWN_APPS = "cooldown_apps"
         
+        // URL handling constants
+        private const val KEY_URL_HANDLING_MODE = "url_handling_mode"
+        private const val KEY_URL_REPLACEMENT_TEXT = "url_replacement_text"
+        private const val DEFAULT_URL_HANDLING_MODE = "domain_only"
+        private const val DEFAULT_URL_REPLACEMENT_TEXT = ""
+        
         // TTS Recovery settings - Enhanced for Android 15 compatibility
         private const val MAX_TTS_RECOVERY_ATTEMPTS = 5 // Increased for Android 15
         private const val TTS_RECOVERY_DELAY_MS = 2000L // 2 seconds between attempts
@@ -266,6 +274,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 false // Default to enabled if error
             }
         }
+        
+        // Pre-compiled regex for URL detection (includes IPv6 support)
+        private val URL_PATTERN = Regex("""(?i)(?:https?://[^\s]+|www\.[^\s]+|(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.(?:[a-zA-Z]{2,}|[0-9]+)|\[[0-9a-fA-F:]+\])(?::[0-9]+)?(?:/[^\s]*)?)""")
     }
     
     data class NotificationData(
@@ -1750,6 +1761,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         wordReplacements = newWordReplacements
         Log.d(TAG, "Loaded word replacements: $wordReplacements")
         
+        // Load URL handling settings
+        urlHandlingMode = sharedPreferences?.getString(KEY_URL_HANDLING_MODE, DEFAULT_URL_HANDLING_MODE) ?: DEFAULT_URL_HANDLING_MODE
+        urlReplacementText = sharedPreferences?.getString(KEY_URL_REPLACEMENT_TEXT, DEFAULT_URL_REPLACEMENT_TEXT) ?: DEFAULT_URL_REPLACEMENT_TEXT
+        Log.d(TAG, "Loaded URL handling: mode=$urlHandlingMode, replacement='$urlReplacementText'")
+        
         // Load behavior settings  
         notificationBehavior = sharedPreferences?.getString(KEY_NOTIFICATION_BEHAVIOR, "interrupt") ?: "interrupt"
         priorityApps = HashSet(sharedPreferences?.getStringSet(KEY_PRIORITY_APPS, HashSet()) ?: HashSet())
@@ -1946,7 +1962,101 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         }
         
+        // 4. Apply URL handling (only for non-private notifications)
+        if (urlHandlingMode != "read_full") {
+            processedText = applyUrlHandling(processedText)
+        }
+        
         return FilterResult(true, processedText, "Word filtering applied")
+    }
+    
+    
+    /**
+     * Handles URL processing based on user preferences
+     * Supports various URL formats: http, https, www, localhost, IP addresses, IPv6
+     */
+    private fun applyUrlHandling(text: String): String {
+        if (urlHandlingMode == "read_full") {
+            return text // No processing needed
+        }
+        
+        // Skip processing for very long texts to prevent performance issues
+        if (text.length > 10000) {
+            Log.w(TAG, "Text too long for URL processing (${text.length} chars), skipping")
+            return text
+        }
+        
+        return URL_PATTERN.replace(text) { matchResult ->
+            val url = matchResult.value
+            val replacement = when (urlHandlingMode) {
+                "domain_only" -> extractDomain(url)
+                "dont_read" -> if (urlReplacementText.isNotEmpty()) urlReplacementText else ""
+                else -> url // Fallback to original URL
+            }
+            
+            Log.d(TAG, "URL handling applied: '$url' -> '$replacement' (mode=$urlHandlingMode, replacementText='$urlReplacementText')")
+            InAppLogger.logFilter("URL handling applied: '$url' -> '$replacement' (mode=$urlHandlingMode, replacementText='$urlReplacementText')")
+            replacement
+        }
+    }
+    
+    /**
+     * Extracts the domain from a URL, handling various formats
+     * Examples:
+     * - https://www.speakthat.app/subdirectory -> speakthat.app
+     * - www.amazon.com/dp/B08N5WRWNW -> amazon.com
+     * - localhost:8080 -> localhost
+     * - 192.168.1.1:3000 -> 192.168.1.1
+     * Note: Never includes protocol (http/https) in the result
+     */
+    private fun extractDomain(url: String): String {
+        try {
+            // Validate input
+            if (url.isBlank()) {
+                Log.w(TAG, "Empty URL provided to extractDomain")
+                return "link"
+            }
+            
+            // Remove protocol if present (https:// or http://)
+            var cleanUrl = url.replace(Regex("^https?://"), "")
+            
+            // Remove www. prefix if present
+            cleanUrl = cleanUrl.replace(Regex("^www\\."), "")
+            
+            // Split by / to get the host part
+            val hostPart = cleanUrl.split("/")[0]
+            
+            // Split by : to remove port if present
+            val domainPart = hostPart.split(":")[0]
+            
+            // Validate domain part
+            if (domainPart.isBlank()) {
+                Log.w(TAG, "Empty domain part extracted from URL '$url'")
+                return "link"
+            }
+            
+            // For localhost and IP addresses, return as-is
+            if (domainPart == "localhost" || domainPart.matches(Regex("^\\d+\\.\\d+\\.\\d+\\.\\d+$"))) {
+                return domainPart
+            }
+            
+            // For IPv6 addresses (in brackets), return as-is
+            if (domainPart.startsWith("[") && domainPart.endsWith("]")) {
+                return domainPart
+            }
+            
+            // For regular domains, extract the main domain (last two parts)
+            val parts = domainPart.split(".")
+            return if (parts.size >= 2) {
+                parts.takeLast(2).joinToString(".")
+            } else {
+                domainPart
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Error extracting domain from URL '$url': ${e.message}")
+            // Return a safe fallback instead of original URL to avoid reading long URLs
+            return "link"
+        }
     }
     
     private fun applyConditionalFiltering(_packageName: String, _appName: String, text: String): FilterResult {

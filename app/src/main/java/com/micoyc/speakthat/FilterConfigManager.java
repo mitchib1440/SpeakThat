@@ -23,6 +23,8 @@ public class FilterConfigManager {
     private static final String KEY_WORD_BLACKLIST = "word_blacklist";
     private static final String KEY_WORD_BLACKLIST_PRIVATE = "word_blacklist_private";
     private static final String KEY_WORD_REPLACEMENTS = "word_replacements";
+    private static final String KEY_URL_HANDLING_MODE = "url_handling_mode";
+    private static final String KEY_URL_REPLACEMENT_TEXT = "url_replacement_text";
     
     public static class FilterConfig {
         public String appListMode;
@@ -31,6 +33,8 @@ public class FilterConfigManager {
         public Set<String> wordBlacklist;
         public Set<String> wordBlacklistPrivate;
         public String wordReplacements; // Stored as delimited string
+        public String urlHandlingMode;
+        public String urlReplacementText;
         public String exportDate;
         public String appVersion;
         public String configVersion;
@@ -41,6 +45,8 @@ public class FilterConfigManager {
             this.wordBlacklist = new HashSet<>();
             this.wordBlacklistPrivate = new HashSet<>();
             this.wordReplacements = "";
+            this.urlHandlingMode = "domain_only";
+            this.urlReplacementText = "";
             this.exportDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
             this.appVersion = "1.0"; // Static version for export compatibility
             this.configVersion = CONFIG_VERSION;
@@ -183,6 +189,8 @@ public class FilterConfigManager {
         config.wordBlacklist = new HashSet<>(prefs.getStringSet(KEY_WORD_BLACKLIST, new HashSet<>()));
         config.wordBlacklistPrivate = new HashSet<>(prefs.getStringSet(KEY_WORD_BLACKLIST_PRIVATE, new HashSet<>()));
         config.wordReplacements = prefs.getString(KEY_WORD_REPLACEMENTS, "");
+        config.urlHandlingMode = prefs.getString(KEY_URL_HANDLING_MODE, "domain_only");
+        config.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
         
         // Create JSON structure
         JSONObject json = new JSONObject();
@@ -203,6 +211,8 @@ public class FilterConfigManager {
         filters.put("wordBlacklist", new JSONArray(config.wordBlacklist));
         filters.put("wordBlacklistPrivate", new JSONArray(config.wordBlacklistPrivate));
         filters.put("wordReplacements", config.wordReplacements);
+        filters.put("urlHandlingMode", config.urlHandlingMode);
+        filters.put("urlReplacementText", config.urlReplacementText);
         json.put("filters", filters);
         
         // Future extension point - we can add more sections here
@@ -228,6 +238,8 @@ public class FilterConfigManager {
         config.filters.wordBlacklist = new HashSet<>(prefs.getStringSet(KEY_WORD_BLACKLIST, new HashSet<>()));
         config.filters.wordBlacklistPrivate = new HashSet<>(prefs.getStringSet(KEY_WORD_BLACKLIST_PRIVATE, new HashSet<>()));
         config.filters.wordReplacements = prefs.getString(KEY_WORD_REPLACEMENTS, "");
+        config.filters.urlHandlingMode = prefs.getString(KEY_URL_HANDLING_MODE, "domain_only");
+        config.filters.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
         
         // Load voice settings
         config.voice.speechRate = voicePrefs.getFloat("speech_rate", 1.0f);
@@ -415,6 +427,17 @@ public class FilterConfigManager {
                 }
             }
             
+            // Import URL handling settings
+            if (filters.has("urlHandlingMode")) {
+                editor.putString(KEY_URL_HANDLING_MODE, filters.getString("urlHandlingMode"));
+                filtersImported++;
+            }
+            
+            if (filters.has("urlReplacementText")) {
+                editor.putString(KEY_URL_REPLACEMENT_TEXT, filters.getString("urlReplacementText"));
+                filtersImported++;
+            }
+            
             // Apply all changes
             editor.apply();
             
@@ -500,6 +523,17 @@ public class FilterConfigManager {
                     if (!wordReplacements.isEmpty()) {
                         totalImported += wordReplacements.split("\\|").length;
                     }
+                }
+                
+                // Import URL handling settings
+                if (filters.has("urlHandlingMode")) {
+                    mainEditor.putString(KEY_URL_HANDLING_MODE, filters.getString("urlHandlingMode"));
+                    totalImported++;
+                }
+                
+                if (filters.has("urlReplacementText")) {
+                    mainEditor.putString(KEY_URL_REPLACEMENT_TEXT, filters.getString("urlReplacementText"));
+                    totalImported++;
                 }
             }
             
