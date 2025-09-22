@@ -275,8 +275,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         }
         
-        // Pre-compiled regex for URL detection (includes IPv6 support)
-        private val URL_PATTERN = Regex("""(?i)(?:https?://[^\s]+|www\.[^\s]+|(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.(?:[a-zA-Z]{2,}|[0-9]+)|\[[0-9a-fA-F:]+\])(?::[0-9]+)?(?:/[^\s]*)?)""")
+        // Pre-compiled regex for URL detection (restrictive - only http/https/www URLs)
+        private val URL_PATTERN = Regex("""(?i)(?:https?://[^\s]+|www\.[^\s]+)""")
     }
     
     data class NotificationData(
