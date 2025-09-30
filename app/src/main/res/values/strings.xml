@@ -446,6 +446,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_title_invalid_app_package">Invalid App Package</string>
     <string name="dialog_title_edit_rule">Edit Rule</string>
     <string name="dialog_title_create_rule">Create Rule</string>
+    <string name="dialog_title_content_cap">Content Cap</string>
     
     <!-- Filter Settings Dialog Titles -->
     <string name="dialog_title_edit_filtered_media_app">Edit Filtered Media App</string>
@@ -619,6 +620,9 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_cooldown_title">Notification Cooldown</string>
     <string name="behavior_cooldown_description">Prevent apps from having multiple notifications read within a specified time period</string>
     <string name="behavior_cooldown_recommendation">Great for: Apps that spam notifications</string>
+    <string name="behavior_content_cap_title">Content Cap</string>
+    <string name="behavior_content_cap_description">Limit how much of each notification gets read aloud</string>
+    <string name="behavior_content_cap_recommendation">Great for: Long notifications where you only need the beginning</string>
     <string name="behavior_speech_title">Speech Format</string>
     <string name="behavior_speech_description">Customize how notifications are spoken aloud using placeholders</string>
     <string name="behavior_speech_recommendation">Customize your notification experience</string>
@@ -1294,6 +1298,20 @@ This permission is completely optional. Core app functionality works without it.
     <string name="behavior_great_for">Great for: Desk users &amp; accessibility</string>
     <string name="behavior_enable_wave_stop">Enable wave to stop</string>
     <string name="behavior_proximity_threshold">Proximity Threshold</string>
+    
+    <!-- Content Cap Feature Strings -->
+    <string name="content_cap_mode_label">Content Cap Mode:</string>
+    <string name="content_cap_disabled">Disabled - Read full notification</string>
+    <string name="content_cap_words">Word count limit</string>
+    <string name="content_cap_sentences">Sentence count limit</string>
+    <string name="content_cap_time">Time limit</string>
+    <string name="content_cap_word_count_label">Word count:</string>
+    <string name="content_cap_sentence_count_label">Sentence count:</string>
+    <string name="content_cap_time_limit_label">Time limit (seconds):</string>
+    <string name="content_cap_word_count_value">%d words</string>
+    <string name="content_cap_sentence_count_value">%d sentences</string>
+    <string name="content_cap_time_limit_value">%d seconds</string>
+    <string name="content_cap_help_message"><![CDATA[Content Cap lets you limit how much of each notification gets read aloud:<br><br><b>Word Count</b> - Read only the first N words<br>• Perfect for payment notifications where important info is at the start<br>• Works reliably across most languages<br>• Example: \"Payment of $50.00 from John Smith for lunch\" → \"Payment of $50.00 from John\"<br><br><b>Sentence Count</b> - Read only the first N complete sentences<br>• More natural breaks than word limits<br>• Uses smart sentence detection for international languages<br>• Handles line breaks in emails properly<br>• Example: \"Hello! How are you today?\" → \"Hello!\"<br><br><b>Time Limit</b> - Stop reading after N seconds<br>• Universal - works with all languages<br>• Predictable notification durations<br>• Great for consistent timing<br>• Example: Stops after 10 seconds regardless of content length<br><br><b>Tips:</b><br>• Word count works best for most users<br>• Sentence count is more natural but may be less precise<br>• Time limit is universal and predictable<br>• All options work with your existing speech templates<br>• Combine with Shake to Stop for maximum control]]></string>
     
     <!-- Major Missing Section Titles -->
     <string name="behavior_custom_app_names_title">📱 Custom App Names</string>

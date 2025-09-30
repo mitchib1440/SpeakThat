@@ -85,6 +85,16 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String KEY_NOTIFICATION_DEDUPLICATION = "notification_deduplication"; // boolean
     private static final String KEY_DISMISSAL_MEMORY_ENABLED = "dismissal_memory_enabled"; // boolean
     private static final String KEY_DISMISSAL_MEMORY_TIMEOUT = "dismissal_memory_timeout"; // int (minutes)
+    
+    // Content Cap settings
+    private static final String KEY_CONTENT_CAP_MODE = "content_cap_mode";
+    private static final String KEY_CONTENT_CAP_WORD_COUNT = "content_cap_word_count";
+    private static final String KEY_CONTENT_CAP_SENTENCE_COUNT = "content_cap_sentence_count";
+    private static final String KEY_CONTENT_CAP_TIME_LIMIT = "content_cap_time_limit";
+    private static final String DEFAULT_CONTENT_CAP_MODE = "disabled";
+    private static final int DEFAULT_CONTENT_CAP_WORD_COUNT = 6;
+    private static final int DEFAULT_CONTENT_CAP_SENTENCE_COUNT = 1;
+    private static final int DEFAULT_CONTENT_CAP_TIME_LIMIT = 10;
 
     private static final String KEY_SPEECH_TEMPLATE = "speech_template"; // Custom speech template
 
@@ -269,6 +279,57 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.btnDelayInfo.setOnClickListener(v -> showDelayDialog());
         binding.btnAppNamesInfo.setOnClickListener(v -> showCustomAppNamesDialog());
         binding.btnCooldownInfo.setOnClickListener(v -> showCooldownDialog());
+        binding.btnContentCapInfo.setOnClickListener(v -> showContentCapDialog());
+
+        // Set up Content Cap radio buttons
+        binding.contentCapModeGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            String mode = "disabled"; // default
+            if (checkedId == R.id.radioContentCapWords) {
+                mode = "words";
+            } else if (checkedId == R.id.radioContentCapSentences) {
+                mode = "sentences";
+            } else if (checkedId == R.id.radioContentCapTime) {
+                mode = "time";
+            }
+            
+            // Show/hide appropriate slider sections
+            binding.contentCapWordSection.setVisibility("words".equals(mode) ? View.VISIBLE : View.GONE);
+            binding.contentCapSentenceSection.setVisibility("sentences".equals(mode) ? View.VISIBLE : View.GONE);
+            binding.contentCapTimeSection.setVisibility("time".equals(mode) ? View.VISIBLE : View.GONE);
+            
+            // Save setting
+            saveContentCapMode(mode);
+            Log.d("BehaviorSettings", "Content Cap mode changed to: " + mode);
+            InAppLogger.log("BehaviorSettings", "Content Cap mode changed to: " + mode);
+        });
+        
+        // Set up Content Cap sliders
+        binding.sliderContentCapWordCount.addOnChangeListener((slider, value, fromUser) -> {
+            if (fromUser) {
+                int wordCount = (int) value;
+                binding.tvContentCapWordCountValue.setText(getString(R.string.content_cap_word_count_value, wordCount));
+                saveContentCapWordCount(wordCount);
+                Log.d("BehaviorSettings", "Content Cap word count changed to: " + wordCount);
+            }
+        });
+        
+        binding.sliderContentCapSentenceCount.addOnChangeListener((slider, value, fromUser) -> {
+            if (fromUser) {
+                int sentenceCount = (int) value;
+                binding.tvContentCapSentenceCountValue.setText(getString(R.string.content_cap_sentence_count_value, sentenceCount));
+                saveContentCapSentenceCount(sentenceCount);
+                Log.d("BehaviorSettings", "Content Cap sentence count changed to: " + sentenceCount);
+            }
+        });
+        
+        binding.sliderContentCapTimeLimit.addOnChangeListener((slider, value, fromUser) -> {
+            if (fromUser) {
+                int timeLimit = (int) value;
+                binding.tvContentCapTimeLimitValue.setText(getString(R.string.content_cap_time_limit_value, timeLimit));
+                saveContentCapTimeLimit(timeLimit);
+                Log.d("BehaviorSettings", "Content Cap time limit changed to: " + timeLimit);
+            }
+        });
 
         // Set up shake to stop toggle
         binding.switchShakeToStop.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -1033,6 +1094,50 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
 
         // Load cooldown apps
         loadCooldownApps();
+        
+        // Load Content Cap settings
+        String contentCapMode = sharedPreferences.getString(KEY_CONTENT_CAP_MODE, DEFAULT_CONTENT_CAP_MODE);
+        switch (contentCapMode) {
+            case "words":
+                binding.radioContentCapWords.setChecked(true);
+                binding.contentCapWordSection.setVisibility(View.VISIBLE);
+                binding.contentCapSentenceSection.setVisibility(View.GONE);
+                binding.contentCapTimeSection.setVisibility(View.GONE);
+                break;
+            case "sentences":
+                binding.radioContentCapSentences.setChecked(true);
+                binding.contentCapWordSection.setVisibility(View.GONE);
+                binding.contentCapSentenceSection.setVisibility(View.VISIBLE);
+                binding.contentCapTimeSection.setVisibility(View.GONE);
+                break;
+            case "time":
+                binding.radioContentCapTime.setChecked(true);
+                binding.contentCapWordSection.setVisibility(View.GONE);
+                binding.contentCapSentenceSection.setVisibility(View.GONE);
+                binding.contentCapTimeSection.setVisibility(View.VISIBLE);
+                break;
+            default: // "disabled"
+                binding.radioContentCapDisabled.setChecked(true);
+                binding.contentCapWordSection.setVisibility(View.GONE);
+                binding.contentCapSentenceSection.setVisibility(View.GONE);
+                binding.contentCapTimeSection.setVisibility(View.GONE);
+                break;
+        }
+        
+        int wordCount = sharedPreferences.getInt(KEY_CONTENT_CAP_WORD_COUNT, DEFAULT_CONTENT_CAP_WORD_COUNT);
+        binding.sliderContentCapWordCount.setValue(wordCount);
+        binding.tvContentCapWordCountValue.setText(getString(R.string.content_cap_word_count_value, wordCount));
+        
+        int sentenceCount = sharedPreferences.getInt(KEY_CONTENT_CAP_SENTENCE_COUNT, DEFAULT_CONTENT_CAP_SENTENCE_COUNT);
+        binding.sliderContentCapSentenceCount.setValue(sentenceCount);
+        binding.tvContentCapSentenceCountValue.setText(getString(R.string.content_cap_sentence_count_value, sentenceCount));
+        
+        int timeLimit = sharedPreferences.getInt(KEY_CONTENT_CAP_TIME_LIMIT, DEFAULT_CONTENT_CAP_TIME_LIMIT);
+        binding.sliderContentCapTimeLimit.setValue(timeLimit);
+        binding.tvContentCapTimeLimitValue.setText(getString(R.string.content_cap_time_limit_value, timeLimit));
+        
+        Log.d("BehaviorSettings", "Loaded Content Cap settings: mode=" + contentCapMode + ", wordCount=" + wordCount + ", sentenceCount=" + sentenceCount + ", timeLimit=" + timeLimit);
+        InAppLogger.log("BehaviorSettings", "Loaded Content Cap settings: mode=" + contentCapMode + ", wordCount=" + wordCount + ", sentenceCount=" + sentenceCount + ", timeLimit=" + timeLimit);
 
         // Load Do Not Disturb setting
         boolean honourDoNotDisturb = sharedPreferences.getBoolean(KEY_HONOUR_DO_NOT_DISTURB, DEFAULT_HONOUR_DO_NOT_DISTURB);
@@ -1655,6 +1760,34 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         editor.putInt(KEY_DELAY_BEFORE_READOUT, delaySeconds);
         editor.apply();
         InAppLogger.log("BehaviorSettings", "Delay before readout changed to: " + delaySeconds + " seconds");
+    }
+    
+    private void saveContentCapMode(String mode) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_CONTENT_CAP_MODE, mode);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Content Cap mode changed to: " + mode);
+    }
+    
+    private void saveContentCapWordCount(int wordCount) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_CONTENT_CAP_WORD_COUNT, wordCount);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Content Cap word count changed to: " + wordCount);
+    }
+    
+    private void saveContentCapSentenceCount(int sentenceCount) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_CONTENT_CAP_SENTENCE_COUNT, sentenceCount);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Content Cap sentence count changed to: " + sentenceCount);
+    }
+    
+    private void saveContentCapTimeLimit(int timeLimit) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_CONTENT_CAP_TIME_LIMIT, timeLimit);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Content Cap time limit changed to: " + timeLimit + " seconds");
     }
 
     private void saveHonourDoNotDisturb(boolean honour) {
@@ -2295,6 +2428,17 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.dialog_title_custom_app_names)
                 .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
+                .setPositiveButton(R.string.button_got_it, null)
+                .show();
+    }
+
+    private void showContentCapDialog() {
+        // Track dialog usage for analytics
+        trackDialogUsage("content_cap_info");
+        
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.dialog_title_content_cap)
+                .setMessage(Html.fromHtml(getString(R.string.content_cap_help_message), Html.FROM_HTML_MODE_LEGACY))
                 .setPositiveButton(R.string.button_got_it, null)
                 .show();
     }

@@ -58,6 +58,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var wordReplacements: Map<String, String> = emptyMap()
     private var urlHandlingMode = DEFAULT_URL_HANDLING_MODE
     private var urlReplacementText = DEFAULT_URL_REPLACEMENT_TEXT
+    private var contentCapMode = DEFAULT_CONTENT_CAP_MODE
+    private var contentCapWordCount = DEFAULT_CONTENT_CAP_WORD_COUNT
+    private var contentCapSentenceCount = DEFAULT_CONTENT_CAP_SENTENCE_COUNT
+    private var contentCapTimeLimit = DEFAULT_CONTENT_CAP_TIME_LIMIT
     private var priorityApps: Set<String> = emptySet()
     private var notificationBehavior = "interrupt"
     private var mediaBehavior = "ignore"
@@ -101,6 +105,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     // Delay settings
     private var delayHandler: android.os.Handler? = null
     private var pendingReadoutRunnable: Runnable? = null
+    private var contentCapTimerRunnable: Runnable? = null
     
     // Rule system
     private lateinit var ruleManager: RuleManager
@@ -249,6 +254,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val KEY_URL_REPLACEMENT_TEXT = "url_replacement_text"
         private const val DEFAULT_URL_HANDLING_MODE = "domain_only"
         private const val DEFAULT_URL_REPLACEMENT_TEXT = ""
+        
+        // Content Cap settings
+        private const val KEY_CONTENT_CAP_MODE = "content_cap_mode"
+        private const val KEY_CONTENT_CAP_WORD_COUNT = "content_cap_word_count"
+        private const val KEY_CONTENT_CAP_SENTENCE_COUNT = "content_cap_sentence_count"
+        private const val KEY_CONTENT_CAP_TIME_LIMIT = "content_cap_time_limit"
+        private const val DEFAULT_CONTENT_CAP_MODE = "disabled"
+        private const val DEFAULT_CONTENT_CAP_WORD_COUNT = 6
+        private const val DEFAULT_CONTENT_CAP_SENTENCE_COUNT = 1
+        private const val DEFAULT_CONTENT_CAP_TIME_LIMIT = 10
         
         // TTS Recovery settings - Enhanced for Android 15 compatibility
         private const val MAX_TTS_RECOVERY_ATTEMPTS = 5 // Increased for Android 15
@@ -1766,6 +1781,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         urlReplacementText = sharedPreferences?.getString(KEY_URL_REPLACEMENT_TEXT, DEFAULT_URL_REPLACEMENT_TEXT) ?: DEFAULT_URL_REPLACEMENT_TEXT
         Log.d(TAG, "Loaded URL handling: mode=$urlHandlingMode, replacement='$urlReplacementText'")
         
+        // Load Content Cap settings
+        contentCapMode = sharedPreferences?.getString(KEY_CONTENT_CAP_MODE, DEFAULT_CONTENT_CAP_MODE) ?: DEFAULT_CONTENT_CAP_MODE
+        contentCapWordCount = sharedPreferences?.getInt(KEY_CONTENT_CAP_WORD_COUNT, DEFAULT_CONTENT_CAP_WORD_COUNT) ?: DEFAULT_CONTENT_CAP_WORD_COUNT
+        contentCapSentenceCount = sharedPreferences?.getInt(KEY_CONTENT_CAP_SENTENCE_COUNT, DEFAULT_CONTENT_CAP_SENTENCE_COUNT) ?: DEFAULT_CONTENT_CAP_SENTENCE_COUNT
+        contentCapTimeLimit = sharedPreferences?.getInt(KEY_CONTENT_CAP_TIME_LIMIT, DEFAULT_CONTENT_CAP_TIME_LIMIT) ?: DEFAULT_CONTENT_CAP_TIME_LIMIT
+        Log.d(TAG, "Loaded Content Cap settings: mode=$contentCapMode, wordCount=$contentCapWordCount, sentenceCount=$contentCapSentenceCount, timeLimit=$contentCapTimeLimit")
+        InAppLogger.log("Service", "Content Cap loaded: mode=$contentCapMode, wordCount=$contentCapWordCount, sentenceCount=$contentCapSentenceCount, timeLimit=${contentCapTimeLimit}s")
+        
         // Load behavior settings  
         notificationBehavior = sharedPreferences?.getString(KEY_NOTIFICATION_BEHAVIOR, "interrupt") ?: "interrupt"
         priorityApps = HashSet(sharedPreferences?.getStringSet(KEY_PRIORITY_APPS, HashSet()) ?: HashSet())
@@ -1967,6 +1990,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             processedText = applyUrlHandling(processedText)
         }
         
+        // 5. Apply Content Cap (only for non-private notifications)
+        if (contentCapMode != "disabled") {
+            processedText = applyContentCap(processedText)
+        }
+        
         return FilterResult(true, processedText, "Word filtering applied")
     }
     
@@ -2056,6 +2084,104 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.w(TAG, "Error extracting domain from URL '$url': ${e.message}")
             // Return a safe fallback instead of original URL to avoid reading long URLs
             return "link"
+        }
+    }
+    
+    /**
+     * Apply Content Cap to limit notification length
+     * Supports word count, sentence count, and time limit modes
+     */
+    private fun applyContentCap(text: String): String {
+        // Early return for disabled mode - zero processing overhead
+        if (contentCapMode == "disabled") {
+            Log.d(TAG, "Content Cap disabled, returning original text")
+            return text
+        }
+        
+        val originalLength = text.length
+        val result = when (contentCapMode) {
+            "words" -> applyWordCap(text)
+            "sentences" -> applySentenceCap(text)
+            "time" -> text // Time cap is handled in TTS layer, not text processing
+            else -> {
+                Log.w(TAG, "Unknown content cap mode: $contentCapMode, returning original text")
+                text
+            }
+        }
+        
+        // Log content cap application
+        if (result != text) {
+            Log.d(TAG, "Content Cap applied (mode=$contentCapMode): Original=${originalLength} chars, Capped=${result.length} chars")
+            InAppLogger.log("Service", "Content Cap applied (mode=$contentCapMode): ${originalLength} chars → ${result.length} chars")
+        } else {
+            Log.d(TAG, "Content Cap: No change needed (text within limit)")
+        }
+        
+        return result
+    }
+    
+    /**
+     * Apply word count limit
+     * Splits text by whitespace and takes first N words
+     */
+    private fun applyWordCap(text: String): String {
+        val words = text.split("\\s+".toRegex())
+        
+        // If text has fewer words than limit, return original
+        if (words.size <= contentCapWordCount) {
+            Log.d(TAG, "Word cap: Text has ${words.size} words, limit is $contentCapWordCount - no cap needed")
+            return text
+        }
+        
+        val cappedText = words.take(contentCapWordCount).joinToString(" ")
+        Log.d(TAG, "Word cap applied: ${words.size} words → $contentCapWordCount words")
+        InAppLogger.log("Service", "Word cap applied: ${words.size} words → $contentCapWordCount words")
+        
+        return cappedText
+    }
+    
+    /**
+     * Apply sentence count limit
+     * Uses BreakIterator for proper international sentence detection
+     */
+    private fun applySentenceCap(text: String): String {
+        try {
+            // Use BreakIterator for proper sentence boundary detection
+            // This handles international punctuation and line breaks correctly
+            val iterator = java.text.BreakIterator.getSentenceInstance(java.util.Locale.getDefault())
+            iterator.setText(text)
+            
+            var sentenceCount = 0
+            var endIndex = 0
+            var start = iterator.first()
+            
+            while (start != java.text.BreakIterator.DONE && sentenceCount < contentCapSentenceCount) {
+                val end = iterator.next()
+                if (end == java.text.BreakIterator.DONE) {
+                    endIndex = text.length
+                    sentenceCount++
+                    break
+                }
+                endIndex = end
+                sentenceCount++
+            }
+            
+            // If text has fewer sentences than limit, return original
+            if (sentenceCount <= contentCapSentenceCount && endIndex >= text.length) {
+                Log.d(TAG, "Sentence cap: Text has $sentenceCount sentences, limit is $contentCapSentenceCount - no cap needed")
+                return text
+            }
+            
+            val cappedText = text.substring(0, endIndex).trim()
+            Log.d(TAG, "Sentence cap applied: Capped to $contentCapSentenceCount sentence(s)")
+            InAppLogger.log("Service", "Sentence cap applied: Capped to $contentCapSentenceCount sentence(s)")
+            
+            return cappedText
+        } catch (e: Exception) {
+            Log.e(TAG, "Error applying sentence cap: ${e.message}", e)
+            InAppLogger.logError("Service", "Error applying sentence cap: ${e.message}")
+            // Fallback to original text on error
+            return text
         }
     }
     
@@ -4740,6 +4866,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 val maxVolume = audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)
                 Log.d(TAG, "=== DUCKING DEBUG: TTS started - Music volume: $currentVolume/$maxVolume ===")
                 InAppLogger.log("Service", "=== DUCKING DEBUG: TTS started - Music volume: $currentVolume/$maxVolume ===")
+                
+                // Apply time cap if enabled
+                if (contentCapMode == "time" && contentCapTimeLimit > 0) {
+                    contentCapTimerRunnable = Runnable {
+                        Log.d(TAG, "Content Cap time limit reached (${contentCapTimeLimit}s) - stopping TTS")
+                        InAppLogger.log("Service", "Content Cap time limit reached (${contentCapTimeLimit}s) - stopping TTS")
+                        textToSpeech?.stop()
+                    }
+                    delayHandler?.postDelayed(contentCapTimerRunnable!!, (contentCapTimeLimit * 1000).toLong())
+                    Log.d(TAG, "Content Cap timer started: ${contentCapTimeLimit}s")
+                    InAppLogger.log("Service", "Content Cap timer started: ${contentCapTimeLimit}s")
+                }
             }
             
             override fun onDone(utteranceId: String?) {
@@ -4747,6 +4885,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     Log.d(TAG, "=== DUCKING DEBUG: TTS utterance COMPLETED: $utteranceId ===")
                     InAppLogger.log("Service", "=== DUCKING DEBUG: TTS utterance COMPLETED: $utteranceId ===")
                     isCurrentlySpeaking = false
+                    
+                    // Cancel content cap timer if active
+                    contentCapTimerRunnable?.let { runnable ->
+                        delayHandler?.removeCallbacks(runnable)
+                        contentCapTimerRunnable = null
+                        Log.d(TAG, "Content Cap timer cancelled (TTS completed naturally)")
+                    }
                     
                     // Log current volume state when TTS completes
                     val currentVolume = audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
@@ -4795,6 +4940,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (utteranceId == "notification_utterance") {
                     Log.e(TAG, "TTS utterance error: $utteranceId")
                     isCurrentlySpeaking = false
+                    
+                    // Cancel content cap timer if active
+                    contentCapTimerRunnable?.let { runnable ->
+                        delayHandler?.removeCallbacks(runnable)
+                        contentCapTimerRunnable = null
+                        Log.d(TAG, "Content Cap timer cancelled (TTS error)")
+                    }
                     
                     // Hide reading notification
                     // hideReadingNotification()
@@ -4875,6 +5027,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 loadFilterSettings()
                 Log.d(TAG, "Filter settings updated")
                 InAppLogger.log("Service", "Filter settings updated")
+            }
+            KEY_CONTENT_CAP_MODE, KEY_CONTENT_CAP_WORD_COUNT, KEY_CONTENT_CAP_SENTENCE_COUNT, KEY_CONTENT_CAP_TIME_LIMIT -> {
+                // Reload Content Cap settings
+                contentCapMode = sharedPreferences?.getString(KEY_CONTENT_CAP_MODE, DEFAULT_CONTENT_CAP_MODE) ?: DEFAULT_CONTENT_CAP_MODE
+                contentCapWordCount = sharedPreferences?.getInt(KEY_CONTENT_CAP_WORD_COUNT, DEFAULT_CONTENT_CAP_WORD_COUNT) ?: DEFAULT_CONTENT_CAP_WORD_COUNT
+                contentCapSentenceCount = sharedPreferences?.getInt(KEY_CONTENT_CAP_SENTENCE_COUNT, DEFAULT_CONTENT_CAP_SENTENCE_COUNT) ?: DEFAULT_CONTENT_CAP_SENTENCE_COUNT
+                contentCapTimeLimit = sharedPreferences?.getInt(KEY_CONTENT_CAP_TIME_LIMIT, DEFAULT_CONTENT_CAP_TIME_LIMIT) ?: DEFAULT_CONTENT_CAP_TIME_LIMIT
+                Log.d(TAG, "Content Cap settings updated: mode=$contentCapMode, wordCount=$contentCapWordCount, sentenceCount=$contentCapSentenceCount, timeLimit=$contentCapTimeLimit")
+                InAppLogger.log("Service", "Content Cap settings updated: mode=$contentCapMode, wordCount=$contentCapWordCount, sentenceCount=$contentCapSentenceCount, timeLimit=${contentCapTimeLimit}s")
             }
             KEY_SHAKE_TO_STOP_ENABLED, KEY_SHAKE_THRESHOLD, KEY_SHAKE_TIMEOUT_SECONDS, KEY_WAVE_TIMEOUT_SECONDS, "pocket_mode_enabled" -> {
                 // Reload shake and wave settings
@@ -5036,7 +5197,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "Template localization - Key: $templateKey, App: $appName, Result: $result")
         return result
     }
-
     /**
      * Get resource ID for template strings
      */

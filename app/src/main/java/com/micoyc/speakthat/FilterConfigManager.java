@@ -122,6 +122,10 @@ public class FilterConfigManager {
         public String customAppNames;
         public String cooldownApps;
         public String speechTemplate;
+        public String contentCapMode;
+        public int contentCapWordCount;
+        public int contentCapSentenceCount;
+        public int contentCapTimeLimit;
         
         public BehaviorConfig() {
             this.notificationBehavior = "interrupt";
@@ -144,6 +148,10 @@ public class FilterConfigManager {
             this.customAppNames = "[]";
             this.cooldownApps = "[]";
             this.speechTemplate = "{app} notified you: {content}";
+            this.contentCapMode = "disabled";
+            this.contentCapWordCount = 6;
+            this.contentCapSentenceCount = 1;
+            this.contentCapTimeLimit = 10;
         }
     }
     
@@ -275,6 +283,10 @@ public class FilterConfigManager {
         config.behavior.customAppNames = prefs.getString("custom_app_names", "[]");
         config.behavior.cooldownApps = prefs.getString("cooldown_apps", "[]");
         config.behavior.speechTemplate = prefs.getString("speech_template", "{app} notified you: {content}");
+        config.behavior.contentCapMode = prefs.getString("content_cap_mode", "disabled");
+        config.behavior.contentCapWordCount = prefs.getInt("content_cap_word_count", 6);
+        config.behavior.contentCapSentenceCount = prefs.getInt("content_cap_sentence_count", 1);
+        config.behavior.contentCapTimeLimit = prefs.getInt("content_cap_time_limit", 10);
         
         // Load general settings
         config.general.darkMode = prefs.getBoolean("dark_mode", true);
@@ -341,6 +353,10 @@ public class FilterConfigManager {
         behavior.put("customAppNames", config.behavior.customAppNames);
         behavior.put("cooldownApps", config.behavior.cooldownApps);
         behavior.put("speechTemplate", config.behavior.speechTemplate);
+        behavior.put("contentCapMode", config.behavior.contentCapMode);
+        behavior.put("contentCapWordCount", config.behavior.contentCapWordCount);
+        behavior.put("contentCapSentenceCount", config.behavior.contentCapSentenceCount);
+        behavior.put("contentCapTimeLimit", config.behavior.contentCapTimeLimit);
         json.put("behavior", behavior);
         
         // General settings
@@ -725,6 +741,26 @@ public class FilterConfigManager {
                 
                 if (behavior.has("speechTemplate")) {
                     mainEditor.putString("speech_template", behavior.getString("speechTemplate"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("contentCapMode")) {
+                    mainEditor.putString("content_cap_mode", behavior.getString("contentCapMode"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("contentCapWordCount")) {
+                    mainEditor.putInt("content_cap_word_count", behavior.getInt("contentCapWordCount"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("contentCapSentenceCount")) {
+                    mainEditor.putInt("content_cap_sentence_count", behavior.getInt("contentCapSentenceCount"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("contentCapTimeLimit")) {
+                    mainEditor.putInt("content_cap_time_limit", behavior.getInt("contentCapTimeLimit"));
                     totalImported++;
                 }
             }

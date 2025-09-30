@@ -117,7 +117,7 @@ SpeakThat! I've been practicing my timing during delays. I think I'm ready for n
 SpeakThat! The delay feature: Because sometimes even notifications need a moment to compose themselves.
 SpeakThat! I'm not late, I'm fashionably delayed! There's a difference in the notification world.
 SpeakThat! During my delay, I like to imagine what your notification might taste like. This one tastes like... {DAY}. [DELAY_ONLY]
-SpeakThat! Roses are red, violets are blue, I'll wait a few seconds, then I'll speak to you! [DELAY_ONLY]
+SpeakThat! Roses are red, violets are blue, I'll wait {DELAY_TIME}, then I'll speak to you! [DELAY_ONLY]
 SpeakThat! Good {TIME}! Perfect time for some notification entertainment!
 SpeakThat! It's {DAY}, which means it's a great day for notifications!
 SpeakThat! I'm craving {RANDOM_FOOD} right now. Do you have any {RANDOM_FOOD} notifications for me?

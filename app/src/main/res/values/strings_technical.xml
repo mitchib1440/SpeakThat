@@ -215,4 +215,21 @@ This file should NOT have corresponding files in values-XX directories.
     <string name="boot_receiver_service_already_enabled">Notification service already enabled, no action needed</string>
     <string name="boot_receiver_service_not_enabled">Notification service not enabled, user needs to grant permission</string>
 
+    <!-- Content Cap Feature Keys -->
+    <string name="prefs_content_cap_mode">content_cap_mode</string>
+    <string name="prefs_content_cap_word_count">content_cap_word_count</string>
+    <string name="prefs_content_cap_sentence_count">content_cap_sentence_count</string>
+    <string name="prefs_content_cap_time_limit">content_cap_time_limit</string>
+
+    <!-- Content Cap Mode Values -->
+    <string name="content_cap_mode_disabled">disabled</string>
+    <string name="content_cap_mode_words">words</string>
+    <string name="content_cap_mode_sentences">sentences</string>
+    <string name="content_cap_mode_time">time</string>
+
+    <!-- Sentence Boundary Characters (Unicode) -->
+    <!-- Includes: period, exclamation, question marks (standard and inverted),
+         CJK punctuation, Devanagari danda, interrobang, ellipsis, and brackets/parentheses -->
+    <string name="sentence_boundary_chars">.!?¿¡。！？।॥‽…)]})</string>
+
 </resources>
