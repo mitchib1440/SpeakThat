@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.micoyc.speakthat"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.micoyc.speakthat"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 20
         versionName = "1.5.0"
 
