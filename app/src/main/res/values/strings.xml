@@ -871,7 +871,7 @@ This permission is completely optional. Core app functionality works without it.
     <string name="behavior_enable_press_stop">Enable Press to Stop</string>
     <string name="behavior_requires_accessibility_permission">Requires Accessibility Permission</string>
     <string name="press_to_stop_dialog_title">Press to Stop</string>
-        <string name="press_to_stop_dialog_message">Press both volume buttons simultaneously to stop notification reading.<br/><br/><b>🎯 Perfect for hands-free control:</b><br/>• Works from anywhere in the system<br/>• No need to look at the screen<br/>• Quick and reliable<br/>• Normal volume control still works<br/><br/><b>⚠️ Requires Accessibility Permission:</b><br/>This feature needs the accessibility permission to detect volume button presses. You can enable it in General Settings.</string>
+    <string name="press_to_stop_dialog_message">Press both volume buttons simultaneously to stop notification reading.<br/><br/><b>🎯 Perfect for hands-free control:</b><br/>• Works from anywhere in the system<br/>• No need to look at the screen<br/>• Quick and reliable<br/>• Normal volume control still works<br/><br/><b>⚠️ Requires Accessibility Permission:</b><br/>This feature needs the accessibility permission to detect volume button presses. You can enable it in General Settings.<br/>Please note that this will only work when the screen is on.</string>
     <string name="accessibility_permission_required_title">Accessibility Permission Required</string>
     <string name="accessibility_permission_required_message">Press to Stop requires the accessibility permission to detect volume button presses. Please enable it in General Settings first.</string>
     <string name="open_accessibility_settings">Open Accessibility Settings</string>
@@ -1034,22 +1034,22 @@ This permission is completely optional. Core app functionality works without it.
     <string name="dialog_donate_patron_description">Monthly support with exclusive updates</string>
     
     <!-- Development Settings -->
-    <string name="dev_debug_tools_title">🛠️ Debug Tools</string>
+    <string name="dev_debug_tools_title">Debug Tools</string>
     <string name="dev_debug_tools_description">Tools for debugging and testing the app</string>
-    <string name="dev_notification_history">📋 Show Notification History</string>
-    <string name="dev_analytics">📊 Show Help Usage Analytics</string>
-    <string name="dev_battery_report">🔋 Battery Optimization Report</string>
-    <string name="dev_repair_blacklist">🛠️ Repair Word Blacklist</string>
-    <string name="dev_background_monitor">🛰️ Background Process Monitor</string>
-    <string name="dev_installation_debug">🔍 Installation Source Debug</string>
-    <string name="dev_test_rules">🧪 Test Rule System</string>
+    <string name="dev_notification_history">Show Notification History</string>
+    <string name="dev_analytics">Show Help Usage Analytics</string>
+    <string name="dev_battery_report">Battery Optimization Report</string>
+    <string name="dev_repair_blacklist">Repair Word Blacklist</string>
+    <string name="dev_background_monitor">Background Process Monitor</string>
+    <string name="dev_installation_debug">Installation Source Debug</string>
+    <string name="dev_test_rules">Test Rule System</string>
     
     <!-- Notification History -->
     <string name="notification_history_title">Notification History</string>
     <string name="notification_history_description">Recent notifications processed by SpeakThat</string>
     <string name="notification_history_empty">No notifications to display</string>
     <string name="notification_history_clear">Clear History</string>
-    <string name="notification_history_recent">📜 Recent Notifications</string>
+    <string name="notification_history_recent">Recent Notifications</string>
     <string name="notification_history_loading">Loading notification history...</string>
     <string name="notification_history_debug_info">Debug Information</string>
     <string name="notification_history_debug_description">This screen shows notifications that SpeakThat! has captured for debugging purposes. It helps you verify that the app is working correctly and see exactly what notifications are being read aloud.</string>
