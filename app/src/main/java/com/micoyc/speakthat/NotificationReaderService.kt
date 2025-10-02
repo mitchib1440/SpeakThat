@@ -566,6 +566,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     return
                 }
                 
+                // Skip group summary notifications - only read individual notifications
+                // Group summaries are "container" notifications that show "X notifications" 
+                // but don't contain the actual content. Reading them causes duplicates.
+                // This is especially important for Android 16's automatic notification grouping.
+                if (notification.flags and Notification.FLAG_GROUP_SUMMARY != 0) {
+                    Log.d(TAG, "Skipping group summary notification from $packageName")
+                    InAppLogger.logFilter("Skipped group summary notification from $packageName")
+                    return
+                }
+                
                 // Check master switch first - if disabled, don't process any notifications
                 if (!MainActivity.isMasterSwitchEnabled(this)) {
                     Log.d(TAG, "Master switch disabled - ignoring notification from $packageName")
