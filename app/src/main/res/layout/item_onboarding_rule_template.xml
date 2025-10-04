@@ -70,7 +70,7 @@
                 android:textSize="12sp"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
-                style="@style/Widget.SpeakThat.Button.Primary" />
+                style="@style/PrimaryButton" />
 
         </FrameLayout>
 

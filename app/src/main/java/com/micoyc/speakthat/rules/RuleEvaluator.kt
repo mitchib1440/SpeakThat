@@ -59,6 +59,19 @@ class RuleEvaluator(private val context: Context) {
     
     companion object {
         private const val TAG = "RuleEvaluator"
+        
+        // Throttling for repetitive Bluetooth logs
+        private var lastBluetoothLogTime: Long = 0L
+        private const val BLUETOOTH_LOG_THROTTLE_MS = 30000L // Only log detailed Bluetooth info every 30 seconds
+        
+        private fun shouldLogBluetoothDetails(): Boolean {
+            val currentTime = System.currentTimeMillis()
+            if (currentTime - lastBluetoothLogTime > BLUETOOTH_LOG_THROTTLE_MS) {
+                lastBluetoothLogTime = currentTime
+                return true
+            }
+            return false
+        }
     }
     
     /**
@@ -344,14 +357,20 @@ class RuleEvaluator(private val context: Context) {
                 is List<*> -> deviceAddressesData.mapNotNull { it as? String }.toSet()
                 else -> emptySet<String>()
             }
-            InAppLogger.logDebug(TAG, "Required devices from trigger data: $requiredDevices")
+            if (shouldLogBluetoothDetails()) {
+                InAppLogger.logDebug(TAG, "Required devices from trigger data: $requiredDevices")
+            }
             
             // Step 4: Handle "any device" vs "specific device" logic
             if (requiredDevices.isEmpty()) {
-                InAppLogger.logDebug(TAG, "No specific devices required - checking if ANY Bluetooth device is connected")
+                if (shouldLogBluetoothDetails()) {
+                    InAppLogger.logDebug(TAG, "No specific devices required - checking if ANY Bluetooth device is connected")
+                }
                 return evaluateAnyBluetoothDevice()
             } else {
-                InAppLogger.logDebug(TAG, "Specific devices required - checking for: $requiredDevices")
+                if (shouldLogBluetoothDetails()) {
+                    InAppLogger.logDebug(TAG, "Specific devices required - checking for: $requiredDevices")
+                }
                 return evaluateSpecificBluetoothDevices(requiredDevices)
             }
             
@@ -450,8 +469,10 @@ class RuleEvaluator(private val context: Context) {
      * Evaluate if specific Bluetooth devices are connected
      */
     private fun evaluateSpecificBluetoothDevices(requiredDevices: Set<String>): EvaluationResult {
-        InAppLogger.logDebug(TAG, "=== EVALUATING SPECIFIC BLUETOOTH DEVICES ===")
-        InAppLogger.logDebug(TAG, "Required devices: $requiredDevices")
+        if (shouldLogBluetoothDetails()) {
+            InAppLogger.logDebug(TAG, "=== EVALUATING SPECIFIC BLUETOOTH DEVICES ===")
+            InAppLogger.logDebug(TAG, "Required devices: $requiredDevices")
+        }
         
         // Method 1: Try to get actively connected devices via BluetoothManager
         val connectedDevices = getActivelyConnectedDevices()
@@ -526,7 +547,9 @@ class RuleEvaluator(private val context: Context) {
                         InAppLogger.logDebug(TAG, "Profile $profile devices: ${devices.map { "${it.name} (${it.address})" }}")
                     }
                 } catch (e: Throwable) {
-                    InAppLogger.logDebug(TAG, "Profile $profile not supported: ${e.message}")
+                    if (shouldLogBluetoothDetails()) {
+                        InAppLogger.logDebug(TAG, "Profile $profile not supported: ${e.message}")
+                    }
                 }
             }
             

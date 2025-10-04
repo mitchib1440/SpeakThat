@@ -85,7 +85,10 @@ class RuleManager(private val context: Context) {
      */
     private fun loadRulesFromStorage(): List<Rule> {
         val rulesJson = sharedPreferences.getString(KEY_RULES_LIST, "[]")
-        InAppLogger.logDebug(TAG, "Raw JSON loaded: $rulesJson")
+        // Only log raw JSON in verbose mode to reduce noise
+        if (InAppLogger.verboseMode) {
+            InAppLogger.logDebug(TAG, "Raw JSON loaded: $rulesJson")
+        }
         return try {
             val type = object : TypeToken<List<Rule>>() {}.type
             val rules = gson.fromJson(rulesJson, type) ?: emptyList<Rule>()

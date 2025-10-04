@@ -192,7 +192,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         android:layout_marginEnd="8dp"
-                                        style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                        style="@style/WhiteHintTextInputLayout"
                                         app:boxBackgroundMode="outline"
                                         app:boxStrokeColor="@color/white_100"
                                         app:hintTextColor="@color/white_100"
@@ -224,7 +224,7 @@
 
                                         <com.google.android.material.button.MaterialButton
                                             android:id="@+id/btnAddApp"
-                                            style="@style/Widget.SpeakThat.Button.Primary"
+                                            style="@style/PrimaryButton"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
                                             android:text="@string/button_add"
@@ -414,7 +414,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:layout_marginEnd="8dp"
-                                style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                style="@style/WhiteHintTextInputLayout"
                                 app:boxBackgroundMode="outline"
                                 app:boxStrokeColor="@color/white_100"
                                 app:hintTextColor="@color/white_100"
@@ -437,8 +437,10 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="8dp"
                                 android:minWidth="80dp"
-                                android:background="@drawable/dropdown_background"
-                                android:popupBackground="@color/white_100" />
+                                android:background="@drawable/spinner_background"
+                                android:popupBackground="@drawable/dropdown_background"
+                                android:padding="12dp"
+                                android:minHeight="48dp" />
 
                         </LinearLayout>
 
@@ -455,7 +457,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/button_add"
                                 app:cornerRadius="12dp"
-                                style="@style/Widget.SpeakThat.Button.Primary" />
+                                style="@style/PrimaryButton" />
 
                         </FrameLayout>
 
@@ -588,7 +590,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:layout_marginEnd="8dp"
-                                    style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                    style="@style/WhiteHintTextInputLayout"
                                     app:boxBackgroundMode="outline"
                                     app:boxStrokeColor="@color/white_100"
                                     app:hintTextColor="@color/white_100"
@@ -609,7 +611,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                    style="@style/WhiteHintTextInputLayout"
                                     app:boxBackgroundMode="outline"
                                     app:boxStrokeColor="@color/white_100"
                                     app:hintTextColor="@color/white_100"
@@ -640,7 +642,7 @@
                                     android:layout_height="48dp"
                                     android:text="@string/button_add"
                                     app:cornerRadius="12dp"
-                                    style="@style/Widget.SpeakThat.Button.Primary" />
+                                    style="@style/PrimaryButton" />
 
                             </FrameLayout>
 
@@ -823,7 +825,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                            style="@style/WhiteHintTextInputLayout"
                             app:boxBackgroundMode="outline"
                             app:boxStrokeColor="@color/white_100"
                             app:hintTextColor="@color/white_100"
@@ -960,7 +962,7 @@
                                  android:layout_width="match_parent"
                                  android:layout_height="wrap_content"
                                  android:layout_marginBottom="8dp"
-                                 style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                 style="@style/WhiteHintTextInputLayout"
                                  app:boxBackgroundMode="outline"
                                  app:boxStrokeColor="@color/white_100"
                                  app:hintTextColor="@color/white_100"
@@ -996,7 +998,7 @@
                                      android:layout_width="match_parent"
                                      android:layout_height="48dp"
                                      android:text="@string/button_add"
-                                     style="@style/Widget.SpeakThat.Button.Primary" />
+                                     style="@style/PrimaryButton" />
 
                              </FrameLayout>
 
@@ -1080,7 +1082,7 @@
                                          android:layout_width="match_parent"
                                          android:layout_height="wrap_content"
                                          android:layout_marginBottom="8dp"
-                                         style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                         style="@style/WhiteHintTextInputLayout"
                                          app:boxBackgroundMode="outline"
                                          app:boxStrokeColor="@color/white_100"
                                          app:hintTextColor="@color/white_100"
@@ -1116,7 +1118,7 @@
                                              android:layout_width="match_parent"
                                              android:layout_height="48dp"
                                              android:text="@string/button_add"
-                                             style="@style/Widget.SpeakThat.Button.Primary" />
+                                             style="@style/PrimaryButton" />
 
                                      </FrameLayout>
 
@@ -1157,7 +1159,7 @@
                                          android:layout_width="match_parent"
                                          android:layout_height="wrap_content"
                                          android:layout_marginBottom="8dp"
-                                         style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                         style="@style/WhiteHintTextInputLayout"
                                          app:boxBackgroundMode="outline"
                                          app:boxStrokeColor="@color/white_100"
                                          app:hintTextColor="@color/white_100"
@@ -1185,7 +1187,7 @@
                                              android:layout_width="match_parent"
                                              android:layout_height="48dp"
                                              android:text="@string/button_add"
-                                             style="@style/Widget.SpeakThat.Button.Primary" />
+                                             style="@style/PrimaryButton" />
 
                                      </FrameLayout>
 

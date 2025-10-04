@@ -171,6 +171,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var healthCheckRunnable: Runnable? = null
     private val HEALTH_CHECK_INTERVAL_MS = 300000L // 5 minutes
     
+    // Throttling for repetitive logs
+    private var lastTtsVolumeLogTime: Long = 0L
+    private val TTS_VOLUME_LOG_THROTTLE_MS = 10000L // Only log TTS volume maintenance every 10 seconds
+    
 
     
     // Voice settings listener
@@ -1978,6 +1982,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         // 3. Apply word swaps (only for non-private notifications and only if there are replacements)
+        val wordSwapStartText = processedText
+        var wordSwapChangesMade = false
+        val appliedReplacements = mutableListOf<String>()
+        
         if (wordReplacements.isNotEmpty()) {
             Log.d(TAG, "Word replacements available: ${wordReplacements.size} items")
             for ((from, to) in wordReplacements) {
@@ -1985,41 +1993,66 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 processedText = processedText.replace(from, to, ignoreCase = true)
                 if (originalText != processedText) {
                     Log.d(TAG, "Word replacement applied: '$from' -> '$to'")
-                    InAppLogger.logFilter("Word replacement applied: '$from' -> '$to'")
+                    wordSwapChangesMade = true
+                    appliedReplacements.add("'$from' -> '$to'")
                 } else {
                     Log.d(TAG, "Word replacement not found: '$from' in text: '$processedText'")
-                    InAppLogger.logFilter("Word replacement not found: '$from' in text: '$processedText'")
                 }
             }
         }
         
-        Log.d(TAG, "=== FILTERING DEBUG: Word replacement section completed, about to start URL handling ===")
-        InAppLogger.logFilter("=== WORD REPLACEMENT COMPLETE - Starting URL/Content Cap processing ===")
+        // Log summary to InAppLogger
+        if (wordSwapChangesMade) {
+            val changesSummary = appliedReplacements.joinToString(", ")
+            InAppLogger.logFilter("Word swaps applied: $changesSummary | Before: '$wordSwapStartText' | After: '$processedText'")
+        } else if (wordReplacements.isNotEmpty()) {
+            InAppLogger.logFilter("No word swaps applied (${wordReplacements.size} rules checked) | Text unchanged: '$processedText'")
+        }
+        
+        // Only log detailed filter processing in verbose mode
+        if (InAppLogger.verboseMode) {
+            Log.d(TAG, "=== FILTERING DEBUG: Word replacement section completed, about to start URL handling ===")
+            InAppLogger.logFilter("=== WORD REPLACEMENT COMPLETE - Starting URL/Content Cap processing ===")
+        }
         
         // 4. Apply URL handling (only for non-private notifications)
         if (urlHandlingMode != "read_full") {
-            Log.d(TAG, "=== URL HANDLING DEBUG: About to apply URL handling ===")
-            InAppLogger.logFilter("URL handling mode: $urlHandlingMode - applying URL processing")
+            if (InAppLogger.verboseMode) {
+                Log.d(TAG, "=== URL HANDLING DEBUG: About to apply URL handling ===")
+                InAppLogger.logFilter("URL handling mode: $urlHandlingMode - applying URL processing")
+            }
             processedText = applyUrlHandling(processedText)
         } else {
-            Log.d(TAG, "=== URL HANDLING DEBUG: URL handling disabled (read_full mode) ===")
-            InAppLogger.logFilter("URL handling: read_full mode - skipping")
+            if (InAppLogger.verboseMode) {
+                Log.d(TAG, "=== URL HANDLING DEBUG: URL handling disabled (read_full mode) ===")
+                InAppLogger.logFilter("URL handling: read_full mode - skipping")
+            }
         }
         
         // 5. Apply Content Cap (only for non-private notifications)
-        Log.d(TAG, "=== CONTENT CAP DEBUG: About to check content cap - mode=$contentCapMode ===")
-        InAppLogger.logFilter("=== CONTENT CAP CHECK: mode=$contentCapMode ===")
+        if (InAppLogger.verboseMode) {
+            Log.d(TAG, "=== CONTENT CAP DEBUG: About to check content cap - mode=$contentCapMode ===")
+            InAppLogger.logFilter("=== CONTENT CAP CHECK: mode=$contentCapMode ===")
+        }
         if (contentCapMode != "disabled") {
-            Log.d(TAG, "=== CONTENT CAP DEBUG: Content cap IS enabled, calling applyContentCap() ===")
-            InAppLogger.logFilter("Content cap ENABLED ($contentCapMode) - calling applyContentCap()")
+            if (InAppLogger.verboseMode) {
+                Log.d(TAG, "=== CONTENT CAP DEBUG: Content cap IS enabled, calling applyContentCap() ===")
+                InAppLogger.logFilter("Content cap ENABLED ($contentCapMode) - calling applyContentCap()")
+            }
             processedText = applyContentCap(processedText)
-            InAppLogger.logFilter("Content cap processing completed")
+            if (InAppLogger.verboseMode) {
+                InAppLogger.logFilter("Content cap processing completed")
+            }
         } else {
-            Log.d(TAG, "=== CONTENT CAP DEBUG: Content cap is disabled, skipping ===")
-            InAppLogger.logFilter("Content cap DISABLED - skipping")
+            if (InAppLogger.verboseMode) {
+                Log.d(TAG, "=== CONTENT CAP DEBUG: Content cap is disabled, skipping ===")
+                InAppLogger.logFilter("Content cap DISABLED - skipping")
+            }
         }
         
-        InAppLogger.logFilter("=== WORD FILTERING COMPLETE - returning filtered text ===")
+        if (InAppLogger.verboseMode) {
+            InAppLogger.logFilter("=== WORD FILTERING COMPLETE - returning filtered text ===")
+        }
         return FilterResult(true, processedText, "Word filtering applied")
     }
     
@@ -2117,12 +2150,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * Supports word count, sentence count, and time limit modes
      */
     private fun applyContentCap(text: String): String {
-        Log.d(TAG, "=== CONTENT CAP DEBUG: applyContentCap() called ===")
-        InAppLogger.log("Service", "=== APPLY CONTENT CAP CALLED ===")
-        Log.d(TAG, "Content Cap mode: $contentCapMode, wordCount: $contentCapWordCount, sentenceCount: $contentCapSentenceCount")
-        InAppLogger.log("Service", "Content Cap settings: mode=$contentCapMode, words=$contentCapWordCount, sentences=$contentCapSentenceCount")
-        Log.d(TAG, "Input text: '$text'")
-        InAppLogger.log("Service", "Input text length: ${text.length} chars")
+        // Only log detailed content cap info in verbose mode to reduce noise
+        if (InAppLogger.verboseMode) {
+            Log.d(TAG, "=== CONTENT CAP DEBUG: applyContentCap() called ===")
+            InAppLogger.log("Service", "=== APPLY CONTENT CAP CALLED ===")
+            Log.d(TAG, "Content Cap mode: $contentCapMode, wordCount: $contentCapWordCount, sentenceCount: $contentCapSentenceCount")
+            InAppLogger.log("Service", "Content Cap settings: mode=$contentCapMode, words=$contentCapWordCount, sentences=$contentCapSentenceCount")
+            Log.d(TAG, "Input text: '$text'")
+            InAppLogger.log("Service", "Input text length: ${text.length} chars")
+        }
         
         // Null safety check
         if (text.isNullOrEmpty()) {
@@ -2133,25 +2169,33 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Early return for disabled mode - zero processing overhead
         if (contentCapMode == "disabled") {
-            Log.d(TAG, "Content Cap disabled, returning original text")
-            InAppLogger.log("Service", "Content Cap: Mode is disabled, skipping")
+            if (InAppLogger.verboseMode) {
+                Log.d(TAG, "Content Cap disabled, returning original text")
+                InAppLogger.log("Service", "Content Cap: Mode is disabled, skipping")
+            }
             return text
         }
         
         val originalLength = text.length
         val result = when (contentCapMode) {
             "words" -> {
-                Log.d(TAG, "Applying word cap...")
-                InAppLogger.log("Service", "Applying WORD cap...")
+                if (InAppLogger.verboseMode) {
+                    Log.d(TAG, "Applying word cap...")
+                    InAppLogger.log("Service", "Applying WORD cap...")
+                }
                 applyWordCap(text)
             }
             "sentences" -> {
-                Log.d(TAG, "Applying sentence cap...")
-                InAppLogger.log("Service", "Applying SENTENCE cap...")
+                if (InAppLogger.verboseMode) {
+                    Log.d(TAG, "Applying sentence cap...")
+                    InAppLogger.log("Service", "Applying SENTENCE cap...")
+                }
                 applySentenceCap(text)
             }
             "time" -> {
-                Log.d(TAG, "Time cap mode - no text processing needed")
+                if (InAppLogger.verboseMode) {
+                    Log.d(TAG, "Time cap mode - no text processing needed")
+                }
                 text // Time cap is handled in TTS layer, not text processing
             }
             else -> {
@@ -2163,15 +2207,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Ensure result is never null
         val safeResult = result ?: text
         
-        // Log content cap application
+        // Log content cap application (only when changes are made or in verbose mode)
         if (safeResult != text) {
             Log.d(TAG, "Content Cap applied (mode=$contentCapMode): Original=${originalLength} chars, Capped=${safeResult.length} chars")
             InAppLogger.log("Service", "Content Cap applied (mode=$contentCapMode): ${originalLength} chars → ${safeResult.length} chars")
-        } else {
+        } else if (InAppLogger.verboseMode) {
             Log.d(TAG, "Content Cap: No change needed (text within limit)")
         }
         
-        Log.d(TAG, "=== CONTENT CAP DEBUG: Result: '${safeResult.take(150)}'")
+        if (InAppLogger.verboseMode) {
+            Log.d(TAG, "=== CONTENT CAP DEBUG: Result: '${safeResult.take(150)}'")
+        }
         return safeResult
     }
     
@@ -3344,9 +3390,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // This helps prevent the system from overriding our volume settings
             val volumeParams = VoiceSettingsActivity.createVolumeBundle(ttsVolume, ttsUsage, speakerphoneEnabled)
             
-            // Log the current TTS volume for debugging
-            Log.d(TAG, "Re-applied TTS volume settings - Volume: ${ttsVolume * 100}%, Usage: $ttsUsage")
-            InAppLogger.log("MediaBehavior", "Re-applied TTS volume settings to prevent ducking - Volume: ${ttsVolume * 100}%")
+            // Log the current TTS volume for debugging (throttled to reduce noise)
+            val currentTime = System.currentTimeMillis()
+            if (currentTime - lastTtsVolumeLogTime > TTS_VOLUME_LOG_THROTTLE_MS) {
+                Log.d(TAG, "Re-applied TTS volume settings - Volume: ${ttsVolume * 100}%, Usage: $ttsUsage")
+                InAppLogger.log("MediaBehavior", "Re-applied TTS volume settings to prevent ducking - Volume: ${ttsVolume * 100}%")
+                lastTtsVolumeLogTime = currentTime
+            }
             
             // Additional check: ensure that the TTS volume is not being reduced by the system
             // This is a defensive measure to prevent the bug where TTS volume gets reduced
@@ -3365,7 +3415,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             // Additional safety measure: ensure that the TTS volume is not being reduced by the system
             // This is a defensive measure to prevent the bug where TTS volume gets reduced when switching apps
-            if (isCurrentlySpeaking) {
+            if (isCurrentlySpeaking && currentTime - lastTtsVolumeLogTime > TTS_VOLUME_LOG_THROTTLE_MS) {
                 Log.d(TAG, "TTS is currently speaking - ensuring volume is maintained")
                 InAppLogger.log("MediaBehavior", "TTS is currently speaking - ensuring volume is maintained")
             }

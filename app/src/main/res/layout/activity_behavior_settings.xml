@@ -2111,7 +2111,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/behavior_wave_recalibrate"
                             android:textSize="14sp"
-                            style="@style/Widget.SpeakThat.Button.Secondary"
+                            style="@style/SecondaryButton"
                             android:layout_marginBottom="16dp" />
 
                         <!-- Timeout Section -->
@@ -2527,7 +2527,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginEnd="8dp"
-                            style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                            style="@style/WhiteHintTextInputLayout"
                             app:boxBackgroundMode="outline"
                             app:boxStrokeColor="@color/white_100">
 
@@ -2546,7 +2546,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="8dp"
-                            style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                            style="@style/WhiteHintTextInputLayout"
                             app:boxBackgroundMode="outline"
                             app:boxStrokeColor="@color/white_100">
 
@@ -2569,7 +2569,7 @@
                         android:text="@string/add_custom_app_name"
                         android:layout_marginBottom="16dp"
                         app:cornerRadius="12dp"
-                        style="@style/Widget.SpeakThat.Button.Primary" />
+                        style="@style/PrimaryButton" />
 
                     <!-- Custom App Names List -->
                     <androidx.recyclerview.widget.RecyclerView
@@ -2859,7 +2859,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
-                            style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                            style="@style/WhiteHintTextInputLayout"
                             app:boxBackgroundMode="outline"
                             app:boxStrokeColor="@color/white_100">
 
@@ -2887,7 +2887,7 @@
                             android:layout_height="48dp"
                             android:text="@string/button_add"
                             app:cornerRadius="12dp"
-                            style="@style/Widget.SpeakThat.Button.Primary" />
+                            style="@style/PrimaryButton" />
 
                     </LinearLayout>
 
@@ -3292,9 +3292,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:minHeight="48dp"
                         android:background="@drawable/spinner_background"
-                        android:popupBackground="?attr/colorSurface" />
+                        android:popupBackground="@drawable/dropdown_background"
+                        android:padding="12dp"
+                        android:minHeight="48dp" />
 
                     <!-- Custom Template Input -->
                     <TextView
@@ -3354,7 +3355,7 @@
                             android:text="@string/button_test"
                             android:textSize="12sp"
                             app:cornerRadius="12dp"
-                            style="@style/Widget.SpeakThat.Button.Primary" />
+                            style="@style/PrimaryButton" />
 
                     </LinearLayout>
 
