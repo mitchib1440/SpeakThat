@@ -73,6 +73,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String KEY_WAVE_TO_STOP_ENABLED = "wave_to_stop_enabled";
     private static final String KEY_WAVE_THRESHOLD = "wave_threshold";
     private static final String KEY_WAVE_TIMEOUT_SECONDS = "wave_timeout_seconds";
+    private static final String KEY_PRESS_TO_STOP_ENABLED = "press_to_stop_enabled";
     private static final String KEY_POCKET_MODE_ENABLED = "pocket_mode_enabled";
     private static final String KEY_MEDIA_BEHAVIOR = "media_behavior";
     private static final String KEY_DUCKING_VOLUME = "ducking_volume";
@@ -84,6 +85,16 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String KEY_NOTIFICATION_DEDUPLICATION = "notification_deduplication"; // boolean
     private static final String KEY_DISMISSAL_MEMORY_ENABLED = "dismissal_memory_enabled"; // boolean
     private static final String KEY_DISMISSAL_MEMORY_TIMEOUT = "dismissal_memory_timeout"; // int (minutes)
+    
+    // Content Cap settings
+    private static final String KEY_CONTENT_CAP_MODE = "content_cap_mode";
+    private static final String KEY_CONTENT_CAP_WORD_COUNT = "content_cap_word_count";
+    private static final String KEY_CONTENT_CAP_SENTENCE_COUNT = "content_cap_sentence_count";
+    private static final String KEY_CONTENT_CAP_TIME_LIMIT = "content_cap_time_limit";
+    private static final String DEFAULT_CONTENT_CAP_MODE = "disabled";
+    private static final int DEFAULT_CONTENT_CAP_WORD_COUNT = 6;
+    private static final int DEFAULT_CONTENT_CAP_SENTENCE_COUNT = 1;
+    private static final int DEFAULT_CONTENT_CAP_TIME_LIMIT = 10;
 
     private static final String KEY_SPEECH_TEMPLATE = "speech_template"; // Custom speech template
 
@@ -264,9 +275,61 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.btnDoNotDisturbInfo.setOnClickListener(v -> showDoNotDisturbDialog());
         binding.btnShakeToStopInfo.setOnClickListener(v -> showShakeToStopDialog());
         binding.btnWaveToStopInfo.setOnClickListener(v -> showWaveToStopDialog());
+        binding.btnPressToStopInfo.setOnClickListener(v -> showPressToStopDialog());
         binding.btnDelayInfo.setOnClickListener(v -> showDelayDialog());
         binding.btnAppNamesInfo.setOnClickListener(v -> showCustomAppNamesDialog());
         binding.btnCooldownInfo.setOnClickListener(v -> showCooldownDialog());
+        binding.btnContentCapInfo.setOnClickListener(v -> showContentCapDialog());
+
+        // Set up Content Cap radio buttons
+        binding.contentCapModeGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            String mode = "disabled"; // default
+            if (checkedId == R.id.radioContentCapWords) {
+                mode = "words";
+            } else if (checkedId == R.id.radioContentCapSentences) {
+                mode = "sentences";
+            } else if (checkedId == R.id.radioContentCapTime) {
+                mode = "time";
+            }
+            
+            // Show/hide appropriate slider sections
+            binding.contentCapWordSection.setVisibility("words".equals(mode) ? View.VISIBLE : View.GONE);
+            binding.contentCapSentenceSection.setVisibility("sentences".equals(mode) ? View.VISIBLE : View.GONE);
+            binding.contentCapTimeSection.setVisibility("time".equals(mode) ? View.VISIBLE : View.GONE);
+            
+            // Save setting
+            saveContentCapMode(mode);
+            Log.d("BehaviorSettings", "Content Cap mode changed to: " + mode);
+            InAppLogger.log("BehaviorSettings", "Content Cap mode changed to: " + mode);
+        });
+        
+        // Set up Content Cap sliders
+        binding.sliderContentCapWordCount.addOnChangeListener((slider, value, fromUser) -> {
+            if (fromUser) {
+                int wordCount = (int) value;
+                binding.tvContentCapWordCountValue.setText(getString(R.string.content_cap_word_count_value, wordCount));
+                saveContentCapWordCount(wordCount);
+                Log.d("BehaviorSettings", "Content Cap word count changed to: " + wordCount);
+            }
+        });
+        
+        binding.sliderContentCapSentenceCount.addOnChangeListener((slider, value, fromUser) -> {
+            if (fromUser) {
+                int sentenceCount = (int) value;
+                binding.tvContentCapSentenceCountValue.setText(getString(R.string.content_cap_sentence_count_value, sentenceCount));
+                saveContentCapSentenceCount(sentenceCount);
+                Log.d("BehaviorSettings", "Content Cap sentence count changed to: " + sentenceCount);
+            }
+        });
+        
+        binding.sliderContentCapTimeLimit.addOnChangeListener((slider, value, fromUser) -> {
+            if (fromUser) {
+                int timeLimit = (int) value;
+                binding.tvContentCapTimeLimitValue.setText(getString(R.string.content_cap_time_limit_value, timeLimit));
+                saveContentCapTimeLimit(timeLimit);
+                Log.d("BehaviorSettings", "Content Cap time limit changed to: " + timeLimit);
+            }
+        });
 
         // Set up shake to stop toggle
         binding.switchShakeToStop.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -371,6 +434,21 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Set up wave recalibration button
         binding.btnRecalibrateWave.setOnClickListener(v -> {
             launchWaveCalibration();
+        });
+
+        // Set up press to stop toggle
+        binding.switchPressToStop.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Check if accessibility permission is granted
+                boolean hasPermission = isAccessibilityServiceEnabled();
+                if (!hasPermission) {
+                    // Show dialog explaining accessibility permission requirement
+                    showAccessibilityPermissionRequiredDialog();
+                    buttonView.setChecked(false);
+                    return;
+                }
+            }
+            savePressToStopEnabled(isChecked);
         });
 
         // Set up shake timeout slider
@@ -930,6 +1008,23 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         }
         updateWaveTimeoutDisplay(waveTimeoutSeconds);
 
+        // Load press to stop settings
+        boolean pressEnabled = sharedPreferences.getBoolean(KEY_PRESS_TO_STOP_ENABLED, false);
+        boolean hasAccessibilityPermission = isAccessibilityServiceEnabled();
+        
+        // Only enable the switch if accessibility permission is granted
+        // If permission is not granted, force the setting to false
+        if (!hasAccessibilityPermission && pressEnabled) {
+            // Permission was revoked - disable the feature and save the change
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(KEY_PRESS_TO_STOP_ENABLED, false);
+            editor.apply();
+            pressEnabled = false;
+        }
+        
+        binding.switchPressToStop.setChecked(pressEnabled);
+        binding.switchPressToStop.setEnabled(hasAccessibilityPermission);
+
         // Load pocket mode setting
         boolean pocketModeEnabled = sharedPreferences.getBoolean(KEY_POCKET_MODE_ENABLED, false);
         binding.switchPocketMode.setChecked(pocketModeEnabled);
@@ -999,6 +1094,50 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
 
         // Load cooldown apps
         loadCooldownApps();
+        
+        // Load Content Cap settings
+        String contentCapMode = sharedPreferences.getString(KEY_CONTENT_CAP_MODE, DEFAULT_CONTENT_CAP_MODE);
+        switch (contentCapMode) {
+            case "words":
+                binding.radioContentCapWords.setChecked(true);
+                binding.contentCapWordSection.setVisibility(View.VISIBLE);
+                binding.contentCapSentenceSection.setVisibility(View.GONE);
+                binding.contentCapTimeSection.setVisibility(View.GONE);
+                break;
+            case "sentences":
+                binding.radioContentCapSentences.setChecked(true);
+                binding.contentCapWordSection.setVisibility(View.GONE);
+                binding.contentCapSentenceSection.setVisibility(View.VISIBLE);
+                binding.contentCapTimeSection.setVisibility(View.GONE);
+                break;
+            case "time":
+                binding.radioContentCapTime.setChecked(true);
+                binding.contentCapWordSection.setVisibility(View.GONE);
+                binding.contentCapSentenceSection.setVisibility(View.GONE);
+                binding.contentCapTimeSection.setVisibility(View.VISIBLE);
+                break;
+            default: // "disabled"
+                binding.radioContentCapDisabled.setChecked(true);
+                binding.contentCapWordSection.setVisibility(View.GONE);
+                binding.contentCapSentenceSection.setVisibility(View.GONE);
+                binding.contentCapTimeSection.setVisibility(View.GONE);
+                break;
+        }
+        
+        int wordCount = sharedPreferences.getInt(KEY_CONTENT_CAP_WORD_COUNT, DEFAULT_CONTENT_CAP_WORD_COUNT);
+        binding.sliderContentCapWordCount.setValue(wordCount);
+        binding.tvContentCapWordCountValue.setText(getString(R.string.content_cap_word_count_value, wordCount));
+        
+        int sentenceCount = sharedPreferences.getInt(KEY_CONTENT_CAP_SENTENCE_COUNT, DEFAULT_CONTENT_CAP_SENTENCE_COUNT);
+        binding.sliderContentCapSentenceCount.setValue(sentenceCount);
+        binding.tvContentCapSentenceCountValue.setText(getString(R.string.content_cap_sentence_count_value, sentenceCount));
+        
+        int timeLimit = sharedPreferences.getInt(KEY_CONTENT_CAP_TIME_LIMIT, DEFAULT_CONTENT_CAP_TIME_LIMIT);
+        binding.sliderContentCapTimeLimit.setValue(timeLimit);
+        binding.tvContentCapTimeLimitValue.setText(getString(R.string.content_cap_time_limit_value, timeLimit));
+        
+        Log.d("BehaviorSettings", "Loaded Content Cap settings: mode=" + contentCapMode + ", wordCount=" + wordCount + ", sentenceCount=" + sentenceCount + ", timeLimit=" + timeLimit);
+        InAppLogger.log("BehaviorSettings", "Loaded Content Cap settings: mode=" + contentCapMode + ", wordCount=" + wordCount + ", sentenceCount=" + sentenceCount + ", timeLimit=" + timeLimit);
 
         // Load Do Not Disturb setting
         boolean honourDoNotDisturb = sharedPreferences.getBoolean(KEY_HONOUR_DO_NOT_DISTURB, DEFAULT_HONOUR_DO_NOT_DISTURB);
@@ -1513,6 +1652,17 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         editor.apply();
     }
 
+    /**
+     * Save the Press to Stop setting to SharedPreferences
+     * 
+     * @param enabled true to enable Press to Stop, false to disable
+     */
+    private void savePressToStopEnabled(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_PRESS_TO_STOP_ENABLED, enabled);
+        editor.apply();
+    }
+
     private void saveWaveTimeoutSeconds(int timeoutSeconds) {
         // Safety validation: ensure timeout is within valid range (0 or 5-300)
         int validatedTimeout = timeoutSeconds;
@@ -1610,6 +1760,34 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         editor.putInt(KEY_DELAY_BEFORE_READOUT, delaySeconds);
         editor.apply();
         InAppLogger.log("BehaviorSettings", "Delay before readout changed to: " + delaySeconds + " seconds");
+    }
+    
+    private void saveContentCapMode(String mode) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_CONTENT_CAP_MODE, mode);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Content Cap mode changed to: " + mode);
+    }
+    
+    private void saveContentCapWordCount(int wordCount) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_CONTENT_CAP_WORD_COUNT, wordCount);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Content Cap word count changed to: " + wordCount);
+    }
+    
+    private void saveContentCapSentenceCount(int sentenceCount) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_CONTENT_CAP_SENTENCE_COUNT, sentenceCount);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Content Cap sentence count changed to: " + sentenceCount);
+    }
+    
+    private void saveContentCapTimeLimit(int timeLimit) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_CONTENT_CAP_TIME_LIMIT, timeLimit);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Content Cap time limit changed to: " + timeLimit + " seconds");
     }
 
     private void saveHonourDoNotDisturb(boolean honour) {
@@ -2162,6 +2340,32 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 .show();
     }
 
+    private void showPressToStopDialog() {
+        // Track dialog usage for analytics
+        trackDialogUsage("press_to_stop_info");
+        
+        String htmlText = getString(R.string.press_to_stop_dialog_message);
+        
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(getString(R.string.press_to_stop_dialog_title))
+                .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
+                .setPositiveButton(R.string.got_it, null)
+                .show();
+    }
+
+    private void showAccessibilityPermissionRequiredDialog() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.accessibility_permission_required_title))
+                .setMessage(getString(R.string.accessibility_permission_required_message))
+                .setPositiveButton(getString(R.string.open_accessibility_settings), (dialog, which) -> {
+                    // Open accessibility settings
+                    Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                    startActivity(intent);
+                })
+                .setNegativeButton(getString(R.string.cancel), null)
+                .show();
+    }
+
     private void showDelayDialog() {
         // Track dialog usage for analytics
         trackDialogUsage("delay_info");
@@ -2224,6 +2428,17 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.dialog_title_custom_app_names)
                 .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
+                .setPositiveButton(R.string.button_got_it, null)
+                .show();
+    }
+
+    private void showContentCapDialog() {
+        // Track dialog usage for analytics
+        trackDialogUsage("content_cap_info");
+        
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.dialog_title_content_cap)
+                .setMessage(Html.fromHtml(getString(R.string.content_cap_help_message), Html.FROM_HTML_MODE_LEGACY))
                 .setPositiveButton(R.string.button_got_it, null)
                 .show();
     }
@@ -2604,6 +2819,33 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
      */
     private String loadDuckingFallbackStrategy() {
         return sharedPreferences.getString("ducking_fallback_strategy", "manual");
+    }
+
+    /**
+     * Check if the accessibility service is enabled
+     * 
+     * This method checks if the SpeakThatAccessibilityService is enabled in the
+     * Android accessibility settings. It's similar to how notification listener
+     * permission is checked.
+     * 
+     * @return true if the accessibility service is enabled, false otherwise
+     */
+    private boolean isAccessibilityServiceEnabled() {
+        String packageName = getPackageName();
+        String serviceName = packageName + "/com.micoyc.speakthat.SpeakThatAccessibilityService";
+        
+        String enabledServices = android.provider.Settings.Secure.getString(getContentResolver(), 
+            android.provider.Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+        
+        if (enabledServices != null && !enabledServices.isEmpty()) {
+            String[] services = enabledServices.split(":");
+            for (String service : services) {
+                if (service.equals(serviceName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void trackDialogUsage(String dialogType) {

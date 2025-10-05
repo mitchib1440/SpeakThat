@@ -23,6 +23,8 @@ public class FilterConfigManager {
     private static final String KEY_WORD_BLACKLIST = "word_blacklist";
     private static final String KEY_WORD_BLACKLIST_PRIVATE = "word_blacklist_private";
     private static final String KEY_WORD_REPLACEMENTS = "word_replacements";
+    private static final String KEY_URL_HANDLING_MODE = "url_handling_mode";
+    private static final String KEY_URL_REPLACEMENT_TEXT = "url_replacement_text";
     
     public static class FilterConfig {
         public String appListMode;
@@ -31,6 +33,8 @@ public class FilterConfigManager {
         public Set<String> wordBlacklist;
         public Set<String> wordBlacklistPrivate;
         public String wordReplacements; // Stored as delimited string
+        public String urlHandlingMode;
+        public String urlReplacementText;
         public String exportDate;
         public String appVersion;
         public String configVersion;
@@ -41,6 +45,8 @@ public class FilterConfigManager {
             this.wordBlacklist = new HashSet<>();
             this.wordBlacklistPrivate = new HashSet<>();
             this.wordReplacements = "";
+            this.urlHandlingMode = "domain_only";
+            this.urlReplacementText = "";
             this.exportDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
             this.appVersion = "1.0"; // Static version for export compatibility
             this.configVersion = CONFIG_VERSION;
@@ -116,6 +122,10 @@ public class FilterConfigManager {
         public String customAppNames;
         public String cooldownApps;
         public String speechTemplate;
+        public String contentCapMode;
+        public int contentCapWordCount;
+        public int contentCapSentenceCount;
+        public int contentCapTimeLimit;
         
         public BehaviorConfig() {
             this.notificationBehavior = "interrupt";
@@ -138,6 +148,10 @@ public class FilterConfigManager {
             this.customAppNames = "[]";
             this.cooldownApps = "[]";
             this.speechTemplate = "{app} notified you: {content}";
+            this.contentCapMode = "disabled";
+            this.contentCapWordCount = 6;
+            this.contentCapSentenceCount = 1;
+            this.contentCapTimeLimit = 10;
         }
     }
     
@@ -183,6 +197,8 @@ public class FilterConfigManager {
         config.wordBlacklist = new HashSet<>(prefs.getStringSet(KEY_WORD_BLACKLIST, new HashSet<>()));
         config.wordBlacklistPrivate = new HashSet<>(prefs.getStringSet(KEY_WORD_BLACKLIST_PRIVATE, new HashSet<>()));
         config.wordReplacements = prefs.getString(KEY_WORD_REPLACEMENTS, "");
+        config.urlHandlingMode = prefs.getString(KEY_URL_HANDLING_MODE, "domain_only");
+        config.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
         
         // Create JSON structure
         JSONObject json = new JSONObject();
@@ -203,6 +219,8 @@ public class FilterConfigManager {
         filters.put("wordBlacklist", new JSONArray(config.wordBlacklist));
         filters.put("wordBlacklistPrivate", new JSONArray(config.wordBlacklistPrivate));
         filters.put("wordReplacements", config.wordReplacements);
+        filters.put("urlHandlingMode", config.urlHandlingMode);
+        filters.put("urlReplacementText", config.urlReplacementText);
         json.put("filters", filters);
         
         // Future extension point - we can add more sections here
@@ -228,6 +246,8 @@ public class FilterConfigManager {
         config.filters.wordBlacklist = new HashSet<>(prefs.getStringSet(KEY_WORD_BLACKLIST, new HashSet<>()));
         config.filters.wordBlacklistPrivate = new HashSet<>(prefs.getStringSet(KEY_WORD_BLACKLIST_PRIVATE, new HashSet<>()));
         config.filters.wordReplacements = prefs.getString(KEY_WORD_REPLACEMENTS, "");
+        config.filters.urlHandlingMode = prefs.getString(KEY_URL_HANDLING_MODE, "domain_only");
+        config.filters.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
         
         // Load voice settings
         config.voice.speechRate = voicePrefs.getFloat("speech_rate", 1.0f);
@@ -263,6 +283,10 @@ public class FilterConfigManager {
         config.behavior.customAppNames = prefs.getString("custom_app_names", "[]");
         config.behavior.cooldownApps = prefs.getString("cooldown_apps", "[]");
         config.behavior.speechTemplate = prefs.getString("speech_template", "{app} notified you: {content}");
+        config.behavior.contentCapMode = prefs.getString("content_cap_mode", "disabled");
+        config.behavior.contentCapWordCount = prefs.getInt("content_cap_word_count", 6);
+        config.behavior.contentCapSentenceCount = prefs.getInt("content_cap_sentence_count", 1);
+        config.behavior.contentCapTimeLimit = prefs.getInt("content_cap_time_limit", 10);
         
         // Load general settings
         config.general.darkMode = prefs.getBoolean("dark_mode", true);
@@ -329,6 +353,10 @@ public class FilterConfigManager {
         behavior.put("customAppNames", config.behavior.customAppNames);
         behavior.put("cooldownApps", config.behavior.cooldownApps);
         behavior.put("speechTemplate", config.behavior.speechTemplate);
+        behavior.put("contentCapMode", config.behavior.contentCapMode);
+        behavior.put("contentCapWordCount", config.behavior.contentCapWordCount);
+        behavior.put("contentCapSentenceCount", config.behavior.contentCapSentenceCount);
+        behavior.put("contentCapTimeLimit", config.behavior.contentCapTimeLimit);
         json.put("behavior", behavior);
         
         // General settings
@@ -413,6 +441,17 @@ public class FilterConfigManager {
                 if (!wordReplacements.isEmpty()) {
                     filtersImported += wordReplacements.split("\\|").length;
                 }
+            }
+            
+            // Import URL handling settings
+            if (filters.has("urlHandlingMode")) {
+                editor.putString(KEY_URL_HANDLING_MODE, filters.getString("urlHandlingMode"));
+                filtersImported++;
+            }
+            
+            if (filters.has("urlReplacementText")) {
+                editor.putString(KEY_URL_REPLACEMENT_TEXT, filters.getString("urlReplacementText"));
+                filtersImported++;
             }
             
             // Apply all changes
@@ -500,6 +539,17 @@ public class FilterConfigManager {
                     if (!wordReplacements.isEmpty()) {
                         totalImported += wordReplacements.split("\\|").length;
                     }
+                }
+                
+                // Import URL handling settings
+                if (filters.has("urlHandlingMode")) {
+                    mainEditor.putString(KEY_URL_HANDLING_MODE, filters.getString("urlHandlingMode"));
+                    totalImported++;
+                }
+                
+                if (filters.has("urlReplacementText")) {
+                    mainEditor.putString(KEY_URL_REPLACEMENT_TEXT, filters.getString("urlReplacementText"));
+                    totalImported++;
                 }
             }
             
@@ -691,6 +741,26 @@ public class FilterConfigManager {
                 
                 if (behavior.has("speechTemplate")) {
                     mainEditor.putString("speech_template", behavior.getString("speechTemplate"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("contentCapMode")) {
+                    mainEditor.putString("content_cap_mode", behavior.getString("contentCapMode"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("contentCapWordCount")) {
+                    mainEditor.putInt("content_cap_word_count", behavior.getInt("contentCapWordCount"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("contentCapSentenceCount")) {
+                    mainEditor.putInt("content_cap_sentence_count", behavior.getInt("contentCapSentenceCount"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("contentCapTimeLimit")) {
+                    mainEditor.putInt("content_cap_time_limit", behavior.getInt("contentCapTimeLimit"));
                     totalImported++;
                 }
             }

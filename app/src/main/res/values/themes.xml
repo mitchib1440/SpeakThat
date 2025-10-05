@@ -26,9 +26,9 @@
         
         <!-- Global corner radius for consistent UI elements -->
         <item name="cornerRadius">12dp</item>
-        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.SpeakThat.SmallComponent</item>
-        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.SpeakThat.MediumComponent</item>
-        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.SpeakThat.LargeComponent</item>
+        <item name="shapeAppearanceSmallComponent">@style/AppShapeAppearance.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/AppShapeAppearance.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/AppShapeAppearance.LargeComponent</item>
     </style>
 
     <style name="Theme.SpeakThat" parent="Base.Theme.SpeakThat" />
@@ -40,51 +40,51 @@
     </style>
     
     <!-- Global Shape Appearances for consistent corner radius -->
-    <style name="ShapeAppearance.SpeakThat.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
+    <style name="AppShapeAppearance.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
     </style>
     
-    <style name="ShapeAppearance.SpeakThat.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
+    <style name="AppShapeAppearance.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
     </style>
     
-    <style name="ShapeAppearance.SpeakThat.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
+    <style name="AppShapeAppearance.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
     </style>
     
     <!-- Custom TextInputLayout style with forced white hint text -->
-    <style name="Widget.SpeakThat.TextInputLayout.WhiteHint" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+    <style name="WhiteHintTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textColorHint">@color/white_100</item>
         <item name="hintTextColor">@color/white_100</item>
         <item name="placeholderTextColor">@color/white_100</item>
         <item name="boxStrokeColor">@color/white_100</item>
-        <item name="shapeAppearance">@style/ShapeAppearance.SpeakThat.MediumComponent</item>
+        <item name="shapeAppearance">@style/AppShapeAppearance.MediumComponent</item>
     </style>
 
     <!-- Primary Button Style - White background with black text for buttons on purple gradients -->
-    <style name="Widget.SpeakThat.Button.Primary" parent="Widget.Material3.Button">
+    <style name="PrimaryButton" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">@color/white_100</item>
         <item name="android:textColor">@color/black_100</item>
         <item name="cornerRadius">12dp</item>
     </style>
 
     <!-- Secondary Button Style - Existing darkened overlay with white text for buttons on purple gradients -->
-    <style name="Widget.SpeakThat.Button.Secondary" parent="Widget.Material3.Button.TextButton">
+    <style name="SecondaryButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="backgroundTint">@color/black_overlay_15</item>
         <item name="android:textColor">@color/white_100</item>
         <item name="cornerRadius">12dp</item>
     </style>
     
     <!-- Global MaterialCardView style for consistent corner radius -->
-    <style name="Widget.SpeakThat.CardView" parent="Widget.Material3.CardView.Elevated">
+    <style name="AppCardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">12dp</item>
     </style>
     
     <!-- Global Slider style for consistent corner radius -->
-    <style name="Widget.SpeakThat.Slider" parent="Widget.Material3.Slider">
+    <style name="AppSlider" parent="Widget.MaterialComponents.Slider">
         <item name="trackCornerRadius">12dp</item>
     </style>
 </resources> 

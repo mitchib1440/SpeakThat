@@ -21,6 +21,35 @@
     <uses-permission android:name="android.permission.BIND_QUICK_SETTINGS_TILE"
         tools:ignore="ProtectedPermissions" />
     
+    <!-- Accessibility Service Permission (OPTIONAL FEATURE) -->
+    <!-- 
+    PURPOSE: This permission enables advanced user control features for the notification reader.
+    
+    SPECIFIC USES:
+    - Volume button control: Allow users to stop/pause notification readouts using hardware volume buttons
+    - Enhanced gesture recognition: Provide alternative control methods beyond current shake/wave detection
+    - Global media control: Better integration with music apps and media playback
+    - System-wide shortcuts: Enable quick actions from anywhere in the system
+    
+    PRIVACY & SECURITY:
+    - This permission is COMPLETELY OPTIONAL - core app functionality works without it
+    - All processing stays on-device - no data collection or transmission
+    - Users must explicitly enable this in Android's accessibility settings
+    - Each feature can be individually enabled/disabled by the user
+    - No access to personal data, passwords, or sensitive information
+    
+    FOSS COMPLIANCE:
+    - Permission is only used for legitimate accessibility features
+    - No tracking, analytics, or data collection
+    - Transparent about what each feature does
+    - Users have full control over all functionality
+    - Can be completely disabled without affecting core app features
+    
+    This permission follows the same privacy-first approach as the existing notification listener permission.
+    -->
+    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE"
+        tools:ignore="ProtectedPermissions" />
+    
     <!-- Permission to post notifications (required for Android 13+) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     
@@ -207,6 +236,20 @@
             <meta-data
                 android:name="android.service.quicksettings.ACTIVE_TILE"
                 android:value="true" />
+        </service>
+
+        <!-- Accessibility Service -->
+        <service
+            android:name=".SpeakThatAccessibilityService"
+            android:label="@string/accessibility_service_name"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
         </service>
 
         <!-- Boot Receiver for auto-start functionality -->

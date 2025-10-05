@@ -132,7 +132,7 @@ This feature is especially loved by people who get notifications during meetings
     <string name="persistent_notification_filtering_title">Persistent/Silent Notification Filtering</string>
     <string name="persistent_notification_filtering_description">Skip notifications that are persistent (ongoing) or silent (no sound/vibration)</string>
     <string name="enable_persistent_filtering">Enable persistent/silent notification filtering</string>
-    <string name="persistent_filtering_help">💡 Persistent notifications are ongoing (like music controls, navigation, etc.) and silent notifications have no sound/vibration. This option helps reduce notification spam from background services.</string>
+    <string name="persistent_filtering_help">Persistent notifications are ongoing (like music controls, navigation, etc.) and silent notifications have no sound/vibration. This option helps reduce notification spam from background services.</string>
     
     <!-- Individual Persistent Filtering Categories -->
     <string name="filter_persistent_notifications">Filter persistent notifications</string>
@@ -446,6 +446,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_title_invalid_app_package">Invalid App Package</string>
     <string name="dialog_title_edit_rule">Edit Rule</string>
     <string name="dialog_title_create_rule">Create Rule</string>
+    <string name="dialog_title_content_cap">Content Cap</string>
     
     <!-- Filter Settings Dialog Titles -->
     <string name="dialog_title_edit_filtered_media_app">Edit Filtered Media App</string>
@@ -619,6 +620,9 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_cooldown_title">Notification Cooldown</string>
     <string name="behavior_cooldown_description">Prevent apps from having multiple notifications read within a specified time period</string>
     <string name="behavior_cooldown_recommendation">Great for: Apps that spam notifications</string>
+    <string name="behavior_content_cap_title">Content Cap</string>
+    <string name="behavior_content_cap_description">Limit how much of each notification gets read aloud</string>
+    <string name="behavior_content_cap_recommendation">Great for: Long notifications where you only need the beginning</string>
     <string name="behavior_speech_title">Speech Format</string>
     <string name="behavior_speech_description">Customize how notifications are spoken aloud using placeholders</string>
     <string name="behavior_speech_recommendation">Customize your notification experience</string>
@@ -841,6 +845,37 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="general_verify_settings">Verify All Settings</string>
     <string name="general_verify_settings_description">Run comprehensive test to verify all settings are working</string>
     
+    <!-- Accessibility Permission Strings -->
+    <string name="general_accessibility_permission">Accessibility Permission</string>
+    <string name="general_accessibility_permission_description">Enable advanced controls like volume button shortcuts (completely optional)</string>
+    <string name="accessibility_permission_request">Request Accessibility Permission</string>
+    <string name="accessibility_permission_granted">Accessibility permission granted</string>
+    <string name="accessibility_permission_denied">Accessibility permission denied</string>
+    <string name="accessibility_permission_explanation_title">Accessibility Permission</string>
+    <string name="accessibility_permission_explanation_message">This permission enables advanced control features for SpeakThat:
+
+• Volume button control - Stop/pause notifications using hardware buttons
+• Enhanced gesture recognition - Alternative control methods
+• Global media control - Better integration with music apps
+• System-wide shortcuts - Quick actions from anywhere
+
+This permission is completely optional. Core app functionality works without it. All processing stays on your device with no data collection.</string>
+    <string name="accessibility_permission_open_settings">Open Accessibility Settings</string>
+    <string name="accessibility_permission_cancel">Cancel</string>
+    <string name="accessibility_service_name">SpeakThat Accessibility</string>
+    <string name="accessibility_service_description">Enables advanced control features for SpeakThat including volume button shortcuts to stop/pause notification reading. This service is completely optional and all processing stays on your device.</string>
+    
+    <!-- Press to Stop Strings -->
+    <string name="behavior_press_to_stop_title">Press to Stop</string>
+        <string name="behavior_press_to_stop_description">Stop notification reading by pressing both volume buttons simultaneously. Normal volume control still works. Requires accessibility permission.</string>
+    <string name="behavior_enable_press_stop">Enable Press to Stop</string>
+    <string name="behavior_requires_accessibility_permission">Requires Accessibility Permission</string>
+    <string name="press_to_stop_dialog_title">Press to Stop</string>
+    <string name="press_to_stop_dialog_message">Press both volume buttons simultaneously to stop notification reading.<br/><br/><b>🎯 Perfect for hands-free control:</b><br/>• Works from anywhere in the system<br/>• No need to look at the screen<br/>• Quick and reliable<br/>• Normal volume control still works<br/><br/><b>⚠️ Requires Accessibility Permission:</b><br/>This feature needs the accessibility permission to detect volume button presses. You can enable it in General Settings.<br/>Please note that this will only work when the screen is on.</string>
+    <string name="accessibility_permission_required_title">Accessibility Permission Required</string>
+    <string name="accessibility_permission_required_message">Press to Stop requires the accessibility permission to detect volume button presses. Please enable it in General Settings first.</string>
+    <string name="open_accessibility_settings">Open Accessibility Settings</string>
+    
     <!-- Exception Configuration -->
     <string name="exception_set_end_time">Set End Time</string>
     <string name="exception_no_days_selected">No days selected</string>
@@ -907,6 +942,18 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="filter_swap_description">Swap words in notifications for censoring or pronunciation fixes</string>
     <string name="filter_swap_count">(0 swaps)</string>
     <string name="filter_swap_tip">Tip: Use lowercase for case-insensitive matching. Leave \'Swap with\' empty to remove words entirely.</string>
+    
+    <!-- URL Handling -->
+    <string name="url_handling_title">URL Handling</string>
+    <string name="url_handling_description">Control how web links are read aloud in notifications</string>
+    <string name="url_handling_read_full">Read full link</string>
+    <string name="url_handling_domain_only">Read domain only</string>
+    <string name="url_handling_dont_read">Don\'t read</string>
+    <string name="url_handling_example">Example: https://www.speakthat.app/subdirectory → speakthat.app</string>
+    <string name="url_handling_custom_text_title">Custom Replacement Text</string>
+    <string name="url_handling_custom_text_description">What to say instead of URLs (leave empty to omit entirely)</string>
+    <string name="url_handling_custom_text_hint">e.g., \'web link\', \'link to site\', or leave blank to omit</string>
+    
     <string name="filter_media_description">Automatically filter notifications for apps like YouTube that have both unwanted notifications (media controls) while allowing wanted notifications (like replies to your comments)</string>
     <string name="filter_media_enable">Enable smart media notification filtering</string>
     <string name="filter_media_apps_title">Filtered Media Apps:</string>
@@ -987,22 +1034,22 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_donate_patron_description">Monthly support with exclusive updates</string>
     
     <!-- Development Settings -->
-    <string name="dev_debug_tools_title">🛠️ Debug Tools</string>
+    <string name="dev_debug_tools_title">Debug Tools</string>
     <string name="dev_debug_tools_description">Tools for debugging and testing the app</string>
-    <string name="dev_notification_history">📋 Show Notification History</string>
-    <string name="dev_analytics">📊 Show Help Usage Analytics</string>
-    <string name="dev_battery_report">🔋 Battery Optimization Report</string>
-    <string name="dev_repair_blacklist">🛠️ Repair Word Blacklist</string>
-    <string name="dev_background_monitor">🛰️ Background Process Monitor</string>
-    <string name="dev_installation_debug">🔍 Installation Source Debug</string>
-    <string name="dev_test_rules">🧪 Test Rule System</string>
+    <string name="dev_notification_history">Show Notification History</string>
+    <string name="dev_analytics">Show Help Usage Analytics</string>
+    <string name="dev_battery_report">Battery Optimization Report</string>
+    <string name="dev_repair_blacklist">Repair Word Blacklist</string>
+    <string name="dev_background_monitor">Background Process Monitor</string>
+    <string name="dev_installation_debug">Installation Source Debug</string>
+    <string name="dev_test_rules">Test Rule System</string>
     
     <!-- Notification History -->
     <string name="notification_history_title">Notification History</string>
     <string name="notification_history_description">Recent notifications processed by SpeakThat</string>
     <string name="notification_history_empty">No notifications to display</string>
     <string name="notification_history_clear">Clear History</string>
-    <string name="notification_history_recent">📜 Recent Notifications</string>
+    <string name="notification_history_recent">Recent Notifications</string>
     <string name="notification_history_loading">Loading notification history...</string>
     <string name="notification_history_debug_info">Debug Information</string>
     <string name="notification_history_debug_description">This screen shows notifications that SpeakThat! has captured for debugging purposes. It helps you verify that the app is working correctly and see exactly what notifications are being read aloud.</string>
@@ -1251,6 +1298,20 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_great_for">Great for: Desk users &amp; accessibility</string>
     <string name="behavior_enable_wave_stop">Enable wave to stop</string>
     <string name="behavior_proximity_threshold">Proximity Threshold</string>
+    
+    <!-- Content Cap Feature Strings -->
+    <string name="content_cap_mode_label">Content Cap Mode:</string>
+    <string name="content_cap_disabled">Disabled - Read full notification</string>
+    <string name="content_cap_words">Word count limit</string>
+    <string name="content_cap_sentences">Sentence count limit</string>
+    <string name="content_cap_time">Time limit</string>
+    <string name="content_cap_word_count_label">Word count:</string>
+    <string name="content_cap_sentence_count_label">Sentence count:</string>
+    <string name="content_cap_time_limit_label">Time limit (seconds):</string>
+    <string name="content_cap_word_count_value">%d words</string>
+    <string name="content_cap_sentence_count_value">%d sentences</string>
+    <string name="content_cap_time_limit_value">%d seconds</string>
+    <string name="content_cap_help_message"><![CDATA[Content Cap lets you limit how much of each notification gets read aloud:<br><br><b>Word Count</b> - Read only the first N words<br>• Perfect for payment notifications where important info is at the start<br>• Works reliably across most languages<br>• <b>Note:</b> Counts words in both title and body combined<br>• Example: Payment of $50.00 from John Smith for lunch → Payment of $50.00 from John<br><br><b>Sentence Count</b> - Read only the first N complete sentences<br>• More natural breaks than word limits<br>• Uses smart sentence detection for international languages<br>• Handles line breaks in emails properly<br>• <b>Note:</b> Titles without sentence-ending punctuation don&apos;t count as separate sentences<br>• Example: Hello! How are you today? → Hello!<br><br><b>Time Limit</b> - Stop reading after N seconds<br>• Universal - works with all languages<br>• Predictable notification durations<br>• Great for consistent timing<br>• Example: Stops after 10 seconds regardless of content length<br><br><b>Tips:</b><br>• Word count works best for most users<br>• Sentence count is more natural but may be less precise<br>• Time limit is universal and predictable<br>• All options work with your existing speech templates<br>• Combine with Shake to Stop for maximum control]]></string>
     
     <!-- Major Missing Section Titles -->
     <string name="behavior_custom_app_names_title">📱 Custom App Names</string>

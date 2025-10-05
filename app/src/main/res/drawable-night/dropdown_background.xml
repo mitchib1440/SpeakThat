@@ -3,10 +3,10 @@
     <!-- Background -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="?attr/colorSurface" />
+            <solid android:color="@color/black_200" />
             <stroke
                 android:width="1dp"
-                android:color="@color/white_100" />
+                android:color="@color/white_300" />
             <corners android:radius="12dp" />
         </shape>
     </item>
@@ -17,7 +17,7 @@
         android:right="12dp">
         <bitmap
             android:src="@android:drawable/arrow_down_float"
-            android:tint="@color/purple_card_text_secondary" />
+            android:tint="@color/white_100" />
     </item>
     
     <!-- Padding for text -->

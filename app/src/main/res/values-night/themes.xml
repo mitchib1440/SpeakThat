@@ -33,7 +33,7 @@
     </style>
     
     <!-- Custom TextInputLayout style with forced white hint text -->
-    <style name="Widget.SpeakThat.TextInputLayout.WhiteHint" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+    <style name="WhiteHintTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textColorHint">@color/white_100</item>
         <item name="hintTextColor">@color/white_100</item>
         <item name="placeholderTextColor">@color/white_100</item>

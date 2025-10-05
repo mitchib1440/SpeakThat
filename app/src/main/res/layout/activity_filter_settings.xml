@@ -192,7 +192,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         android:layout_marginEnd="8dp"
-                                        style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                        style="@style/WhiteHintTextInputLayout"
                                         app:boxBackgroundMode="outline"
                                         app:boxStrokeColor="@color/white_100"
                                         app:hintTextColor="@color/white_100"
@@ -224,7 +224,7 @@
 
                                         <com.google.android.material.button.MaterialButton
                                             android:id="@+id/btnAddApp"
-                                            style="@style/Widget.SpeakThat.Button.Primary"
+                                            style="@style/PrimaryButton"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
                                             android:text="@string/button_add"
@@ -414,7 +414,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:layout_marginEnd="8dp"
-                                style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                style="@style/WhiteHintTextInputLayout"
                                 app:boxBackgroundMode="outline"
                                 app:boxStrokeColor="@color/white_100"
                                 app:hintTextColor="@color/white_100"
@@ -437,8 +437,10 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="8dp"
                                 android:minWidth="80dp"
-                                android:background="@drawable/dropdown_background"
-                                android:popupBackground="@color/white_100" />
+                                android:background="@drawable/spinner_background"
+                                android:popupBackground="@drawable/dropdown_background"
+                                android:padding="12dp"
+                                android:minHeight="48dp" />
 
                         </LinearLayout>
 
@@ -455,7 +457,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/button_add"
                                 app:cornerRadius="12dp"
-                                style="@style/Widget.SpeakThat.Button.Primary" />
+                                style="@style/PrimaryButton" />
 
                         </FrameLayout>
 
@@ -588,7 +590,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:layout_marginEnd="8dp"
-                                    style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                    style="@style/WhiteHintTextInputLayout"
                                     app:boxBackgroundMode="outline"
                                     app:boxStrokeColor="@color/white_100"
                                     app:hintTextColor="@color/white_100"
@@ -609,7 +611,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                    style="@style/WhiteHintTextInputLayout"
                                     app:boxBackgroundMode="outline"
                                     app:boxStrokeColor="@color/white_100"
                                     app:hintTextColor="@color/white_100"
@@ -640,7 +642,7 @@
                                     android:layout_height="48dp"
                                     android:text="@string/button_add"
                                     app:cornerRadius="12dp"
-                                    style="@style/Widget.SpeakThat.Button.Primary" />
+                                    style="@style/PrimaryButton" />
 
                             </FrameLayout>
 
@@ -675,6 +677,170 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:nestedScrollingEnabled="false" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- URL Handling Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="@drawable/gradient_card_subtle_right">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_link_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="URL Handling" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/url_handling_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/url_handling_description"
+                        android:textSize="14sp"
+                        android:textColor="@color/purple_card_text_secondary"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- URL Handling Mode Selection -->
+                    <RadioGroup
+                        android:id="@+id/urlHandlingModeGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp">
+
+                        <RadioButton
+                            android:id="@+id/radioUrlReadFull"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/url_handling_read_full"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:buttonTint="@color/radio_button_color"
+                            app:buttonTint="@color/radio_button_color"
+                            android:checked="false" />
+
+                        <RadioButton
+                            android:id="@+id/radioUrlDomainOnly"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/url_handling_domain_only"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:buttonTint="@color/radio_button_color"
+                            app:buttonTint="@color/radio_button_color"
+                            android:layout_marginTop="8dp"
+                            android:checked="true" />
+
+                        <RadioButton
+                            android:id="@+id/radioUrlDontRead"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/url_handling_dont_read"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:buttonTint="@color/radio_button_color"
+                            app:buttonTint="@color/radio_button_color"
+                            android:layout_marginTop="8dp" />
+
+                    </RadioGroup>
+
+                    <!-- URL Example -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+                        
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/lightbulb_2_24px"
+                            app:tint="@color/white_100"
+                            android:layout_marginEnd="6dp"
+                            android:contentDescription="Example icon" />
+                        
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/url_handling_example"
+                            android:textSize="12sp"
+                            android:textColor="@color/purple_card_text_primary" />
+                    </LinearLayout>
+
+                    <!-- Custom Replacement Text (Only shown when "Don't read" is selected) -->
+                    <LinearLayout
+                        android:id="@+id/urlReplacementTextSection"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/url_handling_custom_text_title"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/url_handling_custom_text_description"
+                            android:textSize="12sp"
+                            android:textColor="@color/purple_card_text_secondary"
+                            android:layout_marginBottom="8dp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/WhiteHintTextInputLayout"
+                            app:boxBackgroundMode="outline"
+                            app:boxStrokeColor="@color/white_100"
+                            app:hintTextColor="@color/white_100"
+                            app:placeholderTextColor="@color/white_100">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editUrlReplacementText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/url_handling_custom_text_hint"
+                                android:inputType="text"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:textColorHint="@color/white_100" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
 
@@ -796,7 +962,7 @@
                                  android:layout_width="match_parent"
                                  android:layout_height="wrap_content"
                                  android:layout_marginBottom="8dp"
-                                 style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                 style="@style/WhiteHintTextInputLayout"
                                  app:boxBackgroundMode="outline"
                                  app:boxStrokeColor="@color/white_100"
                                  app:hintTextColor="@color/white_100"
@@ -832,7 +998,7 @@
                                      android:layout_width="match_parent"
                                      android:layout_height="48dp"
                                      android:text="@string/button_add"
-                                     style="@style/Widget.SpeakThat.Button.Primary" />
+                                     style="@style/PrimaryButton" />
 
                              </FrameLayout>
 
@@ -916,7 +1082,7 @@
                                          android:layout_width="match_parent"
                                          android:layout_height="wrap_content"
                                          android:layout_marginBottom="8dp"
-                                         style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                         style="@style/WhiteHintTextInputLayout"
                                          app:boxBackgroundMode="outline"
                                          app:boxStrokeColor="@color/white_100"
                                          app:hintTextColor="@color/white_100"
@@ -952,7 +1118,7 @@
                                              android:layout_width="match_parent"
                                              android:layout_height="48dp"
                                              android:text="@string/button_add"
-                                             style="@style/Widget.SpeakThat.Button.Primary" />
+                                             style="@style/PrimaryButton" />
 
                                      </FrameLayout>
 
@@ -993,7 +1159,7 @@
                                          android:layout_width="match_parent"
                                          android:layout_height="wrap_content"
                                          android:layout_marginBottom="8dp"
-                                         style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                                         style="@style/WhiteHintTextInputLayout"
                                          app:boxBackgroundMode="outline"
                                          app:boxStrokeColor="@color/white_100"
                                          app:hintTextColor="@color/white_100"
@@ -1021,7 +1187,7 @@
                                              android:layout_width="match_parent"
                                              android:layout_height="48dp"
                                              android:text="@string/button_add"
-                                             style="@style/Widget.SpeakThat.Button.Primary" />
+                                             style="@style/PrimaryButton" />
 
                                      </FrameLayout>
 

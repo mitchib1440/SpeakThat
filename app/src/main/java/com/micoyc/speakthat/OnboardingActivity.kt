@@ -43,7 +43,9 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     
     companion object {
-        private const val PREFS_NAME = "SpeakThatPrefs"
+        // Use separate SharedPreferences file for onboarding state
+        // This file is excluded from backups so new installs always show onboarding
+        private const val PREFS_NAME = "OnboardingState"
         private const val KEY_HAS_SEEN_ONBOARDING = "has_seen_onboarding"
         private const val TAG = "OnboardingActivity"
         

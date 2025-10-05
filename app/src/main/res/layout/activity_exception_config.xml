@@ -267,7 +267,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/exception_set_start_time"
-                                style="@style/Widget.SpeakThat.Button.Primary" />
+                                style="@style/PrimaryButton" />
 
                         </FrameLayout>
 
@@ -283,7 +283,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/exception_set_end_time"
-                                style="@style/Widget.SpeakThat.Button.Primary" />
+                                style="@style/PrimaryButton" />
 
                         </FrameLayout>
 
@@ -439,7 +439,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/exception_select_devices"
-                        style="@style/Widget.SpeakThat.Button.Primary" />
+                        style="@style/PrimaryButton" />
 
                 </LinearLayout>
 
@@ -566,7 +566,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/exception_select_networks"
-                        style="@style/Widget.SpeakThat.Button.Primary" />
+                        style="@style/PrimaryButton" />
 
                 </LinearLayout>
 

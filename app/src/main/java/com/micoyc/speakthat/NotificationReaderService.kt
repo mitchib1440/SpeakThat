@@ -32,6 +32,7 @@ import java.util.HashSet
 import java.util.Locale
 import kotlin.collections.ArrayList
 import com.micoyc.speakthat.rules.RuleManager
+import com.micoyc.speakthat.AccessibilityUtils
 
 class NotificationReaderService : NotificationListenerService(), TextToSpeech.OnInitListener, SensorEventListener, SharedPreferences.OnSharedPreferenceChangeListener {
     
@@ -55,6 +56,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var blockedWords: Set<String> = emptySet()
     private var privateWords: Set<String> = emptySet()
     private var wordReplacements: Map<String, String> = emptyMap()
+    private var urlHandlingMode = DEFAULT_URL_HANDLING_MODE
+    private var urlReplacementText = DEFAULT_URL_REPLACEMENT_TEXT
+    private var contentCapMode = DEFAULT_CONTENT_CAP_MODE
+    private var contentCapWordCount = DEFAULT_CONTENT_CAP_WORD_COUNT
+    private var contentCapSentenceCount = DEFAULT_CONTENT_CAP_SENTENCE_COUNT
+    private var contentCapTimeLimit = DEFAULT_CONTENT_CAP_TIME_LIMIT
     private var priorityApps: Set<String> = emptySet()
     private var notificationBehavior = "interrupt"
     private var mediaBehavior = "ignore"
@@ -98,6 +105,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     // Delay settings
     private var delayHandler: android.os.Handler? = null
     private var pendingReadoutRunnable: Runnable? = null
+    private var contentCapTimerRunnable: Runnable? = null
     
     // Rule system
     private lateinit var ruleManager: RuleManager
@@ -162,6 +170,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var healthCheckHandler: android.os.Handler? = null
     private var healthCheckRunnable: Runnable? = null
     private val HEALTH_CHECK_INTERVAL_MS = 300000L // 5 minutes
+    
+    // Throttling for repetitive logs
+    private var lastTtsVolumeLogTime: Long = 0L
+    private val TTS_VOLUME_LOG_THROTTLE_MS = 10000L // Only log TTS volume maintenance every 10 seconds
     
 
     
@@ -241,6 +253,22 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Cooldown settings
         private const val KEY_COOLDOWN_APPS = "cooldown_apps"
         
+        // URL handling constants
+        private const val KEY_URL_HANDLING_MODE = "url_handling_mode"
+        private const val KEY_URL_REPLACEMENT_TEXT = "url_replacement_text"
+        private const val DEFAULT_URL_HANDLING_MODE = "domain_only"
+        private const val DEFAULT_URL_REPLACEMENT_TEXT = ""
+        
+        // Content Cap settings
+        private const val KEY_CONTENT_CAP_MODE = "content_cap_mode"
+        private const val KEY_CONTENT_CAP_WORD_COUNT = "content_cap_word_count"
+        private const val KEY_CONTENT_CAP_SENTENCE_COUNT = "content_cap_sentence_count"
+        private const val KEY_CONTENT_CAP_TIME_LIMIT = "content_cap_time_limit"
+        private const val DEFAULT_CONTENT_CAP_MODE = "disabled"
+        private const val DEFAULT_CONTENT_CAP_WORD_COUNT = 6
+        private const val DEFAULT_CONTENT_CAP_SENTENCE_COUNT = 1
+        private const val DEFAULT_CONTENT_CAP_TIME_LIMIT = 10
+        
         // TTS Recovery settings - Enhanced for Android 15 compatibility
         private const val MAX_TTS_RECOVERY_ATTEMPTS = 5 // Increased for Android 15
         private const val TTS_RECOVERY_DELAY_MS = 2000L // 2 seconds between attempts
@@ -265,6 +293,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 false // Default to enabled if error
             }
         }
+        
+        // Pre-compiled regex for URL detection (restrictive - only http/https/www URLs)
+        private val URL_PATTERN = Regex("""(?i)(?:https?://[^\s]+|www\.[^\s]+)""")
     }
     
     data class NotificationData(
@@ -368,6 +399,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Show persistent notification if enabled and master switch is on
             checkAndShowPersistentNotification()
             
+            // Register broadcast receiver for accessibility service
+            registerAccessibilityBroadcastReceiver()
+            
         } catch (e: Exception) {
             Log.e(TAG, "Critical error during service initialization", e)
             InAppLogger.logError("Service", "Critical initialization error: " + e.message)
@@ -428,6 +462,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Unregister voice settings listener
             voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
             
+            // Unregister accessibility broadcast receiver
+            unregisterAccessibilityBroadcastReceiver()
+            
             // Clear deduplication cache
             recentNotificationKeys.clear()
             Log.d(TAG, "Cleared deduplication cache during cleanup")
@@ -452,6 +489,65 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
+    /**
+     * Register broadcast receiver for accessibility service communication
+     * 
+     * This method registers a broadcast receiver to listen for STOP_READING broadcasts
+     * from the accessibility service. The receiver is registered with RECEIVER_NOT_EXPORTED
+     * flag for security, ensuring it only receives broadcasts from within the same app.
+     */
+    private fun registerAccessibilityBroadcastReceiver() {
+        try {
+            val filter = android.content.IntentFilter("com.micoyc.speakthat.STOP_READING")
+            // Use RECEIVER_NOT_EXPORTED since this is for internal app communication only
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                registerReceiver(accessibilityBroadcastReceiver, filter, android.content.Context.RECEIVER_NOT_EXPORTED)
+            } else {
+                registerReceiver(accessibilityBroadcastReceiver, filter)
+            }
+            Log.d(TAG, "Accessibility broadcast receiver registered")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error registering accessibility broadcast receiver", e)
+        }
+    }
+    
+    /**
+     * Unregister broadcast receiver for accessibility service communication
+     */
+    private fun unregisterAccessibilityBroadcastReceiver() {
+        try {
+            unregisterReceiver(accessibilityBroadcastReceiver)
+            Log.d(TAG, "Accessibility broadcast receiver unregistered")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error unregistering accessibility broadcast receiver", e)
+        }
+    }
+    
+    /**
+     * Broadcast receiver for accessibility service communication
+     * 
+     * This receiver listens for broadcasts from the SpeakThatAccessibilityService
+     * to handle advanced control features like "Press to Stop" functionality.
+     * 
+     * The receiver is registered with RECEIVER_NOT_EXPORTED flag for security,
+     * ensuring it only receives broadcasts from within the same app.
+     */
+    private val accessibilityBroadcastReceiver = object : android.content.BroadcastReceiver() {
+        override fun onReceive(context: android.content.Context?, intent: android.content.Intent?) {
+            Log.d(TAG, "Accessibility broadcast received - Action: ${intent?.action}")
+            
+            when (intent?.action) {
+                "com.micoyc.speakthat.STOP_READING" -> {
+                    Log.d(TAG, "Received STOP_READING broadcast from accessibility service")
+                    stopSpeaking("accessibility service")
+                }
+                else -> {
+                    Log.d(TAG, "Unknown accessibility broadcast action: ${intent?.action}")
+                }
+            }
+        }
+    }
+    
     override fun onListenerConnected() {
         super.onListenerConnected()
         Log.d(TAG, "NotificationListener connected")
@@ -471,6 +567,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 
                 // Skip our own notifications
                 if (packageName == this.packageName) {
+                    return
+                }
+                
+                // Skip group summary notifications - only read individual notifications
+                // Group summaries are "container" notifications that show "X notifications" 
+                // but don't contain the actual content. Reading them causes duplicates.
+                // This is especially important for Android 16's automatic notification grouping.
+                if (notification.flags and Notification.FLAG_GROUP_SUMMARY != 0) {
+                    Log.d(TAG, "Skipping group summary notification from $packageName")
+                    InAppLogger.logFilter("Skipped group summary notification from $packageName")
                     return
                 }
                 
@@ -1684,6 +1790,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         wordReplacements = newWordReplacements
         Log.d(TAG, "Loaded word replacements: $wordReplacements")
         
+        // Load URL handling settings
+        urlHandlingMode = sharedPreferences?.getString(KEY_URL_HANDLING_MODE, DEFAULT_URL_HANDLING_MODE) ?: DEFAULT_URL_HANDLING_MODE
+        urlReplacementText = sharedPreferences?.getString(KEY_URL_REPLACEMENT_TEXT, DEFAULT_URL_REPLACEMENT_TEXT) ?: DEFAULT_URL_REPLACEMENT_TEXT
+        Log.d(TAG, "Loaded URL handling: mode=$urlHandlingMode, replacement='$urlReplacementText'")
+        
+        // Load Content Cap settings
+        contentCapMode = sharedPreferences?.getString(KEY_CONTENT_CAP_MODE, DEFAULT_CONTENT_CAP_MODE) ?: DEFAULT_CONTENT_CAP_MODE
+        contentCapWordCount = sharedPreferences?.getInt(KEY_CONTENT_CAP_WORD_COUNT, DEFAULT_CONTENT_CAP_WORD_COUNT) ?: DEFAULT_CONTENT_CAP_WORD_COUNT
+        contentCapSentenceCount = sharedPreferences?.getInt(KEY_CONTENT_CAP_SENTENCE_COUNT, DEFAULT_CONTENT_CAP_SENTENCE_COUNT) ?: DEFAULT_CONTENT_CAP_SENTENCE_COUNT
+        contentCapTimeLimit = sharedPreferences?.getInt(KEY_CONTENT_CAP_TIME_LIMIT, DEFAULT_CONTENT_CAP_TIME_LIMIT) ?: DEFAULT_CONTENT_CAP_TIME_LIMIT
+        Log.d(TAG, "Loaded Content Cap settings: mode=$contentCapMode, wordCount=$contentCapWordCount, sentenceCount=$contentCapSentenceCount, timeLimit=$contentCapTimeLimit")
+        InAppLogger.log("Service", "Content Cap loaded: mode=$contentCapMode, wordCount=$contentCapWordCount, sentenceCount=$contentCapSentenceCount, timeLimit=${contentCapTimeLimit}s")
+        
         // Load behavior settings  
         notificationBehavior = sharedPreferences?.getString(KEY_NOTIFICATION_BEHAVIOR, "interrupt") ?: "interrupt"
         priorityApps = HashSet(sharedPreferences?.getStringSet(KEY_PRIORITY_APPS, HashSet()) ?: HashSet())
@@ -1832,10 +1951,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             return FilterResult(true, processedText, "App-level privacy applied")
         }
         
-        // Early exit if no word filters are configured
-        if (blockedWords.isEmpty() && privateWords.isEmpty() && wordReplacements.isEmpty()) {
-            return FilterResult(true, processedText, "No word filters configured")
-        }
+        // Note: Even if no word filters are configured, we still need to apply URL handling and Content Cap
+        // So we can't early return here anymore
         
         // 1. Check for blocked words (including smart filters) - EARLY EXIT on first match
         for (blockedWord in blockedWords) {
@@ -1865,6 +1982,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         // 3. Apply word swaps (only for non-private notifications and only if there are replacements)
+        val wordSwapStartText = processedText
+        var wordSwapChangesMade = false
+        val appliedReplacements = mutableListOf<String>()
+        
         if (wordReplacements.isNotEmpty()) {
             Log.d(TAG, "Word replacements available: ${wordReplacements.size} items")
             for ((from, to) in wordReplacements) {
@@ -1872,15 +1993,316 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 processedText = processedText.replace(from, to, ignoreCase = true)
                 if (originalText != processedText) {
                     Log.d(TAG, "Word replacement applied: '$from' -> '$to'")
-                    InAppLogger.logFilter("Word replacement applied: '$from' -> '$to'")
+                    wordSwapChangesMade = true
+                    appliedReplacements.add("'$from' -> '$to'")
                 } else {
                     Log.d(TAG, "Word replacement not found: '$from' in text: '$processedText'")
-                    InAppLogger.logFilter("Word replacement not found: '$from' in text: '$processedText'")
                 }
             }
         }
         
+        // Log summary to InAppLogger
+        if (wordSwapChangesMade) {
+            val changesSummary = appliedReplacements.joinToString(", ")
+            InAppLogger.logFilter("Word swaps applied: $changesSummary | Before: '$wordSwapStartText' | After: '$processedText'")
+        } else if (wordReplacements.isNotEmpty()) {
+            InAppLogger.logFilter("No word swaps applied (${wordReplacements.size} rules checked) | Text unchanged: '$processedText'")
+        }
+        
+        // Only log detailed filter processing in verbose mode
+        if (InAppLogger.verboseMode) {
+            Log.d(TAG, "=== FILTERING DEBUG: Word replacement section completed, about to start URL handling ===")
+            InAppLogger.logFilter("=== WORD REPLACEMENT COMPLETE - Starting URL/Content Cap processing ===")
+        }
+        
+        // 4. Apply URL handling (only for non-private notifications)
+        if (urlHandlingMode != "read_full") {
+            if (InAppLogger.verboseMode) {
+                Log.d(TAG, "=== URL HANDLING DEBUG: About to apply URL handling ===")
+                InAppLogger.logFilter("URL handling mode: $urlHandlingMode - applying URL processing")
+            }
+            processedText = applyUrlHandling(processedText)
+        } else {
+            if (InAppLogger.verboseMode) {
+                Log.d(TAG, "=== URL HANDLING DEBUG: URL handling disabled (read_full mode) ===")
+                InAppLogger.logFilter("URL handling: read_full mode - skipping")
+            }
+        }
+        
+        // 5. Apply Content Cap (only for non-private notifications)
+        if (InAppLogger.verboseMode) {
+            Log.d(TAG, "=== CONTENT CAP DEBUG: About to check content cap - mode=$contentCapMode ===")
+            InAppLogger.logFilter("=== CONTENT CAP CHECK: mode=$contentCapMode ===")
+        }
+        if (contentCapMode != "disabled") {
+            if (InAppLogger.verboseMode) {
+                Log.d(TAG, "=== CONTENT CAP DEBUG: Content cap IS enabled, calling applyContentCap() ===")
+                InAppLogger.logFilter("Content cap ENABLED ($contentCapMode) - calling applyContentCap()")
+            }
+            processedText = applyContentCap(processedText)
+            if (InAppLogger.verboseMode) {
+                InAppLogger.logFilter("Content cap processing completed")
+            }
+        } else {
+            if (InAppLogger.verboseMode) {
+                Log.d(TAG, "=== CONTENT CAP DEBUG: Content cap is disabled, skipping ===")
+                InAppLogger.logFilter("Content cap DISABLED - skipping")
+            }
+        }
+        
+        if (InAppLogger.verboseMode) {
+            InAppLogger.logFilter("=== WORD FILTERING COMPLETE - returning filtered text ===")
+        }
         return FilterResult(true, processedText, "Word filtering applied")
+    }
+    
+    
+    /**
+     * Handles URL processing based on user preferences
+     * Supports various URL formats: http, https, www, localhost, IP addresses, IPv6
+     */
+    private fun applyUrlHandling(text: String): String {
+        if (urlHandlingMode == "read_full") {
+            return text // No processing needed
+        }
+        
+        // Skip processing for very long texts to prevent performance issues
+        if (text.length > 10000) {
+            Log.w(TAG, "Text too long for URL processing (${text.length} chars), skipping")
+            return text
+        }
+        
+        return URL_PATTERN.replace(text) { matchResult ->
+            val url = matchResult.value
+            val replacement = when (urlHandlingMode) {
+                "domain_only" -> extractDomain(url)
+                "dont_read" -> if (urlReplacementText.isNotEmpty()) urlReplacementText else ""
+                else -> url // Fallback to original URL
+            }
+            
+            Log.d(TAG, "URL handling applied: '$url' -> '$replacement' (mode=$urlHandlingMode, replacementText='$urlReplacementText')")
+            InAppLogger.logFilter("URL handling applied: '$url' -> '$replacement' (mode=$urlHandlingMode, replacementText='$urlReplacementText')")
+            replacement
+        }
+    }
+    
+    /**
+     * Extracts the domain from a URL, handling various formats
+     * Examples:
+     * - https://www.speakthat.app/subdirectory -> speakthat.app
+     * - www.amazon.com/dp/B08N5WRWNW -> amazon.com
+     * - localhost:8080 -> localhost
+     * - 192.168.1.1:3000 -> 192.168.1.1
+     * Note: Never includes protocol (http/https) in the result
+     */
+    private fun extractDomain(url: String): String {
+        try {
+            // Validate input
+            if (url.isBlank()) {
+                Log.w(TAG, "Empty URL provided to extractDomain")
+                return "link"
+            }
+            
+            // Remove protocol if present (https:// or http://)
+            var cleanUrl = url.replace(Regex("^https?://"), "")
+            
+            // Remove www. prefix if present
+            cleanUrl = cleanUrl.replace(Regex("^www\\."), "")
+            
+            // Split by / to get the host part
+            val hostPart = cleanUrl.split("/")[0]
+            
+            // Split by : to remove port if present
+            val domainPart = hostPart.split(":")[0]
+            
+            // Validate domain part
+            if (domainPart.isBlank()) {
+                Log.w(TAG, "Empty domain part extracted from URL '$url'")
+                return "link"
+            }
+            
+            // For localhost and IP addresses, return as-is
+            if (domainPart == "localhost" || domainPart.matches(Regex("^\\d+\\.\\d+\\.\\d+\\.\\d+$"))) {
+                return domainPart
+            }
+            
+            // For IPv6 addresses (in brackets), return as-is
+            if (domainPart.startsWith("[") && domainPart.endsWith("]")) {
+                return domainPart
+            }
+            
+            // For regular domains, extract the main domain (last two parts)
+            val parts = domainPart.split(".")
+            return if (parts.size >= 2) {
+                parts.takeLast(2).joinToString(".")
+            } else {
+                domainPart
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Error extracting domain from URL '$url': ${e.message}")
+            // Return a safe fallback instead of original URL to avoid reading long URLs
+            return "link"
+        }
+    }
+    
+    /**
+     * Apply Content Cap to limit notification length
+     * Supports word count, sentence count, and time limit modes
+     */
+    private fun applyContentCap(text: String): String {
+        // Only log detailed content cap info in verbose mode to reduce noise
+        if (InAppLogger.verboseMode) {
+            Log.d(TAG, "=== CONTENT CAP DEBUG: applyContentCap() called ===")
+            InAppLogger.log("Service", "=== APPLY CONTENT CAP CALLED ===")
+            Log.d(TAG, "Content Cap mode: $contentCapMode, wordCount: $contentCapWordCount, sentenceCount: $contentCapSentenceCount")
+            InAppLogger.log("Service", "Content Cap settings: mode=$contentCapMode, words=$contentCapWordCount, sentences=$contentCapSentenceCount")
+            Log.d(TAG, "Input text: '$text'")
+            InAppLogger.log("Service", "Input text length: ${text.length} chars")
+        }
+        
+        // Null safety check
+        if (text.isNullOrEmpty()) {
+            Log.w(TAG, "Content Cap: Input text is null or empty, returning empty string")
+            InAppLogger.log("Service", "Content Cap: Empty input text, returning empty")
+            return ""
+        }
+        
+        // Early return for disabled mode - zero processing overhead
+        if (contentCapMode == "disabled") {
+            if (InAppLogger.verboseMode) {
+                Log.d(TAG, "Content Cap disabled, returning original text")
+                InAppLogger.log("Service", "Content Cap: Mode is disabled, skipping")
+            }
+            return text
+        }
+        
+        val originalLength = text.length
+        val result = when (contentCapMode) {
+            "words" -> {
+                if (InAppLogger.verboseMode) {
+                    Log.d(TAG, "Applying word cap...")
+                    InAppLogger.log("Service", "Applying WORD cap...")
+                }
+                applyWordCap(text)
+            }
+            "sentences" -> {
+                if (InAppLogger.verboseMode) {
+                    Log.d(TAG, "Applying sentence cap...")
+                    InAppLogger.log("Service", "Applying SENTENCE cap...")
+                }
+                applySentenceCap(text)
+            }
+            "time" -> {
+                if (InAppLogger.verboseMode) {
+                    Log.d(TAG, "Time cap mode - no text processing needed")
+                }
+                text // Time cap is handled in TTS layer, not text processing
+            }
+            else -> {
+                Log.w(TAG, "Unknown content cap mode: $contentCapMode, returning original text")
+                text
+            }
+        }
+        
+        // Ensure result is never null
+        val safeResult = result ?: text
+        
+        // Log content cap application (only when changes are made or in verbose mode)
+        if (safeResult != text) {
+            Log.d(TAG, "Content Cap applied (mode=$contentCapMode): Original=${originalLength} chars, Capped=${safeResult.length} chars")
+            InAppLogger.log("Service", "Content Cap applied (mode=$contentCapMode): ${originalLength} chars → ${safeResult.length} chars")
+        } else if (InAppLogger.verboseMode) {
+            Log.d(TAG, "Content Cap: No change needed (text within limit)")
+        }
+        
+        if (InAppLogger.verboseMode) {
+            Log.d(TAG, "=== CONTENT CAP DEBUG: Result: '${safeResult.take(150)}'")
+        }
+        return safeResult
+    }
+    
+    /**
+     * Apply word count limit
+     * Splits text by whitespace and takes first N words
+     */
+    private fun applyWordCap(text: String): String {
+        val words = text.split("\\s+".toRegex())
+        
+        // If text has fewer words than limit, return original
+        if (words.size <= contentCapWordCount) {
+            Log.d(TAG, "Word cap: Text has ${words.size} words, limit is $contentCapWordCount - no cap needed")
+            return text
+        }
+        
+        val cappedText = words.take(contentCapWordCount).joinToString(" ")
+        Log.d(TAG, "Word cap applied: ${words.size} words → $contentCapWordCount words")
+        InAppLogger.log("Service", "Word cap applied: ${words.size} words → $contentCapWordCount words")
+        
+        return cappedText
+    }
+    
+    /**
+     * Apply sentence count limit
+     * Uses BreakIterator for proper international sentence detection
+     */
+    private fun applySentenceCap(text: String): String {
+        try {
+            InAppLogger.log("Service", "=== SENTENCE CAP START ===")
+            InAppLogger.log("Service", "Text to cap: ${text.take(100)}... (${text.length} chars)")
+            InAppLogger.log("Service", "Sentence limit: $contentCapSentenceCount")
+            
+            // Use BreakIterator for proper sentence boundary detection
+            // This handles international punctuation and line breaks correctly
+            val iterator = java.text.BreakIterator.getSentenceInstance(java.util.Locale.getDefault())
+            iterator.setText(text)
+            
+            var sentenceCount = 0
+            var endIndex = 0
+            var start = iterator.first()
+            
+            InAppLogger.log("Service", "Starting sentence detection loop...")
+            while (start != java.text.BreakIterator.DONE && sentenceCount < contentCapSentenceCount) {
+                val end = iterator.next()
+                InAppLogger.log("Service", "Loop iteration: sentenceCount=$sentenceCount, start=$start, end=$end")
+                if (end == java.text.BreakIterator.DONE) {
+                    endIndex = text.length
+                    sentenceCount++
+                    InAppLogger.log("Service", "Reached DONE - endIndex=$endIndex, sentenceCount=$sentenceCount")
+                    break
+                }
+                endIndex = end
+                sentenceCount++
+                InAppLogger.log("Service", "Found sentence boundary at $end - sentenceCount=$sentenceCount")
+            }
+            
+            InAppLogger.log("Service", "Loop complete: sentenceCount=$sentenceCount, endIndex=$endIndex, textLength=${text.length}")
+            
+            // If text has fewer sentences than limit, return original
+            if (sentenceCount <= contentCapSentenceCount && endIndex >= text.length) {
+                Log.d(TAG, "Sentence cap: Text has $sentenceCount sentences, limit is $contentCapSentenceCount - no cap needed")
+                InAppLogger.log("Service", "Sentence cap: NO CAP NEEDED - Text has $sentenceCount sentences (limit: $contentCapSentenceCount)")
+                return text
+            }
+            
+            InAppLogger.log("Service", "Applying cap - will substring from 0 to $endIndex")
+            val cappedText = if (endIndex > 0 && endIndex <= text.length) {
+                text.substring(0, endIndex).trim()
+            } else {
+                InAppLogger.log("Service", "ERROR: Invalid endIndex=$endIndex, returning original")
+                text
+            }
+            
+            InAppLogger.log("Service", "Capped text: ${cappedText.take(100)}... (${cappedText.length} chars)")
+            Log.d(TAG, "Sentence cap applied: Capped to $contentCapSentenceCount sentence(s)")
+            InAppLogger.log("Service", "Sentence cap applied: Capped to $contentCapSentenceCount sentence(s)")
+            
+            return cappedText
+        } catch (e: Exception) {
+            Log.e(TAG, "Error applying sentence cap: ${e.message}", e)
+            InAppLogger.logError("Service", "Error applying sentence cap: ${e.message}")
+            // Fallback to original text on error
+            return text
+        }
     }
     
     private fun applyConditionalFiltering(_packageName: String, _appName: String, text: String): FilterResult {
@@ -2545,11 +2967,27 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     /**
      * Attempt direct media session control to pause active media playback.
      * This is the strongest approach for pausing media, bypassing audio focus limitations.
+     * 
+     * ACCESSIBILITY ENHANCEMENT: When accessibility permission is granted, this method
+     * also attempts to send direct media control intents for more reliable pausing.
      */
     private fun tryMediaSessionPause(): Boolean {
         return try {
             Log.d(TAG, "Attempting direct media session control to pause media")
             InAppLogger.log("MediaBehavior", "Attempting direct media session control")
+            
+            // ACCESSIBILITY ENHANCEMENT: Try direct media control intents first if accessibility is available
+            if (AccessibilityUtils.shouldUseEnhancedAudioControl(this)) {
+                Log.d(TAG, "Accessibility permission available - attempting enhanced media control")
+                InAppLogger.log("MediaBehavior", "Accessibility permission available - using enhanced media control")
+                
+                val enhancedPauseSuccess = tryAccessibilityEnhancedMediaPause()
+                if (enhancedPauseSuccess) {
+                    Log.d(TAG, "Accessibility-enhanced media pause successful")
+                    InAppLogger.log("MediaBehavior", "Accessibility-enhanced media pause successful")
+                    return true
+                }
+            }
             
             val mediaSessionManager = getSystemService(Context.MEDIA_SESSION_SERVICE) as MediaSessionManager
             // Use the notification listener service-specific method to bypass permission restrictions
@@ -2594,6 +3032,50 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         } catch (e: Exception) {
             Log.e(TAG, "Media session control failed", e)
             InAppLogger.logError("MediaBehavior", "Media session control failed: ${e.message}")
+            false
+        }
+    }
+    
+    /**
+     * ACCESSIBILITY ENHANCED: Attempt to pause media using direct media control intents
+     * 
+     * This method uses accessibility service privileges to send direct media control
+     * intents, which can be more reliable than media session control on some devices.
+     * 
+     * @return true if media was successfully paused, false otherwise
+     */
+    private fun tryAccessibilityEnhancedMediaPause(): Boolean {
+        return try {
+            Log.d(TAG, "Attempting accessibility-enhanced media pause with direct intents")
+            InAppLogger.log("MediaBehavior", "Attempting accessibility-enhanced media pause")
+            
+            // Send direct media pause intent - this works better with accessibility permission
+            val pauseIntent = Intent(android.content.Intent.ACTION_MEDIA_BUTTON).apply {
+                putExtra(android.content.Intent.EXTRA_KEY_EVENT, 
+                    android.view.KeyEvent(android.view.KeyEvent.ACTION_DOWN, android.view.KeyEvent.KEYCODE_MEDIA_PAUSE))
+            }
+            
+            // Send the intent to all media apps
+            sendBroadcast(pauseIntent)
+            
+            // Also try the play/pause toggle intent
+            val playPauseIntent = Intent(android.content.Intent.ACTION_MEDIA_BUTTON).apply {
+                putExtra(android.content.Intent.EXTRA_KEY_EVENT,
+                    android.view.KeyEvent(android.view.KeyEvent.ACTION_DOWN, android.view.KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE))
+            }
+            
+            sendBroadcast(playPauseIntent)
+            
+            Log.d(TAG, "Accessibility-enhanced media pause intents sent")
+            InAppLogger.log("MediaBehavior", "Accessibility-enhanced media pause intents sent")
+            
+            // Give the system time to process the intents
+            Thread.sleep(100)
+            
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "Accessibility-enhanced media pause failed", e)
+            InAppLogger.logError("MediaBehavior", "Accessibility-enhanced media pause failed: ${e.message}")
             false
         }
     }
@@ -2908,9 +3390,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // This helps prevent the system from overriding our volume settings
             val volumeParams = VoiceSettingsActivity.createVolumeBundle(ttsVolume, ttsUsage, speakerphoneEnabled)
             
-            // Log the current TTS volume for debugging
-            Log.d(TAG, "Re-applied TTS volume settings - Volume: ${ttsVolume * 100}%, Usage: $ttsUsage")
-            InAppLogger.log("MediaBehavior", "Re-applied TTS volume settings to prevent ducking - Volume: ${ttsVolume * 100}%")
+            // Log the current TTS volume for debugging (throttled to reduce noise)
+            val currentTime = System.currentTimeMillis()
+            if (currentTime - lastTtsVolumeLogTime > TTS_VOLUME_LOG_THROTTLE_MS) {
+                Log.d(TAG, "Re-applied TTS volume settings - Volume: ${ttsVolume * 100}%, Usage: $ttsUsage")
+                InAppLogger.log("MediaBehavior", "Re-applied TTS volume settings to prevent ducking - Volume: ${ttsVolume * 100}%")
+                lastTtsVolumeLogTime = currentTime
+            }
             
             // Additional check: ensure that the TTS volume is not being reduced by the system
             // This is a defensive measure to prevent the bug where TTS volume gets reduced
@@ -2929,7 +3415,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             // Additional safety measure: ensure that the TTS volume is not being reduced by the system
             // This is a defensive measure to prevent the bug where TTS volume gets reduced when switching apps
-            if (isCurrentlySpeaking) {
+            if (isCurrentlySpeaking && currentTime - lastTtsVolumeLogTime > TTS_VOLUME_LOG_THROTTLE_MS) {
                 Log.d(TAG, "TTS is currently speaking - ensuring volume is maintained")
                 InAppLogger.log("MediaBehavior", "TTS is currently speaking - ensuring volume is maintained")
             }
@@ -3324,7 +3810,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
             val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4)
             
-            val ttsUsage = when (ttsUsageIndex) {
+            val fallbackTtsUsage = when (ttsUsageIndex) {
                 0 -> android.media.AudioAttributes.USAGE_MEDIA
                 1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
                 2 -> android.media.AudioAttributes.USAGE_ALARM
@@ -3333,11 +3819,27 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
             }
             
+            // ACCESSIBILITY ENHANCEMENT: Use enhanced audio attributes when accessibility permission is available
+            val (ttsUsage, ttsContent) = AccessibilityUtils.getEnhancedAudioAttributes(
+                this, 
+                fallbackTtsUsage, 
+                android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+            )
+            
             Log.d(TAG, "Trying alternative ducking focus with TTS usage: $ttsUsage")
             InAppLogger.log("MediaBehavior", "Trying alternative ducking focus strategy")
             
+            if (AccessibilityUtils.shouldUseEnhancedAudioControl(this)) {
+                Log.d(TAG, "Using accessibility-enhanced alternative ducking focus")
+                InAppLogger.log("MediaBehavior", "Accessibility-enhanced alternative ducking focus")
+            }
+            
             // TRICK: Try using USAGE_ALARM for TTS during ducking - some devices handle this better
-            val alternativeUsage = if (ttsUsage == android.media.AudioAttributes.USAGE_MEDIA) {
+            // But prioritize accessibility-enhanced usage if available
+            val alternativeUsage = if (AccessibilityUtils.shouldUseEnhancedAudioControl(this)) {
+                // When accessibility is available, use the enhanced usage directly
+                ttsUsage
+            } else if (ttsUsage == android.media.AudioAttributes.USAGE_MEDIA) {
                 android.media.AudioAttributes.USAGE_ALARM
             } else {
                 ttsUsage
@@ -3346,13 +3848,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Create audio attributes for alternative ducking focus
             val alternativeAudioAttributes = android.media.AudioAttributes.Builder()
                 .setUsage(alternativeUsage)
-                .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                .setContentType(ttsContent)
                 .build()
             
-            // Create focus request for alternative ducking
-            val alternativeFocusRequest = android.media.AudioFocusRequest.Builder(
+            // ACCESSIBILITY ENHANCEMENT: Use enhanced audio focus flags when accessibility permission is available
+            val focusFlags = AccessibilityUtils.getEnhancedAudioFocusFlags(
+                this,
                 android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
             )
+            
+            // Create focus request for alternative ducking
+            val alternativeFocusRequest = android.media.AudioFocusRequest.Builder(focusFlags)
                 .setAudioAttributes(alternativeAudioAttributes)
                 .setOnAudioFocusChangeListener { focusChange ->
                     handleAlternativeDuckingFocusChange(focusChange)
@@ -3530,7 +4036,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
             
             // Convert index to actual usage constant (matching VoiceSettingsActivity)
-            val ttsUsage = when (ttsUsageIndex) {
+            val fallbackTtsUsage = when (ttsUsageIndex) {
                 0 -> android.media.AudioAttributes.USAGE_MEDIA
                 1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
                 2 -> android.media.AudioAttributes.USAGE_ALARM
@@ -3539,9 +4045,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE // Safe fallback
             }
             
-            // CRITICAL FIX: Always use CONTENT_TYPE_SPEECH for TTS to prevent it from being ducked
-            // The user's content_type preference is for other audio contexts, not for TTS
-            val ttsContent = android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+            // ACCESSIBILITY ENHANCEMENT: Use enhanced audio attributes when accessibility permission is available
+            val (ttsUsage, ttsContent) = AccessibilityUtils.getEnhancedAudioAttributes(
+                this, 
+                fallbackTtsUsage, 
+                android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+            )
+            
+            if (AccessibilityUtils.shouldUseEnhancedAudioControl(this)) {
+                Log.d(TAG, "=== DUCKING DEBUG: Using accessibility-enhanced audio attributes - Usage: $ttsUsage, Content: $ttsContent ===")
+                InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Accessibility-enhanced ducking - Usage: $ttsUsage ===")
+            } else {
+                Log.d(TAG, "=== DUCKING DEBUG: Using standard audio attributes - Usage: $ttsUsage, Content: $ttsContent ===")
+                InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Standard ducking - Usage: $ttsUsage ===")
+            }
             
             Log.d(TAG, "=== DUCKING DEBUG: Enhanced ducking - TTS usage index: $ttsUsageIndex -> usage constant: $ttsUsage ===")
             InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Enhanced ducking - TTS usage: $ttsUsage (index: $ttsUsageIndex) ===")
@@ -3559,9 +4076,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "=== DUCKING DEBUG: Creating enhanced ducking focus request ===")
             InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Creating enhanced ducking focus request ===")
             
-            enhancedDuckingFocusRequest = android.media.AudioFocusRequest.Builder(
+            // ACCESSIBILITY ENHANCEMENT: Use enhanced audio focus flags when accessibility permission is available
+            val focusFlags = AccessibilityUtils.getEnhancedAudioFocusFlags(
+                this,
                 android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
             )
+            
+            if (AccessibilityUtils.shouldUseEnhancedAudioControl(this)) {
+                Log.d(TAG, "=== DUCKING DEBUG: Using accessibility-enhanced focus flags: $focusFlags ===")
+                InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Accessibility-enhanced focus flags: $focusFlags ===")
+            }
+            
+            enhancedDuckingFocusRequest = android.media.AudioFocusRequest.Builder(focusFlags)
                 .setAudioAttributes(ttsAudioAttributes)
                 .setOnAudioFocusChangeListener { focusChange ->
                     Log.d(TAG, "=== DUCKING DEBUG: Enhanced ducking focus change listener called with: $focusChange ===")
@@ -4233,6 +4759,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "=== DUCKING DEBUG: executeSpeech called with text: ${speechText.take(50)}... ===")
         InAppLogger.log("Service", "=== DUCKING DEBUG: executeSpeech called with text: ${speechText.take(50)}... ===")
         
+        // CRITICAL: Stop any existing TTS speech and clear the queue to prevent stale text
+        Log.d(TAG, "=== DUCKING DEBUG: Stopping any existing TTS speech to prevent stale text ===")
+        InAppLogger.log("Service", "=== DUCKING DEBUG: Stopping any existing TTS speech to prevent stale text ===")
+        textToSpeech?.stop()
+        
+        // Small delay to ensure TTS is fully stopped and cleared
+        Thread.sleep(50)
+        
         // CRITICAL: Force refresh voice settings before each speech to ensure they're applied
         // This prevents issues where voice settings might not be current
         // The voice settings will respect the override logic (specific voice > language)
@@ -4464,6 +4998,33 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 val maxVolume = audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)
                 Log.d(TAG, "=== DUCKING DEBUG: TTS started - Music volume: $currentVolume/$maxVolume ===")
                 InAppLogger.log("Service", "=== DUCKING DEBUG: TTS started - Music volume: $currentVolume/$maxVolume ===")
+                
+                // Apply time cap if enabled
+                if (contentCapMode == "time" && contentCapTimeLimit > 0) {
+                    contentCapTimerRunnable = Runnable {
+                        Log.d(TAG, "Content Cap time limit reached (${contentCapTimeLimit}s) - stopping TTS")
+                        InAppLogger.log("Service", "Content Cap time limit reached (${contentCapTimeLimit}s) - stopping TTS")
+                        
+                        // Stop TTS
+                        textToSpeech?.stop()
+                        
+                        // Manually trigger cleanup since stop() doesn't always trigger onDone/onError
+                        isCurrentlySpeaking = false
+                        contentCapTimerRunnable = null
+                        
+                        // Stop foreground service
+                        stopForegroundService()
+                        
+                        // Unregister sensors
+                        unregisterShakeListener()
+                        
+                        Log.d(TAG, "Content Cap cleanup completed")
+                        InAppLogger.logTTSEvent("TTS stopped by Content Cap", "Time limit: ${contentCapTimeLimit}s")
+                    }
+                    delayHandler?.postDelayed(contentCapTimerRunnable!!, (contentCapTimeLimit * 1000).toLong())
+                    Log.d(TAG, "Content Cap timer started: ${contentCapTimeLimit}s")
+                    InAppLogger.log("Service", "Content Cap timer started: ${contentCapTimeLimit}s")
+                }
             }
             
             override fun onDone(utteranceId: String?) {
@@ -4471,6 +5032,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     Log.d(TAG, "=== DUCKING DEBUG: TTS utterance COMPLETED: $utteranceId ===")
                     InAppLogger.log("Service", "=== DUCKING DEBUG: TTS utterance COMPLETED: $utteranceId ===")
                     isCurrentlySpeaking = false
+                    
+                    // Cancel content cap timer if active
+                    contentCapTimerRunnable?.let { runnable ->
+                        delayHandler?.removeCallbacks(runnable)
+                        contentCapTimerRunnable = null
+                        Log.d(TAG, "Content Cap timer cancelled (TTS completed naturally)")
+                    }
                     
                     // Log current volume state when TTS completes
                     val currentVolume = audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
@@ -4519,6 +5087,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (utteranceId == "notification_utterance") {
                     Log.e(TAG, "TTS utterance error: $utteranceId")
                     isCurrentlySpeaking = false
+                    
+                    // Cancel content cap timer if active
+                    contentCapTimerRunnable?.let { runnable ->
+                        delayHandler?.removeCallbacks(runnable)
+                        contentCapTimerRunnable = null
+                        Log.d(TAG, "Content Cap timer cancelled (TTS error)")
+                    }
                     
                     // Hide reading notification
                     // hideReadingNotification()
@@ -4600,6 +5175,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 Log.d(TAG, "Filter settings updated")
                 InAppLogger.log("Service", "Filter settings updated")
             }
+            KEY_CONTENT_CAP_MODE, KEY_CONTENT_CAP_WORD_COUNT, KEY_CONTENT_CAP_SENTENCE_COUNT, KEY_CONTENT_CAP_TIME_LIMIT -> {
+                // Reload Content Cap settings
+                contentCapMode = sharedPreferences?.getString(KEY_CONTENT_CAP_MODE, DEFAULT_CONTENT_CAP_MODE) ?: DEFAULT_CONTENT_CAP_MODE
+                contentCapWordCount = sharedPreferences?.getInt(KEY_CONTENT_CAP_WORD_COUNT, DEFAULT_CONTENT_CAP_WORD_COUNT) ?: DEFAULT_CONTENT_CAP_WORD_COUNT
+                contentCapSentenceCount = sharedPreferences?.getInt(KEY_CONTENT_CAP_SENTENCE_COUNT, DEFAULT_CONTENT_CAP_SENTENCE_COUNT) ?: DEFAULT_CONTENT_CAP_SENTENCE_COUNT
+                contentCapTimeLimit = sharedPreferences?.getInt(KEY_CONTENT_CAP_TIME_LIMIT, DEFAULT_CONTENT_CAP_TIME_LIMIT) ?: DEFAULT_CONTENT_CAP_TIME_LIMIT
+                Log.d(TAG, "Content Cap settings updated: mode=$contentCapMode, wordCount=$contentCapWordCount, sentenceCount=$contentCapSentenceCount, timeLimit=$contentCapTimeLimit")
+                InAppLogger.log("Service", "Content Cap settings updated: mode=$contentCapMode, wordCount=$contentCapWordCount, sentenceCount=$contentCapSentenceCount, timeLimit=${contentCapTimeLimit}s")
+            }
             KEY_SHAKE_TO_STOP_ENABLED, KEY_SHAKE_THRESHOLD, KEY_SHAKE_TIMEOUT_SECONDS, KEY_WAVE_TIMEOUT_SECONDS, "pocket_mode_enabled" -> {
                 // Reload shake and wave settings
                 refreshSettings()
@@ -4673,11 +5257,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      */
     private fun formatSpeechText(appName: String, text: String, packageName: String, sbn: StatusBarNotification?): String {
         // Extract notification components from StatusBarNotification if available
-        val title = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
-        val notificationText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
-        val bigText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
-        val summaryText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString() ?: ""
-        val infoText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString() ?: ""
+        // IMPORTANT: Apply Content Cap to all extracted fields to ensure consistent capping behavior
+        // regardless of which template placeholders the user chooses to use
+        val rawTitle = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
+        val rawNotificationText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
+        val rawBigText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
+        val rawSummaryText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString() ?: ""
+        val rawInfoText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString() ?: ""
+        
+        // Apply Content Cap to all notification text fields to ensure consistent behavior
+        // This ensures Content Cap works regardless of which template placeholders are used
+        val title = if (contentCapMode != "disabled" && rawTitle.isNotEmpty()) applyContentCap(rawTitle) else rawTitle
+        val notificationText = if (contentCapMode != "disabled" && rawNotificationText.isNotEmpty()) applyContentCap(rawNotificationText) else rawNotificationText
+        val bigText = if (contentCapMode != "disabled" && rawBigText.isNotEmpty()) applyContentCap(rawBigText) else rawBigText
+        val summaryText = if (contentCapMode != "disabled" && rawSummaryText.isNotEmpty()) applyContentCap(rawSummaryText) else rawSummaryText
+        val infoText = if (contentCapMode != "disabled" && rawInfoText.isNotEmpty()) applyContentCap(rawInfoText) else rawInfoText
         
         // Get current time and date
         val time = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
@@ -4760,7 +5354,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "Template localization - Key: $templateKey, App: $appName, Result: $result")
         return result
     }
-
     /**
      * Get resource ID for template strings
      */

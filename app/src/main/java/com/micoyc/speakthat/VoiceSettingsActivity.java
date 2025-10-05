@@ -27,6 +27,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
     // SharedPreferences keys
     private static final String PREFS_NAME = "VoiceSettings";
+    
+    // Throttling for repetitive volume boost logs
+    private static long lastVolumeBoostLogTime = 0L;
+    private static final long VOLUME_BOOST_LOG_THROTTLE_MS = 10000L; // Only log volume boosts every 10 seconds
     private static final String KEY_SPEECH_RATE = "speech_rate";
     private static final String KEY_PITCH = "pitch";
     private static final String KEY_TTS_VOLUME = "tts_volume";
@@ -1723,7 +1727,12 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             // Cap at 1.8f to prevent excessive distortion
             float boostedVolume = Math.min(1.8f, ttsVolume * 1.5f);
             params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, boostedVolume);
-            InAppLogger.log("VoiceSettings", "ASSISTANCE_NAVIGATION_GUIDANCE stream detected - boosting volume from " + (ttsVolume * 100) + "% to " + (boostedVolume * 100) + "% for better audibility");
+            // Throttle volume boost logging to reduce noise
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastVolumeBoostLogTime > VOLUME_BOOST_LOG_THROTTLE_MS) {
+                InAppLogger.log("VoiceSettings", "ASSISTANCE_NAVIGATION_GUIDANCE stream detected - boosting volume from " + (ttsVolume * 100) + "% to " + (boostedVolume * 100) + "% for better audibility");
+                lastVolumeBoostLogTime = currentTime;
+            }
         }
         
         return params;

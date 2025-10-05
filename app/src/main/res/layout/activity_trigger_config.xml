@@ -224,7 +224,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/trigger_set_button"
                                 android:textSize="14sp"
-                                style="@style/Widget.SpeakThat.Button.Primary" />
+                                style="@style/PrimaryButton" />
 
                         </FrameLayout>
 
@@ -269,7 +269,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/trigger_set_button"
                                 android:textSize="14sp"
-                                style="@style/Widget.SpeakThat.Button.Primary" />
+                                style="@style/PrimaryButton" />
 
                         </FrameLayout>
 
@@ -463,7 +463,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/trigger_select_devices"
                             android:textSize="14sp"
-                            style="@style/Widget.SpeakThat.Button.Primary" />
+                            style="@style/PrimaryButton" />
 
                     </FrameLayout>
 
@@ -624,7 +624,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/trigger_select_networks"
                         android:textSize="14sp"
-                        style="@style/Widget.SpeakThat.Button.Primary" />
+                        style="@style/PrimaryButton" />
 
                 </LinearLayout>
 

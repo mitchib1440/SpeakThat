@@ -100,7 +100,7 @@
                     </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                        style="@style/WhiteHintTextInputLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:boxBackgroundMode="outline"
@@ -181,7 +181,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/button_add"
                                 android:textSize="14sp"
-                                style="@style/Widget.SpeakThat.Button.Primary" />
+                                style="@style/PrimaryButton" />
 
                         </FrameLayout>
 
@@ -318,7 +318,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/button_add"
                                 android:textSize="14sp"
-                                style="@style/Widget.SpeakThat.Button.Primary" />
+                                style="@style/PrimaryButton" />
 
                         </FrameLayout>
 
@@ -402,7 +402,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/button_add"
                                 android:textSize="14sp"
-                                style="@style/Widget.SpeakThat.Button.Primary" />
+                                style="@style/PrimaryButton" />
 
                         </FrameLayout>
 

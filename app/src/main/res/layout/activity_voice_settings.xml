@@ -314,10 +314,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:minHeight="48dp"
-                        android:background="@drawable/dropdown_background"
-                        android:popupBackground="?attr/colorSurface"
-                        android:padding="12dp" />
+                        android:background="@drawable/spinner_background"
+                        android:popupBackground="@drawable/dropdown_background"
+                        android:padding="12dp"
+                        android:minHeight="48dp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -466,10 +466,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
-                            android:minHeight="48dp"
                             android:background="@drawable/spinner_background"
-                            android:popupBackground="?attr/colorSurface"
-                            android:padding="12dp" />
+                        android:popupBackground="@drawable/dropdown_background"
+                        android:padding="12dp"
+                        android:minHeight="48dp" />
 
                         <!-- Voice Section -->
                         <TextView
@@ -570,10 +570,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
-                            android:minHeight="48dp"
                             android:background="@drawable/spinner_background"
-                            android:popupBackground="?attr/colorSurface"
-                            android:padding="12dp" />
+                        android:popupBackground="@drawable/dropdown_background"
+                        android:padding="12dp"
+                        android:minHeight="48dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -681,10 +681,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:minHeight="48dp"
                         android:background="@drawable/spinner_background"
-                        android:popupBackground="?attr/colorSurface"
-                        android:padding="12dp" />
+                        android:popupBackground="@drawable/dropdown_background"
+                        android:padding="12dp"
+                        android:minHeight="48dp" />
 
                     <!-- Stream Volume -->
                     <TextView
@@ -759,10 +759,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:minHeight="48dp"
                         android:background="@drawable/spinner_background"
-                        android:popupBackground="?attr/colorSurface"
-                        android:padding="12dp" />
+                        android:popupBackground="@drawable/dropdown_background"
+                        android:padding="12dp"
+                        android:minHeight="48dp" />
 
                     <!-- Speakerphone Option for VOICE_CALL -->
                     <LinearLayout
@@ -935,7 +935,7 @@
                             android:textSize="16sp"
                             android:padding="16dp"
                             app:cornerRadius="12dp"
-                            style="@style/Widget.SpeakThat.Button.Primary" />
+                            style="@style/PrimaryButton" />
 
                     </LinearLayout>
 

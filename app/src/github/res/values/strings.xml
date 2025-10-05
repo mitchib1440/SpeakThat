@@ -12,4 +12,35 @@
     <string name="audio_ducking_disabled_message">Due to inconsistencies with how different devices handle Audio Focus requests, the Lower Audio option has been temporarily disabled by default. If you are able to help get this feature working, please contribute to this project on GitHub. You can re-enable this feature for development or experimentation purposes by going into Development Settings -> Enable Audio Ducking. It may work on some devices, but I cannot offer general support for it at this time.</string>
     <string name="audio_ducking_disabled_ok">Got it</string>
     <string name="audio_ducking_disabled_enable">Enable Audio Ducking</string>
+    
+    <!-- Accessibility Permission Strings -->
+    <string name="general_accessibility_permission">Accessibility Permission</string>
+    <string name="general_accessibility_permission_description">Enable advanced controls like volume button shortcuts (completely optional)</string>
+    <string name="accessibility_permission_request">Request Accessibility Permission</string>
+    <string name="accessibility_permission_granted">Accessibility permission granted</string>
+    <string name="accessibility_permission_denied">Accessibility permission denied</string>
+    <string name="accessibility_permission_explanation_title">Accessibility Permission</string>
+    <string name="accessibility_permission_explanation_message">This permission enables advanced control features for SpeakThat:
+
+• Volume button control - Stop/pause notifications using hardware buttons
+• Enhanced gesture recognition - Alternative control methods
+• Global media control - Better integration with music apps
+• System-wide shortcuts - Quick actions from anywhere
+
+This permission is completely optional. Core app functionality works without it. All processing stays on your device with no data collection.</string>
+    <string name="accessibility_permission_open_settings">Open Accessibility Settings</string>
+    <string name="accessibility_permission_cancel">Cancel</string>
+    <string name="accessibility_service_name">SpeakThat Accessibility</string>
+    <string name="accessibility_service_description">Enables advanced control features for SpeakThat including volume button shortcuts to stop/pause notification reading. This service is completely optional and all processing stays on your device.</string>
+    
+    <!-- Press to Stop Strings -->
+    <string name="behavior_press_to_stop_title">Press to Stop</string>
+        <string name="behavior_press_to_stop_description">Stop notification reading by pressing both volume buttons simultaneously. Normal volume control still works. Requires accessibility permission.</string>
+    <string name="behavior_enable_press_stop">Enable Press to Stop</string>
+    <string name="behavior_requires_accessibility_permission">Requires Accessibility Permission</string>
+    <string name="press_to_stop_dialog_title">Press to Stop</string>
+        <string name="press_to_stop_dialog_message">Press both volume buttons simultaneously to stop notification reading.<br/><br/><b>🎯 Perfect for hands-free control:</b><br/>• Works from anywhere in the system<br/>• No need to look at the screen<br/>• Quick and reliable<br/>• Normal volume control still works<br/><br/><b>⚠️ Requires Accessibility Permission:</b><br/>This feature needs the accessibility permission to detect volume button presses. You can enable it in General Settings.</string>
+    <string name="accessibility_permission_required_title">Accessibility Permission Required</string>
+    <string name="accessibility_permission_required_message">Press to Stop requires the accessibility permission to detect volume button presses. Please enable it in General Settings first.</string>
+    <string name="open_accessibility_settings">Open Accessibility Settings</string>
 </resources> 

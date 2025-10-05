@@ -82,7 +82,7 @@ Smart mode lets you choose which apps are urgent enough to interrupt (like calls
 
 <b>ðŸ”‰ Lower Audio (Recommended)</b> - Temporarily reduces media volume so you can hear both. Most natural experience.
 
-<b>ðŸ”‡ Silence</b> - Doesn\'t speak while media plays. Quiet but you might miss important notifications.
+<b>Silence</b> - Doesn\'t speak while media plays. Quiet but you might miss important notifications.
 
 Lower Audio works like a car radio - it ducks the music down when speaking, then brings it back up. Perfect for music lovers who still want notifications.</string>
     <string name="shake_to_stop_dialog_title">Shake to Stop Feature</string>
@@ -109,7 +109,7 @@ This feature is especially loved by people who get notifications during meetings
     <string name="use_recommended">Use Recommended</string>
     <string name="got_it">Got it</string>
     <!-- Persistent/Silent Notification Filtering -->
-    <string name="persistent_notification_filtering_title">ðŸ”‡ Persistent/Silent Notification Filtering</string>
+    <string name="persistent_notification_filtering_title">Persistent/Silent Notification Filtering</string>
     <string name="persistent_notification_filtering_description">Skip notifications that are persistent (ongoing) or silent (no sound/vibration)</string>
     <string name="enable_persistent_filtering">Enable persistent/silent notification filtering</string>
     <string name="persistent_filtering_help">ðŸ’¡ Persistent notifications are ongoing (like music controls, navigation, etc.) and silent notifications have no sound/vibration. This option helps reduce notification spam from background services.</string>

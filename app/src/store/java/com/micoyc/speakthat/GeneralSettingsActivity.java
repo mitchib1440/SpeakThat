@@ -39,24 +39,25 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         // Initialize SharedPreferences FIRST
         sharedPreferences = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE);
-        
+
         // Apply saved theme after SharedPreferences is initialized
         applySavedTheme();
-        
+
         binding = ActivityGeneralSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        
+
         // Set the activity title
         getSupportActionBar().setTitle(getString(R.string.title_general_settings));
-        
+
         // Initialize activity result launchers
         initializeActivityResultLaunchers();
-        
+
         setupThemeSettings();
         setupPerformanceSettings();
+        setupAccessibilityPermission();
         setupDataManagement();
         setupThemeIcon();
     }
@@ -279,6 +280,85 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 .setNegativeButton(getString(R.string.cancel), null)
                 .show();
         });
+    }
+
+    /**
+     * Set up the accessibility permission button
+     * 
+     * This method configures the accessibility permission button in the General Settings.
+     * When clicked, it checks if the accessibility service is enabled and either shows
+     * a success message or guides the user to enable the permission.
+     */
+    private void setupAccessibilityPermission() {
+        // Accessibility Permission Button
+        // Using findViewById instead of binding due to binding generation issue
+        android.view.View accessibilityButton = findViewById(R.id.buttonAccessibilityPermission);
+
+        if (accessibilityButton != null) {
+            accessibilityButton.setOnClickListener(v -> {
+                // Check if accessibility service is already enabled
+                boolean isEnabled = isAccessibilityServiceEnabled();
+
+                if (isEnabled) {
+                    // Already enabled - show success message
+                    Toast.makeText(this, getString(R.string.accessibility_permission_granted), Toast.LENGTH_SHORT).show();
+                } else {
+                    // Not enabled - show explanation and guide user to settings
+                    showAccessibilityPermissionDialog();
+                }
+            });
+        }
+    }
+    
+    /**
+     * Check if the accessibility service is enabled
+     * 
+     * This method checks if the SpeakThatAccessibilityService is enabled in the
+     * Android accessibility settings. It's similar to how notification listener
+     * permission is checked.
+     * 
+     * @return true if the accessibility service is enabled, false otherwise
+     */
+    private boolean isAccessibilityServiceEnabled() {
+        String packageName = getPackageName();
+        String serviceName = packageName + "/com.micoyc.speakthat.SpeakThatAccessibilityService";
+
+        String enabledServices = android.provider.Settings.Secure.getString(getContentResolver(),
+                android.provider.Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+
+        if (enabledServices != null && !enabledServices.isEmpty()) {
+            String[] services = enabledServices.split(":");
+            for (String service : services) {
+                if (service.equals(serviceName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Show dialog explaining accessibility permission and guide user to enable it
+     */
+    private void showAccessibilityPermissionDialog() {
+        new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.accessibility_permission_explanation_title))
+            .setMessage(getString(R.string.accessibility_permission_explanation_message))
+            .setPositiveButton(getString(R.string.accessibility_permission_open_settings), (dialog, which) -> {
+                // Try to open the specific accessibility service settings first
+                try {
+                    Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                    startActivity(intent);
+                    Toast.makeText(this, "Please find 'SpeakThat Accessibility' in the list and enable it", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    // Fallback to general accessibility settings
+                    Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                    startActivity(intent);
+                    Toast.makeText(this, getString(R.string.accessibility_permission_request), Toast.LENGTH_LONG).show();
+                }
+            })
+            .setNegativeButton(getString(R.string.accessibility_permission_cancel), null)
+            .show();
     }
 
     private boolean checkStoragePermission() {

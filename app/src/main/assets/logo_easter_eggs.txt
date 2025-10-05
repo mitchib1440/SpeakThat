@@ -117,7 +117,7 @@ SpeakThat! I've been practicing my timing during delays. I think I'm ready for n
 SpeakThat! The delay feature: Because sometimes even notifications need a moment to compose themselves.
 SpeakThat! I'm not late, I'm fashionably delayed! There's a difference in the notification world.
 SpeakThat! During my delay, I like to imagine what your notification might taste like. This one tastes like... {DAY}. [DELAY_ONLY]
-SpeakThat! Roses are red, violets are blue, I'll wait a few seconds, then I'll speak to you! [DELAY_ONLY]
+SpeakThat! Roses are red, violets are blue, I'll wait {DELAY_TIME}, then I'll speak to you! [DELAY_ONLY]
 SpeakThat! Good {TIME}! Perfect time for some notification entertainment!
 SpeakThat! It's {DAY}, which means it's a great day for notifications!
 SpeakThat! I'm craving {RANDOM_FOOD} right now. Do you have any {RANDOM_FOOD} notifications for me?
@@ -278,3 +278,20 @@ SpeakThat! Did you know the Android robot is called BugDroid? It's true!
 SpeakThat! From the developer of... oh... this is the first product, isn't it?
 SpeakThat! Coming to phones near you this {DAY}!
 SpeakThat! Want to see a magic trick? I predict that today is... {DAY}!
+SpeakThat! I can read URLs perfectly now! youtube.com See? Flawless! (No more https:// nonsense!)
+SpeakThat! URL handling: Because nobody wants to hear 'h-t-t-p-s-colon-slash-slash-w-w-w-dot-amazon-dot-com-slash-dp-slash-B08N5WRWNW-slash-ref-equals-s-r-underscore-1-underscore-1...'
+SpeakThat! I used to read URLs like a robot. Now I just say 'amazon.com' and save everyone's sanity!
+SpeakThat! Pro tip: I can shorten those ridiculously long Amazon links to just the domain. Your ears will thank me later!
+SpeakThat! URL shortener? More like URL sanity-saver! I turn those tracking nightmares into simple domains!
+SpeakThat! I'm like a translator, but instead of languages, I translate long URLs into human-readable domains!
+SpeakThat! Breaking: Local app discovers that 'www.google.com' sounds much better than 'h-t-t-p-s-colon-slash-slash-w-w-w-dot-google-dot-com-slash-search-question-q-equals-cat-videos'
+SpeakThat! I once read a YouTube URL so long, it took me three minutes just to say the tracking parameters. Never again!
+SpeakThat! URL handling: Turning your notification reader from a URL regurgitator into a domain whisperer!
+SpeakThat! Fun fact: I can now say 'speakthat.app' instead of that nightmare of a URL with all the parameters!
+SpeakThat! I'm basically a URL therapist - I help your notifications get over their addiction to unnecessarily long addresses!
+SpeakThat! Why read a URL when I can just say the domain? It's like the difference between reading a book and reading the table of contents!
+SpeakThat! I used to be a URL megaphone. Now I'm a domain diplomat. Much more civilized!
+SpeakThat! URL handling: Because life's too short to listen to someone spell out 'https://www.reddit.com/r/notifications/comments/abc123/this_is_why_we_cant_have_nice_things/'
+SpeakThat! I'm like a URL GPS - I take the scenic route and show you only the important landmarks!
+SpeakThat! My new URL handling features are so good, even Amazon's tracking department is impressed with my brevity!
+SpeakThat! URL shortening: When 'bit.ly' becomes 'bit.ly' and everyone's happy about it!

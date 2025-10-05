@@ -2111,7 +2111,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/behavior_wave_recalibrate"
                             android:textSize="14sp"
-                            style="@style/Widget.SpeakThat.Button.Secondary"
+                            style="@style/SecondaryButton"
                             android:layout_marginBottom="16dp" />
 
                         <!-- Timeout Section -->
@@ -2283,6 +2283,137 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Press to Stop Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="@drawable/gradient_card_subtle_right">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_mobile_hand_24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="Press to Stop" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/behavior_press_to_stop_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/behavior_press_to_stop_description"
+                        android:textSize="14sp"
+                        android:textColor="@color/purple_card_text_secondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Permission Requirement Box -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/bg_advanced_voice_section"
+                        android:padding="12dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="8dp">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/warning_24px"
+                                android:contentDescription="Permission Required"
+                                android:layout_marginEnd="6dp"
+                                app:tint="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/behavior_requires_accessibility_permission"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/btnPressToStopInfo"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="More Info"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            app:tint="@color/white_100" />
+
+                    </LinearLayout>
+
+                    <!-- Press to Stop Toggle -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/behavior_enable_press_stop"
+                            android:textSize="16sp"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switchPressToStop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- App Name Customization Section -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -2396,7 +2527,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginEnd="8dp"
-                            style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                            style="@style/WhiteHintTextInputLayout"
                             app:boxBackgroundMode="outline"
                             app:boxStrokeColor="@color/white_100">
 
@@ -2415,7 +2546,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="8dp"
-                            style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                            style="@style/WhiteHintTextInputLayout"
                             app:boxBackgroundMode="outline"
                             app:boxStrokeColor="@color/white_100">
 
@@ -2438,7 +2569,7 @@
                         android:text="@string/add_custom_app_name"
                         android:layout_marginBottom="16dp"
                         app:cornerRadius="12dp"
-                        style="@style/Widget.SpeakThat.Button.Primary" />
+                        style="@style/PrimaryButton" />
 
                     <!-- Custom App Names List -->
                     <androidx.recyclerview.widget.RecyclerView
@@ -2728,7 +2859,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
-                            style="@style/Widget.SpeakThat.TextInputLayout.WhiteHint"
+                            style="@style/WhiteHintTextInputLayout"
                             app:boxBackgroundMode="outline"
                             app:boxStrokeColor="@color/white_100">
 
@@ -2756,7 +2887,7 @@
                             android:layout_height="48dp"
                             android:text="@string/button_add"
                             app:cornerRadius="12dp"
-                            style="@style/Widget.SpeakThat.Button.Primary" />
+                            style="@style/PrimaryButton" />
 
                     </LinearLayout>
 
@@ -2767,6 +2898,280 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:nestedScrollingEnabled="false" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Content Cap Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="@drawable/gradient_card_subtle_right">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/text_to_speech_24px"
+                            app:tint="@color/white_100"
+                            android:contentDescription="Content Cap" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/behavior_content_cap_title"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/behavior_content_cap_description"
+                        android:textSize="14sp"
+                        android:textColor="@color/purple_card_text_secondary"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Recommendation Box -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/bg_advanced_voice_section"
+                        android:padding="12dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="8dp">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:contentDescription="Tip"
+                                android:layout_marginEnd="6dp"
+                                app:tint="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/behavior_content_cap_recommendation"
+                                android:textSize="12sp"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/btnContentCapInfo"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/help_24px"
+                            android:contentDescription="More Info"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            app:tint="@color/white_100" />
+
+                    </LinearLayout>
+
+                    <!-- Content Cap Mode Selection -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/content_cap_mode_label"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/purple_card_text_primary"
+                        android:layout_marginBottom="8dp" />
+
+                    <RadioGroup
+                        android:id="@+id/contentCapModeGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <RadioButton
+                            android:id="@+id/radioContentCapDisabled"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/content_cap_disabled"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:padding="12dp" />
+
+                        <RadioButton
+                            android:id="@+id/radioContentCapWords"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/content_cap_words"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:padding="12dp" />
+
+                        <RadioButton
+                            android:id="@+id/radioContentCapSentences"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/content_cap_sentences"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:padding="12dp" />
+
+                        <RadioButton
+                            android:id="@+id/radioContentCapTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/content_cap_time"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:padding="12dp" />
+
+                    </RadioGroup>
+
+                    <!-- Word Count Section -->
+                    <LinearLayout
+                        android:id="@+id/contentCapWordSection"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:background="@drawable/bg_advanced_voice_section"
+                        android:padding="16dp"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/content_cap_word_count_label"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:id="@+id/tvContentCapWordCountValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="6 words"
+                            android:textSize="16sp"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:layout_marginBottom="8dp" />
+
+                        <com.google.android.material.slider.Slider
+                            android:id="@+id/sliderContentCapWordCount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:valueFrom="1"
+                            android:valueTo="200"
+                            android:stepSize="1"
+                            android:value="6" />
+
+                    </LinearLayout>
+
+                    <!-- Sentence Count Section -->
+                    <LinearLayout
+                        android:id="@+id/contentCapSentenceSection"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:background="@drawable/bg_advanced_voice_section"
+                        android:padding="16dp"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/content_cap_sentence_count_label"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:id="@+id/tvContentCapSentenceCountValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1 sentences"
+                            android:textSize="16sp"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:layout_marginBottom="8dp" />
+
+                        <com.google.android.material.slider.Slider
+                            android:id="@+id/sliderContentCapSentenceCount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:valueFrom="1"
+                            android:valueTo="50"
+                            android:stepSize="1"
+                            android:value="1" />
+
+                    </LinearLayout>
+
+                    <!-- Time Limit Section -->
+                    <LinearLayout
+                        android:id="@+id/contentCapTimeSection"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:background="@drawable/bg_advanced_voice_section"
+                        android:padding="16dp"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/content_cap_time_limit_label"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:id="@+id/tvContentCapTimeLimitValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="10 seconds"
+                            android:textSize="16sp"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:layout_marginBottom="8dp" />
+
+                        <com.google.android.material.slider.Slider
+                            android:id="@+id/sliderContentCapTimeLimit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:valueFrom="3"
+                            android:valueTo="300"
+                            android:stepSize="1"
+                            android:value="10" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -2809,7 +3214,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/behavior_speech_title"
-                            android:textSize="18sp"
+                            android:textSize="20sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
 
@@ -2887,9 +3292,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:minHeight="48dp"
                         android:background="@drawable/spinner_background"
-                        android:popupBackground="?attr/colorSurface" />
+                        android:popupBackground="@drawable/dropdown_background"
+                        android:padding="12dp"
+                        android:minHeight="48dp" />
 
                     <!-- Custom Template Input -->
                     <TextView
@@ -2949,7 +3355,7 @@
                             android:text="@string/button_test"
                             android:textSize="12sp"
                             app:cornerRadius="12dp"
-                            style="@style/Widget.SpeakThat.Button.Primary" />
+                            style="@style/PrimaryButton" />
 
                     </LinearLayout>
 

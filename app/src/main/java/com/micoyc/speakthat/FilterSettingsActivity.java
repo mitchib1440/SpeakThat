@@ -67,6 +67,10 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private static final String KEY_WORD_BLACKLIST = "word_blacklist";
     private static final String KEY_WORD_BLACKLIST_PRIVATE = "word_blacklist_private";
     private static final String KEY_WORD_REPLACEMENTS = "word_replacements";
+    private static final String KEY_URL_HANDLING_MODE = "url_handling_mode";
+    private static final String KEY_URL_REPLACEMENT_TEXT = "url_replacement_text";
+    private static final String DEFAULT_URL_HANDLING_MODE = "domain_only";
+    private static final String DEFAULT_URL_REPLACEMENT_TEXT = "";
     private static final String KEY_DEFAULTS_INITIALIZED = "defaults_initialized";
     
     // Media notification filtering keys
@@ -98,6 +102,11 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private List<AppFilterItem> appList = new ArrayList<>();
     private List<WordFilterItem> wordBlacklistItems = new ArrayList<>();
     private List<WordReplacementItem> wordReplacementItems = new ArrayList<>();
+    
+    // URL handling variables
+    private String urlHandlingMode = DEFAULT_URL_HANDLING_MODE;
+    private String urlReplacementText = DEFAULT_URL_REPLACEMENT_TEXT;
+    
     private List<AppFilterItem> mediaExceptedAppsList = new ArrayList<>();
     private List<WordFilterItem> mediaImportantKeywordsList = new ArrayList<>();
     private List<AppFilterItem> filteredMediaAppsList = new ArrayList<>();
@@ -233,6 +242,39 @@ public class FilterSettingsActivity extends AppCompatActivity {
         // Set up collapsible advanced options
         binding.advancedOptionsHeader.setOnClickListener(v -> toggleAdvancedOptions());
         
+        // Set up URL handling radio buttons
+        binding.urlHandlingModeGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            String mode = DEFAULT_URL_HANDLING_MODE;
+            if (checkedId == R.id.radioUrlReadFull) {
+                mode = "read_full";
+            } else if (checkedId == R.id.radioUrlDomainOnly) {
+                mode = "domain_only";
+            } else if (checkedId == R.id.radioUrlDontRead) {
+                mode = "dont_read";
+            }
+            
+            // Show/hide custom replacement text section
+            binding.urlReplacementTextSection.setVisibility(
+                "dont_read".equals(mode) ? View.VISIBLE : View.GONE
+            );
+            
+            saveUrlHandlingMode(mode);
+        });
+        
+        // Set up URL replacement text field
+        binding.editUrlReplacementText.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            
+            @Override
+            public void afterTextChanged(android.text.Editable s) {
+                saveUrlReplacementText(s.toString());
+            }
+        });
+        
         // Set up collapsible sections
         binding.appListHeader.setOnClickListener(v -> toggleAppList());
         binding.blacklistHeader.setOnClickListener(v -> toggleBlacklist());
@@ -364,6 +406,33 @@ public class FilterSettingsActivity extends AppCompatActivity {
         }
         wordSwapAdapter.notifyDataSetChanged();
         updateCountDisplays();
+        
+        // Load URL handling settings
+        urlHandlingMode = sharedPreferences.getString(KEY_URL_HANDLING_MODE, DEFAULT_URL_HANDLING_MODE);
+        urlReplacementText = sharedPreferences.getString(KEY_URL_REPLACEMENT_TEXT, DEFAULT_URL_REPLACEMENT_TEXT);
+        
+        // Set radio button selection
+        switch (urlHandlingMode) {
+            case "read_full":
+                binding.radioUrlReadFull.setChecked(true);
+                binding.urlReplacementTextSection.setVisibility(View.GONE);
+                break;
+            case "domain_only":
+                binding.radioUrlDomainOnly.setChecked(true);
+                binding.urlReplacementTextSection.setVisibility(View.GONE);
+                break;
+            case "dont_read":
+                binding.radioUrlDontRead.setChecked(true);
+                binding.urlReplacementTextSection.setVisibility(View.VISIBLE);
+                break;
+            default:
+                binding.radioUrlDomainOnly.setChecked(true);
+                binding.urlReplacementTextSection.setVisibility(View.GONE);
+                break;
+        }
+        
+        // Set custom replacement text
+        binding.editUrlReplacementText.setText(urlReplacementText);
         
         // Load media notification filtering settings
         boolean isMediaFilteringEnabled = sharedPreferences.getBoolean(KEY_MEDIA_FILTERING_ENABLED, false); // Default to disabled
@@ -1101,6 +1170,20 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private void saveAppListMode(String mode) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_APP_LIST_MODE, mode);
+        editor.apply();
+    }
+    
+    private void saveUrlHandlingMode(String mode) {
+        urlHandlingMode = mode;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_URL_HANDLING_MODE, mode);
+        editor.apply();
+    }
+    
+    private void saveUrlReplacementText(String text) {
+        urlReplacementText = text;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_URL_REPLACEMENT_TEXT, text);
         editor.apply();
     }
 
