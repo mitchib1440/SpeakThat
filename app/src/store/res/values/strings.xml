@@ -19,15 +19,12 @@
     <string name="accessibility_permission_request">Request Accessibility Permission</string>
     <string name="accessibility_permission_granted">Accessibility permission granted</string>
     <string name="accessibility_permission_denied">Accessibility permission denied</string>
-    <string name="accessibility_permission_explanation_title">Accessibility Permission</string>
-    <string name="accessibility_permission_explanation_message">This permission enables advanced control features for SpeakThat:
+    <string name="accessibility_permission_explanation_title">Accessibility Service Permission</string>
+    <string name="accessibility_permission_explanation_message">SpeakThat! uses the AccessibilityService API to provide optional control features such as pausing speech using hardware buttons and smoother integration with media apps.
 
-• Volume button control - Stop/pause notifications using hardware buttons
-• Enhanced gesture recognition - Alternative control methods
-• Global media control - Better integration with music apps
-• System-wide shortcuts - Quick actions from anywhere
+This permission allows the app to detect button presses and user interface actions, giving you more ways to control readouts. No personal or sensitive user data is collected, stored, or shared — all processing happens entirely on your device.
 
-This permission is completely optional. Core app functionality works without it. All processing stays on your device with no data collection.</string>
+This permission is completely optional; SpeakThat! will still function without it.</string>
     <string name="accessibility_permission_open_settings">Open Accessibility Settings</string>
     <string name="accessibility_permission_cancel">Cancel</string>
     <string name="accessibility_service_name">SpeakThat Accessibility</string>
