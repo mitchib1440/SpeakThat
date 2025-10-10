@@ -31,3 +31,9 @@ google-services.json
 
 # Android Profiling
 *.hprof
+app/github/release/baselineProfiles/0/SpeakThat-v1.3.2.dm
+app/github/release/baselineProfiles/0/SpeakThat-v1.5.1.dm
+app/github/release/baselineProfiles/1/SpeakThat-v1.3.2.dm
+app/github/release/baselineProfiles/1/SpeakThat-v1.5.1.dm
+app/github/release/output-metadata.json
+*.aab

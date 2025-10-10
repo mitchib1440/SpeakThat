@@ -1480,7 +1480,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         
         try {
             ReviewReminderManager reviewManager = ReviewReminderManager.Companion.getInstance(this);
-            reviewManager.showReminderDialog();
+            reviewManager.showReminderDialog(this);
             
             Toast.makeText(this, "Review reminder dialog shown", Toast.LENGTH_SHORT).show();
             InAppLogger.logUserAction("Review reminder test dialog shown toast", "");

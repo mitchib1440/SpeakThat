@@ -90,8 +90,9 @@ class ReviewReminderManager private constructor(private val context: Context) {
     
     /**
      * Show the review reminder dialog
+     * @param activityContext The Activity context needed for showing the AlertDialog
      */
-    fun showReminderDialog() {
+    fun showReminderDialog(activityContext: android.app.Activity) {
         if (!shouldShowReminder()) {
             return
         }
@@ -99,19 +100,19 @@ class ReviewReminderManager private constructor(private val context: Context) {
         Log.i(TAG, "Showing review reminder dialog")
         InAppLogger.logUserAction("Review reminder dialog shown")
         
-        AlertDialog.Builder(context)
-            .setTitle(context.getString(R.string.review_reminder_title))
-            .setMessage(context.getString(R.string.review_reminder_message))
-            .setPositiveButton(context.getString(R.string.review_reminder_rate_now)) { _, _ ->
+        AlertDialog.Builder(activityContext)
+            .setTitle(activityContext.getString(R.string.review_reminder_title))
+            .setMessage(activityContext.getString(R.string.review_reminder_message))
+            .setPositiveButton(activityContext.getString(R.string.review_reminder_rate_now)) { _, _ ->
                 openPlayStoreReview()
                 markReminderShown()
             }
-            .setNegativeButton(context.getString(R.string.review_reminder_later)) { _, _ ->
+            .setNegativeButton(activityContext.getString(R.string.review_reminder_later)) { _, _ ->
                 // Just dismiss for now, will show again later
                 Log.d(TAG, "User chose 'Later' for review reminder")
                 InAppLogger.logUserAction("Review reminder - chose later")
             }
-            .setNeutralButton(context.getString(R.string.review_reminder_never)) { _, _ ->
+            .setNeutralButton(activityContext.getString(R.string.review_reminder_never)) { _, _ ->
                 markReminderDismissed()
                 Log.d(TAG, "User chose 'Never' for review reminder")
                 InAppLogger.logUserAction("Review reminder - chose never")

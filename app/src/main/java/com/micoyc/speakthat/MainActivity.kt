@@ -1539,7 +1539,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Check if we should show the reminder (with a small delay to avoid showing immediately)
         Handler(Looper.getMainLooper()).postDelayed({
             if (reviewManager.shouldShowReminder()) {
-                reviewManager.showReminderDialog()
+                reviewManager.showReminderDialog(this@MainActivity)
             }
         }, 2000) // 2 second delay to let the app settle
     }
