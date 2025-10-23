@@ -2931,7 +2931,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginEnd="16dp"
-                            android:src="@drawable/text_to_speech_24px"
+                            android:src="@drawable/ic_end_24"
                             app:tint="@color/white_100"
                             android:contentDescription="Content Cap" />
 
