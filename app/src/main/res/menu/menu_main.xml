@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_diagnostics"
+        android:title="@string/quick_diagnostics"
+        android:icon="@drawable/ic_stethoscope_24"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_about"
         android:title="@string/about"
         android:icon="@drawable/info_24px"

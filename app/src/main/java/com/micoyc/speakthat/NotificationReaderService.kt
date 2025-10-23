@@ -44,6 +44,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var currentSpeechText = ""
     private var currentAppName = ""
     private var currentTtsText = ""
+    private var shouldShowEngineFailureWarning = false
     
     // Cached system services for performance
     private val audioManager by lazy { getSystemService(AUDIO_SERVICE) as AudioManager }
@@ -946,7 +947,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 }
             }
             
-            textToSpeech = TextToSpeech(this, this)
+            // Get selected TTS engine from preferences
+            val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", android.content.Context.MODE_PRIVATE)
+            val selectedEngine = voiceSettingsPrefs.getString("tts_engine_package", "")
+            
+            if (selectedEngine.isNullOrEmpty()) {
+                // Use system default engine
+                textToSpeech = TextToSpeech(this, this)
+                Log.d(TAG, "Using system default TTS engine")
+                InAppLogger.log("Service", "Using system default TTS engine")
+            } else {
+                // Use selected custom engine
+                textToSpeech = TextToSpeech(this, this, selectedEngine)
+                Log.d(TAG, "Using custom TTS engine: $selectedEngine")
+                InAppLogger.log("Service", "Using custom TTS engine: $selectedEngine")
+            }
             
             // Add a timeout to detect if TTS initialization hangs
             android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
@@ -1316,6 +1331,28 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 val errorMessage = getTtsErrorMessage(status)
                 Log.e(TAG, "TextToSpeech initialization failed with status: $status - $errorMessage")
                 InAppLogger.logError("Service", "TextToSpeech initialization failed with status: $status - $errorMessage")
+                
+                // Check if we were trying to use a custom engine
+                val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", android.content.Context.MODE_PRIVATE)
+                val selectedEngine = voiceSettingsPrefs.getString("tts_engine_package", "")
+                
+                if (!selectedEngine.isNullOrEmpty()) {
+                    // Custom engine failed - log it and revert to default
+                    Log.e(TAG, "Selected TTS engine failed: $selectedEngine")
+                    InAppLogger.logError("Service", "Selected TTS engine failed: $selectedEngine")
+                    
+                    // Clear the saved engine and reinitialize with default
+                    voiceSettingsPrefs.edit().putString("tts_engine_package", "").apply()
+                    
+                    // Set flag to show error notification
+                    shouldShowEngineFailureWarning = true
+                    
+                    // Reinitialize with default engine
+                    textToSpeech = TextToSpeech(this, this)
+                    Log.d(TAG, "Reverting to system default TTS engine")
+                    InAppLogger.log("Service", "Reverting to system default TTS engine")
+                    return
+                }
                 
                 // Attempt recovery for initialization failures
                 attemptTtsRecovery("Initialization failed with status: $status - $errorMessage")
@@ -4774,6 +4811,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         InAppLogger.log("Service", "=== DUCKING DEBUG: Refreshing voice settings before speech execution ===")
         applyVoiceSettings()
         
+        // Add engine failure warning if needed
+        var finalSpeechText = speechText
+        if (shouldShowEngineFailureWarning) {
+            finalSpeechText = speechText + " " + getString(R.string.tts_engine_failure_spoken)
+            shouldShowEngineFailureWarning = false // Clear flag after speaking once
+            Log.d(TAG, "Added TTS engine failure warning to speech")
+            InAppLogger.log("Service", "Added TTS engine failure warning to speech")
+        }
+        
         // Check TTS health before attempting to speak
         if (!checkTtsHealth()) {
             Log.e(TAG, "TTS health check failed - cannot speak")
@@ -4964,7 +5010,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "=== DUCKING DEBUG: Calling TTS.speak() with volume: ${ttsVolume * 100}% ===")
         InAppLogger.log("Service", "=== DUCKING DEBUG: Calling TTS.speak() with volume: ${ttsVolume * 100}% ===")
         
-        val speakResult = textToSpeech?.speak(speechText, TextToSpeech.QUEUE_FLUSH, volumeParams, "notification_utterance")
+        val speakResult = textToSpeech?.speak(finalSpeechText, TextToSpeech.QUEUE_FLUSH, volumeParams, "notification_utterance")
         
         Log.d(TAG, "=== DUCKING DEBUG: TTS.speak() returned: $speakResult ===")
         InAppLogger.log("Service", "=== DUCKING DEBUG: TTS.speak() returned: $speakResult ===")

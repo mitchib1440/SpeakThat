@@ -602,7 +602,19 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun initializeTextToSpeech() {
-        textToSpeech = TextToSpeech(this, this)
+        // Get selected TTS engine from preferences
+        val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", android.content.Context.MODE_PRIVATE)
+        val selectedEngine = voiceSettingsPrefs.getString("tts_engine_package", "")
+        
+        if (selectedEngine.isNullOrEmpty()) {
+            // Use system default engine
+            textToSpeech = TextToSpeech(this, this)
+            Log.d(TAG, "Using system default TTS engine")
+        } else {
+            // Use selected custom engine
+            textToSpeech = TextToSpeech(this, this, selectedEngine)
+            Log.d(TAG, "Using custom TTS engine: $selectedEngine")
+        }
     }
     
     private fun reinitializeTtsWithCurrentSettings() {
@@ -611,7 +623,19 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         isTtsInitialized = false
         
         // Create new TTS instance with current settings
-        textToSpeech = TextToSpeech(this, this)
+        // Get selected TTS engine from preferences
+        val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", android.content.Context.MODE_PRIVATE)
+        val selectedEngine = voiceSettingsPrefs.getString("tts_engine_package", "")
+        
+        if (selectedEngine.isNullOrEmpty()) {
+            // Use system default engine
+            textToSpeech = TextToSpeech(this, this)
+            Log.d(TAG, "Reinitializing with system default TTS engine")
+        } else {
+            // Use selected custom engine
+            textToSpeech = TextToSpeech(this, this, selectedEngine)
+            Log.d(TAG, "Reinitializing with custom TTS engine: $selectedEngine")
+        }
     }
     
     private fun loadEasterEggs() {
@@ -647,6 +671,27 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             val errorMessage = getTtsErrorMessage(status)
             Log.e(TAG, "TextToSpeech initialization failed with status: $status - $errorMessage")
             InAppLogger.logTTSEvent("TTS initialization failed", "Status: $status - $errorMessage")
+            
+            // Check if we were trying to use a custom engine
+            val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", android.content.Context.MODE_PRIVATE)
+            val selectedEngine = voiceSettingsPrefs.getString("tts_engine_package", "")
+            
+            if (!selectedEngine.isNullOrEmpty()) {
+                // Custom engine failed - log it and revert to default
+                Log.e(TAG, "Selected TTS engine failed: $selectedEngine")
+                InAppLogger.logError("MainActivity", "Selected TTS engine failed: $selectedEngine")
+                
+                // Clear the saved engine and reinitialize with default
+                voiceSettingsPrefs.edit().putString("tts_engine_package", "").apply()
+                
+                // Show visual warning dialog
+                showTtsEngineFailureDialog()
+                
+                // Reinitialize with default engine
+                textToSpeech = TextToSpeech(this, this)
+                Log.d(TAG, "Reverting to system default TTS engine")
+                return
+            }
             
             // Log device info for debugging
             val deviceInfo = "Device: ${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}, " +
@@ -1185,10 +1230,323 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 startActivity(Intent(this, AboutActivity::class.java))
                 true
             }
+            R.id.action_diagnostics -> {
+                InAppLogger.logUserAction("Quick diagnostics menu item clicked")
+                showQuickDiagnosticsDialog()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
     
+    /**
+     * Show quick diagnostics dialog with system status checks
+     */
+    private fun showQuickDiagnosticsDialog() {
+        try {
+            // Run all diagnostic checks
+            val notificationAccess = checkNotificationAccess()
+            val ttsInitialization = checkTtsInitialization()
+            val ttsLanguage = checkTtsLanguage()
+            val outputStream = checkOutputStream()
+            val shouldRead = checkShouldReadNotifications()
+            val ttsEngine = checkTtsEngine()
+            
+            // Build diagnostic report
+            val report = buildDiagnosticReport(
+                notificationAccess, ttsInitialization, ttsLanguage,
+                outputStream, shouldRead, ttsEngine
+            )
+            
+            // Create and show dialog
+            val dialog = AlertDialog.Builder(this)
+                .setTitle(getString(R.string.diagnostics_title))
+                .setMessage(report)
+                .setPositiveButton(getString(R.string.diagnostics_copy_clipboard)) { _, _ ->
+                    copyDiagnosticReportToClipboard(report)
+                }
+                .setNeutralButton(getString(R.string.diagnostics_reinitialize_tts)) { _, _ ->
+                    reinitializeTtsAndShowDiagnostics()
+                }
+                .setNegativeButton(getString(R.string.close)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .create()
+            
+            dialog.show()
+            
+            // Log diagnostic action
+            InAppLogger.log("Diagnostics", "Quick diagnostics dialog shown")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error showing diagnostics dialog", e)
+            InAppLogger.logError("Diagnostics", "Error showing diagnostics dialog: ${e.message}")
+            Toast.makeText(this, "Error running diagnostics", Toast.LENGTH_SHORT).show()
+        }
+    }
+    
+    /**
+     * Check notification access status
+     */
+    private fun checkNotificationAccess(): DiagnosticResult {
+        return try {
+            val isEnabled = isNotificationServiceEnabled()
+            if (isEnabled) {
+                DiagnosticResult("OK", getString(R.string.diagnostics_notification_access_ok))
+            } else {
+                DiagnosticResult("ERR", getString(R.string.diagnostics_notification_access_err))
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking notification access", e)
+            DiagnosticResult("ERR", "Error: ${e.message}")
+        }
+    }
+    
+    /**
+     * Check TTS initialization status
+     */
+    private fun checkTtsInitialization(): DiagnosticResult {
+        return try {
+            when {
+                textToSpeech == null -> DiagnosticResult("-", getString(R.string.diagnostics_tts_init_dash))
+                isTtsInitialized -> DiagnosticResult("OK", getString(R.string.diagnostics_tts_init_ok))
+                else -> DiagnosticResult("ERR", getString(R.string.diagnostics_tts_init_err))
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking TTS initialization", e)
+            DiagnosticResult("ERR", "Error: ${e.message}")
+        }
+    }
+    
+    /**
+     * Check TTS language availability
+     */
+    private fun checkTtsLanguage(): DiagnosticResult {
+        return try {
+            if (textToSpeech == null || !isTtsInitialized) {
+                return DiagnosticResult("-", getString(R.string.diagnostics_tts_language_dash))
+            }
+            
+            // Get current language from voice settings
+            val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+            val savedLanguage = voiceSettingsPrefs.getString("language", "en_US") ?: "en_US"
+            
+            // Parse locale
+            val localeParts = savedLanguage.split("_")
+            val targetLocale = when {
+                localeParts.size >= 2 -> java.util.Locale(localeParts[0], localeParts[1])
+                localeParts.size == 1 -> java.util.Locale(localeParts[0])
+                else -> java.util.Locale.getDefault()
+            }
+            
+            val availability = textToSpeech?.isLanguageAvailable(targetLocale) ?: TextToSpeech.LANG_NOT_SUPPORTED
+            when (availability) {
+                TextToSpeech.LANG_AVAILABLE, TextToSpeech.LANG_COUNTRY_AVAILABLE, TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE -> 
+                    DiagnosticResult("OK", getString(R.string.diagnostics_tts_language_ok))
+                else -> DiagnosticResult("ERR", getString(R.string.diagnostics_tts_language_err))
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking TTS language", e)
+            DiagnosticResult("ERR", "Error: ${e.message}")
+        }
+    }
+    
+    /**
+     * Check output stream accessibility
+     */
+    private fun checkOutputStream(): DiagnosticResult {
+        return try {
+            val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+            val ttsUsageIndex = voiceSettingsPrefs.getInt("audio_usage", 4) // Default to ASSISTANT
+            val contentTypeIndex = voiceSettingsPrefs.getInt("content_type", 0) // Default to SPEECH
+            
+            val ttsUsage = when (ttsUsageIndex) {
+                0 -> android.media.AudioAttributes.USAGE_MEDIA
+                1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
+                2 -> android.media.AudioAttributes.USAGE_ALARM
+                3 -> android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION
+                4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+                else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+            }
+            
+            val contentType = when (contentTypeIndex) {
+                0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                else -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+            }
+            
+            // Test if we can create audio attributes
+            val audioAttributes = android.media.AudioAttributes.Builder()
+                .setUsage(ttsUsage)
+                .setContentType(contentType)
+                .build()
+            
+            // Test audio manager
+            val audioManager = getSystemService(Context.AUDIO_SERVICE) as android.media.AudioManager
+            val isMusicActive = audioManager.isMusicActive
+            val isSpeakerphoneOn = audioManager.isSpeakerphoneOn
+            
+            DiagnosticResult("OK", getString(R.string.diagnostics_output_stream_ok))
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking output stream", e)
+            DiagnosticResult("ERR", getString(R.string.diagnostics_output_stream_err))
+        }
+    }
+    
+    /**
+     * Check if notifications should be read based on current settings
+     */
+    private fun checkShouldReadNotifications(): DiagnosticResult {
+        return try {
+            // Check master switch
+            if (!MainActivity.isMasterSwitchEnabled(this)) {
+                return DiagnosticResult("N", "Master switch disabled")
+            }
+            
+            // Check Do Not Disturb if honor DND is enabled
+            val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+            val honorDnd = voiceSettingsPrefs.getBoolean("honor_dnd", false)
+            if (honorDnd) {
+                val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    val dndMode = notificationManager.currentInterruptionFilter
+                    if (dndMode == android.app.NotificationManager.INTERRUPTION_FILTER_NONE) {
+                        return DiagnosticResult("N", "Do Not Disturb is active")
+                    }
+                }
+            }
+            
+            // Check if any rules are blocking (simplified check)
+            try {
+                // This is a simplified check - in a real implementation, we'd need to initialize RuleManager
+                // For now, we'll just check if rules are enabled
+                val rulesEnabled = voiceSettingsPrefs.getBoolean("rules_enabled", false)
+                if (rulesEnabled) {
+                    // We can't easily check rule status without full RuleManager initialization
+                    // So we'll just indicate that rules are enabled
+                    return DiagnosticResult("Y", getString(R.string.diagnostics_should_read_yes) + " (rules enabled)")
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "Could not check rules status", e)
+            }
+            
+            DiagnosticResult("Y", getString(R.string.diagnostics_should_read_yes))
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking should read notifications", e)
+            DiagnosticResult("ERR", getString(R.string.diagnostics_should_read_err))
+        }
+    }
+    
+    /**
+     * Check TTS engine status
+     */
+    private fun checkTtsEngine(): DiagnosticResult {
+        return try {
+            val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+            val selectedEngine = voiceSettingsPrefs.getString("tts_engine_package", "")
+            
+            if (selectedEngine.isNullOrEmpty()) {
+                DiagnosticResult("-", getString(R.string.diagnostics_tts_engine_dash))
+            } else {
+                // Check if the selected engine package exists
+                try {
+                    packageManager.getPackageInfo(selectedEngine, 0)
+                    if (isTtsInitialized && textToSpeech != null) {
+                        DiagnosticResult("OK", getString(R.string.diagnostics_tts_engine_ok))
+                    } else {
+                        DiagnosticResult("ERR", getString(R.string.diagnostics_tts_engine_err))
+                    }
+                } catch (e: Exception) {
+                    DiagnosticResult("ERR", "Engine package not found: $selectedEngine")
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking TTS engine", e)
+            DiagnosticResult("ERR", "Error: ${e.message}")
+        }
+    }
+    
+    /**
+     * Build formatted diagnostic report
+     */
+    private fun buildDiagnosticReport(
+        notificationAccess: DiagnosticResult,
+        ttsInitialization: DiagnosticResult,
+        ttsLanguage: DiagnosticResult,
+        outputStream: DiagnosticResult,
+        shouldRead: DiagnosticResult,
+        ttsEngine: DiagnosticResult
+    ): String {
+        return buildString {
+            appendLine("${getString(R.string.diagnostics_notification_access)} ${notificationAccess.status}")
+            appendLine()
+            
+            appendLine("${getString(R.string.diagnostics_tts_initialization)} ${ttsInitialization.status}")
+            appendLine()
+            
+            appendLine("${getString(R.string.diagnostics_tts_language)} ${ttsLanguage.status}")
+            appendLine()
+            
+            appendLine("${getString(R.string.diagnostics_output_stream)} ${outputStream.status}")
+            appendLine()
+            
+            appendLine("${getString(R.string.diagnostics_should_read)} ${shouldRead.status}")
+            appendLine()
+            
+            appendLine("${getString(R.string.diagnostics_tts_engine)} ${ttsEngine.status}")
+        }
+    }
+    
+    /**
+     * Copy diagnostic report to clipboard
+     */
+    private fun copyDiagnosticReportToClipboard(report: String) {
+        try {
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val clip = android.content.ClipData.newPlainText("SpeakThat Diagnostics", report)
+            clipboard.setPrimaryClip(clip)
+            
+            Toast.makeText(this, getString(R.string.diagnostics_clipboard_copied), Toast.LENGTH_SHORT).show()
+            InAppLogger.log("Diagnostics", "Diagnostic report copied to clipboard")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error copying to clipboard", e)
+            InAppLogger.logError("Diagnostics", "Error copying to clipboard: ${e.message}")
+            Toast.makeText(this, "Error copying to clipboard", Toast.LENGTH_SHORT).show()
+        }
+    }
+    
+    /**
+     * Reinitialize TTS and show updated diagnostics
+     */
+    private fun reinitializeTtsAndShowDiagnostics() {
+        try {
+            InAppLogger.log("Diagnostics", "Reinitializing TTS as requested by user")
+            reinitializeTtsWithCurrentSettings()
+            
+            Toast.makeText(this, getString(R.string.diagnostics_tts_reinitialized), Toast.LENGTH_SHORT).show()
+            
+            // Show diagnostics again after a short delay to allow TTS to initialize
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                showQuickDiagnosticsDialog()
+            }, 2000)
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Error reinitializing TTS", e)
+            InAppLogger.logError("Diagnostics", "Error reinitializing TTS: ${e.message}")
+            Toast.makeText(this, "Error reinitializing TTS", Toast.LENGTH_SHORT).show()
+        }
+    }
+    
+    /**
+     * Data class for diagnostic results
+     */
+    private data class DiagnosticResult(
+        val status: String,
+        val message: String
+    )
+
     /**
      * Check for updates automatically if enabled in settings
      * This runs silently in the background without user interaction
@@ -1551,6 +1909,22 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     fun trackNotificationRead() {
         val reviewManager = ReviewReminderManager.getInstance(this)
         reviewManager.incrementNotificationsRead()
+    }
+
+    /**
+     * Show TTS Engine Failure Dialog
+     */
+    private fun showTtsEngineFailureDialog() {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(getString(R.string.tts_engine_failure_title))
+            .setMessage(getString(R.string.tts_engine_failure_message))
+            .setPositiveButton("Open Voice Settings") { _, _ ->
+                // Open Voice Settings
+                val intent = android.content.Intent(this, VoiceSettingsActivity::class.java)
+                startActivity(intent)
+            }
+            .setNegativeButton("Dismiss", null)
+            .show()
     }
 
 } 

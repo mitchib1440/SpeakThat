@@ -174,7 +174,19 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
     
     private fun initializeTextToSpeech() {
-        textToSpeech = TextToSpeech(this, this)
+        // Get selected TTS engine from preferences
+        val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", android.content.Context.MODE_PRIVATE)
+        val selectedEngine = voiceSettingsPrefs.getString("tts_engine_package", "")
+        
+        if (selectedEngine.isNullOrEmpty()) {
+            // Use system default engine
+            textToSpeech = TextToSpeech(this, this)
+            InAppLogger.log(TAG, "Using system default TTS engine")
+        } else {
+            // Use selected custom engine
+            textToSpeech = TextToSpeech(this, this, selectedEngine)
+            InAppLogger.log(TAG, "Using custom TTS engine: $selectedEngine")
+        }
     }
     
     private fun reinitializeTtsWithCurrentSettings() {
@@ -183,7 +195,19 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         isTtsInitialized = false
         
         // Create new TTS instance with current settings
-        textToSpeech = TextToSpeech(this, this)
+        // Get selected TTS engine from preferences
+        val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", android.content.Context.MODE_PRIVATE)
+        val selectedEngine = voiceSettingsPrefs.getString("tts_engine_package", "")
+        
+        if (selectedEngine.isNullOrEmpty()) {
+            // Use system default engine
+            textToSpeech = TextToSpeech(this, this)
+            InAppLogger.log(TAG, "Reinitializing with system default TTS engine")
+        } else {
+            // Use selected custom engine
+            textToSpeech = TextToSpeech(this, this, selectedEngine)
+            InAppLogger.log(TAG, "Reinitializing with custom TTS engine: $selectedEngine")
+        }
     }
     
     override fun onInit(status: Int) {

@@ -41,6 +41,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private static final String KEY_SHOW_ADVANCED = "show_advanced_voice";
     private static final String KEY_TTS_LANGUAGE = "tts_language";
     private static final String KEY_SPEAKERPHONE_ENABLED = "speakerphone_enabled";
+    private static final String KEY_TTS_ENGINE = "tts_engine_package";
 
 
     // Default values
@@ -66,10 +67,12 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private Spinner audioUsageSpinner;
     private Spinner contentTypeSpinner;
     private Spinner ttsLanguageSpinner;
+    private Spinner ttsEngineSpinner;
 
     private Button previewButton;
     private Button resetButton;
     private ImageView btnVoiceInfo;
+    private ImageView btnTtsEngineInfo;
     private MaterialSwitch switchAdvancedVoice;
     private LinearLayout layoutAdvancedVoiceSection;
     private LinearLayout speakerphoneOptionLayout;
@@ -80,6 +83,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private boolean isTtsReady = false;
     private List<Voice> availableVoices = new ArrayList<>();
     private List<Locale> availableLanguages = new ArrayList<>();
+    private List<TextToSpeech.EngineInfo> availableEngines = new ArrayList<>();
     private SharedPreferences sharedPreferences;
     private AudioManager audioManager;
 
@@ -143,9 +147,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         audioUsageSpinner = findViewById(R.id.audioUsageSpinner);
         contentTypeSpinner = findViewById(R.id.contentTypeSpinner);
         ttsLanguageSpinner = findViewById(R.id.ttsLanguageSpinner);
+        ttsEngineSpinner = findViewById(R.id.ttsEngineSpinner);
         previewButton = findViewById(R.id.previewButton);
         resetButton = findViewById(R.id.resetButton);
         btnVoiceInfo = findViewById(R.id.btnVoiceInfo);
+        btnTtsEngineInfo = findViewById(R.id.btnTtsEngineInfo);
         switchAdvancedVoice = findViewById(R.id.switchAdvancedVoice);
         layoutAdvancedVoiceSection = findViewById(R.id.layoutAdvancedVoiceSection);
         speakerphoneOptionLayout = findViewById(R.id.speakerphoneOptionLayout);
@@ -164,7 +170,18 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     }
 
     private void initializeTextToSpeech() {
-        textToSpeech = new TextToSpeech(this, this);
+        // Get selected TTS engine from preferences
+        String selectedEngine = sharedPreferences.getString(KEY_TTS_ENGINE, "");
+        
+        if (selectedEngine.isEmpty()) {
+            // Use system default engine
+            textToSpeech = new TextToSpeech(this, this);
+            InAppLogger.log("VoiceSettings", "Using system default TTS engine");
+        } else {
+            // Use selected custom engine
+            textToSpeech = new TextToSpeech(this, this, selectedEngine);
+            InAppLogger.log("VoiceSettings", "Using custom TTS engine: " + selectedEngine);
+        }
     }
 
     private void setupToolbar() {
@@ -291,6 +308,14 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         // Remove save button functionality - settings save automatically now
         resetButton.setOnClickListener(v -> resetToDefaults());
         btnVoiceInfo.setOnClickListener(v -> showVoiceInfoDialog());
+        btnTtsEngineInfo.setOnClickListener(v -> showTtsEngineInfoDialog());
+        
+        // System TTS Settings button - the clickable area is the LinearLayout containing the settings button
+        // We'll find it by looking for the LinearLayout that contains the settings icon and text
+        LinearLayout systemTtsSettings = (LinearLayout) findViewById(R.id.systemTtsSettings);
+        if (systemTtsSettings != null) {
+            systemTtsSettings.setOnClickListener(v -> openSystemTtsSettings());
+        }
         
         // Translation assistance functionality
         LinearLayout cardTranslationHelp = findViewById(R.id.cardTranslationHelp);
@@ -326,6 +351,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         setupVoiceSpinner();
         setupLanguagePresetSpinner(); // New preset-based spinner
         setupTtsLanguageSpinner();
+        setupTtsEngineSpinner(); // New TTS engine selection
         setupAudioChannelSpinners();
     }
 
@@ -2137,6 +2163,189 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             Toast.makeText(this, "Unable to open email app", Toast.LENGTH_SHORT).show();
             InAppLogger.logError("VoiceSettings", "Failed to open translation email: " + e.getMessage());
         }
+    }
+
+    /**
+     * Setup TTS Engine Spinner
+     */
+    private void setupTtsEngineSpinner() {
+        if (!isTtsReady) return;
+
+        // Get available engines
+        availableEngines.clear();
+        List<TextToSpeech.EngineInfo> engines = textToSpeech.getEngines();
+        if (engines != null) {
+            availableEngines.addAll(engines);
+        }
+
+        // Create engine names list
+        List<String> engineNames = new ArrayList<>();
+        engineNames.add(getString(R.string.tts_engine_system_default)); // "System Default"
+
+        for (TextToSpeech.EngineInfo engine : availableEngines) {
+            String displayName = engine.label;
+            if (displayName == null || displayName.isEmpty()) {
+                displayName = engine.name; // Fallback to package name
+            }
+            engineNames.add(displayName);
+        }
+
+        // Setup spinner
+        ArrayAdapter<String> engineAdapter = new ArrayAdapter<>(this,
+            android.R.layout.simple_spinner_item, engineNames);
+        engineAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ttsEngineSpinner.setAdapter(engineAdapter);
+
+        // Load saved engine selection
+        String savedEngine = sharedPreferences.getString(KEY_TTS_ENGINE, "");
+        int selectedIndex = 0; // Default to "System Default"
+        
+        if (!savedEngine.isEmpty()) {
+            for (int i = 0; i < availableEngines.size(); i++) {
+                if (availableEngines.get(i).name.equals(savedEngine)) {
+                    selectedIndex = i + 1; // +1 because index 0 is "System Default"
+                    break;
+                }
+            }
+        }
+        
+        ttsEngineSpinner.setSelection(selectedIndex);
+
+        // Add selection listener
+        ttsEngineSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    // System Default selected
+                    saveTtsEngine("");
+                } else {
+                    // Custom engine selected
+                    int engineIndex = position - 1; // -1 because position 0 is "System Default"
+                    if (engineIndex < availableEngines.size()) {
+                        String enginePackage = availableEngines.get(engineIndex).name;
+                        saveTtsEngine(enginePackage);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+                // Keep current selection
+            }
+        });
+
+        InAppLogger.log("VoiceSettings", "TTS Engine spinner setup with " + availableEngines.size() + " engines");
+    }
+
+    /**
+     * Save TTS Engine selection and show restart dialog if changed
+     */
+    private void saveTtsEngine(String enginePackage) {
+        String currentEngine = sharedPreferences.getString(KEY_TTS_ENGINE, "");
+        
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_TTS_ENGINE, enginePackage);
+        editor.apply();
+        
+        InAppLogger.log("VoiceSettings", "TTS Engine saved: " + (enginePackage.isEmpty() ? "System Default" : enginePackage));
+        
+        // Show restart dialog if engine changed
+        if (!currentEngine.equals(enginePackage)) {
+            showEngineRestartDialog();
+        }
+    }
+
+    /**
+     * Show restart dialog for TTS engine change
+     */
+    private void showEngineRestartDialog() {
+        new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.tts_engine_restart_required))
+            .setMessage("SpeakThat needs to restart to apply the new TTS engine. Restart now?")
+            .setPositiveButton(getString(R.string.tts_engine_restart_confirm), (dialog, which) -> {
+                // Restart the app
+                android.content.Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+                if (intent != null) {
+                    intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    System.exit(0);
+                }
+            })
+            .setNegativeButton("Cancel", (dialog, which) -> {
+                // User cancelled - revert to previous selection
+                // This would require more complex state management
+                InAppLogger.log("VoiceSettings", "User cancelled TTS engine restart");
+            })
+            .setCancelable(false)
+            .show();
+    }
+
+    /**
+     * Open System TTS Settings
+     */
+    private void openSystemTtsSettings() {
+        try {
+            android.content.Intent intent = new android.content.Intent(android.provider.Settings.ACTION_SETTINGS);
+            startActivity(intent);
+            InAppLogger.logUserAction("System TTS Settings opened from Voice Settings", "");
+        } catch (Exception e) {
+            Toast.makeText(this, "Unable to open TTS settings", Toast.LENGTH_SHORT).show();
+            InAppLogger.logError("VoiceSettings", "Failed to open system TTS settings: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Show TTS Engine Information Dialog
+     */
+    private void showTtsEngineInfoDialog() {
+        if (!isTtsReady) {
+            Toast.makeText(this, "TTS not ready", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        StringBuilder info = new StringBuilder();
+        
+        // Current engine info
+        String currentEngine = textToSpeech.getDefaultEngine();
+        if (currentEngine != null) {
+            info.append("Current Engine: ").append(currentEngine).append("\n\n");
+        }
+        
+        // Available engines
+        info.append("Available Engines (").append(availableEngines.size()).append("):\n");
+        for (TextToSpeech.EngineInfo engine : availableEngines) {
+            info.append("• ").append(engine.label != null ? engine.label : engine.name);
+            if (engine.name.equals(currentEngine)) {
+                info.append(" (Current)");
+            }
+            info.append("\n");
+        }
+        
+        // Voice count for current engine
+        Set<Voice> voices = textToSpeech.getVoices();
+        if (voices != null) {
+            info.append("\nAvailable Voices: ").append(voices.size()).append("\n");
+            
+            // Count network vs local voices
+            int networkVoices = 0;
+            int localVoices = 0;
+            for (Voice voice : voices) {
+                if (voice.isNetworkConnectionRequired()) {
+                    networkVoices++;
+                } else {
+                    localVoices++;
+                }
+            }
+            info.append("• Local: ").append(localVoices).append("\n");
+            info.append("• Network: ").append(networkVoices);
+        }
+
+        new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.tts_engine_info_title))
+            .setMessage(info.toString())
+            .setPositiveButton("OK", null)
+            .setNeutralButton("Open TTS Settings", (dialog, which) -> openSystemTtsSettings())
+            .show();
     }
 
     @Override

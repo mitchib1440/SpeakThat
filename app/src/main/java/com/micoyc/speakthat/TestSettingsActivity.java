@@ -80,13 +80,29 @@ public class TestSettingsActivity extends AppCompatActivity {
     }
     
     private void initializeTTS() {
-        tts = new TextToSpeech(this, status -> {
-            isTtsReady = (status == TextToSpeech.SUCCESS);
-            if (isTtsReady) {
-                // Apply current voice settings
-                applyVoiceSettings();
-            }
-        });
+        // Get selected TTS engine from preferences
+        SharedPreferences voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE);
+        String selectedEngine = voiceSettingsPrefs.getString("tts_engine_package", "");
+        
+        if (selectedEngine.isEmpty()) {
+            // Use system default engine
+            tts = new TextToSpeech(this, status -> {
+                isTtsReady = (status == TextToSpeech.SUCCESS);
+                if (isTtsReady) {
+                    // Apply current voice settings
+                    applyVoiceSettings();
+                }
+            });
+        } else {
+            // Use selected custom engine
+            tts = new TextToSpeech(this, status -> {
+                isTtsReady = (status == TextToSpeech.SUCCESS);
+                if (isTtsReady) {
+                    // Apply current voice settings
+                    applyVoiceSettings();
+                }
+            }, selectedEngine);
+        }
     }
     
     private void applyVoiceSettings() {

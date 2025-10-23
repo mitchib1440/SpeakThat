@@ -279,6 +279,17 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Voice Settings Test -->
     <string name="tts_voice_test">This is how your notifications will sound with these voice settings.</string>
     
+    <!-- TTS Engine Selection -->
+    <string name="tts_engine_label">TTS Engine</string>
+    <string name="tts_engine_system_default">System Default</string>
+    <string name="tts_engine_restart_required">SpeakThat needs to restart to apply the new TTS engine. Restart now?</string>
+    <string name="tts_engine_restart_confirm">Restart</string>
+    <string name="tts_engine_failure_spoken">By the way, SpeakThat was unable to use your selected text-to-speech engine. Please open Voice Settings to choose another engine.</string>
+    <string name="tts_engine_failure_title">TTS Engine Not Available</string>
+    <string name="tts_engine_failure_message">SpeakThat couldn\'t use your selected TTS engine. It may have been uninstalled. The system default engine is now being used.</string>
+    <string name="open_system_tts_settings">Open System TTS Settings</string>
+    <string name="tts_engine_info_title">TTS Engine Information</string>
+    
     <!-- Onboarding TTS -->
     <string name="tts_onboarding_language_theme">Choose your preferred language and theme to get started with SpeakThat.</string>
     <string name="tts_onboarding_welcome">Welcome to SpeakThat! Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.</string>
@@ -1525,4 +1536,40 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="dev_test_review_reminder">🧪 Test Review Reminder</string>
     <string name="dev_reset_review_reminder">🔄 Reset Review Reminder</string>
     <string name="dev_review_reminder_stats">📊 Review Reminder Stats</string>
+    
+    <!-- Quick Diagnostics -->
+    <string name="quick_diagnostics">Quick Diagnostics</string>
+    <string name="diagnostics_title">Quick Diagnostics</string>
+    <string name="diagnostics_notification_access">Notification Access</string>
+    <string name="diagnostics_tts_initialization">TTS Initialization</string>
+    <string name="diagnostics_tts_language">TTS Language</string>
+    <string name="diagnostics_output_stream">Output Stream</string>
+    <string name="diagnostics_should_read">Should Read Notifications</string>
+    <string name="diagnostics_tts_engine">TTS Engine</string>
+    <string name="diagnostics_status_ok">OK</string>
+    <string name="diagnostics_status_err">ERR</string>
+    <string name="diagnostics_status_dash">-</string>
+    <string name="diagnostics_status_yes">Y</string>
+    <string name="diagnostics_status_no">N</string>
+    <string name="diagnostics_copy_clipboard">Copy to Clipboard</string>
+    <string name="diagnostics_reinitialize_tts">Reinitialize TTS</string>
+    <string name="diagnostics_clipboard_copied">Diagnostic report copied to clipboard</string>
+    <string name="diagnostics_tts_reinitialized">TTS reinitialized - running diagnostics again</string>
+    <string name="diagnostics_notification_access_ok">Notification access is enabled</string>
+    <string name="diagnostics_notification_access_err">Notification access is disabled</string>
+    <string name="diagnostics_tts_init_ok">TTS is initialized and ready</string>
+    <string name="diagnostics_tts_init_err">TTS initialization failed</string>
+    <string name="diagnostics_tts_init_dash">TTS instance is null</string>
+    <string name="diagnostics_tts_language_ok">TTS language is available</string>
+    <string name="diagnostics_tts_language_err">TTS language is not supported</string>
+    <string name="diagnostics_tts_language_dash">Cannot check TTS language</string>
+    <string name="diagnostics_output_stream_ok">Output stream is accessible</string>
+    <string name="diagnostics_output_stream_err">Output stream is blocked</string>
+    <string name="diagnostics_output_stream_dash">Cannot determine output stream status</string>
+    <string name="diagnostics_should_read_yes">All checks passed - notifications should be read</string>
+    <string name="diagnostics_should_read_no">Notifications are blocked by rules or settings</string>
+    <string name="diagnostics_should_read_err">Cannot determine if notifications should be read</string>
+    <string name="diagnostics_tts_engine_ok">TTS engine is working</string>
+    <string name="diagnostics_tts_engine_err">TTS engine failed</string>
+    <string name="diagnostics_tts_engine_dash">Using default TTS engine</string>
 </resources> 

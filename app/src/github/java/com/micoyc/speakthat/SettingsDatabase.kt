@@ -308,6 +308,17 @@ object SettingsDatabase {
                 searchKeywords = listOf("preview", "test", "voice", "speech", "sample", "demo"),
                 navigationAction = { context.startActivity(Intent(context, VoiceSettingsActivity::class.java)) }
             ),
+            SettingsItem(
+                id = "tts_engine",
+                title = "TTS Engine",
+                description = "Choose which text-to-speech engine to use",
+                category = "voice",
+                categoryTitle = "Voice Settings",
+                categoryIcon = "🎙️",
+                settingType = SettingType.DROPDOWN,
+                searchKeywords = listOf("engine", "tts", "voice", "speech", "google", "samsung", "text to speech"),
+                navigationAction = { context.startActivity(Intent(context, VoiceSettingsActivity::class.java)) }
+            ),
 
             // Filter Settings
             SettingsItem(
