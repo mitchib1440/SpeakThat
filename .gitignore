@@ -37,3 +37,4 @@ app/github/release/baselineProfiles/1/SpeakThat-v1.3.2.dm
 app/github/release/baselineProfiles/1/SpeakThat-v1.5.1.dm
 app/github/release/output-metadata.json
 *.aab
+app/store/release/app-store-release.aab
