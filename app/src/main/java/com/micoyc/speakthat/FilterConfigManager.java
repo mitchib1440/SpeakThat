@@ -159,7 +159,8 @@ public class FilterConfigManager {
         public boolean darkMode;
         public boolean autoStartOnBoot;
         public boolean batteryOptimizationDisabled;
-        public boolean aggressiveBackgroundProcessing;
+        @Deprecated
+        public boolean aggressiveBackgroundProcessing; // Deprecated: No longer used in UI, kept for backwards compatibility
         public String serviceRestartPolicy;
         
         public GeneralConfig() {

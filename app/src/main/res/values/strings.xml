@@ -824,8 +824,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="general_auto_start_description">Automatically start the notification service when device boots</string>
     <string name="general_battery_optimization">Battery Optimization Exemption</string>
     <string name="general_battery_optimization_description">Exclude app from battery optimization for better reliability</string>
-    <string name="general_aggressive_background">Aggressive Background Processing</string>
-    <string name="general_aggressive_background_description">Process notifications more aggressively in background (uses more battery)</string>
     <string name="general_service_restart_policy">Service Restart Policy</string>
     <string name="general_service_restart_description">When should the notification service automatically restart?</string>
     <string name="general_never_restart">Never restart automatically</string>

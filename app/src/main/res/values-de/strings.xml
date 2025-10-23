@@ -962,10 +962,6 @@ Automatisch den Benachrichtigungsdienst beim Booten des Geräts starten
     <string name="general_battery_optimization_description">
 App von der Batterieoptimierung ausschließen, um die Zuverlässigkeit zu verbessern
 </string>
-    <string name="general_aggressive_background">Aggressive Hintergrundverarbeitung</string>
-    <string name="general_aggressive_background_description">
-Benachrichtigungen im Hintergrund aggressiver verarbeiten (benötigt mehr Akku)
-</string>
     <string name="general_service_restart_policy">Neustart-Richtlinie des Dienstes</string>
     <string name="general_service_restart_description">
 Wann soll der Benachrichtigungsdienst automatisch neu gestartet werden?

@@ -217,14 +217,6 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             sharedPreferences.edit().putBoolean(getString(R.string.prefs_battery_optimization_enabled), isChecked).apply();
         });
 
-        // Aggressive Processing Toggle
-        MaterialSwitch aggressiveProcessingSwitch = binding.switchAggressiveProcessing;
-        boolean aggressiveProcessingEnabled = sharedPreferences.getBoolean(getString(R.string.prefs_aggressive_processing_enabled), false);
-        aggressiveProcessingSwitch.setChecked(aggressiveProcessingEnabled);
-
-        aggressiveProcessingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            sharedPreferences.edit().putBoolean(getString(R.string.prefs_aggressive_processing_enabled), isChecked).apply();
-        });
 
         // Service Restart Policy
         String restartPolicy = sharedPreferences.getString(getString(R.string.prefs_restart_policy), getString(R.string.restart_policy_never));

@@ -181,7 +181,6 @@ public class TestSettingsActivity extends AppCompatActivity {
             boolean darkMode = mainPrefs.getBoolean("dark_mode", false);
             boolean autoStart = mainPrefs.getBoolean("auto_start_on_boot", false);
             boolean batteryOpt = mainPrefs.getBoolean("battery_optimization_disabled", false);
-            boolean aggressiveProc = mainPrefs.getBoolean("aggressive_background_processing", false);
             String restartPolicy = mainPrefs.getString("service_restart_policy", "periodic");
             boolean dataExportEnabled = mainPrefs.getBoolean("data_export_enabled", false);
             boolean dataImportEnabled = mainPrefs.getBoolean("data_import_enabled", false);
@@ -190,7 +189,6 @@ public class TestSettingsActivity extends AppCompatActivity {
             results.append("Dark Mode: ").append(darkMode ? "✅ Enabled" : "❌ Disabled").append("\n");
             results.append("Auto-start on Boot: ").append(autoStart ? "✅ Enabled" : "❌ Disabled").append("\n");
             results.append("Battery Optimization: ").append(batteryOpt ? "✅ Disabled" : "❌ Enabled").append("\n");
-            results.append("Aggressive Processing: ").append(aggressiveProc ? "✅ Enabled" : "❌ Disabled").append("\n");
             results.append("Restart Policy: ").append(restartPolicy).append("\n");
             results.append("Data Export: ").append(dataExportEnabled ? "✅ Enabled" : "❌ Disabled").append("\n");
             results.append("Data Import: ").append(dataImportEnabled ? "✅ Enabled" : "❌ Disabled").append("\n");
@@ -307,7 +305,6 @@ public class TestSettingsActivity extends AppCompatActivity {
     
     private void testPerformanceImpact(StringBuilder results) {
         try {
-            boolean aggressiveProc = mainPrefs.getBoolean("aggressive_background_processing", false);
             boolean batteryOpt = mainPrefs.getBoolean("battery_optimization_disabled", false);
             String restartPolicy = mainPrefs.getString("service_restart_policy", "periodic");
             int delayBeforeReadout = mainPrefs.getInt("delay_before_readout", 0);
@@ -316,12 +313,10 @@ public class TestSettingsActivity extends AppCompatActivity {
             Set<String> wordBlacklist = mainPrefs.getStringSet("word_blacklist", null);
             
             results.append("Battery Impact: ");
-            if (aggressiveProc && !batteryOpt) {
-                results.append("⚠️ HIGH (Aggressive processing + battery optimization)\n");
-            } else if (aggressiveProc) {
-                results.append("⚠️ MEDIUM (Aggressive processing)\n");
+            if (!batteryOpt) {
+                results.append("⚠️ MEDIUM (Battery optimization enabled)\n");
             } else {
-                results.append("✅ LOW (Standard processing)\n");
+                results.append("✅ LOW (Battery optimization disabled)\n");
             }
             
             results.append("Memory Impact: ");
@@ -346,15 +341,11 @@ public class TestSettingsActivity extends AppCompatActivity {
     private void validateSettings(StringBuilder results) {
         try {
             // Check for conflicts
-            boolean aggressiveProc = mainPrefs.getBoolean("aggressive_background_processing", false);
             boolean batteryOpt = mainPrefs.getBoolean("battery_optimization_disabled", false);
             String notificationBehavior = mainPrefs.getString("notification_behavior", "interrupt");
             String mediaBehavior = mainPrefs.getString("media_behavior", "ignore");
             
             // Validation checks
-            if (aggressiveProc && !batteryOpt) {
-                results.append("⚠️ WARNING: Aggressive processing with battery optimization may cause issues\n");
-            }
             
             if (notificationBehavior.equals("interrupt") && mediaBehavior.equals("pause")) {
                 results.append("⚠️ WARNING: Interrupting notifications with media pausing may cause conflicts\n");

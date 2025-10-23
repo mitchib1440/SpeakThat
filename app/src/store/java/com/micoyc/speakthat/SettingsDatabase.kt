@@ -41,17 +41,6 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, GeneralSettingsActivity::class.java)) }
             ),
             SettingsItem(
-                id = "aggressive_processing",
-                title = "Aggressive Background Processing",
-                description = "Use more aggressive background processing for better reliability",
-                category = "general",
-                categoryTitle = "General Settings",
-                categoryIcon = "⚙️",
-                settingType = SettingType.SWITCH,
-                searchKeywords = listOf("background", "processing", "aggressive", "reliability", "performance"),
-                navigationAction = { context.startActivity(Intent(context, GeneralSettingsActivity::class.java)) }
-            ),
-            SettingsItem(
                 id = "service_restart_policy",
                 title = "Service Restart Policy",
                 description = "Choose when to restart the notification service",

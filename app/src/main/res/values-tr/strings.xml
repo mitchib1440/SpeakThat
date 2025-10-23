@@ -915,10 +915,6 @@ Cihaz açıldığında bildirim hizmetini otomatik olarak başlat
     <string name="general_battery_optimization_description">
 Daha iyi güvenilirlik için uygulamayı pil optimizasyonundan hariç tut
 </string>
-    <string name="general_aggressive_background">Agresif Arka Plan İşlemi</string>
-    <string name="general_aggressive_background_description">
-Bildirimleri arka planda daha agresif bir şekilde işle (daha fazla pil kullanır)
-</string>
     <string name="general_service_restart_policy">Hizmet Yeniden Başlatma Politikası</string>
     <string name="general_service_restart_description">
 Bildirim hizmeti ne zaman otomatik olarak yeniden başlamalı?

@@ -927,10 +927,6 @@ Inicia automáticamente el servicio de notificación cuando el dispositivo inici
     <string name="general_battery_optimization_description">
 Excluye la aplicación de la optimización de la batería para una mayor fiabilidad
 </string>
-    <string name="general_aggressive_background">Procesamiento agresivo de fondo</string>
-    <string name="general_aggressive_background_description">
-Procesa notificaciones de forma más agresiva en segundo plano (usa más batería)
-</string>
     <string name="general_service_restart_policy">Política de reinicio del servicio</string>
     <string name="general_service_restart_description">
 ¿Cuándo debería reiniciar automáticamente el servicio de notificación?

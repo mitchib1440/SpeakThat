@@ -283,48 +283,6 @@
 
                     </LinearLayout>
 
-                    <!-- Background Processing -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingVertical="12dp">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/general_aggressive_background"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/purple_card_text_primary" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/general_aggressive_background_description"
-                                android:textSize="14sp"
-                                android:textColor="@color/purple_card_text_secondary"
-                                android:layout_marginTop="4dp" />
-
-                        </LinearLayout>
-
-                        <com.google.android.material.materialswitch.MaterialSwitch
-                            android:id="@+id/switchAggressiveProcessing"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:thumbTint="@color/switch_thumb_color"
-                            android:trackTint="@color/switch_track_color"
-                            app:thumbTint="@color/switch_thumb_color"
-                            app:trackTint="@color/switch_track_color" />
-
-                    </LinearLayout>
 
                     <!-- Service Restart Policy -->
                     <LinearLayout
