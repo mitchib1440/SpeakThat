@@ -64,7 +64,9 @@ Uitschakelen als dat niet nodig is om batterij te besparen
         <item>5 minuten</item>
     </string-array>
     <!--
-     Cooldown Time Values (corresponding to options above)
+
+         Cooldown Time Values (corresponding to options above)
+
     -->
     <string-array name="cooldown_time_values">
         <item>1</item>
@@ -196,7 +198,9 @@ Dit project is open source en beschikbaar onder de GPL-3.0 licentie.\n\nJe kunt 
     <string name="read_about_app">Lees over de app</string>
     <string name="stop_reading">Stop met lezen</string>
     <!--
-     TTS-specific strings (emoji-free and speech-optimized)
+
+         TTS-specific strings (emoji-free and speech-optimized)
+
     -->
     <string name="tts_app_intro">Welkom bij SpeakThat!</string>
     <string name="tts_description">
@@ -258,7 +262,9 @@ Automatisch controleren op app-updates wanneer u de app opent
     <string name="update_never">Nooit (alleen handmatig)</string>
     <!-- TTS Template Strings (for improved localization) -->
     <!--
-     These are complete sentence templates with placeholders for proper localization
+
+         These are complete sentence templates with placeholders for proper localization
+
     -->
     <string name="tts_template_notified_you">{app} heeft u een melding gegeven: {content}</string>
     <string name="tts_template_reported">{app} heeft gerapporteerd: {content}</string>
@@ -276,7 +282,9 @@ Automatisch controleren op app-updates wanneer u de app opent
     <string name="tts_template_says">{app} zegt: {content}</string>
     <string name="tts_template_private_notification">U heeft een privé-melding ontvangen van {app}</string>
     <!--
-     TTS Context Templates - Complete sentences for different app contexts
+
+         TTS Context Templates - Complete sentences for different app contexts
+
     -->
     <!-- About Page TTS -->
     <string name="tts_about_intro">Welkom bij SpeakThat!</string>
@@ -598,9 +606,7 @@ Taal zal volledig worden toegepast wanneer u de app opnieuw opstart
     <string name="section_notification_behavior">Notificatie gedrag</string>
     <string name="section_media_behavior">Media gedrag</string>
     <string name="recommendation_smart_mode">De meeste gebruikers gebruiken: Slimme Mode</string>
-    <string name="recommendation_lower_audio">
-De meeste gebruikers gebruiken: Pauze
-</string>
+    <string name="recommendation_lower_audio"> De meeste gebruikers gebruiken: Pauze </string>
     <!-- Behavior Settings Strings -->
     <string name="behavior_notification_description">
 Bepaal hoe meldingen worden afgehandeld wanneer er al één wordt gelezen
@@ -1056,7 +1062,7 @@ Psst! Je kunt ook een vriendelijke e-mail versturen, een leuk bericht maakt alti
     <string name="filter_suggestion_keywords">Alleen Sleutelwoorden</string>
     <string name="filter_suggestion_keywords_preview">Voorbeeld: locatie bijwerken</string>
     <string name="filter_suggestion_exact_match">Exacte tekstovereenkomst</string>
-    <string name="filter_suggestion_exact_preview">Voorbeeld: Locatie bijwerken om 2:30 PM ...</string>
+    <string name="filter_suggestion_exact_preview">Voorbeeld: Locatie bijwerken om 2:30 PM …</string>
     <string name="filter_suggestion_all_notifications">Alle meldingen van deze app</string>
     <string name="filter_suggestion_all_preview">Voorbeeld: Alle Life360 meldingen blokkeren</string>
     <string name="filter_suggestion_action">Actie:</string>
@@ -1416,7 +1422,9 @@ Stop meteen met voorlezen door je hand voor het apparaat te zwaaien
     <string name="filter_word_swaps_header">📋 Woordwisselingen</string>
     <string name="voice_language_preset_title">Taal voorinstelling</string>
     <!--
-     Audio Ducking Warnings (I see these in your screenshots)
+
+         Audio Ducking Warnings (I see these in your screenshots)
+
     -->
     <string name="behavior_audio_ducking_warning">
 Audio-verlagen werkt anders op verschillende apparaten en Android-versies. Sommige apparaten verlagen mogelijk bepaalde apps of audiostreams niet naar behoren.
@@ -1529,7 +1537,7 @@ Real-time overzicht van wat er onder de motorkap gebeurt
     <string name="dev_clear_crash_logs">🗑️ Verwijder Crash-logs</string>
     <string name="dev_debug_crash_logs">🔍 Foutopsporing van Crash-logs</string>
     <string name="dev_starting_log_display">
-Start log weergave...\nLogs zullen hier in real-time verschijnen.\n
+Start log weergave…\nLogs zullen hier in real-time verschijnen.\n
 </string>
     <!-- AboutActivity Hardcoded Strings -->
     <string name="tts_error_occurred">TTS fout opgetreden</string>
@@ -1567,7 +1575,9 @@ Dit zal alle instellingen herstellen naar standaardinstellingen en wist de meldi
     <string name="app_filter_no_filter_showing_all">Geen filter - toont alle %d apps</string>
     <string name="app_filter_publishing_results">Publicatie van %d resultaten</string>
     <!--
-     Technical hardcoded strings moved to strings_technical.xml
+
+         Technical hardcoded strings moved to strings_technical.xml
+
     -->
     <!-- AppCategory String Resources -->
     <string name="category_social_display_name">Sociale media</string>
@@ -1583,10 +1593,14 @@ Dit zal alle instellingen herstellen naar standaardinstellingen en wist de meldi
     <string name="category_games_display_name">Spellen</string>
     <string name="category_games_description">Mobiele games en gaming apps</string>
     <!--
-     Technical strings (preference keys, package names, etc.) have been moved to strings_technical.xml
+
+         Technical strings (preference keys, package names, etc.) have been moved to strings_technical.xml
+
     -->
     <!--
-     This prevents them from being translated by CrowdIn
+
+         This prevents them from being translated by CrowdIn
+
     -->
     <!-- Error Messages -->
     <string name="error_unable_to_open_output_stream">
@@ -1637,12 +1651,15 @@ Meldingsmachtiging geweigerd - SpeakThat! meldingen worden mogelijk niet weergeg
 </string>
     <string name="main_notification_title_active">SpreakThat! Actief</string>
     <string name="main_notification_content_tap_settings">Tik om SpreakThat! instellingen te openen</string>
-    
     <!-- Audio Ducking Feature -->
     <string name="dev_enable_audio_ducking">Audio Ducking Inschakelen</string>
-    <string name="dev_enable_audio_ducking_description">Heractiveer de "Lager audiovolume" radioknop in Media Gedrag instellingen. Deze functie is tijdelijk uitgeschakeld vanwege apparaatcompatibiliteitsproblemen.</string>
+    <string name="dev_enable_audio_ducking_description">
+Heractiveer de "Lager audiovolume" radioknop in Media Gedrag instellingen. Deze functie is tijdelijk uitgeschakeld vanwege apparaatcompatibiliteitsproblemen.
+</string>
     <string name="audio_ducking_disabled_title">Audio Ducking Tijdelijk Uitgeschakeld</string>
-    <string name="audio_ducking_disabled_message">Vanwege inconsistenties in hoe verschillende apparaten Audio Focus verzoeken verwerken, is de "Lager audiovolume" optie standaard tijdelijk uitgeschakeld. Als je kunt helpen om deze functie werkend te krijgen, draag dan bij aan dit project op GitHub. Je kunt deze functie opnieuw inschakelen voor ontwikkelings- of experimentele doeleinden door naar Ontwikkelingsinstellingen → Audio Ducking Inschakelen te gaan. Het kan op sommige apparaten werken, maar ik kan geen algemene ondersteuning bieden.</string>
+    <string name="audio_ducking_disabled_message">
+Vanwege inconsistenties in hoe verschillende apparaten Audio Focus verzoeken verwerken, is de "Lager audiovolume" optie standaard tijdelijk uitgeschakeld. Als je kunt helpen om deze functie werkend te krijgen, draag dan bij aan dit project op GitHub. Je kunt deze functie opnieuw inschakelen voor ontwikkelings- of experimentele doeleinden door naar Ontwikkelingsinstellingen → Audio Ducking Inschakelen te gaan. Het kan op sommige apparaten werken, maar ik kan geen algemene ondersteuning bieden.
+</string>
     <string name="audio_ducking_disabled_ok">Begrepen</string>
     <string name="audio_ducking_disabled_enable">Audio Ducking Inschakelen</string>
 </resources>

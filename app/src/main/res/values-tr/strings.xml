@@ -64,7 +64,9 @@ SpeakThat!, bildirimlerinizi sesli okuyabilmek için erişim iznine ihtiyaç duy
         <item>5 dakika</item>
     </string-array>
     <!--
-     Cooldown Time Values (corresponding to options above)
+
+         Cooldown Time Values (corresponding to options above)
+
     -->
     <string-array name="cooldown_time_values">
         <item>1</item>
@@ -200,7 +202,9 @@ Bu proje açık kaynaklıdır ve GPL-3.0 Lisansı altında mevcuttur.\n\nLisans 
     <string name="read_about_app">Uygulama Hakkında Oku</string>
     <string name="stop_reading">Okumayı Durdur</string>
     <!--
-     TTS-specific strings (emoji-free and speech-optimized)
+
+         TTS-specific strings (emoji-free and speech-optimized)
+
     -->
     <string name="tts_app_intro">SpeakThat\'e hoş geldiniz!</string>
     <string name="tts_description">
@@ -262,7 +266,9 @@ Uygulamayı açtığınızda otomatik olarak uygulama güncellemelerini kontrol 
     <string name="update_never">Asla (sadece manuel)</string>
     <!-- TTS Template Strings (for improved localization) -->
     <!--
-     These are complete sentence templates with placeholders for proper localization
+
+         These are complete sentence templates with placeholders for proper localization
+
     -->
     <string name="tts_template_notified_you">{app} bildirdi: {content}</string>
     <string name="tts_template_reported">{app} rapor etti: {content}</string>
@@ -282,7 +288,9 @@ Uygulamayı açtığınızda otomatik olarak uygulama güncellemelerini kontrol 
     <string name="tts_template_says">{app} diyor ki: {content}</string>
     <string name="tts_template_private_notification">{app} uygulamasından özel bir bildirim aldınız</string>
     <!--
-     TTS Context Templates - Complete sentences for different app contexts
+
+         TTS Context Templates - Complete sentences for different app contexts
+
     -->
     <!-- About Page TTS -->
     <string name="tts_about_intro">SpeakThat\'e hoş geldiniz!</string>
@@ -1414,7 +1422,9 @@ Elinizi cihazın önünde sallayarak okumaları anında durdurun
     <string name="filter_word_swaps_header">📋 Kelime Değişimleri</string>
     <string name="voice_language_preset_title">Dil Hazır Ayarı</string>
     <!--
-     Audio Ducking Warnings (I see these in your screenshots)
+
+         Audio Ducking Warnings (I see these in your screenshots)
+
     -->
     <string name="behavior_audio_ducking_warning">
 Ses kısma özelliği cihazlar ve Android sürümleri arasında farklı çalışır. Bazı cihazlar belirli uygulamaları veya ses akışlarını düzgün bir şekilde kısamayabilir.
@@ -1567,7 +1577,9 @@ Bu, tüm ayarları varsayılanlara sıfırlayacak ve bildirim geçmişini temizl
     <string name="app_filter_no_filter_showing_all">Filtre yok - tüm %d uygulama gösteriliyor</string>
     <string name="app_filter_publishing_results">%d sonuç yayınlanıyor</string>
     <!--
-     Technical hardcoded strings moved to strings_technical.xml
+
+         Technical hardcoded strings moved to strings_technical.xml
+
     -->
     <!-- AppCategory String Resources -->
     <string name="category_social_display_name">Sosyal Medya</string>
@@ -1583,10 +1595,14 @@ Bu, tüm ayarları varsayılanlara sıfırlayacak ve bildirim geçmişini temizl
     <string name="category_games_display_name">Oyunlar</string>
     <string name="category_games_description">Mobil oyunlar ve oyun uygulamaları</string>
     <!--
-     Technical strings (preference keys, package names, etc.) have been moved to strings_technical.xml
+
+         Technical strings (preference keys, package names, etc.) have been moved to strings_technical.xml
+
     -->
     <!--
-     This prevents them from being translated by CrowdIn
+
+         This prevents them from being translated by CrowdIn
+
     -->
     <!-- Error Messages -->
     <string name="error_unable_to_open_output_stream">URI için çıkış akışı açılamıyor</string>
@@ -1633,12 +1649,15 @@ Bildirim izni reddedildi - SpeakThat bildirimleri görünmeyebilir
 </string>
     <string name="main_notification_title_active">SpeakThat Aktif</string>
     <string name="main_notification_content_tap_settings">SpeakThat ayarlarını açmak için dokunun</string>
-    
     <!-- Audio Ducking Feature -->
     <string name="dev_enable_audio_ducking">Ses Kısma Özelliğini Etkinleştir</string>
-    <string name="dev_enable_audio_ducking_description">Medya Davranış ayarlarında "Ses Seviyesini Düşür" radyo düğmesini yeniden etkinleştir. Bu özellik cihaz uyumluluk sorunları nedeniyle geçici olarak devre dışı bırakılmıştır.</string>
+    <string name="dev_enable_audio_ducking_description">
+Medya Davranış ayarlarında "Ses Seviyesini Düşür" radyo düğmesini yeniden etkinleştir. Bu özellik cihaz uyumluluk sorunları nedeniyle geçici olarak devre dışı bırakılmıştır.
+</string>
     <string name="audio_ducking_disabled_title">Ses Kısma Özelliği Geçici Olarak Devre Dışı</string>
-    <string name="audio_ducking_disabled_message">Farklı cihazların Ses Odaklama isteklerini nasıl işlediği konusundaki tutarsızlıklar nedeniyle, "Ses Seviyesini Düşür" seçeneği varsayılan olarak geçici olarak devre dışı bırakılmıştır. Bu özelliği çalışır hale getirmeye yardımcı olabilirseniz, lütfen GitHub\'da bu projeye katkıda bulunun. Bu özelliği geliştirme veya deneme amaçlı olarak yeniden etkinleştirebilirsiniz, bunun için Geliştirici Ayarları → Ses Kısma Özelliğini Etkinleştir\'e gidin. Bazı cihazlarda çalışabilir, ancak genel destek sunamıyorum.</string>
+    <string name="audio_ducking_disabled_message">
+Farklı cihazların Ses Odaklama isteklerini nasıl işlediği konusundaki tutarsızlıklar nedeniyle, "Ses Seviyesini Düşür" seçeneği varsayılan olarak geçici olarak devre dışı bırakılmıştır. Bu özelliği çalışır hale getirmeye yardımcı olabilirseniz, lütfen GitHub\'da bu projeye katkıda bulunun. Bu özelliği geliştirme veya deneme amaçlı olarak yeniden etkinleştirebilirsiniz, bunun için Geliştirici Ayarları → Ses Kısma Özelliğini Etkinleştir\'e gidin. Bazı cihazlarda çalışabilir, ancak genel destek sunamıyorum.
+</string>
     <string name="audio_ducking_disabled_ok">Anladım</string>
     <string name="audio_ducking_disabled_enable">Ses Kısma Özelliğini Etkinleştir</string>
 </resources>

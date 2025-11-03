@@ -64,7 +64,9 @@ Suspender cuando no sea necesario para ahorrar batería
         <item>5 minutos</item>
     </string-array>
     <!--
-     Cooldown Time Values (corresponding to options above)
+
+         Cooldown Time Values (corresponding to options above)
+
     -->
     <string-array name="cooldown_time_values">
         <item>1</item>
@@ -204,7 +206,9 @@ Este proyecto es de código abierto y está disponible bajo la Licencia GPL-3.0.
     <string name="read_about_app">Leer Acerca de App</string>
     <string name="stop_reading">Parar lectura</string>
     <!--
-     TTS-specific strings (emoji-free and speech-optimized)
+
+         TTS-specific strings (emoji-free and speech-optimized)
+
     -->
     <string name="tts_app_intro">Bienvenido a SpeakThat!</string>
     <string name="tts_description">
@@ -268,7 +272,9 @@ Comprobar automáticamente las actua. de la app al abrir la aplicación
     <string name="update_never">Nunca (sólo manual)</string>
     <!-- TTS Template Strings (for improved localization) -->
     <!--
-     These are complete sentence templates with placeholders for proper localization
+
+         These are complete sentence templates with placeholders for proper localization
+
     -->
     <string name="tts_template_notified_you">{app} te notificó: {content}</string>
     <string name="tts_template_reported">{app} reportó: {content}</string>
@@ -286,7 +292,9 @@ Comprobar automáticamente las actua. de la app al abrir la aplicación
     <string name="tts_template_says">{app} dice: {content}</string>
     <string name="tts_template_private_notification">Recibiste una notificación privada de {app}</string>
     <!--
-     TTS Context Templates - Complete sentences for different app contexts
+
+         TTS Context Templates - Complete sentences for different app contexts
+
     -->
     <!-- About Page TTS -->
     <string name="tts_about_intro">Bienvenido a SpeakThat!</string>
@@ -610,7 +618,9 @@ Mantener el tiempo de espera activado (Recomendado)
     <string name="recommendation_smart_mode">
 La mayoría de usuarios deben usar: Modo inteligente
 </string>
-    <string name="recommendation_lower_audio">La mayoría de los usuarios deben usar: Pausar Audio</string>
+    <string name="recommendation_lower_audio">
+La mayoría de los usuarios deben usar: Pausar Audio
+</string>
     <!-- Behavior Settings Strings -->
     <string name="behavior_notification_description">
 Controla cómo se manejan las notificaciones cuando ya se está leyendo una
@@ -1070,12 +1080,12 @@ Filtra automáticamente los controles de medios mientras se conservan las notifi
 </string>
     <!-- Dialog Strings - Filter Suggestion -->
     <string name="filter_suggestion_smart_pattern">Patrón inteligente (recomendado)</string>
-    <string name="filter_suggestion_smart_preview">Vista previa: Ubicación de actualizaciones...</string>
+    <string name="filter_suggestion_smart_preview">Vista previa: Ubicación de actualizaciones…</string>
     <string name="filter_suggestion_keywords">Sólo palabras clave</string>
     <string name="filter_suggestion_keywords_preview">Vista previa: Actualizando ubicación</string>
     <string name="filter_suggestion_exact_match">Extraer texto exacto</string>
     <string name="filter_suggestion_exact_preview">
-Vista previa: Actualizando ubicación a las 2:30 PM...
+Vista previa: Actualizando ubicación a las 2:30 PM…
 </string>
     <string name="filter_suggestion_all_notifications">Todas las notificaciones de esta app</string>
     <string name="filter_suggestion_all_preview">
@@ -1152,7 +1162,7 @@ Reporta fallos, errores o comportamiento inesperado
     <string name="notification_history_empty">Ninguna notificación para mostrar</string>
     <string name="notification_history_clear">Borrar historial</string>
     <string name="notification_history_recent">📜 Notificaciones recientes</string>
-    <string name="notification_history_loading">Cargando historial de notificaciones...</string>
+    <string name="notification_history_loading">Cargando historial de notificaciones…</string>
     <string name="notification_history_debug_info">Información de depuración</string>
     <string name="notification_history_debug_description">
 Esta pantalla muestra las notificaciones que SpeakThat! ha capturado con fines de depuración. Te ayuda a comprobar que la aplicación funciona correctamente y a ver exactamente qué notificaciones se están leyendo en voz alta.
@@ -1436,7 +1446,9 @@ Detiene lecturas al instante agitando la mano delante del dispositivo
     <string name="filter_word_swaps_header">📋 Intercambio de palabra</string>
     <string name="voice_language_preset_title">Idioma predefinido</string>
     <!--
-     Audio Ducking Warnings (I see these in your screenshots)
+
+         Audio Ducking Warnings (I see these in your screenshots)
+
     -->
     <string name="behavior_audio_ducking_warning">
 La atenuación de audio funciona según los dispositivos y versiones Android. Algunos dispositivos pueden no atenuar ciertas aplicaciones o flujos de audio correctamente.
@@ -1522,8 +1534,8 @@ Introduce el nombre de la regla (por ej., Modo Noche, Modo Coche)
     <string name="hint_wifi_networks">HomeWiFi OfficeNetwork</string>
     <string name="hint_wifi_network_name">Introduce el nombre de la red WiFi</string>
     <string name="hint_cooldown_time">Tiempo de reposo</string>
-    <string name="hint_search_for_app">Buscar una aplicación...</string>
-    <string name="hint_enter_word_to_block">Escribe una palabra para bloquear...</string>
+    <string name="hint_search_for_app">Buscar una aplicación…</string>
+    <string name="hint_enter_word_to_block">Escribe una palabra para bloquear…</string>
     <string name="hint_enter_format_placeholders">Introduce el formato con marcadores de posición</string>
     <!-- Development Settings Hardcoded Strings -->
     <string name="dev_configure_logging">Configura lo que se registra para la depuración</string>
@@ -1553,7 +1565,7 @@ Vista en tiempo real de lo que está ocurriendo bajo el capó
     <string name="dev_clear_crash_logs">🗑️ Limpiar registros de fallos</string>
     <string name="dev_debug_crash_logs">🔍 Depurar registros de fallos</string>
     <string name="dev_starting_log_display">
-Iniciando la visualización del registro...\nLos registros aparecerán aquí en tiempo real.\n
+Iniciando la visualización del registro…\nLos registros aparecerán aquí en tiempo real.\n
 </string>
     <!-- AboutActivity Hardcoded Strings -->
     <string name="tts_error_occurred">Ocurrió un error TTS</string>
@@ -1593,7 +1605,9 @@ Permiso de notificación denegado - la función no funcionará
     <string name="app_filter_no_filter_showing_all">Sin filtro - mostrando todas las %d aplicaciones</string>
     <string name="app_filter_publishing_results">Publicando %d resultados</string>
     <!--
-     Technical hardcoded strings moved to strings_technical.xml
+
+         Technical hardcoded strings moved to strings_technical.xml
+
     -->
     <!-- AppCategory String Resources -->
     <string name="category_social_display_name">Redes Sociales</string>
@@ -1609,10 +1623,14 @@ Permiso de notificación denegado - la función no funcionará
     <string name="category_games_display_name">Juegos</string>
     <string name="category_games_description">Juegos móviles y aplicaciones de juegos</string>
     <!--
-     Technical strings (preference keys, package names, etc.) have been moved to strings_technical.xml
+
+         Technical strings (preference keys, package names, etc.) have been moved to strings_technical.xml
+
     -->
     <!--
-     This prevents them from being translated by CrowdIn
+
+         This prevents them from being translated by CrowdIn
+
     -->
     <!-- Error Messages -->
     <string name="error_unable_to_open_output_stream">No se puede abrir el flujo de salida para URI</string>
@@ -1665,12 +1683,15 @@ Permiso de notificación denegado - Las notificaciones pueden no aparecer
 </string>
     <string name="main_notification_title_active">SpeakThat activo</string>
     <string name="main_notification_content_tap_settings">Toca para abrir la configuración de SpeakThat</string>
-    
     <!-- Audio Ducking Feature -->
     <string name="dev_enable_audio_ducking">Habilitar Reducción de Audio</string>
-    <string name="dev_enable_audio_ducking_description">Rehabilitar el botón de radio "Bajar Audio" en la configuración de Comportamiento de Medios. Esta función ha sido temporalmente deshabilitada debido a problemas de compatibilidad de dispositivos.</string>
+    <string name="dev_enable_audio_ducking_description">
+Rehabilitar el botón de radio "Bajar Audio" en la configuración de Comportamiento de Medios. Esta función ha sido temporalmente deshabilitada debido a problemas de compatibilidad de dispositivos.
+</string>
     <string name="audio_ducking_disabled_title">Reducción de Audio Temporalmente Deshabilitada</string>
-    <string name="audio_ducking_disabled_message">Debido a inconsistencias en cómo diferentes dispositivos manejan las solicitudes de Enfoque de Audio, la opción "Bajar Audio" ha sido temporalmente deshabilitada por defecto. Si puedes ayudar a que esta función funcione, por favor contribuye a este proyecto en GitHub. Puedes rehabilitar esta función para propósitos de desarrollo o experimentación yendo a Configuración de Desarrollo → Habilitar Reducción de Audio. Puede funcionar en algunos dispositivos, pero no puedo ofrecer soporte general para ello en este momento.</string>
+    <string name="audio_ducking_disabled_message">
+Debido a inconsistencias en cómo diferentes dispositivos manejan las solicitudes de Enfoque de Audio, la opción "Bajar Audio" ha sido temporalmente deshabilitada por defecto. Si puedes ayudar a que esta función funcione, por favor contribuye a este proyecto en GitHub. Puedes rehabilitar esta función para propósitos de desarrollo o experimentación yendo a Configuración de Desarrollo → Habilitar Reducción de Audio. Puede funcionar en algunos dispositivos, pero no puedo ofrecer soporte general para ello en este momento.
+</string>
     <string name="audio_ducking_disabled_ok">Entendido</string>
     <string name="audio_ducking_disabled_enable">Habilitar Reducción de Audio</string>
 </resources>
