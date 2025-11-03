@@ -373,12 +373,22 @@ class OnboardingPagerAdapter(
                             val packageName = resolveInfo.activityInfo.packageName
                             val appName = resolveInfo.loadLabel(packageManager).toString()
                             
-                            // Skip system apps and our own app
-                            if (packageName == binding.root.context.packageName || 
-                                packageName.startsWith("com.android.") ||
-                                packageName.startsWith("android.") ||
-                                packageName.startsWith("com.samsung.") ||
-                                packageName.startsWith("com.sec.")) {
+                            // Skip our own app
+                            if (packageName == binding.root.context.packageName) {
+                                continue
+                            }
+                            
+                            // Check if this is actually a system app using ApplicationInfo flags
+                            try {
+                                val appInfo = packageManager.getApplicationInfo(packageName, 0)
+                                // Skip actual system apps (but allow user-installed apps even if they have system-like package names)
+                                if ((appInfo.flags and android.content.pm.ApplicationInfo.FLAG_SYSTEM) != 0 && 
+                                    (appInfo.flags and android.content.pm.ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 0) {
+                                    // This is a true system app (not a user-installed update)
+                                    continue
+                                }
+                            } catch (e: Exception) {
+                                // If we can't get app info, skip it
                                 continue
                             }
                             

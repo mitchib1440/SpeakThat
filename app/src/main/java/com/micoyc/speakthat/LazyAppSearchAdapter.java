@@ -145,13 +145,27 @@ public class LazyAppSearchAdapter extends ArrayAdapter<AppInfo> {
                         String packageName = resolveInfo.activityInfo.packageName;
                         String appName = resolveInfo.loadLabel(pm).toString();
                         
-                        // Skip system apps and our own app
-                        if (packageName.equals(context.getPackageName()) || 
-                            packageName.startsWith("com.android.") ||
-                            packageName.startsWith("android.") ||
-                            packageName.startsWith("com.samsung.") ||
-                            packageName.startsWith("com.sec.") ||
-                            isGoogleSystemService(packageName)) {
+                        // Skip our own app
+                        if (packageName.equals(context.getPackageName())) {
+                            continue;
+                        }
+                        
+                        // Check if this is actually a system app using ApplicationInfo flags
+                        try {
+                            ApplicationInfo appInfo = pm.getApplicationInfo(packageName, 0);
+                            // Skip actual system apps (but allow user-installed apps even if they have system-like package names)
+                            if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0 && 
+                                (appInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 0) {
+                                // This is a true system app (not a user-installed update)
+                                continue;
+                            }
+                        } catch (Exception e) {
+                            // If we can't get app info, skip it
+                            continue;
+                        }
+                        
+                        // Still filter out known Google system services
+                        if (isGoogleSystemService(packageName)) {
                             continue;
                         }
                         
