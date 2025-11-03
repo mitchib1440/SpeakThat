@@ -315,7 +315,7 @@ object SettingsDatabase {
                 category = "voice",
                 categoryTitle = "Voice Settings",
                 categoryIcon = "🎙️",
-                settingType = SettingType.DROPDOWN,
+                settingType = SettingType.SPINNER,
                 searchKeywords = listOf("engine", "tts", "voice", "speech", "google", "samsung", "text to speech"),
                 navigationAction = { context.startActivity(Intent(context, VoiceSettingsActivity::class.java)) }
             ),
