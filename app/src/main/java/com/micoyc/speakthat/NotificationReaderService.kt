@@ -43,6 +43,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var isCurrentlySpeaking = false
     private var currentSpeechText = ""
     private var currentAppName = ""
+    private var currentOriginalAppName = "" // Store original app name for statistics (before privacy modification)
     private var currentTtsText = ""
     private var shouldShowEngineFailureWarning = false
     
@@ -311,7 +312,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val text: String,
         val isPriority: Boolean = false,
         val conditionalDelaySeconds: Int = -1,
-        val sbn: StatusBarNotification? = null
+        val sbn: StatusBarNotification? = null,
+        val originalAppName: String? = null // Original app name for statistics (before privacy modification)
     )
     
     override fun onCreate() {
@@ -575,6 +577,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 } else {
                     // Skip our own notifications (normal behavior)
                     if (packageName == this.packageName) {
+                        // Track filter reason
+                        try {
+                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_SELF_PACKAGE)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error tracking self-package filter", e)
+                        }
                         return
                     }
                 }
@@ -586,6 +594,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (notification.flags and Notification.FLAG_GROUP_SUMMARY != 0) {
                     Log.d(TAG, "Skipping group summary notification from $packageName")
                     InAppLogger.logFilter("Skipped group summary notification from $packageName")
+                    // Track filter reason
+                    try {
+                        StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_GROUP_SUMMARY)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error tracking group summary filter", e)
+                    }
                     return
                 }
                 
@@ -593,6 +607,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (!MainActivity.isMasterSwitchEnabled(this)) {
                     Log.d(TAG, "Master switch disabled - ignoring notification from $packageName")
                     InAppLogger.log("MasterSwitch", "Notification ignored due to master switch being disabled")
+                    // Track filter reason
+                    try {
+                        StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_MASTER_SWITCH)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error tracking master switch filter", e)
+                    }
                     return
                 }
 
@@ -600,6 +620,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (BehaviorSettingsActivity.shouldHonourDoNotDisturb(this)) {
                     Log.d(TAG, "Do Not Disturb mode enabled - ignoring notification from $packageName")
                     InAppLogger.log("DoNotDisturb", "Notification ignored due to Do Not Disturb mode")
+                    // Track filter reason
+                    try {
+                        StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_DND)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error tracking DND filter", e)
+                    }
                     return
                 }
                 
@@ -614,6 +640,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     }
                     Log.d(TAG, "Audio mode check failed - device is in $modeName mode, ignoring notification from $packageName")
                     InAppLogger.log("AudioMode", "Notification ignored due to audio mode: $modeName")
+                    // Track filter reason
+                    try {
+                        StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_AUDIO_MODE)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error tracking audio mode filter", e)
+                    }
                     return
                 } else {
                     // Log when audio mode check passes (for debugging)
@@ -632,11 +664,24 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (BehaviorSettingsActivity.shouldHonourPhoneCalls(this)) {
                     Log.d(TAG, "Phone call check failed - device is on a call, ignoring notification from $packageName")
                     InAppLogger.log("PhoneCalls", "Notification ignored due to active phone call")
+                    // Track filter reason
+                    try {
+                        StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_PHONE_CALLS)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error tracking phone calls filter", e)
+                    }
                     return
                 } else {
                     // Log when phone call check passes (for debugging)
                     Log.d(TAG, "Phone call check passed - device is not on a call, proceeding with notification from $packageName")
                     InAppLogger.log("PhoneCalls", "Phone call check passed: no active call")
+                }
+                
+                // Track notification received (after passing basic checks)
+                try {
+                    StatisticsManager.getInstance(this).incrementReceived()
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error tracking notification received", e)
                 }
                 
                 // Get app name
@@ -680,6 +725,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         Log.d(TAG, "Duplicate notification detected from $appName - skipping (processed ${timeSinceLastProcessed}ms ago)")
                         Log.d(TAG, "Deduplication key: $notificationKey")
                         InAppLogger.logFilter("Duplicate notification from $appName - skipping (processed ${timeSinceLastProcessed}ms ago)")
+                        // Track filter reason
+                        try {
+                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_DEDUPLICATION)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error tracking deduplication filter", e)
+                        }
                         return
                     }
                     
@@ -696,6 +747,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         val timeSinceLastContent = currentTime - lastContentTime
                         Log.d(TAG, "Content-based duplicate detected from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
                         InAppLogger.logFilter("Content-based duplicate from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
+                        // Track filter reason
+                        try {
+                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_DEDUPLICATION)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error tracking deduplication filter", e)
+                        }
                         return
                     }
                     
@@ -710,6 +767,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                             val timeSinceLastGmailId = currentTime - lastGmailIdTime
                             Log.d(TAG, "Gmail notification ID recently processed - skipping (processed ${timeSinceLastGmailId}ms ago)")
                             InAppLogger.logFilter("Gmail notification ID recently processed - skipping (processed ${timeSinceLastGmailId}ms ago)")
+                            // Track filter reason
+                            try {
+                                StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_DEDUPLICATION)
+                            } catch (e: Exception) {
+                                Log.e(TAG, "Error tracking deduplication filter", e)
+                            }
                             return
                         }
                         recentNotificationKeys[gmailIdKey] = currentTime
@@ -727,6 +790,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                             val timeSinceLastAppSpecific = currentTime - lastAppSpecificTime
                             Log.d(TAG, "App-specific duplicate detected from $appName - skipping (processed ${timeSinceLastAppSpecific}ms ago)")
                             InAppLogger.logFilter("App-specific duplicate from $appName - skipping (processed ${timeSinceLastAppSpecific}ms ago)")
+                            // Track filter reason
+                            try {
+                                StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_DEDUPLICATION)
+                            } catch (e: Exception) {
+                                Log.e(TAG, "Error tracking deduplication filter", e)
+                            }
                             return
                         }
                         recentNotificationKeys[appSpecificKey] = currentTime
@@ -752,6 +821,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                             Log.d(TAG, "Dismissed notification detected from $appName - skipping (dismissed ${timeSinceDismissalMinutes} minutes ago)")
                             Log.d(TAG, "Dismissal memory: Content hash: $dismissalContentHash, Timeout: ${dismissalTimeoutMinutes} minutes")
                             InAppLogger.logFilter("Dismissed notification from $appName - skipping (dismissed ${timeSinceDismissalMinutes} minutes ago)")
+                            // Track filter reason
+                            try {
+                                StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_DISMISSAL_MEMORY)
+                            } catch (e: Exception) {
+                                Log.e(TAG, "Error tracking dismissal memory filter", e)
+                            }
                             return
                         }
                     } catch (e: Exception) {
@@ -812,14 +887,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         // Handle notification based on behavior mode (pass conditional delay info)
                         handleNotificationBehavior(packageName, finalAppName, filterResult.processedText, filterResult.conditionalDelaySeconds, sbn)
                     } else {
-                        // SECURITY: Don't log specific reasons for blocked notifications to avoid information leakage (unless sensitive data logging is enabled for testing)
+                        // Always log the blocking reason type (not sensitive data)
+                        // When sensitive data logging is enabled, also log the full details
+                        val reasonType = extractBlockingReasonType(filterResult.reason)
                         if (isSensitiveDataLoggingEnabled) {
-                            // SECURITY EXCEPTION: Only for development/testing with explicit user consent
-                            Log.d(TAG, "Notification blocked from $appName: ${filterResult.reason} [SENSITIVE DATA LOGGING ENABLED]")
-                            InAppLogger.logFilter("Blocked notification from $appName: ${filterResult.reason} [SENSITIVE DATA LOGGING ENABLED]")
+                            // Log full reason with details when sensitive data logging is enabled
+                            Log.d(TAG, "Notification blocked from $appName: Blocked: $reasonType (Details: ${filterResult.reason}) [SENSITIVE DATA LOGGING ENABLED]")
+                            InAppLogger.logFilter("Blocked notification from $appName: Blocked: $reasonType (Details: ${filterResult.reason}) [SENSITIVE DATA LOGGING ENABLED]")
                         } else {
-                            Log.d(TAG, "Notification blocked from $appName: [BLOCKED - REASON NOT LOGGED]")
-                            InAppLogger.logFilter("Blocked notification from $appName: [BLOCKED - REASON NOT LOGGED]")
+                            // Log only the reason type (no sensitive details)
+                            Log.d(TAG, "Notification blocked from $appName: Blocked: $reasonType")
+                            InAppLogger.logFilter("Blocked notification from $appName: Blocked: $reasonType")
                         }
                     }
                 }
@@ -1922,6 +2000,29 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val conditionalDelaySeconds: Int = -1 // -1 means no conditional delay
     )
     
+    /**
+     * Extract a user-friendly blocking reason type from the detailed reason string.
+     * This allows us to always log why a notification was blocked without revealing sensitive details.
+     * 
+     * @param reason The detailed reason string from FilterResult
+     * @return A user-friendly reason type (e.g., "filtered word detected", "app in blacklist")
+     */
+    private fun extractBlockingReasonType(reason: String): String {
+        return when {
+            reason.startsWith("App not in whitelist") -> "app not in whitelist"
+            reason.startsWith("App blacklisted") -> "app in blacklist"
+            reason.startsWith("Blocked by filter:") -> "filtered word detected"
+            reason.startsWith("Cooldown active") -> "cooldown active"
+            reason.startsWith("Media notification filtered:") -> "media notification filtered"
+            reason.startsWith("Persistent/silent notification:") -> "persistent/silent notification"
+            reason.startsWith("Rules blocking:") -> "rules blocking"
+            reason.startsWith("Duplicate notification") -> "duplicate notification detected"
+            reason.contains("dismissal memory", ignoreCase = true) -> "dismissal memory"
+            reason.isNotEmpty() -> reason // Fallback: use the reason as-is if we don't recognize the pattern
+            else -> "unknown reason"
+        }
+    }
+    
     private fun applyFilters(packageName: String, appName: String, text: String, sbn: StatusBarNotification? = null): FilterResult {
         // 1. Check app filtering
         val appFilterResult = checkAppFilter(packageName)
@@ -1975,6 +2076,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (appList.contains(packageName)) {
                     FilterResult(true, "", "App whitelisted")
                 } else {
+                    // Track filter reason
+                    try {
+                        StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_APP_LIST)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error tracking app list filter", e)
+                    }
                     FilterResult(false, "", "App not in whitelist")
                 }
             }
@@ -1985,6 +2092,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         // Allow through for private mode processing
                         FilterResult(true, "", "App blacklisted but private mode enabled")
                     } else {
+                        // Track filter reason
+                        try {
+                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_APP_LIST)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error tracking app list filter", e)
+                        }
                         FilterResult(false, "", "App blacklisted")
                     }
                 } else {
@@ -2013,6 +2126,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // 1. Check for blocked words (including smart filters) - EARLY EXIT on first match
         for (blockedWord in blockedWords) {
             if (matchesWordFilter(processedText, blockedWord)) {
+                // Track filter reason
+                try {
+                    StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_WORD_FILTERS)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error tracking word filter", e)
+                }
                 return FilterResult(false, "", "Blocked by filter: $blockedWord")
             }
         }
@@ -2376,6 +2495,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 val blockingRules = ruleManager.getBlockingRuleNames()
                 val reason = "Rules blocking: ${blockingRules.joinToString(", ")}"
                 InAppLogger.logFilter("Rules blocked notification: $reason")
+                // Track filter reason
+                try {
+                    StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_CONDITIONAL_RULES)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error tracking conditional rules filter", e)
+                }
                 return FilterResult(false, "", reason)
             } else {
                 InAppLogger.logFilter("Rules passed: no blocking rules active")
@@ -2590,12 +2715,23 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     private fun stopSpeaking(triggerType: String = "unknown") {
+        // Track interruption if currently speaking
+        val wasSpeaking = isCurrentlySpeaking
+        if (wasSpeaking) {
+            try {
+                StatisticsManager.getInstance(this).incrementReadoutsInterrupted()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error tracking readout interruption", e)
+            }
+        }
+        
         textToSpeech?.stop()
         isCurrentlySpeaking = false
         
         // Clear current notification variables
         currentSpeechText = ""
         currentAppName = ""
+        currentOriginalAppName = ""
         currentTtsText = ""
         
         // Unregister shake listener since we're no longer speaking
@@ -2640,12 +2776,23 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * Used internally by audio focus handlers.
      */
     private fun stopCurrentSpeech() {
+        // Track interruption if currently speaking
+        val wasSpeaking = isCurrentlySpeaking
+        if (wasSpeaking) {
+            try {
+                StatisticsManager.getInstance(this).incrementReadoutsInterrupted()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error tracking readout interruption", e)
+            }
+        }
+        
         textToSpeech?.stop()
         isCurrentlySpeaking = false
         
         // Clear current notification variables
         currentSpeechText = ""
         currentAppName = ""
+        currentOriginalAppName = ""
         currentTtsText = ""
         unregisterShakeListener()
         
@@ -4710,7 +4857,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
     private fun handleNotificationBehavior(packageName: String, appName: String, text: String, conditionalDelaySeconds: Int = -1, sbn: StatusBarNotification? = null) {
         val isPriorityApp = priorityApps.contains(packageName)
-        val queuedNotification = QueuedNotification(appName, text, isPriorityApp, conditionalDelaySeconds, sbn)
+        
+        // Get original app name for statistics tracking (before privacy modification)
+        val originalAppName = getAppName(packageName)
+        val queuedNotification = QueuedNotification(appName, text, isPriority = isPriorityApp, conditionalDelaySeconds = conditionalDelaySeconds, sbn = sbn, originalAppName = originalAppName)
         
         Log.d(TAG, "Handling notification behavior - Mode: $notificationBehavior, App: $appName, Currently speaking: $isCurrentlySpeaking, Queue size: ${notificationQueue.size}")
         InAppLogger.logNotification("Processing notification from $appName (mode: $notificationBehavior, speaking: $isCurrentlySpeaking)")
@@ -4719,13 +4869,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (!handleMediaBehavior(appName, text, sbn)) {
             Log.d(TAG, "Media behavior blocked notification from $appName (sbn: ${sbn?.packageName})")
             InAppLogger.logFilter("Media behavior blocked notification from $appName (sbn: ${sbn?.packageName})")
+            // Track filter reason
+            try {
+                StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_MEDIA_BEHAVIOR)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error tracking media behavior filter", e)
+            }
             return
         }
         
         when (notificationBehavior) {
             "interrupt" -> {
                 Log.d(TAG, "INTERRUPT mode: Speaking immediately and interrupting any current speech")
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName)
             }
             "queue" -> {
                 Log.d(TAG, "QUEUE mode: Adding to queue")
@@ -4736,15 +4892,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "skip" -> {
                 if (!isCurrentlySpeaking) {
                     Log.d(TAG, "SKIP mode: Not currently speaking, will speak now")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName)
                 } else {
                     Log.d(TAG, "SKIP mode: Currently speaking, skipping notification from $appName")
+                    // Track filter reason
+                    try {
+                        StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_SKIP_MODE)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error tracking skip mode filter", e)
+                    }
                 }
             }
             "smart" -> {
                 if (isPriorityApp) {
                     Log.d(TAG, "SMART mode: Priority app $appName - interrupting")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName)
                 } else {
                     Log.d(TAG, "SMART mode: Regular app $appName - adding to queue")
                     notificationQueue.add(queuedNotification)
@@ -4753,7 +4915,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             else -> {
                 Log.d(TAG, "UNKNOWN mode '$notificationBehavior': Defaulting to interrupt")
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName)
             }
         }
     }
@@ -4763,7 +4925,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (!isCurrentlySpeaking && notificationQueue.isNotEmpty()) {
             val queuedNotification = notificationQueue.removeAt(0)
             Log.d(TAG, "Processing next queued notification from ${queuedNotification.appName}")
-            speakNotificationImmediate(queuedNotification.appName, queuedNotification.text, queuedNotification.conditionalDelaySeconds, queuedNotification.sbn)
+            speakNotificationImmediate(queuedNotification.appName, queuedNotification.text, queuedNotification.conditionalDelaySeconds, queuedNotification.sbn, queuedNotification.originalAppName)
         } else if (isCurrentlySpeaking) {
             Log.d(TAG, "Still speaking, queue will be processed when current speech finishes")
         } else {
@@ -4771,7 +4933,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
 
-    private fun speakNotificationImmediate(appName: String, text: String, conditionalDelaySeconds: Int = -1, sbn: StatusBarNotification? = null) {
+    private fun speakNotificationImmediate(appName: String, text: String, conditionalDelaySeconds: Int = -1, sbn: StatusBarNotification? = null, originalAppName: String? = null) {
         if (!isTtsInitialized || textToSpeech == null) {
             Log.w(TAG, "TTS not initialized, cannot speak notification")
             return
@@ -4810,21 +4972,32 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (effectiveDelay > 0) {
             Log.d(TAG, "Delaying speech by ${effectiveDelay}s")
             pendingReadoutRunnable = Runnable {
-                executeSpeech(speechText, appName, text)
+                executeSpeech(speechText, appName, text, originalAppName)
             }
             delayHandler?.postDelayed(pendingReadoutRunnable!!, (effectiveDelay * 1000).toLong())
         } else {
-            executeSpeech(speechText, appName, text)
+            executeSpeech(speechText, appName, text, originalAppName)
         }
     }
     
-    private fun executeSpeech(speechText: String, appName: String, originalText: String) {
+    private fun executeSpeech(speechText: String, appName: String, originalText: String, originalAppName: String? = null) {
         Log.d(TAG, "=== DUCKING DEBUG: executeSpeech called with text: ${speechText.take(50)}... ===")
         InAppLogger.log("Service", "=== DUCKING DEBUG: executeSpeech called with text: ${speechText.take(50)}... ===")
         
         // CRITICAL: Stop any existing TTS speech and clear the queue to prevent stale text
         Log.d(TAG, "=== DUCKING DEBUG: Stopping any existing TTS speech to prevent stale text ===")
         InAppLogger.log("Service", "=== DUCKING DEBUG: Stopping any existing TTS speech to prevent stale text ===")
+        
+        // Track interruption if currently speaking (new notification interrupting current one)
+        val wasSpeaking = isCurrentlySpeaking
+        if (wasSpeaking) {
+            try {
+                StatisticsManager.getInstance(this).incrementReadoutsInterrupted()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error tracking readout interruption", e)
+            }
+        }
+        
         textToSpeech?.stop()
         
         // Small delay to ensure TTS is fully stopped and cleared
@@ -4857,6 +5030,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Set the current app name and text for the reading notification
         currentAppName = appName
+        // Store original app name for statistics (before privacy modification)
+        currentOriginalAppName = originalAppName ?: appName
         currentSpeechText = originalText
         currentTtsText = speechText
         
@@ -5077,6 +5252,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         Log.d(TAG, "Content Cap time limit reached (${contentCapTimeLimit}s) - stopping TTS")
                         InAppLogger.log("Service", "Content Cap time limit reached (${contentCapTimeLimit}s) - stopping TTS")
                         
+                        // Track interruption if currently speaking
+                        val wasSpeaking = isCurrentlySpeaking
+                        if (wasSpeaking) {
+                            try {
+                                StatisticsManager.getInstance(this@NotificationReaderService).incrementReadoutsInterrupted()
+                            } catch (e: Exception) {
+                                Log.e(TAG, "Error tracking readout interruption", e)
+                            }
+                        }
+                        
                         // Stop TTS
                         textToSpeech?.stop()
                         
@@ -5142,6 +5327,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     
                     // Track notification read for review reminder
                     trackNotificationReadForReview()
+                    
+                    // Track notification read for statistics (use original app name, not privacy-modified one)
+                    try {
+                        val appNameForStats = if (currentOriginalAppName.isNotEmpty()) currentOriginalAppName else currentAppName
+                        StatisticsManager.getInstance(this@NotificationReaderService).incrementRead(appNameForStats)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error tracking notification read", e)
+                    }
                     
                     // Clean up media behavior effects with proper delay to avoid premature volume reduction
                     // This allows the TTS to complete naturally and gives time for any audio effects to settle

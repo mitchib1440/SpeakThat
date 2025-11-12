@@ -508,9 +508,6 @@ class SelfTestActivity : AppCompatActivity() {
         binding.textErrorCode.visibility = View.VISIBLE
         binding.textResultTitle.text = getString(R.string.selftest_success_title)
         binding.textResultDescription.text = getString(R.string.selftest_success_description)
-        
-        // Hide share report button on success
-        binding.buttonShareReport.visibility = View.GONE
     }
     
     private fun showError(code: Int, title: String, description: String) {

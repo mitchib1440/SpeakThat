@@ -275,5 +275,17 @@
 
         </LinearLayout>
 
+        <!-- Statistics Display -->
+        <TextView
+            android:id="@+id/textStatistics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textAlignment="center"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp" />
+
     </LinearLayout>
 </ScrollView> 

@@ -54,6 +54,9 @@ class AboutActivity : AppCompatActivity() {
         
         // Load app information
         loadAppInfo()
+        
+        // Load statistics
+        loadStatistics()
     }
 
     private fun applySavedTheme(prefs: android.content.SharedPreferences) {
@@ -98,6 +101,91 @@ class AboutActivity : AppCompatActivity() {
         
         // License info
         binding.textLicense.text = getString(R.string.license_info)
+    }
+    
+    private fun loadStatistics() {
+        try {
+            val statsManager = StatisticsManager.getInstance(this)
+            val stats = statsManager.getStats()
+            
+            val received = stats["notifications_received"] as Int
+            val read = stats["notifications_read"] as Int
+            val readoutsInterrupted = stats["readouts_interrupted"] as Int
+            val percentage = stats["percentage_read"] as Double
+            val filterReasons = stats["filter_reasons"] as Map<String, Int>
+            val appsRead = stats["apps_read"] as Set<String>
+            
+            val statsText = buildString {
+                // Basic stats
+                append(getString(R.string.statistics_notifications_received))
+                append(": ")
+                append(received)
+                append("\n")
+                
+                append(getString(R.string.statistics_notifications_read_label))
+                append(": ")
+                append(read)
+                append("\n")
+                
+                append(getString(R.string.statistics_readouts_interrupted))
+                append(": ")
+                append(readoutsInterrupted)
+                append("\n")
+                
+                append(getString(R.string.statistics_percentage_read))
+                append(": ")
+                append(String.format(Locale.getDefault(), getString(R.string.statistics_percentage_format), percentage))
+                append("\n\n")
+                
+                // Filter reasons
+                if (filterReasons.isNotEmpty()) {
+                    append(getString(R.string.statistics_filter_reasons))
+                    append(":\n")
+                    filterReasons.entries.sortedByDescending { it.value }.forEach { (reason, count) ->
+                        val reasonString = getFilterReasonString(reason)
+                        append(String.format(Locale.getDefault(), getString(R.string.statistics_filter_count_format), reasonString, count))
+                        append("\n")
+                    }
+                    append("\n")
+                } else {
+                    append(getString(R.string.statistics_no_filter_reasons))
+                    append("\n\n")
+                }
+                
+                // Apps read
+                if (appsRead.isNotEmpty()) {
+                    append(getString(R.string.statistics_apps_read))
+                    append(": ")
+                    append(appsRead.sorted().joinToString(", "))
+                } else {
+                    append(getString(R.string.statistics_no_apps_read))
+                }
+            }
+            
+            binding.textStatistics.text = statsText
+        } catch (e: Exception) {
+            android.util.Log.e("AboutActivity", "Error loading statistics", e)
+            binding.textStatistics.text = getString(R.string.statistics_title)
+        }
+    }
+    
+    private fun getFilterReasonString(reason: String): String {
+        return when (reason) {
+            StatisticsManager.FILTER_MASTER_SWITCH -> getString(R.string.statistics_filter_reason_master_switch)
+            StatisticsManager.FILTER_DND -> getString(R.string.statistics_filter_reason_dnd)
+            StatisticsManager.FILTER_AUDIO_MODE -> getString(R.string.statistics_filter_reason_audio_mode)
+            StatisticsManager.FILTER_PHONE_CALLS -> getString(R.string.statistics_filter_reason_phone_calls)
+            StatisticsManager.FILTER_WORD_FILTERS -> getString(R.string.statistics_filter_reason_word_filters)
+            StatisticsManager.FILTER_CONDITIONAL_RULES -> getString(R.string.statistics_filter_reason_conditional_rules)
+            StatisticsManager.FILTER_MEDIA_BEHAVIOR -> getString(R.string.statistics_filter_reason_media_behavior)
+            StatisticsManager.FILTER_SKIP_MODE -> getString(R.string.statistics_filter_reason_skip_mode)
+            StatisticsManager.FILTER_APP_LIST -> getString(R.string.statistics_filter_reason_app_list)
+            StatisticsManager.FILTER_DEDUPLICATION -> getString(R.string.statistics_filter_reason_deduplication)
+            StatisticsManager.FILTER_DISMISSAL_MEMORY -> getString(R.string.statistics_filter_reason_dismissal_memory)
+            StatisticsManager.FILTER_GROUP_SUMMARY -> getString(R.string.statistics_filter_reason_group_summary)
+            StatisticsManager.FILTER_SELF_PACKAGE -> getString(R.string.statistics_filter_reason_self_package)
+            else -> reason
+        }
     }
     
     private fun startTTS() {
@@ -295,6 +383,12 @@ class AboutActivity : AppCompatActivity() {
             
             $thankYouText
         """.trimIndent()
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        // Reload statistics when activity resumes to show updated data
+        loadStatistics()
     }
     
     override fun onDestroy() {

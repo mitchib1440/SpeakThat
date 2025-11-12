@@ -1672,4 +1672,37 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="selftest_logs_exported">Debug logs exported to: %s</string>
     <string name="selftest_logs_export_failed">Failed to export debug logs</string>
     
+    <!-- Statistics -->
+    <string name="statistics_notifications_read">Notifications read: %d</string>
+    <string name="statistics_title">Statistics</string>
+    <string name="statistics_notifications_received">Notifications received</string>
+    <string name="statistics_notifications_read_label">Notifications read</string>
+    <string name="statistics_readouts_interrupted">Readouts interrupted</string>
+    <string name="statistics_percentage_read">Percentage read</string>
+    <string name="statistics_percentage_format">%.1f%%</string>
+    <string name="statistics_filter_reasons">Filter reasons</string>
+    <string name="statistics_apps_read">Apps read</string>
+    <string name="statistics_no_filter_reasons">No notifications filtered</string>
+    <string name="statistics_no_apps_read">No apps read yet</string>
+    <string name="statistics_filter_reason_master_switch">Master switch disabled</string>
+    <string name="statistics_filter_reason_dnd">Do Not Disturb</string>
+    <string name="statistics_filter_reason_audio_mode">Audio mode</string>
+    <string name="statistics_filter_reason_phone_calls">Phone calls</string>
+    <string name="statistics_filter_reason_word_filters">Word filters</string>
+    <string name="statistics_filter_reason_conditional_rules">Conditional rules</string>
+    <string name="statistics_filter_reason_media_behavior">Media behavior</string>
+    <string name="statistics_filter_reason_skip_mode">Skip mode</string>
+    <string name="statistics_filter_reason_app_list">App list</string>
+    <string name="statistics_filter_reason_deduplication">Deduplication</string>
+    <string name="statistics_filter_reason_dismissal_memory">Dismissal memory</string>
+    <string name="statistics_filter_reason_group_summary">Group summary</string>
+    <string name="statistics_filter_reason_self_package">Self package</string>
+    <string name="statistics_filter_count_format">%s: %d</string>
+    
+    <!-- Development Settings - Statistics Reset -->
+    <string name="dev_reset_statistics">Reset Statistics</string>
+    <string name="dev_reset_statistics_title">Reset Statistics</string>
+    <string name="dev_reset_statistics_message">Are you sure you want to reset all notification statistics? This action cannot be undone.</string>
+    <string name="dev_reset_statistics_success">Statistics reset successfully</string>
+    
 </resources> 

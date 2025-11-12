@@ -308,6 +308,9 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             startActivity(intent);
         });
         
+        // Add Reset Statistics button
+        binding.btnResetStatistics.setOnClickListener(v -> resetStatistics());
+        
         // Add welcome message
         InAppLogger.log("Development", "Development Settings opened");
     }
@@ -1513,6 +1516,34 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             builder.setPositiveButton(R.string.button_ok, null);
             builder.show();
         }
+    }
+    
+    private void resetStatistics() {
+        InAppLogger.log("Development", "Reset statistics button clicked");
+        
+        // Show confirmation dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.dev_reset_statistics_title));
+        builder.setMessage(getString(R.string.dev_reset_statistics_message));
+        builder.setPositiveButton(R.string.button_ok, (dialog, which) -> {
+            try {
+                StatisticsManager statsManager = StatisticsManager.Companion.getInstance(this);
+                statsManager.resetStats();
+                
+                Toast.makeText(this, getString(R.string.dev_reset_statistics_success), Toast.LENGTH_SHORT).show();
+                InAppLogger.logUserAction("Statistics reset", "");
+            } catch (Exception e) {
+                InAppLogger.logError("Development", "Error resetting statistics: " + e.getMessage());
+                
+                AlertDialog.Builder errorBuilder = new AlertDialog.Builder(this);
+                errorBuilder.setTitle("❌ Statistics Reset Error");
+                errorBuilder.setMessage("Error resetting statistics: " + e.getMessage());
+                errorBuilder.setPositiveButton(R.string.button_ok, null);
+                errorBuilder.show();
+            }
+        });
+        builder.setNegativeButton(R.string.button_cancel, null);
+        builder.show();
     }
     
     private void showReviewReminderStats() {

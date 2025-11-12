@@ -266,6 +266,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         Log.d(TAG, "About to check for updates on resume")
         checkForUpdatesIfEnabled()
         
+        // Update statistics display
+        updateStatisticsDisplay()
 
     }
     
@@ -397,6 +399,17 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         
         // Always show "Permission Settings" for consistent button sizing
         binding.buttonEnablePermission.text = getString(R.string.open_settings)
+    }
+    
+    private fun updateStatisticsDisplay() {
+        try {
+            val statsManager = StatisticsManager.getInstance(this)
+            val notificationsRead = statsManager.getNotificationsRead()
+            binding.textStatistics.text = getString(R.string.statistics_notifications_read, notificationsRead)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error updating statistics display", e)
+            binding.textStatistics.text = ""
+        }
     }
     
     private fun isNotificationServiceEnabled(): Boolean {
