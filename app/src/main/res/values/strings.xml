@@ -1572,4 +1572,104 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="diagnostics_tts_engine_ok">TTS engine is working</string>
     <string name="diagnostics_tts_engine_err">TTS engine failed</string>
     <string name="diagnostics_tts_engine_dash">Using default TTS engine</string>
+    
+    <!-- SelfTest System -->
+    <string name="selftest_title">SelfTest</string>
+    <string name="selftest_subtitle">Automated diagnostic test to identify issues</string>
+    <string name="selftest_yes">Yes</string>
+    <string name="selftest_no">No</string>
+    <string name="selftest_export_logs">Export Debug Logs</string>
+    <string name="selftest_share_report">Share Bug Report</string>
+    <string name="selftest_try_again">Try Again</string>
+    <string name="selftest_monitoring_message">Monitoring for test notification...</string>
+    
+    <!-- SelfTest Steps -->
+    <string name="selftest_step1_title">NotificationListener Permission</string>
+    <string name="selftest_step1_pass">Permission enabled</string>
+    <string name="selftest_step1_fail">Permission not enabled - please enable in settings</string>
+    
+    <string name="selftest_step2_title">POST_NOTIFICATIONS Permission</string>
+    <string name="selftest_step2_pass">Permission granted</string>
+    <string name="selftest_step2_fail">Permission denied</string>
+    <string name="selftest_step2_requesting">Requesting permission...</string>
+    <string name="selftest_step2_not_needed">Not required on Android &lt; 13</string>
+    
+    <string name="selftest_step3_title">Master Switch</string>
+    <string name="selftest_step3_pass">Enabled</string>
+    <string name="selftest_step3_fail">Disabled - please enable the master switch</string>
+    
+    <string name="selftest_step4_title">TTS Initialization</string>
+    <string name="selftest_step4_pass">TTS ready</string>
+    <string name="selftest_step4_fail">TTS initialization failed</string>
+    
+    <string name="selftest_step5_title">Volume Check</string>
+    <string name="selftest_step5_pass">Volume at %d%%</string>
+    <string name="selftest_step5_fail">Volume is muted</string>
+    
+    <string name="selftest_step6_title">Audio Mode</string>
+    <string name="selftest_step6_pass">Audio mode: %s</string>
+    <string name="selftest_step6_fail">Device is in %s mode</string>
+    
+    <string name="selftest_step7_title">Rules System</string>
+    <string name="selftest_step7_pass_disabled">Rules disabled</string>
+    <string name="selftest_step7_warning">Rules enabled - may block notifications</string>
+    
+    <string name="selftest_step8_title">Post Test Notification</string>
+    <string name="selftest_step8_posting">Posting test notification...</string>
+    <string name="selftest_step8_posted">Test notification posted</string>
+    <string name="selftest_step8_fail">Failed to post notification</string>
+    
+    <string name="selftest_step9_title">Monitor for Response</string>
+    <string name="selftest_step9_monitoring">Monitoring logs...</string>
+    <string name="selftest_step9_not_received">Notification not received by service</string>
+    <string name="selftest_step9_received_not_read">Notification received but not read</string>
+    <string name="selftest_step9_success">Notification read successfully</string>
+    
+    <!-- SelfTest Error Codes -->
+    <string name="selftest_error_code">Error Code: %s</string>
+    
+    <string name="selftest_success_title">Test Passed!</string>
+    <string name="selftest_success_description">SpeakThat is working correctly. Notifications are being received and read aloud.</string>
+    
+    <string name="selftest_error_0400_title">Notification Not Posted</string>
+    <string name="selftest_error_0400_description">The test notification could not be posted. This is likely a permission issue. Please ensure the POST_NOTIFICATIONS permission is granted.</string>
+    
+    <string name="selftest_error_0404_title">Service Not Receiving Notifications</string>
+    <string name="selftest_error_0404_description">The notification appeared on your screen, but the NotificationListener service did not receive it. Try toggling the notification permission off and on in system settings.</string>
+    
+    <string name="selftest_error_0410_title">Master Switch Disabled</string>
+    <string name="selftest_error_0410_description">The SpeakThat master switch is disabled. Please enable it in the main screen to allow notifications to be read.</string>
+    
+    <string name="selftest_error_0411_title">Audio Mode Blocking</string>
+    <string name="selftest_error_0411_description">Your device is in Silent or Vibrate mode, and you have \"Honor Audio Mode\" enabled. Notifications will not be read in this mode. You can disable \"Honor Audio Mode\" in Voice Settings.</string>
+    
+    <string name="selftest_error_0412_title">Do Not Disturb Active</string>
+    <string name="selftest_error_0412_description">Do Not Disturb mode is active, and you have \"Honor Do Not Disturb\" enabled. Notifications will not be read in this mode. You can disable \"Honor Do Not Disturb\" in Voice Settings.</string>
+    
+    <string name="selftest_error_0413_title">Blocked by Rules</string>
+    <string name="selftest_error_0413_description">The notification was blocked by your rules system. Check your rules configuration to ensure they\'re not blocking all notifications.</string>
+    
+    <string name="selftest_error_0414_title">Blocked by Filtering</string>
+    <string name="selftest_error_0414_description">The notification was blocked by content filtering. Check your app filters, word filters, or other filtering settings.</string>
+    
+    <string name="selftest_error_0415_title">TTS Not Initialized</string>
+    <string name="selftest_error_0415_description">Text-to-Speech is not initialized. Try restarting the app or checking your TTS engine settings.</string>
+    
+    <string name="selftest_error_0420_title">Unknown Blocking Reason</string>
+    <string name="selftest_error_0420_description">The notification was received but not read for an unknown reason. Please export the debug logs and report this issue.</string>
+    
+    <string name="selftest_error_0440_title">Audio Output Issue</string>
+    <string name="selftest_error_0440_description">TTS completed successfully, but you didn\'t hear it. Check your volume settings, audio output device (Bluetooth headphones, etc.), or try a different audio stream in Voice Settings.</string>
+    
+    <string name="selftest_error_unknown_title">Unknown Error</string>
+    <string name="selftest_error_unknown_description">An unexpected error occurred during the test.</string>
+    
+    <!-- SelfTest User Questions -->
+    <string name="selftest_question_notification_appeared">Did you see the test notification appear on your screen?</string>
+    <string name="selftest_question_heard_notification">Did you hear SpeakThat read the notification aloud?</string>
+    
+    <!-- SelfTest Log Export -->
+    <string name="selftest_logs_exported">Debug logs exported to: %s</string>
+    <string name="selftest_logs_export_failed">Failed to export debug logs</string>
+    
 </resources> 

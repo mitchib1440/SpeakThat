@@ -1231,8 +1231,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 true
             }
             R.id.action_diagnostics -> {
-                InAppLogger.logUserAction("Quick diagnostics menu item clicked")
-                showQuickDiagnosticsDialog()
+                InAppLogger.logUserAction("SelfTest launched from menu")
+                startActivity(Intent(this, SelfTestActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)

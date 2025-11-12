@@ -566,9 +566,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 val notification = sbn.notification
                 val packageName = sbn.packageName
                 
-                // Skip our own notifications
-                if (packageName == this.packageName) {
-                    return
+                // Check for SelfTest notification - bypass self-package filter if it's a test
+                val isSelfTest = notification.extras.getBoolean(SelfTestHelper.EXTRA_IS_SELFTEST, false)
+                if (isSelfTest) {
+                    Log.d(TAG, "SelfTest notification detected - bypassing self-package filter")
+                    InAppLogger.log("SelfTest", "SelfTest notification received")
+                    // Process as test notification - continue with normal flow
+                } else {
+                    // Skip our own notifications (normal behavior)
+                    if (packageName == this.packageName) {
+                        return
+                    }
                 }
                 
                 // Skip group summary notifications - only read individual notifications
@@ -647,8 +655,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 }
                 
                 // Check for duplicate notifications (only if deduplication is enabled)
+                // Skip deduplication for SelfTest notifications
                 val isDeduplicationEnabled = sharedPreferences?.getBoolean("notification_deduplication", true) ?: true
-                if (isDeduplicationEnabled) {
+                if (isSelfTest) {
+                    Log.d(TAG, "SelfTest notification - bypassing deduplication")
+                    InAppLogger.log("SelfTest", "Deduplication bypassed for test notification")
+                }
+                if (isDeduplicationEnabled && !isSelfTest) {
                     val notificationKey = generateNotificationKey(packageName, sbn.id, notificationText)
                     val currentTime = System.currentTimeMillis()
                     
@@ -781,6 +794,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     }
                     
                     if (filterResult.shouldSpeak) {
+                        // Log for SelfTest if this is a test notification
+                        if (isSelfTest) {
+                            InAppLogger.log("SelfTest", "SelfTest notification passed filtering")
+                            Log.d(TAG, "SelfTest notification passed filtering - will be spoken")
+                        }
+                        
                         // Determine final app name (private apps become "An app")
                         val finalAppName = if (isAppPrivate) "An app" else appName
                         
@@ -4756,6 +4775,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (!isTtsInitialized || textToSpeech == null) {
             Log.w(TAG, "TTS not initialized, cannot speak notification")
             return
+        }
+        
+        // Check if this is a SelfTest notification
+        val isSelfTest = sbn?.notification?.extras?.getBoolean(SelfTestHelper.EXTRA_IS_SELFTEST, false) ?: false
+        if (isSelfTest) {
+            InAppLogger.log("SelfTest", "SelfTest notification speaking")
+            Log.d(TAG, "SelfTest notification about to be spoken")
         }
         
         // Cancel any existing pending readout

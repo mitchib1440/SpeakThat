@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="?android:attr/colorBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Header -->
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/selftest_title"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorPrimary"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/textSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/selftest_subtitle"
+            android:textSize="14sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:layout_marginBottom="32dp"/>
+
+        <!-- Progress Steps Container -->
+        <LinearLayout
+            android:id="@+id/layoutSteps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <!-- Step 1: Notification Permission -->
+            <include
+                android:id="@+id/step1"
+                layout="@layout/selftest_step_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- Step 2: POST_NOTIFICATIONS Permission -->
+            <include
+                android:id="@+id/step2"
+                layout="@layout/selftest_step_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- Step 3: Master Switch -->
+            <include
+                android:id="@+id/step3"
+                layout="@layout/selftest_step_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- Step 4: TTS Initialization -->
+            <include
+                android:id="@+id/step4"
+                layout="@layout/selftest_step_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- Step 5: Volume Check -->
+            <include
+                android:id="@+id/step5"
+                layout="@layout/selftest_step_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- Step 6: Audio Mode Check -->
+            <include
+                android:id="@+id/step6"
+                layout="@layout/selftest_step_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- Step 7: Rules Check -->
+            <include
+                android:id="@+id/step7"
+                layout="@layout/selftest_step_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- Step 8: Test Notification -->
+            <include
+                android:id="@+id/step8"
+                layout="@layout/selftest_step_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- Step 9: Monitoring -->
+            <include
+                android:id="@+id/step9"
+                layout="@layout/selftest_step_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <!-- Results Container (Hidden initially) -->
+        <LinearLayout
+            android:id="@+id/layoutResults"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:padding="16dp"
+            android:background="@drawable/rounded_background">
+
+            <!-- Result Icon -->
+            <TextView
+                android:id="@+id/textResultIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="72sp"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Error Code -->
+            <TextView
+                android:id="@+id/textErrorCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="?android:attr/textColorPrimary"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Result Title -->
+            <TextView
+                android:id="@+id/textResultTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="?android:attr/textColorPrimary"
+                android:gravity="center"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Result Description -->
+            <TextView
+                android:id="@+id/textResultDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="?android:attr/textColorSecondary"
+                android:gravity="center"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- User Feedback Question (Conditional) -->
+            <LinearLayout
+                android:id="@+id/layoutUserFeedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:id="@+id/textUserQuestion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:gravity="center"
+                    android:layout_marginBottom="12dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonYes"
+                        style="@style/Widget.Material3.Button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/selftest_yes"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonNo"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/selftest_no"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Action Buttons -->
+            <LinearLayout
+                android:id="@+id/layoutActionButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonExportLogs"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/selftest_export_logs"
+                    android:layout_marginBottom="8dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonShareReport"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/selftest_share_report"
+                    android:layout_marginBottom="8dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonTryAgain"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/selftest_try_again"
+                    android:layout_marginBottom="8dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonClose"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/close"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Loading Indicator -->
+        <LinearLayout
+            android:id="@+id/layoutLoading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginTop="32dp"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:id="@+id/textLoadingMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="?android:attr/textColorSecondary"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+

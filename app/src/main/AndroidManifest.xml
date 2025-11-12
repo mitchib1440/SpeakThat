@@ -205,6 +205,12 @@
             android:exported="false"
             android:parentActivityName=".MainActivity" />
 
+        <!-- SelfTest Activity -->
+        <activity
+            android:name=".SelfTestActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+
         <!-- Update Activity -->
         <activity
             android:name=".UpdateActivity"
