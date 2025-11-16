@@ -229,6 +229,12 @@
             </intent-filter>
         </service>
 
+        <!-- Foreground host for the persistent notification indicator -->
+        <service
+            android:name=".PersistentIndicatorService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
+
         <!-- Quick Settings Tile Service -->
         <service
             android:name=".SpeakThatTileService"
