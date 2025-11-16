@@ -462,5 +462,14 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Conditional Rules - Exception Strings -->
     <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <string name="selftest_step1_rebinding">권한이 활성화되었습니다 - 알림 리스너를 다시 연결하는 중...</string>
+    <string name="selftest_step9_rebinding">리스너 연결이 끊어졌습니다 - 자동으로 다시 시도합니다...</string>
+    <string name="listener_warning_title">알림 리스너에 조치가 필요합니다</string>
+    <string name="listener_warning_body_disconnected">Android가 %1$s 전에 알림 서비스를 끊었습니다. 시스템에 다시 연결하도록 요청하려면 "다시 시도"를 눌러 주세요. 자주 발생하면 일반 설정에서 배터리 최적화를 해제하세요.</string>
+    <string name="listener_warning_body_stale">알림 서비스가 %1$s 동안 연결되지 않았습니다. "다시 시도"를 눌러 깨우고, 문제가 계속되면 일반 설정의 배터리 최적화를 확인하세요.</string>
+    <string name="listener_warning_time_unknown">방금</string>
+    <string name="listener_warning_retry_in_progress">재연결 요청을 보냈습니다</string>
+    <string name="listener_warning_retry_denied">잠시 기다린 후 다시 시도하세요</string>
+    <string name="listener_warning_last_attempt">마지막 재연결 시도: %1$s</string>
 </resources>
 

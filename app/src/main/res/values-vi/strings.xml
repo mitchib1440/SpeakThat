@@ -462,5 +462,14 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Conditional Rules - Exception Strings -->
     <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <string name="selftest_step1_rebinding">Quyền đã bật - đang kết nối lại bộ lắng nghe thông báo...</string>
+    <string name="selftest_step9_rebinding">Bộ lắng nghe bị ngắt - tự động thử lại...</string>
+    <string name="listener_warning_title">Bộ lắng nghe thông báo cần được chú ý</string>
+    <string name="listener_warning_body_disconnected">Android đã ngắt dịch vụ thông báo cách đây %1$s. Nhấn "Thử lại" để yêu cầu hệ thống kết nối lại. Nếu xảy ra thường xuyên, hãy tắt tối ưu hóa pin trong Cài đặt chung.</string>
+    <string name="listener_warning_body_stale">Dịch vụ thông báo chưa kết nối trong %1$s. Nhấn "Thử lại" để đánh thức nó, sau đó kiểm tra tối ưu hóa pin trong Cài đặt chung nếu vấn đề vẫn tiếp diễn.</string>
+    <string name="listener_warning_time_unknown">gần đây</string>
+    <string name="listener_warning_retry_in_progress">Đã gửi yêu cầu kết nối lại</string>
+    <string name="listener_warning_retry_denied">Chờ một chút rồi thử lại</string>
+    <string name="listener_warning_last_attempt">Lần thử kết nối lại gần nhất: %1$s</string>
 </resources>
 

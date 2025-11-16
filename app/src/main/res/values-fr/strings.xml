@@ -1710,4 +1710,13 @@ Si vous appréciez SpeakThat, veuillez envisager de laisser un commentaire sur G
     <string name="dev_test_review_reminder">🧪 Tester le rappel de revue</string>
     <string name="dev_reset_review_reminder">🔄 Réinitialiser le rappel de revue</string>
     <string name="dev_review_reminder_stats">📊 Statistiques de rappel de revue</string>
+    <string name="selftest_step1_rebinding">Autorisation activée - reconnexion du service de notifications...</string>
+    <string name="selftest_step9_rebinding">Écouteur déconnecté - nouvel essai automatique...</string>
+    <string name="listener_warning_title">Le service de notifications nécessite une attention</string>
+    <string name="listener_warning_body_disconnected">Android a déconnecté le service de notifications il y a %1$s. Touchez « Réessayer » pour demander au système de le reconnecter. Si cela se reproduit, désactivez l’optimisation de la batterie dans les paramètres généraux.</string>
+    <string name="listener_warning_body_stale">Le service de notifications n’a pas établi de connexion depuis %1$s. Touchez « Réessayer » pour le réveiller, puis vérifiez l’optimisation de la batterie dans les paramètres généraux si le problème persiste.</string>
+    <string name="listener_warning_time_unknown">récemment</string>
+    <string name="listener_warning_retry_in_progress">Demande de reconnexion envoyée</string>
+    <string name="listener_warning_retry_denied">Attendez un instant avant de réessayer</string>
+    <string name="listener_warning_last_attempt">Dernière tentative de reconnexion : %1$s</string>
 </resources>

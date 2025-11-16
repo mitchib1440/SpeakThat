@@ -462,5 +462,14 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Conditional Rules - Exception Strings -->
     <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <string name="selftest_step1_rebinding">Izin aktif - menghubungkan ulang listener notifikasi...</string>
+    <string name="selftest_step9_rebinding">Listener terputus - mencoba ulang secara otomatis...</string>
+    <string name="listener_warning_title">Listener notifikasi memerlukan perhatian</string>
+    <string name="listener_warning_body_disconnected">Android memutus layanan notifikasi %1$s yang lalu. Ketuk "Coba lagi" untuk meminta sistem menyambungkannya kembali. Jika sering terjadi, nonaktifkan penghematan baterai di Pengaturan Umum.</string>
+    <string name="listener_warning_body_stale">Layanan notifikasi belum terhubung selama %1$s. Ketuk "Coba lagi" untuk membangunkannya, lalu tinjau penghematan baterai di Pengaturan Umum jika masalah berlanjut.</string>
+    <string name="listener_warning_time_unknown">baru saja</string>
+    <string name="listener_warning_retry_in_progress">Permintaan penyambungan ulang dikirim</string>
+    <string name="listener_warning_retry_denied">Tunggu sebentar sebelum mencoba lagi</string>
+    <string name="listener_warning_last_attempt">Upaya penyambungan ulang terakhir: %1$s</string>
 </resources>
 

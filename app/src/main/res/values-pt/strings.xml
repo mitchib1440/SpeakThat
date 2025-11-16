@@ -462,5 +462,14 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Conditional Rules - Exception Strings -->
     <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <string name="selftest_step1_rebinding">Permissão ativada - reconectando o listener de notificações...</string>
+    <string name="selftest_step9_rebinding">Listener desconectado - tentando novamente automaticamente...</string>
+    <string name="listener_warning_title">O listener de notificações precisa de atenção</string>
+    <string name="listener_warning_body_disconnected">O Android desconectou o serviço de notificações há %1$s. Toque em "Repetir" para pedir ao sistema que reconecte. Se acontecer com frequência, desative a otimização de bateria nas Configurações gerais.</string>
+    <string name="listener_warning_body_stale">O serviço de notificações não se conecta há %1$s. Toque em "Repetir" para despertá-lo e revise a otimização de bateria nas Configurações gerais se o problema continuar.</string>
+    <string name="listener_warning_time_unknown">há pouco</string>
+    <string name="listener_warning_retry_in_progress">Solicitação de reconexão enviada</string>
+    <string name="listener_warning_retry_denied">Aguarde um momento antes de tentar novamente</string>
+    <string name="listener_warning_last_attempt">Última tentativa de reconexão: %1$s</string>
 </resources>
 

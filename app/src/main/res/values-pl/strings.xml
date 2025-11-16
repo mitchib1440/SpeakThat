@@ -462,5 +462,14 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Conditional Rules - Exception Strings -->
     <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <string name="selftest_step1_rebinding">Uprawnienie włączone - ponowne łączenie nasłuchu powiadomień...</string>
+    <string name="selftest_step9_rebinding">Nasłuch został rozłączony - ponawiam próbę automatycznie...</string>
+    <string name="listener_warning_title">Nasłuch powiadomień wymaga uwagi</string>
+    <string name="listener_warning_body_disconnected">Android rozłączył usługę powiadomień %1$s temu. Dotknij „Spróbuj ponownie”, aby poprosić system o ponowne połączenie. Jeśli dzieje się to często, wyłącz optymalizację baterii w ustawieniach ogólnych.</string>
+    <string name="listener_warning_body_stale">Usługa powiadomień nie łączyła się od %1$s. Dotknij „Spróbuj ponownie”, aby ją obudzić, a jeśli problem się utrzymuje, sprawdź optymalizację baterii w ustawieniach ogólnych.</string>
+    <string name="listener_warning_time_unknown">ostatnio</string>
+    <string name="listener_warning_retry_in_progress">Żądanie ponownego połączenia wysłane</string>
+    <string name="listener_warning_retry_denied">Poczekaj chwilę przed ponowną próbą</string>
+    <string name="listener_warning_last_attempt">Ostatnia próba ponownego połączenia: %1$s</string>
 </resources>
 

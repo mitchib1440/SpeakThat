@@ -17,6 +17,7 @@ import android.provider.Settings
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.text.TextUtils
+import android.text.format.DateUtils
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.micoyc.speakthat.VoiceSettingsActivity
@@ -24,6 +25,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.micoyc.speakthat.databinding.ActivityMainBinding
 import java.io.BufferedReader
 import java.util.Locale
@@ -61,6 +63,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     private var proximitySensor: Sensor? = null
     private var isWaveToStopEnabled = false
     private var waveThreshold = 5.0f
+    private val listenerWarningThresholdMs = 5 * 60 * 1000L
     
     // Voice settings listener
     private var voiceSettingsPrefs: SharedPreferences? = null
@@ -269,6 +272,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Update statistics display
         updateStatisticsDisplay()
 
+        updateListenerWarningCard()
     }
     
     private fun setupUI() {
@@ -276,6 +280,95 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         setupAnimatedLogo()
         // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
 
+        setupListenerHealthCard()
+    }
+
+    private fun setupListenerHealthCard() {
+        binding.buttonListenerRetry.setOnClickListener {
+            handleListenerRetry()
+        }
+        binding.buttonListenerPermission.setOnClickListener {
+            InAppLogger.log("ListenerHealth", "User opened notification access from warning card")
+            openNotificationListenerSettings()
+        }
+        binding.buttonListenerBattery.setOnClickListener {
+            InAppLogger.log("ListenerHealth", "User opened General Settings for battery optimization")
+            startActivity(Intent(this, GeneralSettingsActivity::class.java))
+        }
+    }
+
+    private fun handleListenerRetry() {
+        try {
+            val requested = NotificationListenerRecovery.requestRebind(this, "main_manual_retry", true)
+            val messageRes = if (requested) {
+                InAppLogger.log("ListenerHealth", "Manual rebind requested from MainActivity")
+                R.string.listener_warning_retry_in_progress
+            } else {
+                InAppLogger.logWarning("ListenerHealth", "Manual rebind request throttled or denied by system")
+                R.string.listener_warning_retry_denied
+            }
+            Toast.makeText(this, getString(messageRes), Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to request listener rebind from MainActivity", e)
+            InAppLogger.logError("ListenerHealth", "Manual rebind failed: ${e.message}")
+            Toast.makeText(this, getString(R.string.listener_warning_retry_denied), Toast.LENGTH_SHORT).show()
+        } finally {
+            updateListenerWarningCard()
+        }
+    }
+
+    private fun updateListenerWarningCard() {
+        val status = NotificationListenerRecovery.getListenerStatus(this, listenerWarningThresholdMs)
+        val now = System.currentTimeMillis()
+        val permissionEnabled = status.permissionGranted
+
+        val isDisconnected = status.isDisconnected
+        val isStale = status.isStale
+
+        binding.cardListenerHealth.isVisible = permissionEnabled && (isDisconnected || isStale)
+
+        if (!binding.cardListenerHealth.isVisible) {
+            return
+        }
+
+        val referenceTimestamp = when {
+            isDisconnected && status.lastDisconnect != 0L -> status.lastDisconnect
+            status.lastConnect != 0L -> status.lastConnect
+            else -> 0L
+        }
+
+        val relativeTime = if (referenceTimestamp > 0L) {
+            DateUtils.getRelativeTimeSpanString(
+                referenceTimestamp,
+                now,
+                DateUtils.MINUTE_IN_MILLIS,
+                DateUtils.FORMAT_ABBREV_RELATIVE
+            ).toString()
+        } else {
+            getString(R.string.listener_warning_time_unknown)
+        }
+
+        val messageRes = if (isDisconnected) {
+            R.string.listener_warning_body_disconnected
+        } else {
+            R.string.listener_warning_body_stale
+        }
+
+        val warningBody = StringBuilder(getString(messageRes, relativeTime))
+        val lastRebindAttempt = status.lastRebindAttempt
+        if (lastRebindAttempt > 0L) {
+            val attemptTime = DateUtils.getRelativeTimeSpanString(
+                lastRebindAttempt,
+                now,
+                DateUtils.MINUTE_IN_MILLIS,
+                DateUtils.FORMAT_ABBREV_RELATIVE
+            ).toString()
+            warningBody.append("\n\n")
+                .append(getString(R.string.listener_warning_last_attempt, attemptTime))
+        }
+
+        binding.textListenerWarningTitle.text = getString(R.string.listener_warning_title)
+        binding.textListenerWarningBody.text = warningBody.toString()
     }
     
     private fun setupClickListeners() {
@@ -399,6 +492,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         
         // Always show "Permission Settings" for consistent button sizing
         binding.buttonEnablePermission.text = getString(R.string.open_settings)
+
+        // Update listener health warning card visibility
+        updateListenerWarningCard()
     }
     
     private fun updateStatisticsDisplay() {

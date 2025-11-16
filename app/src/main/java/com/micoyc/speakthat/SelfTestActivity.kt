@@ -37,6 +37,7 @@ class SelfTestActivity : AppCompatActivity() {
     private lateinit var selfTestHelper: SelfTestHelper
     private var sharedPreferences: SharedPreferences? = null
     private val handler = Handler(Looper.getMainLooper())
+    private var listenerRecoveryAttempts = 0
     
     private var currentStep = 0
     private var errorCode = 0
@@ -48,6 +49,9 @@ class SelfTestActivity : AppCompatActivity() {
         private const val REQUEST_POST_NOTIFICATIONS = 1001
         const val PREFS_NAME = "SpeakThatPrefs"
         const val KEY_MASTER_SWITCH_ENABLED = "master_switch_enabled"
+        private const val MAX_LISTENER_RECOVERY_ATTEMPTS = 2
+        private const val LISTENER_RECOVERY_DELAY_MS = 1500L
+        private const val LISTENER_STALE_THRESHOLD_MS = 5 * 60 * 1000L
     }
     
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -134,6 +138,7 @@ class SelfTestActivity : AppCompatActivity() {
         binding.layoutSteps.visibility = View.VISIBLE
         binding.layoutResults.visibility = View.GONE
         binding.layoutLoading.visibility = View.GONE
+        listenerRecoveryAttempts = 0
         currentStep = 0
         errorCode = 0
         errorMessage = ""
@@ -160,6 +165,17 @@ class SelfTestActivity : AppCompatActivity() {
         
         val isEnabled = isNotificationServiceEnabled()
         if (isEnabled) {
+            if (!isListenerConnectionHealthy()) {
+                setStepStatus(binding.step1.root, "⏳", getString(R.string.selftest_step1_title), getString(R.string.selftest_step1_rebinding))
+                val scheduled = scheduleListenerRecovery("selftest_step1") {
+                    checkNotificationListenerPermission()
+                }
+                if (scheduled) {
+                    return
+                }
+                InAppLogger.log("SelfTest", "Step 1: Listener recovery not scheduled (limit reached)")
+            }
+
             setStepStatus(binding.step1.root, "✓", getString(R.string.selftest_step1_title), getString(R.string.selftest_step1_pass))
             InAppLogger.log("SelfTest", "Step 1: PASS - NotificationListener enabled")
             handler.postDelayed({ checkPostNotificationsPermission() }, 300)
@@ -167,6 +183,50 @@ class SelfTestActivity : AppCompatActivity() {
             setStepStatus(binding.step1.root, "✗", getString(R.string.selftest_step1_title), getString(R.string.selftest_step1_fail))
             InAppLogger.log("SelfTest", "Step 1: FAIL - NotificationListener not enabled")
             showError(404, getString(R.string.selftest_error_0404_title), getString(R.string.selftest_error_0404_description))
+        }
+    }
+
+    private fun isListenerConnectionHealthy(): Boolean {
+        val status = NotificationListenerRecovery.getListenerStatus(this, LISTENER_STALE_THRESHOLD_MS)
+
+        if (!status.permissionGranted) {
+            InAppLogger.log("SelfTest", "Listener permission missing - cannot be healthy")
+            return false
+        }
+
+        if (status.isDisconnected) {
+            InAppLogger.log("SelfTest", "Listener disconnect newer than connect - needs recovery")
+            return false
+        }
+
+        if (status.isStale) {
+            val age = System.currentTimeMillis() - status.lastConnect
+            InAppLogger.log("SelfTest", "Listener connection stale (${age}ms) - needs recovery")
+            return false
+        }
+
+        if (status.lastConnect == 0L) {
+            InAppLogger.log("SelfTest", "Listener connection timestamp missing - treating as unhealthy")
+            return false
+        }
+
+        return true
+    }
+
+    private fun scheduleListenerRecovery(reason: String, onRecoveryComplete: () -> Unit): Boolean {
+        if (listenerRecoveryAttempts >= MAX_LISTENER_RECOVERY_ATTEMPTS) {
+            return false
+        }
+
+        val requested = NotificationListenerRecovery.requestRebind(this, reason, true)
+        return if (requested) {
+            listenerRecoveryAttempts++
+            InAppLogger.log("SelfTest", "Listener recovery attempt #$listenerRecoveryAttempts (reason=$reason)")
+            handler.postDelayed(onRecoveryComplete, LISTENER_RECOVERY_DELAY_MS)
+            true
+        } else {
+            InAppLogger.log("SelfTest", "Listener recovery request denied by system (reason=$reason)")
+            false
         }
     }
     
@@ -368,10 +428,20 @@ class SelfTestActivity : AppCompatActivity() {
         
         when (result.status) {
             SelfTestHelper.TestStatus.NOT_RECEIVED -> {
-                // Don't show checkmark/cross yet - waiting for user feedback
-                setStepStatus(binding.step9.root, "❓", getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_not_received))
-                InAppLogger.log("SelfTest", "Result: Notification not received by service")
-                askUserIfNotificationAppeared()
+                val recoveryScheduled = scheduleListenerRecovery("selftest_step9") {
+                    selfTestHelper.cancelTestNotification()
+                    postTestNotification()
+                }
+
+                if (recoveryScheduled) {
+                    setStepStatus(binding.step9.root, "⏳", getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_rebinding))
+                    InAppLogger.log("SelfTest", "Result: Notification not received - auto recovery scheduled")
+                } else {
+                    // Don't show checkmark/cross yet - waiting for user feedback
+                    setStepStatus(binding.step9.root, "❓", getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_not_received))
+                    InAppLogger.log("SelfTest", "Result: Notification not received by service")
+                    askUserIfNotificationAppeared()
+                }
             }
             SelfTestHelper.TestStatus.RECEIVED_NOT_READ -> {
                 // This is a definitive failure - show immediately

@@ -1712,4 +1712,13 @@ Wenn Sie SpeakThat hilfreich finden, überlegen Sie bitte eine Bewertung im Goog
     <string name="dev_test_review_reminder">🧪 Teste Rezensions-Erinnerung</string>
     <string name="dev_reset_review_reminder">🔄 Rezensions-Erinnerung zurücksetzen</string>
     <string name="dev_review_reminder_stats">📊 Rezensions-Erinnerung Status</string>
+    <string name="selftest_step1_rebinding">Berechtigung aktiv - Benachrichtigungslistener wird neu verbunden...</string>
+    <string name="selftest_step9_rebinding">Listener getrennt - automatischer erneuter Versuch...</string>
+    <string name="listener_warning_title">Benachrichtigungslistener benötigt Aufmerksamkeit</string>
+    <string name="listener_warning_body_disconnected">Android hat den Benachrichtigungsdienst vor %1$s getrennt. Tippe auf „Erneut versuchen“, um das System um eine neue Verbindung zu bitten. Wenn das häufig passiert, deaktiviere die Akku-Optimierung in den allgemeinen Einstellungen.</string>
+    <string name="listener_warning_body_stale">Der Benachrichtigungsdienst hat seit %1$s keine Verbindung hergestellt. Tippe auf „Erneut versuchen“, um ihn zu wecken, und überprüfe anschließend die Akku-Optimierung in den allgemeinen Einstellungen, falls das Problem bleibt.</string>
+    <string name="listener_warning_time_unknown">kürzlich</string>
+    <string name="listener_warning_retry_in_progress">Neuverbindungsanfrage gesendet</string>
+    <string name="listener_warning_retry_denied">Bitte kurz warten und dann erneut versuchen</string>
+    <string name="listener_warning_last_attempt">Letzter Verbindungsversuch: %1$s</string>
 </resources>

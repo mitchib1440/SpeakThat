@@ -1558,4 +1558,13 @@ Notification permission denied - SpeakThat notifications may not appear
     <string name="audio_ducking_disabled_message">異なるデバイスでのオーディオフォーカス要求の処理方法に一貫性がないため、「音量を下げる」オプションはデフォルトで一時的に無効化されています。この機能を動作させるお手伝いができる場合は、GitHubでこのプロジェクトに貢献してください。開発や実験目的でこの機能を再有効化するには、開発者設定 → オーディオダッキングを有効にするに移動してください。一部のデバイスでは動作する可能性がありますが、一般的なサポートは提供できません。</string>
     <string name="audio_ducking_disabled_ok">了解</string>
     <string name="audio_ducking_disabled_enable">オーディオダッキングを有効にする</string>
+    <string name="selftest_step1_rebinding">権限は有効です。通知リスナーを再接続しています...</string>
+    <string name="selftest_step9_rebinding">リスナーが切断されました。自動的に再試行します...</string>
+    <string name="listener_warning_title">通知リスナーに注意が必要です</string>
+    <string name="listener_warning_body_disconnected">Androidが%1$s前に通知サービスの接続を切断しました。[再試行] をタップしてシステムに再接続を依頼してください。頻繁に発生する場合は、一般設定でバッテリー最適化を無効にしてください。</string>
+    <string name="listener_warning_body_stale">通知サービスは%1$sのあいだ接続されていません。[再試行] をタップして復帰させ、問題が続く場合は一般設定のバッテリー最適化を確認してください。</string>
+    <string name="listener_warning_time_unknown">つい先ほど</string>
+    <string name="listener_warning_retry_in_progress">再接続リクエストを送信しました</string>
+    <string name="listener_warning_retry_denied">少し待ってからもう一度お試しください</string>
+    <string name="listener_warning_last_attempt">最後の再接続試行: %1$s</string>
 </resources>

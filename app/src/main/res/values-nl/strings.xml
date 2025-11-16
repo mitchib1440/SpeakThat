@@ -1662,4 +1662,13 @@ Vanwege inconsistenties in hoe verschillende apparaten Audio Focus verzoeken ver
 </string>
     <string name="audio_ducking_disabled_ok">Begrepen</string>
     <string name="audio_ducking_disabled_enable">Audio Ducking Inschakelen</string>
+    <string name="selftest_step1_rebinding">Machtiging ingeschakeld - notificatieluisteraar wordt opnieuw verbonden...</string>
+    <string name="selftest_step9_rebinding">Luisteraar verbroken - automatisch opnieuw proberen...</string>
+    <string name="listener_warning_title">De notificatieluisteraar heeft aandacht nodig</string>
+    <string name="listener_warning_body_disconnected">Android heeft de notificatieservice %1$s geleden verbroken. Tik op "Opnieuw proberen" om het systeem opnieuw te laten verbinden. Als dit vaak gebeurt, schakel batterijoptimalisatie uit in de algemene instellingen.</string>
+    <string name="listener_warning_body_stale">De notificatieservice heeft al %1$s geen verbinding gemaakt. Tik op "Opnieuw proberen" om hem te wekken en controleer de batterijoptimalisatie in de algemene instellingen als het probleem aanhoudt.</string>
+    <string name="listener_warning_time_unknown">kort geleden</string>
+    <string name="listener_warning_retry_in_progress">Verbindingsverzoek verzonden</string>
+    <string name="listener_warning_retry_denied">Wacht even voordat je het opnieuw probeert</string>
+    <string name="listener_warning_last_attempt">Laatste poging tot opnieuw verbinden: %1$s</string>
 </resources>

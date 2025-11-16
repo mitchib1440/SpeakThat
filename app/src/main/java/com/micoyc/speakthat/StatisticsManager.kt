@@ -33,6 +33,9 @@ class StatisticsManager private constructor(private val context: Context) {
         private const val KEY_READOUTS_INTERRUPTED = "readouts_interrupted"
         private const val KEY_FILTER_REASONS = "filter_reasons" // JSON map of reason -> count
         private const val KEY_APPS_READ = "apps_read" // JSON set of app names
+        private const val KEY_LISTENER_REBINDS = "listener_rebinds"
+        private const val KEY_LISTENER_REBINDS_SKIPPED = "listener_rebinds_skipped"
+        private const val KEY_LISTENER_REBINDS_RECOVERED = "listener_rebinds_recovered"
         
         // Filter reason constants
         const val FILTER_MASTER_SWITCH = "master_switch"
@@ -191,10 +194,43 @@ class StatisticsManager private constructor(private val context: Context) {
             "notifications_received" to getNotificationsReceived(),
             "notifications_read" to getNotificationsRead(),
             "readouts_interrupted" to getReadoutsInterrupted(),
+            "listener_rebinds" to getListenerRebinds(),
+            "listener_rebinds_skipped" to getListenerRebindsSkipped(),
+            "listener_rebinds_recovered" to getListenerRebindsRecovered(),
             "percentage_read" to getPercentageRead(),
             "filter_reasons" to getFilterReasons(),
             "apps_read" to getAppsRead()
         )
+    }
+
+    fun incrementListenerRebindRequested() {
+        val currentCount = prefs.getInt(KEY_LISTENER_REBINDS, 0)
+        prefs.edit().putInt(KEY_LISTENER_REBINDS, currentCount + 1).apply()
+        Log.d(TAG, "Listener rebind requested count: ${currentCount + 1}")
+    }
+
+    fun incrementListenerRebindSkipped() {
+        val currentCount = prefs.getInt(KEY_LISTENER_REBINDS_SKIPPED, 0)
+        prefs.edit().putInt(KEY_LISTENER_REBINDS_SKIPPED, currentCount + 1).apply()
+        Log.d(TAG, "Listener rebind skipped count: ${currentCount + 1}")
+    }
+
+    fun incrementListenerRebindRecovered() {
+        val currentCount = prefs.getInt(KEY_LISTENER_REBINDS_RECOVERED, 0)
+        prefs.edit().putInt(KEY_LISTENER_REBINDS_RECOVERED, currentCount + 1).apply()
+        Log.d(TAG, "Listener rebind recovered count: ${currentCount + 1}")
+    }
+
+    fun getListenerRebinds(): Int {
+        return prefs.getInt(KEY_LISTENER_REBINDS, 0)
+    }
+
+    fun getListenerRebindsSkipped(): Int {
+        return prefs.getInt(KEY_LISTENER_REBINDS_SKIPPED, 0)
+    }
+
+    fun getListenerRebindsRecovered(): Int {
+        return prefs.getInt(KEY_LISTENER_REBINDS_RECOVERED, 0)
     }
     
     /**
@@ -207,6 +243,9 @@ class StatisticsManager private constructor(private val context: Context) {
             .remove(KEY_READOUTS_INTERRUPTED)
             .remove(KEY_FILTER_REASONS)
             .remove(KEY_APPS_READ)
+            .remove(KEY_LISTENER_REBINDS)
+            .remove(KEY_LISTENER_REBINDS_SKIPPED)
+            .remove(KEY_LISTENER_REBINDS_RECOVERED)
             .apply()
         
         Log.d(TAG, "Statistics reset")

@@ -1572,6 +1572,15 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="diagnostics_tts_engine_ok">TTS engine is working</string>
     <string name="diagnostics_tts_engine_err">TTS engine failed</string>
     <string name="diagnostics_tts_engine_dash">Using default TTS engine</string>
+
+    <!-- Listener Health -->
+    <string name="listener_warning_title">Notification listener needs attention</string>
+    <string name="listener_warning_body_disconnected">Android disconnected the notification service %1$s ago. Tap Retry to ask the system to reconnect. If this keeps happening, disable battery optimization in General Settings.</string>
+    <string name="listener_warning_body_stale">Notification service hasn\'t connected in %1$s. Tap Retry to wake it up, then review battery optimization in General Settings if the issue persists.</string>
+    <string name="listener_warning_time_unknown">recently</string>
+    <string name="listener_warning_retry_in_progress">Rebind request sent</string>
+    <string name="listener_warning_retry_denied">Wait a moment before trying again</string>
+    <string name="listener_warning_last_attempt">Last reconnect attempt: %1$s</string>
     
     <!-- SelfTest System -->
     <string name="selftest_title">SelfTest</string>
@@ -1587,6 +1596,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="selftest_step1_title">NotificationListener Permission</string>
     <string name="selftest_step1_pass">Permission enabled</string>
     <string name="selftest_step1_fail">Permission not enabled - please enable in settings</string>
+    <string name="selftest_step1_rebinding">Permission enabled - reconnecting notification listener...</string>
     
     <string name="selftest_step2_title">POST_NOTIFICATIONS Permission</string>
     <string name="selftest_step2_pass">Permission granted</string>
@@ -1624,6 +1634,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="selftest_step9_not_received">Notification not received by service</string>
     <string name="selftest_step9_received_not_read">Notification received but not read</string>
     <string name="selftest_step9_success">Notification read successfully</string>
+    <string name="selftest_step9_rebinding">Listener disconnected - retrying automatically...</string>
     
     <!-- SelfTest Error Codes -->
     <string name="selftest_error_code">Error Code: %s</string>
@@ -1697,7 +1708,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="statistics_filter_reason_dismissal_memory">Dismissal memory</string>
     <string name="statistics_filter_reason_group_summary">Group summary</string>
     <string name="statistics_filter_reason_self_package">Self package</string>
-    <string name="statistics_filter_count_format">%s: %d</string>
+    <string name="statistics_filter_count_format">%1$s: %2$d</string>
     
     <!-- Development Settings - Statistics Reset -->
     <string name="dev_reset_statistics">Reset Statistics</string>

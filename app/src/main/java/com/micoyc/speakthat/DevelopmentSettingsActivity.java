@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.format.DateUtils;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -1363,9 +1365,25 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         StringBuilder sb = new StringBuilder();
         // Check NotificationReaderService running (registered as notification listener)
         try {
-            String enabledListeners = android.provider.Settings.Secure.getString(getContentResolver(), "enabled_notification_listeners");
-            boolean isNotificationServiceEnabled = enabledListeners != null && enabledListeners.contains(getPackageName());
-            sb.append("NotificationReaderService: ").append(isNotificationServiceEnabled ? "🟢 RUNNING" : "🔴 STOPPED").append("\n");
+            NotificationListenerRecovery.ListenerStatus status = NotificationListenerRecovery.getListenerStatus(this);
+            sb.append("NotificationReaderService: ").append(status.getPermissionGranted() ? "🟢 RUNNING" : "🔴 STOPPED").append("\n");
+
+            if (status.getLastConnect() > 0) {
+                sb.append("  Last connect: ").append(formatRelativeTime(status.getLastConnect())).append("\n");
+            }
+            if (status.getLastDisconnect() > 0) {
+                sb.append("  Last disconnect: ").append(formatRelativeTime(status.getLastDisconnect())).append("\n");
+            }
+            if (status.getLastRebindAttempt() > 0) {
+                sb.append("  Last rebind request: ").append(formatRelativeTime(status.getLastRebindAttempt()));
+                if (!TextUtils.isEmpty(status.getLastRebindReason())) {
+                    sb.append(" (").append(status.getLastRebindReason()).append(")");
+                }
+                sb.append("\n");
+            }
+            if (status.getLastRebindSuccess() > 0) {
+                sb.append("  Last rebind success: ").append(formatRelativeTime(status.getLastRebindSuccess())).append("\n");
+            }
         } catch (Exception e) {
             sb.append("NotificationReaderService: Error checking status\n");
         }
@@ -1378,6 +1396,15 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             sb.append("Shake/Wave Sensor Listeners: Error checking status\n");
         }
         return sb.toString();
+    }
+
+    private String formatRelativeTime(long timestamp) {
+        return DateUtils.getRelativeTimeSpanString(
+            timestamp,
+            System.currentTimeMillis(),
+            DateUtils.MINUTE_IN_MILLIS,
+            DateUtils.FORMAT_ABBREV_RELATIVE
+        ).toString();
     }
 
     private void showBackgroundProcessMonitor() {

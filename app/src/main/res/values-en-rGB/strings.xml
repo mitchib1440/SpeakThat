@@ -471,5 +471,14 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="audio_ducking_disabled_message">Due to inconsistencies with how different devices handle Audio Focus requests, the Lower Audio option has been temporarily disabled by default. If you are able to help get this feature working, please contribute to this project on GitHub. You can re-enable this feature for development or experimentation purposes by going into Development Settings -> Enable Audio Ducking. It may work on some devices, but I cannot offer general support for it at this time.</string>
     <string name="audio_ducking_disabled_ok">Got it</string>
     <string name="audio_ducking_disabled_enable">Enable Audio Ducking</string>
+    <string name="selftest_step1_rebinding">Permission enabled - reconnecting notification listener...</string>
+    <string name="selftest_step9_rebinding">Listener disconnected - retrying automatically...</string>
+    <string name="listener_warning_title">Notification listener needs attention</string>
+    <string name="listener_warning_body_disconnected">Android disconnected the notification service %1$s ago. Tap Retry to ask the system to reconnect. If this keeps happening, disable battery optimisation in General Settings.</string>
+    <string name="listener_warning_body_stale">Notification service hasn\'t connected in %1$s. Tap Retry to wake it up, then review battery optimisation in General Settings if the issue persists.</string>
+    <string name="listener_warning_time_unknown">recently</string>
+    <string name="listener_warning_retry_in_progress">Rebind request sent</string>
+    <string name="listener_warning_retry_denied">Wait a moment before trying again</string>
+    <string name="listener_warning_last_attempt">Last reconnect attempt: %1$s</string>
 </resources>
 

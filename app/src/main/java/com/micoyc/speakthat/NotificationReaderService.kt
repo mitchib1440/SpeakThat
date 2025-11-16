@@ -147,6 +147,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private val BATCH_DELAY_MS = 5000L // 5 seconds
     private val MAX_BATCH_SIZE = 10
     
+    // Foreground tracking so we can safely transition between persistent + reading states
+    private enum class ForegroundReason {
+        NONE,
+        PERSISTENT,
+        READING
+    }
+    private var currentForegroundReason = ForegroundReason.NONE
+    private var currentForegroundNotificationId = -1
+    
     // Cooldown tracking
     private val appCooldownTimestamps = HashMap<String, Long>() // packageName -> last notification timestamp
     private val appCooldownSettings = HashMap<String, Int>() // packageName -> cooldown seconds
@@ -212,6 +221,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val KEY_DISMISSAL_MEMORY_TIMEOUT = "dismissal_memory_timeout"
         private const val DEFAULT_DISMISSAL_MEMORY_ENABLED = true
         private const val DEFAULT_DISMISSAL_MEMORY_TIMEOUT_MINUTES = 15
+        private const val LISTENER_HEALTH_THRESHOLD_MS = 5 * 60 * 1000L
         
         // Filter system keys
         private const val KEY_APP_LIST_MODE = "app_list_mode"
@@ -554,11 +564,27 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     override fun onListenerConnected() {
         super.onListenerConnected()
         Log.d(TAG, "NotificationListener connected")
+        InAppLogger.log("Service", "NotificationListener connected")
+        try {
+            NotificationListenerRecovery.recordConnection(this)
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to record listener connection", e)
+            InAppLogger.logError("ServiceRebind", "Failed to record connection: ${e.message}")
+        }
     }
     
     override fun onListenerDisconnected() {
         super.onListenerDisconnected()
-        Log.d(TAG, "NotificationListener disconnected")
+        Log.w(TAG, "NotificationListener disconnected")
+        InAppLogger.logWarning("Service", "NotificationListener disconnected - scheduling rebind")
+        try {
+            NotificationListenerRecovery.recordDisconnect(this)
+            val requested = NotificationListenerRecovery.requestRebind(this, "listener_disconnected")
+            Log.d(TAG, "Rebind requested after disconnect: $requested")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to schedule listener rebind", e)
+            InAppLogger.logError("ServiceRebind", "Failed to schedule rebind: ${e.message}")
+        }
     }
     
     override fun onNotificationPosted(sbn: StatusBarNotification) {
@@ -1245,6 +1271,32 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         return true
     }
+
+    private fun checkListenerHealth() {
+        try {
+            val status = NotificationListenerRecovery.getListenerStatus(this, LISTENER_HEALTH_THRESHOLD_MS)
+
+            if (!status.permissionGranted) {
+                Log.d(TAG, "Listener health check skipped - permission missing")
+                return
+            }
+
+            if (!status.isDisconnected && !status.isStale) {
+                return
+            }
+
+            val reason = if (status.isDisconnected) "health_monitor_disconnected" else "health_monitor_stale"
+            val requested = NotificationListenerRecovery.requestRebind(this, reason, false)
+            if (requested) {
+                InAppLogger.log("ServiceHealth", "Listener health monitor requested rebind (reason=$reason)")
+            } else {
+                InAppLogger.logWarning("ServiceHealth", "Listener health monitor skipped rebind (reason=$reason)")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error during listener health check", e)
+            InAppLogger.logError("ServiceHealth", "Listener health check failed: ${e.message}")
+        }
+    }
     
     /**
      * Start periodic TTS health checks
@@ -1260,6 +1312,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (!isCurrentlySpeaking) {
                     checkTtsHealth()
                 }
+
+                checkListenerHealth()
                 
                 // Schedule next health check
                 healthCheckHandler?.postDelayed(healthCheckRunnable!!, HEALTH_CHECK_INTERVAL_MS)
@@ -5682,7 +5736,69 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             showPersistentNotification()
         } else {
             Log.d(TAG, "Persistent notification conditions not met: enabled=$isPersistentNotificationEnabled, masterSwitch=$isMasterSwitchEnabled")
+            if (currentForegroundReason == ForegroundReason.PERSISTENT) {
+                hidePersistentNotification()
+            }
         }
+    }
+    
+    /**
+     * Helper to update the foreground notification safely.
+     * Handles transitions between IDs and keeps tracking variables in sync.
+     */
+    private fun updateForegroundNotification(notificationId: Int, notification: Notification, reason: ForegroundReason) {
+        try {
+            if (currentForegroundNotificationId != -1 && currentForegroundNotificationId != notificationId) {
+                Log.d(TAG, "Switching foreground notification from $currentForegroundNotificationId to $notificationId for $reason")
+                stopForegroundInternal(removeNotification = true)
+            }
+            
+            startForeground(notificationId, notification)
+            currentForegroundNotificationId = notificationId
+            currentForegroundReason = reason
+            
+            Log.d(TAG, "Foreground notification updated: id=$notificationId, reason=$reason")
+            InAppLogger.log("Service", "Foreground notification updated: id=$notificationId, reason=$reason")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to update foreground notification for $reason", e)
+            InAppLogger.logError("Service", "Failed to update foreground notification for $reason: ${e.message}")
+        }
+    }
+    
+    /**
+     * Centralized helper to stop foreground mode and clear tracking flags.
+     */
+    private fun stopForegroundInternal(removeNotification: Boolean) {
+        if (currentForegroundNotificationId == -1) {
+            return
+        }
+        
+        try {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                val mode = if (removeNotification) {
+                    android.app.Service.STOP_FOREGROUND_REMOVE
+                } else {
+                    android.app.Service.STOP_FOREGROUND_DETACH
+                }
+                stopForeground(mode)
+            } else {
+                @Suppress("DEPRECATION")
+                stopForeground(removeNotification)
+            }
+            
+            Log.d(TAG, "Foreground notification stopped (removeNotification=$removeNotification)")
+            InAppLogger.log("Service", "Foreground notification stopped (removeNotification=$removeNotification)")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to stop foreground notification", e)
+            InAppLogger.logError("Service", "Failed to stop foreground notification: ${e.message}")
+        } finally {
+            currentForegroundNotificationId = -1
+            currentForegroundReason = ForegroundReason.NONE
+        }
+    }
+    
+    private fun isNotificationWhileReadingEnabled(): Boolean {
+        return sharedPreferences?.getBoolean(KEY_NOTIFICATION_WHILE_READING, false) ?: false
     }
     
     /**
@@ -5691,62 +5807,30 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private fun showPersistentNotification() {
         try {
             val isPersistentNotificationEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_NOTIFICATION, false) ?: false
-            if (!isPersistentNotificationEnabled) {
-                Log.d(TAG, "Persistent notification disabled in settings")
+            val isMasterSwitchEnabled = MainActivity.isMasterSwitchEnabled(this)
+            if (!isPersistentNotificationEnabled || !isMasterSwitchEnabled) {
+                Log.d(TAG, "Persistent notification aborted - enabled=$isPersistentNotificationEnabled, masterSwitch=$isMasterSwitchEnabled")
+                hidePersistentNotification()
                 return
             }
             
-            // Check notification permission for Android 13+
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-                    Log.w(TAG, "POST_NOTIFICATIONS permission not granted - cannot show persistent notification")
-                    InAppLogger.logError("Notifications", "POST_NOTIFICATIONS permission not granted")
-                    return
-                }
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU &&
+                checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                Log.w(TAG, "POST_NOTIFICATIONS permission not granted - cannot promote to foreground")
+                InAppLogger.logError("Notifications", "POST_NOTIFICATIONS permission not granted for persistent notification")
+                return
             }
             
-            // Create notification channel for Android O+
-            createNotificationChannel()
+            val notification = createPersistentForegroundNotification()
+            updateForegroundNotification(PERSISTENT_NOTIFICATION_ID, notification, ForegroundReason.PERSISTENT)
             
-            // Create intent for opening SpeakThat
-            val openAppIntent = Intent(this, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-            }
-            val openAppPendingIntent = PendingIntent.getActivity(
-                this, 0, openAppIntent, 
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
-            
-            // Build notification
-            val notification = NotificationCompat.Builder(this, "SpeakThat_Channel")
-                .setContentTitle("SpeakThat Active")
-                .setContentText("Tap to open SpeakThat settings")
-                .setSmallIcon(R.drawable.speakthaticon)
-                .setOngoing(true) // Persistent notification
-                .setSilent(true) // Silent notification
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(openAppPendingIntent)
-                .addAction(
-                    R.drawable.speakthaticon,
-                    "Open SpeakThat!",
-                    openAppPendingIntent
-                )
-                .build()
-            
-            // Show notification
-            notificationManager.notify(PERSISTENT_NOTIFICATION_ID, notification)
-            Log.d(TAG, "Persistent notification shown with ID: $PERSISTENT_NOTIFICATION_ID")
-            InAppLogger.log("Notifications", "Persistent notification shown with ID: $PERSISTENT_NOTIFICATION_ID")
-            
-            // Verify notification was actually posted
-            val activeNotifications = notificationManager.activeNotifications
-            val ourNotification = activeNotifications.find { it.id == PERSISTENT_NOTIFICATION_ID }
-            if (ourNotification != null) {
-                Log.d(TAG, "Persistent notification verified as active")
-                InAppLogger.log("Notifications", "Persistent notification verified as active")
+            val activeNotification = notificationManager.activeNotifications.find { it.id == PERSISTENT_NOTIFICATION_ID }
+            if (activeNotification != null) {
+                Log.d(TAG, "Persistent foreground notification verified as active")
+                InAppLogger.log("Notifications", "Persistent foreground notification verified as active")
             } else {
-                Log.w(TAG, "Persistent notification not found in active notifications")
-                InAppLogger.logError("Notifications", "Persistent notification not found in active notifications")
+                Log.w(TAG, "Persistent foreground notification not found in active notifications")
+                InAppLogger.logError("Notifications", "Persistent foreground notification not found in active notifications")
             }
             
         } catch (e: Exception) {
@@ -5755,11 +5839,60 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
+    private fun createPersistentForegroundNotification(): Notification {
+        createNotificationChannel()
+        
+        val openAppIntent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        val openAppPendingIntent = PendingIntent.getActivity(
+            this, 0, openAppIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        
+        val title = getString(R.string.main_notification_title_active)
+        val content = getString(R.string.main_notification_content_tap_settings)
+        val actionLabel = getString(R.string.main_notification_content_tap_settings)
+        
+        return NotificationCompat.Builder(this, "SpeakThat_Channel")
+            .setContentTitle(title)
+            .setContentText(content)
+            .setSmallIcon(R.drawable.speakthaticon)
+            .setOngoing(true)
+            .setSilent(true)
+            .setCategory(NotificationCompat.CATEGORY_SERVICE)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+            .setContentIntent(openAppPendingIntent)
+            .setVisibility(NotificationCompat.VISIBILITY_SECRET)
+            .addAction(
+                R.drawable.speakthaticon,
+                actionLabel,
+                openAppPendingIntent
+            )
+            .build()
+    }
+    
     /**
      * Hide persistent notification
      */
     private fun hidePersistentNotification() {
         try {
+            if (currentForegroundNotificationId == PERSISTENT_NOTIFICATION_ID) {
+                val readingInProgress = isCurrentlySpeaking
+                val usingPersistentSlotForReading = currentForegroundReason == ForegroundReason.READING
+                
+                if (readingInProgress || usingPersistentSlotForReading) {
+                    Log.d(TAG, "Persistent notification disabled while reading - moving to transient foreground notification")
+                    InAppLogger.log("Notifications", "Persistent notification disabled while reading - switching foreground slot")
+                    val readingNotification = createForegroundNotification(currentAppName, currentSpeechText, currentTtsText)
+                    updateForegroundNotification(FOREGROUND_SERVICE_ID, readingNotification, ForegroundReason.READING)
+                } else {
+                    Log.d(TAG, "Stopping persistent foreground notification")
+                    stopForegroundInternal(removeNotification = true)
+                }
+            }
+            
             notificationManager.cancel(PERSISTENT_NOTIFICATION_ID)
             Log.d(TAG, "Persistent notification hidden")
             InAppLogger.log("Notifications", "Persistent notification hidden")
@@ -5777,38 +5910,27 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * Promote service to foreground during TTS playback to enable audio focus on Android 12+
      * This is critical for audio focus requests to be granted when the app is not in the foreground.
      */
-    private fun promoteToForegroundService() {
+    private fun promoteToForegroundService(force: Boolean = false) {
         try {
-            // Check if we're already a foreground service
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                val isForeground = try {
-                    val method = this::class.java.getDeclaredMethod("isForegroundService")
-                    method.invoke(this) as Boolean
-                } catch (e: Exception) {
-                    false // Assume not foreground if we can't check
-                }
-                
-                if (isForeground) {
-                    Log.d(TAG, "Service is already in foreground")
-                    return
-                }
+            val persistentEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_NOTIFICATION, false) ?: false
+            val isMasterSwitchEnabled = MainActivity.isMasterSwitchEnabled(this)
+            val readingNotificationEnabled = isNotificationWhileReadingEnabled()
+            
+            if (!force && persistentEnabled && isMasterSwitchEnabled && !readingNotificationEnabled) {
+                Log.d(TAG, "Persistent foreground active and reading notification disabled - no swap required")
+                return
             }
             
-            Log.d(TAG, "Promoting service to foreground for audio focus compatibility")
-            InAppLogger.log("Service", "Promoting service to foreground for audio focus compatibility")
-            
-            // Create a detailed foreground notification with reading content
             val foregroundNotification = createForegroundNotification(currentAppName, currentSpeechText, currentTtsText)
+            val targetNotificationId = if (persistentEnabled && isMasterSwitchEnabled) {
+                PERSISTENT_NOTIFICATION_ID
+            } else {
+                FOREGROUND_SERVICE_ID
+            }
             
-            // Start foreground service
-            // The foreground service type is already declared in the manifest as "mediaPlayback"
-            // which is the correct type for audio focus compatibility
-            startForeground(FOREGROUND_SERVICE_ID, foregroundNotification)
-            Log.d(TAG, "Service started as foreground with manifest-declared mediaPlayback type")
-            InAppLogger.log("Service", "Service started as foreground with manifest-declared mediaPlayback type")
-            
-            Log.d(TAG, "Service promoted to foreground successfully")
-            InAppLogger.log("Service", "Service promoted to foreground successfully")
+            updateForegroundNotification(targetNotificationId, foregroundNotification, ForegroundReason.READING)
+            Log.d(TAG, "Service promoted to foreground for reading (notificationId=$targetNotificationId)")
+            InAppLogger.log("Service", "Service promoted to foreground for reading (notificationId=$targetNotificationId)")
             
         } catch (e: Exception) {
             Log.e(TAG, "Failed to promote service to foreground", e)
@@ -5821,10 +5943,22 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      */
     private fun stopForegroundService() {
         try {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                stopForeground(android.app.Service.STOP_FOREGROUND_REMOVE)
-                Log.d(TAG, "Service stopped from foreground")
-                InAppLogger.log("Service", "Service stopped from foreground")
+            if (currentForegroundReason != ForegroundReason.READING) {
+                Log.d(TAG, "stopForegroundService skipped - current reason: $currentForegroundReason")
+                return
+            }
+            
+            val persistentEnabled = sharedPreferences?.getBoolean(KEY_PERSISTENT_NOTIFICATION, false) ?: false
+            val isMasterSwitchEnabled = MainActivity.isMasterSwitchEnabled(this)
+            
+            if (persistentEnabled && isMasterSwitchEnabled) {
+                Log.d(TAG, "Reading finished - restoring persistent foreground notification")
+                InAppLogger.log("Service", "Reading finished - restoring persistent notification")
+                showPersistentNotification()
+            } else {
+                Log.d(TAG, "Stopping transient foreground service after reading")
+                InAppLogger.log("Service", "Stopping transient foreground service after reading")
+                stopForegroundInternal(removeNotification = true)
             }
         } catch (e: Exception) {
             Log.e(TAG, "Failed to stop foreground service", e)

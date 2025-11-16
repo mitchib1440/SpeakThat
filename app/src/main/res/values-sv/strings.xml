@@ -462,5 +462,14 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Conditional Rules - Exception Strings -->
     <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <string name="selftest_step1_rebinding">Behörighet aktiverad - återansluter avisningslyssnaren...</string>
+    <string name="selftest_step9_rebinding">Lyssnaren kopplades från - försöker igen automatiskt...</string>
+    <string name="listener_warning_title">Avisningslyssnaren behöver uppmärksamhet</string>
+    <string name="listener_warning_body_disconnected">Android kopplade från avisningstjänsten för %1$s sedan. Tryck på "Försök igen" för att be systemet att ansluta på nytt. Om det händer ofta, inaktivera batterioptimering i Allmänna inställningar.</string>
+    <string name="listener_warning_body_stale">Avisningstjänsten har inte anslutit på %1$s. Tryck på "Försök igen" för att väcka den och gå igenom batterioptimeringen i Allmänna inställningar om problemet kvarstår.</string>
+    <string name="listener_warning_time_unknown">nyligen</string>
+    <string name="listener_warning_retry_in_progress">Begäran om återanslutning skickad</string>
+    <string name="listener_warning_retry_denied">Vänta lite innan du försöker igen</string>
+    <string name="listener_warning_last_attempt">Senaste återanslutningsförsök: %1$s</string>
 </resources>
 

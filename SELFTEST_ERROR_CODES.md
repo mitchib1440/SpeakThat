@@ -62,12 +62,14 @@ This document catalogs all error codes, their meanings, and troubleshooting step
 4. If issue persists, restart the device
 5. Check if battery optimization is killing the service
 6. Ensure "Don't optimize" is selected for SpeakThat in battery settings
+7. If SelfTest shows “Permission enabled – reconnecting notification listener…”, wait for the automatic rebind sequence to finish (two attempts spaced ~1.5s apart). The status will update if Android accepts the request.
 
 **Technical Details:** The notification was successfully posted (Step 8), but the `onNotificationPosted()` callback was never triggered. This indicates a system-level issue with NotificationListenerService binding.
 
 **Developer Notes:** 
+- The listener health watchdog now writes to `ServiceRebind` / `ServiceHealth` in `InAppLogger`. Look for lines such as `Listener health monitor requested rebind`.
 - Check for `onListenerDisconnected()` calls in logs
-- Monitor service lifecycle events
+- Monitor service lifecycle events and compare `last_connect`, `last_disconnect`, and `last_rebind_attempt` timestamps in Development Settings → Background Process Monitor.
 - Verify that `android.permission.BIND_NOTIFICATION_LISTENER_SERVICE` is still active
 
 ---

@@ -463,5 +463,14 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Conditional Rules - Exception Strings -->
     <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <string name="selftest_step1_rebinding">已启用权限 - 正在重新连接通知监听器...</string>
+    <string name="selftest_step9_rebinding">监听器已断开 - 正在自动重试...</string>
+    <string name="listener_warning_title">通知监听服务需要关注</string>
+    <string name="listener_warning_body_disconnected">Android 在 %1$s 前断开了通知服务。点击“重试”请求系统重新连接。如果经常发生，请在常规设置中关闭电池优化。</string>
+    <string name="listener_warning_body_stale">通知服务已 %1$s 未连接。点击“重试”唤醒它，如问题持续，请在常规设置中检查电池优化。</string>
+    <string name="listener_warning_time_unknown">刚刚</string>
+    <string name="listener_warning_retry_in_progress">已发送重新连接请求</string>
+    <string name="listener_warning_retry_denied">请稍等片刻再试</string>
+    <string name="listener_warning_last_attempt">上次重新连接尝试：%1$s</string>
 </resources>
 

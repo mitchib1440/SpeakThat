@@ -462,5 +462,14 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Conditional Rules - Exception Strings -->
     <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <string name="selftest_step1_rebinding">تم تفعيل الإذن - يتم إعادة توصيل مستمع الإشعارات...</string>
+    <string name="selftest_step9_rebinding">انقطع اتصال المستمع - تتم المحاولة تلقائيًا...</string>
+    <string name="listener_warning_title">يحتاج مستمع الإشعارات إلى اهتمام</string>
+    <string name="listener_warning_body_disconnected">قام أندرويد بفصل خدمة الإشعارات منذ %1$s. اضغط على "إعادة المحاولة" لطلب إعادة الاتصال. إذا تكرر الأمر، عطّل تحسين البطارية من الإعدادات العامة.</string>
+    <string name="listener_warning_body_stale">لم تتصل خدمة الإشعارات منذ %1$s. اضغط على "إعادة المحاولة" لتنشيطها، ثم راجع إعداد استثناء البطارية في الإعدادات العامة إذا استمرت المشكلة.</string>
+    <string name="listener_warning_time_unknown">مؤخرًا</string>
+    <string name="listener_warning_retry_in_progress">تم إرسال طلب إعادة الربط</string>
+    <string name="listener_warning_retry_denied">انتظر لحظة قبل المحاولة مرة أخرى</string>
+    <string name="listener_warning_last_attempt">آخر محاولة لإعادة الاتصال: %1$s</string>
 </resources>
 

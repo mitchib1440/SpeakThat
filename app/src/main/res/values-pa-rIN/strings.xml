@@ -462,5 +462,14 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Conditional Rules - Exception Strings -->
     <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
     <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <string name="selftest_step1_rebinding">ਇਜਾਜ਼ਤ ਚਾਲੂ ਹੈ - ਸੂਚਨਾ ਲਿਸਨਰ ਨੂੰ ਮੁੜ ਜੋੜਿਆ ਜਾ ਰਿਹਾ ਹੈ...</string>
+    <string name="selftest_step9_rebinding">ਲਿਸਨਰ ਕੱਟ ਗਿਆ - ਆਟੋਮੈਟਿਕ ਤੌਰ ਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ...</string>
+    <string name="listener_warning_title">ਨੋਟੀਫਿਕੇਸ਼ਨ ਲਿਸਨਰ ਨੂੰ ਧਿਆਨ ਦੀ ਲੋੜ ਹੈ</string>
+    <string name="listener_warning_body_disconnected">ਐਂਡਰਾਇਡ ਨੇ %1$s ਪਹਿਲਾਂ ਨੋਟੀਫਿਕੇਸ਼ਨ ਸੇਵਾ ਨੂੰ ਡਿਸਕਨੈਕਟ ਕਰ ਦਿੱਤਾ। &quot;ਮੁੜ ਕੋਸ਼ਿਸ਼&quot; \'ਤੇ ਟੈਪ ਕਰਕੇ ਸਿਸਟਮ ਨੂੰ ਦੁਬਾਰਾ ਜੋੜਨ ਲਈ ਕਹੋ। ਜੇ ਇਹ ਹੁੰਦਾ ਰਹਿੰਦਾ ਹੈ, ਤਾਂ ਜਨਰਲ ਸੈਟਿੰਗਜ਼ ਵਿੱਚ ਬੈਟਰੀ ਓਪਟੀਮਾਈਜ਼ੇਸ਼ਨ ਬੰਦ ਕਰੋ।</string>
+    <string name="listener_warning_body_stale">ਨੋਟੀਫਿਕੇਸ਼ਨ ਸੇਵਾ ਨੇ %1$s ਤੋਂ ਕਨੈਕਟ ਨਹੀਂ ਕੀਤਾ। ਇਸਨੂੰ ਜਗਾਉਣ ਲਈ &quot;ਮੁੜ ਕੋਸ਼ਿਸ਼&quot; \'ਤੇ ਟੈਪ ਕਰੋ ਅਤੇ ਸਮੱਸਿਆ ਜਾਰੀ ਰਹੇ ਤਾਂ ਜਨਰਲ ਸੈਟਿੰਗਜ਼ ਵਿੱਚ ਬੈਟਰੀ ਓਪਟੀਮਾਈਜ਼ੇਸ਼ਨ ਦੀ ਜਾਂਚ ਕਰੋ।</string>
+    <string name="listener_warning_time_unknown">ਹਾਲ ਹੀ ਵਿੱਚ</string>
+    <string name="listener_warning_retry_in_progress">ਰੀਬਾਈਂਡ ਬੇਨਤੀ ਭੇਜੀ ਗਈ</string>
+    <string name="listener_warning_retry_denied">ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਥੋੜ੍ਹਾ ਉਡੀਕ ਕਰੋ</string>
+    <string name="listener_warning_last_attempt">ਆਖਰੀ ਮੁੜ-ਜੁੜਨ ਦੀ ਕੋਸ਼ਿਸ਼: %1$s</string>
 </resources>
 

@@ -31,29 +31,20 @@ public class BootReceiver extends BroadcastReceiver {
                 // The system will automatically start it when the user grants permission
                 // We just need to ensure the service is enabled
                 try {
-                    // Check if the notification listener service is enabled
-                    String flat = android.provider.Settings.Secure.getString(
-                        context.getContentResolver(), 
-                        context.getString(R.string.boot_receiver_enabled_notification_listeners)
-                    );
-                    
-                    if (flat != null && !flat.isEmpty()) {
-                        String[] names = flat.split(":");
-                        for (String name : names) {
-                            android.content.ComponentName componentName = 
-                                android.content.ComponentName.unflattenFromString(name);
-                            if (componentName != null && 
-                                context.getPackageName().equals(componentName.getPackageName())) {
-                                Log.d(TAG, context.getString(R.string.log_boot_receiver_service_enabled));
-                                InAppLogger.log("BootReceiver", context.getString(R.string.log_boot_receiver_service_enabled));
-                                return;
-                            }
-                        }
+                    boolean listenerEnabled = NotificationListenerRecovery.isNotificationAccessGranted(context);
+
+                    if (listenerEnabled) {
+                        Log.d(TAG, context.getString(R.string.log_boot_receiver_service_enabled));
+                        InAppLogger.log("BootReceiver", context.getString(R.string.log_boot_receiver_service_enabled));
+
+                        boolean rebindRequested = NotificationListenerRecovery.requestRebind(context, "boot_completed", false);
+                        Log.d(TAG, "Notification listener rebind requested at boot: " + rebindRequested);
+                        InAppLogger.log("BootReceiver", "Listener rebind requested at boot (result=" + rebindRequested + ")");
+                    } else {
+                        // If not enabled, log that user needs to grant permission
+                        Log.d(TAG, context.getString(R.string.log_boot_receiver_service_not_enabled));
+                        InAppLogger.log("BootReceiver", context.getString(R.string.log_boot_receiver_service_not_enabled));
                     }
-                    
-                    // If not enabled, log that user needs to grant permission
-                    Log.d(TAG, context.getString(R.string.log_boot_receiver_service_not_enabled));
-                    InAppLogger.log("BootReceiver", context.getString(R.string.log_boot_receiver_service_not_enabled));
                     
                 } catch (Exception e) {
                     Log.e(TAG, "Error checking notification service status", e);

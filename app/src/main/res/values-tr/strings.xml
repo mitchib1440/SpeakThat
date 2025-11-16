@@ -1660,4 +1660,13 @@ Farklı cihazların Ses Odaklama isteklerini nasıl işlediği konusundaki tutar
 </string>
     <string name="audio_ducking_disabled_ok">Anladım</string>
     <string name="audio_ducking_disabled_enable">Ses Kısma Özelliğini Etkinleştir</string>
+    <string name="selftest_step1_rebinding">İzin etkin - bildirim dinleyicisi yeniden bağlanıyor...</string>
+    <string name="selftest_step9_rebinding">Dinleyici bağlantısı koptu - otomatik olarak yeniden deneniyor...</string>
+    <string name="listener_warning_title">Bildirim dinleyicisinin müdahaleye ihtiyacı var</string>
+    <string name="listener_warning_body_disconnected">Android, bildirim hizmetinin bağlantısını %1$s önce kesti. Sistemin yeniden bağlanmasını istemek için &quot;Yeniden dene&quot; öğesine dokunun. Bu sık oluyorsa Genel Ayarlar\'dan pil optimizasyonunu devre dışı bırakın.</string>
+    <string name="listener_warning_body_stale">Bildirim hizmeti %1$s boyunca bağlanmadı. Onu uyandırmak için &quot;Yeniden dene&quot; öğesine dokunun ve sorun devam ederse Genel Ayarlar\'daki pil optimizasyonunu gözden geçirin.</string>
+    <string name="listener_warning_time_unknown">kısa süre önce</string>
+    <string name="listener_warning_retry_in_progress">Yeniden bağlanma isteği gönderildi</string>
+    <string name="listener_warning_retry_denied">Tekrar denemeden önce biraz bekleyin</string>
+    <string name="listener_warning_last_attempt">Son yeniden bağlanma denemesi: %1$s</string>
 </resources>
