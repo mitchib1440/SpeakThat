@@ -1703,4 +1703,7 @@ Debido a inconsistencias en cómo diferentes dispositivos manejan las solicitude
     <string name="listener_warning_retry_in_progress">Solicitud de reconexión enviada</string>
     <string name="listener_warning_retry_denied">Espera un momento antes de volver a intentarlo</string>
     <string name="listener_warning_last_attempt">Último intento de reconexión: %1$s</string>
+    <string name="statistics_listener_rebind_requests">Solicitudes de reconexión del lector</string>
+    <string name="statistics_listener_rebind_skips">Intentos de reconexión omitidos</string>
+    <string name="statistics_listener_rebind_recoveries">Recuperaciones tras reconectar</string>
 </resources>

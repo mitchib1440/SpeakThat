@@ -173,7 +173,6 @@ SpeakThat! I'm the digital equivalent of that person who reads movie subtitles o
 SpeakThat! Your phone trusts me with its most important job - making sure you hear everything. No pressure!
 SpeakThat! I'm like a personal assistant, but I only have one skill and I'm really, really good at it!
 SpeakThat! Breaking: Local app discovers that reading notifications is basically being a one-person radio show!
-SpeakThat! I don't always make puns, but when I do, they're notification-ally hilarious!
 SpeakThat! Fun fact: I'm probably the most talkative app on your phone, and I'm proud of it!
 SpeakThat! I'm like a podcast host, but my show is called 'What's Happening In Your Life Right Now' and it updates constantly!
 SpeakThat! Your notification sound is my entrance music. I like to think of myself as having quite the dramatic flair!
@@ -295,3 +294,4 @@ SpeakThat! URL handling: Because life's too short to listen to someone spell out
 SpeakThat! I'm like a URL GPS - I take the scenic route and show you only the important landmarks!
 SpeakThat! My new URL handling features are so good, even Amazon's tracking department is impressed with my brevity!
 SpeakThat! URL shortening: When 'bit.ly' becomes 'bit.ly' and everyone's happy about it!
+SpeakThat! Better for Britain than the BNP!

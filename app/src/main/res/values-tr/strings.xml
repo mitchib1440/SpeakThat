@@ -1669,4 +1669,7 @@ Farklı cihazların Ses Odaklama isteklerini nasıl işlediği konusundaki tutar
     <string name="listener_warning_retry_in_progress">Yeniden bağlanma isteği gönderildi</string>
     <string name="listener_warning_retry_denied">Tekrar denemeden önce biraz bekleyin</string>
     <string name="listener_warning_last_attempt">Son yeniden bağlanma denemesi: %1$s</string>
+    <string name="statistics_listener_rebind_requests">Dinleyici yeniden bağlama istekleri</string>
+    <string name="statistics_listener_rebind_skips">Dinleyici yeniden bağlama atlamaları</string>
+    <string name="statistics_listener_rebind_recoveries">Dinleyici yeniden bağlama kurtarmaları</string>
 </resources>

@@ -1671,4 +1671,7 @@ Vanwege inconsistenties in hoe verschillende apparaten Audio Focus verzoeken ver
     <string name="listener_warning_retry_in_progress">Verbindingsverzoek verzonden</string>
     <string name="listener_warning_retry_denied">Wacht even voordat je het opnieuw probeert</string>
     <string name="listener_warning_last_attempt">Laatste poging tot opnieuw verbinden: %1$s</string>
+    <string name="statistics_listener_rebind_requests">Herbindverzoeken van de listener</string>
+    <string name="statistics_listener_rebind_skips">Overgeslagen herbindpogingen</string>
+    <string name="statistics_listener_rebind_recoveries">Herstel na herbindpogingen</string>
 </resources>

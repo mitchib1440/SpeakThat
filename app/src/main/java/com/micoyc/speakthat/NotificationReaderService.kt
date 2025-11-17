@@ -176,6 +176,28 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var lastTtsVolumeLogTime: Long = 0L
     private val TTS_VOLUME_LOG_THROTTLE_MS = 10000L // Only log TTS volume maintenance every 10 seconds
     
+    // Listener reliability components
+    @Volatile
+    private var lastListenerEventTimestamp: Long = 0L
+    private var listenerWatchdog: SpeakThatWatchdog? = null
+    private var listenerRebindHandler: android.os.Handler? = null
+    private var listenerRebindRunnable: Runnable? = null
+    private val watchdogCallback = object : SpeakThatWatchdog.Callback {
+        override fun isWatchdogAllowed(): Boolean {
+            val masterEnabled = MainActivity.isMasterSwitchEnabled(this@NotificationReaderService)
+            val permissionGranted = NotificationListenerRecovery.isNotificationAccessGranted(this@NotificationReaderService)
+            val shouldMonitor = masterEnabled && permissionGranted
+            if (!shouldMonitor) {
+                Log.d(TAG, "Watchdog disabled (master=$masterEnabled, permission=$permissionGranted)")
+            }
+            return shouldMonitor
+        }
+
+        override fun onWatchdogStale(idleMs: Long): Boolean {
+            return handleWatchdogStale(idleMs)
+        }
+    }
+    
 
     
     // Voice settings listener
@@ -212,6 +234,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val DEFAULT_DISMISSAL_MEMORY_ENABLED = true
         private const val DEFAULT_DISMISSAL_MEMORY_TIMEOUT_MINUTES = 15
         private const val LISTENER_HEALTH_THRESHOLD_MS = 5 * 60 * 1000L
+        private const val WATCHDOG_INTERVAL_MS = 45_000L
+        private const val WATCHDOG_STALE_THRESHOLD_MS = 3 * 60 * 1000L
+        private const val WATCHDOG_REBIND_COOLDOWN_MS = 2 * 60 * 1000L
+        private const val LISTENER_REBIND_DELAY_MS = 7_500L
+        private const val LEGACY_COMPONENT_REENABLE_DELAY_MS = 2_000L
         
         // Filter system keys
         private const val KEY_APP_LIST_MODE = "app_list_mode"
@@ -395,6 +422,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             // Start dismissal memory cleanup
             startDismissalMemoryCleanup()
+
+            // Initialize listener watchdog to keep NotificationListenerService healthy
+            ensureListenerReliabilityComponents()
+            recordListenerEvent("service_create")
+            startListenerWatchdog("service_create")
             
             Log.d(TAG, "NotificationReaderService initialization completed successfully")
             InAppLogger.log("Service", "Service initialization completed successfully")
@@ -478,6 +510,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             // Stop dismissal memory cleanup
             stopDismissalMemoryCleanup()
+
+            // Stop listener watchdog and pending rebind operations
+            listenerRebindRunnable?.let { runnable ->
+                listenerRebindHandler?.removeCallbacks(runnable)
+            }
+            listenerRebindRunnable = null
+            listenerRebindHandler = null
+            stopListenerWatchdog("service_destroy")
+            listenerWatchdog = null
             
             // Hide all SpeakThat notifications
             PersistentIndicatorManager.requestStop(this)
@@ -561,19 +602,29 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.e(TAG, "Failed to record listener connection", e)
             InAppLogger.logError("ServiceRebind", "Failed to record connection: ${e.message}")
         }
+        ensureListenerReliabilityComponents()
+        recordListenerEvent("listener_connected")
+        startListenerWatchdog("listener_connected")
     }
     
     override fun onListenerDisconnected() {
         super.onListenerDisconnected()
-        Log.w(TAG, "NotificationListener disconnected")
+        Log.w(TAG, "NotificationListener disconnected - scheduling reliability rebind")
         InAppLogger.logWarning("Service", "NotificationListener disconnected - scheduling rebind")
         try {
             NotificationListenerRecovery.recordDisconnect(this)
-            val requested = NotificationListenerRecovery.requestRebind(this, "listener_disconnected")
-            Log.d(TAG, "Rebind requested after disconnect: $requested")
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to schedule listener rebind", e)
-            InAppLogger.logError("ServiceRebind", "Failed to schedule rebind: ${e.message}")
+            Log.e(TAG, "Failed to record listener disconnect", e)
+            InAppLogger.logError("ServiceRebind", "Failed to record disconnect: ${e.message}")
+        }
+
+        listenerWatchdog?.recordExternalIntervention("listener_disconnected")
+
+        try {
+            scheduleListenerRebind("listener_disconnected", LISTENER_REBIND_DELAY_MS)
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to schedule listener rebind task", e)
+            InAppLogger.logError("ServiceRebind", "Failed to schedule rebind task: ${e.message}")
         }
     }
     
@@ -602,6 +653,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         return
                     }
                 }
+                
+                recordListenerEvent("notification_posted:$packageName")
                 
                 // Skip group summary notifications - only read individual notifications
                 // Group summaries are "container" notifications that show "X notifications" 
@@ -1285,6 +1338,124 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         } catch (e: Exception) {
             Log.e(TAG, "Error during listener health check", e)
             InAppLogger.logError("ServiceHealth", "Listener health check failed: ${e.message}")
+        }
+    }
+
+    private fun ensureListenerReliabilityComponents() {
+        if (listenerRebindHandler == null) {
+            listenerRebindHandler = android.os.Handler(android.os.Looper.getMainLooper())
+        }
+        if (listenerWatchdog == null) {
+            listenerWatchdog = SpeakThatWatchdog(
+                callback = watchdogCallback,
+                lastActivityProvider = { lastListenerEventTimestamp },
+                checkIntervalMs = WATCHDOG_INTERVAL_MS,
+                staleThresholdMs = WATCHDOG_STALE_THRESHOLD_MS,
+                rebindCooldownMs = WATCHDOG_REBIND_COOLDOWN_MS
+            )
+        }
+    }
+
+    private fun startListenerWatchdog(reason: String) {
+        ensureListenerReliabilityComponents()
+        listenerWatchdog?.start(reason)
+    }
+
+    private fun stopListenerWatchdog(reason: String) {
+        listenerWatchdog?.stop(reason)
+    }
+
+    private fun recordListenerEvent(reason: String) {
+        lastListenerEventTimestamp = System.currentTimeMillis()
+        Log.v(TAG, "Listener heartbeat recorded ($reason)")
+    }
+
+    private fun handleWatchdogStale(idleMs: Long): Boolean {
+        val reason = "watchdog_idle_${idleMs / 1000}s"
+        Log.w(TAG, "Watchdog detected stale listener (idle=${idleMs}ms) - requesting rebind ($reason)")
+        val requested = requestListenerRebind(reason, force = false)
+        if (!requested) {
+            Log.w(TAG, "Watchdog rebind request skipped or deferred ($reason)")
+        }
+        return requested
+    }
+
+    private fun scheduleListenerRebind(reason: String, delayMs: Long) {
+        ensureListenerReliabilityComponents()
+
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O_MR1) {
+            Log.d(TAG, "Legacy device detected - performing immediate component toggle for $reason")
+            requestListenerRebind(reason, force = true)
+            return
+        }
+
+        listenerRebindRunnable?.let { runnable ->
+            listenerRebindHandler?.removeCallbacks(runnable)
+        }
+
+        val runnable = Runnable {
+            requestListenerRebind(reason, force = false)
+        }
+        listenerRebindRunnable = runnable
+        listenerRebindHandler?.postDelayed(runnable, delayMs)
+        listenerWatchdog?.recordExternalIntervention("scheduled_$reason")
+        Log.d(TAG, "Scheduled listener rebind in ${delayMs}ms (reason=$reason)")
+        InAppLogger.log("ServiceRebind", "Scheduled listener rebind in ${delayMs}ms (reason=$reason)")
+    }
+
+    private fun requestListenerRebind(reason: String, force: Boolean): Boolean {
+        ensureListenerReliabilityComponents()
+
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O_MR1) {
+            triggerLegacyListenerRebind(reason)
+            return true
+        }
+
+        val requested = NotificationListenerRecovery.requestRebind(this, reason, force)
+        if (requested) {
+            listenerWatchdog?.recordExternalIntervention(reason)
+            Log.i(TAG, "NotificationListenerService rebind requested (reason=$reason, force=$force)")
+            InAppLogger.log("ServiceRebind", "requestRebind submitted (reason=$reason, force=$force)")
+        } else {
+            Log.w(TAG, "NotificationListenerService rebind request skipped (reason=$reason, force=$force)")
+            InAppLogger.logWarning("ServiceRebind", "requestRebind skipped (reason=$reason, force=$force)")
+        }
+        return requested
+    }
+
+    private fun triggerLegacyListenerRebind(reason: String) {
+        ensureListenerReliabilityComponents()
+        try {
+            val componentName = ComponentName(this, NotificationReaderService::class.java)
+            cachedPackageManager.setComponentEnabledSetting(
+                componentName,
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP
+            )
+            listenerRebindHandler?.postDelayed({
+                try {
+                    cachedPackageManager.setComponentEnabledSetting(
+                        componentName,
+                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                        PackageManager.DONT_KILL_APP
+                    )
+                    InAppLogger.log(
+                        "ServiceRebind",
+                        "Legacy component toggle completed (reason=$reason)"
+                    )
+                } catch (enableError: Exception) {
+                    Log.e(TAG, "Failed to re-enable listener component (reason=$reason)", enableError)
+                    InAppLogger.logError(
+                        "ServiceRebind",
+                        "Legacy listener re-enable failed ($reason): ${enableError.message}"
+                    )
+                }
+            }, LEGACY_COMPONENT_REENABLE_DELAY_MS)
+            listenerWatchdog?.recordExternalIntervention("legacy_$reason")
+            Log.i(TAG, "Legacy listener component toggle scheduled (reason=$reason)")
+        } catch (e: Exception) {
+            Log.e(TAG, "Legacy listener toggle failed (reason=$reason)", e)
+            InAppLogger.logError("ServiceRebind", "Legacy listener toggle failed ($reason): ${e.message}")
         }
     }
     

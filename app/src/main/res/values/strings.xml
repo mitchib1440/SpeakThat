@@ -1709,6 +1709,9 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="statistics_filter_reason_group_summary">Group summary</string>
     <string name="statistics_filter_reason_self_package">Self package</string>
     <string name="statistics_filter_count_format">%1$s: %2$d</string>
+    <string name="statistics_listener_rebind_requests">Listener rebind requests</string>
+    <string name="statistics_listener_rebind_skips">Listener rebind skips</string>
+    <string name="statistics_listener_rebind_recoveries">Listener rebind recoveries</string>
     
     <!-- Development Settings - Statistics Reset -->
     <string name="dev_reset_statistics">Reset Statistics</string>

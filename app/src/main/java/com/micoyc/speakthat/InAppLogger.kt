@@ -621,18 +621,100 @@ object InAppLogger {
     
     @JvmStatic
     fun getSystemInfo(context: android.content.Context): String {
-        return """
-            |=== SYSTEM INFORMATION ===
-            |Android Version: ${android.os.Build.VERSION.RELEASE} (API ${android.os.Build.VERSION.SDK_INT})
-            |Device: ${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}
-            |App Version: ${getAppVersionInfo(context)}
-            |Build Variant: ${getBuildVariantInfo()}
-            |Installation Source: ${getInstallationSource(context)}
-            |Logging Settings: Verbose=$verboseMode, Filters=$logFilters, Notifications=$logNotifications, UserActions=$logUserActions, SystemEvents=$logSystemEvents, Sensitive=$logSensitiveData
-            |Total Log Entries: ${logs.size}
-            |Crash Logs Available: ${hasCrashLogs()}
-            |Timestamp: ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())}
-            |===========================
-        """.trimMargin()
+        val statsSection = buildStatisticsInfo(context)
+        return buildString {
+            appendLine("=== SYSTEM INFORMATION ===")
+            appendLine("Android Version: ${android.os.Build.VERSION.RELEASE} (API ${android.os.Build.VERSION.SDK_INT})")
+            appendLine("Device: ${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}")
+            appendLine("App Version: ${getAppVersionInfo(context)}")
+            appendLine("Build Variant: ${getBuildVariantInfo()}")
+            appendLine("Installation Source: ${getInstallationSource(context)}")
+            appendLine("Logging Settings: Verbose=$verboseMode, Filters=$logFilters, Notifications=$logNotifications, UserActions=$logUserActions, SystemEvents=$logSystemEvents, Sensitive=$logSensitiveData")
+            appendLine("Total Log Entries: ${logs.size}")
+            appendLine("Crash Logs Available: ${hasCrashLogs()}")
+            appendLine("Timestamp: ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())}")
+            appendLine("===========================")
+            if (statsSection.isNotBlank()) {
+                appendLine()
+                append(statsSection)
+            }
+        }.trimEnd()
+    }
+
+    private fun buildStatisticsInfo(context: android.content.Context): String {
+        return try {
+            val statsManager = StatisticsManager.getInstance(context)
+            val received = statsManager.getNotificationsReceived()
+            val read = statsManager.getNotificationsRead()
+            val readoutsInterrupted = statsManager.getReadoutsInterrupted()
+            val percentage = statsManager.getPercentageRead()
+            val filterReasons = statsManager.getFilterReasons()
+            val appsReadCount = statsManager.getAppsRead().size
+            val listenerRebindRequests = statsManager.getListenerRebinds()
+            val listenerRebindSkips = statsManager.getListenerRebindsSkipped()
+            val listenerRebindRecoveries = statsManager.getListenerRebindsRecovered()
+
+            buildString {
+                appendLine("=== ${context.getString(R.string.statistics_title)} ===")
+                appendLine("${context.getString(R.string.statistics_notifications_received)}: $received")
+                appendLine("${context.getString(R.string.statistics_notifications_read_label)}: $read")
+                appendLine("${context.getString(R.string.statistics_readouts_interrupted)}: $readoutsInterrupted")
+                appendLine(
+                    "${context.getString(R.string.statistics_percentage_read)}: ${
+                        String.format(
+                            Locale.getDefault(),
+                            context.getString(R.string.statistics_percentage_format),
+                            percentage
+                        )
+                    }"
+                )
+                appendLine("${context.getString(R.string.statistics_listener_rebind_requests)}: $listenerRebindRequests")
+                appendLine("${context.getString(R.string.statistics_listener_rebind_skips)}: $listenerRebindSkips")
+                appendLine("${context.getString(R.string.statistics_listener_rebind_recoveries)}: $listenerRebindRecoveries")
+                appendLine("${context.getString(R.string.statistics_apps_read)}: $appsReadCount")
+                if (filterReasons.isNotEmpty()) {
+                    appendLine()
+                    appendLine("${context.getString(R.string.statistics_filter_reasons)}:")
+                    filterReasons.entries
+                        .sortedByDescending { it.value }
+                        .forEach { (reason, count) ->
+                            val reasonLabel = getFilterReasonLabel(context, reason)
+                            appendLine(
+                                String.format(
+                                    Locale.getDefault(),
+                                    context.getString(R.string.statistics_filter_count_format),
+                                    reasonLabel,
+                                    count
+                                )
+                            )
+                        }
+                } else {
+                    appendLine()
+                    appendLine(context.getString(R.string.statistics_no_filter_reasons))
+                }
+            }.trimEnd()
+        } catch (e: Exception) {
+            Log.e("InAppLogger", "Failed to build statistics info", e)
+            ""
+        }
+    }
+
+    private fun getFilterReasonLabel(context: android.content.Context, reason: String): String {
+        return when (reason) {
+            StatisticsManager.FILTER_MASTER_SWITCH -> context.getString(R.string.statistics_filter_reason_master_switch)
+            StatisticsManager.FILTER_DND -> context.getString(R.string.statistics_filter_reason_dnd)
+            StatisticsManager.FILTER_AUDIO_MODE -> context.getString(R.string.statistics_filter_reason_audio_mode)
+            StatisticsManager.FILTER_PHONE_CALLS -> context.getString(R.string.statistics_filter_reason_phone_calls)
+            StatisticsManager.FILTER_WORD_FILTERS -> context.getString(R.string.statistics_filter_reason_word_filters)
+            StatisticsManager.FILTER_CONDITIONAL_RULES -> context.getString(R.string.statistics_filter_reason_conditional_rules)
+            StatisticsManager.FILTER_MEDIA_BEHAVIOR -> context.getString(R.string.statistics_filter_reason_media_behavior)
+            StatisticsManager.FILTER_SKIP_MODE -> context.getString(R.string.statistics_filter_reason_skip_mode)
+            StatisticsManager.FILTER_APP_LIST -> context.getString(R.string.statistics_filter_reason_app_list)
+            StatisticsManager.FILTER_DEDUPLICATION -> context.getString(R.string.statistics_filter_reason_deduplication)
+            StatisticsManager.FILTER_DISMISSAL_MEMORY -> context.getString(R.string.statistics_filter_reason_dismissal_memory)
+            StatisticsManager.FILTER_GROUP_SUMMARY -> context.getString(R.string.statistics_filter_reason_group_summary)
+            StatisticsManager.FILTER_SELF_PACKAGE -> context.getString(R.string.statistics_filter_reason_self_package)
+            else -> reason
+        }
     }
 } 
