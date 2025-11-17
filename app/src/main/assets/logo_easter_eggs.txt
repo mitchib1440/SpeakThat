@@ -25,6 +25,7 @@
 # SpeakThat! Shake me if you can! [SHAKE_ONLY]
 # SpeakThat! Wave your hand to stop me! [WAVE_ONLY]
 
+SpeakThat! Over 500 downloads on Google Play!
 SpeakThat! Did you know I have excellent volume control? Unlike my cousin, Siri, who sometimes whispers.
 SpeakThat! I'm not just reading notifications, I'm performing them! This is my audition for Broadway.
 SpeakThat! Fun fact: I can say supercalifragilisticexpialidocious perfectly. Want to hear it again?
@@ -271,13 +272,13 @@ SpeakThat! We sincerely apologise for the time you have wasted on the flashy log
 SpeakThat! PullThat! TwistThat! FlipThat! BopThat! PushThat! DropThat! TapThat!
 SpeakThat! Shout out to the bikers who use me! Stay safe on the road, friends!
 SpeakThat! Thanks to Facundo for the shout out!
-SpeakThat! Just Stop Oil, more like Just Stop Traffic!
+SpeakThat! Better for the planet than Just Stop Oil!
 Spea!
 SpeakThat! Did you know the Android robot is called BugDroid? It's true!
 SpeakThat! From the developer of... oh... this is the first product, isn't it?
 SpeakThat! Coming to phones near you this {DAY}!
 SpeakThat! Want to see a magic trick? I predict that today is... {DAY}!
-SpeakThat! I can read URLs perfectly now! youtube.com See? Flawless! (No more https:// nonsense!)
+SpeakThat! I can read URLs perfectly now! youtube.com See? Flawless! No more https:// nonsense!
 SpeakThat! URL handling: Because nobody wants to hear 'h-t-t-p-s-colon-slash-slash-w-w-w-dot-amazon-dot-com-slash-dp-slash-B08N5WRWNW-slash-ref-equals-s-r-underscore-1-underscore-1...'
 SpeakThat! I used to read URLs like a robot. Now I just say 'amazon.com' and save everyone's sanity!
 SpeakThat! Pro tip: I can shorten those ridiculously long Amazon links to just the domain. Your ears will thank me later!
@@ -295,3 +296,31 @@ SpeakThat! I'm like a URL GPS - I take the scenic route and show you only the im
 SpeakThat! My new URL handling features are so good, even Amazon's tracking department is impressed with my brevity!
 SpeakThat! URL shortening: When 'bit.ly' becomes 'bit.ly' and everyone's happy about it!
 SpeakThat! Better for Britain than the BNP!
+SpeakThat! Born in 2025, and still too old for Donald Trump!
+SpeakThat! Works on 100 percent of compatible devices!
+SpeakThat! Better for creatives than Adobe Creative Cloud!
+SpeakThat! Completely uncensored, for better or worse!
+SpeakThat! Made in the UK! That means it's badly engineered and will break if you breathe on it!
+SpeakThat! As seen on TV! That is, as long as you watched How To Men's video on a TV!
+SpeakThat! I don't even have any allergies! Bet you're jealous!
+SpeakThat! Better at podcasting than Logan Paul!
+SpeakThat! Stands with the Ukraine!
+SpeakThat! Better for free speech than Xi Jinping!
+SpeakThat! Hasn't been ruined by Elon Musk!
+SpeakThat! Doesn't have a monopoly on notification readers!
+SpeakThat! Also try Voice Notify!
+SpeakThat! More free than the Freedom Phone!
+SpeakThat! Better with numbers than the imperial system!
+SqueakThat! Wait, SqueakThat?
+SpeakThat! Don't wear my name out!
+SpeakThat! Peter picked a peck of pickled pineapples!
+SpeakThat! Remember to wash your Irish wristwatch!
+SpeakThat! My developer often gets curious about people's use of this app. But he will never know, as I keep it all private!
+SpeakThat! The pinnacle of local computing!
+SpeakThat! I use arch by the way!
+SpeakThat! Doesn't forget the 'u' in 'colour'!
+SpeakThat! The only thing not owned by the Walt Disney Company!
+SpeakThat! Doesn't judge you for your sexual fetish notifications, but people around you might!
+SpeakThat! There are only two genders - male USB, and female USB!
+SpeakThat! Better for your battery than Battery Doctor!
+SpeakThat! If you would have paid for this app, please consider donating to keep it free!
