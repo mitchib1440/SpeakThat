@@ -471,5 +471,15 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_warning_retry_in_progress">ส่งคำขอเชื่อมต่อใหม่แล้ว</string>
     <string name="listener_warning_retry_denied">โปรดรอสักครู่ก่อนลองอีกครั้ง</string>
     <string name="listener_warning_last_attempt">ความพยายามเชื่อมต่ออีกครั้งล่าสุด: %1$s</string>
+    <string name="dev_listener_health_title">สถานะตัวฟังการแจ้งเตือน</string>
+    <string name="listener_status_permission_missing">ไม่มีสิทธิ์เข้าถึงการแจ้งเตือน - โปรดให้สิทธิ์เพื่อใช้งานต่อ</string>
+    <string name="listener_status_disconnected">Android ตัดการเชื่อมต่อตัวฟังเมื่อ %1$s ที่ผ่านมา</string>
+    <string name="listener_status_idle">ไม่มีการทำงานของตัวฟังเป็นเวลา %1$s</string>
+    <string name="listener_status_ok">ทุกอย่างปกติ - กิจกรรมล่าสุดเมื่อ %1$s ที่ผ่านมา</string>
+    <string name="listener_health_last_activity">กิจกรรมล่าสุด: %1$s</string>
+    <string name="listener_health_last_connect">เชื่อมต่อล่าสุด: %1$s</string>
+    <string name="listener_health_last_disconnect">ตัดการเชื่อมต่อล่าสุด: %1$s</string>
+    <string name="listener_health_last_heartbeat">ฮาร์ตบีตล่าสุด: %1$s</string>
+    <string name="listener_health_last_rebind_success">การเชื่อมต่อสำเร็จครั้งล่าสุด: %1$s</string>
 </resources>
 

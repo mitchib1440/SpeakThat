@@ -471,5 +471,15 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_warning_retry_in_progress">تم إرسال طلب إعادة الربط</string>
     <string name="listener_warning_retry_denied">انتظر لحظة قبل المحاولة مرة أخرى</string>
     <string name="listener_warning_last_attempt">آخر محاولة لإعادة الاتصال: %1$s</string>
+    <string name="dev_listener_health_title">حالة مستمع الإشعارات</string>
+    <string name="listener_status_permission_missing">وصول الإشعارات غير مفعّل - امنح الإذن للمتابعة</string>
+    <string name="listener_status_disconnected">قام أندرويد بفصل المستمع منذ %1$s</string>
+    <string name="listener_status_idle">لا يوجد نشاط للمستمع منذ %1$s</string>
+    <string name="listener_status_ok">كل شيء يعمل - آخر نشاط قبل %1$s</string>
+    <string name="listener_health_last_activity">آخر نشاط: %1$s</string>
+    <string name="listener_health_last_connect">آخر اتصال: %1$s</string>
+    <string name="listener_health_last_disconnect">آخر فصل: %1$s</string>
+    <string name="listener_health_last_heartbeat">آخر نبضة: %1$s</string>
+    <string name="listener_health_last_rebind_success">آخر إعادة ارتباط ناجحة: %1$s</string>
 </resources>
 

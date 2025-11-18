@@ -200,7 +200,8 @@ class SelfTestActivity : AppCompatActivity() {
         }
 
         if (status.isStale) {
-            val age = System.currentTimeMillis() - status.lastConnect
+            val reference = maxOf(status.lastConnect, status.lastHeartbeat)
+            val age = if (reference > 0L) System.currentTimeMillis() - reference else -1L
             InAppLogger.log("SelfTest", "Listener connection stale (${age}ms) - needs recovery")
             return false
         }

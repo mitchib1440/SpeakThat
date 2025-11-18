@@ -471,5 +471,15 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_warning_retry_in_progress">Permintaan penyambungan ulang dikirim</string>
     <string name="listener_warning_retry_denied">Tunggu sebentar sebelum mencoba lagi</string>
     <string name="listener_warning_last_attempt">Upaya penyambungan ulang terakhir: %1$s</string>
+    <string name="dev_listener_health_title">Status pendengar notifikasi</string>
+    <string name="listener_status_permission_missing">Akses notifikasi tidak tersedia - berikan izin untuk melanjutkan</string>
+    <string name="listener_status_disconnected">Android memutus pendengar %1$s yang lalu</string>
+    <string name="listener_status_idle">Tidak ada aktivitas pendengar selama %1$s</string>
+    <string name="listener_status_ok">Semua aman - aktivitas terakhir %1$s yang lalu</string>
+    <string name="listener_health_last_activity">Aktivitas terakhir: %1$s</string>
+    <string name="listener_health_last_connect">Koneksi terakhir: %1$s</string>
+    <string name="listener_health_last_disconnect">Putus terakhir: %1$s</string>
+    <string name="listener_health_last_heartbeat">Heartbeat terakhir: %1$s</string>
+    <string name="listener_health_last_rebind_success">Rebind berhasil terakhir: %1$s</string>
 </resources>
 

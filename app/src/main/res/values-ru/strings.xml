@@ -438,4 +438,14 @@
     <string name="listener_warning_retry_in_progress">Запрос на переподключение отправлен</string>
     <string name="listener_warning_retry_denied">Подождите немного и попробуйте ещё раз</string>
     <string name="listener_warning_last_attempt">Последняя попытка переподключения: %1$s</string>
+    <string name="dev_listener_health_title">Состояние слушателя уведомлений</string>
+    <string name="listener_status_permission_missing">Нет доступа к уведомлениям — предоставьте разрешение, чтобы продолжить</string>
+    <string name="listener_status_disconnected">Android отключил слушатель %1$s назад</string>
+    <string name="listener_status_idle">Нет активности слушателя в течение %1$s</string>
+    <string name="listener_status_ok">Все в порядке — последняя активность %1$s назад</string>
+    <string name="listener_health_last_activity">Последняя активность: %1$s</string>
+    <string name="listener_health_last_connect">Последнее подключение: %1$s</string>
+    <string name="listener_health_last_disconnect">Последнее отключение: %1$s</string>
+    <string name="listener_health_last_heartbeat">Последний heartbeat: %1$s</string>
+    <string name="listener_health_last_rebind_success">Последнее успешное переподключение: %1$s</string>
 </resources>

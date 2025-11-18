@@ -1703,6 +1703,16 @@ Debido a inconsistencias en cómo diferentes dispositivos manejan las solicitude
     <string name="listener_warning_retry_in_progress">Solicitud de reconexión enviada</string>
     <string name="listener_warning_retry_denied">Espera un momento antes de volver a intentarlo</string>
     <string name="listener_warning_last_attempt">Último intento de reconexión: %1$s</string>
+    <string name="dev_listener_health_title">Estado del lector de notificaciones</string>
+    <string name="listener_status_permission_missing">Falta el acceso a notificaciones - concede el permiso para continuar</string>
+    <string name="listener_status_disconnected">Android desconectó el lector hace %1$s</string>
+    <string name="listener_status_idle">Sin actividad del lector desde hace %1$s</string>
+    <string name="listener_status_ok">Todo correcto - última actividad hace %1$s</string>
+    <string name="listener_health_last_activity">Última actividad: %1$s</string>
+    <string name="listener_health_last_connect">Última conexión: %1$s</string>
+    <string name="listener_health_last_disconnect">Última desconexión: %1$s</string>
+    <string name="listener_health_last_heartbeat">Último latido: %1$s</string>
+    <string name="listener_health_last_rebind_success">Última reconexión correcta: %1$s</string>
     <string name="statistics_listener_rebind_requests">Solicitudes de reconexión del lector</string>
     <string name="statistics_listener_rebind_skips">Intentos de reconexión omitidos</string>
     <string name="statistics_listener_rebind_recoveries">Recuperaciones tras reconectar</string>

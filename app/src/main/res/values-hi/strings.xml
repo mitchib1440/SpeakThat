@@ -471,5 +471,15 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_warning_retry_in_progress">रीबाइंड अनुरोध भेजा गया</string>
     <string name="listener_warning_retry_denied">दोबारा प्रयास करने से पहले थोड़ा इंतजार करें</string>
     <string name="listener_warning_last_attempt">अंतिम पुन: कनेक्ट प्रयास: %1$s</string>
+    <string name="dev_listener_health_title">नोटिफिकेशन लिस्नर की स्थिति</string>
+    <string name="listener_status_permission_missing">नोटिफिकेशन एक्सेस अनुपलब्ध है - जारी रखने के लिए अनुमति दें</string>
+    <string name="listener_status_disconnected">Android ने %1$s पहले लिस्नर को डिस्कनेक्ट किया</string>
+    <string name="listener_status_idle">%1$s से लिस्नर की कोई गतिविधि नहीं</string>
+    <string name="listener_status_ok">सब ठीक है - अंतिम गतिविधि %1$s पहले</string>
+    <string name="listener_health_last_activity">अंतिम गतिविधि: %1$s</string>
+    <string name="listener_health_last_connect">अंतिम कनेक्शन: %1$s</string>
+    <string name="listener_health_last_disconnect">अंतिम डिस्कनेक्शन: %1$s</string>
+    <string name="listener_health_last_heartbeat">अंतिम हार्टबीट: %1$s</string>
+    <string name="listener_health_last_rebind_success">अंतिम सफल रिबाइंड: %1$s</string>
 </resources>
 

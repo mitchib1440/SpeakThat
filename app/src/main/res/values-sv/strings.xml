@@ -471,5 +471,15 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_warning_retry_in_progress">Begäran om återanslutning skickad</string>
     <string name="listener_warning_retry_denied">Vänta lite innan du försöker igen</string>
     <string name="listener_warning_last_attempt">Senaste återanslutningsförsök: %1$s</string>
+    <string name="dev_listener_health_title">Status för avisningslyssnaren</string>
+    <string name="listener_status_permission_missing">Behörighet för aviseringar saknas - ge åtkomst för att fortsätta</string>
+    <string name="listener_status_disconnected">Android kopplade från lyssnaren för %1$s sedan</string>
+    <string name="listener_status_idle">Ingen lyssnaraktivitet på %1$s</string>
+    <string name="listener_status_ok">Allt ser bra ut - senaste aktivitet för %1$s sedan</string>
+    <string name="listener_health_last_activity">Senaste aktivitet: %1$s</string>
+    <string name="listener_health_last_connect">Senaste anslutning: %1$s</string>
+    <string name="listener_health_last_disconnect">Senaste frånkoppling: %1$s</string>
+    <string name="listener_health_last_heartbeat">Senaste heartbeat: %1$s</string>
+    <string name="listener_health_last_rebind_success">Senaste lyckade återbindning: %1$s</string>
 </resources>
 

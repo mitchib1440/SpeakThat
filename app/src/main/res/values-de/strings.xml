@@ -1721,6 +1721,16 @@ Wenn Sie SpeakThat hilfreich finden, überlegen Sie bitte eine Bewertung im Goog
     <string name="listener_warning_retry_in_progress">Neuverbindungsanfrage gesendet</string>
     <string name="listener_warning_retry_denied">Bitte kurz warten und dann erneut versuchen</string>
     <string name="listener_warning_last_attempt">Letzter Verbindungsversuch: %1$s</string>
+    <string name="dev_listener_health_title">Benachrichtigungslistener-Zustand</string>
+    <string name="listener_status_permission_missing">Benachrichtigungszugriff fehlt - bitte Berechtigung erteilen</string>
+    <string name="listener_status_disconnected">Android hat den Listener vor %1$s getrennt</string>
+    <string name="listener_status_idle">Keine Listener-Aktivität seit %1$s</string>
+    <string name="listener_status_ok">Alles in Ordnung - letzte Aktivität vor %1$s</string>
+    <string name="listener_health_last_activity">Letzte Aktivität: %1$s</string>
+    <string name="listener_health_last_connect">Letzte Verbindung: %1$s</string>
+    <string name="listener_health_last_disconnect">Letzte Trennung: %1$s</string>
+    <string name="listener_health_last_heartbeat">Letzter Heartbeat: %1$s</string>
+    <string name="listener_health_last_rebind_success">Letzte erfolgreiche Neuverbindung: %1$s</string>
     <string name="statistics_listener_rebind_requests">Anforderungen zum Neuverbinden des Listeners</string>
     <string name="statistics_listener_rebind_skips">Übersprungene Neuverbindungen</string>
     <string name="statistics_listener_rebind_recoveries">Erfolgreiche Neuverbindungswiederherstellungen</string>

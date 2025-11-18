@@ -1719,4 +1719,14 @@ Si vous appréciez SpeakThat, veuillez envisager de laisser un commentaire sur G
     <string name="listener_warning_retry_in_progress">Demande de reconnexion envoyée</string>
     <string name="listener_warning_retry_denied">Attendez un instant avant de réessayer</string>
     <string name="listener_warning_last_attempt">Dernière tentative de reconnexion : %1$s</string>
+    <string name="dev_listener_health_title">État de l’écouteur de notifications</string>
+    <string name="listener_status_permission_missing">Accès aux notifications manquant - accordez l’autorisation pour continuer</string>
+    <string name="listener_status_disconnected">Android a déconnecté l’écouteur il y a %1$s</string>
+    <string name="listener_status_idle">Aucune activité de l’écouteur depuis %1$s</string>
+    <string name="listener_status_ok">Tout est normal - dernière activité il y a %1$s</string>
+    <string name="listener_health_last_activity">Dernière activité : %1$s</string>
+    <string name="listener_health_last_connect">Dernière connexion : %1$s</string>
+    <string name="listener_health_last_disconnect">Dernière déconnexion : %1$s</string>
+    <string name="listener_health_last_heartbeat">Dernier heartbeat : %1$s</string>
+    <string name="listener_health_last_rebind_success">Dernière reconnexion réussie : %1$s</string>
 </resources>

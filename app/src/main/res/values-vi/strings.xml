@@ -471,5 +471,15 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_warning_retry_in_progress">Đã gửi yêu cầu kết nối lại</string>
     <string name="listener_warning_retry_denied">Chờ một chút rồi thử lại</string>
     <string name="listener_warning_last_attempt">Lần thử kết nối lại gần nhất: %1$s</string>
+    <string name="dev_listener_health_title">Tình trạng trình nghe thông báo</string>
+    <string name="listener_status_permission_missing">Thiếu quyền truy cập thông báo - hãy cấp quyền để tiếp tục</string>
+    <string name="listener_status_disconnected">Android đã ngắt trình nghe cách đây %1$s</string>
+    <string name="listener_status_idle">Không có hoạt động của trình nghe trong %1$s</string>
+    <string name="listener_status_ok">Mọi thứ ổn - lần hoạt động cuối %1$s trước</string>
+    <string name="listener_health_last_activity">Hoạt động cuối: %1$s</string>
+    <string name="listener_health_last_connect">Kết nối cuối: %1$s</string>
+    <string name="listener_health_last_disconnect">Ngắt kết nối cuối: %1$s</string>
+    <string name="listener_health_last_heartbeat">Nhịp tim cuối: %1$s</string>
+    <string name="listener_health_last_rebind_success">Lần nối lại thành công gần nhất: %1$s</string>
 </resources>
 

@@ -1671,6 +1671,16 @@ Vanwege inconsistenties in hoe verschillende apparaten Audio Focus verzoeken ver
     <string name="listener_warning_retry_in_progress">Verbindingsverzoek verzonden</string>
     <string name="listener_warning_retry_denied">Wacht even voordat je het opnieuw probeert</string>
     <string name="listener_warning_last_attempt">Laatste poging tot opnieuw verbinden: %1$s</string>
+    <string name="dev_listener_health_title">Status van de notificatieluisteraar</string>
+    <string name="listener_status_permission_missing">Notificatietoegang ontbreekt - geef de toestemming om door te gaan</string>
+    <string name="listener_status_disconnected">Android verbrak de luisteraar %1$s geleden</string>
+    <string name="listener_status_idle">%1$s lang geen luisteraaractiviteit</string>
+    <string name="listener_status_ok">Alles in orde - laatste activiteit %1$s geleden</string>
+    <string name="listener_health_last_activity">Laatste activiteit: %1$s</string>
+    <string name="listener_health_last_connect">Laatste verbinding: %1$s</string>
+    <string name="listener_health_last_disconnect">Laatste verbreking: %1$s</string>
+    <string name="listener_health_last_heartbeat">Laatste heartbeat: %1$s</string>
+    <string name="listener_health_last_rebind_success">Laatste geslaagde nieuwe verbinding: %1$s</string>
     <string name="statistics_listener_rebind_requests">Herbindverzoeken van de listener</string>
     <string name="statistics_listener_rebind_skips">Overgeslagen herbindpogingen</string>
     <string name="statistics_listener_rebind_recoveries">Herstel na herbindpogingen</string>

@@ -55,6 +55,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
     private static final String KEY_LOG_SYSTEM_EVENTS = "log_system_events";
     private static final String KEY_LOG_SENSITIVE_DATA = "log_sensitive_data";
     private static final String KEY_DISABLE_MEDIA_FALLBACK = "disable_media_fallback";
+    private static final long LISTENER_WARNING_THRESHOLD_MS = 5 * 60 * 1000L;
 
     private boolean isLogAutoRefreshPaused = false;
     private Runnable logUpdateRunnable;
@@ -94,6 +95,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         
         // Check for new logs instead of starting auto-refresh
         checkForNewLogs();
+        updateListenerHealthCard();
         
         // Start a very slow background check for new logs (every 30 seconds)
         // This only updates the indicator, not the UI
@@ -315,6 +317,108 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         
         // Add welcome message
         InAppLogger.log("Development", "Development Settings opened");
+
+        setupListenerHealthCard();
+    }
+
+    private void setupListenerHealthCard() {
+        binding.buttonListenerRetry.setOnClickListener(v -> handleListenerRetry());
+        binding.buttonListenerPermission.setOnClickListener(v -> {
+            InAppLogger.log("ListenerHealth", "User opened notification access from Development Settings");
+            openNotificationListenerSettings();
+        });
+        binding.buttonListenerBattery.setOnClickListener(v -> {
+            InAppLogger.log("ListenerHealth", "User opened General Settings to adjust battery optimizations");
+            startActivity(new Intent(this, GeneralSettingsActivity.class));
+        });
+        updateListenerHealthCard();
+    }
+
+    private void handleListenerRetry() {
+        try {
+            boolean requested = NotificationListenerRecovery.requestRebind(this, "dev_manual_retry", true);
+            int messageRes = requested
+                ? R.string.listener_warning_retry_in_progress
+                : R.string.listener_warning_retry_denied;
+            Toast.makeText(this, getString(messageRes), Toast.LENGTH_SHORT).show();
+            if (requested) {
+                InAppLogger.log("ListenerHealth", "Manual rebind requested via Development Settings");
+            } else {
+                InAppLogger.logWarning("ListenerHealth", "Manual rebind throttled via Development Settings");
+            }
+        } catch (Exception e) {
+            android.util.Log.e("DevelopmentSettings", "Failed to request listener rebind from Development Settings", e);
+            InAppLogger.logError("ListenerHealth", "Manual rebind failed in Development Settings: " + e.getMessage());
+            Toast.makeText(this, getString(R.string.listener_warning_retry_denied), Toast.LENGTH_SHORT).show();
+        } finally {
+            updateListenerHealthCard();
+        }
+    }
+
+    private void updateListenerHealthCard() {
+        if (binding == null) {
+            return;
+        }
+
+        NotificationListenerRecovery.ListenerStatus status =
+            NotificationListenerRecovery.getListenerStatus(this, LISTENER_WARNING_THRESHOLD_MS);
+
+        boolean permissionGranted = status.getPermissionGranted();
+        boolean isDisconnected = status.isDisconnected();
+        boolean isStale = status.isStale();
+
+        long lastHealthy = Math.max(status.getLastConnect(), status.getLastHeartbeat());
+        CharSequence summary;
+
+        if (!permissionGranted) {
+            summary = getString(R.string.listener_status_permission_missing);
+        } else if (isDisconnected) {
+            summary = getString(
+                R.string.listener_status_disconnected,
+                formatRelativeTime(status.getLastDisconnect())
+            );
+        } else if (isStale) {
+            summary = getString(
+                R.string.listener_status_idle,
+                formatRelativeTime(lastHealthy)
+            );
+        } else {
+            summary = getString(
+                R.string.listener_status_ok,
+                formatRelativeTime(lastHealthy)
+            );
+        }
+
+        StringBuilder details = new StringBuilder();
+        details.append(getString(R.string.listener_health_last_activity, formatRelativeTime(lastHealthy)));
+        details.append("\n");
+        details.append(getString(R.string.listener_health_last_connect, formatRelativeTime(status.getLastConnect())));
+        details.append("\n");
+        details.append(getString(R.string.listener_health_last_disconnect, formatRelativeTime(status.getLastDisconnect())));
+        details.append("\n");
+        details.append(getString(R.string.listener_health_last_heartbeat, formatRelativeTime(status.getLastHeartbeat())));
+        details.append("\n");
+
+        long lastAttempt = status.getLastRebindAttempt();
+        if (lastAttempt > 0L) {
+            details.append(getString(R.string.listener_warning_last_attempt, formatRelativeTime(lastAttempt)));
+        } else {
+            details.append(getString(R.string.listener_warning_last_attempt, getString(R.string.listener_warning_time_unknown)));
+        }
+        details.append("\n");
+
+        long lastSuccess = status.getLastRebindSuccess();
+        details.append(getString(R.string.listener_health_last_rebind_success, formatRelativeTime(lastSuccess)));
+
+        binding.textListenerHealthTitle.setText(R.string.dev_listener_health_title);
+        binding.textListenerHealthSummary.setText(summary);
+        binding.textListenerHealthDetails.setText(details.toString().trim());
+        binding.buttonListenerRetry.setEnabled(permissionGranted);
+    }
+
+    private void openNotificationListenerSettings() {
+        Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
+        startActivity(intent);
     }
 
     private void updateCrashLogButtonVisibility() {
@@ -1399,12 +1503,16 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
     }
 
     private String formatRelativeTime(long timestamp) {
-        return DateUtils.getRelativeTimeSpanString(
+        if (timestamp <= 0L) {
+            return getString(R.string.listener_warning_time_unknown);
+        }
+        CharSequence span = DateUtils.getRelativeTimeSpanString(
             timestamp,
             System.currentTimeMillis(),
             DateUtils.MINUTE_IN_MILLIS,
             DateUtils.FORMAT_ABBREV_RELATIVE
-        ).toString();
+        );
+        return span != null ? span.toString() : getString(R.string.listener_warning_time_unknown);
     }
 
     private void showBackgroundProcessMonitor() {

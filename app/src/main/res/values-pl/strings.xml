@@ -471,5 +471,15 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_warning_retry_in_progress">Żądanie ponownego połączenia wysłane</string>
     <string name="listener_warning_retry_denied">Poczekaj chwilę przed ponowną próbą</string>
     <string name="listener_warning_last_attempt">Ostatnia próba ponownego połączenia: %1$s</string>
+    <string name="dev_listener_health_title">Stan nasłuchiwacza powiadomień</string>
+    <string name="listener_status_permission_missing">Brak dostępu do powiadomień - nadaj uprawnienie, aby kontynuować</string>
+    <string name="listener_status_disconnected">Android odłączył nasłuchiwacz %1$s temu</string>
+    <string name="listener_status_idle">Brak aktywności nasłuchiwacza od %1$s</string>
+    <string name="listener_status_ok">Wszystko w porządku - ostatnia aktywność %1$s temu</string>
+    <string name="listener_health_last_activity">Ostatnia aktywność: %1$s</string>
+    <string name="listener_health_last_connect">Ostatnie połączenie: %1$s</string>
+    <string name="listener_health_last_disconnect">Ostatnie rozłączenie: %1$s</string>
+    <string name="listener_health_last_heartbeat">Ostatni heartbeat: %1$s</string>
+    <string name="listener_health_last_rebind_success">Ostatnie udane ponowne powiązanie: %1$s</string>
 </resources>
 

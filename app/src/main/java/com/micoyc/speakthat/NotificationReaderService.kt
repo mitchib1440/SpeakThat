@@ -1368,6 +1368,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private fun recordListenerEvent(reason: String) {
         lastListenerEventTimestamp = System.currentTimeMillis()
         Log.v(TAG, "Listener heartbeat recorded ($reason)")
+        try {
+            NotificationListenerRecovery.recordHeartbeat(this, reason)
+        } catch (e: Exception) {
+            Log.w(TAG, "Failed to persist listener heartbeat ($reason)", e)
+            InAppLogger.logError("ServiceHeartbeat", "Failed to record heartbeat ($reason): ${e.message}")
+        }
     }
 
     private fun handleWatchdogStale(idleMs: Long): Boolean {

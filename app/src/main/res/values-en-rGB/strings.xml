@@ -480,6 +480,16 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_warning_retry_in_progress">Rebind request sent</string>
     <string name="listener_warning_retry_denied">Wait a moment before trying again</string>
     <string name="listener_warning_last_attempt">Last reconnect attempt: %1$s</string>
+    <string name="dev_listener_health_title">Notification listener health</string>
+    <string name="listener_status_permission_missing">Notification access missing - grant permission to resume</string>
+    <string name="listener_status_disconnected">Android disconnected the listener %1$s ago</string>
+    <string name="listener_status_idle">No listener activity for %1$s</string>
+    <string name="listener_status_ok">All clear - last activity %1$s ago</string>
+    <string name="listener_health_last_activity">Last activity: %1$s</string>
+    <string name="listener_health_last_connect">Last connect: %1$s</string>
+    <string name="listener_health_last_disconnect">Last disconnect: %1$s</string>
+    <string name="listener_health_last_heartbeat">Last heartbeat: %1$s</string>
+    <string name="listener_health_last_rebind_success">Last successful rebind: %1$s</string>
     <string name="statistics_listener_rebind_requests">Listener rebind requests</string>
     <string name="statistics_listener_rebind_skips">Listener rebind skips</string>
     <string name="statistics_listener_rebind_recoveries">Listener rebind recoveries</string>

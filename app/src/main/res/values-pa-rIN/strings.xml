@@ -471,5 +471,15 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_warning_retry_in_progress">ਰੀਬਾਈਂਡ ਬੇਨਤੀ ਭੇਜੀ ਗਈ</string>
     <string name="listener_warning_retry_denied">ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਥੋੜ੍ਹਾ ਉਡੀਕ ਕਰੋ</string>
     <string name="listener_warning_last_attempt">ਆਖਰੀ ਮੁੜ-ਜੁੜਨ ਦੀ ਕੋਸ਼ਿਸ਼: %1$s</string>
+    <string name="dev_listener_health_title">ਨੋਟੀਫਿਕੇਸ਼ਨ ਲਿਸਨਰ ਦੀ ਸਿਹਤ</string>
+    <string name="listener_status_permission_missing">ਨੋਟੀਫਿਕੇਸ਼ਨ ਐਕਸੈੱਸ ਗੈਰਹਾਜ਼ਿਰ ਹੈ - ਕਿਰਪਾ ਕਰਕੇ ਇਜਾਜ਼ਤ ਦਿਓ</string>
+    <string name="listener_status_disconnected">ਐਂਡਰਾਇਡ ਨੇ %1$s ਪਹਿਲਾਂ ਲਿਸਨਰ ਨੂੰ ਡਿਸਕਨੈਕਟ ਕੀਤਾ</string>
+    <string name="listener_status_idle">%1$s ਤੋਂ ਲਿਸਨਰ ਗਤੀਵਿਧੀ ਨਹੀਂ ਮਿਲੀ</string>
+    <string name="listener_status_ok">ਸਭ ਠੀਕ - ਆਖਰੀ ਗਤੀਵਿਧੀ %1$s ਪਹਿਲਾਂ</string>
+    <string name="listener_health_last_activity">ਆਖਰੀ ਗਤੀਵਿਧੀ: %1$s</string>
+    <string name="listener_health_last_connect">ਆਖਰੀ ਕਨੈਕਸ਼ਨ: %1$s</string>
+    <string name="listener_health_last_disconnect">ਆਖਰੀ ਡਿਸਕਨੈਕਟ: %1$s</string>
+    <string name="listener_health_last_heartbeat">ਆਖਰੀ ਹਾਰਟਬੀਟ: %1$s</string>
+    <string name="listener_health_last_rebind_success">ਆਖਰੀ ਸਫਲ ਰੀਬਾਈਂਡ: %1$s</string>
 </resources>
 

@@ -1669,6 +1669,16 @@ Farklı cihazların Ses Odaklama isteklerini nasıl işlediği konusundaki tutar
     <string name="listener_warning_retry_in_progress">Yeniden bağlanma isteği gönderildi</string>
     <string name="listener_warning_retry_denied">Tekrar denemeden önce biraz bekleyin</string>
     <string name="listener_warning_last_attempt">Son yeniden bağlanma denemesi: %1$s</string>
+    <string name="dev_listener_health_title">Bildirim dinleyici durumu</string>
+    <string name="listener_status_permission_missing">Bildirim erişimi yok - devam etmek için izin ver</string>
+    <string name="listener_status_disconnected">Android dinleyicinin bağlantısını %1$s önce kesti</string>
+    <string name="listener_status_idle">%1$s süredir dinleyici etkinliği yok</string>
+    <string name="listener_status_ok">Her şey yolunda - son etkinlik %1$s önce</string>
+    <string name="listener_health_last_activity">Son etkinlik: %1$s</string>
+    <string name="listener_health_last_connect">Son bağlantı: %1$s</string>
+    <string name="listener_health_last_disconnect">Son bağlantı kesilmesi: %1$s</string>
+    <string name="listener_health_last_heartbeat">Son kalp atışı: %1$s</string>
+    <string name="listener_health_last_rebind_success">Son başarılı yeniden bağlama: %1$s</string>
     <string name="statistics_listener_rebind_requests">Dinleyici yeniden bağlama istekleri</string>
     <string name="statistics_listener_rebind_skips">Dinleyici yeniden bağlama atlamaları</string>
     <string name="statistics_listener_rebind_recoveries">Dinleyici yeniden bağlama kurtarmaları</string>

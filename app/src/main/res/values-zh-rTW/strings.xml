@@ -471,5 +471,15 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_warning_retry_in_progress">已送出重新連線請求</string>
     <string name="listener_warning_retry_denied">請稍候再試一次</string>
     <string name="listener_warning_last_attempt">上次重新連線嘗試：%1$s</string>
+    <string name="dev_listener_health_title">通知監聽器狀態</string>
+    <string name="listener_status_permission_missing">缺少通知存取權 - 請授權以繼續</string>
+    <string name="listener_status_disconnected">Android 在 %1$s 前中斷了監聽器</string>
+    <string name="listener_status_idle">%1$s 內沒有監聽器活動</string>
+    <string name="listener_status_ok">一切正常 - 上次活動在 %1$s 前</string>
+    <string name="listener_health_last_activity">最後活動時間：%1$s</string>
+    <string name="listener_health_last_connect">最後連線：%1$s</string>
+    <string name="listener_health_last_disconnect">最後斷線：%1$s</string>
+    <string name="listener_health_last_heartbeat">最後心跳：%1$s</string>
+    <string name="listener_health_last_rebind_success">最近一次成功重新綁定：%1$s</string>
 </resources>
 

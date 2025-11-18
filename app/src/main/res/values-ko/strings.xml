@@ -471,5 +471,15 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_warning_retry_in_progress">재연결 요청을 보냈습니다</string>
     <string name="listener_warning_retry_denied">잠시 기다린 후 다시 시도하세요</string>
     <string name="listener_warning_last_attempt">마지막 재연결 시도: %1$s</string>
+    <string name="dev_listener_health_title">알림 리스너 상태</string>
+    <string name="listener_status_permission_missing">알림 접근 권한이 없습니다 - 계속하려면 권한을 부여하세요</string>
+    <string name="listener_status_disconnected">Android가 %1$s 전에 리스너 연결을 해제했습니다</string>
+    <string name="listener_status_idle">%1$s 동안 리스너 활동이 없습니다</string>
+    <string name="listener_status_ok">모두 정상 - 마지막 활동은 %1$s 전</string>
+    <string name="listener_health_last_activity">마지막 활동: %1$s</string>
+    <string name="listener_health_last_connect">마지막 연결: %1$s</string>
+    <string name="listener_health_last_disconnect">마지막 연결 해제: %1$s</string>
+    <string name="listener_health_last_heartbeat">마지막 하트비트: %1$s</string>
+    <string name="listener_health_last_rebind_success">가장 최근 성공한 재바인딩: %1$s</string>
 </resources>
 

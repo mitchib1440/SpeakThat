@@ -1567,6 +1567,16 @@ Notification permission denied - SpeakThat notifications may not appear
     <string name="listener_warning_retry_in_progress">再接続リクエストを送信しました</string>
     <string name="listener_warning_retry_denied">少し待ってからもう一度お試しください</string>
     <string name="listener_warning_last_attempt">最後の再接続試行: %1$s</string>
+    <string name="dev_listener_health_title">通知リスナーの状態</string>
+    <string name="listener_status_permission_missing">通知へのアクセスがありません - 許可を付与してください</string>
+    <string name="listener_status_disconnected">Androidが%1$s前にリスナーの接続を切断しました</string>
+    <string name="listener_status_idle">%1$sのあいだリスナーのアクティビティがありません</string>
+    <string name="listener_status_ok">問題ありません - 最終アクティビティは%1$s前</string>
+    <string name="listener_health_last_activity">最終アクティビティ: %1$s</string>
+    <string name="listener_health_last_connect">最終接続: %1$s</string>
+    <string name="listener_health_last_disconnect">最終切断: %1$s</string>
+    <string name="listener_health_last_heartbeat">最終ハートビート: %1$s</string>
+    <string name="listener_health_last_rebind_success">直近の再接続成功: %1$s</string>
     <string name="statistics_listener_rebind_requests">通知リスナーの再接続要求</string>
     <string name="statistics_listener_rebind_skips">通知リスナーの再接続スキップ</string>
     <string name="statistics_listener_rebind_recoveries">通知リスナーの再接続復旧</string>

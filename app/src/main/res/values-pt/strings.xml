@@ -471,5 +471,15 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_warning_retry_in_progress">Solicitação de reconexão enviada</string>
     <string name="listener_warning_retry_denied">Aguarde um momento antes de tentar novamente</string>
     <string name="listener_warning_last_attempt">Última tentativa de reconexão: %1$s</string>
+    <string name="dev_listener_health_title">Saúde do ouvinte de notificações</string>
+    <string name="listener_status_permission_missing">Acesso a notificações ausente - conceda a permissão para continuar</string>
+    <string name="listener_status_disconnected">O Android desconectou o ouvinte há %1$s</string>
+    <string name="listener_status_idle">Sem atividade do ouvinte há %1$s</string>
+    <string name="listener_status_ok">Tudo certo - última atividade há %1$s</string>
+    <string name="listener_health_last_activity">Última atividade: %1$s</string>
+    <string name="listener_health_last_connect">Última conexão: %1$s</string>
+    <string name="listener_health_last_disconnect">Última desconexão: %1$s</string>
+    <string name="listener_health_last_heartbeat">Último heartbeat: %1$s</string>
+    <string name="listener_health_last_rebind_success">Última reconexão bem-sucedida: %1$s</string>
 </resources>
 

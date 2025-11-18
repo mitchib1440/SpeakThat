@@ -23,6 +23,7 @@ object NotificationListenerRecovery {
     private const val KEY_LAST_REBIND_ATTEMPT = "last_rebind_attempt"
     private const val KEY_LAST_REBIND_SUCCESS = "last_rebind_success"
     private const val KEY_LAST_REBIND_REASON = "last_rebind_reason"
+    private const val KEY_LAST_HEARTBEAT = "last_listener_heartbeat"
     private const val KEY_CURRENT_BACKOFF = "current_rebind_backoff"
     private const val KEY_ATTEMPT_WINDOW_START = "attempt_window_start"
     private const val KEY_ATTEMPTS_IN_WINDOW = "attempts_in_window"
@@ -45,6 +46,7 @@ object NotificationListenerRecovery {
             .putInt(KEY_ATTEMPTS_IN_WINDOW, 0)
             .putLong(KEY_LAST_REBIND_SUCCESS, now)
             .putString(KEY_LAST_REBIND_REASON, "connected")
+            .putLong(KEY_LAST_HEARTBEAT, now)
             .apply()
 
         val lastAttempt = prefs.getLong(KEY_LAST_REBIND_ATTEMPT, 0L)
@@ -66,6 +68,16 @@ object NotificationListenerRecovery {
             .putString(KEY_LAST_REBIND_REASON, "disconnected")
             .apply()
         InAppLogger.logWarning("ServiceRebind", "Notification listener disconnected")
+    }
+
+    @JvmStatic
+    fun recordHeartbeat(context: Context, source: String) {
+        val now = System.currentTimeMillis()
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .putLong(KEY_LAST_HEARTBEAT, now)
+            .apply()
+        InAppLogger.log("ServiceHeartbeat", "Heartbeat recorded from $source")
     }
 
     @JvmStatic
@@ -199,6 +211,12 @@ object NotificationListenerRecovery {
     }
 
     @JvmStatic
+    fun getLastHeartbeatTimestamp(context: Context): Long {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        return prefs.getLong(KEY_LAST_HEARTBEAT, 0L)
+    }
+
+    @JvmStatic
     fun getListenerStatus(context: Context): ListenerStatus {
         return getListenerStatus(context, DEFAULT_STALE_THRESHOLD_MS)
     }
@@ -211,11 +229,13 @@ object NotificationListenerRecovery {
         val lastRebind = prefs.getLong(KEY_LAST_REBIND_ATTEMPT, 0L)
         val lastRebindSuccess = prefs.getLong(KEY_LAST_REBIND_SUCCESS, 0L)
         val lastReason = prefs.getString(KEY_LAST_REBIND_REASON, null)
+        val lastHeartbeat = prefs.getLong(KEY_LAST_HEARTBEAT, 0L)
         val permissionGranted = isNotificationAccessGranted(context)
         val now = System.currentTimeMillis()
         val isDisconnected = permissionGranted && lastDisconnect > lastConnect && lastDisconnect != 0L
+        val lastHealthy = maxOf(lastConnect, lastHeartbeat)
         val isStale = permissionGranted && !isDisconnected &&
-            lastConnect != 0L && now - lastConnect > staleThresholdMs
+            lastHealthy != 0L && now - lastHealthy > staleThresholdMs
 
         return ListenerStatus(
             permissionGranted = permissionGranted,
@@ -224,6 +244,7 @@ object NotificationListenerRecovery {
             lastRebindAttempt = lastRebind,
             lastRebindSuccess = lastRebindSuccess,
             lastRebindReason = lastReason,
+            lastHeartbeat = lastHeartbeat,
             isDisconnected = isDisconnected,
             isStale = isStale
         )
@@ -236,6 +257,7 @@ object NotificationListenerRecovery {
         val lastRebindAttempt: Long,
         val lastRebindSuccess: Long,
         val lastRebindReason: String?,
+        val lastHeartbeat: Long,
         val isDisconnected: Boolean,
         val isStale: Boolean
     )
