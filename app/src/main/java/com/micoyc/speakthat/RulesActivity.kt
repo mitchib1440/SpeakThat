@@ -1,14 +1,20 @@
 package com.micoyc.speakthat
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.annotation.StringRes
 import androidx.recyclerview.widget.LinearLayoutManager
+import android.widget.Toast
 import com.micoyc.speakthat.InAppLogger
 import com.micoyc.speakthat.databinding.ActivityRulesBinding
+import com.micoyc.speakthat.automation.AutomationMode
+import com.micoyc.speakthat.automation.AutomationModeManager
 import com.micoyc.speakthat.rules.RuleManager
 import com.micoyc.speakthat.rules.Rule
 import com.micoyc.speakthat.rules.RulesAdapter
@@ -19,14 +25,16 @@ class RulesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRulesBinding
     private lateinit var sharedPreferences: android.content.SharedPreferences
     private lateinit var ruleManager: RuleManager
+    private lateinit var automationModeManager: AutomationModeManager
     private lateinit var rulesAdapter: RulesAdapter
     private var hasShownExperimentalWarning = false
     private var experimentalWarningDialog: AlertDialog? = null
+    private var suppressModeCallback = false
+    private var currentMode: AutomationMode = AutomationMode.OFF
     
     companion object {
         private const val PREFS_NAME = "SpeakThatPrefs"
         private const val KEY_DARK_MODE = "dark_mode"
-        private const val KEY_RULES_ENABLED = "rules_enabled"
     }
     
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,11 +52,13 @@ class RulesActivity : AppCompatActivity() {
         
         // Initialize rule manager
         ruleManager = RuleManager(this)
+        automationModeManager = AutomationModeManager(this)
         
-        setupMasterToggle()
+        setupModeSelector()
+        setupAutomationStringsCard()
         setupButtons()
         setupRecyclerView()
-        loadSettings()
+        updateUI(automationModeManager.getMode())
     }
     
     private fun applySavedTheme() {
@@ -61,15 +71,51 @@ class RulesActivity : AppCompatActivity() {
         }
     }
     
-    private fun setupMasterToggle() {
-        binding.switchMasterToggle.setOnCheckedChangeListener { _, isChecked ->
-            // Update both local preferences and rule manager
-            sharedPreferences.edit().putBoolean(KEY_RULES_ENABLED, isChecked).apply()
-            ruleManager.setRulesEnabled(isChecked)
+    private fun setupModeSelector() {
+        val initialMode = automationModeManager.getMode()
+        updateModeSelection(initialMode)
+        
+        binding.radioAutomationModes.setOnCheckedChangeListener { _, checkedId ->
+            if (suppressModeCallback) return@setOnCheckedChangeListener
             
-            updateUI()
-            InAppLogger.logUserAction("Rules master toggle: ${if (isChecked) "enabled" else "disabled"}")
+            val selectedMode = when (checkedId) {
+                R.id.radioModeConditional -> AutomationMode.CONDITIONAL_RULES
+                R.id.radioModeExternal -> AutomationMode.EXTERNAL_AUTOMATION
+                else -> AutomationMode.OFF
+            }
+            
+            automationModeManager.setMode(selectedMode)
+            updateUI(selectedMode)
         }
+        
+        binding.buttonAutomationInfo.setOnClickListener {
+            showAutomationInfoDialog()
+        }
+    }
+    
+    private fun setupAutomationStringsCard() {
+        val rows = listOf(
+            Triple(binding.cardAutomationStringActionEnable, binding.textAutomationValueActionEnable, R.string.rules_quick_strings_action_enable_label),
+            Triple(binding.cardAutomationStringActionDisable, binding.textAutomationValueActionDisable, R.string.rules_quick_strings_action_disable_label),
+            Triple(binding.cardAutomationStringReceiver, binding.textAutomationValueReceiver, R.string.rules_quick_strings_receiver_label),
+            Triple(binding.cardAutomationStringPackage, binding.textAutomationValuePackage, R.string.rules_quick_strings_package_label)
+        )
+
+        rows.forEach { (container, valueView, labelRes) ->
+            container.setOnClickListener {
+                copyAutomationValue(valueView.text.toString(), labelRes)
+            }
+        }
+    }
+    
+    private fun copyAutomationValue(value: String, @StringRes labelRes: Int) {
+        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.setPrimaryClip(ClipData.newPlainText("SpeakThat automation", value))
+        Toast.makeText(
+            this,
+            getString(R.string.rules_quick_strings_copied, getString(labelRes)),
+            Toast.LENGTH_SHORT
+        ).show()
     }
     
     private fun setupButtons() {
@@ -106,51 +152,74 @@ class RulesActivity : AppCompatActivity() {
     
     override fun onResume() {
         super.onResume()
-        // Refresh the rules list when returning from RuleBuilderActivity
-        InAppLogger.logDebug("RulesActivity", "onResume() called - refreshing UI")
-        updateUI()
+        val mode = automationModeManager.getMode()
+        InAppLogger.logDebug("RulesActivity", "onResume() called - refreshing UI (mode=$mode)")
+        updateUI(mode)
         
-        // Show experimental warning only once when rules are enabled
-        if (!hasShownExperimentalWarning && ruleManager.isRulesEnabled()) {
+        if (!hasShownExperimentalWarning &&
+            mode == AutomationMode.CONDITIONAL_RULES &&
+            ruleManager.isRulesEnabled()
+        ) {
             hasShownExperimentalWarning = true
             showExperimentalFeatureWarning()
         }
     }
     
-    private fun loadSettings() {
-        val isMasterEnabled = ruleManager.isRulesEnabled()
-        binding.switchMasterToggle.isChecked = isMasterEnabled
-        updateUI()
+    private fun updateUI(modeOverride: AutomationMode? = null) {
+        val mode = modeOverride ?: automationModeManager.getMode()
+        currentMode = mode
+        updateModeSelection(mode)
+        binding.cardAutomationStrings.visibility = if (mode == AutomationMode.EXTERNAL_AUTOMATION) View.VISIBLE else View.GONE
+        
+        when (mode) {
+            AutomationMode.CONDITIONAL_RULES -> renderRulesContent()
+            AutomationMode.OFF -> renderAutomationDisabledState(
+                R.string.rules_mode_off_empty_title,
+                R.string.rules_mode_off_empty_description
+            )
+            AutomationMode.EXTERNAL_AUTOMATION -> renderAutomationDisabledState(
+                R.string.rules_mode_external_empty_title,
+                R.string.rules_mode_external_empty_description
+            )
+        }
     }
     
-    private fun updateUI() {
-        val isMasterEnabled = ruleManager.isRulesEnabled()
-        InAppLogger.logDebug("RulesActivity", "updateUI() - Master toggle enabled: $isMasterEnabled")
-        
-        if (isMasterEnabled) {
-            val rules = ruleManager.getAllRules()
-            val hasRules = rules.isNotEmpty()
-            
-            InAppLogger.logDebug("RulesActivity", "updateUI() - Loaded ${rules.size} rules from RuleManager")
-            if (rules.isNotEmpty()) {
-                InAppLogger.logDebug("RulesActivity", "updateUI() - Rule names: ${rules.map { it.name }}")
-            }
-            
-            if (hasRules) {
-                binding.rulesContainer.visibility = View.VISIBLE
-                binding.emptyStateContainer.visibility = View.GONE
-                rulesAdapter.updateRules(rules)
-                InAppLogger.logDebug("RulesActivity", "Found ${rules.size} rules to display")
-            } else {
-                binding.rulesContainer.visibility = View.GONE
-                binding.emptyStateContainer.visibility = View.VISIBLE
-                InAppLogger.logDebug("RulesActivity", "No rules found, showing empty state")
-            }
+    private fun updateModeSelection(mode: AutomationMode) {
+        suppressModeCallback = true
+        binding.radioModeOff.isChecked = mode == AutomationMode.OFF
+        binding.radioModeConditional.isChecked = mode == AutomationMode.CONDITIONAL_RULES
+        binding.radioModeExternal.isChecked = mode == AutomationMode.EXTERNAL_AUTOMATION
+        suppressModeCallback = false
+    }
+    
+    private fun renderRulesContent() {
+        val rules = ruleManager.getAllRules()
+        InAppLogger.logDebug("RulesActivity", "Rendering ${rules.size} rules for Conditional mode")
+        if (rules.isNotEmpty()) {
+            binding.rulesContainer.visibility = View.VISIBLE
+            binding.emptyStateContainer.visibility = View.GONE
+            binding.btnAddFirstRule.visibility = View.GONE
+            rulesAdapter.updateRules(rules)
         } else {
             binding.rulesContainer.visibility = View.GONE
             binding.emptyStateContainer.visibility = View.VISIBLE
-            InAppLogger.logDebug("RulesActivity", "Rules system disabled, showing empty state")
+            binding.textEmptyStateTitle.setText(R.string.rules_no_rules_created)
+            binding.textEmptyStateDescription.setText(R.string.rules_create_first_rule_description)
+            binding.btnAddFirstRule.visibility = View.VISIBLE
+            InAppLogger.logDebug("RulesActivity", "No rules found, showing empty state")
         }
+    }
+    
+    private fun renderAutomationDisabledState(
+        @StringRes titleRes: Int,
+        @StringRes descriptionRes: Int
+    ) {
+        binding.rulesContainer.visibility = View.GONE
+        binding.emptyStateContainer.visibility = View.VISIBLE
+        binding.textEmptyStateTitle.setText(titleRes)
+        binding.textEmptyStateDescription.setText(descriptionRes)
+        binding.btnAddFirstRule.visibility = View.GONE
+        InAppLogger.logDebug("RulesActivity", "Automation disabled state applied (title=$titleRes)")
     }
     
     private fun showErrorDialog(message: String) {
@@ -175,6 +244,14 @@ class RulesActivity : AppCompatActivity() {
             .setOnDismissListener {
                 experimentalWarningDialog = null
             }
+            .show()
+    }
+    
+    private fun showAutomationInfoDialog() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.rules_mode_info_title)
+            .setMessage(R.string.rules_mode_info_description)
+            .setPositiveButton(R.string.ok, null)
             .show()
     }
     

@@ -264,6 +264,17 @@
                 android:resource="@xml/accessibility_service_config" />
         </service>
 
+        <!-- BroadcastReceiver for automation intents (enabled when External Automation mode is active) -->
+        <receiver
+            android:name=".automation.AutomationBroadcastReceiver"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.micoyc.speakthat.intent.ACTION_ENABLE_SPEAKTHAT" />
+                <action android:name="com.micoyc.speakthat.intent.ACTION_DISABLE_SPEAKTHAT" />
+            </intent-filter>
+        </receiver>
+
         <!-- Boot Receiver for auto-start functionality -->
         <receiver
             android:name=".BootReceiver"

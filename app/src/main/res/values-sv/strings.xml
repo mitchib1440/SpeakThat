@@ -481,5 +481,21 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_health_last_disconnect">Senaste frånkoppling: %1$s</string>
     <string name="listener_health_last_heartbeat">Senaste heartbeat: %1$s</string>
     <string name="listener_health_last_rebind_success">Senaste lyckade återbindning: %1$s</string>
+    <string name="rules_mode_off_title">Av</string>
+    <string name="rules_mode_off_description">Utan automatisering förblir SpeakThat! alltid aktiv.</string>
+    <string name="rules_mode_conditional_title">Villkorade regler</string>
+    <string name="rules_mode_conditional_description">Använd SpeakThat!s interna automatisering för att upptäcka Bluetooth-enheter, scheman osv.</string>
+    <string name="rules_mode_external_title">Extern automatisering</string>
+    <string name="rules_mode_external_description">Aktivera intents för automatiseringsverktyg från tredje part som MacroDroid eller Tasker.</string>
+    <string name="rules_mode_info_title">Automatiseringslägen</string>
+    <string name="rules_mode_info_description">SpeakThat kan bara använda en automatiseringskälla åt gången.\n\nAv – Håller automatiseringen avstängd så att SpeakThat fortsätter vara aktiv tills du ändrar huvudbrytaren manuellt.\n\nVillkorade regler – Utnyttjar SpeakThat!s inbyggda triggrar för Bluetooth-enheter, scheman och filter.\n\nExtern automatisering – Aktiverar sändnings-intents för verktyg som MacroDroid eller Tasker som styr SpeakThat direkt.</string>
+    <string name="rules_mode_info_content_description">Information om automatiseringsläge</string>
+    <string name="rules_mode_off_empty_title">Automatisering avstängd</string>
+    <string name="rules_mode_off_empty_description">Välj ”Villkorade regler” för att skapa automatiseringar eller lämna det här läget för att hålla SpeakThat alltid aktivt.</string>
+    <string name="rules_mode_external_empty_title">Styrs av automatisering</string>
+    <string name="rules_mode_external_empty_description">SpeakThat väntar på automatiserings-intents. Byt tillbaka till ”Villkorade regler” för att redigera interna automatiseringar.</string>
+    <string name="selftest_step7_external">Extern automatisering styr SpeakThat</string>
+    <string name="diagnostics_should_read_yes_conditional">Alla kontroller godkända – aviseringar bör läsas upp (Villkorade regler aktiva)</string>
+    <string name="diagnostics_should_read_yes_external">Alla kontroller godkända – aviseringar styrs av extern automatisering</string>
 </resources>
 

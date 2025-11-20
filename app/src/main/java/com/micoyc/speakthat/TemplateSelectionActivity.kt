@@ -17,6 +17,8 @@ import com.micoyc.speakthat.databinding.ActivityTemplateSelectionBinding
 import com.micoyc.speakthat.databinding.ItemTemplateBinding
 import com.micoyc.speakthat.rules.RuleManager
 import com.micoyc.speakthat.rules.RuleTemplates
+import com.micoyc.speakthat.automation.AutomationMode
+import com.micoyc.speakthat.automation.AutomationModeManager
 import com.micoyc.speakthat.rules.RuleTemplate
 import com.micoyc.speakthat.rules.TriggerType
 import com.micoyc.speakthat.utils.WifiCapabilityChecker
@@ -332,10 +334,10 @@ class TemplateSelectionActivity : AppCompatActivity() {
             val success = ruleManager.addRule(rule)
             
             // Enable Conditional Rules if it's not already enabled
-            if (success && !ruleManager.isRulesEnabled()) {
-                ruleManager.setRulesEnabled(true)
-                InAppLogger.logUserAction("Enabled Conditional Rules feature")
-            }
+        if (success && !ruleManager.isRulesEnabled()) {
+            AutomationModeManager(this).setMode(AutomationMode.CONDITIONAL_RULES)
+            InAppLogger.logUserAction("Enabled Conditional Rules feature")
+        }
             
             if (success) {
                 InAppLogger.logUserAction("Rule created from template: ${template.name}")
@@ -386,10 +388,10 @@ class TemplateSelectionActivity : AppCompatActivity() {
             val success = ruleManager.addRule(rule)
             
             // Enable Conditional Rules if it's not already enabled
-            if (success && !ruleManager.isRulesEnabled()) {
-                ruleManager.setRulesEnabled(true)
-                InAppLogger.logUserAction("Enabled Conditional Rules feature")
-            }
+        if (success && !ruleManager.isRulesEnabled()) {
+            AutomationModeManager(this).setMode(AutomationMode.CONDITIONAL_RULES)
+            InAppLogger.logUserAction("Enabled Conditional Rules feature")
+        }
             
             if (success) {
                 InAppLogger.logUserAction("Rule created from template: ${template.name}")

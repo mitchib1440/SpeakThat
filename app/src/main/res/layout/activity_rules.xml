@@ -16,50 +16,306 @@
         android:layout_margin="16dp"
         android:background="@drawable/gradient_card_subtle_right">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/rules_title"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/purple_card_text_primary"
-            android:layout_marginBottom="12dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/rules_description"
-            android:textSize="14sp"
-            android:textColor="@color/purple_card_text_secondary"
-            android:layout_marginBottom="16dp" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/rules_enable"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/purple_card_text_primary" />
+                android:orientation="vertical">
 
-            <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/switchMasterToggle"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rules_title"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/purple_card_text_primary"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rules_description"
+                    android:textSize="14sp"
+                    android:textColor="@color/purple_card_text_secondary" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/buttonAutomationInfo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
+                android:contentDescription="@string/rules_mode_info_content_description"
+                android:src="@drawable/info_24px"
+                android:tint="@color/white_100" />
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/radioAutomationModes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioModeOff"
+                style="@style/Widget.MaterialComponents.CompoundButton.RadioButton"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:thumbTint="@color/switch_thumb_color"
-                android:trackTint="@color/switch_track_color"
-                app:thumbTint="@color/switch_thumb_color"
-                app:trackTint="@color/switch_track_color" />
+                android:text="@string/rules_mode_off_title"
+                android:textColor="@color/purple_card_text_primary"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textModeOffDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="32dp"
+                android:text="@string/rules_mode_off_description"
+                android:textColor="@color/purple_card_text_secondary"
+                android:textSize="14sp" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioModeConditional"
+                style="@style/Widget.MaterialComponents.CompoundButton.RadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rules_mode_conditional_title"
+                android:textColor="@color/purple_card_text_primary"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textModeConditionalDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="32dp"
+                android:text="@string/rules_mode_conditional_description"
+                android:textColor="@color/purple_card_text_secondary"
+                android:textSize="14sp" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioModeExternal"
+                style="@style/Widget.MaterialComponents.CompoundButton.RadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rules_mode_external_title"
+                android:textColor="@color/purple_card_text_primary"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textModeExternalDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginStart="32dp"
+                android:text="@string/rules_mode_external_description"
+                android:textColor="@color/purple_card_text_secondary"
+                android:textSize="14sp" />
+
+        </RadioGroup>
+    </LinearLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardAutomationStrings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="0dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@drawable/gradient_card_subtle_right">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rules_quick_strings_title"
+                android:textColor="@color/purple_card_text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/rules_quick_strings_note"
+                android:textColor="@color/purple_card_text_secondary"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:id="@+id/cardAutomationStringActionEnable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:background="@drawable/darkened_overlay_background"
+                android:padding="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rules_quick_strings_action_enable_label"
+                    android:textColor="@color/purple_card_text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textAutomationValueActionEnable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="monospace"
+                    android:text="@string/rules_quick_strings_action_enable_value"
+                    android:textColor="@color/white_100"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cardAutomationStringActionDisable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:background="@drawable/darkened_overlay_background"
+                android:padding="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rules_quick_strings_action_disable_label"
+                    android:textColor="@color/purple_card_text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textAutomationValueActionDisable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="monospace"
+                    android:text="@string/rules_quick_strings_action_disable_value"
+                    android:textColor="@color/white_100"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cardAutomationStringReceiver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:background="@drawable/darkened_overlay_background"
+                android:padding="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rules_quick_strings_receiver_label"
+                    android:textColor="@color/purple_card_text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textAutomationValueReceiver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="monospace"
+                    android:text="@string/rules_quick_strings_receiver_value"
+                    android:textColor="@color/white_100"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cardAutomationStringPackage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:background="@drawable/darkened_overlay_background"
+                android:padding="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rules_quick_strings_package_label"
+                    android:textColor="@color/purple_card_text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textAutomationValuePackage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="monospace"
+                    android:text="@string/rules_quick_strings_package_value"
+                    android:textColor="@color/white_100"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/rules_quick_strings_flags_title"
+                android:textColor="@color/purple_card_text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/rules_quick_strings_flags_description"
+                android:textColor="@color/purple_card_text_secondary"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/textAutomationSourceHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/rules_quick_strings_source_hint"
+                android:textColor="@color/purple_card_text_secondary"
+                android:textSize="13sp" />
 
         </LinearLayout>
 
-    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- Rules Container -->
     <LinearLayout
@@ -134,9 +390,10 @@
             android:layout_marginBottom="24dp" />
 
         <TextView
+            android:id="@+id/textEmptyStateTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-                            android:text="@string/rules_no_rules_created"
+            android:text="@string/rules_no_rules_created"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
@@ -144,9 +401,10 @@
             android:layout_marginBottom="12dp" />
 
         <TextView
+            android:id="@+id/textEmptyStateDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-                            android:text="@string/rules_create_first_rule_description"
+            android:text="@string/rules_create_first_rule_description"
             android:textSize="16sp"
             android:textColor="@color/text_secondary"
             android:gravity="center"

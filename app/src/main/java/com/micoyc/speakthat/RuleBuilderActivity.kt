@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.micoyc.speakthat.databinding.ActivityRuleBuilderBinding
+import com.micoyc.speakthat.automation.AutomationMode
+import com.micoyc.speakthat.automation.AutomationModeManager
 import com.micoyc.speakthat.rules.RuleManager
 import com.micoyc.speakthat.rules.Rule
 import com.micoyc.speakthat.rules.Trigger
@@ -368,7 +370,7 @@ class RuleBuilderActivity : AppCompatActivity() {
             
             // Enable Conditional Rules if it's not already enabled and rule was added successfully
             if (addSuccess && !ruleManager.isRulesEnabled()) {
-                ruleManager.setRulesEnabled(true)
+                AutomationModeManager(this).setMode(AutomationMode.CONDITIONAL_RULES)
                 InAppLogger.logUserAction("Enabled Conditional Rules feature")
             }
             

@@ -448,4 +448,20 @@
     <string name="listener_health_last_disconnect">Последнее отключение: %1$s</string>
     <string name="listener_health_last_heartbeat">Последний heartbeat: %1$s</string>
     <string name="listener_health_last_rebind_success">Последнее успешное переподключение: %1$s</string>
+    <string name="rules_mode_off_title">Выкл.</string>
+    <string name="rules_mode_off_description">Без автоматизации SpeakThat! остаётся активным постоянно.</string>
+    <string name="rules_mode_conditional_title">Условные правила</string>
+    <string name="rules_mode_conditional_description">Используйте встроенную автоматизацию SpeakThat! для обнаружения устройств Bluetooth, расписаний и т. д.</string>
+    <string name="rules_mode_external_title">Внешняя автоматизация</string>
+    <string name="rules_mode_external_description">Включите интенты для сторонних инструментов автоматизации, например MacroDroid или Tasker.</string>
+    <string name="rules_mode_info_title">Режимы автоматизации</string>
+    <string name="rules_mode_info_description">SpeakThat может использовать только один источник автоматизации одновременно.\n\nВыкл. — Автоматизация отключена, SpeakThat остаётся активным, пока вы не измените главный переключатель.\n\nУсловные правила — Используются встроенные триггеры SpeakThat! для устройств Bluetooth, расписаний и фильтров.\n\nВнешняя автоматизация — Включает широковещательные интенты для инструментов вроде MacroDroid или Tasker, которые напрямую управляют SpeakThat.</string>
+    <string name="rules_mode_info_content_description">Описание режима автоматизации</string>
+    <string name="rules_mode_off_empty_title">Автоматизация отключена</string>
+    <string name="rules_mode_off_empty_description">Выберите «Условные правила», чтобы создать автоматизации, или оставьте этот режим, чтобы SpeakThat всегда оставался активным.</string>
+    <string name="rules_mode_external_empty_title">Управляется автоматизацией</string>
+    <string name="rules_mode_external_empty_description">SpeakThat ждёт интенты автоматизации. Вернитесь к «Условным правилам», чтобы редактировать внутренние автоматизации.</string>
+    <string name="selftest_step7_external">Внешняя автоматизация управляет SpeakThat</string>
+    <string name="diagnostics_should_read_yes_conditional">Все проверки пройдены — уведомления должны быть прочитаны (Условные правила активны)</string>
+    <string name="diagnostics_should_read_yes_external">Все проверки пройдены — уведомления управляются внешней автоматизацией</string>
 </resources>

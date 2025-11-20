@@ -482,5 +482,21 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_health_last_disconnect">Ultima disconnessione: %1$s</string>
     <string name="listener_health_last_heartbeat">Ultimo heartbeat: %1$s</string>
     <string name="listener_health_last_rebind_success">Ultimo ricollegamento riuscito: %1$s</string>
+    <string name="rules_mode_off_title">Disattivato</string>
+    <string name="rules_mode_off_description">Senza automazione, SpeakThat! rimane sempre attivo.</string>
+    <string name="rules_mode_conditional_title">Regole condizionali</string>
+    <string name="rules_mode_conditional_description">Usa l’automazione interna di SpeakThat! per rilevare dispositivi Bluetooth, orari, ecc.</string>
+    <string name="rules_mode_external_title">Automazione esterna</string>
+    <string name="rules_mode_external_description">Abilita intents per strumenti di automazione di terze parti come MacroDroid o Tasker.</string>
+    <string name="rules_mode_info_title">Modalità di automazione</string>
+    <string name="rules_mode_info_description">SpeakThat può usare una sola fonte di automazione alla volta.\n\nDisattivato – Mantiene l’automazione spenta in modo che SpeakThat resti attivo finché non cambi l’interruttore principale.\n\nRegole condizionali – Utilizza i trigger integrati di SpeakThat! per dispositivi Bluetooth, pianificazioni e filtri.\n\nAutomazione esterna – Attiva intents broadcast per strumenti come MacroDroid o Tasker che controllano direttamente SpeakThat.</string>
+    <string name="rules_mode_info_content_description">Informazioni sulla modalità di automazione</string>
+    <string name="rules_mode_off_empty_title">Automazione disattivata</string>
+    <string name="rules_mode_off_empty_description">Seleziona «Regole condizionali» per creare automazioni oppure lascia questa modalità per mantenere SpeakThat sempre attivo.</string>
+    <string name="rules_mode_external_empty_title">Controllato dall’automazione</string>
+    <string name="rules_mode_external_empty_description">SpeakThat è in attesa di intents di automazione. Torna a «Regole condizionali» per modificare le automazioni interne.</string>
+    <string name="selftest_step7_external">L’automazione esterna controlla SpeakThat</string>
+    <string name="diagnostics_should_read_yes_conditional">Tutti i controlli sono superati: le notifiche dovrebbero essere lette (Regole condizionali attive)</string>
+    <string name="diagnostics_should_read_yes_external">Tutti i controlli sono superati: le notifiche sono controllate dall’automazione esterna</string>
 </resources>
 

@@ -2,6 +2,8 @@ package com.micoyc.speakthat.rules
 
 import android.content.Context
 import com.micoyc.speakthat.InAppLogger
+import com.micoyc.speakthat.automation.AutomationMode
+import com.micoyc.speakthat.automation.AutomationModeManager
 
 /**
  * Rule System Test
@@ -299,7 +301,7 @@ class RuleSystemTest(private val context: Context) {
         InAppLogger.logDebug(TAG, "Test 7: Rule evaluation")
         
         // Enable the rules system
-        ruleManager.setRulesEnabled(true)
+        AutomationModeManager(context).setMode(AutomationMode.CONDITIONAL_RULES)
         
         // Get all rules
         val allRules = ruleManager.getAllRules()
@@ -365,7 +367,7 @@ class RuleSystemTest(private val context: Context) {
         ruleManager.clearAllRules()
         
         // Enable the rules system
-        ruleManager.setRulesEnabled(true)
+        AutomationModeManager(context).setMode(AutomationMode.CONDITIONAL_RULES)
         
         // Test 1: Rule with DISABLE_SPEAKTHAT action should block
         val blockingRule = Rule(

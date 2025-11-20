@@ -22,6 +22,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.micoyc.speakthat.automation.AutomationMode
+import com.micoyc.speakthat.automation.AutomationModeManager
 import com.micoyc.speakthat.databinding.ActivitySelftestBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -369,20 +371,37 @@ class SelfTestActivity : AppCompatActivity() {
         currentStep = 7
         InAppLogger.log("SelfTest", "Step 7: Checking rules system")
         
-        val voicePrefs = getSharedPreferences("VoiceSettings", Context.MODE_PRIVATE)
-        val rulesEnabled = voicePrefs.getBoolean("rules_enabled", false)
-        
-        if (!rulesEnabled) {
-            setStepStatus(binding.step7.root, "✓", getString(R.string.selftest_step7_title), getString(R.string.selftest_step7_pass_disabled))
-            InAppLogger.log("SelfTest", "Step 7: PASS - Rules system disabled")
-            handler.postDelayed({ postTestNotification() }, 300)
-        } else {
-            // Rules enabled - check if any blocking rules are active
-            // For now, we'll just warn but continue
-            setStepStatus(binding.step7.root, "⚠", getString(R.string.selftest_step7_title), getString(R.string.selftest_step7_warning))
-            InAppLogger.log("SelfTest", "Step 7: WARNING - Rules system enabled, may block notifications")
-            handler.postDelayed({ postTestNotification() }, 300)
+        when (AutomationModeManager(this).getMode()) {
+            AutomationMode.OFF -> {
+                setStepStatus(
+                    binding.step7.root,
+                    "✓",
+                    getString(R.string.selftest_step7_title),
+                    getString(R.string.selftest_step7_pass_disabled)
+                )
+                InAppLogger.log("SelfTest", "Step 7: PASS - Automation disabled")
+            }
+            AutomationMode.CONDITIONAL_RULES -> {
+                setStepStatus(
+                    binding.step7.root,
+                    "⚠",
+                    getString(R.string.selftest_step7_title),
+                    getString(R.string.selftest_step7_warning)
+                )
+                InAppLogger.log("SelfTest", "Step 7: WARNING - Conditional Rules enabled, may block notifications")
+            }
+            AutomationMode.EXTERNAL_AUTOMATION -> {
+                setStepStatus(
+                    binding.step7.root,
+                    "⚠",
+                    getString(R.string.selftest_step7_title),
+                    getString(R.string.selftest_step7_external)
+                )
+                InAppLogger.log("SelfTest", "Step 7: WARNING - External automation controls SpeakThat")
+            }
         }
+        
+        handler.postDelayed({ postTestNotification() }, 300)
     }
     
     // Step 8: Post Test Notification

@@ -1213,6 +1213,19 @@ Erstelle leistungsstarke Regeln zur Kontrolle, wann SpeakThat Benachrichtigungen
 </string>
     <string name="rules_enable">Regeln aktivieren</string>
     <string name="rules_create_new">Neue Regel erstellen</string>
+    <string name="rules_mode_off_title">Aus</string>
+    <string name="rules_mode_off_description">Keine Automatisierung, SpeakThat! bleibt dauerhaft aktiv.</string>
+    <string name="rules_mode_conditional_title">Bedingte Regeln</string>
+    <string name="rules_mode_conditional_description">Nutze die interne Automatisierung von SpeakThat! für Bluetooth-Erkennung, Zeitpläne usw.</string>
+    <string name="rules_mode_external_title">Externe Automatisierung</string>
+    <string name="rules_mode_external_description">Aktiviere Intents für Automatisierungs-Apps wie MacroDroid oder Tasker.</string>
+    <string name="rules_mode_info_title">Automatisierungsmodi</string>
+    <string name="rules_mode_info_description">SpeakThat kann immer nur eine Automatisierungsquelle gleichzeitig verwenden.\n\nAus – Hält die Automatisierung deaktiviert, damit SpeakThat aktiv bleibt, bis du den Hauptschalter änderst.\n\nBedingte Regeln – Nutzt die integrierten Trigger von SpeakThat! für Bluetooth-Geräte, Zeitpläne und Filter.\n\nExterne Automatisierung – Aktiviert Broadcast-Intents für Tools wie MacroDroid oder Tasker, die SpeakThat direkt steuern.</string>
+    <string name="rules_mode_info_content_description">Informationen zum Automatisierungsmodus</string>
+    <string name="rules_mode_off_empty_title">Automatisierung deaktiviert</string>
+    <string name="rules_mode_off_empty_description">Wähle „Bedingte Regeln“, um Automatisierungen zu erstellen, oder lasse diesen Modus aktiv, damit SpeakThat dauerhaft eingeschaltet bleibt.</string>
+    <string name="rules_mode_external_empty_title">Von Automatisierung gesteuert</string>
+    <string name="rules_mode_external_empty_description">SpeakThat wartet auf Automatisierungs-Intents. Wechsle zurück zu „Bedingte Regeln“, um interne Automatisierungen zu bearbeiten.</string>
     <!-- Onboarding -->
     <string name="onboarding_skip">Überspringen</string>
     <string name="onboarding_next">Weiter</string>

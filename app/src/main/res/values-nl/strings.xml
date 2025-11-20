@@ -1684,4 +1684,20 @@ Vanwege inconsistenties in hoe verschillende apparaten Audio Focus verzoeken ver
     <string name="statistics_listener_rebind_requests">Herbindverzoeken van de listener</string>
     <string name="statistics_listener_rebind_skips">Overgeslagen herbindpogingen</string>
     <string name="statistics_listener_rebind_recoveries">Herstel na herbindpogingen</string>
+    <string name="rules_mode_off_title">Uit</string>
+    <string name="rules_mode_off_description">Geen automatisering; SpeakThat! blijft permanent actief.</string>
+    <string name="rules_mode_conditional_title">Conditionele regels</string>
+    <string name="rules_mode_conditional_description">Gebruik de interne automatisering van SpeakThat! voor Bluetooth-detectie, schema’s enz.</string>
+    <string name="rules_mode_external_title">Externe automatisering</string>
+    <string name="rules_mode_external_description">Schakel intents in voor automatiseringstools van derden zoals MacroDroid of Tasker.</string>
+    <string name="rules_mode_info_title">Automatiseringsmodi</string>
+    <string name="rules_mode_info_description">SpeakThat kan één automatiseringsbron tegelijk gebruiken.\n\nUit – Houdt automatisering uitgeschakeld zodat SpeakThat actief blijft totdat je de hoofdschakelaar handmatig aanpast.\n\nConditionele regels – Gebruik de ingebouwde triggers van SpeakThat! voor Bluetooth-apparaten, schema’s en filters.\n\nExterne automatisering – Schakelt broadcast-intents in voor tools als MacroDroid of Tasker om SpeakThat direct te bedienen.</string>
+    <string name="rules_mode_info_content_description">Informatie over de automatiseringsmodus</string>
+    <string name="rules_mode_off_empty_title">Automatisering uitgeschakeld</string>
+    <string name="rules_mode_off_empty_description">Kies “Conditionele regels” om automatiseringen te maken of laat deze modus aan om SpeakThat altijd actief te houden.</string>
+    <string name="rules_mode_external_empty_title">Bestuurd door automatisering</string>
+    <string name="rules_mode_external_empty_description">SpeakThat wacht op automatiserings-intents. Schakel terug naar “Conditionele regels” om interne automatiseringen te bewerken.</string>
+    <string name="selftest_step7_external">Externe automatisering bestuurt SpeakThat</string>
+    <string name="diagnostics_should_read_yes_conditional">Alle controles geslaagd – meldingen moeten worden voorgelezen (Conditionele regels actief)</string>
+    <string name="diagnostics_should_read_yes_external">Alle controles geslaagd – meldingen worden geregeld door externe automatisering</string>
 </resources>

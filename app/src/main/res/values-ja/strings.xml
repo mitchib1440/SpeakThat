@@ -1580,4 +1580,20 @@ Notification permission denied - SpeakThat notifications may not appear
     <string name="statistics_listener_rebind_requests">通知リスナーの再接続要求</string>
     <string name="statistics_listener_rebind_skips">通知リスナーの再接続スキップ</string>
     <string name="statistics_listener_rebind_recoveries">通知リスナーの再接続復旧</string>
+    <string name="rules_mode_off_title">Off</string>
+    <string name="rules_mode_off_description">No automation, SpeakThat! remains permanently active.</string>
+    <string name="rules_mode_conditional_title">Conditional Rules</string>
+    <string name="rules_mode_conditional_description">Use the internal automation in SpeakThat! for Bluetooth device detection, time schedules, etc.</string>
+    <string name="rules_mode_external_title">External Automation</string>
+    <string name="rules_mode_external_description">Enable intents for third-party automation tools such as MacroDroid or Tasker.</string>
+    <string name="rules_mode_info_title">Automation Modes</string>
+    <string name="rules_mode_info_description">SpeakThat can only use one automation source at a time.\n\nOff - Keep automation disabled so SpeakThat remains active until you toggle the master switch manually.\n\nConditional Rules - Use the built-in triggers in SpeakThat! for Bluetooth devices, schedules, and filters.\n\nExternal Automation - Enable broadcast intents for automation tools (e.g., MacroDroid, Tasker) to control SpeakThat directly.</string>
+    <string name="rules_mode_info_content_description">Automation mode information</string>
+    <string name="rules_mode_off_empty_title">Automation disabled</string>
+    <string name="rules_mode_off_empty_description">Select “Conditional Rules” to create automations, or leave this mode selected to keep SpeakThat always active.</string>
+    <string name="rules_mode_external_empty_title">Controlled by automation</string>
+    <string name="rules_mode_external_empty_description">SpeakThat is waiting for automation intents. Switch back to “Conditional Rules” to edit internal automations.</string>
+    <string name="selftest_step7_external">External automation controls SpeakThat</string>
+    <string name="diagnostics_should_read_yes_conditional">All checks passed – notifications should be read (Conditional Rules active)</string>
+    <string name="diagnostics_should_read_yes_external">All checks passed – notifications are controlled by external automation</string>
 </resources>

@@ -19,7 +19,6 @@ class RuleManager(private val context: Context) {
     companion object {
         private const val TAG = "RuleManager"
         private const val PREFS_NAME = "SpeakThatRules"
-        private const val KEY_RULES_ENABLED = "rules_enabled"
         private const val KEY_RULES_LIST = "rules_list"
         private const val KEY_MASTER_TOGGLE = "master_toggle"
     }

@@ -1,7 +1,6 @@
 package com.micoyc.speakthat
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
@@ -31,17 +30,10 @@ class SpeakThatTileService : TileService() {
     
     companion object {
         private const val TAG = "SpeakThatTileService"
-        private const val PREFS_NAME = "SpeakThatPrefs"
-        private const val KEY_MASTER_SWITCH_ENABLED = "master_switch_enabled"
     }
-    
-    private lateinit var sharedPreferences: SharedPreferences
-    
-
     
     override fun onCreate() {
         super.onCreate()
-        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
         Log.d(TAG, "SpeakThatTileService created")
     }
     
@@ -65,7 +57,7 @@ class SpeakThatTileService : TileService() {
             val newState = !isCurrentlyEnabled
             
             // Update the master switch state
-            sharedPreferences.edit().putBoolean(KEY_MASTER_SWITCH_ENABLED, newState).apply()
+            MasterSwitchController.setEnabled(this, newState, "QuickSettingsTile")
             
             // Update tile state immediately
             updateTileState()

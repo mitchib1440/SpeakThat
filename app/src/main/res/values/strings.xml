@@ -1074,6 +1074,37 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="rules_description">Create powerful rules to control when SpeakThat reads notifications based on your device state, time, and connections.</string>
     <string name="rules_enable">Enable Rules</string>
     <string name="rules_create_new">Create New Rule</string>
+    <string name="rules_mode_off_title">Off</string>
+    <string name="rules_mode_off_description">No automation, SpeakThat! remains permanently active.</string>
+    <string name="rules_mode_conditional_title">Conditional Rules</string>
+    <string name="rules_mode_conditional_description">Use the internal automation in SpeakThat! for Bluetooth device detection, time schedules, etc.</string>
+    <string name="rules_mode_external_title">External Automation</string>
+    <string name="rules_mode_external_description">Enable intents for third-party automation tools such as MacroDroid or Tasker.</string>
+    <string name="rules_mode_info_title">Automation Modes</string>
+    <string name="rules_mode_info_description">SpeakThat can only use one automation source at a time.\n\nOff - Keep automation disabled so SpeakThat remains active until you toggle the master switch manually.\n\nConditional Rules - Use the built-in triggers in SpeakThat! for Bluetooth devices, schedules, and filters.\n\nExternal Automation - Enable broadcast intents for automation tools (e.g., MacroDroid, Tasker) to control SpeakThat directly.</string>
+    <string name="rules_mode_info_content_description">Automation mode information</string>
+    <string name="rules_mode_off_empty_title">Automation disabled</string>
+    <string name="rules_mode_off_empty_description">Select Conditional Rules to create automations, or leave this mode selected to keep SpeakThat always active.</string>
+    <string name="rules_mode_external_empty_title">Controlled by automation</string>
+    <string name="rules_mode_external_empty_description">SpeakThat is waiting for automation intents. Switch back to Conditional Rules to edit internal automations.</string>
+    <string name="rules_quick_strings_title" translatable="false">Automation intent shortcuts</string>
+    <string name="rules_quick_strings_note" translatable="false">Tap a row to copy the value.</string>
+    <string name="rules_quick_strings_action_enable_label" translatable="false">Enable action</string>
+    <string name="rules_quick_strings_action_disable_label" translatable="false">Disable action</string>
+    <string name="rules_quick_strings_receiver_label" translatable="false">Receiver class</string>
+    <string name="rules_quick_strings_package_label" translatable="false">Package name</string>
+    <string name="rules_quick_strings_copied" translatable="false">%1$s copied to clipboard</string>
+    <string name="rules_quick_strings_action_enable_value" translatable="false">com.micoyc.speakthat.intent.ACTION_ENABLE_SPEAKTHAT</string>
+    <string name="rules_quick_strings_action_disable_value" translatable="false">com.micoyc.speakthat.intent.ACTION_DISABLE_SPEAKTHAT</string>
+    <string name="rules_quick_strings_receiver_value" translatable="false">com.micoyc.speakthat.automation.AutomationBroadcastReceiver</string>
+    <string name="rules_quick_strings_package_value" translatable="false">com.micoyc.speakthat</string>
+    <string name="rules_quick_strings_flags_title" translatable="false">Recommended flags &amp; extras</string>
+    <string name="rules_quick_strings_flags_description" translatable="false">Enable the flag \"INCLUDE_STOPPED_PACKAGES\\" so intents still reach SpeakThat! after reboot, and use the flag \"RECEIVER_FOREGROUND\" if your automation app supports it for faster delivery.</string>
+    <string name="rules_quick_strings_source_hint" translatable="false">Optional: an \"Extra\" slot can be used to identify the automation in debug logs. Set the parameter name to \"source\", and the value to a key identifier of your choosing (e.g. \"enable-speakthat-when-i-get-home\") so you can tell which profile toggled the master switch.</string>
+    <string name="master_switch_enabled_toast" translatable="false">SpeakThat enabled - notifications will be read</string>
+    <string name="master_switch_disabled_toast" translatable="false">SpeakThat disabled - notifications will be silent</string>
+    <string name="master_switch_enabled_toast_automation" translatable="false">SpeakThat enabled via automation intent</string>
+    <string name="master_switch_disabled_toast_automation" translatable="false">SpeakThat disabled via automation intent</string>
     
     <!-- Onboarding -->
     <string name="onboarding_skip">Skip</string>
@@ -1567,6 +1598,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="diagnostics_output_stream_err">Output stream is blocked</string>
     <string name="diagnostics_output_stream_dash">Cannot determine output stream status</string>
     <string name="diagnostics_should_read_yes">All checks passed - notifications should be read</string>
+    <string name="diagnostics_should_read_yes_conditional">All checks passed - notifications should be read (Conditional Rules active)</string>
+    <string name="diagnostics_should_read_yes_external">All checks passed - notifications are controlled by external automation</string>
     <string name="diagnostics_should_read_no">Notifications are blocked by rules or settings</string>
     <string name="diagnostics_should_read_err">Cannot determine if notifications should be read</string>
     <string name="diagnostics_tts_engine_ok">TTS engine is working</string>
@@ -1633,6 +1666,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="selftest_step7_title">Rules System</string>
     <string name="selftest_step7_pass_disabled">Rules disabled</string>
     <string name="selftest_step7_warning">Rules enabled - may block notifications</string>
+    <string name="selftest_step7_external">External automation controls SpeakThat</string>
     
     <string name="selftest_step8_title">Post Test Notification</string>
     <string name="selftest_step8_posting">Posting test notification...</string>
