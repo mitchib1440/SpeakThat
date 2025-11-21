@@ -344,9 +344,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         availableLanguages.add(Locale.FRANCE);
         availableLanguages.add(Locale.GERMANY);
         availableLanguages.add(Locale.ITALY);
-        availableLanguages.add(new Locale("es", "ES")); // Spanish
-        availableLanguages.add(new Locale("pt", "PT")); // Portuguese (Portugal)
-        availableLanguages.add(new Locale("pt", "BR")); // Portuguese (Brazil)
+        availableLanguages.add(safeLocale("es", "ES")); // Spanish
+        availableLanguages.add(safeLocale("pt", "PT")); // Portuguese (Portugal)
+        availableLanguages.add(safeLocale("pt", "BR")); // Portuguese (Brazil)
 
         setupVoiceSpinner();
         setupLanguagePresetSpinner(); // New preset-based spinner
@@ -1330,7 +1330,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         }
         
         // Final fallback: Default to English
-        Locale defaultLocale = new Locale("en", "US");
+        Locale defaultLocale = safeLocale("en-US");
         InAppLogger.log("VoiceSettings", "Preview using default language: " + defaultLocale.toString());
         return defaultLocale;
     }
@@ -1367,11 +1367,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         
         String[] parts = localeCode.split("_");
         if (parts.length >= 2) {
-            return new Locale(parts[0], parts[1]);
+            return safeLocale(parts[0], parts[1]);
         } else if (parts.length == 1) {
-            return new Locale(parts[0]);
+            return safeLocale(parts[0]);
         }
-        return null;
+        return Locale.getDefault();
     }
     
     /**
@@ -1501,11 +1501,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 String[] langParts = preset.uiLocale.split("_");
                 Locale presetLocale;
                 if (langParts.length >= 2) {
-                    presetLocale = new Locale(langParts[0], langParts[1]);
+                    presetLocale = safeLocale(langParts[0], langParts[1]);
                 } else if (langParts.length == 1) {
-                    presetLocale = new Locale(langParts[0]);
+                    presetLocale = safeLocale(langParts[0]);
                 } else {
-                    presetLocale = new Locale("en", "US"); // Safe fallback
+                    presetLocale = safeLocale("en-US"); // Safe fallback
                 }
                 
                 // Apply the preset language directly
@@ -1559,7 +1559,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 InAppLogger.log("VoiceSettings", "Preview: Language set to: " + currentLanguage.toString() + " (result: " + langResult + ")");
             } else {
                 // Fallback to default if currentLanguage is somehow null
-                Locale defaultLocale = new Locale("en", "US");
+                Locale defaultLocale = safeLocale("en-US");
                 int langResult = textToSpeech.setLanguage(defaultLocale);
                 InAppLogger.log("VoiceSettings", "Preview: Using default language: " + defaultLocale.toString() + " (result: " + langResult + ")");
             }
@@ -1635,7 +1635,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         currentSpeechRate = DEFAULT_SPEECH_RATE;
         currentPitch = DEFAULT_PITCH;
         currentTtsVolume = DEFAULT_TTS_VOLUME;
-        currentLanguage = new Locale("en", "US");
+        currentLanguage = safeLocale("en-US");
 
         // Reset UI
         speechRateSeekBar.setProgress((int) ((DEFAULT_SPEECH_RATE - 0.1f) * 100));
@@ -1798,9 +1798,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             Locale targetLocale = null;
             String[] langParts = language.split("_");
             if (langParts.length >= 2) {
-                targetLocale = new Locale(langParts[0], langParts[1]);
+                targetLocale = safeLocale(langParts[0], langParts[1]);
             } else if (langParts.length == 1) {
-                targetLocale = new Locale(langParts[0]);
+                targetLocale = safeLocale(langParts[0]);
             } else {
                 targetLocale = Locale.getDefault();
             }
@@ -2355,5 +2355,33 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             textToSpeech.shutdown();
         }
         super.onDestroy();
+    }
+
+    private static Locale safeLocale(String language, String country) {
+        if (language == null || language.isEmpty()) {
+            return Locale.getDefault();
+        }
+        if (country == null || country.isEmpty()) {
+            return safeLocale(language);
+        }
+        return safeLocale(language + "-" + country);
+    }
+
+    private static Locale safeLocale(String languageTag) {
+        if (languageTag == null || languageTag.isEmpty()) {
+            return Locale.getDefault();
+        }
+        String normalizedTag = languageTag.replace('_', '-');
+        Locale locale = Locale.forLanguageTag(normalizedTag);
+        if (locale == null || locale.getLanguage() == null || locale.getLanguage().isEmpty() || "und".equals(locale.getLanguage())) {
+            String[] parts = languageTag.split("[-_]");
+            if (parts.length >= 2) {
+                return new Locale.Builder().setLanguage(parts[0]).setRegion(parts[1]).build();
+            } else if (parts.length == 1 && !parts[0].isEmpty()) {
+                return new Locale.Builder().setLanguage(parts[0]).build();
+            }
+            return Locale.getDefault();
+        }
+        return locale;
     }
 } 

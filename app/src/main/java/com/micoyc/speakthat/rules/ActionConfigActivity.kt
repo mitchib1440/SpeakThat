@@ -115,7 +115,7 @@ class ActionConfigActivity : AppCompatActivity() {
     private fun setupVoiceSettingsOptions() {
         // Speech rate options
         val speechRateOptions = arrayOf("Very Slow", "Slow", "Normal", "Fast", "Very Fast")
-        val speechRateValues = arrayOf(0.5f, 0.75f, 1.0f, 1.5f, 2.0f)
+        val speechRateValues = floatArrayOf(0.5f, 0.75f, 1.0f, 1.5f, 2.0f)
         
         val speechRateAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, speechRateOptions)
         speechRateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -123,7 +123,7 @@ class ActionConfigActivity : AppCompatActivity() {
         
         // Pitch options
         val pitchOptions = arrayOf("Very Low", "Low", "Normal", "High", "Very High")
-        val pitchValues = arrayOf(0.5f, 0.75f, 1.0f, 1.5f, 2.0f)
+        val pitchValues = floatArrayOf(0.5f, 0.75f, 1.0f, 1.5f, 2.0f)
         
         val pitchAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, pitchOptions)
         pitchAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -173,19 +173,17 @@ class ActionConfigActivity : AppCompatActivity() {
                 }
                 
                 ActionType.CHANGE_VOICE_SETTINGS -> {
-                    val voiceSettings = action.data["voice_settings"] as? Map<String, Any>
-                    if (voiceSettings != null) {
-                        val speechRate = voiceSettings["speech_rate"] as? Float ?: 1.0f
-                        val pitch = voiceSettings["pitch"] as? Float ?: 1.0f
+                    val voiceSettingsData = action.data["voice_settings"]
+                    if (voiceSettingsData is Map<*, *>) {
+                        val speechRate = (voiceSettingsData["speech_rate"] as? Number)?.toFloat() ?: 1.0f
+                        val pitch = (voiceSettingsData["pitch"] as? Number)?.toFloat() ?: 1.0f
                         
-                        // Set speech rate
-                        val speechRateValues = binding.spinnerSpeechRate.tag as? Array<Float>
-                        val speechRateIndex = speechRateValues?.indexOf(speechRate) ?: 2
+                        val speechRateValues = binding.spinnerSpeechRate.tag as? FloatArray
+                        val speechRateIndex = speechRateValues?.indexOfFirst { it == speechRate }?.takeIf { it >= 0 } ?: 2
                         binding.spinnerSpeechRate.setSelection(speechRateIndex)
                         
-                        // Set pitch
-                        val pitchValues = binding.spinnerPitch.tag as? Array<Float>
-                        val pitchIndex = pitchValues?.indexOf(pitch) ?: 2
+                        val pitchValues = binding.spinnerPitch.tag as? FloatArray
+                        val pitchIndex = pitchValues?.indexOfFirst { it == pitch }?.takeIf { it >= 0 } ?: 2
                         binding.spinnerPitch.setSelection(pitchIndex)
                     }
                 }
@@ -289,11 +287,11 @@ class ActionConfigActivity : AppCompatActivity() {
     }
 
     private fun createChangeVoiceSettingsAction(): Action {
-        val speechRateValues = binding.spinnerSpeechRate.tag as? Array<Float> ?: arrayOf(1.0f)
-        val pitchValues = binding.spinnerPitch.tag as? Array<Float> ?: arrayOf(1.0f)
+        val speechRateValues = binding.spinnerSpeechRate.tag as? FloatArray ?: floatArrayOf(1.0f)
+        val pitchValues = binding.spinnerPitch.tag as? FloatArray ?: floatArrayOf(1.0f)
         
-        val speechRate = speechRateValues[binding.spinnerSpeechRate.selectedItemPosition]
-        val pitch = pitchValues[binding.spinnerPitch.selectedItemPosition]
+        val speechRate = speechRateValues.getOrElse(binding.spinnerSpeechRate.selectedItemPosition) { 1.0f }
+        val pitch = pitchValues.getOrElse(binding.spinnerPitch.selectedItemPosition) { 1.0f }
         
         val voiceSettings = mapOf(
             "speech_rate" to speechRate,

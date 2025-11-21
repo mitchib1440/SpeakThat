@@ -295,16 +295,7 @@ public class LanguagePresetManager {
      */
     private static void applyUILanguageChange(Context context, String uiLocale) {
         try {
-            // Parse the locale string (e.g., "ja_JP" -> Locale("ja", "JP"))
-            String[] localeParts = uiLocale.split("_");
-            Locale targetLocale;
-            if (localeParts.length >= 2) {
-                targetLocale = new Locale(localeParts[0], localeParts[1]);
-            } else if (localeParts.length == 1) {
-                targetLocale = new Locale(localeParts[0]);
-            } else {
-                targetLocale = Locale.getDefault();
-            }
+            Locale targetLocale = parseLocaleString(uiLocale);
             
             // Check if the target locale is already the current locale to avoid infinite loops
             Configuration currentConfig = context.getResources().getConfiguration();
@@ -353,16 +344,7 @@ public class LanguagePresetManager {
      */
     private static void applyUILanguageChangeForOnboarding(Context context, String uiLocale) {
         try {
-            // Parse the locale string (e.g., "ja_JP" -> Locale("ja", "JP"))
-            String[] localeParts = uiLocale.split("_");
-            Locale targetLocale;
-            if (localeParts.length >= 2) {
-                targetLocale = new Locale(localeParts[0], localeParts[1]);
-            } else if (localeParts.length == 1) {
-                targetLocale = new Locale(localeParts[0]);
-            } else {
-                targetLocale = Locale.getDefault();
-            }
+            Locale targetLocale = parseLocaleString(uiLocale);
             
             // Check if the target locale is already the current locale to avoid infinite loops
             Configuration currentConfig = context.getResources().getConfiguration();
@@ -404,6 +386,25 @@ public class LanguagePresetManager {
         } catch (Exception e) {
             InAppLogger.log(TAG, "Error applying onboarding UI language change: " + e.getMessage());
         }
+    }
+
+    private static Locale parseLocaleString(String localeString) {
+        if (localeString == null || localeString.isEmpty()) {
+            return Locale.getDefault();
+        }
+
+        String normalizedTag = localeString.replace('_', '-');
+        Locale locale = Locale.forLanguageTag(normalizedTag);
+        if (locale == null || locale.getLanguage() == null || locale.getLanguage().isEmpty() || "und".equals(locale.getLanguage())) {
+            String[] parts = localeString.split("_");
+            if (parts.length >= 2) {
+                return new Locale.Builder().setLanguage(parts[0]).setRegion(parts[1]).build();
+            } else if (parts.length == 1 && !parts[0].isEmpty()) {
+                return new Locale.Builder().setLanguage(parts[0]).build();
+            }
+            return Locale.getDefault();
+        }
+        return locale;
     }
     
     /**

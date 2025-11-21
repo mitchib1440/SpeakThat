@@ -108,12 +108,17 @@ class AboutActivity : AppCompatActivity() {
             val statsManager = StatisticsManager.getInstance(this)
             val stats = statsManager.getStats()
             
-            val received = stats["notifications_received"] as Int
-            val read = stats["notifications_read"] as Int
-            val readoutsInterrupted = stats["readouts_interrupted"] as Int
-            val percentage = stats["percentage_read"] as Double
-            val filterReasons = stats["filter_reasons"] as Map<String, Int>
-            val appsRead = stats["apps_read"] as Set<String>
+            val received = (stats["notifications_received"] as? Number)?.toInt() ?: 0
+            val read = (stats["notifications_read"] as? Number)?.toInt() ?: 0
+            val readoutsInterrupted = (stats["readouts_interrupted"] as? Number)?.toInt() ?: 0
+            val percentage = (stats["percentage_read"] as? Number)?.toDouble() ?: 0.0
+            val filterReasons = (stats["filter_reasons"] as? Map<*, *>)?.entries
+                ?.mapNotNull { entry ->
+                    val key = entry.key as? String ?: return@mapNotNull null
+                    val value = (entry.value as? Number)?.toInt() ?: return@mapNotNull null
+                    key to value
+                }?.toMap() ?: emptyMap()
+            val appsRead = (stats["apps_read"] as? Collection<*>)?.mapNotNull { it as? String }?.toSet() ?: emptySet()
             
             val statsText = buildString {
                 // Basic stats

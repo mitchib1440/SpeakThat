@@ -863,8 +863,7 @@ class OnboardingPagerAdapter(
             try {
                 // Check if this is a WiFi rule with specific networks and we can't resolve SSIDs
                 val hasWifiTrigger = template.triggers.any { it.type == TriggerType.WIFI_NETWORK }
-                val hasSpecificNetworks = customData.containsKey("network_ssids") && 
-                    (customData["network_ssids"] as? Set<String>)?.isNotEmpty() == true
+                val hasSpecificNetworks = (customData["network_ssids"] as? Collection<*>)?.any { (it as? String)?.isNotBlank() == true } == true
                 
                 if (hasWifiTrigger && hasSpecificNetworks) {
                     // Always show warning for WiFi rules with specific networks to inform about Android limitations

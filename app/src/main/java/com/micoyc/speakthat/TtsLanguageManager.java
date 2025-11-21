@@ -48,70 +48,70 @@ public class TtsLanguageManager {
         
         // Add languages that have actual translations
         // English (using GB spelling as default since you're British)
-        languages.add(new TtsLanguage("English (United Kingdom)", "en_GB", new Locale("en", "GB")));
+        languages.add(new TtsLanguage("English (United Kingdom)", "en_GB", locale("en-GB")));
         
         // Pirate English (for testing and fun!)
-        languages.add(new TtsLanguage("Pirate English (Arr!)", "en_PIRATE", new Locale("en", "PIRATE")));
+        languages.add(new TtsLanguage("Pirate English (Arr!)", "en_PIRATE", locale("en-PIRATE")));
         
         // German (has complete translations)
-        languages.add(new TtsLanguage("Deutsch (Deutschland)", "de_DE", new Locale("de", "DE")));
+        languages.add(new TtsLanguage("Deutsch (Deutschland)", "de_DE", locale("de-DE")));
         
         // Italian (has complete translations)
-        languages.add(new TtsLanguage("Italiano (Italia)", "it_IT", new Locale("it", "IT")));
+        languages.add(new TtsLanguage("Italiano (Italia)", "it_IT", locale("it-IT")));
         
         // Swedish (has complete translations)
-        languages.add(new TtsLanguage("Svenska (Sverige)", "sv_SE", new Locale("sv", "SE")));
+        languages.add(new TtsLanguage("Svenska (Sverige)", "sv_SE", locale("sv-SE")));
         
         // Portuguese (has complete translations)
-        languages.add(new TtsLanguage("Português (Brasil)", "pt_BR", new Locale("pt", "BR")));
+        languages.add(new TtsLanguage("Português (Brasil)", "pt_BR", locale("pt-BR")));
         
         // Spanish (has complete translations)
-        languages.add(new TtsLanguage("Español (España)", "es_ES", new Locale("es", "ES")));
+        languages.add(new TtsLanguage("Español (España)", "es_ES", locale("es-ES")));
         
         // French (has complete translations)
-        languages.add(new TtsLanguage("Français (France)", "fr_FR", new Locale("fr", "FR")));
+        languages.add(new TtsLanguage("Français (France)", "fr_FR", locale("fr-FR")));
         
         // Arabic (has complete translations - RTL language)
-        languages.add(new TtsLanguage("العربية (المملكة العربية السعودية)", "ar_SA", new Locale("ar", "SA")));
+        languages.add(new TtsLanguage("العربية (المملكة العربية السعودية)", "ar_SA", locale("ar-SA")));
         
         // Japanese (has complete translations - SOV word order)
-        languages.add(new TtsLanguage("日本語 (日本)", "ja_JP", new Locale("ja", "JP")));
+        languages.add(new TtsLanguage("日本語 (日本)", "ja_JP", locale("ja-JP")));
         
         // Korean (has complete translations - SOV word order)
-        languages.add(new TtsLanguage("한국어 (대한민국)", "ko_KR", new Locale("ko", "KR")));
+        languages.add(new TtsLanguage("한국어 (대한민국)", "ko_KR", locale("ko-KR")));
         
         // Chinese Simplified (has complete translations)
-        languages.add(new TtsLanguage("中文 (简体)", "zh_CN", new Locale("zh", "CN")));
+        languages.add(new TtsLanguage("中文 (简体)", "zh_CN", locale("zh-CN")));
         
         // Chinese Traditional (has complete translations)
-        languages.add(new TtsLanguage("中文 (繁體)", "zh_TW", new Locale("zh", "TW")));
+        languages.add(new TtsLanguage("中文 (繁體)", "zh_TW", locale("zh-TW")));
         
         // Russian (has complete translations)
-        languages.add(new TtsLanguage("Русский (Россия)", "ru_RU", new Locale("ru", "RU")));
+        languages.add(new TtsLanguage("Русский (Россия)", "ru_RU", locale("ru-RU")));
         
         // Thai (has complete translations)
-        languages.add(new TtsLanguage("ไทย (ประเทศไทย)", "th_TH", new Locale("th", "TH")));
+        languages.add(new TtsLanguage("ไทย (ประเทศไทย)", "th_TH", locale("th-TH")));
         
         // Vietnamese (has complete translations)
-        languages.add(new TtsLanguage("Tiếng Việt (Việt Nam)", "vi_VN", new Locale("vi", "VN")));
+        languages.add(new TtsLanguage("Tiếng Việt (Việt Nam)", "vi_VN", locale("vi-VN")));
         
         // Hindi (has complete translations - SOV word order, Devanagari script)
-        languages.add(new TtsLanguage("हिन्दी (भारत)", "hi_IN", new Locale("hi", "IN")));
+        languages.add(new TtsLanguage("हिन्दी (भारत)", "hi_IN", locale("hi-IN")));
         
         // Indonesian (has complete translations)
-        languages.add(new TtsLanguage("Bahasa Indonesia (Indonesia)", "id_ID", new Locale("id", "ID")));
+        languages.add(new TtsLanguage("Bahasa Indonesia (Indonesia)", "id_ID", locale("id-ID")));
         
         // Turkish (has complete translations - agglutinative language)
-        languages.add(new TtsLanguage("Türkçe (Türkiye)", "tr_TR", new Locale("tr", "TR")));
+        languages.add(new TtsLanguage("Türkçe (Türkiye)", "tr_TR", locale("tr-TR")));
         
         // Polish (has complete translations - complex grammar)
-        languages.add(new TtsLanguage("Polski (Polska)", "pl_PL", new Locale("pl", "PL")));
+        languages.add(new TtsLanguage("Polski (Polska)", "pl_PL", locale("pl-PL")));
         
         // Punjabi (has complete translations - Gurmukhi script)
-        languages.add(new TtsLanguage("ਪੰਜਾਬੀ (ਭਾਰਤ)", "pa_IN", new Locale("pa", "IN")));
+        languages.add(new TtsLanguage("ਪੰਜਾਬੀ (ਭਾਰਤ)", "pa_IN", locale("pa-IN")));
         
         // Dutch (has complete translations)
-        languages.add(new TtsLanguage("Nederlands (Nederland)", "nl_NL", new Locale("nl", "NL")));
+        languages.add(new TtsLanguage("Nederlands (Nederland)", "nl_NL", locale("nl-NL")));
         
         // Note: Add more languages here ONLY when they have complete translations
         // This prevents the "fraud" issue of showing languages without proper translations
@@ -375,5 +375,23 @@ public class TtsLanguageManager {
         }
         
         return pirateText;
+    }
+
+    private static Locale locale(String languageTag) {
+        if (languageTag == null || languageTag.isEmpty()) {
+            return Locale.getDefault();
+        }
+        String normalizedTag = languageTag.replace('_', '-');
+        Locale locale = Locale.forLanguageTag(normalizedTag);
+        if (locale == null || locale.getLanguage() == null || locale.getLanguage().isEmpty() || "und".equals(locale.getLanguage())) {
+            String[] parts = languageTag.split("[-_]");
+            if (parts.length >= 2) {
+                return new Locale.Builder().setLanguage(parts[0]).setRegion(parts[1]).build();
+            } else if (parts.length == 1 && !parts[0].isEmpty()) {
+                return new Locale.Builder().setLanguage(parts[0]).build();
+            }
+            return Locale.getDefault();
+        }
+        return locale;
     }
 } 

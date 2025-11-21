@@ -118,7 +118,11 @@ public class TestSettingsActivity extends AppCompatActivity {
         // Set language
         String[] langParts = language.split("_");
         if (langParts.length == 2) {
-            tts.setLanguage(new Locale(langParts[0], langParts[1]));
+            Locale targetLocale = Locale.forLanguageTag((langParts[0] + "-" + langParts[1]).replace('_', '-'));
+            if (targetLocale == null || targetLocale.getLanguage().isEmpty() || "und".equals(targetLocale.getLanguage())) {
+                targetLocale = new Locale.Builder().setLanguage(langParts[0]).setRegion(langParts[1]).build();
+            }
+            tts.setLanguage(targetLocale);
         }
     }
     

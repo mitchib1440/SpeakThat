@@ -473,13 +473,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         val savedLanguage = voiceSettingsPrefs.getString("language", "en_US") ?: "en_US"
         
         try {
-            // Parse the locale string (e.g., "ja_JP" -> Locale("ja", "JP"))
-            val localeParts = savedLanguage.split("_")
-            val targetLocale = when {
-                localeParts.size >= 2 -> java.util.Locale(localeParts[0], localeParts[1])
-                localeParts.size == 1 -> java.util.Locale(localeParts[0])
-                else -> java.util.Locale.getDefault()
-            }
+            val targetLocale = parseLocalePreference(savedLanguage)
             
             // Check if we need to change the locale
             val currentConfig = resources.configuration
@@ -508,7 +502,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 resources.updateConfiguration(config, resources.displayMetrics)
                 
                 // Also update the default locale for this session
-                java.util.Locale.setDefault(targetLocale)
+                Locale.setDefault(targetLocale)
                 
                 // Show language change dialog instead of immediate recreate
                 showLanguageChangeDialog(targetLocale)
@@ -519,6 +513,16 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         } catch (e: Exception) {
             com.micoyc.speakthat.InAppLogger.log("MainActivity", 
                 "Error applying saved language: ${e.message}")
+        }
+    }
+
+    private fun parseLocalePreference(languageTag: String): Locale {
+        return try {
+            val normalizedTag = languageTag.replace('_', '-')
+            val locale = Locale.forLanguageTag(normalizedTag)
+            if (locale.language.isBlank()) Locale.getDefault() else locale
+        } catch (e: Exception) {
+            Locale.getDefault()
         }
     }
     
@@ -1268,13 +1272,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
             val savedLanguage = voiceSettingsPrefs.getString("language", "en_US") ?: "en_US"
             
-            // Parse locale
-            val localeParts = savedLanguage.split("_")
-            val targetLocale = when {
-                localeParts.size >= 2 -> java.util.Locale(localeParts[0], localeParts[1])
-                localeParts.size == 1 -> java.util.Locale(localeParts[0])
-                else -> java.util.Locale.getDefault()
-            }
+            val targetLocale = parseLocalePreference(savedLanguage)
             
             val availability = textToSpeech?.isLanguageAvailable(targetLocale) ?: TextToSpeech.LANG_NOT_SUPPORTED
             when (availability) {
