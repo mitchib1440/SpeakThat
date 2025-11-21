@@ -140,6 +140,16 @@ public class LanguagePresetManager {
             false
         ));
         
+        // French - complete UI translations available
+        presets.add(new LanguagePreset(
+            "fr_FR",
+            "Français (France)",
+            "fr_FR",
+            "fr_FR",
+            null,  // Let system choose best French voice
+            false
+        ));
+        
         // German - complete UI translations available
         presets.add(new LanguagePreset(
             "de_DE", 
