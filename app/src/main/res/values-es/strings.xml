@@ -1553,10 +1553,6 @@ Registra el ciclo de vida de la aplicación y los eventos del sistema
     <string name="dev_notification_logging_description">
 Registra eventos de procesamiento de notificaciones
 </string>
-    <string name="dev_sensitive_data_logging">Registro de datos sensible</string>
-    <string name="dev_sensitive_data_logging_description">
-⚠️ Registrar información sensible (deshabilitada por defecto)
-</string>
     <string name="dev_live_log_display">📊 Pantalla de registro en vivo</string>
     <string name="dev_live_log_description">
 Vista en tiempo real de lo que está ocurriendo bajo el capó

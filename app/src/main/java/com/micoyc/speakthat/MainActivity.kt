@@ -444,13 +444,17 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Update UI immediately
         updateServiceStatus()
         
-        // Show feedback to user
-        val message = if (isEnabled) {
-            "SpeakThat enabled - notifications will be read"
-        } else {
-            "SpeakThat disabled - notifications will be silent"
+        // Show feedback to user if toast is enabled
+        val prefs = getSharedPreferences("SpeakThatPrefs", Context.MODE_PRIVATE)
+        val showToast = prefs.getBoolean(MasterSwitchController.KEY_TOAST_MAIN_APP, true)
+        if (showToast) {
+            val message = if (isEnabled) {
+                "SpeakThat enabled - notifications will be read"
+            } else {
+                "SpeakThat disabled - notifications will be silent"
+            }
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         
         Log.d(TAG, "Master switch toggled: $isEnabled")
     }

@@ -1525,10 +1525,6 @@ Gebruikersinteracties en indrukken van knoppen registreren
     <string name="dev_system_event_logging_description">Log app levensduur en systeemgebeurtenissen</string>
     <string name="dev_notification_logging">Meldingslogging</string>
     <string name="dev_notification_logging_description">Meldingsverwerkingsgebeurtenissen registreren</string>
-    <string name="dev_sensitive_data_logging">Gevoelige gegevensregistratie</string>
-    <string name="dev_sensitive_data_logging_description">
-⚠️ Log gevoelige informatie (standaard uitgeschakeld)
-</string>
     <string name="dev_live_log_display">📊 Weergave Live Log</string>
     <string name="dev_live_log_description">
 Real-time overzicht van wat er onder de motorkap gebeurt

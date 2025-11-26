@@ -1590,10 +1590,6 @@ App-Lebenszyklus und System-Ereignisse protokolliert
 </string>
     <string name="dev_notification_logging">Benachrichtigungsprotokollierung</string>
     <string name="dev_notification_logging_description">Logge Benachrichtigungs-Verarbeitungsvorgänge</string>
-    <string name="dev_sensitive_data_logging">Sensitive Datenprotokollierung</string>
-    <string name="dev_sensitive_data_logging_description">
-⚠️Protokolliere sensible Informationen (standardmäßig deaktiviert)
-</string>
     <string name="dev_live_log_display">📊 Live-Protokoll-Anzeige</string>
     <string name="dev_live_log_description">
 Echtzeit-Ansicht dessen, was unter der Haube passiert

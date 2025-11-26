@@ -23,6 +23,9 @@ object MasterSwitchController {
     private const val PREFS_NAME = "SpeakThatPrefs"
     private const val KEY_MASTER_SWITCH_ENABLED = "master_switch_enabled"
     private const val KEY_PERSISTENT_NOTIFICATION = "persistent_notification"
+    const val KEY_TOAST_MAIN_APP = "toast_main_app_enabled"
+    const val KEY_TOAST_QUICK_SETTINGS = "toast_quick_settings_enabled"
+    const val KEY_TOAST_AUTOMATION = "toast_automation_enabled"
     private const val CHANNEL_ID = "SpeakThat_Channel"
     private const val CHANNEL_NAME = "SpeakThat Notifications"
     private const val NOTIFICATION_ID_PERSISTENT = 1001
@@ -49,16 +52,19 @@ object MasterSwitchController {
         )
 
         if (source?.startsWith("AutomationIntent:") == true) {
-            Handler(Looper.getMainLooper()).post {
-                Toast.makeText(
-                    context,
-                    if (enabled) {
-                        context.getString(R.string.master_switch_enabled_toast_automation)
-                    } else {
-                        context.getString(R.string.master_switch_disabled_toast_automation)
-                    },
-                    Toast.LENGTH_SHORT
-                ).show()
+            val showToast = prefs.getBoolean(KEY_TOAST_AUTOMATION, true)
+            if (showToast) {
+                Handler(Looper.getMainLooper()).post {
+                    Toast.makeText(
+                        context,
+                        if (enabled) {
+                            context.getString(R.string.master_switch_enabled_toast_automation)
+                        } else {
+                            context.getString(R.string.master_switch_disabled_toast_automation)
+                        },
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
 

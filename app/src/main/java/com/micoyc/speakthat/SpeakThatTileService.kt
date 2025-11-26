@@ -1,6 +1,8 @@
 package com.micoyc.speakthat
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
@@ -67,17 +69,21 @@ class SpeakThatTileService : TileService() {
             InAppLogger.logSettingsChange("Quick Settings Tile", isCurrentlyEnabled.toString(), newState.toString())
             InAppLogger.log("QuickSettingsTile", "Master switch ${if (newState) "enabled" else "disabled"} via Quick Settings tile")
             
-            // Show user feedback
-            val message = if (newState) {
-                getString(R.string.quick_settings_tile_enabled_toast)
-            } else {
-                getString(R.string.quick_settings_tile_disabled_toast)
+            // Show user feedback if toast is enabled
+            val prefs = getSharedPreferences("SpeakThatPrefs", Context.MODE_PRIVATE)
+            val showToast = prefs.getBoolean(MasterSwitchController.KEY_TOAST_QUICK_SETTINGS, true)
+            if (showToast) {
+                val message = if (newState) {
+                    getString(R.string.quick_settings_tile_enabled_toast)
+                } else {
+                    getString(R.string.quick_settings_tile_disabled_toast)
+                }
+                
+                // Use a brief toast to confirm the action
+                // Note: We use a short duration to minimize battery impact
+                val toast = android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT)
+                toast.show()
             }
-            
-            // Use a brief toast to confirm the action
-            // Note: We use a short duration to minimize battery impact
-            val toast = android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT)
-            toast.show()
             
 
             

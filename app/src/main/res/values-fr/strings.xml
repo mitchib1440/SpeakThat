@@ -1517,10 +1517,6 @@ Journalisation du cycle de vie de l\'application et des évènements systèmes
     <string name="dev_notification_logging_description">
 Journalisation des évènements de traitement des notifications
 </string>
-    <string name="dev_sensitive_data_logging">Journalisation des données sensibles</string>
-    <string name="dev_sensitive_data_logging_description">
-⚠️ Journalisation des données sensibles (désactivé par défaut)
-</string>
     <string name="dev_disable_media_fallback">Désactiver le comportement de secours des médias</string>
     <string name="dev_disable_media_fallback_description">
 Désactive les méthodes de secours pour le comportement des médias. Si une méthode ne fonctionne pas, il n\'essayera pas une alternative. Ceci aide à isoler les problèmes. Notez que dans ce cas, le mode sourdine sera remplacé par le mode pause en cas d\'échec. Si les deux méthodes échouent, les notifications seront lues sans focus audio.

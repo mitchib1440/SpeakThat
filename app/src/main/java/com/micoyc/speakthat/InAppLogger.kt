@@ -36,9 +36,6 @@ object InAppLogger {
     @JvmField
     var logSystemEvents = true
     
-    @JvmField
-    var logSensitiveData = false // For privacy-sensitive information
-    
     private data class LogEntry(
         val timestamp: String,
         val tag: String,
@@ -441,13 +438,6 @@ object InAppLogger {
     }
     
     @JvmStatic
-    fun logSensitive(tag: String, message: String) {
-        if (logSensitiveData) {
-            log(tag, message, "SENSITIVE")
-        }
-    }
-    
-    @JvmStatic
     fun logCrash(exception: Throwable, context: String = "") {
         val message = if (context.isNotEmpty()) {
             "$context - ${exception.javaClass.simpleName}: ${exception.message}"
@@ -491,7 +481,6 @@ object InAppLogger {
             "C" -> Log.i("SpeakThat_Settings", message)
             "P" -> Log.i("SpeakThat_Permission", message)
             "L" -> Log.i("SpeakThat_Lifecycle", message)
-            "SENSITIVE" -> Log.i("SpeakThat_Sensitive", message)
             "CRASH" -> Log.e("SpeakThat_Crash", message)
             "PERF" -> Log.d("SpeakThat_Performance", message)
             else -> Log.i("SpeakThat_$tag", message)
@@ -511,8 +500,8 @@ object InAppLogger {
     
     @JvmStatic
     fun getLogsForSupport(): String {
-        // Get logs excluding sensitive data for support purposes
-        return logs.filter { it.level != "SENSITIVE" }.joinToString("\n")
+        // Get all logs for support purposes
+        return logs.joinToString("\n")
     }
     
     @JvmStatic
@@ -549,12 +538,6 @@ object InAppLogger {
     fun setLogSystemEvents(enabled: Boolean) {
         logSystemEvents = enabled
         log("Logger", "System event logging ${if (enabled) "enabled" else "disabled"}")
-    }
-    
-    @JvmStatic
-    fun setLogSensitiveData(enabled: Boolean) {
-        logSensitiveData = enabled
-        log("Logger", "Sensitive data logging ${if (enabled) "enabled" else "disabled"}")
     }
     
     @JvmStatic
@@ -629,7 +612,7 @@ object InAppLogger {
             appendLine("App Version: ${getAppVersionInfo(context)}")
             appendLine("Build Variant: ${getBuildVariantInfo()}")
             appendLine("Installation Source: ${getInstallationSource(context)}")
-            appendLine("Logging Settings: Verbose=$verboseMode, Filters=$logFilters, Notifications=$logNotifications, UserActions=$logUserActions, SystemEvents=$logSystemEvents, Sensitive=$logSensitiveData")
+            appendLine("Logging Settings: Verbose=$verboseMode, Filters=$logFilters, Notifications=$logNotifications, UserActions=$logUserActions, SystemEvents=$logSystemEvents")
             appendLine("Total Log Entries: ${logs.size}")
             appendLine("Crash Logs Available: ${hasCrashLogs()}")
             appendLine("Timestamp: ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())}")

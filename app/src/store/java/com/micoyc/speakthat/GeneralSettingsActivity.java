@@ -57,6 +57,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
 
         setupThemeSettings();
         setupPerformanceSettings();
+        setupToastNotifications();
         setupAccessibilityPermission();
         setupDataManagement();
         setupThemeIcon();
@@ -244,6 +245,35 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 policy = getString(R.string.restart_policy_never);
             }
             sharedPreferences.edit().putString(getString(R.string.prefs_restart_policy), policy).apply();
+        });
+    }
+
+    private void setupToastNotifications() {
+        // Main App Toggle Toast
+        MaterialSwitch toastMainAppSwitch = binding.switchToastMainApp;
+        boolean toastMainAppEnabled = sharedPreferences.getBoolean(com.micoyc.speakthat.MasterSwitchController.KEY_TOAST_MAIN_APP, true);
+        toastMainAppSwitch.setChecked(toastMainAppEnabled);
+
+        toastMainAppSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean(com.micoyc.speakthat.MasterSwitchController.KEY_TOAST_MAIN_APP, isChecked).apply();
+        });
+
+        // Quick Settings Tile Toast
+        MaterialSwitch toastQuickSettingsSwitch = binding.switchToastQuickSettings;
+        boolean toastQuickSettingsEnabled = sharedPreferences.getBoolean(com.micoyc.speakthat.MasterSwitchController.KEY_TOAST_QUICK_SETTINGS, true);
+        toastQuickSettingsSwitch.setChecked(toastQuickSettingsEnabled);
+
+        toastQuickSettingsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean(com.micoyc.speakthat.MasterSwitchController.KEY_TOAST_QUICK_SETTINGS, isChecked).apply();
+        });
+
+        // Automation Intents Toast
+        MaterialSwitch toastAutomationSwitch = binding.switchToastAutomation;
+        boolean toastAutomationEnabled = sharedPreferences.getBoolean(com.micoyc.speakthat.MasterSwitchController.KEY_TOAST_AUTOMATION, true);
+        toastAutomationSwitch.setChecked(toastAutomationEnabled);
+
+        toastAutomationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean(com.micoyc.speakthat.MasterSwitchController.KEY_TOAST_AUTOMATION, isChecked).apply();
         });
     }
 

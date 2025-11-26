@@ -908,30 +908,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 }
                 
                 if (notificationText.isNotEmpty()) {
-                    // SECURITY: Check sensitive data logging setting once for this notification
-                    val isSensitiveDataLoggingEnabled = sharedPreferences?.getBoolean("log_sensitive_data", false) ?: false
-                    
                     // Log the notification being processed for debugging
                     Log.d(TAG, "Processing notification from $appName: '$notificationText' (ID: ${sbn?.id}, time: ${System.currentTimeMillis()})")
                     
                     // Apply filtering first to determine final privacy status
                     val filterResult = applyFilters(packageName, appName, notificationText, sbn)
                     
-                    // SECURITY: Check if the final result is private (either app-level or word-level)
+                    // Check if the final result is private (either app-level or word-level)
                     val isAppPrivate = privateApps.contains(packageName)
                     val isWordPrivate = filterResult.processedText.contains("private notification") || filterResult.processedText.contains("You received a private notification")
                     val isPrivateContent = isAppPrivate || isWordPrivate
                     
-                    // Log notification content based on privacy status and sensitive data logging setting
+                    // Always log notification content (including private notifications for debugging)
                     if (isPrivateContent) {
-                        if (isSensitiveDataLoggingEnabled) {
-                            // SECURITY EXCEPTION: Only for development/testing with explicit user consent
-                            Log.d(TAG, "New notification from $appName: $notificationText [SENSITIVE DATA LOGGING ENABLED]")
-                            InAppLogger.logNotification("Processing private notification from $appName: $notificationText [SENSITIVE DATA LOGGING ENABLED]")
-                        } else {
-                            Log.d(TAG, "New notification from $appName: [PRIVATE CONTENT - NOT LOGGED]")
-                            InAppLogger.logNotification("Processing private notification from $appName: [PRIVATE CONTENT - NOT LOGGED]")
-                        }
+                        Log.d(TAG, "New notification from $appName: $notificationText")
+                        InAppLogger.logNotification("Processing private notification from $appName: $notificationText")
                     } else {
                         Log.d(TAG, "New notification from $appName: $notificationText")
                         InAppLogger.logNotification("Processing notification from $appName: $notificationText")
@@ -956,18 +947,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         // Handle notification based on behavior mode (pass conditional delay info)
                         handleNotificationBehavior(packageName, finalAppName, filterResult.processedText, filterResult.conditionalDelaySeconds, sbn)
                     } else {
-                        // Always log the blocking reason type (not sensitive data)
-                        // When sensitive data logging is enabled, also log the full details
+                        // Always log the full blocking reason with details
                         val reasonType = extractBlockingReasonType(filterResult.reason)
-                        if (isSensitiveDataLoggingEnabled) {
-                            // Log full reason with details when sensitive data logging is enabled
-                            Log.d(TAG, "Notification blocked from $appName: Blocked: $reasonType (Details: ${filterResult.reason}) [SENSITIVE DATA LOGGING ENABLED]")
-                            InAppLogger.logFilter("Blocked notification from $appName: Blocked: $reasonType (Details: ${filterResult.reason}) [SENSITIVE DATA LOGGING ENABLED]")
-                        } else {
-                            // Log only the reason type (no sensitive details)
-                            Log.d(TAG, "Notification blocked from $appName: Blocked: $reasonType")
-                            InAppLogger.logFilter("Blocked notification from $appName: Blocked: $reasonType")
-                        }
+                        Log.d(TAG, "Notification blocked from $appName: Blocked: $reasonType (Details: ${filterResult.reason})")
+                        InAppLogger.logFilter("Blocked notification from $appName: Blocked: $reasonType (Details: ${filterResult.reason})")
                     }
                 }
             } catch (e: Exception) {
@@ -2364,15 +2347,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 // This ensures complete privacy - no partial content is revealed
                 processedText = getLocalizedTemplate("private_notification", appName, "")
                 
-                // SECURITY: Check sensitive data logging setting for word filtering logs
-                val isSensitiveDataLoggingEnabled = sharedPreferences?.getBoolean("log_sensitive_data", false) ?: false
-                if (isSensitiveDataLoggingEnabled) {
-                    Log.d(TAG, "Private word '$privateWord' detected - entire notification made private [SENSITIVE DATA LOGGING ENABLED]")
-                    InAppLogger.logFilter("Made notification private due to word: $privateWord [SENSITIVE DATA LOGGING ENABLED]")
-                } else {
-                    Log.d(TAG, "Private word detected - entire notification made private [WORD REDACTED]")
-                    InAppLogger.logFilter("Made notification private due to word: [REDACTED]")
-                }
+                // Always log private word detection for debugging
+                Log.d(TAG, "Private word '$privateWord' detected - entire notification made private")
+                InAppLogger.logFilter("Made notification private due to word: $privateWord")
                 break // Exit loop since entire text is now private
             }
         }

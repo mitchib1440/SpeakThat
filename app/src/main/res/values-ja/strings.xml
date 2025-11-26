@@ -1433,8 +1433,6 @@ SpeakThat currently only supports one voice at a time. This means:\n\n✅ What w
     <string name="dev_system_event_logging_description">Log app lifecycle and system events</string>
     <string name="dev_notification_logging">Notification Logging</string>
     <string name="dev_notification_logging_description">Log notification processing events</string>
-    <string name="dev_sensitive_data_logging">Sensitive Data Logging</string>
-    <string name="dev_sensitive_data_logging_description">⚠️ Log sensitive information (disabled by default)</string>
     <string name="dev_live_log_display">📊 Live Log Display</string>
     <string name="dev_live_log_description">Real-time view of what\'s happening under the hood</string>
     <string name="dev_view_crash_logs">📄 View Crash Logs</string>

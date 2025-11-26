@@ -845,6 +845,13 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="general_persistent_notification_description">Show a persistent notification when SpeakThat is active</string>
     <string name="general_notification_while_reading">Notification While Reading</string>
     <string name="general_notification_while_reading_description">Show a notification when TTS is actively reading</string>
+    <string name="general_toast_notifications_title">Enable Toast Notifications</string>
+    <string name="general_toast_main_app">Main app toggle</string>
+    <string name="general_toast_main_app_description">Show toast when toggling master switch in the app</string>
+    <string name="general_toast_quick_settings">Quick Settings tile</string>
+    <string name="general_toast_quick_settings_description">Show toast when toggling via Quick Settings tile</string>
+    <string name="general_toast_automation">Automation intents</string>
+    <string name="general_toast_automation_description">Show toast when toggling via external automation apps</string>
     <string name="general_data_management_title">Data Management</string>
     <string name="general_export_configuration">Export Configuration</string>
     <string name="general_export_configuration_description">Save all settings to a file</string>
@@ -1441,8 +1448,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="dev_system_event_logging_description">Log app lifecycle and system events</string>
     <string name="dev_notification_logging">Notification Logging</string>
     <string name="dev_notification_logging_description">Log notification processing events</string>
-    <string name="dev_sensitive_data_logging">Sensitive Data Logging</string>
-    <string name="dev_sensitive_data_logging_description">⚠️ Log sensitive information (disabled by default)</string>
     <string name="dev_disable_media_fallback">Disable Media Behavior Fallback</string>
     <string name="dev_disable_media_fallback_description">Disable fallback methods for media behavior. If a feature doesn\'t work, it won\'t try alternatives. Helps isolate issues. Note: When disabled, duck mode will fall back to pause mode if ducking fails. If both fail, notifications will still be read without audio focus.</string>
     <string name="dev_live_log_display">📊 Live Log Display</string>

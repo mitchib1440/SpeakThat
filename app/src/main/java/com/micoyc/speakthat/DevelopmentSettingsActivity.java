@@ -53,7 +53,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
     private static final String KEY_LOG_NOTIFICATIONS = "log_notifications";
     private static final String KEY_LOG_USER_ACTIONS = "log_user_actions";
     private static final String KEY_LOG_SYSTEM_EVENTS = "log_system_events";
-    private static final String KEY_LOG_SENSITIVE_DATA = "log_sensitive_data";
     private static final String KEY_DISABLE_MEDIA_FALLBACK = "disable_media_fallback";
     private static final long LISTENER_WARNING_THRESHOLD_MS = 5 * 60 * 1000L;
 
@@ -263,12 +262,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             saveLogSystemEvents(isChecked);
             InAppLogger.setLogSystemEvents(isChecked);
             InAppLogger.log("Development", "System event logging " + (isChecked ? "enabled" : "disabled"));
-        });
-        
-        binding.switchLogSensitiveData.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            saveLogSensitiveData(isChecked);
-            InAppLogger.setLogSensitiveData(isChecked);
-            InAppLogger.log("Development", "Sensitive data logging " + (isChecked ? "enabled" : "disabled"));
         });
         
         binding.switchDisableMediaFallback.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -762,7 +755,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         boolean logNotifications = sharedPreferences.getBoolean(KEY_LOG_NOTIFICATIONS, true); // Default to enabled
         boolean logUserActions = sharedPreferences.getBoolean(KEY_LOG_USER_ACTIONS, true); // Default to enabled
         boolean logSystemEvents = sharedPreferences.getBoolean(KEY_LOG_SYSTEM_EVENTS, true); // Default to enabled
-        boolean logSensitiveData = sharedPreferences.getBoolean(KEY_LOG_SENSITIVE_DATA, false); // Default to disabled
         boolean disableMediaFallback = sharedPreferences.getBoolean(KEY_DISABLE_MEDIA_FALLBACK, false); // Default to disabled
         
         binding.switchVerboseLogging.setChecked(verboseLogging);
@@ -770,7 +762,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         binding.switchLogNotifications.setChecked(logNotifications);
         binding.switchLogUserActions.setChecked(logUserActions);
         binding.switchLogSystemEvents.setChecked(logSystemEvents);
-        binding.switchLogSensitiveData.setChecked(logSensitiveData);
         binding.switchDisableMediaFallback.setChecked(disableMediaFallback);
     }
 
@@ -1119,13 +1110,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         editor.putBoolean(KEY_LOG_SYSTEM_EVENTS, enabled);
         editor.apply();
         InAppLogger.log("Development", "Log system events setting saved: " + enabled);
-    }
-
-    private void saveLogSensitiveData(boolean enabled) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(KEY_LOG_SENSITIVE_DATA, enabled);
-        editor.apply();
-        InAppLogger.log("Development", "Log sensitive data setting saved: " + enabled);
     }
 
     private void saveDisableMediaFallback(boolean enabled) {

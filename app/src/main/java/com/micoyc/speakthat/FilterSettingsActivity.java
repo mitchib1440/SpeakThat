@@ -543,8 +543,11 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private void toggleAppPrivate(int position) {
         AppFilterItem item = appList.get(position);
         item.isPrivate = !item.isPrivate;
-        appListAdapter.notifyDataSetChanged();
-        updateCountDisplays();
+        // Defer notification to avoid crash if called during RecyclerView layout pass
+        binding.recyclerAppList.post(() -> {
+            appListAdapter.notifyItemChanged(position);
+            updateCountDisplays();
+        });
         saveAppList();
     }
 
@@ -707,7 +710,10 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private void toggleMediaExceptedAppPrivate(int position) {
         AppFilterItem item = mediaExceptedAppsList.get(position);
         item.isPrivate = !item.isPrivate;
-        mediaExceptedAppsAdapter.notifyDataSetChanged();
+        // Defer notification to avoid crash if called during RecyclerView layout pass
+        binding.recyclerMediaExceptedApps.post(() -> {
+            mediaExceptedAppsAdapter.notifyItemChanged(position);
+        });
         saveMediaExceptedApps();
     }
     
@@ -878,7 +884,10 @@ public class FilterSettingsActivity extends AppCompatActivity {
             
             // Update in SharedPreferences
             saveFilteredMediaApps();
-            filteredMediaAppsAdapter.notifyDataSetChanged();
+            // Defer notification to avoid crash if called during RecyclerView layout pass
+            binding.recyclerFilteredMediaApps.post(() -> {
+                filteredMediaAppsAdapter.notifyItemChanged(position);
+            });
         }
     }
 

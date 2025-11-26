@@ -1527,10 +1527,6 @@ Uygulama yaşam döngüsünü ve sistem olaylarını günlüğe kaydet
 </string>
     <string name="dev_notification_logging">Bildirim Günlük Kaydı</string>
     <string name="dev_notification_logging_description">Bildirim işleme olaylarını günlüğe kaydet</string>
-    <string name="dev_sensitive_data_logging">Hassas Veri Günlük Kaydı</string>
-    <string name="dev_sensitive_data_logging_description">
-⚠️ Hassas bilgileri günlüğe kaydet (varsayılan olarak devre dışı)
-</string>
     <string name="dev_live_log_display">📊 Canlı Günlük Ekranı</string>
     <string name="dev_live_log_description">
 Arka planda neler olup bittiğini gerçek zamanlı olarak görüntüleyin
