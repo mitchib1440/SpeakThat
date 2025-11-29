@@ -49,7 +49,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private static final float DEFAULT_PITCH = 1.0f;
     private static final float DEFAULT_TTS_VOLUME = 1.0f;
     private static final String DEFAULT_LANGUAGE = "en_US";
-    private static final int DEFAULT_AUDIO_USAGE = 1; // USAGE_NOTIFICATION (recommended for Duck Audio)
+    // Default to Assistance/Navigation so speech stays on the media stream and ignores the ringer slider.
+    // Older releases used the Notification stream which tied TTS to the Ringtone volume and caused silence
+    // when users muted alerts, so new installs start on Assistance instead.
+    private static final int DEFAULT_AUDIO_USAGE = 4; // USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
     private static final int DEFAULT_CONTENT_TYPE = 0; // CONTENT_TYPE_SPEECH
 
     // UI Components
@@ -1720,6 +1723,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         // Apply base volume
         params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, ttsVolume);
         
+        int streamType = mapUsageToStream(audioUsage);
+        params.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, streamType);
+        
         // Volume boosting logic for different audio usage types
         // Note: With extended volume range (0.0 to 1.5), we allow higher boosted volumes
         // but still cap them at reasonable levels to prevent excessive distortion
@@ -1761,7 +1767,23 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             }
         }
         
+        InAppLogger.log("VoiceSettings", "TTS bundle -> usage: " + audioUsage + ", stream: " + streamType + ", volume: " + (ttsVolume * 100) + "%");
         return params;
+    }
+    
+    private static int mapUsageToStream(int audioUsage) {
+        switch (audioUsage) {
+            case android.media.AudioAttributes.USAGE_NOTIFICATION:
+                return AudioManager.STREAM_NOTIFICATION;
+            case android.media.AudioAttributes.USAGE_ALARM:
+                return AudioManager.STREAM_ALARM;
+            case android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION:
+                return AudioManager.STREAM_VOICE_CALL;
+            case android.media.AudioAttributes.USAGE_MEDIA:
+            case android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE:
+            default:
+                return AudioManager.STREAM_MUSIC;
+        }
     }
 
     /**
@@ -1928,11 +1950,12 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private void showAudioHelpDialog() {
         String helpText = "🔊 Audio Stream Type\n" +
                 "Controls which volume slider affects notification speech:\n\n" +
+                "• Assistance (Default): Uses navigation volume so speech stays audible even when ringer is muted\n" +
                 "• Media: Uses media volume (may conflict with ducking)\n" +
-                "• Notification (Recommended): Uses notification volume\n" +
+                "• Notification: Uses notification/ringer volume\n" +
                 "• Alarm: Uses alarm volume\n" +
                 "• Voice Call: Uses call volume (often works well)\n" +
-                "• Assistance: Uses navigation volume\n\n" +
+                "• (Advanced) You can still force Notification if your device needs it, but remember it follows the ringer slider\n\n" +
                 
                 "🎵 Content Type\n" +
                 "Tells the system how to optimize audio processing:\n\n" +
@@ -1958,8 +1981,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 "• If still too quiet, try 'Notification' or 'Assistance' streams instead\n\n" +
                 
                 "🎯 Recommended Settings\n" +
-                "For best results: Notification + Speech\n" +
-                "Alternative: Voice Call + Speech";
+                "For best results: Assistance (Navigation) + Speech\n" +
+                "Alternative: Voice Call + Speech when you need isolation from media apps";
 
         new android.app.AlertDialog.Builder(this)
                 .setTitle(R.string.dialog_title_audio_settings_help)
