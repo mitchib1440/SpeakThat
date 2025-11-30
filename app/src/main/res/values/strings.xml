@@ -1450,6 +1450,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="dev_notification_logging_description">Log notification processing events</string>
     <string name="dev_disable_media_fallback">Disable Media Behavior Fallback</string>
     <string name="dev_disable_media_fallback_description">Disable fallback methods for media behavior. If a feature doesn\'t work, it won\'t try alternatives. Helps isolate issues. Note: When disabled, duck mode will fall back to pause mode if ducking fails. If both fail, notifications will still be read without audio focus.</string>
+    <string name="dev_enable_legacy_ducking">Enable Legacy Duck/Pause Hacks</string>
+    <string name="dev_enable_legacy_ducking_description">Force the experimental ducking methods (direct media-session pauses and manual STREAM_MUSIC volume changes). Helps stubborn apps like PowerAmp, but can fight ringer settings or leave apps muted if SpeakThat crashes.</string>
     <string name="dev_live_log_display">📊 Live Log Display</string>
     <string name="dev_live_log_description">Real-time view of what\'s happening under the hood</string>
     <string name="dev_view_crash_logs">📄 View Crash Logs</string>

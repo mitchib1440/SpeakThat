@@ -14,6 +14,9 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.media.AudioManager
+import android.media.session.MediaController
+import android.media.session.MediaSessionManager
+import android.media.session.PlaybackState
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
@@ -67,6 +70,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var duckingVolume = 30
     private var delayBeforeReadout = 0
     private var isPersistentFilteringEnabled = true
+    private var legacyDuckingEnabled = false
     
     // Shake detection
     private var sensorManager: SensorManager? = null
@@ -89,6 +93,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var originalMusicVolume = -1 // Store original volume for restoration
     private var originalAudioMode = -1 // Store original audio mode for restoration
     private var audioFocusRequest: android.media.AudioFocusRequest? = null
+    private val pausedMediaSessions = mutableListOf<MediaController>() // Track paused sessions when legacy ducking is enabled
     
     // Media notification filtering
     private var mediaFilterPreferences = MediaNotificationDetector.MediaFilterPreferences()
@@ -363,6 +368,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "Registering preference change listener...")
             sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
             Log.d(TAG, "Preference change listener registered")
+            legacyDuckingEnabled = sharedPreferences?.getBoolean("enable_legacy_ducking", false) ?: false
+            Log.d(
+                TAG,
+                "Legacy ducking ${if (legacyDuckingEnabled) "enabled" else "disabled"} at startup"
+            )
             
             // Initialize and register voice settings listener
             Log.d(TAG, "Initializing voice settings...")
@@ -3014,12 +3024,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     /**
      * MEDIA BEHAVIOR HANDLING (ignore, pause, duck, silence)
      *
-     * Simplified approach that relies on Android's audio focus system rather than custom volume tricks.
-     * If a device denies focus we still continue so notifications are never silently discarded.
+     * Respect the simplified focus-only path by default, but allow legacy behavior to be toggled
+     * back on from Development Settings when deeper hacks are necessary.
      */
     private fun handleMediaBehavior(appName: String, _text: String, sbn: StatusBarNotification? = null): Boolean {
         val isMusicActive = audioManager.isMusicActive
-        Log.d(TAG, "Media behavior check - isMusicActive: $isMusicActive, mediaBehavior: $mediaBehavior, isCurrentlySpeaking: $isCurrentlySpeaking")
+        Log.d(
+            TAG,
+            "Media behavior check - isMusicActive: $isMusicActive, mediaBehavior: $mediaBehavior, " +
+                "isCurrentlySpeaking: $isCurrentlySpeaking, legacy=$legacyDuckingEnabled"
+        )
 
         if (!isMusicActive) return true
 
@@ -3036,6 +3050,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             return false
         }
 
+        return if (legacyDuckingEnabled) {
+            handleLegacyMediaBehavior(appName)
+        } else {
+            handleModernMediaBehavior(appName)
+        }
+    }
+
+    private fun handleModernMediaBehavior(appName: String): Boolean {
         return when (mediaBehavior) {
             "ignore" -> true
             "pause" -> {
@@ -3066,6 +3088,144 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             else -> true
         }
     }
+
+    private fun handleLegacyMediaBehavior(appName: String): Boolean {
+        return when (mediaBehavior) {
+            "ignore" -> true
+            "pause" -> {
+                if (tryMediaSessionPause()) {
+                    InAppLogger.log("MediaBehavior", "Legacy pause via media session for $appName")
+                    return true
+                }
+
+                val focusGranted = requestSpeechAudioFocus(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
+                if (focusGranted) {
+                    InAppLogger.log("MediaBehavior", "Legacy pause acquired transient focus for $appName")
+                    return true
+                }
+
+                if (isMediaFallbackDisabled(this)) {
+                    Log.w(TAG, "Legacy pause fallback disabled - continuing without stopping media")
+                    InAppLogger.log("MediaBehavior", "Legacy pause fallback disabled; continuing for $appName")
+                    return true
+                }
+
+                if (trySoftPauseFallback()) {
+                    InAppLogger.log("MediaBehavior", "Soft pause fallback applied for $appName")
+                    return true
+                }
+
+                Log.w(TAG, "Soft pause fallback failed - reading without audio focus")
+                InAppLogger.log("MediaBehavior", "Soft pause fallback failed for $appName - reading anyway")
+                true
+            }
+            "duck" -> {
+                val focusGranted = requestSpeechAudioFocus(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
+                if (focusGranted) {
+                    InAppLogger.log("MediaBehavior", "Legacy duck granted focus for $appName")
+                    return true
+                }
+
+                if (isMediaFallbackDisabled(this)) {
+                    Log.w(TAG, "Legacy duck fallback disabled - continuing without ducking")
+                    InAppLogger.log("MediaBehavior", "Legacy duck fallback disabled; continuing for $appName")
+                    return true
+                }
+
+                val ducked = duckMediaVolume()
+                if (ducked) {
+                    InAppLogger.log("MediaBehavior", "Manual ducking applied for $appName")
+                } else {
+                    Log.w(TAG, "Manual ducking failed - reading without ducking")
+                    InAppLogger.log("MediaBehavior", "Manual ducking failed for $appName - reading anyway")
+                }
+                true
+            }
+            "silence" -> {
+                Log.d(TAG, "Media behavior: SILENCE (legacy) - not speaking due to active media")
+                InAppLogger.log("MediaBehavior", "Legacy mode silenced notification from $appName due to active media")
+                false
+            }
+            else -> true
+        }
+    }
+
+    private fun tryMediaSessionPause(): Boolean {
+        return try {
+            val mediaSessionManager =
+                getSystemService(Context.MEDIA_SESSION_SERVICE) as? MediaSessionManager ?: return false
+            val componentName = ComponentName(this, NotificationReaderService::class.java)
+            val controllers = mediaSessionManager.getActiveSessions(componentName)
+            if (controllers.isEmpty()) {
+                Log.d(TAG, "No active media sessions detected for legacy pause")
+                return false
+            }
+
+            pausedMediaSessions.clear()
+            var pausedAny = false
+            controllers.forEach { controller ->
+                val playbackState = controller.playbackState
+                if (playbackState != null && playbackState.state == PlaybackState.STATE_PLAYING) {
+                    try {
+                        controller.transportControls.pause()
+                        pausedMediaSessions.add(controller)
+                        pausedAny = true
+                        Log.d(TAG, "Paused media session for ${controller.packageName}")
+                    } catch (controllerError: Exception) {
+                        Log.e(TAG, "Failed to pause media session ${controller.packageName}", controllerError)
+                    }
+                }
+            }
+
+            pausedAny
+        } catch (security: SecurityException) {
+            Log.e(TAG, "Unable to access media sessions for legacy pause (missing permission?)", security)
+            false
+        } catch (e: Exception) {
+            Log.e(TAG, "Unexpected error during media session pause", e)
+            false
+        }
+    }
+
+    private fun resumeMediaSessions() {
+        if (pausedMediaSessions.isEmpty()) {
+            return
+        }
+
+        val iterator = pausedMediaSessions.iterator()
+        while (iterator.hasNext()) {
+            val controller = iterator.next()
+            try {
+                controller.transportControls.play()
+                Log.d(TAG, "Resumed media session for ${controller.packageName}")
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to resume media session ${controller.packageName}", e)
+            }
+        }
+
+        pausedMediaSessions.clear()
+        InAppLogger.log("MediaBehavior", "Resumed paused media sessions after TTS completion")
+    }
+
+    private fun trySoftPauseFallback(): Boolean {
+        return try {
+            val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+            val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+            if (originalMusicVolume == -1) {
+                originalMusicVolume = currentVolume
+                Log.d(TAG, "Stored original music volume $currentVolume for soft pause fallback")
+            }
+
+            val softVolume = (maxVolume * 0.15f).toInt().coerceAtLeast(1)
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, softVolume, 0)
+            Log.d(TAG, "Soft pause fallback lowered STREAM_MUSIC from $currentVolume to $softVolume (max=$maxVolume)")
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "Soft pause fallback failed", e)
+            false
+        }
+    }
+
     
     private fun resolveTtsUsage(): Int {
         val prefs = voiceSettingsPrefs ?: getSharedPreferences("VoiceSettings", MODE_PRIVATE)
@@ -4396,6 +4556,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private fun cleanupMediaBehavior() {
         releaseAudioFocus()
 
+        if (legacyDuckingEnabled) {
+            resumeMediaSessions()
+            restoreMediaVolume()
+        }
+
         if (originalAudioMode != -1) {
             try {
                 audioManager.mode = originalAudioMode
@@ -5062,6 +5227,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 val isNotificationWhileReadingEnabled = sharedPreferences?.getBoolean(KEY_NOTIFICATION_WHILE_READING, false) ?: false
                 Log.d(TAG, "Notification while reading setting updated: $isNotificationWhileReadingEnabled")
                 // Note: Reading notifications are shown/hidden dynamically during TTS, so no immediate action needed here
+            }
+            "enable_legacy_ducking" -> {
+                legacyDuckingEnabled = sharedPreferences?.getBoolean("enable_legacy_ducking", false) ?: false
+                Log.d(TAG, "Legacy ducking toggled: $legacyDuckingEnabled")
+                InAppLogger.log("MediaBehavior", "Legacy ducking ${if (legacyDuckingEnabled) "enabled" else "disabled"} via dev settings")
             }
         }
     }
