@@ -3061,12 +3061,32 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         return when (mediaBehavior) {
             "ignore" -> true
             "pause" -> {
-                val granted = requestSpeechAudioFocus(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
+                val granted = requestPauseAudioFocus()
                 if (!granted) {
-                    Log.w(TAG, "Audio focus denied for pause mode; continuing without forcing media to stop")
-                    InAppLogger.log("MediaBehavior", "Audio focus denied for pause mode, reading anyway")
+                    Log.w(TAG, "Audio focus denied for pause mode; escalating to media session fallback")
+                    InAppLogger.log("MediaBehavior", "Audio focus denied for pause mode, trying session fallback for $appName")
+
+                    val pausedViaSession = tryMediaSessionPause()
+                    if (pausedViaSession) {
+                        InAppLogger.log("MediaBehavior", "Media session pause succeeded for $appName (modern fallback)")
+                        return true
+                    }
+
+                    if (isMediaFallbackDisabled(this)) {
+                        Log.w(TAG, "Media fallback disabled - continuing without forcing media to stop")
+                        InAppLogger.log("MediaBehavior", "Media fallback disabled; continuing for $appName")
+                        return true
+                    }
+
+                    if (trySoftPauseFallback()) {
+                        InAppLogger.log("MediaBehavior", "Soft pause fallback applied for $appName (modern path)")
+                        return true
+                    }
+
+                    Log.w(TAG, "All pause fallbacks failed - reading without pausing media")
+                    InAppLogger.log("MediaBehavior", "Modern pause fallbacks failed for $appName - reading anyway")
                 } else {
-                    InAppLogger.log("MediaBehavior", "Audio focus granted for pause mode (usage=${resolveTtsUsage()})")
+                    InAppLogger.log("MediaBehavior", "Audio focus granted for pause mode (modern path)")
                 }
                 true
             }
@@ -3086,6 +3106,38 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 false
             }
             else -> true
+        }
+    }
+
+    private fun requestPauseAudioFocus(): Boolean {
+        val usage = android.media.AudioAttributes.USAGE_MEDIA
+        val contentType = android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            val attributes = android.media.AudioAttributes.Builder()
+                .setUsage(usage)
+                .setContentType(contentType)
+                .build()
+
+            audioFocusRequest = android.media.AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
+                .setAudioAttributes(attributes)
+                .setOnAudioFocusChangeListener { handleAudioFocusChange(it) }
+                .setAcceptsDelayedFocusGain(false)
+                .setWillPauseWhenDucked(true)
+                .build()
+
+            val result = audioManager.requestAudioFocus(audioFocusRequest!!)
+            Log.d(TAG, "Pause audio focus request result (usage=$usage): $result")
+            result == android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED
+        } else {
+            @Suppress("DEPRECATION")
+            val result = audioManager.requestAudioFocus(
+                { focusChange -> handleAudioFocusChange(focusChange) },
+                android.media.AudioManager.STREAM_MUSIC,
+                android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT
+            )
+            Log.d(TAG, "Legacy pause audio focus request result: $result")
+            result == android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED
         }
     }
 
@@ -4556,8 +4608,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private fun cleanupMediaBehavior() {
         releaseAudioFocus()
 
-        if (legacyDuckingEnabled) {
+        if (legacyDuckingEnabled || pausedMediaSessions.isNotEmpty()) {
             resumeMediaSessions()
+        }
+
+        if (legacyDuckingEnabled || originalMusicVolume != -1) {
             restoreMediaVolume()
         }
 
