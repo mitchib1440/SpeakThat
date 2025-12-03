@@ -6,7 +6,7 @@
 [<img src="https://img.shields.io/badge/SpeakThat!-Google_Play-blue?logo=googleplay" alt="RB shield">](https://play.google.com/store/apps/details?id=com.micoyc.speakthat)
 [![License](https://img.shields.io/badge/License-GPL--3.0-green.svg)](LICENSE)
 [<img src="https://shields.rbtlog.dev/simple/com.micoyc.speakthat" alt="RB shield">](https://shields.rbtlog.dev/com.micoyc.speakthat)
-[![Weblate](https://badges.crowdin.net/speakthat-notification-reader/localized.svg)](https://hosted.weblate.org/projects/speakthat)
+[![Weblate](https://hosted.weblate.org/widgets/speakthat/-/svg-badge.svg)](https://speakthat.app/translate)
 [<img src="https://img.shields.io/badge/SpeakThat!-Official_Website-purple" alt="RB shield">](https://speakthat.app)
 
 ## The Journey to get here!

@@ -920,7 +920,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     Log.d(TAG, "Processing notification from $appName: '$notificationText' (ID: ${sbn?.id}, time: ${System.currentTimeMillis()})")
                     
                     // Apply filtering first to determine final privacy status
-                    val filterResult = applyFilters(packageName, appName, notificationText, sbn)
+                    val filterResult = applyFilters(packageName, appName, notificationText, sbn, isSelfTest)
                     
                     // Check if the final result is private (either app-level or word-level)
                     val isAppPrivate = privateApps.contains(packageName)
@@ -2235,7 +2235,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
-    private fun applyFilters(packageName: String, appName: String, text: String, sbn: StatusBarNotification? = null): FilterResult {
+    private fun applyFilters(
+        packageName: String,
+        appName: String,
+        text: String,
+        sbn: StatusBarNotification? = null,
+        isSelfTest: Boolean = false
+    ): FilterResult {
         // 1. Check app filtering
         val appFilterResult = checkAppFilter(packageName)
         if (!appFilterResult.shouldSpeak) {
@@ -2282,7 +2288,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         )
     }
     
-    private fun checkAppFilter(packageName: String): FilterResult {
+    private fun checkAppFilter(packageName: String, isSelfTest: Boolean = false): FilterResult {
+        if (isSelfTest) {
+            Log.d(TAG, "SelfTest bypass - skipping app list checks for $packageName")
+            InAppLogger.log("SelfTest", "App list bypassed for SelfTest notification")
+            return FilterResult(true, "", "SelfTest bypassed app list")
+        }
         return when (appListMode) {
             "whitelist" -> {
                 if (appList.contains(packageName)) {

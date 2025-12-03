@@ -27,6 +27,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
     // SharedPreferences keys
     private static final String PREFS_NAME = "VoiceSettings";
+    private static final String WEBLATE_TRANSLATION_URL = "https://speakthat.app/translate";
     
     // Throttling for repetitive volume boost logs
     private static long lastVolumeBoostLogTime = 0L;
@@ -49,10 +50,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private static final float DEFAULT_PITCH = 1.0f;
     private static final float DEFAULT_TTS_VOLUME = 1.0f;
     private static final String DEFAULT_LANGUAGE = "en_US";
-    // Default to Assistance/Navigation so speech stays on the media stream and ignores the ringer slider.
-    // Older releases used the Notification stream which tied TTS to the Ringtone volume and caused silence
-    // when users muted alerts, so new installs start on Assistance instead.
-    private static final int DEFAULT_AUDIO_USAGE = 4; // USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+    // Default to Media so SpeakThat follows the primary volume slider users expect.
+    // Earlier versions defaulted to Assistance/Navigation to dodge muted ringers, but Media now provides
+    // better consistency with other audio apps and is clearly labeled as the recommended option.
+    private static final int DEFAULT_AUDIO_USAGE = 0; // USAGE_MEDIA
     private static final int DEFAULT_CONTENT_TYPE = 0; // CONTENT_TYPE_SPEECH
 
     // UI Components
@@ -322,7 +323,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         
         // Translation assistance functionality
         LinearLayout cardTranslationHelp = findViewById(R.id.cardTranslationHelp);
-        cardTranslationHelp.setOnClickListener(v -> sendTranslationEmail());
+        if (cardTranslationHelp != null) {
+            cardTranslationHelp.setOnClickListener(v -> openTranslationPage());
+        }
         
         // Multi-language warning functionality
         LinearLayout multiLanguageWarning = findViewById(R.id.multiLanguageWarning);
@@ -824,11 +827,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private void setupAudioChannelSpinners() {
         // Audio Usage Spinner
         String[] audioUsageOptions = {
-            "Media",
-            "Notification (Recommended)",
-            "Alarm",
-            "Voice Call",
-            "Assistance"
+            getString(R.string.voice_audio_usage_media_recommended),
+            getString(R.string.voice_audio_usage_notification),
+            getString(R.string.voice_audio_usage_alarm),
+            getString(R.string.voice_audio_usage_voice_call),
+            getString(R.string.voice_audio_usage_assistance)
         };
         ArrayAdapter<String> audioUsageAdapter = new ArrayAdapter<>(this,
             android.R.layout.simple_spinner_item, audioUsageOptions);
@@ -1950,12 +1953,12 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private void showAudioHelpDialog() {
         String helpText = "🔊 Audio Stream Type\n" +
                 "Controls which volume slider affects notification speech:\n\n" +
-                "• Assistance (Default): Uses navigation volume so speech stays audible even when ringer is muted\n" +
-                "• Media: Uses media volume (may conflict with ducking)\n" +
-                "• Notification: Uses notification/ringer volume\n" +
-                "• Alarm: Uses alarm volume\n" +
-                "• Voice Call: Uses call volume (often works well)\n" +
-                "• (Advanced) You can still force Notification if your device needs it, but remember it follows the ringer slider\n\n" +
+                "• Media (Recommended): Uses the media volume slider so you can quickly adjust notification speech alongside music and videos\n" +
+                "• Notification: Uses notification/ringer volume (mutes when your ringer is silenced)\n" +
+                "• Alarm: Uses alarm volume (great for critical alerts)\n" +
+                "• Voice Call: Uses call volume (routes to the earpiece unless speakerphone is enabled)\n" +
+                "• Assistance: Uses navigation volume so speech stays audible even when ringer is muted\n" +
+                "• (Advanced) You can still force Notification or Assistance if your device needs it—just remember they follow their respective system sliders\n\n" +
                 
                 "🎵 Content Type\n" +
                 "Tells the system how to optimize audio processing:\n\n" +
@@ -1970,18 +1973,18 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 
                 "💡 Troubleshooting Audio Issues\n" +
                 "If ducking isn't working well:\n" +
-                "• Try 'Voice Call' or 'Notification' streams (most compatible)\n" +
-                "• Avoid 'Media' stream as it may duck your TTS with your music\n" +
+                "• Try 'Voice Call' or 'Notification' streams (most compatible with strict apps)\n" +
+                "• Switch back to 'Media' after troubleshooting if you want one slider for everything\n" +
                 "• Different apps respond differently to audio ducking\n" +
                 "• The app automatically chooses the best ducking method for your device\n\n" +
                 "🔊 Voice Call Stream Note:\n" +
                 "• Voice Call stream routes to earpiece by default (quiet for privacy)\n" +
                 "• Enable 'Use Speakerphone' option for louder volume\n" +
                 "• Volume is automatically boosted when speakerphone is disabled\n" +
-                "• If still too quiet, try 'Notification' or 'Assistance' streams instead\n\n" +
+                "• If still too quiet, try 'Media' or 'Notification' streams instead\n\n" +
                 
                 "🎯 Recommended Settings\n" +
-                "For best results: Assistance (Navigation) + Speech\n" +
+                "For best results: Media + Speech\n" +
                 "Alternative: Voice Call + Speech when you need isolation from media apps";
 
         new android.app.AlertDialog.Builder(this)
@@ -2166,25 +2169,16 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
 
     
-    private void sendTranslationEmail() {
+    private void openTranslationPage() {
         try {
-            android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_SENDTO);
-            intent.setData(android.net.Uri.parse("mailto:"));
-            intent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"micoycbusiness@gmail.com"});
-            intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "SpeakThat! Translations");
-            
-            StringBuilder body = new StringBuilder();
-            body.append("I would like to help translate SpeakThat! to my language.\n\n");
-            body.append("Languages I speak:\n\n");
-            body.append("[Please replace this text with the languages you speak]\n\n");
-            
-            intent.putExtra(android.content.Intent.EXTRA_TEXT, body.toString());
-            
+            android.net.Uri translationUri = android.net.Uri.parse(WEBLATE_TRANSLATION_URL);
+            android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_VIEW, translationUri);
+            intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
-            InAppLogger.logUserAction("Translation email opened from Voice Settings", "");
+            InAppLogger.logUserAction("Translation page opened from Voice Settings", WEBLATE_TRANSLATION_URL);
         } catch (Exception e) {
-            Toast.makeText(this, "Unable to open email app", Toast.LENGTH_SHORT).show();
-            InAppLogger.logError("VoiceSettings", "Failed to open translation email: " + e.getMessage());
+            Toast.makeText(this, R.string.voice_help_translate_open_failed, Toast.LENGTH_SHORT).show();
+            InAppLogger.logError("VoiceSettings", "Failed to open translation page: " + e.getMessage());
         }
     }
 

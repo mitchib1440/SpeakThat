@@ -752,7 +752,7 @@ Elige tu idioma. De este modo, se establece tanto la interfaz de la aplicación 
 Esto es lo más necesario para los usuarios. Usa las opciones de voz avanzadas a continuación para personalizar los ajustes individuales.
 </string>
     <string name="voice_help_translate">Ayuda a traducir SpeakThat!</string>
-    <string name="voice_help_translate_description">Toca para enviar el correo de traducción</string>
+    <string name="voice_help_translate_description">Toca para abrir la página de traducción en Weblate</string>
     <string name="voice_show_advanced">Mostrar opciones avanzadas de voz</string>
     <string name="voice_advanced_label">⚙️ Avanzado</string>
     <string name="voice_tts_language_advanced">Idioma TTS (Avanzado)</string>
@@ -896,7 +896,8 @@ Detiene las lecturas agitando la mano sobre el sensor de proximidad
     <string name="label_test_wave">Prueba de ondulado</string>
     <!-- Voice Settings - Additional Strings -->
     <string name="voice_help_translate_button">Ayuda a traducir SpeakThat!</string>
-    <string name="voice_help_translate_description_button">Toca para enviar el correo de traducción</string>
+    <string name="voice_help_translate_description_button">Toca para abrir la página de traducción en Weblate</string>
+    <string name="voice_help_translate_open_failed">No se pudo abrir la página de traducción</string>
     <string name="voice_advanced_options_show">Mostrar opciones avanzadas de voz</string>
     <string name="voice_tts_language_label">Idioma TTS (Avanzado)</string>
     <string name="voice_specific_voice_label">Voz específica (Avanzado)</string>
@@ -1020,11 +1021,16 @@ Elegir qué dispositivos Bluetooth deben activar esta regla:
 Configura cómo se reproducen las notificaciones a través del sistema de audio del dispositivo.
 </string>
     <string name="voice_audio_stream_type">Tipo de flujo de audio</string>
+    <string name="voice_audio_usage_media_recommended">Multimedia (recomendado)</string>
+    <string name="voice_audio_usage_notification">Notificación</string>
+    <string name="voice_audio_usage_alarm">Alarma</string>
+    <string name="voice_audio_usage_voice_call">Llamada de voz</string>
+    <string name="voice_audio_usage_assistance">Asistencia</string>
     <string name="voice_content_type">Tipo de contenido</string>
     <string name="voice_content_type_description">
 Indica al sistema qué tipo de audio es. Se recomienda el habla para notificaciones.
 </string>
-    <string name="voice_audio_recommendation">Recomendado: Notificación + Voz</string>
+    <string name="voice_audio_recommendation">Recomendado: Multimedia + Voz</string>
     <string name="voice_preview_actions">Vista previa &amp; Acciones</string>
     <string name="voice_preview_button">Vista previa</string>
     <string name="voice_test_settings">Probar ajustes de voz</string>
@@ -1193,7 +1199,7 @@ Elige el idioma que debería utilizar. También puedes activar el modo oscuro si
     <string name="onboarding_language_section_title">Idioma</string>
     <string name="onboarding_language_help_title">¿No aparece tu idioma?</string>
     <string name="onboarding_language_help_description">
-Estoy trabajando todo lo que pueda para apoyar más idiomas. ¡Contribuya con traducciones a la página de Crowdin si puedes!
+Estoy trabajando todo lo que pueda para apoyar más idiomas. ¡Contribuye con traducciones en la página de Weblate si puedes!
 </string>
     <string name="onboarding_theme_section_title">Temas</string>
     <string name="onboarding_theme_description">Usar modo oscuro para esta app</string>
@@ -1625,7 +1631,7 @@ Permiso de notificación denegado - la función no funcionará
     -->
     <!--
 
-         This prevents them from being translated by CrowdIn
+         This prevents them from being translated by Weblate
 
     -->
     <!-- Error Messages -->

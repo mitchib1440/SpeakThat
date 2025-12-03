@@ -122,7 +122,7 @@ private fun extractDomain(url: String): String {
 
 ### Localization
 
-All user-facing text is externalized to `strings.xml` for translation via CrowdIn:
+All user-facing text is externalized to `strings.xml` for translation via Weblate:
 - Section titles and descriptions
 - Radio button labels
 - Help text and examples

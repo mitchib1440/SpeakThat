@@ -664,7 +664,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="voice_language_preset_description">Choose your language. This sets both the app interface and text-to-speech language at once for the best experience.</string>
     <string name="voice_preset_recommendation">This is all most users need. Use Advanced Voice Options below to customize individual settings.</string>
     <string name="voice_help_translate">Help Translate SpeakThat!</string>
-    <string name="voice_help_translate_description">Tap to send translation email</string>
+    <string name="voice_help_translate_description">Tap to open the Weblate translation page</string>
     <string name="voice_show_advanced">Show Advanced Voice Options</string>
     <string name="voice_advanced_label">⚙️ Advanced</string>
     <string name="voice_tts_language_advanced">TTS Language (Advanced)</string>
@@ -804,7 +804,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     
     <!-- Voice Settings - Additional Strings -->
     <string name="voice_help_translate_button">Help Translate SpeakThat!</string>
-    <string name="voice_help_translate_description_button">Tap to send translation email</string>
+    <string name="voice_help_translate_description_button">Tap to open the Weblate translation page</string>
+    <string name="voice_help_translate_open_failed">Unable to open the translation page</string>
     <string name="voice_advanced_options_show">Show Advanced Voice Options</string>
     <string name="voice_tts_language_label">TTS Language (Advanced)</string>
     <string name="voice_specific_voice_label">Specific Voice (Advanced)</string>
@@ -937,11 +938,16 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="voice_audio_output_settings">Audio Output Settings</string>
     <string name="voice_audio_output_description">Configure how notifications are played through your device\'s audio system.</string>
     <string name="voice_audio_stream_type">Audio Stream Type</string>
+    <string name="voice_audio_usage_media_recommended">Media (recommended)</string>
+    <string name="voice_audio_usage_notification">Notification</string>
+    <string name="voice_audio_usage_alarm">Alarm</string>
+    <string name="voice_audio_usage_voice_call">Voice Call</string>
+    <string name="voice_audio_usage_assistance">Assistance</string>
     <string name="voice_stream_volume">Stream Volume</string>
     <string name="voice_stream_volume_description">Control the volume level for the selected audio stream. This affects the device\'s volume for this stream type.</string>
     <string name="voice_content_type">Content Type</string>
     <string name="voice_content_type_description">Tells the system what kind of audio this is. Speech is recommended for notifications.</string>
-    <string name="voice_audio_recommendation">Recommended: Notification + Speech</string>
+    <string name="voice_audio_recommendation">Recommended: Media + Speech</string>
         <string name="voice_speakerphone_option">Use Speakerphone for Voice Call</string>
         <string name="voice_speakerphone_description">Route Voice Call audio to speaker instead of earpiece for louder volume</string>
         <string name="voice_preview_actions">Preview &amp; Actions</string>
@@ -1123,7 +1129,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="onboarding_language_theme_description">Choose which language SpeakThat should use. You can also enable dark mode if you\'d like.</string>
     <string name="onboarding_language_section_title">Language</string>
     <string name="onboarding_language_help_title">Is your language not listed?</string>
-    <string name="onboarding_language_help_description">I\'m working as hard as I can to support more languages. Please contribute translations to the Crowdin page if you can!</string>
+    <string name="onboarding_language_help_description">I\'m working as hard as I can to support more languages. Please contribute translations on the Weblate page if you can!</string>
     <string name="onboarding_theme_section_title">Theme</string>
     <string name="onboarding_theme_description">Use dark mode in this app</string>
     <string name="onboarding_theme_light">Light Mode</string>
@@ -1521,7 +1527,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="category_games_description">Mobile games and gaming apps</string>
     
     <!-- Technical strings (preference keys, package names, etc.) have been moved to strings_technical.xml -->
-    <!-- This prevents them from being translated by CrowdIn -->
+    <!-- This prevents them from being translated by Weblate -->
     
     <!-- Error Messages -->
     <string name="error_unable_to_open_output_stream">Unable to open output stream for URI</string>

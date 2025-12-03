@@ -13,7 +13,7 @@
 <li>Speech Rate control</li>
 <li>Voice Pitch control</li>
 <li>TTS Volume control</li>
-<li>Full Localisation support both with TTS and the UI (Help me translate the app on CrowdIn!)</li>
+<li>Full Localisation support both with TTS and the UI (Help me translate the app on Weblate: https://speakthat.app/translate)</li>
 <li>Audio Output Settings</li>
 <li>Notification Behaviour (Decide what happens when multiple notifications arrive at once)</li>
 <li>Media Behaviour (Decide how SpeakThat sounds when you have music playing)</li>

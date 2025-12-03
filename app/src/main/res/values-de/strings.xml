@@ -742,7 +742,7 @@ Wählen Sie Ihre Sprache. Dies legt sowohl die App-Schnittstelle als auch die TT
 Dies ist alles, was die meisten Benutzer brauchen. Verwenden Sie erweiterte Sprachoptionen unten, um individuelle Einstellungen anzupassen.
 </string>
     <string name="voice_help_translate">Hilf mit, SpeakThat! zu übersetzen!</string>
-    <string name="voice_help_translate_description">Tippen um E-Mail (Übersetzung) zu versenden</string>
+    <string name="voice_help_translate_description">Tippen, um die Weblate-Übersetzungsseite zu öffnen</string>
     <string name="voice_show_advanced">Erweiterte Sprachoptionen anzeigen</string>
     <string name="voice_advanced_label">⚙️ Erweitert</string>
     <string name="voice_tts_language_advanced">TTS-Sprache (Erweitert)</string>
@@ -921,7 +921,8 @@ Stoppe das Vorlesen, indem Sie ihre Hand über den Näherungssensor bewegen
     <string name="test_settings_btn_export">Exportieren</string>
     <!-- Voice Settings - Additional Strings -->
     <string name="voice_help_translate_button">Hilf dabei, SpeakThat zu übersetzen!</string>
-    <string name="voice_help_translate_description_button">Tippen, um Übersetzungsmail zu senden</string>
+    <string name="voice_help_translate_description_button">Tippen, um die Weblate-Übersetzungsseite zu öffnen</string>
+    <string name="voice_help_translate_open_failed">Übersetzungsseite konnte nicht geöffnet werden</string>
     <string name="voice_advanced_options_show">Erweiterte Sprachoptionen anzeigen</string>
     <string name="voice_tts_language_label">TTS-Sprache (Erweitert)</string>
     <string name="voice_specific_voice_label">Spezifische Stimme (Erweitert)</string>
@@ -1045,6 +1046,11 @@ Wähle, welche WLAN-Netzwerke diese Regel auslösen sollen:
 Konfigurieren Sie, wie Benachrichtigungen über das Audiosystem Ihres Geräts abgespielt werden sollen.
 </string>
     <string name="voice_audio_stream_type">Audio Streamtyp</string>
+    <string name="voice_audio_usage_media_recommended">Medien (empfohlen)</string>
+    <string name="voice_audio_usage_notification">Benachrichtigung</string>
+    <string name="voice_audio_usage_alarm">Alarm</string>
+    <string name="voice_audio_usage_voice_call">Sprachanruf</string>
+    <string name="voice_audio_usage_assistance">Assistenz</string>
     <string name="voice_stream_volume">Stream Lautstärke</string>
     <string name="voice_stream_volume_description">
 Steuert die Lautstärke für den ausgewählten Audio-Stream. Dies beeinflusst die Lautstärke des Geräts für diesen Stream-Typ.
@@ -1053,7 +1059,7 @@ Steuert die Lautstärke für den ausgewählten Audio-Stream. Dies beeinflusst di
     <string name="voice_content_type_description">
 Gibt dem System an, um welche Art von Audio es sich handelt. Sprache wird für Benachrichtigungen empfohlen.
 </string>
-    <string name="voice_audio_recommendation">Empfohlen: Benachrichtigung + Sprache</string>
+    <string name="voice_audio_recommendation">Empfohlen: Medien + Sprache</string>
     <string name="voice_speakerphone_option">Lautsprecher für Sprachanruf verwenden</string>
     <string name="voice_speakerphone_description">
 Für höhere Lautstärke: Sprachanruf-Audio anstatt auf Ohrhörern auf Lautsprecher umlenken
@@ -1238,7 +1244,7 @@ Wählen Sie aus, welche Sprache verwendet werden soll. Sie können auch den dunk
     <string name="onboarding_language_section_title">Sprache</string>
     <string name="onboarding_language_help_title">Ist Ihre Sprache nicht aufgeführt?</string>
     <string name="onboarding_language_help_description">
-Ich arbeite so hart wie möglich daran, weitere Sprachen zu unterstützen. Bitte tragen Sie Übersetzungen zur Crowdin-Seite bei, wenn Sie können!
+Ich arbeite so hart wie möglich daran, weitere Sprachen zu unterstützen. Bitte tragen Sie Übersetzungen auf der Weblate-Seite bei, wenn Sie können!
 </string>
     <string name="onboarding_theme_section_title">Design</string>
     <string name="onboarding_theme_description">Dunkelmodus in dieser App verwenden</string>
@@ -1657,7 +1663,7 @@ Benachrichtigungsberechtigung verweigert - Funktion wird nicht funktionieren
      Technical strings (preference keys, package names, etc.) have been moved to strings_technical.xml
     -->
     <!--
-     This prevents them from being translated by CrowdIn
+     This prevents them from being translated by Weblate
     -->
     <!-- Error Messages -->
     <string name="error_unable_to_open_output_stream">Kann Ausgabe-Stream für URI nicht öffnen</string>

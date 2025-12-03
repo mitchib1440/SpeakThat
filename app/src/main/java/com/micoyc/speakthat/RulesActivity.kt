@@ -119,17 +119,15 @@ class RulesActivity : AppCompatActivity() {
     }
     
     private fun setupButtons() {
-        binding.btnAddRule.setOnClickListener {
-            // Go directly to template selection
-            startActivity(Intent(this, TemplateSelectionActivity::class.java))
-            InAppLogger.logUserAction("Add rule button clicked - opened template selection")
+        binding.fabAddRule.setOnClickListener {
+            openTemplateSelection("Add rule FAB clicked - opened template selection")
         }
-        
-        binding.btnAddFirstRule.setOnClickListener {
-            // Go directly to template selection
-            startActivity(Intent(this, TemplateSelectionActivity::class.java))
-            InAppLogger.logUserAction("Add first rule button clicked - opened template selection")
-        }
+    }
+    
+    private fun openTemplateSelection(logMessage: String) {
+        // Go directly to template selection
+        startActivity(Intent(this, TemplateSelectionActivity::class.java))
+        InAppLogger.logUserAction(logMessage)
     }
     
 
@@ -170,6 +168,7 @@ class RulesActivity : AppCompatActivity() {
         currentMode = mode
         updateModeSelection(mode)
         binding.cardAutomationStrings.visibility = if (mode == AutomationMode.EXTERNAL_AUTOMATION) View.VISIBLE else View.GONE
+        binding.fabAddRule.visibility = if (mode == AutomationMode.CONDITIONAL_RULES) View.VISIBLE else View.GONE
         
         when (mode) {
             AutomationMode.CONDITIONAL_RULES -> renderRulesContent()
@@ -198,14 +197,12 @@ class RulesActivity : AppCompatActivity() {
         if (rules.isNotEmpty()) {
             binding.rulesContainer.visibility = View.VISIBLE
             binding.emptyStateContainer.visibility = View.GONE
-            binding.btnAddFirstRule.visibility = View.GONE
             rulesAdapter.updateRules(rules)
         } else {
             binding.rulesContainer.visibility = View.GONE
             binding.emptyStateContainer.visibility = View.VISIBLE
             binding.textEmptyStateTitle.setText(R.string.rules_no_rules_created)
             binding.textEmptyStateDescription.setText(R.string.rules_create_first_rule_description)
-            binding.btnAddFirstRule.visibility = View.VISIBLE
             InAppLogger.logDebug("RulesActivity", "No rules found, showing empty state")
         }
     }
@@ -218,7 +215,6 @@ class RulesActivity : AppCompatActivity() {
         binding.emptyStateContainer.visibility = View.VISIBLE
         binding.textEmptyStateTitle.setText(titleRes)
         binding.textEmptyStateDescription.setText(descriptionRes)
-        binding.btnAddFirstRule.visibility = View.GONE
         InAppLogger.logDebug("RulesActivity", "Automation disabled state applied (title=$titleRes)")
     }
     

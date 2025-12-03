@@ -742,7 +742,7 @@ Dilinizi seçin. Bu, en iyi deneyim için hem uygulama arayüzünü hem de metin
 Çoğu kullanıcının ihtiyacı olan tek şey budur. Bireysel ayarları özelleştirmek için aşağıdaki Gelişmiş Ses Seçeneklerini kullanın.
 </string>
     <string name="voice_help_translate">SpeakThat\'i Çevirmeye Yardım Edin!</string>
-    <string name="voice_help_translate_description">Çeviri e-postası göndermek için dokunun</string>
+    <string name="voice_help_translate_description">Weblate çeviri sayfasını açmak için dokunun</string>
     <string name="voice_show_advanced">Gelişmiş Ses Seçeneklerini Göster</string>
     <string name="voice_advanced_label">⚙️ Gelişmiş</string>
     <string name="voice_tts_language_advanced">TTS Dili (Gelişmiş)</string>
@@ -884,7 +884,8 @@ Elinizi yakınlık sensörünün üzerinden geçirerek okumaları durdurun
     <string name="label_test_wave">El Sallamayı Test Et</string>
     <!-- Voice Settings - Additional Strings -->
     <string name="voice_help_translate_button">SpeakThat\'i Çevirmeye Yardım Edin!</string>
-    <string name="voice_help_translate_description_button">Çeviri e-postası göndermek için dokunun</string>
+    <string name="voice_help_translate_description_button">Weblate çeviri sayfasını açmak için dokunun</string>
+    <string name="voice_help_translate_open_failed">Çeviri sayfası açılamadı</string>
     <string name="voice_advanced_options_show">Gelişmiş Ses Seçeneklerini Göster</string>
     <string name="voice_tts_language_label">TTS Dili (Gelişmiş)</string>
     <string name="voice_specific_voice_label">Belirli Ses (Gelişmiş)</string>
@@ -1004,11 +1005,16 @@ Bu kuralı hangi WiFi ağlarının tetiklemesi gerektiğini seçin:
 Bildirimlerin cihazınızın ses sistemi üzerinden nasıl çalınacağını yapılandırın.
 </string>
     <string name="voice_audio_stream_type">Ses Akışı Türü</string>
+    <string name="voice_audio_usage_media_recommended">Medya (önerilir)</string>
+    <string name="voice_audio_usage_notification">Bildirim</string>
+    <string name="voice_audio_usage_alarm">Alarm</string>
+    <string name="voice_audio_usage_voice_call">Sesli Arama</string>
+    <string name="voice_audio_usage_assistance">Yardım</string>
     <string name="voice_content_type">İçerik Türü</string>
     <string name="voice_content_type_description">
 Sisteme bunun ne tür bir ses olduğunu söyler. Bildirimler için Konuşma önerilir.
 </string>
-    <string name="voice_audio_recommendation">Önerilen: Bildirim + Konuşma</string>
+    <string name="voice_audio_recommendation">Önerilen: Medya + Konuşma</string>
     <string name="voice_preview_actions">Önizleme ve Eylemler</string>
     <string name="voice_preview_button">Önizleme</string>
     <string name="voice_test_settings">Ses Ayarlarını Test Et</string>
@@ -1171,7 +1177,7 @@ SpeakThat\'in hangi dili kullanması gerektiğini seçin. İsterseniz koyu modu 
     <string name="onboarding_language_section_title">Dil</string>
     <string name="onboarding_language_help_title">Diliniz listede yok mu?</string>
     <string name="onboarding_language_help_description">
-Daha fazla dili desteklemek için elimden geldiğince çok çalışıyorum. Mümkünse lütfen Crowdin sayfasına çeviri katkısında bulunun!
+Daha fazla dili desteklemek için elimden geldiğince çok çalışıyorum. Mümkünse lütfen Weblate sayfasına çeviri katkısında bulunun!
 </string>
     <string name="onboarding_theme_section_title">Tema</string>
     <string name="onboarding_theme_description">Bu uygulamada koyu modu kullan</string>
@@ -1597,7 +1603,7 @@ Bu, tüm ayarları varsayılanlara sıfırlayacak ve bildirim geçmişini temizl
     -->
     <!--
 
-         This prevents them from being translated by CrowdIn
+         This prevents them from being translated by Weblate
 
     -->
     <!-- Error Messages -->

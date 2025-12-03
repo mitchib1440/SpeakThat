@@ -12,6 +12,8 @@
     <color name="logo_color">#DFD9E6</color> <!-- white_200 for dark mode -->
     <color name="purple_200">#AB6ACF</color>
     <color name="purple_300">#B687D0</color>
+    <color name="rules_fab_background">#31174C</color>
+    <color name="rules_fab_icon">@color/white_100</color>
     <!-- Gradient overlay colors -->
     <color name="white_overlay_20">#33FFFFFF</color> <!-- 20% white for gradient start -->
     <color name="white_overlay_12">#1FFFFFFF</color> <!-- 12% white for subtle gradient start -->

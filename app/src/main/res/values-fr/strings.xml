@@ -770,7 +770,7 @@ Choisissez votre langage. Ceci règle à la fois l\'interface de l\'application 
 C\'est tout ce qui est nécessaire pour la plupart des utilisateurs. Utilisez Les Options avancées de voix ci-dessous pour personnaliser les réglages individuellement.
 </string>
     <string name="voice_help_translate">Aidez à traduire SpeakThat!</string>
-    <string name="voice_help_translate_description">Appuyez pour envoyer un courriel de traduction</string>
+    <string name="voice_help_translate_description">Appuyez pour ouvrir la page de traduction Weblate</string>
     <string name="voice_show_advanced">Afficher les options de voix avancées</string>
     <string name="voice_advanced_label">⚙️ Avancé</string>
     <string name="voice_tts_language_advanced">Langage de synthèse vocale (avancé)</string>
@@ -919,7 +919,8 @@ Arrêter la lecture en agitant votre main au dessus du capteur de proximité
     <string name="test_settings_btn_refresh">Rafraîchir</string>
     <string name="test_settings_btn_export">Exporter</string>
     <string name="voice_help_translate_button">Aider à traduire SpeakThat!</string>
-    <string name="voice_help_translate_description_button">Appuyez pour envoyer le courriel de traduction</string>
+    <string name="voice_help_translate_description_button">Appuyez pour ouvrir la page de traduction Weblate</string>
+    <string name="voice_help_translate_open_failed">Impossible d\'ouvrir la page de traduction</string>
     <string name="voice_advanced_options_show">Afficher les options vocales avancées</string>
     <string name="voice_tts_language_label">Langue de synthèse (avancée)</string>
     <string name="voice_specific_voice_label">Voix spécifique (avancée)</string>
@@ -1043,6 +1044,11 @@ Se déclenche quand n\'importe quel réseau est connecté
 Configure comment les notifications sont jouées sur le système audio de votre appareil.
 </string>
     <string name="voice_audio_stream_type">Type du flux audio</string>
+    <string name="voice_audio_usage_media_recommended">Média (recommandé)</string>
+    <string name="voice_audio_usage_notification">Notification</string>
+    <string name="voice_audio_usage_alarm">Alarme</string>
+    <string name="voice_audio_usage_voice_call">Appel vocal</string>
+    <string name="voice_audio_usage_assistance">Assistance</string>
     <string name="voice_stream_volume">Volume du flux</string>
     <string name="voice_stream_volume_description">
 Contrôle le niveau du volume du flux audio sélectionné. Ceci affecte le volume de l\'appareil pour ce type de flux.
@@ -1051,7 +1057,7 @@ Contrôle le niveau du volume du flux audio sélectionné. Ceci affecte le volum
     <string name="voice_content_type_description">
 Indique au système le type de l\'audio. Parole est recommandé pour les notifications.
 </string>
-    <string name="voice_audio_recommendation">Recommandé : Notification + Parole</string>
+    <string name="voice_audio_recommendation">Recommandé : Média + Parole</string>
     <string name="voice_speakerphone_option">
 Utiliser le haut parleur du téléphone pour les appels vocaux
 </string>
@@ -1204,7 +1210,7 @@ Choisissez quel langage SpeakThat doit utiliser. Vous pouvez aussi activer le mo
     <string name="onboarding_language_section_title">Langage</string>
     <string name="onboarding_language_help_title">Votre langage n\'est pas proposé ?</string>
     <string name="onboarding_language_help_description">
-Je travaille aussi dur que possible pour supporter plus de langages. S\'il vous plait et si vous le pouvez, contribuez aux traductions sur la page Crowdin !
+Je travaille aussi dur que possible pour supporter plus de langages. S\'il vous plaît, et si vous le pouvez, contribuez aux traductions sur la page Weblate !
 </string>
     <string name="onboarding_theme_section_title">Thème</string>
     <string name="onboarding_theme_description">Utiliser le mode sombre dans cette application</string>

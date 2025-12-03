@@ -734,7 +734,7 @@ Kies uw taal. Dit stelt zowel de app interface als de tekst-naar-spraak taal teg
 Dit hebben de meeste gebruikers nodig. Gebruik de geavanceerde spraakopties hieronder om de individuele instellingen aan te passen.
 </string>
     <string name="voice_help_translate">Help SpreakThat! vertalen!</string>
-    <string name="voice_help_translate_description">Tik om e-mail voor vertaling te verzenden</string>
+    <string name="voice_help_translate_description">Tik om de Weblate-vertaalpagina te openen</string>
     <string name="voice_show_advanced">Toon geavanceerde stemopties</string>
     <string name="voice_advanced_label">⚙️ Geavanceerd</string>
     <string name="voice_tts_language_advanced">TTS Taal (Geavanceerd)</string>
@@ -876,7 +876,8 @@ Stop uitlezingen door uw hand over de nabijheidssensor te zwaaien
     <string name="label_test_wave">Testen zwaaien</string>
     <!-- Voice Settings - Additional Strings -->
     <string name="voice_help_translate_button">Help SpreakThat! vertalen!</string>
-    <string name="voice_help_translate_description_button">Tik om e-mail voor vertaling te verzenden</string>
+    <string name="voice_help_translate_description_button">Tik om de Weblate-vertaalpagina te openen</string>
+    <string name="voice_help_translate_open_failed">Kan de vertaalpagina niet openen</string>
     <string name="voice_advanced_options_show">Toon geavanceerde stemopties</string>
     <string name="voice_tts_language_label">TTS Taal (Geavanceerd)</string>
     <string name="voice_specific_voice_label">Specifieke stem (Geavanceerd)</string>
@@ -1000,11 +1001,16 @@ Kies welke WiFi-netwerken deze regel moeten activeren:
 Stel in hoe meldingen worden afgespeeld via het audiosysteem van je apparaat.
 </string>
     <string name="voice_audio_stream_type">Type audio-stream</string>
+    <string name="voice_audio_usage_media_recommended">Media (aanbevolen)</string>
+    <string name="voice_audio_usage_notification">Melding</string>
+    <string name="voice_audio_usage_alarm">Alarm</string>
+    <string name="voice_audio_usage_voice_call">Spraakoproep</string>
+    <string name="voice_audio_usage_assistance">Assistentie</string>
     <string name="voice_content_type">Inhoudstype</string>
     <string name="voice_content_type_description">
 Vertelt het systeem wat voor soort audio dit is. Spreken wordt aanbevolen voor meldingen.
 </string>
-    <string name="voice_audio_recommendation">Aanbevolen: Melding + spraak</string>
+    <string name="voice_audio_recommendation">Aanbevolen: Media + spraak</string>
     <string name="voice_preview_actions">Voorbeeld &amp; Acties</string>
     <string name="voice_preview_button">Voorbeeld</string>
     <string name="voice_test_settings">Spraakinstellingen testen</string>
@@ -1167,7 +1173,7 @@ Kies welke taal SpreakThat! moet gebruiken. Je kunt ook de donkere modus inschak
     <string name="onboarding_language_section_title">Taal</string>
     <string name="onboarding_language_help_title">Staat uw taal er niet tussen?</string>
     <string name="onboarding_language_help_description">
-Ik werk zo hard als ik kan om meer talen te ondersteunen. Gelieve vertalingen bij te dragen aan de Crowdin-pagina als u kunt!
+Ik werk zo hard als ik kan om meer talen te ondersteunen. Draag als het kan vertalingen bij op de Weblate-pagina!
 </string>
     <string name="onboarding_theme_section_title">Thema</string>
     <string name="onboarding_theme_description">Donkere modus voor deze app inschakelen</string>
@@ -1595,7 +1601,7 @@ Dit zal alle instellingen herstellen naar standaardinstellingen en wist de meldi
     -->
     <!--
 
-         This prevents them from being translated by CrowdIn
+         This prevents them from being translated by Weblate
 
     -->
     <!-- Error Messages -->
