@@ -2243,7 +2243,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         isSelfTest: Boolean = false
     ): FilterResult {
         // 1. Check app filtering
-        val appFilterResult = checkAppFilter(packageName)
+        val appFilterResult = checkAppFilter(packageName, isSelfTest)
         if (!appFilterResult.shouldSpeak) {
             return appFilterResult
         }
