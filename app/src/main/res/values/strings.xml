@@ -1742,6 +1742,7 @@ This permission is completely optional; SpeakThat! will still function without i
     
     <!-- Statistics -->
     <string name="statistics_notifications_read">Notifications read: %d</string>
+    <string name="statistics_summary_read_and_taps">Notifications read: %1$d\nSpeakThat logo taps: %2$d</string>
     <string name="statistics_title">Statistics</string>
     <string name="statistics_notifications_received">Notifications received</string>
     <string name="statistics_notifications_read_label">Notifications read</string>
@@ -1750,6 +1751,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="statistics_percentage_format">%.1f%%</string>
     <string name="statistics_filter_reasons">Filter reasons</string>
     <string name="statistics_apps_read">Apps read</string>
+    <string name="statistics_logo_taps_label">SpeakThat logo taps</string>
+    <string name="statistics_apps_read_list_label">Apps read list</string>
     <string name="statistics_no_filter_reasons">No notifications filtered</string>
     <string name="statistics_no_apps_read">No apps read yet</string>
     <string name="statistics_filter_reason_master_switch">Master switch disabled</string>

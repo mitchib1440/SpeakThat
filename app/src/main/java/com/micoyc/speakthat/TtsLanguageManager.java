@@ -50,9 +50,6 @@ public class TtsLanguageManager {
         // English (using GB spelling as default since you're British)
         languages.add(new TtsLanguage("English (United Kingdom)", "en_GB", locale("en-GB")));
         
-        // Pirate English (for testing and fun!)
-        languages.add(new TtsLanguage("Pirate English (Arr!)", "en_PIRATE", locale("en-PIRATE")));
-        
         // German (has complete translations)
         languages.add(new TtsLanguage("Deutsch (Deutschland)", "de_DE", locale("de-DE")));
         
@@ -215,12 +212,6 @@ public class TtsLanguageManager {
             return context.getString(stringResourceId);
         }
         
-        // Handle Pirate English programmatically
-        if ("en_PIRATE".equals(ttsLanguageCode)) {
-            String originalString = context.getString(stringResourceId);
-            return convertToPirateSpeak(originalString);
-        }
-        
         try {
             // Create a configuration for the target language
             Configuration config = new Configuration(context.getResources().getConfiguration());
@@ -250,11 +241,6 @@ public class TtsLanguageManager {
             // Use system language
             int resourceId = context.getResources().getIdentifier(stringName, "string", context.getPackageName());
             return resourceId != 0 ? context.getString(resourceId) : stringName;
-        }
-        
-        // Handle Pirate English programmatically
-        if ("en_PIRATE".equals(ttsLanguageCode)) {
-            return getPirateEnglishTranslation(stringName, context);
         }
         
         try {
@@ -287,96 +273,6 @@ public class TtsLanguageManager {
         }
     }
     
-    /**
-     * Get Pirate English translation for a string
-     */
-    private static String getPirateEnglishTranslation(String stringName, Context context) {
-        // Get the original English string first
-        int resourceId = context.getResources().getIdentifier(stringName, "string", context.getPackageName());
-        if (resourceId == 0) {
-            return stringName; // Fallback to string name if not found
-        }
-        
-        String originalString = context.getString(resourceId);
-        
-        // Convert to pirate speak
-        return convertToPirateSpeak(originalString);
-    }
-    
-    /**
-     * Convert English text to pirate speak
-     */
-    private static String convertToPirateSpeak(String text) {
-        if (text == null || text.isEmpty()) {
-            return text;
-        }
-        
-        // Simple pirate speak conversion rules
-        String pirateText = text;
-        
-        // Replace common words with pirate equivalents
-        pirateText = pirateText.replaceAll("\\bYou\\b", "Ye");
-        pirateText = pirateText.replaceAll("\\byou\\b", "ye");
-        pirateText = pirateText.replaceAll("\\bYour\\b", "Yer");
-        pirateText = pirateText.replaceAll("\\byour\\b", "yer");
-        pirateText = pirateText.replaceAll("\\bAre\\b", "Be");
-        pirateText = pirateText.replaceAll("\\bare\\b", "be");
-        pirateText = pirateText.replaceAll("\\bIs\\b", "Be");
-        pirateText = pirateText.replaceAll("\\bis\\b", "be");
-        pirateText = pirateText.replaceAll("\\bAm\\b", "Be");
-        pirateText = pirateText.replaceAll("\\bam\\b", "be");
-        pirateText = pirateText.replaceAll("\\bSaying\\b", "Sayin'");
-        pirateText = pirateText.replaceAll("\\bsaying\\b", "sayin'");
-        pirateText = pirateText.replaceAll("\\bTelling\\b", "Tellin'");
-        pirateText = pirateText.replaceAll("\\btelling\\b", "tellin'");
-        pirateText = pirateText.replaceAll("\\bWarning\\b", "Warnin'");
-        pirateText = pirateText.replaceAll("\\bwarning\\b", "warnin'");
-        pirateText = pirateText.replaceAll("\\bReading\\b", "Readin'");
-        pirateText = pirateText.replaceAll("\\breading\\b", "readin'");
-        pirateText = pirateText.replaceAll("\\bStaying\\b", "Stayin'");
-        pirateText = pirateText.replaceAll("\\bstaying\\b", "stayin'");
-        pirateText = pirateText.replaceAll("\\bUsing\\b", "Usin'");
-        pirateText = pirateText.replaceAll("\\busing\\b", "usin'");
-        pirateText = pirateText.replaceAll("\\bLooking\\b", "Lookin'");
-        pirateText = pirateText.replaceAll("\\blooking\\b", "lookin'");
-        pirateText = pirateText.replaceAll("\\bStaring\\b", "Starin'");
-        pirateText = pirateText.replaceAll("\\bstaring\\b", "starin'");
-        pirateText = pirateText.replaceAll("\\bFocusing\\b", "Focusin'");
-        pirateText = pirateText.replaceAll("\\bfocusing\\b", "focusin'");
-        pirateText = pirateText.replaceAll("\\bControlling\\b", "Controllin'");
-        pirateText = pirateText.replaceAll("\\bcontrolling\\b", "controllin'");
-        pirateText = pirateText.replaceAll("\\bFiltering\\b", "Filterin'");
-        pirateText = pirateText.replaceAll("\\bfiltering\\b", "filterin'");
-        pirateText = pirateText.replaceAll("\\bChoosing\\b", "Choosin'");
-        pirateText = pirateText.replaceAll("\\bchoosing\\b", "choosin'");
-        pirateText = pirateText.replaceAll("\\bWorking\\b", "Workin'");
-        pirateText = pirateText.replaceAll("\\bworking\\b", "workin'");
-        pirateText = pirateText.replaceAll("\\bTesting\\b", "Testin'");
-        pirateText = pirateText.replaceAll("\\btesting\\b", "testin'");
-        pirateText = pirateText.replaceAll("\\bDeveloping\\b", "Developin'");
-        pirateText = pirateText.replaceAll("\\bdeveloping\\b", "developin'");
-        pirateText = pirateText.replaceAll("\\bAccelerating\\b", "Acceleratin'");
-        pirateText = pirateText.replaceAll("\\baccelerating\\b", "acceleratin'");
-        
-        // Add some pirate flair
-        if (pirateText.contains("Welcome")) {
-            pirateText = pirateText.replace("Welcome", "Ahoy there, welcome");
-        }
-        if (pirateText.contains("Thank you")) {
-            pirateText = pirateText.replace("Thank you", "Thank ye");
-        }
-        if (pirateText.contains("Thank you for")) {
-            pirateText = pirateText.replace("Thank you for", "Thank ye for");
-        }
-        
-        // Add "matey" to certain sentences
-        if (pirateText.contains("settings") && !pirateText.contains("matey")) {
-            pirateText = pirateText.replace(".", ", matey!");
-        }
-        
-        return pirateText;
-    }
-
     private static Locale locale(String languageTag) {
         if (languageTag == null || languageTag.isEmpty()) {
             return Locale.getDefault();

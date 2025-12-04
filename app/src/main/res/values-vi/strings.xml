@@ -481,5 +481,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_health_last_disconnect">Ngắt kết nối cuối: %1$s</string>
     <string name="listener_health_last_heartbeat">Nhịp tim cuối: %1$s</string>
     <string name="listener_health_last_rebind_success">Lần nối lại thành công gần nhất: %1$s</string>
+    <string name="statistics_summary_read_and_taps">Thông báo đã đọc: %1$d\nSố lần chạm logo SpeakThat: %2$d</string>
+    <string name="statistics_logo_taps_label">Số lần chạm logo SpeakThat</string>
+    <string name="statistics_apps_read_list_label">Danh sách ứng dụng đã đọc</string>
 </resources>
 

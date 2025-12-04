@@ -36,6 +36,7 @@ class StatisticsManager private constructor(private val context: Context) {
         private const val KEY_LISTENER_REBINDS = "listener_rebinds"
         private const val KEY_LISTENER_REBINDS_SKIPPED = "listener_rebinds_skipped"
         private const val KEY_LISTENER_REBINDS_RECOVERED = "listener_rebinds_recovered"
+        private const val KEY_LOGO_TAPS = "logo_tap_count"
         
         // Filter reason constants
         const val FILTER_MASTER_SWITCH = "master_switch"
@@ -93,7 +94,28 @@ class StatisticsManager private constructor(private val context: Context) {
         appsRead.add(appName)
         saveAppsRead(appsRead)
         
-        Log.d(TAG, "Notifications read incremented: ${currentCount + 1}, app: $appName")
+        val updatedCount = currentCount + 1
+        Log.d(TAG, "Notifications read incremented: $updatedCount, app: $appName")
+        InAppLogger.log("Statistics", "Notification read from $appName (total reads: $updatedCount)")
+    }
+
+    /**
+     * Increment total SpeakThat logo taps and return updated count
+     */
+    fun incrementLogoTaps(): Int {
+        val currentCount = prefs.getInt(KEY_LOGO_TAPS, 0) + 1
+        prefs.edit().putInt(KEY_LOGO_TAPS, currentCount).apply()
+        
+        Log.d(TAG, "Logo taps incremented: $currentCount")
+        InAppLogger.log("Statistics", "SpeakThat logo tapped (total taps: $currentCount)")
+        return currentCount
+    }
+
+    /**
+     * Get total SpeakThat logo taps
+     */
+    fun getLogoTaps(): Int {
+        return prefs.getInt(KEY_LOGO_TAPS, 0)
     }
     
     /**
@@ -198,6 +220,7 @@ class StatisticsManager private constructor(private val context: Context) {
             "listener_rebinds_skipped" to getListenerRebindsSkipped(),
             "listener_rebinds_recovered" to getListenerRebindsRecovered(),
             "percentage_read" to getPercentageRead(),
+            "logo_taps" to getLogoTaps(),
             "filter_reasons" to getFilterReasons(),
             "apps_read" to getAppsRead()
         )
@@ -246,6 +269,7 @@ class StatisticsManager private constructor(private val context: Context) {
             .remove(KEY_LISTENER_REBINDS)
             .remove(KEY_LISTENER_REBINDS_SKIPPED)
             .remove(KEY_LISTENER_REBINDS_RECOVERED)
+            .remove(KEY_LOGO_TAPS)
             .apply()
         
         Log.d(TAG, "Statistics reset")

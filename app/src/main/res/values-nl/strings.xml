@@ -1702,4 +1702,7 @@ Vanwege inconsistenties in hoe verschillende apparaten Audio Focus verzoeken ver
     <string name="selftest_step7_external">Externe automatisering bestuurt SpeakThat</string>
     <string name="diagnostics_should_read_yes_conditional">Alle controles geslaagd – meldingen moeten worden voorgelezen (Conditionele regels actief)</string>
     <string name="diagnostics_should_read_yes_external">Alle controles geslaagd – meldingen worden geregeld door externe automatisering</string>
+    <string name="statistics_summary_read_and_taps">Voorgelezen meldingen: %1$d\nTikken op het SpeakThat-logo: %2$d</string>
+    <string name="statistics_logo_taps_label">Tikken op het SpeakThat-logo</string>
+    <string name="statistics_apps_read_list_label">Lijst met voorgelezen apps</string>
 </resources>

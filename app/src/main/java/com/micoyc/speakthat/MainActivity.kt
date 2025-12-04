@@ -8,10 +8,12 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.IntentFilter
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.os.BatteryManager
 import android.os.Bundle
 import android.provider.Settings
 import android.speech.tts.TextToSpeech
@@ -20,6 +22,7 @@ import android.text.TextUtils
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.micoyc.speakthat.VoiceSettingsActivity
+import com.micoyc.speakthat.StatisticsManager
 import com.micoyc.speakthat.automation.AutomationMode
 import com.micoyc.speakthat.automation.AutomationModeManager
 import android.widget.Toast
@@ -30,6 +33,7 @@ import com.micoyc.speakthat.databinding.ActivityMainBinding
 import java.io.BufferedReader
 import java.util.Locale
 import kotlin.random.Random
+import kotlin.math.roundToInt
 import android.os.Handler
 import android.os.Looper
 import android.view.Menu
@@ -52,6 +56,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     private var isFirstLogoTap = true
     private val easterEggLines = mutableListOf<String>()
     private var animatedLogo: AnimatedVectorDrawable? = null
+    private var lastLogoTapCount: Int = 0
     
     // Shake detection
     private var sensorManager: SensorManager? = null
@@ -137,6 +142,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         private const val KEY_MASTER_SWITCH_ENABLED = "master_switch_enabled"
         private const val KEY_LAST_EASTER_EGG = "last_easter_egg_line"
         private const val REQUEST_NOTIFICATION_PERMISSION = 1001
+        private const val LOW_BATTERY_THRESHOLD = 20
+        private const val FULL_BATTERY_PERCENT = 99
         // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
     
         @JvmField
@@ -408,7 +415,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         try {
             val statsManager = StatisticsManager.getInstance(this)
             val notificationsRead = statsManager.getNotificationsRead()
-            binding.textStatistics.text = getString(R.string.statistics_notifications_read, notificationsRead)
+            binding.textStatistics.text = getString(
+                R.string.statistics_notifications_read,
+                notificationsRead
+            )
         } catch (e: Exception) {
             Log.e(TAG, "Error updating statistics display", e)
             binding.textStatistics.text = ""
@@ -730,7 +740,21 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         }
     }
     
+    private fun trackLogoTap(): Int {
+        return try {
+            val statsManager = StatisticsManager.getInstance(this)
+            val totalTaps = statsManager.incrementLogoTaps()
+            InAppLogger.log("MainActivity", "Logo tapped - total taps: $totalTaps")
+            totalTaps
+        } catch (e: Exception) {
+            Log.e(TAG, "Error tracking logo tap", e)
+            InAppLogger.logError("MainActivity", "Error tracking logo tap: ${e.message}")
+            0
+        }
+    }
+    
     private fun handleLogoClick() {
+        lastLogoTapCount = trackLogoTap()
         // Trigger the animated logo flashing effect
         triggerLogoAnimation()
         
@@ -759,6 +783,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             return
         }
         
+        val batteryStatus = getBatteryStatus()
+
         if (isFirstLogoTap) {
             // First tap: Play instructional message
             val baseText = "This is SpeakThat! The notification reader. This is how incoming notifications will be announced."
@@ -791,10 +817,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         } else {
             // Subsequent taps: Play random easter egg (avoiding repeats)
             if (easterEggLines.isNotEmpty()) {
-                val availableLines = getAvailableEasterEggs()
+                val availableLines = getAvailableEasterEggs(batteryStatus)
                 if (availableLines.isNotEmpty()) {
                     val selectedLine = selectNonRepeatingEasterEgg(availableLines)
-                    val processedLine = processDynamicEasterEgg(selectedLine)
+                    val processedLine = processDynamicEasterEgg(selectedLine, batteryStatus, lastLogoTapCount)
                     speakText(processedLine)
                     
                     // Store the original line (before processing) to prevent repeats
@@ -1065,11 +1091,15 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         return status.toString()
     }
     
-    private fun getAvailableEasterEggs(): List<String> {
+    private fun getAvailableEasterEggs(batteryStatus: BatteryStatus): List<String> {
         // Filter easter eggs based on current settings
         val delayEnabled = (sharedPreferences?.getInt("delay_before_readout", 2) ?: 2) > 0
         val shakeEnabled = sharedPreferences?.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, false) ?: false
         val waveEnabled = sharedPreferences?.getBoolean(KEY_WAVE_TO_STOP_ENABLED, false) ?: false
+        val batteryPercent = batteryStatus.percent
+        val isLowBattery = batteryPercent?.let { it < LOW_BATTERY_THRESHOLD } ?: false
+        val isFullBattery = batteryStatus.isFull
+        val isCharging = batteryStatus.isCharging
         
         return easterEggLines.filter { line ->
             when {
@@ -1081,6 +1111,11 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 line.contains("[WAVE_ONLY]") && !waveEnabled -> false
                 // Lines with [NO_DELAY] tag only show if delay is disabled
                 line.contains("[NO_DELAY]") && delayEnabled -> false
+                // Battery-aware tags
+                line.contains("[LOW_BATT]") && !isLowBattery -> false
+                line.contains("[FULL_BATT]") && !isFullBattery -> false
+                line.contains("[CHARGE_ONLY]") && !isCharging -> false
+                line.contains("{BATTERY_PERCENT}") && batteryPercent == null -> false
                 // All other lines are always available
                 else -> true
             }
@@ -1107,7 +1142,11 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         }
     }
     
-    private fun processDynamicEasterEgg(line: String): String {
+    private fun processDynamicEasterEgg(
+        line: String,
+        batteryStatus: BatteryStatus,
+        logoTapCount: Int
+    ): String {
         var processedLine = line
         
         // Remove conditional tags from the final output
@@ -1115,6 +1154,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         processedLine = processedLine.replace("[SHAKE_ONLY]", "")
         processedLine = processedLine.replace("[WAVE_ONLY]", "")
         processedLine = processedLine.replace("[NO_DELAY]", "")
+        processedLine = processedLine.replace("[LOW_BATT]", "")
+        processedLine = processedLine.replace("[FULL_BATT]", "")
+        processedLine = processedLine.replace("[CHARGE_ONLY]", "")
         
         // Process dynamic placeholders
         processedLine = processedLine.replace("{DAY}", getCurrentDayOfWeek())
@@ -1122,9 +1164,60 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         processedLine = processedLine.replace("{DELAY_TIME}", getCurrentDelayTime())
         processedLine = processedLine.replace("{RANDOM_FOOD}", getRandomFood())
         processedLine = processedLine.replace("{RANDOM_COLOR}", getRandomColor())
+        processedLine = processedLine.replace(
+            "{BATTERY_PERCENT}",
+            batteryStatus.percent?.let { "$it%" } ?: ""
+        )
+        processedLine = processedLine.replace("{LOGO_TAPS}", logoTapCount.toString())
         
         return processedLine.trim()
     }
+
+    private fun getBatteryStatus(): BatteryStatus {
+        val defaultStatus = BatteryStatus(percent = null, isCharging = false, isFull = false)
+        return try {
+            val batteryManager = getSystemService(BATTERY_SERVICE) as? BatteryManager
+            val intent = registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+            val managerPercent = batteryManager?.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+
+            val level = intent?.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) ?: -1
+            val scale = intent?.getIntExtra(BatteryManager.EXTRA_SCALE, -1) ?: -1
+            val calculatedPercent = if (level >= 0 && scale > 0) {
+                ((level / scale.toFloat()) * 100f).roundToInt().coerceIn(0, 100)
+            } else {
+                null
+            }
+
+            val resolvedPercent = when {
+                managerPercent != null && managerPercent in 0..100 -> managerPercent
+                calculatedPercent != null -> calculatedPercent
+                else -> null
+            }
+
+            val status = intent?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
+            val plugged = intent?.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) ?: 0
+            val isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                    status == BatteryManager.BATTERY_STATUS_FULL ||
+                    plugged > 0
+            val isFull = (resolvedPercent != null && resolvedPercent >= FULL_BATTERY_PERCENT) ||
+                    status == BatteryManager.BATTERY_STATUS_FULL
+
+            BatteryStatus(
+                percent = resolvedPercent,
+                isCharging = isCharging,
+                isFull = isFull
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, "Error retrieving battery status", e)
+            defaultStatus
+        }
+    }
+
+    private data class BatteryStatus(
+        val percent: Int?,
+        val isCharging: Boolean,
+        val isFull: Boolean
+    )
     
     private fun getCurrentDayOfWeek(): String {
         val calendar = java.util.Calendar.getInstance()

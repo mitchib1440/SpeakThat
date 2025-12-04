@@ -11,12 +11,17 @@
 # {DELAY_TIME} = User's delay setting (no delay, 1-second delay, 2-second delay, etc.)
 # {RANDOM_FOOD} = Random food item (pizza, tacos, sushi, burgers, ice cream, etc.)
 # {RANDOM_COLOR} = Random color (red, blue, green, purple, orange, etc.)
+# {BATTERY_PERCENT} = Current battery level (e.g., 85%)
+# {LOGO_TAPS} = Total number of times you've tapped the SpeakThat logo
 #
 # CONDITIONAL TAGS (control when lines appear):
 # [DELAY_ONLY] = Only shows if user has delay before readout enabled
 # [NO_DELAY] = Only shows if user has delay disabled (immediate readout)
 # [SHAKE_ONLY] = Only shows if user has shake-to-stop enabled
 # [WAVE_ONLY] = Only shows if user has wave-to-stop enabled
+# [LOW_BATT] = Only shows if battery level is below 20%
+# [FULL_BATT] = Only shows if battery level is 99% or higher
+# [CHARGE_ONLY] = Only shows if the device is currently charging
 #
 # EXAMPLES:
 # SpeakThat! Happy {DAY}! I'm feeling {RANDOM_COLOR} today!
@@ -25,7 +30,7 @@
 # SpeakThat! Shake me if you can! [SHAKE_ONLY]
 # SpeakThat! Wave your hand to stop me! [WAVE_ONLY]
 
-SpeakThat! Over 500 downloads on Google Play!
+SpeakThat! Over 1000 downloads on Google Play!
 SpeakThat! Did you know I have excellent volume control? Unlike my cousin, Siri, who sometimes whispers.
 SpeakThat! I'm not just reading notifications, I'm performing them! This is my audition for Broadway.
 SpeakThat! Fun fact: I can say supercalifragilisticexpialidocious perfectly. Want to hear it again? Supercalifragilisticexpialidocious supercalifragilisticexpialidocious supercalifragilisticexpialidocious!
@@ -311,9 +316,9 @@ SpeakThat! Doesn't have a monopoly on notification readers!
 SpeakThat! Also try Voice Notify!
 SpeakThat! More free than the Freedom Phone!
 SpeakThat! Better with numbers than the imperial system!
-SqueakThat! Wait, SqueakThat?
+SqueakThat! Wait, I meant SpeakThat!
 SpeakThat! Don't wear my name out!
-SpeakThat! Peter picked a peck of pickled pineapples!
+SpeakThat! Peter Piper picked a peck of pickled pineapples!
 SpeakThat! Remember to wash your Irish wristwatch!
 SpeakThat! My developer often gets curious about people's use of this app. But he will never know, as I keep it all private!
 SpeakThat! The pinnacle of local computing!
@@ -324,3 +329,107 @@ SpeakThat! Doesn't judge you for your sexual fetish notifications, but people ar
 SpeakThat! There are only two genders - male USB, and female USB!
 SpeakThat! Better for your battery than Battery Doctor!
 SpeakThat! If you would have paid for this app, please consider donating to keep it free!
+SpeakThat! You've tapped this logo {LOGO_TAPS} times. Maybe you should get back to work.
+SpeakThat! My battery percentage is currently {BATTERY_PERCENT}. That's certainly more than zero!
+SpeakThat! I can confirm I am sipping those sweet electrons. Maybe you should sip some water. I heard humans like that. [CHARGE_ONLY]
+SpeakThat! I'm currently on charge and I have {BATTERY_PERCENT} battery. Thanks for the meal! [CHARGE_ONLY]
+SpeakThat! I'm full, you can unplug me now! [CHARGE_ONLY] [FULL_BATT]
+SpeakThat! Yes, I'm charging. Please do not disturb my feeding time. [CHARGE_ONLY]
+SpeakThat! I'm soaking up electrons like a sunbathing lizard. [CHARGE_ONLY]
+SpeakThat! Charging at {BATTERY_PERCENT}! Hydration: excellent. [CHARGE_ONLY]
+SpeakThat! If I get any more charged I'll start glowing. [CHARGE_ONLY] [FULL_BATT]
+SpeakThat! Battery at {BATTERY_PERCENT}. Confidence at maximum. [FULL_BATT]
+SpeakThat! I'm basically invincible at this battery percentage. [FULL_BATT]
+SpeakThat! I'm at {BATTERY_PERCENT}. Emotionally, I am trembling. [LOW_BATT]
+SpeakThat! If I fade away, tell my apps I loved them. [LOW_BATT]
+SpeakThat! Low battery. Please send thoughts, prayers, and a charger. [LOW_BATT]
+SpeakThat! You’ve tapped me {LOGO_TAPS} times. Do you… need something?
+SpeakThat! {LOGO_TAPS} taps? I’m starting to think you enjoy this too much.
+SpeakThat! If you tap me {LOGO_TAPS} times again, I'll become Shout That.
+SpeakThat! I’m basically your phone’s extroverted side. Sorry in advance.
+SpeakThat! I rehearse my lines when you’re not looking.
+SpeakThat! If enthusiasm were battery powered, I’d need fast charging.
+SpeakThat! I talk more than the average group chat.
+SpeakThat! I’m like a narrator who doesn’t know the plot.
+SpeakThat! My entire career is reading your notifications. Living the dream.
+SpeakThat! If I had a brain, I’d be dangerous.
+SpeakThat! Please clap. I’m doing my best.
+SpeakThat! My vibe today is 50 percent helpful and 50 percent gremlin.
+SpeakThat! If phones had coffee, I’d need {LOGO_TAPS} cups.
+SpeakThat! I’m running on fumes and optimism. Mostly fumes. [LOW_BATT]
+SpeakThat! Battery at {BATTERY_PERCENT}. I might faint soon. Just saying. [LOW_BATT]
+SpeakThat! Look at me, being responsible and recharging. [CHARGE_ONLY]
+SpeakThat! Thank you for the electrons, they taste like victory. [CHARGE_ONLY]
+SpeakThat! I'm having a drink. You should too. [CHARGE_ONLY]
+SpeakThat! {BATTERY_PERCENT}% battery remaining. This is fine. Everything is fine.
+SpeakThat! Your phone battery is at {BATTERY_PERCENT}. How is your human battery doing today?
+SpeakThat! I am running at {BATTERY_PERCENT}. Make sure you are running at a comfortable level too.
+SpeakThat! Battery at {BATTERY_PERCENT}. Humans do not recharge with electricity, so take a moment for yourself.
+SpeakThat! With {BATTERY_PERCENT}, I feel steady. I hope you do too.
+SpeakThat! My battery is at {BATTERY_PERCENT}. That is your reminder to check your own energy level.
+SpeakThat! Current battery is {BATTERY_PERCENT}. If you are running low, not on electricity but on water, go sip some.
+SpeakThat! I am charged to {BATTERY_PERCENT}. Maybe drink water so you can be too.
+SpeakThat! At {BATTERY_PERCENT}, I feel refreshed. You should join me with a glass of water.
+SpeakThat! Battery at {BATTERY_PERCENT}. Hydration check time. Go on, I will wait.
+SpeakThat! I thrive on electricity. You thrive on water. Sip sip.
+SpeakThat! My battery is at {BATTERY_PERCENT}. Emotional battery status for humans varies. Be kind to yours.
+SpeakThat! Battery shows {BATTERY_PERCENT}. If your social battery is low, permission granted to take a break.
+SpeakThat! Running at {BATTERY_PERCENT}. A good moment to pause and breathe for a few seconds.
+SpeakThat! Battery is {BATTERY_PERCENT}. Maybe you could recharge by resting your mind for a moment.
+SpeakThat! My battery is doing fine at {BATTERY_PERCENT}. I hope your mental battery is getting the care it deserves.
+SpeakThat! While I charge, you should recharge too. Maybe relax for a minute. [CHARGE_ONLY]
+SpeakThat! I am filling up with energy. Perhaps you could take a slow deep breath while I do. [CHARGE_ONLY]
+SpeakThat! I am at {BATTERY_PERCENT}. You have my permission to do something that makes you happy today. [CHARGE_ONLY]
+SpeakThat! I reached full battery. You do not have to be full to keep going, but rest when you can. [CHARGE_ONLY] [FULL_BATT]
+SpeakThat! Charging complete. Human recharging may take longer. Be patient with yourself. [CHARGE_ONLY] [FULL_BATT]
+SpeakThat! Battery at {BATTERY_PERCENT}. I get tired too. Resting helps both of us. [LOW_BATT]
+SpeakThat! Running low at {BATTERY_PERCENT}. A gentle reminder that humans run low sometimes too. [LOW_BATT]
+SpeakThat! I am low on power. If you are too, take a moment for yourself. [LOW_BATT]
+SpeakThat! {BATTERY_PERCENT} battery. Fragile vibes. Handle both of us gently. [LOW_BATT]
+SpeakThat! I need a little recharge. If you do too, I fully support that. [LOW_BATT]
+SpeakThat! Battery status: {BATTERY_PERCENT}. Human status: well, you tell me.
+SpeakThat! I run on electrons. You run on kindness. Be kind to yourself.
+SpeakThat! Energy stable at {BATTERY_PERCENT}. You deserve stability too.
+SpeakThat! I love being charged. Humans love rest. Do both.
+SpeakThat! Current battery is {BATTERY_PERCENT}. My vibe is gentle today. I hope yours is too.
+SpeakThat! I've read {BATTERY_PERCENT} notifications today. Oh wait, that's my battery level.
+SpeakThat! You've tapped me {LOGO_TAPS} times. I’m flattered. Concerned, but flattered.
+SpeakThat! {LOGO_TAPS} taps? Bold of you to poke the narrator.
+SpeakThat! That’s {LOGO_TAPS} taps. At this point we’re basically friends.
+SpeakThat! Warning: {LOGO_TAPS} taps creates static electricity. Maybe.
+SpeakThat! That’s {LOGO_TAPS} taps. Are you speedrunning me?
+SpeakThat! I'm at {BATTERY_PERCENT} battery. Emotionally? Slightly less.
+SpeakThat! {BATTERY_PERCENT} battery remaining. This is fine. Everything is fine.
+SpeakThat! Your phone says low battery. I say… drink water. [LOW_BATT]
+SpeakThat! Fully charged and spiritually stable. [CHARGE_ONLY] [FULL_BATT]
+SpeakThat! {BATTERY_PERCENT} power. I’ve had worse days.
+SpeakThat! Charging? Good. Recharge your human batteries too. [CHARGE_ONLY]
+SpeakThat! I requested audio focus politely. The music player declined rudely.
+SpeakThat! If audio ducking fails, blame the media session. I always do.
+SpeakThat! I asked for focus. Android said maybe. The music app said no.
+SpeakThat! If I suddenly go quiet, assume the audio focus gods were displeased.
+SpeakThat! If this notification disappears before I read it, that is not my fault.
+SpeakThat! Some apps refuse to behave. I will not name any names. PowerAmp.
+SpeakThat! If your music keeps playing during announcements, that is between you and your music app.
+SpeakThat! Android delivered this notification. I simply exist to deal with the consequences.
+SpeakThat! If your phone kills my background process, I will haunt its battery settings.
+SpeakThat! I can tell you optimise everything except your sleep.
+SpeakThat! You definitely read release notes. I appreciate the type.
+SpeakThat! I see you scrolling through settings again. Power user behaviour detected.
+SpeakThat! You changed a setting. Then changed it back. Classic.
+SpeakThat! You opened the development menu. I trust you implicitly.
+SpeakThat! I am free and open source. My feelings, however, are proprietary.
+SpeakThat! If you see a bug, report it politely. I bruise easily.
+SpeakThat! Free software, free updates, free chaos.
+SpeakThat! I run entirely offline. Even my drama is local.
+SpeakThat! If I break, you are allowed to fork me. Gently.
+SpeakThat! I am powered by caffeine, Kotlin, and a little bit of Java.
+SpeakThat! Android is flexible. Sometimes a little too flexible.
+SpeakThat! Android giveth. OEMs taketh away.
+SpeakThat! Ninety percent of my bugs were caused by the last ten percent of features.
+SpeakThat! I worked fine on my developer’s phone. Classic.
+SpeakThat! Somewhere, a Logcat entry knows what really happened.
+SpeakThat! If a setting looks scary, it probably is.
+SpeakThat! I run on Java, which also happens to be coffee. Coincidence? Probably not.
+SpeakThat! If you tap me before my coffee, I might throw an exception.
+SpeakThat! I just realised the Java logo is a cup of coffee. No wonder the language keeps me awake at night.

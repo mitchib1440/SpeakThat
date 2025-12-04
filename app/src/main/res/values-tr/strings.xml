@@ -1684,4 +1684,7 @@ Farklı cihazların Ses Odaklama isteklerini nasıl işlediği konusundaki tutar
     <string name="statistics_listener_rebind_requests">Dinleyici yeniden bağlama istekleri</string>
     <string name="statistics_listener_rebind_skips">Dinleyici yeniden bağlama atlamaları</string>
     <string name="statistics_listener_rebind_recoveries">Dinleyici yeniden bağlama kurtarmaları</string>
+    <string name="statistics_summary_read_and_taps">Okunan bildirimler: %1$d\nSpeakThat logosuna dokunuş: %2$d</string>
+    <string name="statistics_logo_taps_label">SpeakThat logosuna dokunuş</string>
+    <string name="statistics_apps_read_list_label">Okunan uygulamalar listesi</string>
 </resources>

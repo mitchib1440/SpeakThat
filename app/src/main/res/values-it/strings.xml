@@ -498,5 +498,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="selftest_step7_external">L’automazione esterna controlla SpeakThat</string>
     <string name="diagnostics_should_read_yes_conditional">Tutti i controlli sono superati: le notifiche dovrebbero essere lette (Regole condizionali attive)</string>
     <string name="diagnostics_should_read_yes_external">Tutti i controlli sono superati: le notifiche sono controllate dall’automazione esterna</string>
+    <string name="statistics_summary_read_and_taps">Notifiche lette: %1$d\nTocchi al logo SpeakThat: %2$d</string>
+    <string name="statistics_logo_taps_label">Tocchi al logo SpeakThat</string>
+    <string name="statistics_apps_read_list_label">Elenco app lette</string>
 </resources>
 

@@ -493,6 +493,9 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="statistics_listener_rebind_requests">Listener rebind requests</string>
     <string name="statistics_listener_rebind_skips">Listener rebind skips</string>
     <string name="statistics_listener_rebind_recoveries">Listener rebind recoveries</string>
+    <string name="statistics_summary_read_and_taps">Notifications read: %1$d\nSpeakThat logo taps: %2$d</string>
+    <string name="statistics_logo_taps_label">SpeakThat logo taps</string>
+    <string name="statistics_apps_read_list_label">Apps read list</string>
     <string name="rules_mode_off_title">Off</string>
     <string name="rules_mode_off_description">No automation, SpeakThat! remains permanently active.</string>
     <string name="rules_mode_conditional_title">Conditional Rules</string>

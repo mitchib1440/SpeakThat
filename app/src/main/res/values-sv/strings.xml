@@ -497,5 +497,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="selftest_step7_external">Extern automatisering styr SpeakThat</string>
     <string name="diagnostics_should_read_yes_conditional">Alla kontroller godkända – aviseringar bör läsas upp (Villkorade regler aktiva)</string>
     <string name="diagnostics_should_read_yes_external">Alla kontroller godkända – aviseringar styrs av extern automatisering</string>
+    <string name="statistics_summary_read_and_taps">Upplästa aviseringar: %1$d\nTryck på SpeakThat-loggan: %2$d</string>
+    <string name="statistics_logo_taps_label">Tryck på SpeakThat-loggan</string>
+    <string name="statistics_apps_read_list_label">Lista över upplästa appar</string>
 </resources>
 

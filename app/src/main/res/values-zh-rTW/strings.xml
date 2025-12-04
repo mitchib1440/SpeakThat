@@ -481,5 +481,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_health_last_disconnect">最後斷線：%1$s</string>
     <string name="listener_health_last_heartbeat">最後心跳：%1$s</string>
     <string name="listener_health_last_rebind_success">最近一次成功重新綁定：%1$s</string>
+    <string name="statistics_summary_read_and_taps">已讀通知：%1$d\nSpeakThat 標誌點擊次數：%2$d</string>
+    <string name="statistics_logo_taps_label">SpeakThat 標誌點擊次數</string>
+    <string name="statistics_apps_read_list_label">已讀應用清單</string>
 </resources>
 

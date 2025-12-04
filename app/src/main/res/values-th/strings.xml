@@ -481,5 +481,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="listener_health_last_disconnect">ตัดการเชื่อมต่อล่าสุด: %1$s</string>
     <string name="listener_health_last_heartbeat">ฮาร์ตบีตล่าสุด: %1$s</string>
     <string name="listener_health_last_rebind_success">การเชื่อมต่อสำเร็จครั้งล่าสุด: %1$s</string>
+    <string name="statistics_summary_read_and_taps">การแจ้งเตือนที่อ่านแล้ว: %1$d\nการแตะโลโก้ SpeakThat: %2$d</string>
+    <string name="statistics_logo_taps_label">การแตะโลโก้ SpeakThat</string>
+    <string name="statistics_apps_read_list_label">รายการแอปที่อ่าน</string>
 </resources>
 

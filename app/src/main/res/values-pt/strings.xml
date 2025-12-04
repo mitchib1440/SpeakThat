@@ -171,13 +171,13 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="read_about_app">Read About App</string>
     <string name="stop_reading">Stop Reading</string>
     <!-- TTS-specific strings (emoji-free and speech-optimized) -->
-    <string name="tts_app_intro">Welcome to SpeakThat!</string>
-    <string name="tts_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="tts_features_intro">Key features include:</string>
-    <string name="tts_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and fully ad-free, offline functionality.</string>
-    <string name="tts_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
-    <string name="tts_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
-    <string name="tts_thank_you">Thank you for using SpeakThat!</string>
+    <string name="tts_app_intro">Bem-vindo ao SpeakThat!</string>
+    <string name="tts_description">O SpeakThat é um leitor de notificações para Android de código aberto que anuncia suas notificações em voz alta usando texto para fala. Perfeito para uso mãos livres, acessibilidade e para se manter informado enquanto faz várias tarefas.</string>
+    <string name="tts_features_intro">Os principais recursos incluem:</string>
+    <string name="tts_features">Leitura de notificações em tempo real, configurações de voz personalizáveis, filtragem inteligente de notificações, controles específicos por app, comportamento ciente de mídia, histórico de notificações, Agitar para Parar e Acenar para Parar, formatação de fala personalizada, suporte a modo escuro e claro, regras condicionais para lógica e agendas avançadas e funcionamento totalmente offline e sem anúncios.</string>
+    <string name="tts_developer">Desenvolvido com carinho por Mitchi, um desenvolvedor solo do Reino Unido com mais de 12 anos de experiência testando e usando leitores de notificações todos os dias. O SpeakThat foi inspirado pelo Touchless Notifications, originalmente desenvolvido pela DYNA Logix, e busca levar adiante o legado dos leitores de notificações personalizáveis. Este projeto foi acelerado por programação assistida por Inteligência Artificial.</string>
+    <string name="tts_license">Este projeto é de código aberto e está disponível sob a licença GPL-3.0. Você pode ver o texto completo da licença e o código-fonte no GitHub. Contribuições e feedback são bem-vindos!</string>
+    <string name="tts_thank_you">Obrigado por usar o SpeakThat!</string>
     <!-- Update System -->
     <string name="check_for_updates">Check for Updates</string>
     <string name="update_checker">Update Checker</string>
@@ -217,60 +217,83 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="update_never">Never (manual only)</string>
     <!-- TTS Template Strings (for improved localization) -->
     <!-- These are complete sentence templates with placeholders for proper localization -->
-    <string name="tts_template_notified_you">{app} notified you: {content}</string>
-    <string name="tts_template_reported">{app} reported: {content}</string>
-    <string name="tts_template_saying">Notification from {app}, saying {content}</string>
-    <string name="tts_template_alerts_you">{app} alerts you: {content}</string>
-    <string name="tts_template_update_from">Update from {app}: {content}</string>
-    <string name="tts_template_notification">{app} notification: {content}</string>
-    <string name="tts_template_new_notification">New notification: {app}: {content}</string>
-    <string name="tts_template_new_from">New from {app}: {content}</string>
-    <string name="tts_template_said">{app} said: {content}</string>
-    <string name="tts_template_updated_you">{app} updated you: {content}</string>
-    <string name="tts_template_new_notification_from">New notification from {app}: saying: {content}</string>
-    <string name="tts_template_new_update_from">New update from {app}: {content}</string>
-    <string name="tts_template_notification_from">Notification from {app}: {content}</string>
-    <string name="tts_template_says">{app} says: {content}</string>
-    <string name="tts_template_private_notification">You received a private notification from {app}</string>
+    <string name="tts_template_notified_you">{app} notificou você: {content}</string>
+    <string name="tts_template_reported">{app} informou: {content}</string>
+    <string name="tts_template_saying">Notificação de {app}, dizendo {content}</string>
+    <string name="tts_template_alerts_you">{app} alerta você: {content}</string>
+    <string name="tts_template_update_from">Atualização de {app}: {content}</string>
+    <string name="tts_template_notification">Notificação de {app}: {content}</string>
+    <string name="tts_template_new_notification">Nova notificação: {app}: {content}</string>
+    <string name="tts_template_new_from">Novidade de {app}: {content}</string>
+    <string name="tts_template_said">{app} disse: {content}</string>
+    <string name="tts_template_updated_you">{app} atualizou você: {content}</string>
+    <string name="tts_template_new_notification_from">Nova notificação de {app}: dizendo: {content}</string>
+    <string name="tts_template_new_update_from">Nova atualização de {app}: {content}</string>
+    <string name="tts_template_notification_from">Notificação de {app}: {content}</string>
+    <string name="tts_template_says">{app} diz: {content}</string>
+    <string name="tts_template_private_notification">Você recebeu uma notificação privada de {app}</string>
     <!-- TTS Context Templates - Complete sentences for different app contexts -->
     <!-- About Page TTS -->
-    <string name="tts_about_intro">Welcome to SpeakThat!</string>
-    <string name="tts_about_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="tts_about_features_intro">Key features include:</string>
-    <string name="tts_about_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and full ad-free, offline functionality.</string>
-    <string name="tts_about_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
-    <string name="tts_about_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
-    <string name="tts_about_thank_you">Thank you for using SpeakThat!</string>
+    <string name="tts_about_intro">Bem-vindo ao SpeakThat!</string>
+    <string name="tts_about_description">O SpeakThat é um leitor de notificações para Android de código aberto que anuncia suas notificações em voz alta usando texto para fala. Perfeito para uso mãos livres, acessibilidade e para se manter informado enquanto faz várias tarefas.</string>
+    <string name="tts_about_features_intro">Os principais recursos incluem:</string>
+    <string name="tts_about_features">Leitura de notificações em tempo real, configurações de voz personalizáveis, filtragem inteligente de notificações, controles específicos por app, comportamento ciente de mídia, histórico de notificações, Agitar para Parar e Acenar para Parar, formatação de fala personalizada, suporte a modo escuro e claro, regras condicionais para lógica e agendas avançadas e funcionamento totalmente offline e sem anúncios.</string>
+    <string name="tts_about_developer">Desenvolvido com carinho por Mitchi, um desenvolvedor solo do Reino Unido com mais de 12 anos de experiência testando e usando leitores de notificações todos os dias. O SpeakThat foi inspirado pelo Touchless Notifications, originalmente desenvolvido pela DYNA Logix, e busca levar adiante o legado dos leitores de notificações personalizáveis. Este projeto foi acelerado por programação assistida por Inteligência Artificial.</string>
+    <string name="tts_about_license">Este projeto é de código aberto e está disponível sob a licença GPL-3.0. Você pode ver o texto completo da licença e o código-fonte no GitHub. Contribuições e feedback são bem-vindos!</string>
+    <string name="tts_about_thank_you">Obrigado por usar o SpeakThat!</string>
     <!-- Voice Settings Test -->
-    <string name="tts_voice_test">This is how your notifications will sound with these voice settings.</string>
+    <string name="tts_voice_test">É assim que suas notificações soarão com estas configurações de voz.</string>
+    <!-- TTS Engine Selection -->
+    <string name="tts_engine_label">Motor TTS</string>
+    <string name="tts_engine_system_default">Padrão do sistema</string>
+    <string name="tts_engine_restart_required">O SpeakThat precisa reiniciar para aplicar o novo motor TTS. Reiniciar agora?</string>
+    <string name="tts_engine_restart_confirm">Reiniciar</string>
+    <string name="tts_engine_failure_spoken">Ah, o SpeakThat não conseguiu usar o motor de texto para fala selecionado. Abra as Configurações de Voz para escolher outro motor.</string>
+    <string name="tts_engine_failure_title">Motor TTS indisponível</string>
+    <string name="tts_engine_failure_message">O SpeakThat não conseguiu usar o motor TTS selecionado. Ele pode ter sido desinstalado. O motor padrão do sistema está sendo usado.</string>
+    <string name="tts_engine_info_title">Informações do motor TTS</string>
     <!-- Onboarding TTS -->
-    <string name="tts_onboarding_welcome">Welcome to SpeakThat! Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.</string>
-    <string name="tts_onboarding_permission">SpeakThat needs permission to read your notifications aloud. Everything stays on your device and you control what gets read.</string>
-    <string name="tts_onboarding_privacy">Your privacy matters. You control exactly what gets read aloud. Shake your phone to stop any announcement instantly. Everything stays on your device.</string>
-    <string name="tts_onboarding_filters">Let\'s set up some basic privacy filters to get you started. SpeakThat features a powerful filtering system that allows you to choose what gets read and what doesn\'t.</string>
-    <string name="tts_onboarding_apps">Type the name of an app you want me to never read notifications from. Common examples include banking apps, medical apps, and dating apps.</string>
-    <string name="tts_onboarding_words">Type words or phrases that you want me to never read notifications containing. Common examples include password, PIN, credit card, and medical terms.</string>
-    <string name="tts_onboarding_complete">SpeakThat is ready to help you stay connected while keeping your eyes free! You can add more filters anytime in the app settings.</string>
+    <string name="tts_onboarding_language_theme">Escolha seu idioma e tema preferidos para começar a usar o SpeakThat.</string>
+    <string name="tts_onboarding_welcome">Bem-vindo ao SpeakThat! Fique conectado sem ficar encarando a tela. Seu telefone lerá as notificações em voz alta para que você se concentre no que importa.</string>
+    <string name="tts_onboarding_permission">O SpeakThat precisa de permissão para ler suas notificações em voz alta. Tudo fica no seu dispositivo e você controla o que é lido.</string>
+    <string name="tts_onboarding_privacy">Sua privacidade importa. Você decide exatamente o que é lido em voz alta. Sacuda o telefone para interromper qualquer anúncio instantaneamente. Todo o processamento fica no dispositivo.</string>
+    <string name="tts_onboarding_filters">Vamos configurar alguns filtros básicos de privacidade para começar. O SpeakThat tem um sistema poderoso que permite escolher o que é lido e o que é ignorado.</string>
+    <string name="tts_onboarding_apps">Digite o nome de um app do qual você nunca quer ouvir notificações. Exemplos comuns incluem apps bancários, médicos e de namoro.</string>
+    <string name="tts_onboarding_words">Digite palavras ou frases que você nunca quer ouvir nas notificações. Exemplos comuns incluem senha, PIN, cartão de crédito e termos médicos.</string>
+    <string name="tts_onboarding_rules">Configure regras inteligentes que controlam automaticamente quando as notificações são lidas com base na sua situação. Por exemplo, leia apenas quando os fones estiverem conectados ou ignore quando a tela estiver ligada.</string>
+    <string name="tts_onboarding_complete">O SpeakThat está pronto para ajudar você a ficar conectado sem precisar olhar para a tela! Você pode adicionar mais filtros a qualquer momento nas configurações do app.</string>
     <!-- Behavior Settings Speech Format Templates -->
-    <string name="tts_behavior_default">Default format</string>
-    <string name="tts_behavior_minimal">Minimal format</string>
-    <string name="tts_behavior_formal">Formal format</string>
-    <string name="tts_behavior_casual">Casual format</string>
-    <string name="tts_behavior_time_aware">Time aware format</string>
-    <string name="tts_behavior_content_only">Content only format</string>
-    <string name="tts_behavior_app_only">App only format</string>
-    <string name="tts_behavior_varied">Varied format</string>
-    <string name="tts_behavior_custom">Custom format</string>
+    <string name="tts_behavior_default">Formato padrão</string>
+    <string name="tts_behavior_minimal">Formato mínimo</string>
+    <string name="tts_behavior_formal">Formato formal</string>
+    <string name="tts_behavior_casual">Formato casual</string>
+    <string name="tts_behavior_time_aware">Formato sensível ao horário</string>
+    <string name="tts_behavior_content_only">Somente conteúdo</string>
+    <string name="tts_behavior_app_only">Somente app</string>
+    <string name="tts_behavior_varied">Formato variado</string>
+    <string name="tts_behavior_custom">Formato personalizado</string>
     <!-- Speech Format Preset Templates -->
-    <string name="tts_format_default">{app} notified you: {content}</string>
+    <string name="tts_format_default">{app} notificou você: {content}</string>
     <string name="tts_format_minimal">{app}: {content}</string>
-    <string name="tts_format_formal">Notification from {app}: {content}</string>
-    <string name="tts_format_casual">{app} says: {content}</string>
-    <string name="tts_format_time_aware">{app} at {time}: {content}</string>
+    <string name="tts_format_formal">Notificação de {app}: {content}</string>
+    <string name="tts_format_casual">{app} diz: {content}</string>
+    <string name="tts_format_time_aware">{app} às {time}: {content}</string>
     <string name="tts_format_content_only">{content}</string>
     <string name="tts_format_app_only">{app}</string>
-    <string name="tts_format_varied">VARIED</string>
-    <string name="tts_format_custom">CUSTOM</string>
+    <string name="tts_format_varied">VARIADO</string>
+    <string name="tts_format_custom">PERSONALIZADO</string>
+    <!-- TTS Troubleshooting -->
+    <string name="tts_error_occurred">Ocorreu um erro no TTS</string>
+    <string name="tts_initialization_failed">Falha na inicialização do TTS</string>
+    <string name="tts_init_failed_android15">A inicialização do TTS falhou no Android 15. Isso pode ser causado por restrições do sistema.</string>
+    <string name="tts_init_failed_service_unavailable">O serviço TTS não está disponível. Verifique suas configurações de TTS.</string>
+    <string name="tts_init_failed_permissions">A inicialização do TTS falhou por falta de permissões. Reinicie o app.</string>
+    <string name="tts_init_failed_recovery_attempts">A recuperação do TTS falhou após várias tentativas. Reinicie o app ou verifique as configurações de TTS.</string>
+    <string name="tts_init_failed_generic">A inicialização do TTS falhou. Alguns recursos podem não funcionar corretamente.</string>
+    <string name="tts_recovery_in_progress">Tentando recuperar o serviço TTS...</string>
+    <string name="tts_recovery_successful">O serviço TTS foi recuperado com sucesso!</string>
+    <string name="tts_troubleshooting_title">Solução de problemas do TTS</string>
+    <string name="tts_troubleshooting_message">Se o TTS continuar falhando:\n\n1. Abra Configurações &gt; Acessibilidade &gt; Saída de texto para fala\n2. Verifique se o Google TTS está instalado e definido como padrão\n3. Reinicie o app\n4. Reinicie o dispositivo se o problema persistir</string>
     <!-- Rule Builder Templates -->
     <string name="template_selection_title">Choose a Template</string>
     <string name="template_selection_description">Select a pre-configured rule template to get started quickly, or create a custom rule from scratch.</string>
@@ -497,5 +520,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="selftest_step7_external">A automação externa controla o SpeakThat</string>
     <string name="diagnostics_should_read_yes_conditional">Todas as verificações passaram – as notificações devem ser lidas (Regras condicionais ativas)</string>
     <string name="diagnostics_should_read_yes_external">Todas as verificações passaram – as notificações são controladas pela automação externa</string>
+    <string name="statistics_summary_read_and_taps">Notificações lidas: %1$d\nToques no logotipo do SpeakThat: %2$d</string>
+    <string name="statistics_logo_taps_label">Toques no logotipo do SpeakThat</string>
+    <string name="statistics_apps_read_list_label">Lista de apps lidos</string>
 </resources>
 

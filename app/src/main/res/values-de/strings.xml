@@ -1749,4 +1749,7 @@ Wenn Sie SpeakThat hilfreich finden, überlegen Sie bitte eine Bewertung im Goog
     <string name="statistics_listener_rebind_requests">Anforderungen zum Neuverbinden des Listeners</string>
     <string name="statistics_listener_rebind_skips">Übersprungene Neuverbindungen</string>
     <string name="statistics_listener_rebind_recoveries">Erfolgreiche Neuverbindungswiederherstellungen</string>
+    <string name="statistics_summary_read_and_taps">Vorgelesene Benachrichtigungen: %1$d\nBerührungen des SpeakThat-Logos: %2$d</string>
+    <string name="statistics_logo_taps_label">Berührungen des SpeakThat-Logos</string>
+    <string name="statistics_apps_read_list_label">Liste der vorgelesenen Apps</string>
 </resources>

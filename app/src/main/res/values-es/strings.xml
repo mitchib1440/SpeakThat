@@ -1734,4 +1734,7 @@ Debido a inconsistencias en cómo diferentes dispositivos manejan las solicitude
     <string name="selftest_step7_external">La automatización externa controla SpeakThat</string>
     <string name="diagnostics_should_read_yes_conditional">Todas las comprobaciones superadas: se deberían leer las notificaciones (Reglas condicionales activas)</string>
     <string name="diagnostics_should_read_yes_external">Todas las comprobaciones superadas: las notificaciones están controladas por automatización externa</string>
+    <string name="statistics_summary_read_and_taps">Notificaciones leídas: %1$d\nToques al logotipo de SpeakThat: %2$d</string>
+    <string name="statistics_logo_taps_label">Toques al logotipo de SpeakThat</string>
+    <string name="statistics_apps_read_list_label">Lista de aplicaciones leídas</string>
 </resources>

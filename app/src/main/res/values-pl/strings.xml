@@ -497,5 +497,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="selftest_step7_external">Automatyzacja zewnętrzna kontroluje SpeakThat</string>
     <string name="diagnostics_should_read_yes_conditional">Wszystkie testy zaliczone – powiadomienia powinny być odczytywane (Reguły warunkowe aktywne)</string>
     <string name="diagnostics_should_read_yes_external">Wszystkie testy zaliczone – powiadomienia są kontrolowane przez automatyzację zewnętrzną</string>
+    <string name="statistics_summary_read_and_taps">Przeczytane powiadomienia: %1$d\nDotknięcia logo SpeakThat: %2$d</string>
+    <string name="statistics_logo_taps_label">Dotknięcia logo SpeakThat</string>
+    <string name="statistics_apps_read_list_label">Lista odczytanych aplikacji</string>
 </resources>
 

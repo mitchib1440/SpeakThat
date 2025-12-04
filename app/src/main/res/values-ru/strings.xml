@@ -464,4 +464,7 @@
     <string name="selftest_step7_external">Внешняя автоматизация управляет SpeakThat</string>
     <string name="diagnostics_should_read_yes_conditional">Все проверки пройдены — уведомления должны быть прочитаны (Условные правила активны)</string>
     <string name="diagnostics_should_read_yes_external">Все проверки пройдены — уведомления управляются внешней автоматизацией</string>
+    <string name="statistics_summary_read_and_taps">Прочитанные уведомления: %1$d\nНажатия на логотип SpeakThat: %2$d</string>
+    <string name="statistics_logo_taps_label">Нажатия на логотип SpeakThat</string>
+    <string name="statistics_apps_read_list_label">Список озвученных приложений</string>
 </resources>

@@ -632,16 +632,19 @@ object InAppLogger {
             val readoutsInterrupted = statsManager.getReadoutsInterrupted()
             val percentage = statsManager.getPercentageRead()
             val filterReasons = statsManager.getFilterReasons()
-            val appsReadCount = statsManager.getAppsRead().size
+            val appsReadList = statsManager.getAppsRead().toList().sorted()
+            val appsReadCount = appsReadList.size
             val listenerRebindRequests = statsManager.getListenerRebinds()
             val listenerRebindSkips = statsManager.getListenerRebindsSkipped()
             val listenerRebindRecoveries = statsManager.getListenerRebindsRecovered()
+            val logoTaps = statsManager.getLogoTaps()
 
             buildString {
                 appendLine("=== ${context.getString(R.string.statistics_title)} ===")
                 appendLine("${context.getString(R.string.statistics_notifications_received)}: $received")
                 appendLine("${context.getString(R.string.statistics_notifications_read_label)}: $read")
                 appendLine("${context.getString(R.string.statistics_readouts_interrupted)}: $readoutsInterrupted")
+                appendLine("${context.getString(R.string.statistics_logo_taps_label)}: $logoTaps")
                 appendLine(
                     "${context.getString(R.string.statistics_percentage_read)}: ${
                         String.format(
@@ -655,6 +658,14 @@ object InAppLogger {
                 appendLine("${context.getString(R.string.statistics_listener_rebind_skips)}: $listenerRebindSkips")
                 appendLine("${context.getString(R.string.statistics_listener_rebind_recoveries)}: $listenerRebindRecoveries")
                 appendLine("${context.getString(R.string.statistics_apps_read)}: $appsReadCount")
+                if (appsReadList.isNotEmpty()) {
+                    appendLine(context.getString(R.string.statistics_apps_read_list_label))
+                    appsReadList.forEach { appName ->
+                        appendLine("- $appName")
+                    }
+                } else {
+                    appendLine(context.getString(R.string.statistics_no_apps_read))
+                }
                 if (filterReasons.isNotEmpty()) {
                     appendLine()
                     appendLine("${context.getString(R.string.statistics_filter_reasons)}:")

@@ -497,5 +497,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="selftest_step7_external">External automation controls SpeakThat</string>
     <string name="diagnostics_should_read_yes_conditional">All checks passed – notifications should be read (Conditional Rules active)</string>
     <string name="diagnostics_should_read_yes_external">All checks passed – notifications are controlled by external automation</string>
+    <string name="statistics_summary_read_and_taps">Notifikasi dibacakan: %1$d\nKetukan logo SpeakThat: %2$d</string>
+    <string name="statistics_logo_taps_label">Ketukan logo SpeakThat</string>
+    <string name="statistics_apps_read_list_label">Daftar aplikasi yang dibaca</string>
 </resources>
 

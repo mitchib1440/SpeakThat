@@ -1600,4 +1600,7 @@ Notification permission denied - SpeakThat notifications may not appear
     <string name="selftest_step7_external">External automation controls SpeakThat</string>
     <string name="diagnostics_should_read_yes_conditional">All checks passed – notifications should be read (Conditional Rules active)</string>
     <string name="diagnostics_should_read_yes_external">All checks passed – notifications are controlled by external automation</string>
+    <string name="statistics_summary_read_and_taps">読み上げた通知: %1$d\nSpeakThat ロゴのタップ数: %2$d</string>
+    <string name="statistics_logo_taps_label">SpeakThat ロゴのタップ数</string>
+    <string name="statistics_apps_read_list_label">読み上げたアプリ一覧</string>
 </resources>

@@ -112,6 +112,7 @@ class AboutActivity : AppCompatActivity() {
             val read = (stats["notifications_read"] as? Number)?.toInt() ?: 0
             val readoutsInterrupted = (stats["readouts_interrupted"] as? Number)?.toInt() ?: 0
             val percentage = (stats["percentage_read"] as? Number)?.toDouble() ?: 0.0
+            val logoTaps = (stats["logo_taps"] as? Number)?.toInt() ?: statsManager.getLogoTaps()
             val filterReasons = (stats["filter_reasons"] as? Map<*, *>)?.entries
                 ?.mapNotNull { entry ->
                     val key = entry.key as? String ?: return@mapNotNull null
@@ -135,6 +136,11 @@ class AboutActivity : AppCompatActivity() {
                 append(getString(R.string.statistics_readouts_interrupted))
                 append(": ")
                 append(readoutsInterrupted)
+                append("\n")
+                
+                append(getString(R.string.statistics_logo_taps_label))
+                append(": ")
+                append(logoTaps)
                 append("\n")
                 
                 append(getString(R.string.statistics_percentage_read))
