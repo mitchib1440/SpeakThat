@@ -273,6 +273,41 @@ public class TtsLanguageManager {
         }
     }
     
+    /**
+     * Attempt to find which string resource key matches a stored localized value by checking
+     * the base resources plus every supported TTS language variant.
+     */
+    public static String findMatchingStringKey(Context context, String storedValue, String[] candidateKeys) {
+        if (context == null || storedValue == null || candidateKeys == null || candidateKeys.length == 0) {
+            return null;
+        }
+        
+        // First check system/default resources
+        for (String key : candidateKeys) {
+            String baseString = getLocalizedTtsStringByName(context, "system", key);
+            if (storedValue.equals(baseString)) {
+                return key;
+            }
+        }
+        
+        // Check each supported TTS language
+        List<TtsLanguage> languages = getSupportedTtsLanguages(context);
+        for (TtsLanguage language : languages) {
+            if (language == null || language.localeCode == null || "system".equals(language.localeCode)) {
+                continue;
+            }
+            
+            for (String key : candidateKeys) {
+                String localizedString = getLocalizedTtsStringByName(context, language.localeCode, key);
+                if (storedValue.equals(localizedString)) {
+                    return key;
+                }
+            }
+        }
+        
+        return null;
+    }
+    
     private static Locale locale(String languageTag) {
         if (languageTag == null || languageTag.isEmpty()) {
             return Locale.getDefault();

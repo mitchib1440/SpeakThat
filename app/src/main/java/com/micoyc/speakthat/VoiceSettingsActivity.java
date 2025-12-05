@@ -1401,7 +1401,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 } else if ("gb".equals(countryCode) || "uk".equals(countryCode)) {
                     return "Hello! This is a voice test in British English.";
                 } else if ("ca".equals(countryCode)) {
-                    return "Hello! This is a voice test in Canadian English, eh?";
+                    return "Hello! This is a voice test in Canadian English eh?";
                 } else {
                     return "Hello! This is a voice test in American English.";
                 }

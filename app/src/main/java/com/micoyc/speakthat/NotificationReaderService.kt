@@ -115,6 +115,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     // Speech template settings
     private var speechTemplate = "{app} notified you: {content}"
+    private var speechTemplateKey: String = SpeechTemplateConstants.DEFAULT_TEMPLATE_KEY
     
     // Varied format options for random selection
     private val variedFormats = arrayOf(
@@ -264,6 +265,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Speech template settings
         private const val KEY_SPEECH_TEMPLATE = "speech_template"
+        private const val KEY_SPEECH_TEMPLATE_KEY = "speech_template_key"
         
         // Conditional rules settings
         private const val KEY_CONDITIONAL_RULES = "conditional_rules"
@@ -2189,8 +2191,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Load cooldown settings
         loadCooldownSettings()
         
-        // Load speech template
-        speechTemplate = sharedPreferences?.getString(KEY_SPEECH_TEMPLATE, "{app} notified you: {content}") ?: "{app} notified you: {content}"
+        // Load speech template + key
+        refreshSpeechTemplateState()
         
         // Load notification settings (values used in other parts of the service)
         sharedPreferences?.getBoolean(KEY_PERSISTENT_NOTIFICATION, false) ?: false
@@ -5273,10 +5275,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 InAppLogger.log("Service", "Cooldown settings updated - apps: ${appCooldownSettings.size}")
             }
             KEY_SPEECH_TEMPLATE -> {
-                // Reload speech template
-                speechTemplate = sharedPreferences?.getString(KEY_SPEECH_TEMPLATE, "{app} notified you: {content}") ?: "{app} notified you: {content}"
-                Log.d(TAG, "Speech template updated")
-                InAppLogger.log("Service", "Speech template updated")
+                refreshSpeechTemplateState()
+                Log.d(TAG, "Speech template updated - key=$speechTemplateKey")
+                InAppLogger.log("Service", "Speech template updated - key=$speechTemplateKey")
+            }
+            KEY_SPEECH_TEMPLATE_KEY -> {
+                speechTemplateKey = sharedPreferences?.getString(KEY_SPEECH_TEMPLATE_KEY, speechTemplateKey) ?: speechTemplateKey
+                Log.d(TAG, "Speech template key updated: $speechTemplateKey")
+                InAppLogger.log("Service", "Speech template key updated: $speechTemplateKey")
             }
             KEY_PERSISTENT_NOTIFICATION -> {
                 // Handle persistent notification setting change
@@ -5355,12 +5361,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "Unknown"
         }
         
-        // Handle varied template by randomly selecting a format
-        val templateToUse = if (speechTemplate == "VARIED") {
-            getLocalizedVariedFormatsImproved().random()
-        } else {
-            speechTemplate
-        }
+        // Handle template localization + varied/custom modes
+        val templateToUse = resolveSpeechTemplateForPlayback()
         
         // Process the template with all available placeholders
         var processedTemplate = templateToUse
@@ -5388,8 +5390,50 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * Get localized TTS string based on user's TTS language setting
      */
     private fun getLocalizedTtsString(stringResId: Int): String {
-        val ttsLanguageCode = voiceSettingsPrefs?.getString("tts_language", "system") ?: "system"
-        return TtsLanguageManager.getLocalizedTtsString(this, ttsLanguageCode, stringResId)
+        return TtsLanguageManager.getLocalizedTtsString(this, getCurrentTtsLanguageCode(), stringResId)
+    }
+
+    private fun getCurrentTtsLanguageCode(): String {
+        return voiceSettingsPrefs?.getString("tts_language", "system") ?: "system"
+    }
+
+    private fun refreshSpeechTemplateState() {
+        val template = sharedPreferences?.getString(KEY_SPEECH_TEMPLATE, "{app} notified you: {content}") ?: "{app} notified you: {content}"
+        speechTemplate = template
+        val storedKey = sharedPreferences?.getString(KEY_SPEECH_TEMPLATE_KEY, null)
+        speechTemplateKey = when {
+            !storedKey.isNullOrBlank() -> storedKey
+            template == SpeechTemplateConstants.TEMPLATE_KEY_VARIED -> SpeechTemplateConstants.TEMPLATE_KEY_VARIED
+            template == "VARIED" -> SpeechTemplateConstants.TEMPLATE_KEY_VARIED // Legacy literal storage
+            else -> TtsLanguageManager.findMatchingStringKey(this, template, SpeechTemplateConstants.RESOURCE_TEMPLATE_KEYS)
+                ?: SpeechTemplateConstants.TEMPLATE_KEY_CUSTOM
+        }
+        
+        if (storedKey == null) {
+            sharedPreferences?.edit()?.putString(KEY_SPEECH_TEMPLATE_KEY, speechTemplateKey)?.apply()
+        }
+        
+        Log.d(TAG, "Speech template state refreshed - key=$speechTemplateKey")
+    }
+    
+    private fun isResourceTemplateKey(key: String?): Boolean {
+        if (key.isNullOrBlank()) {
+            return false
+        }
+        return SpeechTemplateConstants.RESOURCE_TEMPLATE_KEYS.contains(key)
+    }
+    
+    private fun resolveSpeechTemplateForPlayback(): String {
+        return when {
+            speechTemplateKey == SpeechTemplateConstants.TEMPLATE_KEY_VARIED -> getLocalizedVariedFormatsImproved().random()
+            speechTemplateKey == SpeechTemplateConstants.TEMPLATE_KEY_CUSTOM -> speechTemplate
+            isResourceTemplateKey(speechTemplateKey) -> {
+                val key = speechTemplateKey ?: SpeechTemplateConstants.DEFAULT_TEMPLATE_KEY
+                TtsLanguageManager.getLocalizedTtsStringByName(this, getCurrentTtsLanguageCode(), key)
+            }
+            speechTemplate == SpeechTemplateConstants.TEMPLATE_KEY_VARIED || speechTemplate == "VARIED" -> getLocalizedVariedFormatsImproved().random()
+            else -> speechTemplate
+        }
     }
 
     /**

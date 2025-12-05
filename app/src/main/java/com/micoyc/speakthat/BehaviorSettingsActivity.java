@@ -97,6 +97,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final int DEFAULT_CONTENT_CAP_TIME_LIMIT = 10;
 
     private static final String KEY_SPEECH_TEMPLATE = "speech_template"; // Custom speech template
+    private static final String KEY_SPEECH_TEMPLATE_KEY = SpeechTemplateConstants.KEY_SPEECH_TEMPLATE_KEY;
 
     // Media behavior options
     private static final String MEDIA_BEHAVIOR_IGNORE = "ignore";
@@ -669,12 +670,14 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                     binding.textSpeechPreview.setText("Varied mode: Random format selected for each notification");
                     binding.textSpeechPreview.setTextColor(getResources().getColor(R.color.text_tertiary));
                     saveSpeechTemplate("VARIED");
+                    saveSpeechTemplateKey(SpeechTemplateConstants.TEMPLATE_KEY_VARIED);
                 } else if (selectedTemplateKey.equals("CUSTOM")) {
                     // Custom mode - show input field
                     binding.editCustomSpeechTemplate.setVisibility(View.VISIBLE);
                     View customFormatContainer = (View) binding.editCustomSpeechTemplate.getParent().getParent();
                     customFormatContainer.setVisibility(View.VISIBLE);
                     updateSpeechPreview();
+                    saveSpeechTemplateKey(SpeechTemplateConstants.TEMPLATE_KEY_CUSTOM);
                 } else {
                     // Regular preset - get localized template and update input field and preview
                     String localizedTemplate = getLocalizedTemplateValue(selectedTemplateKey);
@@ -684,6 +687,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                     binding.editCustomSpeechTemplate.setText(localizedTemplate);
                     updateSpeechPreview();
                     saveSpeechTemplate(localizedTemplate);
+                    saveSpeechTemplateKey(selectedTemplateKey);
                 }
             }
             
@@ -712,10 +716,12 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 
                 // Check if the new template matches any preset
                 boolean matchesPreset = false;
+                String matchedKey = null;
                 for (int i = 0; i < TEMPLATE_KEYS.length - 1; i++) { // Skip the last "Custom" option
                     String localizedTemplate = getLocalizedTemplateValue(TEMPLATE_KEYS[i]);
                     if (localizedTemplate.equals(newTemplate)) {
                         matchesPreset = true;
+                        matchedKey = TEMPLATE_KEYS[i];
                         binding.spinnerSpeechTemplate.setSelection(i);
                         break;
                     }
@@ -726,6 +732,11 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 
                 updateSpeechPreview();
                 saveSpeechTemplate(newTemplate);
+                if (matchesPreset && matchedKey != null) {
+                    saveSpeechTemplateKey(matchedKey);
+                } else {
+                    saveSpeechTemplateKey(SpeechTemplateConstants.TEMPLATE_KEY_CUSTOM);
+                }
             }
         });
         
@@ -1185,41 +1196,39 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     
     private void loadSpeechTemplateSettings() {
         String savedTemplate = sharedPreferences.getString(KEY_SPEECH_TEMPLATE, DEFAULT_SPEECH_TEMPLATE);
+        String templateKey = sharedPreferences.getString(KEY_SPEECH_TEMPLATE_KEY, null);
         
-        if (savedTemplate.equals("VARIED")) {
-            // Set spinner to Varied and hide custom input section
+        if (templateKey == null) {
+            templateKey = resolveTemplateKey(savedTemplate);
+            saveSpeechTemplateKey(templateKey);
+        }
+        
+        if (SpeechTemplateConstants.TEMPLATE_KEY_VARIED.equals(templateKey)) {
             binding.spinnerSpeechTemplate.setSelection(TEMPLATE_PRESETS.length - 2); // Varied is second to last
             binding.editCustomSpeechTemplate.setVisibility(View.GONE);
             View customFormatContainer = (View) binding.editCustomSpeechTemplate.getParent().getParent();
             customFormatContainer.setVisibility(View.GONE);
             binding.textSpeechPreview.setText("Varied mode: Random format selected for each notification");
             binding.textSpeechPreview.setTextColor(getResources().getColor(R.color.text_tertiary));
-        } else {
-            // Find the preset that matches the saved template
-            int presetIndex = -1;
-            for (int i = 0; i < TEMPLATE_KEYS.length; i++) {
-                String localizedTemplate = getLocalizedTemplateValue(TEMPLATE_KEYS[i]);
-                if (localizedTemplate.equals(savedTemplate)) {
-                    presetIndex = i;
-                    break;
-                }
-            }
-            
-            if (presetIndex >= 0) {
-                // It's a preset
-                binding.spinnerSpeechTemplate.setSelection(presetIndex);
-                binding.editCustomSpeechTemplate.setText(savedTemplate);
-            } else {
-                // It's a custom template
-                binding.spinnerSpeechTemplate.setSelection(TEMPLATE_KEYS.length - 1); // Custom is last
-                binding.editCustomSpeechTemplate.setText(savedTemplate);
-            }
-            
-            binding.editCustomSpeechTemplate.setVisibility(View.VISIBLE);
-            View customFormatContainer = (View) binding.editCustomSpeechTemplate.getParent().getParent();
-            customFormatContainer.setVisibility(View.VISIBLE);
-            updateSpeechPreview();
+            return;
         }
+        
+        binding.editCustomSpeechTemplate.setVisibility(View.VISIBLE);
+        View customFormatContainer = (View) binding.editCustomSpeechTemplate.getParent().getParent();
+        customFormatContainer.setVisibility(View.VISIBLE);
+        
+        if (isResourceTemplateKey(templateKey)) {
+            int presetIndex = getTemplateIndex(templateKey);
+            if (presetIndex >= 0) {
+                binding.spinnerSpeechTemplate.setSelection(presetIndex);
+            }
+            binding.editCustomSpeechTemplate.setText(getLocalizedTemplateValue(templateKey));
+        } else {
+            binding.spinnerSpeechTemplate.setSelection(TEMPLATE_KEYS.length - 1); // Custom is last
+            binding.editCustomSpeechTemplate.setText(savedTemplate);
+        }
+        
+        updateSpeechPreview();
     }
     
     /**
@@ -1235,6 +1244,51 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         String ttsLanguageCode = voiceSettingsPrefs.getString("tts_language", "system");
         
         return TtsLanguageManager.getLocalizedTtsStringByName(this, ttsLanguageCode, templateKey);
+    }
+    
+    private String resolveTemplateKey(String savedTemplate) {
+        if (savedTemplate == null || savedTemplate.trim().isEmpty()) {
+            return SpeechTemplateConstants.TEMPLATE_KEY_CUSTOM;
+        }
+        if (SpeechTemplateConstants.TEMPLATE_KEY_VARIED.equals(savedTemplate)) {
+            return SpeechTemplateConstants.TEMPLATE_KEY_VARIED;
+        }
+        String match = TtsLanguageManager.findMatchingStringKey(this, savedTemplate, SpeechTemplateConstants.RESOURCE_TEMPLATE_KEYS);
+        return match != null ? match : SpeechTemplateConstants.TEMPLATE_KEY_CUSTOM;
+    }
+    
+    private boolean isResourceTemplateKey(String templateKey) {
+        if (templateKey == null) {
+            return false;
+        }
+        for (String key : SpeechTemplateConstants.RESOURCE_TEMPLATE_KEYS) {
+            if (templateKey.equals(key)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private int getTemplateIndex(String templateKey) {
+        if (templateKey == null) {
+            return -1;
+        }
+        for (int i = 0; i < TEMPLATE_KEYS.length; i++) {
+            if (templateKey.equals(TEMPLATE_KEYS[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    private void saveSpeechTemplateKey(String templateKey) {
+        if (templateKey == null || templateKey.isEmpty()) {
+            templateKey = SpeechTemplateConstants.TEMPLATE_KEY_CUSTOM;
+        }
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_SPEECH_TEMPLATE_KEY, templateKey);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Speech template key saved: " + templateKey);
     }
     
     private void saveSpeechTemplate(String template) {
