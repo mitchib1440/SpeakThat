@@ -687,7 +687,7 @@ class RuleEvaluator(private val context: Context) {
             // Get schedule data from trigger - handle both Long and Double types
             val startTimeRaw = trigger.data["start_time"]
             val endTimeRaw = trigger.data["end_time"]
-            val daysOfWeek = trigger.data["days_of_week"] as? Set<Int> ?: emptySet()
+            val daysOfWeek = normalizeDaysOfWeek(trigger.data["days_of_week"])
             
             // Convert start_time to Long, handling both Long and Double types
             val startTime = when (startTimeRaw) {
@@ -755,6 +755,39 @@ class RuleEvaluator(private val context: Context) {
                 message = "Time schedule evaluation error: ${e.message}"
             )
         }
+    }
+
+    /**
+     * Normalizes the days_of_week payload that comes back from JSON (Lists) or in-memory (Sets)
+     * into the 0-based Set<Int> that the evaluator expects.
+     */
+    private fun normalizeDaysOfWeek(daysRaw: Any?): Set<Int> {
+        if (daysRaw == null) {
+            return emptySet()
+        }
+
+        fun convert(value: Any?): Int? {
+            return when (value) {
+                is Int -> value
+                is Long -> value.toInt()
+                is Double -> value.toInt()
+                is Float -> value.toInt()
+                is Number -> value.toInt()
+                is String -> value.toIntOrNull()
+                else -> null
+            }
+        }
+
+        val normalized = when (daysRaw) {
+            is Set<*> -> daysRaw.mapNotNull { convert(it) }
+            is List<*> -> daysRaw.mapNotNull { convert(it) }
+            is Array<*> -> daysRaw.mapNotNull { convert(it) }
+            else -> emptyList()
+        }.toSet()
+
+        InAppLogger.logDebug(TAG, "normalizeDaysOfWeek -> raw=$daysRaw (${daysRaw.javaClass?.simpleName}) normalized=$normalized")
+
+        return normalized
     }
     
 
