@@ -1,4 +1,4 @@
-## SpeakThat!
+<img width="1500" height="429" alt="SpeakThat! Header" src="https://github.com/user-attachments/assets/f7acb89c-9c81-406f-9e7f-dad3e01ffce0" />
 
 **SpeakThat!** is an Android app that reads your notifications aloud, helping you stay connected without constantly checking your phone. Whether you're driving, busy, visually impaired, or just want to reduce screen time, SpeakThat! makes your notifications accessible, hands-free, and private.
 
@@ -23,27 +23,31 @@ And so after a few failed versions, I'm pleased to introduce SpeakThat! The noti
 
 ---
 
-## 🚀 Features
+## Features
 
-- **Reads notifications aloud** from any app, with customizable filters
 - **Privacy-first:**
-  - Nothing is sent to me or anyone else
+  - Nothing from your phone is sent to me or anyone else unless you submit a bug report or support request from within the app
   - All processing happens on your device
   - You control exactly what gets read
 - **App filtering:**
-  - Block sensitive apps (banking, medical, etc.)
-  - Private mode for messaging apps
-  - Allow or block any app
+  - Choose which apps get read and which will stay silent
+- **Word Filtering**
+  - Stop notifications containing certain words or phrases from ever being read, or substitute words with alternatives for SpeakThat to read
+- **Private Mode**
+  - When a notification is read in Private Mode, its app name will be read out loud but its notification content won't
 - **Shake to Stop:**
-  - Instantly silence SpeakThat! by shaking your device
+  - Instantly silence SpeakThat! by shaking your device with an adjustable threshold
+- **Wave to Stop:**
+  - Instantly silence SpeakThat! by covering your device's proximity sensor
+- **Behaviour Settings**
+  - Add a delay before readout, 
 - **Smart onboarding:**
   - Guided setup for privacy and permissions
 - **Accessible UI:**
-  - Makes e of the Material 3 design system
-  - Large buttons, clear text, and support for screen readers
-  - Works in both portrait and landscape
+  - Makes use of the Material design system
 - **Customizable voice settings:**
   - Change speech rate, pitch, and voice
+  - Supports external TTS engines
   - Preview voice output
 - **No ads, no tracking, no nonsense**
   - Open source for total transparency
@@ -51,7 +55,7 @@ And so after a few failed versions, I'm pleased to introduce SpeakThat! The noti
 
 ---
 
-## 📲 Getting Started
+## Getting Started
 
 1. Download the APK and save it to your phone
 2. Tap the APK to install it (You may be prompted to grant install permissions if you haven't already)
@@ -60,14 +64,14 @@ And so after a few failed versions, I'm pleased to introduce SpeakThat! The noti
 
 ---
 
-## 🛡️ Privacy & Security
+## Privacy & Security
 - SpeakThat! never sends your notifications or data off your device
 - All processing is local and under your control
 - You can block or privatize any app at any time
 
 ---
 
-## 📝 Customization
+## Customization
 - **App Filters:** Block, allow, or privatize notifications from any app
 - **Voice Settings:** Adjust speech rate, pitch, and select your preferred voice
 
@@ -75,18 +79,18 @@ And so after a few failed versions, I'm pleased to introduce SpeakThat! The noti
 
 ---
 
-## 📢 Feedback & Support
+## Feedback & Support
 - Found a bug? Have a feature request? [Open an issue](https://github.com/mitchib1440/SpeakThat/issues)
 - For support, use the in-app "Support & Feedback" option or email the developer
 
 ---
 
-## 📃 License
-This project is licensed under the GPL-3.0 License. See [LICENSE](https://github.com/mitchib1440/SpeakThat/blob/main/LICENSE) for details.
+## License
+This project is licensed under the GPL-3.0 License. You are permitted to use, share, modify, and redistribute provided any derivatives are under the same license as the original work. See [LICENSE](https://github.com/mitchib1440/SpeakThat/blob/main/LICENSE) for details.
 
 ---
 
-## 🙏 Acknowledgements
+## Acknowledgements
 - Thanks to the Android and Material Design teams
 - Special thanks to everyone who provided feedback and testing
 
