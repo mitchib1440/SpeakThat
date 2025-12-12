@@ -874,14 +874,11 @@ Die Erinnerungsfunktion für verworfene Benachrichtigungen verhindert, dass Bena
 </string>
     <!-- Behavior Settings - Audio Mode -->
     <string name="section_honor_audio_mode">Audio Modus beachten</string>
-    <string name="behavior_audio_mode_description">
-Benachrichtigungen nur lesen, wenn Ihr Gerät im Ton-Modus ist (nicht Lautlos oder Vibrieren)
-</string>
-    <string name="behavior_audio_mode_recommendation">Empfohlen: Diese Funktion aktivieren</string>
-    <string name="behavior_audio_mode_switch_label">Audio Modus beachten (nur Ton)</string>
-    <string name="behavior_audio_mode_benefits">
-✨ Vorteile:\n\n• Verhindert unerwünschte Sprachausgaben, wenn das Telefon stummgeschaltet ist\n• Berücksichtigt die Audioeinstellungen Ihres Geräts\n• Funktioniert im Lautlos- und Vibrationsmodus\n• Stellt sicher, dass Benachrichtigungen nur abgespielt werden, wenn Sie sie abhören können
-</string>
+    <string name="behavior_audio_mode_description">Wähle, wie SpeakThat sich in Lautlos und Vibration verhält. Lass beide stumm oder erlaube Sprache im Vibrationsmodus, während Lautlos stumm bleibt.</string>
+    <string name="behavior_audio_mode_recommendation">Empfehlung: Lautlos und Vibration beachten</string>
+    <string name="behavior_silent_mode_switch_label">Lautlos-Modus beachten</string>
+    <string name="behavior_vibrate_mode_switch_label">Vibrationsmodus beachten</string>
+    <string name="behavior_audio_mode_benefits">✨ Vorteile:\n\n• Verhindert unerwünschte Ausgabe im Lautlos-Modus\n• Optionales Sprechen im Vibrationsmodus\n• Passt zu Meetings/Fokus\n• Funktioniert mit den Lautstärketasten</string>
     <!-- Behavior Settings - Shake to Stop -->
     <string name="section_shake_to_stop">Schütteln zum Stoppen</string>
     <string name="behavior_shake_description">
@@ -1752,4 +1749,7 @@ Wenn Sie SpeakThat hilfreich finden, überlegen Sie bitte eine Bewertung im Goog
     <string name="statistics_summary_read_and_taps">Vorgelesene Benachrichtigungen: %1$d\nBerührungen des SpeakThat-Logos: %2$d</string>
     <string name="statistics_logo_taps_label">Berührungen des SpeakThat-Logos</string>
     <string name="statistics_apps_read_list_label">Liste der vorgelesenen Apps</string>
+    <!-- Behavior Settings - System Modes Group -->
+    <string name="section_honor_system_modes">Honour System Modes</string>
+    <string name="behavior_system_modes_description">Keep SpeakThat quiet when your device is in Do Not Disturb, on a call, or using silent or vibrate modes. Toggle each option below.</string>
 </resources>

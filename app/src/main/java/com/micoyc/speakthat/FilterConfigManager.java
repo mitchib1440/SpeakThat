@@ -113,7 +113,10 @@ public class FilterConfigManager {
         public int delayBeforeReadout;
         public boolean honourDoNotDisturb;
         public boolean honourPhoneCalls; // Add honour phone calls setting
-        public boolean honourAudioMode; // Add honour audio mode setting
+        public boolean honourSilentMode; // Honour Silent ringer mode
+        public boolean honourVibrateMode; // Honour Vibrate ringer mode
+        @Deprecated
+        public boolean honourAudioMode; // Legacy combined audio mode flag
         public boolean persistentNotification; // Add persistent notification setting
         public boolean notificationWhileReading; // Add notification while reading setting
         public boolean waveToStopEnabled;
@@ -139,7 +142,9 @@ public class FilterConfigManager {
             this.delayBeforeReadout = 0;
             this.honourDoNotDisturb = true;
             this.honourPhoneCalls = true; // Default to true for safety
-            this.honourAudioMode = true; // Default to true for safety
+            this.honourSilentMode = true; // Default to true for safety
+            this.honourVibrateMode = true; // Default to true for safety
+            this.honourAudioMode = true; // Legacy: keep for backwards compatibility
             this.persistentNotification = false; // Default to false
             this.notificationWhileReading = false; // Default to false
             this.waveToStopEnabled = false;
@@ -275,7 +280,11 @@ public class FilterConfigManager {
         config.behavior.delayBeforeReadout = prefs.getInt("delay_before_readout", 0);
         config.behavior.honourDoNotDisturb = prefs.getBoolean("honour_do_not_disturb", true);
         config.behavior.honourPhoneCalls = prefs.getBoolean("honour_phone_calls", true); // Add honour phone calls
-        config.behavior.honourAudioMode = prefs.getBoolean("honour_audio_mode", true); // Add honour audio mode
+        // Split audio mode: prefer new keys, fall back to legacy combined flag
+        boolean legacyHonourAudioMode = prefs.getBoolean("honour_audio_mode", true);
+        config.behavior.honourSilentMode = prefs.getBoolean("honour_silent_mode", legacyHonourAudioMode);
+        config.behavior.honourVibrateMode = prefs.getBoolean("honour_vibrate_mode", legacyHonourAudioMode);
+        config.behavior.honourAudioMode = legacyHonourAudioMode;
         config.behavior.persistentNotification = prefs.getBoolean("persistent_notification", false); // Add persistent notification
         config.behavior.notificationWhileReading = prefs.getBoolean("notification_while_reading", false); // Add notification while reading
         config.behavior.waveToStopEnabled = prefs.getBoolean("wave_to_stop_enabled", false);
@@ -345,7 +354,9 @@ public class FilterConfigManager {
         behavior.put("delayBeforeReadout", config.behavior.delayBeforeReadout);
         behavior.put("honourDoNotDisturb", config.behavior.honourDoNotDisturb);
         behavior.put("honourPhoneCalls", config.behavior.honourPhoneCalls); // Add honour phone calls
-        behavior.put("honourAudioMode", config.behavior.honourAudioMode); // Add honour audio mode
+        behavior.put("honourSilentMode", config.behavior.honourSilentMode); // Split audio mode
+        behavior.put("honourVibrateMode", config.behavior.honourVibrateMode); // Split audio mode
+        behavior.put("honourAudioMode", config.behavior.honourAudioMode); // Legacy combined flag
         behavior.put("persistentNotification", config.behavior.persistentNotification); // Add persistent notification
         behavior.put("notificationWhileReading", config.behavior.notificationWhileReading); // Add notification while reading
         behavior.put("waveToStopEnabled", config.behavior.waveToStopEnabled);
@@ -694,8 +705,24 @@ public class FilterConfigManager {
                     totalImported++;
                 }
                 
+                // Prefer split audio-mode flags; fall back to legacy combined flag
+                if (behavior.has("honourSilentMode")) {
+                    mainEditor.putBoolean("honour_silent_mode", behavior.getBoolean("honourSilentMode"));
+                    totalImported++;
+                }
+                if (behavior.has("honourVibrateMode")) {
+                    mainEditor.putBoolean("honour_vibrate_mode", behavior.getBoolean("honourVibrateMode"));
+                    totalImported++;
+                }
                 if (behavior.has("honourAudioMode")) {
-                    mainEditor.putBoolean("honour_audio_mode", behavior.getBoolean("honourAudioMode"));
+                    boolean legacyHonour = behavior.getBoolean("honourAudioMode");
+                    mainEditor.putBoolean("honour_audio_mode", legacyHonour);
+                    if (!behavior.has("honourSilentMode")) {
+                        mainEditor.putBoolean("honour_silent_mode", legacyHonour);
+                    }
+                    if (!behavior.has("honourVibrateMode")) {
+                        mainEditor.putBoolean("honour_vibrate_mode", legacyHonour);
+                    }
                     totalImported++;
                 }
                 

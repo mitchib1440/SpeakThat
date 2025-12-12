@@ -935,14 +935,11 @@ Pendant quelle durée mémoriser les notifications effacées
     <string name="dialog_title_dismissal_memory">Mémoire d\'effacement</string>
     <string name="dialog_dismissal_memory_explanation"><![CDATA[La mémoire d\'effacement évite de relire les notifications que vous avez effacées :<br/><br/><b>Fonctionnement :</b><br/>Quand vous effacez une notification, SpeakThat la mémorise pendant une durée configurable. Si la même notification réapparaît pendant cette période, elle ne sera pas relue.<br/><br/><b>Utilité :</b><br/>• <b>Notifications effacées</b> - évite de les relire après les avoir balayées<br/>• <b>Mises à jour</b> - Certaines applications réémettent leurs notifications après avoir été mises à jour<br/>• <b>Rafraîchissement du système</b> - Android peut réémettre des notifications lors d\'évènements système<br/>• <b>Reconnexions au réseau</b> - Les applications peuvent réémettre leurs notifications quand la connectivité est rétablie<br/><br/><b>Fonctionnement :</b><br/>• Suit les notifications effacées par le hachage de leur contenu<br/>• Délai de mémorisation configurable (5 minutes à 1 heure)<br/>• Nettoyage automatique pour éviter l\'encombrement de la mémoire<br/>• Respectueux de la batterie par un stockage efficace<br/>• Journalisation détaillée pour diagnostique<br/><br/><b>Conseil :</b> Activez cette option si vos notifications sont relues après effacement. Recommandé pour la majorité des utilisateurs !]]></string>
     <string name="section_honor_audio_mode">Respecter le mode audio</string>
-    <string name="behavior_audio_mode_description">
-Ne lit les notifications que si l\'appareil n\'est pas en mode silence ou vibreur
-</string>
-    <string name="behavior_audio_mode_recommendation">Recommandé : Activez cette fonctionnalité</string>
-    <string name="behavior_audio_mode_switch_label">Respecter le mode audio (son seul)</string>
-    <string name="behavior_audio_mode_benefits">
-✨ Avantages:\n\n• Évite les sons indésirables quand votre téléphone est en mode muet\n• Respecte les réglages audio de votre appareil\n• Fonctionne avec les mode Silencieux et Vibreur\n• Garanti que les notification ne sont lues que lorsque vous pouvez les entendre
-</string>
+    <string name="behavior_audio_mode_description">Choisissez comment SpeakThat se comporte en mode Silencieux et Vibreur. Laissez les deux silencieux ou autorisez la parole en Vibreur tandis que Silencieux reste muet.</string>
+    <string name="behavior_audio_mode_recommendation">Recommandé : respecter Silencieux et Vibreur</string>
+    <string name="behavior_silent_mode_switch_label">Respecter le mode Silencieux</string>
+    <string name="behavior_vibrate_mode_switch_label">Respecter le mode Vibreur</string>
+    <string name="behavior_audio_mode_benefits">✨ Avantages:\n\n• Empêche l’audio indésirable en Silencieux\n• Parole optionnelle en Vibreur\n• S’adapte aux réunions/concentration\n• Fonctionne avec les boutons de volume</string>
     <string name="section_shake_to_stop">Secouer pour arrêter</string>
     <string name="behavior_shake_description">
 Arrête instantanément la lecture en secouant votre appareil
@@ -1881,4 +1878,7 @@ Veuillez noter que cela ne fonctionnera que si l\'écran est activé.
     <string name="statistics_summary_read_and_taps">Notifications lues : %1$d\nAppuis sur le logo SpeakThat : %2$d</string>
     <string name="statistics_logo_taps_label">Appuis sur le logo SpeakThat</string>
     <string name="statistics_apps_read_list_label">Liste des applications lues</string>
+    <!-- Behavior Settings - System Modes Group -->
+    <string name="section_honor_system_modes">Honour System Modes</string>
+    <string name="behavior_system_modes_description">Keep SpeakThat quiet when your device is in Do Not Disturb, on a call, or using silent or vibrate modes. Toggle each option below.</string>
 </resources>

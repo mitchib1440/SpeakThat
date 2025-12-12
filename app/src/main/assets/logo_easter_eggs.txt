@@ -433,3 +433,4 @@ SpeakThat! If a setting looks scary, it probably is.
 SpeakThat! I run on Java, which also happens to be coffee. Coincidence? Probably not.
 SpeakThat! If you tap me before my coffee, I might throw an exception.
 SpeakThat! I just realised the Java logo is a cup of coffee. No wonder the language keeps me awake at night.
+SpeakThat! The building is a symbol, as is the act of destroying it. Symbols are given power by people. Alone, a symbol is meaningless, but with enough people, blowing up a building can change the world.

@@ -349,14 +349,21 @@ class SelfTestActivity : AppCompatActivity() {
             else -> "Unknown"
         }
         
-        // Check if Honor Audio Mode setting is enabled
-        val voicePrefs = getSharedPreferences("VoiceSettings", Context.MODE_PRIVATE)
-        val honorAudioMode = voicePrefs.getBoolean("honor_audio_mode", true)
-        
-        if (!honorAudioMode || ringerMode == AudioManager.RINGER_MODE_NORMAL) {
+        // Check split Honour Audio Mode settings (fallback to legacy combined flag)
+        val behaviorPrefs = getSharedPreferences("SpeakThatPrefs", Context.MODE_PRIVATE)
+        val hasSilent = behaviorPrefs.contains("honour_silent_mode")
+        val hasVibrate = behaviorPrefs.contains("honour_vibrate_mode")
+        val legacyHonor = behaviorPrefs.getBoolean("honour_audio_mode", true)
+        val honorSilent = behaviorPrefs.getBoolean("honour_silent_mode", legacyHonor)
+        val honorVibrate = behaviorPrefs.getBoolean("honour_vibrate_mode", legacyHonor)
+
+        val blockedBySilent = ringerMode == AudioManager.RINGER_MODE_SILENT && honorSilent
+        val blockedByVibrate = ringerMode == AudioManager.RINGER_MODE_VIBRATE && honorVibrate
+
+        if (!(blockedBySilent || blockedByVibrate)) {
             setStepStatus(binding.step6.root, "✓", getString(R.string.selftest_step6_title), 
                 getString(R.string.selftest_step6_pass, modeName))
-            InAppLogger.log("SelfTest", "Step 6: PASS - Audio mode: $modeName (honor: $honorAudioMode)")
+            InAppLogger.log("SelfTest", "Step 6: PASS - Audio mode: $modeName (silent=$honorSilent, vibrate=$honorVibrate, legacy=$legacyHonor, hasSplit=${hasSilent && hasVibrate})")
             handler.postDelayed({ checkRules() }, 300)
         } else {
             setStepStatus(binding.step6.root, "✗", getString(R.string.selftest_step6_title), 
