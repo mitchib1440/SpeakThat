@@ -169,6 +169,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     // App selector for cooldown apps
     private LazyAppSearchAdapter cooldownAppSelectorAdapter;
     
+    // App selector for custom app names (package input)
+    private LazyAppSearchAdapter customAppSelectorAdapter;
+    
     // App selector for priority apps
     private LazyAppSearchAdapter priorityAppSelectorAdapter;
     
@@ -261,6 +264,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
 
         // Set up RecyclerView for custom app names
         setupCustomAppNamesRecycler();
+        
+        // Set up custom app package selector
+        setupCustomAppSelector();
 
         // Set up RecyclerView for cooldown apps
         setupCooldownAppsRecycler();
@@ -858,6 +864,26 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         customAppNameAdapter = new CustomAppNameAdapter(this);
         binding.recyclerCustomAppNames.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerCustomAppNames.setAdapter(customAppNameAdapter);
+    }
+    
+    private void setupCustomAppSelector() {
+        // Use lazy loading adapter for custom app package selector
+        customAppSelectorAdapter = new LazyAppSearchAdapter(this);
+        binding.editAppPackage.setAdapter(customAppSelectorAdapter);
+        binding.editAppPackage.setThreshold(1); // Show suggestions after 1 character
+        
+        // Handle app selection
+        binding.editAppPackage.setOnItemClickListener((parent, view, position, id) -> {
+            AppInfo selectedApp = customAppSelectorAdapter.getItem(position);
+            if (selectedApp != null) {
+                // Populate the package field with the selected package name
+                binding.editAppPackage.setText(selectedApp.packageName);
+                binding.editAppPackage.setSelection(binding.editAppPackage.getText().length());
+                InAppLogger.log("AppSelector", "Custom name selector chose: " + selectedApp.appName + " (" + selectedApp.packageName + ")");
+            }
+        });
+        
+        InAppLogger.log("AppSelector", "Lazy custom app selector initialized - apps will load on search");
     }
 
     private void setupCooldownAppsRecycler() {
@@ -2254,6 +2280,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         if (cooldownAppSelectorAdapter != null) {
             cooldownAppSelectorAdapter.shutdown();
         }
+        if (customAppSelectorAdapter != null) {
+            customAppSelectorAdapter.shutdown();
+        }
         
         super.onDestroy();
         
@@ -2812,7 +2841,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "• <b>App restarts</b> - Apps may re-post notifications when restarting<br>" +
                 "• <b>Network issues</b> - Connectivity problems can cause duplicate notifications<br><br>" +
                 "<b>⚙️ How it works:</b><br>" +
-                "• Uses a 5-second window to detect duplicates<br>" +
+                "• Uses a 30-second window to detect duplicates<br>" +
                 "• Compares notification package, ID, and content hash<br>" +
                 "• Automatically cleans up old entries to save memory<br>" +
                 "• Logs when duplicates are detected for debugging<br>" +

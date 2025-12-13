@@ -851,7 +851,7 @@ Evita que la misma notificación sea leída varias veces consecutivamente
     <string name="behavior_deduplication_recommendation">Activar si experimenta notificaciones duplicadas</string>
     <string name="behavior_deduplication_switch_label">Activar deduplicación de notificación</string>
     <string name="behavior_deduplication_benefits">
-✨ Beneficios:\n\n• Evita molestas lecturas repetidas\n• Ahorra batería evitando innecesarios TTS\n• Funciona automáticamente con una ventana de 5-segundo\n• Ayuda con aplicaciones que publican notificaciones múltiples
+✨ Beneficios:\n\n• Evita molestas lecturas repetidas\n• Ahorra batería evitando innecesarios TTS\n• Funciona automáticamente con una ventana de 30 segundos\n• Ayuda con aplicaciones que publican notificaciones múltiples
 </string>
     <!-- Behavior Settings - Audio Mode -->
     <string name="section_honor_audio_mode">Considerar modo audio</string>

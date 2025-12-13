@@ -845,7 +845,7 @@ Aktivieren, wenn doppelte Benachrichtigungen auftreten
 </string>
     <string name="behavior_deduplication_switch_label">Doppelte Benachrichtigungen verhindern aktivieren</string>
     <string name="behavior_deduplication_benefits">
-✨ Vorteile:\n\n• Verhindert doppeltes Vorlesen\n• Energiesparen durch Vermeidung unnötiger TTS\n• Funktioniert automatisch innerhalb 5-Sekunden-Fenster\n• Hilft bei Apps, die mehrere Benachrichtigungen ausgeben
+✨ Vorteile:\n\n• Verhindert doppeltes Vorlesen\n• Energiesparen durch Vermeidung unnötiger TTS\n• Funktioniert automatisch innerhalb eines 30-Sekunden-Fensters\n• Hilft bei Apps, die mehrere Benachrichtigungen ausgeben
 </string>
     <!-- Behavior Settings - Dismissal Memory -->
     <string name="section_dismissal_memory">Verworfen-Speicher</string>

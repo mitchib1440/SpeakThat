@@ -901,15 +901,6 @@
 
                     </LinearLayout>
 
-                    <!-- Benefits Section -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/behavior_deduplication_benefits"
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:lineSpacingExtra="4dp" />
-
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -1114,15 +1105,6 @@
                         </RadioGroup>
 
                     </LinearLayout>
-
-                    <!-- Benefits Section -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/behavior_dismissal_memory_benefits"
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:lineSpacingExtra="4dp" />
 
                 </LinearLayout>
 
@@ -2271,13 +2253,21 @@
                             app:boxBackgroundMode="outline"
                             app:boxStrokeColor="@color/white_100">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <AutoCompleteTextView
                                 android:id="@+id/editAppPackage"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/app_package_hint"
+                                android:minHeight="56dp"
+                                android:hint="@string/hint_search_apps_or_package"
                                 android:inputType="text"
-                                android:textColor="@color/purple_card_text_primary" />
+                                android:completionThreshold="1"
+                                android:dropDownHeight="200dp"
+                                android:textSize="16sp"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:paddingStart="16dp"
+                                android:paddingEnd="16dp"
+                                android:paddingTop="16dp"
+                                android:paddingBottom="16dp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -2473,15 +2463,6 @@
                             android:textColor="@color/purple_card_text_primary" />
 
                     </RadioGroup>
-
-                    <!-- Benefits Section -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/behavior_delay_benefits"
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:lineSpacingExtra="4dp" />
 
                 </LinearLayout>
 

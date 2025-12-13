@@ -775,7 +775,7 @@ Common placeholders: {app}, {content}, {time}, {title}, {text}, {priority}, {cat
     <string name="behavior_deduplication_recommendation">重複通知を経験する場合は有効にする</string>
     <string name="behavior_deduplication_switch_label">通知の重複除去を有効にする</string>
     <string name="behavior_deduplication_benefits">
-✨ メリット：\n\n• 煩わしい重複読み上げを防ぐ\n• 不要なTTSを避けてバッテリーを節約\n• 5秒間のウィンドウで自動的に動作\n• 複数の通知を投稿するアプリに役立つ
+✨ メリット：\n\n• 煩わしい重複読み上げを防ぐ\n• 不要なTTSを避けてバッテリーを節約\n• 30秒間のウィンドウで自動的に動作\n• 複数の通知を投稿するアプリに役立つ
 </string>
     <!-- Behavior Settings - Audio Mode -->
     <string name="section_honor_audio_mode">音声モードに配慮</string>

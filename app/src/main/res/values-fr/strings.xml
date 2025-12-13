@@ -910,7 +910,7 @@ Activez si vous éprouvez des notifications en double
 </string>
     <string name="behavior_deduplication_switch_label">Activer la déduplication de notifications</string>
     <string name="behavior_deduplication_benefits">
-Avantages :\n\n• Empêche doublons ennuyeux\n• Sauve la batterie en évitant les lectures inutiles\n• Fonctionne automatiquement dans une fenêtre de 5 secondes\n• Aide avec les applications qui publient de nombreuses notifications
+Avantages :\n\n• Empêche doublons ennuyeux\n• Sauve la batterie en évitant les lectures inutiles\n• Fonctionne automatiquement dans une fenêtre de 30 secondes\n• Aide avec les applications qui publient de nombreuses notifications
 </string>
     <string name="section_dismissal_memory">Mémoire d\'effacement</string>
     <string name="behavior_dismissal_memory_description">

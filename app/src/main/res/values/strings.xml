@@ -752,7 +752,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_deduplication_description">Prevent the same notification from being read multiple times in quick succession</string>
     <string name="behavior_deduplication_recommendation">Enable if you experience duplicate notifications</string>
     <string name="behavior_deduplication_switch_label">Enable notification deduplication</string>
-    <string name="behavior_deduplication_benefits">✨ Benefits:\n\n• Prevents annoying duplicate readouts\n• Saves battery by avoiding unnecessary TTS\n• Works automatically with 5-second window\n• Helps with apps that post multiple notifications</string>
+    <string name="behavior_deduplication_benefits">✨ Benefits:\n\n• Prevents annoying duplicate readouts\n• Saves battery by avoiding unnecessary TTS\n• Works automatically with 30-second window\n• Helps with apps that post multiple notifications</string>
     
     <!-- Behavior Settings - Dismissal Memory -->
     <string name="section_dismissal_memory">Dismissal Memory</string>
