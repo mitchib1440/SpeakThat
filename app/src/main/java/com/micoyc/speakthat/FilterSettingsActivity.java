@@ -11,7 +11,6 @@ import android.widget.AutoCompleteTextView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -179,13 +178,6 @@ public class FilterSettingsActivity extends AppCompatActivity {
             // R.string.button_save setting
             saveAppListMode(mode);
         });
-
-        // Set up blacklist type spinner
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(
-            this, R.array.blacklist_types, android.R.layout.simple_spinner_item
-        );
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerBlacklistType.setAdapter(spinnerAdapter);
 
         // Set up RecyclerViews
         setupAppListRecycler();
@@ -558,9 +550,6 @@ public class FilterSettingsActivity extends AppCompatActivity {
             return;
         }
 
-        int selectedType = binding.spinnerBlacklistType.getSelectedItemPosition();
-        boolean isPrivate = selectedType == 1; // 0 = Block, 1 = Private
-
         // Check for duplicates in UI list
         for (WordFilterItem item : wordBlacklistItems) {
             if (item.word.equals(word)) {
@@ -578,7 +567,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
             return;
         }
 
-        wordBlacklistItems.add(new WordFilterItem(word, isPrivate));
+        wordBlacklistItems.add(new WordFilterItem(word, false));
         wordBlacklistAdapter.notifyDataSetChanged();
         updateCountDisplays();
         binding.editBlacklistWord.setText("");

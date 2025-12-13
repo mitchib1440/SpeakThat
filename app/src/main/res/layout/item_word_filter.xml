@@ -26,14 +26,15 @@
         android:ellipsize="end"
         android:minWidth="100dp" />
 
-    <Spinner
-        android:id="@+id/spinnerType"
+    <CheckBox
+        android:id="@+id/checkBoxPrivate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:minWidth="60dp"
-        android:background="@drawable/spinner_background"
-        android:textColor="@color/white_100"/>
+        android:text="@string/item_app_filter_private"
+        android:textSize="14sp"
+        android:textColor="@color/white_100"
+        android:buttonTint="@color/white_100"
+        android:layout_marginEnd="8dp" />
 
     <ImageButton
         android:id="@+id/buttonRemove"
