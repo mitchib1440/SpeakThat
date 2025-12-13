@@ -427,7 +427,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         binding.editUrlReplacementText.setText(urlReplacementText);
         
         // Load media notification filtering settings
-        boolean isMediaFilteringEnabled = sharedPreferences.getBoolean(KEY_MEDIA_FILTERING_ENABLED, false); // Default to disabled
+        boolean isMediaFilteringEnabled = sharedPreferences.getBoolean(KEY_MEDIA_FILTERING_ENABLED, true); // Default to enabled
         binding.switchMediaFiltering.setChecked(isMediaFilteringEnabled);
         binding.mediaFilteringSection.setVisibility(isMediaFilteringEnabled ? View.VISIBLE : View.GONE);
         

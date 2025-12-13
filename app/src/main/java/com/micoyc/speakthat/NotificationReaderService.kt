@@ -2158,15 +2158,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         delayBeforeReadout = sharedPreferences?.getInt(KEY_DELAY_BEFORE_READOUT, 0) ?: 0
         
         // Load media notification filtering settings
-        val isMediaFilteringEnabled = sharedPreferences?.getBoolean(KEY_MEDIA_FILTERING_ENABLED, false) ?: false
+        val isMediaFilteringEnabled = sharedPreferences?.getBoolean(KEY_MEDIA_FILTERING_ENABLED, true) ?: true
         val exceptedApps = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTER_EXCEPTED_APPS, HashSet()) ?: HashSet())
         val importantKeywords = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, HashSet()) ?: HashSet())
         val filteredMediaApps = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTERED_APPS, HashSet()) ?: HashSet())
-        
-        // If no custom important keywords are set, use defaults
-        if (importantKeywords.isEmpty()) {
-            importantKeywords.addAll(MediaNotificationDetector.MediaFilterPreferences().importantKeywords)
-        }
         
         mediaFilterPreferences = MediaNotificationDetector.MediaFilterPreferences(
             isMediaFilteringEnabled = isMediaFilteringEnabled,
@@ -2729,11 +2724,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     private fun applyMediaFiltering(sbn: StatusBarNotification): FilterResult {
-        // Use unified detection logic
         if (!mediaFilterPreferences.isMediaFilteringEnabled) {
             return FilterResult(true, "", "Media filtering disabled")
         }
-        if (MediaNotificationDetector.isMediaNotification(sbn)) {
+
+        val shouldFilter = MediaNotificationDetector.shouldFilterMediaNotification(sbn, mediaFilterPreferences)
+        if (shouldFilter) {
             val reason = MediaNotificationDetector.getMediaDetectionReason(sbn)
             Log.d(TAG, "Media notification filtered out (unified logic): $reason")
             InAppLogger.logFilter("Blocked media notification from ${sbn.packageName}: $reason (unified logic)")
@@ -2742,7 +2738,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "[UnifiedFilter] Notification extras: $extras")
             return FilterResult(false, "", "Media notification filtered: $reason (unified logic)")
         }
-        return FilterResult(true, "", "Not a media notification or media filtering not applicable (unified logic)")
+
+        // If it was a media-style notification but passed due to exceptions/keywords, log for traceability
+        if (MediaNotificationDetector.isMediaNotification(sbn)) {
+            val reason = MediaNotificationDetector.getMediaDetectionReason(sbn)
+            Log.d(TAG, "Media notification allowed (unified logic): $reason")
+        }
+
+        return FilterResult(true, "", "Not filtered by media rules (unified logic)")
     }
 
     private fun applyPersistentFiltering(sbn: StatusBarNotification): FilterResult {
