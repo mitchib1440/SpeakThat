@@ -277,7 +277,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     }
 
     private void setupAppListRecycler() {
-        appListAdapter = new AppListAdapter(appList, this::removeApp, this::toggleAppPrivate, this::editApp);
+        appListAdapter = new AppListAdapter(appList, this::removeApp, this::toggleAppPrivate, this::editApp, true);
         binding.recyclerAppList.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerAppList.setAdapter(appListAdapter);
     }
@@ -296,7 +296,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     
     private void setupMediaFilteringRecyclers() {
         // Set up media excepted apps RecyclerView
-        mediaExceptedAppsAdapter = new AppListAdapter(mediaExceptedAppsList, this::removeMediaExceptedApp, this::toggleMediaExceptedAppPrivate, this::editMediaExceptedApp);
+        mediaExceptedAppsAdapter = new AppListAdapter(mediaExceptedAppsList, this::removeMediaExceptedApp, this::toggleMediaExceptedAppPrivate, this::editMediaExceptedApp, false);
         binding.recyclerMediaExceptedApps.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerMediaExceptedApps.setAdapter(mediaExceptedAppsAdapter);
         
@@ -308,7 +308,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     
     private void setupFilteredMediaAppsRecycler() {
         // Set up filtered media apps RecyclerView
-        filteredMediaAppsAdapter = new AppListAdapter(filteredMediaAppsList, this::removeFilteredMediaAppFromList, this::toggleFilteredMediaAppPrivate, this::editFilteredMediaApp);
+        filteredMediaAppsAdapter = new AppListAdapter(filteredMediaAppsList, this::removeFilteredMediaAppFromList, this::toggleFilteredMediaAppPrivate, this::editFilteredMediaApp, false);
         binding.recyclerFilteredMediaApps.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerFilteredMediaApps.setAdapter(filteredMediaAppsAdapter);
     }

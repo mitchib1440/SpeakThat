@@ -19,16 +19,19 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     private FilterSettingsActivity.OnAppActionListener removeListener;
     private FilterSettingsActivity.OnAppActionListener privateToggleListener;
     private FilterSettingsActivity.OnAppActionListener editListener;
+    private final boolean showPrivateToggle;
     private final Map<String, String> appNameCache = new HashMap<>();
 
     public AppListAdapter(List<FilterSettingsActivity.AppFilterItem> items, 
                          FilterSettingsActivity.OnAppActionListener removeListener,
                          FilterSettingsActivity.OnAppActionListener privateToggleListener,
-                         FilterSettingsActivity.OnAppActionListener editListener) {
+                         FilterSettingsActivity.OnAppActionListener editListener,
+                         boolean showPrivateToggle) {
         this.items = items;
         this.removeListener = removeListener;
         this.privateToggleListener = privateToggleListener;
         this.editListener = editListener;
+        this.showPrivateToggle = showPrivateToggle;
     }
 
     @NonNull
@@ -44,7 +47,14 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         FilterSettingsActivity.AppFilterItem item = items.get(position);
         
         holder.textAppName.setText(resolveDisplayName(holder.itemView.getContext(), item.packageName));
-        holder.checkBoxPrivate.setChecked(item.isPrivate);
+        // Show/hide private toggle based on caller intent
+        holder.checkBoxPrivate.setVisibility(showPrivateToggle ? View.VISIBLE : View.GONE);
+        if (showPrivateToggle) {
+            holder.checkBoxPrivate.setChecked(item.isPrivate);
+        } else {
+            // Avoid stale listeners when reused in recycled views
+            holder.checkBoxPrivate.setOnCheckedChangeListener(null);
+        }
         
         // Make text clickable for editing
         holder.textAppName.setOnClickListener(v -> {
@@ -54,12 +64,14 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         });
         
         // Set up checkbox listener
-        holder.checkBoxPrivate.setOnCheckedChangeListener(null); // Clear previous listener
-        holder.checkBoxPrivate.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (privateToggleListener != null) {
-                privateToggleListener.onAction(holder.getAdapterPosition());
-            }
-        });
+        if (showPrivateToggle) {
+            holder.checkBoxPrivate.setOnCheckedChangeListener(null); // Clear previous listener
+            holder.checkBoxPrivate.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (privateToggleListener != null) {
+                    privateToggleListener.onAction(holder.getAdapterPosition());
+                }
+            });
+        }
         
         // Set up remove button listener
         holder.buttonRemove.setOnClickListener(v -> {
