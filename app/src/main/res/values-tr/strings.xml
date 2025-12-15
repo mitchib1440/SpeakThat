@@ -1131,7 +1131,6 @@ Merhaba! Ben Mitchi. SpeakThat\'i yapmak için çok çaba harcıyorum. Arayüz/k
     <string name="dev_debug_tools_title">🛠️ Hata Ayıklama Araçları</string>
     <string name="dev_debug_tools_description">Uygulamayı hata ayıklama ve test etme araçları</string>
     <string name="dev_notification_history">📋 Bildirim Geçmişini Göster</string>
-    <string name="dev_analytics">📊 Yardım Kullanım Analizlerini Göster</string>
     <string name="dev_battery_report">🔋 Pil Optimizasyon Raporu</string>
     <string name="dev_repair_blacklist">🛠️ Kelime Kara Listesini Onar</string>
     <string name="dev_background_monitor">🛰️ Arka Plan İşlem Monitörü</string>

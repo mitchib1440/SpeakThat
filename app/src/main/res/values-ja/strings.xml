@@ -1057,7 +1057,6 @@ Hey! Mitchi here. A lot goes into making SpeakThat! I handle the UI/UX design, q
     <string name="dev_debug_tools_title">🛠️ Debug Tools</string>
     <string name="dev_debug_tools_description">Tools for debugging and testing the app</string>
     <string name="dev_notification_history">📋 Show Notification History</string>
-    <string name="dev_analytics">📊 Show Help Usage Analytics</string>
     <string name="dev_battery_report">🔋 Battery Optimization Report</string>
     <string name="dev_repair_blacklist">🛠️ Repair Word Blacklist</string>
     <string name="dev_background_monitor">🛰️ Background Process Monitor</string>

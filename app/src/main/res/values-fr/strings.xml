@@ -1226,7 +1226,6 @@ Hé ! C\'est Mitchi. Je m\'investis beaucoup dans la réalisation de SpeakThat
     <string name="dev_debug_tools_title">Outils de débogage</string>
     <string name="dev_debug_tools_description">Outils pour déboguer et tester l\'application</string>
     <string name="dev_notification_history">Afficher l\'historique des notifications</string>
-    <string name="dev_analytics">Afficher les statistiques d\'utilisation</string>
     <string name="dev_battery_report">Rapport d\'utilisation de la batterie</string>
     <string name="dev_repair_blacklist">Réparer la liste noire des mots</string>
     <string name="dev_background_monitor">Moniteur du traitement en arrière plan</string>
@@ -1722,9 +1721,6 @@ Si vous appréciez SpeakThat, veuillez envisager de laisser un commentaire sur G
     <string name="review_reminder_rate_now">Noter maintenant</string>
     <string name="review_reminder_later">Plus tard peut-être</string>
     <string name="review_reminder_never">Ne pas redemander</string>
-    <string name="dev_test_review_reminder">🧪 Tester le rappel de revue</string>
-    <string name="dev_reset_review_reminder">🔄 Réinitialiser le rappel de revue</string>
-    <string name="dev_review_reminder_stats">📊 Statistiques de rappel de revue</string>
     <string name="tts_engine_label">Moteur de synthèse vocale</string>
     <string name="tts_engine_system_default">Défaut système</string>
     <string name="tts_engine_restart_required">

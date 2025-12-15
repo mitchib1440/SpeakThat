@@ -1127,7 +1127,6 @@ Hey! Mitchi hier. Het kost veel om SpeakThat maken! Ik ontwerp de gebruikersinte
 Gereedschappen voor foutopsporing en testen van de app
 </string>
     <string name="dev_notification_history">📋 Toon Meldingsgeschiedenis</string>
-    <string name="dev_analytics">📊 Help gebruiksanalyse weergeven</string>
     <string name="dev_battery_report">🔋 Batterijoptimalisatie Rapport</string>
     <string name="dev_repair_blacklist">Zwarte lijst woorden repareren</string>
     <string name="dev_background_monitor">:satelliite: Achtergrondproces monitoren</string>

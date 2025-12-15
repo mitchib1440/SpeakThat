@@ -1182,7 +1182,6 @@ Hey! Mitchi hier. Viel Arbeit steckt in SpeakThat! Ich befasse mich mit dem UI/U
     <string name="dev_debug_tools_title">🛠️ Debug-Werkzeuge</string>
     <string name="dev_debug_tools_description">Tools zum Debuggen und Testen der App</string>
     <string name="dev_notification_history">📋 Benachrichtigungsverlauf anzeigen</string>
-    <string name="dev_analytics">📊 Hilfe Analyse anzeigen</string>
     <string name="dev_battery_report">🔋 Akku-Optimierungsbericht</string>
     <string name="dev_repair_blacklist">🛠️ Wortblacklist reparieren</string>
     <string name="dev_background_monitor">🛰️ Hintergrund Prozessmonitor</string>
@@ -1721,9 +1720,6 @@ Wenn Sie SpeakThat hilfreich finden, überlegen Sie bitte eine Bewertung im Goog
     <string name="review_reminder_rate_now">Jetzt bewerten</string>
     <string name="review_reminder_later">Vielleicht später</string>
     <string name="review_reminder_never">Nicht erneut fragen</string>
-    <string name="dev_test_review_reminder">🧪 Teste Rezensions-Erinnerung</string>
-    <string name="dev_reset_review_reminder">🔄 Rezensions-Erinnerung zurücksetzen</string>
-    <string name="dev_review_reminder_stats">📊 Rezensions-Erinnerung Status</string>
     <string name="selftest_step1_rebinding">Berechtigung aktiv - Benachrichtigungslistener wird neu verbunden...</string>
     <string name="selftest_step9_rebinding">Listener getrennt - automatischer erneuter Versuch...</string>
     <string name="listener_warning_title">Benachrichtigungslistener benötigt Aufmerksamkeit</string>

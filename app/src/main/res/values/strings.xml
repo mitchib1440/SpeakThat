@@ -1061,7 +1061,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="dev_debug_tools_title">Debug Tools</string>
     <string name="dev_debug_tools_description">Tools for debugging and testing the app</string>
     <string name="dev_notification_history">Show Notification History</string>
-    <string name="dev_analytics">Show Help Usage Analytics</string>
     <string name="dev_battery_report">Battery Optimization Report</string>
     <string name="dev_repair_blacklist">Repair Word Blacklist</string>
     <string name="dev_background_monitor">Background Process Monitor</string>
@@ -1582,9 +1581,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="review_reminder_rate_now">Rate Now</string>
     <string name="review_reminder_later">Maybe Later</string>
     <string name="review_reminder_never">Don\'t Ask Again</string>
-    <string name="dev_test_review_reminder">🧪 Test Review Reminder</string>
-    <string name="dev_reset_review_reminder">🔄 Reset Review Reminder</string>
-    <string name="dev_review_reminder_stats">📊 Review Reminder Stats</string>
     
     <!-- Quick Diagnostics -->
     <string name="quick_diagnostics">Quick Diagnostics</string>

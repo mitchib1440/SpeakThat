@@ -1153,7 +1153,6 @@ Reporta fallos, errores o comportamiento inesperado
     <string name="dev_debug_tools_title">🛠️ Herramientas de depuración</string>
     <string name="dev_debug_tools_description">Herramientas para depurar y probar la aplicación</string>
     <string name="dev_notification_history">📋 Mostrar historial de notificaciones</string>
-    <string name="dev_analytics">📊 Mostrar análisis de uso</string>
     <string name="dev_battery_report">🔋 Informe de optimización de batería</string>
     <string name="dev_repair_blacklist">🛠️ Reparar palabras prohibidas</string>
     <string name="dev_background_monitor">🛰️ Monitor de proceso de fondo</string>
