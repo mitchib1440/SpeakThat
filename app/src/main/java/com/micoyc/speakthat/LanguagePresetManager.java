@@ -159,6 +159,16 @@ public class LanguagePresetManager {
             null,  // Let system choose best German voice
             false
         ));
+
+        // Korean - complete UI translations available
+        presets.add(new LanguagePreset(
+            "ko_KR",
+            "한국어 (대한민국)",
+            "ko_KR",
+            "ko_KR",
+            null,  // Let system choose best Korean voice
+            false
+        ));
         
         // Custom preset - represents user's advanced customizations
         presets.add(new LanguagePreset(

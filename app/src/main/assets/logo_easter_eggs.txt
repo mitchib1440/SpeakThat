@@ -427,7 +427,7 @@ SpeakThat! I am powered by caffeine, Kotlin, and a little bit of Java.
 SpeakThat! Android is flexible. Sometimes a little too flexible.
 SpeakThat! Android giveth. OEMs taketh away.
 SpeakThat! Ninety percent of my bugs were caused by the last ten percent of features.
-SpeakThat! I worked fine on my developer’s phone. Classic.
+SpeakThat! I worked fine on my developer’s phone.
 SpeakThat! Somewhere, a Logcat entry knows what really happened.
 SpeakThat! If a setting looks scary, it probably is.
 SpeakThat! I run on Java, which also happens to be coffee. Coincidence? Probably not.
