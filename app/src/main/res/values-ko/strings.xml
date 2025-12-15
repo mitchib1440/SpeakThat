@@ -1,27 +1,38 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<resources>
+﻿<resources>
     <string name="app_name">SpeakThat!</string>
-    <string name="service_name">SpeakThat Notification Reader</string>
+    <string name="service_name">SpeakThat 알림 읽어주기 도구</string>
     <!-- Permission Explanations for IzzyOnDroid/F-Droid -->
-    <string name="permission_request_install_packages">Used for auto-update system to install new versions from GitHub releases. Only used when user explicitly enables auto-updates and app was not installed from Google Play Store.</string>
-    <string name="permission_access_location">Required for Bluetooth and WiFi conditional filtering features. Used to detect nearby Bluetooth devices and WiFi networks for user-defined rules. No location tracking or data collection.</string>
-    <string name="permission_bluetooth_scan">Required for Bluetooth conditional filtering. Allows the app to detect when specific Bluetooth devices are connected for notification rules. No data is collected or transmitted.</string>
-    <string name="permission_nearby_wifi_devices">Required for WiFi network conditional filtering on Android 13+. Allows the app to detect WiFi network changes for user-defined notification rules. No network data is collected.</string>
-    <string name="permission_read_external_storage">Used for importing/exporting app settings and configuration files. Allows users to backup and restore their settings. No personal data is accessed.</string>
-    <string name="permission_needed">Notification Access Required</string>
-    <string name="permission_description">SpeakThat! needs access to your notifications to read them aloud. This permission is required for the app to function.</string>
-    <string name="master_switch_battery_tip">ðŸ’¡ Turn off when not needed to save battery</string>
-    <string name="open_settings">Permission Settings</string>
-    <string name="service_enabled">Notification Reader: Enabled</string>
-    <string name="service_disabled">Notification Reader: Disabled</string>
-    <string name="show_history">Show Notification History</string>
-    <string name="settings">SpeakThat! Settings</string>
-    <string name="no_notifications">No notifications to display</string>
-    <string name="notification_history">Notification History</string>
-    <string name="close">Close</string>
+    <string name="permission_request_install_packages">
+GitHub 릴리즈에서 새 버전을 설치하는 데 사용됩니다. 앱이 구글 Play 스토어에서 설치되지 않았고, 사용자가 직접 자동 업데이트를 활성화했을 경우에만 필요합니다.
+</string>
+    <string name="permission_access_location">
+블루투스 및 Wi-Fi 조건 필터 기능에 필요합니다. 사용자 규칙에 따라 근처 블루투스 기기와 Wi-Fi 네트워크를 감지하는 데 사용됩니다. 위치 추적이나 데이터 수집이 발생하지 않습니다.
+</string>
+    <string name="permission_bluetooth_scan">
+블루투스 조건 필터 기능에 필요합니다. 특정 블루투스 기기가 연결되었는지 감지하는 데 사용됩니다. 데이터가 수집되거나 전송되지 않습니다.
+</string>
+    <string name="permission_nearby_wifi_devices">
+안드로이드 버전 13 이상에서 Wi-Fi 네트워크 조건 필터 기능에 필요합니다. 사용자 규칙에 따라 Wi-Fi 네트워크 변화를 감지하는 데 사용됩니다. 네트워크 데이터는 수집되지 않습니다.
+</string>
+    <string name="permission_read_external_storage">
+앱 설정 파일을 내보내거나 불러올 때 사용합니다. 설정을 백업하거나 복원할 수 있습니다. 다른 개인 정보에는 접근하지 않습니다.
+</string>
+    <string name="permission_needed">알림 접근 권한 필요</string>
+    <string name="permission_description">
+SpeakThat!이 알림을 읽기 위해 접근 권한이 필요합니다. 앱이 정상적으로 작동하기 위해 반드시 필요한 권한입니다.
+</string>
+    <string name="master_switch_battery_tip">💡 배터리를 절약할 필요가 없을 때는 끄세요</string>
+    <string name="open_settings">권한 설정</string>
+    <string name="service_enabled">알림 읽어주기 도구: 활성</string>
+    <string name="service_disabled">알림 읽어주기 도구: 비활성</string>
+    <string name="show_history">알림 기록 보기</string>
+    <string name="settings">SpeakThat! 설정</string>
+    <string name="no_notifications">표시할 알림 없음</string>
+    <string name="notification_history">알림 기록</string>
+    <string name="close">닫기</string>
     <!-- Search Functionality -->
-    <string name="search_settings_hint">Search settings...</string>
-    <string name="no_search_results">No matching settings found</string>
+    <string name="search_settings_hint">설정 검색...</string>
+    <string name="no_search_results">일치하는 설정 없음</string>
     <!-- Filter Settings -->
     <string-array name="blacklist_types">
         <item>Block</item>
@@ -40,7 +51,9 @@
         <item>2 minutes</item>
         <item>5 minutes</item>
     </string-array>
-    <!-- Cooldown Time Values (corresponding to options above) -->
+    <!--
+     Cooldown Time Values (corresponding to options above)
+    -->
     <string-array name="cooldown_time_values">
         <item>1</item>
         <item>2</item>
@@ -54,451 +67,1409 @@
         <item>300</item>
     </string-array>
     <!-- Behavior Settings Dialogs -->
-    <string name="notification_behavior_dialog_title">Notification Behavior Options</string>
-    <string name="notification_behavior_dialog_message">Choose how SpeakThat handles multiple notifications:
-
-<b>ðŸ”„ Interrupt</b> - Stops current notification and reads new one immediately. Best for urgent notifications.
-
-<b>ðŸ“‹ Queue</b> - Finishes current notification, then reads new ones in order. Nothing gets missed.
-
-<b>â­ï¸ Skip</b> - Ignores new notifications while reading. Simple but you might miss important ones.
-
-<b>ðŸ§  Smart (Recommended)</b> - Priority apps interrupt, others queue. Perfect balance of urgency and completeness.
-
-Smart mode lets you choose which apps are urgent enough to interrupt (like calls, messages) while other apps wait their turn.</string>
-    <string name="custom_app_names_title">Custom App Names</string>
-    <string name="custom_app_names_description">Customize how app names are spoken in notifications</string>
-    <string name="add_custom_app_name">Add Custom App Name</string>
-    <string name="app_package_hint">App package name (e.g., com.twitter.android)</string>
-    <string name="custom_name_hint">Custom name (e.g., Twitter)</string>
-    <string name="custom_app_names_example">Example: X app reads as Twitter</string>
-    <string name="media_behavior_dialog_title">Media Behavior Options</string>
-    <string name="media_behavior_dialog_message">Choose how SpeakThat handles notifications while music/videos play:
-
-<b>ðŸŽµ Ignore</b> - Speaks over your media. Simple but can be disruptive.
-
-<b>â¸ï¸ Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow.
-
-<b>ðŸ”‰ Lower Audio (Recommended)</b> - Temporarily reduces media volume so you can hear both. Most natural experience.
-
-<b>Silence</b> - Doesn\'t speak while media plays. Quiet but you might miss important notifications.
-
-Lower Audio works like a car radio - it ducks the music down when speaking, then brings it back up. Perfect for music lovers who still want notifications.</string>
-    <string name="shake_to_stop_dialog_title">Shake to Stop Feature</string>
-    <string name="shake_to_stop_dialog_message">Shake to Stop lets you instantly silence SpeakThat by shaking your device:
-
-<b>âœ¨ Why it\'s helpful:</b>
-â€¢ Stop embarrassing notifications in quiet places
-â€¢ Quick control when your hands are busy
-â€¢ Works even when screen is off
-â€¢ No fumbling for buttons
-
-<b>ðŸŽ¯ How it works:</b>
-â€¢ Shake your device firmly (like a dice shake)
-â€¢ Current notification stops immediately
-â€¢ Queued notifications are cleared
-â€¢ New notifications work normally
-
-<b>âš™ï¸ Customization:</b>
-â€¢ Adjust sensitivity for your preference
-â€¢ Test your shake strength with the meter
-â€¢ Works great for both gentle and vigorous shakers
-
-This feature is especially loved by people who get notifications during meetings, movies, or while driving.</string>
-    <string name="use_recommended">Use Recommended</string>
-    <string name="got_it">Got it</string>
+    <string name="notification_behavior_dialog_title">알림 동작 옵션</string>
+    <string name="custom_app_names_title">앱 별명</string>
+    <string name="custom_app_names_description">알림 내 앱 이름을 어떻게 읽을지 설정하세요</string>
+    <string name="add_custom_app_name">앱 별명 추가</string>
+    <string name="app_package_hint">앱 패키지명 (e.g., com.twitter.android)</string>
+    <string name="custom_name_hint">별명 (e.g., Twitter)</string>
+    <string name="custom_app_names_example">예: X 대신 Twitter로 읽습니다</string>
+    <string name="media_behavior_dialog_title">미디어 동작 옵션</string>
+    <string name="shake_to_stop_dialog_title">흔들어 멈추기 기능</string>
+    <string name="use_recommended">권장 사항 사용</string>
+    <string name="got_it">이해했어요</string>
     <!-- Persistent/Silent Notification Filtering -->
-    <string name="persistent_notification_filtering_title">Persistent/Silent Notification Filtering</string>
-    <string name="persistent_notification_filtering_description">Skip notifications that are persistent (ongoing) or silent (no sound/vibration)</string>
-    <string name="enable_persistent_filtering">Enable persistent/silent notification filtering</string>
-    <string name="persistent_filtering_help">ðŸ’¡ Persistent notifications are ongoing (like music controls, navigation, etc.) and silent notifications have no sound/vibration. This option helps reduce notification spam from background services.</string>
+    <string name="persistent_notification_filtering_title">지속/무음 알림 필터</string>
+    <string name="persistent_notification_filtering_description">지속 알림 및 무음 (소리 없음/진동) 알림을 건너뜁니다</string>
+    <string name="enable_persistent_filtering">지속/무음 알림 필터를 활성화합니다</string>
+    <string name="persistent_filtering_help">
+상시 알림은 지속적으로 유지되는 알림(음악 재생기, 내비게이션 등)이며, 무음 알림은 소리나 진동이 설정되지 않은 알림입니다. 이 옵션은 백그라운드 서비스로부터의 불필요한 알림을 방지합니다.
+</string>
     <!-- Individual Persistent Filtering Categories -->
-    <string name="filter_persistent_notifications">Filter persistent notifications</string>
-    <string name="filter_silent_notifications">Filter silent notifications</string>
-    <string name="filter_foreground_services">Filter foreground service notifications</string>
-    <string name="filter_low_priority">Filter low priority notifications</string>
-    <string name="filter_system_notifications">Filter system notifications</string>
+    <string name="filter_persistent_notifications">지속 알림 필터</string>
+    <string name="filter_silent_notifications">무음 알림 필터</string>
+    <string name="filter_foreground_services">포그라운드 서비스 알림 필터</string>
+    <string name="filter_low_priority">우선순위 낮은 알림 필터</string>
+    <string name="filter_system_notifications">시스템 알림 필터</string>
     <!-- Category Descriptions -->
-    <string name="persistent_notifications_desc">Ongoing notifications that don\'t auto-dismiss (music controls, navigation)</string>
-    <string name="silent_notifications_desc">Notifications with no sound or vibration</string>
-    <string name="foreground_services_desc">Notifications from ongoing background services</string>
-    <string name="low_priority_desc">Notifications with minimum or low priority level</string>
-    <string name="system_notifications_desc">Notifications from system apps (Android, Google services)</string>
+    <string name="persistent_notifications_desc">자동으로 해제되지 않는 지속 알림 (음악 재생기, 내비게이션)</string>
+    <string name="silent_notifications_desc">소리 없음 또는 진동 알림</string>
+    <string name="foreground_services_desc">실행 중인 백그라운드 서비스의 알림</string>
+    <string name="low_priority_desc">최소 및 낮은 우선 순위 알림</string>
+    <string name="system_notifications_desc">시스템 앱 알림 (안드로이드, 구글 서비스)</string>
     <!-- Wave to Stop Feature -->
-    <string name="wave_to_stop_dialog_title">Wave to Stop Feature</string>
-    <string name="wave_to_stop_dialog_message">Wave to Stop lets you instantly silence SpeakThat by waving your hand in front of the device:
-
-<b>âœ¨ Why it\'s helpful:</b>
-â€¢ Perfect for users who can\'t shake their device
-â€¢ Great for phones on desks or mounts
-â€¢ Works with one hand
-â€¢ No physical device movement needed
-â€¢ Accessibility-friendly alternative to shake
-
-<b>ðŸŽ¯ How it works:</b>
-â€¢ Wave your hand in front of the device (like a magic gesture)
-â€¢ Uses the proximity sensor to detect hand movement
-â€¢ Current notification stops immediately
-â€¢ Queued notifications are cleared
-â€¢ New notifications work normally
-
-<b>âš™ï¸ Customization:</b>
-â€¢ Adjust sensitivity for your preference
-â€¢ Test your wave detection with the meter
-â€¢ Works great for different hand sizes and distances
-
-This feature is especially useful for accessibility, desk users, and anyone who prefers gesture control over physical movement.</string>
+    <string name="wave_to_stop_dialog_title">손 흔들어 멈추기 기능</string>
     <!-- About Page -->
-    <string name="about">About</string>
-    <string name="about_description_title">About SpeakThat!</string>
-    <string name="about_features_title">Key Features</string>
-    <string name="about_developer_title">Developer</string>
-    <string name="about_license_title">License</string>
-    <string name="version_format">Version %s</string>
-    <string name="version_format_with_variant" formatted="false">Version %1$s (%2$s)</string>
+    <string name="about">정보</string>
+    <string name="about_description_title">SpeakThat!에 관하여</string>
+    <string name="about_features_title">주요 기능</string>
+    <string name="about_developer_title">개발자</string>
+    <string name="about_license_title">라이센스</string>
+    <string name="version_format">버전 %s</string>
+    <string name="version_format_with_variant" formatted="false">버전 %1$s (%2$s)</string>
     <!-- Store Update Dialog -->
-    <string name="store_update_dialog_title">Updates via App Store</string>
-    <string name="store_update_dialog_message">This version of SpeakThat! receives updates through your app store (F-Droid, Google Play Store, etc.).</string>
-    <string name="store_update_dialog_info">â€¢ Updates are automatically handled by your app store\nâ€¢ You\'ll receive notifications when updates are available\nâ€¢ No manual download or installation required</string>
-    <string name="store_update_dialog_help_title">Need the auto-update version?</string>
-    <string name="store_update_dialog_help_message">If you want automatic updates directly from GitHub, you can download the GitHub version instead. This version is identical but includes auto-update functionality.</string>
-    <string name="store_update_dialog_visit_github">Visit GitHub</string>
-    <string name="store_update_dialog_got_it">Got it</string>
-    <string name="app_description">SpeakThat! is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="app_features">â€¢ Real-time notification reading\nâ€¢ Customizable voice settings\nâ€¢ Smart notification filtering\nâ€¢ App-specific controls\nâ€¢ Media-aware behavior\nâ€¢ Notification history\nâ€¢ Shake/Wave to stop\nâ€¢ Custom speech formatting\nâ€¢ Dark/Light theme support\nâ€¢ Conditional rules for advanced logic and schedules\nâ€¢ Fully ad-free and offline functionality</string>
-    <string name="developer_info">Developed with â¤ï¸ by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day.\n\nSpeakThat! was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers.\n\nThis project was accelerated by AI-assisted programming.</string>
-    <string name="license_info">This project is open source and available under the GPL-3.0 License.\n\nYou can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
-    <string name="read_about_app">Read About App</string>
-    <string name="stop_reading">Stop Reading</string>
-    <!-- TTS-specific strings (emoji-free and speech-optimized) -->
-    <string name="tts_app_intro">Welcome to SpeakThat!</string>
-    <string name="tts_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="tts_features_intro">Key features include:</string>
-    <string name="tts_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and fully ad-free, offline functionality.</string>
-    <string name="tts_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
-    <string name="tts_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
-    <string name="tts_thank_you">Thank you for using SpeakThat!</string>
+    <string name="store_update_dialog_title">앱 스토어를 통한 업데이트</string>
+    <string name="store_update_dialog_message">
+이 버전의 SpeakThat!은 앱 스토어(F-Droid, Google Play 스토어 등)에 의해 업데이트됩니다.
+</string>
+    <string name="store_update_dialog_help_title">자동 업데이트 버전이 필요합니까?</string>
+    <string name="store_update_dialog_help_message">
+GitHub로부터 직접 자동 업데이트를 받고 싶다면, GitHub 버전을 다운로드하세요. 다른 모든 기능은 같지만 자동 업데이트 기능이 추가되어 있습니다.
+</string>
+    <string name="store_update_dialog_visit_github">GitHub 방문하기</string>
+    <string name="store_update_dialog_got_it">이해했어요</string>
+    <string name="app_description">
+SpeakThat!은 텍스트 읽어주기 기능을 사용하여 알림을 읽어주는 오픈소스 안드로이드 앱입니다. 핸즈프리 동작, 접근성, 멀티태스킹 중 소식을 놓치지 않는 데 유용합니다.
+</string>
+    <string name="app_features">
+• 실시간 알림 읽어주기\n• 사용자 음성 설정\n• 스마트 알림 필터\n• 개별 앱 설정\n• 미디어 재생에 따른 동작\n• 알림 기록\n• 기기나 손을 흔들어 멈추기\n• 읽어주기 형식 설정\n• 라이트/다크 테마 지원\n• 고급 규칙 및 스케줄을 위한 조건화 지원\n• 무광고, 오프라인 동작
+</string>
+    <string name="license_info">
+이 프로젝트는 오픈소스이며 GPL-3.0 라이센스를 준수합니다.\n\n라이센스 문서와 소스 코드는 GitHub에서 확인 가능합니다. 기여 및 피드백은 언제나 환영입니다!
+</string>
+    <string name="read_about_app">앱에 관하여 읽어보기</string>
+    <string name="stop_reading">읽기 멈추기</string>
+    <!--
+     TTS-specific strings (emoji-free and speech-optimized)
+    -->
+    <string name="tts_app_intro">SpeakThat!에 오신 것을 환영합니다!</string>
+    <string name="tts_description">
+SpeakThat!은 텍스트 읽어주기 기능을 사용하여 알림을 읽어주는 오픈소스 안드로이드 앱입니다. 핸즈프리 동작, 접근성, 멀티태스킹 중 소식을 놓치지 않는 데 유용합니다.
+</string>
+    <string name="tts_features_intro">주요 기능:</string>
+    <string name="tts_features">
+실시간 알림 읽어주기, 사용자 음성 설정, 스마트 알림 필터, 개별 앱 설정, 미디어 재생에 따른 동작, 알림 기록, 기기나 손을 흔들어 멈추기, 읽어주기 형식 설정, 라이트/다크 테마 지원, 고급 규칙 및 스케줄을 위한 조건화 지원, 무광고, 오프라인 동작.
+</string>
+    <string name="tts_developer">
+개발자 Mitchi는 12년 이상 알림 읽어주기 도구를 테스트하고 사용한 경험이 있는 영국의 1인 개발자입니다. SpeakThat은 DYNA Logix에서 개발된 Touchless Notifications에서 영감을 받았으며, 사용자가 입맛대로 설정 가능한 알림 읽어주기 도구의 가치를 잇고자 합니다. 이 프로젝트의 빠른 개발을 위해 인공지능이 사용되었습니다.
+</string>
+    <string name="tts_license">
+이 프로젝트는 오픈소스이며 GPL-3.0 라이센스를 준수합니다. 라이센스 문서와 소스 코드는 GitHub에서 확인 가능합니다. 기여 및 피드백은 언제나 환영입니다!
+</string>
+    <string name="tts_thank_you">SpeakThat!을 사용해 주셔서 감사합니다!</string>
     <!-- Update System -->
-    <string name="check_for_updates">Check for Updates</string>
-    <string name="update_checker">Update Checker</string>
-    <string name="checking_for_updates">Checking for updates...</string>
-    <string name="update_available">Update Available: %s</string>
-    <string name="no_update_available">No Update Available</string>
-    <string name="app_up_to_date">Your app is up to date!</string>
-    <string name="update_info">Version: %1$s\nSize: %2$s\nReleased: %3$s</string>
-    <string name="download_update">Download Update</string>
-    <string name="download_confirmation">Download version %s? This will use mobile data if not on WiFi.</string>
-    <string name="downloading_update">Downloading update...</string>
-    <string name="downloading_update_progress">Downloading update... %d%%</string>
-    <string name="download_complete">Download complete!</string>
-    <string name="install_update">Install Update</string>
-    <string name="view_release_notes">View Release Notes</string>
-    <string name="release_notes">Release Notes</string>
-    <string name="no_release_notes">No release notes available</string>
-    <string name="check_again">Check Again</string>
-    <string name="update_check_failed">Failed to check for updates</string>
-    <string name="download_failed">Download failed</string>
-    <string name="installation_failed">Installation failed</string>
-    <string name="invalid_apk_signature">Invalid APK signature</string>
-    <string name="signature_verification_failed">Signature verification failed</string>
-    <string name="update_privacy_notice">Privacy: Update checks only verify version numbers. No personal data is collected or transmitted.</string>
-    <string name="download">Download</string>
-    <string name="cancel">Cancel</string>
-    <string name="ok">OK</string>
+    <string name="check_for_updates">업데이트 확인</string>
+    <string name="update_checker">업데이트 확인 방식</string>
+    <string name="checking_for_updates">업데이트 확인 중...</string>
+    <string name="update_available">업데이트 가능: %s</string>
+    <string name="no_update_available">업데이트 없음</string>
+    <string name="app_up_to_date">최신 버전을 사용 중입니다!</string>
+    <string name="update_info">버전: %1$s\n크기: %2$s\n릴리즈 날짜: %3$s</string>
+    <string name="download_update">업데이트 다운로드</string>
+    <string name="download_confirmation">버전 %s을 다운로드할까요? 모바일 데이터가 사용될 수 있습니다.</string>
+    <string name="downloading_update">업데이트 다운로드 중...</string>
+    <string name="downloading_update_progress">업데이트 다운로드 중... %d%%</string>
+    <string name="download_complete">다운로드 완료!</string>
+    <string name="install_update">업데이트 설치</string>
+    <string name="view_release_notes">릴리즈 노트 보기</string>
+    <string name="release_notes">릴리즈 노트</string>
+    <string name="no_release_notes">릴리즈 노트 없음</string>
+    <string name="check_again">다시 확인</string>
+    <string name="update_check_failed">업데이트 확인 실패</string>
+    <string name="download_failed">다운로드 실패</string>
+    <string name="installation_failed">설치 실패</string>
+    <string name="invalid_apk_signature">잘못된 APK 서명</string>
+    <string name="signature_verification_failed">서명 인증 실패</string>
+    <string name="update_privacy_notice">
+개인정보: 업데이트 확인은 앱 버전 번호만 확인합니다. 개인정보는 수집 및 전송되지 않습니다.
+</string>
+    <string name="download">다운로드</string>
+    <string name="cancel">취소</string>
+    <string name="ok">확인</string>
     <!-- Update Settings -->
-    <string name="auto_update_settings">Auto-Update Settings</string>
-    <string name="check_for_updates_auto">Check for Updates</string>
-    <string name="check_for_updates_auto_desc">Automatically check for app updates when you open the app</string>
-    <string name="check_frequency">Check Frequency</string>
-    <string name="check_frequency_desc">How often should the app check for updates?</string>
-    <string name="update_daily">Daily</string>
-    <string name="update_weekly">Weekly (recommended)</string>
-    <string name="update_monthly">Monthly</string>
-    <string name="update_never">Never (manual only)</string>
+    <string name="auto_update_settings">자동 업데이트 설정</string>
+    <string name="check_for_updates_auto">업데이트 확인</string>
+    <string name="check_for_updates_auto_desc">앱을 실행할 때마다 자동으로 업데이트 확인</string>
+    <string name="check_frequency">확인 빈도</string>
+    <string name="check_frequency_desc">얼마나 자주 업데이트를 확인할까요?</string>
+    <string name="update_daily">매일</string>
+    <string name="update_weekly">매주 (권장)</string>
+    <string name="update_monthly">매월</string>
+    <string name="update_never">안 함 (수동 업데이트)</string>
     <!-- TTS Template Strings (for improved localization) -->
-    <!-- These are complete sentence templates with placeholders for proper localization -->
-    <string name="tts_template_notified_you">{app} notified you: {content}</string>
-    <string name="tts_template_reported">{app} reported: {content}</string>
-    <string name="tts_template_saying">Notification from {app}, saying {content}</string>
-    <string name="tts_template_alerts_you">{app} alerts you: {content}</string>
-    <string name="tts_template_update_from">Update from {app}: {content}</string>
-    <string name="tts_template_notification">{app} notification: {content}</string>
-    <string name="tts_template_new_notification">New notification: {app}: {content}</string>
-    <string name="tts_template_new_from">New from {app}: {content}</string>
-    <string name="tts_template_said">{app} said: {content}</string>
-    <string name="tts_template_updated_you">{app} updated you: {content}</string>
-    <string name="tts_template_new_notification_from">New notification from {app}: saying: {content}</string>
-    <string name="tts_template_new_update_from">New update from {app}: {content}</string>
-    <string name="tts_template_notification_from">Notification from {app}: {content}</string>
-    <string name="tts_template_says">{app} says: {content}</string>
-    <string name="tts_template_private_notification">You received a private notification from {app}</string>
-    <!-- TTS Context Templates - Complete sentences for different app contexts -->
+    <!--
+     These are complete sentence templates with placeholders for proper localization
+    -->
+    <string name="tts_template_notified_you">{app}에서 알림: {content}</string>
+    <string name="tts_template_reported">{app}에서 보고드립니다: {content}</string>
+    <string name="tts_template_saying">{app}에서 알려드립니다. 내용은 다음과 같습니다. {content}</string>
+    <string name="tts_template_alerts_you">{app}에서 알려드려요: {content}</string>
+    <string name="tts_template_update_from">{app}에서 업데이트합니다: {content}</string>
+    <string name="tts_template_notification">{app} 알림: {content}</string>
+    <string name="tts_template_new_notification">새 알림입니다: {app}: {content}</string>
+    <string name="tts_template_new_from">새 알림 {app}: {content}</string>
+    <string name="tts_template_said">{app}에서: {content}</string>
+    <string name="tts_template_updated_you">{app}에서 전해요: {content}</string>
+    <string name="tts_template_new_notification_from">{app}에서 새 알림입니다: 내용은 다음과 같습니다: {content}</string>
+    <string name="tts_template_new_update_from">{app}에서 전합니다: {content}</string>
+    <string name="tts_template_notification_from">{app}에서 알려드립니다: {content}</string>
+    <string name="tts_template_says">{app}에서: {content}</string>
+    <string name="tts_template_private_notification">{app}에서 개인 알림이 발생했습니다</string>
+    <!--
+     TTS Context Templates - Complete sentences for different app contexts
+    -->
     <!-- About Page TTS -->
-    <string name="tts_about_intro">Welcome to SpeakThat!</string>
-    <string name="tts_about_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="tts_about_features_intro">Key features include:</string>
-    <string name="tts_about_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behavior, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and full ad-free, offline functionality.</string>
-    <string name="tts_about_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
-    <string name="tts_about_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
-    <string name="tts_about_thank_you">Thank you for using SpeakThat!</string>
+    <string name="tts_about_intro">SpeakThat!에 오신 것을 환영합니다!</string>
+    <string name="tts_about_description">
+SpeakThat!은 텍스트 읽어주기 기능을 사용하여 알림을 읽어주는 오픈소스 안드로이드 앱입니다. 핸즈프리 동작, 접근성, 멀티태스킹 중 소식을 놓치지 않는 데 유용합니다.
+</string>
+    <string name="tts_about_features_intro">주요 기능:</string>
+    <string name="tts_about_features">
+실시간 알림 읽어주기, 사용자 음성 설정, 스마트 알림 필터, 개별 앱 설정, 미디어 재생에 따른 동작, 알림 기록, 기기나 손을 흔들어 멈추기, 읽어주기 형식 설정, 라이트/다크 테마 지원, 고급 규칙 및 스케줄을 위한 조건화 지원, 무광고, 오프라인 동작.
+</string>
+    <string name="tts_about_developer">
+개발자 Mitchi는 12년 이상 알림 읽어주기 도구를 테스트하고 사용한 경험이 있는 영국의 1인 개발자입니다. SpeakThat은 DYNA Logix에서 개발된 Touchless Notifications에서 영감을 받았으며, 사용자가 입맛대로 설정 가능한 알림 읽어주기 도구의 가치를 잇고자 합니다. 이 프로젝트의 빠른 개발을 위해 인공지능이 사용되었습니다.
+</string>
+    <string name="tts_about_license">
+이 프로젝트는 오픈소스이며 GPL-3.0 라이센스를 준수합니다. 라이센스 문서와 소스 코드는 GitHub에서 확인 가능합니다. 기여 및 피드백은 언제나 환영입니다!
+</string>
+    <string name="tts_about_thank_you">SpeakThat!을 사용해 주셔서 감사합니다!</string>
     <!-- Voice Settings Test -->
-    <string name="tts_voice_test">This is how your notifications will sound with these voice settings.</string>
+    <string name="tts_voice_test">위 음성 설정에 따른 알림 소리를 미리 들려드려요.</string>
     <!-- Onboarding TTS -->
-    <string name="tts_onboarding_welcome">Welcome to SpeakThat! Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.</string>
-    <string name="tts_onboarding_permission">SpeakThat needs permission to read your notifications aloud. Everything stays on your device and you control what gets read.</string>
-    <string name="tts_onboarding_privacy">Your privacy matters. You control exactly what gets read aloud. Shake your phone to stop any announcement instantly. Everything stays on your device.</string>
-    <string name="tts_onboarding_filters">Let\'s set up some basic privacy filters to get you started. SpeakThat features a powerful filtering system that allows you to choose what gets read and what doesn\'t.</string>
-    <string name="tts_onboarding_apps">Type the name of an app you want me to never read notifications from. Common examples include banking apps, medical apps, and dating apps.</string>
-    <string name="tts_onboarding_words">Type words or phrases that you want me to never read notifications containing. Common examples include password, PIN, credit card, and medical terms.</string>
-    <string name="tts_onboarding_complete">SpeakThat is ready to help you stay connected while keeping your eyes free! You can add more filters anytime in the app settings.</string>
+    <string name="tts_onboarding_welcome">
+SpeakThat!에 오신 것을 환영합니다! 화면을 보지 않고도 계속 소식을 접하세요. 이제 휴대폰이 알림을 읽어 드릴 테니 소중한 지금에 집중하세요.
+</string>
+    <string name="tts_onboarding_permission">
+SpeakThat이 알림을 읽기 위해서는 권한이 필요합니다. 모든 기능은 기기 내에서만 작동되며 그 어떠한 정보도 무단으로 전송되지 않습니다. 어떤 알림을 어떻게 읽게 할지는 여러분이 직접 결정하세요.
+</string>
+    <string name="tts_onboarding_privacy">
+개발자는 개인정보를 중시합니다. 무슨 알림이 읽힐지는 여러분이 선택합니다. 알림 읽기를 멈추고 싶다면 휴대폰을 흔드세요. 모든 기능과 정보는 기기 내에서만 유지됩니다.
+</string>
+    <string name="tts_onboarding_filters">
+우선 기본 개인정보 필터를 설정해 봅시다. SpeakThat은 여러분이 듣고 싶은 알림을 직접 선택할 수 있도록 강력한 필터 기능을 제공합니다.
+</string>
+    <string name="tts_onboarding_apps">
+알림 읽어주기를 실행하지 않을 앱 이름을 입력해 보세요. 예) 은행, 건강, 소개팅 앱 등.
+</string>
+    <string name="tts_onboarding_words">
+알림 읽기에서 제외할 단어나 문구를 입력해 보세요. 예) 비밀번호, 암호, 신용카드, 인증 코드.
+</string>
+    <string name="tts_onboarding_complete">
+이제 SpeakThat의 준비가 끝났습니다! 화면에서 눈을 뗀 채로도 세상과 연결되어 있을 수 있어요! 앱 설정에서 언제든 필터를 더 추가할 수 있습니다.
+</string>
     <!-- Behavior Settings Speech Format Templates -->
-    <string name="tts_behavior_default">Default format</string>
-    <string name="tts_behavior_minimal">Minimal format</string>
-    <string name="tts_behavior_formal">Formal format</string>
-    <string name="tts_behavior_casual">Casual format</string>
-    <string name="tts_behavior_time_aware">Time aware format</string>
-    <string name="tts_behavior_content_only">Content only format</string>
-    <string name="tts_behavior_app_only">App only format</string>
-    <string name="tts_behavior_varied">Varied format</string>
-    <string name="tts_behavior_custom">Custom format</string>
+    <string name="tts_behavior_default">기본값</string>
+    <string name="tts_behavior_minimal">가장 간단한</string>
+    <string name="tts_behavior_formal">정중한</string>
+    <string name="tts_behavior_casual">캐주얼한</string>
+    <string name="tts_behavior_time_aware">시간을 포함한</string>
+    <string name="tts_behavior_content_only">내용만</string>
+    <string name="tts_behavior_app_only">앱 이름만</string>
+    <string name="tts_behavior_varied">무작위</string>
+    <string name="tts_behavior_custom">사용자 설정</string>
     <!-- Speech Format Preset Templates -->
-    <string name="tts_format_default">{app} notified you: {content}</string>
+    <string name="tts_format_default">{app}의 알림: {content}</string>
     <string name="tts_format_minimal">{app}: {content}</string>
-    <string name="tts_format_formal">Notification from {app}: {content}</string>
-    <string name="tts_format_casual">{app} says: {content}</string>
-    <string name="tts_format_time_aware">{app} at {time}: {content}</string>
+    <string name="tts_format_formal">{app}에서 알려드립니다: {content}</string>
+    <string name="tts_format_casual">{app}에서 전해요: {content}</string>
+    <string name="tts_format_time_aware">{time}에 {app}의 알림: {content}</string>
     <string name="tts_format_content_only">{content}</string>
     <string name="tts_format_app_only">{app}</string>
-    <string name="tts_format_varied">VARIED</string>
-    <string name="tts_format_custom">CUSTOM</string>
+    <string name="tts_format_varied">무작위</string>
+    <string name="tts_format_custom">사용자 설정</string>
     <!-- Rule Builder Templates -->
-    <string name="template_selection_title">Choose a Template</string>
-    <string name="template_selection_description">Select a pre-configured rule template to get started quickly, or create a custom rule from scratch.</string>
-    <string name="create_custom_rule">Create Custom Rule</string>
+    <string name="template_selection_title">템플릿을 선택하세요</string>
+    <string name="template_selection_description">사전 설정된 규칙 템플릿을 선택하거나 직접 규칙을 작성하세요.</string>
+    <string name="create_custom_rule">직접 규칙 생성</string>
     <!-- Template Names -->
-    <string name="template_headphones_only_name">Bluetooth Headphones</string>
-    <string name="template_headphones_only_description">Select your Bluetooth headphones, and notifications will ONLY be read when they are connected to your phone</string>
-    <string name="template_time_schedule_name">Quiet Hours</string>
-    <string name="template_time_schedule_description">Select two times you want SpeakThat to remain silent between</string>
-    <string name="template_screen_off_name">Only when Screen Off</string>
-    <string name="template_screen_off_description">Notifications will only be read if your screen is off</string>
-    <string name="template_home_network_name">Only on Home WiFi</string>
-    <string name="template_home_network_description">Enter your Home WiFi network and notifications will only be read when you\'re connected to it</string>
+    <string name="template_headphones_only_name">블루투스 헤드폰</string>
+    <string name="template_headphones_only_description">
+블루투스 헤드폰을 선택하세요. 해당 기기가 휴대폰에 연결되어 있을 때만 알림 읽어주기가 동작합니다
+</string>
+    <string name="template_time_schedule_name">방해 금지 시간</string>
+    <string name="template_time_schedule_description">SpeakThat이 작동을 중단할 시작 및 종료 시각을 선택하세요</string>
+    <string name="template_screen_off_name">화면이 꺼졌을 때만</string>
+    <string name="template_screen_off_description">화면이 꺼졌을 때만 알림 읽어주기가 실행됩니다</string>
+    <string name="template_home_network_name">집 Wi-Fi에서만</string>
+    <string name="template_home_network_description">집 Wi-Fi 네트워크에 연결했을 때만 알림 읽어주기가 작동합니다</string>
     <!-- Template Trigger Descriptions -->
-    <string name="template_trigger_headphones_disconnected">When Bluetooth headphones are disconnected</string>
-    <string name="template_trigger_time_between">Between 10:00 PM and 8:00 AM</string>
-    <string name="template_trigger_screen_on">When screen is turned on</string>
-    <string name="template_trigger_not_home_wifi">When not connected to Home WiFi</string>
+    <string name="template_trigger_headphones_disconnected">블루투스 헤드폰이 연결 해제되었을 때</string>
+    <string name="template_trigger_time_between">오후 10시와 오전 8시 사이</string>
+    <string name="template_trigger_screen_on">화면이 켜졌을 때만</string>
+    <string name="template_trigger_not_home_wifi">집 Wi-Fi에 연결되지 않았을 때</string>
     <!-- Template Action Descriptions -->
-    <string name="template_action_skip_notification">Don\'t read notifications</string>
+    <string name="template_action_skip_notification">알림 읽지 않기</string>
     <!-- Rule Natural Language Templates -->
-    <string name="rule_format_when_trigger_will_action">When %1$s, %2$s will %3$s</string>
-    <string name="rule_format_when_trigger_will_action_unless_exception">When %1$s, %2$s will %3$s unless %4$s</string>
-    <string name="rule_format_when_trigger_will_action_unless_exceptions">When %1$s, %2$s will %3$s unless %4$s</string>
+    <string name="rule_format_when_trigger_will_action">%1$s을(를) 만족할 때, %2$s이(가) %3$s합니다</string>
+    <string name="rule_format_when_trigger_will_action_unless_exception">%1$s을(를) 만족할 때, %4$s이(가) 아니라면, %2$s이(가) %3$s합니다</string>
+    <string name="rule_format_when_trigger_will_action_unless_exceptions">%1$s을(를) 만족할 때, %4$s이(가) 아니라면, %2$s이(가) %3$s합니다</string>
     <!-- Rule Component Descriptions -->
-    <string name="rule_trigger_bluetooth_connected">Bluetooth device is connected</string>
-    <string name="rule_trigger_bluetooth_disconnected">Bluetooth device is disconnected</string>
-    <string name="rule_trigger_screen_on">screen is on</string>
-    <string name="rule_trigger_screen_off">screen is off</string>
-    <string name="rule_trigger_time_between">time is between %1$s and %2$s</string>
-    <string name="rule_trigger_wifi_connected">connected to %1$s</string>
-    <string name="rule_trigger_wifi_disconnected">not connected to %1$s</string>
-    <string name="rule_trigger_multiple">multiple conditions are met</string>
-    <string name="rule_action_skip_notification">skip reading notifications</string>
-    <string name="rule_action_enable_app_filter">enable app filtering for %1$s</string>
-    <string name="rule_action_disable_app_filter">disable app filtering for %1$s</string>
-    <string name="rule_action_change_voice_settings">change voice settings</string>
-    <string name="rule_action_multiple">perform multiple actions</string>
-    <string name="rule_exception_bluetooth_connected">Bluetooth device is connected</string>
-    <string name="rule_exception_bluetooth_disconnected">Bluetooth device is disconnected</string>
-    <string name="rule_exception_screen_on">screen is on</string>
-    <string name="rule_exception_screen_off">screen is off</string>
-    <string name="rule_exception_time_between">time is between %1$s and %2$s</string>
-    <string name="rule_exception_wifi_connected">connected to %1$s</string>
-    <string name="rule_exception_wifi_disconnected">not connected to %1$s</string>
-    <string name="rule_exception_multiple">multiple exceptions apply</string>
+    <string name="rule_trigger_bluetooth_connected">블루투스 기기가 연결됨</string>
+    <string name="rule_trigger_bluetooth_disconnected">블루투스 기기가 해제됨</string>
+    <string name="rule_trigger_screen_on">화면 켜짐</string>
+    <string name="rule_trigger_screen_off">화면 꺼짐</string>
+    <string name="rule_trigger_time_between">현재 시간이 %1$s에서 %2$s 사이임</string>
+    <string name="rule_trigger_wifi_connected">%1$s에 연결됨</string>
+    <string name="rule_trigger_wifi_disconnected">%1$s에 연결되지 않음</string>
+    <string name="rule_trigger_multiple">여러 조건이 충족됨</string>
+    <string name="rule_action_skip_notification">알림 읽기 건너뛰기</string>
+    <string name="rule_action_enable_app_filter">%1$s에 대한 앱 필터 활성화</string>
+    <string name="rule_action_disable_app_filter">%1$s에 대한 앱 필터 비활성화</string>
+    <string name="rule_action_change_voice_settings">음성 설정 변경</string>
+    <string name="rule_action_multiple">여러 액션 실행</string>
+    <string name="rule_exception_bluetooth_connected">블루투스 기기가 연결됨</string>
+    <string name="rule_exception_bluetooth_disconnected">블루투스 기기가 해제됨</string>
+    <string name="rule_exception_screen_on">화면 켜짐</string>
+    <string name="rule_exception_screen_off">화면 꺼짐</string>
+    <string name="rule_exception_time_between">현재 시간이 %1$s에서 %2$s 사이임</string>
+    <string name="rule_exception_wifi_connected">%1$s에 연결됨</string>
+    <string name="rule_exception_wifi_disconnected">%1$s에 연결되지 않음</string>
+    <string name="rule_exception_multiple">여러 예외가 적용됨</string>
     <!-- Logic Connectors -->
-    <string name="rule_logic_and">and</string>
-    <string name="rule_logic_or">or</string>
-    <string name="rule_logic_xor">either</string>
+    <string name="rule_logic_and">그리고</string>
+    <string name="rule_logic_or">또는</string>
+    <string name="rule_logic_xor">또는</string>
     <string name="rule_logic_separator">, </string>
-    <string name="rule_logic_final_separator">, and </string>
+    <string name="rule_logic_final_separator">, 그리고</string>
     <!-- Critical Hardcoded Strings - Activity Titles -->
-    <string name="title_behavior_settings">Behavior Settings</string>
-    <string name="title_general_settings">General Settings</string>
-    <string name="title_voice_settings">Voice Settings</string>
-    <string name="title_filter_settings">Filter Settings</string>
-    <string name="title_test_settings">Test Settings</string>
-    <string name="title_notification_history">Notification History</string>
-    <string name="title_bluetooth_devices">Bluetooth Devices</string>
+    <string name="title_behavior_settings">동작 설정</string>
+    <string name="title_general_settings">일반 설정</string>
+    <string name="title_voice_settings">음성 설정</string>
+    <string name="title_filter_settings">필터 설정</string>
+    <string name="title_test_settings">설정 테스트</string>
+    <string name="title_notification_history">알림 기록</string>
+    <string name="title_bluetooth_devices">블루투스 기기</string>
     <!-- Critical Hardcoded Strings - Dialog Titles -->
-    <string name="dialog_title_theme_changed">Theme Changed</string>
-    <string name="dialog_title_export_successful">Export Successful</string>
-    <string name="dialog_title_export_failed">Export Failed</string>
-    <string name="dialog_title_import_full_config">Import Full Configuration</string>
-    <string name="dialog_title_import_successful">Import Successful</string>
-    <string name="dialog_title_import_failed">Import Failed</string>
-    <string name="dialog_title_clear_all_data">Clear All Data</string>
-    <string name="dialog_title_data_cleared">Data Cleared</string>
-    <string name="dialog_title_clear_failed">Clear Failed</string>
-    <string name="dialog_title_advanced_voice_options">Advanced Voice Options</string>
-    <string name="dialog_title_audio_settings_help">Audio Settings Help</string>
-    <string name="dialog_title_advanced_voice_information">Advanced Voice Information</string>
-    <string name="dialog_title_format_test_results">ðŸ§ª Format Test Results</string>
-    <string name="dialog_title_delay_before_readout">Delay Before Readout</string>
-    <string name="dialog_title_custom_app_names">Custom App Names</string>
-    <string name="dialog_title_notification_cooldown">Notification Cooldown</string>
-    <string name="dialog_title_speech_formats_guide">ðŸ—£ï¸ Speech Formats - Complete Guide</string>
-    <string name="dialog_title_honour_do_not_disturb">Honour Do Not Disturb</string>
-    <string name="dialog_title_honour_audio_mode">Honour Audio Mode</string>
-    <string name="dialog_title_select_bluetooth_device">Select Bluetooth Device</string>
-    <string name="dialog_title_remove_device">Remove Device</string>
-    <string name="dialog_title_error">Error</string>
-    <string name="dialog_title_bluetooth_not_available">Bluetooth Not Available</string>
-    <string name="dialog_title_bluetooth_disabled">Bluetooth Disabled</string>
-    <string name="dialog_title_no_devices_found">No Devices Found</string>
-    <string name="dialog_title_select_bluetooth_devices">Select Bluetooth Devices</string>
-    <string name="dialog_title_wifi_disabled">WiFi Disabled</string>
-    <string name="dialog_title_wifi_networks">WiFi Networks</string>
-    <string name="dialog_title_no_networks_found">No Networks Found</string>
-    <string name="dialog_title_select_wifi_networks">Select WiFi Networks</string>
-    <string name="dialog_title_enter_wifi_network">Enter WiFi Network</string>
-    <string name="dialog_title_set_quiet_hours">Set Quiet Hours</string>
-    <string name="dialog_title_rule_created">Rule Created!</string>
-    <string name="dialog_title_experimental_feature">Experimental Feature</string>
-    <string name="dialog_title_delete_rule">Delete Rule</string>
-    <string name="dialog_title_invalid_rule_name">Invalid Rule Name</string>
-    <string name="dialog_title_invalid_rule">Invalid Rule</string>
-    <string name="dialog_title_add_trigger">Add Trigger</string>
-    <string name="dialog_title_add_action">Add Action</string>
-    <string name="dialog_title_add_exception">Add Exception</string>
-    <string name="dialog_title_remove_trigger">Remove Trigger</string>
-    <string name="dialog_title_remove_action">Remove Action</string>
-    <string name="dialog_title_remove_exception">Remove Exception</string>
-    <string name="dialog_title_coming_soon">Coming Soon</string>
-    <string name="dialog_title_select_app">Select App</string>
-    <string name="dialog_title_invalid_app_package">Invalid App Package</string>
-    <string name="dialog_title_edit_rule">Edit Rule</string>
-    <string name="dialog_title_create_rule">Create Rule</string>
+    <string name="dialog_title_theme_changed">테마 변경됨</string>
+    <string name="dialog_title_export_successful">내보내기 성공</string>
+    <string name="dialog_title_export_failed">내보내기 실패</string>
+    <string name="dialog_title_import_full_config">전체 설정 가져오기</string>
+    <string name="dialog_title_import_successful">불러오기 성공</string>
+    <string name="dialog_title_import_failed">불러오기 실패</string>
+    <string name="dialog_title_clear_all_data">모든 데이터 비우기</string>
+    <string name="dialog_title_data_cleared">데이터 비워짐</string>
+    <string name="dialog_title_clear_failed">데이터 비우기 실패</string>
+    <string name="dialog_title_advanced_voice_options">고급 음성 옵션</string>
+    <string name="dialog_title_audio_settings_help">오디오 설정 도움말</string>
+    <string name="dialog_title_advanced_voice_information">고급 음성 정보</string>
+    <string name="dialog_title_format_test_results">🧪 형식 테스트 결과</string>
+    <string name="dialog_title_delay_before_readout">읽어주기 전 지연 시간</string>
+    <string name="dialog_title_custom_app_names">앱 별명</string>
+    <string name="dialog_title_notification_cooldown">알림 쉬기</string>
+    <string name="dialog_title_speech_formats_guide">🗣️ 음성 형식 - 전체 가이드</string>
+    <string name="dialog_title_honour_do_not_disturb">방해 금지 모드 고려하기</string>
+    <string name="dialog_title_honour_audio_mode">오디오 모드 고려하기</string>
+    <string name="dialog_title_select_bluetooth_device">블루투스 기기 선택</string>
+    <string name="dialog_title_remove_device">기기 삭제</string>
+    <string name="dialog_title_error">오류</string>
+    <string name="dialog_title_bluetooth_not_available">블루투스 사용 불가</string>
+    <string name="dialog_title_bluetooth_disabled">블루투스 비활성화됨</string>
+    <string name="dialog_title_no_devices_found">발견된 기기 없음</string>
+    <string name="dialog_title_select_bluetooth_devices">블루투스 기기 선택</string>
+    <string name="dialog_title_wifi_disabled">Wi-Fi 비활성화됨</string>
+    <string name="dialog_title_wifi_networks">Wi-Fi 네트워크</string>
+    <string name="dialog_title_no_networks_found">발견된 네트워크 없음</string>
+    <string name="dialog_title_select_wifi_networks">무선 네트워크 선택</string>
+    <string name="dialog_title_enter_wifi_network">Wi-Fi 네트워크 입력</string>
+    <string name="dialog_title_set_quiet_hours">방해 금지 시간 설정</string>
+    <string name="dialog_title_rule_created">규칙 생성됨!</string>
+    <string name="dialog_title_experimental_feature">시험 기능</string>
+    <string name="dialog_title_delete_rule">규칙 삭제</string>
+    <string name="dialog_title_invalid_rule_name">잘못된 규칙 이름</string>
+    <string name="dialog_title_invalid_rule">잘못된 규칙</string>
+    <string name="dialog_title_add_trigger">트리거 추가</string>
+    <string name="dialog_title_add_exception">예외 추가</string>
+    <string name="dialog_title_remove_trigger">트리거 제거</string>
+    <string name="dialog_title_remove_action">액션 삭제</string>
+    <string name="dialog_title_remove_exception">예외 삭제</string>
+    <string name="dialog_title_coming_soon">업데이트 예정</string>
+    <string name="dialog_title_select_app">앱 선택</string>
+    <string name="dialog_title_invalid_app_package">잘못된 앱 패키지</string>
+    <string name="dialog_title_edit_rule">규칙 수정</string>
+    <string name="dialog_title_create_rule">규칙 생성</string>
     <!-- Critical Hardcoded Strings - Dialog Messages -->
-    <string name="dialog_message_theme_changed">The theme has been changed. For the best experience, you may want to restart the app manually.</string>
-    <string name="dialog_message_export_successful">Full configuration exported to:\n%s</string>
-    <string name="dialog_message_export_successful_text">Configuration exported as text (file creation failed)</string>
-    <string name="dialog_message_export_failed">Failed to export configuration: %s</string>
-    <string name="dialog_message_import_full_config">This will replace your current settings with the imported configuration.\n\nDo you want to continue?</string>
+    <string name="dialog_message_theme_changed">테마가 변경되었습니다. 최적의 경험을 위해 수동으로 앱을 재실행하세요.</string>
+    <string name="dialog_message_export_successful">전체 설정이 다음 경로로 내보내기되었습니다:\n%s</string>
+    <string name="dialog_message_export_successful_text">설정이 텍스트로 내보내기되었습니다 (파일 생성 실패)</string>
+    <string name="dialog_message_export_failed">설정 내보내기 실패: %s</string>
+    <string name="dialog_message_import_full_config">현재 설정이 불러온 설정으로 대체됩니다.\n\n계속할까요?</string>
     <string name="dialog_message_import_successful">%s</string>
     <string name="dialog_message_import_failed">%s</string>
-    <string name="dialog_message_import_failed_read">Failed to read file: %s</string>
-    <string name="dialog_message_clear_all_data">This will reset all settings to defaults and clear notification history.\n\nThis action cannot be undone.\n\nDo you want to continue?</string>
-    <string name="dialog_message_data_cleared">All settings have been reset to defaults and notification history has been cleared.</string>
-    <string name="dialog_message_clear_failed">Failed to clear data: %s</string>
-    <string name="dialog_message_advanced_voice_options">These settings are for users who need granular control over the voice and accent.\n\n99% of users should only change the main Language option.\n\nIf you run into trouble, you can always reset to defaults.</string>
-    <string name="dialog_message_bluetooth_not_available">Bluetooth is not available on this device.</string>
-    <string name="dialog_message_bluetooth_disabled">Please enable Bluetooth to select devices.</string>
-    <string name="dialog_message_no_devices_found">No paired Bluetooth devices found. Please pair some devices first.</string>
-    <string name="dialog_message_wifi_disabled">Please enable WiFi to select networks.</string>
-    <string name="dialog_message_wifi_networks">Unable to automatically detect WiFi networks. Please manually enter WiFi network names (SSIDs) one per line.\n\nNote: You can also try enabling location services and granting location permissions to automatically detect networks.</string>
-    <string name="dialog_message_no_networks_found">No WiFi networks found. Please connect to some networks first or manually enter network names.</string>
-    <string name="dialog_message_enter_wifi_network">Enter the name of your WiFi network:</string>
-    <string name="dialog_message_set_quiet_hours">Choose the time range and days when you don\'t want notifications read:</string>
-    <string name="dialog_message_rule_created">Your rule \'%s\' has been created successfully.</string>
-    <string name="dialog_message_experimental_feature">Rules are experimental. If you experience issues, you can disable them in settings. Your existing filters and privacy settings will always be respected.</string>
-    <string name="dialog_message_delete_rule">Are you sure you want to delete the rule \'%s\'?</string>
-    <string name="dialog_message_invalid_rule_name">Please enter a name for this rule.</string>
-    <string name="dialog_message_invalid_rule">Please fix the following issues:\n\n%s</string>
-    <string name="dialog_message_save_rule_failed">Failed to %s rule. Please try again.</string>
-    <string name="dialog_message_remove_trigger">Are you sure you want to remove this trigger?</string>
-    <string name="dialog_message_remove_action">Are you sure you want to remove this action?</string>
-    <string name="dialog_message_remove_exception">Are you sure you want to remove this exception?</string>
-    <string name="dialog_message_coming_soon">%s configuration will be implemented in the next phase.</string>
-    <string name="dialog_message_select_app">Enter the app package name (e.g., com.whatsapp):</string>
-    <string name="dialog_message_invalid_app_package">Please enter an app package name.</string>
-    <string name="dialog_message_remove_device">Remove %s from the list?</string>
-    <string name="dialog_message_select_bluetooth_device">Choose the Bluetooth device for this rule:</string>
-    <string name="dialog_message_select_wifi_network">Choose the WiFi network for this rule:</string>
+    <string name="dialog_message_import_failed_read">파일 읽기 실패: %s</string>
+    <string name="dialog_message_clear_all_data">
+모든 설정이 초기화되고 알림 기록이 제거됩니다.\n\n이 작업은 취소할 수 없습니다.\n\n계속할까요?
+</string>
+    <string name="dialog_message_data_cleared">모든 설정이 초기화되고 알림 기록이 제거되었습니다.</string>
+    <string name="dialog_message_clear_failed">데이터 제거 실패: %s</string>
+    <string name="dialog_message_advanced_voice_options">
+음성과 억양을 세밀하게 조절하고자 하는 사용자를 위한 설정입니다.\n\n대부분의 경우 주 언어 옵션을 바꾸는 것으로 충분합니다.\n\n문제가 발생하면 언제든 초기화하세요.
+</string>
+    <string name="dialog_message_bluetooth_not_available">기기가 블루투스를 지원하지 않습니다.</string>
+    <string name="dialog_message_bluetooth_disabled">기기 선택을 위해 블루투스를 활성화하세요.</string>
+    <string name="dialog_message_no_devices_found">페어링된 블루투스 기기가 없습니다. 우선 기기를 페어링하세요.</string>
+    <string name="dialog_message_wifi_disabled">네트워크를 선택하려면 Wi-Fi를 켜세요.</string>
+    <string name="dialog_message_wifi_networks">
+자동으로 Wi-Fi 네트워크를 감지할 수 없습니다. Wi-Fi 네트워크 이름(SSID)을 한 줄에 하나씩 수동으로 입력하세요.\n\n참고: 자동 네트워크 감지를 위해 위치 서비스를 활성화하거나 위치 권한을 부여해 보세요.
+</string>
+    <string name="dialog_message_no_networks_found">
+발견된 Wi-Fi 네트워크가 없습니다. 먼저 네트워크에 연결하거나 수동으로 네트워크명을 입력하세요.
+</string>
+    <string name="dialog_message_enter_wifi_network">Wi-Fi 네트워크명을 입력하세요:</string>
+    <string name="dialog_message_set_quiet_hours">알림 읽어주기를 멈출 시간 범위 및 요일을 선택하세요:</string>
+    <string name="dialog_message_rule_created">규칙 \'%s\'이 생성되었습니다.</string>
+    <string name="dialog_message_experimental_feature">
+규칙 기능은 아직 개발 중입니다. 문제가 발생하면 설정에서 비활성화할 수 있습니다. 기존의 필터 및 개인정보 설정이 계속 적용됩니다.
+</string>
+    <string name="dialog_message_delete_rule">규칙 \'%s\'을(를) 삭제할까요?</string>
+    <string name="dialog_message_invalid_rule_name">규칙의 이름을 입력하세요.</string>
+    <string name="dialog_message_invalid_rule">다음 문제를 수정하세요:\n\n%s</string>
+    <string name="dialog_message_save_rule_failed">규칙 %s 삭제에 실패했습니다. 다시 시도하세요.</string>
+    <string name="dialog_message_remove_trigger">이 트리거를 삭제할까요?</string>
+    <string name="dialog_message_remove_action">이 액션을 삭제할까요?</string>
+    <string name="dialog_message_remove_exception">이 예외를 삭제할까요?</string>
+    <string name="dialog_message_coming_soon">%s 설정은 추후 구현될 예정입니다.</string>
+    <string name="dialog_message_select_app">앱 패키지명을 입력하세요 (예: com.whatsapp):</string>
+    <string name="dialog_message_invalid_app_package">앱 패키지 이름을 입력하세요.</string>
+    <string name="dialog_message_remove_device">%s을(를) 목록에서 제거할까요?</string>
+    <string name="dialog_message_select_bluetooth_device">이 규칙에 대한 블루투스 기기를 선택하세요:</string>
+    <string name="dialog_message_select_wifi_network">이 규칙에 대한 Wi-Fi 네트워크를 선택하세요:</string>
     <!-- Critical Hardcoded Strings - Button Labels -->
-    <string name="button_restart_now">Restart Now</string>
-    <string name="button_later">Later</string>
-    <string name="button_select_file">Select File</string>
-    <string name="button_clear_all_data">Clear All Data</string>
-    <string name="button_continue">Continue</string>
-    <string name="button_got_it">Got it!</string>
-    <string name="button_use_recommended">Use Recommended</string>
-    <string name="button_nevermind_keep_timeout">Keep the timeout enabled (Recommended)</string>
-    <string name="button_disable_timeout">Disable the timeout</string>
-    <string name="button_create_rule">Create Rule</string>
-    <string name="button_manual_input">Manual Input</string>
-    <string name="button_i_understand">I Understand</string>
-    <string name="button_delete">Delete</string>
-    <string name="button_remove">Remove</string>
+    <string name="button_restart_now">지금 재실행</string>
+    <string name="button_later">나중에</string>
+    <string name="button_select_file">파일 선택</string>
+    <string name="button_clear_all_data">모든 데이터 비우기</string>
+    <string name="button_continue">계속</string>
+    <string name="button_got_it">알겠습니다!</string>
+    <string name="button_use_recommended">권장 사항 사용</string>
+    <string name="button_nevermind_keep_timeout">시간 제한 활성화 (권장)</string>
+    <string name="button_disable_timeout">시간 제한 비활성화</string>
+    <string name="button_create_rule">규칙 생성</string>
+    <string name="button_manual_input">수동 입력</string>
+    <string name="button_i_understand">이해했어요</string>
+    <string name="button_delete">삭제</string>
+    <string name="button_remove">삭제</string>
     <!-- Critical Hardcoded Strings - App Categories -->
     <string name="category_social_display_name">Social Media</string>
-    <string name="category_social_description">Social networking and community apps</string>
-    <string name="category_messaging_display_name">Messaging</string>
-    <string name="category_messaging_description">Chat and communication apps</string>
-    <string name="category_finance_display_name">Finance</string>
-    <string name="category_finance_description">Banking and financial apps</string>
-    <string name="category_health_display_name">Health</string>
-    <string name="category_health_description">Health and fitness apps</string>
-    <string name="category_entertainment_display_name">Entertainment</string>
-    <string name="category_entertainment_description">Media and entertainment apps</string>
-    <string name="category_games_display_name">Games</string>
-    <string name="category_games_description">Mobile games and gaming apps</string>
+    <string name="category_social_description">SNS 및 커뮤니티 앱</string>
+    <string name="category_messaging_display_name">메시지</string>
+    <string name="category_messaging_description">채팅 및 커뮤니케이션 앱</string>
+    <string name="category_finance_display_name">금융</string>
+    <string name="category_finance_description">은행 및 금융 앱</string>
+    <string name="category_health_display_name">건강 및 피트니스</string>
+    <string name="category_health_description">건강 및 피트니스 앱</string>
+    <string name="category_entertainment_display_name">엔터테인먼트</string>
+    <string name="category_entertainment_description">미디어 및 엔터테인먼트 앱</string>
+    <string name="category_games_display_name">게임</string>
+    <string name="category_games_description">모바일 게임 앱</string>
     <!-- Critical Hardcoded Strings - Other -->
-    <string name="unknown_device">Unknown Device</string>
-    <string name="export_full_config_text">Complete configuration backup created on %s</string>
-    <string name="export_full_config_chooser">Export Full Configuration</string>
-    <string name="export_full_config_text_chooser">Export Full Configuration as Text</string>
-    <string name="select_configuration_file">Select Configuration File</string>
-    <string name="save_rule">save</string>
-    <string name="update_rule">update</string>
+    <string name="unknown_device">미확인 기기</string>
+    <string name="export_full_config_text">%s에 설정 백업 생성 완료</string>
+    <string name="export_full_config_chooser">전체 설정 내보내기</string>
+    <string name="export_full_config_text_chooser">전체 설정 텍스트로 내보내기</string>
+    <string name="select_configuration_file">설정 파일 선택</string>
+    <string name="save_rule">저장</string>
+    <string name="update_rule">업데이트</string>
     <!-- Conditional Rules - Trigger Strings -->
-    <string name="rule_trigger_wifi_network">Connected to WiFi network: %1$s</string>
-    <string name="rule_trigger_not_wifi_network">Not connected to WiFi network: %1$s</string>
+    <string name="rule_trigger_wifi_network">%1$s Wi-Fi 네트워크 주변에 있음</string>
+    <string name="rule_trigger_not_wifi_network">%1$s Wi-Fi 네트워크 주변에 있지 않음</string>
     <!-- Conditional Rules - Action Strings -->
-    <string name="rule_action_read_notification">Read the notification</string>
-    <string name="rule_action_skip_app">Skip notifications from app: %1$s</string>
-    <string name="rule_action_read_app">Read notifications from app: %1$s</string>
+    <string name="rule_action_read_notification">알림 읽기</string>
+    <string name="rule_action_skip_app">알림 건너뛰기: %1$s</string>
+    <string name="rule_action_read_app">%1$s에서 알림 읽기</string>
     <!-- Conditional Rules - Exception Strings -->
     <string name="rule_exception_wifi_network">Connected to WiFi network: %1$s</string>
-    <string name="rule_exception_not_wifi_network">Not connected to WiFi network: %1$s</string>
-    <string name="selftest_step1_rebinding">권한이 활성화되었습니다 - 알림 리스너를 다시 연결하는 중...</string>
-    <string name="selftest_step9_rebinding">리스너 연결이 끊어졌습니다 - 자동으로 다시 시도합니다...</string>
-    <string name="listener_warning_title">알림 리스너에 조치가 필요합니다</string>
-    <string name="listener_warning_body_disconnected">Android가 %1$s 전에 알림 서비스를 끊었습니다. 시스템에 다시 연결하도록 요청하려면 "다시 시도"를 눌러 주세요. 자주 발생하면 일반 설정에서 배터리 최적화를 해제하세요.</string>
-    <string name="listener_warning_body_stale">알림 서비스가 %1$s 동안 연결되지 않았습니다. "다시 시도"를 눌러 깨우고, 문제가 계속되면 일반 설정의 배터리 최적화를 확인하세요.</string>
-    <string name="listener_warning_time_unknown">방금</string>
-    <string name="listener_warning_retry_in_progress">재연결 요청을 보냈습니다</string>
-    <string name="listener_warning_retry_denied">잠시 기다린 후 다시 시도하세요</string>
-    <string name="listener_warning_last_attempt">마지막 재연결 시도: %1$s</string>
-    <string name="dev_listener_health_title">알림 리스너 상태</string>
-    <string name="listener_status_permission_missing">알림 접근 권한이 없습니다 - 계속하려면 권한을 부여하세요</string>
-    <string name="listener_status_disconnected">Android가 %1$s 전에 리스너 연결을 해제했습니다</string>
-    <string name="listener_status_idle">%1$s 동안 리스너 활동이 없습니다</string>
-    <string name="listener_status_ok">모두 정상 - 마지막 활동은 %1$s 전</string>
-    <string name="listener_health_last_activity">마지막 활동: %1$s</string>
-    <string name="listener_health_last_connect">마지막 연결: %1$s</string>
-    <string name="listener_health_last_disconnect">마지막 연결 해제: %1$s</string>
-    <string name="listener_health_last_heartbeat">마지막 하트비트: %1$s</string>
-    <string name="listener_health_last_rebind_success">가장 최근 성공한 재바인딩: %1$s</string>
-    <string name="rules_mode_off_title">Off</string>
-    <string name="rules_mode_off_description">No automation, SpeakThat! remains permanently active.</string>
-    <string name="rules_mode_conditional_title">Conditional Rules</string>
-    <string name="rules_mode_conditional_description">Use the internal automation in SpeakThat! for Bluetooth device detection, time schedules, etc.</string>
-    <string name="rules_mode_external_title">External Automation</string>
-    <string name="rules_mode_external_description">Enable intents for third-party automation tools such as MacroDroid or Tasker.</string>
-    <string name="rules_mode_info_title">Automation Modes</string>
-    <string name="rules_mode_info_description">SpeakThat can only use one automation source at a time.\n\nOff - Keep automation disabled so SpeakThat remains active until you toggle the master switch manually.\n\nConditional Rules - Use the built-in triggers in SpeakThat! for Bluetooth devices, schedules, and filters.\n\nExternal Automation - Enable broadcast intents for automation tools (e.g., MacroDroid, Tasker) to control SpeakThat directly.</string>
-    <string name="rules_mode_info_content_description">Automation mode information</string>
-    <string name="rules_mode_off_empty_title">Automation disabled</string>
-    <string name="rules_mode_off_empty_description">Select “Conditional Rules” to create automations, or leave this mode selected to keep SpeakThat always active.</string>
-    <string name="rules_mode_external_empty_title">Controlled by automation</string>
-    <string name="rules_mode_external_empty_description">SpeakThat is waiting for automation intents. Switch back to “Conditional Rules” to edit internal automations.</string>
-    <string name="selftest_step7_external">External automation controls SpeakThat</string>
-    <string name="diagnostics_should_read_yes_conditional">All checks passed – notifications should be read (Conditional Rules active)</string>
-    <string name="diagnostics_should_read_yes_external">All checks passed – notifications are controlled by external automation</string>
-    <string name="statistics_summary_read_and_taps">읽은 알림: %1$d\nSpeakThat 로고 탭 수: %2$d</string>
-    <string name="statistics_logo_taps_label">SpeakThat 로고 탭 수</string>
-    <string name="statistics_apps_read_list_label">읽은 앱 목록</string>
-</resources>
+    <string name="quick_settings_tile_label">SpeakThat</string>
+    <string name="quick_settings_tile_enabled">활성화됨</string>
+    <string name="quick_settings_tile_disabled">비활성화됨</string>
+    <string name="quick_settings_tile_enabled_toast">빠른 설정에 의해 SpeakThat이 활성화됨</string>
+    <string name="quick_settings_tile_disabled_toast">빠른 설정에 의해 SpeakThat이 비활성화됨</string>
+    <string name="quick_settings_tile_error_toast">SpeakThat의 실행을 설정하는 중에 오류가 발생했습니다</string>
+    <string name="master_switch_battery_tip_no_emoji">배터리를 절약할 필요가 없을 경우 비활성화하세요</string>
+    <string name="tts_engine_label">텍스트 음성 변환 엔진</string>
+    <string name="tts_engine_system_default">시스템 기본값</string>
+    <string name="tts_engine_restart_required">새로운 엔진을 적용하려면 SpeakThat을 재실행해야 합니다. 지금 재실행할까요?</string>
+    <string name="tts_engine_restart_confirm">재실행</string>
+    <string name="tts_engine_failure_spoken">
+앗, SpeakThat이 해당 엔진을 사용할 수 없었습니다. 음성 설정에서 다른 엔진을 선택하세요.
+</string>
+    <string name="tts_engine_failure_title">텍스트 읽어주기 엔진 없음</string>
+    <string name="tts_engine_failure_message">
+SpeakThat이 선택된 엔진을 사용할 수 없었습니다. 엔진이 이미 삭제되었기 때문일 수 있습니다. 시스템 기본 엔진이 사용됩니다.
+</string>
+    <string name="open_system_tts_settings">시스템 텍스트 읽어주기 설정 실행</string>
+    <string name="tts_engine_info_title">텍스트 읽어주기 엔진 정보</string>
+    <string name="tts_onboarding_language_theme">SpeakThat을 시작하려면 선호 언어와 테마를 선택하세요.</string>
+    <string name="tts_onboarding_rules">
+스마트 규칙을 설정하여 상황에 알맞게 알림 읽어주기를 자동으로 제어해 보세요. 예를 들어, 헤드폰이 연결되었을 때만 알림을 읽거나, 화면이 켜져 있을 때는 읽지 않도록 설정할 수 있습니다.
+</string>
+    <string name="rule_trigger_wifi_connected_android15">%1$s에 연결됨 (안드로이드 15 이상: 임의의 Wi-Fi)</string>
+    <string name="rule_trigger_wifi_disconnected_android15">%1$s에 연결되지 않음 (안드로이드 15 이상: 임의의 Wi-Fi)</string>
+    <string name="wifi_compatibility_warning_title">Wi-Fi 호환성에 대한 추가 정보</string>
+    <string name="wifi_compatibility_warning_message">
+일부 안드로이드 버전에서는 보안 제한으로 인해 개별 앱이 현재 Wi-Fi 네트워크 이름을 감지할 수 없습니다. 지금은 SpeakThat이 네트워크를 감지할 수 있지만, 이 기능이 모든 상황에서 안정적으로 작동하리라 보장할 수 없습니다. (특히 앱이 백그라운드에서 실행 중인 경우)\n\n네트워크 이름 감지가 실패할 경우 이 규칙은 대신에 Wi-Fi 연결 여부를 감지할 것입니다. 그러나 이는 당신이 의도하는 동작과 다를 수 있습니다.\n\n이 기능을 구현하는 것이 이론적으로 불가능한 것은 아닙니다. 가능하다면, GitHub에 오셔서 이 앱의 개발을 도와주세요.
+</string>
+    <string name="wifi_compatibility_warning_create_anyway">그래도 규칙 생성</string>
+    <string name="wifi_compatibility_warning_add_anyway">그래도 규칙 추가</string>
+    <string name="wifi_compatibility_warning_nevermind">괜찮습니다</string>
+    <string name="wifi_compatibility_warning_open_github">GitHub 열기</string>
+    <string name="dialog_title_honour_phone_calls">통화 여부 고려하기</string>
+    <string name="dialog_title_notification_deduplication">알림 중복 방지</string>
+    <string name="dialog_title_content_cap">내용 길이 제한</string>
+    <string name="dialog_title_edit_filtered_media_app">필터된 미디어 앱 수정</string>
+    <string name="dialog_title_edit_media_exception_app">미디어 제외 앱 수정</string>
+    <string name="dialog_title_edit_media_important_keyword">미디어 중요 키워드 수정</string>
+    <string name="dialog_title_edit_app_filter">앱 필터 수정</string>
+    <string name="dialog_title_edit_word_filter">단어 필터 수정</string>
+    <string name="dialog_title_edit_word_swap">단어 대체 규칙 수정</string>
+    <string name="dialog_title_import_filter_configuration">필터 설정 불러오기</string>
+    <string name="dialog_title_app_filter_help">📱 앱 필터 도움말</string>
+    <string name="dialog_title_smart_media_filter">스마트 미디어 알림 필터</string>
+    <string name="dialog_title_language_changed">언어 변경됨</string>
+    <string name="dialog_message_language_changed">
+앱 언어가 %1$s에서 %2$s로 변경되었습니다.\n\n• 지금 적용: 이 화면만 즉시 업데이트합니다\n• 앱 재실행: 모든 화면과 읽어주기 서비스가 새로운 언어를 사용합니다\n\n최선의 경험을 위해서는 앱 재실행을 추천합니다.
+</string>
+    <string name="button_restart_app">앱 재실행</string>
+    <string name="button_apply_now">지금 적용</string>
+    <string name="toast_language_restarting">새로운 언어로 앱을 재실행합니다...</string>
+    <string name="toast_language_manual_restart">새로운 언어 설정은 앱을 재실행할 때 완전히 적용됩니다</string>
+    <string name="button_save">저장</string>
+    <string name="button_cancel">취소</string>
+    <string name="button_ok">확인</string>
+    <string name="button_close">닫기</string>
+    <string name="button_clear">지우기</string>
+    <string name="button_export_crash_logs">충돌 기록 내보내기</string>
+    <string name="button_clear_crash_logs">충돌 기록 지우기</string>
+    <string name="button_force_test_crash">강제로 충돌 테스트</string>
+    <string name="button_clear_analytics">분석 데이터 지우기</string>
+    <string name="button_export_report">보고서 내보내기</string>
+    <string name="button_reset_cache">캐시 재설정</string>
+    <string name="button_re_detect">다시 감지</string>
+    <string name="section_notification_behavior">알림 동작</string>
+    <string name="section_media_behavior">미디어 동작</string>
+    <string name="recommendation_smart_mode">대부분의 사용자에게 추천: 스마트 모드</string>
+    <string name="recommendation_lower_audio">대부분의 사용자에게 추천: 중지</string>
+    <string name="behavior_notification_description">알림 읽어주기가 진행 중일 때 다른 알림을 어떻게 할지 제어합니다</string>
+    <string name="behavior_media_description">미디어가 재생 중일 때 알림을 어떻게 처리할지 제어합니다</string>
+    <string name="behavior_interrupt_mode">중단하기 (현재 읽어주기를 멈추고 즉시 새로운 알림을 읽습니다)</string>
+    <string name="behavior_queue_mode">쌓아두기 (현재 읽어주기를 끝낸 뒤 새 알림을 읽습니다)</string>
+    <string name="behavior_skip_mode">건너뛰기 (읽어주기가 진행 중일 때 발생한 새 알림을 무시합니다)</string>
+    <string name="behavior_smart_mode">스마트 (최우선 앱의 알림은 곧바로 읽어주고, 다른 앱의 알림은 쌓아둡니다)</string>
+    <string name="behavior_priority_apps">⚡ 최우선 앱</string>
+    <string name="behavior_priority_apps_description">이 앱은 현재 알림 읽어주기를 중단합니다. 이외의 앱에 의한 알림을 대기열에 추가됩니다.</string>
+    <string name="behavior_media_ignore">무시 - 원래대로 계속하기</string>
+    <string name="behavior_media_pause">일시정지 - 읽어주기 도중에 미디어 재생을 멈춥니다</string>
+    <string name="behavior_media_lower">오디오 작게 - 미디어 음량을 일시적으로 줄입니다</string>
+    <string name="behavior_media_silence">읽지 않기 - 미디어가 재생 중일 때는 알림을 읽지 않습니다</string>
+    <string name="behavior_ducking_volume">🔉 음랑 줄이기</string>
+    <string name="behavior_ducking_description">알림 읽어주기 중 미디어의 음량을 설정합니다</string>
+    <string name="behavior_ducking_warning">
+⚠️ 일부 기기에서는 미디어 음량을 줄이면 알림 음량도 줄어들 수 있습니다. 알림이 잘 들리지 않으면 일시정지 모드를 사용하거나 텍스트 읽어주기 설정을 변경하세요.
+</string>
+    <string name="behavior_ducking_tip">팁: 낮게 설정할수록 알림 읽어주기 중 미디어가 작게 들립니다</string>
+    <string name="behavior_ducking_enhanced_warning">
+⚠️ 오디오 작게 모드는 기기 및 안드로이드 버전에 따라 다르게 동작합니다. 일부 기기에서는 제대로 동작하지 않을 수 있습니다.
+</string>
+    <string name="behavior_ducking_device_tip">
+💡 음량 줄이기가 오작동할 때: 음성 설정에서 미디어 스트림이 아닌 다른 오디오 스트림(전화 통화 또는 알림)을 선택해 보세요.
+</string>
+    <string name="behavior_ducking_fallback_tip">
+🔧 가능한 경우 이 앱은 자동으로 고급 시스템 음량 줄이기 기능을 사용합니다. 수동 음량 줄이기 기능은 최대한 많은 기기에서 이 앱을 지원하기 위해 보조 수단으로 사용됩니다.
+</string>
+    <string name="behavior_ducking_test_title">음랑 줄이기 호환성 테스트</string>
+    <string name="behavior_ducking_test_message">기기가 오디오 포커스 요청을 지원하는지 확인합니다...</string>
+    <string name="behavior_ducking_test_success">✅ 기기가 음랑 줄이기 기능을 지원합니다!</string>
+    <string name="behavior_ducking_test_warning">
+⚠️ 이 기기는 오디오 작게 모드를 지원하지 않을 수 있습니다. 일부 앱에서 음량이 변경되지 않을 수 있습니다.
+</string>
+    <string name="behavior_ducking_test_button">음랑 줄이기 모드 테스트</string>
+    <string name="behavior_ducking_test_success_title">테스트 완료</string>
+    <string name="behavior_ducking_test_warning_title">테스트 완료</string>
+    <string name="behavior_ducking_fallback_title">대체 수단</string>
+    <string name="behavior_ducking_fallback_description">오디오 포커스 기능이 실패할 경우 어떻게 할지 선택하세요</string>
+    <string name="behavior_ducking_fallback_manual">수동 음량 조절</string>
+    <string name="behavior_ducking_fallback_pause">미디어 일시정지</string>
+    <string name="behavior_ducking_fallback_manual_desc">수동 음량 조절 (일부 기기에서 지원하지 않음)</string>
+    <string name="behavior_ducking_fallback_pause_desc">오디오 포커스가 실패할 경우 미디어를 일시정지하기 (더 안정적)</string>
+    <string name="audio_ducking_disabled_title">음랑 줄이기 기능</string>
+    <string name="audio_ducking_disabled_message">
+오디오 작게 기능은 기기마다 다르게 작동합니다. 일부 기기에서 음량이 변경되지 않아 읽어주기 소리가 작게 들릴 수 있습니다.\n\n이 기능을 활성화할 수 있지만, 모든 기기에서 항상 작동하지는 않는다는 점에 유의하세요.
+</string>
+    <string name="audio_ducking_disabled_ok">이해했어요</string>
+    <string name="audio_ducking_disabled_enable">음랑 줄이기 활성화</string>
+    <string name="behavior_calls_title">📞 전화 통화 고려하기</string>
+    <string name="behavior_calls_description">통화 중 알림을 읽지 않습니다</string>
+    <string name="behavior_calls_recommendation">대부분의 사용자에게 추천: 활성화</string>
+    <string name="behavior_calls_checkbox">전화 통화 고려하기</string>
+    <string name="behavior_calls_benefits">
+✨ 장점:\n\n• 중요한 통화를 방해하지 않습니다\n• 대화 중 당신의 사생활을 보호합니다\n• 모든 유형의 통화에 작동합니다\n• 통화 상태를 자동으로 감지합니다
+</string>
+    <string name="behavior_audio_title">🔇 오디오 모드 고려하기</string>
+    <string name="behavior_audio_description">기기가 무음 및 진동 모드가 아닐 때만 알림을 읽어줍니다</string>
+    <string name="behavior_audio_recommendation">추천: 활성화</string>
+    <string name="behavior_audio_checkbox">오디오 모드 고려하기 (소리만)</string>
+    <string name="behavior_audio_benefits">
+✨ 장점:\n\n• 무음 상태일 때 원치 않는 소리를 듣지 않습니다\n• 기기의 오디오 설정을 따릅니다\n• 무음 및 진동 모드에 잘 작동합니다\n• 당신이 들을 준비가 된 상황에서만 알림을 읽습니다
+</string>
+    <string name="behavior_shake_current">현재 흔들기 강도: 0.0</string>
+    <string name="behavior_shake_threshold">임계값: 12.0</string>
+    <string name="behavior_timeout_display">시간 제한: 30초</string>
+    <string name="behavior_timeout_disable">시간 제한 비활성화 (권장하지 않음)</string>
+    <string name="behavior_wave_threshold">근접 센서 임계값</string>
+    <string name="behavior_wave_pocket">주머니 모드</string>
+    <string name="behavior_wave_pocket_description">
+센서가 이미 다른 물체로 덮였을 때(예: 휴대전화를 주머니에 넣었을 때)도 알림 읽어주기를 허용합니다. 단, 알림 읽어주기가 시작한 뒤 센서를 가리면 읽기를 멈춥니다
+</string>
+    <string name="behavior_wave_pocket_checkbox">센서가 덮여 있을 때 읽어주기를 허용합니다</string>
+    <string name="behavior_custom_apps_title">앱 별명</string>
+    <string name="behavior_custom_apps_description">알림 내 앱 이름을 어떻게 읽을지 설정하세요</string>
+    <string name="behavior_custom_apps_example">예: X 대신 Twitter로 읽습니다</string>
+    <string name="behavior_custom_apps_add">앱 별명 추가</string>
+    <string name="behavior_delay_title">읽어주기 전 지연 시간</string>
+    <string name="behavior_delay_description">SpeakThat이 알림을 읽기 전에 잠깐 기다립니다</string>
+    <string name="behavior_delay_recommendation">대부분의 사용자에게 추천: 2초</string>
+    <string name="behavior_delay_none">없음 - 즉시 읽기</string>
+    <string name="behavior_delay_1s">1초 - 잠깐 멈추기</string>
+    <string name="behavior_delay_2s">2초 - 권장됨</string>
+    <string name="behavior_delay_3s">3초 - 더 넉넉한 반응 시간</string>
+    <string name="behavior_delay_benefits">
+✨ 장점:\n\n• 알림음과 중복되지 않게 합니다\n• 흔들어 취소할 여유를 줍니다\n• 조용한 공간에서 더 낫습니다\n• 모임이나 공공 장소에서 추천합니다
+</string>
+    <string name="behavior_cooldown_title">알림 쉬기</string>
+    <string name="behavior_cooldown_description">특정 시간 동안 앱이 여러 알림을 발생시켰을 때 하나의 알림만 읽습니다</string>
+    <string name="behavior_cooldown_recommendation">너무 많은 알림을 발생시키는 앱에 대하여 추천합니다</string>
+    <string name="behavior_content_cap_title">내용 길이 제한</string>
+    <string name="behavior_content_cap_description">각 알림 읽어주기의 길이를 제한합니다</string>
+    <string name="behavior_content_cap_recommendation">알림 내용이 길지만 첫 부분만 듣고 싶을 때 추천합니다</string>
+    <string name="behavior_speech_title">읽기 형식</string>
+    <string name="behavior_speech_description">표시자를 사용하여 알림을 읽는 규칙을 입맛대로 설정합니다</string>
+    <string name="behavior_speech_recommendation">알림 경험을 입맛대로 조절하세요</string>
+    <string name="behavior_speech_preset">사전 형식:</string>
+    <string name="behavior_speech_custom">사용자 설정 형식:</string>
+    <string name="behavior_speech_preview">
+미리보기: Messages notified you: Mitchi: I heard you\'re using SpeakThat!
+</string>
+    <string name="behavior_speech_placeholders">
+자주 사용되는 표시자: {app}, {content}, {time}, {title}, {text}, {priority}, {category}
+</string>
+    <string name="button_start_test">테스트 시작</string>
+    <string name="button_test">테스트</string>
+    <string name="button_add">추가</string>
+    <string name="label_gentle">부드럽게</string>
+    <string name="label_strong">강하게</string>
+    <string name="label_5s">5초</string>
+    <string name="label_5m">5분</string>
+    <string name="label_30_percent">30%</string>
+    <string name="label_90_percent">90%</string>
+    <string name="volume_mute">음소거</string>
+    <string name="volume_loud">크게</string>
+    <string name="volume_30_percent">30%</string>
+    <string name="voice_characteristics">음성 특성</string>
+    <string name="voice_speech_rate">속도</string>
+    <string name="voice_pitch">음조</string>
+    <string name="voice_tts_volume">음량</string>
+    <string name="voice_language_section">언어 및 음성</string>
+    <string name="voice_language_preset">언어 사전 설정</string>
+    <string name="voice_language_preset_description">사용 언어를 고르세요. 앱 화면과 알림 읽어주기 언어가 함께 변경됩니다.</string>
+    <string name="voice_preset_recommendation">
+대부분의 경우 이 설정만 변경해도 충분합니다. 개별 설정을 변경하려면 고급 음성 옵션을 사용하세요.
+</string>
+    <string name="voice_help_translate">SpeakThat의 번역을 도와주세요!</string>
+    <string name="voice_help_translate_description">번역 이메일을 보내려면 탭하세요</string>
+    <string name="voice_show_advanced">고급 음성 옵션 표시</string>
+    <string name="voice_advanced_label">⚙️ 고급</string>
+    <string name="voice_tts_language_advanced">텍스트 읽어주기 언어 (고급)</string>
+    <string name="voice_tts_language_description">
+읽어주기 구절의 언어를 설정합니다. 앱 화면과 읽어주기 구절의 언어를 다르게 설정할 수 있습니다. 원치 않는다면 기본값으로 두세요.
+</string>
+    <string name="voice_specific_voice_advanced">특정 음성 (고급)</string>
+    <string name="voice_specific_voice_description">
+특정 음성 엔진을 선택하세요. 상위 언어 설정을 무시합니다. 고급 사용자를 위한 기능입니다.
+</string>
+    <string name="voice_tap_for_details">더 보기</string>
+    <string name="voice_advanced_recommendation">
+추천: 먼저 언어 설정을 시도해 보세요. 특정한 음성 엔진을 사용하고 싶을 때만 이 기능을 사용하세요.\n\n문제가 발생하면 하단에서 재설정할 수 있습니다!
+</string>
+    <string name="voice_reset_warning">문제가 발생하면 하단에서 재설정할 수 있습니다!</string>
+    <string name="label_0_1x">0.1배속</string>
+    <string name="label_3_0x">3배속</string>
+    <string name="label_1_0x">1배속</string>
+    <string name="label_2_0x">2배속</string>
+    <string name="label_0_percent">0%</string>
+    <string name="label_100_percent">100%</string>
+    <string name="label_150_percent">150%</string>
+    <string name="voice_tts_volume_boost_warning">⚠️ 100% 이상의 음량은 오디오를 왜곡할 수 있습니다</string>
+    <string name="arrow_right">›</string>
+    <string name="main_version_placeholder">버전 x.x.x</string>
+    <string name="main_author">Mitchi에 의해 개발됨</string>
+    <string name="main_service_active">SpeakThat! 활성화</string>
+    <string name="main_service_enable">탭하여 알림 읽어주기를 활성화하세요</string>
+    <string name="main_notification_permissions">알림 권한:</string>
+    <string name="settings_general_title">일반 설정</string>
+    <string name="settings_general_description">앱 환경설정, 테마 설정</string>
+    <string name="settings_voice_title">음성 설정</string>
+    <string name="settings_voice_description">텍스트 읽어주기 음성 및 속도</string>
+    <string name="settings_behavior_title">동작 설정</string>
+    <string name="settings_behavior_description">언제, 어떻게 알림을 읽을지 설정</string>
+    <string name="settings_filter_title">필터 설정</string>
+    <string name="settings_filter_description">어떤 앱의 알림을 읽을지 선택</string>
+    <string name="settings_rules_title">조건 규칙</string>
+    <string name="settings_rules_description">블루투스, 시간 일정 등을 설정</string>
+    <string name="settings_development_title">개발자 설정</string>
+    <string name="settings_development_description">디버깅 도구 및 기록 시스템</string>
+    <string name="settings_rerun_onboarding">튜토리얼 재시작</string>
+    <string name="settings_rerun_onboarding_description">앱 소개를 다시 시청합니다</string>
+    <string name="settings_support_title">지원 및 피드백</string>
+    <string name="settings_support_description">도움말, 버그 제보, 기능 개선 요청</string>
+    <string name="settings_donate_title">후원하기</string>
+    <string name="settings_donate_description">이 앱이 계속 무료로 제공될 수 있도록 개발을 지원해 주세요</string>
+    <string name="behavior_media_volume_tip">팁: 낮게 설정할수록 알림 읽어주기 중 미디어가 작게 들립니다</string>
+    <string name="section_honor_dnd">방해 금지 모드 고려하기</string>
+    <string name="behavior_dnd_description">기기의 방해 금지 모드와 알림의 무음 상태를 따릅니다</string>
+    <string name="behavior_dnd_recommendation">대부분의 사용자에게 추천: 활성화</string>
+    <string name="behavior_dnd_switch_label">방해 금지 모드 고려하기</string>
+    <string name="behavior_dnd_benefits">
+✨ 장점:\n\n• 기기의 방해 금지 모드 설정을 따릅니다\n• 회의, 수면, 조용한 공간에서 적합합니다\n• 방해 금지 모드가 자동으로 시작되었든 수동으로 시작되었든 무관합니다\n• 필요에 따라 개인정보를 보호하고 집중 상태를 유지할 수 있습니다
+</string>
+    <string name="section_honor_phone_calls">전화 통화 고려하기</string>
+    <string name="behavior_phone_calls_description">통화 중 알림을 읽지 않습니다</string>
+    <string name="behavior_phone_calls_recommendation">대부분의 사용자에게 추천: 활성화</string>
+    <string name="behavior_phone_calls_switch_label">전화 통화 고려하기</string>
+    <string name="url_handling_custom_text_description">URL 주소를 대체할 구절 (주소를 읽지 않으려면 빈칸으로 두세요)</string>
+    <string name="press_to_stop_dialog_message">
+두 음량 버튼을 동시에 눌러 알림 읽어주기를 중단하세요.
+<br/>
+<br/>
+<b>🎯 휴대폰을 보지 않고 제어할 수 있습니다:</b>
+<br/>
+• 시스템 어디에서나 작동합니다
+<br/>
+• 화면을 볼 필요가 없습니다
+<br/>
+• 빠르고 안정적입니다
+<br/>
+• 기존의 음량 조절은 여전히 작동합니다
+<br/>
+<br/>
+<b>⚠️ 접근성 권한이 필요합니다:</b>
+<br/>
+음량 버튼 누름을 감지하기 위해 접근성 권한이 필요합니다. 일반 설정에서 활성화할 수 있습니다.
+<br/>
+이 기능은 화면이 켜져 있을 때만 작동합니다.
+</string>
+    <string name="behavior_press_to_stop_title">눌러서 중지</string>
+    <string name="press_to_stop_dialog_title">눌러서 중지</string>
+    <string name="accessibility_permission_required_message">눌러서 중지 기능은 접근성 권한을 필요로 합니다. 일반 설정에서 활성화하세요.</string>
+    <string name="behavior_deduplication_description">알림이 빠르게 반복될 때 같은 알림이 여러 번 읽히지 않도록 합니다</string>
+    <string name="voice_preview_button">미리보기</string>
+    <string name="voice_preview_actions">미리듣기</string>
+    <string name="filter_suggestion_all_preview">미리보기: 모든 Life360 알림을 차단합니다</string>
+    <string name="behavior_speech_preview_example">
+미리보기: Messages notified you: Mitchi: I heard you\'re using SpeakThat!
+</string>
+    <string name="filter_suggestion_smart_preview">미리보기: 위치 업데이트...</string>
+    <string name="filter_suggestion_keywords_preview">미리보기: 위치 업데이트</string>
+    <string name="filter_suggestion_exact_preview">미리보기: 2시 30분에 위치 업데이트...</string>
+    <string name="item_priority_app_name">최우선 앱 이름</string>
+    <string name="donate_privacy">
+개인정보: 모든 후원금은 해당 플랫폼에서 처리됩니다. 개발자는 어떠한 결제 정보도 수집 및 저장하지 않습니다.
+</string>
+    <string name="support_logs_privacy">
+🔒 개인정보: 디버깅 기록은 사용자가 공유하지 않는 이상 기기에만 저장됩니다. 이메일에 첨부하기 전에 기록의 내용을 검토할 수 있습니다.
+</string>
+    <string name="item_app_filter_private">개인</string>
+    <string name="behavior_proximity_threshold">근접 센서 임계값</string>
+    <string name="donate_friendly_message">고마움을 담은 메일만 써 주셔도 개발자에게 큰 힘이 됩니다! :)</string>
+    <string name="app_filter_publishing_results">%d 결과 발행 중</string>
+    <string name="log_app_search_adapter_publishing">%d 결과 발행 중</string>
+    <string name="log_app_filter_publishing">%d 결과 발행 중</string>
+    <string name="quick_diagnostics">빠른 점검</string>
+    <string name="diagnostics_title">빠른 점검</string>
+    <string name="dialog_donate_coffee_description">Ko-fi를 통한 일회성 후원</string>
+    <string name="review_reminder_rate_now">지금 평가</string>
+    <string name="url_handling_domain_only">도메인만 읽기</string>
+    <string name="url_handling_read_full">전체 링크 읽기</string>
+    <string name="reading_notification_enabled">알림 읽기 활성화</string>
+    <string name="wave_calibration_ready">손 흔들기 감지 보정 준비</string>
+    <string name="dev_live_log_description">앱의 세부 작동 사항을 실시간으로 확인</string>
+    <string name="wave_calibration_recalibrate">재보정</string>
+    <string name="behavior_wave_recalibrate">손 흔들기 감지 재보정</string>
+    <string name="notification_history_recent">최근 알림</string>
+    <string name="notification_history_description">SpeakThat이 읽은 최근 알림</string>
+    <string name="behavior_audio_mode_recommendation">추천: 활성화</string>
+    <string name="behavior_wave_recommendation">추천: 활성화</string>
+    <string name="support_logs_description">
+버그 보고 및 기술 문제 해결을 위해서 추천합니다. 디버깅 기록이 있으면 문제를 빨리 파악하고 해결할 수 있습니다.\n기록에는 알림 내용 정보가 포함될 수 있습니다. 개발자에게 전송하기 전에 기록을 검토하세요.
+</string>
+    <string name="voice_audio_recommendation">추천: 알림 + 음성</string>
+    <string name="test_settings_btn_refresh">새로고침</string>
+    <string name="diagnostics_reinitialize_tts">텍스트 읽어주기 재설정</string>
+    <string name="behavior_dismissal_memory_description">해제된 알림을 다시 읽지 않도록 기억합니다</string>
+    <string name="dev_repair_blacklist">단어 제외목록 교정</string>
+    <string name="dialog_support_bug_description">충돌, 오류, 예기치 못한 작동 보고하기</string>
+    <string name="accessibility_permission_request">접근성 권한 요청</string>
+    <string name="behavior_requires_accessibility_permission">접근성 권한이 필요합니다</string>
+    <string name="general_reset_settings">모든 설정 초기화</string>
+    <string name="voice_reset_defaults">초기화</string>
+    <string name="voice_reset_button">음성 설정 초기화</string>
+    <string name="restart_now">지금 재실행</string>
+    <string name="general_restart_on_crash">충돌 시에만 재실행</string>
+    <string name="general_restart_periodically">주기적으로 재실행 (6시간마다)</string>
+    <string name="voice_speakerphone_description">더 큰 음량을 위해 통화 오디오를 이어폰이 아닌 스피커로 재생합니다</string>
+    <string name="rule_builder_name_label">규칙 이름</string>
+    <string name="item_rule_name">규칙 이름</string>
+    <string name="rules_wrench_icon">규칙</string>
+    <string name="rules_title">규칙</string>
+    <string name="rule_builder_description">
+규칙은 각 알림에 대해 조건을 따르는지 검토합니다. 규칙은 상태 변화를 기억하지 않으며, 실시간으로 알림을 필터링합니다.
+</string>
+    <string name="item_rule_summary">규칙 요약</string>
+    <string name="item_onboarding_rule_template_name">규칙 템플릿</string>
+    <string name="general_verify_settings_description">모든 설정이 올바른지 전체 테스트를 수행합니다</string>
+    <string name="app_selector_sample_apps_loaded">샘플 앱 로딩됨:</string>
+    <string name="log_app_selector_sample_apps">샘플 앱 로딩됨:</string>
+    <string name="dialog_filter_suggestion_sample">샘플 알림 텍스트</string>
+    <string name="day_sat">토</string>
+    <string name="day_saturday">토요일</string>
+    <string name="general_export_configuration_description">모든 설정을 파일에 저장</string>
+    <string name="rule_builder_save_rule">규칙 저장</string>
+    <string name="trigger_screen_state">화면 상태</string>
+    <string name="exception_screen_state">화면 상태</string>
+    <string name="hint_search_apps_or_package">앱을 검색하거나 패키지명을 입력하세요</string>
+    <string name="hint_search_media_filter">미디어 필터에 추가할 앱을 검색하세요</string>
+    <string name="hint_search_for_app">앱 검색...</string>
+    <string name="filter_search_description">
+설치된 앱의 이름 및 패키지명을 검색합니다. 제안된 항목을 누르면 즉시 추가됩니다. (탭하여 더 보기)
+</string>
+    <string name="action_select_app">앱 선택</string>
+    <string name="bluetooth_config_select">블루투스 기기 선택:</string>
+    <string name="bluetooth_devices_description">해당 기기가 연결될 때만 알림 읽어주기가 실행됩니다.</string>
+    <string name="exception_select_devices">기기 선택</string>
+    <string name="trigger_select_devices">기기 선택</string>
+    <string name="bluetooth_selected_devices">선택된 기기</string>
+    <string name="exception_select_networks">네트워크 선택</string>
+    <string name="trigger_select_networks">네트워크 선택</string>
+    <string name="action_disable_app_description">필터가 적용되지 않을 앱을 선택:</string>
+    <string name="action_enable_app_description">필터가 적용될 앱을 선택:</string>
+    <string name="content_cap_sentence_count_label">문장 수:</string>
+    <string name="content_cap_sentences">문장 수 제한</string>
+    <string name="general_service_restart_policy">서비스 재시작 정책</string>
+    <string name="trigger_set_button">설정</string>
+    <string name="exception_set_end_time">종료 시간 설정</string>
+    <string name="behavior_timeout_description">(배터리 절약을 위해) 제스처 인식 지속 시간을 선택하세요</string>
+    <string name="item_custom_app_name_label">앱 이름</string>
+    <string name="item_custom_app_package">com.example.package</string>
+    <string name="item_custom_app_example_package">com.twitter.android</string>
+    <string name="item_custom_app_example_name">Twitter</string>
+    <string name="behavior_custom_app_names_title">📱 앱 별명</string>
+    <string name="behavior_phone_calls_benefits">
+✨ 장점:\n\n• 중요한 통화를 방해하지 않습니다\n• 대화 중 당신의 사생활을 보호합니다\n• 모든 유형의 통화에 작동합니다\n• 통화 상태를 자동으로 감지합니다
+</string>
+    <string name="section_notification_deduplication">알림 중복 방지</string>
+    <string name="behavior_deduplication_recommendation">알림이 중복으로 읽힐 경우 활성화하세요</string>
+    <string name="behavior_deduplication_switch_label">알림 중복 방지 활성화</string>
+    <string name="behavior_deduplication_benefits">
+✨ 장점:\n\n• 원치 않는 중복 알림 읽어주기를 방지합니다\n• 불필요한 읽기를 막아 배터리를 절약합니다\n• 5초 내 중복 알림을 자동으로 감지합니다\n• 여러 알림을 발생시키는 앱에 적합합니다
+</string>
+    <string name="section_dismissal_memory">해제된 알림 기억</string>
+    <string name="behavior_dismissal_memory_recommendation">알림을 해제한 이후에도 읽힐 경우에 활성화하세요</string>
+    <string name="behavior_dismissal_memory_switch_label">해제된 알림 기억 활성화</string>
+    <string name="behavior_dismissal_memory_benefits">
+✨ 장점:\n\n• 해제된 알림을 다시 읽지 않게 합니다\n• 사용자가 직접 해제한 알림은 읽히지 않습니다\n• 기억 기간을 조절 가능합니다 (5분에서 1시간까지)\n• 메모리와 배터리 절약을 위해 자동으로 기록이 삭제됩니다
+</string>
+    <string name="behavior_dismissal_memory_timeout_label">기억 기간</string>
+    <string name="behavior_dismissal_memory_timeout_description">해제된 알림을 얼마나 오래 기억할지 선택합니다</string>
+    <string name="behavior_dismissal_memory_timeout_5min">5분</string>
+    <string name="behavior_dismissal_memory_timeout_15min">15분</string>
+    <string name="behavior_dismissal_memory_timeout_30min">30분</string>
+    <string name="behavior_dismissal_memory_timeout_1hour">1시간</string>
+    <string name="behavior_dismissal_memory_info_button">ℹ️</string>
+    <string name="dialog_title_dismissal_memory">해제된 알림 기억</string>
+    <string name="dialog_dismissal_memory_explanation">
+해제된 알림 기억 기능은 사용자가 해제한 알림이 읽히지 않도록 방지합니다:<br/><br/><b>작동 방식:</b><br/>사용자가 알림을 해제하면, SpeakThat은 설정된 기간 동안 알림을 기억합니다. 같은 내용의 알림이 해당 기간 동안 다시 발생하면, 그 알림을 읽지 않습니다.<br/><br/><b>이용 사례:</b><br/>• <b>해제된 알림</b> - 사용자가 해제한 알림이 반복 재생되지 않습니다<br/>• <b>앱 업데이트</b> - 일부 앱은 업데이트된 후 알림을 다시 발생시킵니다<br/>• <b>시스템 이벤트</b> - 안드로이드는 시스템 이벤트 중 알림을 다시 발생시킬 수 있습니다<br/>• <b>네트워크 재연결</b> - 일부 앱은 네트워크에 다시 연결되었을 때 알림을 다시 발생시킵니다<br/><br/><b>작동 원리:</b><br/>• 해제된 알림 내용을 해시 형태로 추적합니다<br/>• 기억 기간 설정 (5분에서 1시간)<br/>• 메모리 과부하 방지를 위한 자동 비우기<br/>• 효율적인 저장소 활용 및 배터리 절약<br/>• 오류 해결을 위한 세부 기록 저장<br/><br/><b>팁:</b> 해제된 알림이 다시 읽히면 활성화하세요. 대부분의 사용자에게 권장합니다!
+</string>
+    <string name="section_honor_audio_mode">오디오 모드 고려하기</string>
+    <string name="behavior_audio_mode_description">기기가 무음 및 진동 모드가 아닐 때만 알림을 읽어줍니다</string>
 
+    <string name="behavior_audio_mode_benefits">
+✨ 장점:\n\n• 무음 상태일 때 원치 않는 소리를 듣지 않습니다\n• 기기의 오디오 설정을 따릅니다\n• 무음 및 진동 모드에 잘 작동합니다\n• 당신이 들을 준비가 된 상황에서만 알림을 읽습니다
+</string>
+    <string name="section_shake_to_stop">흔들어 멈추기</string>
+    <string name="behavior_shake_description">기기를 흔들어 알림 읽기를 멈추세요</string>
+    <string name="behavior_shake_recommendation">대부분의 사용자에게 추천: 활성화</string>
+    <string name="behavior_shake_switch_label">흔들어 멈추기 활성화</string>
+    <string name="behavior_shake_intensity_label">흔들기 강도</string>
+    <string name="behavior_shake_intensity_description">얼마나 세게 흔들어 알림을 멈출지 설정합니다</string>
+    <string name="behavior_shake_test_label">흔들기 테스트</string>
+    <string name="behavior_shake_test_description">흔들기 강도를 테스트하고 작동 임계점을 확인합니다</string>
+    <string name="section_wave_to_stop">👋 손 흔들어 멈추기</string>
+    <string name="behavior_wave_description">근접 센서 위로 손을 흔들어 읽어주기를 멈추세요</string>
+    <string name="behavior_wave_switch_label">손 흔들어 멈추기 활성화</string>
+    <string name="behavior_wave_benefits">
+✨ 장점:\n\n• 읽어주기를 조용히 멈출 수 있습니다\n• 조용한 환경에서 유용합니다\n• 기기에 접촉할 필요가 없습니다\n• 빠르고 유용한 제어
+</string>
+    <string name="label_calibrate">보정</string>
+    <string name="label_test_shake">흔들기 테스트</string>
+    <string name="label_test_wave">손 흔들기 테스트</string>
+    <string name="test_settings_btn_tts">텍스트 읽어주기 테스트</string>
+    <string name="test_settings_btn_shake">흔들기 테스트</string>
+    <string name="test_settings_btn_filters">필터 테스트</string>
+    <string name="test_settings_btn_export">내보내기</string>
+    <string name="voice_help_translate_button">SpeakThat의 번역을 도와주세요!</string>
+    <string name="voice_help_translate_description_button">번역 이메일을 보내려면 탭하세요</string>
+    <string name="voice_advanced_options_show">고급 음성 옵션 표시</string>
+    <string name="voice_tts_language_label">텍스트 읽어주기 언어 (고급)</string>
+    <string name="voice_specific_voice_label">특정 음성 (고급)</string>
+    <string name="voice_test_button">음성 테스트</string>
+    <string name="filter_app_list_title">앱 목록 필터</string>
+    <string name="filter_app_list_description">알림을 읽을 앱을 제어하세요</string>
+    <string name="filter_no_filtering">앱 필터 없음</string>
+    <string name="filter_whitelist">허용목록 (선택된 앱만 읽어주기)</string>
+    <string name="filter_blacklist">제외목록 (선택된 앱을 제외)</string>
+    <string name="filter_manage_apps">앱 관리:</string>
+    <string name="filter_app_list_button">📋 앱 목록</string>
+    <string name="filter_app_count">(0개 앱)</string>
+    <string name="filter_word_blacklist_title">단어 제외목록</string>
+    <string name="filter_word_blacklist_description">특정 단어를 포함한 알림을 차단하거나 보호하세요</string>
+    <string name="filter_word_blacklist_info">차단 = 아예 읽지 않기, 보호 = 알림 내용 읽지 않기</string>
+    <string name="filter_blacklisted_words">📋 제외된 단어</string>
+    <string name="general_theme_title">테마</string>
+    <string name="general_dark_mode">다크 모드</string>
+    <string name="general_dark_mode_description">이 앱에서 다크 모드 활성화</string>
+    <string name="general_app_behavior_title">앱 동작 및 성능</string>
+    <string name="general_auto_start">기기 시동 시 자동 시작</string>
+    <string name="general_auto_start_description">기기가 켜질 때 알림 서비스를 자동으로 시작합니다</string>
+    <string name="general_battery_optimization">배터리 최적화 제외</string>
+    <string name="general_battery_optimization_description">안정적인 작동을 위해 배터리 최적화에서 제외합니다</string>
+    <string name="general_service_restart_description">언제 알림 서비스를 자동 재시작할까요?</string>
+    <string name="general_never_restart">안 함</string>
+    <string name="general_notification_settings_title">알림 설정</string>
+    <string name="general_persistent_notification">지속 알림</string>
+    <string name="general_persistent_notification_description">SpeakThat이 켜져 있을 때 지속 알림 표시</string>
+    <string name="general_notification_while_reading">읽어주기 중 알림</string>
+    <string name="general_notification_while_reading_description">알림을 읽고 있을 때 알림 표시</string>
+    <string name="general_data_management_title">데이터 관리</string>
+    <string name="general_export_configuration">설정 내보내기</string>
+    <string name="general_import_configuration">설정 불러오기</string>
+    <string name="general_import_configuration_description">파일에서 설정을 불러옵니다</string>
+    <string name="general_verify_settings">모든 설정 점검</string>
+    <string name="general_accessibility_permission">접근성 권한</string>
+    <string name="general_accessibility_permission_description">음량 버튼 바로가기 등 고급 제어를 활성화하세요 (선택 사항)</string>
+    <string name="accessibility_permission_granted">접근성 권한 부여됨</string>
+    <string name="accessibility_permission_denied">접근성 권한 거부됨</string>
+    <string name="accessibility_permission_explanation_title">접근성 서비스 권한</string>
+    <string name="accessibility_permission_explanation_message">
+SpeakThat!은 AccessibilityService API를 사용하여 하드웨어 버튼으로 읽어주기를 멈추는 등 선택적 제어 기능 및 미디어 앱과의 유연한 연동을 제공합니다. 이 권한은 앱이 버튼 누르기 및 UI 동작을 감지하여 더욱 다양한 방식으로 읽어주기를 제어할 수 있게 합니다. 개인정보나 민감한 사용자 정보는 수집, 저장, 공유되지 않으며, 모든 정보는 기기 내에서만 처리됩니다. 이 권한의 부여는 선택사항이며, SpeakThat!은 이 권한 없이도 정상 작동합니다.
+</string>
+    <string name="accessibility_permission_open_settings">접근성 설정 열기</string>
+    <string name="accessibility_permission_cancel">취소</string>
+    <string name="accessibility_service_name">SpeakThat 접근성</string>
+    <string name="accessibility_service_description">
+음량 버튼 바로가기를 통해 알림 읽기를 멈추는 등의 고급 제어 기능을 활성화합니다. 이 서비스는 선택사항이며, 모든 정보 처리는 기기 내에서만 수행됩니다.
+</string>
+    <string name="behavior_press_to_stop_description">
+두 음량 버튼을 동시에 눌러 알림 읽어주기를 멈춥니다. 기존 음량 조절은 정상으로 작동합니다. 접근성 권한이 요구됩니다.
+</string>
+    <string name="behavior_enable_press_stop">음량 버튼으로 멈추기 활성화</string>
+    <string name="accessibility_permission_required_title">접근성 권한 필요</string>
+    <string name="open_accessibility_settings">접근성 설정 열기</string>
+    <string name="exception_no_days_selected">선택된 요일 없음</string>
+    <string name="exception_bluetooth_devices_title">이 예외 조건을 일으킬 블루투스 기기 선택:</string>
+    <string name="exception_specific_devices">기기명 (한 줄에 하나):</string>
+    <string name="exception_wifi_networks_title">이 예외 조건을 일으킬 Wi-Fi 네트워크 선택:</string>
+    <string name="exception_specific_networks">네트워크명 (한 줄에 하나):</string>
+    <string name="rules_no_rules_created">생성된 규칙 없음</string>
+    <string name="rules_create_first_rule_description">
+첫 규칙을 생성하여 SpeakThat이 기기 상태, 시간, 연결 상태에 따라 알림을 읽을 수 있도록 합니다.
+</string>
+    <string name="rules_create_first_rule_button">첫 규칙 생성</string>
+    <string name="rule_builder_logic_and">그리고</string>
+    <string name="rule_builder_logic_or">또는</string>
+    <string name="rule_builder_logic_xor">둘 중 하나만 참</string>
+    <string name="rule_builder_actions_title">액션</string>
+    <string name="rule_builder_actions_description">트리거가 충족될 때 일어날 동작</string>
+    <string name="rule_builder_exceptions_title">예외</string>
+    <string name="rule_builder_exceptions_description">트리거를 무시할 조건 (선택사항)</string>
+    <string name="trigger_no_days_selected">선택된 요일 없음</string>
+    <string name="trigger_bluetooth_devices_title">이 규칙을 활성화할 블루투스 기기 선택:</string>
+    <string name="trigger_any_bluetooth_device">아무 블루투스 기기</string>
+    <string name="trigger_any_bluetooth_description">아무 기기나 연결되면 활성화됩니다</string>
+    <string name="trigger_specific_devices">특정 기기 (한 줄에 하나):</string>
+    <string name="trigger_wifi_networks_title">이 규칙을 활성화할 Wi-Fi 네트워크 선택:</string>
+    <string name="trigger_any_wifi_network">아무 Wi-Fi 네트워크</string>
+    <string name="trigger_any_wifi_description">아무 네트워크에 연결되면 활성화됩니다</string>
+    <string name="trigger_specific_networks">특정 네트워크 (한 줄에 하나):</string>
+    <string name="wave_calibration_save_settings">정상 작동 확인! 설정을 저장합니다</string>
+    <string name="wave_calibration_disable">손 흔들어 멈추기 비활성화</string>
+    <string name="voice_audio_output_settings">오디오 출력 설정</string>
+    <string name="voice_audio_output_description">기기 오디오 시스템이 알림을 재생하는 방식을 설정합니다.</string>
+    <string name="voice_audio_stream_type">오디오 스트림 유형</string>
+    <string name="voice_stream_volume">스트림 음량</string>
+    <string name="voice_stream_volume_description">
+선택된 오디오 스트림의 음량 수준을 제어합니다. 이 스트림 유형에 대한 기기 음량이 변경됩니다.
+</string>
+    <string name="voice_content_type">컨텐츠 유형</string>
+    <string name="voice_content_type_description">시스템에게 이 오디오의 유형을 전달합니다. 음성을 권장합니다.</string>
+    <string name="voice_speakerphone_option">통화에 스피커 사용</string>
+    <string name="voice_test_settings">음성 설정 테스트</string>
+    <string name="voice_preview_tip">
+팁: 미리듣기 버튼으로 알림이 어떻게 들리는지 확인하세요. 모든 설정 변경은 자동으로 저장됩니다.
+</string>
+    <string name="filter_word_count">(단어 0개)</string>
+    <string name="filter_swap_description">알림 내 단어를 대체하여 민감한 단어를 거르거나 발음을 바로잡습니다</string>
+    <string name="filter_swap_count">(0개 대체)</string>
+    <string name="filter_swap_tip">
+팁: 영어의 경우, 단어를 소문자로 입력하면 대소문자에 무관하게 대체됩니다. \'대체할 단어\'를 공란으로 두면 해당 단어를 읽지 않습니다.
+</string>
+    <string name="url_handling_title">URL 주소 읽기 방식</string>
+    <string name="url_handling_description">웹 링크를 어떻게 읽을지 제어합니다</string>
+    <string name="url_handling_dont_read">읽지 않기</string>
+    <string name="url_handling_example">
+예: https://www.speakthat.app/subdirectory → speakthat.app
+</string>
+    <string name="url_handling_custom_text_title">대체할 텍스트</string>
+    <string name="url_handling_custom_text_hint">예: \'웹 링크\', \'사이트 링크\', 공란으로 두면 읽지 않습니다</string>
+    <string name="filter_media_description">
+YouTube와 같은 앱에서 원치 않는 알림(미디어 제어)을 제외하면서도 유용한 알림(답글 알림)은 읽도록 자동으로 필터링합니다
+</string>
+    <string name="filter_media_enable">스마트 미디어 알림 필터링 활성화</string>
+    <string name="filter_media_apps_title">필터링된 미디어 앱:</string>
+    <string name="filter_media_apps_description">미디어 알림을 자동으로 제외할 앱입니다. 적용할 미디어 앱을 추가하세요.</string>
+    <string name="filter_advanced_options">고급 옵션</string>
+    <string name="filter_exception_apps_title">예외 앱:</string>
+    <string name="filter_exception_apps_description">알림 필터링을 적용하지 않을 앱</string>
+    <string name="filter_important_keywords_title">중요 키워드:</string>
+    <string name="filter_important_keywords_description">중요 알림이 포함하는 단어 (\'답글\', \'코멘트\' 등)</string>
+    <string name="filter_media_info">중요 알림을 읽으면서도 미디어 제어를 자동으로 필터링합니다. (탭하여 더 보기)</string>
+    <string name="donate_coffee">☕</string>
+    <string name="donate_theatre">🎭</string>
+    <string name="donate_octopus">🐙</string>
+    <string name="donate_bitcoin">₿</string>
+    <string name="donate_github_sponsors">GitHub 스폰서</string>
+    <string name="donate_github_description">오픈소스 개발 지원하기</string>
+    <string name="donate_bitcoin_title">비트코인 (BTC)</string>
+    <string name="donate_bitcoin_description">비트코인 네트워크로 BTC 기부하기</string>
+    <string name="filter_suggestion_smart_pattern">스마트 패턴 (권장)</string>
+    <string name="filter_suggestion_keywords">키워드만</string>
+    <string name="filter_suggestion_exact_match">전체 텍스트 일치</string>
+    <string name="filter_suggestion_all_notifications">이 앱의 모든 알림</string>
+    <string name="filter_suggestion_action">액션:</string>
+    <string name="filter_suggestion_block_completely">모두 차단</string>
+    <string name="filter_suggestion_make_private">보호하기</string>
+    <string name="filter_suggestion_create_filter">필터 추가</string>
+    <string name="support_chat">💬</string>
+    <string name="icon_refresh">🔄</string>
+    <string name="support_lightbulb">💡</string>
+    <string name="support_bug">🐛</string>
+    <string name="support_question">❓</string>
+    <string name="support_general_title">일반 지원</string>
+    <string name="support_general_description">설치, 앱 이용 등 일반 질문에 대한 도움 얻기</string>
+    <string name="support_clipboard">📋</string>
+    <string name="support_include_logs">디버깅 기록 포함하기</string>
+    <string name="support_log_entries">현재 기록 사항: 0</string>
+    <string name="action_configure_voice_settings">이 규칙이 활성화될 때 적용할 음성 설정을 선택하세요:</string>
+    <string name="exception_any_bluetooth_device">아무 블루투스 기기</string>
+    <string name="exception_any_wifi_network">아무 Wi-Fi 네트워크</string>
+    <string name="dialog_support_title">지원 및 피드백</string>
+    <string name="dialog_support_description">어떤 도움이 필요하세요? 가장 일치하는 유형을 선택하세요:</string>
+    <string name="dialog_support_feature_request">기능 제안</string>
+    <string name="dialog_support_feature_description">새로운 기능 및 개선 사항을 제안합니다</string>
+    <string name="dialog_support_bug_report">버그 보고</string>
+    <string name="dialog_donate_title">SpeakThat을 지원하세요!</string>
+    <string name="dialog_donate_message">
+안녕하세요! 개발자 Mitchi입니다. SpeakThat의 개발은 결코 쉬운 일이 아닙니다! 1인 개발자로서 저는 UI/UX 디자인, 품질 관리, 테스트, 프로젝트 관리, 배포, 앱 스토어 정책 준수, 사용자 지원 등 셀 수 없는 업무를 혼자 해 나가고 있습니다!\n\nSpeakThat을 유용하게 사용하고 계신다면, 아, 이만하면 돈 내고도 쓰겠다 싶으시다면, 제 개발에 작은 도움을 주시는 것은 어떨까요!\n\n여러분의 후원이 있다면 앞으로도 이 앱은 필요로 하는 모두에게 무료로, 오픈소스로 제공될 수 있을 것입니다.\n\n감사합니다! ❤️
+</string>
+    <string name="dialog_donate_coffee">개발자에게 커피 한 잔</string>
+    <string name="dialog_donate_patron">정기 후원</string>
+    <string name="dialog_donate_patron_description">회원 전용 업데이트를 포함한 월간 지원</string>
+    <string name="dev_debug_tools_title">디버깅 도구</string>
+    <string name="dev_debug_tools_description">앱을 디버깅하고 테스트하기 위한 도구</string>
+    <string name="dev_notification_history">알림 기록 보기</string>
+    <string name="dev_battery_report">배터리 최적화 보고서</string>
+    <string name="dev_background_monitor">백그라운드 프로세스 모니터</string>
+    <string name="dev_installation_debug">설치 소스 디버그</string>
+    <string name="dev_test_rules">규칙 시스템 테스트</string>
+    <string name="notification_history_title">알림 기록</string>
+    <string name="notification_history_empty">표시할 알림 없음</string>
+    <string name="notification_history_clear">기록 비우기</string>
+    <string name="notification_history_loading">알림 기록 로딩 중...</string>
+    <string name="notification_history_debug_info">디버깅 정보</string>
+    <string name="notification_history_debug_description">
+이 화면은 디버깅 목적으로 SpeakThat이 포착한 알림을 보여줍니다. 앱이 정상 작동하는지, 정확히 어떤 알림이 읽어지고 있는지 확인할 수 있습니다.
+</string>
+    <string name="dialog_filter_suggestion_title">비슷한 알림 필터</string>
+    <string name="dialog_filter_suggestion_original">원래 알림:</string>
+    <string name="dialog_filter_suggestion_choose">필터 유형 선택:</string>
+    <string name="dialog_wifi_config_title">Wi-Fi 설정</string>
+    <string name="dialog_time_schedule_title">시간 스케줄 설정</string>
+    <string name="dialog_bluetooth_config_title">블루투스 설정</string>
+    <string name="rules_description">
+SpeakThat이 기기 상태, 시간, 연결 상태에 따라 언제 알림을 읽을지 제어하는 유용한 규칙을 생성합니다.
+</string>
+    <string name="rules_enable">규칙 활성화</string>
+    <string name="rules_create_new">새 규칙 생성</string>
+    <string name="onboarding_skip">건너뛰기</string>
+    <string name="onboarding_next">다음</string>
+    <string name="onboarding_mute_button">음소거</string>
+    <string name="onboarding_language_theme_title">언어 및 테마</string>
+    <string name="onboarding_language_theme_description">SpeakThat의 언어를 선택하세요. 다크 모드를 활성화할 수도 있습니다.</string>
+    <string name="onboarding_language_section_title">언어</string>
+    <string name="onboarding_language_help_title">언어가 목록에 없나요?</string>
+    <string name="onboarding_language_help_description">더 많은 언어를 지원하기 위해 최선을 다하고 있습니다. 가능하다면 번역에 참여해 주세요!</string>
+    <string name="onboarding_theme_section_title">테마</string>
+    <string name="onboarding_theme_description">이 앱에서 다크 모드 사용</string>
+    <string name="onboarding_theme_light">라이트 모드</string>
+    <string name="onboarding_theme_dark">다크 모드</string>
+    <string name="onboarding_welcome_title">SpeakThat!에 오신 것을 환영합니다!</string>
+    <string name="onboarding_welcome_description">
+화면을 보지 않고도 계속 소식을 접하세요. 이제 휴대폰이 알림을 읽어 드릴 테니 소중한 지금에 집중하세요.
+</string>
+    <string name="onboarding_permission_title">알림 접근 권한 필요</string>
+    <string name="onboarding_privacy_title">이 앱은 개인정보를 중시합니다</string>
+    <string name="onboarding_filters_title">기본 필터를 설정해 봅시다</string>
+    <string name="onboarding_apps_title">민감한 앱 차단</string>
+    <string name="onboarding_words_title">민감한 단어 차단</string>
+    <string name="onboarding_rules_title">스마트 규칙 설정</string>
+    <string name="onboarding_complete_title">끝났습니다!</string>
+    <string name="trigger_screen_choose">이 트리거가 언제 활성화될 지 결정하세요:</string>
+    <string name="trigger_invert_condition">조건 뒤집기</string>
+    <string name="trigger_time_schedule">시간 스케줄</string>
+    <string name="rule_builder_info_icon">정보</string>
+    <string name="rule_builder_triggers_label">트리거</string>
+    <string name="rule_builder_triggers_description">이 규칙이 활성화되기 위해 만족되어야 하는 조건</string>
+    <string name="rule_builder_logic_label">논리:</string>
+    <string name="exception_screen_choose">이 예외가 언제 적용될지 선택:</string>
+    <string name="exception_time_schedule">시간 스케줄</string>
+    <string name="exception_time_choose">이 예외가 언제 적용될지 선택:</string>
+    <string name="action_disable_speakthat">SpeakThat 비활성화</string>
+    <string name="action_enable_app_filter">앱 필터 활성화</string>
+    <string name="action_disable_app_filter">앱 필터 비활성화</string>
+    <string name="wave_calibration_title">손 흔들어 멈추기 감지 설정</string>
+    <string name="wave_calibration_threshold">임계점: 3.2cm (5.3cm의 60%)</string>
+    <string name="wave_calibration_how_it_works">💡 작동 원리:</string>
+    <string name="wave_calibration_start">보정 시작</string>
+    <string name="bluetooth_devices_title">블루투스 기기</string>
+    <string name="bluetooth_add_device">블루투스 기기 추가</string>
+    <string name="bluetooth_how_it_works">작동 원리</string>
+    <string name="wifi_config_enter_name">Wi-Fi 네트워크 이름 입력:</string>
+    <string name="bluetooth_config_description">이 규칙에 사용할 기기(들)을 선택하세요. 페어링된 기기만 표시됩니다.</string>
+    <string name="time_schedule_set">타임 스케줄 설정:</string>
+    <string name="time_schedule_description">이 규칙이 활성화될 시간을 선택하세요.</string>
+    <string name="time_schedule_start">시작 시간:</string>
+    <string name="time_schedule_end">종료 시간:</string>
+    <string name="time_schedule_days">요일:</string>
+    <string name="time_schedule_range">시간 범위</string>
+    <string name="time_schedule_every_day">매일</string>
+    <string name="day_monday">월요일</string>
+    <string name="day_tuesday">화요일</string>
+    <string name="day_wednesday">수요일</string>
+    <string name="day_thursday">목요일</string>
+    <string name="day_friday">금요일</string>
+    <string name="day_sunday">일요일</string>
+    <string name="day_mon">월</string>
+    <string name="day_tue">화</string>
+    <string name="day_wed">수</string>
+    <string name="day_thu">목</string>
+    <string name="day_fri">금</string>
+    <string name="day_sun">일</string>
+    <string name="item_word_swap_from">부터</string>
+    <string name="item_word_swap_to">까지</string>
+    <string name="item_word_swap_arrow">→</string>
+    <string name="item_bluetooth_device_name">기기명</string>
+    <string name="item_bluetooth_mac_address">00:00:00:00:00:00</string>
+    <string name="item_rule_example">화면이 켜져 있을 때, 방해 금지 시간에는 알림이 읽히지 않습니다</string>
+    <string name="item_notification_app_name">앱 이름</string>
+    <string name="item_notification_time">12:34:56</string>
+    <string name="item_notification_content">알림 내용이 표시됩니다...</string>
+    <string name="item_notification_filter">🚫 비슷한 것 필터</string>
+    <string name="item_cooldown_app_name">앱 이름</string>
+    <string name="item_cooldown_package">com.example.app</string>
+    <string name="item_cooldown_no_cooldown">알림 쉬지 않기</string>
+    <string name="item_cooldown_delete">🗑️</string>
+    <string name="hint_cooldown_time">알림 쉬기 시간</string>
+    <string name="diagnostics_tts_engine_dash">기본 텍스트 읽어주기 엔진 사용</string>
+    <string name="diagnostics_tts_engine_err">텍스트 읽어주기 엔진 실패</string>
+    <string name="diagnostics_tts_engine_ok">텍스트 읽어주기 엔진 작동 중</string>
+    <string name="diagnostics_should_read_err">알림을 읽을지 판단할 수 없음</string>
+    <string name="diagnostics_should_read_no">알림이 규칙 또는 설정에 의해 차단됨</string>
+    <string name="diagnostics_should_read_yes">모든 점검 통과 - 알림 읽어주기 대상에 해당</string>
+    <string name="diagnostics_output_stream_dash">출력 스트림 상태 파악 불가</string>
+    <string name="diagnostics_output_stream_err">출력 스트림 차단됨</string>
+    <string name="diagnostics_output_stream_ok">출력 스트림이 사용 가능</string>
+    <string name="diagnostics_tts_language_dash">텍스트 읽어주기 언어 확인 불가</string>
+    <string name="diagnostics_tts_language_err">텍스트 읽어주기 언어가 지원되지 않음</string>
+    <string name="diagnostics_tts_language_ok">텍스트 읽어주기 언어 사용 가능</string>
+    <string name="diagnostics_tts_init_dash">텍스트 읽어주기 인스턴스가 null임</string>
+    <string name="diagnostics_tts_init_err">텍스트 읽어주기 초기화 실패</string>
+    <string name="diagnostics_tts_init_ok">텍스트 읽어주기 초기화 및 준비 완료</string>
+    <string name="diagnostics_notification_access_err">알림 접근 비활성</string>
+    <string name="diagnostics_notification_access_ok">알림 접근 활성</string>
+    <string name="diagnostics_tts_reinitialized">텍스트 읽어주기 재초기화됨 - 점검 재실행</string>
+    <string name="diagnostics_clipboard_copied">점검 보고서가 클립보드에 복사됨</string>
+    <string name="diagnostics_copy_clipboard">클립보드에 복사</string>
+    <string name="diagnostics_status_no">아니요</string>
+    <string name="diagnostics_status_yes">예</string>
+    <string name="diagnostics_status_dash">-</string>
+    <string name="diagnostics_status_err">오류</string>
+    <string name="diagnostics_status_ok">OK</string>
+    <string name="diagnostics_tts_engine">텍스트 읽어주기 엔진</string>
+    <string name="diagnostics_should_read">알림 읽어야 함</string>
+    <string name="diagnostics_output_stream">출력 스트림</string>
+    <string name="diagnostics_tts_language">텍스트 읽어주기 언어</string>
+    <string name="diagnostics_tts_initialization">텍스트 읽어주기 초기화</string>
+    <string name="diagnostics_notification_access">알림 접근 권한</string>
+    <string name="review_reminder_never">다시 묻지 않기</string>
+    <string name="review_reminder_later">나중에</string>
+    <string name="review_reminder_message">
+SpeakThat을 유용하게 사용하셨다면, Google Play 스토어에 사용 후기를 남겨 주세요. 여러분의 피드백은 다른 사용자가 이 앱을 발견하고 향후 개발을 지원하는 데 큰 힘이 됩니다.
+</string>
+    <string name="review_reminder_title">SpeakThat을 유용하게 쓰고 계신가요?</string>
+    <string name="main_notification_content_tap_settings">탭하여 SpeakThat 설정을 여세요</string>
+    <string name="main_notification_title_active">SpeakThat 활성 상태</string>
+    <string name="main_notification_permission_denied">알림 접근 권한 거부됨 - SpeakThat 알림이 표시되지 않을 수 있습니다</string>
+    <string name="main_notification_permission_granted">알림 접근 권한 허용됨</string>
+    <string name="main_tts_playback_failed">텍스트 읽어주기 재생 실패</string>
+    <string name="main_tts_not_ready">텍스트 읽어주기 준비되지 않음. 잠시 뒤 재시도하세요.</string>
+    <string name="main_tts_init_failed">텍스트 읽어주기 초기화 실패. 일부 기능이 작동하지 않을 수 있습니다.</string>
+    <string name="main_notification_access_granted">SpeakThat에 알림 접근 권한 부여됨</string>
+    <string name="main_master_switch_disabled">SpeakThat 비활성 상태 - 알림 읽어주기가 작동하지 않습니다</string>
+    <string name="main_master_switch_enabled">SpeakThat는 활성 상태에서 알림을 읽어줍니다</string>
+    <string name="restart_policy_periodic">주기적</string>
+    <string name="restart_policy_crash">충돌</string>
+    <string name="restart_policy_never">안 함</string>
+    <string name="system_default">시스템</string>
+    <string name="date_format_export">yyyy년 MM월 dd일 HH시 mm분 ss초</string>
+    <string name="log_boot_receiver_service_not_enabled">알림 서비스 비활성화됨 - 권한을 허용해야 합니다</string>
+    <string name="log_boot_receiver_service_enabled">알림 서비스 활성화됨</string>
+    <string name="log_boot_receiver_auto_start">자동 실행 설정됨, 알림 서비스 시작 중</string>
+    <string name="log_boot_receiver_boot_completed">기기 시동 완료 신호 수신</string>
+    <string name="log_app_filter_no_filter">필터 없음 - 전체 %d개 앱 표시</string>
+    <string name="log_app_filter_found_matches" formatted="false">\'%s\'에 대하여 %d의 일치 발견</string>
+    <string name="log_app_filter_google_maps" formatted="false">GOOGLE MAPS CANDIDATE: %s (%s)</string>
+    <string name="log_app_filter_match" formatted="false">일치: %s (%s) - 이름:%s 패키지:%s</string>
+    <string name="log_app_filter_filtering">필터 키워드: \'%s\'</string>
+    <string name="log_app_selector_total">총: %d개 앱</string>
+    <string name="log_app_selector_app_info" formatted="false">%s (%s)</string>
+    <string name="log_app_search_adapter_filtering" formatted="false">\'%s\'로 필터 - %d개 결과 발견</string>
+    <string name="error_unable_to_open_input_stream">URI에서 입력 스트림 실행할 수 없음</string>
+    <string name="error_unable_to_open_output_stream">URI에서 출력 스트림 실행할 수 없음</string>
+    <string name="app_filter_no_filter_showing_all">필터 없음 - 전체 %d개 앱 표시</string>
+    <string name="app_filter_found_matches" formatted="false">\'%s\'에 대하여 %d의 일치 발견</string>
+    <string name="app_filter_google_maps_candidate" formatted="false">GOOGLE MAPS CANDIDATE: %s (%s)</string>
+    <string name="app_filter_match" formatted="false">일치: %s (%s) - 이름:%s 패키지:%s</string>
+    <string name="app_filter_filtering_with">필터 키워드: \'%s\'</string>
+    <string name="app_selector_total_apps">총: %d개 앱</string>
+    <string name="app_selector_google_maps_found" formatted="false">구글/지도 앱 발견: %s (%s)</string>
+    <string name="notification_permission_denied">알림 접근 권한 거부됨 - 기능이 작동하지 않습니다</string>
+    <string name="persistent_notification_enabled">지속 알림 활성화됨</string>
+    <string name="failed_to_clear_data">데이터 제거 실패: %s</string>
+    <string name="all_data_cleared_successfully">모든 데이터 제거됨</string>
+    <string name="import_failed">불러오기 실패: %s</string>
+    <string name="configuration_imported_successfully">설정 불러오기 성공: %s</string>
+    <string name="configuration_exported_successfully">설정 내보내기 성공</string>
+    <string name="export_failed">내보내기 실패: %s</string>
+    <string name="clear_all_data_button">모든 데이터 비우기</string>
+    <string name="clear_all_data_title">모든 데이터 비우기</string>
+    <string name="later">나중에</string>
+    <string name="theme_changed_message">테마가 적용되었습니다. 최적의 경험을 위해 앱을 재실행하세요.</string>
+    <string name="clear_all_data_message">
+모든 설정이 초기화되고 알림 기록이 제거됩니다.\n\n이 작업은 취소할 수 없습니다.\n\n계속할까요?
+</string>
+    <string name="theme_changed_title">테마 변경됨</string>
+    <string name="storage_permission_required">내보내기를 위해 저장소 권한이 필요함</string>
+    <string name="tts_troubleshooting_title">텍스트 읽어주기 문제 해결</string>
+    <string name="tts_recovery_successful">텍스트 읽어주기 서비스가 복구되었습니다!</string>
+    <string name="tts_recovery_in_progress">텍스트 읽어주기 서비스 복구 시도 중...</string>
+    <string name="tts_init_failed_generic">텍스트 읽어주기 초기화 실패. 일부 기능이 제대로 작동하지 않을 수 있습니다.</string>
+    <string name="tts_init_failed_recovery_attempts">
+텍스트 읽어주기 복구가 여러 차례 실패했습니다. 앱을 재실행하거나 텍스트 읽어주기 설정을 검토하세요.
+</string>
+    <string name="tts_init_failed_permissions">텍스트 읽어주기 초기화가 권한 부족으로 실패했습니다. 앱을 재실행하세요.</string>
+    <string name="tts_init_failed_service_unavailable">텍스트 읽어주기 서비스를 사용할 수 없습니다. 텍스트 읽어주기 설정을 검토하세요.</string>
+    <string name="tts_init_failed_android15">
+텍스트 읽어주기 초기화가 안드로이드 15에서 실패했습니다. 시스템 제한 때문일 수 있습니다.
+</string>
+    <string name="tts_initialization_failed">텍스트 읽어주기 초기화 실패</string>
+    <string name="tts_error_occurred">텍스트 읽어주기 오류 발생</string>
+    <string name="dev_debug_crash_logs">🔍 충돌 기록 디버그</string>
+    <string name="dev_clear_crash_logs">🗑️ 충돌 기록 비우기</string>
+    <string name="dev_view_crash_logs">📄 충돌 기록 보기</string>
+    <string name="dev_live_log_display">📊 실시간 기록 보기</string>
+    <string name="dev_notification_logging">알림 기록</string>
+    <string name="dev_system_event_logging_description">앱 라이프사이클 및 시스템 이벤트 기록</string>
+    <string name="dev_notification_logging_description">알림 처리 이벤트 기록하기</string>
+    <string name="dev_system_event_logging">시스템 이벤트 기록</string>
+    <string name="dev_user_action_logging_description">사용자 상호작용 및 버튼 입력 기록</string>
+    <string name="dev_user_action_logging">사용자 동작 기록</string>
+    <string name="dev_filter_logging_description">필터 판단 및 결과 기록</string>
+    <string name="dev_filter_logging">필터 기록</string>
+    <string name="dev_verbose_logging_description">세부 디버깅 정보 표시</string>
+    <string name="dev_verbose_logging">세부 기록</string>
+    <string name="dev_configure_logging">디버깅을 위해 기록될 사항을 선택합니다</string>
+    <string name="hint_enter_format_placeholders">표시자와 함께 형식을 입력하세요</string>
+    <string name="hint_enter_word_to_block">차단할 단어를 입력...</string>
+    <string name="hint_wifi_network_name">Wi-Fi 네트워크 이름 입력</string>
+    <string name="hint_wifi_networks">HomeWiFi OfficeNetwork</string>
+    <string name="hint_bluetooth_addresses">00:11:22:33:44:55 AA:BB:CC:DD:EE:FF</string>
+    <string name="hint_rule_name">규칙 이름 입력 (예: 수면 모드, 운전 모드)</string>
+    <string name="hint_important_keyword">중요 키워드 (예: 답장, 답글)</string>
+    <string name="hint_swap_with_optional">다음으로 대체하기 (선택사항)</string>
+    <string name="hint_word_to_swap">대체할 단어</string>
+    <string name="hint_word_to_blacklist">차단할 단어</string>
+    <string name="hint_network_ssids">네트워크 SSID</string>
+    <string name="hint_device_addresses">기기 주소 또는 이름</string>
+    <string name="hint_app_package_name">앱 패키지명</string>
+    <string name="specific_voice_warning_dialog_got_it">이해했어요</string>
+    <string name="specific_voice_warning_dialog_title">다국어 음성에 대한 제한</string>
+    <string name="specific_voice_warning_description">
+SpeakThat은 하나의 음성만 지원합니다. 여러 언어로 알림을 받을 경우, 일부 알림이 제대로 읽히지 않을 수 있습니다.
+</string>
+    <string name="specific_voice_warning">다국어 제한</string>
+    <string name="trigger_end_time_default">17:00</string>
+    <string name="trigger_end_time_label">종료 시간:</string>
+    <string name="trigger_start_time_default">09:00</string>
+    <string name="trigger_start_time_label">시작 시간:</string>
+    <string name="trigger_time_schedule_description">이 트리거가 활성화될 시간 범위를 설정하세요:</string>
+    <string name="trigger_time_schedule_title">🕐 시간 스케줄</string>
+    <string name="trigger_invert_description">조건이 충족되지 않을 경우 트리거됩니다</string>
+    <string name="exception_set_start_time">시작 시간 설정</string>
+    <string name="exception_end_time_default">07:00</string>
+    <string name="exception_end_time_label">종료 시간:</string>
+    <string name="exception_start_time_default">19:00</string>
+    <string name="exception_start_time_label">시작 시간:</string>
+    <string name="exception_invert_description">조건이 만족되지 않았을 때 예외 적용</string>
+    <string name="exception_invert_condition">조건 뒤집기</string>
+    <string name="behavior_wave_current_threshold">임계값: 5.0 cm</string>
+    <string name="behavior_wave_current_proximity">현재 근접도: 5.0 cm</string>
+    <string name="behavior_wave_test_description">
+손 흔들기 감지를 테스트하세요. 이진 센서의 경우 0 (가까움) 또는 max (멂)을 표시합니다.
+</string>
+    <string name="behavior_wave_test_button">손 흔들기 테스트</string>
+    <string name="behavior_wave_threshold_90">90%</string>
+    <string name="behavior_wave_threshold_30">30%</string>
+    <string name="behavior_wave_threshold_description">손 흔들어 멈추기를 일으킬 센서의 최대 거리를 퍼센트로 지정하세요. (보정 필요)</string>
+    <string name="behavior_audio_ducking_hint">팁: 값을 낮추면 알림 중 미디어 음량이 줄어듭니다</string>
+    <string name="behavior_audio_ducking_system">
+가능한 경우 이 앱은 자동으로 고급 시스템 음량 줄이기 기능을 사용합니다. 수동 음량 줄이기 기능은 최대한 많은 기기에서 이 앱을 지원하기 위해 보조 수단으로 사용됩니다.
+</string>
+    <string name="dialog_notification_history_description">최근 알림 보기</string>
+    <string name="item_condition_builder_name">조건 이름</string>
+    <string name="item_condition_builder_summary">조건 요약</string>
+    <string name="item_app_selector_name">앱 이름</string>
+    <string name="item_app_selector_package">com.example.app</string>
+    <string name="item_action_builder_name">액션 이름</string>
+    <string name="item_action_builder_summary">액션 요약</string>
+    <string name="item_exception_time_schedule">시간 스케줄</string>
+    <string name="item_exception_time_range">19시부터 7시까지</string>
+    <string name="item_trigger_bluetooth_device">블루투스 기기</string>
+    <string name="item_trigger_bluetooth_connected">차량 블루투스에 연결됨</string>
+    <string name="item_template_arrow">→</string>
+    <string name="item_onboarding_rule_template_add">추가</string>
+    <string name="item_onboarding_add_app">앱 추가</string>
+    <string name="item_onboarding_add_word">단어 추가</string>
+    <string name="item_onboarding_choose_template">규칙 템플릿을 선택하여 시작하세요:</string>
+    <string name="item_onboarding_notification_settings">알림 설정 열기</string>
+    <string name="dialog_notification_history_tap_info">\'🚫 비슷한 것 필터\'를 탭하여 반복되는 알림에 대한 스마트 필터를 생성하세요</string>
+    <string name="item_condition_builder_when">시간</string>
+    <string name="item_condition_builder_remove">✕</string>
+    <string name="item_action_builder_remove">✕</string>
+    <string name="item_action_builder_then">그러면</string>
+    <string name="behavior_notification_filtering_title">📱 알림 필터</string>
+    <string name="behavior_notification_filtering_description">알림 필터 및 처리를 위한 고급 옵션</string>
+    <string name="behavior_battery_optimization_title">🔋 배터리 최적화</string>
+    <string name="behavior_battery_optimization_description">전력 소비 및 성능 설정 관리</string>
+    <string name="behavior_emergency_mode_title">🚨 위급 모드</string>
+    <string name="behavior_emergency_mode_description">매우 중요한 알림에 대한 위급 대체 설정</string>
+    <string name="behavior_accessibility_title">♿ 접근성</string>
+    <string name="behavior_accessibility_description">접근성과 사용 편의를 위한 설정</string>
+    <string name="behavior_advanced_features_title">🛠️ 고급 기능</string>
+    <string name="behavior_advanced_features_description">시험 기능 및 고숙련 사용자를 위한 기능</string>
+    <string name="behavior_current_shake">현재 흔들기 강도: 0.0</string>
+    <string name="behavior_threshold_value">임계값: 12.0</string>
+    <string name="behavior_start_test">테스트 시작</string>
+    <string name="behavior_timeout_settings">시간 제한 설정</string>
+    <string name="behavior_timeout_5s">5초</string>
+    <string name="behavior_timeout_5m">5분</string>
+    <string name="behavior_timeout_current">시간 제한: 30초</string>
+    <string name="behavior_disable_timeout">시간 제한 비활성화 (권장하지 않음)</string>
+    <string name="behavior_wave_to_stop_title">손 흔들어 멈추기</string>
+    <string name="behavior_enable_wave_stop">손 흔들어 멈추기 활성화</string>
+    <string name="content_cap_mode_label">내용 길이 제한 모드:</string>
+    <string name="content_cap_disabled">꺼짐 - 전체 내용을 읽습니다</string>
+    <string name="content_cap_words">단어 수 제한</string>
+    <string name="content_cap_time">시간 제한</string>
+    <string name="content_cap_word_count_label">단어 수:</string>
+    <string name="content_cap_time_limit_label">시간 제한 (초):</string>
+    <string name="content_cap_word_count_value">%d 단어</string>
+    <string name="content_cap_sentence_count_value">%d 문장</string>
+    <string name="content_cap_time_limit_value">%d초</string>
+    <string name="filter_word_swap_title">단어 대체</string>
+    <string name="filter_word_swaps_header">📋 단어 대체</string>
+    <string name="voice_language_preset_title">언어 사전 설정</string>
+    <string name="dev_disable_media_fallback">미디어 재생 시 음량 줄이기 대체 수단 비활성화</string>
+    <string name="onboarding_permission_description">
+SpeakThat이 알림을 읽어주기 위해서는 권한이 필요합니다.\n\n🔒 모든 정보는 기기 내에서만 처리됩니다\n📱 정보가 외부에 전송되지 않습니다\n⚙️ 읽기 내용은 사용자가 제어합니다\n💬 이 앱은 사용자가 허용한 내용만 읽어 드립니다\n💡 팁: 목록에서 \'SpeakThat\'을 탭하여 활성화하세요
+</string>
+    <string name="onboarding_privacy_description">
+🔒 정확히 어떤 내용을 읽을지 사용자가 선택합니다\n\n📱 휴대폰을 흔들어 즉시 멈춥니다\n\n⚙️ 앱, 단어, 알림 유형을 필터합니다\n\n🔐 모든 정보는 기기 내에서만 처리됩니다
+</string>
+    <string name="onboarding_filters_description">
+SpeakThat은 알림 읽기의 내용을 사용자가 선택하는 강력한 필터 시스템을 제공합니다.\n\n기본 개인정보 필터를 설정해 봅시다.
+</string>
+    <string name="onboarding_apps_description">
+알림 읽어주기를 실행하지 않을 앱 이름을 입력해 보세요.\n\n예) 은행, 건강, 소개팅 앱 등
+</string>
+    <string name="onboarding_words_description">
+알림 읽기에서 제외할 단어나 문구를 입력해 보세요!\n\n예) 비밀번호, 암호, 신용카드, 인증 코드
+</string>
+    <string name="onboarding_rules_description">
+스마트 규칙을 설정하여 상황에 알맞게 알림 읽어주기를 자동으로 제어해 보세요.\n\n예를 들어, 헤드폰이 연결되었을 때만 알림을 읽거나, 화면이 켜져 있을 때는 읽지 않도록 설정할 수 있습니다.
+</string>
+    <string name="bluetooth_instructions">
+• 하나 이상의 기기가 연결되었을 때만 알림 읽어주기가 실행됩니다\n\n• 기기를 선택하지 않으면 모든 알림이 읽힙니다\n\n• 기기는 페어링 및 연결되어야 합니다 (기기 검색이 아닌)
+</string>
+    <string name="onboarding_complete_description">
+이제 SpeakThat과 함께 화면에서 눈을 뗀 채로도 세상과 연결될 준비가 끝났습니다!\n\n💡 앱 설정에서 언제든 필터를 더 추가할 수 있습니다.
+</string>
+    <string name="trigger_time_description">이 트리거가 활성화될 시간 범위를 설정하세요:</string>
+    <string name="action_disable_description">이 액션은 규칙이 충족되었을 때 SpeakThat을 완전히 비활성화합니다.</string>
+    <string name="wave_calibration_description">손 흔들기 감지 기능을 보정하세요</string>
+    <string name="wave_calibration_instructions">
+• 8초간 손을 센서에 가까이 댔다가 멀리 떼기를 반복하세요\n• 센서값을 50밀리초마다 한 번씩 측정합니다\n• 보정에는 최소 20개의 값이 필요합니다\n• 임계값을 최대 감지 거리의 60%로 설정하세요
+</string>
+    <string name="wifi_config_description">
+Wi-Fi 네트워크의 정확한 이름(SSID)을 입력하세요. 대소문자 포함 정확히 일치해야 합니다.
+</string>
+    <string name="wifi_config_tip">💡 팁: 휴대폰의 Wi-Fi 설정에서 Wi-Fi 네트워크명을 찾을 수 있습니다</string>
+    <string name="item_word_filter_word">단어</string>
+    <string name="item_priority_app_icon">⚡</string>
+    <string name="item_action_control">SpeakThat 제어</string>
+    <string name="item_action_disable">SpeakThat 비활성화</string>
+    <string name="item_app_filter_name">앱 이름</string>
+    <string name="item_app_filter_package">패키지명</string>
+    <string name="item_exception_name">예외 이름</string>
+    <string name="item_exception_summary">예외 요약</string>
+    <string name="item_trigger_name">트리거 이름</string>
+    <string name="item_trigger_summary">트리거 요약</string>
+    <string name="item_template_name">템플릿 이름</string>
+    <string name="item_onboarding_page_title">페이지 제목</string>
+    <string name="item_onboarding_page_subtitle">페이지 소제목</string>
+    <string name="item_onboarding_page_description">여기 페이지 설명을 입력합니다</string>
+    <string name="item_onboarding_page_button">계속</string>
+    <string name="dialog_notification_history_title">알림 기록</string>
+    <string name="behavior_wave_to_stop_description">화면 위에서 손을 흔들어 알림 읽기를 즉시 멈춥니다</string>
+    <string name="behavior_great_for">유용한 경우: 오피스에서 사용하는 경우, 접근성</string>
+    <string name="content_cap_help_message">
+내용 길이 제한은 각 알림을 얼마나 읽을지 제한합니다:<br/><br/><b>단어 수</b> - 첫 N개의 단어만 읽습니다<br/>• 중요한 정보가 첫머리에 등장하는 알림에 적합합니다<br/>• 대부분의 언어에 잘 작동합니다<br/>• <b>주의:</b> 알림 제목과 본문의 단어 수가 합계 집계됩니다<br/>• 예: Payment of $50.00 from John Smith for lunch → Payment of $50.00 from John<br/><br/><b>문장 수</b> - 첫 N개의 문장만 읽습니다<br/>• 더 자연스러운 알림 읽기<br/>• 다국어에 대응한 스마트 문장 감지 기능 사용<br/>• 이메일 줄 바꿈을 처리함<br/>• <b>주의:</b> 알림 제목에 마침표가 없으면 하나의 문장으로 취급되지 않습니다<br/>• 예: Hello! How are you today? → Hello!<br/><br/><b>시간 제한</b> - N초 후 멈춤<br/>• 모든 언어에 사용 가능<br/>• 예측 가능한 알림 읽기 길이<br/>• 일관성 있는 타이밍<br/>• 예: 내용 길이와 무관하게 10초 후 중지<br/><br/><b>팁:</b><br/>• 대부분의 사용자에게 단어 수를 권장합니다<br/>• 문장 수는 자연스럽지만 정확도가 떨어집니다<br/>• 시간 제한은 모든 경우에 잘 작동하며 예측 가능합니다<br/>• 모든 옵션은 기존 말하기 템플릿에 대해 적용됩니다<br/>• 흔들어 멈추기와 결합하여 제어를 극대화하세요
+</string>
+    <string name="dev_logging_configuration_title">📝 기록 설정</string>
+    <string name="behavior_audio_ducking_warning">
+오디오 작게 모드는 기기 및 안드로이드 버전에 따라 다르게 동작합니다. 일부 기기는 특정 앱이나 오디오 스트림의 음량을 제대로 줄이지 못할 수 있습니다.
+</string>
+    <string name="behavior_audio_ducking_tip">
+음량 줄이기가 오작동하면: 음성 설정에서 다른 오디오 스트림(\'통화\'나 \'알림\')을 선택하세요. \'미디어\' 스트림은 음악과 함께 알림 읽기 소리까지 줄어들 수 있기 때문에 권장하지 않습니다.
+</string>
+    <string name="behavior_wave_sensor_info">
+기기마다 센서가 다르게 작동합니다. 일부 기기는 \'가까움\', \'멂\'만 인식하기도 하고, 일부 기기는 정확한 값을 인식합니다.\n \n이 막대가 극단적으로 움직여도 정상입니다!
+</string>
+    <string name="specific_voice_warning_dialog_message">
+SpeakThat은 하나의 음성만 지원합니다. \n\n✅ 문제가 없는 경우:\n• 선택한 언어와 동일한 언어의 알림\n• 사용자가 하나의 언어만 사용하는 경우\n• 가장 흔한 알림 패턴\n\n⚠️ 문제 발생 가능:\n• 여러 언어로 알림을 받을 경우, 일부 알림이 제대로 읽히지 않을 수 있습니다.\n• 하나의 알림에 여러 언어가 섞인 경우 이해하기 어려울 수 있습니다\n• 일부 문자나 억양이 제대로 발음되지 않을 수 있습니다\n\n💡 권장:\n• 알림에서 가장 자주 사용되는 언어에 해당하는 음성을 고르세요\n• 특정 음성이 아닌 언어 및 지역 설정을 사용하세요\n• 실제 알림으로 작동을 테스트해 보세요\n\n🔮 개발 계획:\n• 다국어 음성 지원 예정\n• 자동 언어 인식 및 음성 변경\n• 둘 이상의 언어가 섞인 알림 처리\n\n현재 다국어 사용자에게는 언어 및 지역 설정을 권장합니다. 여러 내용 유형에 자동으로 대응하기 때문입니다.
+</string>
+    <string name="dev_disable_media_fallback_description">
+미디어 동작에서 대체 수단을 사용하지 않습니다. 기능이 동작하지 않아도 다른 방식을 시도하지 않습니다. 빠른 문제 파악을 돕습니다. 참고: 이 옵션을 비활성화하면 음량 줄이기가 실패할 경우 오디오가 일시정지됩니다. 일시정지에 실패하면, 오디오 포커스 없이 알림을 그대로 읽습니다.
+</string>
+    <string name="dev_starting_log_display">기록 화면 시작 중...\n여기에 기록이 실시간으로 표시됩니다.\n</string>
+    <string name="tts_troubleshooting_message">
+텍스트 읽어주기가 계속 실패하면:\n\n1. 시스템 설정 > 접근성 > 텍스트 읽어주기 출력을 확인하세요\n2. Google TTS가 설치되어 기본값으로 설정되었는지 확인하세요\n3. 앱을 재실행하세요\n4. 문제가 계속되면 기기를 재시동하세요
+</string>
+</resources>
