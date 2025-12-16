@@ -1550,6 +1550,7 @@ Notification permission denied - SpeakThat notifications may not appear
 </string>
     <string name="main_notification_title_active">SpeakThat Active</string>
     <string name="main_notification_content_tap_settings">Tap to open SpeakThat settings</string>
+    <string name="main_notification_action_open_app">SpeakThat を開く！</string>
     
     <!-- Audio Ducking Feature -->
     <string name="dev_enable_audio_ducking">オーディオダッキングを有効にする</string>

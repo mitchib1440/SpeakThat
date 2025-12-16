@@ -1215,6 +1215,7 @@ SpeakThat을 유용하게 사용하셨다면, Google Play 스토어에 사용 �
 </string>
     <string name="review_reminder_title">SpeakThat을 유용하게 쓰고 계신가요?</string>
     <string name="main_notification_content_tap_settings">탭하여 SpeakThat 설정을 여세요</string>
+    <string name="main_notification_action_open_app">SpeakThat 열기!</string>
     <string name="main_notification_title_active">SpeakThat 활성 상태</string>
     <string name="main_notification_permission_denied">알림 접근 권한 거부됨 - SpeakThat 알림이 표시되지 않을 수 있습니다</string>
     <string name="main_notification_permission_granted">알림 접근 권한 허용됨</string>

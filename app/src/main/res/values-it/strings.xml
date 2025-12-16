@@ -511,5 +511,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_silent_mode_switch_label">Rispetta modalità Silenzioso</string>
     <string name="behavior_vibrate_mode_switch_label">Rispetta modalità Vibrazione</string>
     <string name="behavior_audio_mode_benefits">✨ Vantaggi:\n\n• Evita audio indesiderato in Silenzioso\n• Voce opzionale in Vibrazione\n• Si adatta a riunioni/concentrazione\n• Funziona con i pulsanti del volume</string>
+    <string name="main_notification_action_open_app">Apri SpeakThat!</string>
 </resources>
 

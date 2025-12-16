@@ -1681,6 +1681,7 @@ Permiso de notificación denegado - Las notificaciones pueden no aparecer
 </string>
     <string name="main_notification_title_active">SpeakThat activo</string>
     <string name="main_notification_content_tap_settings">Toca para abrir la configuración de SpeakThat</string>
+    <string name="main_notification_action_open_app">Abre SpeakThat!</string>
     <!-- Audio Ducking Feature -->
     <string name="dev_enable_audio_ducking">Habilitar Reducción de Audio</string>
     <string name="dev_enable_audio_ducking_description">

@@ -1707,6 +1707,7 @@ Benachrichtigungsberechtigung verweigert - SpeakThat Benachrichtigungen werden m
 </string>
     <string name="main_notification_title_active">SpeakThat aktiv</string>
     <string name="main_notification_content_tap_settings">Zum Öffnen der SpeakThat Einstellungen tippen</string>
+    <string name="main_notification_action_open_app">SpeakThat öffnen!</string>
     <!-- Review Reminder Strings -->
     <string name="review_reminder_title">Gefällt Ihnen SpeakThat?</string>
     <string name="review_reminder_message">

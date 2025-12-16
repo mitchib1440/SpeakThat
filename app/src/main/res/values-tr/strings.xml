@@ -1647,6 +1647,7 @@ Bildirim izni reddedildi - SpeakThat bildirimleri görünmeyebilir
 </string>
     <string name="main_notification_title_active">SpeakThat Aktif</string>
     <string name="main_notification_content_tap_settings">SpeakThat ayarlarını açmak için dokunun</string>
+    <string name="main_notification_action_open_app">SpeakThat uygulamasını aç!</string>
     <!-- Audio Ducking Feature -->
     <string name="dev_enable_audio_ducking">Ses Kısma Özelliğini Etkinleştir</string>
     <string name="dev_enable_audio_ducking_description">

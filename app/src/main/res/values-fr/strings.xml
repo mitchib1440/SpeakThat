@@ -1714,6 +1714,7 @@ Autorisation Notification refusée. Les notifications de SpeakThat pourraient ne
 </string>
     <string name="main_notification_title_active">SpeakThat activé</string>
     <string name="main_notification_content_tap_settings">Appuyez pour ouvrir les réglages de SpeakThat</string>
+    <string name="main_notification_action_open_app">Ouvrir SpeakThat !</string>
     <string name="review_reminder_title">Vous appréciez SpeakThat ?</string>
     <string name="review_reminder_message">
 Si vous appréciez SpeakThat, veuillez envisager de laisser un commentaire sur Google Play Store. Votre revue aidera les autres utilisateurs à découvrir l\'application et supporter de futurs développements.

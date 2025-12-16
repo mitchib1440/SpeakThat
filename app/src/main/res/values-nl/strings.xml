@@ -1649,6 +1649,7 @@ Meldingsmachtiging geweigerd - SpeakThat! meldingen worden mogelijk niet weergeg
 </string>
     <string name="main_notification_title_active">SpreakThat! Actief</string>
     <string name="main_notification_content_tap_settings">Tik om SpreakThat! instellingen te openen</string>
+    <string name="main_notification_action_open_app">SpeakThat openen!</string>
     <!-- Audio Ducking Feature -->
     <string name="dev_enable_audio_ducking">Audio Ducking Inschakelen</string>
     <string name="dev_enable_audio_ducking_description">
