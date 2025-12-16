@@ -309,7 +309,7 @@ SpeakThat! Made in the UK! That means it's badly engineered and will break if yo
 SpeakThat! As seen on TV! That is, as long as you watched How To Men's video on a TV!
 SpeakThat! I don't even have any allergies! Bet you're jealous!
 SpeakThat! Better at podcasting than Logan Paul!
-SpeakThat! Stands with the Ukraine!
+SpeakThat! Stands with Ukraine!
 SpeakThat! Better for free speech than Xi Jinping!
 SpeakThat! Hasn't been ruined by Elon Musk!
 SpeakThat! Doesn't have a monopoly on notification readers!
@@ -318,7 +318,7 @@ SpeakThat! More free than the Freedom Phone!
 SpeakThat! Better with numbers than the imperial system!
 SqueakThat! Wait, I meant SpeakThat!
 SpeakThat! Don't wear my name out!
-SpeakThat! Peter Piper picked a peck of pickled pineapples!
+SpeakThat! Peter Piper picked a peck of pickled peppers, though his pinnacle picking profession had proudly peaked prior to previously proven points of pineapple produce production. 'What a plonker,' said the pillock!
 SpeakThat! Remember to wash your Irish wristwatch!
 SpeakThat! My developer often gets curious about people's use of this app. But he will never know, as I keep it all private!
 SpeakThat! The pinnacle of local computing!
@@ -427,9 +427,11 @@ SpeakThat! I am powered by caffeine, Kotlin, and a little bit of Java.
 SpeakThat! Android is flexible. Sometimes a little too flexible.
 SpeakThat! Android giveth. OEMs taketh away.
 SpeakThat! Ninety percent of my bugs were caused by the last ten percent of features.
-SpeakThat! I worked fine on my developer’s phone. Classic.
+SpeakThat! I worked fine on my developer’s phone.
 SpeakThat! Somewhere, a Logcat entry knows what really happened.
 SpeakThat! If a setting looks scary, it probably is.
 SpeakThat! I run on Java, which also happens to be coffee. Coincidence? Probably not.
 SpeakThat! If you tap me before my coffee, I might throw an exception.
 SpeakThat! I just realised the Java logo is a cup of coffee. No wonder the language keeps me awake at night.
+SpeakThat! The building is a symbol, as is the act of destroying it. Symbols are given power by people. Alone, a symbol is meaningless, but with enough people, blowing up a building can change the world.
+SpeakThat! I'm the god of notifications.

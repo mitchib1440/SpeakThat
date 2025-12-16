@@ -73,24 +73,6 @@
 
                     </FrameLayout>
 
-                    <!-- Analytics Button -->
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/bg_advanced_voice_section">
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnShowAnalytics"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/dev_analytics"
-                            android:background="@android:color/transparent"
-                            android:textColor="@color/white_100"
-                            style="@style/Widget.Material3.Button.TextButton" />
-
-                    </FrameLayout>
-
                     <!-- Battery Report Button -->
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -175,60 +157,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/dev_test_rules"
-                            android:background="@android:color/transparent"
-                            android:textColor="@color/white_100"
-                            style="@style/Widget.Material3.Button.TextButton" />
-
-                    </FrameLayout>
-
-                    <!-- Review Reminder Test Button -->
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/bg_advanced_voice_section">
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnTestReviewReminder"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/dev_test_review_reminder"
-                            android:background="@android:color/transparent"
-                            android:textColor="@color/white_100"
-                            style="@style/Widget.Material3.Button.TextButton" />
-
-                    </FrameLayout>
-
-                    <!-- Reset Review Reminder Button -->
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/bg_advanced_voice_section">
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnResetReviewReminder"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/dev_reset_review_reminder"
-                            android:background="@android:color/transparent"
-                            android:textColor="@color/white_100"
-                            style="@style/Widget.Material3.Button.TextButton" />
-
-                    </FrameLayout>
-
-                    <!-- Review Reminder Stats Button -->
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/bg_advanced_voice_section">
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnReviewReminderStats"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/dev_review_reminder_stats"
                             android:background="@android:color/transparent"
                             android:textColor="@color/white_100"
                             style="@style/Widget.Material3.Button.TextButton" />

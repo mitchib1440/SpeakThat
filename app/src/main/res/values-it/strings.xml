@@ -501,5 +501,16 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="statistics_summary_read_and_taps">Notifiche lette: %1$d\nTocchi al logo SpeakThat: %2$d</string>
     <string name="statistics_logo_taps_label">Tocchi al logo SpeakThat</string>
     <string name="statistics_apps_read_list_label">Elenco app lette</string>
+    <!-- Behavior Settings - System Modes Group -->
+    <string name="section_honor_system_modes">Honour System Modes</string>
+    <string name="behavior_system_modes_description">Keep SpeakThat quiet when your device is in Do Not Disturb, on a call, or using silent or vibrate modes. Toggle each option below.</string>
+    <!-- Behavior Settings - Audio Mode -->
+    <string name="section_honor_audio_mode">Rispetta la modalità audio</string>
+    <string name="behavior_audio_mode_description">Scegli come si comporta SpeakThat in Silenzioso e Vibrazione. Mantieni entrambi silenziosi oppure consenti la voce in Vibrazione mentre Silenzioso resta muto.</string>
+    <string name="behavior_audio_mode_recommendation">Consigliato: Rispetta Silenzioso e Vibrazione</string>
+    <string name="behavior_silent_mode_switch_label">Rispetta modalità Silenzioso</string>
+    <string name="behavior_vibrate_mode_switch_label">Rispetta modalità Vibrazione</string>
+    <string name="behavior_audio_mode_benefits">✨ Vantaggi:\n\n• Evita audio indesiderato in Silenzioso\n• Voce opzionale in Vibrazione\n• Si adatta a riunioni/concentrazione\n• Funziona con i pulsanti del volume</string>
+    <string name="main_notification_action_open_app">Apri SpeakThat!</string>
 </resources>
 

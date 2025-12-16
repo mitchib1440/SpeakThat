@@ -500,5 +500,16 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="statistics_summary_read_and_taps">الإشعارات المقروءة: %1$d\nنقرات شعار SpeakThat: %2$d</string>
     <string name="statistics_logo_taps_label">نقرات شعار SpeakThat</string>
     <string name="statistics_apps_read_list_label">قائمة التطبيقات التي تمت قراءتها</string>
+    <!-- Behavior Settings - System Modes Group -->
+    <string name="section_honor_system_modes">Honour System Modes</string>
+    <string name="behavior_system_modes_description">Keep SpeakThat quiet when your device is in Do Not Disturb, on a call, or using silent or vibrate modes. Toggle each option below.</string>
+    <!-- Behavior Settings - Audio Mode (split) -->
+    <string name="section_honor_audio_mode">Honour Audio Mode</string>
+    <string name="behavior_audio_mode_description">Choose how SpeakThat behaves in Silent and Vibrate. Keep both quiet, or let Vibrate keep talking while Silent stays muted.</string>
+    <string name="behavior_audio_mode_recommendation">Recommended: Keep both Silent and Vibrate honoured</string>
+    <string name="behavior_silent_mode_switch_label">Honour Silent mode</string>
+    <string name="behavior_vibrate_mode_switch_label">Honour Vibrate mode</string>
+    <string name="behavior_audio_mode_benefits">✨ Benefits:\n\n• Prevents unwanted audio in Silent\n• Optional speech while on Vibrate\n• Matches your meeting/focus needs\n• Works with physical volume buttons</string>
+    <string name="main_notification_action_open_app">افتح SpeakThat!</string>
 </resources>
 

@@ -910,7 +910,7 @@ Activez si vous éprouvez des notifications en double
 </string>
     <string name="behavior_deduplication_switch_label">Activer la déduplication de notifications</string>
     <string name="behavior_deduplication_benefits">
-Avantages :\n\n• Empêche doublons ennuyeux\n• Sauve la batterie en évitant les lectures inutiles\n• Fonctionne automatiquement dans une fenêtre de 5 secondes\n• Aide avec les applications qui publient de nombreuses notifications
+Avantages :\n\n• Empêche doublons ennuyeux\n• Sauve la batterie en évitant les lectures inutiles\n• Fonctionne automatiquement dans une fenêtre de 30 secondes\n• Aide avec les applications qui publient de nombreuses notifications
 </string>
     <string name="section_dismissal_memory">Mémoire d\'effacement</string>
     <string name="behavior_dismissal_memory_description">
@@ -935,14 +935,11 @@ Pendant quelle durée mémoriser les notifications effacées
     <string name="dialog_title_dismissal_memory">Mémoire d\'effacement</string>
     <string name="dialog_dismissal_memory_explanation"><![CDATA[La mémoire d\'effacement évite de relire les notifications que vous avez effacées :<br/><br/><b>Fonctionnement :</b><br/>Quand vous effacez une notification, SpeakThat la mémorise pendant une durée configurable. Si la même notification réapparaît pendant cette période, elle ne sera pas relue.<br/><br/><b>Utilité :</b><br/>• <b>Notifications effacées</b> - évite de les relire après les avoir balayées<br/>• <b>Mises à jour</b> - Certaines applications réémettent leurs notifications après avoir été mises à jour<br/>• <b>Rafraîchissement du système</b> - Android peut réémettre des notifications lors d\'évènements système<br/>• <b>Reconnexions au réseau</b> - Les applications peuvent réémettre leurs notifications quand la connectivité est rétablie<br/><br/><b>Fonctionnement :</b><br/>• Suit les notifications effacées par le hachage de leur contenu<br/>• Délai de mémorisation configurable (5 minutes à 1 heure)<br/>• Nettoyage automatique pour éviter l\'encombrement de la mémoire<br/>• Respectueux de la batterie par un stockage efficace<br/>• Journalisation détaillée pour diagnostique<br/><br/><b>Conseil :</b> Activez cette option si vos notifications sont relues après effacement. Recommandé pour la majorité des utilisateurs !]]></string>
     <string name="section_honor_audio_mode">Respecter le mode audio</string>
-    <string name="behavior_audio_mode_description">
-Ne lit les notifications que si l\'appareil n\'est pas en mode silence ou vibreur
-</string>
-    <string name="behavior_audio_mode_recommendation">Recommandé : Activez cette fonctionnalité</string>
-    <string name="behavior_audio_mode_switch_label">Respecter le mode audio (son seul)</string>
-    <string name="behavior_audio_mode_benefits">
-✨ Avantages:\n\n• Évite les sons indésirables quand votre téléphone est en mode muet\n• Respecte les réglages audio de votre appareil\n• Fonctionne avec les mode Silencieux et Vibreur\n• Garanti que les notification ne sont lues que lorsque vous pouvez les entendre
-</string>
+    <string name="behavior_audio_mode_description">Choisissez comment SpeakThat se comporte en mode Silencieux et Vibreur. Laissez les deux silencieux ou autorisez la parole en Vibreur tandis que Silencieux reste muet.</string>
+    <string name="behavior_audio_mode_recommendation">Recommandé : respecter Silencieux et Vibreur</string>
+    <string name="behavior_silent_mode_switch_label">Respecter le mode Silencieux</string>
+    <string name="behavior_vibrate_mode_switch_label">Respecter le mode Vibreur</string>
+    <string name="behavior_audio_mode_benefits">✨ Avantages:\n\n• Empêche l’audio indésirable en Silencieux\n• Parole optionnelle en Vibreur\n• S’adapte aux réunions/concentration\n• Fonctionne avec les boutons de volume</string>
     <string name="section_shake_to_stop">Secouer pour arrêter</string>
     <string name="behavior_shake_description">
 Arrête instantanément la lecture en secouant votre appareil
@@ -1229,7 +1226,6 @@ Hé ! C\'est Mitchi. Je m\'investis beaucoup dans la réalisation de SpeakThat
     <string name="dev_debug_tools_title">Outils de débogage</string>
     <string name="dev_debug_tools_description">Outils pour déboguer et tester l\'application</string>
     <string name="dev_notification_history">Afficher l\'historique des notifications</string>
-    <string name="dev_analytics">Afficher les statistiques d\'utilisation</string>
     <string name="dev_battery_report">Rapport d\'utilisation de la batterie</string>
     <string name="dev_repair_blacklist">Réparer la liste noire des mots</string>
     <string name="dev_background_monitor">Moniteur du traitement en arrière plan</string>
@@ -1268,7 +1264,7 @@ Choisissez quel langage SpeakThat doit utiliser. Vous pouvez aussi activer le mo
     <string name="onboarding_language_section_title">Langage</string>
     <string name="onboarding_language_help_title">Votre langage n\'est pas proposé ?</string>
     <string name="onboarding_language_help_description">
-Je travaille aussi dur que possible pour supporter plus de langages. S\'il vous plait et si vous le pouvez, contribuez aux traductions sur la page Crowdin !
+Je travaille aussi dur que possible pour supporter plus de langages. S\'il vous plait et si vous le pouvez, contribuez aux traductions sur la page Weblate !
 </string>
     <string name="onboarding_theme_section_title">Thème</string>
     <string name="onboarding_theme_description">Utiliser le mode sombre dans cette application</string>
@@ -1718,6 +1714,7 @@ Autorisation Notification refusée. Les notifications de SpeakThat pourraient ne
 </string>
     <string name="main_notification_title_active">SpeakThat activé</string>
     <string name="main_notification_content_tap_settings">Appuyez pour ouvrir les réglages de SpeakThat</string>
+    <string name="main_notification_action_open_app">Ouvrir SpeakThat !</string>
     <string name="review_reminder_title">Vous appréciez SpeakThat ?</string>
     <string name="review_reminder_message">
 Si vous appréciez SpeakThat, veuillez envisager de laisser un commentaire sur Google Play Store. Votre revue aidera les autres utilisateurs à découvrir l\'application et supporter de futurs développements.
@@ -1725,9 +1722,6 @@ Si vous appréciez SpeakThat, veuillez envisager de laisser un commentaire sur G
     <string name="review_reminder_rate_now">Noter maintenant</string>
     <string name="review_reminder_later">Plus tard peut-être</string>
     <string name="review_reminder_never">Ne pas redemander</string>
-    <string name="dev_test_review_reminder">🧪 Tester le rappel de revue</string>
-    <string name="dev_reset_review_reminder">🔄 Réinitialiser le rappel de revue</string>
-    <string name="dev_review_reminder_stats">📊 Statistiques de rappel de revue</string>
     <string name="tts_engine_label">Moteur de synthèse vocale</string>
     <string name="tts_engine_system_default">Défaut système</string>
     <string name="tts_engine_restart_required">
@@ -1881,4 +1875,7 @@ Veuillez noter que cela ne fonctionnera que si l\'écran est activé.
     <string name="statistics_summary_read_and_taps">Notifications lues : %1$d\nAppuis sur le logo SpeakThat : %2$d</string>
     <string name="statistics_logo_taps_label">Appuis sur le logo SpeakThat</string>
     <string name="statistics_apps_read_list_label">Liste des applications lues</string>
+    <!-- Behavior Settings - System Modes Group -->
+    <string name="section_honor_system_modes">Honour System Modes</string>
+    <string name="behavior_system_modes_description">Keep SpeakThat quiet when your device is in Do Not Disturb, on a call, or using silent or vibrate modes. Toggle each option below.</string>
 </resources>

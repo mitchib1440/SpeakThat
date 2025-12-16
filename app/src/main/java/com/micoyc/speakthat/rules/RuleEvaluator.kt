@@ -579,16 +579,23 @@ class RuleEvaluator(private val context: Context) {
             val isBluetoothA2dpOn = audioManager.isBluetoothA2dpOn
             val isBluetoothScoOn = audioManager.isBluetoothScoOn
             val audioMode = audioManager.mode
+            val isCallOrCommMode = isCallOrCommunicationMode(audioMode)
+            val isScoRoutable = isBluetoothScoOn && isCallOrCommMode
+            val hasAudioRoute = isBluetoothA2dpOn || isScoRoutable
             
-            InAppLogger.logDebug(TAG, "Audio routing check - A2DP: $isBluetoothA2dpOn, SCO: $isBluetoothScoOn, Mode: $audioMode")
+            InAppLogger.logDebug(
+                TAG,
+                "Audio routing check - A2DP: $isBluetoothA2dpOn, SCO: $isBluetoothScoOn, Mode: $audioMode, Call/Comm mode: $isCallOrCommMode"
+            )
             
-            // Consider connected if audio is being routed to Bluetooth
-            val isConnected = isBluetoothA2dpOn || isBluetoothScoOn || 
-                             audioMode == android.media.AudioManager.MODE_IN_COMMUNICATION ||
-                             audioMode == android.media.AudioManager.MODE_IN_CALL
+            // Conservative fallback: require A2DP, or SCO while in a call/comm mode.
+            if (!hasAudioRoute) {
+                InAppLogger.logDebug(TAG, "Conservative fallback: no audio route to Bluetooth detected (treating as disconnected)")
+                return false
+            }
             
-            InAppLogger.logDebug(TAG, "Audio routing indicates Bluetooth connection: $isConnected")
-            return isConnected
+            InAppLogger.logDebug(TAG, "Conservative fallback: audio route to Bluetooth detected")
+            return true
             
         } catch (e: Throwable) {
             InAppLogger.logError(TAG, "Error checking audio routing: ${e.message}")
@@ -623,21 +630,38 @@ class RuleEvaluator(private val context: Context) {
             val isBluetoothA2dpOn = audioManager.isBluetoothA2dpOn
             val isBluetoothScoOn = audioManager.isBluetoothScoOn
             val audioMode = audioManager.mode
+            val isCallOrCommMode = isCallOrCommunicationMode(audioMode)
+            val isScoRoutable = isBluetoothScoOn && isCallOrCommMode
+            val hasAudioRoute = isBluetoothA2dpOn || isScoRoutable
             
-            InAppLogger.logDebug(TAG, "Audio routing check - A2DP: $isBluetoothA2dpOn, SCO: $isBluetoothScoOn, Mode: $audioMode")
+            InAppLogger.logDebug(
+                TAG,
+                "Audio routing check - A2DP: $isBluetoothA2dpOn, SCO: $isBluetoothScoOn, Mode: $audioMode, Call/Comm mode: $isCallOrCommMode"
+            )
             
-            // Consider connected if audio is being routed to Bluetooth
-            val isConnected = isBluetoothA2dpOn || isBluetoothScoOn || 
-                             audioMode == android.media.AudioManager.MODE_IN_COMMUNICATION ||
-                             audioMode == android.media.AudioManager.MODE_IN_CALL
+            // Conservative fallback: require A2DP, or SCO while in a call/comm mode.
+            if (!hasAudioRoute) {
+                InAppLogger.logDebug(TAG, "Conservative fallback: audio route to required device not confirmed (treating as disconnected)")
+                return false
+            }
             
-            InAppLogger.logDebug(TAG, "Specific device audio routing check result: $isConnected")
-            return isConnected
+            InAppLogger.logDebug(TAG, "Specific device audio routing check result (conservative): $hasAudioRoute")
+            return true
             
         } catch (e: Throwable) {
             InAppLogger.logError(TAG, "Error checking specific device audio routing: ${e.message}")
             return false
         }
+    }
+    
+    /**
+     * Helper to detect whether the current audio mode is indicative of call/communication.
+     * Avoids treating stray SCO flags in MODE_NORMAL as a valid Bluetooth connection.
+     */
+    private fun isCallOrCommunicationMode(mode: Int): Boolean {
+        return mode == android.media.AudioManager.MODE_IN_COMMUNICATION ||
+               mode == android.media.AudioManager.MODE_IN_CALL ||
+               mode == android.media.AudioManager.MODE_CALL_SCREENING
     }
     
     private fun evaluateScreenStateTrigger(trigger: Trigger): EvaluationResult {

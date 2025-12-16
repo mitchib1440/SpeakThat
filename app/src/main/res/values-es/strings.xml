@@ -851,18 +851,15 @@ Evita que la misma notificación sea leída varias veces consecutivamente
     <string name="behavior_deduplication_recommendation">Activar si experimenta notificaciones duplicadas</string>
     <string name="behavior_deduplication_switch_label">Activar deduplicación de notificación</string>
     <string name="behavior_deduplication_benefits">
-✨ Beneficios:\n\n• Evita molestas lecturas repetidas\n• Ahorra batería evitando innecesarios TTS\n• Funciona automáticamente con una ventana de 5-segundo\n• Ayuda con aplicaciones que publican notificaciones múltiples
+✨ Beneficios:\n\n• Evita molestas lecturas repetidas\n• Ahorra batería evitando innecesarios TTS\n• Funciona automáticamente con una ventana de 30 segundos\n• Ayuda con aplicaciones que publican notificaciones múltiples
 </string>
     <!-- Behavior Settings - Audio Mode -->
     <string name="section_honor_audio_mode">Considerar modo audio</string>
-    <string name="behavior_audio_mode_description">
-Sólo lee notificaciones cuando el dispositivo está en modo sonido (no silencioso o en vibración)
-</string>
-    <string name="behavior_audio_mode_recommendation">Recomendado: Activar esta función</string>
-    <string name="behavior_audio_mode_switch_label">Considerar modo audio (solo sonido)</string>
-    <string name="behavior_audio_mode_benefits">
-✨ Beneficios:\n\n• Evita el audio no deseado cuando el teléfono está silenciado\n• Respeta la configuración de audio de su dispositivo\n• Funciona con modos de vibración y silencio\n• Asegura que las notificaciones se reproduzcan solo cuando pueda oírlas
-</string>
+    <string name="behavior_audio_mode_description">Elige cómo se comporta SpeakThat en Silencio y Vibración. Mantén ambos silenciosos o permite hablar en Vibración mientras Silencio queda mudo.</string>
+    <string name="behavior_audio_mode_recommendation">Recomendado: Respetar Silencio y Vibración</string>
+    <string name="behavior_silent_mode_switch_label">Respetar modo Silencio</string>
+    <string name="behavior_vibrate_mode_switch_label">Respetar modo Vibración</string>
+    <string name="behavior_audio_mode_benefits">✨ Beneficios:\n\n• Evita audio no deseado en Silencio\n• Habla opcional en Vibración\n• Se adapta a reuniones/enfoque\n• Funciona con los botones de volumen</string>
     <!-- Behavior Settings - Shake to Stop -->
     <string name="section_shake_to_stop">Sacudir para detener</string>
     <string name="behavior_shake_description">
@@ -1156,7 +1153,6 @@ Reporta fallos, errores o comportamiento inesperado
     <string name="dev_debug_tools_title">🛠️ Herramientas de depuración</string>
     <string name="dev_debug_tools_description">Herramientas para depurar y probar la aplicación</string>
     <string name="dev_notification_history">📋 Mostrar historial de notificaciones</string>
-    <string name="dev_analytics">📊 Mostrar análisis de uso</string>
     <string name="dev_battery_report">🔋 Informe de optimización de batería</string>
     <string name="dev_repair_blacklist">🛠️ Reparar palabras prohibidas</string>
     <string name="dev_background_monitor">🛰️ Monitor de proceso de fondo</string>
@@ -1685,6 +1681,7 @@ Permiso de notificación denegado - Las notificaciones pueden no aparecer
 </string>
     <string name="main_notification_title_active">SpeakThat activo</string>
     <string name="main_notification_content_tap_settings">Toca para abrir la configuración de SpeakThat</string>
+    <string name="main_notification_action_open_app">Abre SpeakThat!</string>
     <!-- Audio Ducking Feature -->
     <string name="dev_enable_audio_ducking">Habilitar Reducción de Audio</string>
     <string name="dev_enable_audio_ducking_description">
@@ -1737,4 +1734,7 @@ Debido a inconsistencias en cómo diferentes dispositivos manejan las solicitude
     <string name="statistics_summary_read_and_taps">Notificaciones leídas: %1$d\nToques al logotipo de SpeakThat: %2$d</string>
     <string name="statistics_logo_taps_label">Toques al logotipo de SpeakThat</string>
     <string name="statistics_apps_read_list_label">Lista de aplicaciones leídas</string>
+    <!-- Behavior Settings - System Modes Group -->
+    <string name="section_honor_system_modes">Honour System Modes</string>
+    <string name="behavior_system_modes_description">Keep SpeakThat quiet when your device is in Do Not Disturb, on a call, or using silent or vibrate modes. Toggle each option below.</string>
 </resources>

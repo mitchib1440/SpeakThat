@@ -61,6 +61,7 @@ object PersistentIndicatorManager {
 
         val title = context.getString(R.string.main_notification_title_active)
         val content = context.getString(R.string.main_notification_content_tap_settings)
+        val actionLabel = context.getString(R.string.main_notification_action_open_app)
 
         val notification = NotificationCompat.Builder(context, SpeakThatNotificationChannel.CHANNEL_ID)
             .setContentTitle(title)
@@ -72,7 +73,7 @@ object PersistentIndicatorManager {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(openAppPendingIntent)
             .setVisibility(NotificationCompat.VISIBILITY_SECRET)
-            .addAction(R.drawable.speakthaticon, content, openAppPendingIntent)
+            .addAction(R.drawable.speakthaticon, actionLabel, openAppPendingIntent)
             .build()
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {

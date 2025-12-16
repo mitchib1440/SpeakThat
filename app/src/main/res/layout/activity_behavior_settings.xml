@@ -614,7 +614,7 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Do Not Disturb Section -->
+            <!-- Honour System Modes Section -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -644,12 +644,12 @@
                             android:layout_marginEnd="16dp"
                             android:src="@drawable/ic_do_not_disturb_off_24"
                             app:tint="@color/white_100"
-                            android:contentDescription="Honour Do Not Disturb" />
+                            android:contentDescription="Honour system modes" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/section_honor_dnd"
+                            android:text="@string/section_honor_system_modes"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -659,60 +659,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/behavior_dnd_description"
+                        android:text="@string/behavior_system_modes_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="8dp" />
-
-                    <!-- Recommendation Box -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:background="@drawable/bg_advanced_voice_section"
-                        android:padding="12dp"
-                        android:layout_marginBottom="16dp"
-                        android:gravity="center_vertical">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginEnd="8dp">
-
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/lightbulb_2_24px"
-                                android:contentDescription="Tip"
-                                android:layout_marginEnd="6dp"
-                                app:tint="@color/purple_card_text_primary" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/behavior_dnd_recommendation"
-                                android:textSize="14sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/purple_card_text_primary" />
-
-                        </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/btnDoNotDisturbInfo"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/help_24px"
-                            android:contentDescription="More Info"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                            android:padding="4dp"
-                            app:tint="@color/white_100" />
-
-                    </LinearLayout>
+                        android:layout_marginBottom="16dp" />
 
                     <!-- Do Not Disturb Toggle -->
                     <LinearLayout
@@ -720,7 +670,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp">
+                        android:layout_marginBottom="12dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -741,126 +691,13 @@
 
                     </LinearLayout>
 
-                    <!-- Benefits Section -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="4dp"
-                        android:text="@string/behavior_dnd_benefits"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Phone Calls Section -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="@android:color/transparent"
-                app:strokeWidth="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    android:background="@drawable/gradient_card_subtle_right">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginEnd="16dp"
-                            android:src="@drawable/ic_phone_disabled_24"
-                            android:tint="@color/white_100"
-                            android:contentDescription="Honour Phone Calls" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/section_honor_phone_calls"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/behavior_phone_calls_description"
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="8dp" />
-
-                    <!-- Recommendation Box -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:background="@drawable/bg_advanced_voice_section"
-                        android:padding="12dp"
-                        android:layout_marginBottom="16dp"
-                        android:gravity="center_vertical">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginEnd="8dp">
-
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/lightbulb_2_24px"
-                                android:contentDescription="Tip"
-                                android:layout_marginEnd="6dp"
-                                app:tint="@color/purple_card_text_primary" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/behavior_phone_calls_recommendation"
-                                android:textSize="14sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/purple_card_text_primary" />
-
-                        </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/btnPhoneCallsInfo"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/help_24px"
-                            android:contentDescription="More Info"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                            android:padding="4dp"
-                            app:tint="@color/white_100" />
-
-                    </LinearLayout>
-
                     <!-- Phone Calls Toggle -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp">
+                        android:layout_marginBottom="12dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -881,14 +718,57 @@
 
                     </LinearLayout>
 
-                    <!-- Benefits Section -->
-                    <TextView
+                    <!-- Audio Mode Toggles -->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/behavior_phone_calls_benefits"
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:lineSpacingExtra="4dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/behavior_silent_mode_switch_label"
+                            android:textSize="16sp"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switchHonourSilentMode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/behavior_vibrate_mode_switch_label"
+                            android:textSize="16sp"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switchHonourVibrateMode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -1020,15 +900,6 @@
                             app:trackTint="@color/switch_track_color" />
 
                     </LinearLayout>
-
-                    <!-- Benefits Section -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/behavior_deduplication_benefits"
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:lineSpacingExtra="4dp" />
 
                 </LinearLayout>
 
@@ -1234,155 +1105,6 @@
                         </RadioGroup>
 
                     </LinearLayout>
-
-                    <!-- Benefits Section -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/behavior_dismissal_memory_benefits"
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:lineSpacingExtra="4dp" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Audio Mode Section -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="@android:color/transparent"
-                app:strokeWidth="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    android:background="@drawable/gradient_card_subtle_right">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginEnd="16dp"
-                            android:src="@drawable/ic_mobile_sound_off_24"
-                            android:tint="@color/white_100"
-                            android:contentDescription="Honour Audio Mode" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/section_honor_audio_mode"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/behavior_audio_mode_description"
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="8dp" />
-
-                    <!-- Recommendation Box -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:background="@drawable/bg_advanced_voice_section"
-                        android:padding="12dp"
-                        android:layout_marginBottom="16dp"
-                        android:gravity="center_vertical">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginEnd="8dp">
-
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/lightbulb_2_24px"
-                                android:contentDescription="Tip"
-                                android:layout_marginEnd="6dp"
-                                app:tint="@color/purple_card_text_primary" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/behavior_audio_mode_recommendation"
-                                android:textSize="14sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/purple_card_text_primary" />
-
-                        </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/btnAudioModeInfo"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/help_24px"
-                            android:contentDescription="More Info"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                            android:padding="4dp"
-                            app:tint="@color/white_100" />
-
-                    </LinearLayout>
-
-                    <!-- Audio Mode Toggle -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/behavior_audio_mode_switch_label"
-                            android:textSize="16sp"
-                            android:textColor="@color/purple_card_text_primary" />
-
-                        <com.google.android.material.materialswitch.MaterialSwitch
-                            android:id="@+id/switchHonourAudioMode"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:thumbTint="@color/switch_thumb_color"
-                            android:trackTint="@color/switch_track_color"
-                            app:thumbTint="@color/switch_thumb_color"
-                            app:trackTint="@color/switch_track_color" />
-
-                    </LinearLayout>
-
-                    <!-- Benefits Section -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/behavior_audio_mode_benefits"
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:lineSpacingExtra="4dp" />
 
                 </LinearLayout>
 
@@ -2531,13 +2253,21 @@
                             app:boxBackgroundMode="outline"
                             app:boxStrokeColor="@color/white_100">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <AutoCompleteTextView
                                 android:id="@+id/editAppPackage"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/app_package_hint"
+                                android:minHeight="56dp"
+                                android:hint="@string/hint_search_apps_or_package"
                                 android:inputType="text"
-                                android:textColor="@color/purple_card_text_primary" />
+                                android:completionThreshold="1"
+                                android:dropDownHeight="200dp"
+                                android:textSize="16sp"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:paddingStart="16dp"
+                                android:paddingEnd="16dp"
+                                android:paddingTop="16dp"
+                                android:paddingBottom="16dp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -2733,15 +2463,6 @@
                             android:textColor="@color/purple_card_text_primary" />
 
                     </RadioGroup>
-
-                    <!-- Benefits Section -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/behavior_delay_benefits"
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:lineSpacingExtra="4dp" />
 
                 </LinearLayout>
 

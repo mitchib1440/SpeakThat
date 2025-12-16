@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="24dp"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp">
 
     <!-- Title -->
     <TextView
@@ -17,160 +19,177 @@
         android:gravity="center"
         android:layout_marginBottom="16dp" />
 
-    <!-- Original Notification -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dialog_filter_suggestion_original"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="?android:attr/textColorPrimary"
-        android:layout_marginBottom="4dp" />
-
-    <com.google.android.material.card.MaterialCardView
+    <!-- Scrollable content to keep buttons visible on small screens -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/filterSuggestionScroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="2dp"
-        app:cardBackgroundColor="?attr/colorSurfaceVariant">
-
-        <TextView
-            android:id="@+id/textOriginalNotification"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_filter_suggestion_sample"
-            android:textSize="14sp"
-            android:textColor="?android:attr/textColorPrimary"
-            android:padding="12dp" />
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <!-- Filter Options -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dialog_filter_suggestion_choose"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="?android:attr/textColorPrimary"
-        android:layout_marginBottom="12dp" />
-
-    <RadioGroup
-        android:id="@+id/radioGroupFilterType"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="false"
+        android:overScrollMode="ifContentScrolls"
         android:layout_marginBottom="16dp">
 
-        <RadioButton
-            android:id="@+id/radioPattern"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/filter_suggestion_smart_pattern"
-            android:checked="true"
-            android:textSize="14sp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textPatternPreview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_suggestion_smart_preview"
-            android:textSize="12sp"
-            android:textColor="?android:attr/textColorSecondary"
-            android:layout_marginStart="32dp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="monospace" />
+            <!-- Original Notification -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dialog_filter_suggestion_original"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="?android:attr/textColorPrimary"
+                android:layout_marginBottom="4dp" />
 
-        <RadioButton
-            android:id="@+id/radioKeywords"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_suggestion_keywords"
-            android:textSize="14sp" />
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="?attr/colorSurfaceVariant">
 
-        <TextView
-            android:id="@+id/textKeywordsPreview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_suggestion_keywords_preview"
-            android:textSize="12sp"
-            android:textColor="?android:attr/textColorSecondary"
-            android:layout_marginStart="32dp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="monospace" />
+                <TextView
+                    android:id="@+id/textOriginalNotification"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dialog_filter_suggestion_sample"
+                    android:textSize="14sp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:padding="12dp" />
 
-        <RadioButton
-            android:id="@+id/radioExact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_suggestion_exact_match"
-            android:textSize="14sp" />
+            </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/textExactPreview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_suggestion_exact_preview"
-            android:textSize="12sp"
-            android:textColor="?android:attr/textColorSecondary"
-            android:layout_marginStart="32dp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="monospace" />
+            <!-- Filter Options -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dialog_filter_suggestion_choose"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="?android:attr/textColorPrimary"
+                android:layout_marginBottom="12dp" />
 
-        <RadioButton
-            android:id="@+id/radioAppSpecific"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_suggestion_all_notifications"
-            android:textSize="14sp" />
+            <RadioGroup
+                android:id="@+id/radioGroupFilterType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
 
-        <TextView
-            android:id="@+id/textAppSpecificPreview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_suggestion_all_preview"
-            android:textSize="12sp"
-            android:textColor="?android:attr/textColorSecondary"
-            android:layout_marginStart="32dp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="monospace" />
+                <RadioButton
+                    android:id="@+id/radioPattern"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/filter_suggestion_smart_pattern"
+                    android:checked="true"
+                    android:textSize="14sp" />
 
-    </RadioGroup>
+                <TextView
+                    android:id="@+id/textPatternPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/filter_suggestion_smart_preview"
+                    android:textSize="12sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="monospace" />
 
-    <!-- Filter Action -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/filter_suggestion_action"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="?android:attr/textColorPrimary"
-        android:layout_marginBottom="8dp" />
+                <RadioButton
+                    android:id="@+id/radioKeywords"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/filter_suggestion_keywords"
+                    android:textSize="14sp" />
 
-    <RadioGroup
-        android:id="@+id/radioGroupFilterAction"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="20dp">
+                <TextView
+                    android:id="@+id/textKeywordsPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/filter_suggestion_keywords_preview"
+                    android:textSize="12sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="monospace" />
 
-        <RadioButton
-            android:id="@+id/radioBlock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_suggestion_block_completely"
-            android:checked="true"
-            android:textSize="14sp"
-            android:layout_marginEnd="16dp" />
+                <RadioButton
+                    android:id="@+id/radioExact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/filter_suggestion_exact_match"
+                    android:textSize="14sp" />
 
-        <RadioButton
-            android:id="@+id/radioPrivate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_suggestion_make_private"
-            android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/textExactPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/filter_suggestion_exact_preview"
+                    android:textSize="12sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="monospace" />
 
-    </RadioGroup>
+                <RadioButton
+                    android:id="@+id/radioAppSpecific"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/filter_suggestion_all_notifications"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/textAppSpecificPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/filter_suggestion_all_preview"
+                    android:textSize="12sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="monospace" />
+
+            </RadioGroup>
+
+            <!-- Filter Action -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/filter_suggestion_action"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="?android:attr/textColorPrimary"
+                android:layout_marginBottom="8dp" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupFilterAction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp">
+
+                <RadioButton
+                    android:id="@+id/radioBlock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/filter_suggestion_block_completely"
+                    android:checked="true"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="16dp" />
+
+                <RadioButton
+                    android:id="@+id/radioPrivate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/filter_suggestion_make_private"
+                    android:textSize="14sp" />
+
+            </RadioGroup>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <!-- Action Buttons -->
     <LinearLayout
@@ -199,4 +218,4 @@
 
     </LinearLayout>
 
-</LinearLayout> 
+</LinearLayout>

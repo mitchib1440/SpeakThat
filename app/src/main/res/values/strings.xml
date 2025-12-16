@@ -73,13 +73,13 @@
     <string name="notification_behavior_dialog_title">Notification Behaviour Options</string>
     <string name="notification_behavior_dialog_message">Choose how SpeakThat handles multiple notifications:
 
-<b>🔄 Interrupt</b> - Stops current notification and reads new one immediately. Best for urgent notifications.
+<b>Interrupt</b> - Stops current notification and reads new one immediately. Best for urgent notifications.
 
-<b>📋 Queue</b> - Finishes current notification, then reads new ones in order. Nothing gets missed.
+<b>Queue</b> - Finishes current notification, then reads new ones in order. Nothing gets missed.
 
-<b>⏭️ Skip</b> - Ignores new notifications while reading. Simple but you might miss important ones.
+<b>⏭Skip</b> - Ignores new notifications while reading. Simple but you might miss important ones.
 
-<b>🧠 Smart (Recommended)</b> - Priority apps interrupt, others queue. Perfect balance of urgency and completeness.
+<b>Smart (Recommended)</b> - Priority apps interrupt, others queue. Perfect balance of urgency and completeness.
 
 Smart mode lets you choose which apps are urgent enough to interrupt (like calls, messages) while other apps wait their turn.</string>
 
@@ -93,32 +93,32 @@ Smart mode lets you choose which apps are urgent enough to interrupt (like calls
     <string name="media_behavior_dialog_title">Media Behaviour Options</string>
     <string name="media_behavior_dialog_message">Choose how SpeakThat handles notifications while music/videos play:
 
-<b>🎵 Ignore</b> - Speaks over your media. Simple but can be disruptive.
+<b>Ignore</b> - Speaks over your media. Simple but can be disruptive.
 
-<b>⏸️ Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow.
+<b>Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow.
 
-<b>🔉 Lower Audio</b> - Temporarily reduces media volume so you can hear both.
+<b>Lower Audio</b> - Temporarily reduces media volume so you can hear both.
 
-<b>🔇 Silence</b> - Doesn\'t speak while media plays. Quiet but you might miss important notifications.
+<b>Silence</b> - Doesn\'t speak while media plays. Quiet but you might miss important notifications.
 
 Lower Audio works like a car radio - it ducks the music down when speaking, then brings it back up.</string>
     
     <string name="shake_to_stop_dialog_title">Shake to Stop Feature</string>
     <string name="shake_to_stop_dialog_message">Shake to Stop lets you instantly silence SpeakThat by shaking your device:
 
-<b>✨ Why it\'s helpful:</b>
+<b>Why it\'s helpful:</b>
 • Stop embarrassing notifications in quiet places
 • Quick control when your hands are busy
 • Works even when screen is off
 • No fumbling for buttons
 
-<b>🎯 How it works:</b>
+<b>How it works:</b>
 • Shake your device firmly (like a dice shake)
 • Current notification stops immediately
 • Queued notifications are cleared
 • New notifications work normally
 
-<b>⚙️ Customization:</b>
+<b>Customization:</b>
 • Adjust sensitivity for your preference
 • Test your shake strength with the meter
 • Works great for both gentle and vigorous shakers
@@ -152,7 +152,7 @@ This feature is especially loved by people who get notifications during meetings
     <string name="wave_to_stop_dialog_title">Wave to Stop Feature</string>
     <string name="wave_to_stop_dialog_message">Wave to Stop lets you instantly silence SpeakThat by waving your hand in front of the device:
 
-<b>✨ Why it\'s helpful:</b>
+<b> Why it\'s helpful:</b>
 • Perfect for users who can\'t shake their device
 • Great for phones on desks or mounts
 • Works with one hand
@@ -598,12 +598,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_calls_description">Prevent notification readouts when you\'re on a phone call</string>
     <string name="behavior_calls_recommendation">Most users should: Enable this feature</string>
     <string name="behavior_calls_checkbox">Honour phone calls</string>
-    <string name="behavior_calls_benefits">✨ Benefits:\n\n• Prevents interruptions during important calls\n• Respects your conversation privacy\n• Works with all types of phone calls\n• Automatic detection of call state</string>
+    <string name="behavior_calls_benefits"> Benefits:\n\n• Prevents interruptions during important calls\n• Respects your conversation privacy\n• Works with all types of phone calls\n• Automatic detection of call state</string>
     <string name="behavior_audio_title">🔇 Honour Audio Mode</string>
     <string name="behavior_audio_description">Only read notifications when your device is in Sound mode (not Silent or Vibrate)</string>
     <string name="behavior_audio_recommendation">Recommended: Enable this feature</string>
     <string name="behavior_audio_checkbox">Honour audio mode (Sound only)</string>
-    <string name="behavior_audio_benefits">✨ Benefits:\n\n• Prevents unwanted audio when phone is muted\n• Respects your device\'s audio settings\n• Works with Silent and Vibrate modes\n• Ensures notifications only play when you can hear them</string>
+    <string name="behavior_audio_benefits">Benefits:\n\n• Prevents unwanted audio when phone is muted\n• Respects your device\'s audio settings\n• Works with Silent and Vibrate modes\n• Ensures notifications only play when you can hear them</string>
 
 
     <string name="behavior_shake_current">Current shake: 0.0</string>
@@ -627,7 +627,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_delay_1s">1 second - Quick pause</string>
     <string name="behavior_delay_2s">2 seconds - Recommended</string>
     <string name="behavior_delay_3s">3 seconds - Extra time to react</string>
-    <string name="behavior_delay_benefits">✨ Benefits:\n\n• Avoids overlap with notification sounds\n• Gives you time to shake-to-cancel\n• Less jarring in quiet environments\n• Perfect for meetings and public spaces</string>
+    <string name="behavior_delay_benefits">Benefits:\n\n• Avoids overlap with notification sounds\n• Gives you time to shake-to-cancel\n• Less jarring in quiet environments\n• Perfect for meetings and public spaces</string>
     <string name="behavior_cooldown_title">Notification Cooldown</string>
     <string name="behavior_cooldown_description">Prevent apps from having multiple notifications read within a specified time period</string>
     <string name="behavior_cooldown_recommendation">Great for: Apps that spam notifications</string>
@@ -729,33 +729,37 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Behavior Settings - Media Volume -->
     <string name="behavior_media_volume_tip">Tip: Lower values make media quieter during notifications</string>
     
+    <!-- Behavior Settings - System Modes Group -->
+    <string name="section_honor_system_modes">Honour System Modes</string>
+    <string name="behavior_system_modes_description">Keep SpeakThat quiet when your device is in Do Not Disturb, on a call, or using silent or vibrate modes. Toggle each option below.</string>
+
     <!-- Behavior Settings - Do Not Disturb -->
     <string name="section_honor_dnd">Honour Do Not Disturb</string>
     <string name="behavior_dnd_description">Respect your device\'s Do Not Disturb mode and silence notifications when enabled</string>
     <string name="behavior_dnd_recommendation">Most users should: Enable this feature</string>
     <string name="behavior_dnd_switch_label">Honour Do Not Disturb mode</string>
-    <string name="behavior_dnd_benefits">✨ Benefits:\n\n• Respects your device\'s Do Not Disturb settings\n• Perfect for meetings, sleep, and quiet time\n• Works with scheduled DND and manual activation\n• Maintains your privacy and focus when needed</string>
+    <string name="behavior_dnd_benefits">Benefits:\n\n• Respects your device\'s Do Not Disturb settings\n• Perfect for meetings, sleep, and quiet time\n• Works with scheduled DND and manual activation\n• Maintains your privacy and focus when needed</string>
     
     <!-- Behavior Settings - Phone Calls -->
     <string name="section_honor_phone_calls">Honour Phone Calls</string>
     <string name="behavior_phone_calls_description">Prevent notification readouts when you\'re on a phone call</string>
     <string name="behavior_phone_calls_recommendation">Most users should: Enable this feature</string>
     <string name="behavior_phone_calls_switch_label">Honour phone calls</string>
-    <string name="behavior_phone_calls_benefits">✨ Benefits:\n\n• Prevents interruptions during important calls\n• Respects your conversation privacy\n• Works with all types of phone calls\n• Automatic detection of call state</string>
+    <string name="behavior_phone_calls_benefits">Benefits:\n\n• Prevents interruptions during important calls\n• Respects your conversation privacy\n• Works with all types of phone calls\n• Automatic detection of call state</string>
     
     <!-- Behavior Settings - Notification Deduplication -->
     <string name="section_notification_deduplication">Notification Deduplication</string>
     <string name="behavior_deduplication_description">Prevent the same notification from being read multiple times in quick succession</string>
     <string name="behavior_deduplication_recommendation">Enable if you experience duplicate notifications</string>
     <string name="behavior_deduplication_switch_label">Enable notification deduplication</string>
-    <string name="behavior_deduplication_benefits">✨ Benefits:\n\n• Prevents annoying duplicate readouts\n• Saves battery by avoiding unnecessary TTS\n• Works automatically with 5-second window\n• Helps with apps that post multiple notifications</string>
+    <string name="behavior_deduplication_benefits">Benefits:\n\n• Prevents annoying duplicate readouts\n• Saves battery by avoiding unnecessary TTS\n• Works automatically with 30-second window\n• Helps with apps that post multiple notifications</string>
     
     <!-- Behavior Settings - Dismissal Memory -->
     <string name="section_dismissal_memory">Dismissal Memory</string>
     <string name="behavior_dismissal_memory_description">Remember dismissed notifications to prevent re-reading them</string>
     <string name="behavior_dismissal_memory_recommendation">Enable if notifications get read again after dismissal</string>
     <string name="behavior_dismissal_memory_switch_label">Enable dismissal memory</string>
-    <string name="behavior_dismissal_memory_benefits">✨ Benefits:\n\n• Prevents re-reading dismissed notifications\n• Stops notifications from being read after you dismiss them\n• Configurable memory duration (5 min to 1 hour)\n• Automatic cleanup to save memory and battery</string>
+    <string name="behavior_dismissal_memory_benefits">Benefits:\n\n• Prevents re-reading dismissed notifications\n• Stops notifications from being read after you dismiss them\n• Configurable memory duration (5 min to 1 hour)\n• Automatic cleanup to save memory and battery</string>
     <string name="behavior_dismissal_memory_timeout_label">Memory duration</string>
     <string name="behavior_dismissal_memory_timeout_description">How long to remember dismissed notifications</string>
     <string name="behavior_dismissal_memory_timeout_5min">5 minutes</string>
@@ -764,14 +768,15 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_dismissal_memory_timeout_1hour">1 hour</string>
     <string name="behavior_dismissal_memory_info_button">ℹ️</string>
     <string name="dialog_title_dismissal_memory">Dismissal Memory</string>
-    <string name="dialog_dismissal_memory_explanation"><![CDATA[Dismissal Memory prevents notifications from being read again after you dismiss them:<br><br><b>What it does:</b><br>When you dismiss a notification, SpeakThat remembers it for a configurable period. If the same notification content appears again during this time, it will not be read aloud.<br><br><b>When it is useful:</b><br>• <b>Dismissed notifications</b> - Prevents re-reading after you swipe them away<br>• <b>App updates</b> - Some apps re-post notifications after updates<br>• <b>System refreshes</b> - Android may re-post notifications during system events<br>• <b>Network reconnections</b> - Apps may re-post notifications when connectivity is restored<br><br><b>How it works:</b><br>• Tracks dismissed notifications by content hash<br>• Configurable memory duration (5 min to 1 hour)<br>• Automatic cleanup to prevent memory bloat<br>• Battery-friendly with efficient storage<br>• Detailed logging for troubleshooting<br><br><b>Tip:</b> Enable this if you experience notifications being read again after dismissal. Most users will benefit from this feature!]]></string>
+    <string name="dialog_dismissal_memory_explanation"><![CDATA[Dismissal Memory prevents notifications from being read again after you dismiss them:<br/><br/><b>What it does:</b><br/>When you dismiss a notification, SpeakThat remembers it for a configurable period. If the same notification content appears again during this time, it will not be read aloud.<br/><br/><b>When it is useful:</b><br/>• <b>Dismissed notifications</b> - Prevents re-reading after you swipe them away<br/>• <b>App updates</b> - Some apps re-post notifications after updates<br/>• <b>System refreshes</b> - Android may re-post notifications during system events<br/>• <b>Network reconnections</b> - Apps may re-post notifications when connectivity is restored<br/><br/><b>How it works:</b><br/>• Tracks dismissed notifications by content hash<br/>• Configurable memory duration (5 min to 1 hour)<br/>• Automatic cleanup to prevent memory bloat<br/>• Battery-friendly with efficient storage<br/>• Detailed logging for troubleshooting<br/><br/><b>Tip:</b> Enable this if you experience notifications being read again after dismissal. Most users will benefit from this feature!]]></string>
     
     <!-- Behavior Settings - Audio Mode -->
     <string name="section_honor_audio_mode">Honour Audio Mode</string>
-    <string name="behavior_audio_mode_description">Only read notifications when your device is in Sound mode (not Silent or Vibrate)</string>
-    <string name="behavior_audio_mode_recommendation">Recommended: Enable this feature</string>
-    <string name="behavior_audio_mode_switch_label">Honour audio mode (Sound only)</string>
-    <string name="behavior_audio_mode_benefits">✨ Benefits:\n\n• Prevents unwanted audio when phone is muted\n• Respects your device\'s audio settings\n• Works with Silent and Vibrate modes\n• Ensures notifications only play when you can hear them</string>
+    <string name="behavior_audio_mode_description">Choose how SpeakThat behaves in Silent and Vibrate. Keep both quiet, or let Vibrate keep talking while Silent stays muted.</string>
+    <string name="behavior_audio_mode_recommendation">Recommended: Keep both Silent and Vibrate honoured</string>
+    <string name="behavior_silent_mode_switch_label">Honour Silent mode</string>
+    <string name="behavior_vibrate_mode_switch_label">Honour Vibrate mode</string>
+    <string name="behavior_audio_mode_benefits">Benefits:\n\n• Prevents unwanted audio in Silent\n• Optional speech while on Vibrate\n• Matches your meeting/focus needs\n• Works with physical volume buttons</string>
     
     <!-- Behavior Settings - Shake to Stop -->
     <string name="section_shake_to_stop">Shake to Stop</string>
@@ -788,7 +793,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_wave_description">Stop readouts by waving your hand over the proximity sensor</string>
     <string name="behavior_wave_recommendation">Recommended: Enable this feature</string>
     <string name="behavior_wave_switch_label">Enable wave to stop</string>
-    <string name="behavior_wave_benefits">✨ Benefits:\n\n• Silent gesture to stop readouts\n• Works in quiet environments\n• No physical contact required\n• Quick and convenient control</string>
+    <string name="behavior_wave_benefits">Benefits:\n\n• Silent gesture to stop readouts\n• Works in quiet environments\n• No physical contact required\n• Quick and convenient control</string>
     
     <!-- Behavior Settings - Additional Labels -->
     <string name="label_calibrate">Calibrate</string>
@@ -1056,7 +1061,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="dev_debug_tools_title">Debug Tools</string>
     <string name="dev_debug_tools_description">Tools for debugging and testing the app</string>
     <string name="dev_notification_history">Show Notification History</string>
-    <string name="dev_analytics">Show Help Usage Analytics</string>
     <string name="dev_battery_report">Battery Optimization Report</string>
     <string name="dev_repair_blacklist">Repair Word Blacklist</string>
     <string name="dev_background_monitor">Background Process Monitor</string>
@@ -1361,7 +1365,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="content_cap_word_count_value">%d words</string>
     <string name="content_cap_sentence_count_value">%d sentences</string>
     <string name="content_cap_time_limit_value">%d seconds</string>
-    <string name="content_cap_help_message"><![CDATA[Content Cap lets you limit how much of each notification gets read aloud:<br><br><b>Word Count</b> - Read only the first N words<br>• Perfect for payment notifications where important info is at the start<br>• Works reliably across most languages<br>• <b>Note:</b> Counts words in both title and body combined<br>• Example: Payment of $50.00 from John Smith for lunch → Payment of $50.00 from John<br><br><b>Sentence Count</b> - Read only the first N complete sentences<br>• More natural breaks than word limits<br>• Uses smart sentence detection for international languages<br>• Handles line breaks in emails properly<br>• <b>Note:</b> Titles without sentence-ending punctuation don&apos;t count as separate sentences<br>• Example: Hello! How are you today? → Hello!<br><br><b>Time Limit</b> - Stop reading after N seconds<br>• Universal - works with all languages<br>• Predictable notification durations<br>• Great for consistent timing<br>• Example: Stops after 10 seconds regardless of content length<br><br><b>Tips:</b><br>• Word count works best for most users<br>• Sentence count is more natural but may be less precise<br>• Time limit is universal and predictable<br>• All options work with your existing speech templates<br>• Combine with Shake to Stop for maximum control]]></string>
+    <string name="content_cap_help_message"><![CDATA[Content Cap lets you limit how much of each notification gets read aloud:<br/><br/><b>Word Count</b> - Read only the first N words<br/>• Perfect for payment notifications where important info is at the start<br/>• Works reliably across most languages<br/>• <b>Note:</b> Counts words in both title and body combined<br/>• Example: Payment of $50.00 from John Smith for lunch → Payment of $50.00 from John<br/><br/><b>Sentence Count</b> - Read only the first N complete sentences<br/>• More natural breaks than word limits<br/>• Uses smart sentence detection for international languages<br/>• Handles line breaks in emails properly<br/>• <b>Note:</b> Titles without sentence-ending punctuation don&apos;t count as separate sentences<br/>• Example: Hello! How are you today? → Hello!<br/><br/><b>Time Limit</b> - Stop reading after N seconds<br/>• Universal - works with all languages<br/>• Predictable notification durations<br/>• Great for consistent timing<br/>• Example: Stops after 10 seconds regardless of content length<br/><br/><b>Tips:</b><br/>• Word count works best for most users<br/>• Sentence count is more natural but may be less precise<br/>• Time limit is universal and predictable<br/>• All options work with your existing speech templates<br/><br/>• Combine with Shake to Stop for maximum control]]></string>
     
     <!-- Major Missing Section Titles -->
     <string name="behavior_custom_app_names_title">📱 Custom App Names</string>
@@ -1560,16 +1564,17 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="restart_policy_periodic">periodic</string>
     
     <!-- MainActivity Hardcoded Strings -->
-    <string name="main_master_switch_enabled">SpeakThat will read notifications when active</string>
-    <string name="main_master_switch_disabled">SpeakThat is disabled - notifications will not be read</string>
-    <string name="main_notification_access_granted">SpeakThat has notification access</string>
+    <string name="main_master_switch_enabled">SpeakThat! will read notifications when active</string>
+    <string name="main_master_switch_disabled">SpeakThat! is disabled - notifications will not be read</string>
+    <string name="main_notification_access_granted">SpeakThat! has notification access</string>
     <string name="main_tts_init_failed">TTS initialization failed. Some features may not work.</string>
     <string name="main_tts_not_ready">TTS not ready. Please try again in a moment.</string>
     <string name="main_tts_playback_failed">TTS playback failed</string>
     <string name="main_notification_permission_granted">Notification permission granted</string>
     <string name="main_notification_permission_denied">Notification permission denied - SpeakThat notifications may not appear</string>
-    <string name="main_notification_title_active">SpeakThat Active</string>
-    <string name="main_notification_content_tap_settings">Tap to open SpeakThat settings</string>
+    <string name="main_notification_title_active">SpeakThat! Active</string>
+    <string name="main_notification_content_tap_settings">SpeakThat! is awake and ready to read notifications!</string>
+    <string name="main_notification_action_open_app">Open SpeakThat!</string>
     
     <!-- Review Reminder Strings -->
     <string name="review_reminder_title">Enjoying SpeakThat?</string>
@@ -1577,9 +1582,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="review_reminder_rate_now">Rate Now</string>
     <string name="review_reminder_later">Maybe Later</string>
     <string name="review_reminder_never">Don\'t Ask Again</string>
-    <string name="dev_test_review_reminder">🧪 Test Review Reminder</string>
-    <string name="dev_reset_review_reminder">🔄 Reset Review Reminder</string>
-    <string name="dev_review_reminder_stats">📊 Review Reminder Stats</string>
     
     <!-- Quick Diagnostics -->
     <string name="quick_diagnostics">Quick Diagnostics</string>

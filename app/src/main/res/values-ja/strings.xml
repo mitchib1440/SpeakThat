@@ -775,18 +775,15 @@ Common placeholders: {app}, {content}, {time}, {title}, {text}, {priority}, {cat
     <string name="behavior_deduplication_recommendation">重複通知を経験する場合は有効にする</string>
     <string name="behavior_deduplication_switch_label">通知の重複除去を有効にする</string>
     <string name="behavior_deduplication_benefits">
-✨ メリット：\n\n• 煩わしい重複読み上げを防ぐ\n• 不要なTTSを避けてバッテリーを節約\n• 5秒間のウィンドウで自動的に動作\n• 複数の通知を投稿するアプリに役立つ
+✨ メリット：\n\n• 煩わしい重複読み上げを防ぐ\n• 不要なTTSを避けてバッテリーを節約\n• 30秒間のウィンドウで自動的に動作\n• 複数の通知を投稿するアプリに役立つ
 </string>
     <!-- Behavior Settings - Audio Mode -->
     <string name="section_honor_audio_mode">音声モードに配慮</string>
-    <string name="behavior_audio_mode_description">
-デバイスが音声モード（サイレントまたは振動ではない）の場合のみ通知を読み上げます
-</string>
-    <string name="behavior_audio_mode_recommendation">推奨：この機能を有効にする</string>
-    <string name="behavior_audio_mode_switch_label">音声モードに配慮（音声のみ）</string>
-    <string name="behavior_audio_mode_benefits">
-✨ メリット：\n\n• 電話がミュートされているときの不要な音声を防ぐ\n• デバイスの音声設定を尊重\n• サイレントと振動モードで動作\n• 通知が聞こえるときのみ再生されることを保証
-</string>
+    <string name="behavior_audio_mode_description">サイレントとバイブの挙動を選べます。両方を静かにするか、サイレントは静音のままバイブで読み上げを続けるかを選択。</string>
+    <string name="behavior_audio_mode_recommendation">推奨: サイレントとバイブの両方を尊重</string>
+    <string name="behavior_silent_mode_switch_label">サイレントモードを尊重</string>
+    <string name="behavior_vibrate_mode_switch_label">バイブモードを尊重</string>
+    <string name="behavior_audio_mode_benefits">✨ メリット：\n\n• サイレント時の不要な音声を防ぐ\n• バイブ時は任意で読み上げ可能\n• 会議/集中に合わせて調整\n• 物理ボリュームボタンと連携</string>
     <!-- Behavior Settings - Shake to Stop -->
     <string name="section_shake_to_stop">Shake to Stop</string>
     <string name="behavior_shake_description">Stop readouts instantly by shaking your device</string>
@@ -1060,7 +1057,6 @@ Hey! Mitchi here. A lot goes into making SpeakThat! I handle the UI/UX design, q
     <string name="dev_debug_tools_title">🛠️ Debug Tools</string>
     <string name="dev_debug_tools_description">Tools for debugging and testing the app</string>
     <string name="dev_notification_history">📋 Show Notification History</string>
-    <string name="dev_analytics">📊 Show Help Usage Analytics</string>
     <string name="dev_battery_report">🔋 Battery Optimization Report</string>
     <string name="dev_repair_blacklist">🛠️ Repair Word Blacklist</string>
     <string name="dev_background_monitor">🛰️ Background Process Monitor</string>
@@ -1554,6 +1550,7 @@ Notification permission denied - SpeakThat notifications may not appear
 </string>
     <string name="main_notification_title_active">SpeakThat Active</string>
     <string name="main_notification_content_tap_settings">Tap to open SpeakThat settings</string>
+    <string name="main_notification_action_open_app">SpeakThat を開く！</string>
     
     <!-- Audio Ducking Feature -->
     <string name="dev_enable_audio_ducking">オーディオダッキングを有効にする</string>
@@ -1603,4 +1600,7 @@ Notification permission denied - SpeakThat notifications may not appear
     <string name="statistics_summary_read_and_taps">読み上げた通知: %1$d\nSpeakThat ロゴのタップ数: %2$d</string>
     <string name="statistics_logo_taps_label">SpeakThat ロゴのタップ数</string>
     <string name="statistics_apps_read_list_label">読み上げたアプリ一覧</string>
+    <!-- Behavior Settings - System Modes Group -->
+    <string name="section_honor_system_modes">Honour System Modes</string>
+    <string name="behavior_system_modes_description">Keep SpeakThat quiet when your device is in Do Not Disturb, on a call, or using silent or vibrate modes. Toggle each option below.</string>
 </resources>

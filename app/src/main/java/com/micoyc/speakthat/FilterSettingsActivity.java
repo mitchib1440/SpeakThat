@@ -11,7 +11,6 @@ import android.widget.AutoCompleteTextView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -180,13 +179,6 @@ public class FilterSettingsActivity extends AppCompatActivity {
             saveAppListMode(mode);
         });
 
-        // Set up blacklist type spinner
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(
-            this, R.array.blacklist_types, android.R.layout.simple_spinner_item
-        );
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerBlacklistType.setAdapter(spinnerAdapter);
-
         // Set up RecyclerViews
         setupAppListRecycler();
         setupWordBlacklistRecycler();
@@ -285,7 +277,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     }
 
     private void setupAppListRecycler() {
-        appListAdapter = new AppListAdapter(appList, this::removeApp, this::toggleAppPrivate, this::editApp);
+        appListAdapter = new AppListAdapter(appList, this::removeApp, this::toggleAppPrivate, this::editApp, true);
         binding.recyclerAppList.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerAppList.setAdapter(appListAdapter);
     }
@@ -304,7 +296,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     
     private void setupMediaFilteringRecyclers() {
         // Set up media excepted apps RecyclerView
-        mediaExceptedAppsAdapter = new AppListAdapter(mediaExceptedAppsList, this::removeMediaExceptedApp, this::toggleMediaExceptedAppPrivate, this::editMediaExceptedApp);
+        mediaExceptedAppsAdapter = new AppListAdapter(mediaExceptedAppsList, this::removeMediaExceptedApp, this::toggleMediaExceptedAppPrivate, this::editMediaExceptedApp, false);
         binding.recyclerMediaExceptedApps.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerMediaExceptedApps.setAdapter(mediaExceptedAppsAdapter);
         
@@ -316,7 +308,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     
     private void setupFilteredMediaAppsRecycler() {
         // Set up filtered media apps RecyclerView
-        filteredMediaAppsAdapter = new AppListAdapter(filteredMediaAppsList, this::removeFilteredMediaAppFromList, this::toggleFilteredMediaAppPrivate, this::editFilteredMediaApp);
+        filteredMediaAppsAdapter = new AppListAdapter(filteredMediaAppsList, this::removeFilteredMediaAppFromList, this::toggleFilteredMediaAppPrivate, this::editFilteredMediaApp, false);
         binding.recyclerFilteredMediaApps.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerFilteredMediaApps.setAdapter(filteredMediaAppsAdapter);
     }
@@ -435,7 +427,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         binding.editUrlReplacementText.setText(urlReplacementText);
         
         // Load media notification filtering settings
-        boolean isMediaFilteringEnabled = sharedPreferences.getBoolean(KEY_MEDIA_FILTERING_ENABLED, false); // Default to disabled
+        boolean isMediaFilteringEnabled = sharedPreferences.getBoolean(KEY_MEDIA_FILTERING_ENABLED, true); // Default to enabled
         binding.switchMediaFiltering.setChecked(isMediaFilteringEnabled);
         binding.mediaFilteringSection.setVisibility(isMediaFilteringEnabled ? View.VISIBLE : View.GONE);
         
@@ -558,9 +550,6 @@ public class FilterSettingsActivity extends AppCompatActivity {
             return;
         }
 
-        int selectedType = binding.spinnerBlacklistType.getSelectedItemPosition();
-        boolean isPrivate = selectedType == 1; // 0 = Block, 1 = Private
-
         // Check for duplicates in UI list
         for (WordFilterItem item : wordBlacklistItems) {
             if (item.word.equals(word)) {
@@ -578,7 +567,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
             return;
         }
 
-        wordBlacklistItems.add(new WordFilterItem(word, isPrivate));
+        wordBlacklistItems.add(new WordFilterItem(word, false));
         wordBlacklistAdapter.notifyDataSetChanged();
         updateCountDisplays();
         binding.editBlacklistWord.setText("");

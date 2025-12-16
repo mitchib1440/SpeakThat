@@ -831,18 +831,15 @@ Voorkomen dat dezelfde melding meerdere keren snel achter elkaar wordt gelezen
     <string name="behavior_deduplication_recommendation">Inschakelen als u dubbele meldingen ervaart</string>
     <string name="behavior_deduplication_switch_label">Meldingsontdubbeling inschakelen</string>
     <string name="behavior_deduplication_benefits">
-✨ Voordelen:\n\n• Voorkom vervelende dubbele uitlezingen\n• Bespaart batterij door onnodige meldingen te voorkomen\n• Werkt automatisch binnen een 5-seconde tijdsbestek\n• Helpt met apps die meerdere meldingen plaatsen
+✨ Voordelen:\n\n• Voorkom vervelende dubbele uitlezingen\n• Bespaart batterij door onnodige meldingen te voorkomen\n• Werkt automatisch binnen een 30-seconden tijdsbestek\n• Helpt met apps die meerdere meldingen plaatsen
 </string>
     <!-- Behavior Settings - Audio Mode -->
-    <string name="section_honor_audio_mode">Eerbiedig Audiomodus</string>
-    <string name="behavior_audio_mode_description">
-Lees alleen meldingen wanneer je apparaat in geluidmodus staat (niet op stil of trillen)
-</string>
-    <string name="behavior_audio_mode_recommendation">Aanbevolen: Schakel deze functie in</string>
-    <string name="behavior_audio_mode_switch_label">Eerbiedig audiomodus (alleen geluid)</string>
-    <string name="behavior_audio_mode_benefits">
-✨ Voordelen:\n\n• Voorkomt ongewenste audio wanneer telefoon is gedempt\n• Respecteert de audio-instellingen van uw apparaat\n• Werkt met stille en trillingsmodus\n• Zorgt ervoor dat meldingen alleen worden afgespeeld als u ze kunt horen
-</string>
+    <string name="section_honor_audio_mode">Audiomodus respecteren</string>
+    <string name="behavior_audio_mode_description">Kies hoe SpeakThat zich gedraagt in Stil en Trillen. Houd beide stil of laat in Trillen spreken terwijl Stil stil blijft.</string>
+    <string name="behavior_audio_mode_recommendation">Aanbevolen: Stil en Trillen respecteren</string>
+    <string name="behavior_silent_mode_switch_label">Stille modus respecteren</string>
+    <string name="behavior_vibrate_mode_switch_label">Trilmodus respecteren</string>
+    <string name="behavior_audio_mode_benefits">✨ Voordelen:\n\n• Voorkomt ongewenst geluid in Stil\n• Optioneel spreken in Trillen\n• Past bij vergaderingen/focus\n• Werkt met de volumeknoppen</string>
     <!-- Behavior Settings - Shake to Stop -->
     <string name="section_shake_to_stop">Schudden om te stoppen</string>
     <string name="behavior_shake_description">
@@ -1130,7 +1127,6 @@ Hey! Mitchi hier. Het kost veel om SpeakThat maken! Ik ontwerp de gebruikersinte
 Gereedschappen voor foutopsporing en testen van de app
 </string>
     <string name="dev_notification_history">📋 Toon Meldingsgeschiedenis</string>
-    <string name="dev_analytics">📊 Help gebruiksanalyse weergeven</string>
     <string name="dev_battery_report">🔋 Batterijoptimalisatie Rapport</string>
     <string name="dev_repair_blacklist">Zwarte lijst woorden repareren</string>
     <string name="dev_background_monitor">:satelliite: Achtergrondproces monitoren</string>
@@ -1653,6 +1649,7 @@ Meldingsmachtiging geweigerd - SpeakThat! meldingen worden mogelijk niet weergeg
 </string>
     <string name="main_notification_title_active">SpreakThat! Actief</string>
     <string name="main_notification_content_tap_settings">Tik om SpreakThat! instellingen te openen</string>
+    <string name="main_notification_action_open_app">SpeakThat openen!</string>
     <!-- Audio Ducking Feature -->
     <string name="dev_enable_audio_ducking">Audio Ducking Inschakelen</string>
     <string name="dev_enable_audio_ducking_description">
@@ -1705,4 +1702,7 @@ Vanwege inconsistenties in hoe verschillende apparaten Audio Focus verzoeken ver
     <string name="statistics_summary_read_and_taps">Voorgelezen meldingen: %1$d\nTikken op het SpeakThat-logo: %2$d</string>
     <string name="statistics_logo_taps_label">Tikken op het SpeakThat-logo</string>
     <string name="statistics_apps_read_list_label">Lijst met voorgelezen apps</string>
+    <!-- Behavior Settings - System Modes Group -->
+    <string name="section_honor_system_modes">Honour System Modes</string>
+    <string name="behavior_system_modes_description">Keep SpeakThat quiet when your device is in Do Not Disturb, on a call, or using silent or vibrate modes. Toggle each option below.</string>
 </resources>

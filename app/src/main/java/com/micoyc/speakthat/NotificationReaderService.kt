@@ -68,6 +68,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var notificationBehavior = "interrupt"
     private var mediaBehavior = "ignore"
     private var duckingVolume = 30
+    private var duckingFallbackStrategy = "manual"
     private var delayBeforeReadout = 0
     private var isPersistentFilteringEnabled = true
     private var legacyDuckingEnabled = false
@@ -259,6 +260,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Media behavior settings
         private const val KEY_MEDIA_BEHAVIOR = "media_behavior"
         private const val KEY_DUCKING_VOLUME = "ducking_volume"
+        private const val KEY_DUCKING_FALLBACK_STRATEGY = "ducking_fallback_strategy"
         
         // Delay settings
         private const val KEY_DELAY_BEFORE_READOUT = "delay_before_readout"
@@ -708,18 +710,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     return
                 }
                 
-                // Check audio mode - if not in Sound mode and honouring audio mode, don't process notifications
-                if (BehaviorSettingsActivity.shouldHonourAudioMode(this)) {
-                    val ringerMode = audioManager.ringerMode
-                    val modeName = when (ringerMode) {
-                        AudioManager.RINGER_MODE_SILENT -> "Silent"
-                        AudioManager.RINGER_MODE_VIBRATE -> "Vibrate"
-                        AudioManager.RINGER_MODE_NORMAL -> "Sound"
-                        else -> "Unknown"
-                    }
-                    Log.d(TAG, "Audio mode check failed - device is in $modeName mode, ignoring notification from $packageName")
-                    InAppLogger.log("AudioMode", "Notification ignored due to audio mode: $modeName")
-                    // Track filter reason
+                // Check audio mode - block according to per-mode preferences
+                val audioBlockReason = BehaviorSettingsActivity.getAudioModeBlockReason(this)
+                if (audioBlockReason != null) {
+                    Log.d(TAG, "Audio mode check failed - device is in $audioBlockReason mode, ignoring notification from $packageName")
+                    InAppLogger.log("AudioMode", "Notification ignored due to audio mode: $audioBlockReason")
                     try {
                         StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_AUDIO_MODE)
                     } catch (e: Exception) {
@@ -727,7 +722,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     }
                     return
                 } else {
-                    // Log when audio mode check passes (for debugging)
                     val ringerMode = audioManager.ringerMode
                     val modeName = when (ringerMode) {
                         AudioManager.RINGER_MODE_SILENT -> "Silent"
@@ -2158,20 +2152,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Load media behavior settings
         mediaBehavior = sharedPreferences?.getString(KEY_MEDIA_BEHAVIOR, "ignore") ?: "ignore"
         duckingVolume = sharedPreferences?.getInt(KEY_DUCKING_VOLUME, 30) ?: 30
+        duckingFallbackStrategy = sharedPreferences?.getString(KEY_DUCKING_FALLBACK_STRATEGY, "manual") ?: "manual"
         
         // Load delay settings
         delayBeforeReadout = sharedPreferences?.getInt(KEY_DELAY_BEFORE_READOUT, 0) ?: 0
         
         // Load media notification filtering settings
-        val isMediaFilteringEnabled = sharedPreferences?.getBoolean(KEY_MEDIA_FILTERING_ENABLED, false) ?: false
+        val isMediaFilteringEnabled = sharedPreferences?.getBoolean(KEY_MEDIA_FILTERING_ENABLED, true) ?: true
         val exceptedApps = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTER_EXCEPTED_APPS, HashSet()) ?: HashSet())
         val importantKeywords = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, HashSet()) ?: HashSet())
         val filteredMediaApps = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTERED_APPS, HashSet()) ?: HashSet())
-        
-        // If no custom important keywords are set, use defaults
-        if (importantKeywords.isEmpty()) {
-            importantKeywords.addAll(MediaNotificationDetector.MediaFilterPreferences().importantKeywords)
-        }
         
         mediaFilterPreferences = MediaNotificationDetector.MediaFilterPreferences(
             isMediaFilteringEnabled = isMediaFilteringEnabled,
@@ -2200,7 +2190,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         Log.d(TAG, "Filter settings loaded - appMode: $appListMode, apps: ${appList.size}, blocked words: ${blockedWords.size}, replacements: ${wordReplacements.size}")
         Log.d(TAG, "Behavior settings loaded - mode: $notificationBehavior, priority apps: ${priorityApps.size}")
-        Log.d(TAG, "Media behavior settings loaded - mode: $mediaBehavior, ducking volume: $duckingVolume%")
+        Log.d(TAG, "Media behavior settings loaded - mode: $mediaBehavior, ducking volume: $duckingVolume%, fallback: $duckingFallbackStrategy")
         Log.d(TAG, "Delay settings loaded - delay: ${delayBeforeReadout}s")
         Log.d(TAG, "Media filtering settings loaded - enabled: $isMediaFilteringEnabled, excepted apps: ${exceptedApps.size}, important keywords: ${importantKeywords.size}")
         Log.d(TAG, "Persistent filtering enabled: $isPersistentFilteringEnabled")
@@ -2734,11 +2724,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     private fun applyMediaFiltering(sbn: StatusBarNotification): FilterResult {
-        // Use unified detection logic
         if (!mediaFilterPreferences.isMediaFilteringEnabled) {
             return FilterResult(true, "", "Media filtering disabled")
         }
-        if (MediaNotificationDetector.isMediaNotification(sbn)) {
+
+        val shouldFilter = MediaNotificationDetector.shouldFilterMediaNotification(sbn, mediaFilterPreferences)
+        if (shouldFilter) {
             val reason = MediaNotificationDetector.getMediaDetectionReason(sbn)
             Log.d(TAG, "Media notification filtered out (unified logic): $reason")
             InAppLogger.logFilter("Blocked media notification from ${sbn.packageName}: $reason (unified logic)")
@@ -2747,7 +2738,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "[UnifiedFilter] Notification extras: $extras")
             return FilterResult(false, "", "Media notification filtered: $reason (unified logic)")
         }
-        return FilterResult(true, "", "Not a media notification or media filtering not applicable (unified logic)")
+
+        // If it was a media-style notification but passed due to exceptions/keywords, log for traceability
+        if (MediaNotificationDetector.isMediaNotification(sbn)) {
+            val reason = MediaNotificationDetector.getMediaDetectionReason(sbn)
+            Log.d(TAG, "Media notification allowed (unified logic): $reason")
+        }
+
+        return FilterResult(true, "", "Not filtered by media rules (unified logic)")
     }
 
     private fun applyPersistentFiltering(sbn: StatusBarNotification): FilterResult {
@@ -3106,8 +3104,43 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "duck" -> {
                 val granted = requestSpeechAudioFocus(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
                 if (!granted) {
-                    Log.w(TAG, "Audio focus denied for duck mode; continuing without system ducking")
-                    InAppLogger.log("MediaBehavior", "Audio focus denied for duck mode, continuing without system ducking")
+                    Log.w(TAG, "Audio focus denied for duck mode; applying fallback strategy: $duckingFallbackStrategy")
+                    InAppLogger.log("MediaBehavior", "Audio focus denied for duck mode; fallback: $duckingFallbackStrategy")
+
+                    if (isMediaFallbackDisabled(this)) {
+                        Log.w(TAG, "Media fallback disabled - continuing without ducking")
+                        InAppLogger.log("MediaBehavior", "Media fallback disabled; continuing without ducking")
+                        return true
+                    }
+
+                    when (duckingFallbackStrategy) {
+                        "pause" -> {
+                            // Try pausing media as a fallback
+                            val paused = tryMediaSessionPause()
+                            if (paused) {
+                                InAppLogger.log("MediaBehavior", "Fallback pause applied for $appName (modern duck)")
+                                return true
+                            }
+
+                            if (trySoftPauseFallback()) {
+                                InAppLogger.log("MediaBehavior", "Soft pause fallback applied for $appName (modern duck)")
+                                return true
+                            }
+
+                            Log.w(TAG, "Pause fallback failed - reading without pausing media")
+                            InAppLogger.log("MediaBehavior", "Pause fallback failed for $appName - reading anyway")
+                        }
+                        else -> {
+                            // Manual ducking fallback
+                            val ducked = duckMediaVolume(duckingVolume)
+                            if (ducked) {
+                                InAppLogger.log("MediaBehavior", "Manual ducking fallback applied for $appName at $duckingVolume%")
+                            } else {
+                                Log.w(TAG, "Manual ducking fallback failed - reading without ducking")
+                                InAppLogger.log("MediaBehavior", "Manual ducking fallback failed for $appName - reading anyway")
+                            }
+                        }
+                    }
                 } else {
                     InAppLogger.log("MediaBehavior", "Audio focus granted for duck mode (usage=${resolveTtsUsage()})")
                 }
@@ -3586,7 +3619,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
-    private fun duckMediaVolume(): Boolean {
+    private fun duckMediaVolume(targetPercentOverride: Int = -1): Boolean {
         try {
             Log.d(TAG, "=== DUCKING DEBUG: Manual ducking method called ===")
             InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Manual ducking method called ===")
@@ -3598,7 +3631,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Get TTS settings for diagnostics
             val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
             val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
-            val duckingVolume = voicePrefs.getInt("ducking_volume", 50) // Default to 50%
+            val duckingVolume = if (targetPercentOverride in 0..100) {
+                targetPercentOverride
+            } else {
+                voicePrefs.getInt("ducking_volume", 50) // Default to 50%
+            }
             
             Log.d(TAG, "=== DUCKING DEBUG: Manual ducking settings - Current volume: $currentVolume, Max volume: $maxVolume, Ducking volume: $duckingVolume%, TTS usage index: $ttsUsageIndex ===")
             InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Manual ducking settings - Current: $currentVolume, Max: $maxVolume, Ducking: $duckingVolume%, TTS usage index: $ttsUsageIndex ===")
@@ -5212,12 +5249,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 priorityApps = HashSet(sharedPreferences?.getStringSet(KEY_PRIORITY_APPS, HashSet()) ?: HashSet())
                 Log.d(TAG, "Behavior settings updated - mode: $notificationBehavior, priority apps: ${priorityApps.size}")
             }
-            KEY_MEDIA_BEHAVIOR, KEY_DUCKING_VOLUME -> {
+            KEY_MEDIA_BEHAVIOR, KEY_DUCKING_VOLUME, KEY_DUCKING_FALLBACK_STRATEGY -> {
                 // Reload media behavior settings
                 mediaBehavior = sharedPreferences?.getString(KEY_MEDIA_BEHAVIOR, "ignore") ?: "ignore"
                 duckingVolume = sharedPreferences?.getInt(KEY_DUCKING_VOLUME, 30) ?: 30
-                Log.d(TAG, "Media behavior settings updated - mode: $mediaBehavior, ducking volume: $duckingVolume%")
-                InAppLogger.log("Service", "Media behavior settings updated - mode: $mediaBehavior, ducking volume: $duckingVolume%")
+                duckingFallbackStrategy = sharedPreferences?.getString(KEY_DUCKING_FALLBACK_STRATEGY, "manual") ?: "manual"
+                Log.d(TAG, "Media behavior settings updated - mode: $mediaBehavior, ducking volume: $duckingVolume%, fallback: $duckingFallbackStrategy")
+                InAppLogger.log("Service", "Media behavior settings updated - mode: $mediaBehavior, ducking volume: $duckingVolume%, fallback: $duckingFallbackStrategy")
             }
             KEY_APP_LIST_MODE, KEY_APP_LIST, KEY_APP_PRIVATE_FLAGS, 
             KEY_WORD_BLACKLIST, KEY_WORD_BLACKLIST_PRIVATE, KEY_WORD_REPLACEMENTS -> {

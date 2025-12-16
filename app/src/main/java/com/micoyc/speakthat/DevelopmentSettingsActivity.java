@@ -228,9 +228,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         
 
         
-        // Set up analytics button
-        binding.btnShowAnalytics.setOnClickListener(v -> showAnalyticsDialog());
-        
         // Set up battery optimization report button
         binding.btnBatteryReport.setOnClickListener(v -> showBatteryOptimizationReport());
         
@@ -295,15 +292,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         
         // Add Rule System Test button
         binding.btnRuleSystemTest.setOnClickListener(v -> testRuleSystem());
-        
-        // Add Review Reminder Test button
-        binding.btnTestReviewReminder.setOnClickListener(v -> testReviewReminder());
-        
-        // Add Reset Review Reminder button
-        binding.btnResetReviewReminder.setOnClickListener(v -> resetReviewReminder());
-        
-        // Add Review Reminder Stats button
-        binding.btnReviewReminderStats.setOnClickListener(v -> showReviewReminderStats());
         
         // Add Test Settings button
         binding.btnTestSettings.setOnClickListener(v -> {
@@ -1162,106 +1150,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         return true;
     }
 
-    private void showAnalyticsDialog() {
-        StringBuilder analytics = new StringBuilder();
-        analytics.append("📊 Help Usage Analytics\n");
-        analytics.append("========================\n\n");
-        
-        // Get total usage
-        int totalUsage = sharedPreferences.getInt("total_dialog_usage", 0);
-        analytics.append("Total help dialogs opened: ").append(totalUsage).append("\n\n");
-        
-        if (totalUsage > 0) {
-            analytics.append("📋 Dialog Usage Breakdown:\n");
-            analytics.append("─────────────────────────\n");
-            
-            // Individual dialog stats
-            int notificationInfo = sharedPreferences.getInt("dialog_usage_notification_behavior_info", 0);
-            int notificationRec = sharedPreferences.getInt("dialog_usage_notification_behavior_recommended", 0);
-            int mediaInfo = sharedPreferences.getInt("dialog_usage_media_behavior_info", 0);
-            int mediaRec = sharedPreferences.getInt("dialog_usage_media_behavior_recommended", 0);
-            int shakeInfo = sharedPreferences.getInt("dialog_usage_shake_to_stop_info", 0);
-            int shakeRec = sharedPreferences.getInt("dialog_usage_shake_to_stop_recommended", 0);
-            
-            analytics.append("🔔 Notification Behavior:\n");
-            analytics.append("   Info viewed: ").append(notificationInfo).append(" times\n");
-            analytics.append("   Recommended used: ").append(notificationRec).append(" times\n\n");
-            
-            analytics.append("🎵 Media Behavior:\n");
-            analytics.append("   Info viewed: ").append(mediaInfo).append(" times\n");
-            analytics.append("   Recommended used: ").append(mediaRec).append(" times\n\n");
-            
-            analytics.append("📳 Shake to Stop:\n");
-            analytics.append("   Info viewed: ").append(shakeInfo).append(" times\n");
-            analytics.append("   Recommended used: ").append(shakeRec).append(" times\n\n");
-            
-            // Calculate recommendation adoption rate
-            int totalInfoViews = notificationInfo + mediaInfo + shakeInfo;
-            int totalRecommendations = notificationRec + mediaRec + shakeRec;
-            
-            if (totalInfoViews > 0) {
-                int adoptionRate = (totalRecommendations * 100) / totalInfoViews;
-                analytics.append("✨ Insights:\n");
-                analytics.append("─────────\n");
-                analytics.append("Recommendation adoption rate: ").append(adoptionRate).append("%\n");
-                
-                if (adoptionRate >= 80) {
-                    analytics.append("🎉 Excellent! Users find recommendations very helpful.\n");
-                } else if (adoptionRate >= 60) {
-                    analytics.append("👍 Good! Most users trust the recommendations.\n");
-                } else if (adoptionRate >= 40) {
-                    analytics.append("📈 Moderate adoption. Users appreciate having options.\n");
-                } else {
-                    analytics.append("🤔 Low adoption. Users prefer to explore settings themselves.\n");
-                }
-            }
-            
-            // Last usage timestamp
-            long lastUsage = sharedPreferences.getLong("last_dialog_usage", 0);
-            if (lastUsage > 0) {
-                Date lastDate = new Date(lastUsage);
-                SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy 'at' HH:mm", Locale.getDefault());
-                analytics.append("\nLast help dialog opened: ").append(sdf.format(lastDate)).append("\n");
-            }
-        } else {
-            analytics.append("No help dialogs have been opened yet.\n");
-            analytics.append("These analytics help us understand which features need better explanations.\n");
-        }
-        
-        analytics.append("\n💡 Privacy Note:\n");
-        analytics.append("This data never leaves your device. It's stored locally to help improve the app's user experience.");
-        
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Help Usage Analytics")
-                .setMessage(analytics.toString())
-                .setPositiveButton(R.string.button_clear_analytics, (dialog, which) -> {
-                    clearAnalytics();
-                })
-                .setNegativeButton(R.string.button_close, null)
-                .show();
-        
-        InAppLogger.log("Development", "Analytics dialog viewed - Total usage: " + totalUsage);
-    }
-    
-    private void clearAnalytics() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        
-        // R.string.button_clear all analytics keys
-        editor.remove("total_dialog_usage");
-        editor.remove("dialog_usage_notification_behavior_info");
-        editor.remove("dialog_usage_notification_behavior_recommended");
-        editor.remove("dialog_usage_media_behavior_info");
-        editor.remove("dialog_usage_media_behavior_recommended");
-        editor.remove("dialog_usage_shake_to_stop_info");
-        editor.remove("dialog_usage_shake_to_stop_recommended");
-        editor.remove("last_dialog_usage");
-        
-        editor.apply();
-        
-        Toast.makeText(this, "Analytics data cleared", Toast.LENGTH_SHORT).show();
-        InAppLogger.log("Development", "Analytics data cleared by user");
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -1612,46 +1500,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         }).start();
     }
     
-    private void testReviewReminder() {
-        InAppLogger.log("Development", "Testing review reminder dialog");
-        
-        try {
-            ReviewReminderManager reviewManager = ReviewReminderManager.Companion.getInstance(this);
-            reviewManager.showReminderDialog(this);
-            
-            Toast.makeText(this, "Review reminder dialog shown", Toast.LENGTH_SHORT).show();
-            InAppLogger.logUserAction("Review reminder test dialog shown toast", "");
-        } catch (Exception e) {
-            InAppLogger.logError("Development", "Error testing review reminder: " + e.getMessage());
-            
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("❌ Review Reminder Test Error");
-            builder.setMessage("Error testing review reminder: " + e.getMessage());
-            builder.setPositiveButton(R.string.button_ok, null);
-            builder.show();
-        }
-    }
-    
-    private void resetReviewReminder() {
-        InAppLogger.log("Development", "Resetting review reminder state");
-        
-        try {
-            ReviewReminderManager reviewManager = ReviewReminderManager.Companion.getInstance(this);
-            reviewManager.resetReminderState();
-            
-            Toast.makeText(this, "Review reminder state reset", Toast.LENGTH_SHORT).show();
-            InAppLogger.logUserAction("Review reminder state reset toast shown", "");
-        } catch (Exception e) {
-            InAppLogger.logError("Development", "Error resetting review reminder: " + e.getMessage());
-            
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("❌ Review Reminder Reset Error");
-            builder.setMessage("Error resetting review reminder: " + e.getMessage());
-            builder.setPositiveButton(R.string.button_ok, null);
-            builder.show();
-        }
-    }
-    
     private void resetStatistics() {
         InAppLogger.log("Development", "Reset statistics button clicked");
         
@@ -1678,38 +1526,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         });
         builder.setNegativeButton(R.string.button_cancel, null);
         builder.show();
-    }
-    
-    private void showReviewReminderStats() {
-        InAppLogger.log("Development", "Showing review reminder statistics");
-        
-        try {
-            ReviewReminderManager reviewManager = ReviewReminderManager.Companion.getInstance(this);
-            java.util.Map<String, Object> stats = reviewManager.getReminderStats();
-            
-            StringBuilder statsText = new StringBuilder();
-            statsText.append("📊 Review Reminder Statistics\n");
-            statsText.append("============================\n\n");
-            
-            for (java.util.Map.Entry<String, Object> entry : stats.entrySet()) {
-                statsText.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
-            }
-            
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("📊 Review Reminder Statistics");
-            builder.setMessage(statsText.toString());
-            builder.setPositiveButton(R.string.button_ok, null);
-            builder.show();
-            
-        } catch (Exception e) {
-            InAppLogger.logError("Development", "Error showing review reminder stats: " + e.getMessage());
-            
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("❌ Review Reminder Stats Error");
-            builder.setMessage("Error showing review reminder stats: " + e.getMessage());
-            builder.setPositiveButton(R.string.button_ok, null);
-            builder.show();
-        }
     }
     
     /**

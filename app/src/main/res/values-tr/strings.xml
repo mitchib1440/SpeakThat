@@ -841,18 +841,15 @@ Aynı bildirimin kısa aralıklarla birden çok kez okunmasını önleyin
     <string name="behavior_deduplication_recommendation">Yinelenen bildirimler yaşıyorsanız etkinleştirin</string>
     <string name="behavior_deduplication_switch_label">Bildirim tekrarını önlemeyi etkinleştir</string>
     <string name="behavior_deduplication_benefits">
-✨ Faydaları:\n\n• Rahatsız edici yinelenen okumaları önler\n• Gereksiz TTS\'den kaçınarak pil tasarrufu sağlar\n• 5 saniyelik bir pencereyle otomatik olarak çalışır\n• Birden fazla bildirim gönderen uygulamalara yardımcı olur
+✨ Faydaları:\n\n• Rahatsız edici yinelenen okumaları önler\n• Gereksiz TTS\'den kaçınarak pil tasarrufu sağlar\n• 30 saniyelik bir pencereyle otomatik olarak çalışır\n• Birden fazla bildirim gönderen uygulamalara yardımcı olur
 </string>
     <!-- Behavior Settings - Audio Mode -->
     <string name="section_honor_audio_mode">Ses Moduna Uy</string>
-    <string name="behavior_audio_mode_description">
-Bildirimleri yalnızca cihazınız Ses modundayken (Sessiz veya Titreşim değil) okuyun
-</string>
-    <string name="behavior_audio_mode_recommendation">Önerilen: Bu özelliği etkinleştirin</string>
-    <string name="behavior_audio_mode_switch_label">Ses moduna uy (sadece Ses)</string>
-    <string name="behavior_audio_mode_benefits">
-✨ Faydaları:\n\n• Telefon sessizdeyken istenmeyen sesleri önler\n• Cihazınızın ses ayarlarına saygı duyar\n• Sessiz ve Titreşim modlarıyla çalışır\n• Bildirimlerin yalnızca duyabileceğiniz zaman çalmasını sağlar
-</string>
+    <string name="behavior_audio_mode_description">Silent ve Titreşim için SpeakThat davranışını seçin. İkisini de sessiz tutun veya Titreşimde konuşmaya izin verin, Sessiz sessiz kalır.</string>
+    <string name="behavior_audio_mode_recommendation">Önerilen: Sessiz ve Titreşim modlarını onurlandırın</string>
+    <string name="behavior_silent_mode_switch_label">Sessiz modu onurlandır</string>
+    <string name="behavior_vibrate_mode_switch_label">Titreşim modunu onurlandır</string>
+    <string name="behavior_audio_mode_benefits">✨ Faydaları:\n\n• Sessizde istenmeyen sesi önler\n• Titreşimde isteğe bağlı konuşma\n• Toplantı/odak ihtiyacına uyar\n• Ses tuşlarıyla çalışır</string>
     <!-- Behavior Settings - Shake to Stop -->
     <string name="section_shake_to_stop">Sallayarak Durdur</string>
     <string name="behavior_shake_description">Cihazınızı sallayarak okumaları anında durdurun</string>
@@ -1134,7 +1131,6 @@ Merhaba! Ben Mitchi. SpeakThat\'i yapmak için çok çaba harcıyorum. Arayüz/k
     <string name="dev_debug_tools_title">🛠️ Hata Ayıklama Araçları</string>
     <string name="dev_debug_tools_description">Uygulamayı hata ayıklama ve test etme araçları</string>
     <string name="dev_notification_history">📋 Bildirim Geçmişini Göster</string>
-    <string name="dev_analytics">📊 Yardım Kullanım Analizlerini Göster</string>
     <string name="dev_battery_report">🔋 Pil Optimizasyon Raporu</string>
     <string name="dev_repair_blacklist">🛠️ Kelime Kara Listesini Onar</string>
     <string name="dev_background_monitor">🛰️ Arka Plan İşlem Monitörü</string>
@@ -1651,6 +1647,7 @@ Bildirim izni reddedildi - SpeakThat bildirimleri görünmeyebilir
 </string>
     <string name="main_notification_title_active">SpeakThat Aktif</string>
     <string name="main_notification_content_tap_settings">SpeakThat ayarlarını açmak için dokunun</string>
+    <string name="main_notification_action_open_app">SpeakThat uygulamasını aç!</string>
     <!-- Audio Ducking Feature -->
     <string name="dev_enable_audio_ducking">Ses Kısma Özelliğini Etkinleştir</string>
     <string name="dev_enable_audio_ducking_description">
@@ -1687,4 +1684,7 @@ Farklı cihazların Ses Odaklama isteklerini nasıl işlediği konusundaki tutar
     <string name="statistics_summary_read_and_taps">Okunan bildirimler: %1$d\nSpeakThat logosuna dokunuş: %2$d</string>
     <string name="statistics_logo_taps_label">SpeakThat logosuna dokunuş</string>
     <string name="statistics_apps_read_list_label">Okunan uygulamalar listesi</string>
+    <!-- Behavior Settings - System Modes Group -->
+    <string name="section_honor_system_modes">Honour System Modes</string>
+    <string name="behavior_system_modes_description">Keep SpeakThat quiet when your device is in Do Not Disturb, on a call, or using silent or vibrate modes. Toggle each option below.</string>
 </resources>

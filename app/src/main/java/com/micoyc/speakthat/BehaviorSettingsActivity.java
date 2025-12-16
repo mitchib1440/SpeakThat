@@ -82,6 +82,8 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final String KEY_COOLDOWN_APPS = "cooldown_apps"; // JSON string of cooldown app settings
     private static final String KEY_HONOUR_DO_NOT_DISTURB = "honour_do_not_disturb"; // boolean
     private static final String KEY_HONOUR_PHONE_CALLS = "honour_phone_calls"; // boolean
+    private static final String KEY_HONOUR_SILENT_MODE = "honour_silent_mode"; // boolean
+    private static final String KEY_HONOUR_VIBRATE_MODE = "honour_vibrate_mode"; // boolean
     private static final String KEY_NOTIFICATION_DEDUPLICATION = "notification_deduplication"; // boolean
     private static final String KEY_DISMISSAL_MEMORY_ENABLED = "dismissal_memory_enabled"; // boolean
     private static final String KEY_DISMISSAL_MEMORY_TIMEOUT = "dismissal_memory_timeout"; // int (minutes)
@@ -112,6 +114,8 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private static final int DEFAULT_DELAY_BEFORE_READOUT = 2; // 2 seconds
     private static final boolean DEFAULT_HONOUR_DO_NOT_DISTURB = true; // Default to honouring DND
     private static final boolean DEFAULT_HONOUR_PHONE_CALLS = true; // Default to honouring phone calls
+    private static final boolean DEFAULT_HONOUR_SILENT_MODE = true; // Default to honouring Silent mode
+    private static final boolean DEFAULT_HONOUR_VIBRATE_MODE = true; // Default to honouring Vibrate mode
     private static final boolean DEFAULT_NOTIFICATION_DEDUPLICATION = false; // Default to disabled
     private static final boolean DEFAULT_DISMISSAL_MEMORY_ENABLED = true; // Default to enabled (most users benefit)
     private static final int DEFAULT_DISMISSAL_MEMORY_TIMEOUT = 15; // Default to 15 minutes
@@ -164,6 +168,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     
     // App selector for cooldown apps
     private LazyAppSearchAdapter cooldownAppSelectorAdapter;
+    
+    // App selector for custom app names (package input)
+    private LazyAppSearchAdapter customAppSelectorAdapter;
     
     // App selector for priority apps
     private LazyAppSearchAdapter priorityAppSelectorAdapter;
@@ -257,6 +264,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
 
         // Set up RecyclerView for custom app names
         setupCustomAppNamesRecycler();
+        
+        // Set up custom app package selector
+        setupCustomAppSelector();
 
         // Set up RecyclerView for cooldown apps
         setupCooldownAppsRecycler();
@@ -273,7 +283,6 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Set up info button listeners
         binding.btnNotificationBehaviorInfo.setOnClickListener(v -> showNotificationBehaviorDialog());
         binding.btnMediaBehaviorInfo.setOnClickListener(v -> showMediaBehaviorDialog());
-        binding.btnDoNotDisturbInfo.setOnClickListener(v -> showDoNotDisturbDialog());
         binding.btnShakeToStopInfo.setOnClickListener(v -> showShakeToStopDialog());
         binding.btnWaveToStopInfo.setOnClickListener(v -> showWaveToStopDialog());
         binding.btnPressToStopInfo.setOnClickListener(v -> showPressToStopDialog());
@@ -593,9 +602,12 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             saveHonourDoNotDisturb(isChecked);
         });
         
-        // Set up Audio Mode toggle
-        binding.switchHonourAudioMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            saveHonourAudioMode(isChecked);
+        // Set up Silent/Vibrate toggles
+        binding.switchHonourSilentMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveHonourSilentMode(isChecked);
+        });
+        binding.switchHonourVibrateMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveHonourVibrateMode(isChecked);
         });
         
         // Set up Phone Calls toggle
@@ -636,12 +648,6 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         
         // Set up Dismissal Memory info button
         binding.btnDismissalMemoryInfo.setOnClickListener(v -> showDismissalMemoryDialog());
-        
-        // Set up Audio Mode info button
-        binding.btnAudioModeInfo.setOnClickListener(v -> showAudioModeDialog());
-        
-        // Set up Phone Calls info button
-        binding.btnPhoneCallsInfo.setOnClickListener(v -> showPhoneCallsDialog());
         
         // Set up speech template functionality
         setupSpeechTemplateUI();
@@ -858,6 +864,26 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         customAppNameAdapter = new CustomAppNameAdapter(this);
         binding.recyclerCustomAppNames.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerCustomAppNames.setAdapter(customAppNameAdapter);
+    }
+    
+    private void setupCustomAppSelector() {
+        // Use lazy loading adapter for custom app package selector
+        customAppSelectorAdapter = new LazyAppSearchAdapter(this);
+        binding.editAppPackage.setAdapter(customAppSelectorAdapter);
+        binding.editAppPackage.setThreshold(1); // Show suggestions after 1 character
+        
+        // Handle app selection
+        binding.editAppPackage.setOnItemClickListener((parent, view, position, id) -> {
+            AppInfo selectedApp = customAppSelectorAdapter.getItem(position);
+            if (selectedApp != null) {
+                // Populate the package field with the selected package name
+                binding.editAppPackage.setText(selectedApp.packageName);
+                binding.editAppPackage.setSelection(binding.editAppPackage.getText().length());
+                InAppLogger.log("AppSelector", "Custom name selector chose: " + selectedApp.appName + " (" + selectedApp.packageName + ")");
+            }
+        });
+        
+        InAppLogger.log("AppSelector", "Lazy custom app selector initialized - apps will load on search");
     }
 
     private void setupCooldownAppsRecycler() {
@@ -1150,13 +1176,18 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         Log.d("BehaviorSettings", "Loaded Content Cap settings: mode=" + contentCapMode + ", wordCount=" + wordCount + ", sentenceCount=" + sentenceCount + ", timeLimit=" + timeLimit);
         InAppLogger.log("BehaviorSettings", "Loaded Content Cap settings: mode=" + contentCapMode + ", wordCount=" + wordCount + ", sentenceCount=" + sentenceCount + ", timeLimit=" + timeLimit);
 
+        // Migrate legacy audio mode setting (single toggle) to split Silent/Vibrate if missing
+        migrateAudioModePreferenceIfNeeded();
+
         // Load Do Not Disturb setting
         boolean honourDoNotDisturb = sharedPreferences.getBoolean(KEY_HONOUR_DO_NOT_DISTURB, DEFAULT_HONOUR_DO_NOT_DISTURB);
         binding.switchHonourDoNotDisturb.setChecked(honourDoNotDisturb);
         
-        // Load Audio Mode setting
-        boolean honourAudioMode = sharedPreferences.getBoolean("honour_audio_mode", true); // Default to true for safety
-        binding.switchHonourAudioMode.setChecked(honourAudioMode);
+        // Load Audio Mode split settings
+        boolean honourSilentMode = sharedPreferences.getBoolean(KEY_HONOUR_SILENT_MODE, DEFAULT_HONOUR_SILENT_MODE);
+        boolean honourVibrateMode = sharedPreferences.getBoolean(KEY_HONOUR_VIBRATE_MODE, DEFAULT_HONOUR_VIBRATE_MODE);
+        binding.switchHonourSilentMode.setChecked(honourSilentMode);
+        binding.switchHonourVibrateMode.setChecked(honourVibrateMode);
         
         // Load Phone Calls setting
         boolean honourPhoneCalls = sharedPreferences.getBoolean(KEY_HONOUR_PHONE_CALLS, DEFAULT_HONOUR_PHONE_CALLS);
@@ -1851,11 +1882,18 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         InAppLogger.log("BehaviorSettings", "Honour Do Not Disturb changed to: " + honour);
     }
 
-    private void saveHonourAudioMode(boolean honour) {
+    private void saveHonourSilentMode(boolean honour) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("honour_audio_mode", honour);
+        editor.putBoolean(KEY_HONOUR_SILENT_MODE, honour);
         editor.apply();
-        InAppLogger.log("BehaviorSettings", "Honour Audio Mode changed to: " + honour);
+        InAppLogger.log("BehaviorSettings", "Honour Silent Mode changed to: " + honour);
+    }
+
+    private void saveHonourVibrateMode(boolean honour) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_HONOUR_VIBRATE_MODE, honour);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Honour Vibrate Mode changed to: " + honour);
     }
 
     private void saveHonourPhoneCalls(boolean honour) {
@@ -1886,7 +1924,23 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         InAppLogger.log("BehaviorSettings", "Dismissal memory timeout changed to: " + timeoutMinutes + " minutes");
     }
     
+    /**
+     * Migrate legacy single audio-mode flag to split Silent/Vibrate flags if needed.
+     */
+    private void migrateAudioModePreferenceIfNeeded() {
+        boolean hasSilent = sharedPreferences.contains(KEY_HONOUR_SILENT_MODE);
+        boolean hasVibrate = sharedPreferences.contains(KEY_HONOUR_VIBRATE_MODE);
+        if (hasSilent && hasVibrate) {
+            return;
+        }
 
+        boolean legacyHonourAudioMode = sharedPreferences.getBoolean("honour_audio_mode", true);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_HONOUR_SILENT_MODE, legacyHonourAudioMode);
+        editor.putBoolean(KEY_HONOUR_VIBRATE_MODE, legacyHonourAudioMode);
+        editor.apply();
+        InAppLogger.log("BehaviorSettings", "Migrated legacy honour_audio_mode (" + legacyHonourAudioMode + ") to split Silent/Vibrate flags");
+    }
 
     private void updateThresholdMarker(float threshold) {
         // Check if binding is null (activity might be destroyed)
@@ -2225,6 +2279,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     protected void onDestroy() {
         if (cooldownAppSelectorAdapter != null) {
             cooldownAppSelectorAdapter.shutdown();
+        }
+        if (customAppSelectorAdapter != null) {
+            customAppSelectorAdapter.shutdown();
         }
         
         super.onDestroy();
@@ -2705,21 +2762,19 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         // Track dialog usage for analytics
         trackDialogUsage("audio_mode_info");
         
-        String htmlText = "Honour Audio Mode ensures notifications are only read when your device is in Sound mode:<br><br>" +
+        String htmlText = "Honour Audio Mode lets you choose how Silent and Vibrate behave:<br><br>" +
                 "<b>🎯 What it does:</b><br>" +
-                "When your device is in Silent or Vibrate mode, SpeakThat will not read any notifications aloud. This prevents unwanted audio when your phone is muted.<br><br>" +
+                "Toggle Silent and Vibrate separately so SpeakThat can stay quiet in Silent but keep talking in Vibrate if you want.<br><br>" +
                 "<b>📱 When it's useful:</b><br>" +
-                "• <b>Silent mode</b> - No audio interruptions when phone is completely muted<br>" +
-                "• <b>Vibrate mode</b> - Respects your choice to only feel notifications<br>" +
-                "• <b>Meetings</b> - No embarrassing audio when phone is on vibrate<br>" +
-                "• <b>Quiet environments</b> - Ensures notifications only play when you can hear them<br><br>" +
+                "• <b>Silent mode</b> - Keep SpeakThat fully silent<br>" +
+                "• <b>Vibrate mode</b> - Optional: allow speech even while the phone vibrates<br>" +
+                "• <b>Meetings/focus</b> - Silence everything in Silent without losing Vibrate flexibility<br>" +
+                "• <b>Quiet environments</b> - Fine-tune audio to match where you are<br><br>" +
                 "<b>⚙️ How it works:</b><br>" +
-                "• Automatically detects your device's audio mode<br>" +
-                "• Only allows TTS when in Sound mode (RINGER_MODE_NORMAL)<br>" +
-                "• Blocks TTS in Silent mode (RINGER_MODE_SILENT)<br>" +
-                "• Blocks TTS in Vibrate mode (RINGER_MODE_VIBRATE)<br>" +
-                "• Notifications resume normally when switched back to Sound mode<br><br>" +
-                "<b>💡 Tip:</b> This feature works with your device's physical volume buttons and system settings. Perfect for users who frequently switch between audio modes!";
+                "• Detects ringer modes: Silent, Vibrate, Sound<br>" +
+                "• Each switch controls whether that mode blocks TTS<br>" +
+                "• Defaults keep both blocked (same as before) for safety<br><br>" +
+                "<b>💡 Tip:</b> Turn off Vibrate blocking to let SpeakThat keep talking while your phone is on vibrate.";
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.dialog_title_honour_audio_mode)
@@ -2728,9 +2783,11 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                     // Track recommendation usage
                     trackDialogUsage("audio_mode_recommended");
                     
-                    // Enable honour audio mode
-                    binding.switchHonourAudioMode.setChecked(true);
-                    saveHonourAudioMode(true);
+                    // Enable both for the recommended safe default
+                    binding.switchHonourSilentMode.setChecked(true);
+                    binding.switchHonourVibrateMode.setChecked(true);
+                    saveHonourSilentMode(true);
+                    saveHonourVibrateMode(true);
                 })
                 .setNegativeButton(R.string.got_it, null)
                 .show();
@@ -2784,7 +2841,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "• <b>App restarts</b> - Apps may re-post notifications when restarting<br>" +
                 "• <b>Network issues</b> - Connectivity problems can cause duplicate notifications<br><br>" +
                 "<b>⚙️ How it works:</b><br>" +
-                "• Uses a 5-second window to detect duplicates<br>" +
+                "• Uses a 30-second window to detect duplicates<br>" +
                 "• Compares notification package, ID, and content hash<br>" +
                 "• Automatically cleans up old entries to save memory<br>" +
                 "• Logs when duplicates are detected for debugging<br>" +
@@ -3152,35 +3209,35 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     }
 
     /**
-     * Check if the device is currently in Sound mode (not Silent or Vibrate)
-     * This can be used to prevent TTS when the phone is muted
+     * Determine if the current ringer mode should block TTS based on user prefs.
      * @param context The application context
-     * @return true if device is in Sound mode, false if Silent or Vibrate
+     * @return "Silent" if blocked by silent, "Vibrate" if blocked by vibrate, null if allowed
      */
-    public static boolean isDeviceInSoundMode(Context context) {
+    public static String getAudioModeBlockReason(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        boolean honourSilent = prefs.getBoolean(KEY_HONOUR_SILENT_MODE, DEFAULT_HONOUR_SILENT_MODE);
+        boolean honourVibrate = prefs.getBoolean(KEY_HONOUR_VIBRATE_MODE, DEFAULT_HONOUR_VIBRATE_MODE);
+
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        if (audioManager != null) {
-            int ringerMode = audioManager.getRingerMode();
-            // Only allow TTS when in RINGER_MODE_NORMAL (Sound mode)
-            // RINGER_MODE_SILENT = 0, RINGER_MODE_VIBRATE = 1, RINGER_MODE_NORMAL = 2
-            return ringerMode == AudioManager.RINGER_MODE_NORMAL;
+        if (audioManager == null) {
+            return null;
         }
-        return false;
+
+        int ringerMode = audioManager.getRingerMode();
+        if (ringerMode == AudioManager.RINGER_MODE_SILENT && honourSilent) {
+            return "Silent";
+        }
+        if (ringerMode == AudioManager.RINGER_MODE_VIBRATE && honourVibrate) {
+            return "Vibrate";
+        }
+        return null;
     }
 
     /**
-     * Check if SpeakThat should honour audio mode (only speak when in Sound mode)
-     * @param context The application context
-     * @return true if audio mode should be honoured, false otherwise
+     * Backwards compatible helper used by the service to decide blocking.
      */
     public static boolean shouldHonourAudioMode(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        boolean honourAudioMode = prefs.getBoolean("honour_audio_mode", true); // Default to true for safety
-        
-        if (honourAudioMode) {
-            return !isDeviceInSoundMode(context); // Return true if we should block (not in sound mode)
-        }
-        return false;
+        return getAudioModeBlockReason(context) != null;
     }
 
     /**

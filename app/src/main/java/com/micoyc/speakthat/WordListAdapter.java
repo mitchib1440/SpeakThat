@@ -3,10 +3,9 @@ package com.micoyc.speakthat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,35 +52,15 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
             }
         });
         
-        // Set up spinner with blacklist types
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(
-            holder.itemView.getContext(), R.array.blacklist_types, android.R.layout.simple_spinner_item
-        );
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        holder.spinnerType.setAdapter(spinnerAdapter);
-        
-        // Set selection based on current type (0 = Block, 1 = Private)
-        holder.spinnerType.setSelection(item.isPrivate ? 1 : 0);
-        
-        // Clear previous listener to avoid triggering during setup
-        holder.spinnerType.setOnItemSelectedListener(null);
-        
-        // Set up spinner selection listener
-        holder.spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int selection, long id) {
-                boolean newIsPrivate = (selection == 1);
-                if (item.isPrivate != newIsPrivate) {
-                    item.isPrivate = newIsPrivate;
-                    if (typeChangeListener != null) {
-                        typeChangeListener.onTypeChange(holder.getAdapterPosition(), newIsPrivate);
-                    }
+        // Bind private checkbox to match App List behaviour
+        holder.checkBoxPrivate.setOnCheckedChangeListener(null);
+        holder.checkBoxPrivate.setChecked(item.isPrivate);
+        holder.checkBoxPrivate.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
+            if (item.isPrivate != isChecked) {
+                item.isPrivate = isChecked;
+                if (typeChangeListener != null) {
+                    typeChangeListener.onTypeChange(holder.getAdapterPosition(), isChecked);
                 }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Do nothing
             }
         });
         
@@ -100,13 +79,13 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textWord;
-        Spinner spinnerType;
+        CheckBox checkBoxPrivate;
         ImageButton buttonRemove;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textWord = itemView.findViewById(R.id.textWord);
-            spinnerType = itemView.findViewById(R.id.spinnerType);
+            checkBoxPrivate = itemView.findViewById(R.id.checkBoxPrivate);
             buttonRemove = itemView.findViewById(R.id.buttonRemove);
         }
     }

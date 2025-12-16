@@ -223,12 +223,7 @@ class MediaNotificationDetector {
     data class MediaFilterPreferences(
         val isMediaFilteringEnabled: Boolean = false,
         val exceptedApps: Set<String> = emptySet(),
-        val importantKeywords: Set<String> = setOf(
-            // Only keep truly important keywords that indicate social interaction
-            "reply", "comment", "mention", "like", "follow", "subscribe",
-            "replied", "commented", "liked", "subscribed", "new subscriber",
-            "dm", "direct message", "message", "notification", "alert"
-        ),
+        val importantKeywords: Set<String> = emptySet(),
         val filteredMediaApps: Set<String> = emptySet()
     )
 } 

@@ -7,9 +7,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import com.micoyc.speakthat.StatsSnapshot;
 
 public class FilterConfigManager {
     
@@ -61,6 +63,7 @@ public class FilterConfigManager {
         public VoiceConfig voice;
         public BehaviorConfig behavior;
         public GeneralConfig general;
+        public StatsConfig statistics;
         
         public FullConfig() {
             this.exportDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
@@ -70,6 +73,7 @@ public class FilterConfigManager {
             this.voice = new VoiceConfig();
             this.behavior = new BehaviorConfig();
             this.general = new GeneralConfig();
+            this.statistics = new StatsConfig();
         }
     }
     
@@ -113,7 +117,10 @@ public class FilterConfigManager {
         public int delayBeforeReadout;
         public boolean honourDoNotDisturb;
         public boolean honourPhoneCalls; // Add honour phone calls setting
-        public boolean honourAudioMode; // Add honour audio mode setting
+        public boolean honourSilentMode; // Honour Silent ringer mode
+        public boolean honourVibrateMode; // Honour Vibrate ringer mode
+        @Deprecated
+        public boolean honourAudioMode; // Legacy combined audio mode flag
         public boolean persistentNotification; // Add persistent notification setting
         public boolean notificationWhileReading; // Add notification while reading setting
         public boolean waveToStopEnabled;
@@ -139,7 +146,9 @@ public class FilterConfigManager {
             this.delayBeforeReadout = 0;
             this.honourDoNotDisturb = true;
             this.honourPhoneCalls = true; // Default to true for safety
-            this.honourAudioMode = true; // Default to true for safety
+            this.honourSilentMode = true; // Default to true for safety
+            this.honourVibrateMode = true; // Default to true for safety
+            this.honourAudioMode = true; // Legacy: keep for backwards compatibility
             this.persistentNotification = false; // Default to false
             this.notificationWhileReading = false; // Default to false
             this.waveToStopEnabled = false;
@@ -169,6 +178,30 @@ public class FilterConfigManager {
             this.batteryOptimizationDisabled = false;
             this.aggressiveBackgroundProcessing = false;
             this.serviceRestartPolicy = "periodic";
+        }
+    }
+
+    public static class StatsConfig {
+        public int notificationsReceived;
+        public int notificationsRead;
+        public int readoutsInterrupted;
+        public int listenerRebinds;
+        public int listenerRebindsSkipped;
+        public int listenerRebindsRecovered;
+        public int logoTaps;
+        public HashMap<String, Integer> filterReasons;
+        public Set<String> appsRead;
+
+        public StatsConfig() {
+            this.notificationsReceived = 0;
+            this.notificationsRead = 0;
+            this.readoutsInterrupted = 0;
+            this.listenerRebinds = 0;
+            this.listenerRebindsSkipped = 0;
+            this.listenerRebindsRecovered = 0;
+            this.logoTaps = 0;
+            this.filterReasons = new HashMap<>();
+            this.appsRead = new HashSet<>();
         }
     }
     
@@ -275,7 +308,11 @@ public class FilterConfigManager {
         config.behavior.delayBeforeReadout = prefs.getInt("delay_before_readout", 0);
         config.behavior.honourDoNotDisturb = prefs.getBoolean("honour_do_not_disturb", true);
         config.behavior.honourPhoneCalls = prefs.getBoolean("honour_phone_calls", true); // Add honour phone calls
-        config.behavior.honourAudioMode = prefs.getBoolean("honour_audio_mode", true); // Add honour audio mode
+        // Split audio mode: prefer new keys, fall back to legacy combined flag
+        boolean legacyHonourAudioMode = prefs.getBoolean("honour_audio_mode", true);
+        config.behavior.honourSilentMode = prefs.getBoolean("honour_silent_mode", legacyHonourAudioMode);
+        config.behavior.honourVibrateMode = prefs.getBoolean("honour_vibrate_mode", legacyHonourAudioMode);
+        config.behavior.honourAudioMode = legacyHonourAudioMode;
         config.behavior.persistentNotification = prefs.getBoolean("persistent_notification", false); // Add persistent notification
         config.behavior.notificationWhileReading = prefs.getBoolean("notification_while_reading", false); // Add notification while reading
         config.behavior.waveToStopEnabled = prefs.getBoolean("wave_to_stop_enabled", false);
@@ -295,6 +332,18 @@ public class FilterConfigManager {
         config.general.batteryOptimizationDisabled = prefs.getBoolean("battery_optimization_disabled", false);
         config.general.aggressiveBackgroundProcessing = prefs.getBoolean("aggressive_background_processing", false);
         config.general.serviceRestartPolicy = prefs.getString("service_restart_policy", "periodic");
+
+        // Load statistics from main prefs
+        StatsSnapshot statsSnapshot = StatisticsManager.Companion.exportSnapshot(context);
+        config.statistics.notificationsReceived = statsSnapshot.getNotificationsReceived();
+        config.statistics.notificationsRead = statsSnapshot.getNotificationsRead();
+        config.statistics.readoutsInterrupted = statsSnapshot.getReadoutsInterrupted();
+        config.statistics.listenerRebinds = statsSnapshot.getListenerRebinds();
+        config.statistics.listenerRebindsSkipped = statsSnapshot.getListenerRebindsSkipped();
+        config.statistics.listenerRebindsRecovered = statsSnapshot.getListenerRebindsRecovered();
+        config.statistics.logoTaps = statsSnapshot.getLogoTaps();
+        config.statistics.filterReasons = new HashMap<>(statsSnapshot.getFilterReasons());
+        config.statistics.appsRead = new HashSet<>(statsSnapshot.getAppsRead());
         
         // Create JSON structure
         JSONObject json = new JSONObject();
@@ -345,7 +394,9 @@ public class FilterConfigManager {
         behavior.put("delayBeforeReadout", config.behavior.delayBeforeReadout);
         behavior.put("honourDoNotDisturb", config.behavior.honourDoNotDisturb);
         behavior.put("honourPhoneCalls", config.behavior.honourPhoneCalls); // Add honour phone calls
-        behavior.put("honourAudioMode", config.behavior.honourAudioMode); // Add honour audio mode
+        behavior.put("honourSilentMode", config.behavior.honourSilentMode); // Split audio mode
+        behavior.put("honourVibrateMode", config.behavior.honourVibrateMode); // Split audio mode
+        behavior.put("honourAudioMode", config.behavior.honourAudioMode); // Legacy combined flag
         behavior.put("persistentNotification", config.behavior.persistentNotification); // Add persistent notification
         behavior.put("notificationWhileReading", config.behavior.notificationWhileReading); // Add notification while reading
         behavior.put("waveToStopEnabled", config.behavior.waveToStopEnabled);
@@ -368,6 +419,19 @@ public class FilterConfigManager {
         general.put("aggressiveBackgroundProcessing", config.general.aggressiveBackgroundProcessing);
         general.put("serviceRestartPolicy", config.general.serviceRestartPolicy);
         json.put("general", general);
+
+        // Statistics
+        JSONObject statistics = new JSONObject();
+        statistics.put("notificationsReceived", config.statistics.notificationsReceived);
+        statistics.put("notificationsRead", config.statistics.notificationsRead);
+        statistics.put("readoutsInterrupted", config.statistics.readoutsInterrupted);
+        statistics.put("listenerRebinds", config.statistics.listenerRebinds);
+        statistics.put("listenerRebindsSkipped", config.statistics.listenerRebindsSkipped);
+        statistics.put("listenerRebindsRecovered", config.statistics.listenerRebindsRecovered);
+        statistics.put("logoTaps", config.statistics.logoTaps);
+        statistics.put("filterReasons", new JSONObject(config.statistics.filterReasons));
+        statistics.put("appsRead", new JSONArray(config.statistics.appsRead));
+        json.put("statistics", statistics);
         
         return json.toString(2); // Pretty print with 2-space indentation
     }
@@ -694,8 +758,24 @@ public class FilterConfigManager {
                     totalImported++;
                 }
                 
+                // Prefer split audio-mode flags; fall back to legacy combined flag
+                if (behavior.has("honourSilentMode")) {
+                    mainEditor.putBoolean("honour_silent_mode", behavior.getBoolean("honourSilentMode"));
+                    totalImported++;
+                }
+                if (behavior.has("honourVibrateMode")) {
+                    mainEditor.putBoolean("honour_vibrate_mode", behavior.getBoolean("honourVibrateMode"));
+                    totalImported++;
+                }
                 if (behavior.has("honourAudioMode")) {
-                    mainEditor.putBoolean("honour_audio_mode", behavior.getBoolean("honourAudioMode"));
+                    boolean legacyHonour = behavior.getBoolean("honourAudioMode");
+                    mainEditor.putBoolean("honour_audio_mode", legacyHonour);
+                    if (!behavior.has("honourSilentMode")) {
+                        mainEditor.putBoolean("honour_silent_mode", legacyHonour);
+                    }
+                    if (!behavior.has("honourVibrateMode")) {
+                        mainEditor.putBoolean("honour_vibrate_mode", legacyHonour);
+                    }
                     totalImported++;
                 }
                 
@@ -794,6 +874,38 @@ public class FilterConfigManager {
                     mainEditor.putString("service_restart_policy", general.getString("serviceRestartPolicy"));
                     totalImported++;
                 }
+            }
+
+            // Import statistics (if present) - overwrites current stats
+            if (json.has("statistics")) {
+                JSONObject statistics = json.getJSONObject("statistics");
+                StatsSnapshot snapshot = StatisticsManager.Companion.snapshotFromJson(statistics);
+                StatisticsManager.Companion.importSnapshot(context, snapshot);
+
+                int statsImported = 0;
+                if (statistics.has("notificationsReceived")) statsImported++;
+                if (statistics.has("notificationsRead")) statsImported++;
+                if (statistics.has("readoutsInterrupted")) statsImported++;
+                if (statistics.has("listenerRebinds")) statsImported++;
+                if (statistics.has("listenerRebindsSkipped")) statsImported++;
+                if (statistics.has("listenerRebindsRecovered")) statsImported++;
+                if (statistics.has("logoTaps")) statsImported++;
+
+                JSONObject filterReasonsJson = statistics.optJSONObject("filterReasons");
+                if (filterReasonsJson != null) {
+                    statsImported += filterReasonsJson.length();
+                } else if (statistics.has("filterReasons")) {
+                    statsImported++;
+                }
+
+                JSONArray appsReadJson = statistics.optJSONArray("appsRead");
+                if (appsReadJson != null) {
+                    statsImported += appsReadJson.length();
+                } else if (statistics.has("appsRead")) {
+                    statsImported++;
+                }
+
+                totalImported += statsImported;
             }
             
             // Apply all changes
