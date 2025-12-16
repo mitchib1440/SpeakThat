@@ -1264,7 +1264,7 @@ Choisissez quel langage SpeakThat doit utiliser. Vous pouvez aussi activer le mo
     <string name="onboarding_language_section_title">Langage</string>
     <string name="onboarding_language_help_title">Votre langage n\'est pas proposé ?</string>
     <string name="onboarding_language_help_description">
-Je travaille aussi dur que possible pour supporter plus de langages. S\'il vous plait et si vous le pouvez, contribuez aux traductions sur la page Crowdin !
+Je travaille aussi dur que possible pour supporter plus de langages. S\'il vous plait et si vous le pouvez, contribuez aux traductions sur la page Weblate !
 </string>
     <string name="onboarding_theme_section_title">Thème</string>
     <string name="onboarding_theme_description">Utiliser le mode sombre dans cette application</string>

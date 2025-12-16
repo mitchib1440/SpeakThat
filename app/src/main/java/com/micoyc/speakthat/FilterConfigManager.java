@@ -7,9 +7,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import com.micoyc.speakthat.StatsSnapshot;
 
 public class FilterConfigManager {
     
@@ -61,6 +63,7 @@ public class FilterConfigManager {
         public VoiceConfig voice;
         public BehaviorConfig behavior;
         public GeneralConfig general;
+        public StatsConfig statistics;
         
         public FullConfig() {
             this.exportDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
@@ -70,6 +73,7 @@ public class FilterConfigManager {
             this.voice = new VoiceConfig();
             this.behavior = new BehaviorConfig();
             this.general = new GeneralConfig();
+            this.statistics = new StatsConfig();
         }
     }
     
@@ -174,6 +178,30 @@ public class FilterConfigManager {
             this.batteryOptimizationDisabled = false;
             this.aggressiveBackgroundProcessing = false;
             this.serviceRestartPolicy = "periodic";
+        }
+    }
+
+    public static class StatsConfig {
+        public int notificationsReceived;
+        public int notificationsRead;
+        public int readoutsInterrupted;
+        public int listenerRebinds;
+        public int listenerRebindsSkipped;
+        public int listenerRebindsRecovered;
+        public int logoTaps;
+        public HashMap<String, Integer> filterReasons;
+        public Set<String> appsRead;
+
+        public StatsConfig() {
+            this.notificationsReceived = 0;
+            this.notificationsRead = 0;
+            this.readoutsInterrupted = 0;
+            this.listenerRebinds = 0;
+            this.listenerRebindsSkipped = 0;
+            this.listenerRebindsRecovered = 0;
+            this.logoTaps = 0;
+            this.filterReasons = new HashMap<>();
+            this.appsRead = new HashSet<>();
         }
     }
     
@@ -304,6 +332,18 @@ public class FilterConfigManager {
         config.general.batteryOptimizationDisabled = prefs.getBoolean("battery_optimization_disabled", false);
         config.general.aggressiveBackgroundProcessing = prefs.getBoolean("aggressive_background_processing", false);
         config.general.serviceRestartPolicy = prefs.getString("service_restart_policy", "periodic");
+
+        // Load statistics from main prefs
+        StatsSnapshot statsSnapshot = StatisticsManager.Companion.exportSnapshot(context);
+        config.statistics.notificationsReceived = statsSnapshot.getNotificationsReceived();
+        config.statistics.notificationsRead = statsSnapshot.getNotificationsRead();
+        config.statistics.readoutsInterrupted = statsSnapshot.getReadoutsInterrupted();
+        config.statistics.listenerRebinds = statsSnapshot.getListenerRebinds();
+        config.statistics.listenerRebindsSkipped = statsSnapshot.getListenerRebindsSkipped();
+        config.statistics.listenerRebindsRecovered = statsSnapshot.getListenerRebindsRecovered();
+        config.statistics.logoTaps = statsSnapshot.getLogoTaps();
+        config.statistics.filterReasons = new HashMap<>(statsSnapshot.getFilterReasons());
+        config.statistics.appsRead = new HashSet<>(statsSnapshot.getAppsRead());
         
         // Create JSON structure
         JSONObject json = new JSONObject();
@@ -379,6 +419,19 @@ public class FilterConfigManager {
         general.put("aggressiveBackgroundProcessing", config.general.aggressiveBackgroundProcessing);
         general.put("serviceRestartPolicy", config.general.serviceRestartPolicy);
         json.put("general", general);
+
+        // Statistics
+        JSONObject statistics = new JSONObject();
+        statistics.put("notificationsReceived", config.statistics.notificationsReceived);
+        statistics.put("notificationsRead", config.statistics.notificationsRead);
+        statistics.put("readoutsInterrupted", config.statistics.readoutsInterrupted);
+        statistics.put("listenerRebinds", config.statistics.listenerRebinds);
+        statistics.put("listenerRebindsSkipped", config.statistics.listenerRebindsSkipped);
+        statistics.put("listenerRebindsRecovered", config.statistics.listenerRebindsRecovered);
+        statistics.put("logoTaps", config.statistics.logoTaps);
+        statistics.put("filterReasons", new JSONObject(config.statistics.filterReasons));
+        statistics.put("appsRead", new JSONArray(config.statistics.appsRead));
+        json.put("statistics", statistics);
         
         return json.toString(2); // Pretty print with 2-space indentation
     }
@@ -821,6 +874,38 @@ public class FilterConfigManager {
                     mainEditor.putString("service_restart_policy", general.getString("serviceRestartPolicy"));
                     totalImported++;
                 }
+            }
+
+            // Import statistics (if present) - overwrites current stats
+            if (json.has("statistics")) {
+                JSONObject statistics = json.getJSONObject("statistics");
+                StatsSnapshot snapshot = StatisticsManager.Companion.snapshotFromJson(statistics);
+                StatisticsManager.Companion.importSnapshot(context, snapshot);
+
+                int statsImported = 0;
+                if (statistics.has("notificationsReceived")) statsImported++;
+                if (statistics.has("notificationsRead")) statsImported++;
+                if (statistics.has("readoutsInterrupted")) statsImported++;
+                if (statistics.has("listenerRebinds")) statsImported++;
+                if (statistics.has("listenerRebindsSkipped")) statsImported++;
+                if (statistics.has("listenerRebindsRecovered")) statsImported++;
+                if (statistics.has("logoTaps")) statsImported++;
+
+                JSONObject filterReasonsJson = statistics.optJSONObject("filterReasons");
+                if (filterReasonsJson != null) {
+                    statsImported += filterReasonsJson.length();
+                } else if (statistics.has("filterReasons")) {
+                    statsImported++;
+                }
+
+                JSONArray appsReadJson = statistics.optJSONArray("appsRead");
+                if (appsReadJson != null) {
+                    statsImported += appsReadJson.length();
+                } else if (statistics.has("appsRead")) {
+                    statsImported++;
+                }
+
+                totalImported += statsImported;
             }
             
             // Apply all changes

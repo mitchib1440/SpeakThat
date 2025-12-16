@@ -1225,7 +1225,7 @@ Wählen Sie aus, welche Sprache verwendet werden soll. Sie können auch den dunk
     <string name="onboarding_language_section_title">Sprache</string>
     <string name="onboarding_language_help_title">Ist Ihre Sprache nicht aufgeführt?</string>
     <string name="onboarding_language_help_description">
-Ich arbeite so hart wie möglich daran, weitere Sprachen zu unterstützen. Bitte tragen Sie Übersetzungen zur Crowdin-Seite bei, wenn Sie können!
+Ich arbeite so hart wie möglich daran, weitere Sprachen zu unterstützen. Bitte tragen Sie Übersetzungen zur Weblate-Seite bei, wenn Sie können!
 </string>
     <string name="onboarding_theme_section_title">Design</string>
     <string name="onboarding_theme_description">Dunkelmodus in dieser App verwenden</string>
@@ -1653,7 +1653,7 @@ Benachrichtigungsberechtigung verweigert - Funktion wird nicht funktionieren
     -->
     <!--
 
-         This prevents them from being translated by CrowdIn
+         This prevents them from being translated by Weblate
 
     -->
     <!-- Error Messages -->
