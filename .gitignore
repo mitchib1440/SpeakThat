@@ -77,3 +77,12 @@ app/store/release/baselineProfiles/0/SpeakThat-NoUpdater-v1.6.1.dm
 app/store/release/baselineProfiles/1/SpeakThat-NoUpdater-v1.4.4.dm
 app/store/release/baselineProfiles/1/SpeakThat-NoUpdater-v1.6.1.dm
 app/store/release/output-metadata.json
+app/github/release/baselineProfiles/0/SpeakThat-v1.6.2.dm
+app/github/release/baselineProfiles/1/SpeakThat-v1.6.2.dm
+app/github/release/output-metadata.json
+app/store/release/app-store-release.aab
+app/store/release/baselineProfiles/0/SpeakThat-NoUpdater-v1.4.4.dm
+app/store/release/baselineProfiles/0/SpeakThat-NoUpdater-v1.6.2.dm
+app/store/release/baselineProfiles/1/SpeakThat-NoUpdater-v1.4.4.dm
+app/store/release/baselineProfiles/1/SpeakThat-NoUpdater-v1.6.2.dm
+app/store/release/output-metadata.json

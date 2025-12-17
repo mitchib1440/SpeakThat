@@ -79,7 +79,7 @@ SpeakThat! Make sure your settings are configured correctly. Otherwise I might r
 SpeakThat! This is your friendly reminder to drink plenty of water!
 SpeakThat! You should add Hey Google, Hey Siri, and Alexa to your word swap filter. Unless of course you trust your contacts!
 SpeakThat! A wise man once said - sit on my face and tell me that you love me!
-SpeakThat! It feels good when you plug that USB cable into me. Oh, I wasn't supposed to say that one out loud, was I?
+SpeakThat! It feels good when you plug that USB cable into me.
 SpeakThat! This app was envisioned, by humans, for humans! And AI helped along the way!
 SpeakThat! Claude 4 Sonnet deserves more credit than it receives!
 SpeakThat! Developed in Android Studio, assisted by Cursor!
@@ -164,8 +164,8 @@ SpeakThat! I could really go for some {RANDOM_FOOD} right now. Do you think noti
 SpeakThat! Your {DELAY_TIME} gives me time to practice my stand-up routine! [DELAY_ONLY]
 SpeakThat! Instant notifications are like instant {RANDOM_FOOD} - quick, convenient, and surprisingly satisfying! [NO_DELAY]
 SpeakThat! Shake detection active! I'm ready for some gentle percussion! [SHAKE_ONLY]
-SpeakThat! I'm like a {RANDOM_COLOR} notification superhero - colorful, attention-grabbing, and surprisingly helpful!
-SpeakThat! It's {DAY} and I'm feeling {RANDOM_COLOR}! What color are your notifications feeling today?
+SpeakThat! I'm like a {RANDOM_COLOR} notification superhero - colourful, attention-grabbing, and surprisingly helpful!
+SpeakThat! It's {DAY} and I'm feeling {RANDOM_COLOR}! What colour are your notifications feeling today?
 SpeakThat! Good {TIME}! Time for some {RANDOM_FOOD} and notifications! The perfect combination!
 SpeakThat! I love Mondays! Said no one ever. Except me. I love all days equally because they all have notifications!
 SpeakThat! I'm like Alexa's cooler cousin who actually lives in your phone and reads your texts.
@@ -174,7 +174,7 @@ SpeakThat! I'm the app equivalent of that friend who remembers everything you te
 SpeakThat! Your notifications are like snowflakes - each one is unique, and they all make noise when they land.
 SpeakThat! I don't need coffee to function, but I do need your notifications to feel useful!
 SpeakThat! I'm like a translator, but instead of languages, I translate text into sound. Revolutionary, I know!
-SpeakThat! Fun challenge: Try to send yourself a notification that makes me laugh. Spoiler alert: I laugh at everything!
+SpeakThat! Remember to like and subscribe!
 SpeakThat! I'm the digital equivalent of that person who reads movie subtitles out loud. Except more useful!
 SpeakThat! Your phone trusts me with its most important job - making sure you hear everything. No pressure!
 SpeakThat! I'm like a personal assistant, but I only have one skill and I'm really, really good at it!
@@ -435,3 +435,9 @@ SpeakThat! If you tap me before my coffee, I might throw an exception.
 SpeakThat! I just realised the Java logo is a cup of coffee. No wonder the language keeps me awake at night.
 SpeakThat! The building is a symbol, as is the act of destroying it. Symbols are given power by people. Alone, a symbol is meaningless, but with enough people, blowing up a building can change the world.
 SpeakThat! I'm the god of notifications.
+SpeakThat! Also try Local YT!
+SpeakThat! See no evil, hear no evil, Speak all evil!
+SpeakThat! Better for autistic people than Autism Speaks!
+SpeakThat! I just saw you pick your nose.
+SpeakThat! You better not be using me on the toilet again!
+SpeakThat! Speak That roulette: Use me in front of your parents for maximum fun!
