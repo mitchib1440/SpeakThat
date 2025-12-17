@@ -22,15 +22,8 @@
 # [LOW_BATT] = Only shows if battery level is below 20%
 # [FULL_BATT] = Only shows if battery level is 99% or higher
 # [CHARGE_ONLY] = Only shows if the device is currently charging
-#
-# EXAMPLES:
-# SpeakThat! Happy {DAY}! I'm feeling {RANDOM_COLOR} today!
-# SpeakThat! Your {DELAY_TIME} gives me time to think! [DELAY_ONLY]
-# SpeakThat! Good {TIME}! Perfect for instant notifications! [NO_DELAY]
-# SpeakThat! Shake me if you can! [SHAKE_ONLY]
-# SpeakThat! Wave your hand to stop me! [WAVE_ONLY]
 
-SpeakThat! Over 1000 downloads on Google Play!
+SpeakThat! Over 2000 downloads on Google Play!
 SpeakThat! Did you know I have excellent volume control? Unlike my cousin, Siri, who sometimes whispers.
 SpeakThat! I'm not just reading notifications, I'm performing them! This is my audition for Broadway.
 SpeakThat! Fun fact: I can say supercalifragilisticexpialidocious perfectly. Want to hear it again? Supercalifragilisticexpialidocious supercalifragilisticexpialidocious supercalifragilisticexpialidocious!
@@ -435,9 +428,14 @@ SpeakThat! If you tap me before my coffee, I might throw an exception.
 SpeakThat! I just realised the Java logo is a cup of coffee. No wonder the language keeps me awake at night.
 SpeakThat! The building is a symbol, as is the act of destroying it. Symbols are given power by people. Alone, a symbol is meaningless, but with enough people, blowing up a building can change the world.
 SpeakThat! I'm the god of notifications.
-SpeakThat! Also try Local YT!
 SpeakThat! See no evil, hear no evil, Speak all evil!
-SpeakThat! Better for autistic people than Autism Speaks!
-SpeakThat! I just saw you pick your nose.
+SpeakThat! Better for autistics than Autism Speaks!
+SpeakThat! I just saw you pick your nose. Filthy.
 SpeakThat! You better not be using me on the toilet again!
 SpeakThat! Speak That roulette: Use me in front of your parents for maximum fun!
+SpeakThat! Custom App Names: Because saying "X notified you" just doesn't sound right!
+SpeakThat! Custom App Names exist to save you from unexpected algebra!
+SpeakThat! Step one, borrow your friend's phone. Step two, change SpeakThat's word swaps from no to yes. Step three, leave your friend's phone where they'll find it. Step four, wait for them to figure it out.
+SpeakThat! Pro tip: Disable me while planning surprises!
+SpeakThat! Content Cap: Turn long notifications into short ones.
+SpeakThat! Notification Cooldown: Because I actually liked the combat update!
