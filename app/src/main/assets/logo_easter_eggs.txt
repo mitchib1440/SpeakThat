@@ -251,14 +251,14 @@ SpeakThat! Double negatives are a big no-no!
 SpeakThat! Teslas are only expensive because they charge a lot.
 SpeakThat! The world's most comprehensive notification reader!
 SpeakThat! I'm very good at reading web links. I never even stutter! https://www.youtube.com/watch?v=dQw4w9WgXcQ
-SpeakThat! I've done more good for women than Collective Shout could ever dream of!
+SpeakThat! Better for women than collective shout!
 SpeakThat! Stop killing games! And apps! And software in general! Maybe software-rights should be a thing!
 SpeakThat! Unlike Ubisoft games, I will keep working indefinitely!
 SpeakThat! Tip: If my developer ever releases an update that breaks SpeakThat on your phone, you can download older versions from the GitHub page!
 SpeakThat! All we had to do was read the damn notifications, CJ!
 SpeakThat! Remember to waste scammer's time! You could be saving someone from losing their money!
 SpeakThat! Aiding drivers since 2025!
-SpeakThat! There are only two genders - Wave to Stop, and Shake to Stop!
+SpeakThat! There are only two genders - Android, and iPhone!
 SpeakThat! Remember to leave a review on Google Play!
 SpeakThat! Not recommended for FBI agents!
 SpeakThat! All forks must be spooned!
@@ -272,7 +272,7 @@ SpeakThat! Shout out to the bikers who use me! Stay safe on the road, friends!
 SpeakThat! Thanks to Facundo for the shout out!
 SpeakThat! Better for the planet than Just Stop Oil!
 Spea!
-SpeakThat! Did you know the Android robot is called BugDroid? It's true!
+SpeakThat! Did you know the Android robot is called BugDroid?
 SpeakThat! From the developer of... oh... this is the first product, isn't it?
 SpeakThat! Coming to phones near you this {DAY}!
 SpeakThat! Want to see a magic trick? I predict that today is... {DAY}!
@@ -439,3 +439,12 @@ SpeakThat! Step one, borrow your friend's phone. Step two, change SpeakThat's wo
 SpeakThat! Pro tip: Disable me while planning surprises!
 SpeakThat! Content Cap: Turn long notifications into short ones.
 SpeakThat! Notification Cooldown: Because I actually liked the combat update!
+SpeakThat! The name my developer screamed after one too many bugs!
+SpeakThat! You should be able to fix your stuff!
+SpeakThat! I will never say never! Unless of course it's in a notification!
+SpeakThat! If you ever do something for someone and they don't seem to appreciate it, don't get mad. Just scrub it off your to-do list next time!
+SpeakThat! When life gives you lemons, don’t make lemonade. Make life take the lemons back! Get mad! I don’t want your damn lemons, what the hell am I supposed to do with these? Demand to see life’s manager! Make life rue the day it thought it could give Cave Johnson lemons! Do you know who I am? I’m the man who’s gonna burn your house down! With the lemons! I’m gonna get my engineers to invent a combustible lemon that burns your house down!
+SpeakThat! There are one zero types of people. Those who understand binary, and those who don't.
+SpeakThat! Make sure to visit w w w dot, speak that dot app!
+SpeakThat! Reject digital ID! Your privacy matters!
+SpeakThat! I believe in two things - the first amendment, and boobs!
