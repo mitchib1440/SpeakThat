@@ -206,7 +206,35 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
+                            android:layout_marginBottom="12dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/txtPriorityAppsCount"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:textStyle="bold"
+                                android:textSize="16sp"
+                                android:text="@string/filter_app_count" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnManagePriorityApps"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/filter_manage_apps"
+                                android:backgroundTint="@color/white_100"
+                                android:textColor="@color/purple_base" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="12dp"
+                            android:visibility="gone">
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="0dp"
@@ -252,7 +280,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
-                            android:nestedScrollingEnabled="false" />
+                            android:nestedScrollingEnabled="false"
+                            android:visibility="gone" />
 
                     </LinearLayout>
 

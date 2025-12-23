@@ -6,6 +6,7 @@
         <!-- Allow querying all launcher apps for app name resolution -->
         <intent>
             <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
         </intent>
         <!-- Allow querying TTS services (required for Android 11+ and especially Android 15) -->
         <intent>
@@ -175,6 +176,11 @@
 
         <activity
             android:name=".FilterSettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".SettingsActivity" />
+
+        <activity
+            android:name=".AppPickerActivity"
             android:exported="false"
             android:parentActivityName=".SettingsActivity" />
 

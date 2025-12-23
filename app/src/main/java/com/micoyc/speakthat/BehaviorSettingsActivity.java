@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -165,15 +167,13 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private List<CustomAppNameAdapter.CustomAppNameEntry> customAppNamesList = new ArrayList<>();
     private CooldownAppAdapter cooldownAppAdapter;
     private List<CooldownAppAdapter.CooldownAppItem> cooldownAppsList = new ArrayList<>();
+    private androidx.activity.result.ActivityResultLauncher<Intent> priorityAppPickerLauncher;
     
     // App selector for cooldown apps
     private LazyAppSearchAdapter cooldownAppSelectorAdapter;
     
     // App selector for custom app names (package input)
     private LazyAppSearchAdapter customAppSelectorAdapter;
-    
-    // App selector for priority apps
-    private LazyAppSearchAdapter priorityAppSelectorAdapter;
     
     // Shake detection
     private SensorManager sensorManager;
@@ -203,6 +203,22 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         super.onCreate(savedInstanceState);
         binding = ActivityBehaviorSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        priorityAppPickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    ArrayList<String> selected = result.getData().getStringArrayListExtra(AppPickerActivity.EXTRA_SELECTED_PACKAGES);
+                    if (selected != null) {
+                        priorityAppsList.clear();
+                        priorityAppsList.addAll(selected);
+                        priorityAppAdapter.notifyDataSetChanged();
+                        savePriorityApps();
+                        updatePriorityAppsSummary();
+                    }
+                }
+            }
+        );
 
         // Set up action bar
         if (getSupportActionBar() != null) {
@@ -255,12 +271,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
 
         // Set up RecyclerView for priority apps
         setupPriorityAppsRecycler();
-
-        // Set up priority app selector
-        setupPriorityAppSelector();
-
-        // Set up button listener
-        binding.btnAddPriorityApp.setOnClickListener(v -> addPriorityApp());
+        binding.btnManagePriorityApps.setOnClickListener(v -> openPriorityAppPicker());
 
         // Set up RecyclerView for custom app names
         setupCustomAppNamesRecycler();
@@ -860,6 +871,24 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         binding.recyclerPriorityApps.setAdapter(priorityAppAdapter);
     }
 
+    private void openPriorityAppPicker() {
+        ArrayList<String> selectedPackages = new ArrayList<>(priorityAppsList);
+        Intent intent = AppPickerActivity.createIntent(
+            this,
+            getString(R.string.behavior_priority_apps),
+            selectedPackages,
+            new ArrayList<>(),
+            false
+        );
+        priorityAppPickerLauncher.launch(intent);
+    }
+
+    private void updatePriorityAppsSummary() {
+        if (binding != null) {
+            binding.txtPriorityAppsCount.setText("(" + priorityAppsList.size() + " apps)");
+        }
+    }
+
     private void setupCustomAppNamesRecycler() {
         customAppNameAdapter = new CustomAppNameAdapter(this);
         binding.recyclerCustomAppNames.setLayoutManager(new LinearLayoutManager(this));
@@ -925,26 +954,6 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         InAppLogger.log("AppSelector", "Lazy cooldown app selector initialized - apps will load on search");
     }
 
-    private void setupPriorityAppSelector() {
-        // Use lazy loading adapter for priority app selector
-        priorityAppSelectorAdapter = new LazyAppSearchAdapter(this);
-        binding.editPriorityApp.setAdapter(priorityAppSelectorAdapter);
-        binding.editPriorityApp.setThreshold(1); // Show suggestions after 1 character
-        
-        // Handle app selection
-        binding.editPriorityApp.setOnItemClickListener((parent, view, position, id) -> {
-            AppInfo selectedApp = priorityAppSelectorAdapter.getItem(position);
-            if (selectedApp != null) {
-                // Add the selected app to the priority list
-                addPriorityAppFromSelection(selectedApp);
-                // Clear the input field after selection
-                binding.editPriorityApp.setText("");
-            }
-        });
-        
-        InAppLogger.log("AppSelector", "Lazy priority app selector initialized - apps will load on search");
-    }
-
     private void loadSettings() {
         // Load behavior mode
         String behaviorMode = sharedPreferences.getString(KEY_NOTIFICATION_BEHAVIOR, "interrupt");
@@ -972,6 +981,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         priorityAppsList.clear();
         priorityAppsList.addAll(priorityApps);
         priorityAppAdapter.notifyDataSetChanged();
+        updatePriorityAppsSummary();
 
         // Load shake to stop settings
         boolean shakeEnabled = sharedPreferences.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, true);
@@ -1370,37 +1380,6 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             }
         }
         return result.toString();
-    }
-
-    private void addPriorityApp() {
-        String input = binding.editPriorityApp.getText().toString().trim();
-        if (input.isEmpty()) {
-            Toast.makeText(this, "Please enter an app name or package name", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Try to match input to JSON apps as fallback for display names
-        String packageNameToAdd = input;
-        AppListData matched = findAppByNameOrPackage(input);
-        if (matched != null) {
-            packageNameToAdd = matched.packageName;
-        }
-
-        // Check for duplicates
-        if (priorityAppsList.contains(packageNameToAdd)) {
-            Toast.makeText(this, "App already in priority list", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        priorityAppsList.add(packageNameToAdd);
-        priorityAppAdapter.notifyDataSetChanged();
-        binding.editPriorityApp.setText("");
-        
-        savePriorityApps();
-        
-        // Show success message
-        String displayName = matched != null ? matched.displayName : input;
-        Toast.makeText(this, "Added " + displayName + " to priority list", Toast.LENGTH_SHORT).show();
     }
 
     private void removePriorityApp(int position) {
@@ -3139,25 +3118,6 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         saveCooldownApps();
         
         Toast.makeText(this, "Added " + selectedApp.appName + " to cooldown list", Toast.LENGTH_SHORT).show();
-    }
-
-    private void addPriorityAppFromSelection(AppInfo selectedApp) {
-        Log.d("BehaviorSettings", "Adding priority app from selection: " + selectedApp.appName + " (" + selectedApp.packageName + ")");
-        
-        // Check for duplicates
-        if (priorityAppsList.contains(selectedApp.packageName)) {
-            Toast.makeText(this, "App already in priority list", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Add to priority list
-        priorityAppsList.add(selectedApp.packageName);
-        priorityAppAdapter.notifyDataSetChanged();
-        
-        Log.d("BehaviorSettings", "Added app to priority list: " + selectedApp.appName);
-        savePriorityApps();
-        
-        Toast.makeText(this, "Added " + selectedApp.appName + " to priority list", Toast.LENGTH_SHORT).show();
     }
 
     /**

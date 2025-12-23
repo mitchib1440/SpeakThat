@@ -177,8 +177,33 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
                                 android:layout_marginBottom="12dp">
+
+                                <TextView
+                                    android:id="@+id/txtAppListSummary"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:textColor="@color/purple_card_text_primary"
+                                    android:textSize="14sp"
+                                    android:text="@string/filter_manage_apps" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnManageAppList"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/filter_manage_apps"
+                                    style="@style/PrimaryButton" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginBottom="12dp"
+                                android:visibility="gone">
 
                                 <!-- App Search Section -->
                                 <LinearLayout
@@ -271,7 +296,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
-                                android:nestedScrollingEnabled="false" />
+                                android:nestedScrollingEnabled="false"
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
@@ -942,11 +968,36 @@
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="12dp" />
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/txtFilteredMediaAppsCount"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:textSize="14sp"
+                                android:text="@string/filter_media_apps_title" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnManageFilteredMediaApps"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/filter_manage_apps"
+                                style="@style/PrimaryButton" />
+                        </LinearLayout>
+
                                                  <LinearLayout
                              android:layout_width="match_parent"
                              android:layout_height="wrap_content"
                              android:orientation="vertical"
-                             android:layout_marginBottom="12dp">
+                             android:layout_marginBottom="12dp"
+                             android:visibility="gone">
 
                              <!-- Text Input Field -->
                              <com.google.android.material.textfield.TextInputLayout
@@ -1000,7 +1051,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
-                            android:nestedScrollingEnabled="false" />
+                            android:nestedScrollingEnabled="false"
+                            android:visibility="gone" />
 
                         <!-- Advanced Options (Collapsible) -->
                         <LinearLayout
