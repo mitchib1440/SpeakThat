@@ -55,52 +55,30 @@
             android:layout_marginTop="16dp"
             android:visibility="gone">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_search_for_app"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/white_100"
-                app:hintTextColor="@color/purple_card_text_secondary"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="8dp">
 
-                <AutoCompleteTextView
-                    android:id="@+id/editAppName"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/textAppCount"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textSize="16sp"
-                    android:minHeight="56dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="16dp"
+                    android:layout_weight="1"
                     android:textColor="@color/purple_card_text_primary"
-                    android:textColorHint="@color/purple_card_text_secondary" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/gradient_card_subtle_right">
+                    android:textSize="14sp"
+                    android:text="(0 apps)" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonAddApp"
+                    android:id="@+id/buttonManageApps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/item_onboarding_add_app"
-                    android:textSize="14sp"
-                    android:background="@android:color/transparent"
-                    android:textColor="@color/white_100"
-                    app:cornerRadius="20dp"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="8dp"
-                    style="@style/Widget.Material3.Button.TextButton" />
+                    android:text="@string/filter_manage_apps"
+                    style="@style/PrimaryButton" />
 
-            </FrameLayout>
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerSelectedApps"

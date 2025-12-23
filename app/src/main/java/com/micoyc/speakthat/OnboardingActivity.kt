@@ -19,6 +19,7 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var adapter: OnboardingPagerAdapter
     private var skipPermissionPage = false
+    private lateinit var onboardingAppPickerLauncher: androidx.activity.result.ActivityResultLauncher<Intent>
     
     // TTS support
     private var textToSpeech: TextToSpeech? = null
@@ -73,6 +74,27 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        onboardingAppPickerLauncher = registerForActivityResult(
+            androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK && result.data != null) {
+                val selected = result.data?.getStringArrayListExtra(AppPickerActivity.EXTRA_SELECTED_PACKAGES) ?: arrayListOf()
+                val priv = result.data?.getStringArrayListExtra(AppPickerActivity.EXTRA_PRIVATE_PACKAGES) ?: arrayListOf()
+                val prefs = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE)
+                val editor = prefs.edit()
+                editor.putStringSet("app_list", selected.toSet())
+                editor.putStringSet("app_private_flags", priv.toSet())
+                if (prefs.getString("app_list_mode", "none") == "none") {
+                    editor.putString("app_list_mode", "blacklist")
+                }
+                editor.apply()
+                val currentPage = binding.viewPager.currentItem
+                adapter.notifyDataSetChanged()
+                binding.viewPager.setCurrentItem(currentPage, false)
+                InAppLogger.log("OnboardingAppSelector", "Updated onboarding app list via picker: ${selected.size} apps, private: ${priv.size}")
+            }
+        }
+
         // Configure system UI for proper insets handling
         configureSystemUI()
 
@@ -111,6 +133,7 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             } else {
                 OnboardingPagerAdapter()
             }
+            adapter.appPickerLauncher = onboardingAppPickerLauncher
             binding.viewPager.adapter = adapter
             
             // Update page indicator for the new page count
@@ -377,6 +400,7 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         } else {
             OnboardingPagerAdapter()
         }
+            adapter.appPickerLauncher = onboardingAppPickerLauncher
         binding.viewPager.adapter = adapter
         
         // Set up page indicator dots

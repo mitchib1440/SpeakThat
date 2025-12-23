@@ -20,6 +20,8 @@ class OnboardingPagerAdapter(
     private val skipPermissionPage: Boolean = false
 ) : RecyclerView.Adapter<OnboardingPagerAdapter.OnboardingViewHolder>() {
     
+    var appPickerLauncher: ActivityResultLauncher<Intent>? = null
+    
     private val pages = if (skipPermissionPage) listOf(
         OnboardingPage(
             titleResId = R.string.onboarding_language_theme_title,
@@ -212,28 +214,8 @@ class OnboardingPagerAdapter(
         }
         
         private fun setupAppSelector() {
-            // Initialize app search adapter
-            val appSearchAdapter = LazyAppSearchAdapter(binding.root.context)
-            binding.editAppName.setAdapter(appSearchAdapter)
-            binding.editAppName.threshold = 1 // Show suggestions after 1 character
-            
-            // Handle app selection from dropdown
-            binding.editAppName.setOnItemClickListener { _, _, position, _ ->
-                val selectedApp = appSearchAdapter.getItem(position)
-                if (selectedApp != null) {
-                    binding.editAppName.setText(selectedApp.packageName)
-                    binding.editAppName.setSelection(selectedApp.packageName.length)
-                    InAppLogger.log("OnboardingAppSelector", "Selected app: ${selectedApp.appName} (${selectedApp.packageName})")
-                }
-            }
-            
-            // Set up add button
-            binding.buttonAddApp.setOnClickListener {
-                val input = binding.editAppName.text?.toString()?.trim() ?: ""
-                if (input.isNotEmpty()) {
-                    addAppToBlacklist(input)
-                    binding.editAppName.text?.clear()
-                }
+            binding.buttonManageApps.setOnClickListener {
+                launchAppPicker()
             }
             
             // Set up RecyclerView for selected apps
@@ -246,6 +228,22 @@ class OnboardingPagerAdapter(
             
             // Load existing apps
             loadSelectedApps(selectedAppsAdapter)
+            updateAppCount(null)
+        }
+        
+        private fun launchAppPicker() {
+            val ctx = binding.root.context
+            val prefs = ctx.getSharedPreferences("SpeakThatPrefs", android.content.Context.MODE_PRIVATE)
+            val selected = prefs.getStringSet("app_list", LinkedHashSet())?.toCollection(ArrayList()) ?: arrayListOf()
+            val priv = prefs.getStringSet("app_private_flags", LinkedHashSet())?.toCollection(ArrayList()) ?: arrayListOf()
+            val intent = AppPickerActivity.createIntent(
+                ctx,
+                ctx.getString(R.string.onboarding_apps_title),
+                selected,
+                priv,
+                true
+            )
+            appPickerLauncher?.launch(intent)
         }
         
         private fun setupWordSelector() {
@@ -431,21 +429,28 @@ class OnboardingPagerAdapter(
             // Refresh the RecyclerView
             val adapter = binding.recyclerSelectedApps.adapter as? OnboardingAppListAdapter
             adapter?.updateApps(currentApps.toList())
+            updateAppCount(currentApps.size)
         }
         
         private fun removeAppFromBlacklist(packageName: String) {
             val sharedPreferences = binding.root.context.getSharedPreferences("SpeakThatPrefs", android.content.Context.MODE_PRIVATE)
             val currentApps = sharedPreferences.getStringSet("app_list", LinkedHashSet())?.toMutableSet() ?: mutableSetOf()
+            val currentPrivate = sharedPreferences.getStringSet("app_private_flags", LinkedHashSet())?.toMutableSet() ?: mutableSetOf()
             
             if (currentApps.contains(packageName)) {
                 currentApps.remove(packageName)
-                sharedPreferences.edit().putStringSet("app_list", currentApps).apply()
+                currentPrivate.remove(packageName)
+                sharedPreferences.edit()
+                    .putStringSet("app_list", currentApps)
+                    .putStringSet("app_private_flags", currentPrivate)
+                    .apply()
                 
                 InAppLogger.log("OnboardingAppSelector", "Removed app '$packageName' from blacklist")
                 
                 // Refresh the RecyclerView
                 val adapter = binding.recyclerSelectedApps.adapter as? OnboardingAppListAdapter
                 adapter?.updateApps(currentApps.toList())
+                updateAppCount(currentApps.size)
             }
         }
         
@@ -453,6 +458,15 @@ class OnboardingPagerAdapter(
             val sharedPreferences = binding.root.context.getSharedPreferences("SpeakThatPrefs", android.content.Context.MODE_PRIVATE)
             val currentApps = sharedPreferences.getStringSet("app_list", LinkedHashSet()) ?: LinkedHashSet()
             adapter.updateApps(currentApps.toList())
+            updateAppCount(currentApps.size)
+        }
+
+        private fun updateAppCount(count: Int?) {
+            val resolvedCount = count ?: run {
+                val prefs = binding.root.context.getSharedPreferences("SpeakThatPrefs", android.content.Context.MODE_PRIVATE)
+                prefs.getStringSet("app_list", LinkedHashSet())?.size ?: 0
+            }
+            binding.textAppCount.text = "(${resolvedCount} apps)"
         }
         
         private fun addWordToBlacklist(word: String) {
