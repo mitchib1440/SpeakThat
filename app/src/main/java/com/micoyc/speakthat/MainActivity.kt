@@ -144,6 +144,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         private const val REQUEST_NOTIFICATION_PERMISSION = 1001
         private const val LOW_BATTERY_THRESHOLD = 20
         private const val FULL_BATTERY_PERCENT = 99
+        private const val LATEST_UPDATE_ASSET = "latest_update.txt"
         // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
     
         @JvmField
@@ -213,6 +214,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         initializeShakeDetection()
         initializeTextToSpeech()
         loadEasterEggs()
+        loadLatestUpdateMarquee()
         
         // Load logo tap state
         isFirstLogoTap = sharedPreferences?.getBoolean(KEY_FIRST_LOGO_TAP, true) ?: true
@@ -612,6 +614,28 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         } catch (e: Exception) {
             Log.e(TAG, "Error loading easter eggs", e)
         }
+    }
+    
+    private fun loadLatestUpdateMarquee() {
+        val fallbackText = "SpeakThat! latest update: stability polish, battery-friendly notification tweaks."
+        
+        val latestLine = try {
+            assets.open(LATEST_UPDATE_ASSET).bufferedReader().useLines { lines ->
+                lines.firstOrNull { line ->
+                    val trimmed = line.trim()
+                    trimmed.isNotEmpty() && !trimmed.startsWith("#")
+                }?.trim()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error loading latest update marquee from assets", e)
+            InAppLogger.logError("MainActivity", "Failed to load latest update marquee: ${e.message}")
+            null
+        }
+        
+        val displayText = latestLine ?: fallbackText
+        binding.textLatestUpdateMarquee.text = displayText
+        // Required for marquee to auto-scroll
+        binding.textLatestUpdateMarquee.isSelected = true
     }
     
     override fun onInit(status: Int) {
