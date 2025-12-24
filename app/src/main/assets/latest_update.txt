@@ -1,1 +1,1 @@
-SpeakThat! v1.6.3 - Removed lots of stuff that was redundant oh hey this is really long innit i really hope this scrolls as it should oh wow that would be awkward if it didn't please work as intended okay thanks bye
+By popular demand, app selection for any relevant settings is now done on a separate screen, allowing for a large scrollable list of apps along with the option to search for specific ones.

@@ -196,8 +196,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Get version number with build variant
         val packageInfo = packageManager.getPackageInfo(packageName, 0)
         val buildVariant = InAppLogger.getBuildVariantInfo()
-        val versionText = getString(R.string.version_format_with_variant, packageInfo.versionName, buildVariant)
+        val versionName = packageInfo.versionName ?: "0.0.0"
+        val versionText = getString(R.string.version_format_with_variant, versionName, buildVariant)
         findViewById<TextView>(R.id.versionnumber).text = versionText
+        setLatestCardTitle(versionName)
 
         // Configure system UI for proper insets handling
         configureSystemUI()
@@ -636,6 +638,12 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         binding.textLatestUpdateMarquee.text = displayText
         // Required for marquee to auto-scroll
         binding.textLatestUpdateMarquee.isSelected = true
+    }
+    
+    private fun setLatestCardTitle(versionName: String) {
+        // Keep title dynamic to reflect current version without hardcoded text
+        val appName = getString(R.string.app_name)
+        binding.textLatestTitle.text = "$appName v$versionName"
     }
     
     override fun onInit(status: Int) {

@@ -681,7 +681,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="label_0_percent">0%</string>
     <string name="label_100_percent">100%</string>
     <string name="label_150_percent">150%</string>
-    <string name="voice_tts_volume_boost_warning">⚠️ Volume above 100% may cause audio distortion</string>
+    <string name="voice_tts_volume_boost_warning">⚠️ Volume above 100% may cause audio distortion &amp; doesn\'t work on every device</string>
     <string name="arrow_right">›</string>
     
     <!-- Main Activity Strings -->
@@ -708,8 +708,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="settings_rerun_onboarding_description">See the app introduction again</string>
     <string name="settings_support_title">Support &amp; Feedback</string>
     <string name="settings_support_description">Get help, report bugs, request features</string>
-    <string name="settings_donate_title">Donate</string>
-    <string name="settings_donate_description">Support development and keep the app free</string>
+    <string name="settings_donate_title">Say Thanks</string>
+    <string name="settings_donate_description">Support development and keep the app ad-free</string>
     
 
     
