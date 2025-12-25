@@ -41,6 +41,13 @@ android {
             buildConfigField("boolean", "ENABLE_AUTO_UPDATER", "false")
             buildConfigField("String", "DISTRIBUTION_CHANNEL", "\"store\"")
         }
+        
+        create("play") {
+            dimension = "distribution"
+            // Matches the store flavor behavior; no updater for Play distribution
+            buildConfigField("boolean", "ENABLE_AUTO_UPDATER", "false")
+            buildConfigField("String", "DISTRIBUTION_CHANNEL", "\"play\"")
+        }
     }
 
     buildTypes {
@@ -80,6 +87,7 @@ android {
                 
                 outputFileName = when (flavor) {
                     "store" -> "SpeakThat-NoUpdater-v${versionName}.apk"
+                    "play" -> "SpeakThat-NoUpdater-v${versionName}.apk"
                     "github" -> "SpeakThat-v${versionName}.apk"
                     else -> "SpeakThat-${flavor}-v${versionName}.apk"
                 }

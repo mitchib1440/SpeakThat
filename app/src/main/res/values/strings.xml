@@ -1501,6 +1501,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="failed_to_clear_data">Failed to clear data: %s</string>
     <string name="persistent_notification_enabled">Persistent notification enabled</string>
     <string name="reading_notification_enabled">Reading notification enabled</string>
+    <string name="notification_while_reading_enabled">Notification while reading enabled</string>
+    <string name="notification_permission_required">Notification permission required</string>
     <string name="notification_permission_denied">Notification permission denied - feature will not work</string>
     
     <!-- AppAutoCompleteAdapter Hardcoded Strings -->
@@ -1780,5 +1782,9 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="dev_reset_statistics_title">Reset Statistics</string>
     <string name="dev_reset_statistics_message">Are you sure you want to reset all notification statistics? This action cannot be undone.</string>
     <string name="dev_reset_statistics_success">Statistics reset successfully</string>
+
+    <!-- Development: audio ducking toggle (default for all flavors) -->
+    <string name="dev_enable_audio_ducking">Enable Audio Ducking</string>
+    <string name="dev_enable_audio_ducking_description">Re-enable the Lower Audio option in Media Behaviour settings (experimental; may be unstable on some devices).</string>
     
 </resources> 

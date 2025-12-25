@@ -581,9 +581,10 @@ object InAppLogger {
             val versionCode = packageInfo.versionCode // Use versionCode instead of longVersionCode for API compatibility
             
             // Get build variant information
-            val buildVariant = when {
-                BuildConfig.DISTRIBUTION_CHANNEL == "github" -> "GitHub"
-                BuildConfig.DISTRIBUTION_CHANNEL == "store" -> "Store"
+            val buildVariant = when (BuildConfig.DISTRIBUTION_CHANNEL) {
+                "github" -> "GitHub"
+                "store" -> "Store"
+                "play" -> "Play"
                 else -> "Unknown"
             }
             
@@ -595,9 +596,10 @@ object InAppLogger {
     
     @JvmStatic
     fun getBuildVariantInfo(): String {
-        return when {
-            BuildConfig.DISTRIBUTION_CHANNEL == "github" -> "GitHub"
-            BuildConfig.DISTRIBUTION_CHANNEL == "store" -> "Store"
+        return when (BuildConfig.DISTRIBUTION_CHANNEL) {
+            "github" -> "GitHub"
+            "store" -> "Store"
+            "play" -> "Play"
             else -> "Unknown"
         }
     }
