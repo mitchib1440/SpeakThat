@@ -511,5 +511,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_vibrate_mode_switch_label">Honour Vibrate mode</string>
     <string name="behavior_audio_mode_benefits">✨ Benefits:\n\n• Prevents unwanted audio in Silent\n• Optional speech while on Vibrate\n• Matches your meeting/focus needs\n• Works with physical volume buttons</string>
     <string name="main_notification_action_open_app">Öppna SpeakThat!</string>
+    <string name="latest_update_dialog_title">Senaste uppdatering</string>
+    <string name="latest_update_fallback">Senaste SpeakThat!-uppdateringen: stabilitetspolering och batterisnåla justeringar av aviseringar.</string>
 </resources>
 

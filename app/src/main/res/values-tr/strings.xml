@@ -1687,4 +1687,6 @@ Farklı cihazların Ses Odaklama isteklerini nasıl işlediği konusundaki tutar
     <!-- Behavior Settings - System Modes Group -->
     <string name="section_honor_system_modes">Honour System Modes</string>
     <string name="behavior_system_modes_description">Keep SpeakThat quiet when your device is in Do Not Disturb, on a call, or using silent or vibrate modes. Toggle each option below.</string>
+    <string name="latest_update_dialog_title">Son güncelleme</string>
+    <string name="latest_update_fallback">SpeakThat! için son güncelleme: kararlılık iyileştirmeleri ve pil dostu bildirim ayarları.</string>
 </resources>

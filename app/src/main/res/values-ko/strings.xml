@@ -1472,4 +1472,6 @@ SpeakThat은 하나의 음성만 지원합니다. \n\n✅ 문제가 없는 경�
     <string name="tts_troubleshooting_message">
 텍스트 읽어주기가 계속 실패하면:\n\n1. 시스템 설정 > 접근성 > 텍스트 읽어주기 출력을 확인하세요\n2. Google TTS가 설치되어 기본값으로 설정되었는지 확인하세요\n3. 앱을 재실행하세요\n4. 문제가 계속되면 기기를 재시동하세요
 </string>
+    <string name="latest_update_dialog_title">최신 업데이트</string>
+    <string name="latest_update_fallback">SpeakThat! 최신 업데이트: 안정성 다듬기와 배터리 절약 알림 조정.</string>
 </resources>

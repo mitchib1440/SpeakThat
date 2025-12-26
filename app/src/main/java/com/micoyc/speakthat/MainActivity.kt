@@ -20,6 +20,7 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.text.TextUtils
 import android.util.Log
+import android.util.TypedValue
 import androidx.core.app.NotificationCompat
 import com.micoyc.speakthat.VoiceSettingsActivity
 import com.micoyc.speakthat.StatisticsManager
@@ -39,6 +40,8 @@ import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
@@ -302,6 +305,18 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         binding.buttonSettings.setOnClickListener {
             InAppLogger.logUserAction("Settings button clicked")
             startActivity(Intent(this, SettingsActivity::class.java))
+        }
+        
+        // Latest updates long-press to show full text
+        binding.cardLatestUpdates.setOnLongClickListener {
+            InAppLogger.logUserAction("Latest updates card long-pressed")
+            showLatestUpdateDialog()
+            true
+        }
+        binding.textLatestUpdateMarquee.setOnLongClickListener {
+            InAppLogger.logUserAction("Latest updates marquee long-pressed")
+            showLatestUpdateDialog()
+            true
         }
         
         // Master switch functionality
@@ -619,7 +634,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun loadLatestUpdateMarquee() {
-        val fallbackText = "SpeakThat! latest update: stability polish, battery-friendly notification tweaks."
+        val fallbackText = getString(R.string.latest_update_fallback)
         
         val latestLine = try {
             assets.open(LATEST_UPDATE_ASSET).bufferedReader().useLines { lines ->
@@ -644,6 +659,42 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Keep title dynamic to reflect current version without hardcoded text
         val appName = getString(R.string.app_name)
         binding.textLatestTitle.text = "$appName v$versionName"
+    }
+
+    private fun showLatestUpdateDialog() {
+        val latestText = binding.textLatestUpdateMarquee.text?.toString()
+            ?.takeIf { it.isNotBlank() }
+            ?: getString(R.string.latest_update_fallback)
+
+        val paddingPx = (24 * resources.displayMetrics.density).roundToInt()
+        val messageView = TextView(this).apply {
+            text = latestText
+            setTextColor(binding.textLatestUpdateMarquee.currentTextColor)
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, binding.textLatestUpdateMarquee.textSize)
+            setLineSpacing(0f, 1.1f)
+            setPadding(paddingPx, paddingPx, paddingPx, paddingPx)
+        }
+
+        val scrollView = ScrollView(this).apply {
+            isFillViewport = true
+            overScrollMode = ScrollView.OVER_SCROLL_IF_CONTENT_SCROLLS
+            addView(
+                messageView,
+                ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+            )
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.latest_update_dialog_title))
+            .setView(scrollView)
+            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+                InAppLogger.logUserAction("Latest update dialog dismissed")
+                dialog.dismiss()
+            }
+            .show()
     }
     
     override fun onInit(status: Int) {
