@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_donate_title">Say Thanks</string>
+    <string name="play_donate_subtitle">Support SpeakThat! on Google Play</string>
+    <string name="play_donate_badge_count">Badges: %1$d</string>
+    <string name="play_donate_badge_placeholder">Hi! My name is Mitchi and SpeakThat is a passion project of mine. I originally created it for my own use, and released it under an open source license. As more people have been using it lately, I\'m spending a lot of time maintaining it and answering support emails. If you can help me in any way, I\'d greatly appreciate it!</string>
+    <string name="play_donate_tip_label">Support SpeakThat</string>
+    <string name="play_donate_price_unavailable">Price unavailable</string>
+    <string name="play_donate_buy">Confirm</string>
+    <string name="play_donate_more_ways">More ways to support</string>
+    <string name="play_donate_more_ways_url">https://www.speakthat.app/support</string>
+    <string name="play_donate_loading">Loading...</string>
+    <string name="play_donate_loading_message">Loading donation options from Google Play...</string>
+    <string name="play_donate_error">Billing unavailable. Please try again or use other options.</string>
+    <string name="play_donate_thank_you">Thanks! Badges: %1$d</string>
+    <string name="play_donate_offline_fallback">Unable to load Play Billing. Opening other donation options.</string>
+</resources>
+

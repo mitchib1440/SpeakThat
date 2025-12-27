@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.micoyc.speakthat.databinding.ActivitySettingsBinding
+import com.micoyc.speakthat.donations.DonationManager
+import com.micoyc.speakthat.donations.DonationManagerProvider
 
 class SettingsActivity : AppCompatActivity() {
     
@@ -20,6 +22,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var searchAdapter: SearchResultsAdapter
     private val settingsCategories = mutableListOf<SettingsCategory>()
     private val allSettings = mutableListOf<SettingsItem>()
+    private val donationManager: DonationManager by lazy { DonationManagerProvider.get(this) }
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -226,7 +229,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         binding.cardDonate.setOnClickListener {
-            showDonateDialog()
+            donationManager.showDonate(this) { showDonateDialog() }
         }
         
         binding.cardReRunOnboarding.setOnClickListener {

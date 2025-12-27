@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/play_donate_title"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnSurface"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/textSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/play_donate_subtitle"
+        android:textSize="14sp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:layout_marginBottom="12dp" />
+
+    <LinearLayout
+        android:id="@+id/loadingContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressLoading"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_marginEnd="12dp" />
+
+        <TextView
+            android:id="@+id/textLoadingMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/play_donate_loading_message"
+            android:textSize="14sp"
+            android:textColor="?attr/colorOnSurfaceVariant" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textBadgeCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnSurface"
+        android:layout_marginBottom="6dp" />
+
+    <TextView
+        android:id="@+id/textBadgePlaceholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/play_donate_badge_placeholder"
+        android:textSize="14sp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Single tip option -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:background="@drawable/gradient_card_subtle_right">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:dividerPadding="24dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/play_donate_tip_label"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/purple_card_text_primary" />
+
+                <TextView
+                    android:id="@+id/textPriceSingle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/play_donate_loading"
+                    android:textSize="16sp"
+                    android:textColor="@color/white_100" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:layout_marginTop="12dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnBuySingle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/play_donate_buy"/>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnMoreWays"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/play_donate_more_ways"
+        android:textColor="?attr/colorPrimary" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCancel"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_cancel"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:layout_marginTop="4dp" />
+
+</LinearLayout>
+

@@ -11,8 +11,8 @@ android {
         applicationId = "com.micoyc.speakthat"
         minSdk = 24
         targetSdk = 36
-        versionCode = 27
-        versionName = "1.6.3"
+        versionCode = 33
+        versionName = "1.6.3.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -115,6 +115,9 @@ dependencies {
     
     // For background work (optional, for future enhancements)
     implementation("androidx.work:work-runtime-ktx:2.9.0")
+
+    // Play-only: Google Play Billing for donation flow (quantity support requires 6.2+)
+    add("playImplementation", "com.android.billingclient:billing-ktx:6.2.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
