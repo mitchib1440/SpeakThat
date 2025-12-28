@@ -125,6 +125,15 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             }
         }
     }
+
+    /**
+     * Listen for badge selection changes (Play flavor only) so the logo updates immediately.
+     */
+    private val badgeSelectionListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == BadgeAssets.PREF_BADGE_SELECTION) {
+            updateBadgeLogo()
+        }
+    }
     
     // Sensor timeout for safety
     private var sensorTimeoutHandler: Handler? = null
@@ -181,6 +190,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         
         // Register master switch listener for Quick Settings tile sync
         sharedPreferences?.registerOnSharedPreferenceChangeListener(masterSwitchListener)
+        sharedPreferences?.registerOnSharedPreferenceChangeListener(badgeSelectionListener)
         
         // Apply saved theme first
         applySavedTheme()
@@ -191,6 +201,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Initialize view binding
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        updateBadgeLogo()
 
         // Get version number with build variant
         val packageInfo = packageManager.getPackageInfo(packageName, 0)
@@ -251,6 +262,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         
         // Unregister master switch listener (safely handle null case)
         sharedPreferences?.unregisterOnSharedPreferenceChangeListener(masterSwitchListener)
+        sharedPreferences?.unregisterOnSharedPreferenceChangeListener(badgeSelectionListener)
         
         // Clean up TTS
         textToSpeech?.stop()
@@ -280,6 +292,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         
         // Update statistics display
         updateStatisticsDisplay()
+        updateBadgeLogo()
 
     }
     
@@ -287,6 +300,24 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         setupClickListeners()
         // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
 
+    }
+
+    private fun updateBadgeLogo() {
+        if (!::binding.isInitialized) return
+
+        // Only Play builds surface badges; others keep the default logo.
+        if (BuildConfig.DISTRIBUTION_CHANNEL != "play") {
+            binding.logoSpeakThat.setImageResource(R.drawable.logo_speakthat)
+            return
+        }
+
+        val badgeCount = BadgeAssets.getPlayBadgeCount(this)
+        val selection = sharedPreferences?.getString(
+            BadgeAssets.PREF_BADGE_SELECTION,
+            BadgeAssets.KEY_DEFAULT
+        )
+        val drawableRes = BadgeAssets.drawableForSelection(selection, badgeCount)
+        binding.logoSpeakThat.setImageResource(drawableRes)
     }
     
     private fun setupClickListeners() {
@@ -436,9 +467,13 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun applySavedLanguage() {
-        // Get saved language from VoiceSettings preferences
+        // Use device locale as the default so we do not trigger a dialog on cold start
+        val deviceLocale = Locale.getDefault()
+        val defaultLanguagePref = deviceLocale.toLanguageTag().replace('-', '_')
+
+        // Get saved language from VoiceSettings preferences (fall back to device locale)
         val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-        val savedLanguage = voiceSettingsPrefs.getString("language", "en_US") ?: "en_US"
+        val savedLanguage = voiceSettingsPrefs.getString("language", defaultLanguagePref) ?: defaultLanguagePref
         
         try {
             val targetLocale = parseLocalePreference(savedLanguage)
@@ -472,11 +507,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 // Also update the default locale for this session
                 Locale.setDefault(targetLocale)
                 
-                // Show language change dialog instead of immediate recreate
-                showLanguageChangeDialog(targetLocale)
-                
+                // Startup path: apply silently to avoid surfacing a false language-change dialog
                 com.micoyc.speakthat.InAppLogger.log("MainActivity", 
-                    "Applied saved language: ${targetLocale} (from: $savedLanguage)")
+                    "Applied saved language silently at startup: ${targetLocale} (from: $savedLanguage)")
             }
         } catch (e: Exception) {
             com.micoyc.speakthat.InAppLogger.log("MainActivity", 

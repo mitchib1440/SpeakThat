@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.micoyc.speakthat.databinding.ActivityGeneralSettingsBinding;
+import com.micoyc.speakthat.BadgeAssets;
 import org.json.JSONException;
 import java.io.BufferedReader;
 import java.io.File;
@@ -58,6 +60,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         setupThemeSettings();
         setupPerformanceSettings();
         setupToastNotifications();
+        setupBadgeSelector();
         setupAccessibilityPermission();
         setupDataManagement();
         setupThemeIcon();
@@ -248,6 +251,20 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         });
     }
 
+    private void setupBadgeSelector() {
+        if (!"play".equals(BuildConfig.DISTRIBUTION_CHANNEL)) {
+            if (binding.rowBadgeSelector != null) {
+                binding.rowBadgeSelector.setVisibility(View.GONE);
+            }
+            return;
+        }
+
+        renderBadgeSelection();
+        if (binding.rowBadgeSelector != null) {
+            binding.rowBadgeSelector.setOnClickListener(v -> showBadgeSelectionDialog());
+        }
+    }
+
     private void setupToastNotifications() {
         // Main App Toggle Toast
         MaterialSwitch toastMainAppSwitch = binding.switchToastMainApp;
@@ -320,6 +337,97 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                     showAccessibilityPermissionDialog();
                 }
             });
+        }
+    }
+
+    private void showBadgeSelectionDialog() {
+        int badgeCount = BadgeAssets.getPlayBadgeCount(this);
+        java.util.List<BadgeOption> options = getBadgeOptions(badgeCount);
+        String currentSelection = sharedPreferences.getString(getString(R.string.prefs_badge_selection), BadgeAssets.KEY_DEFAULT);
+
+        int checkedIndex = 0;
+        for (int i = 0; i < options.size(); i++) {
+            if (options.get(i).key.equals(currentSelection)) {
+                checkedIndex = i;
+                break;
+            }
+        }
+
+        CharSequence[] labels = new CharSequence[options.size()];
+        for (int i = 0; i < options.size(); i++) {
+            labels[i] = options.get(i).label;
+        }
+
+        final int[] selectedIndex = {checkedIndex};
+
+        new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.badge_selector_dialog_title))
+            .setSingleChoiceItems(labels, checkedIndex, (dialog, which) -> selectedIndex[0] = which)
+            .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                BadgeOption chosen = options.get(selectedIndex[0]);
+                sharedPreferences.edit().putString(getString(R.string.prefs_badge_selection), chosen.key).apply();
+                renderBadgeSelection();
+            })
+            .setNegativeButton(android.R.string.cancel, null)
+            .show();
+    }
+
+    private void renderBadgeSelection() {
+        int badgeCount = BadgeAssets.getPlayBadgeCount(this);
+        if (binding.rowBadgeSelector != null) {
+            binding.rowBadgeSelector.setVisibility(badgeCount > 0 ? View.VISIBLE : View.GONE);
+        }
+        String storedSelection = sharedPreferences.getString(getString(R.string.prefs_badge_selection), BadgeAssets.KEY_DEFAULT);
+        String resolvedSelection = BadgeAssets.ensureValidSelection(storedSelection, badgeCount);
+
+        if (!resolvedSelection.equals(storedSelection)) {
+            sharedPreferences.edit().putString(getString(R.string.prefs_badge_selection), resolvedSelection).apply();
+        }
+
+        if (binding.textBadgeSelectionValue != null && badgeCount > 0) {
+            binding.textBadgeSelectionValue.setText(getBadgeLabel(resolvedSelection));
+        }
+    }
+
+    private java.util.List<BadgeOption> getBadgeOptions(int badgeCount) {
+        java.util.ArrayList<BadgeOption> options = new java.util.ArrayList<>();
+        options.add(new BadgeOption(BadgeAssets.KEY_DEFAULT, getString(R.string.badge_option_default)));
+        for (BadgeAssets.BadgeTier tier : BadgeAssets.unlockedBadges(badgeCount)) {
+            options.add(new BadgeOption(tier.getKey(), getBadgeLabel(tier.getKey())));
+        }
+        return options;
+    }
+
+    private String getBadgeLabel(String key) {
+        switch (key) {
+            case "bronze":
+                return getString(R.string.badge_option_bronze);
+            case "silver":
+                return getString(R.string.badge_option_silver);
+            case "gold":
+                return getString(R.string.badge_option_gold);
+            case "emerald":
+                return getString(R.string.badge_option_emerald);
+            case "sapphire":
+                return getString(R.string.badge_option_sapphire);
+            case "amber":
+                return getString(R.string.badge_option_amber);
+            case "amethyst":
+                return getString(R.string.badge_option_amethyst);
+            case "ruby":
+                return getString(R.string.badge_option_ruby);
+            default:
+                return getString(R.string.badge_option_default);
+        }
+    }
+
+    private static class BadgeOption {
+        final String key;
+        final String label;
+
+        BadgeOption(String key, String label) {
+            this.key = key;
+            this.label = label;
         }
     }
     

@@ -17,6 +17,7 @@ This file should NOT have corresponding files in values-XX directories.
     <string name="prefs_battery_optimization_enabled">battery_optimization_enabled</string>
     <string name="prefs_aggressive_processing_enabled">aggressive_processing_enabled</string>
     <string name="prefs_restart_policy">restart_policy</string>
+    <string name="prefs_badge_selection">badge_selection</string>
     <string name="prefs_tts_language">tts_language</string>
     <string name="prefs_speech_rate">speech_rate</string>
     <string name="prefs_pitch">pitch</string>

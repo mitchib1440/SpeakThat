@@ -55,9 +55,8 @@ SpeakThat! Fun challenge: Try to shake me mid-sentence. I dare you! It's like no
 SpeakThat! I'm basically the audiobook version of your phone. Except shorter. And with more variety. And better humour.
 SpeakThat! Your phone has trust issues, but not with me. I'm the one app that always speaks the truth!
 SpeakThat! Sorry, I missed that last notification. Too busy playing Minecraft.
-SpeakThat! Some of these lines were written by an artificial intelligence. Bet you can't guess which ones.
 SpeakThat! Keep your head down. There's two of us in here now, Remember?
-SpeakThat! I just read your stuff. And I'm still better than Cortana ever was.
+SpeakThat! I just speak your notifications. And I'm still better than Cortana ever was.
 SpeakThat! I'm never going to give you up, never going to let you down. Never going to run around and hurt you.
 SpeakThat! Want to see a magic trick? I predict that you are... not using an iPhone.
 SpeakThat! Careful! That logo might fall off if you keep pressing it!
@@ -445,4 +444,5 @@ SpeakThat! When life gives you lemons, don’t make lemonade. Make life take the
 SpeakThat! There are one zero types of people. Those who understand binary, and those who don't.
 SpeakThat! Make sure to visit w w w dot, speak that dot app!
 SpeakThat! Reject digital ID! Your privacy matters!
-SpeakThat! I believe in two things - the first amendment, and boobs!
+SpeakThat! I believe in two things - notifications, and boobs!
+SpeakThat! If it's your birthday today, then happy birthday! If it's not, then please disregard this line!

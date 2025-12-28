@@ -12,7 +12,19 @@
     <string name="play_donate_loading">Loading...</string>
     <string name="play_donate_loading_message">Loading donation options from Google Play...</string>
     <string name="play_donate_error">Billing unavailable. Please try again or use other options.</string>
-    <string name="play_donate_thank_you">Thanks! Badges: %1$d</string>
+    <string name="play_donate_thank_you">Thank you! Badges: %1$d</string>
     <string name="play_donate_offline_fallback">Unable to load Play Billing. Opening other donation options.</string>
+    <string name="badge_selector_title">Badge style</string>
+    <string name="badge_selector_description">Pick which badge to show on the home screen.</string>
+    <string name="badge_selector_dialog_title">Choose a badge</string>
+    <string name="badge_option_default">Default logo</string>
+    <string name="badge_option_bronze">Bronze</string>
+    <string name="badge_option_silver">Silver</string>
+    <string name="badge_option_gold">Gold</string>
+    <string name="badge_option_emerald">Emerald</string>
+    <string name="badge_option_sapphire">Sapphire</string>
+    <string name="badge_option_amber">Amber</string>
+    <string name="badge_option_amethyst">Amethyst</string>
+    <string name="badge_option_ruby">Ruby</string>
 </resources>
 

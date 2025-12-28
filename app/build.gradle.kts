@@ -11,8 +11,8 @@ android {
         applicationId = "com.micoyc.speakthat"
         minSdk = 24
         targetSdk = 36
-        versionCode = 33
-        versionName = "1.6.3.6"
+        versionCode = 35
+        versionName = "1.6.3.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -77,6 +77,8 @@ android {
                 viewBinding = true
                 buildConfig = true  // Enable BuildConfig generation
             }
+
+    // Use default res structure (badge vectors are placed directly in drawable).
 
     // Configure APK output file naming
     applicationVariants.all {
