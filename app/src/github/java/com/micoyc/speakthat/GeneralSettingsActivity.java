@@ -57,6 +57,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         
         setupThemeSettings();
         setupPerformanceSettings();
+        setupToastNotifications();
         setupAccessibilityPermission();
         setupAutoUpdateSettings();
         setupDataManagement();
@@ -248,6 +249,35 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         });
     }
 
+    private void setupToastNotifications() {
+        // Main App Toggle Toast
+        MaterialSwitch toastMainAppSwitch = binding.switchToastMainApp;
+        boolean toastMainAppEnabled = sharedPreferences.getBoolean(com.micoyc.speakthat.MasterSwitchController.KEY_TOAST_MAIN_APP, true);
+        toastMainAppSwitch.setChecked(toastMainAppEnabled);
+
+        toastMainAppSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean(com.micoyc.speakthat.MasterSwitchController.KEY_TOAST_MAIN_APP, isChecked).apply();
+        });
+
+        // Quick Settings Tile Toast
+        MaterialSwitch toastQuickSettingsSwitch = binding.switchToastQuickSettings;
+        boolean toastQuickSettingsEnabled = sharedPreferences.getBoolean(com.micoyc.speakthat.MasterSwitchController.KEY_TOAST_QUICK_SETTINGS, true);
+        toastQuickSettingsSwitch.setChecked(toastQuickSettingsEnabled);
+
+        toastQuickSettingsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean(com.micoyc.speakthat.MasterSwitchController.KEY_TOAST_QUICK_SETTINGS, isChecked).apply();
+        });
+
+        // Automation Intents Toast
+        MaterialSwitch toastAutomationSwitch = binding.switchToastAutomation;
+        boolean toastAutomationEnabled = sharedPreferences.getBoolean(com.micoyc.speakthat.MasterSwitchController.KEY_TOAST_AUTOMATION, true);
+        toastAutomationSwitch.setChecked(toastAutomationEnabled);
+
+        toastAutomationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean(com.micoyc.speakthat.MasterSwitchController.KEY_TOAST_AUTOMATION, isChecked).apply();
+        });
+    }
+
     private void setupAutoUpdateSettings() {
         // Auto-Update Toggle - Default to ON (true)
         MaterialSwitch autoUpdateSwitch = binding.switchAutoUpdate;
@@ -256,10 +286,15 @@ public class GeneralSettingsActivity extends AppCompatActivity {
 
         autoUpdateSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             sharedPreferences.edit().putBoolean("auto_update_enabled", isChecked).apply();
+            com.micoyc.speakthat.UpdateFeature.onAutoUpdatePreferenceChanged(this);
         });
 
         // Update Check Frequency - Default to Weekly
         String updateFrequency = sharedPreferences.getString("update_check_frequency", "weekly");
+        if ("never".equals(updateFrequency)) {
+            updateFrequency = "weekly";
+            sharedPreferences.edit().putString("update_check_frequency", "weekly").apply();
+        }
         switch (updateFrequency) {
             case "daily":
                 binding.radioUpdateDaily.setChecked(true);
@@ -269,9 +304,6 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 break;
             case "monthly":
                 binding.radioUpdateMonthly.setChecked(true);
-                break;
-            case "never":
-                binding.radioUpdateNever.setChecked(true);
                 break;
             default:
                 // Default to weekly if no value is set
@@ -288,12 +320,11 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 frequency = "weekly";
             } else if (checkedId == R.id.radioUpdateMonthly) {
                 frequency = "monthly";
-            } else if (checkedId == R.id.radioUpdateNever) {
-                frequency = "never";
             } else {
                 frequency = "weekly"; // Default fallback
             }
             sharedPreferences.edit().putString("update_check_frequency", frequency).apply();
+            com.micoyc.speakthat.UpdateFeature.onAutoUpdatePreferenceChanged(this);
         });
     }
 

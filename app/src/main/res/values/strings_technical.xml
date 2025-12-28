@@ -216,6 +216,16 @@ This file should NOT have corresponding files in values-XX directories.
     <string name="boot_receiver_service_already_enabled">Notification service already enabled, no action needed</string>
     <string name="boot_receiver_service_not_enabled">Notification service not enabled, user needs to grant permission</string>
 
+    <!-- GitHub updater cache + worker keys -->
+    <string name="prefs_cached_update_version">cached_update_version</string>
+    <string name="prefs_cached_update_size">cached_update_size</string>
+    <string name="prefs_cached_update_notes">cached_update_notes</string>
+    <string name="prefs_cached_update_date">cached_update_date</string>
+    <string name="prefs_last_notified_version">last_notified_version</string>
+    <string name="work_update_check_name">github_update_check</string>
+    <string name="work_update_check_tag">github_update_check_tag</string>
+    <string name="update_notification_channel_id">speakthat_update_channel</string>
+
     <!-- Content Cap Feature Keys -->
     <string name="prefs_content_cap_mode">content_cap_mode</string>
     <string name="prefs_content_cap_word_count">content_cap_word_count</string>

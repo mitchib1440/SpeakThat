@@ -190,6 +190,13 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="store_update_dialog_help_message">If you want automatic updates directly from GitHub, you can download the GitHub version instead. This version is identical but includes auto-update functionality.</string>
     <string name="store_update_dialog_visit_github">Visit GitHub</string>
     <string name="store_update_dialog_got_it">Got it</string>
+    <string name="update_banner_title">Update available: %1$s</string>
+    <string name="update_banner_body">New version ready (%1$s). Tap to open the updater.</string>
+    <string name="update_banner_action">Update now</string>
+    <string name="update_notification_title">Update available: %1$s</string>
+    <string name="update_notification_text">Tap to download and install the latest version.</string>
+    <string name="update_notification_channel_name">SpeakThat Updates</string>
+    <string name="update_notification_channel_description">Alerts for new SpeakThat versions in the GitHub build.</string>
     <string name="app_description">SpeakThat! is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
     <string name="app_features">• Real-time notification reading\n• Customizable voice settings\n• Smart notification filtering\n• App-specific controls\n• Media-aware behaviour\n• Notification history\n• Shake/Wave to stop\n• Custom speech formatting\n• Dark/Light theme support\n• Conditional rules for advanced logic and schedules\n• Fully ad-free and offline functionality</string>
     <string name="developer_info">Developed with ❤️ by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day.\n\nSpeakThat! was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers.\n\nThis project was accelerated by AI-assisted programming.</string>
@@ -248,7 +255,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="update_daily">Daily</string>
     <string name="update_weekly">Weekly (recommended)</string>
     <string name="update_monthly">Monthly</string>
-    <string name="update_never">Never (manual only)</string>
     
     <!-- TTS Template Strings (for improved localization) -->
     <!-- These are complete sentence templates with placeholders for proper localization -->

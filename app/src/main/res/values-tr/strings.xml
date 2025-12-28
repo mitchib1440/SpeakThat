@@ -263,7 +263,6 @@ Uygulamayı açtığınızda otomatik olarak uygulama güncellemelerini kontrol 
     <string name="update_daily">Günlük</string>
     <string name="update_weekly">Haftalık (önerilen)</string>
     <string name="update_monthly">Aylık</string>
-    <string name="update_never">Asla (sadece manuel)</string>
     <!-- TTS Template Strings (for improved localization) -->
     <!--
 

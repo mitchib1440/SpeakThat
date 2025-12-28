@@ -51,6 +51,11 @@ class UpdateManager private constructor(private val context: Context) {
         private const val KEY_UPDATE_CHECK_INTERVAL = "update_check_interval_hours"
         private const val KEY_INSTALLATION_SOURCE = "installation_source"
         private const val KEY_GOOGLE_PLAY_DETECTED = "google_play_detected"
+        private const val KEY_CACHED_VERSION_NAME = "cached_update_version"
+        private const val KEY_CACHED_FILE_SIZE = "cached_update_size"
+        private const val KEY_CACHED_RELEASE_NOTES = "cached_update_notes"
+        private const val KEY_CACHED_RELEASE_DATE = "cached_update_date"
+        private const val KEY_LAST_NOTIFIED_VERSION = "last_notified_version"
         
         // Google Play Store identifiers
         private const val GOOGLE_PLAY_STORE_PACKAGE = "com.android.vending"
@@ -415,10 +420,14 @@ class UpdateManager private constructor(private val context: Context) {
                     .putString(KEY_LAST_CHECKED_VERSION, releaseInfo.versionName)
                     .putLong(KEY_LAST_UPDATE_CHECK, System.currentTimeMillis())
                     .apply()
+
+                // Cache update details for UI/notification surfaces
+                cacheUpdateInfo(releaseInfo)
                 
                 return@withContext releaseInfo
             } else {
                 Log.d(TAG, "No update available - app is up to date")
+                clearCachedUpdateInfo()
                 return@withContext null
             }
             
@@ -525,14 +534,17 @@ class UpdateManager private constructor(private val context: Context) {
         
         // Get frequency setting from general preferences
         val generalPrefs = context.getSharedPreferences("SpeakThatPrefs", Context.MODE_PRIVATE)
-        val frequency = generalPrefs.getString("update_check_frequency", "weekly")
+        var frequency = generalPrefs.getString("update_check_frequency", "weekly")
+        if (frequency == "never") {
+            frequency = "weekly"
+            generalPrefs.edit().putString("update_check_frequency", "weekly").apply()
+        }
         
         // Convert frequency to hours
         val intervalHours = when (frequency) {
             "daily" -> 24L
             "weekly" -> 24L * 7L
             "monthly" -> 24L * 30L
-            "never" -> Long.MAX_VALUE // Never check
             else -> 24L // Default to daily
         }
         
@@ -551,7 +563,7 @@ class UpdateManager private constructor(private val context: Context) {
      * @return true if already notified
      */
     fun hasNotifiedAboutVersion(versionName: String): Boolean {
-        val lastNotifiedVersion = prefs.getString(KEY_LAST_CHECKED_VERSION, "")
+        val lastNotifiedVersion = prefs.getString(KEY_LAST_NOTIFIED_VERSION, "")
         return lastNotifiedVersion == versionName
     }
     
@@ -563,7 +575,7 @@ class UpdateManager private constructor(private val context: Context) {
      * Get current app version from package manager
      * Strips any suffixes for clean version comparison
      */
-    private fun getCurrentVersion(): String {
+    fun getCurrentVersionName(): String {
         val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
         val fullVersionName = packageInfo.versionName ?: "1.0.0"
         
@@ -666,6 +678,49 @@ class UpdateManager private constructor(private val context: Context) {
         
         return false // Versions are equal
     }
+
+    fun isNewerThanInstalled(versionName: String): Boolean {
+        return isNewerVersion(versionName, getCurrentVersionName())
+    }
+
+    fun cacheUpdateInfo(updateInfo: UpdateInfo) {
+        prefs.edit()
+            .putString(KEY_CACHED_VERSION_NAME, updateInfo.versionName)
+            .putLong(KEY_CACHED_FILE_SIZE, updateInfo.fileSize)
+            .putString(KEY_CACHED_RELEASE_NOTES, updateInfo.releaseNotes ?: "")
+            .putString(KEY_CACHED_RELEASE_DATE, updateInfo.releaseDate ?: "")
+            .apply()
+    }
+
+    fun clearCachedUpdateInfo() {
+        prefs.edit()
+            .remove(KEY_CACHED_VERSION_NAME)
+            .remove(KEY_CACHED_FILE_SIZE)
+            .remove(KEY_CACHED_RELEASE_NOTES)
+            .remove(KEY_CACHED_RELEASE_DATE)
+            .apply()
+    }
+
+    fun getCachedUpdateInfo(): UpdateInfo? {
+        val version = prefs.getString(KEY_CACHED_VERSION_NAME, null) ?: return null
+        val size = prefs.getLong(KEY_CACHED_FILE_SIZE, -1L)
+        val notes = prefs.getString(KEY_CACHED_RELEASE_NOTES, "") ?: ""
+        val date = prefs.getString(KEY_CACHED_RELEASE_DATE, "") ?: ""
+        return UpdateInfo(
+            versionName = version,
+            versionCode = extractVersionCode(version),
+            downloadUrl = "", // Download URL not cached; fetched fresh in UpdateActivity
+            fileSize = if (size >= 0) size else 0L,
+            releaseNotes = notes,
+            releaseDate = date
+        )
+    }
+
+    fun markVersionNotified(versionName: String) {
+        prefs.edit().putString(KEY_LAST_NOTIFIED_VERSION, versionName).apply()
+    }
+
+    fun lastNotifiedVersion(): String? = prefs.getString(KEY_LAST_NOTIFIED_VERSION, null)
     
     /**
      * Extract version code from version name

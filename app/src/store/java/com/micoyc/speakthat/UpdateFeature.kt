@@ -1,5 +1,6 @@
 package com.micoyc.speakthat
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -49,6 +50,10 @@ object UpdateFeature {
         }
     }
     
+    fun onAppStart(application: Application) {
+        // No-op in store build
+    }
+
     /**
      * Check for updates if enabled
      * 
@@ -102,6 +107,14 @@ object UpdateFeature {
             // This code only runs in the Store flavor
             // No update checking - stores handle updates themselves
         }
+    }
+
+    fun getCachedUpdateInfo(context: Context): UpdateManager.UpdateInfo? {
+        return null
+    }
+
+    fun onAutoUpdatePreferenceChanged(context: Context) {
+        // No-op in store build
     }
     
     /**

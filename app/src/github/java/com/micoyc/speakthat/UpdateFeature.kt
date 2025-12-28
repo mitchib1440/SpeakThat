@@ -1,8 +1,10 @@
 package com.micoyc.speakthat
 
+import android.app.Application
 import android.content.Context
 import android.widget.Toast
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -45,11 +47,16 @@ object UpdateFeature {
     }
     
     /**
-     * Check for updates if enabled
-     * 
-     * This method demonstrates how the same code can have different behavior:
-     * - GitHub flavor: Actually checks for updates
-     * - Store flavor: Does nothing (silently skips)
+     * Initialize GitHub updater on app start (foreground tracker + scheduler)
+     */
+    fun onAppStart(application: Application) {
+        if (!isEnabled()) return
+        UpdateAppForegroundTracker.init(application)
+        UpdateScheduler.schedule(application)
+    }
+
+    /**
+     * Check for updates if enabled. Called from foreground flow.
      */
     fun checkForUpdatesIfEnabled(context: Context) {
         if (isEnabled()) {
@@ -82,12 +89,11 @@ object UpdateFeature {
             }
             
             // Perform the update check
-            GlobalScope.launch {
+            CoroutineScope(Dispatchers.IO).launch {
                 try {
                     val updateInfo = updateManager.checkForUpdates()
                     if (updateInfo != null) {
-                        // Show update notification (you can implement this)
-                        android.util.Log.i("UpdateFeature", "Update available: ${updateInfo.versionName}")
+                        UpdateAvailabilityCache.save(context, updateInfo)
                     }
                 } catch (e: Exception) {
                     android.util.Log.e("UpdateFeature", "Update check failed: ${e.message}")
@@ -97,6 +103,24 @@ object UpdateFeature {
             // This code only runs in the Store flavor
             // No update checking - stores handle updates themselves
         }
+    }
+
+    /**
+     * Returns cached update info if present and still newer than installed.
+     */
+    fun getCachedUpdateInfo(context: Context): UpdateManager.UpdateInfo? {
+        if (!isEnabled()) return null
+        val updateManager = UpdateManager.getInstance(context)
+        val cached = UpdateAvailabilityCache.get(context) ?: return null
+        return if (updateManager.isNewerThanInstalled(cached.versionName)) cached else null
+    }
+
+    /**
+     * Update scheduler hook when user toggles auto-update or frequency.
+     */
+    fun onAutoUpdatePreferenceChanged(context: Context) {
+        if (!isEnabled()) return
+        UpdateScheduler.schedule(context)
     }
     
     /**

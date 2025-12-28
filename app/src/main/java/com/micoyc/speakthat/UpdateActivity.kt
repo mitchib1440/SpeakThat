@@ -44,16 +44,19 @@ class UpdateActivity : AppCompatActivity() {
         private const val TAG = "UpdateActivity"
         private const val EXTRA_FORCE_CHECK = "force_check"
         
+        fun createIntent(context: android.content.Context, forceCheck: Boolean = false): Intent {
+            return Intent(context, UpdateActivity::class.java).apply {
+                putExtra(EXTRA_FORCE_CHECK, forceCheck)
+            }
+        }
+
         /**
          * Start the update activity
          * @param context Context to start from
          * @param forceCheck If true, bypass time restrictions and check immediately
          */
         fun start(context: android.content.Context, forceCheck: Boolean = false) {
-            val intent = Intent(context, UpdateActivity::class.java).apply {
-                putExtra(EXTRA_FORCE_CHECK, forceCheck)
-            }
-            context.startActivity(intent)
+            context.startActivity(createIntent(context, forceCheck))
         }
     }
     

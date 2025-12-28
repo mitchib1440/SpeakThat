@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private lateinit var binding: ActivityMainBinding
     private var sharedPreferences: SharedPreferences? = null
+    private var updatePrefs: SharedPreferences? = null
     private var textToSpeech: TextToSpeech? = null
     private var isTtsInitialized = false
     private var isFirstLogoTap = true
@@ -126,6 +127,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         }
     }
 
+    private val updatePrefsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ ->
+        renderUpdateBannerFromCache()
+    }
+
     /**
      * Listen for badge selection changes (Play flavor only) so the logo updates immediately.
      */
@@ -183,6 +188,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         
         // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        updatePrefs = getSharedPreferences("UpdatePrefs", MODE_PRIVATE)
         
         // Initialize voice settings listener
         voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
@@ -191,6 +197,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Register master switch listener for Quick Settings tile sync
         sharedPreferences?.registerOnSharedPreferenceChangeListener(masterSwitchListener)
         sharedPreferences?.registerOnSharedPreferenceChangeListener(badgeSelectionListener)
+        updatePrefs?.registerOnSharedPreferenceChangeListener(updatePrefsListener)
         
         // Apply saved theme first
         applySavedTheme()
@@ -234,6 +241,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Set up UI
         setupUI()
         updateServiceStatus()
+        renderUpdateBannerFromCache()
         
         // Check for updates automatically (if enabled)
         Log.d(TAG, "About to check for updates automatically")
@@ -263,6 +271,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Unregister master switch listener (safely handle null case)
         sharedPreferences?.unregisterOnSharedPreferenceChangeListener(masterSwitchListener)
         sharedPreferences?.unregisterOnSharedPreferenceChangeListener(badgeSelectionListener)
+        updatePrefs?.unregisterOnSharedPreferenceChangeListener(updatePrefsListener)
         
         // Clean up TTS
         textToSpeech?.stop()
@@ -289,6 +298,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Check for updates automatically when returning to app (if enabled)
         Log.d(TAG, "About to check for updates on resume")
         checkForUpdatesIfEnabled()
+        renderUpdateBannerFromCache()
         
         // Update statistics display
         updateStatisticsDisplay()
@@ -1676,6 +1686,51 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                     .show()
             }
             .show()
+    }
+
+    private fun renderUpdateBannerFromCache() {
+        if (!BuildConfig.ENABLE_AUTO_UPDATER || BuildConfig.DISTRIBUTION_CHANNEL != "github") {
+            hideUpdateBanner()
+            return
+        }
+
+        if (!::binding.isInitialized) return
+
+        val prefs = sharedPreferences ?: run {
+            hideUpdateBanner()
+            return
+        }
+
+        val autoUpdateEnabled = prefs.getBoolean("auto_update_enabled", true)
+        if (!autoUpdateEnabled) {
+            hideUpdateBanner()
+            return
+        }
+
+        val cached = UpdateFeature.getCachedUpdateInfo(this) ?: run {
+            hideUpdateBanner()
+            return
+        }
+
+        val updateManager = UpdateManager.getInstance(this)
+        if (!updateManager.isNewerThanInstalled(cached.versionName)) {
+            hideUpdateBanner()
+            return
+        }
+
+        binding.cardUpdateBanner.visibility = View.VISIBLE
+        binding.textUpdateBannerTitle.text = getString(R.string.update_banner_title, cached.versionName)
+        val sizeText = formatFileSize(cached.fileSize)
+        binding.textUpdateBannerSubtitle.text = getString(R.string.update_banner_body, sizeText)
+        binding.buttonUpdateBanner.setOnClickListener {
+            UpdateFeature.startUpdateActivity(this, forceCheck = true)
+        }
+    }
+
+    private fun hideUpdateBanner() {
+        if (::binding.isInitialized) {
+            binding.cardUpdateBanner.visibility = View.GONE
+        }
     }
     
     /**

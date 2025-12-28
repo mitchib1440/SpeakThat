@@ -1,5 +1,6 @@
 package com.micoyc.speakthat
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -30,6 +31,10 @@ object UpdateFeature {
             showStoreUpdateMessage(context)
         }
     }
+
+    fun onAppStart(application: Application) {
+        // No-op in Play build
+    }
     
     fun checkForUpdatesIfEnabled(context: Context) {
         if (isEnabled()) {
@@ -56,6 +61,14 @@ object UpdateFeature {
         } else {
             // Play/Store rely on store-managed updates; no in-app check.
         }
+    }
+
+    fun getCachedUpdateInfo(context: Context): UpdateManager.UpdateInfo? {
+        return null
+    }
+
+    fun onAutoUpdatePreferenceChanged(context: Context) {
+        // No-op in Play build
     }
     
     private fun showStoreUpdateMessage(context: Context) {
