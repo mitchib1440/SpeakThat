@@ -66,8 +66,25 @@ object InAppLogger {
             // Load any existing persistent logs
             loadPersistentLogs()
             
+            // Apply stored logging preferences so switches persist across restarts
+            loadStoredLoggingPrefs(context.applicationContext)
+            
             log("Logger", "InAppLogger initialized with crash persistence")
         }
+    }
+    
+    private fun loadStoredLoggingPrefs(context: Context) {
+        val prefs = context.getSharedPreferences("SpeakThatPrefs", Context.MODE_PRIVATE)
+        verboseMode = prefs.getBoolean("verbose_logging", verboseMode)
+        logFilters = prefs.getBoolean("log_filters", logFilters)
+        logNotifications = prefs.getBoolean("log_notifications", logNotifications)
+        logUserActions = prefs.getBoolean("log_user_actions", logUserActions)
+        logSystemEvents = prefs.getBoolean("log_system_events", logSystemEvents)
+        
+        log(
+            "Logger",
+            "Logging prefs loaded: Verbose=$verboseMode, Filters=$logFilters, Notifications=$logNotifications, UserActions=$logUserActions, SystemEvents=$logSystemEvents"
+        )
     }
     
     private fun setupCrashHandler() {
