@@ -913,9 +913,10 @@ class TriggerConfigActivity : AppCompatActivity() {
     
     private fun checkWifiPermissions(): Boolean {
         return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            checkSelfPermission(android.Manifest.permission.NEARBY_WIFI_DEVICES) == android.content.pm.PackageManager.PERMISSION_GRANTED
+            checkSelfPermission(android.Manifest.permission.NEARBY_WIFI_DEVICES) == android.content.pm.PackageManager.PERMISSION_GRANTED &&
+            checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
         } else {
-            checkSelfPermission(android.Manifest.permission.ACCESS_WIFI_STATE) == android.content.pm.PackageManager.PERMISSION_GRANTED
+            checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
         }
     }
     
@@ -939,9 +940,12 @@ class TriggerConfigActivity : AppCompatActivity() {
     private fun requestWifiPermissions() {
         InAppLogger.log("TriggerConfig", "Requesting WiFi permissions")
         val permissions = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            arrayOf(android.Manifest.permission.NEARBY_WIFI_DEVICES)
+            arrayOf(
+                android.Manifest.permission.NEARBY_WIFI_DEVICES,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
         } else {
-            arrayOf(android.Manifest.permission.ACCESS_WIFI_STATE)
+            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
         }
         
         requestPermissions(permissions, REQUEST_WIFI_PERMISSIONS)
