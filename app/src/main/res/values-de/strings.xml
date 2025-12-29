@@ -263,7 +263,6 @@ Beim Öffnen der App automatisch nach Updates suchen
     <string name="update_daily">Täglich</string>
     <string name="update_weekly">Wöchentlich (empfohlen)</string>
     <string name="update_monthly">Monatlich</string>
-    <string name="update_never">Nie (nur manuell)</string>
     <!-- TTS Template Strings (for improved localization) -->
     <!--
 

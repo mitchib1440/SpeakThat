@@ -50,6 +50,7 @@ object UpdateFeature {
         }
     }
     
+    @JvmStatic
     fun onAppStart(application: Application) {
         // No-op in store build
     }
@@ -113,6 +114,7 @@ object UpdateFeature {
         return null
     }
 
+    @JvmStatic
     fun onAutoUpdatePreferenceChanged(context: Context) {
         // No-op in store build
     }

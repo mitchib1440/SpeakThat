@@ -259,7 +259,6 @@ Automatisch controleren op app-updates wanneer u de app opent
     <string name="update_daily">Dagelijks</string>
     <string name="update_weekly">Wekelijks (aanbevolen)</string>
     <string name="update_monthly">Maandelijks</string>
-    <string name="update_never">Nooit (alleen handmatig)</string>
     <!-- TTS Template Strings (for improved localization) -->
     <!--
 

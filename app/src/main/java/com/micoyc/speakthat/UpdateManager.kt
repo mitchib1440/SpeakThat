@@ -348,7 +348,7 @@ class UpdateManager private constructor(private val context: Context) {
             details["system_installed"] = isSystemInstalled()
             
             // Get current app version for context
-            details["current_version"] = getCurrentVersion()
+            details["current_version"] = getCurrentVersionName()
             
             // Add simple detection info
             details["detection_method"] = "installer_package_only"
@@ -399,7 +399,7 @@ class UpdateManager private constructor(private val context: Context) {
             }
             
             // Get current app version from package manager
-            val currentVersion = getCurrentVersion()
+            val currentVersion = getCurrentVersionName()
             Log.d(TAG, "Current version: $currentVersion")
             
             // Fetch latest release info from GitHub API

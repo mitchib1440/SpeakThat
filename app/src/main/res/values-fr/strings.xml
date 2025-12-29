@@ -258,7 +258,6 @@ A quel intervalle l\'application doit-elle vérifier ses mises à jour ?
     <string name="update_daily">Quotidiennement</string>
     <string name="update_weekly">Hebdomadairement (recommandé)</string>
     <string name="update_monthly">Mensuellement</string>
-    <string name="update_never">Jamais (manuellement seulement)</string>
     <!-- TTS Template Strings (for improved localization) -->
     <!--
      These are complete sentence templates with placeholders for proper localization

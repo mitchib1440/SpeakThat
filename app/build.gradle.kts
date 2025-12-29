@@ -11,8 +11,8 @@ android {
         applicationId = "com.micoyc.speakthat"
         minSdk = 24
         targetSdk = 36
-        versionCode = 35
-        versionName = "1.6.3.8"
+        versionCode = 36
+        versionName = "1.6.3.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -107,6 +107,7 @@ dependencies {
     implementation(libs.androidx.viewpager2)
     implementation(libs.androidx.recyclerview)
     implementation(libs.gson)
+    implementation("androidx.lifecycle:lifecycle-process:2.8.4")
     
     // Coil for image loading - only used in GitHub variant for online icons
     implementation("io.coil-kt:coil:2.4.0")

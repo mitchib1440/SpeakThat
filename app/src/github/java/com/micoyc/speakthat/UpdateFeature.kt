@@ -49,6 +49,7 @@ object UpdateFeature {
     /**
      * Initialize GitHub updater on app start (foreground tracker + scheduler)
      */
+    @JvmStatic
     fun onAppStart(application: Application) {
         if (!isEnabled()) return
         UpdateAppForegroundTracker.init(application)
@@ -118,6 +119,7 @@ object UpdateFeature {
     /**
      * Update scheduler hook when user toggles auto-update or frequency.
      */
+    @JvmStatic
     fun onAutoUpdatePreferenceChanged(context: Context) {
         if (!isEnabled()) return
         UpdateScheduler.schedule(context)

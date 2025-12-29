@@ -185,7 +185,6 @@ SpeakThat!은 텍스트 읽어주기 기능을 사용하여 알림을 읽어주�
     <string name="update_daily">매일</string>
     <string name="update_weekly">매주 (권장)</string>
     <string name="update_monthly">매월</string>
-    <string name="update_never">안 함 (수동 업데이트)</string>
     <!-- TTS Template Strings (for improved localization) -->
     <!--
      These are complete sentence templates with placeholders for proper localization

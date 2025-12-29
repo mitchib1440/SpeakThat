@@ -32,6 +32,7 @@ object UpdateFeature {
         }
     }
 
+    @JvmStatic
     fun onAppStart(application: Application) {
         // No-op in Play build
     }
@@ -67,6 +68,7 @@ object UpdateFeature {
         return null
     }
 
+    @JvmStatic
     fun onAutoUpdatePreferenceChanged(context: Context) {
         // No-op in Play build
     }

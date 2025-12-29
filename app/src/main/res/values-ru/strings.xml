@@ -181,7 +181,6 @@
     <string name="update_daily">Daily</string>
     <string name="update_weekly">Weekly (recommended)</string>
     <string name="update_monthly">Monthly</string>
-    <string name="update_never">Never (manual only)</string>
     <!-- TTS Template Strings (for improved localization) -->
     <!-- These are complete sentence templates with placeholders for proper localization -->
     <string name="tts_template_notified_you">{app} уведомил вас: {content}</string>

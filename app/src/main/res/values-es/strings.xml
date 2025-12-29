@@ -269,7 +269,6 @@ Comprobar automáticamente las actua. de la app al abrir la aplicación
     <string name="update_daily">Diario</string>
     <string name="update_weekly">Semanal (recomendado)</string>
     <string name="update_monthly">Mensual</string>
-    <string name="update_never">Nunca (sólo manual)</string>
     <!-- TTS Template Strings (for improved localization) -->
     <!--
 
