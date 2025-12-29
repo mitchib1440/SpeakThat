@@ -1,30 +1,32 @@
 package com.micoyc.speakthat
 
+import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
 import android.net.wifi.WifiManager
+import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.micoyc.speakthat.InAppLogger
+import com.micoyc.speakthat.automation.AutomationMode
+import com.micoyc.speakthat.automation.AutomationModeManager
 import com.micoyc.speakthat.databinding.ActivityTemplateSelectionBinding
 import com.micoyc.speakthat.databinding.ItemTemplateBinding
 import com.micoyc.speakthat.rules.RuleManager
-import com.micoyc.speakthat.rules.RuleTemplates
-import com.micoyc.speakthat.automation.AutomationMode
-import com.micoyc.speakthat.automation.AutomationModeManager
 import com.micoyc.speakthat.rules.RuleTemplate
+import com.micoyc.speakthat.rules.RuleTemplates
 import com.micoyc.speakthat.rules.TriggerType
 import com.micoyc.speakthat.utils.WifiCapabilityChecker
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.LinearLayout
 
 class TemplateSelectionActivity : AppCompatActivity() {
     
@@ -32,10 +34,12 @@ class TemplateSelectionActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: android.content.SharedPreferences
     private lateinit var ruleManager: RuleManager
     private lateinit var adapter: TemplateAdapter
+    private var pendingWifiTemplate: RuleTemplate? = null
     
     companion object {
         private const val PREFS_NAME = "SpeakThatPrefs"
         private const val KEY_DARK_MODE = "dark_mode"
+        private const val REQUEST_WIFI_PERMISSIONS = 1002
     }
     
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -208,6 +212,12 @@ class TemplateSelectionActivity : AppCompatActivity() {
     }
     
     private fun handleWifiNetworkSelection(template: RuleTemplate) {
+        if (!hasWifiPermissions()) {
+            pendingWifiTemplate = template
+            requestWifiPermissions()
+            return
+        }
+
         // Check if we can resolve WiFi SSIDs
         if (!WifiCapabilityChecker.canResolveWifiSSID(this)) {
             showWifiCompatibilityWarning(template)
@@ -415,6 +425,27 @@ class TemplateSelectionActivity : AppCompatActivity() {
         }
     }
     
+    private fun hasWifiPermissions(): Boolean {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            checkSelfPermission(android.Manifest.permission.NEARBY_WIFI_DEVICES) == android.content.pm.PackageManager.PERMISSION_GRANTED &&
+            checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        } else {
+            checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        }
+    }
+
+    private fun requestWifiPermissions() {
+        val permissions = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            arrayOf(
+                android.Manifest.permission.NEARBY_WIFI_DEVICES,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        } else {
+            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+        requestPermissions(permissions, REQUEST_WIFI_PERMISSIONS)
+    }
+
     private fun checkBluetoothPermissions(): Boolean {
         // Check if we have the necessary Bluetooth permissions
         return checkSelfPermission(android.Manifest.permission.BLUETOOTH_CONNECT) == android.content.pm.PackageManager.PERMISSION_GRANTED
@@ -433,6 +464,24 @@ class TemplateSelectionActivity : AppCompatActivity() {
             .setMessage(message)
             .setPositiveButton("OK", null)
             .show()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == REQUEST_WIFI_PERMISSIONS) {
+            val allGranted = grantResults.isNotEmpty() && grantResults.all { it == android.content.pm.PackageManager.PERMISSION_GRANTED }
+            if (allGranted) {
+                pendingWifiTemplate?.let { handleWifiNetworkSelection(it) }
+            } else {
+                showErrorDialog("WiFi permissions are required to select networks.")
+            }
+            pendingWifiTemplate = null
+        }
     }
     
     override fun onSupportNavigateUp(): Boolean {

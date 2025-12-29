@@ -41,10 +41,14 @@ class RuleBuilderActivity : AppCompatActivity() {
     private lateinit var triggerAdapter: TriggerAdapter
     private lateinit var actionAdapter: ActionAdapter
     private lateinit var exceptionAdapter: ExceptionAdapter
+    private var pendingWifiAction: PendingWifiAction? = null
+    private var pendingExistingTrigger: Trigger? = null
+    private var pendingExistingException: Exception? = null
     
     companion object {
         private const val PREFS_NAME = "SpeakThatPrefs"
         private const val KEY_DARK_MODE = "dark_mode"
+        private const val REQUEST_WIFI_PERMISSIONS = 3001
     }
     
     // Activity Result launchers
@@ -476,6 +480,13 @@ class RuleBuilderActivity : AppCompatActivity() {
     }
     
     private fun launchTriggerConfig(triggerType: TriggerType, existingTrigger: Trigger?) {
+        if (triggerType == TriggerType.WIFI_NETWORK && !hasWifiPermissions()) {
+            pendingWifiAction = if (existingTrigger == null) PendingWifiAction.ADD_TRIGGER else PendingWifiAction.EDIT_TRIGGER
+            pendingExistingTrigger = existingTrigger
+            requestWifiPermissions()
+            return
+        }
+
         val intent = android.content.Intent(this, TriggerConfigActivity::class.java).apply {
             putExtra(TriggerConfigActivity.EXTRA_TRIGGER_TYPE, triggerType)
             putExtra(TriggerConfigActivity.EXTRA_IS_EDITING, existingTrigger != null)
@@ -517,6 +528,13 @@ class RuleBuilderActivity : AppCompatActivity() {
     }
 
     private fun launchExceptionConfig(exceptionType: ExceptionType, existingException: Exception?) {
+        if (exceptionType == ExceptionType.WIFI_NETWORK && !hasWifiPermissions()) {
+            pendingWifiAction = if (existingException == null) PendingWifiAction.ADD_EXCEPTION else PendingWifiAction.EDIT_EXCEPTION
+            pendingExistingException = existingException
+            requestWifiPermissions()
+            return
+        }
+
         val intent = android.content.Intent(this, ExceptionConfigActivity::class.java).apply {
             putExtra(ExceptionConfigActivity.EXTRA_EXCEPTION_TYPE, exceptionType)
             putExtra(ExceptionConfigActivity.EXTRA_IS_EDITING, existingException != null)
@@ -612,6 +630,60 @@ class RuleBuilderActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true
+    }
+
+    private fun hasWifiPermissions(): Boolean {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            checkSelfPermission(android.Manifest.permission.NEARBY_WIFI_DEVICES) == android.content.pm.PackageManager.PERMISSION_GRANTED &&
+            checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        } else {
+            checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        }
+    }
+
+    private fun requestWifiPermissions() {
+        val permissions = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            arrayOf(
+                android.Manifest.permission.NEARBY_WIFI_DEVICES,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        } else {
+            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+        requestPermissions(permissions, REQUEST_WIFI_PERMISSIONS)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == REQUEST_WIFI_PERMISSIONS) {
+            val allGranted = grantResults.isNotEmpty() && grantResults.all { it == android.content.pm.PackageManager.PERMISSION_GRANTED }
+            if (allGranted) {
+                when (pendingWifiAction) {
+                    PendingWifiAction.ADD_TRIGGER -> launchTriggerConfig(TriggerType.WIFI_NETWORK, null)
+                    PendingWifiAction.EDIT_TRIGGER -> launchTriggerConfig(TriggerType.WIFI_NETWORK, pendingExistingTrigger)
+                    PendingWifiAction.ADD_EXCEPTION -> launchExceptionConfig(ExceptionType.WIFI_NETWORK, null)
+                    PendingWifiAction.EDIT_EXCEPTION -> launchExceptionConfig(ExceptionType.WIFI_NETWORK, pendingExistingException)
+                    null -> { /* no-op */ }
+                }
+            } else {
+                InAppLogger.logFilter("RuleBuilder", "WiFi permissions denied; cannot configure WiFi rules.")
+            }
+            pendingWifiAction = null
+            pendingExistingTrigger = null
+            pendingExistingException = null
+        }
+    }
+
+    private enum class PendingWifiAction {
+        ADD_TRIGGER,
+        EDIT_TRIGGER,
+        ADD_EXCEPTION,
+        EDIT_EXCEPTION
     }
 
     private fun loadExistingRule() {
