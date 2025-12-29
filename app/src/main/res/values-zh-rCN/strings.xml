@@ -497,5 +497,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="main_notification_action_open_app">打开 SpeakThat！</string>
     <string name="latest_update_dialog_title">最新更新</string>
     <string name="latest_update_fallback">SpeakThat! 最新更新：稳定性打磨，节电的通知优化。</string>
+    <string name="dev_hacks_workarounds_title">技巧和变通方案</string>
 </resources>
 

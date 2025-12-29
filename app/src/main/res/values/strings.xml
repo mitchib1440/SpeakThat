@@ -1466,6 +1466,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="dev_system_event_logging_description">Log app lifecycle and system events</string>
     <string name="dev_notification_logging">Notification Logging</string>
     <string name="dev_notification_logging_description">Log notification processing events</string>
+    <string name="dev_hacks_workarounds_title">Hacks and Workarounds</string>
     <string name="dev_disable_media_fallback">Disable Media Behavior Fallback</string>
     <string name="dev_disable_media_fallback_description">Disable fallback methods for media behavior. If a feature doesn\'t work, it won\'t try alternatives. Helps isolate issues. Note: When disabled, duck mode will fall back to pause mode if ducking fails. If both fail, notifications will still be read without audio focus.</string>
     <string name="dev_enable_legacy_ducking">Enable Legacy Duck/Pause Hacks</string>

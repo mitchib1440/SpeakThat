@@ -496,5 +496,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="main_notification_action_open_app">เปิด SpeakThat!</string>
     <string name="latest_update_dialog_title">อัปเดตล่าสุด</string>
     <string name="latest_update_fallback">อัปเดตล่าสุดของ SpeakThat!: ปรับปรุงความเสถียรและปรับการแจ้งเตือนให้ประหยัดแบตเตอรี่</string>
+    <string name="dev_hacks_workarounds_title">แฮ็กและวิธีแก้ปัญหาชั่วคราว</string>
 </resources>
 

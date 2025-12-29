@@ -1931,4 +1931,5 @@ Es kann nicht festgestellt werden, ob Benachrichtigungen gelesen werden sollten
     <string name="diagnostics_tts_engine_dash">Verwendung der Standard-TTS-Engine</string>
     <string name="latest_update_dialog_title">Neueste Aktualisierung</string>
     <string name="latest_update_fallback">SpeakThat! neuestes Update: Stabilitätsfeinschliff, stromsparende Benachrichtigungsanpassungen.</string>
+    <string name="dev_hacks_workarounds_title">Hacks und Problemumgehungen</string>
 </resources>

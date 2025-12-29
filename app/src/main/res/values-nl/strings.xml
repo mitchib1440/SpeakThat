@@ -1706,4 +1706,5 @@ Vanwege inconsistenties in hoe verschillende apparaten Audio Focus verzoeken ver
     <string name="behavior_system_modes_description">Keep SpeakThat quiet when your device is in Do Not Disturb, on a call, or using silent or vibrate modes. Toggle each option below.</string>
     <string name="latest_update_dialog_title">Laatste update</string>
     <string name="latest_update_fallback">Nieuwste update van SpeakThat!: stabiliteitsverbetering en batterijvriendelijke meldingsaanpassingen.</string>
+    <string name="dev_hacks_workarounds_title">Hacks en workarounds</string>
 </resources>

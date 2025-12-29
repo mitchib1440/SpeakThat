@@ -512,5 +512,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="main_notification_action_open_app">Öppna SpeakThat!</string>
     <string name="latest_update_dialog_title">Senaste uppdatering</string>
     <string name="latest_update_fallback">Senaste SpeakThat!-uppdateringen: stabilitetspolering och batterisnåla justeringar av aviseringar.</string>
+    <string name="dev_hacks_workarounds_title">Hacks och temporära lösningar</string>
 </resources>
 

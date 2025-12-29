@@ -554,6 +554,36 @@
 
                     </LinearLayout>
 
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Hacks and Workarounds Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="@drawable/gradient_card_subtle_right">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dev_hacks_workarounds_title"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/purple_card_text_primary"
+                        android:layout_marginBottom="12dp" />
+
                     <!-- Disable Media Fallback Switch -->
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -641,8 +671,6 @@
                             android:paddingLeft="12dp"/>
 
                     </LinearLayout>
-
-
 
                 </LinearLayout>
 

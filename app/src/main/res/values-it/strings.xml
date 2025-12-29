@@ -513,5 +513,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="main_notification_action_open_app">Apri SpeakThat!</string>
     <string name="latest_update_dialog_title">Ultimo aggiornamento</string>
     <string name="latest_update_fallback">Ultimo aggiornamento di SpeakThat!: rifiniture di stabilità e ottimizzazioni delle notifiche per risparmiare batteria.</string>
+    <string name="dev_hacks_workarounds_title">Hack e soluzioni alternative</string>
 </resources>
 
