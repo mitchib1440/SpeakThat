@@ -254,6 +254,19 @@ public class TestSettingsActivity extends AppCompatActivity {
             boolean readNotificationTitle = mainPrefs.getBoolean("read_notification_title", true);
             boolean readNotificationText = mainPrefs.getBoolean("read_notification_text", true);
             int maxReadoutLength = mainPrefs.getInt("max_readout_length", 200);
+            boolean waveToStop = mainPrefs.getBoolean("wave_to_stop_enabled", false);
+            float waveThresholdCm = mainPrefs.getFloat("wave_threshold", 3.0f);
+            int waveTimeoutSeconds = mainPrefs.getInt("wave_timeout_seconds", 30);
+            SharedPreferences behaviorPrefs = getSharedPreferences("BehaviorSettings", MODE_PRIVATE);
+            float waveThresholdPercent = behaviorPrefs.getFloat("wave_threshold_percent", 60f);
+            boolean honourDnd = mainPrefs.getBoolean("honour_do_not_disturb", true);
+            boolean honourPhoneCalls = mainPrefs.getBoolean("honour_phone_calls", true);
+            boolean honourSilentMode = mainPrefs.getBoolean("honour_silent_mode", true);
+            boolean honourVibrateMode = mainPrefs.getBoolean("honour_vibrate_mode", true);
+            String contentCapMode = mainPrefs.getString("content_cap_mode", "disabled");
+            int contentCapWordCount = mainPrefs.getInt("content_cap_word_count", 6);
+            int contentCapSentenceCount = mainPrefs.getInt("content_cap_sentence_count", 1);
+            int contentCapTimeLimit = mainPrefs.getInt("content_cap_time_limit", 10);
             
             results.append("Notification Behavior: ").append(notificationBehavior).append("\n");
             results.append("Priority Apps: ").append(priorityApps != null ? priorityApps.size() : 0).append(" apps\n");
@@ -266,6 +279,17 @@ public class TestSettingsActivity extends AppCompatActivity {
             results.append("Read Title: ").append(readNotificationTitle ? "✅ Yes" : "❌ No").append("\n");
             results.append("Read Text: ").append(readNotificationText ? "✅ Yes" : "❌ No").append("\n");
             results.append("Max Readout Length: ").append(maxReadoutLength).append(" chars\n");
+            results.append("Wave to Stop: ").append(waveToStop ? "✅ Enabled" : "❌ Disabled").append("\n");
+            results.append("Wave Threshold: ").append(String.format(Locale.getDefault(), "%.1f cm (%.0f%%)", waveThresholdCm, waveThresholdPercent)).append("\n");
+            results.append("Wave Timeout: ").append(waveTimeoutSeconds == 0 ? "Disabled" : waveTimeoutSeconds + "s").append("\n");
+            results.append("Honour Do Not Disturb: ").append(honourDnd ? "✅ Yes" : "❌ No").append("\n");
+            results.append("Honour Phone Calls: ").append(honourPhoneCalls ? "✅ Yes" : "❌ No").append("\n");
+            results.append("Honour Silent Mode: ").append(honourSilentMode ? "✅ Yes" : "❌ No").append("\n");
+            results.append("Honour Vibrate Mode: ").append(honourVibrateMode ? "✅ Yes" : "❌ No").append("\n");
+            results.append("Content Cap Mode: ").append(contentCapMode).append("\n");
+            results.append("Content Cap Words: ").append(contentCapWordCount).append("\n");
+            results.append("Content Cap Sentences: ").append(contentCapSentenceCount).append("\n");
+            results.append("Content Cap Time: ").append(contentCapTimeLimit).append("s\n");
         } catch (Exception e) {
             results.append("❌ Error reading behavior settings: ").append(e.getMessage()).append("\n");
         }
@@ -282,6 +306,8 @@ public class TestSettingsActivity extends AppCompatActivity {
             boolean caseSensitive = mainPrefs.getBoolean("case_sensitive_filtering", false);
             boolean regexEnabled = mainPrefs.getBoolean("regex_filtering", false);
             int minWordLength = mainPrefs.getInt("min_word_length", 3);
+            String urlHandlingMode = mainPrefs.getString("url_handling_mode", "domain_only");
+            String urlReplacementText = mainPrefs.getString("url_replacement_text", "");
             
             results.append("App List Mode: ").append(appListMode).append("\n");
             results.append("Filtered Apps: ").append(appList != null ? appList.size() : 0).append(" apps\n");
@@ -292,6 +318,10 @@ public class TestSettingsActivity extends AppCompatActivity {
             results.append("Case Sensitive: ").append(caseSensitive ? "✅ Yes" : "❌ No").append("\n");
             results.append("Regex Enabled: ").append(regexEnabled ? "✅ Yes" : "❌ No").append("\n");
             results.append("Min Word Length: ").append(minWordLength).append(" chars\n");
+            results.append("URL Handling: ").append(urlHandlingMode).append("\n");
+            if ("dont_read".equals(urlHandlingMode)) {
+                results.append("URL Replacement Text: ").append(urlReplacementText.isEmpty() ? "(empty)" : urlReplacementText).append("\n");
+            }
         } catch (Exception e) {
             results.append("❌ Error reading filter settings: ").append(e.getMessage()).append("\n");
         }
