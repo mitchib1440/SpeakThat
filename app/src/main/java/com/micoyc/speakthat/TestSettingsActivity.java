@@ -72,8 +72,6 @@ public class TestSettingsActivity extends AppCompatActivity {
         
         // Set up interactive test buttons
         binding.btnTestTTS.setOnClickListener(v -> testTTSFunctionality());
-        binding.btnTestShake.setOnClickListener(v -> testShakeDetection());
-        binding.btnTestNotifications.setOnClickListener(v -> testNotificationFiltering());
         
         // Run initial tests
         runAllTests();
@@ -186,8 +184,6 @@ public class TestSettingsActivity extends AppCompatActivity {
         results.append("\n📋 INTERACTIVE TESTING\n");
         results.append("---------------------\n");
         results.append("• TTS Test: Tap 'Test TTS' to hear current voice settings\n");
-        results.append("• Shake Test: Tap 'Test Shake' to simulate shake detection\n");
-        results.append("• Notification Test: Tap 'Test Notifications' to check filtering\n");
         results.append("• Refresh: Tap 'Refresh' to re-run all tests\n");
         results.append("• Export: Tap 'Export' to share test results\n\n");
         
@@ -408,31 +404,6 @@ public class TestSettingsActivity extends AppCompatActivity {
         String testText = "This is a test of the current voice settings. Speech rate, pitch, and language are being tested.";
         tts.speak(testText, TextToSpeech.QUEUE_FLUSH, null, "test_utterance");
         Toast.makeText(this, "TTS test started", Toast.LENGTH_SHORT).show();
-    }
-    
-    private void testShakeDetection() {
-        // Simulate shake detection test
-        Toast.makeText(this, "Shake detection test: Move device to test sensitivity", Toast.LENGTH_LONG).show();
-        
-        // In a real implementation, you'd trigger the shake detection system
-        // For now, just show the current threshold
-        float shakeThreshold = mainPrefs.getFloat("shake_threshold", 12.0f);
-        Toast.makeText(this, "Current shake threshold: " + shakeThreshold, Toast.LENGTH_SHORT).show();
-    }
-    
-    private void testNotificationFiltering() {
-        // Simulate notification filtering test
-        String appListMode = mainPrefs.getString("app_list_mode", "none");
-        Set<String> appList = mainPrefs.getStringSet("app_list", null);
-        Set<String> wordBlacklist = mainPrefs.getStringSet("word_blacklist", null);
-        
-        StringBuilder testResult = new StringBuilder();
-        testResult.append("Filter Test Results:\n");
-        testResult.append("App List Mode: ").append(appListMode).append("\n");
-        testResult.append("Filtered Apps: ").append(appList != null ? appList.size() : 0).append("\n");
-        testResult.append("Blocked Words: ").append(wordBlacklist != null ? wordBlacklist.size() : 0).append("\n");
-        
-        Toast.makeText(this, testResult.toString(), Toast.LENGTH_LONG).show();
     }
     
     private void exportTestResults() {
