@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Build;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
@@ -30,6 +32,7 @@ import java.util.Locale;
 public class GeneralSettingsActivity extends AppCompatActivity {
     private ActivityGeneralSettingsBinding binding;
     private SharedPreferences sharedPreferences;
+    private boolean isUpdatingBatteryOptimizationSwitch = false;
     
     // Activity result launchers for file operations
     private ActivityResultLauncher<String> requestPermissionLauncher;
@@ -212,11 +215,17 @@ public class GeneralSettingsActivity extends AppCompatActivity {
 
         // Battery Optimization Toggle
         MaterialSwitch batteryOptimizationSwitch = binding.switchBatteryOptimization;
-        boolean batteryOptimizationEnabled = sharedPreferences.getBoolean("battery_optimization_enabled", false);
-        batteryOptimizationSwitch.setChecked(batteryOptimizationEnabled);
+        syncBatteryOptimizationState();
 
         batteryOptimizationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            sharedPreferences.edit().putBoolean("battery_optimization_enabled", isChecked).apply();
+            if (isUpdatingBatteryOptimizationSwitch) {
+                return;
+            }
+            if (isChecked) {
+                requestBatteryOptimizationExemption();
+            } else {
+                sharedPreferences.edit().putBoolean("battery_optimization_enabled", false).apply();
+            }
         });
 
 
@@ -419,6 +428,12 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        syncBatteryOptimizationState();
+    }
+
     private boolean checkStoragePermission() {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) 
                == PackageManager.PERMISSION_GRANTED;
@@ -560,6 +575,57 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         }
     }
     
+    private void syncBatteryOptimizationState() {
+        boolean exempt = isBatteryOptimizationExempt();
+        updateBatteryOptimizationSwitch(exempt);
+        sharedPreferences.edit().putBoolean("battery_optimization_enabled", exempt).apply();
+    }
+
+    private void updateBatteryOptimizationSwitch(boolean isChecked) {
+        isUpdatingBatteryOptimizationSwitch = true;
+        binding.switchBatteryOptimization.setChecked(isChecked);
+        isUpdatingBatteryOptimizationSwitch = false;
+    }
+
+    private boolean isBatteryOptimizationExempt() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
+        PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        return powerManager != null && powerManager.isIgnoringBatteryOptimizations(getPackageName());
+    }
+
+    private void requestBatteryOptimizationExemption() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            sharedPreferences.edit().putBoolean("battery_optimization_enabled", true).apply();
+            updateBatteryOptimizationSwitch(true);
+            return;
+        }
+
+        if (isBatteryOptimizationExempt()) {
+            sharedPreferences.edit().putBoolean("battery_optimization_enabled", true).apply();
+            updateBatteryOptimizationSwitch(true);
+            return;
+        }
+
+        Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+        intent.setData(Uri.parse("package:" + getPackageName()));
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            openBatteryOptimizationSettingsFallback();
+        }
+    }
+
+    private void openBatteryOptimizationSettingsFallback() {
+        try {
+            Intent intent = new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+            startActivity(intent);
+        } catch (Exception ignored) {
+            // If this also fails, leave the switch as-is; the user can retry.
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
