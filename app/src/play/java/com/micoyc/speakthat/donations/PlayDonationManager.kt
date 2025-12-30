@@ -12,10 +12,13 @@ import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.ConsumeParams
+import com.android.billingclient.api.PendingPurchasesParams
 import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.ProductDetailsResponseListener
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
+import com.android.billingclient.api.QueryProductDetailsResult
 import com.google.android.material.button.MaterialButton
 import com.micoyc.speakthat.InAppLogger
 import com.micoyc.speakthat.R
@@ -32,7 +35,12 @@ class PlayDonationManager(private val appContext: Context) : DonationManager, Pu
     private val store = PlayDonationStore(appContext)
 
     private val billingClient: BillingClient = BillingClient.newBuilder(appContext)
-        .enablePendingPurchases()
+        // Required for PBL 8+: explicitly opt in to pending purchases for one-time products.
+        .enablePendingPurchases(
+            PendingPurchasesParams.newBuilder()
+                .enableOneTimeProducts()
+                .build()
+        )
         .setListener(this)
         .build()
 
@@ -89,22 +97,34 @@ class PlayDonationManager(private val appContext: Context) : DonationManager, Pu
             .setProductList(products)
             .build()
 
-        billingClient.queryProductDetailsAsync(params) { billingResult, detailsList ->
-            val size = detailsList?.size ?: 0
-            val code = billingResult.responseCode
-            val debugMessage = billingResult.debugMessage
-            val debugIds = productIds.joinToString(",")
-            InAppLogger.logUserAction("Billing", "Query products response=$code, size=$size, msg=$debugMessage, requested=[$debugIds]")
+        billingClient.queryProductDetailsAsync(
+            params,
+            object : ProductDetailsResponseListener {
+                override fun onProductDetailsResponse(
+                    billingResult: BillingResult,
+                    productDetailsResult: QueryProductDetailsResult
+                ) {
+                    val productDetailsList = productDetailsResult.productDetailsList ?: emptyList()
+                    val size = productDetailsList.size
+                    val code = billingResult.responseCode
+                    val debugMessage = billingResult.debugMessage
+                    val debugIds = productIds.joinToString(",")
+                    InAppLogger.logUserAction(
+                        "Billing",
+                        "Query products response=$code, size=$size, msg=$debugMessage, requested=[$debugIds]"
+                    )
 
-            if (code == BillingClient.BillingResponseCode.OK && !detailsList.isNullOrEmpty()) {
-                productDetails = detailsList.associateBy { it.productId }
-                InAppLogger.logUserAction("Billing", "Products loaded: ${productDetails.keys}")
-                onReady()
-            } else {
-                InAppLogger.logError("Billing", "Failed to load products: code=$code, size=$size")
-                onError()
+                    if (code == BillingClient.BillingResponseCode.OK && productDetailsList.isNotEmpty()) {
+                        productDetails = productDetailsList.associateBy { it.productId }
+                        InAppLogger.logUserAction("Billing", "Products loaded: ${productDetails.keys}")
+                        onReady()
+                    } else {
+                        InAppLogger.logError("Billing", "Failed to load products: code=$code, size=$size")
+                        onError()
+                    }
+                }
             }
-        }
+        )
     }
 
     private fun showPlayDialog(activity: Activity, fallback: () -> Unit) {
