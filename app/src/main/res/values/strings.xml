@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">SpeakThat!</string>
     <string name="service_name">SpeakThat Notification Reader</string>
-    
     <!-- Quick Settings Tile -->
     <string name="quick_settings_tile_label">SpeakThat</string>
     <string name="quick_settings_tile_enabled">Enabled</string>
@@ -10,14 +9,12 @@
     <string name="quick_settings_tile_enabled_toast">SpeakThat enabled via Quick Settings</string>
     <string name="quick_settings_tile_disabled_toast">SpeakThat disabled via Quick Settings</string>
     <string name="quick_settings_tile_error_toast">Error toggling SpeakThat</string>
-    
     <!-- Permission Explanations for IzzyOnDroid/F-Droid -->
     <string name="permission_request_install_packages">Used for auto-update system to install new versions from GitHub releases. Only used when user explicitly enables auto-updates and app was not installed from Google Play Store.</string>
     <string name="permission_access_location">Required for Bluetooth and WiFi conditional filtering features. Used to detect nearby Bluetooth devices and WiFi networks for user-defined rules. No location tracking or data collection.</string>
     <string name="permission_bluetooth_scan">Required for Bluetooth conditional filtering. Allows the app to detect when specific Bluetooth devices are connected for notification rules. No data is collected or transmitted.</string>
     <string name="permission_nearby_wifi_devices">Required for WiFi network conditional filtering on Android 13+. Allows the app to detect WiFi network changes for user-defined notification rules. No network data is collected.</string>
     <string name="permission_read_external_storage">Used for importing/exporting app settings and configuration files. Allows users to backup and restore their settings. No personal data is accessed.</string>
-    
     <string name="permission_needed">Notification Access Required</string>
     <string name="permission_description">SpeakThat! needs access to your notifications to read them aloud. This permission is required for the app to function.</string>
     <string name="master_switch_battery_tip">💡 Turn off when not needed to save battery</string>
@@ -30,17 +27,14 @@
     <string name="no_notifications">No notifications to display</string>
     <string name="notification_history">Notification History</string>
     <string name="close">Close</string>
-
     <!-- Search Functionality -->
     <string name="search_settings_hint">Search settings...</string>
     <string name="no_search_results">No matching settings found</string>
-
     <!-- Filter Settings -->
     <string-array name="blacklist_types">
         <item>Block</item>
         <item>Private</item>
     </string-array>
-
     <!-- Cooldown Time Options -->
     <string-array name="cooldown_time_options">
         <item>1 second</item>
@@ -54,7 +48,6 @@
         <item>2 minutes</item>
         <item>5 minutes</item>
     </string-array>
-
     <!-- Cooldown Time Values (corresponding to options above) -->
     <string-array name="cooldown_time_values">
         <item>1</item>
@@ -68,111 +61,41 @@
         <item>120</item>
         <item>300</item>
     </string-array>
-
     <!-- Behavior Settings Dialogs -->
     <string name="notification_behavior_dialog_title">Notification Behaviour Options</string>
-    <string name="notification_behavior_dialog_message">Choose how SpeakThat handles multiple notifications:
-
-<b>Interrupt</b> - Stops current notification and reads new one immediately. Best for urgent notifications.
-
-<b>Queue</b> - Finishes current notification, then reads new ones in order. Nothing gets missed.
-
-<b>⏭Skip</b> - Ignores new notifications while reading. Simple but you might miss important ones.
-
-<b>Smart (Recommended)</b> - Priority apps interrupt, others queue. Perfect balance of urgency and completeness.
-
-Smart mode lets you choose which apps are urgent enough to interrupt (like calls, messages) while other apps wait their turn.</string>
-
+    <string name="notification_behavior_dialog_message">Choose how SpeakThat handles multiple notifications: <b>Interrupt</b> - Stops current notification and reads new one immediately. Best for urgent notifications. <b>Queue</b> - Finishes current notification, then reads new ones in order. Nothing gets missed. <b>⏭Skip</b> - Ignores new notifications while reading. Simple but you might miss important ones. <b>Smart (Recommended)</b> - Priority apps interrupt, others queue. Perfect balance of urgency and completeness. Smart mode lets you choose which apps are urgent enough to interrupt (like calls, messages) while other apps wait their turn.</string>
     <string name="custom_app_names_title">Custom App Names</string>
     <string name="custom_app_names_description">Customize how app names are spoken in notifications</string>
     <string name="add_custom_app_name">Add Custom App Name</string>
     <string name="app_package_hint">App package name (e.g., com.twitter.android)</string>
     <string name="custom_name_hint">Custom name (e.g., Twitter)</string>
     <string name="custom_app_names_example">Example: X app reads as Twitter</string>
-    
     <string name="media_behavior_dialog_title">Media Behaviour Options</string>
-    <string name="media_behavior_dialog_message">Choose how SpeakThat handles notifications while music/videos play:
-
-<b>Ignore</b> - Speaks over your media. Simple but can be disruptive.
-
-<b>Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow.
-
-<b>Lower Audio</b> - Temporarily reduces media volume so you can hear both.
-
-<b>Silence</b> - Doesn\'t speak while media plays. Quiet but you might miss important notifications.
-
-Lower Audio works like a car radio - it ducks the music down when speaking, then brings it back up.</string>
-    
+    <string name="media_behavior_dialog_message">Choose how SpeakThat handles notifications while music/videos play: <b>Ignore</b> - Speaks over your media. Simple but can be disruptive. <b>Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow. <b>Lower Audio</b> - Temporarily reduces media volume so you can hear both. <b>Silence</b> - Doesn\'t speak while media plays. Quiet but you might miss important notifications. Lower Audio works like a car radio - it ducks the music down when speaking, then brings it back up.</string>
     <string name="shake_to_stop_dialog_title">Shake to Stop Feature</string>
-    <string name="shake_to_stop_dialog_message">Shake to Stop lets you instantly silence SpeakThat by shaking your device:
-
-<b>Why it\'s helpful:</b>
-• Stop embarrassing notifications in quiet places
-• Quick control when your hands are busy
-• Works even when screen is off
-• No fumbling for buttons
-
-<b>How it works:</b>
-• Shake your device firmly (like a dice shake)
-• Current notification stops immediately
-• Queued notifications are cleared
-• New notifications work normally
-
-<b>Customization:</b>
-• Adjust sensitivity for your preference
-• Test your shake strength with the meter
-• Works great for both gentle and vigorous shakers
-
-This feature is especially loved by people who get notifications during meetings, movies, or while driving.</string>
-    
+    <string name="shake_to_stop_dialog_message">Shake to Stop lets you instantly silence SpeakThat by shaking your device: <b>Why it\'s helpful:</b> • Stop embarrassing notifications in quiet places • Quick control when your hands are busy • Works even when screen is off • No fumbling for buttons <b>How it works:</b> • Shake your device firmly (like a dice shake) • Current notification stops immediately • Queued notifications are cleared • New notifications work normally <b>Customization:</b> • Adjust sensitivity for your preference • Test your shake strength with the meter • Works great for both gentle and vigorous shakers This feature is especially loved by people who get notifications during meetings, movies, or while driving.</string>
     <string name="use_recommended">Use Recommended</string>
     <string name="got_it">Got it</string>
-    
     <!-- Persistent/Silent Notification Filtering -->
     <string name="persistent_notification_filtering_title">Persistent/Silent Notification Filtering</string>
     <string name="persistent_notification_filtering_description">Skip notifications that are persistent (ongoing) or silent (no sound/vibration)</string>
     <string name="enable_persistent_filtering">Enable persistent/silent notification filtering</string>
     <string name="persistent_filtering_help">Persistent notifications are ongoing (like music controls, navigation, etc.) and silent notifications have no sound/vibration. This option helps reduce notification spam from background services.</string>
-    
     <!-- Individual Persistent Filtering Categories -->
     <string name="filter_persistent_notifications">Filter persistent notifications</string>
     <string name="filter_silent_notifications">Filter silent notifications</string>
     <string name="filter_foreground_services">Filter foreground service notifications</string>
     <string name="filter_low_priority">Filter low priority notifications</string>
     <string name="filter_system_notifications">Filter system notifications</string>
-    
     <!-- Category Descriptions -->
     <string name="persistent_notifications_desc">Ongoing notifications that don\'t auto-dismiss (music controls, navigation)</string>
     <string name="silent_notifications_desc">Notifications with no sound or vibration</string>
     <string name="foreground_services_desc">Notifications from ongoing background services</string>
     <string name="low_priority_desc">Notifications with minimum or low priority level</string>
     <string name="system_notifications_desc">Notifications from system apps (Android, Google services)</string>
-    
     <!-- Wave to Stop Feature -->
     <string name="wave_to_stop_dialog_title">Wave to Stop Feature</string>
-    <string name="wave_to_stop_dialog_message">Wave to Stop lets you instantly silence SpeakThat by waving your hand in front of the device:
-
-<b> Why it\'s helpful:</b>
-• Perfect for users who can\'t shake their device
-• Great for phones on desks or mounts
-• Works with one hand
-• No physical device movement needed
-• Accessibility-friendly alternative to shake
-
-<b>🎯 How it works:</b>
-• Wave your hand in front of the device (like a magic gesture)
-• Uses the proximity sensor to detect hand movement
-• Current notification stops immediately
-• Queued notifications are cleared
-• New notifications work normally
-
-<b>⚙️ Customization:</b>
-• Adjust sensitivity for your preference
-• Test your wave detection with the meter
-• Works great for different hand sizes and distances
-
-This feature is especially useful for accessibility, desk users, and anyone who prefers gesture control over physical movement.</string>
-
+    <string name="wave_to_stop_dialog_message">Wave to Stop lets you instantly silence SpeakThat by waving your hand in front of the device: <b> Why it\'s helpful:</b> • Perfect for users who can\'t shake their device • Great for phones on desks or mounts • Works with one hand • No physical device movement needed • Accessibility-friendly alternative to shake <b>🎯 How it works:</b> • Wave your hand in front of the device (like a magic gesture) • Uses the proximity sensor to detect hand movement • Current notification stops immediately • Queued notifications are cleared • New notifications work normally <b>⚙️ Customization:</b> • Adjust sensitivity for your preference • Test your wave detection with the meter • Works great for different hand sizes and distances This feature is especially useful for accessibility, desk users, and anyone who prefers gesture control over physical movement.</string>
     <!-- About Page -->
     <string name="about">About</string>
     <string name="about_description_title">About SpeakThat!</string>
@@ -181,7 +104,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="about_license_title">License</string>
     <string name="version_format">Version %s</string>
     <string name="version_format_with_variant" formatted="false">Version %1$s (%2$s)</string>
-    
     <!-- Store Update Dialog -->
     <string name="store_update_dialog_title">Updates via App Store</string>
     <string name="store_update_dialog_message">This version of SpeakThat! receives updates through your app store (F-Droid, Google Play Store, etc.).</string>
@@ -201,10 +123,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="app_features">• Real-time notification reading\n• Customizable voice settings\n• Smart notification filtering\n• App-specific controls\n• Media-aware behaviour\n• Notification history\n• Shake/Wave to stop\n• Custom speech formatting\n• Dark/Light theme support\n• Conditional rules for advanced logic and schedules\n• Fully ad-free and offline functionality</string>
     <string name="developer_info">Developed with ❤️ by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day.\n\nSpeakThat! was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers.\n\nThis project was accelerated by AI-assisted programming.</string>
     <string name="license_info">This project is open source and available under the GPL-3.0 License.\n\nYou can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
-    
     <string name="read_about_app">Read About App</string>
     <string name="stop_reading">Stop Reading</string>
-    
     <!-- TTS-specific strings (emoji-free and speech-optimized) -->
     <string name="tts_app_intro">Welcome to SpeakThat!</string>
     <string name="tts_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
@@ -213,9 +133,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
     <string name="tts_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
     <string name="tts_thank_you">Thank you for using SpeakThat!</string>
-    
-
-    
     <!-- Update System -->
     <string name="latest_update_dialog_title">Latest update</string>
     <string name="latest_update_fallback">SpeakThat! latest update: stability polish, battery-friendly notification tweaks.</string>
@@ -245,7 +162,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="download">Download</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
-    
     <!-- Update Settings -->
     <string name="auto_update_settings">Auto-Update Settings</string>
     <string name="check_for_updates_auto">Check for Updates</string>
@@ -255,7 +171,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="update_daily">Daily</string>
     <string name="update_weekly">Weekly (recommended)</string>
     <string name="update_monthly">Monthly</string>
-    
     <!-- TTS Template Strings (for improved localization) -->
     <!-- These are complete sentence templates with placeholders for proper localization -->
     <string name="tts_template_notified_you">{app} notified you: {content}</string>
@@ -273,7 +188,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_template_notification_from">Notification from {app}: {content}</string>
     <string name="tts_template_says">{app} says: {content}</string>
     <string name="tts_template_private_notification">You received a private notification from {app}</string>
-    
     <!-- TTS Context Templates - Complete sentences for different app contexts -->
     <!-- About Page TTS -->
     <string name="tts_about_intro">Welcome to SpeakThat!</string>
@@ -283,10 +197,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_about_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
     <string name="tts_about_license">This project is open source and available under the GPL-3.0 License. You can view the full license text and source code on GitHub. Contributions and feedback are welcome!</string>
     <string name="tts_about_thank_you">Thank you for using SpeakThat!</string>
-    
     <!-- Voice Settings Test -->
     <string name="tts_voice_test">This is how your notifications will sound with these voice settings.</string>
-    
     <!-- TTS Engine Selection -->
     <string name="tts_engine_label">TTS Engine</string>
     <string name="tts_engine_system_default">System Default</string>
@@ -297,7 +209,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_engine_failure_message">SpeakThat couldn\'t use your selected TTS engine. It may have been uninstalled. The system default engine is now being used.</string>
     <string name="open_system_tts_settings">Open System TTS Settings</string>
     <string name="tts_engine_info_title">TTS Engine Information</string>
-    
     <!-- Onboarding TTS -->
     <string name="tts_onboarding_language_theme">Choose your preferred language and theme to get started with SpeakThat.</string>
     <string name="tts_onboarding_welcome">Welcome to SpeakThat! Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.</string>
@@ -308,7 +219,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_onboarding_words">Type words or phrases that you want me to never read notifications containing. Common examples include password, PIN, credit card, and medical terms.</string>
     <string name="tts_onboarding_rules">Set up smart rules that automatically control when notifications are read based on your situation. For example, only read notifications when headphones are connected, or skip notifications when the screen is on.</string>
     <string name="tts_onboarding_complete">SpeakThat is ready to help you stay connected while keeping your eyes free! You can add more filters anytime in the app settings.</string>
-    
     <!-- Behavior Settings Speech Format Templates -->
     <string name="tts_behavior_default">Default format</string>
     <string name="tts_behavior_minimal">Minimal format</string>
@@ -319,7 +229,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_behavior_app_only">App only format</string>
     <string name="tts_behavior_varied">Varied format</string>
     <string name="tts_behavior_custom">Custom format</string>
-    
     <!-- Speech Format Preset Templates -->
     <string name="tts_format_default">{app} notified you: {content}</string>
     <string name="tts_format_minimal">{app}: {content}</string>
@@ -330,39 +239,30 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_format_app_only">{app}</string>
     <string name="tts_format_varied">VARIED</string>
     <string name="tts_format_custom">CUSTOM</string>
-    
     <!-- Rule Builder Templates -->
     <string name="template_selection_title">Choose a Template</string>
     <string name="template_selection_description">Select a pre-configured rule template to get started quickly, or create a custom rule from scratch.</string>
     <string name="create_custom_rule">Create Custom Rule</string>
-    
     <!-- Template Names -->
     <string name="template_headphones_only_name">Bluetooth Headphones</string>
     <string name="template_headphones_only_description">Select your Bluetooth headphones, and notifications will ONLY be read when they are connected to your phone</string>
-    
     <string name="template_time_schedule_name">Quiet Hours</string>
     <string name="template_time_schedule_description">Select two times you want SpeakThat to remain silent between</string>
-    
     <string name="template_screen_off_name">Only when Screen Off</string>
     <string name="template_screen_off_description">Notifications will only be read if your screen is off</string>
-    
     <string name="template_home_network_name">Only on Home WiFi</string>
     <string name="template_home_network_description">Enter your Home WiFi network and notifications will only be read when you\'re connected to it</string>
-    
     <!-- Template Trigger Descriptions -->
     <string name="template_trigger_headphones_disconnected">When Bluetooth headphones are disconnected</string>
     <string name="template_trigger_time_between">Between 10:00 PM and 8:00 AM</string>
     <string name="template_trigger_screen_on">When screen is turned on</string>
     <string name="template_trigger_not_home_wifi">When not connected to Home WiFi</string>
-    
     <!-- Template Action Descriptions -->
     <string name="template_action_skip_notification">Don\'t read notifications</string>
-    
     <!-- Rule Natural Language Templates -->
     <string name="rule_format_when_trigger_will_action">When %1$s, %2$s will %3$s</string>
     <string name="rule_format_when_trigger_will_action_unless_exception">When %1$s, %2$s will %3$s unless %4$s</string>
     <string name="rule_format_when_trigger_will_action_unless_exceptions">When %1$s, %2$s will %3$s unless %4$s</string>
-    
     <!-- Rule Component Descriptions -->
     <string name="rule_trigger_bluetooth_connected">Bluetooth device is connected</string>
     <string name="rule_trigger_bluetooth_disconnected">Bluetooth device is disconnected</string>
@@ -373,7 +273,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_trigger_wifi_disconnected">not connected to %1$s</string>
     <string name="rule_trigger_wifi_connected_android15">connected to %1$s (Android 15+: any WiFi)</string>
     <string name="rule_trigger_wifi_disconnected_android15">not connected to %1$s (Android 15+: any WiFi)</string>
-    
     <!-- WiFi Compatibility Warning -->
     <string name="wifi_compatibility_warning_title">Note on WiFi Compatibility</string>
     <string name="wifi_compatibility_warning_message">Some Android versions have security restrictions that prevent apps from detecting specific WiFi network names. While SpeakThat can currently detect your WiFi network, this functionality may not work reliably in all situations (especially when the app is in the background).\n\nThe rule will fall back to detecting WiFi connection state if SSID detection fails, but it may not work exactly as expected.\n\nIt\'s not impossible to implement properly, however. So if you\'re a better developer than me then please contribute on the GitHub.</string>
@@ -382,13 +281,11 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="wifi_compatibility_warning_nevermind">Nevermind</string>
     <string name="wifi_compatibility_warning_open_github">Open GitHub</string>
     <string name="rule_trigger_multiple">multiple conditions are met</string>
-    
     <string name="rule_action_skip_notification">skip reading notifications</string>
     <string name="rule_action_enable_app_filter">enable app filtering for %1$s</string>
     <string name="rule_action_disable_app_filter">disable app filtering for %1$s</string>
     <string name="rule_action_change_voice_settings">change voice settings</string>
     <string name="rule_action_multiple">perform multiple actions</string>
-    
     <string name="rule_exception_bluetooth_connected">Bluetooth device is connected</string>
     <string name="rule_exception_bluetooth_disconnected">Bluetooth device is disconnected</string>
     <string name="rule_exception_screen_on">screen is on</string>
@@ -397,14 +294,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_exception_wifi_connected">connected to %1$s</string>
     <string name="rule_exception_wifi_disconnected">not connected to %1$s</string>
     <string name="rule_exception_multiple">multiple exceptions apply</string>
-    
     <!-- Logic Connectors -->
     <string name="rule_logic_and">and</string>
     <string name="rule_logic_or">or</string>
     <string name="rule_logic_xor">either</string>
     <string name="rule_logic_separator">, </string>
-    <string name="rule_logic_final_separator">, and </string>
-    
+    <string name="rule_logic_final_separator">, and</string>
     <!-- Critical Hardcoded Strings - Activity Titles -->
     <string name="title_behavior_settings">Behaviour Settings</string>
     <string name="title_general_settings">General Settings</string>
@@ -413,7 +308,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="title_test_settings">Test Settings</string>
     <string name="title_notification_history">Notification History</string>
     <string name="title_bluetooth_devices">Bluetooth Devices</string>
-    
     <!-- Critical Hardcoded Strings - Dialog Titles -->
     <string name="dialog_title_theme_changed">Theme Changed</string>
     <string name="dialog_title_export_successful">Export Successful</string>
@@ -466,7 +360,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_title_edit_rule">Edit Rule</string>
     <string name="dialog_title_create_rule">Create Rule</string>
     <string name="dialog_title_content_cap">Content Cap</string>
-    
     <!-- Filter Settings Dialog Titles -->
     <string name="dialog_title_edit_filtered_media_app">Edit Filtered Media App</string>
     <string name="dialog_title_edit_media_exception_app">Edit Media Exception App</string>
@@ -477,7 +370,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_title_import_filter_configuration">Import Filter Configuration</string>
     <string name="dialog_title_app_filter_help">📱 App Filter Help</string>
     <string name="dialog_title_smart_media_filter">Smart Media Notification Filter</string>
-    
     <!-- Critical Hardcoded Strings - Dialog Messages -->
     <string name="dialog_message_theme_changed">The theme has been changed. For the best experience, you may want to restart the app manually.</string>
     <string name="dialog_message_export_successful">Full configuration exported to:\n%s</string>
@@ -514,7 +406,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_message_remove_device">Remove %s from the list?</string>
     <string name="dialog_message_select_bluetooth_device">Choose the Bluetooth device for this rule:</string>
     <string name="dialog_message_select_wifi_network">Choose the WiFi network for this rule:</string>
-    
     <!-- Language Change Dialog -->
     <string name="dialog_title_language_changed">Language Changed</string>
     <string name="dialog_message_language_changed">The app language has been changed from %1$s to %2$s.\n\n• Apply Now: Updates this screen immediately\n• Restart App: Ensures all screens and services use the new language\n\nFor the best experience, we recommend restarting the app.</string>
@@ -522,7 +413,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="button_apply_now">Apply Now</string>
     <string name="toast_language_restarting">Restarting app with new language...</string>
     <string name="toast_language_manual_restart">Language will be fully applied when you restart the app</string>
-    
     <!-- Critical Hardcoded Strings - Button Labels -->
     <string name="button_restart_now">Restart Now</string>
     <string name="button_later">Later</string>
@@ -550,13 +440,11 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="button_export_report">Export Report</string>
     <string name="button_reset_cache">Reset Cache</string>
     <string name="button_re_detect">Re-detect</string>
-    
     <!-- Layout Section Titles -->
     <string name="section_notification_behavior">Notification Behaviour</string>
     <string name="section_media_behavior">Media Behaviour</string>
     <string name="recommendation_smart_mode">Most users should use: Smart Mode</string>
     <string name="recommendation_lower_audio">Most users should use: Pause</string>
-    
     <!-- Behavior Settings Strings -->
     <string name="behavior_notification_description">Control how notifications are handled when one is already being read</string>
     <string name="behavior_media_description">Control how notifications are handled when music or videos are playing</string>
@@ -574,12 +462,10 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_ducking_description">Set how quiet media should become during notifications</string>
     <string name="behavior_ducking_warning">⚠️ On some devices, lowering media volume may also lower the notification voice. If notifications are still hard to hear, try Pause mode or adjust your TTS settings.</string>
     <string name="behavior_ducking_tip">Tip: Lower values make media quieter during notifications</string>
-    
     <!-- Audio Ducking Enhanced Warning -->
     <string name="behavior_ducking_enhanced_warning">⚠️ Lower Audio works differently across devices and Android versions. Some devices may not duck certain apps or audio streams properly.</string>
     <string name="behavior_ducking_device_tip">💡 If ducking isn\'t working well: Try different audio streams in Voice Settings (\'Voice Call\' or \'Notification\' often work best). Avoid \'Media\' stream as it may duck your TTS along with your music.</string>
     <string name="behavior_ducking_fallback_tip">🔧 The app automatically uses advanced system ducking when available, with smooth manual ducking as backup for maximum compatibility.</string>
-    
     <!-- Audio Ducking Test and Fallback -->
     <string name="behavior_ducking_test_title">Test Lower Audio Compatibility</string>
     <string name="behavior_ducking_test_message">Testing if your device supports audio focus requests properly...</string>
@@ -588,7 +474,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_ducking_test_button">Test Lower Audio</string>
     <string name="behavior_ducking_test_success_title">Test Complete</string>
     <string name="behavior_ducking_test_warning_title">Test Complete</string>
-    
     <!-- Audio Ducking Fallback Options -->
     <string name="behavior_ducking_fallback_title">Fallback Strategy</string>
     <string name="behavior_ducking_fallback_description">Choose what happens when audio focus fails on your device</string>
@@ -596,7 +481,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_ducking_fallback_pause">Pause Media Instead</string>
     <string name="behavior_ducking_fallback_manual_desc">Use manual volume adjustment (may not work on all devices)</string>
     <string name="behavior_ducking_fallback_pause_desc">Pause media completely when audio focus fails (more reliable)</string>
-    
     <!-- Audio Ducking Disabled Dialog -->
     <string name="audio_ducking_disabled_title">Lower Audio Feature</string>
     <string name="audio_ducking_disabled_message">Lower Audio works differently across devices. Some devices may not respond to volume changes properly, which could affect your TTS volume.\n\nYou can still enable this feature, but be aware it may not work consistently on all devices.</string>
@@ -612,14 +496,10 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_audio_recommendation">Recommended: Enable this feature</string>
     <string name="behavior_audio_checkbox">Honour audio mode (Sound only)</string>
     <string name="behavior_audio_benefits">Benefits:\n\n• Prevents unwanted audio when phone is muted\n• Respects your device\'s audio settings\n• Works with Silent and Vibrate modes\n• Ensures notifications only play when you can hear them</string>
-
-
     <string name="behavior_shake_current">Current shake: 0.0</string>
     <string name="behavior_shake_threshold">Threshold: 12.0</string>
-
     <string name="behavior_timeout_display">Timeout: 30 seconds</string>
     <string name="behavior_timeout_disable">Disable timeout (not recommended)</string>
-
     <string name="behavior_wave_threshold">Proximity Threshold</string>
     <string name="behavior_wave_pocket">Pocket Mode</string>
     <string name="behavior_wave_pocket_description">Allow readouts to continue when sensor is already covered (like in your pocket), but still stop when you cover it after the readout starts</string>
@@ -661,7 +541,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="volume_mute">Mute</string>
     <string name="volume_loud">Loud</string>
     <string name="volume_30_percent">30%</string>
-    
     <!-- Voice Settings Strings -->
     <string name="voice_characteristics">Voice Characteristics</string>
     <string name="voice_speech_rate">Speech Rate</string>
@@ -691,14 +570,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="label_150_percent">150%</string>
     <string name="voice_tts_volume_boost_warning">⚠️ Volume above 100% may cause audio distortion &amp; doesn\'t work on every device</string>
     <string name="arrow_right">›</string>
-    
     <!-- Main Activity Strings -->
     <string name="main_version_placeholder">version x.x.x</string>
     <string name="main_author">by Mitchi</string>
     <string name="main_service_active">SpeakThat! Active</string>
     <string name="main_service_enable">Tap to enable notification reading</string>
     <string name="main_notification_permissions">Notification permissions:</string>
-    
     <!-- Settings Activity Strings -->
     <string name="settings_general_title">General Settings</string>
     <string name="settings_general_description">App preferences, theme settings</string>
@@ -718,9 +595,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="settings_support_description">Get help, report bugs, request features</string>
     <string name="settings_donate_title">Say Thanks</string>
     <string name="settings_donate_description">Support development and keep the app ad-free</string>
-    
-
-    
     <!-- Critical Hardcoded Strings - Other -->
     <string name="unknown_device">Unknown Device</string>
     <string name="export_full_config_text">Complete configuration backup created on %s</string>
@@ -729,39 +603,32 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="select_configuration_file">Select Configuration File</string>
     <string name="save_rule">save</string>
     <string name="update_rule">update</string>
-    
     <!-- Conditional Rules - Trigger Strings -->
     <string name="rule_trigger_wifi_network">WiFi network in range: %1$s</string>
     <string name="rule_trigger_not_wifi_network">WiFi network not in range: %1$s</string>
-    
     <!-- Behavior Settings - Media Volume -->
     <string name="behavior_media_volume_tip">Tip: Lower values make media quieter during notifications</string>
-    
     <!-- Behavior Settings - System Modes Group -->
     <string name="section_honor_system_modes">Honour System Modes</string>
     <string name="behavior_system_modes_description">Keep SpeakThat quiet when your device is in Do Not Disturb, on a call, or using silent or vibrate modes. Toggle each option below.</string>
-
     <!-- Behavior Settings - Do Not Disturb -->
     <string name="section_honor_dnd">Honour Do Not Disturb</string>
     <string name="behavior_dnd_description">Respect your device\'s Do Not Disturb mode and silence notifications when enabled</string>
     <string name="behavior_dnd_recommendation">Most users should: Enable this feature</string>
     <string name="behavior_dnd_switch_label">Honour Do Not Disturb mode</string>
     <string name="behavior_dnd_benefits">Benefits:\n\n• Respects your device\'s Do Not Disturb settings\n• Perfect for meetings, sleep, and quiet time\n• Works with scheduled DND and manual activation\n• Maintains your privacy and focus when needed</string>
-    
     <!-- Behavior Settings - Phone Calls -->
     <string name="section_honor_phone_calls">Honour Phone Calls</string>
     <string name="behavior_phone_calls_description">Prevent notification readouts when you\'re on a phone call</string>
     <string name="behavior_phone_calls_recommendation">Most users should: Enable this feature</string>
     <string name="behavior_phone_calls_switch_label">Honour phone calls</string>
     <string name="behavior_phone_calls_benefits">Benefits:\n\n• Prevents interruptions during important calls\n• Respects your conversation privacy\n• Works with all types of phone calls\n• Automatic detection of call state</string>
-    
     <!-- Behavior Settings - Notification Deduplication -->
     <string name="section_notification_deduplication">Notification Deduplication</string>
     <string name="behavior_deduplication_description">Prevent the same notification from being read multiple times in quick succession</string>
     <string name="behavior_deduplication_recommendation">Enable if you experience duplicate notifications</string>
     <string name="behavior_deduplication_switch_label">Enable notification deduplication</string>
     <string name="behavior_deduplication_benefits">Benefits:\n\n• Prevents annoying duplicate readouts\n• Saves battery by avoiding unnecessary TTS\n• Works automatically with 30-second window\n• Helps with apps that post multiple notifications</string>
-    
     <!-- Behavior Settings - Dismissal Memory -->
     <string name="section_dismissal_memory">Dismissal Memory</string>
     <string name="behavior_dismissal_memory_description">Remember dismissed notifications to prevent re-reading them</string>
@@ -777,7 +644,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_dismissal_memory_info_button">ℹ️</string>
     <string name="dialog_title_dismissal_memory">Dismissal Memory</string>
     <string name="dialog_dismissal_memory_explanation"><![CDATA[Dismissal Memory prevents notifications from being read again after you dismiss them:<br/><br/><b>What it does:</b><br/>When you dismiss a notification, SpeakThat remembers it for a configurable period. If the same notification content appears again during this time, it will not be read aloud.<br/><br/><b>When it is useful:</b><br/>• <b>Dismissed notifications</b> - Prevents re-reading after you swipe them away<br/>• <b>App updates</b> - Some apps re-post notifications after updates<br/>• <b>System refreshes</b> - Android may re-post notifications during system events<br/>• <b>Network reconnections</b> - Apps may re-post notifications when connectivity is restored<br/><br/><b>How it works:</b><br/>• Tracks dismissed notifications by content hash<br/>• Configurable memory duration (5 min to 1 hour)<br/>• Automatic cleanup to prevent memory bloat<br/>• Battery-friendly with efficient storage<br/>• Detailed logging for troubleshooting<br/><br/><b>Tip:</b> Enable this if you experience notifications being read again after dismissal. Most users will benefit from this feature!]]></string>
-    
     <!-- Behavior Settings - Audio Mode -->
     <string name="section_honor_audio_mode">Honour Audio Mode</string>
     <string name="behavior_audio_mode_description">Choose how SpeakThat behaves in Silent and Vibrate. Keep both quiet, or let Vibrate keep talking while Silent stays muted.</string>
@@ -785,7 +651,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_silent_mode_switch_label">Honour Silent mode</string>
     <string name="behavior_vibrate_mode_switch_label">Honour Vibrate mode</string>
     <string name="behavior_audio_mode_benefits">Benefits:\n\n• Prevents unwanted audio in Silent\n• Optional speech while on Vibrate\n• Matches your meeting/focus needs\n• Works with physical volume buttons</string>
-    
     <!-- Behavior Settings - Shake to Stop -->
     <string name="section_shake_to_stop">Shake to Stop</string>
     <string name="behavior_shake_description">Stop readouts instantly by shaking your device</string>
@@ -795,26 +660,22 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_shake_intensity_description">Adjust how hard you need to shake to stop readouts</string>
     <string name="behavior_shake_test_label">Shake Test</string>
     <string name="behavior_shake_test_description">Test your shake intensity and see the trigger threshold</string>
-    
     <!-- Behavior Settings - Wave to Stop -->
     <string name="section_wave_to_stop">👋 Wave to Stop</string>
     <string name="behavior_wave_description">Stop readouts by waving your hand over the proximity sensor</string>
     <string name="behavior_wave_recommendation">Recommended: Enable this feature</string>
     <string name="behavior_wave_switch_label">Enable wave to stop</string>
     <string name="behavior_wave_benefits">Benefits:\n\n• Silent gesture to stop readouts\n• Works in quiet environments\n• No physical contact required\n• Quick and convenient control</string>
-    
     <!-- Behavior Settings - Additional Labels -->
     <string name="label_calibrate">Calibrate</string>
     <string name="label_test_shake">Test Shake</string>
     <string name="label_test_wave">Test Wave</string>
-    
     <!-- Test Settings Buttons -->
     <string name="test_settings_btn_tts">Test TTS</string>
     <string name="test_settings_btn_shake">Test Shake</string>
     <string name="test_settings_btn_filters">Test Filters</string>
     <string name="test_settings_btn_refresh">Refresh</string>
     <string name="test_settings_btn_export">Export</string>
-    
     <!-- Voice Settings - Additional Strings -->
     <string name="voice_help_translate_button">Help Translate SpeakThat!</string>
     <string name="voice_help_translate_description_button">Tap to open the Weblate translation page</string>
@@ -824,7 +685,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="voice_specific_voice_label">Specific Voice (Advanced)</string>
     <string name="voice_reset_button">Reset Voice Settings</string>
     <string name="voice_test_button">Test Voice</string>
-    
     <!-- Filter Settings Strings -->
     <string name="filter_app_list_title">App List Filtering</string>
     <string name="filter_app_list_description">Control which apps can trigger notifications</string>
@@ -839,7 +699,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="filter_word_blacklist_description">Block or privatize notifications containing specific words</string>
     <string name="filter_word_blacklist_info">Block = skip entirely, Private = announce privately</string>
     <string name="filter_blacklisted_words">📋 Blacklisted Words</string>
-    
     <!-- General Settings Strings -->
     <string name="general_theme_title">Theme</string>
     <string name="general_dark_mode">Dark Mode</string>
@@ -874,7 +733,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="general_reset_settings">Reset all settings to defaults</string>
     <string name="general_verify_settings">Verify All Settings</string>
     <string name="general_verify_settings_description">Run comprehensive test to verify all settings are working</string>
-    
     <!-- Accessibility Permission Strings -->
     <string name="general_accessibility_permission">Accessibility Permission</string>
     <string name="general_accessibility_permission_description">Enable advanced controls like volume button shortcuts (completely optional)</string>
@@ -891,10 +749,9 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="accessibility_permission_cancel">Cancel</string>
     <string name="accessibility_service_name">SpeakThat Accessibility</string>
     <string name="accessibility_service_description">Enables advanced control features for SpeakThat including volume button shortcuts to stop/pause notification reading. This service is completely optional and all processing stays on your device.</string>
-    
     <!-- Press to Stop Strings -->
     <string name="behavior_press_to_stop_title">Press to Stop</string>
-        <string name="behavior_press_to_stop_description">Stop notification reading by pressing both volume buttons simultaneously. Normal volume control still works. Requires accessibility permission.</string>
+    <string name="behavior_press_to_stop_description">Stop notification reading by pressing both volume buttons simultaneously. Normal volume control still works. Requires accessibility permission.</string>
     <string name="behavior_enable_press_stop">Enable Press to Stop</string>
     <string name="behavior_requires_accessibility_permission">Requires Accessibility Permission</string>
     <string name="press_to_stop_dialog_title">Press to Stop</string>
@@ -902,7 +759,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="accessibility_permission_required_title">Accessibility Permission Required</string>
     <string name="accessibility_permission_required_message">Press to Stop requires the accessibility permission to detect volume button presses. Please enable it in General Settings first.</string>
     <string name="open_accessibility_settings">Open Accessibility Settings</string>
-    
     <!-- Exception Configuration -->
     <string name="exception_set_end_time">Set End Time</string>
     <string name="exception_no_days_selected">No days selected</string>
@@ -912,12 +768,10 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="exception_wifi_networks_title">Choose which WiFi networks should trigger this exception:</string>
     <string name="exception_specific_networks">Specific Networks (one per line):</string>
     <string name="exception_select_networks">Select Networks</string>
-    
     <!-- Rules Activity -->
     <string name="rules_no_rules_created">No Rules Created</string>
     <string name="rules_create_first_rule_description">Create your first rule to control when SpeakThat reads notifications based on your device state, time, or connections.</string>
     <string name="rules_create_first_rule_button">Create Your First Rule</string>
-    
     <!-- Rule Builder -->
     <string name="rule_builder_logic_and">AND</string>
     <string name="rule_builder_logic_or">OR</string>
@@ -927,7 +781,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="rule_builder_exceptions_title">Exceptions</string>
     <string name="rule_builder_exceptions_description">Conditions that override the triggers (optional)</string>
     <string name="rule_builder_save_rule">Save Rule</string>
-    
     <!-- Trigger Configuration -->
     <string name="trigger_set_button">Set</string>
     <string name="trigger_no_days_selected">No days selected</string>
@@ -941,12 +794,10 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="trigger_any_wifi_description">Trigger when connected to any network</string>
     <string name="trigger_specific_networks">Specific Networks (one per line):</string>
     <string name="trigger_select_networks">Select Networks</string>
-    
-        <!-- Wave Calibration -->
+    <!-- Wave Calibration -->
     <string name="wave_calibration_recalibrate">Recalibrate</string>
     <string name="wave_calibration_save_settings">This Works! Save Settings</string>
     <string name="wave_calibration_disable">Turn Wave-to-Stop Off</string>
-    
     <!-- Voice Settings - Audio Output -->
     <string name="voice_audio_output_settings">Audio Output Settings</string>
     <string name="voice_audio_output_description">Configure how notifications are played through your device\'s audio system.</string>
@@ -961,20 +812,18 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="voice_content_type">Content Type</string>
     <string name="voice_content_type_description">Tells the system what kind of audio this is. Speech is recommended for notifications.</string>
     <string name="voice_audio_recommendation">Recommended: Media + Speech</string>
-        <string name="voice_speakerphone_option">Use Speakerphone for Voice Call</string>
-        <string name="voice_speakerphone_description">Route Voice Call audio to speaker instead of earpiece for louder volume</string>
-        <string name="voice_preview_actions">Preview &amp; Actions</string>
+    <string name="voice_speakerphone_option">Use Speakerphone for Voice Call</string>
+    <string name="voice_speakerphone_description">Route Voice Call audio to speaker instead of earpiece for louder volume</string>
+    <string name="voice_preview_actions">Preview &amp; Actions</string>
     <string name="voice_preview_button">Preview</string>
     <string name="voice_test_settings">Test Voice Settings</string>
     <string name="voice_reset_defaults">Reset to Defaults</string>
     <string name="voice_preview_tip">Tip: Use the preview button to test how notifications will sound with your settings. All changes are saved automatically as you make them.</string>
-    
     <!-- Filter Settings -->
     <string name="filter_word_count">(0 words)</string>
     <string name="filter_swap_description">Swap words in notifications for censoring or pronunciation fixes</string>
     <string name="filter_swap_count">(0 swaps)</string>
     <string name="filter_swap_tip">Tip: Use lowercase for case-insensitive matching. Leave \'Swap with\' empty to remove words entirely.</string>
-    
     <!-- URL Handling -->
     <string name="url_handling_title">URL Handling</string>
     <string name="url_handling_description">Control how web links are read aloud in notifications</string>
@@ -985,7 +834,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="url_handling_custom_text_title">Custom Replacement Text</string>
     <string name="url_handling_custom_text_description">What to say instead of URLs (leave empty to omit entirely)</string>
     <string name="url_handling_custom_text_hint">e.g., \'web link\', \'link to site\', or leave blank to omit</string>
-    
     <string name="filter_media_description">Automatically filter notifications for apps like YouTube that have both unwanted notifications (media controls) while allowing wanted notifications (like replies to your comments)</string>
     <string name="filter_media_enable">Enable smart media notification filtering</string>
     <string name="filter_media_apps_title">Filtered Media Apps:</string>
@@ -996,7 +844,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="filter_important_keywords_title">Important Keywords:</string>
     <string name="filter_important_keywords_description">Words that indicate important notifications (like \'reply\', \'comment\')</string>
     <string name="filter_media_info">Automatically filters out media controls while preserving important notifications. (Tap for more info)</string>
-    
     <!-- Dialog Strings - Donate -->
     <string name="donate_coffee">☕</string>
     <string name="donate_theatre">🎭</string>
@@ -1008,7 +855,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="donate_bitcoin_description">Donate BTC via the Bitcoin network</string>
     <string name="donate_privacy">🔒 Privacy: All donations are processed by their respective platforms. I don\'t collect or store any payment information.</string>
     <string name="donate_friendly_message">Psst! You can also send a friendly email, a nice message always makes my day! :)</string>
-    
     <!-- Dialog Strings - Filter Suggestion -->
     <string name="filter_suggestion_smart_pattern">Smart pattern (recommended)</string>
     <string name="filter_suggestion_smart_preview">Preview: Updates location...</string>
@@ -1022,7 +868,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="filter_suggestion_block_completely">Block completely</string>
     <string name="filter_suggestion_make_private">Make private</string>
     <string name="filter_suggestion_create_filter">Create Filter</string>
-    
     <!-- Dialog Strings - Support & Feedback -->
     <string name="support_chat">💬</string>
     <string name="icon_refresh">🔄</string>
@@ -1036,35 +881,28 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="support_logs_description">Recommended for bug reports and technical issues. Debug logs help me identify and fix problems faster.\nLogs may contain information about your notification content! Please proofread the logs before sending.</string>
     <string name="support_log_entries">Current log entries: 0</string>
     <string name="support_logs_privacy">🔒 Privacy: Debug logs remain on your device unless you choose to share them. You can review the log content before sending any email.</string>
-    
     <!-- Action Configuration -->
     <string name="action_configure_voice_settings">Configure voice settings to apply when this rule is triggered:</string>
-    
     <!-- Behavior Settings -->
     <string name="behavior_speech_preview_example">Preview: Messages notified you: Mitchi: I heard you\'re using SpeakThat!</string>
-    
     <!-- Rules Activity -->
     <string name="rules_wrench_icon">Rules</string>
-    
     <!-- Exception Configuration -->
     <string name="exception_any_bluetooth_device">Any Bluetooth Device</string>
     <string name="exception_any_wifi_network">Any WiFi Network</string>
-    
     <string name="dialog_support_title">Support &amp; Feedback</string>
     <string name="dialog_support_description">How can we help you today? Choose the option that best describes your needs:</string>
     <string name="dialog_support_feature_request">Feature Request</string>
     <string name="dialog_support_feature_description">Suggest new features or improvements</string>
     <string name="dialog_support_bug_report">Bug Report</string>
     <string name="dialog_support_bug_description">Report crashes, errors, or unexpected behaviour</string>
-    
     <!-- Dialog Strings - Donate -->
     <string name="dialog_donate_title">Support SpeakThat!</string>
-    <string name="dialog_donate_message">Hey! Mitchi here. A lot goes into making SpeakThat! I  handle the UI/UX design, quality assurance and testing, project management, distribution and publishing, app store compliance, and user support just to name a few!\n\nIf SpeakThat has been helpful for you, or if you would have paid for it, please consider supporting its development!\n\nEvery donation keeps this app totally free and open-source for everyone who needs it.\n\nThank you! ❤️</string>
+    <string name="dialog_donate_message">Hey! Mitchi here. A lot goes into making SpeakThat! I handle the UI/UX design, quality assurance and testing, project management, distribution and publishing, app store compliance, and user support just to name a few!\n\nIf SpeakThat has been helpful for you, or if you would have paid for it, please consider supporting its development!\n\nEvery donation keeps this app totally free and open-source for everyone who needs it.\n\nThank you! ❤️</string>
     <string name="dialog_donate_coffee">Buy me a coffee</string>
     <string name="dialog_donate_coffee_description">Quick one-time donation via Ko-fi</string>
     <string name="dialog_donate_patron">Become a Patron</string>
     <string name="dialog_donate_patron_description">Monthly support with exclusive updates</string>
-    
     <!-- Development Settings -->
     <string name="dev_debug_tools_title">Debug Tools</string>
     <string name="dev_debug_tools_description">Tools for debugging and testing the app</string>
@@ -1074,7 +912,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="dev_background_monitor">Background Process Monitor</string>
     <string name="dev_installation_debug">Installation Source Debug</string>
     <string name="dev_test_rules">Test Rule System</string>
-    
     <!-- Notification History -->
     <string name="notification_history_title">Notification History</string>
     <string name="notification_history_description">Recent notifications processed by SpeakThat</string>
@@ -1084,7 +921,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="notification_history_loading">Loading notification history...</string>
     <string name="notification_history_debug_info">Debug Information</string>
     <string name="notification_history_debug_description">This screen shows notifications that SpeakThat! has captured for debugging purposes. It helps you verify that the app is working correctly and see exactly what notifications are being read aloud.</string>
-    
     <!-- Additional Dialog Strings -->
     <string name="dialog_filter_suggestion_title">Filter Similar Notifications</string>
     <string name="dialog_filter_suggestion_original">Original notification:</string>
@@ -1093,7 +929,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="dialog_wifi_config_title">WiFi Configuration</string>
     <string name="dialog_time_schedule_title">Time Schedule Configuration</string>
     <string name="dialog_bluetooth_config_title">Bluetooth Configuration</string>
-    
     <!-- Rules Activity -->
     <string name="rules_title">Rules</string>
     <string name="rules_description">Create powerful rules to control when SpeakThat reads notifications based on your device state, time, and connections.</string>
@@ -1130,12 +965,10 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="master_switch_disabled_toast" translatable="false">SpeakThat disabled - notifications will be silent</string>
     <string name="master_switch_enabled_toast_automation" translatable="false">SpeakThat enabled via automation intent</string>
     <string name="master_switch_disabled_toast_automation" translatable="false">SpeakThat disabled via automation intent</string>
-    
     <!-- Onboarding -->
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_next">Next</string>
     <string name="onboarding_mute_button">Mute</string>
-    
     <!-- Language and Theme Onboarding -->
     <string name="onboarding_language_theme_title">Language and Theme</string>
     <string name="onboarding_language_theme_description">Choose which language SpeakThat should use. You can also enable dark mode if you\'d like.</string>
@@ -1146,39 +979,29 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="onboarding_theme_description">Use dark mode in this app</string>
     <string name="onboarding_theme_light">Light Mode</string>
     <string name="onboarding_theme_dark">Dark Mode</string>
-    
     <!-- Onboarding Page Titles and Descriptions -->
     <string name="onboarding_welcome_title">Welcome to SpeakThat!</string>
     <string name="onboarding_welcome_description">Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.</string>
-    
     <string name="onboarding_permission_title">Notification Access Required</string>
     <string name="onboarding_permission_description">SpeakThat needs permission to read your notifications aloud.\n\n🔒 Everything stays on your device\n📱 No data is sent to us or anyone else\n⚙️ You control what gets read\n💬 We only read what you allow\n💡 Tip: In the list, tap \'SpeakThat\' to enable</string>
-    
     <string name="onboarding_privacy_title">Your Privacy Matters</string>
     <string name="onboarding_privacy_description">🔒 You control exactly what gets read aloud\n\n📱 Shake your phone to stop any announcement instantly\n\n⚙️ Filter apps, words, and notification types\n\n🔐 Everything stays on your device</string>
-    
     <string name="onboarding_filters_title">Let\'s Set Up Basic Filters</string>
     <string name="onboarding_filters_description">SpeakThat features a powerful filtering system that allows YOU to choose what gets read and what doesn\'t.\n\nLet\'s set up some basic privacy filters to get you started.</string>
-    
     <string name="onboarding_apps_title">Block Sensitive Apps</string>
     <string name="onboarding_apps_description">Type the name of an app you want me to NEVER read notifications from.\n\nCommon examples: banking apps, medical apps, dating apps</string>
-    
     <string name="onboarding_words_title">Block Sensitive Words</string>
     <string name="onboarding_words_description">Type words or phrases that you want me to NEVER read notifications containing!\n\nCommon examples: password, PIN, credit card, medical terms</string>
-    
     <string name="onboarding_rules_title">Set Up Smart Rules</string>
     <string name="onboarding_rules_description">Set up smart rules that automatically control when notifications are read based on your situation.\n\nFor example, only read notifications when headphones are connected, or skip notifications when the screen is on.</string>
-    
     <string name="onboarding_complete_title">You\'re All Set!</string>
     <string name="onboarding_complete_description">SpeakThat is ready to help you stay connected while keeping your eyes free!\n\n💡 You can add more filters anytime in the app settings.</string>
-    
     <!-- Trigger Configuration -->
     <string name="trigger_screen_state">Screen State</string>
     <string name="trigger_screen_choose">Choose when this trigger should activate:</string>
     <string name="trigger_invert_condition">Invert Condition</string>
     <string name="trigger_time_schedule">Time Schedule</string>
     <string name="trigger_time_description">Set the time range when this trigger should activate:</string>
-    
     <!-- Rule Builder -->
     <string name="rule_builder_info_icon">Info</string>
     <string name="rule_builder_description">Rules check conditions for each notification. They don\'t remember state changes - they filter notifications in real-time.</string>
@@ -1186,13 +1009,11 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="rule_builder_triggers_label">Triggers</string>
     <string name="rule_builder_triggers_description">Conditions that must be met for this rule to activate</string>
     <string name="rule_builder_logic_label">Logic:</string>
-    
     <!-- Exception Configuration -->
     <string name="exception_screen_state">Screen State</string>
     <string name="exception_screen_choose">Choose when this exception should apply:</string>
     <string name="exception_time_schedule">Time Schedule</string>
     <string name="exception_time_choose">Choose when this exception should apply:</string>
-    
     <!-- Action Configuration -->
     <string name="action_disable_speakthat">Disable SpeakThat</string>
     <string name="action_disable_description">This action will disable SpeakThat completely when the rule is triggered.</string>
@@ -1201,7 +1022,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="action_select_app">Select App</string>
     <string name="action_disable_app_filter">Disable App Filter</string>
     <string name="action_disable_app_description">Select which app to disable filtering for:</string>
-    
     <!-- Wave Calibration -->
     <string name="wave_calibration_title">Wave Detection Setup</string>
     <string name="wave_calibration_description">Calibrate your device to detect hand waves and silence notifications</string>
@@ -1210,9 +1030,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="wave_calibration_how_it_works">💡 How it works:</string>
     <string name="wave_calibration_instructions">• Move your hand closer and farther from the sensor for 8 seconds\n• We\'ll record sensor readings every 50ms\n• Need at least 20 readings for calibration\n• Set threshold to 60% of maximum distance detected</string>
     <string name="wave_calibration_start">Start Calibration</string>
-    
-
-    
     <!-- Bluetooth Condition -->
     <string name="bluetooth_devices_title">Bluetooth Devices</string>
     <string name="bluetooth_devices_description">Select Bluetooth devices that must be connected for notifications to be read.</string>
@@ -1220,15 +1037,12 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="bluetooth_add_device">Add Bluetooth Device</string>
     <string name="bluetooth_how_it_works">How it works</string>
     <string name="bluetooth_instructions">• Notifications will only be read when at least one selected device is connected\n\n• If no devices are selected, all notifications will be read\n\n• The device must be paired and connected (not just discovered)</string>
-    
     <!-- Dialog Configuration Strings -->
     <string name="wifi_config_enter_name">Enter WiFi Network Name:</string>
     <string name="wifi_config_description">Enter the exact name of your WiFi network (SSID). The name must match exactly, including case sensitivity.</string>
     <string name="wifi_config_tip">💡 Tip: You can find your WiFi name in your phone\'s WiFi settings</string>
-    
     <string name="bluetooth_config_select">Select Bluetooth devices:</string>
     <string name="bluetooth_config_description">Choose the devices you want to use for this rule. Only paired devices are shown.</string>
-    
     <string name="time_schedule_set">Set Time Schedule:</string>
     <string name="time_schedule_description">Choose when this rule should be active.</string>
     <string name="time_schedule_start">Start Time:</string>
@@ -1236,7 +1050,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="time_schedule_days">Days of Week:</string>
     <string name="time_schedule_range">Time Range</string>
     <string name="time_schedule_every_day">Every Day</string>
-    
     <!-- Day Names -->
     <string name="day_monday">Monday</string>
     <string name="day_tuesday">Tuesday</string>
@@ -1252,29 +1065,23 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="day_fri">Fri</string>
     <string name="day_sat">Sat</string>
     <string name="day_sun">Sun</string>
-    
     <!-- Item Layout Strings -->
     <string name="item_word_swap_from">From</string>
     <string name="item_word_swap_to">To</string>
     <string name="item_word_swap_arrow"> → </string>
-    
     <string name="item_bluetooth_device_name">Device Name</string>
     <string name="item_bluetooth_mac_address">00:00:00:00:00:00</string>
-    
     <string name="item_rule_name">Rule Name</string>
     <string name="item_rule_summary">Rule summary</string>
     <string name="item_rule_example">When screen is on, Quiet Hours will skip reading notifications</string>
-    
     <string name="item_notification_app_name">App Name</string>
     <string name="item_notification_time">12:34:56</string>
     <string name="item_notification_content">Notification content goes here...</string>
     <string name="item_notification_filter">🚫 Filter Similar</string>
-    
     <string name="item_cooldown_app_name">App Name</string>
     <string name="item_cooldown_package">com.example.app</string>
     <string name="item_cooldown_no_cooldown">No cooldown</string>
     <string name="item_cooldown_delete">🗑️</string>
-    
     <!-- More Item Layout Strings -->
     <string name="item_word_filter_word">Word</string>
     <string name="item_priority_app_icon">⚡</string>
@@ -1295,11 +1102,9 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="item_onboarding_page_subtitle">Page subtitle</string>
     <string name="item_onboarding_page_description">Page description goes here</string>
     <string name="item_onboarding_page_button">Continue</string>
-    
     <!-- Dialog Strings -->
     <string name="dialog_notification_history_title">Notification History</string>
     <string name="dialog_notification_history_description">View recent notifications</string>
-    
     <!-- Builder Items -->
     <string name="item_condition_builder_name">Condition Name</string>
     <string name="item_condition_builder_summary">Condition summary</string>
@@ -1307,14 +1112,12 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="item_app_selector_package">com.example.app</string>
     <string name="item_action_builder_name">Action Name</string>
     <string name="item_action_builder_summary">Action summary</string>
-    
     <!-- Additional Item Strings -->
     <string name="item_app_filter_private">Private</string>
     <string name="item_exception_time_schedule">Time Schedule</string>
     <string name="item_exception_time_range">Between 19:00 and 07:00</string>
     <string name="item_trigger_bluetooth_device">Bluetooth Device</string>
     <string name="item_trigger_bluetooth_connected">Connected to Car Bluetooth</string>
-    
     <!-- More Item Strings -->
     <string name="item_template_arrow">→</string>
     <string name="item_onboarding_rule_template_add">Add</string>
@@ -1324,14 +1127,12 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="item_onboarding_add_word">Add Word</string>
     <string name="item_onboarding_choose_template">Choose a rule template to get started:</string>
     <string name="item_onboarding_notification_settings">Open Notification Settings</string>
-    
     <!-- Final Item Strings -->
     <string name="dialog_notification_history_tap_info">Tap \'🚫 Filter Similar\' to create smart filters for repetitive notifications</string>
     <string name="item_condition_builder_when">When </string>
     <string name="item_condition_builder_remove">✕</string>
     <string name="item_action_builder_remove">✕</string>
     <string name="item_action_builder_then">Then </string>
-    
     <!-- Behavior Settings Additional Strings -->
     <string name="behavior_notification_filtering_title">📱 Notification Filtering</string>
     <string name="behavior_notification_filtering_description">Advanced options for filtering and processing notifications</string>
@@ -1343,7 +1144,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="behavior_accessibility_description">Settings to improve accessibility and ease of use</string>
     <string name="behavior_advanced_features_title">🛠️ Advanced Features</string>
     <string name="behavior_advanced_features_description">Experimental and power user features</string>
-    
     <!-- Wave/Shake Sensor Strings -->
     <string name="behavior_current_shake">Current shake: 0.0</string>
     <string name="behavior_threshold_value">Threshold: 12.0</string>
@@ -1354,13 +1154,11 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="behavior_timeout_5m">5m</string>
     <string name="behavior_timeout_current">Timeout: 30 seconds</string>
     <string name="behavior_disable_timeout">Disable timeout (not recommended)</string>
-
     <string name="behavior_wave_to_stop_title">Wave to Stop</string>
     <string name="behavior_wave_to_stop_description">Stop readouts instantly by waving your hand in front of the device</string>
     <string name="behavior_great_for">Great for: Desk users &amp; accessibility</string>
     <string name="behavior_enable_wave_stop">Enable wave to stop</string>
     <string name="behavior_proximity_threshold">Proximity Threshold</string>
-    
     <!-- Content Cap Feature Strings -->
     <string name="content_cap_mode_label">Content Cap Mode:</string>
     <string name="content_cap_disabled">Disabled - Read full notification</string>
@@ -1374,20 +1172,17 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="content_cap_sentence_count_value">%d sentences</string>
     <string name="content_cap_time_limit_value">%d seconds</string>
     <string name="content_cap_help_message"><![CDATA[Content Cap lets you limit how much of each notification gets read aloud:<br/><br/><b>Word Count</b> - Read only the first N words<br/>• Perfect for payment notifications where important info is at the start<br/>• Works reliably across most languages<br/>• <b>Note:</b> Counts words in both title and body combined<br/>• Example: Payment of $50.00 from John Smith for lunch → Payment of $50.00 from John<br/><br/><b>Sentence Count</b> - Read only the first N complete sentences<br/>• More natural breaks than word limits<br/>• Uses smart sentence detection for international languages<br/>• Handles line breaks in emails properly<br/>• <b>Note:</b> Titles without sentence-ending punctuation don&apos;t count as separate sentences<br/>• Example: Hello! How are you today? → Hello!<br/><br/><b>Time Limit</b> - Stop reading after N seconds<br/>• Universal - works with all languages<br/>• Predictable notification durations<br/>• Great for consistent timing<br/>• Example: Stops after 10 seconds regardless of content length<br/><br/><b>Tips:</b><br/>• Word count works best for most users<br/>• Sentence count is more natural but may be less precise<br/>• Time limit is universal and predictable<br/>• All options work with your existing speech templates<br/><br/>• Combine with Shake to Stop for maximum control]]></string>
-    
     <!-- Major Missing Section Titles -->
     <string name="behavior_custom_app_names_title">📱 Custom App Names</string>
     <string name="dev_logging_configuration_title">📝 Logging Configuration</string>
     <string name="filter_word_swap_title">Word Swap</string>
     <string name="filter_word_swaps_header">📋 Word Swaps</string>
     <string name="voice_language_preset_title">Language Preset</string>
-    
     <!-- Audio Ducking Warnings (I see these in your screenshots) -->
     <string name="behavior_audio_ducking_warning">Audio ducking works differently across devices and Android versions. Some devices may not duck certain apps or audio streams properly.</string>
     <string name="behavior_audio_ducking_tip">If ducking isn\'t working well: Try different audio streams in Voice Settings (\'Voice Call\' or \'Notification\' often work best). Avoid \'Media\' stream as it may duck your TTS along with your music.</string>
     <string name="behavior_audio_ducking_system">The app automatically uses advanced system ducking when available, with smooth manual ducking as backup for maximum compatibility.</string>
     <string name="behavior_audio_ducking_hint">ヒント: 値を下げると通知中のメディア音量が小さくなります</string>
-    
     <!-- Wave Detection Settings -->
     <string name="behavior_wave_threshold_description">Set the percentage of your sensor\'s maximum distance that will trigger wave-to-stop. (Requires calibration)</string>
     <string name="behavior_wave_threshold_30">30%</string>
@@ -1398,7 +1193,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="behavior_wave_current_proximity">Current proximity: 5.0 cm</string>
     <string name="behavior_wave_current_threshold">Threshold: 5.0 cm</string>
     <string name="behavior_wave_recalibrate">Recalibrate Wave Detection</string>
-    
     <!-- Rule Configuration - Exception Settings -->
     <string name="exception_invert_condition">Invert Condition</string>
     <string name="exception_invert_description">Exception when condition is NOT met</string>
@@ -1407,7 +1201,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="exception_end_time_label">End Time:</string>
     <string name="exception_end_time_default">07:00</string>
     <string name="exception_set_start_time">Set Start Time</string>
-    
     <!-- Rule Configuration - Trigger Settings -->
     <string name="trigger_invert_description">Trigger when condition is NOT met</string>
     <string name="trigger_time_schedule_title">🕐 Time Schedule</string>
@@ -1416,25 +1209,19 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="trigger_start_time_default">09:00</string>
     <string name="trigger_end_time_label">End Time:</string>
     <string name="trigger_end_time_default">17:00</string>
-    
-
-
     <!-- Conditional Rules - Action Strings -->
     <string name="rule_action_read_notification">Read the notification</string>
     <string name="rule_action_skip_app">Skip notifications from app: %1$s</string>
     <string name="rule_action_read_app">Read notifications from app: %1$s</string>
-    
     <!-- Conditional Rules - Exception Strings -->
     <string name="rule_exception_wifi_network">WiFi network in range: %1$s</string>
     <string name="rule_exception_not_wifi_network">WiFi network not in range: %1$s</string>
-    
     <!-- Multi-Language Voice Warning -->
     <string name="specific_voice_warning">Multi-language limitation</string>
     <string name="specific_voice_warning_description">SpeakThat only supports one voice at a time. If you receive notifications in multiple languages, some may sound garbled.</string>
     <string name="specific_voice_warning_dialog_title">Multi-Language Voice Limitation</string>
     <string name="specific_voice_warning_dialog_message">SpeakThat currently only supports one voice at a time. This means:\n\n✅ What works well:\n• Notifications in the same language as your selected voice\n• Single-language usage scenarios\n• Most common notification patterns\n\n⚠️ Potential issues:\n• Notifications in different languages may sound garbled\n• Mixed-language content might be difficult to understand\n• Some characters or accents may not be pronounced correctly\n\n💡 Recommendations:\n• Choose a voice that matches your most common notification language\n• Consider using the Language &amp; Region setting instead of Specific Voice\n• Test with your actual notifications to ensure clarity\n\n🔮 Future plans:\n• Multi-language voice support is planned for future updates\n• Automatic language detection and voice switching\n• Better handling of mixed-language content\n\nFor now, the Language &amp; Region setting often works better for multi-language users as it automatically adapts to different content types.</string>
     <string name="specific_voice_warning_dialog_got_it">Got it</string>
-    
     <!-- Hint Strings -->
     <string name="hint_app_package_name">App Package Name</string>
     <string name="hint_search_apps_or_package">Search apps or enter package name</string>
@@ -1446,14 +1233,14 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="hint_search_media_filter">Search apps to add to media filter</string>
     <string name="hint_important_keyword">Important keyword (e.g., reply, comment)</string>
     <string name="hint_rule_name">Enter rule name (e.g., Night Mode, Car Mode)</string>
-    <string name="hint_bluetooth_addresses">00:11:22:33:44:55&#10;AA:BB:CC:DD:EE:FF</string>
-    <string name="hint_wifi_networks">HomeWiFi&#10;OfficeNetwork</string>
+    <string name="hint_bluetooth_addresses">00:11:22:33:44:55
+AA:BB:CC:DD:EE:FF</string>
+    <string name="hint_wifi_networks">HomeWiFi OfficeNetwork</string>
     <string name="hint_wifi_network_name">Enter WiFi network name</string>
     <string name="hint_cooldown_time">Cooldown time</string>
     <string name="hint_search_for_app">Search for an app...</string>
     <string name="hint_enter_word_to_block">Enter a word to block...</string>
     <string name="hint_enter_format_placeholders">Enter format with placeholders</string>
-    
     <!-- Development Settings Hardcoded Strings -->
     <string name="dev_configure_logging">Configure what gets logged for debugging</string>
     <string name="dev_verbose_logging">Verbose Logging</string>
@@ -1477,11 +1264,9 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="dev_clear_crash_logs">🗑️ Clear Crash Logs</string>
     <string name="dev_debug_crash_logs">🔍 Debug Crash Logs</string>
     <string name="dev_starting_log_display">Starting log display...\nLogs will appear here in real-time.\n</string>
-    
     <!-- AboutActivity Hardcoded Strings -->
     <string name="tts_error_occurred">TTS error occurred</string>
     <string name="tts_initialization_failed">TTS initialization failed</string>
-    
     <!-- Enhanced TTS Error Messages for Android 15+ -->
     <string name="tts_init_failed_android15">TTS initialization failed on Android 15. This may be due to system restrictions.</string>
     <string name="tts_init_failed_service_unavailable">TTS service is not available. Please check your TTS settings.</string>
@@ -1491,8 +1276,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="tts_recovery_in_progress">Attempting to recover TTS service...</string>
     <string name="tts_recovery_successful">TTS service recovered successfully!</string>
     <string name="tts_troubleshooting_title">TTS Troubleshooting</string>
-    <string name="tts_troubleshooting_message">If TTS continues to fail:\n\n1. Check Settings > Accessibility > Text-to-Speech Output\n2. Ensure Google TTS is installed and set as default\n3. Restart the app\n4. Restart your device if the problem persists</string>
-    
+    <string name="tts_troubleshooting_message">If TTS continues to fail:\n\n1. Check Settings &gt; Accessibility &gt; Text-to-Speech Output\n2. Ensure Google TTS is installed and set as default\n3. Restart the app\n4. Restart your device if the problem persists</string>
     <!-- GeneralSettingsActivity Hardcoded Strings -->
     <string name="storage_permission_required">Storage permission required for export</string>
     <string name="theme_changed_title">Theme Changed</string>
@@ -1513,7 +1297,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="notification_while_reading_enabled">Notification while reading enabled</string>
     <string name="notification_permission_required">Notification permission required</string>
     <string name="notification_permission_denied">Notification permission denied - feature will not work</string>
-    
     <!-- AppAutoCompleteAdapter Hardcoded Strings -->
     <string name="app_selector_sample_apps_loaded">Sample apps loaded:</string>
     <string name="app_selector_google_maps_found" formatted="false">GOOGLE/MAPS APP FOUND: %s (%s)</string>
@@ -1524,7 +1307,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="app_filter_found_matches" formatted="false">Found %d matches for \'%s\'</string>
     <string name="app_filter_no_filter_showing_all">No filter - showing all %d apps</string>
     <string name="app_filter_publishing_results">Publishing %d results</string>
-    
     <!-- Technical hardcoded strings moved to strings_technical.xml -->
     
     <!-- AppCategory String Resources -->
@@ -1540,19 +1322,17 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="category_entertainment_description">Media and entertainment apps</string>
     <string name="category_games_display_name">Games</string>
     <string name="category_games_description">Mobile games and gaming apps</string>
-    
     <!-- Technical strings (preference keys, package names, etc.) have been moved to strings_technical.xml -->
     <!-- This prevents them from being translated by Weblate -->
     
     <!-- Error Messages -->
     <string name="error_unable_to_open_output_stream">Unable to open output stream for URI</string>
     <string name="error_unable_to_open_input_stream">Unable to open input stream from URI</string>
-    
     <!-- Log Messages -->
     <string name="log_app_search_adapter_filtering" formatted="false">Filtering with \'%s\' - found %d results</string>
     <string name="log_app_search_adapter_publishing">Publishing %d results</string>
     <string name="log_app_selector_sample_apps">Sample apps loaded:</string>
-    <string name="log_app_selector_app_info" formatted="false">  %s (%s)</string>
+    <string name="log_app_selector_app_info" formatted="false">%s (%s)</string>
     <string name="log_app_selector_total">Total: %d apps</string>
     <string name="log_app_filter_filtering">Filtering with: \'%s\'</string>
     <string name="log_app_filter_match" formatted="false">MATCH: %s (%s) - name:%s pkg:%s</string>
@@ -1564,16 +1344,13 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="log_boot_receiver_auto_start">Auto-start enabled, starting notification service</string>
     <string name="log_boot_receiver_service_enabled">Notification service already enabled</string>
     <string name="log_boot_receiver_service_not_enabled">Notification service not enabled - user needs to grant permission</string>
-    
     <!-- Date/Time Format -->
     <string name="date_format_export">yyyy-MM-dd_HH-mm-ss</string>
-    
     <!-- System Values -->
     <string name="system_default">system</string>
     <string name="restart_policy_never">never</string>
     <string name="restart_policy_crash">crash</string>
     <string name="restart_policy_periodic">periodic</string>
-    
     <!-- MainActivity Hardcoded Strings -->
     <string name="main_master_switch_enabled">SpeakThat! will read notifications when active</string>
     <string name="main_master_switch_disabled">SpeakThat! is disabled - notifications will not be read</string>
@@ -1586,14 +1363,12 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="main_notification_title_active">SpeakThat! Active</string>
     <string name="main_notification_content_tap_settings">SpeakThat! is awake and ready to read notifications!</string>
     <string name="main_notification_action_open_app">Open SpeakThat!</string>
-    
     <!-- Review Reminder Strings -->
     <string name="review_reminder_title">Enjoying SpeakThat?</string>
     <string name="review_reminder_message">If you find SpeakThat helpful, please consider leaving a review on the Google Play Store. Your feedback helps other users discover the app and supports future development.</string>
     <string name="review_reminder_rate_now">Rate Now</string>
     <string name="review_reminder_later">Maybe Later</string>
     <string name="review_reminder_never">Don\'t Ask Again</string>
-    
     <!-- Quick Diagnostics -->
     <string name="quick_diagnostics">Quick Diagnostics</string>
     <string name="diagnostics_title">Quick Diagnostics</string>
@@ -1631,7 +1406,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="diagnostics_tts_engine_ok">TTS engine is working</string>
     <string name="diagnostics_tts_engine_err">TTS engine failed</string>
     <string name="diagnostics_tts_engine_dash">Using default TTS engine</string>
-
     <!-- Listener Health -->
     <string name="listener_warning_title">Notification listener needs attention</string>
     <string name="listener_warning_body_disconnected">Android disconnected the notification service %1$s ago. Tap Retry to ask the system to reconnect. If this keeps happening, disable battery optimization in General Settings.</string>
@@ -1650,7 +1424,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="listener_health_last_disconnect">Last disconnect: %1$s</string>
     <string name="listener_health_last_heartbeat">Last heartbeat: %1$s</string>
     <string name="listener_health_last_rebind_success">Last successful rebind: %1$s</string>
-    
     <!-- SelfTest System -->
     <string name="selftest_title">SelfTest</string>
     <string name="selftest_subtitle">Automated diagnostic test to identify issues</string>
@@ -1660,99 +1433,74 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="selftest_share_report">Share Bug Report</string>
     <string name="selftest_try_again">Try Again</string>
     <string name="selftest_monitoring_message">Monitoring for test notification...</string>
-    
     <!-- SelfTest Steps -->
     <string name="selftest_step1_title">NotificationListener Permission</string>
     <string name="selftest_step1_pass">Permission enabled</string>
     <string name="selftest_step1_fail">Permission not enabled - please enable in settings</string>
     <string name="selftest_step1_rebinding">Permission enabled - reconnecting notification listener...</string>
-    
     <string name="selftest_step2_title">POST_NOTIFICATIONS Permission</string>
     <string name="selftest_step2_pass">Permission granted</string>
     <string name="selftest_step2_fail">Permission denied</string>
     <string name="selftest_step2_requesting">Requesting permission...</string>
     <string name="selftest_step2_not_needed">Not required on Android &lt; 13</string>
-    
     <string name="selftest_step3_title">Master Switch</string>
     <string name="selftest_step3_pass">Enabled</string>
     <string name="selftest_step3_fail">Disabled - please enable the master switch</string>
-    
     <string name="selftest_step4_title">TTS Initialization</string>
     <string name="selftest_step4_pass">TTS ready</string>
     <string name="selftest_step4_fail">TTS initialization failed</string>
-    
     <string name="selftest_step5_title">Volume Check</string>
     <string name="selftest_step5_pass">Volume at %d%%</string>
     <string name="selftest_step5_fail">Volume is muted</string>
-    
     <string name="selftest_step6_title">Audio Mode</string>
     <string name="selftest_step6_pass">Audio mode: %s</string>
     <string name="selftest_step6_fail">Device is in %s mode</string>
-    
     <string name="selftest_step7_title">Rules System</string>
     <string name="selftest_step7_pass_disabled">Rules disabled</string>
     <string name="selftest_step7_warning">Rules enabled - may block notifications</string>
     <string name="selftest_step7_external">External automation controls SpeakThat</string>
-    
     <string name="selftest_step8_title">Post Test Notification</string>
     <string name="selftest_step8_posting">Posting test notification...</string>
     <string name="selftest_step8_posted">Test notification posted</string>
     <string name="selftest_step8_fail">Failed to post notification</string>
-    
     <string name="selftest_step9_title">Monitor for Response</string>
     <string name="selftest_step9_monitoring">Monitoring logs...</string>
     <string name="selftest_step9_not_received">Notification not received by service</string>
     <string name="selftest_step9_received_not_read">Notification received but not read</string>
     <string name="selftest_step9_success">Notification read successfully</string>
     <string name="selftest_step9_rebinding">Listener disconnected - retrying automatically...</string>
-    
     <!-- SelfTest Error Codes -->
     <string name="selftest_error_code">Error Code: %s</string>
-    
     <string name="selftest_success_title">Test Passed!</string>
     <string name="selftest_success_description">SpeakThat is working correctly. Notifications are being received and read aloud.</string>
-    
     <string name="selftest_error_0400_title">Notification Not Posted</string>
     <string name="selftest_error_0400_description">The test notification could not be posted. This is likely a permission issue. Please ensure the POST_NOTIFICATIONS permission is granted.</string>
-    
     <string name="selftest_error_0404_title">Service Not Receiving Notifications</string>
     <string name="selftest_error_0404_description">The notification appeared on your screen, but the NotificationListener service did not receive it. Try toggling the notification permission off and on in system settings.</string>
-    
     <string name="selftest_error_0410_title">Master Switch Disabled</string>
     <string name="selftest_error_0410_description">The SpeakThat master switch is disabled. Please enable it in the main screen to allow notifications to be read.</string>
-    
     <string name="selftest_error_0411_title">Audio Mode Blocking</string>
     <string name="selftest_error_0411_description">Your device is in Silent or Vibrate mode, and you have \"Honor Audio Mode\" enabled. Notifications will not be read in this mode. You can disable \"Honor Audio Mode\" in Voice Settings.</string>
-    
     <string name="selftest_error_0412_title">Do Not Disturb Active</string>
     <string name="selftest_error_0412_description">Do Not Disturb mode is active, and you have \"Honor Do Not Disturb\" enabled. Notifications will not be read in this mode. You can disable \"Honor Do Not Disturb\" in Voice Settings.</string>
-    
     <string name="selftest_error_0413_title">Blocked by Rules</string>
     <string name="selftest_error_0413_description">The notification was blocked by your rules system. Check your rules configuration to ensure they\'re not blocking all notifications.</string>
-    
     <string name="selftest_error_0414_title">Blocked by Filtering</string>
     <string name="selftest_error_0414_description">The notification was blocked by content filtering. Check your app filters, word filters, or other filtering settings.</string>
-    
     <string name="selftest_error_0415_title">TTS Not Initialized</string>
     <string name="selftest_error_0415_description">Text-to-Speech is not initialized. Try restarting the app or checking your TTS engine settings.</string>
-    
     <string name="selftest_error_0420_title">Unknown Blocking Reason</string>
     <string name="selftest_error_0420_description">The notification was received but not read for an unknown reason. Please export the debug logs and report this issue.</string>
-    
     <string name="selftest_error_0440_title">Audio Output Issue</string>
     <string name="selftest_error_0440_description">TTS completed successfully, but you didn\'t hear it. Check your volume settings, audio output device (Bluetooth headphones, etc.), or try a different audio stream in Voice Settings.</string>
-    
     <string name="selftest_error_unknown_title">Unknown Error</string>
     <string name="selftest_error_unknown_description">An unexpected error occurred during the test.</string>
-    
     <!-- SelfTest User Questions -->
     <string name="selftest_question_notification_appeared">Did you see the test notification appear on your screen?</string>
     <string name="selftest_question_heard_notification">Did you hear SpeakThat read the notification aloud?</string>
-    
     <!-- SelfTest Log Export -->
     <string name="selftest_logs_exported">Debug logs exported to: %s</string>
     <string name="selftest_logs_export_failed">Failed to export debug logs</string>
-    
     <!-- Statistics -->
     <string name="statistics_notifications_read">Notifications read: %d</string>
     <string name="statistics_summary_read_and_taps">Notifications read: %1$d\nSpeakThat logo taps: %2$d</string>
@@ -1785,15 +1533,12 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="statistics_listener_rebind_requests">Listener rebind requests</string>
     <string name="statistics_listener_rebind_skips">Listener rebind skips</string>
     <string name="statistics_listener_rebind_recoveries">Listener rebind recoveries</string>
-    
     <!-- Development Settings - Statistics Reset -->
     <string name="dev_reset_statistics">Reset Statistics</string>
     <string name="dev_reset_statistics_title">Reset Statistics</string>
     <string name="dev_reset_statistics_message">Are you sure you want to reset all notification statistics? This action cannot be undone.</string>
     <string name="dev_reset_statistics_success">Statistics reset successfully</string>
-
     <!-- Development: audio ducking toggle (default for all flavors) -->
     <string name="dev_enable_audio_ducking">Enable Audio Ducking</string>
     <string name="dev_enable_audio_ducking_description">Re-enable the Lower Audio option in Media Behaviour settings (experimental; may be unstable on some devices).</string>
-    
-</resources> 
+</resources>
