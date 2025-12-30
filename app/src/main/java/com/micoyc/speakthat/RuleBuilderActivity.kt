@@ -671,7 +671,7 @@ class RuleBuilderActivity : AppCompatActivity() {
                     null -> { /* no-op */ }
                 }
             } else {
-                InAppLogger.logFilter("RuleBuilder", "WiFi permissions denied; cannot configure WiFi rules.")
+                InAppLogger.logFilter("WiFi permissions denied; cannot configure WiFi rules.")
             }
             pendingWifiAction = null
             pendingExistingTrigger = null
