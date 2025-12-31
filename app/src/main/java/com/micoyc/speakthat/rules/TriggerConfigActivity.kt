@@ -480,8 +480,7 @@ class TriggerConfigActivity : AppCompatActivity() {
     
     private fun loadCurrentValues() {
         originalTrigger?.let { trigger ->
-            // Load inversion state for all trigger types
-            binding.switchInvertScreenState.isChecked = trigger.inverted
+            // Load inversion state for supported trigger types
             binding.switchInvertTimeSchedule.isChecked = trigger.inverted
             binding.switchInvertBluetooth.isChecked = trigger.inverted
             binding.switchInvertWifi.isChecked = trigger.inverted
@@ -741,7 +740,7 @@ class TriggerConfigActivity : AppCompatActivity() {
     private fun createScreenStateTrigger(): Trigger {
         val screenState = if (binding.spinnerScreenState.selectedItemPosition == 0) "on" else "off"
         val description = if (screenState == "on") "Screen is on" else "Screen is off"
-        val inverted = binding.switchInvertScreenState.isChecked
+        val inverted = false // Screen state inversion removed; spinner handles on/off selection
         
         return if (isEditing && originalTrigger != null) {
             // Preserve the original trigger ID when editing

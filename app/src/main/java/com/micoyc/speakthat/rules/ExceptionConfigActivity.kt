@@ -413,8 +413,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
 
     private fun loadCurrentValues() {
         originalException?.let { exception ->
-            // Load inversion state for all exception types
-            binding.switchInvertScreenState.isChecked = exception.inverted
+            // Load inversion state for supported exception types
             binding.switchInvertTimeSchedule.isChecked = exception.inverted
             binding.switchInvertBluetooth.isChecked = exception.inverted
             binding.switchInvertWifi.isChecked = exception.inverted
@@ -630,7 +629,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
     private fun createScreenStateException(): Exception {
         val screenState = if (binding.spinnerScreenState.selectedItemPosition == 0) "on" else "off"
         val description = if (screenState == "on") "Screen is on" else "Screen is off"
-        val inverted = binding.switchInvertScreenState.isChecked
+        val inverted = false // Screen state inversion removed; spinner handles on/off selection
         
         return if (isEditing && originalException != null) {
             // Preserve the original exception ID when editing
