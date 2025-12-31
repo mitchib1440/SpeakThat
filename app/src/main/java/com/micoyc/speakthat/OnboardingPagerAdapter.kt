@@ -880,10 +880,14 @@ class OnboardingPagerAdapter(
                 val hasSpecificNetworks = (customData["network_ssids"] as? Collection<*>)?.any { (it as? String)?.isNotBlank() == true } == true
                 
                 if (hasWifiTrigger && hasSpecificNetworks) {
-                    // Always show warning for WiFi rules with specific networks to inform about Android limitations
-                    // This ensures users are aware that SSID detection may not work reliably in all situations
-                    showWifiCompatibilityWarningBeforeCreationOnboarding(template, customData)
-                    return
+                    val canResolve = WifiCapabilityChecker.canResolveWifiSSID(binding.root.context)
+                    if (!canResolve) {
+                        // Warn only when SSID resolution isn’t possible on this device/context
+                        showWifiCompatibilityWarningBeforeCreationOnboarding(template, customData)
+                        return
+                    } else {
+                        InAppLogger.logDebug("OnboardingRuleTemplates", "WiFi SSID resolution available; skipping compatibility warning.")
+                    }
                 }
                 
                 // Create a rule from the template with custom data

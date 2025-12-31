@@ -332,10 +332,14 @@ class TemplateSelectionActivity : AppCompatActivity() {
             val hasSpecificNetworks = customData.containsKey("ssid") && (customData["ssid"] as? String)?.isNotEmpty() == true
             
             if (hasWifiTrigger && hasSpecificNetworks) {
-                // Always show warning for WiFi rules with specific networks to inform about Android limitations
-                // This ensures users are aware that SSID detection may not work reliably in all situations
-                showWifiCompatibilityWarningBeforeCreation(template, customData)
-                return
+                val canResolve = WifiCapabilityChecker.canResolveWifiSSID(this)
+                if (!canResolve) {
+                    // Warn only when SSID resolution isn’t possible on this device/context
+                    showWifiCompatibilityWarningBeforeCreation(template, customData)
+                    return
+                } else {
+                    InAppLogger.logDebug("TemplateSelectionActivity", "WiFi SSID resolution available; skipping compatibility warning.")
+                }
             }
             
             val rule = RuleTemplates.createRuleFromTemplate(template, customData)

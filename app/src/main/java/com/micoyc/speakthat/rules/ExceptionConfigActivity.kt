@@ -574,9 +574,14 @@ class ExceptionConfigActivity : AppCompatActivity() {
                 // Check if this is a WiFi exception with specific networks
                 val networkSSIDs = wifiException.data["network_ssids"] as? Set<String>
                 if (networkSSIDs?.isNotEmpty() == true) {
-                    // Always show warning for WiFi rules with specific networks to inform about Android limitations
-                    showWifiCompatibilityWarningBeforeSave(wifiException)
-                    return
+                    val canResolve = WifiCapabilityChecker.canResolveWifiSSID(this)
+                    if (!canResolve) {
+                        // Warn only when SSID resolution isn’t possible on this device/context
+                        showWifiCompatibilityWarningBeforeSave(wifiException)
+                        return
+                    } else {
+                        InAppLogger.logDebug("ExceptionConfigActivity", "WiFi SSID resolution available; skipping compatibility warning.")
+                    }
                 }
                 
                 wifiException
