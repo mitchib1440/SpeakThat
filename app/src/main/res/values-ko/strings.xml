@@ -1130,7 +1130,7 @@ SpeakThat이 기기 상태, 시간, 연결 상태에 따라 언제 알림을 읽
     <string name="exception_screen_choose">이 예외가 언제 적용될지 선택:</string>
     <string name="exception_time_schedule">시간 스케줄</string>
     <string name="exception_time_choose">이 예외가 언제 적용될지 선택:</string>
-    <string name="action_disable_speakthat">SpeakThat 비활성화</string>
+    <string name="action_disable_speakthat">Skip this notification</string>
     <string name="action_enable_app_filter">앱 필터 활성화</string>
     <string name="action_disable_app_filter">앱 필터 비활성화</string>
     <string name="wave_calibration_title">손 흔들어 멈추기 감지 설정</string>
@@ -1433,7 +1433,7 @@ Wi-Fi 네트워크의 정확한 이름(SSID)을 입력하세요. 대소문자 �
     <string name="item_word_filter_word">단어</string>
     <string name="item_priority_app_icon">⚡</string>
     <string name="item_action_control">SpeakThat 제어</string>
-    <string name="item_action_disable">SpeakThat 비활성화</string>
+    <string name="item_action_disable">Skip this notification</string>
     <string name="item_app_filter_name">앱 이름</string>
     <string name="item_app_filter_package">패키지명</string>
     <string name="item_exception_name">예외 이름</string>

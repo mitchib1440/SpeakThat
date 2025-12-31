@@ -1320,7 +1320,7 @@ Les règles vérifient les conditions pour chaque notification. Elles ne mémori
     <string name="exception_screen_choose">Choisissez quand appliquer cette exception :</string>
     <string name="exception_time_schedule">Plage horaire</string>
     <string name="exception_time_choose">Choisissez quand appliquer cette exception :</string>
-    <string name="action_disable_speakthat">Désactiver SpeakThat</string>
+    <string name="action_disable_speakthat">Skip this notification</string>
     <string name="action_disable_description">
 Cette action désactivera SpeakThat quand la règle sera déclenchée.
 </string>
@@ -1408,7 +1408,7 @@ Quand l\'écran est allumé, les heures calme ignoreront la lecture des notifica
     <string name="item_priority_app_icon">⚡</string>
     <string name="item_priority_app_name">Nom d\'application prioritaire</string>
     <string name="item_action_control">Contrôle de SpeakThat</string>
-    <string name="item_action_disable">Désactiver SpeakThat</string>
+    <string name="item_action_disable">Skip this notification</string>
     <string name="item_app_filter_name">Nom de l\'application</string>
     <string name="item_app_filter_package">Nom du paquetage</string>
     <string name="item_exception_name">Nom d\'exception</string>

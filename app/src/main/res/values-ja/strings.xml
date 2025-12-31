@@ -1162,7 +1162,7 @@ Conditions that must be met for this rule to activate
     <string name="exception_time_schedule">Time Schedule</string>
     <string name="exception_time_choose">Choose when this exception should apply:</string>
     <!-- Action Configuration -->
-    <string name="action_disable_speakthat">Disable SpeakThat</string>
+    <string name="action_disable_speakthat">Skip this notification</string>
     <string name="action_disable_description">
 This action will disable SpeakThat completely when the rule is triggered.
 </string>
@@ -1252,7 +1252,7 @@ When screen is on, Quiet Hours will skip reading notifications
     <string name="item_priority_app_icon">⚡</string>
     <string name="item_priority_app_name">Priority App Name</string>
     <string name="item_action_control">SpeakThat Control</string>
-    <string name="item_action_disable">Disable SpeakThat</string>
+    <string name="item_action_disable">Skip this notification</string>
     <string name="item_app_filter_name">App Name</string>
     <string name="item_app_filter_package">Package Name</string>
     <string name="item_exception_name">Exception Name</string>

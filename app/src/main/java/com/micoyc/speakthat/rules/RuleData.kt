@@ -254,10 +254,7 @@ enum class TriggerType(val displayName: String, val description: String) {
  * Types of actions that can be performed when a rule is triggered
  */
 enum class ActionType(val displayName: String, val description: String) {
-    DISABLE_SPEAKTHAT("Skip this notification", "Don't read this notification aloud"),
-    ENABLE_APP_FILTER("Enable Specific App Filter", "Enable filtering for a specific app"),
-    DISABLE_APP_FILTER("Disable Specific App Filter", "Disable filtering for a specific app"),
-    CHANGE_VOICE_SETTINGS("Change Voice Settings", "Modify voice parameters");
+    DISABLE_SPEAKTHAT("Skip this notification", "Don't read this notification aloud");
     
     companion object {
         fun fromDisplayName(name: String): ActionType {
@@ -602,17 +599,6 @@ data class Rule(
         return when (action.type) {
             ActionType.DISABLE_SPEAKTHAT -> {
                 context.getString(com.micoyc.speakthat.R.string.rule_action_skip_notification)
-            }
-            ActionType.ENABLE_APP_FILTER -> {
-                val appPackage = action.data["app_package"] as? String ?: "app"
-                context.getString(com.micoyc.speakthat.R.string.rule_action_enable_app_filter, appPackage)
-            }
-            ActionType.DISABLE_APP_FILTER -> {
-                val appPackage = action.data["app_package"] as? String ?: "app"
-                context.getString(com.micoyc.speakthat.R.string.rule_action_disable_app_filter, appPackage)
-            }
-            ActionType.CHANGE_VOICE_SETTINGS -> {
-                context.getString(com.micoyc.speakthat.R.string.rule_action_change_voice_settings)
             }
         }
     }

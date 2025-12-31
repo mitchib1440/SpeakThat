@@ -1238,7 +1238,7 @@ Kies wanneer deze uitzondering van toepassing moet zijn:
 Kies wanneer deze uitzondering van toepassing moet zijn:
 </string>
     <!-- Action Configuration -->
-    <string name="action_disable_speakthat">SpreakThat! uitschakelen</string>
+    <string name="action_disable_speakthat">Skip this notification</string>
     <string name="action_disable_description">
 Deze actie zal SpeakThat! volledig uitschakelen wanneer de regel wordt geactiveerd.
 </string>
@@ -1332,7 +1332,7 @@ Als het scherm aan is, worden geen lmeldingen meer gelezen tijdens stille uren
     <string name="item_priority_app_icon">⚡</string>
     <string name="item_priority_app_name">Prioriteits-app naam</string>
     <string name="item_action_control">SpreakThat! Controle </string>
-    <string name="item_action_disable">SpreakThat! uitschakelen</string>
+    <string name="item_action_disable">Skip this notification</string>
     <string name="item_app_filter_name">Toepassingsnaam</string>
     <string name="item_app_filter_package">Pakketnaam</string>
     <string name="item_exception_name">Uitzonderingsnaam</string>

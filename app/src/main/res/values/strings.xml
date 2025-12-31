@@ -1194,8 +1194,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="exception_time_choose">Choose when this exception should apply:</string>
     
     <!-- Action Configuration -->
-    <string name="action_disable_speakthat">Disable SpeakThat</string>
-    <string name="action_disable_description">This action will disable SpeakThat completely when the rule is triggered.</string>
+    <string name="action_disable_speakthat">Skip this notification</string>
+    <string name="action_disable_description">Skip this notification when the rule is triggered.</string>
     <string name="action_enable_app_filter">Enable App Filter</string>
     <string name="action_enable_app_description">Select which app to enable filtering for:</string>
     <string name="action_select_app">Select App</string>
@@ -1280,7 +1280,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="item_priority_app_icon">⚡</string>
     <string name="item_priority_app_name">Priority App Name</string>
     <string name="item_action_control">SpeakThat Control</string>
-    <string name="item_action_disable">Disable SpeakThat</string>
+    <string name="item_action_disable">Skip this notification</string>
     <string name="item_app_filter_name">App Name</string>
     <string name="item_app_filter_package">Package Name</string>
     <string name="item_exception_name">Exception Name</string>

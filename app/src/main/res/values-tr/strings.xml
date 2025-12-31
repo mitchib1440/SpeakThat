@@ -1236,7 +1236,7 @@ Bu kuralın etkinleşmesi için karşılanması gereken koşullar
     <string name="exception_time_schedule">Zaman Çizelgesi</string>
     <string name="exception_time_choose">Bu istisnanın ne zaman uygulanacağını seçin:</string>
     <!-- Action Configuration -->
-    <string name="action_disable_speakthat">SpeakThat\'i Devre Dışı Bırak</string>
+    <string name="action_disable_speakthat">Skip this notification</string>
     <string name="action_disable_description">
 Bu eylem, kural tetiklendiğinde SpeakThat\'i tamamen devre dışı bırakacaktır.
 </string>
@@ -1330,7 +1330,7 @@ Ekran açıkken, Sessiz Saatler bildirim okumayı atlayacak
     <string name="item_priority_app_icon">⚡</string>
     <string name="item_priority_app_name">Öncelikli Uygulama Adı</string>
     <string name="item_action_control">SpeakThat Kontrolü</string>
-    <string name="item_action_disable">SpeakThat\'i Devre Dışı Bırak</string>
+    <string name="item_action_disable">Skip this notification</string>
     <string name="item_app_filter_name">Uygulama Adı</string>
     <string name="item_app_filter_package">Paket Adı</string>
     <string name="item_exception_name">İstisna Adı</string>
