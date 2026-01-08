@@ -3,10 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_save"
-        android:title="@string/button_save"
-        android:icon="@drawable/ic_save_24"
-        app:showAsAction="always" />
+        android:id="@+id/action_add_package"
+        android:title="@string/action_add_package_manual"
+        android:icon="@drawable/ic_box_add_24"
+        app:showAsAction="ifRoom"
+        app:iconTint="?attr/colorOnSurface"
+        android:contentDescription="@string/action_add_package_manual" />
 
 </menu>
 

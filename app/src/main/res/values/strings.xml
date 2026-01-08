@@ -477,6 +477,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_title_import_filter_configuration">Import Filter Configuration</string>
     <string name="dialog_title_app_filter_help">📱 App Filter Help</string>
     <string name="dialog_title_smart_media_filter">Smart Media Notification Filter</string>
+    <string name="dialog_title_add_package_manual">Add Package Manually</string>
+    <string name="action_add_package_manual">Add Package</string>
+    <string name="dialog_message_add_package_manual">Enter a package name to add it to the list.</string>
+    <string name="dialog_error_package_empty">Package name cannot be empty</string>
+    <string name="dialog_error_package_exists">This package is already in the list</string>
+    <string name="dialog_success_package_added">Package added successfully</string>
 
     <!-- Critical Hardcoded Strings - Dialog Messages -->
     <string name="dialog_message_theme_changed">The theme has been changed. For the best experience, you may want to restart the app manually.</string>
