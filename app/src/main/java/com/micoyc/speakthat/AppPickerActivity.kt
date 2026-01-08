@@ -159,7 +159,8 @@ class AppPickerActivity : AppCompatActivity() {
                             packageName = appInfo.packageName,
                             icon = icon,
                             selected = isSelected,
-                            isPrivate = isPrivate
+                            isPrivate = isPrivate,
+                            isManual = false
                         )
                     )
                 } catch (e: Exception) {
@@ -208,9 +209,20 @@ class AppPickerActivity : AppCompatActivity() {
                 app.label.lowercase().contains(lower) || app.packageName.lowercase().contains(lower)
             }
         }
-        InAppLogger.log("AppPicker", "Filter query='$query' matches=${filtered.size}")
+
+        // Keep manual entries grouped at the bottom, each group sorted alphabetically
+        val regularApps = filtered
+            .filter { !it.isManual }
+            .sortedBy { it.label.lowercase() }
+        val manualApps = filtered
+            .filter { it.isManual }
+            .sortedBy { it.label.lowercase() }
+
+        val combined = regularApps + manualApps
+
+        InAppLogger.log("AppPicker", "Filter query='$query' matches=${combined.size}")
         filteredApps.clear()
-        filteredApps.addAll(filtered)
+        filteredApps.addAll(combined)
         adapter.updateData(filteredApps)
     }
 
@@ -262,8 +274,8 @@ class AppPickerActivity : AppCompatActivity() {
                     val label = if (appInfo != null) {
                         pm.getApplicationLabel(appInfo).toString()
                     } else {
-                        // Use package name as label if app not found
-                        packageName
+                        // Use placeholder label for manual/uninstalled apps
+                        getString(R.string.app_picker_manual_placeholder)
                     }
                     
                     val icon = if (appInfo != null) {
@@ -281,7 +293,8 @@ class AppPickerActivity : AppCompatActivity() {
                         packageName = packageName,
                         icon = icon,
                         selected = true, // Automatically select when manually added
-                        isPrivate = initialPrivateSet.contains(packageName)
+                        isPrivate = initialPrivateSet.contains(packageName),
+                        isManual = true
                     )
                     
                     allApps.add(newApp)
@@ -337,7 +350,8 @@ class AppPickerActivity : AppCompatActivity() {
         val packageName: String,
         val icon: Drawable?,
         var selected: Boolean,
-        var isPrivate: Boolean
+        var isPrivate: Boolean,
+        val isManual: Boolean
     )
 
     companion object {
