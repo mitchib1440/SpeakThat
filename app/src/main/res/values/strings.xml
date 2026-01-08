@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SpeakThat!</string>
-    <string name="service_name">SpeakThat Notification Reader</string>
+    <string name="service_name">SpeakThat! Notification Reader</string>
 
     <!-- Quick Settings Tile -->
-    <string name="quick_settings_tile_label">SpeakThat</string>
+    <string name="quick_settings_tile_label">SpeakThat!</string>
     <string name="quick_settings_tile_enabled">Enabled</string>
     <string name="quick_settings_tile_disabled">Disabled</string>
     <string name="quick_settings_tile_enabled_toast">SpeakThat enabled via Quick Settings</string>
@@ -827,7 +827,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
 
     <!-- Filter Settings Strings -->
     <string name="filter_app_list_title">App List Filtering</string>
-    <string name="filter_app_list_description">Control which apps can trigger notifications</string>
+    <string name="filter_app_list_description">Control which apps can trigger readouts</string>
     <string name="filter_no_filtering">No app filtering</string>
     <string name="filter_whitelist">Whitelist (only selected apps)</string>
     <string name="filter_blacklist">Blacklist (exclude selected apps)</string>
@@ -1106,7 +1106,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="rules_mode_external_title">External Automation</string>
     <string name="rules_mode_external_description">Enable intents for third-party automation tools such as MacroDroid or Tasker.</string>
     <string name="rules_mode_info_title">Automation Modes</string>
-    <string name="rules_mode_info_description">SpeakThat can only use one automation source at a time.\n\nOff - Keep automation disabled so SpeakThat remains active until you toggle the master switch manually.\n\nConditional Rules - Use the built-in triggers in SpeakThat! for Bluetooth devices, schedules, and filters.\n\nExternal Automation - Enable broadcast intents for automation tools (e.g., MacroDroid, Tasker) to control SpeakThat directly.</string>
+    <string name="rules_mode_info_description">SpeakThat can only use one automation source at a time.\n\nOff - Keep automation disabled so SpeakThat remains active until you toggle the master switch manually.\n\nConditional Rules - Use the built-in automation logic for Bluetooth devices, schedules, and filters. (Recommended)\n\nExternal Automation - Enable broadcast intents for automation tools (e.g., MacroDroid, Tasker) to control SpeakThat directly.</string>
     <string name="rules_mode_info_content_description">Automation mode information</string>
     <string name="rules_mode_off_empty_title">Automation disabled</string>
     <string name="rules_mode_off_empty_description">Select Conditional Rules to create automations, or leave this mode selected to keep SpeakThat always active.</string>
@@ -1172,19 +1172,19 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="onboarding_complete_title">You\'re All Set!</string>
     <string name="onboarding_complete_description">SpeakThat is ready to help you stay connected while keeping your eyes free!\n\n💡 You can add more filters anytime in the app settings.</string>
 
-    <!-- Trigger Configuration -->
+    <!-- Condition Configuration -->
     <string name="trigger_screen_state">Screen State</string>
-    <string name="trigger_screen_choose">Choose when this trigger should activate:</string>
+    <string name="trigger_screen_choose">Choose when this condition is met</string>
     <string name="trigger_invert_condition">Invert Condition</string>
     <string name="trigger_time_schedule">Time Schedule</string>
-    <string name="trigger_time_description">Set the time range when this trigger should activate:</string>
+    <string name="trigger_time_description">Set the time range when this rule should apply:</string>
 
     <!-- Rule Builder -->
     <string name="rule_builder_info_icon">Info</string>
     <string name="rule_builder_description">Rules check conditions for each notification. They don\'t remember state changes - they filter notifications in real-time.</string>
     <string name="rule_builder_name_label">Rule Name</string>
-    <string name="rule_builder_triggers_label">Triggers</string>
-    <string name="rule_builder_triggers_description">Conditions that must be met for this rule to activate</string>
+    <string name="rule_builder_triggers_label">Conditions</string>
+    <string name="rule_builder_triggers_description">Conditions are checked when a notification is received. If the conditions are met, the rule is applied.</string>
     <string name="rule_builder_logic_label">Logic:</string>
 
     <!-- Exception Configuration -->
@@ -1195,7 +1195,7 @@ This permission is completely optional; SpeakThat! will still function without i
 
     <!-- Action Configuration -->
     <string name="action_disable_speakthat">Skip this notification</string>
-    <string name="action_disable_description">Skip this notification when the rule is triggered.</string>
+    <string name="action_disable_description">SpeakThat will not read this notification.</string>
     <string name="action_enable_app_filter">Enable App Filter</string>
     <string name="action_enable_app_description">Select which app to enable filtering for:</string>
     <string name="action_select_app">Select App</string>
@@ -1285,8 +1285,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="item_app_filter_package">Package Name</string>
     <string name="item_exception_name">Exception Name</string>
     <string name="item_exception_summary">Exception summary</string>
-    <string name="item_trigger_name">Trigger Name</string>
-    <string name="item_trigger_summary">Trigger summary</string>
+    <string name="item_trigger_name">Condition Name</string>
+    <string name="item_trigger_summary">Condition summary</string>
     <string name="item_template_name">Template Name</string>
     <string name="item_onboarding_rule_template_name">Rule Template</string>
     <string name="item_custom_app_name_label">App Name</string>
@@ -1389,7 +1389,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="behavior_audio_ducking_hint">ヒント: 値を下げると通知中のメディア音量が小さくなります</string>
 
     <!-- Wave Detection Settings -->
-    <string name="behavior_wave_threshold_description">Set the percentage of your sensor\'s maximum distance that will trigger wave-to-stop. (Requires calibration)</string>
+    <string name="behavior_wave_threshold_description">Set the percentage of your sensor\'s maximum distance that will trigger wave-to-stop. (Only works on certain devices)</string>
     <string name="behavior_wave_threshold_30">30%</string>
     <string name="behavior_wave_threshold_90">90%</string>
     <string name="behavior_wave_test_button">Wave Test</string>
@@ -1408,10 +1408,10 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="exception_end_time_default">07:00</string>
     <string name="exception_set_start_time">Set Start Time</string>
 
-    <!-- Rule Configuration - Trigger Settings -->
-    <string name="trigger_invert_description">Trigger when condition is NOT met</string>
+    <!-- Rule Configuration - Condition Settings -->
+    <string name="trigger_invert_description">Apply the rule when the condition is NOT met</string>
     <string name="trigger_time_schedule_title">🕐 Time Schedule</string>
-    <string name="trigger_time_schedule_description">Set the time range when this trigger should activate:</string>
+    <string name="trigger_time_schedule_description">Set the time range when this rule should be applied:</string>
     <string name="trigger_start_time_label">Start Time:</string>
     <string name="trigger_start_time_default">09:00</string>
     <string name="trigger_end_time_label">End Time:</string>
@@ -1796,4 +1796,4 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="dev_enable_audio_ducking">Enable Audio Ducking</string>
     <string name="dev_enable_audio_ducking_description">Re-enable the Lower Audio option in Media Behaviour settings (experimental; may be unstable on some devices).</string>
 
-</resources> 
+</resources>
