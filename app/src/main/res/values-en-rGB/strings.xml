@@ -427,11 +427,11 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_title_advanced_voice_options">Advanced Voice Options</string>
     <string name="dialog_title_audio_settings_help">Audio Settings Help</string>
     <string name="dialog_title_advanced_voice_information">Advanced Voice Information</string>
-    <string name="dialog_title_format_test_results">🧪 Format Test Results</string>
+    <string name="dialog_title_format_test_results">Format Test Results</string>
     <string name="dialog_title_delay_before_readout">Delay Before Readout</string>
     <string name="dialog_title_custom_app_names">Custom App Names</string>
     <string name="dialog_title_notification_cooldown">Notification Cooldown</string>
-    <string name="dialog_title_speech_formats_guide">🗣️ Speech Formats - Complete Guide</string>
+    <string name="dialog_title_speech_formats_guide">Speech Formats - Complete Guide</string>
     <string name="dialog_title_honour_do_not_disturb">Honour Do Not Disturb</string>
     <string name="dialog_title_honour_phone_calls">Honour Phone Calls</string>
     <string name="dialog_title_notification_deduplication">Notification Deduplication</string>
@@ -483,6 +483,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_error_package_empty">Package name cannot be empty</string>
     <string name="dialog_error_package_exists">This package is already in the list</string>
     <string name="dialog_success_package_added">Package added successfully</string>
+    <string name="app_picker_manual_placeholder">Manual app</string>
 
     <!-- Critical Hardcoded Strings - Dialog Messages -->
     <string name="dialog_message_theme_changed">The theme has been changed. For the best experience, you may want to restart the app manually.</string>
@@ -576,15 +577,15 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_media_pause">Pause - Pause media while speaking</string>
     <string name="behavior_media_lower">Lower Audio - Duck media volume temporarily</string>
     <string name="behavior_media_silence">Silence - Don\'t speak while media is playing</string>
-    <string name="behavior_ducking_volume">🔉 Ducking Volume</string>
+    <string name="behavior_ducking_volume">Ducking Volume</string>
     <string name="behavior_ducking_description">Set how quiet media should become during notifications</string>
     <string name="behavior_ducking_warning">⚠️ On some devices, lowering media volume may also lower the notification voice. If notifications are still hard to hear, try Pause mode or adjust your TTS settings.</string>
     <string name="behavior_ducking_tip">Tip: Lower values make media quieter during notifications</string>
 
     <!-- Audio Ducking Enhanced Warning -->
     <string name="behavior_ducking_enhanced_warning">⚠️ Lower Audio works differently across devices and Android versions. Some devices may not duck certain apps or audio streams properly.</string>
-    <string name="behavior_ducking_device_tip">💡 If ducking isn\'t working well: Try different audio streams in Voice Settings (\'Voice Call\' or \'Notification\' often work best). Avoid \'Media\' stream as it may duck your TTS along with your music.</string>
-    <string name="behavior_ducking_fallback_tip">🔧 The app automatically uses advanced system ducking when available, with smooth manual ducking as backup for maximum compatibility.</string>
+    <string name="behavior_ducking_device_tip">If ducking isn\'t working well: Try different audio streams in Voice Settings (\'Voice Call\' or \'Notification\' often work best). Avoid \'Media\' stream as it may duck your TTS along with your music.</string>
+    <string name="behavior_ducking_fallback_tip">The app automatically uses advanced system ducking when available, with smooth manual ducking as backup for maximum compatibility.</string>
 
     <!-- Audio Ducking Test and Fallback -->
     <string name="behavior_ducking_test_title">Test Lower Audio Compatibility</string>
@@ -608,12 +609,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="audio_ducking_disabled_message">Lower Audio works differently across devices. Some devices may not respond to volume changes properly, which could affect your TTS volume.\n\nYou can still enable this feature, but be aware it may not work consistently on all devices.</string>
     <string name="audio_ducking_disabled_ok">Got it</string>
     <string name="audio_ducking_disabled_enable">Enable Lower Audio</string>
-    <string name="behavior_calls_title">📞 Honour Phone Calls</string>
+    <string name="behavior_calls_title">Honour Phone Calls</string>
     <string name="behavior_calls_description">Prevent notification readouts when you\'re on a phone call</string>
     <string name="behavior_calls_recommendation">Most users should: Enable this feature</string>
     <string name="behavior_calls_checkbox">Honour phone calls</string>
     <string name="behavior_calls_benefits"> Benefits:\n\n• Prevents interruptions during important calls\n• Respects your conversation privacy\n• Works with all types of phone calls\n• Automatic detection of call state</string>
-    <string name="behavior_audio_title">🔇 Honour Audio Mode</string>
+    <string name="behavior_audio_title">Honour Audio Mode</string>
     <string name="behavior_audio_description">Only read notifications when your device is in Sound mode (not Silent or Vibrate)</string>
     <string name="behavior_audio_recommendation">Recommended: Enable this feature</string>
     <string name="behavior_audio_checkbox">Honour audio mode (Sound only)</string>
@@ -654,7 +655,10 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_speech_preset">Format Preset:</string>
     <string name="behavior_speech_custom">Custom Format:</string>
     <string name="behavior_speech_preview">Preview: Messages notified you: Mitchi: I heard you\'re using SpeakThat!</string>
-    <string name="behavior_speech_placeholders">Common placeholders: {app}, {content}, {time}, {title}, {text}, {priority}, {category}</string>
+    <string name="behavior_speech_placeholders">Common placeholders: {app}, {content}, {time}, {title}, {text}, {priority}, {category}, {ticker}</string>
+    <string name="behavior_speech_placeholder_ticker_html">• <b>{ticker}</b> - Legacy ticker text (older apps only; often empty on modern notifications)</string>
+    <string name="behavior_speech_placeholder_ticker_note" formatted="false">- {ticker} stays blank if the notification does not include ticker text (most modern apps leave this empty)</string>
+    <string name="behavior_speech_example_ticker_html">• <b>Legacy ticker:</b> &quot;{app} - {ticker}&quot; → &quot;Music Player - Now playing: Synthwave Essentials&quot;</string>
     <string name="button_start_test">Start Test</string>
     <string name="button_test">Test</string>
     <string name="button_add">Add</string>
@@ -680,7 +684,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="voice_help_translate">Help Translate SpeakThat!</string>
     <string name="voice_help_translate_description">Tap to open the Weblate translation page</string>
     <string name="voice_show_advanced">Show Advanced Voice Options</string>
-    <string name="voice_advanced_label">⚙️ Advanced</string>
+    <string name="voice_advanced_label">Advanced</string>
     <string name="voice_tts_language_advanced">TTS Language (Advanced)</string>
     <string name="voice_tts_language_description">Override the language for app phrases (like \'notified you:\'). Leave as default unless you want different languages for UI and TTS phrases.</string>
     <string name="voice_specific_voice_advanced">Specific Voice (Advanced)</string>
@@ -780,7 +784,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_dismissal_memory_timeout_15min">15 minutes</string>
     <string name="behavior_dismissal_memory_timeout_30min">30 minutes</string>
     <string name="behavior_dismissal_memory_timeout_1hour">1 hour</string>
-    <string name="behavior_dismissal_memory_info_button">ℹ️</string>
+    <string name="behavior_dismissal_memory_info_button">ⓘ️</string>
     <string name="dialog_title_dismissal_memory">Dismissal Memory</string>
     <string name="dialog_dismissal_memory_explanation"><![CDATA[Dismissal Memory prevents notifications from being read again after you dismiss them:<br/><br/><b>What it does:</b><br/>When you dismiss a notification, SpeakThat remembers it for a configurable period. If the same notification content appears again during this time, it will not be read aloud.<br/><br/><b>When it is useful:</b><br/>• <b>Dismissed notifications</b> - Prevents re-reading after you swipe them away<br/>• <b>App updates</b> - Some apps re-post notifications after updates<br/>• <b>System refreshes</b> - Android may re-post notifications during system events<br/>• <b>Network reconnections</b> - Apps may re-post notifications when connectivity is restored<br/><br/><b>How it works:</b><br/>• Tracks dismissed notifications by content hash<br/>• Configurable memory duration (5 min to 1 hour)<br/>• Automatic cleanup to prevent memory bloat<br/>• Battery-friendly with efficient storage<br/>• Detailed logging for troubleshooting<br/><br/><b>Tip:</b> Enable this if you experience notifications being read again after dismissal. Most users will benefit from this feature!]]></string>
 
@@ -803,7 +807,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_shake_test_description">Test your shake intensity and see the trigger threshold</string>
 
     <!-- Behavior Settings - Wave to Stop -->
-    <string name="section_wave_to_stop">👋 Wave to Stop</string>
+    <string name="section_wave_to_stop">Wave to Stop</string>
     <string name="behavior_wave_description">Stop readouts by waving your hand over the proximity sensor</string>
     <string name="behavior_wave_recommendation">Recommended: Enable this feature</string>
     <string name="behavior_wave_switch_label">Enable wave to stop</string>
@@ -838,13 +842,13 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="filter_whitelist">Whitelist (only selected apps)</string>
     <string name="filter_blacklist">Blacklist (exclude selected apps)</string>
     <string name="filter_manage_apps">Manage Apps:</string>
-    <string name="filter_app_list_button">📋 App List</string>
+    <string name="filter_app_list_button">App List</string>
     <string name="filter_app_count">(0 apps)</string>
     <string name="filter_search_description">Search through your installed apps by name or package. Click a suggestion to add it instantly. (Tap for more info)</string>
     <string name="filter_word_blacklist_title">Word Blacklist</string>
     <string name="filter_word_blacklist_description">Block or privatize notifications containing specific words</string>
     <string name="filter_word_blacklist_info">Block = skip entirely, Private = announce privately</string>
-    <string name="filter_blacklisted_words">📋 Blacklisted Words</string>
+    <string name="filter_blacklisted_words">Blacklisted Words</string>
 
     <!-- General Settings Strings -->
     <string name="general_theme_title">Theme</string>
@@ -904,7 +908,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="behavior_enable_press_stop">Enable Press to Stop</string>
     <string name="behavior_requires_accessibility_permission">Requires Accessibility Permission</string>
     <string name="press_to_stop_dialog_title">Press to Stop</string>
-    <string name="press_to_stop_dialog_message">Press both volume buttons simultaneously to stop notification reading.<br/><br/><b>🎯 Perfect for hands-free control:</b><br/>• Works from anywhere in the system<br/>• No need to look at the screen<br/>• Quick and reliable<br/>• Normal volume control still works<br/><br/><b>⚠️ Requires Accessibility Permission:</b><br/>This feature needs the accessibility permission to detect volume button presses. You can enable it in General Settings.<br/>Please note that this will only work when the screen is on.</string>
+    <string name="press_to_stop_dialog_message">Press both volume buttons simultaneously to stop notification reading.<br/><br/><b>Perfect for hands-free control:</b><br/>• Works from anywhere in the system<br/>• No need to look at the screen<br/>• Quick and reliable<br/>• Normal volume control still works<br/><br/><b>⚠️ Requires Accessibility Permission:</b><br/>This feature needs the accessibility permission to detect volume button presses. You can enable it in General Settings.<br/>Please note that this will only work when the screen is on.</string>
     <string name="accessibility_permission_required_title">Accessibility Permission Required</string>
     <string name="accessibility_permission_required_message">Press to Stop requires the accessibility permission to detect volume button presses. Please enable it in General Settings first.</string>
     <string name="open_accessibility_settings">Open Accessibility Settings</string>
@@ -1274,7 +1278,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="item_notification_app_name">App Name</string>
     <string name="item_notification_time">12:34:56</string>
     <string name="item_notification_content">Notification content goes here...</string>
-    <string name="item_notification_filter">🚫 Filter Similar</string>
+    <string name="item_notification_filter">Filter Similar</string>
 
     <string name="item_cooldown_app_name">App Name</string>
     <string name="item_cooldown_package">com.example.app</string>
@@ -1332,22 +1336,22 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="item_onboarding_notification_settings">Open Notification Settings</string>
 
     <!-- Final Item Strings -->
-    <string name="dialog_notification_history_tap_info">Tap \'🚫 Filter Similar\' to create smart filters for repetitive notifications</string>
+    <string name="dialog_notification_history_tap_info">Tap \'Filter Similar\' to create smart filters for repetitive notifications</string>
     <string name="item_condition_builder_when">When </string>
     <string name="item_condition_builder_remove">✕</string>
     <string name="item_action_builder_remove">✕</string>
     <string name="item_action_builder_then">Then </string>
 
     <!-- Behavior Settings Additional Strings -->
-    <string name="behavior_notification_filtering_title">📱 Notification Filtering</string>
+    <string name="behavior_notification_filtering_title">Notification Filtering</string>
     <string name="behavior_notification_filtering_description">Advanced options for filtering and processing notifications</string>
-    <string name="behavior_battery_optimization_title">🔋 Battery Optimization</string>
+    <string name="behavior_battery_optimization_title">Battery Optimization</string>
     <string name="behavior_battery_optimization_description">Manage power consumption and performance settings</string>
-    <string name="behavior_emergency_mode_title">🚨 Emergency Mode</string>
+    <string name="behavior_emergency_mode_title">Emergency Mode</string>
     <string name="behavior_emergency_mode_description">Emergency override settings for critical notifications</string>
-    <string name="behavior_accessibility_title">♿ Accessibility</string>
+    <string name="behavior_accessibility_title">Accessibility</string>
     <string name="behavior_accessibility_description">Settings to improve accessibility and ease of use</string>
-    <string name="behavior_advanced_features_title">🛠️ Advanced Features</string>
+    <string name="behavior_advanced_features_title">Advanced Features</string>
     <string name="behavior_advanced_features_description">Experimental and power user features</string>
 
     <!-- Wave/Shake Sensor Strings -->
@@ -1382,10 +1386,10 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="content_cap_help_message"><![CDATA[Content Cap lets you limit how much of each notification gets read aloud:<br/><br/><b>Word Count</b> - Read only the first N words<br/>• Perfect for payment notifications where important info is at the start<br/>• Works reliably across most languages<br/>• <b>Note:</b> Counts words in both title and body combined<br/>• Example: Payment of $50.00 from John Smith for lunch → Payment of $50.00 from John<br/><br/><b>Sentence Count</b> - Read only the first N complete sentences<br/>• More natural breaks than word limits<br/>• Uses smart sentence detection for international languages<br/>• Handles line breaks in emails properly<br/>• <b>Note:</b> Titles without sentence-ending punctuation don&apos;t count as separate sentences<br/>• Example: Hello! How are you today? → Hello!<br/><br/><b>Time Limit</b> - Stop reading after N seconds<br/>• Universal - works with all languages<br/>• Predictable notification durations<br/>• Great for consistent timing<br/>• Example: Stops after 10 seconds regardless of content length<br/><br/><b>Tips:</b><br/>• Word count works best for most users<br/>• Sentence count is more natural but may be less precise<br/>• Time limit is universal and predictable<br/>• All options work with your existing speech templates<br/><br/>• Combine with Shake to Stop for maximum control]]></string>
 
     <!-- Major Missing Section Titles -->
-    <string name="behavior_custom_app_names_title">📱 Custom App Names</string>
-    <string name="dev_logging_configuration_title">📝 Logging Configuration</string>
+    <string name="behavior_custom_app_names_title">Custom App Names</string>
+    <string name="dev_logging_configuration_title">Logging Configuration</string>
     <string name="filter_word_swap_title">Word Swap</string>
-    <string name="filter_word_swaps_header">📋 Word Swaps</string>
+    <string name="filter_word_swaps_header">Word Swaps</string>
     <string name="voice_language_preset_title">Language Preset</string>
 
     <!-- Audio Ducking Warnings (I see these in your screenshots) -->
@@ -1416,7 +1420,7 @@ This permission is completely optional; SpeakThat! will still function without i
 
     <!-- Rule Configuration - Condition Settings -->
     <string name="trigger_invert_description">Apply the rule when the condition is NOT met</string>
-    <string name="trigger_time_schedule_title">🕐 Time Schedule</string>
+    <string name="trigger_time_schedule_title">Time Schedule</string>
     <string name="trigger_time_schedule_description">Set the time range when this rule should be applied:</string>
     <string name="trigger_start_time_label">Start Time:</string>
     <string name="trigger_start_time_default">09:00</string>
@@ -1477,11 +1481,11 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="dev_disable_media_fallback_description">Disable fallback methods for media behaviour. If a feature doesn\'t work, it won\'t try alternatives. Helps isolate issues. Note: When disabled, duck mode will fall back to pause mode if ducking fails. If both fail, notifications will still be read without audio focus.</string>
     <string name="dev_enable_legacy_ducking">Enable Legacy Duck/Pause Hacks</string>
     <string name="dev_enable_legacy_ducking_description">Force the experimental ducking methods (direct media-session pauses and manual STREAM_MUSIC volume changes). Helps stubborn apps like PowerAmp, but can fight ringer settings or leave apps muted if SpeakThat crashes.</string>
-    <string name="dev_live_log_display">📊 Live Log Display</string>
-    <string name="dev_live_log_description">Real-time view of what\'s happening under the hood</string>
-    <string name="dev_view_crash_logs">📄 View Crash Logs</string>
-    <string name="dev_clear_crash_logs">🗑️ Clear Crash Logs</string>
-    <string name="dev_debug_crash_logs">🔍 Debug Crash Logs</string>
+    <string name="dev_live_log_display">Log Display</string>
+    <string name="dev_live_log_description">See all current event logs</string>
+    <string name="dev_view_crash_logs">View Crash Logs</string>
+    <string name="dev_clear_crash_logs">Clear Crash Logs</string>
+    <string name="dev_debug_crash_logs">Debug Crash Logs</string>
     <string name="dev_starting_log_display">Starting log display...\nLogs will appear here\n</string>
 
     <!-- AboutActivity Hardcoded Strings -->
