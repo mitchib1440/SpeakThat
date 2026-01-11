@@ -769,6 +769,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         boolean isVariedMode = template.equals("VARIED") || binding.spinnerSpeechTemplate.getSelectedItemPosition() == TEMPLATE_PRESETS.length - 2;
         
         // Create different test scenarios with realistic content
+        // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
         String[] testTitles = {
             "Mitchi",
             "SpeakThat! Bug Report",
@@ -806,7 +807,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         };
         
         StringBuilder testResults = new StringBuilder();
-        
+        // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
         if (isVariedMode) {
             testResults.append("Your format: <b>Varied (Random selection)</b><br><br>");
             testResults.append("<b>How it would sound (random format for each):</b><br><br>");
@@ -844,7 +845,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 testResults.append("• <b>").append(testApps[i]).append(":</b> \"").append(result).append("\"<br><br>");
             }
         }
-        
+        // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
         if (isVariedMode) {
             testResults.append("<b>💡 Varied Mode Tips:</b><br>");
             testResults.append("• Each notification gets a random format from 15 options<br>");
@@ -1347,6 +1348,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     
     private String generateSpeechPreview(String template) {
         // Replace placeholders with sample values and make them bold
+        // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
         String preview = template
             .replace("{app}", "**Messages**")
             .replace("{package}", "**com.google.android.apps.messaging**")
@@ -1392,7 +1394,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private void addCustomAppName() {
         String packageName = binding.editAppPackage.getText().toString().trim();
         String customName = binding.editCustomAppName.getText().toString().trim();
-        
+        // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
         if (packageName.isEmpty() || customName.isEmpty()) {
             Toast.makeText(this, "Please enter both package name and custom name", Toast.LENGTH_SHORT).show();
             return;
@@ -1491,6 +1493,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         
         if (appName.isEmpty()) {
             Log.d("BehaviorSettings", "App name is empty");
+            // This is a hardcoded string, I will need help moving this to a localised string as I am completely out of my depth.
             Toast.makeText(this, "Please enter an app name", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -1516,6 +1519,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         AppListData appData = findAppByNameOrPackage(appName);
         if (appData == null) {
             Log.d("BehaviorSettings", "App not found for: '" + appName + "'");
+            // This is a hardcoded string, I will need help moving this to a localised string as I am completely out of my depth.
             Toast.makeText(this, "App not found. Please check the app name or package.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -2078,6 +2082,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             // Register sensor listener with high frequency for testing
             sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
         } else {
+            // This is a hardcoded string, I will need help moving this to a localised string as I am completely out of my depth.
             Toast.makeText(this, "Accelerometer not available on this device", Toast.LENGTH_SHORT).show();
         }
     }
@@ -2090,6 +2095,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             
             // Show max value achieved
             if (maxShakeValue > 0) {
+                // This is a hardcoded string, I will need help moving this to a localised string as I am completely out of my depth.
                 Toast.makeText(this, String.format("Peak shake: %.1f", maxShakeValue), Toast.LENGTH_SHORT).show();
             }
         }
@@ -2110,6 +2116,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             // Register sensor listener with high frequency for testing
             sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_UI);
         } else {
+            // This is a hardcoded string, I will need help moving this to a localised string as I am completely out of my depth.
             Toast.makeText(this, "Proximity sensor not available on this device", Toast.LENGTH_SHORT).show();
         }
     }
@@ -2121,6 +2128,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             sensorManager.unregisterListener(this);
             
             // Show test results
+            // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
             if (minWaveValue == 0) {
                 Toast.makeText(this, "Test complete: Object detected at 0 cm", Toast.LENGTH_SHORT).show();
             } else if (minWaveValue < 5.0f) {
@@ -2305,7 +2313,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private void showNotificationBehaviorDialog() {
         // Track dialog usage for analytics
         trackDialogUsage("notification_behavior_info");
-        
+        // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
         String htmlText = "Choose how SpeakThat handles multiple notifications:<br><br>" +
                 "<b>Interrupt</b> - Stops current notification and reads new one immediately. Best for urgent notifications.<br><br>" +
                 "<b>Queue</b> - Finishes current notification, then reads new ones in order. Nothing gets missed.<br><br>" +
@@ -2337,7 +2345,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private void showMediaBehaviorDialog() {
         // Track dialog usage for analytics
         trackDialogUsage("media_behavior_info");
-        
+        // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
         String htmlText = "Choose how SpeakThat handles notifications while music/videos play:<br><br>" +
                 "<b>Ignore</b> - Speaks over your media. Simple but can be disruptive.<br><br>" +
                 "<b>Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow. <i>Now with improved compatibility and fallback strategies.</i><br><br>" +
@@ -2366,7 +2374,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private void showShakeToStopDialog() {
         // Track dialog usage for analytics
         trackDialogUsage("shake_to_stop_info");
-        
+        // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
         String htmlText = "Shake to Stop lets you instantly silence SpeakThat by shaking your device:<br><br>" +
                 "<b>Why it's helpful:</b><br>" +
                 "• Stop embarrassing notifications in quiet places<br>" +
@@ -2451,7 +2459,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private void showDelayDialog() {
         // Track dialog usage for analytics
         trackDialogUsage("delay_info");
-        
+        // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
         String htmlText = "Delay Before Readout gives you a brief pause before SpeakThat starts speaking:<br><br>" +
                 "<b>Perfect for avoiding notification sound overlap:</b><br>" +
                 "• Your phone plays its notification sound first<br>" +
@@ -2488,7 +2496,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private void showCustomAppNamesDialog() {
         // Track dialog usage for analytics
         trackDialogUsage("custom_app_names_info");
-        
+        // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
         String htmlText = "Custom App Names let you change how app names are spoken in notifications:<br><br>" +
                 "<b>Why customize app names?</b><br>" +
                 "Some apps have confusing or unclear names when spoken aloud. This feature lets you create custom names that are easier to understand:<br><br>" +
@@ -2525,7 +2533,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private void showCooldownDialog() {
         // Track dialog usage for analytics
         trackDialogUsage("cooldown_info");
-        
+        // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
         String htmlText = "Notification Cooldown prevents apps from having multiple notifications read within a specified time period:<br><br>" +
                 "<b>Why use cooldown?</b><br>" +
                 "Some apps send rapid-fire notifications that can be overwhelming. This feature helps manage notification spam by enforcing a \"quiet period\" between notifications from the same app:<br><br>" +
@@ -2556,7 +2564,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private void showSpeechTemplateDialog() {
         // Track dialog usage for analytics
         trackDialogUsage("speech_template_info");
-        
+        // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
         String htmlText = "Customize exactly how your notifications are spoken aloud using placeholders and formats.<br><br>" +
                 
                 "<b>What are Speech Formats?</b><br>" +
@@ -2700,7 +2708,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private void showDoNotDisturbDialog() {
         // Track dialog usage for analytics
         trackDialogUsage("do_not_disturb_info");
-        
+        // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
         String htmlText = "Honour Do Not Disturb mode respects your device's Do Not Disturb settings:<br><br>" +
                 "<b>What it does:</b><br>" +
                 "When your device is in Do Not Disturb mode, SpeakThat will not read any notifications aloud. This ensures complete silence when you need it most.<br><br>" +
@@ -2734,7 +2742,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private void showAudioModeDialog() {
         // Track dialog usage for analytics
         trackDialogUsage("audio_mode_info");
-        
+        // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
         String htmlText = "Honour Audio Mode lets you choose how Silent and Vibrate behave:<br><br>" +
                 "<b>What it does:</b><br>" +
                 "Toggle Silent and Vibrate separately so SpeakThat can stay quiet in Silent but keep talking in Vibrate if you want.<br><br>" +
@@ -2769,7 +2777,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private void showPhoneCallsDialog() {
         // Track dialog usage for analytics
         trackDialogUsage("phone_calls_info");
-        
+        // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
         String htmlText = "Honour Phone Calls prevents notification readouts when you're on a phone call:<br><br>" +
                 "<b>What it does:</b><br>" +
                 "When you're on a phone call, SpeakThat will not read any notifications aloud. This prevents interruptions during important conversations.<br><br>" +
@@ -2804,7 +2812,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private void showDeduplicationDialog() {
         // Track dialog usage for analytics
         trackDialogUsage("deduplication_info");
-        
+        // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
         String htmlText = "Notification Deduplication prevents the same notification from being read multiple times:<br><br>" +
                 "<b>What it does:</b><br>" +
                 "When the same notification is posted multiple times in quick succession, SpeakThat will only read it once. This prevents annoying duplicate readouts.<br><br>" +
@@ -2881,7 +2889,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         
         priorityAppAdapter.notifyDataSetChanged();
         savePriorityApps();
-        
+        // This is a hardcoded string, I will need help moving this to a localised string as I am completely out of my depth.
         Toast.makeText(this, "Added common priority apps. You can remove or add more as needed.", Toast.LENGTH_LONG).show();
     }
 
@@ -3307,7 +3315,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             })
             .show();
     }
-
+    // These are hardcoded strings, I will need help moving these to localised strings as I am completely out of my depth.
     private void showTimeoutInfoDialog(String type) {
         String title = type.equals("shake") ? "Shake Timeout Info" : "Wave Timeout Info";
         String message = "**Timeout Settings**\n\n" +
