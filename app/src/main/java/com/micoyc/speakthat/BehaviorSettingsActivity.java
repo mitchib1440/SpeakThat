@@ -2307,10 +2307,10 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         trackDialogUsage("notification_behavior_info");
         
         String htmlText = "Choose how SpeakThat handles multiple notifications:<br><br>" +
-                "<b>🔄 Interrupt</b> - Stops current notification and reads new one immediately. Best for urgent notifications.<br><br>" +
-                "<b>📋 Queue</b> - Finishes current notification, then reads new ones in order. Nothing gets missed.<br><br>" +
-                "<b>⏭️ Skip</b> - Ignores new notifications while reading. Simple but you might miss important ones.<br><br>" +
-                "<b>🧠 Smart (Recommended)</b> - Priority apps interrupt, others queue. Perfect balance of urgency and completeness.<br><br>" +
+                "<b>Interrupt</b> - Stops current notification and reads new one immediately. Best for urgent notifications.<br><br>" +
+                "<b>Queue</b> - Finishes current notification, then reads new ones in order. Nothing gets missed.<br><br>" +
+                "<b>Skip</b> - Ignores new notifications while reading. Simple but you might miss important ones.<br><br>" +
+                "<b>Smart (Recommended)</b> - Priority apps interrupt, others queue. Perfect balance of urgency and completeness.<br><br>" +
                 "Smart mode lets you choose which apps are urgent enough to interrupt (like calls, messages) while other apps wait their turn.";
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
@@ -2339,10 +2339,10 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         trackDialogUsage("media_behavior_info");
         
         String htmlText = "Choose how SpeakThat handles notifications while music/videos play:<br><br>" +
-                "<b>🎵 Ignore</b> - Speaks over your media. Simple but can be disruptive.<br><br>" +
-                "<b>⏸️ Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow. <i>Now with improved compatibility and fallback strategies.</i><br><br>" +
-                "<b>🔉 Lower Audio</b> - Temporarily reduces media volume so you can hear both.<br><br>" +
-                "<b>🔇 Silence</b> - Doesn't speak while media plays. Quiet but you might miss important notifications.<br><br>" +
+                "<b>Ignore</b> - Speaks over your media. Simple but can be disruptive.<br><br>" +
+                "<b>Pause</b> - Pauses media completely while speaking. Good for podcasts, but interrupts music flow. <i>Now with improved compatibility and fallback strategies.</i><br><br>" +
+                "<b>Lower Audio</b> - Temporarily reduces media volume so you can hear both.<br><br>" +
+                "<b>Silence</b> - Doesn't speak while media plays. Quiet but you might miss important notifications.<br><br>" +
                 "Lower Audio is HIGHLY dependent on your device. Some devices do not support it all the time for third party apps!<br>" +
                 "Pause is recommended for better reliability!";
 
@@ -2368,17 +2368,17 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         trackDialogUsage("shake_to_stop_info");
         
         String htmlText = "Shake to Stop lets you instantly silence SpeakThat by shaking your device:<br><br>" +
-                "<b>✨ Why it's helpful:</b><br>" +
+                "<b>Why it's helpful:</b><br>" +
                 "• Stop embarrassing notifications in quiet places<br>" +
                 "• Quick control when your hands are busy<br>" +
                 "• Works even when screen is off<br>" +
                 "• No fumbling for buttons<br><br>" +
-                "<b>🎯 How it works:</b><br>" +
+                "<b>How it works:</b><br>" +
                 "• Shake your device firmly (like a dice shake)<br>" +
                 "• Current notification stops immediately<br>" +
                 "• Queued notifications are cleared<br>" +
                 "• New notifications work normally<br><br>" +
-                "<b>⚙️ Customization:</b><br>" +
+                "<b>Customization:</b><br>" +
                 "• Adjust sensitivity for your preference<br>" +
                 "• Test your shake strength with the meter<br>" +
                 "• Works great for both gentle and vigorous shakers<br><br>" +
@@ -2453,17 +2453,17 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         trackDialogUsage("delay_info");
         
         String htmlText = "Delay Before Readout gives you a brief pause before SpeakThat starts speaking:<br><br>" +
-                "<b>🎯 Perfect for avoiding notification sound overlap:</b><br>" +
+                "<b>Perfect for avoiding notification sound overlap:</b><br>" +
                 "• Your phone plays its notification sound first<br>" +
                 "• Then SpeakThat waits the specified delay<br>" +
                 "• Finally, SpeakThat speaks the notification<br>" +
                 "• No more audio collision or jarring interruptions<br><br>" +
-                "<b>⏰ Grace period for shake-to-cancel:</b><br>" +
+                "<b>Grace period for shake-to-cancel:</b><br>" +
                 "• Gives you time to shake your phone to cancel<br>" +
                 "• Perfect for notifications in quiet places<br>" +
                 "• Especially useful during meetings or movies<br>" +
                 "• Cancel before the readout even starts<br><br>" +
-                "<b>🔧 Recommended settings:</b><br>" +
+                "<b>Recommended settings:</b><br>" +
                 "• <b>None (0s)</b> - Immediate readout<br>" +
                 "• <b>1 second</b> - Quick pause, minimal delay<br>" +
                 "• <b>2 seconds</b> - Recommended for most users<br>" +
@@ -2490,18 +2490,15 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         trackDialogUsage("custom_app_names_info");
         
         String htmlText = "Custom App Names let you change how app names are spoken in notifications:<br><br>" +
-                "<b>🎯 Why customize app names?</b><br>" +
+                "<b>Why customize app names?</b><br>" +
                 "Some apps have confusing or unclear names when spoken aloud. This feature lets you create custom names that are easier to understand:<br><br>" +
-                "<b>📱 Examples:</b><br>" +
-                "• <b>X app</b> → <b>Twitter</b><br>" +
-                "• <b>Meta</b> → <b>Facebook</b><br>" +
-                "• <b>WA</b> → <b>WhatsApp</b><br>" +
-                "• <b>IG</b> → <b>Instagram</b><br><br>" +
-                "<b>🔧 How to use:</b><br>" +
+                "<b>Example:</b><br>" +
+                "• <b>X</b> → <b>Twitter</b><br>" +
+                "<b>How to use:</b><br>" +
                 "1. Find the app's package name (e.g., com.twitter.android)<br>" +
                 "2. Enter a custom name that's easier to say<br>" +
                 "3. SpeakThat will use your custom name instead<br><br>" +
-                "<b>💡 Finding package names:</b><br>" +
+                "<b>Finding package names:</b><br>" +
                 "• Check the app's Play Store URL<br>" +
                 "• Use a package name finder app<br>" +
                 "• Common format: com.company.appname<br><br>" +
@@ -2530,19 +2527,19 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         trackDialogUsage("cooldown_info");
         
         String htmlText = "Notification Cooldown prevents apps from having multiple notifications read within a specified time period:<br><br>" +
-                "<b>🎯 Why use cooldown?</b><br>" +
+                "<b>Why use cooldown?</b><br>" +
                 "Some apps send rapid-fire notifications that can be overwhelming. This feature helps manage notification spam by enforcing a \"quiet period\" between notifications from the same app:<br><br>" +
-                "<b>📱 Perfect for:</b><br>" +
+                "<b>Perfect for:</b><br>" +
                 "• <b>Chat apps</b> - WhatsApp, Telegram, Discord<br>" +
                 "• <b>Social media</b> - Twitter, Instagram, Facebook<br>" +
                 "• <b>Games</b> - Apps with frequent updates<br>" +
                 "• <b>Any app</b> that sends rapid notifications<br><br>" +
-                "<b>⚙️ How it works:</b><br>" +
+                "<b>How it works:</b><br>" +
                 "1. Add an app to the cooldown list<br>" +
                 "2. Set a cooldown time (e.g., 5 seconds)<br>" +
                 "3. If the same app sends another notification within that time, it gets skipped<br>" +
                 "4. After the cooldown period, new notifications are read normally<br><br>" +
-                "<b>💡 Recommended settings:</b><br>" +
+                "<b>Recommended settings:</b><br>" +
                 "• <b>1-3 seconds</b> - For apps that send 2-3 notifications quickly<br>" +
                 "• <b>5-10 seconds</b> - For chat apps with message bursts<br>" +
                 "• <b>15-30 seconds</b> - For very spammy apps<br>" +
@@ -2562,23 +2559,23 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         
         String htmlText = "Customize exactly how your notifications are spoken aloud using placeholders and formats.<br><br>" +
                 
-                "<b>🎯 What are Speech Formats?</b><br>" +
+                "<b>What are Speech Formats?</b><br>" +
                 "Speech formats let you control the exact format and wording of how notifications are read out. Instead of always hearing \"WhatsApp notified you: New message\", you can make it say whatever you prefer.<br><br>" +
                 
-                "<b>💡 Why customize?</b><br>" +
+                "<b>Why customize?</b><br>" +
                 "• <b>Personal preference</b> - Some like formal, others casual<br>" +
                 "• <b>Clarity</b> - Make app names easier to understand<br>" +
                 "• <b>Brevity</b> - Shorter formats for quick scanning<br>" +
                 "• <b>Context</b> - Add time, priority, or other details<br>" +
                 "• <b>Accessibility</b> - Format that works best for your needs<br><br>" +
                 
-                "<b>📝 Complete Placeholder Reference:</b><br><br>" +
+                "<b>Complete Placeholder Reference:</b><br><br>" +
                 
-                "<b>🔤 App Information:</b><br>" +
+                "<b>App Information:</b><br>" +
                 "• <b>{app}</b> - App display name (automatically uses custom names and respects privacy settings)<br>" +
                 "• <b>{package}</b> - Package name (e.g., \"com.google.android.apps.messaging\")<br><br>" +
                 
-                "<b>📄 Notification Content:</b><br>" +
+                "<b>Notification Content:</b><br>" +
                 "• <b>{content}</b> - Full notification (title + text combined)<br>" +
                 "• <b>{title}</b> - Notification title only (e.g., \"Mitchi\" for Messages)<br>" +
                 "• <b>{text}</b> - Notification text only (e.g., \"I heard you're using SpeakThat!\" for Messages)<br>" +
@@ -2587,28 +2584,28 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "• <b>{info}</b> - Info text (additional details)<br>" +
                 getString(R.string.behavior_speech_placeholder_ticker_html) + "<br><br>" +
                 
-                "<b>⏰ Time & Date:</b><br>" +
+                "<b>Time & Date:</b><br>" +
                 "• <b>{time}</b> - Current time in HH:mm format (e.g., \"14:30\")<br>" +
                 "• <b>{date}</b> - Current date in MMM dd format (e.g., \"Dec 15\")<br>" +
                 "• <b>{timestamp}</b> - Full timestamp (e.g., \"14:30 Dec 15\")<br><br>" +
                 
-                "<b>📊 Notification Metadata:</b><br>" +
+                "<b>Notification Metadata:</b><br>" +
                 "• <b>{priority}</b> - Priority level (Min, Low, Default, High, Max)<br>" +
                 "• <b>{category}</b> - Notification category (Message, Call, etc.)<br>" +
                 "• <b>{channel}</b> - Notification channel ID<br><br>" +
                 
-                "<b>💡 What's the difference?</b><br>" +
+                "<b>What's the difference?</b><br>" +
                 "• <b>{content} vs {title} + {text}</b> - {content} is everything, {title} and {text} are separate parts<br>" +
                 "• <b>{info}</b> - Usually contains \"Tap to view\" or similar action text<br>" +
                 "• <b>{app}</b> - Automatically uses custom names if set, and respects privacy settings<br><br>" +
                 
-                "<b>⚠️ Important Notes:</b><br>" +
+                "<b>⚠ Important Notes:</b><br>" +
                 "• <b>Avoid {title} {bigtext}</b> - This can cause duplication since bigtext often includes the title<br>" +
                 "• <b>Use {content}</b> for the full notification, or {title} + {text} for separate parts<br>" +
                 "• <b>Test your format</b> with the Test button to see exactly how it will sound<br>" +
                 getString(R.string.behavior_speech_placeholder_ticker_note) + "<br><br>" +
                 
-                "<b>💡 Format Examples:</b><br><br>" +
+                "<b>Format Examples:</b><br><br>" +
                 
                 "<b>Quick & Simple:</b><br>" +
                 "• <b>Minimal:</b> \"{app}: {content}\" → \"Messages: Mitchi: I heard you're using SpeakThat!\"<br>" +
@@ -2633,53 +2630,53 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "• <b>Sender Focused:</b> \"{title} via {app}: {text}\" → \"Mitchi via Messages: I heard you're using SpeakThat!\"<br>" +
                 "• <b>Detailed:</b> \"{app} - {title}: {bigtext}\" → \"Gmail - New email from John Smith: Meeting tomorrow at 3 PM - Please bring the quarterly report\"<br><br>" +
                 
-                "<b>⚙️ How to Use:</b><br>" +
+                "<b>How to Use:</b><br>" +
                 "1. <b>Choose a preset</b> - Start with a format that's close to what you want<br>" +
                 "2. <b>Customize</b> - Edit the format to add or remove elements<br>" +
                 "3. <b>Preview</b> - See exactly how it will sound with the preview<br>" +
                 "4. <b>Test</b> - Try it with real notifications<br>" +
                 "5. <b>Refine</b> - Adjust based on what sounds best to you<br><br>" +
                 
-                "<b>🔧 Tips & Tricks:</b><br>" +
+                "<b>Tips & Tricks:</b><br>" +
                 "• <b>Mix and match</b> - Combine placeholders in any order<br>" +
                 "• <b>Keep it concise</b> - Shorter formats are easier to understand quickly<br>" +
                 "• <b>Use spacing</b> - Add spaces around placeholders for better pronunciation<br>" +
                 "• <b>Test thoroughly</b> - Different apps may have different content formats<br>" +
                 "• <b>Consider context</b> - Time-aware formats are great for busy periods<br><br>" +
                 
-                "<b>🎯 Recommended Starting Points:</b><br>" +
+                "<b>Recommended Starting Points:</b><br>" +
                 "• <b>New users:</b> Start with \"Default\" or \"Minimal\"<br>" +
                 "• <b>Power users:</b> Try \"Time Aware\" or custom formats<br>" +
                 "• <b>Accessibility focus:</b> Use \"Formal\" or add priority information<br>" +
                 "• <b>Quick scanning:</b> Use \"App Only\" or \"Content Only\"<br><br>" +
                 
-                "<b>💡 Real App Examples:</b><br><br>" +
+                "<b>Real App Examples:</b><br><br>" +
                 
-                "<b>📱 Messages (Android):</b><br>" +
+                "<b>Messages:</b><br>" +
                 "• <b>Title:</b> \"Mitchi\"<br>" +
                 "• <b>Text:</b> \"I heard you're using SpeakThat! Did it just speak that?\"<br>" +
                 "• <b>BigText:</b> \"I heard you're using SpeakThat! Did it just speak that?\"<br>" +
                 "• <b>Content:</b> \"Mitchi: I heard you're using SpeakThat! Did it just speak that?\"<br><br>" +
                 
-                "<b>📧 Gmail:</b><br>" +
+                "<b>Gmail:</b><br>" +
                 "• <b>Title:</b> \"New email from John Smith\"<br>" +
                 "• <b>Text:</b> \"Meeting tomorrow at 3 PM\"<br>" +
                 "• <b>BigText:</b> \"Meeting tomorrow at 3 PM - Please bring the quarterly report and budget spreadsheet. We'll discuss Q4 projections.\"<br>" +
                 "• <b>Content:</b> \"New email from John Smith: Meeting tomorrow at 3 PM\"<br><br>" +
                 
-                "<b>🌤️ Weather:</b><br>" +
+                "<b>Weather:</b><br>" +
                 "• <b>Title:</b> \"Weather Alert\"<br>" +
                 "• <b>Text:</b> \"Heavy rain expected in 2 hours\"<br>" +
                 "• <b>BigText:</b> \"Heavy rain expected in 2 hours - Bring an umbrella and expect delays. Rainfall amounts of 1-2 inches possible.\"<br>" +
                 "• <b>Content:</b> \"Weather Alert: Heavy rain expected in 2 hours\"<br><br>" +
                 
-                "<b>🐦 Twitter:</b><br>" +
+                "<b>Twitter:</b><br>" +
                 "• <b>Title:</b> \"@mitchib1440\"<br>" +
                 "• <b>Text:</b> \"Just released a new app update! Check it out\"<br>" +
                 "• <b>BigText:</b> \"Just released a new app update! Check it out - The new version includes dark mode and improved performance. #AndroidDev #AppUpdate\"<br>" +
                 "• <b>Content:</b> \"@mitchib1440: Just released a new app update! Check it out\"<br><br>" +
                 
-                "<b>💡 Remember that different apps present their notifications in different ways.</b><br><br>";
+                "<b>Remember that different apps present their notifications in different ways.</b><br><br>";
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.dialog_title_speech_formats_guide)
@@ -2705,19 +2702,19 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         trackDialogUsage("do_not_disturb_info");
         
         String htmlText = "Honour Do Not Disturb mode respects your device's Do Not Disturb settings:<br><br>" +
-                "<b>🎯 What it does:</b><br>" +
+                "<b>What it does:</b><br>" +
                 "When your device is in Do Not Disturb mode, SpeakThat will not read any notifications aloud. This ensures complete silence when you need it most.<br><br>" +
-                "<b>📱 When it's useful:</b><br>" +
+                "<b>When it's useful:</b><br>" +
                 "• <b>Meetings and presentations</b> - No embarrassing interruptions<br>" +
                 "• <b>Sleep time</b> - Respects your bedtime quiet hours<br>" +
                 "• <b>Focus time</b> - When you need to concentrate without distractions<br>" +
                 "• <b>Quiet environments</b> - Libraries, theaters, or public transport<br><br>" +
-                "<b>⚙️ How it works:</b><br>" +
+                "<b>How it works:</b><br>" +
                 "• Automatically detects when Do Not Disturb is enabled<br>" +
                 "• Works with both manual and scheduled DND<br>" +
                 "• Respects all DND modes (Alarms only, Priority only, etc.)<br>" +
                 "• Notifications resume normally when DND is disabled<br><br>" +
-                "<b>💡 Tip:</b> This feature works seamlessly with your device's existing Do Not Disturb settings. No additional configuration needed!";
+                "<b>Tip:</b> This feature works seamlessly with your device's existing Do Not Disturb settings. No additional configuration needed!";
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.dialog_title_honour_do_not_disturb)
@@ -2739,18 +2736,18 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         trackDialogUsage("audio_mode_info");
         
         String htmlText = "Honour Audio Mode lets you choose how Silent and Vibrate behave:<br><br>" +
-                "<b>🎯 What it does:</b><br>" +
+                "<b>What it does:</b><br>" +
                 "Toggle Silent and Vibrate separately so SpeakThat can stay quiet in Silent but keep talking in Vibrate if you want.<br><br>" +
-                "<b>📱 When it's useful:</b><br>" +
+                "<b>When it's useful:</b><br>" +
                 "• <b>Silent mode</b> - Keep SpeakThat fully silent<br>" +
                 "• <b>Vibrate mode</b> - Optional: allow speech even while the phone vibrates<br>" +
                 "• <b>Meetings/focus</b> - Silence everything in Silent without losing Vibrate flexibility<br>" +
                 "• <b>Quiet environments</b> - Fine-tune audio to match where you are<br><br>" +
-                "<b>⚙️ How it works:</b><br>" +
+                "<b>How it works:</b><br>" +
                 "• Detects ringer modes: Silent, Vibrate, Sound<br>" +
                 "• Each switch controls whether that mode blocks TTS<br>" +
                 "• Defaults keep both blocked (same as before) for safety<br><br>" +
-                "<b>💡 Tip:</b> Turn off Vibrate blocking to let SpeakThat keep talking while your phone is on vibrate.";
+                "<b>Tip:</b> Turn off Vibrate blocking to let SpeakThat keep talking while your phone is on vibrate.";
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.dialog_title_honour_audio_mode)
@@ -2774,20 +2771,20 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         trackDialogUsage("phone_calls_info");
         
         String htmlText = "Honour Phone Calls prevents notification readouts when you're on a phone call:<br><br>" +
-                "<b>🎯 What it does:</b><br>" +
+                "<b>What it does:</b><br>" +
                 "When you're on a phone call, SpeakThat will not read any notifications aloud. This prevents interruptions during important conversations.<br><br>" +
-                "<b>📱 When it's useful:</b><br>" +
+                "<b>When it's useful:</b><br>" +
                 "• <b>Important calls</b> - No interruptions during business or personal calls<br>" +
                 "• <b>Conference calls</b> - Maintains professional audio environment<br>" +
                 "• <b>Voice calls</b> - Prevents notification audio from being heard by call participants<br>" +
                 "• <b>Video calls</b> - Keeps your audio clean during video conversations<br><br>" +
-                "<b>⚙️ How it works:</b><br>" +
+                "<b>How it works:</b><br>" +
                 "• Automatically detects when you're on a phone call<br>" +
                 "• Uses both AudioManager and TelephonyManager for reliable detection<br>" +
                 "• Works with all types of calls (cellular, VoIP, video calls)<br>" +
                 "• Notifications resume normally when call ends<br>" +
                 "• Gracefully handles permission restrictions<br><br>" +
-                "<b>💡 Tip:</b> This feature respects your conversation privacy and ensures you never miss important notifications due to call interruptions!";
+                "<b>Tip:</b> This feature respects your conversation privacy and ensures you never miss important notifications due to call interruptions!";
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.dialog_title_honour_phone_calls)
@@ -2809,20 +2806,20 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
         trackDialogUsage("deduplication_info");
         
         String htmlText = "Notification Deduplication prevents the same notification from being read multiple times:<br><br>" +
-                "<b>🎯 What it does:</b><br>" +
+                "<b>What it does:</b><br>" +
                 "When the same notification is posted multiple times in quick succession, SpeakThat will only read it once. This prevents annoying duplicate readouts.<br><br>" +
-                "<b>📱 When it's useful:</b><br>" +
+                "<b>When it's useful:</b><br>" +
                 "• <b>Duplicate notifications</b> - Some apps post the same notification multiple times<br>" +
                 "• <b>System updates</b> - Android may post notifications multiple times during updates<br>" +
                 "• <b>App restarts</b> - Apps may re-post notifications when restarting<br>" +
                 "• <b>Network issues</b> - Connectivity problems can cause duplicate notifications<br><br>" +
-                "<b>⚙️ How it works:</b><br>" +
+                "<b>How it works:</b><br>" +
                 "• Uses a 30-second window to detect duplicates<br>" +
                 "• Compares notification package, ID, and content hash<br>" +
                 "• Automatically cleans up old entries to save memory<br>" +
                 "• Logs when duplicates are detected for debugging<br>" +
                 "• Works with all notification types and apps<br><br>" +
-                "<b>💡 Tip:</b> Enable this if you experience duplicate notifications. Most users won't need this, but it's a quick fix for devices with notification issues!";
+                "<b>Tip:</b> Enable this if you experience duplicate notifications. Most users won't need this, but it's a quick fix for devices with notification issues!";
         
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.dialog_title_notification_deduplication)
@@ -3279,7 +3276,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     // Warning dialog methods
     private void showTimeoutDisableWarning(String type) {
         String title = type.equals("shake") ? "Disable Shake Timeout?" : "Disable Wave Timeout?";
-        String message = "⚠️ **WARNING** ⚠️\n\n" +
+        String message = "⚠ **WARNING** ⚠\n\n" +
                         "Disabling the timeout could be really bad for your battery if TTS fails to terminate!\n\n" +
                         "I **strongly** recommend you set the timer to 5 minutes instead.\n\n" +
                         "Are you sure you want to disable the timeout?";

@@ -561,8 +561,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Layout Section Titles -->
     <string name="section_notification_behavior">Notification Behaviour</string>
     <string name="section_media_behavior">Media Behaviour</string>
-    <string name="recommendation_smart_mode">Most users should use: Smart Mode</string>
-    <string name="recommendation_lower_audio">Most users should use: Pause</string>
+    <string name="recommendation_smart_mode">Smart Mode is recommended</string>
+    <string name="recommendation_lower_audio">Lower Audio is recommended</string>
 
     <!-- Behavior Settings Strings -->
     <string name="behavior_notification_description">Control how notifications are handled when one is already being read</string>
