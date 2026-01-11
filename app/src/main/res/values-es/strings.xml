@@ -1258,7 +1258,7 @@ Condiciones que deben cumplirse para que esta regla se active
     <string name="exception_time_schedule">Horario</string>
     <string name="exception_time_choose">Elige cuándo se aplicará esta excepción:</string>
     <!-- Action Configuration -->
-    <string name="action_disable_speakthat">Desactivar SpeakThat</string>
+    <string name="action_disable_speakthat">Skip this notification</string>
     <string name="action_disable_description">
 Esta acción desactivará SpeakThat completamente cuando la regla se active.
 </string>
@@ -1352,7 +1352,7 @@ Cuando la pantalla está encendida, Horas Silenciosas omitirá la lectura de las
     <string name="item_priority_app_icon">⚡</string>
     <string name="item_priority_app_name">Nombre de la aplicación prioritaria</string>
     <string name="item_action_control">Control de SpeakThat</string>
-    <string name="item_action_disable">Desactivar SpeakThat</string>
+    <string name="item_action_disable">Skip this notification</string>
     <string name="item_app_filter_name">Nombre de app</string>
     <string name="item_app_filter_package">Nombre del paquete</string>
     <string name="item_exception_name">Nombre de excepción</string>

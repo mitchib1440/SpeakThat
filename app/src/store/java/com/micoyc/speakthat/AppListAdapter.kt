@@ -34,7 +34,7 @@ class AppSearchAdapter(
             val iconView = view.findViewById<ImageView>(R.id.appIcon)
             // Store variant: Always use local fallback icons for privacy
             // No network requests are made, even if iconSlug is provided
-            iconView.setImageResource(R.drawable.ic_app_default)
+            iconView.setImageResource(R.drawable.ic_app_unknown)
             
             // Set app name
             val nameView = view.findViewById<TextView>(R.id.appName)

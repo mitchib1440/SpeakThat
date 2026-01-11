@@ -7,14 +7,22 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.micoyc.speakthat.databinding.ActivityAppPickerBinding
 import java.util.concurrent.Executors
@@ -74,6 +82,38 @@ class AppPickerActivity : AppCompatActivity() {
         loadInstalledApps(initialSelection)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_app_picker, menu)
+        
+        // Programmatically set icon tint for theme adaptation (matching FilterSettingsActivity style)
+        val addPackageItem = menu.findItem(R.id.action_add_package)
+        
+        // Get the appropriate color based on theme
+        val iconColor = if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
+            // Light mode - use black
+            ContextCompat.getColor(this, android.R.color.black)
+        } else {
+            // Dark mode - use white
+            ContextCompat.getColor(this, android.R.color.white)
+        }
+        
+        if (addPackageItem != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            addPackageItem.iconTintList = android.content.res.ColorStateList.valueOf(iconColor)
+        }
+        
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_add_package -> {
+                showManualPackageDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun applySavedTheme() {
         val isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, false)
         if (isDarkMode) {
@@ -119,7 +159,8 @@ class AppPickerActivity : AppCompatActivity() {
                             packageName = appInfo.packageName,
                             icon = icon,
                             selected = isSelected,
-                            isPrivate = isPrivate
+                            isPrivate = isPrivate,
+                            isManual = false
                         )
                     )
                 } catch (e: Exception) {
@@ -168,9 +209,20 @@ class AppPickerActivity : AppCompatActivity() {
                 app.label.lowercase().contains(lower) || app.packageName.lowercase().contains(lower)
             }
         }
-        InAppLogger.log("AppPicker", "Filter query='$query' matches=${filtered.size}")
+
+        // Keep manual entries grouped at the bottom, each group sorted alphabetically
+        val regularApps = filtered
+            .filter { !it.isManual }
+            .sortedBy { it.label.lowercase() }
+        val manualApps = filtered
+            .filter { it.isManual }
+            .sortedBy { it.label.lowercase() }
+
+        val combined = regularApps + manualApps
+
+        InAppLogger.log("AppPicker", "Filter query='$query' matches=${combined.size}")
         filteredApps.clear()
-        filteredApps.addAll(filtered)
+        filteredApps.addAll(combined)
         adapter.updateData(filteredApps)
     }
 
@@ -182,6 +234,89 @@ class AppPickerActivity : AppCompatActivity() {
 
     private fun onSelectionChanged() {
         // No-op hook for now (reserved for future summaries)
+    }
+
+    private fun showManualPackageDialog() {
+        val input = EditText(this).apply {
+            hint = getString(R.string.app_package_hint)
+            inputType = InputType.TYPE_CLASS_TEXT
+            setSingleLine()
+        }
+        
+        AlertDialog.Builder(this)
+            .setTitle(R.string.dialog_title_add_package_manual)
+            .setMessage(R.string.dialog_message_add_package_manual)
+            .setView(input)
+            .setPositiveButton(R.string.button_add) { _, _ ->
+                val packageName = input.text.toString().trim()
+                if (packageName.isEmpty()) {
+                    Toast.makeText(this, R.string.dialog_error_package_empty, Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+                
+                // Check if package already exists
+                val exists = allApps.any { it.packageName == packageName }
+                if (exists) {
+                    Toast.makeText(this, R.string.dialog_error_package_exists, Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+                
+                // Add the package manually
+                try {
+                    // Try to get app info if it exists
+                    val pm = packageManager
+                    val appInfo: ApplicationInfo? = try {
+                        pm.getApplicationInfo(packageName, 0)
+                    } catch (e: PackageManager.NameNotFoundException) {
+                        null
+                    }
+                    
+                    val label = if (appInfo != null) {
+                        pm.getApplicationLabel(appInfo).toString()
+                    } else {
+                        // Use placeholder label for manual/uninstalled apps
+                        getString(R.string.app_picker_manual_placeholder)
+                    }
+                    
+                    val icon = if (appInfo != null) {
+                        try {
+                            pm.getApplicationIcon(packageName)
+                        } catch (e: Exception) {
+                            null
+                        }
+                    } else {
+                        null
+                    }
+                    
+                    val newApp = SelectableApp(
+                        label = label,
+                        packageName = packageName,
+                        icon = icon,
+                        selected = true, // Automatically select when manually added
+                        isPrivate = initialPrivateSet.contains(packageName),
+                        isManual = true
+                    )
+                    
+                    allApps.add(newApp)
+                    allApps.sortBy { it.label.lowercase() }
+                    
+                    // Update filtered list if it matches current search
+                    val currentQuery = binding.searchInput.text?.toString().orEmpty().lowercase().trim()
+                    if (currentQuery.isEmpty() || 
+                        label.lowercase().contains(currentQuery) || 
+                        packageName.lowercase().contains(currentQuery)) {
+                        applyFilter(currentQuery)
+                    }
+                    
+                    Toast.makeText(this, R.string.dialog_success_package_added, Toast.LENGTH_SHORT).show()
+                    InAppLogger.log("AppPicker", "Manually added package: $packageName")
+                } catch (e: Exception) {
+                    InAppLogger.logError("AppPicker", "Error adding manual package: ${e.message}")
+                    Toast.makeText(this, "Error adding package: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton(R.string.button_cancel, null)
+            .show()
     }
 
     private fun returnSelection() {
@@ -215,7 +350,8 @@ class AppPickerActivity : AppCompatActivity() {
         val packageName: String,
         val icon: Drawable?,
         var selected: Boolean,
-        var isPrivate: Boolean
+        var isPrivate: Boolean,
+        val isManual: Boolean
     )
 
     companion object {

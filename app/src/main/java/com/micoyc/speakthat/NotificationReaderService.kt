@@ -5362,6 +5362,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val rawBigText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
         val rawSummaryText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString() ?: ""
         val rawInfoText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString() ?: ""
+        val rawTickerText = sbn?.notification?.tickerText?.toString() ?: ""
         
         // Apply Content Cap to all notification text fields to ensure consistent behavior
         // This ensures Content Cap works regardless of which template placeholders are used
@@ -5370,6 +5371,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val bigText = if (contentCapMode != "disabled" && rawBigText.isNotEmpty()) applyContentCap(rawBigText) else rawBigText
         val summaryText = if (contentCapMode != "disabled" && rawSummaryText.isNotEmpty()) applyContentCap(rawSummaryText) else rawSummaryText
         val infoText = if (contentCapMode != "disabled" && rawInfoText.isNotEmpty()) applyContentCap(rawInfoText) else rawInfoText
+        val tickerText = if (contentCapMode != "disabled" && rawTickerText.isNotEmpty()) applyContentCap(rawTickerText) else rawTickerText
         
         // Get current time and date
         val time = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
@@ -5412,6 +5414,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             .replace("{bigtext}", bigText)
             .replace("{summary}", summaryText)
             .replace("{info}", infoText)
+            .replace("{ticker}", tickerText)
             .replace("{time}", time)
             .replace("{date}", date)
             .replace("{timestamp}", timestamp)

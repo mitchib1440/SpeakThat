@@ -480,8 +480,7 @@ class TriggerConfigActivity : AppCompatActivity() {
     
     private fun loadCurrentValues() {
         originalTrigger?.let { trigger ->
-            // Load inversion state for all trigger types
-            binding.switchInvertScreenState.isChecked = trigger.inverted
+            // Load inversion state for supported trigger types
             binding.switchInvertTimeSchedule.isChecked = trigger.inverted
             binding.switchInvertBluetooth.isChecked = trigger.inverted
             binding.switchInvertWifi.isChecked = trigger.inverted
@@ -686,9 +685,14 @@ class TriggerConfigActivity : AppCompatActivity() {
                 // Check if this is a WiFi trigger with specific networks
                 val networkSSIDs = wifiTrigger.data["network_ssids"] as? Set<String>
                 if (networkSSIDs?.isNotEmpty() == true) {
-                    // Always show warning for WiFi rules with specific networks to inform about Android limitations
-                    showWifiCompatibilityWarningBeforeSave(wifiTrigger)
-                    return
+                    val canResolve = WifiCapabilityChecker.canResolveWifiSSID(this)
+                    if (!canResolve) {
+                        // Warn only when SSID resolution isn’t possible on this device/context
+                        showWifiCompatibilityWarningBeforeSave(wifiTrigger)
+                        return
+                    } else {
+                        InAppLogger.logDebug("TriggerConfigActivity", "WiFi SSID resolution available; skipping compatibility warning.")
+                    }
                 }
                 
                 wifiTrigger
@@ -741,7 +745,7 @@ class TriggerConfigActivity : AppCompatActivity() {
     private fun createScreenStateTrigger(): Trigger {
         val screenState = if (binding.spinnerScreenState.selectedItemPosition == 0) "on" else "off"
         val description = if (screenState == "on") "Screen is on" else "Screen is off"
-        val inverted = binding.switchInvertScreenState.isChecked
+        val inverted = false // Screen state inversion removed; spinner handles on/off selection
         
         return if (isEditing && originalTrigger != null) {
             // Preserve the original trigger ID when editing

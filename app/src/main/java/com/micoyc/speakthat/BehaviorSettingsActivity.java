@@ -1356,6 +1356,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
             .replace("{bigtext}", "**Mitchi: I heard you're using SpeakThat! Did it just speak that?**")
             .replace("{summary}", "**1 new message**")
             .replace("{info}", "**Tap to view**")
+            .replace("{ticker}", "**Legacy ticker text**")
             .replace("{time}", "**14:30**")
             .replace("{date}", "**Dec 15**")
             .replace("{timestamp}", "**14:30 Dec 15**")
@@ -1454,16 +1455,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
     private void addDefaultCustomAppNames() {
         // Add some common custom app names
         CustomAppNameAdapter.CustomAppNameEntry[] defaultEntries = {
-            new CustomAppNameAdapter.CustomAppNameEntry("com.twitter.android", "Twitter"),
-            new CustomAppNameAdapter.CustomAppNameEntry("com.facebook.katana", "Facebook"),
-            new CustomAppNameAdapter.CustomAppNameEntry("com.whatsapp", "WhatsApp"),
-            new CustomAppNameAdapter.CustomAppNameEntry("com.instagram.android", "Instagram"),
-            new CustomAppNameAdapter.CustomAppNameEntry("com.telegram.messenger", "Telegram"),
-            new CustomAppNameAdapter.CustomAppNameEntry("org.telegram.messenger", "Telegram"),
-            new CustomAppNameAdapter.CustomAppNameEntry("com.snapchat.android", "Snapchat"),
-            new CustomAppNameAdapter.CustomAppNameEntry("com.discord", "Discord"),
-            new CustomAppNameAdapter.CustomAppNameEntry("com.slack", "Slack"),
-            new CustomAppNameAdapter.CustomAppNameEntry("com.microsoft.teams", "Teams")
+            new CustomAppNameAdapter.CustomAppNameEntry("com.twitter.android", "Twitter")
         };
         
         for (CustomAppNameAdapter.CustomAppNameEntry entry : defaultEntries) {
@@ -2592,7 +2584,8 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "• <b>{text}</b> - Notification text only (e.g., \"I heard you're using SpeakThat!\" for Messages)<br>" +
                 "• <b>{bigtext}</b> - Big text content (expanded notification)<br>" +
                 "• <b>{summary}</b> - Summary text (e.g., \"1 new message\")<br>" +
-                "• <b>{info}</b> - Info text (additional details)<br><br>" +
+                "• <b>{info}</b> - Info text (additional details)<br>" +
+                getString(R.string.behavior_speech_placeholder_ticker_html) + "<br><br>" +
                 
                 "<b>⏰ Time & Date:</b><br>" +
                 "• <b>{time}</b> - Current time in HH:mm format (e.g., \"14:30\")<br>" +
@@ -2612,7 +2605,8 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "<b>⚠️ Important Notes:</b><br>" +
                 "• <b>Avoid {title} {bigtext}</b> - This can cause duplication since bigtext often includes the title<br>" +
                 "• <b>Use {content}</b> for the full notification, or {title} + {text} for separate parts<br>" +
-                "• <b>Test your format</b> with the Test button to see exactly how it will sound<br><br>" +
+                "• <b>Test your format</b> with the Test button to see exactly how it will sound<br>" +
+                getString(R.string.behavior_speech_placeholder_ticker_note) + "<br><br>" +
                 
                 "<b>💡 Format Examples:</b><br><br>" +
                 
@@ -2629,6 +2623,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity implements Senso
                 "<b>Time-Aware:</b><br>" +
                 "• <b>Time Stamp:</b> \"{app} at {time}: {content}\" → \"Twitter at 14:30: @mitchib1440: Just released a new app update!\"<br>" +
                 "• <b>Full Context:</b> \"{app} ({time}): {content}\" → \"Messages (14:30): Mitchi: I heard you're using SpeakThat!\"<br><br>" +
+                
+                "<b>Legacy / Compatibility:</b><br>" +
+                getString(R.string.behavior_speech_example_ticker_html) + "<br><br>" +
                 
                 "<b>Advanced Examples:</b><br>" +
                 "• <b>Priority Aware:</b> \"{app} ({priority}): {content}\" → \"Gmail (High): New email from John Smith: Meeting tomorrow at 3 PM\"<br>" +

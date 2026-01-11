@@ -162,14 +162,8 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.CHANGE_VOICE_SETTINGS,
-                    data = mapOf(
-                        "voice_settings" to mapOf(
-                            "speech_rate" to 0.8f,
-                            "pitch" to 1.2f
-                        )
-                    ),
-                    description = "Change voice settings"
+                    type = ActionType.DISABLE_SPEAKTHAT,
+                    description = "Skip this notification"
                 )
             ),
             triggerLogic = LogicGate.AND
@@ -196,9 +190,8 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.ENABLE_APP_FILTER,
-                    data = mapOf("app_package" to "com.whatsapp"),
-                    description = "Enable WhatsApp filter"
+                    type = ActionType.DISABLE_SPEAKTHAT,
+                    description = "Skip this notification"
                 )
             ),
             triggerLogic = LogicGate.AND
@@ -270,14 +263,8 @@ class RuleSystemTest(private val context: Context) {
                     description = "Disable SpeakThat during night mode"
                 ),
                 Action(
-                    type = ActionType.CHANGE_VOICE_SETTINGS,
-                    data = mapOf(
-                        "voice_settings" to mapOf(
-                            "speech_rate" to 0.7f,
-                            "pitch" to 0.9f
-                        )
-                    ),
-                    description = "Reduce voice volume at night"
+                    type = ActionType.DISABLE_SPEAKTHAT,
+                    description = "Skip this notification"
                 )
             ),
             exceptions = listOf(
@@ -402,14 +389,8 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.CHANGE_VOICE_SETTINGS,
-                    data = mapOf(
-                        "voice_settings" to mapOf(
-                            "speech_rate" to 1.5f,
-                            "pitch" to 0.5f
-                        )
-                    ),
-                    description = "Change voice settings"
+                    type = ActionType.DISABLE_SPEAKTHAT,
+                    description = "Skip this notification"
                 )
             )
         )

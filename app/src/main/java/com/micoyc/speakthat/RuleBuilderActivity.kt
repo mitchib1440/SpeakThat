@@ -421,21 +421,13 @@ class RuleBuilderActivity : AppCompatActivity() {
     }
     
     private fun showActionMenu() {
-        val actionOptions = arrayOf(
-            "Disable SpeakThat",
-            "Enable Specific App Filter",
-            "Disable Specific App Filter",
-            "Change Voice Settings"
-        )
+        val actionOptions = arrayOf("Skip this notification")
         
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.dialog_title_add_action))
             .setItems(actionOptions) { _, which ->
                 when (which) {
                     0 -> addDisableSpeakThatAction()
-                    1 -> addEnableAppFilterAction()
-                    2 -> addDisableAppFilterAction()
-                    3 -> addChangeVoiceSettingsAction()
                 }
             }
             .show()
@@ -501,18 +493,6 @@ class RuleBuilderActivity : AppCompatActivity() {
     // Action methods
     private fun addDisableSpeakThatAction() {
         launchActionConfig(ActionType.DISABLE_SPEAKTHAT, null)
-    }
-    
-    private fun addEnableAppFilterAction() {
-        launchActionConfig(ActionType.ENABLE_APP_FILTER, null)
-    }
-    
-    private fun addDisableAppFilterAction() {
-        launchActionConfig(ActionType.DISABLE_APP_FILTER, null)
-    }
-    
-    private fun addChangeVoiceSettingsAction() {
-        launchActionConfig(ActionType.CHANGE_VOICE_SETTINGS, null)
     }
     
     private fun launchActionConfig(actionType: ActionType, existingAction: Action?) {

@@ -1290,7 +1290,7 @@ Bedingungen, die erfüllt sein müssen, um diese Regel zu aktivieren
     <string name="exception_time_schedule">Zeitplan</string>
     <string name="exception_time_choose">Wählen Sie, wann diese Ausnahme gelten soll:</string>
     <!-- Action Configuration -->
-    <string name="action_disable_speakthat">SpeakThat deaktivieren</string>
+    <string name="action_disable_speakthat">Skip this notification</string>
     <string name="action_disable_description">
 Diese Aktion wird SpeakThat komplett deaktivieren, wenn die Regel ausgelöst wird.
 </string>
@@ -1382,7 +1382,7 @@ Wenn der Bildschirm eingeschaltet ist, werden Ruhezeiten die Benachrichtigungen 
     <string name="item_priority_app_icon">⚡</string>
     <string name="item_priority_app_name">Name priorisierte App</string>
     <string name="item_action_control">SpeakThat Steuerung</string>
-    <string name="item_action_disable">SpeakThat deaktivieren</string>
+    <string name="item_action_disable">Skip this notification</string>
     <string name="item_app_filter_name">App Name</string>
     <string name="item_app_filter_package">Paketname</string>
     <string name="item_exception_name">Ausnahme Name</string>
