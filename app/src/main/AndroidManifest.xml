@@ -129,7 +129,7 @@
             android:parentActivityName=".SettingsActivity" />
 
         <activity
-            android:name=".BehaviorSettingsActivity"
+            android:name=".settings.BehaviorSettingsActivity"
             android:exported="false"
             android:parentActivityName=".SettingsActivity" />
 
@@ -205,7 +205,7 @@
         <activity
             android:name=".WaveCalibrationActivity"
             android:exported="false"
-            android:parentActivityName=".BehaviorSettingsActivity" />
+            android:parentActivityName=".settings.BehaviorSettingsActivity" />
 
         <activity
             android:name=".AboutActivity"

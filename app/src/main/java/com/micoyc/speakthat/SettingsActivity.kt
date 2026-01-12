@@ -15,6 +15,7 @@ import com.google.android.material.materialswitch.MaterialSwitch
 import com.micoyc.speakthat.databinding.ActivitySettingsBinding
 import com.micoyc.speakthat.donations.DonationManager
 import com.micoyc.speakthat.donations.DonationManagerProvider
+import com.micoyc.speakthat.settings.BehaviorSettingsActivity
 
 class SettingsActivity : AppCompatActivity() {
     

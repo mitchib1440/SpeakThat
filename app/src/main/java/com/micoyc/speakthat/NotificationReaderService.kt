@@ -24,7 +24,7 @@ import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.micoyc.speakthat.VoiceSettingsActivity
-import com.micoyc.speakthat.BehaviorSettingsActivity
+import com.micoyc.speakthat.settings.BehaviorSettingsActivity
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.HashMap
