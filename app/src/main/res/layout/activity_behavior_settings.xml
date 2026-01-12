@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="?attr/colorBackground"
     android:fitsSystemWindows="true"
-    tools:context=".BehaviorSettingsActivity">
+    tools:context=".settings.BehaviorSettingsActivity">
 
 
 

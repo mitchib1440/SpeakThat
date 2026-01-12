@@ -1,6 +1,7 @@
 package com.micoyc.speakthat
 
 import android.content.Intent
+import com.micoyc.speakthat.settings.BehaviorSettingsActivity
 
 object SettingsDatabase {
     
@@ -522,4 +523,3 @@ object SettingsDatabase {
         )
     }
 }
-
