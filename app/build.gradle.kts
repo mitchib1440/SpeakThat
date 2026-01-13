@@ -11,7 +11,7 @@ android {
         applicationId = "com.micoyc.speakthat"
         minSdk = 24
         targetSdk = 36
-        versionCode = 41
+        versionCode = 42
         versionName = "1.6.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
