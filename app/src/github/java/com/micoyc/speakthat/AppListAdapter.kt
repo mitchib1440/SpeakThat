@@ -46,7 +46,7 @@ class AppSearchAdapter(
                     error(R.drawable.ic_app_unknown)
                 }
             } else {
-                iconView.setImageResource(R.drawable.ic_app_default)
+                iconView.setImageResource(R.drawable.ic_app_unknown)
             }
             
             // Set app name
