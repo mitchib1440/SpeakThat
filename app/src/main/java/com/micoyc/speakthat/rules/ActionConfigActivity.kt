@@ -53,7 +53,7 @@ class ActionConfigActivity : AppCompatActivity() {
 
     private fun setupUI() {
         if (actionType == ActionType.DISABLE_SPEAKTHAT) {
-            setupDisableSpeakThatUI()
+            setupSkipNotificationUI()
         } else {
             InAppLogger.logError("ActionConfigActivity", "Unknown action type: $actionType")
             finish()
@@ -63,7 +63,7 @@ class ActionConfigActivity : AppCompatActivity() {
         binding.btnCancel.setOnClickListener { finish() }
     }
 
-    private fun setupDisableSpeakThatUI() {
+    private fun setupSkipNotificationUI() {
         binding.cardDisableSpeakThat.visibility = View.VISIBLE
         binding.textDisableSpeakThatInfo.text = getString(com.micoyc.speakthat.R.string.action_disable_description)
     }
@@ -73,7 +73,7 @@ class ActionConfigActivity : AppCompatActivity() {
     }
 
     private fun saveAction() {
-        val action = createDisableSpeakThatAction()
+        val action = createSkipNotificationAction()
 
         val resultIntent = android.content.Intent().apply {
             putExtra(RESULT_ACTION, action.toJson())
@@ -85,7 +85,7 @@ class ActionConfigActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun createDisableSpeakThatAction(): Action {
+    private fun createSkipNotificationAction(): Action {
         return if (isEditing && originalAction != null) {
             originalAction!!.copy(
                 description = "Skip this notification"
@@ -104,4 +104,3 @@ class ActionConfigActivity : AppCompatActivity() {
         return true
     }
 }
-
