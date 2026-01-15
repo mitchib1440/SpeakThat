@@ -31,6 +31,7 @@ import java.util.HashMap
 import java.util.HashSet
 import java.util.Locale
 import kotlin.collections.ArrayList
+import com.micoyc.speakthat.rules.NotificationContext
 import com.micoyc.speakthat.rules.RuleManager
 import com.micoyc.speakthat.AccessibilityUtils
 
@@ -2268,7 +2269,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         // 6. Apply conditional rules (Smart Rules system)
-        val conditionalResult = applyConditionalFiltering(packageName, appName, wordFilterResult.processedText)
+        val conditionalResult = applyConditionalFiltering(packageName, appName, wordFilterResult.processedText, sbn)
         if (!conditionalResult.shouldSpeak) {
             return conditionalResult
         }
@@ -2689,19 +2690,42 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
-    private fun applyConditionalFiltering(_packageName: String, _appName: String, text: String): FilterResult {
+    private fun applyConditionalFiltering(
+        _packageName: String,
+        _appName: String,
+        text: String,
+        sbn: StatusBarNotification?
+    ): FilterResult {
         try {
             // Check if rules system is enabled
             if (!::ruleManager.isInitialized) {
                 InAppLogger.logFilter("Rule manager not initialized, allowing notification")
                 return FilterResult(true, text, "Rule manager not initialized")
             }
-            
+
+            val notificationContext = NotificationContext(
+                packageName = _packageName,
+                appLabel = _appName,
+                notificationTitle = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_TITLE)?.toString(),
+                notificationText = text,
+                notificationCategory = sbn?.notification?.category,
+                notificationChannelId = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    sbn?.notification?.channelId
+                } else {
+                    null
+                },
+                metadata = mapOf(
+                    "notificationId" to (sbn?.id ?: -1),
+                    "tag" to sbn?.tag,
+                    "postTime" to (sbn?.postTime ?: 0L)
+                )
+            )
+
             // Check if any rules should block this notification
-            val shouldBlock = ruleManager.shouldBlockNotification()
+            val shouldBlock = ruleManager.shouldBlockNotification(notificationContext)
             
             if (shouldBlock) {
-                val blockingRules = ruleManager.getBlockingRuleNames()
+                val blockingRules = ruleManager.getBlockingRuleNames(notificationContext)
                 val reason = "Rules blocking: ${blockingRules.joinToString(", ")}"
                 InAppLogger.logFilter("Rules blocked notification: $reason")
                 // Track filter reason

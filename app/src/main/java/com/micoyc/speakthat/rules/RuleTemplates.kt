@@ -143,6 +143,7 @@ object RuleTemplates {
                     emptyMap<String, Any>()
                 }
             }
+            TriggerType.NOTIFICATION_PACKAGE -> data
             else -> data
         }
     }

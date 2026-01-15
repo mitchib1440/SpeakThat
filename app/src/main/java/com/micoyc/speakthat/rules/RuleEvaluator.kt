@@ -77,7 +77,7 @@ class RuleEvaluator(private val context: Context) {
     /**
      * Evaluates a single rule and returns whether it should execute
      */
-    fun evaluateRule(rule: Rule): RuleEvaluationResult {
+    fun evaluateRule(rule: Rule, notificationContext: NotificationContext): RuleEvaluationResult {
         InAppLogger.logDebug(TAG, "Evaluating rule: ${rule.getLogMessage()}")
         
         // Skip disabled rules
@@ -96,7 +96,7 @@ class RuleEvaluator(private val context: Context) {
         }
         
         // Evaluate triggers
-        val triggerResults = evaluateTriggers(rule.triggers, rule.triggerLogic)
+        val triggerResults = evaluateTriggers(rule.triggers, rule.triggerLogic, notificationContext)
         val triggersMet = triggerResults.all { it.success }
         
         InAppLogger.logDebug(TAG, "Trigger evaluation for '${rule.name}': ${if (triggersMet) "MET" else "NOT_MET"}")
@@ -116,7 +116,7 @@ class RuleEvaluator(private val context: Context) {
         }
         
         // Evaluate exceptions
-        val exceptionResults = evaluateExceptions(rule.exceptions, rule.exceptionLogic)
+        val exceptionResults = evaluateExceptions(rule.exceptions, rule.exceptionLogic, notificationContext)
         val exceptionsMet = exceptionResults.any { it.success } // Any exception met = rule blocked
         
         InAppLogger.logDebug(TAG, "Exception evaluation for '${rule.name}': ${if (exceptionsMet) "MET (BLOCKED)" else "NOT_MET (ALLOWED)"}")
@@ -148,7 +148,11 @@ class RuleEvaluator(private val context: Context) {
     /**
      * Evaluates a list of triggers using the specified logic gate
      */
-    private fun evaluateTriggers(triggers: List<Trigger>, logicGate: LogicGate): List<EvaluationResult> {
+    private fun evaluateTriggers(
+        triggers: List<Trigger>,
+        logicGate: LogicGate,
+        notificationContext: NotificationContext
+    ): List<EvaluationResult> {
         if (triggers.isEmpty()) {
             InAppLogger.logDebug(TAG, "No triggers to evaluate")
             return emptyList()
@@ -157,7 +161,7 @@ class RuleEvaluator(private val context: Context) {
         InAppLogger.logDebug(TAG, "Evaluating ${triggers.size} triggers with logic gate: ${logicGate.displayName}")
         
         val results = triggers.map { trigger ->
-            evaluateTrigger(trigger)
+            evaluateTrigger(trigger, notificationContext)
         }
         
         // Apply logic gate
@@ -197,7 +201,7 @@ class RuleEvaluator(private val context: Context) {
     /**
      * Evaluates a single trigger
      */
-    private fun evaluateTrigger(trigger: Trigger): EvaluationResult {
+    private fun evaluateTrigger(trigger: Trigger, notificationContext: NotificationContext): EvaluationResult {
         if (!trigger.enabled) {
             return EvaluationResult(
                 success = false,
@@ -213,6 +217,7 @@ class RuleEvaluator(private val context: Context) {
             TriggerType.SCREEN_STATE -> evaluateScreenStateTrigger(trigger)
             TriggerType.TIME_SCHEDULE -> evaluateTimeScheduleTrigger(trigger)
             TriggerType.WIFI_NETWORK -> evaluateWifiNetworkTrigger(trigger)
+            TriggerType.NOTIFICATION_PACKAGE -> evaluateNotificationPackageTrigger(trigger, notificationContext)
         }
         
         // Apply inversion if needed
@@ -231,7 +236,11 @@ class RuleEvaluator(private val context: Context) {
     /**
      * Evaluates a list of exceptions using the specified logic gate
      */
-    private fun evaluateExceptions(exceptions: List<Exception>, logicGate: LogicGate): List<EvaluationResult> {
+    private fun evaluateExceptions(
+        exceptions: List<Exception>,
+        logicGate: LogicGate,
+        notificationContext: NotificationContext
+    ): List<EvaluationResult> {
         if (exceptions.isEmpty()) {
             InAppLogger.logDebug(TAG, "No exceptions to evaluate")
             return emptyList()
@@ -240,7 +249,7 @@ class RuleEvaluator(private val context: Context) {
         InAppLogger.logDebug(TAG, "Evaluating ${exceptions.size} exceptions with logic gate: ${logicGate.displayName}")
         
         val results = exceptions.map { exception ->
-            evaluateException(exception)
+            evaluateException(exception, notificationContext)
         }
         
         // Apply logic gate
@@ -280,7 +289,7 @@ class RuleEvaluator(private val context: Context) {
     /**
      * Evaluates a single exception
      */
-    private fun evaluateException(exception: Exception): EvaluationResult {
+    private fun evaluateException(exception: Exception, notificationContext: NotificationContext): EvaluationResult {
         if (!exception.enabled) {
             return EvaluationResult(
                 success = false,
@@ -296,6 +305,7 @@ class RuleEvaluator(private val context: Context) {
             ExceptionType.SCREEN_STATE -> evaluateScreenStateException(exception)
             ExceptionType.TIME_SCHEDULE -> evaluateTimeScheduleException(exception)
             ExceptionType.WIFI_NETWORK -> evaluateWifiNetworkException(exception)
+            ExceptionType.NOTIFICATION_PACKAGE -> evaluateNotificationPackageException(exception, notificationContext)
         }
         
         // Apply inversion if needed
@@ -310,10 +320,69 @@ class RuleEvaluator(private val context: Context) {
             baseResult
         }
     }
+
+    private fun evaluateNotificationPackageException(
+        exception: Exception,
+        notificationContext: NotificationContext
+    ): EvaluationResult {
+        InAppLogger.logDebug(TAG, "Evaluating notification package exception: ${exception.getLogMessage()}")
+        return evaluateNotificationPackageCondition(exception.data, notificationContext, "Exception")
+    }
+
+    private fun evaluateNotificationPackageCondition(
+        data: Map<String, Any>,
+        notificationContext: NotificationContext,
+        label: String
+    ): EvaluationResult {
+        val packageName = notificationContext.packageName
+        val configuredPackage = data["package_name"] as? String
+        val configuredPackages = when (val packageData = data["package_names"]) {
+            is Set<*> -> packageData.mapNotNull { it as? String }.toSet()
+            is List<*> -> packageData.mapNotNull { it as? String }.toSet()
+            is String -> setOf(packageData)
+            else -> emptySet()
+        }
+
+        val expectedPackages = if (!configuredPackage.isNullOrBlank()) {
+            configuredPackages + configuredPackage
+        } else {
+            configuredPackages
+        }
+
+        if (expectedPackages.isEmpty()) {
+            return EvaluationResult(
+                success = false,
+                message = "$label notification package not configured"
+            )
+        }
+
+        val matches = expectedPackages.any { it == packageName }
+
+        return EvaluationResult(
+            success = matches,
+            message = if (matches) {
+                "$label notification package matched $packageName"
+            } else {
+                "$label notification package mismatch (expected: $expectedPackages, actual: $packageName)"
+            },
+            data = mapOf(
+                "expected_packages" to expectedPackages,
+                "actual_package" to packageName
+            )
+        )
+    }
     
     // ============================================================================
     // TRIGGER EVALUATORS
     // ============================================================================
+
+    private fun evaluateNotificationPackageTrigger(
+        trigger: Trigger,
+        notificationContext: NotificationContext
+    ): EvaluationResult {
+        InAppLogger.logDebug(TAG, "Evaluating notification package trigger: ${trigger.getLogMessage()}")
+        return evaluateNotificationPackageCondition(trigger.data, notificationContext, "Trigger")
+    }
     
     private fun evaluateBluetoothTrigger(trigger: Trigger): EvaluationResult {
         try {

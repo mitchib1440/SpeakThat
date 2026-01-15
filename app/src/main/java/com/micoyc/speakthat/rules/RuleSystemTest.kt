@@ -17,6 +17,14 @@ class RuleSystemTest(private val context: Context) {
     }
     
     private val ruleManager = RuleManager(context)
+    private val notificationContext = NotificationContext(
+        packageName = "com.micoyc.speakthat.test",
+        appLabel = "SpeakThat Test",
+        notificationTitle = "Test Notification",
+        notificationText = "Test notification text",
+        notificationCategory = "test",
+        notificationChannelId = "test_channel"
+    )
     
     /**
      * Run comprehensive tests of the rule system
@@ -295,7 +303,7 @@ class RuleSystemTest(private val context: Context) {
         InAppLogger.logDebug(TAG, "Total rules: ${allRules.size}")
         
         // Evaluate all rules
-        val evaluationResults = ruleManager.evaluateAllRules()
+        val evaluationResults = ruleManager.evaluateAllRules(notificationContext)
         InAppLogger.logDebug(TAG, "Evaluation results: ${evaluationResults.size}")
         
         evaluationResults.forEach { result ->
@@ -303,8 +311,8 @@ class RuleSystemTest(private val context: Context) {
         }
         
         // Check if any rules should block notifications
-        val shouldBlock = ruleManager.shouldBlockNotification()
-        val blockingRules = ruleManager.getBlockingRuleNames()
+        val shouldBlock = ruleManager.shouldBlockNotification(notificationContext)
+        val blockingRules = ruleManager.getBlockingRuleNames(notificationContext)
         
         InAppLogger.logDebug(TAG, "Should block notifications: $shouldBlock")
         InAppLogger.logDebug(TAG, "Blocking rules: $blockingRules")
@@ -397,8 +405,8 @@ class RuleSystemTest(private val context: Context) {
         ruleManager.addRule(nonBlockingRule)
         
         // Evaluate the rules
-        val shouldBlock = ruleManager.shouldBlockNotification()
-        val blockingRules = ruleManager.getBlockingRuleNames()
+        val shouldBlock = ruleManager.shouldBlockNotification(notificationContext)
+        val blockingRules = ruleManager.getBlockingRuleNames(notificationContext)
         
         InAppLogger.logDebug(TAG, "Blocking logic test results:")
         InAppLogger.logDebug(TAG, "- Should block notifications: $shouldBlock")
@@ -613,8 +621,8 @@ class RuleSystemTest(private val context: Context) {
      */
     fun getTestSummary(): String {
         val stats = ruleManager.getRuleStats()
-        val shouldBlock = ruleManager.shouldBlockNotification()
-        val blockingRules = ruleManager.getBlockingRuleNames()
+        val shouldBlock = ruleManager.shouldBlockNotification(notificationContext)
+        val blockingRules = ruleManager.getBlockingRuleNames(notificationContext)
         
         return """
             Rule System Test Summary:
