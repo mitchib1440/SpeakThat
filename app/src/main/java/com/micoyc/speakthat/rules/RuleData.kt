@@ -241,7 +241,8 @@ enum class TriggerType(val displayName: String, val description: String) {
     BLUETOOTH_DEVICE("Bluetooth Device Connected", "When a specific Bluetooth device is connected"),
     SCREEN_STATE("Screen State (On/Off)", "When the screen is on or off"),
     TIME_SCHEDULE("Time Schedule", "During specific time periods"),
-    WIFI_NETWORK("WiFi Network Connected", "When connected to a specific WiFi network");
+    WIFI_NETWORK("WiFi Network Connected", "When connected to a specific WiFi network"),
+    NOTIFICATION_PACKAGE("Notification Package", "When the notification is from a specific package");
     
     companion object {
         fun fromDisplayName(name: String): TriggerType {
@@ -270,7 +271,8 @@ enum class ExceptionType(val displayName: String, val description: String) {
     BLUETOOTH_DEVICE("Bluetooth Device Connected", "When a specific Bluetooth device is connected"),
     SCREEN_STATE("Screen State (On/Off)", "When the screen is on or off"),
     TIME_SCHEDULE("Time Schedule", "During specific time periods"),
-    WIFI_NETWORK("WiFi Network Connected", "When connected to a specific WiFi network");
+    WIFI_NETWORK("WiFi Network Connected", "When connected to a specific WiFi network"),
+    NOTIFICATION_PACKAGE("Notification Package", "When the notification is from a specific package");
     
     companion object {
         fun fromDisplayName(name: String): ExceptionType {

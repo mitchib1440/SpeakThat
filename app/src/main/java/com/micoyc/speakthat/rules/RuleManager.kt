@@ -46,6 +46,7 @@ class RuleManager(private val context: Context) {
     // Evaluation result caching for single notification processing
     private var lastEvaluationResults: List<RuleEvaluationResult>? = null
     private var lastEvaluationTime: Long = 0L
+    private var lastEvaluationContext: NotificationContext? = null
     private val evaluationCacheDuration = 100L // Reduced to 100ms for time-sensitive rules
     
     /**
@@ -114,6 +115,7 @@ class RuleManager(private val context: Context) {
     fun invalidateEvaluationCache() {
         lastEvaluationResults = null
         lastEvaluationTime = 0L
+        lastEvaluationContext = null
         InAppLogger.logDebug(TAG, "Evaluation cache invalidated")
     }
     
@@ -236,7 +238,7 @@ class RuleManager(private val context: Context) {
     /**
      * Evaluate all enabled rules and return the results (with caching)
      */
-    fun evaluateAllRules(): List<RuleEvaluationResult> {
+    fun evaluateAllRules(notificationContext: NotificationContext): List<RuleEvaluationResult> {
         if (!isRulesEnabled()) {
             InAppLogger.logDebug(TAG, "Rules system is disabled, skipping evaluation")
             return emptyList()
@@ -260,7 +262,10 @@ class RuleManager(private val context: Context) {
         }
         
         // Return cached evaluation results if they're still valid
-        if (lastEvaluationResults != null && (currentTime - lastEvaluationTime) < effectiveCacheDuration) {
+        if (lastEvaluationResults != null &&
+            (currentTime - lastEvaluationTime) < effectiveCacheDuration &&
+            lastEvaluationContext == notificationContext
+        ) {
             InAppLogger.logDebug(TAG, "Using cached evaluation results (${lastEvaluationResults!!.size} rules) - cache age: ${currentTime - lastEvaluationTime}ms, cache duration: ${effectiveCacheDuration}ms")
             return lastEvaluationResults!!
         }
@@ -269,12 +274,13 @@ class RuleManager(private val context: Context) {
         InAppLogger.logDebug(TAG, "Evaluating ${enabledRules.size} enabled rules")
         
         val results = enabledRules.map { rule ->
-            ruleEvaluator.evaluateRule(rule)
+            ruleEvaluator.evaluateRule(rule, notificationContext)
         }
         
         // Cache the results
         lastEvaluationResults = results
         lastEvaluationTime = currentTime
+        lastEvaluationContext = notificationContext
         
         return results
     }
@@ -282,12 +288,12 @@ class RuleManager(private val context: Context) {
     /**
      * Check if any rules should execute (for notification filtering)
      */
-    fun shouldBlockNotification(): Boolean {
+    fun shouldBlockNotification(notificationContext: NotificationContext): Boolean {
         if (!isRulesEnabled()) {
             return false
         }
         
-        val evaluationResults = evaluateAllRules()
+        val evaluationResults = evaluateAllRules(notificationContext)
         val executingRules = evaluationResults.filter { it.shouldExecute }
         
         if (executingRules.isNotEmpty()) {
@@ -351,12 +357,12 @@ class RuleManager(private val context: Context) {
     /**
      * Get the names of rules that are currently blocking notifications
      */
-    fun getBlockingRuleNames(): List<String> {
+    fun getBlockingRuleNames(notificationContext: NotificationContext): List<String> {
         if (!isRulesEnabled()) {
             return emptyList()
         }
         
-        return evaluateAllRules()
+        return evaluateAllRules(notificationContext)
             .filter { it.shouldExecute }
             .filter { ruleResult ->
                 val rule = getRule(ruleResult.ruleId)
