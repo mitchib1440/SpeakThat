@@ -1,7 +1,6 @@
 package com.micoyc.speakthat.rules
 
 import android.content.Context
-import android.content.SharedPreferences
 import com.micoyc.speakthat.InAppLogger
 
 /**
@@ -13,10 +12,7 @@ class ActionExecutor(private val context: Context) {
     
     companion object {
         private const val TAG = "ActionExecutor"
-        private const val PREFS_NAME = "SpeakThatPrefs"
     }
-    
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     
     /**
      * Execute a list of actions
@@ -44,34 +40,31 @@ class ActionExecutor(private val context: Context) {
         
         InAppLogger.logDebug(TAG, "Executing action: ${action.getLogMessage()}")
         
-        return executeDisableSpeakThat(action)
+        return executeSkipNotification(action)
     }
     
     // ============================================================================
     // ACTION IMPLEMENTATIONS
     // ============================================================================
     
-    private fun executeDisableSpeakThat(action: Action): ActionExecutionResult {
+    private fun executeSkipNotification(action: Action): ActionExecutionResult {
         try {
-            // Set the main SpeakThat toggle to disabled
-            sharedPreferences.edit().putBoolean("speakthat_enabled", false).apply()
-            
-            InAppLogger.logDebug(TAG, "SpeakThat disabled via rule action")
+            InAppLogger.logDebug(TAG, "Skip notification action executed (no global state changes)")
             
             return ActionExecutionResult(
                 actionId = action.id,
                 actionType = action.type,
                 success = true,
-                message = "SpeakThat disabled"
+                message = "Notification skipped"
             )
             
         } catch (e: Throwable) {
-            InAppLogger.logError(TAG, "Error disabling SpeakThat: ${e.message}")
+            InAppLogger.logError(TAG, "Error skipping notification: ${e.message}")
             return ActionExecutionResult(
                 actionId = action.id,
                 actionType = action.type,
                 success = false,
-                message = "Failed to disable SpeakThat: ${e.message}"
+                message = "Failed to skip notification: ${e.message}"
             )
         }
     }

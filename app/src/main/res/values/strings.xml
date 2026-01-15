@@ -1205,7 +1205,7 @@ This permission is completely optional; SpeakThat! will still function without i
 
     <!-- Action Configuration -->
     <string name="action_disable_speakthat">Skip this notification</string>
-    <string name="action_disable_description">SpeakThat will not read this notification.</string>
+    <string name="action_disable_description">SpeakThat will not read this notification and will not change any global settings.</string>
     <string name="action_enable_app_filter">Enable App Filter</string>
     <string name="action_enable_app_description">Select which app to enable filtering for:</string>
     <string name="action_select_app">Select App</string>

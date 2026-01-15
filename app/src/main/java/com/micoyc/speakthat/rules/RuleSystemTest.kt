@@ -97,7 +97,7 @@ class RuleSystemTest(private val context: Context) {
             actions = listOf(
                 Action(
                     type = ActionType.DISABLE_SPEAKTHAT,
-                    description = "Disable SpeakThat"
+                    description = "Skip this notification"
                 )
             ),
             triggerLogic = LogicGate.AND
@@ -126,7 +126,7 @@ class RuleSystemTest(private val context: Context) {
             actions = listOf(
                 Action(
                     type = ActionType.DISABLE_SPEAKTHAT,
-                    description = "Disable SpeakThat when screen is off"
+                    description = "Skip this notification when screen is off"
                 )
             ),
             triggerLogic = LogicGate.AND
@@ -219,7 +219,7 @@ class RuleSystemTest(private val context: Context) {
             actions = listOf(
                 Action(
                     type = ActionType.DISABLE_SPEAKTHAT,
-                    description = "Disable SpeakThat in car"
+                    description = "Skip this notification in car"
                 )
             ),
             triggerLogic = LogicGate.AND
@@ -260,7 +260,7 @@ class RuleSystemTest(private val context: Context) {
             actions = listOf(
                 Action(
                     type = ActionType.DISABLE_SPEAKTHAT,
-                    description = "Disable SpeakThat during night mode"
+                    description = "Skip this notification during night mode"
                 ),
                 Action(
                     type = ActionType.DISABLE_SPEAKTHAT,
@@ -331,7 +331,7 @@ class RuleSystemTest(private val context: Context) {
             actions = listOf(
                 Action(
                     type = ActionType.DISABLE_SPEAKTHAT,
-                    description = "Disable SpeakThat"
+                    description = "Skip this notification"
                 )
             )
         )
@@ -341,7 +341,7 @@ class RuleSystemTest(private val context: Context) {
     
     /**
      * Test the fix for the blocking logic bug
-     * This test verifies that only rules with DISABLE_SPEAKTHAT actions block notifications
+     * This test verifies that only rules with skip-notification actions block notifications
      */
     fun testBlockingLogicFix() {
         InAppLogger.logDebug(TAG, "Test 8: Blocking logic fix verification")
@@ -356,7 +356,7 @@ class RuleSystemTest(private val context: Context) {
         // Enable the rules system
         AutomationModeManager(context).setMode(AutomationMode.CONDITIONAL_RULES)
         
-        // Test 1: Rule with DISABLE_SPEAKTHAT action should block
+        // Test 1: Rule with skip-notification action should block
         val blockingRule = Rule(
             name = "Blocking Rule",
             enabled = true,
@@ -370,7 +370,7 @@ class RuleSystemTest(private val context: Context) {
             actions = listOf(
                 Action(
                     type = ActionType.DISABLE_SPEAKTHAT,
-                    description = "Disable SpeakThat"
+                    description = "Skip this notification"
                 )
             )
         )
@@ -438,7 +438,7 @@ class RuleSystemTest(private val context: Context) {
             actions = listOf(
                 Action(
                     type = ActionType.DISABLE_SPEAKTHAT,
-                    description = "Disable SpeakThat when no headphones"
+                    description = "Skip this notification when no headphones"
                 )
             ),
             triggerLogic = LogicGate.AND
@@ -462,7 +462,7 @@ class RuleSystemTest(private val context: Context) {
             actions = listOf(
                 Action(
                     type = ActionType.DISABLE_SPEAKTHAT,
-                    description = "Disable SpeakThat when screen is on"
+                    description = "Skip this notification when screen is on"
                 )
             ),
             triggerLogic = LogicGate.AND
@@ -497,7 +497,7 @@ class RuleSystemTest(private val context: Context) {
             actions = listOf(
                 Action(
                     type = ActionType.DISABLE_SPEAKTHAT,
-                    description = "Disable SpeakThat during work hours when not on home WiFi"
+                    description = "Skip this notification during work hours when not on home WiFi"
                 )
             ),
             triggerLogic = LogicGate.AND,

@@ -254,7 +254,7 @@ enum class TriggerType(val displayName: String, val description: String) {
  * Types of actions that can be performed when a rule is triggered
  */
 enum class ActionType(val displayName: String, val description: String) {
-    DISABLE_SPEAKTHAT("Skip this notification", "Don't read this notification aloud");
+    DISABLE_SPEAKTHAT("Skip this notification", "Skip reading this notification without changing global settings");
     
     companion object {
         fun fromDisplayName(name: String): ActionType {

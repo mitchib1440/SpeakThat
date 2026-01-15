@@ -296,14 +296,14 @@ class RuleManager(private val context: Context) {
             // Execute actions for all rules that should execute
             executeActionsForRules(executingRules)
             
-            // Check if any of the executing rules contain DISABLE_SPEAKTHAT actions
+            // Check if any of the executing rules contain skip-notification actions
             val shouldBlock = executingRules.any { ruleResult ->
                 val rule = getRule(ruleResult.ruleId)
                 val hasDisableAction = rule?.actions?.any { action ->
                     action.enabled && action.type == ActionType.DISABLE_SPEAKTHAT
                 } ?: false
                 
-                InAppLogger.logDebug(TAG, "Rule '${ruleResult.ruleName}' has DISABLE_SPEAKTHAT action: $hasDisableAction")
+                InAppLogger.logDebug(TAG, "Rule '${ruleResult.ruleName}' has skip-notification action: $hasDisableAction")
                 hasDisableAction
             }
             
