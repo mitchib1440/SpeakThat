@@ -1806,4 +1806,19 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="dev_enable_audio_ducking">Enable Audio Ducking</string>
     <string name="dev_enable_audio_ducking_description">Re-enable the Lower Audio option in Media Behaviour settings (experimental; may be unstable on some devices).</string>
 
+    <!-- Rule validation errors -->
+    <string name="rule_error_name_empty">Rule name cannot be empty</string>
+    <string name="rule_error_no_triggers">Rule must have at least one trigger</string>
+    <string name="rule_error_no_enabled_triggers">Rule must have at least one enabled trigger</string>
+    <string name="rule_error_no_actions">Rule must have at least one action</string>
+    <string name="rule_error_no_enabled_actions">Rule must have at least one enabled action</string>
+    <string name="rule_error_duplicate_name">A rule with this name already exists</string>
+    <string name="rule_error_invalid_bluetooth_devices">Bluetooth device list is invalid</string>
+    <string name="rule_error_invalid_screen_state">Screen state must be on or off</string>
+    <string name="rule_error_invalid_time_schedule">Time schedule is missing a valid start or end time</string>
+    <string name="rule_error_invalid_days_of_week">Days of week must be numbers from 0 to 6</string>
+    <string name="rule_error_invalid_wifi_networks">WiFi network list is invalid</string>
+    <string name="rule_error_invalid_master_switch">Master switch action requires enabled true or false</string>
+    <string name="rule_action_master_switch">Set SpeakThat master switch</string>
+
 </resources>

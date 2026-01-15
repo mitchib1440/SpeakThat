@@ -6,8 +6,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.micoyc.speakthat.InAppLogger
-import com.micoyc.speakthat.rules.ActionExecutor
-import com.micoyc.speakthat.rules.ActionType
 
 /**
  * Rule Manager
@@ -32,7 +30,6 @@ class RuleManager(private val context: Context) {
         .registerTypeAdapter(Exception::class.java, ExceptionTypeAdapter())
         .create()
     private val ruleEvaluator = RuleEvaluator(context)
-    private val actionExecutor = ActionExecutor(context)
     
     // ============================================================================
     // CACHING SYSTEM
@@ -47,6 +44,7 @@ class RuleManager(private val context: Context) {
     private var lastEvaluationResults: List<RuleEvaluationResult>? = null
     private var lastEvaluationTime: Long = 0L
     private val evaluationCacheDuration = 100L // Reduced to 100ms for time-sensitive rules
+    private var lastEvaluationContextHash: Int = 0
     
     /**
      * Get rules with caching - only loads from storage if cache is stale
@@ -91,8 +89,9 @@ class RuleManager(private val context: Context) {
         return try {
             val type = object : TypeToken<List<Rule>>() {}.type
             val rules = gson.fromJson(rulesJson, type) ?: emptyList<Rule>()
-            InAppLogger.logDebug(TAG, "Loaded ${rules.size} rules from storage")
-            rules
+            val migratedRules = migrateLegacyActions(rules)
+            InAppLogger.logDebug(TAG, "Loaded ${migratedRules.size} rules from storage")
+            migratedRules
         } catch (e: Throwable) {
             InAppLogger.logError(TAG, "Error loading rules: ${e.message}")
             emptyList()
@@ -114,6 +113,7 @@ class RuleManager(private val context: Context) {
     fun invalidateEvaluationCache() {
         lastEvaluationResults = null
         lastEvaluationTime = 0L
+        lastEvaluationContextHash = 0
         InAppLogger.logDebug(TAG, "Evaluation cache invalidated")
     }
     
@@ -236,20 +236,25 @@ class RuleManager(private val context: Context) {
     /**
      * Evaluate all enabled rules and return the results (with caching)
      */
-    fun evaluateAllRules(): List<RuleEvaluationResult> {
+    fun evaluateAllRules(notificationContext: NotificationContext): List<RuleEvaluationResult> {
         if (!isRulesEnabled()) {
             InAppLogger.logDebug(TAG, "Rules system is disabled, skipping evaluation")
             return emptyList()
         }
         
         val currentTime = System.currentTimeMillis()
+        val contextHash = computeContextHash(notificationContext)
         
-        // Check if we have time-sensitive rules that require more frequent evaluation
+        // Check if we have time-sensitive or non-cacheable rules
         val enabledRules = getEnabledRules()
         val hasTimeSensitiveRules = enabledRules.any { rule ->
             rule.triggers.any { trigger ->
                 trigger.enabled && trigger.type == TriggerType.TIME_SCHEDULE
             }
+        }
+        val hasNonCacheableRules = enabledRules.any { rule ->
+            rule.triggers.any { trigger -> trigger.enabled && !trigger.type.isCacheable } ||
+                rule.exceptions.any { exception -> exception.enabled && !exception.type.isCacheable }
         }
         
         // Use shorter cache duration for time-sensitive rules
@@ -260,21 +265,31 @@ class RuleManager(private val context: Context) {
         }
         
         // Return cached evaluation results if they're still valid
-        if (lastEvaluationResults != null && (currentTime - lastEvaluationTime) < effectiveCacheDuration) {
+        val shouldUseCache = !hasNonCacheableRules
+        if (shouldUseCache &&
+            lastEvaluationResults != null &&
+            (currentTime - lastEvaluationTime) < effectiveCacheDuration &&
+            lastEvaluationContextHash == contextHash
+        ) {
             InAppLogger.logDebug(TAG, "Using cached evaluation results (${lastEvaluationResults!!.size} rules) - cache age: ${currentTime - lastEvaluationTime}ms, cache duration: ${effectiveCacheDuration}ms")
             return lastEvaluationResults!!
+        }
+
+        if (!shouldUseCache) {
+            InAppLogger.logDebug(TAG, "Skipping evaluation cache due to non-cacheable rule types")
         }
         
         // Cache is stale or null, perform fresh evaluation
         InAppLogger.logDebug(TAG, "Evaluating ${enabledRules.size} enabled rules")
         
         val results = enabledRules.map { rule ->
-            ruleEvaluator.evaluateRule(rule)
+            ruleEvaluator.evaluateRule(rule, notificationContext)
         }
         
         // Cache the results
         lastEvaluationResults = results
         lastEvaluationTime = currentTime
+        lastEvaluationContextHash = contextHash
         
         return results
     }
@@ -282,89 +297,101 @@ class RuleManager(private val context: Context) {
     /**
      * Check if any rules should execute (for notification filtering)
      */
-    fun shouldBlockNotification(): Boolean {
+    fun evaluateNotification(notificationContext: NotificationContext): EvaluationOutcome {
         if (!isRulesEnabled()) {
-            return false
+            return EvaluationOutcome(emptyList(), emptyList())
         }
-        
-        val evaluationResults = evaluateAllRules()
+
+        val evaluationResults = evaluateAllRules(notificationContext)
         val executingRules = evaluationResults.filter { it.shouldExecute }
-        
-        if (executingRules.isNotEmpty()) {
-            InAppLogger.logDebug(TAG, "Found ${executingRules.size} executing rules: ${executingRules.map { it.ruleName }}")
-            
-            // Execute actions for all rules that should execute
-            executeActionsForRules(executingRules)
-            
-            // Check if any of the executing rules contain DISABLE_SPEAKTHAT actions
-            val shouldBlock = executingRules.any { ruleResult ->
-                val rule = getRule(ruleResult.ruleId)
-                val hasDisableAction = rule?.actions?.any { action ->
-                    action.enabled && action.type == ActionType.DISABLE_SPEAKTHAT
-                } ?: false
-                
-                InAppLogger.logDebug(TAG, "Rule '${ruleResult.ruleName}' has DISABLE_SPEAKTHAT action: $hasDisableAction")
-                hasDisableAction
-            }
-            
-            InAppLogger.logDebug(TAG, "Should block notifications: $shouldBlock")
-            
-            if (shouldBlock) {
-                val blockingRules = executingRules.filter { ruleResult ->
-                    val rule = getRule(ruleResult.ruleId)
-                    rule?.actions?.any { action ->
-                        action.enabled && action.type == ActionType.DISABLE_SPEAKTHAT
-                    } ?: false
-                }
-                InAppLogger.logDebug(TAG, "Rules blocking notification: ${blockingRules.map { it.ruleName }}")
-            }
-            
-            return shouldBlock
+
+        if (executingRules.isEmpty()) {
+            return EvaluationOutcome(emptyList(), emptyList())
         }
-        
-        return false
+
+        val matchedRuleNames = mutableListOf<String>()
+        val rawEffects = mutableListOf<Effect>()
+
+        executingRules.forEach { ruleResult ->
+            val rule = getRule(ruleResult.ruleId)
+            rule?.let { safeRule ->
+                matchedRuleNames.add(safeRule.name)
+                rawEffects.addAll(mapActionsToEffects(safeRule.actions))
+            }
+        }
+
+        val aggregatedEffects = aggregateEffects(rawEffects)
+        InAppLogger.logDebug(TAG, "Evaluation outcome: effects=${aggregatedEffects.map { it::class.simpleName }}, matchedRules=$matchedRuleNames")
+
+        return EvaluationOutcome(aggregatedEffects, matchedRuleNames)
     }
     
     /**
      * Execute actions for rules that should execute
      */
-    private fun executeActionsForRules(rules: List<RuleEvaluationResult>) {
-        val allActions = mutableListOf<Action>()
-        
-        rules.forEach { ruleResult ->
-            val rule = getRule(ruleResult.ruleId)
-            rule?.let { 
-                allActions.addAll(it.actions)
+    private fun mapActionsToEffects(actions: List<Action>): List<Effect> {
+        return actions.filter { it.enabled }.mapNotNull { action ->
+            when (action.type) {
+                ActionType.SKIP_NOTIFICATION -> Effect.SkipNotification
+                ActionType.DISABLE_SPEAKTHAT -> Effect.SkipNotification
+                ActionType.SET_MASTER_SWITCH -> {
+                    val enabled = action.data["enabled"] as? Boolean ?: false
+                    Effect.SetMasterSwitch(enabled)
+                }
             }
         }
-        
-        if (allActions.isNotEmpty()) {
-            InAppLogger.logDebug(TAG, "Executing ${allActions.size} actions for ${rules.size} rules")
-            val results = actionExecutor.executeActions(allActions)
-            
-            results.forEach { result ->
-                InAppLogger.logDebug(TAG, result.getLogMessage())
-            }
+    }
+
+    private fun aggregateEffects(effects: List<Effect>): List<Effect> {
+        val aggregated = mutableListOf<Effect>()
+
+        val masterSwitch = effects.filterIsInstance<Effect.SetMasterSwitch>().lastOrNull()
+        if (masterSwitch != null) {
+            aggregated.add(masterSwitch)
         }
+
+        if (effects.any { it is Effect.SkipNotification }) {
+            aggregated.add(Effect.SkipNotification)
+            return aggregated
+        }
+
+        val forcePrivate = effects.any { it is Effect.ForcePrivate }
+        val overridePrivate = effects.any { it is Effect.OverridePrivate }
+        when {
+            forcePrivate -> aggregated.add(Effect.ForcePrivate)
+            overridePrivate -> aggregated.add(Effect.OverridePrivate)
+        }
+
+        val speechTemplate = effects.filterIsInstance<Effect.SetSpeechTemplate>().lastOrNull()
+        if (speechTemplate != null) {
+            aggregated.add(speechTemplate)
+        }
+
+        val mediaBehavior = effects.filterIsInstance<Effect.SetMediaBehavior>().lastOrNull()
+        if (mediaBehavior != null) {
+            aggregated.add(mediaBehavior)
+        }
+
+        val gestureUpdates = effects.filterIsInstance<Effect.SetGestureEnabled>()
+        if (gestureUpdates.isNotEmpty()) {
+            val lastByGesture = gestureUpdates.associateBy { it.gesture }.values
+            aggregated.addAll(lastByGesture)
+        }
+
+        return aggregated
     }
     
     /**
      * Get the names of rules that are currently blocking notifications
      */
-    fun getBlockingRuleNames(): List<String> {
+    fun getBlockingRuleNames(notificationContext: NotificationContext): List<String> {
         if (!isRulesEnabled()) {
             return emptyList()
         }
-        
-        return evaluateAllRules()
-            .filter { it.shouldExecute }
-            .filter { ruleResult ->
-                val rule = getRule(ruleResult.ruleId)
-                rule?.actions?.any { action ->
-                    action.enabled && action.type == ActionType.DISABLE_SPEAKTHAT
-                } ?: false
-            }
-            .map { it.ruleName }
+
+        val outcome = evaluateNotification(notificationContext)
+        val isBlocking = outcome.effects.any { it is Effect.SkipNotification }
+        return if (isBlocking) outcome.matchedRules else emptyList()
     }
     
     // ============================================================================
@@ -379,33 +406,48 @@ class RuleManager(private val context: Context) {
         
         // Check rule name
         if (rule.name.isBlank()) {
-            errors.add("Rule name cannot be empty")
+            errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_name_empty))
         }
         
         // Check triggers
         if (rule.triggers.isEmpty()) {
-            errors.add("Rule must have at least one trigger")
+            errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_no_triggers))
         } else {
             val enabledTriggers = rule.triggers.filter { it.enabled }
             if (enabledTriggers.isEmpty()) {
-                errors.add("Rule must have at least one enabled trigger")
+                errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_no_enabled_triggers))
             }
         }
         
         // Check actions
         if (rule.actions.isEmpty()) {
-            errors.add("Rule must have at least one action")
+            errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_no_actions))
         } else {
             val enabledActions = rule.actions.filter { it.enabled }
             if (enabledActions.isEmpty()) {
-                errors.add("Rule must have at least one enabled action")
+                errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_no_enabled_actions))
             }
         }
         
         // Check for duplicate rule names
         val existingRules = loadRules().filter { it.id != rule.id }
         if (existingRules.any { it.name.equals(rule.name, ignoreCase = true) }) {
-            errors.add("A rule with this name already exists")
+            errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_duplicate_name))
+        }
+
+        // Validate trigger data
+        rule.triggers.filter { it.enabled }.forEach { trigger ->
+            errors.addAll(validateTriggerData(trigger))
+        }
+
+        // Validate exception data
+        rule.exceptions.filter { it.enabled }.forEach { exception ->
+            errors.addAll(validateExceptionData(exception))
+        }
+
+        // Validate action data
+        rule.actions.filter { it.enabled }.forEach { action ->
+            errors.addAll(validateActionData(action))
         }
         
         val isValid = errors.isEmpty()
@@ -441,6 +483,162 @@ class RuleManager(private val context: Context) {
             rulesWithActions = allRules.count { it.actions.isNotEmpty() },
             rulesWithExceptions = allRules.count { it.exceptions.isNotEmpty() }
         )
+    }
+
+    private fun migrateLegacyActions(rules: List<Rule>): List<Rule> {
+        var migrated = false
+
+        val updatedRules = rules.map { rule ->
+            val updatedActions = rule.actions.map { action ->
+                if (action.type == ActionType.DISABLE_SPEAKTHAT) {
+                    migrated = true
+                    action.copy(type = ActionType.SKIP_NOTIFICATION)
+                } else {
+                    action
+                }
+            }
+
+            if (updatedActions != rule.actions) {
+                rule.copy(actions = updatedActions)
+            } else {
+                rule
+            }
+        }
+
+        if (migrated) {
+            InAppLogger.logDebug(TAG, "Migrating legacy DISABLE_SPEAKTHAT actions to SKIP_NOTIFICATION")
+            val rulesJson = gson.toJson(updatedRules)
+            sharedPreferences.edit().putString(KEY_RULES_LIST, rulesJson).apply()
+            invalidateCache()
+        }
+
+        return updatedRules
+    }
+
+    private fun validateTriggerData(trigger: Trigger): List<String> {
+        val errors = mutableListOf<String>()
+        when (trigger.type) {
+            TriggerType.BLUETOOTH_DEVICE -> {
+                if (!isStringSetOrList(trigger.data["device_addresses"])) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_bluetooth_devices))
+                }
+            }
+            TriggerType.SCREEN_STATE -> {
+                val state = trigger.data["screen_state"] as? String
+                if (state != null && state.lowercase() !in setOf("on", "off")) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_screen_state))
+                }
+            }
+            TriggerType.TIME_SCHEDULE -> {
+                val startTime = trigger.data["start_time"]
+                val endTime = trigger.data["end_time"]
+                if (startTime !is Number || endTime !is Number) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_time_schedule))
+                }
+                if (!isDaySet(trigger.data["days_of_week"])) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_days_of_week))
+                }
+            }
+            TriggerType.WIFI_NETWORK -> {
+                if (!isStringSetOrList(trigger.data["network_ssids"])) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_wifi_networks))
+                }
+            }
+        }
+        return errors
+    }
+
+    private fun validateExceptionData(exception: Exception): List<String> {
+        val errors = mutableListOf<String>()
+        when (exception.type) {
+            ExceptionType.BLUETOOTH_DEVICE -> {
+                if (!isStringSetOrList(exception.data["device_addresses"])) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_bluetooth_devices))
+                }
+            }
+            ExceptionType.SCREEN_STATE -> {
+                val state = exception.data["screen_state"] as? String
+                if (state != null && state.lowercase() !in setOf("on", "off")) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_screen_state))
+                }
+            }
+            ExceptionType.TIME_SCHEDULE -> {
+                val startTime = exception.data["start_time"]
+                val endTime = exception.data["end_time"]
+                if (startTime !is Number || endTime !is Number) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_time_schedule))
+                }
+                if (!isDaySet(exception.data["days_of_week"])) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_days_of_week))
+                }
+            }
+            ExceptionType.WIFI_NETWORK -> {
+                if (!isStringSetOrList(exception.data["network_ssids"])) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_wifi_networks))
+                }
+            }
+        }
+        return errors
+    }
+
+    private fun validateActionData(action: Action): List<String> {
+        val errors = mutableListOf<String>()
+        when (action.type) {
+            ActionType.SET_MASTER_SWITCH -> {
+                if (action.data["enabled"] !is Boolean) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_master_switch))
+                }
+            }
+            ActionType.SKIP_NOTIFICATION,
+            ActionType.DISABLE_SPEAKTHAT -> {
+                // No data validation needed
+            }
+        }
+        return errors
+    }
+
+    private fun isStringSetOrList(value: Any?): Boolean {
+        if (value == null) return true
+        return when (value) {
+            is Set<*> -> value.all { it is String }
+            is List<*> -> value.all { it is String }
+            else -> false
+        }
+    }
+
+    private fun isDaySet(value: Any?): Boolean {
+        if (value == null) return true
+        val numbers = when (value) {
+            is Set<*> -> value
+            is List<*> -> value
+            is Array<*> -> value.toList()
+            else -> return false
+        }
+        return numbers.all { item ->
+            val day = when (item) {
+                is Int -> item
+                is Long -> item.toInt()
+                is Double -> item.toInt()
+                is Float -> item.toInt()
+                is Number -> item.toInt()
+                is String -> item.toIntOrNull()
+                else -> null
+            } ?: return@all false
+            day in 0..6
+        }
+    }
+
+    private fun computeContextHash(notificationContext: NotificationContext): Int {
+        var result = notificationContext.packageName.hashCode()
+        result = 31 * result + (notificationContext.title?.hashCode() ?: 0)
+        result = 31 * result + (notificationContext.text?.hashCode() ?: 0)
+        result = 31 * result + (notificationContext.bigText?.hashCode() ?: 0)
+        result = 31 * result + (notificationContext.ticker?.hashCode() ?: 0)
+        result = 31 * result + (notificationContext.category?.hashCode() ?: 0)
+        result = 31 * result + (notificationContext.channelId?.hashCode() ?: 0)
+        result = 31 * result + notificationContext.isOngoing.hashCode()
+        result = 31 * result + notificationContext.postTime.hashCode()
+        return result
     }
 }
 

@@ -172,7 +172,7 @@ object RuleTemplates {
             ),
             actions = listOf(
                 ActionTemplate(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = context.getString(R.string.template_action_skip_notification)
                 )
             )
@@ -203,7 +203,7 @@ object RuleTemplates {
             ),
             actions = listOf(
                 ActionTemplate(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = context.getString(R.string.template_action_skip_notification)
                 )
             )
@@ -228,7 +228,7 @@ object RuleTemplates {
             ),
             actions = listOf(
                 ActionTemplate(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = context.getString(R.string.template_action_skip_notification)
                 )
             )
@@ -252,7 +252,7 @@ object RuleTemplates {
             ),
             actions = listOf(
                 ActionTemplate(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = context.getString(R.string.template_action_skip_notification)
                 )
             )

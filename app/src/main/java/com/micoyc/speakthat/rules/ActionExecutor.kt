@@ -43,40 +43,51 @@ class ActionExecutor(private val context: Context) {
         }
         
         InAppLogger.logDebug(TAG, "Executing action: ${action.getLogMessage()}")
-        
-        return executeDisableSpeakThat(action)
+
+        return when (action.type) {
+            ActionType.SKIP_NOTIFICATION,
+            ActionType.DISABLE_SPEAKTHAT -> {
+                ActionExecutionResult(
+                    actionId = action.id,
+                    actionType = action.type,
+                    success = true,
+                    message = "Skip notification handled by rule pipeline"
+                )
+            }
+            ActionType.SET_MASTER_SWITCH -> executeSetMasterSwitch(action)
+        }
     }
     
     // ============================================================================
     // ACTION IMPLEMENTATIONS
     // ============================================================================
     
-    private fun executeDisableSpeakThat(action: Action): ActionExecutionResult {
+    private fun executeSetMasterSwitch(action: Action): ActionExecutionResult {
         try {
-            // Set the main SpeakThat toggle to disabled
-            sharedPreferences.edit().putBoolean("speakthat_enabled", false).apply()
+            val enabled = action.data["enabled"] as? Boolean ?: false
+            sharedPreferences.edit().putBoolean("speakthat_enabled", enabled).apply()
             
-            InAppLogger.logDebug(TAG, "SpeakThat disabled via rule action")
+            InAppLogger.logDebug(TAG, "SpeakThat master switch set to $enabled via rule action")
             
             return ActionExecutionResult(
                 actionId = action.id,
                 actionType = action.type,
                 success = true,
-                message = "SpeakThat disabled"
+                message = "SpeakThat master switch set to $enabled"
             )
             
         } catch (e: Throwable) {
-            InAppLogger.logError(TAG, "Error disabling SpeakThat: ${e.message}")
+            InAppLogger.logError(TAG, "Error setting SpeakThat master switch: ${e.message}")
             return ActionExecutionResult(
                 actionId = action.id,
                 actionType = action.type,
                 success = false,
-                message = "Failed to disable SpeakThat: ${e.message}"
+                message = "Failed to set master switch: ${e.message}"
             )
         }
     }
     
-    // Removed other actions; Skip this notification is the sole action.
+    // Removed other actions; legacy execution is now handled by the rule pipeline.
 }
 
 // ============================================================================

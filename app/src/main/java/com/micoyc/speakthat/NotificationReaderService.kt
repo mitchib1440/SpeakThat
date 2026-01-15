@@ -2268,7 +2268,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         // 6. Apply conditional rules (Smart Rules system)
-        val conditionalResult = applyConditionalFiltering(packageName, appName, wordFilterResult.processedText)
+        val conditionalResult = applyConditionalFiltering(
+            packageName,
+            appName,
+            wordFilterResult.processedText,
+            sbn
+        )
         if (!conditionalResult.shouldSpeak) {
             return conditionalResult
         }
@@ -2689,7 +2694,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
-    private fun applyConditionalFiltering(_packageName: String, _appName: String, text: String): FilterResult {
+    private fun applyConditionalFiltering(
+        packageName: String,
+        _appName: String,
+        text: String,
+        sbn: StatusBarNotification?
+    ): FilterResult {
         try {
             // Check if rules system is enabled
             if (!::ruleManager.isInitialized) {
@@ -2697,11 +2707,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 return FilterResult(true, text, "Rule manager not initialized")
             }
             
-            // Check if any rules should block this notification
-            val shouldBlock = ruleManager.shouldBlockNotification()
-            
+            val notificationContext = buildNotificationContext(packageName, text, sbn)
+            val outcome = ruleManager.evaluateNotification(notificationContext)
+            applyMasterSwitchEffects(outcome.effects)
+            logUnappliedRuleEffects(outcome.effects)
+
+            val shouldBlock = outcome.effects.any { it is com.micoyc.speakthat.rules.Effect.SkipNotification }
+
             if (shouldBlock) {
-                val blockingRules = ruleManager.getBlockingRuleNames()
+                val blockingRules = ruleManager.getBlockingRuleNames(notificationContext)
                 val reason = "Rules blocking: ${blockingRules.joinToString(", ")}"
                 InAppLogger.logFilter("Rules blocked notification: $reason")
                 // Track filter reason
@@ -2720,6 +2734,58 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Fail-safe: if rules system fails, allow the notification
             InAppLogger.logError("Service", "Error in rule evaluation: ${e.message}")
             return FilterResult(true, text, "Rule evaluation failed, allowing notification")
+        }
+    }
+
+    private fun buildNotificationContext(
+        packageName: String,
+        fallbackText: String,
+        sbn: StatusBarNotification?
+    ): com.micoyc.speakthat.rules.NotificationContext {
+        val notification = sbn?.notification
+        val extras = notification?.extras
+        val isOngoing = notification?.let { note ->
+            val flags = note.flags
+            (flags and Notification.FLAG_ONGOING_EVENT) != 0 ||
+                (flags and Notification.FLAG_NO_CLEAR) != 0
+        } ?: false
+
+        return com.micoyc.speakthat.rules.NotificationContext(
+            packageName = packageName,
+            title = extras?.getCharSequence(Notification.EXTRA_TITLE),
+            text = extras?.getCharSequence(Notification.EXTRA_TEXT) ?: fallbackText,
+            bigText = extras?.getCharSequence(Notification.EXTRA_BIG_TEXT),
+            ticker = notification?.tickerText,
+            category = notification?.category,
+            channelId = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                notification?.channelId
+            } else {
+                null
+            },
+            isOngoing = isOngoing,
+            postTime = sbn?.postTime ?: System.currentTimeMillis(),
+            extras = extras
+        )
+    }
+
+    private fun applyMasterSwitchEffects(effects: List<com.micoyc.speakthat.rules.Effect>) {
+        val masterSwitch = effects.filterIsInstance<com.micoyc.speakthat.rules.Effect.SetMasterSwitch>().lastOrNull()
+            ?: return
+
+        val sharedPreferences = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE)
+        sharedPreferences.edit().putBoolean("speakthat_enabled", masterSwitch.enabled).apply()
+        InAppLogger.logFilter("Rule effect: set master switch to ${masterSwitch.enabled}")
+    }
+
+    private fun logUnappliedRuleEffects(effects: List<com.micoyc.speakthat.rules.Effect>) {
+        val unapplied = effects.filterNot { effect ->
+            effect is com.micoyc.speakthat.rules.Effect.SkipNotification ||
+                effect is com.micoyc.speakthat.rules.Effect.SetMasterSwitch
+        }
+
+        if (unapplied.isNotEmpty()) {
+            val effectNames = unapplied.joinToString(", ") { it::class.simpleName ?: "UnknownEffect" }
+            InAppLogger.logFilter("Rule effects not yet applied: $effectNames")
         }
     }
     

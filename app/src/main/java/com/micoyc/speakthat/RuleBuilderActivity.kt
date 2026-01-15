@@ -427,7 +427,7 @@ class RuleBuilderActivity : AppCompatActivity() {
             .setTitle(getString(R.string.dialog_title_add_action))
             .setItems(actionOptions) { _, which ->
                 when (which) {
-                    0 -> addDisableSpeakThatAction()
+                    0 -> addSkipNotificationAction()
                 }
             }
             .show()
@@ -491,8 +491,8 @@ class RuleBuilderActivity : AppCompatActivity() {
     }
     
     // Action methods
-    private fun addDisableSpeakThatAction() {
-        launchActionConfig(ActionType.DISABLE_SPEAKTHAT, null)
+    private fun addSkipNotificationAction() {
+        launchActionConfig(ActionType.SKIP_NOTIFICATION, null)
     }
     
     private fun launchActionConfig(actionType: ActionType, existingAction: Action?) {

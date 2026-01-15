@@ -61,8 +61,11 @@ class MapStringAnyTypeAdapter : JsonSerializer<Map<String, Any>>, JsonDeserializ
         val jsonObject = json.asJsonObject
         
         for ((key, value) in jsonObject.entrySet()) {
+            if (value.isJsonNull) {
+                continue
+            }
+
             result[key] = when {
-                value.isJsonNull -> ""
                 value.isJsonPrimitive -> {
                     val primitive = value.asJsonPrimitive
                     when {
@@ -101,8 +104,10 @@ class MapStringAnyTypeAdapter : JsonSerializer<Map<String, Any>>, JsonDeserializ
                     val array = value.asJsonArray
                     val list = mutableListOf<Any>()
                     for (element in array) {
+                        if (element.isJsonNull) {
+                            continue
+                        }
                         when {
-                            element.isJsonNull -> list.add("")
                             element.isJsonPrimitive -> {
                                 val primitive = element.asJsonPrimitive
                                 list.add(when {
@@ -237,11 +242,15 @@ enum class LogicGate(val displayName: String, val symbol: String) {
 /**
  * Types of triggers that can activate a rule
  */
-enum class TriggerType(val displayName: String, val description: String) {
-    BLUETOOTH_DEVICE("Bluetooth Device Connected", "When a specific Bluetooth device is connected"),
-    SCREEN_STATE("Screen State (On/Off)", "When the screen is on or off"),
-    TIME_SCHEDULE("Time Schedule", "During specific time periods"),
-    WIFI_NETWORK("WiFi Network Connected", "When connected to a specific WiFi network");
+enum class TriggerType(
+    val displayName: String,
+    val description: String,
+    val isCacheable: Boolean
+) {
+    BLUETOOTH_DEVICE("Bluetooth Device Connected", "When a specific Bluetooth device is connected", true),
+    SCREEN_STATE("Screen State (On/Off)", "When the screen is on or off", true),
+    TIME_SCHEDULE("Time Schedule", "During specific time periods", true),
+    WIFI_NETWORK("WiFi Network Connected", "When connected to a specific WiFi network", true);
     
     companion object {
         fun fromDisplayName(name: String): TriggerType {
@@ -254,11 +263,13 @@ enum class TriggerType(val displayName: String, val description: String) {
  * Types of actions that can be performed when a rule is triggered
  */
 enum class ActionType(val displayName: String, val description: String) {
-    DISABLE_SPEAKTHAT("Skip this notification", "Don't read this notification aloud");
+    SKIP_NOTIFICATION("Skip this notification", "Don't read this notification aloud"),
+    SET_MASTER_SWITCH("Set master switch", "Enable or disable SpeakThat globally"),
+    DISABLE_SPEAKTHAT("Legacy: Skip this notification", "Legacy action migrated to Skip this notification");
     
     companion object {
         fun fromDisplayName(name: String): ActionType {
-            return values().find { it.displayName == name } ?: DISABLE_SPEAKTHAT
+            return values().find { it.displayName == name } ?: SKIP_NOTIFICATION
         }
     }
 }
@@ -266,11 +277,15 @@ enum class ActionType(val displayName: String, val description: String) {
 /**
  * Types of exceptions that can override a rule
  */
-enum class ExceptionType(val displayName: String, val description: String) {
-    BLUETOOTH_DEVICE("Bluetooth Device Connected", "When a specific Bluetooth device is connected"),
-    SCREEN_STATE("Screen State (On/Off)", "When the screen is on or off"),
-    TIME_SCHEDULE("Time Schedule", "During specific time periods"),
-    WIFI_NETWORK("WiFi Network Connected", "When connected to a specific WiFi network");
+enum class ExceptionType(
+    val displayName: String,
+    val description: String,
+    val isCacheable: Boolean
+) {
+    BLUETOOTH_DEVICE("Bluetooth Device Connected", "When a specific Bluetooth device is connected", true),
+    SCREEN_STATE("Screen State (On/Off)", "When the screen is on or off", true),
+    TIME_SCHEDULE("Time Schedule", "During specific time periods", true),
+    WIFI_NETWORK("WiFi Network Connected", "When connected to a specific WiFi network", true);
     
     companion object {
         fun fromDisplayName(name: String): ExceptionType {
@@ -597,8 +612,12 @@ data class Rule(
         if (!action.enabled) return ""
         
         return when (action.type) {
+            ActionType.SKIP_NOTIFICATION,
             ActionType.DISABLE_SPEAKTHAT -> {
                 context.getString(com.micoyc.speakthat.R.string.rule_action_skip_notification)
+            }
+            ActionType.SET_MASTER_SWITCH -> {
+                context.getString(com.micoyc.speakthat.R.string.rule_action_master_switch)
             }
         }
     }

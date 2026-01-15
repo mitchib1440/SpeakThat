@@ -37,6 +37,8 @@ data class RuleEvaluationResult(
     val shouldExecute: Boolean,
     val triggerResults: List<EvaluationResult>,
     val exceptionResults: List<EvaluationResult>,
+    val rawTriggerResults: List<EvaluationResult>,
+    val rawExceptionResults: List<EvaluationResult>,
     val message: String
 ) {
     fun getLogMessage(): String {
@@ -77,7 +79,7 @@ class RuleEvaluator(private val context: Context) {
     /**
      * Evaluates a single rule and returns whether it should execute
      */
-    fun evaluateRule(rule: Rule): RuleEvaluationResult {
+    fun evaluateRule(rule: Rule, notificationContext: NotificationContext): RuleEvaluationResult {
         InAppLogger.logDebug(TAG, "Evaluating rule: ${rule.getLogMessage()}")
         
         // Skip disabled rules
@@ -91,13 +93,16 @@ class RuleEvaluator(private val context: Context) {
                 shouldExecute = false,
                 triggerResults = emptyList(),
                 exceptionResults = emptyList(),
+                rawTriggerResults = emptyList(),
+                rawExceptionResults = emptyList(),
                 message = "Rule is disabled"
             )
         }
         
         // Evaluate triggers
-        val triggerResults = evaluateTriggers(rule.triggers, rule.triggerLogic)
-        val triggersMet = triggerResults.all { it.success }
+        val triggerEvaluation = evaluateTriggers(rule.triggers, rule.triggerLogic, notificationContext)
+        val triggerResults = triggerEvaluation.gatedResults
+        val triggersMet = triggerEvaluation.finalResult
         
         InAppLogger.logDebug(TAG, "Trigger evaluation for '${rule.name}': ${if (triggersMet) "MET" else "NOT_MET"}")
         
@@ -111,13 +116,16 @@ class RuleEvaluator(private val context: Context) {
                 shouldExecute = false,
                 triggerResults = triggerResults,
                 exceptionResults = emptyList(),
+                rawTriggerResults = triggerEvaluation.rawResults,
+                rawExceptionResults = emptyList(),
                 message = "Triggers not met"
             )
         }
         
         // Evaluate exceptions
-        val exceptionResults = evaluateExceptions(rule.exceptions, rule.exceptionLogic)
-        val exceptionsMet = exceptionResults.any { it.success } // Any exception met = rule blocked
+        val exceptionEvaluation = evaluateExceptions(rule.exceptions, rule.exceptionLogic, notificationContext)
+        val exceptionResults = exceptionEvaluation.gatedResults
+        val exceptionsMet = exceptionEvaluation.finalResult // Any exception met = rule blocked
         
         InAppLogger.logDebug(TAG, "Exception evaluation for '${rule.name}': ${if (exceptionsMet) "MET (BLOCKED)" else "NOT_MET (ALLOWED)"}")
         
@@ -138,6 +146,8 @@ class RuleEvaluator(private val context: Context) {
             shouldExecute = shouldExecute,
             triggerResults = triggerResults,
             exceptionResults = exceptionResults,
+            rawTriggerResults = triggerEvaluation.rawResults,
+            rawExceptionResults = exceptionEvaluation.rawResults,
             message = message
         )
         
@@ -148,32 +158,36 @@ class RuleEvaluator(private val context: Context) {
     /**
      * Evaluates a list of triggers using the specified logic gate
      */
-    private fun evaluateTriggers(triggers: List<Trigger>, logicGate: LogicGate): List<EvaluationResult> {
+    private fun evaluateTriggers(
+        triggers: List<Trigger>,
+        logicGate: LogicGate,
+        notificationContext: NotificationContext
+    ): LogicGateEvaluation {
         if (triggers.isEmpty()) {
             InAppLogger.logDebug(TAG, "No triggers to evaluate")
-            return emptyList()
+            return LogicGateEvaluation(emptyList(), emptyList(), false)
         }
         
         InAppLogger.logDebug(TAG, "Evaluating ${triggers.size} triggers with logic gate: ${logicGate.displayName}")
         
-        val results = triggers.map { trigger ->
-            evaluateTrigger(trigger)
+        val rawResults = triggers.map { trigger ->
+            evaluateTrigger(trigger, notificationContext)
         }
         
         // Apply logic gate
         val finalResult = when (logicGate) {
             LogicGate.AND -> {
-                val allSuccess = results.all { it.success }
+                val allSuccess = rawResults.all { it.success }
                 InAppLogger.logDebug(TAG, "AND logic: all triggers must succeed = $allSuccess")
                 allSuccess
             }
             LogicGate.OR -> {
-                val anySuccess = results.any { it.success }
+                val anySuccess = rawResults.any { it.success }
                 InAppLogger.logDebug(TAG, "OR logic: any trigger can succeed = $anySuccess")
                 anySuccess
             }
             LogicGate.XOR -> {
-                val successCount = results.count { it.success }
+                val successCount = rawResults.count { it.success }
                 val exactlyOne = successCount == 1
                 InAppLogger.logDebug(TAG, "XOR logic: exactly one trigger must succeed = $exactlyOne (success count: $successCount)")
                 exactlyOne
@@ -181,7 +195,7 @@ class RuleEvaluator(private val context: Context) {
         }
         
         // Update results to reflect logic gate
-        return results.map { result ->
+        val gatedResults = rawResults.map { result ->
             if (finalResult) {
                 result
             } else {
@@ -192,12 +206,13 @@ class RuleEvaluator(private val context: Context) {
                 )
             }
         }
+        return LogicGateEvaluation(rawResults, gatedResults, finalResult)
     }
     
     /**
      * Evaluates a single trigger
      */
-    private fun evaluateTrigger(trigger: Trigger): EvaluationResult {
+    private fun evaluateTrigger(trigger: Trigger, _notificationContext: NotificationContext): EvaluationResult {
         if (!trigger.enabled) {
             return EvaluationResult(
                 success = false,
@@ -231,32 +246,36 @@ class RuleEvaluator(private val context: Context) {
     /**
      * Evaluates a list of exceptions using the specified logic gate
      */
-    private fun evaluateExceptions(exceptions: List<Exception>, logicGate: LogicGate): List<EvaluationResult> {
+    private fun evaluateExceptions(
+        exceptions: List<Exception>,
+        logicGate: LogicGate,
+        notificationContext: NotificationContext
+    ): LogicGateEvaluation {
         if (exceptions.isEmpty()) {
             InAppLogger.logDebug(TAG, "No exceptions to evaluate")
-            return emptyList()
+            return LogicGateEvaluation(emptyList(), emptyList(), false)
         }
         
         InAppLogger.logDebug(TAG, "Evaluating ${exceptions.size} exceptions with logic gate: ${logicGate.displayName}")
         
-        val results = exceptions.map { exception ->
-            evaluateException(exception)
+        val rawResults = exceptions.map { exception ->
+            evaluateException(exception, notificationContext)
         }
         
         // Apply logic gate
         val finalResult = when (logicGate) {
             LogicGate.AND -> {
-                val allSuccess = results.all { it.success }
+                val allSuccess = rawResults.all { it.success }
                 InAppLogger.logDebug(TAG, "AND logic: all exceptions must be met = $allSuccess")
                 allSuccess
             }
             LogicGate.OR -> {
-                val anySuccess = results.any { it.success }
+                val anySuccess = rawResults.any { it.success }
                 InAppLogger.logDebug(TAG, "OR logic: any exception can be met = $anySuccess")
                 anySuccess
             }
             LogicGate.XOR -> {
-                val successCount = results.count { it.success }
+                val successCount = rawResults.count { it.success }
                 val exactlyOne = successCount == 1
                 InAppLogger.logDebug(TAG, "XOR logic: exactly one exception must be met = $exactlyOne (success count: $successCount)")
                 exactlyOne
@@ -264,7 +283,7 @@ class RuleEvaluator(private val context: Context) {
         }
         
         // Update results to reflect logic gate
-        return results.map { result ->
+        val gatedResults = rawResults.map { result ->
             if (finalResult) {
                 result
             } else {
@@ -275,12 +294,13 @@ class RuleEvaluator(private val context: Context) {
                 )
             }
         }
+        return LogicGateEvaluation(rawResults, gatedResults, finalResult)
     }
     
     /**
      * Evaluates a single exception
      */
-    private fun evaluateException(exception: Exception): EvaluationResult {
+    private fun evaluateException(exception: Exception, _notificationContext: NotificationContext): EvaluationResult {
         if (!exception.enabled) {
             return EvaluationResult(
                 success = false,
@@ -964,4 +984,10 @@ class RuleEvaluator(private val context: Context) {
             data = exception.data
         ))
     }
+
+    private data class LogicGateEvaluation(
+        val rawResults: List<EvaluationResult>,
+        val gatedResults: List<EvaluationResult>,
+        val finalResult: Boolean
+    )
 } 

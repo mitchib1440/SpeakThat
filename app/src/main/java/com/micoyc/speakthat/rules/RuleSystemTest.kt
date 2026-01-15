@@ -96,7 +96,7 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = "Disable SpeakThat"
                 )
             ),
@@ -125,7 +125,7 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = "Disable SpeakThat when screen is off"
                 )
             ),
@@ -162,7 +162,7 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = "Skip this notification"
                 )
             ),
@@ -190,7 +190,7 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = "Skip this notification"
                 )
             ),
@@ -218,7 +218,7 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = "Disable SpeakThat in car"
                 )
             ),
@@ -259,11 +259,11 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = "Disable SpeakThat during night mode"
                 ),
                 Action(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = "Skip this notification"
                 )
             ),
@@ -294,8 +294,10 @@ class RuleSystemTest(private val context: Context) {
         val allRules = ruleManager.getAllRules()
         InAppLogger.logDebug(TAG, "Total rules: ${allRules.size}")
         
+        val notificationContext = createTestNotificationContext()
+
         // Evaluate all rules
-        val evaluationResults = ruleManager.evaluateAllRules()
+        val evaluationResults = ruleManager.evaluateAllRules(notificationContext)
         InAppLogger.logDebug(TAG, "Evaluation results: ${evaluationResults.size}")
         
         evaluationResults.forEach { result ->
@@ -303,8 +305,9 @@ class RuleSystemTest(private val context: Context) {
         }
         
         // Check if any rules should block notifications
-        val shouldBlock = ruleManager.shouldBlockNotification()
-        val blockingRules = ruleManager.getBlockingRuleNames()
+        val outcome = ruleManager.evaluateNotification(notificationContext)
+        val shouldBlock = outcome.effects.any { it is Effect.SkipNotification }
+        val blockingRules = ruleManager.getBlockingRuleNames(notificationContext)
         
         InAppLogger.logDebug(TAG, "Should block notifications: $shouldBlock")
         InAppLogger.logDebug(TAG, "Blocking rules: $blockingRules")
@@ -330,7 +333,7 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = "Disable SpeakThat"
                 )
             )
@@ -341,7 +344,7 @@ class RuleSystemTest(private val context: Context) {
     
     /**
      * Test the fix for the blocking logic bug
-     * This test verifies that only rules with DISABLE_SPEAKTHAT actions block notifications
+     * This test verifies that only rules with SKIP_NOTIFICATION actions block notifications
      */
     fun testBlockingLogicFix() {
         InAppLogger.logDebug(TAG, "Test 8: Blocking logic fix verification")
@@ -356,7 +359,7 @@ class RuleSystemTest(private val context: Context) {
         // Enable the rules system
         AutomationModeManager(context).setMode(AutomationMode.CONDITIONAL_RULES)
         
-        // Test 1: Rule with DISABLE_SPEAKTHAT action should block
+        // Test 1: Rule with SKIP_NOTIFICATION action should block
         val blockingRule = Rule(
             name = "Blocking Rule",
             enabled = true,
@@ -369,14 +372,14 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = "Disable SpeakThat"
                 )
             )
         )
         ruleManager.addRule(blockingRule)
         
-        // Test 2: Rule with CHANGE_VOICE_SETTINGS action should NOT block
+        // Test 2: Rule with SET_MASTER_SWITCH action should NOT block
         val nonBlockingRule = Rule(
             name = "Non-Blocking Rule",
             enabled = true,
@@ -389,16 +392,20 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.DISABLE_SPEAKTHAT,
-                    description = "Skip this notification"
+                    type = ActionType.SET_MASTER_SWITCH,
+                    data = mapOf("enabled" to true),
+                    description = "Enable SpeakThat"
                 )
             )
         )
         ruleManager.addRule(nonBlockingRule)
         
+        val notificationContext = createTestNotificationContext()
+
         // Evaluate the rules
-        val shouldBlock = ruleManager.shouldBlockNotification()
-        val blockingRules = ruleManager.getBlockingRuleNames()
+        val outcome = ruleManager.evaluateNotification(notificationContext)
+        val shouldBlock = outcome.effects.any { it is Effect.SkipNotification }
+        val blockingRules = ruleManager.getBlockingRuleNames(notificationContext)
         
         InAppLogger.logDebug(TAG, "Blocking logic test results:")
         InAppLogger.logDebug(TAG, "- Should block notifications: $shouldBlock")
@@ -437,7 +444,7 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = "Disable SpeakThat when no headphones"
                 )
             ),
@@ -461,7 +468,7 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = "Disable SpeakThat when screen is on"
                 )
             ),
@@ -496,7 +503,7 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = "Disable SpeakThat during work hours when not on home WiFi"
                 )
             ),
@@ -529,7 +536,7 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = "Skip reading notifications"
                 )
             ),
@@ -557,7 +564,7 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = "Skip reading notifications"
                 )
             ),
@@ -594,7 +601,7 @@ class RuleSystemTest(private val context: Context) {
             ),
             actions = listOf(
                 Action(
-                    type = ActionType.DISABLE_SPEAKTHAT,
+                    type = ActionType.SKIP_NOTIFICATION,
                     description = "Skip reading notifications"
                 )
             ),
@@ -613,8 +620,10 @@ class RuleSystemTest(private val context: Context) {
      */
     fun getTestSummary(): String {
         val stats = ruleManager.getRuleStats()
-        val shouldBlock = ruleManager.shouldBlockNotification()
-        val blockingRules = ruleManager.getBlockingRuleNames()
+        val notificationContext = createTestNotificationContext()
+        val outcome = ruleManager.evaluateNotification(notificationContext)
+        val shouldBlock = outcome.effects.any { it is Effect.SkipNotification }
+        val blockingRules = ruleManager.getBlockingRuleNames(notificationContext)
         
         return """
             Rule System Test Summary:
@@ -626,5 +635,20 @@ class RuleSystemTest(private val context: Context) {
             - Should block notifications: $shouldBlock
             - Blocking rules: ${blockingRules.joinToString(", ")}
         """.trimIndent()
+    }
+
+    private fun createTestNotificationContext(): NotificationContext {
+        return NotificationContext(
+            packageName = "com.micoyc.speakthat.test",
+            title = "Test title",
+            text = "Test text",
+            bigText = null,
+            ticker = null,
+            category = null,
+            channelId = null,
+            isOngoing = false,
+            postTime = System.currentTimeMillis(),
+            extras = null
+        )
     }
 } 
