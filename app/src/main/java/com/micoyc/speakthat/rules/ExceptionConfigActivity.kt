@@ -1,11 +1,18 @@
 package com.micoyc.speakthat.rules
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.micoyc.speakthat.AccessibilityUtils
+import com.micoyc.speakthat.AppListManager
+import com.micoyc.speakthat.AppPickerActivity
 import com.micoyc.speakthat.InAppLogger
 import com.micoyc.speakthat.R
 import com.micoyc.speakthat.databinding.ActivityExceptionConfigBinding
@@ -23,6 +30,9 @@ class ExceptionConfigActivity : AppCompatActivity() {
     private var startTimeMillis: Long? = null
     private var endTimeMillis: Long? = null
     private val selectedDays = mutableSetOf<Int>()
+
+    private val selectedForegroundApps = mutableListOf<String>()
+    private lateinit var foregroundAppPickerLauncher: ActivityResultLauncher<Intent>
 
     companion object {
         const val EXTRA_EXCEPTION_TYPE = "exception_type"
@@ -51,7 +61,8 @@ class ExceptionConfigActivity : AppCompatActivity() {
             val exceptionData = intent.getStringExtra(EXTRA_EXCEPTION_DATA)
             originalException = Exception.fromJson(exceptionData ?: "")
         }
-        
+
+        setupForegroundAppPickerLauncher()
         setupUI()
         loadCurrentValues()
     }
@@ -70,6 +81,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
             ExceptionType.CHARGING_STATUS -> setupChargingStatusUI()
             ExceptionType.DEVICE_UNLOCKED -> setupDeviceUnlockedUI()
             ExceptionType.NOTIFICATION_CONTAINS -> setupNotificationContainsUI()
+            ExceptionType.FOREGROUND_APP -> setupForegroundAppUI()
             ExceptionType.SCREEN_ORIENTATION -> setupScreenOrientationUI()
             ExceptionType.SCREEN_STATE -> setupScreenStateUI()
             ExceptionType.TIME_SCHEDULE -> setupTimeScheduleUI()
@@ -134,6 +146,23 @@ class ExceptionConfigActivity : AppCompatActivity() {
 
     private fun setupNotificationContainsUI() {
         binding.cardNotificationContains.visibility = View.VISIBLE
+    }
+
+    private fun setupForegroundAppUI() {
+        binding.cardForegroundApp.visibility = View.VISIBLE
+        binding.textForegroundAppDescription.text = getString(R.string.trigger_foreground_app_description)
+        binding.btnManageForegroundApps.setOnClickListener {
+            if (!AccessibilityUtils.isAccessibilityServiceEnabled(this)) {
+                Toast.makeText(
+                    this,
+                    getString(R.string.trigger_foreground_app_accessibility_required),
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+            openForegroundAppPicker()
+        }
+        updateForegroundAppSummary()
     }
 
     private fun setupDeviceUnlockedUI() {
@@ -204,6 +233,41 @@ class ExceptionConfigActivity : AppCompatActivity() {
         binding.buttonSelectNetworks.setOnClickListener {
             showWifiNetworkSelection()
         }
+    }
+
+    private fun setupForegroundAppPickerLauncher() {
+        foregroundAppPickerLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK && result.data != null) {
+                val selected = result.data?.getStringArrayListExtra(
+                    AppPickerActivity.EXTRA_SELECTED_PACKAGES
+                ) ?: arrayListOf()
+                selectedForegroundApps.clear()
+                selectedForegroundApps.addAll(selected)
+                updateForegroundAppSummary()
+            }
+        }
+    }
+
+    private fun openForegroundAppPicker() {
+        val selectedPackages = ArrayList(selectedForegroundApps)
+        val intent = AppPickerActivity.createIntent(
+            this,
+            getString(R.string.trigger_foreground_app_title),
+            selectedPackages,
+            arrayListOf(),
+            false
+        )
+        foregroundAppPickerLauncher.launch(intent)
+    }
+
+    private fun updateForegroundAppSummary() {
+        val countText = getString(
+            R.string.trigger_foreground_app_selected_count,
+            selectedForegroundApps.size
+        )
+        binding.textForegroundAppsSummary.text = countText
     }
 
     private fun setupDaySelection() {
@@ -515,6 +579,18 @@ class ExceptionConfigActivity : AppCompatActivity() {
                     binding.checkNotificationCaseSensitive.isChecked = caseSensitive
                     binding.switchInvertNotificationContains.isChecked = exception.inverted
                 }
+                ExceptionType.FOREGROUND_APP -> {
+                    val packagesData = exception.data["app_packages"]
+                    val packages = when (packagesData) {
+                        is Set<*> -> packagesData.filterIsInstance<String>()
+                        is List<*> -> packagesData.filterIsInstance<String>()
+                        else -> emptyList()
+                    }
+                    selectedForegroundApps.clear()
+                    selectedForegroundApps.addAll(packages)
+                    binding.switchInvertForegroundApp.isChecked = exception.inverted
+                    updateForegroundAppSummary()
+                }
                 ExceptionType.SCREEN_ORIENTATION -> {
                     val mode = exception.data["mode"] as? String ?: "portrait"
                     val modeIndex = if (mode == "landscape") 1 else 0
@@ -670,6 +746,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
             ExceptionType.CHARGING_STATUS -> createChargingStatusException()
             ExceptionType.DEVICE_UNLOCKED -> createDeviceUnlockedException()
             ExceptionType.NOTIFICATION_CONTAINS -> createNotificationContainsException()
+            ExceptionType.FOREGROUND_APP -> createForegroundAppException()
             ExceptionType.SCREEN_ORIENTATION -> createScreenOrientationException()
             ExceptionType.SCREEN_STATE -> createScreenStateException()
             ExceptionType.TIME_SCHEDULE -> createTimeScheduleException()
@@ -817,6 +894,35 @@ class ExceptionConfigActivity : AppCompatActivity() {
                     "phrase" to phrase,
                     "case_sensitive" to caseSensitive
                 ),
+                description = description,
+                inverted = inverted
+            )
+        }
+    }
+
+    private fun createForegroundAppException(): Exception {
+        val selectedPackages = selectedForegroundApps.toSet()
+        val inverted = binding.switchInvertForegroundApp.isChecked
+        val description = if (selectedPackages.size == 1) {
+            val packageName = selectedPackages.first()
+            val appName = AppListManager.findAppByPackage(this, packageName)?.displayName ?: packageName
+            getString(R.string.rule_exception_foreground_app_single, appName)
+        } else {
+            getString(R.string.rule_exception_foreground_app_multiple, selectedPackages.size)
+        }.let { base ->
+            if (inverted) getString(R.string.rule_exception_foreground_app_not, base) else base
+        }
+
+        return if (isEditing && originalException != null) {
+            originalException!!.copy(
+                data = mapOf("app_packages" to selectedPackages),
+                description = description,
+                inverted = inverted
+            )
+        } else {
+            Exception(
+                type = ExceptionType.FOREGROUND_APP,
+                data = mapOf("app_packages" to selectedPackages),
                 description = description,
                 inverted = inverted
             )

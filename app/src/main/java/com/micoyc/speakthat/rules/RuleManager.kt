@@ -569,6 +569,17 @@ class RuleManager(private val context: Context) {
                     errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_case_sensitive))
                 }
             }
+            TriggerType.FOREGROUND_APP -> {
+                val packagesData = trigger.data["app_packages"]
+                val packages = when (packagesData) {
+                    is Set<*> -> packagesData.filterIsInstance<String>()
+                    is List<*> -> packagesData.filterIsInstance<String>()
+                    else -> emptyList()
+                }
+                if (packages.isEmpty() || !isStringSetOrList(packagesData)) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_foreground_apps))
+                }
+            }
             TriggerType.DEVICE_UNLOCKED -> {
                 val mode = trigger.data["mode"] as? String
                 if (mode !in setOf("locked", "unlocked")) {
@@ -647,6 +658,17 @@ class RuleManager(private val context: Context) {
                 }
                 if (caseSensitive != null && caseSensitive !is Boolean) {
                     errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_case_sensitive))
+                }
+            }
+            ExceptionType.FOREGROUND_APP -> {
+                val packagesData = exception.data["app_packages"]
+                val packages = when (packagesData) {
+                    is Set<*> -> packagesData.filterIsInstance<String>()
+                    is List<*> -> packagesData.filterIsInstance<String>()
+                    else -> emptyList()
+                }
+                if (packages.isEmpty() || !isStringSetOrList(packagesData)) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_foreground_apps))
                 }
             }
             ExceptionType.DEVICE_UNLOCKED -> {

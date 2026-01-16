@@ -1852,6 +1852,23 @@ Debido a inconsistencias en cómo diferentes dispositivos manejan las solicitude
     <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
     <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
 
+    <!-- Foreground App trigger -->
+    <string name="trigger_foreground_app_title">Foreground App</string>
+    <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>
+    <string name="trigger_foreground_app_manage_apps">Manage Apps</string>
+    <string name="trigger_foreground_app_selected_count">Selected: %1$d apps</string>
+    <string name="trigger_foreground_app_selected_count_default">Selected: 0 apps</string>
+    <string name="trigger_foreground_app_accessibility_required">Please go to General Settings and enable the Accessibility Permission</string>
+
+    <string name="rule_trigger_foreground_app_single">Foreground app is %1$s</string>
+    <string name="rule_trigger_foreground_app_multiple">Foreground app is one of %1$d apps</string>
+    <string name="rule_trigger_foreground_app_not">%1$s (inverted)</string>
+    <string name="rule_exception_foreground_app_single">Foreground app is %1$s</string>
+    <string name="rule_exception_foreground_app_multiple">Foreground app is one of %1$d apps</string>
+    <string name="rule_exception_foreground_app_not">%1$s (inverted)</string>
+
+    <string name="rule_error_invalid_foreground_apps">Foreground app selection is invalid</string>
+
     <!-- Device Unlocked trigger -->
     <string name="trigger_device_unlocked_title">Device Unlocked</string>
     <string name="trigger_device_unlocked_description">Condition is considered met when the device is locked or unlocked.</string>

@@ -3,6 +3,7 @@ package com.micoyc.speakthat.rules
 import android.content.Context
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
+import com.micoyc.speakthat.AppListManager
 import com.micoyc.speakthat.InAppLogger
 import java.lang.reflect.Type
 import kotlin.math.abs
@@ -252,6 +253,7 @@ enum class TriggerType(
     CHARGING_STATUS("Charging Status", "When the device is charging or discharging", true),
     DEVICE_UNLOCKED("Device Unlocked", "When the device is locked or unlocked", true),
     NOTIFICATION_CONTAINS("Notification Contains", "When notification contains a word or phrase", false),
+    FOREGROUND_APP("Foreground App", "When a specific app is in the foreground", false),
     SCREEN_ORIENTATION("Screen Orientation", "When the screen is portrait or landscape", true),
     SCREEN_STATE("Screen State (On/Off)", "When the screen is on or off", true),
     TIME_SCHEDULE("Time Schedule", "During specific time periods", true),
@@ -295,6 +297,7 @@ enum class ExceptionType(
     CHARGING_STATUS("Charging Status", "When the device is charging or discharging", true),
     DEVICE_UNLOCKED("Device Unlocked", "When the device is locked or unlocked", true),
     NOTIFICATION_CONTAINS("Notification Contains", "When notification contains a word or phrase", false),
+    FOREGROUND_APP("Foreground App", "When a specific app is in the foreground", false),
     SCREEN_ORIENTATION("Screen Orientation", "When the screen is portrait or landscape", true),
     SCREEN_STATE("Screen State (On/Off)", "When the screen is on or off", true),
     TIME_SCHEDULE("Time Schedule", "During specific time periods", true),
@@ -583,6 +586,26 @@ data class Rule(
                     ) + caseSuffix
                 }
             }
+            TriggerType.FOREGROUND_APP -> {
+                val packagesData = trigger.data["app_packages"]
+                val packages = when (packagesData) {
+                    is Set<*> -> packagesData.filterIsInstance<String>()
+                    is List<*> -> packagesData.filterIsInstance<String>()
+                    else -> emptyList()
+                }
+                val description = if (packages.size == 1) {
+                    val packageName = packages.first()
+                    val appName = AppListManager.findAppByPackage(context, packageName)?.displayName ?: packageName
+                    context.getString(com.micoyc.speakthat.R.string.rule_trigger_foreground_app_single, appName)
+                } else {
+                    context.getString(com.micoyc.speakthat.R.string.rule_trigger_foreground_app_multiple, packages.size)
+                }
+                if (trigger.inverted) {
+                    context.getString(com.micoyc.speakthat.R.string.rule_trigger_foreground_app_not, description)
+                } else {
+                    description
+                }
+            }
             TriggerType.BLUETOOTH_DEVICE -> {
                 if (trigger.inverted) {
                     context.getString(com.micoyc.speakthat.R.string.rule_trigger_bluetooth_disconnected)
@@ -778,6 +801,26 @@ data class Rule(
                         com.micoyc.speakthat.R.string.rule_exception_notification_contains,
                         phrase
                     ) + caseSuffix
+                }
+            }
+            ExceptionType.FOREGROUND_APP -> {
+                val packagesData = exception.data["app_packages"]
+                val packages = when (packagesData) {
+                    is Set<*> -> packagesData.filterIsInstance<String>()
+                    is List<*> -> packagesData.filterIsInstance<String>()
+                    else -> emptyList()
+                }
+                val description = if (packages.size == 1) {
+                    val packageName = packages.first()
+                    val appName = AppListManager.findAppByPackage(context, packageName)?.displayName ?: packageName
+                    context.getString(com.micoyc.speakthat.R.string.rule_exception_foreground_app_single, appName)
+                } else {
+                    context.getString(com.micoyc.speakthat.R.string.rule_exception_foreground_app_multiple, packages.size)
+                }
+                if (exception.inverted) {
+                    context.getString(com.micoyc.speakthat.R.string.rule_exception_foreground_app_not, description)
+                } else {
+                    description
                 }
             }
             ExceptionType.BLUETOOTH_DEVICE -> {

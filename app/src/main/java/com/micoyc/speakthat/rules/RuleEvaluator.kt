@@ -1,6 +1,8 @@
 package com.micoyc.speakthat.rules
 
 import android.content.Context
+import com.micoyc.speakthat.AccessibilityUtils
+import com.micoyc.speakthat.ForegroundAppTracker
 import com.micoyc.speakthat.InAppLogger
 import com.micoyc.speakthat.utils.WifiCapabilityChecker
 
@@ -228,6 +230,7 @@ class RuleEvaluator(private val context: Context) {
             TriggerType.CHARGING_STATUS -> evaluateChargingStatusTrigger(trigger)
             TriggerType.DEVICE_UNLOCKED -> evaluateDeviceUnlockedTrigger(trigger)
             TriggerType.NOTIFICATION_CONTAINS -> evaluateNotificationContainsTrigger(trigger, notificationContext)
+            TriggerType.FOREGROUND_APP -> evaluateForegroundAppTrigger(trigger)
             TriggerType.SCREEN_ORIENTATION -> evaluateScreenOrientationTrigger(trigger)
             TriggerType.BLUETOOTH_DEVICE -> evaluateBluetoothTrigger(trigger)
             TriggerType.SCREEN_STATE -> evaluateScreenStateTrigger(trigger)
@@ -321,6 +324,7 @@ class RuleEvaluator(private val context: Context) {
             ExceptionType.CHARGING_STATUS -> evaluateChargingStatusException(exception)
             ExceptionType.DEVICE_UNLOCKED -> evaluateDeviceUnlockedException(exception)
             ExceptionType.NOTIFICATION_CONTAINS -> evaluateNotificationContainsException(exception, notificationContext)
+            ExceptionType.FOREGROUND_APP -> evaluateForegroundAppException(exception)
             ExceptionType.SCREEN_ORIENTATION -> evaluateScreenOrientationException(exception)
             ExceptionType.BLUETOOTH_DEVICE -> evaluateBluetoothException(exception)
             ExceptionType.SCREEN_STATE -> evaluateScreenStateException(exception)
@@ -598,6 +602,56 @@ class RuleEvaluator(private val context: Context) {
                 message = "Notification contains evaluation error: ${e.message}"
             )
         }
+    }
+
+    private fun evaluateForegroundAppTrigger(trigger: Trigger): EvaluationResult {
+        InAppLogger.logDebug(TAG, "Evaluating Foreground App trigger: ${trigger.getLogMessage()}")
+        val packagesData = trigger.data["app_packages"]
+        val packages = when (packagesData) {
+            is Set<*> -> packagesData.filterIsInstance<String>()
+            is List<*> -> packagesData.filterIsInstance<String>()
+            else -> emptyList()
+        }
+
+        if (packages.isEmpty()) {
+            InAppLogger.logDebug(TAG, "Foreground app trigger has no selected packages")
+            return EvaluationResult(false, "No foreground apps selected")
+        }
+
+        if (!AccessibilityUtils.isAccessibilityServiceEnabled(context)) {
+            InAppLogger.logDebug(TAG, "Accessibility service not enabled for foreground app detection")
+            return EvaluationResult(false, "Accessibility service not enabled for foreground app detection")
+        }
+
+        val currentPackage = ForegroundAppTracker.getCurrentPackage()
+        val effectivePackage = ForegroundAppTracker.getEffectivePackage(15000L)
+        if (effectivePackage.isNullOrBlank()) {
+            InAppLogger.logDebug(TAG, "Foreground app package is unknown (no accessibility events yet)")
+            return EvaluationResult(false, "Foreground app unknown")
+        }
+
+        val lastUpdatedAt = ForegroundAppTracker.getLastUpdatedAt()
+        val ageMs = System.currentTimeMillis() - lastUpdatedAt
+        InAppLogger.logDebug(
+            TAG,
+            "Foreground app detected: current=$currentPackage effective=$effectivePackage (age=${ageMs}ms)"
+        )
+
+        val isMatch = packages.any { it.equals(effectivePackage, ignoreCase = true) }
+        val message = if (isMatch) {
+            "Foreground app matches: $effectivePackage"
+        } else {
+            "Foreground app does not match: $effectivePackage"
+        }
+        return EvaluationResult(
+            isMatch,
+            message,
+            mapOf<String, Any>(
+                "current_package" to (currentPackage ?: ""),
+                "effective_package" to effectivePackage,
+                "foreground_age_ms" to ageMs
+            )
+        )
     }
     /**
      * Check if the app has the necessary Bluetooth permissions
@@ -1193,6 +1247,56 @@ class RuleEvaluator(private val context: Context) {
             type = TriggerType.NOTIFICATION_CONTAINS,
             data = exception.data
         ), notificationContext)
+    }
+
+    private fun evaluateForegroundAppException(exception: Exception): EvaluationResult {
+        InAppLogger.logDebug(TAG, "Evaluating Foreground App exception: ${exception.getLogMessage()}")
+        val packagesData = exception.data["app_packages"]
+        val packages = when (packagesData) {
+            is Set<*> -> packagesData.filterIsInstance<String>()
+            is List<*> -> packagesData.filterIsInstance<String>()
+            else -> emptyList()
+        }
+
+        if (packages.isEmpty()) {
+            InAppLogger.logDebug(TAG, "Foreground app exception has no selected packages")
+            return EvaluationResult(false, "No foreground apps selected")
+        }
+
+        if (!AccessibilityUtils.isAccessibilityServiceEnabled(context)) {
+            InAppLogger.logDebug(TAG, "Accessibility service not enabled for foreground app detection")
+            return EvaluationResult(false, "Accessibility service not enabled for foreground app detection")
+        }
+
+        val currentPackage = ForegroundAppTracker.getCurrentPackage()
+        val effectivePackage = ForegroundAppTracker.getEffectivePackage(15000L)
+        if (effectivePackage.isNullOrBlank()) {
+            InAppLogger.logDebug(TAG, "Foreground app package is unknown (no accessibility events yet)")
+            return EvaluationResult(false, "Foreground app unknown")
+        }
+
+        val lastUpdatedAt = ForegroundAppTracker.getLastUpdatedAt()
+        val ageMs = System.currentTimeMillis() - lastUpdatedAt
+        InAppLogger.logDebug(
+            TAG,
+            "Foreground app detected: current=$currentPackage effective=$effectivePackage (age=${ageMs}ms)"
+        )
+
+        val isMatch = packages.any { it.equals(effectivePackage, ignoreCase = true) }
+        val message = if (isMatch) {
+            "Foreground app matches: $effectivePackage"
+        } else {
+            "Foreground app does not match: $effectivePackage"
+        }
+        return EvaluationResult(
+            isMatch,
+            message,
+            mapOf<String, Any>(
+                "current_package" to (currentPackage ?: ""),
+                "effective_package" to effectivePackage,
+                "foreground_age_ms" to ageMs
+            )
+        )
     }
 
     private fun evaluateScreenStateException(exception: Exception): EvaluationResult {

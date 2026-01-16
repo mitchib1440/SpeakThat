@@ -1,12 +1,19 @@
 package com.micoyc.speakthat.rules
 
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.micoyc.speakthat.AccessibilityUtils
+import com.micoyc.speakthat.AppListManager
+import com.micoyc.speakthat.AppPickerActivity
 import com.micoyc.speakthat.InAppLogger
 import com.micoyc.speakthat.R
 import com.micoyc.speakthat.databinding.ActivityTriggerConfigBinding
@@ -20,6 +27,9 @@ class TriggerConfigActivity : AppCompatActivity() {
     private var triggerType: TriggerType? = null
     private var originalTrigger: Trigger? = null
     private var isEditing = false
+
+    private val selectedForegroundApps = mutableListOf<String>()
+    private lateinit var foregroundAppPickerLauncher: ActivityResultLauncher<Intent>
     
 
     
@@ -44,6 +54,7 @@ class TriggerConfigActivity : AppCompatActivity() {
             originalTrigger = Trigger.fromJson(triggerData ?: "")
         }
         
+        setupForegroundAppPickerLauncher()
         setupUI()
         loadCurrentValues()
     }
@@ -62,6 +73,7 @@ class TriggerConfigActivity : AppCompatActivity() {
             TriggerType.CHARGING_STATUS -> setupChargingStatusUI()
             TriggerType.DEVICE_UNLOCKED -> setupDeviceUnlockedUI()
             TriggerType.NOTIFICATION_CONTAINS -> setupNotificationContainsUI()
+            TriggerType.FOREGROUND_APP -> setupForegroundAppUI()
             TriggerType.SCREEN_ORIENTATION -> setupScreenOrientationUI()
             TriggerType.SCREEN_STATE -> setupScreenStateUI()
             TriggerType.TIME_SCHEDULE -> setupTimeScheduleUI()
@@ -126,6 +138,23 @@ class TriggerConfigActivity : AppCompatActivity() {
 
     private fun setupNotificationContainsUI() {
         binding.cardNotificationContains.visibility = View.VISIBLE
+    }
+
+    private fun setupForegroundAppUI() {
+        binding.cardForegroundApp.visibility = View.VISIBLE
+        binding.textForegroundAppDescription.text = getString(R.string.trigger_foreground_app_description)
+        binding.btnManageForegroundApps.setOnClickListener {
+            if (!AccessibilityUtils.isAccessibilityServiceEnabled(this)) {
+                Toast.makeText(
+                    this,
+                    getString(R.string.trigger_foreground_app_accessibility_required),
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+            openForegroundAppPicker()
+        }
+        updateForegroundAppSummary()
     }
 
     private fun setupDeviceUnlockedUI() {
@@ -201,6 +230,41 @@ class TriggerConfigActivity : AppCompatActivity() {
         binding.btnSelectNetworks.setOnClickListener {
             showWifiNetworkSelection()
         }
+    }
+
+    private fun setupForegroundAppPickerLauncher() {
+        foregroundAppPickerLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK && result.data != null) {
+                val selected = result.data?.getStringArrayListExtra(
+                    AppPickerActivity.EXTRA_SELECTED_PACKAGES
+                ) ?: arrayListOf()
+                selectedForegroundApps.clear()
+                selectedForegroundApps.addAll(selected)
+                updateForegroundAppSummary()
+            }
+        }
+    }
+
+    private fun openForegroundAppPicker() {
+        val selectedPackages = ArrayList(selectedForegroundApps)
+        val intent = AppPickerActivity.createIntent(
+            this,
+            getString(R.string.trigger_foreground_app_title),
+            selectedPackages,
+            arrayListOf(),
+            false
+        )
+        foregroundAppPickerLauncher.launch(intent)
+    }
+
+    private fun updateForegroundAppSummary() {
+        val countText = getString(
+            R.string.trigger_foreground_app_selected_count,
+            selectedForegroundApps.size
+        )
+        binding.textForegroundAppsSummary.text = countText
     }
     
     private fun showWifiCompatibilityWarning() {
@@ -582,6 +646,18 @@ class TriggerConfigActivity : AppCompatActivity() {
                     binding.checkNotificationCaseSensitive.isChecked = caseSensitive
                     binding.switchInvertNotificationContains.isChecked = trigger.inverted
                 }
+                TriggerType.FOREGROUND_APP -> {
+                    val packagesData = trigger.data["app_packages"]
+                    val packages = when (packagesData) {
+                        is Set<*> -> packagesData.filterIsInstance<String>()
+                        is List<*> -> packagesData.filterIsInstance<String>()
+                        else -> emptyList()
+                    }
+                    selectedForegroundApps.clear()
+                    selectedForegroundApps.addAll(packages)
+                    binding.switchInvertForegroundApp.isChecked = trigger.inverted
+                    updateForegroundAppSummary()
+                }
                 TriggerType.SCREEN_ORIENTATION -> {
                     val mode = trigger.data["mode"] as? String ?: "portrait"
                     val modeIndex = if (mode == "landscape") 1 else 0
@@ -781,6 +857,7 @@ class TriggerConfigActivity : AppCompatActivity() {
             TriggerType.CHARGING_STATUS -> createChargingStatusTrigger()
             TriggerType.DEVICE_UNLOCKED -> createDeviceUnlockedTrigger()
             TriggerType.NOTIFICATION_CONTAINS -> createNotificationContainsTrigger()
+            TriggerType.FOREGROUND_APP -> createForegroundAppTrigger()
             TriggerType.SCREEN_ORIENTATION -> createScreenOrientationTrigger()
             TriggerType.SCREEN_STATE -> createScreenStateTrigger()
             TriggerType.TIME_SCHEDULE -> createTimeScheduleTrigger()
@@ -928,6 +1005,35 @@ class TriggerConfigActivity : AppCompatActivity() {
                     "phrase" to phrase,
                     "case_sensitive" to caseSensitive
                 ),
+                description = description,
+                inverted = inverted
+            )
+        }
+    }
+
+    private fun createForegroundAppTrigger(): Trigger {
+        val selectedPackages = selectedForegroundApps.toSet()
+        val inverted = binding.switchInvertForegroundApp.isChecked
+        val description = if (selectedPackages.size == 1) {
+            val packageName = selectedPackages.first()
+            val appName = AppListManager.findAppByPackage(this, packageName)?.displayName ?: packageName
+            getString(R.string.rule_trigger_foreground_app_single, appName)
+        } else {
+            getString(R.string.rule_trigger_foreground_app_multiple, selectedPackages.size)
+        }.let { base ->
+            if (inverted) getString(R.string.rule_trigger_foreground_app_not, base) else base
+        }
+
+        return if (isEditing && originalTrigger != null) {
+            originalTrigger!!.copy(
+                data = mapOf("app_packages" to selectedPackages),
+                description = description,
+                inverted = inverted
+            )
+        } else {
+            Trigger(
+                type = TriggerType.FOREGROUND_APP,
+                data = mapOf("app_packages" to selectedPackages),
                 description = description,
                 inverted = inverted
             )

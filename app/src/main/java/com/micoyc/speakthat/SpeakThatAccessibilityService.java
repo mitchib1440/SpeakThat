@@ -51,7 +51,9 @@ public class SpeakThatAccessibilityService extends AccessibilityService {
         // FLAG_REQUEST_FILTER_KEY_EVENTS is crucial for intercepting hardware key events
         AccessibilityServiceInfo info = new AccessibilityServiceInfo();
         info.eventTypes = AccessibilityEvent.TYPE_VIEW_CLICKED |
-                         AccessibilityEvent.TYPE_VIEW_FOCUSED;
+                         AccessibilityEvent.TYPE_VIEW_FOCUSED |
+                         AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED |
+                         AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
         info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
         info.flags = AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS |
                     AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS |
@@ -64,8 +66,20 @@ public class SpeakThatAccessibilityService extends AccessibilityService {
     
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        // Handle accessibility events if needed
-        // Currently not used, but available for future features
+        if (event == null) {
+            return;
+        }
+
+        // Track foreground app for rule conditions
+        int eventType = event.getEventType();
+        if (eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED ||
+            eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED ||
+            eventType == AccessibilityEvent.TYPE_VIEW_FOCUSED) {
+            CharSequence pkg = event.getPackageName();
+            if (pkg != null) {
+                ForegroundAppTracker.INSTANCE.updateForegroundPackage(pkg.toString());
+            }
+        }
     }
     
     @Override
