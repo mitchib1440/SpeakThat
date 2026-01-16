@@ -5222,6 +5222,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         
                         // Unregister sensors
                         unregisterShakeListener()
+
+                        // Ensure media behavior effects are cleaned up (resume paused media, restore volume)
+                        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                            cleanupMediaBehavior()
+                        }, 250)
                         
                         Log.d(TAG, "Content Cap cleanup completed")
                         InAppLogger.logTTSEvent("TTS stopped by Content Cap", "Time limit: ${contentCapTimeLimit}s")
