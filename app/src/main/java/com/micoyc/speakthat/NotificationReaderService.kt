@@ -89,6 +89,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var wasSensorCoveredAtStart = false
     private var isSensorCurrentlyCovered = false
     private var hasSensorBeenUncovered = false
+    private var hasCapturedStartProximity = false
+    private var speechStartTimestamp = 0L
+    private var lastProximityValue = Float.NaN
+    private var lastProximityTimestamp = 0L
+    private var lastProximityIsNear = false
+    private var lastFarTimestamp = 0L
+    private var nearStableStartTimestamp = 0L
     
     // Media behavior settings
     private var originalMusicVolume = -1 // Store original volume for restoration
@@ -304,6 +311,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val DEFAULT_CONTENT_CAP_WORD_COUNT = 6
         private const val DEFAULT_CONTENT_CAP_SENTENCE_COUNT = 1
         private const val DEFAULT_CONTENT_CAP_TIME_LIMIT = 10
+
+        // Wave detection reliability settings
+        private const val WAVE_DEBOUNCE_MS = 250L
+        private const val WAVE_NEAR_FAR_NEAR_WINDOW_MS = 1500L
+        private const val PROXIMITY_START_SNAPSHOT_MAX_AGE_MS = 2000L
+        private const val WAVE_STARTUP_GRACE_MS = 400L
         
         // TTS Recovery settings - Enhanced for Android 15 compatibility
         private const val MAX_TTS_RECOVERY_ATTEMPTS = 5 // Increased for Android 15
@@ -2974,6 +2987,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         } else if (event.sensor.type == Sensor.TYPE_PROXIMITY && isWaveToStopEnabled) {
             // Proximity sensor returns distance in cm
             val proximityValue = event.values[0]
+            val now = System.currentTimeMillis()
+            val maxRange = proximitySensor?.maximumRange ?: 5.0f
             
             // Log proximity sensor values for debugging (but limit frequency to avoid spam)
             if (System.currentTimeMillis() % 5000 < 100) { // Log roughly every 5 seconds
@@ -2982,7 +2997,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             // Handle different proximity sensor behaviors:
             // Some sensors return 0 when close, others return actual distance
-            val isTriggered = if (proximityValue == 0f) {
+            val isNear = if (proximityValue == 0f) {
                 // Sensor returns 0 when object is very close (most common)
                 true
             } else {
@@ -2990,31 +3005,71 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 // Use < instead of <= to avoid triggering when sensor is at max range
                 // ADDITIONAL SAFETY: Only trigger if the value is significantly different from max range
                 // This prevents false triggers on devices like Pixel 2 XL that read ~5cm when uncovered
-                val maxRange = proximitySensor?.maximumRange ?: 5.0f
                 val significantChange = maxRange * 0.3f // Require at least 30% change from max
                 val distanceFromMax = maxRange - proximityValue
-                
                 proximityValue < waveThreshold && distanceFromMax > significantChange
             }
             
             // Track sensor state changes for pocket mode
             val wasCovered = isSensorCurrentlyCovered
-            isSensorCurrentlyCovered = isTriggered
+            isSensorCurrentlyCovered = isNear
+            lastProximityValue = proximityValue
+            lastProximityTimestamp = now
+            lastProximityIsNear = isNear
+            if (!isSensorCurrentlyCovered) {
+                lastFarTimestamp = now
+            }
             
-            // If sensor was uncovered and is now covered, mark that it has been uncovered
-            if (!wasCovered && isSensorCurrentlyCovered) {
+            // Capture initial proximity state if pocket mode is enabled and not yet captured
+            if (isPocketModeEnabled && !hasCapturedStartProximity && isCurrentlySpeaking) {
+                wasSensorCoveredAtStart = isNear
+                hasCapturedStartProximity = true
+                Log.d(TAG, "Pocket mode: Initial proximity captured during speech - covered at start: $wasSensorCoveredAtStart")
+                if (isNear && now - speechStartTimestamp <= WAVE_STARTUP_GRACE_MS) {
+                    Log.d(TAG, "Pocket mode: Ignoring near reading during startup grace window")
+                    return
+                }
+            }
+
+            // Track sensor state transitions
+            if (wasCovered && !isSensorCurrentlyCovered) {
                 hasSensorBeenUncovered = true
-                Log.d(TAG, "Pocket mode: Sensor covered - has been uncovered: $hasSensorBeenUncovered")
+                lastFarTimestamp = now
+                Log.d(TAG, "Pocket mode: Sensor uncovered - has been uncovered: $hasSensorBeenUncovered")
+            } else if (!wasCovered && isSensorCurrentlyCovered) {
+                nearStableStartTimestamp = now
+            }
+
+            if (!isSensorCurrentlyCovered) {
+                nearStableStartTimestamp = 0L
             }
             
             // Pocket mode logic: if enabled, check if sensor was already covered when readout started
-            if (isTriggered) {
+            if (isNear) {
+                if (nearStableStartTimestamp == 0L) {
+                    nearStableStartTimestamp = now
+                }
+                val nearStableMs = now - nearStableStartTimestamp
+                val hasRecentFar = lastFarTimestamp >= speechStartTimestamp &&
+                        now - lastFarTimestamp <= WAVE_NEAR_FAR_NEAR_WINDOW_MS
+
+                // Debounce to avoid single-sample glitches
+                if (nearStableMs < WAVE_DEBOUNCE_MS) {
+                    return
+                }
+
                 if (isPocketModeEnabled && wasSensorCoveredAtStart && !hasSensorBeenUncovered) {
                     // In pocket mode, if sensor was covered at start and hasn't been uncovered yet, continue readout
                     Log.d(TAG, "Pocket mode: Sensor covered but was already covered at start and hasn't been uncovered - continuing readout")
                     return
                 } else {
-                    Log.d(TAG, "Wave detected! Stopping TTS. Proximity value: $proximityValue cm, threshold: $waveThreshold cm, pocket mode: $isPocketModeEnabled, was covered at start: $wasSensorCoveredAtStart, has been uncovered: $hasSensorBeenUncovered")
+                    // For binary sensors that report 0.0cm when near, require a recent far reading
+                    if (proximityValue == 0f && !hasRecentFar) {
+                        Log.d(TAG, "Wave near ignored (binary sensor) - no recent far reading within window")
+                        return
+                    }
+
+                    Log.d(TAG, "Wave detected! Stopping TTS. Proximity value: $proximityValue cm, threshold: $waveThreshold cm, pocket mode: $isPocketModeEnabled, was covered at start: $wasSensorCoveredAtStart, has been uncovered: $hasSensorBeenUncovered, nearStableMs: $nearStableMs")
                     InAppLogger.logSystemEvent("Wave detected", "Proximity: ${proximityValue}cm, threshold: ${waveThreshold}cm")
                     stopSpeaking("wave")
                 }
@@ -5001,11 +5056,23 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Show reading notification if enabled (now integrated into foreground notification)
         // showReadingNotification(currentAppName, currentSpeechText)
         
-        // Set pocket mode tracking variables
+        // Set wave/pocket mode tracking variables
+        speechStartTimestamp = System.currentTimeMillis()
+        nearStableStartTimestamp = 0L
+        lastFarTimestamp = 0L
+        hasCapturedStartProximity = false
         if (isPocketModeEnabled) {
-            wasSensorCoveredAtStart = isSensorCurrentlyCovered
             hasSensorBeenUncovered = false
-            Log.d(TAG, "Pocket mode: Readout starting - was sensor covered at start: $wasSensorCoveredAtStart")
+            val hasRecentProximitySample =
+                speechStartTimestamp - lastProximityTimestamp <= PROXIMITY_START_SNAPSHOT_MAX_AGE_MS
+            if (hasRecentProximitySample) {
+                wasSensorCoveredAtStart = lastProximityIsNear
+                hasCapturedStartProximity = true
+                Log.d(TAG, "Pocket mode: Readout starting - using recent proximity sample, covered at start: $wasSensorCoveredAtStart")
+            } else {
+                wasSensorCoveredAtStart = false
+                Log.d(TAG, "Pocket mode: Readout starting - no recent proximity sample, defaulting to uncovered")
+            }
         }
         
         // Register shake listener now that we're about to speak
