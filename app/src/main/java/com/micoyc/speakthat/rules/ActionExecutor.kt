@@ -45,6 +45,30 @@ class ActionExecutor(private val context: Context) {
         InAppLogger.logDebug(TAG, "Executing action: ${action.getLogMessage()}")
 
         return when (action.type) {
+            ActionType.APPLY_CUSTOM_SPEECH_FORMAT -> {
+                ActionExecutionResult(
+                    actionId = action.id,
+                    actionType = action.type,
+                    success = true,
+                    message = "Custom speech format handled by rule pipeline"
+                )
+            }
+            ActionType.FORCE_PRIVATE -> {
+                ActionExecutionResult(
+                    actionId = action.id,
+                    actionType = action.type,
+                    success = true,
+                    message = "Force private handled by rule pipeline"
+                )
+            }
+            ActionType.OVERRIDE_PRIVATE -> {
+                ActionExecutionResult(
+                    actionId = action.id,
+                    actionType = action.type,
+                    success = true,
+                    message = "Override private handled by rule pipeline"
+                )
+            }
             ActionType.SKIP_NOTIFICATION,
             ActionType.DISABLE_SPEAKTHAT -> {
                 ActionExecutionResult(

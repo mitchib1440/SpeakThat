@@ -1294,6 +1294,48 @@ Bedingungen, die erfüllt sein müssen, um diese Regel zu aktivieren
     <string name="action_disable_description">
 Diese Aktion wird SpeakThat komplett deaktivieren, wenn die Regel ausgelöst wird.
 </string>
+    <string name="action_custom_speech_format_title">Apply Custom Speech Format</string>
+    <string name="action_custom_speech_format_description">Read this notification using a custom speech format.</string>
+    <string name="action_custom_speech_format_preset_label">Preset</string>
+    <string name="action_custom_speech_format_label">Speech Format</string>
+    <string name="action_custom_speech_format_hint">Enter speech format</string>
+    <string name="action_force_private_title">Force Private</string>
+    <string name="action_force_private_description">Read the app name, but not the notification content.</string>
+    <string name="action_override_private_title">Override Private</string>
+    <string name="action_override_private_description">Read the entire notification, even if it would normally be in private mode.</string>
+    <string name="action_custom_speech_placeholders_title">Placeholders</string>
+    <string name="action_custom_speech_placeholders_hint">Tap a placeholder to add it to your format.</string>
+    <string name="speech_placeholder_app_label">{app}</string>
+    <string name="speech_placeholder_app_desc">App display name</string>
+    <string name="speech_placeholder_package_label">{package}</string>
+    <string name="speech_placeholder_package_desc">Package name (e.g., "com.google.android.apps.messaging")</string>
+    <string name="speech_placeholder_content_label">{content}</string>
+    <string name="speech_placeholder_content_desc">Full notification (title + text combined)</string>
+    <string name="speech_placeholder_title_label">{title}</string>
+    <string name="speech_placeholder_title_desc">Notification title only</string>
+    <string name="speech_placeholder_text_label">{text}</string>
+    <string name="speech_placeholder_text_desc">Notification text only</string>
+    <string name="speech_placeholder_bigtext_label">{bigtext}</string>
+    <string name="speech_placeholder_bigtext_desc">Big text content (expanded notification)</string>
+    <string name="speech_placeholder_summary_label">{summary}</string>
+    <string name="speech_placeholder_summary_desc">Summary text (e.g., "1 new message")</string>
+    <string name="speech_placeholder_info_label">{info}</string>
+    <string name="speech_placeholder_info_desc">Info text (additional details)</string>
+    <string name="speech_placeholder_ticker_label">{ticker}</string>
+    <string name="speech_placeholder_ticker_desc">Legacy ticker text (older apps only; often empty on modern notifications)</string>
+    <string name="speech_placeholder_time_label">{time}</string>
+    <string name="speech_placeholder_time_desc">Current time in HH:mm format (e.g., "14:30")</string>
+    <string name="speech_placeholder_date_label">{date}</string>
+    <string name="speech_placeholder_date_desc">Current date in MMM dd format (e.g., "Dec 15")</string>
+    <string name="speech_placeholder_timestamp_label">{timestamp}</string>
+    <string name="speech_placeholder_timestamp_desc">Full timestamp (e.g., "14:30 Dec 15")</string>
+    <string name="speech_placeholder_priority_label">{priority}</string>
+    <string name="speech_placeholder_priority_desc">Priority level (Min, Low, Default, High, Max)</string>
+    <string name="speech_placeholder_category_label">{category}</string>
+    <string name="speech_placeholder_category_desc">Notification category (Message, Call, etc.)</string>
+    <string name="speech_placeholder_channel_label">{channel}</string>
+    <string name="speech_placeholder_channel_desc">Notification channel ID</string>
+    <string name="action_skip_notification_title">Skip this notification</string>
     <string name="action_enable_app_filter">App-Filter aktivieren</string>
     <string name="action_enable_app_description">Wählen Sie die App für die Filterung aus:</string>
     <string name="action_select_app">App auswählen</string>
@@ -1945,5 +1987,85 @@ Es kann nicht festgestellt werden, ob Benachrichtigungen gelesen werden sollten
     <string name="rule_error_invalid_days_of_week">Days of week must be numbers from 0 to 6</string>
     <string name="rule_error_invalid_wifi_networks">WiFi network list is invalid</string>
     <string name="rule_error_invalid_master_switch">Master switch action requires enabled true or false</string>
+    <string name="rule_error_invalid_speech_template">Speech format cannot be empty</string>
     <string name="rule_action_master_switch">Set SpeakThat master switch</string>
+    <string name="rule_action_custom_speech_format">Apply custom speech format</string>
+    <string name="rule_action_force_private">Force private mode</string>
+    <string name="rule_action_override_private">Override private mode</string>
+
+    <!-- Rule validation: battery/charging -->
+    <string name="rule_error_invalid_battery_mode">Battery mode must be above or below</string>
+    <string name="rule_error_invalid_battery_percentage">Battery percentage must be between 0 and 100</string>
+    <string name="rule_error_invalid_charging_status">Charging status must be charging or discharging</string>
+
+    <!-- Trigger menu labels -->
+    <string name="trigger_bluetooth_device_connected">Bluetooth Device Connected</string>
+    <string name="trigger_screen_state_title">Screen State (On/Off)</string>
+    <string name="trigger_wifi_network_connected">WiFi Network Connected</string>
+
+    <!-- Battery Percentage trigger -->
+    <string name="trigger_battery_percentage_title">Battery Percentage</string>
+    <string name="trigger_battery_percentage_description">Condition is considered met when the battery is above or below a certain percentage.</string>
+    <string name="trigger_battery_mode_label">Mode</string>
+    <string name="trigger_battery_mode_above">Above</string>
+    <string name="trigger_battery_mode_below">Below</string>
+    <string name="trigger_battery_percentage_default">Selected value: 50%</string>
+    <string name="trigger_battery_percentage_value">Selected value: %d%%</string>
+
+    <!-- Charging Status trigger -->
+    <string name="trigger_charging_status_title">Charging Status</string>
+    <string name="trigger_charging_status_description">Condition is considered met when your device is being charged.</string>
+    <string name="trigger_charging_status_label">Status</string>
+    <string name="trigger_battery_status_charging">Charging</string>
+    <string name="trigger_battery_status_discharging">Discharging</string>
+
+    <!-- Battery trigger descriptions -->
+    <string name="rule_trigger_battery_above">Battery is above %d%%</string>
+    <string name="rule_trigger_battery_below">Battery is below %d%%</string>
+    <string name="rule_trigger_battery_charging">Device is charging</string>
+    <string name="rule_trigger_battery_discharging">Device is discharging</string>
+    <string name="rule_exception_battery_above">Battery is above %d%%</string>
+    <string name="rule_exception_battery_below">Battery is below %d%%</string>
+    <string name="rule_exception_battery_charging">Device is charging</string>
+    <string name="rule_exception_battery_discharging">Device is discharging</string>
+
+    <!-- Notification Contains trigger -->
+    <string name="trigger_notification_contains_title">Notification Contains</string>
+    <string name="trigger_notification_contains_description">Condition will be considered met when a specific word or phrase is found in the notification.</string>
+    <string name="trigger_notification_contains_hint">Enter word or phrase</string>
+    <string name="trigger_notification_contains_case_sensitive">Case-sensitive</string>
+
+    <string name="rule_trigger_notification_contains">Notification contains "%1$s"</string>
+    <string name="rule_trigger_notification_not_contains">Notification does not contain "%1$s"</string>
+    <string name="rule_exception_notification_contains">Notification contains "%1$s"</string>
+    <string name="rule_exception_notification_not_contains">Notification does not contain "%1$s"</string>
+    <string name="rule_trigger_case_sensitive_suffix"> (case-sensitive)</string>
+    <string name="rule_exception_case_sensitive_suffix"> (case-sensitive)</string>
+
+    <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
+    <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
+
+    <!-- Device Unlocked trigger -->
+    <string name="trigger_device_unlocked_title">Device Unlocked</string>
+    <string name="trigger_device_unlocked_description">Condition is considered met when the device is locked or unlocked.</string>
+    <string name="trigger_device_unlocked_mode_label">Mode</string>
+    <string name="trigger_device_unlocked_mode_unlocked">Unlocked</string>
+    <string name="trigger_device_unlocked_mode_locked">Locked</string>
+    <string name="rule_trigger_device_unlocked">Device is unlocked</string>
+    <string name="rule_trigger_device_locked">Device is locked</string>
+    <string name="rule_exception_device_unlocked">Device is unlocked</string>
+    <string name="rule_exception_device_locked">Device is locked</string>
+    <string name="rule_error_invalid_unlock_mode">Unlock mode must be locked or unlocked</string>
+
+    <!-- Screen Orientation trigger -->
+    <string name="trigger_screen_orientation_title">Screen Orientation</string>
+    <string name="trigger_screen_orientation_description">Condition is considered met when your screen is either in portrait mode or landscape mode.</string>
+    <string name="trigger_screen_orientation_mode_label">Mode</string>
+    <string name="trigger_screen_orientation_portrait">Portrait</string>
+    <string name="trigger_screen_orientation_landscape">Landscape</string>
+    <string name="rule_trigger_orientation_portrait">Screen is portrait</string>
+    <string name="rule_trigger_orientation_landscape">Screen is landscape</string>
+    <string name="rule_exception_orientation_portrait">Screen is portrait</string>
+    <string name="rule_exception_orientation_landscape">Screen is landscape</string>
+    <string name="rule_error_invalid_orientation_mode">Orientation mode must be portrait or landscape</string>
 </resources>

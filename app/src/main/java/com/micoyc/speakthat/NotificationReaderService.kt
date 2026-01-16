@@ -347,7 +347,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val isPriority: Boolean = false,
         val conditionalDelaySeconds: Int = -1,
         val sbn: StatusBarNotification? = null,
-        val originalAppName: String? = null // Original app name for statistics (before privacy modification)
+        val originalAppName: String? = null, // Original app name for statistics (before privacy modification)
+        val speechTemplateOverride: SpeechTemplateOverride? = null
     )
     
     override fun onCreate() {
@@ -949,7 +950,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         addToHistory(finalAppName, packageName, filterResult.processedText)
                         
                         // Handle notification based on behavior mode (pass conditional delay info)
-                        handleNotificationBehavior(packageName, finalAppName, filterResult.processedText, filterResult.conditionalDelaySeconds, sbn)
+                        handleNotificationBehavior(
+                            packageName,
+                            finalAppName,
+                            filterResult.processedText,
+                            filterResult.conditionalDelaySeconds,
+                            sbn,
+                            filterResult.speechTemplateOverride
+                        )
                     } else {
                         // Always log the full blocking reason with details
                         val reasonType = extractBlockingReasonType(filterResult.reason)
@@ -2201,7 +2209,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val shouldSpeak: Boolean,
         val processedText: String,
         val reason: String = "",
-        val conditionalDelaySeconds: Int = -1 // -1 means no conditional delay
+        val conditionalDelaySeconds: Int = -1, // -1 means no conditional delay
+        val speechTemplateOverride: SpeechTemplateOverride? = null
+    )
+
+    data class SpeechTemplateOverride(
+        val template: String,
+        val templateKey: String? = null
     )
     
     /**
@@ -2261,27 +2275,56 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         }
         
-        // 5. Apply word filtering and replacements
-        val wordFilterResult = applyWordFiltering(text, appName, packageName)
+        // 5. Evaluate conditional rules (Smart Rules system)
+        val notificationContext = buildNotificationContext(packageName, text, sbn)
+        val outcome = evaluateRuleEffects(notificationContext)
+        val effects = outcome?.effects.orEmpty()
+
+        if (effects.any { it is com.micoyc.speakthat.rules.Effect.SkipNotification }) {
+            val blockingRules = ruleManager.getBlockingRuleNames(notificationContext)
+            val reason = "Rules blocking: ${blockingRules.joinToString(", ")}"
+            InAppLogger.logFilter("Rules blocked notification: $reason")
+            // Track filter reason
+            try {
+                StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_CONDITIONAL_RULES)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error tracking conditional rules filter", e)
+            }
+            return FilterResult(false, "", reason)
+        }
+
+        val overridePrivate = effects.any { it is com.micoyc.speakthat.rules.Effect.OverridePrivate }
+        val forcePrivate = effects.any { it is com.micoyc.speakthat.rules.Effect.ForcePrivate }
+        val speechTemplateEffect = effects
+            .filterIsInstance<com.micoyc.speakthat.rules.Effect.SetSpeechTemplate>()
+            .lastOrNull()
+        val speechTemplateOverride = speechTemplateEffect?.let {
+            SpeechTemplateOverride(it.template, it.templateKey)
+        }
+
+        // 6. Apply word filtering and replacements (optionally overriding private mode)
+        val wordFilterResult = applyWordFiltering(text, appName, packageName, overridePrivate)
         if (!wordFilterResult.shouldSpeak) {
             return wordFilterResult
         }
-        
-        // 6. Apply conditional rules (Smart Rules system)
-        val conditionalResult = applyConditionalFiltering(
-            packageName,
-            appName,
-            wordFilterResult.processedText,
-            sbn
-        )
-        if (!conditionalResult.shouldSpeak) {
-            return conditionalResult
+
+        var processedText = wordFilterResult.processedText
+        if (forcePrivate) {
+            InAppLogger.logFilter("Rule effect: force private")
+            processedText = getLocalizedTemplate("private_notification", appName, "")
+        } else if (overridePrivate) {
+            InAppLogger.logFilter("Rule effect: override private")
         }
-        
+
+        if (speechTemplateOverride != null) {
+            InAppLogger.logFilter("Rule effect: apply custom speech format")
+        }
+
         return FilterResult(
             shouldSpeak = true,
-            processedText = conditionalResult.processedText,
-            reason = "Passed all filters"
+            processedText = processedText,
+            reason = "Passed all filters",
+            speechTemplateOverride = speechTemplateOverride
         )
     }
     
@@ -2328,12 +2371,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
-    private fun applyWordFiltering(text: String, appName: String, packageName: String = ""): FilterResult {
+    private fun applyWordFiltering(
+        text: String,
+        appName: String,
+        packageName: String = "",
+        overridePrivate: Boolean = false
+    ): FilterResult {
         var processedText = text
         
         // SECURITY: Check if this app is in private mode FIRST (highest priority)
         // This ensures private apps are never processed for word filtering that might reveal content
-        if (packageName.isNotEmpty() && privateApps.contains(packageName)) {
+        if (!overridePrivate && packageName.isNotEmpty() && privateApps.contains(packageName)) {
             processedText = getLocalizedTemplate("private_notification", appName, "")
             Log.d(TAG, "App '$appName' is in private mode - entire notification made private (SECURITY: bypassing all other filters)")
             InAppLogger.logFilter("Made notification private due to app privacy setting (SECURITY: bypassing all other filters)")
@@ -2357,16 +2405,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         // 2. Check for private words and replace entire notification with [PRIVATE] - EARLY EXIT on first match
-        for (privateWord in privateWords) {
-            if (matchesWordFilter(processedText, privateWord)) {
-                // When any private word is detected, replace the entire notification text with a private message
-                // This ensures complete privacy - no partial content is revealed
-                processedText = getLocalizedTemplate("private_notification", appName, "")
-                
-                // Always log private word detection for debugging
-                Log.d(TAG, "Private word '$privateWord' detected - entire notification made private")
-                InAppLogger.logFilter("Made notification private due to word: $privateWord")
-                break // Exit loop since entire text is now private
+        if (!overridePrivate) {
+            for (privateWord in privateWords) {
+                if (matchesWordFilter(processedText, privateWord)) {
+                    // When any private word is detected, replace the entire notification text with a private message
+                    // This ensures complete privacy - no partial content is revealed
+                    processedText = getLocalizedTemplate("private_notification", appName, "")
+                    
+                    // Always log private word detection for debugging
+                    Log.d(TAG, "Private word '$privateWord' detected - entire notification made private")
+                    InAppLogger.logFilter("Made notification private due to word: $privateWord")
+                    break // Exit loop since entire text is now private
+                }
             }
         }
         
@@ -2694,46 +2744,22 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
-    private fun applyConditionalFiltering(
-        packageName: String,
-        _appName: String,
-        text: String,
-        sbn: StatusBarNotification?
-    ): FilterResult {
-        try {
-            // Check if rules system is enabled
+    private fun evaluateRuleEffects(
+        notificationContext: com.micoyc.speakthat.rules.NotificationContext
+    ): com.micoyc.speakthat.rules.EvaluationOutcome? {
+        return try {
             if (!::ruleManager.isInitialized) {
                 InAppLogger.logFilter("Rule manager not initialized, allowing notification")
-                return FilterResult(true, text, "Rule manager not initialized")
-            }
-            
-            val notificationContext = buildNotificationContext(packageName, text, sbn)
-            val outcome = ruleManager.evaluateNotification(notificationContext)
-            applyMasterSwitchEffects(outcome.effects)
-            logUnappliedRuleEffects(outcome.effects)
-
-            val shouldBlock = outcome.effects.any { it is com.micoyc.speakthat.rules.Effect.SkipNotification }
-
-            if (shouldBlock) {
-                val blockingRules = ruleManager.getBlockingRuleNames(notificationContext)
-                val reason = "Rules blocking: ${blockingRules.joinToString(", ")}"
-                InAppLogger.logFilter("Rules blocked notification: $reason")
-                // Track filter reason
-                try {
-                    StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_CONDITIONAL_RULES)
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error tracking conditional rules filter", e)
-                }
-                return FilterResult(false, "", reason)
+                null
             } else {
-                InAppLogger.logFilter("Rules passed: no blocking rules active")
-                return FilterResult(true, text, "Rules passed")
+                val outcome = ruleManager.evaluateNotification(notificationContext)
+                applyMasterSwitchEffects(outcome.effects)
+                logUnappliedRuleEffects(outcome.effects)
+                outcome
             }
-            
         } catch (e: Exception) {
-            // Fail-safe: if rules system fails, allow the notification
             InAppLogger.logError("Service", "Error in rule evaluation: ${e.message}")
-            return FilterResult(true, text, "Rule evaluation failed, allowing notification")
+            null
         }
     }
 
@@ -2780,7 +2806,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private fun logUnappliedRuleEffects(effects: List<com.micoyc.speakthat.rules.Effect>) {
         val unapplied = effects.filterNot { effect ->
             effect is com.micoyc.speakthat.rules.Effect.SkipNotification ||
-                effect is com.micoyc.speakthat.rules.Effect.SetMasterSwitch
+                effect is com.micoyc.speakthat.rules.Effect.SetMasterSwitch ||
+            effect is com.micoyc.speakthat.rules.Effect.SetSpeechTemplate ||
+            effect is com.micoyc.speakthat.rules.Effect.ForcePrivate ||
+            effect is com.micoyc.speakthat.rules.Effect.OverridePrivate
         }
 
         if (unapplied.isNotEmpty()) {
@@ -4745,12 +4774,27 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
 
-    private fun handleNotificationBehavior(packageName: String, appName: String, text: String, conditionalDelaySeconds: Int = -1, sbn: StatusBarNotification? = null) {
+    private fun handleNotificationBehavior(
+        packageName: String,
+        appName: String,
+        text: String,
+        conditionalDelaySeconds: Int = -1,
+        sbn: StatusBarNotification? = null,
+        speechTemplateOverride: SpeechTemplateOverride? = null
+    ) {
         val isPriorityApp = priorityApps.contains(packageName)
         
         // Get original app name for statistics tracking (before privacy modification)
         val originalAppName = getAppName(packageName)
-        val queuedNotification = QueuedNotification(appName, text, isPriority = isPriorityApp, conditionalDelaySeconds = conditionalDelaySeconds, sbn = sbn, originalAppName = originalAppName)
+        val queuedNotification = QueuedNotification(
+            appName = appName,
+            text = text,
+            isPriority = isPriorityApp,
+            conditionalDelaySeconds = conditionalDelaySeconds,
+            sbn = sbn,
+            originalAppName = originalAppName,
+            speechTemplateOverride = speechTemplateOverride
+        )
         
         Log.d(TAG, "Handling notification behavior - Mode: $notificationBehavior, App: $appName, Currently speaking: $isCurrentlySpeaking, Queue size: ${notificationQueue.size}")
         InAppLogger.logNotification("Processing notification from $appName (mode: $notificationBehavior, speaking: $isCurrentlySpeaking)")
@@ -4771,7 +4815,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         when (notificationBehavior) {
             "interrupt" -> {
                 Log.d(TAG, "INTERRUPT mode: Speaking immediately and interrupting any current speech")
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride)
             }
             "queue" -> {
                 Log.d(TAG, "QUEUE mode: Adding to queue")
@@ -4782,7 +4826,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "skip" -> {
                 if (!isCurrentlySpeaking) {
                     Log.d(TAG, "SKIP mode: Not currently speaking, will speak now")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride)
                 } else {
                     Log.d(TAG, "SKIP mode: Currently speaking, skipping notification from $appName")
                     // Track filter reason
@@ -4796,7 +4840,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "smart" -> {
                 if (isPriorityApp) {
                     Log.d(TAG, "SMART mode: Priority app $appName - interrupting")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride)
                 } else {
                     Log.d(TAG, "SMART mode: Regular app $appName - adding to queue")
                     notificationQueue.add(queuedNotification)
@@ -4805,7 +4849,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             else -> {
                 Log.d(TAG, "UNKNOWN mode '$notificationBehavior': Defaulting to interrupt")
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride)
             }
         }
     }
@@ -4815,7 +4859,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (!isCurrentlySpeaking && notificationQueue.isNotEmpty()) {
             val queuedNotification = notificationQueue.removeAt(0)
             Log.d(TAG, "Processing next queued notification from ${queuedNotification.appName}")
-            speakNotificationImmediate(queuedNotification.appName, queuedNotification.text, queuedNotification.conditionalDelaySeconds, queuedNotification.sbn, queuedNotification.originalAppName)
+            speakNotificationImmediate(
+                queuedNotification.appName,
+                queuedNotification.text,
+                queuedNotification.conditionalDelaySeconds,
+                queuedNotification.sbn,
+                queuedNotification.originalAppName,
+                queuedNotification.speechTemplateOverride
+            )
         } else if (isCurrentlySpeaking) {
             Log.d(TAG, "Still speaking, queue will be processed when current speech finishes")
         } else {
@@ -4823,7 +4874,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
 
-    private fun speakNotificationImmediate(appName: String, text: String, conditionalDelaySeconds: Int = -1, sbn: StatusBarNotification? = null, originalAppName: String? = null) {
+    private fun speakNotificationImmediate(
+        appName: String,
+        text: String,
+        conditionalDelaySeconds: Int = -1,
+        sbn: StatusBarNotification? = null,
+        originalAppName: String? = null,
+        speechTemplateOverride: SpeechTemplateOverride? = null
+    ) {
         if (!isTtsInitialized || textToSpeech == null) {
             Log.w(TAG, "TTS not initialized, cannot speak notification")
             return
@@ -4848,7 +4906,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                             text.startsWith("Du hast eine private Benachrichtigung von")) {
             text // Private messages already include the app name, so don't add prefix
         } else {
-            formatSpeechText(appName, text, packageName, sbn)
+            formatSpeechText(appName, text, packageName, sbn, speechTemplateOverride)
         }
         
         // Determine which delay to use (conditional delay overrides global delay)
@@ -5419,7 +5477,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     /**
      * Format speech text using the custom template with placeholders
      */
-    private fun formatSpeechText(appName: String, text: String, packageName: String, sbn: StatusBarNotification?): String {
+    private fun formatSpeechText(
+        appName: String,
+        text: String,
+        packageName: String,
+        sbn: StatusBarNotification?,
+        speechTemplateOverride: SpeechTemplateOverride? = null
+    ): String {
         // Extract notification components from StatusBarNotification if available
         // IMPORTANT: Apply Content Cap to all extracted fields to ensure consistent capping behavior
         // regardless of which template placeholders the user chooses to use
@@ -5468,7 +5532,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         // Handle template localization + varied/custom modes
-        val templateToUse = resolveSpeechTemplateForPlayback()
+        val templateToUse = resolveSpeechTemplateForPlayback(speechTemplateOverride)
         
         // Process the template with all available placeholders
         var processedTemplate = templateToUse
@@ -5530,7 +5594,24 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         return SpeechTemplateConstants.RESOURCE_TEMPLATE_KEYS.contains(key)
     }
     
-    private fun resolveSpeechTemplateForPlayback(): String {
+    private fun resolveSpeechTemplateForPlayback(override: SpeechTemplateOverride? = null): String {
+        if (override != null) {
+            val overrideKey = override.templateKey
+            val overrideTemplate = override.template
+            return when {
+                overrideKey == SpeechTemplateConstants.TEMPLATE_KEY_VARIED ||
+                    overrideTemplate == SpeechTemplateConstants.TEMPLATE_KEY_VARIED ||
+                    overrideTemplate == "VARIED" -> getLocalizedVariedFormatsImproved().random()
+                overrideKey == SpeechTemplateConstants.TEMPLATE_KEY_CUSTOM -> overrideTemplate
+                isResourceTemplateKey(overrideKey) -> {
+                    val key = overrideKey ?: SpeechTemplateConstants.DEFAULT_TEMPLATE_KEY
+                    TtsLanguageManager.getLocalizedTtsStringByName(this, getCurrentTtsLanguageCode(), key)
+                }
+                overrideTemplate.isNotBlank() -> overrideTemplate
+                else -> resolveSpeechTemplateForPlayback()
+            }
+        }
+
         return when {
             speechTemplateKey == SpeechTemplateConstants.TEMPLATE_KEY_VARIED -> getLocalizedVariedFormatsImproved().random()
             speechTemplateKey == SpeechTemplateConstants.TEMPLATE_KEY_CUSTOM -> speechTemplate

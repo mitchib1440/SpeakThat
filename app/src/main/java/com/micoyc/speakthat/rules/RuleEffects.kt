@@ -8,7 +8,10 @@ sealed class Effect {
     data object SkipNotification : Effect()
     data object ForcePrivate : Effect()
     data object OverridePrivate : Effect()
-    data class SetSpeechTemplate(val templateId: String) : Effect()
+    data class SetSpeechTemplate(
+        val template: String,
+        val templateKey: String? = null
+    ) : Effect()
     data class SetMediaBehavior(val mode: MediaBehavior) : Effect()
     data class SetGestureEnabled(val gesture: Gesture, val enabled: Boolean) : Effect()
     data class SetMasterSwitch(val enabled: Boolean) : Effect()

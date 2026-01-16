@@ -212,7 +212,7 @@ class RuleEvaluator(private val context: Context) {
     /**
      * Evaluates a single trigger
      */
-    private fun evaluateTrigger(trigger: Trigger, _notificationContext: NotificationContext): EvaluationResult {
+    private fun evaluateTrigger(trigger: Trigger, notificationContext: NotificationContext): EvaluationResult {
         if (!trigger.enabled) {
             return EvaluationResult(
                 success = false,
@@ -224,6 +224,11 @@ class RuleEvaluator(private val context: Context) {
         
         // Get the base evaluation result
         val baseResult = when (trigger.type) {
+            TriggerType.BATTERY_PERCENTAGE -> evaluateBatteryPercentageTrigger(trigger)
+            TriggerType.CHARGING_STATUS -> evaluateChargingStatusTrigger(trigger)
+            TriggerType.DEVICE_UNLOCKED -> evaluateDeviceUnlockedTrigger(trigger)
+            TriggerType.NOTIFICATION_CONTAINS -> evaluateNotificationContainsTrigger(trigger, notificationContext)
+            TriggerType.SCREEN_ORIENTATION -> evaluateScreenOrientationTrigger(trigger)
             TriggerType.BLUETOOTH_DEVICE -> evaluateBluetoothTrigger(trigger)
             TriggerType.SCREEN_STATE -> evaluateScreenStateTrigger(trigger)
             TriggerType.TIME_SCHEDULE -> evaluateTimeScheduleTrigger(trigger)
@@ -300,7 +305,7 @@ class RuleEvaluator(private val context: Context) {
     /**
      * Evaluates a single exception
      */
-    private fun evaluateException(exception: Exception, _notificationContext: NotificationContext): EvaluationResult {
+    private fun evaluateException(exception: Exception, notificationContext: NotificationContext): EvaluationResult {
         if (!exception.enabled) {
             return EvaluationResult(
                 success = false,
@@ -312,6 +317,11 @@ class RuleEvaluator(private val context: Context) {
         
         // Get the base evaluation result
         val baseResult = when (exception.type) {
+            ExceptionType.BATTERY_PERCENTAGE -> evaluateBatteryPercentageException(exception)
+            ExceptionType.CHARGING_STATUS -> evaluateChargingStatusException(exception)
+            ExceptionType.DEVICE_UNLOCKED -> evaluateDeviceUnlockedException(exception)
+            ExceptionType.NOTIFICATION_CONTAINS -> evaluateNotificationContainsException(exception, notificationContext)
+            ExceptionType.SCREEN_ORIENTATION -> evaluateScreenOrientationException(exception)
             ExceptionType.BLUETOOTH_DEVICE -> evaluateBluetoothException(exception)
             ExceptionType.SCREEN_STATE -> evaluateScreenStateException(exception)
             ExceptionType.TIME_SCHEDULE -> evaluateTimeScheduleException(exception)
@@ -403,6 +413,192 @@ class RuleEvaluator(private val context: Context) {
         }
     }
     
+    private fun evaluateBatteryPercentageTrigger(trigger: Trigger): EvaluationResult {
+        try {
+            val batteryInfo = getBatteryInfo()
+            if (batteryInfo == null) {
+                return EvaluationResult(
+                    success = false,
+                    message = "Battery info unavailable"
+                )
+            }
+
+            val mode = trigger.data["mode"] as? String ?: "above"
+            val thresholdRaw = trigger.data["percentage"]
+            val threshold = when (thresholdRaw) {
+                is Int -> thresholdRaw
+                is Long -> thresholdRaw.toInt()
+                is Double -> thresholdRaw.toInt()
+                is Float -> thresholdRaw.toInt()
+                is Number -> thresholdRaw.toInt()
+                is String -> thresholdRaw.toIntOrNull()
+                else -> null
+            } ?: 0
+
+            val isAbove = batteryInfo.percentage >= threshold
+            val success = if (mode == "below") !isAbove else isAbove
+
+            return EvaluationResult(
+                success = success,
+                message = if (success) {
+                    "Battery ${if (mode == "below") "below" else "above"} $threshold%"
+                } else {
+                    "Battery not ${if (mode == "below") "below" else "above"} $threshold%"
+                },
+                data = mapOf(
+                    "battery_percentage" to batteryInfo.percentage,
+                    "threshold" to threshold,
+                    "mode" to mode
+                )
+            )
+        } catch (e: Throwable) {
+            InAppLogger.logError(TAG, "Error evaluating battery percentage trigger: ${e.message}")
+            return EvaluationResult(
+                success = false,
+                message = "Battery percentage evaluation error: ${e.message}"
+            )
+        }
+    }
+
+    private fun evaluateChargingStatusTrigger(trigger: Trigger): EvaluationResult {
+        try {
+            val batteryInfo = getBatteryInfo()
+            if (batteryInfo == null) {
+                return EvaluationResult(
+                    success = false,
+                    message = "Battery info unavailable"
+                )
+            }
+
+            val status = trigger.data["status"] as? String ?: "charging"
+            val shouldBeCharging = status != "discharging"
+            val success = batteryInfo.isCharging == shouldBeCharging
+
+            return EvaluationResult(
+                success = success,
+                message = if (success) {
+                    "Battery is ${if (shouldBeCharging) "charging" else "discharging"}"
+                } else {
+                    "Battery is not ${if (shouldBeCharging) "charging" else "discharging"}"
+                },
+                data = mapOf(
+                    "battery_percentage" to batteryInfo.percentage,
+                    "is_charging" to batteryInfo.isCharging,
+                    "status" to status
+                )
+            )
+        } catch (e: Throwable) {
+            InAppLogger.logError(TAG, "Error evaluating charging status trigger: ${e.message}")
+            return EvaluationResult(
+                success = false,
+                message = "Charging status evaluation error: ${e.message}"
+            )
+        }
+    }
+
+    private fun evaluateDeviceUnlockedTrigger(trigger: Trigger): EvaluationResult {
+        try {
+            val keyguardManager = context.getSystemService(Context.KEYGUARD_SERVICE) as android.app.KeyguardManager
+            val isLocked = keyguardManager.isDeviceLocked
+            val mode = trigger.data["mode"] as? String ?: "unlocked"
+            val shouldBeUnlocked = mode != "locked"
+            val success = (!isLocked) == shouldBeUnlocked
+
+            return EvaluationResult(
+                success = success,
+                message = if (success) {
+                    "Device is ${if (shouldBeUnlocked) "unlocked" else "locked"}"
+                } else {
+                    "Device is not ${if (shouldBeUnlocked) "unlocked" else "locked"}"
+                },
+                data = mapOf(
+                    "is_locked" to isLocked,
+                    "mode" to mode
+                )
+            )
+        } catch (e: Throwable) {
+            InAppLogger.logError(TAG, "Error evaluating device unlocked trigger: ${e.message}")
+            return EvaluationResult(
+                success = false,
+                message = "Device unlocked evaluation error: ${e.message}"
+            )
+        }
+    }
+
+    private fun evaluateScreenOrientationTrigger(trigger: Trigger): EvaluationResult {
+        try {
+            val mode = trigger.data["mode"] as? String ?: "portrait"
+            val orientation = context.resources.configuration.orientation
+            val isPortrait = orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT
+            val shouldBePortrait = mode != "landscape"
+            val success = isPortrait == shouldBePortrait
+
+            return EvaluationResult(
+                success = success,
+                message = if (success) {
+                    "Screen is ${if (shouldBePortrait) "portrait" else "landscape"}"
+                } else {
+                    "Screen is not ${if (shouldBePortrait) "portrait" else "landscape"}"
+                },
+                data = mapOf(
+                    "orientation" to orientation,
+                    "mode" to mode
+                )
+            )
+        } catch (e: Throwable) {
+            InAppLogger.logError(TAG, "Error evaluating screen orientation trigger: ${e.message}")
+            return EvaluationResult(
+                success = false,
+                message = "Screen orientation evaluation error: ${e.message}"
+            )
+        }
+    }
+
+    private fun evaluateNotificationContainsTrigger(
+        trigger: Trigger,
+        notificationContext: NotificationContext
+    ): EvaluationResult {
+        try {
+            val phrase = trigger.data["phrase"] as? String ?: ""
+            val caseSensitive = trigger.data["case_sensitive"] as? Boolean ?: false
+
+            if (phrase.isBlank()) {
+                return EvaluationResult(
+                    success = false,
+                    message = "Notification contains: phrase is empty"
+                )
+            }
+
+            val haystack = buildNotificationSearchText(notificationContext)
+            if (haystack.isBlank()) {
+                return EvaluationResult(
+                    success = false,
+                    message = "Notification contains: no text available"
+                )
+            }
+
+            val success = if (caseSensitive) {
+                haystack.contains(phrase)
+            } else {
+                haystack.lowercase().contains(phrase.lowercase())
+            }
+
+            return EvaluationResult(
+                success = success,
+                message = if (success) "Phrase found in notification" else "Phrase not found in notification",
+                data = mapOf(
+                    "phrase" to phrase,
+                    "case_sensitive" to caseSensitive
+                )
+            )
+        } catch (e: Throwable) {
+            InAppLogger.logError(TAG, "Error evaluating notification contains trigger: ${e.message}")
+            return EvaluationResult(
+                success = false,
+                message = "Notification contains evaluation error: ${e.message}"
+            )
+        }
+    }
     /**
      * Check if the app has the necessary Bluetooth permissions
      */
@@ -961,6 +1157,44 @@ class RuleEvaluator(private val context: Context) {
         ))
     }
     
+    private fun evaluateBatteryPercentageException(exception: Exception): EvaluationResult {
+        return evaluateBatteryPercentageTrigger(Trigger(
+            type = TriggerType.BATTERY_PERCENTAGE,
+            data = exception.data
+        ))
+    }
+
+    private fun evaluateChargingStatusException(exception: Exception): EvaluationResult {
+        return evaluateChargingStatusTrigger(Trigger(
+            type = TriggerType.CHARGING_STATUS,
+            data = exception.data
+        ))
+    }
+
+    private fun evaluateDeviceUnlockedException(exception: Exception): EvaluationResult {
+        return evaluateDeviceUnlockedTrigger(Trigger(
+            type = TriggerType.DEVICE_UNLOCKED,
+            data = exception.data
+        ))
+    }
+
+    private fun evaluateScreenOrientationException(exception: Exception): EvaluationResult {
+        return evaluateScreenOrientationTrigger(Trigger(
+            type = TriggerType.SCREEN_ORIENTATION,
+            data = exception.data
+        ))
+    }
+
+    private fun evaluateNotificationContainsException(
+        exception: Exception,
+        notificationContext: NotificationContext
+    ): EvaluationResult {
+        return evaluateNotificationContainsTrigger(Trigger(
+            type = TriggerType.NOTIFICATION_CONTAINS,
+            data = exception.data
+        ), notificationContext)
+    }
+
     private fun evaluateScreenStateException(exception: Exception): EvaluationResult {
         // Use the same logic as screen state trigger
         return evaluateScreenStateTrigger(Trigger(
@@ -983,6 +1217,41 @@ class RuleEvaluator(private val context: Context) {
             type = TriggerType.WIFI_NETWORK,
             data = exception.data
         ))
+    }
+
+    private data class BatteryInfo(
+        val percentage: Int,
+        val isCharging: Boolean
+    )
+
+    private fun getBatteryInfo(): BatteryInfo? {
+        val intent = context.registerReceiver(
+            null,
+            android.content.IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED)
+        ) ?: return null
+
+        val level = intent.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL, -1)
+        val scale = intent.getIntExtra(android.os.BatteryManager.EXTRA_SCALE, -1)
+        if (level < 0 || scale <= 0) {
+            return null
+        }
+
+        val percentage = ((level / scale.toFloat()) * 100).toInt().coerceIn(0, 100)
+        val status = intent.getIntExtra(android.os.BatteryManager.EXTRA_STATUS, -1)
+        val isCharging = status == android.os.BatteryManager.BATTERY_STATUS_CHARGING ||
+            status == android.os.BatteryManager.BATTERY_STATUS_FULL
+
+        return BatteryInfo(percentage, isCharging)
+    }
+
+    private fun buildNotificationSearchText(notificationContext: NotificationContext): String {
+        val parts = listOf(
+            notificationContext.title,
+            notificationContext.text,
+            notificationContext.bigText,
+            notificationContext.ticker
+        )
+        return parts.joinToString(separator = " ") { it?.toString().orEmpty() }.trim()
     }
 
     private data class LogicGateEvaluation(

@@ -332,6 +332,17 @@ class RuleManager(private val context: Context) {
     private fun mapActionsToEffects(actions: List<Action>): List<Effect> {
         return actions.filter { it.enabled }.mapNotNull { action ->
             when (action.type) {
+                ActionType.APPLY_CUSTOM_SPEECH_FORMAT -> {
+                    val template = action.data["template"] as? String ?: ""
+                    val templateKey = action.data["template_key"] as? String
+                    if (template.isBlank() && templateKey.isNullOrBlank()) {
+                        null
+                    } else {
+                        Effect.SetSpeechTemplate(template, templateKey)
+                    }
+                }
+                ActionType.FORCE_PRIVATE -> Effect.ForcePrivate
+                ActionType.OVERRIDE_PRIVATE -> Effect.OverridePrivate
                 ActionType.SKIP_NOTIFICATION -> Effect.SkipNotification
                 ActionType.DISABLE_SPEAKTHAT -> Effect.SkipNotification
                 ActionType.SET_MASTER_SWITCH -> {
@@ -523,6 +534,53 @@ class RuleManager(private val context: Context) {
                     errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_bluetooth_devices))
                 }
             }
+            TriggerType.BATTERY_PERCENTAGE -> {
+                val mode = trigger.data["mode"] as? String
+                val percentage = trigger.data["percentage"]
+                val percentValue = when (percentage) {
+                    is Int -> percentage
+                    is Long -> percentage.toInt()
+                    is Double -> percentage.toInt()
+                    is Float -> percentage.toInt()
+                    is Number -> percentage.toInt()
+                    is String -> percentage.toIntOrNull()
+                    else -> null
+                }
+                if (mode !in setOf("above", "below")) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_battery_mode))
+                }
+                if (percentValue == null || percentValue !in 0..100) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_battery_percentage))
+                }
+            }
+            TriggerType.CHARGING_STATUS -> {
+                val status = trigger.data["status"] as? String
+                if (status !in setOf("charging", "discharging")) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_charging_status))
+                }
+            }
+            TriggerType.NOTIFICATION_CONTAINS -> {
+                val phrase = trigger.data["phrase"] as? String
+                val caseSensitive = trigger.data["case_sensitive"]
+                if (phrase.isNullOrBlank()) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_notification_phrase))
+                }
+                if (caseSensitive != null && caseSensitive !is Boolean) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_case_sensitive))
+                }
+            }
+            TriggerType.DEVICE_UNLOCKED -> {
+                val mode = trigger.data["mode"] as? String
+                if (mode !in setOf("locked", "unlocked")) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_unlock_mode))
+                }
+            }
+            TriggerType.SCREEN_ORIENTATION -> {
+                val mode = trigger.data["mode"] as? String
+                if (mode !in setOf("portrait", "landscape")) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_orientation_mode))
+                }
+            }
             TriggerType.SCREEN_STATE -> {
                 val state = trigger.data["screen_state"] as? String
                 if (state != null && state.lowercase() !in setOf("on", "off")) {
@@ -556,6 +614,53 @@ class RuleManager(private val context: Context) {
                     errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_bluetooth_devices))
                 }
             }
+            ExceptionType.BATTERY_PERCENTAGE -> {
+                val mode = exception.data["mode"] as? String
+                val percentage = exception.data["percentage"]
+                val percentValue = when (percentage) {
+                    is Int -> percentage
+                    is Long -> percentage.toInt()
+                    is Double -> percentage.toInt()
+                    is Float -> percentage.toInt()
+                    is Number -> percentage.toInt()
+                    is String -> percentage.toIntOrNull()
+                    else -> null
+                }
+                if (mode !in setOf("above", "below")) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_battery_mode))
+                }
+                if (percentValue == null || percentValue !in 0..100) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_battery_percentage))
+                }
+            }
+            ExceptionType.CHARGING_STATUS -> {
+                val status = exception.data["status"] as? String
+                if (status !in setOf("charging", "discharging")) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_charging_status))
+                }
+            }
+            ExceptionType.NOTIFICATION_CONTAINS -> {
+                val phrase = exception.data["phrase"] as? String
+                val caseSensitive = exception.data["case_sensitive"]
+                if (phrase.isNullOrBlank()) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_notification_phrase))
+                }
+                if (caseSensitive != null && caseSensitive !is Boolean) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_case_sensitive))
+                }
+            }
+            ExceptionType.DEVICE_UNLOCKED -> {
+                val mode = exception.data["mode"] as? String
+                if (mode !in setOf("locked", "unlocked")) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_unlock_mode))
+                }
+            }
+            ExceptionType.SCREEN_ORIENTATION -> {
+                val mode = exception.data["mode"] as? String
+                if (mode !in setOf("portrait", "landscape")) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_orientation_mode))
+                }
+            }
             ExceptionType.SCREEN_STATE -> {
                 val state = exception.data["screen_state"] as? String
                 if (state != null && state.lowercase() !in setOf("on", "off")) {
@@ -584,6 +689,18 @@ class RuleManager(private val context: Context) {
     private fun validateActionData(action: Action): List<String> {
         val errors = mutableListOf<String>()
         when (action.type) {
+            ActionType.APPLY_CUSTOM_SPEECH_FORMAT -> {
+                val template = action.data["template"] as? String
+                if (template.isNullOrBlank()) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_speech_template))
+                }
+            }
+            ActionType.FORCE_PRIVATE -> {
+                // No additional data required
+            }
+            ActionType.OVERRIDE_PRIVATE -> {
+                // No additional data required
+            }
             ActionType.SET_MASTER_SWITCH -> {
                 if (action.data["enabled"] !is Boolean) {
                     errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_master_switch))

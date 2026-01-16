@@ -58,6 +58,11 @@ class TriggerConfigActivity : AppCompatActivity() {
     
     private fun setupUI() {
         when (triggerType) {
+            TriggerType.BATTERY_PERCENTAGE -> setupBatteryPercentageUI()
+            TriggerType.CHARGING_STATUS -> setupChargingStatusUI()
+            TriggerType.DEVICE_UNLOCKED -> setupDeviceUnlockedUI()
+            TriggerType.NOTIFICATION_CONTAINS -> setupNotificationContainsUI()
+            TriggerType.SCREEN_ORIENTATION -> setupScreenOrientationUI()
             TriggerType.SCREEN_STATE -> setupScreenStateUI()
             TriggerType.TIME_SCHEDULE -> setupTimeScheduleUI()
             TriggerType.BLUETOOTH_DEVICE -> setupBluetoothUI()
@@ -87,6 +92,62 @@ class TriggerConfigActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, screenStateOptions)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerScreenState.adapter = adapter
+    }
+
+    private fun setupBatteryPercentageUI() {
+        binding.cardBatteryPercentage.visibility = View.VISIBLE
+
+        val modeOptions = arrayOf(
+            getString(R.string.trigger_battery_mode_above),
+            getString(R.string.trigger_battery_mode_below)
+        )
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, modeOptions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerBatteryMode.adapter = adapter
+
+        binding.sliderBatteryPercentage.addOnChangeListener { _, value, _ ->
+            updateBatteryPercentageDisplay(value.toInt())
+        }
+
+        updateBatteryPercentageDisplay(binding.sliderBatteryPercentage.value.toInt())
+    }
+
+    private fun setupChargingStatusUI() {
+        binding.cardChargingStatus.visibility = View.VISIBLE
+
+        val statusOptions = arrayOf(
+            getString(R.string.trigger_battery_status_charging),
+            getString(R.string.trigger_battery_status_discharging)
+        )
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, statusOptions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerChargingStatus.adapter = adapter
+    }
+
+    private fun setupNotificationContainsUI() {
+        binding.cardNotificationContains.visibility = View.VISIBLE
+    }
+
+    private fun setupDeviceUnlockedUI() {
+        binding.cardDeviceUnlocked.visibility = View.VISIBLE
+        val modeOptions = arrayOf(
+            getString(R.string.trigger_device_unlocked_mode_unlocked),
+            getString(R.string.trigger_device_unlocked_mode_locked)
+        )
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, modeOptions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerDeviceUnlockedMode.adapter = adapter
+    }
+
+    private fun setupScreenOrientationUI() {
+        binding.cardScreenOrientation.visibility = View.VISIBLE
+        val modeOptions = arrayOf(
+            getString(R.string.trigger_screen_orientation_portrait),
+            getString(R.string.trigger_screen_orientation_landscape)
+        )
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, modeOptions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerScreenOrientation.adapter = adapter
     }
     
     private fun setupTimeScheduleUI() {
@@ -486,6 +547,46 @@ class TriggerConfigActivity : AppCompatActivity() {
             binding.switchInvertWifi.isChecked = trigger.inverted
             
             when (trigger.type) {
+                TriggerType.BATTERY_PERCENTAGE -> {
+                    val mode = trigger.data["mode"] as? String ?: "above"
+                    val percentageRaw = trigger.data["percentage"]
+                    val percentage = when (percentageRaw) {
+                        is Int -> percentageRaw
+                        is Long -> percentageRaw.toInt()
+                        is Double -> percentageRaw.toInt()
+                        is Float -> percentageRaw.toInt()
+                        is Number -> percentageRaw.toInt()
+                        is String -> percentageRaw.toIntOrNull()
+                        else -> null
+                    } ?: 50
+
+                    val modeIndex = if (mode == "below") 1 else 0
+                    binding.spinnerBatteryMode.setSelection(modeIndex)
+                    binding.sliderBatteryPercentage.value = percentage.toFloat()
+                    updateBatteryPercentageDisplay(percentage)
+                }
+                TriggerType.CHARGING_STATUS -> {
+                    val status = trigger.data["status"] as? String ?: "charging"
+                    val statusIndex = if (status == "discharging") 1 else 0
+                    binding.spinnerChargingStatus.setSelection(statusIndex)
+                }
+                TriggerType.DEVICE_UNLOCKED -> {
+                    val mode = trigger.data["mode"] as? String ?: "unlocked"
+                    val modeIndex = if (mode == "locked") 1 else 0
+                    binding.spinnerDeviceUnlockedMode.setSelection(modeIndex)
+                }
+                TriggerType.NOTIFICATION_CONTAINS -> {
+                    val phrase = trigger.data["phrase"] as? String ?: ""
+                    val caseSensitive = trigger.data["case_sensitive"] as? Boolean ?: false
+                    binding.editNotificationPhrase.setText(phrase)
+                    binding.checkNotificationCaseSensitive.isChecked = caseSensitive
+                    binding.switchInvertNotificationContains.isChecked = trigger.inverted
+                }
+                TriggerType.SCREEN_ORIENTATION -> {
+                    val mode = trigger.data["mode"] as? String ?: "portrait"
+                    val modeIndex = if (mode == "landscape") 1 else 0
+                    binding.spinnerScreenOrientation.setSelection(modeIndex)
+                }
                 TriggerType.SCREEN_STATE -> {
                     val screenState = trigger.data["screen_state"] as? String ?: "on"
                     val position = if (screenState == "on") 0 else 1
@@ -676,6 +777,11 @@ class TriggerConfigActivity : AppCompatActivity() {
     
     private fun saveTrigger() {
         val trigger = when (triggerType) {
+            TriggerType.BATTERY_PERCENTAGE -> createBatteryPercentageTrigger()
+            TriggerType.CHARGING_STATUS -> createChargingStatusTrigger()
+            TriggerType.DEVICE_UNLOCKED -> createDeviceUnlockedTrigger()
+            TriggerType.NOTIFICATION_CONTAINS -> createNotificationContainsTrigger()
+            TriggerType.SCREEN_ORIENTATION -> createScreenOrientationTrigger()
             TriggerType.SCREEN_STATE -> createScreenStateTrigger()
             TriggerType.TIME_SCHEDULE -> createTimeScheduleTrigger()
             TriggerType.BLUETOOTH_DEVICE -> createBluetoothTrigger()
@@ -764,6 +870,141 @@ class TriggerConfigActivity : AppCompatActivity() {
             )
         }
     }
+
+    private fun createBatteryPercentageTrigger(): Trigger {
+        val mode = if (binding.spinnerBatteryMode.selectedItemPosition == 1) "below" else "above"
+        val percentage = binding.sliderBatteryPercentage.value.toInt()
+        val description = if (mode == "below") {
+            getString(R.string.rule_trigger_battery_below, percentage)
+        } else {
+            getString(R.string.rule_trigger_battery_above, percentage)
+        }
+
+        return if (isEditing && originalTrigger != null) {
+            originalTrigger!!.copy(
+                data = mapOf(
+                    "mode" to mode,
+                    "percentage" to percentage
+                ),
+                description = description,
+                inverted = false
+            )
+        } else {
+            Trigger(
+                type = TriggerType.BATTERY_PERCENTAGE,
+                data = mapOf(
+                    "mode" to mode,
+                    "percentage" to percentage
+                ),
+                description = description,
+                inverted = false
+            )
+        }
+    }
+
+    private fun createNotificationContainsTrigger(): Trigger {
+        val phrase = binding.editNotificationPhrase.text?.toString().orEmpty().trim()
+        val caseSensitive = binding.checkNotificationCaseSensitive.isChecked
+        val inverted = binding.switchInvertNotificationContains.isChecked
+        val description = if (inverted) {
+            getString(R.string.rule_trigger_notification_not_contains, phrase)
+        } else {
+            getString(R.string.rule_trigger_notification_contains, phrase)
+        }
+
+        return if (isEditing && originalTrigger != null) {
+            originalTrigger!!.copy(
+                data = mapOf(
+                    "phrase" to phrase,
+                    "case_sensitive" to caseSensitive
+                ),
+                description = description,
+                inverted = inverted
+            )
+        } else {
+            Trigger(
+                type = TriggerType.NOTIFICATION_CONTAINS,
+                data = mapOf(
+                    "phrase" to phrase,
+                    "case_sensitive" to caseSensitive
+                ),
+                description = description,
+                inverted = inverted
+            )
+        }
+    }
+
+    private fun createDeviceUnlockedTrigger(): Trigger {
+        val mode = if (binding.spinnerDeviceUnlockedMode.selectedItemPosition == 1) "locked" else "unlocked"
+        val description = if (mode == "locked") {
+            getString(R.string.rule_trigger_device_locked)
+        } else {
+            getString(R.string.rule_trigger_device_unlocked)
+        }
+
+        return if (isEditing && originalTrigger != null) {
+            originalTrigger!!.copy(
+                data = mapOf("mode" to mode),
+                description = description,
+                inverted = false
+            )
+        } else {
+            Trigger(
+                type = TriggerType.DEVICE_UNLOCKED,
+                data = mapOf("mode" to mode),
+                description = description,
+                inverted = false
+            )
+        }
+    }
+
+    private fun createScreenOrientationTrigger(): Trigger {
+        val mode = if (binding.spinnerScreenOrientation.selectedItemPosition == 1) "landscape" else "portrait"
+        val description = if (mode == "landscape") {
+            getString(R.string.rule_trigger_orientation_landscape)
+        } else {
+            getString(R.string.rule_trigger_orientation_portrait)
+        }
+
+        return if (isEditing && originalTrigger != null) {
+            originalTrigger!!.copy(
+                data = mapOf("mode" to mode),
+                description = description,
+                inverted = false
+            )
+        } else {
+            Trigger(
+                type = TriggerType.SCREEN_ORIENTATION,
+                data = mapOf("mode" to mode),
+                description = description,
+                inverted = false
+            )
+        }
+    }
+
+    private fun createChargingStatusTrigger(): Trigger {
+        val status = if (binding.spinnerChargingStatus.selectedItemPosition == 1) "discharging" else "charging"
+        val description = if (status == "discharging") {
+            getString(R.string.rule_trigger_battery_discharging)
+        } else {
+            getString(R.string.rule_trigger_battery_charging)
+        }
+
+        return if (isEditing && originalTrigger != null) {
+            originalTrigger!!.copy(
+                data = mapOf("status" to status),
+                description = description,
+                inverted = false
+            )
+        } else {
+            Trigger(
+                type = TriggerType.CHARGING_STATUS,
+                data = mapOf("status" to status),
+                description = description,
+                inverted = false
+            )
+        }
+    }
     
     private fun createTimeScheduleTrigger(): Trigger {
         val startTime = startTimeMillis ?: 0L
@@ -815,6 +1056,13 @@ class TriggerConfigActivity : AppCompatActivity() {
                 inverted = inverted
             )
         }
+    }
+
+    private fun updateBatteryPercentageDisplay(percentage: Int) {
+        binding.textBatteryPercentageValue.text = getString(
+            R.string.trigger_battery_percentage_value,
+            percentage
+        )
     }
     
     private fun createBluetoothTrigger(): Trigger {
