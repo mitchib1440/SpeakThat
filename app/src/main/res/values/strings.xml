@@ -193,6 +193,10 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="update_banner_title">Update available: %1$s</string>
     <string name="update_banner_body">New version ready (%1$s). Tap to open the updater.</string>
     <string name="update_banner_action">Update now</string>
+    <string name="rules_migration_banner_title">Rules migration notice</string>
+    <string name="rules_migration_banner_body_ok">Rules migrated: %1$d. Please review your rules for accuracy.</string>
+    <string name="rules_migration_banner_body_attention">Rules migrated: %1$d. Rules needing attention: %2$d. Please review your rules.</string>
+    <string name="rules_migration_banner_action">Review rules</string>
     <string name="update_notification_title">Update available: %1$s</string>
     <string name="update_notification_text">Tap to download and install the latest version.</string>
     <string name="update_notification_channel_name">SpeakThat Updates</string>

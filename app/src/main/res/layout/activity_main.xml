@@ -115,6 +115,70 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardRulesMigrationBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:strokeColor="@color/purple_200"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:background="@drawable/gradient_card_subtle_right">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/info_24px"
+                    app:tint="@color/white_100"
+                    android:contentDescription="@string/rules_migration_banner_title" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="12dp">
+
+                    <TextView
+                        android:id="@+id/textRulesMigrationTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rules_migration_banner_title"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/white_100" />
+
+                    <TextView
+                        android:id="@+id/textRulesMigrationSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rules_migration_banner_body_ok"
+                        android:textSize="14sp"
+                        android:textColor="@color/white_100"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonRulesMigrationAction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rules_migration_banner_action"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:textAllCaps="false"
+                    android:layout_marginStart="12dp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <!-- Master Control Card -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardMasterControl"

@@ -1627,4 +1627,8 @@ SpeakThat은 하나의 음성만 지원합니다. \n\n✅ 문제가 없는 경�
     <string name="rule_exception_orientation_portrait">Screen is portrait</string>
     <string name="rule_exception_orientation_landscape">Screen is landscape</string>
     <string name="rule_error_invalid_orientation_mode">Orientation mode must be portrait or landscape</string>
+    <string name="rules_migration_banner_title">Rules migration notice</string>
+    <string name="rules_migration_banner_body_ok">Rules migrated: %1$d. Please review your rules for accuracy.</string>
+    <string name="rules_migration_banner_body_attention">Rules migrated: %1$d. Rules needing attention: %2$d. Please review your rules.</string>
+    <string name="rules_migration_banner_action">Review rules</string>
 </resources>
