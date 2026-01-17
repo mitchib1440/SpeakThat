@@ -9,7 +9,6 @@ import com.google.gson.reflect.TypeToken
 import com.micoyc.speakthat.InAppLogger
 import com.micoyc.speakthat.rules.Action
 import com.micoyc.speakthat.rules.ActionTypeAdapter
-import com.micoyc.speakthat.rules.Exception
 import com.micoyc.speakthat.rules.ExceptionType
 import com.micoyc.speakthat.rules.ExceptionTypeAdapter
 import com.micoyc.speakthat.rules.MapStringAnyTypeAdapter
@@ -248,7 +247,8 @@ object RuleMigrationManager {
             .registerTypeAdapter(Rule::class.java, RuleTypeAdapter())
             .registerTypeAdapter(Trigger::class.java, TriggerTypeAdapter())
             .registerTypeAdapter(Action::class.java, ActionTypeAdapter())
-            .registerTypeAdapter(Exception::class.java, ExceptionTypeAdapter())
+            .registerTypeAdapter(com.micoyc.speakthat.rules.Exception::class.java, ExceptionTypeAdapter())
+            .registerTypeAdapter(com.micoyc.speakthat.rules.Exception::class.java, ExceptionTypeAdapter())
             .create()
 
         return try {
