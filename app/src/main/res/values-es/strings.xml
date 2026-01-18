@@ -1507,6 +1507,13 @@ La aplicación utiliza automáticamente la función avanzada de atenuación del 
     <string name="behavior_wave_threshold_description">
 Ajusta el porcentaje de la distancia máxima del sensor que activará ondular para detener. (Requiere calibración)
 </string>
+    <string name="behavior_wave_hold_title">Tiempo de mantenimiento del gesto</string>
+    <string name="behavior_wave_hold_description">Cuánto tiempo debe permanecer cubierto el sensor de proximidad antes de que se active Wave to Stop.</string>
+    <string name="behavior_wave_hold_0ms">0 ms</string>
+    <string name="behavior_wave_hold_500ms">500 ms</string>
+    <string name="behavior_wave_hold_label_ms">%1$d ms</string>
+    <string name="behavior_wave_hold_current">Tiempo de mantenimiento: %1$d ms</string>
+    <string name="behavior_wave_hold_current_placeholder">Tiempo de mantenimiento: -- ms</string>
     <string name="behavior_wave_threshold_30">30%</string>
     <string name="behavior_wave_threshold_90">90%</string>
     <string name="behavior_wave_test_button">Prueba de ondulado</string>

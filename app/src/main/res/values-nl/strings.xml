@@ -1485,6 +1485,13 @@ Tip: Als u de waarde verlaagt, wordt het mediavolume tijdens meldingen verminder
     <string name="behavior_wave_threshold_description">
 Stel het percentage in van jouw sensor\'s maximale afstand waarbij Zwaaien om te Stoppen nog geactiveerd wordt (Vereist kalibratie)
 </string>
+    <string name="behavior_wave_hold_title">Wave-houdtijd</string>
+    <string name="behavior_wave_hold_description">Hoe lang de nabijheidssensor bedekt moet blijven voordat Wave to Stop activeert.</string>
+    <string name="behavior_wave_hold_0ms">0 ms</string>
+    <string name="behavior_wave_hold_500ms">500 ms</string>
+    <string name="behavior_wave_hold_label_ms">%1$d ms</string>
+    <string name="behavior_wave_hold_current">Houdtijd: %1$d ms</string>
+    <string name="behavior_wave_hold_current_placeholder">Houdtijd: -- ms</string>
     <string name="behavior_wave_threshold_30">30%</string>
     <string name="behavior_wave_threshold_90">90%</string>
     <string name="behavior_wave_test_button">Zwaai Test</string>

@@ -1399,6 +1399,13 @@ The app automatically uses advanced system ducking when available, with smooth m
     <string name="behavior_wave_threshold_description">
 Set the percentage of your sensor\'s maximum distance that will trigger wave-to-stop. (Requires calibration)
 </string>
+    <string name="behavior_wave_hold_title">ウェーブ保持時間</string>
+    <string name="behavior_wave_hold_description">Wave to Stop が作動する前に近接センサーを覆い続ける時間。</string>
+    <string name="behavior_wave_hold_0ms">0 ミリ秒</string>
+    <string name="behavior_wave_hold_500ms">500 ミリ秒</string>
+    <string name="behavior_wave_hold_label_ms">%1$d ミリ秒</string>
+    <string name="behavior_wave_hold_current">保持時間: %1$d ミリ秒</string>
+    <string name="behavior_wave_hold_current_placeholder">保持時間: -- ミリ秒</string>
     <string name="behavior_wave_threshold_30">30%</string>
     <string name="behavior_wave_threshold_90">90%</string>
     <string name="behavior_wave_test_button">Wave Test</string>

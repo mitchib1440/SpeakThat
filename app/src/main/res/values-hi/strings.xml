@@ -672,5 +672,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rules_migration_banner_body_ok">Rules migrated: %1$d. Please review your rules for accuracy.</string>
     <string name="rules_migration_banner_body_attention">Rules migrated: %1$d. Rules needing attention: %2$d. Please review your rules.</string>
     <string name="rules_migration_banner_action">Review rules</string>
+    <string name="behavior_wave_hold_title">वेव होल्ड समय</string>
+    <string name="behavior_wave_hold_description">Wave to Stop ट्रिगर होने से पहले प्रॉक्सिमिटी सेंसर को कितनी देर ढका रहना चाहिए।</string>
+    <string name="behavior_wave_hold_0ms">0 मि.से.</string>
+    <string name="behavior_wave_hold_500ms">500 मि.से.</string>
+    <string name="behavior_wave_hold_label_ms">%1$d मि.से.</string>
+    <string name="behavior_wave_hold_current">होल्ड समय: %1$d मि.से.</string>
+    <string name="behavior_wave_hold_current_placeholder">होल्ड समय: -- मि.से.</string>
 </resources>
 

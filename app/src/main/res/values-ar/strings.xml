@@ -672,5 +672,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rules_migration_banner_body_ok">Rules migrated: %1$d. Please review your rules for accuracy.</string>
     <string name="rules_migration_banner_body_attention">Rules migrated: %1$d. Rules needing attention: %2$d. Please review your rules.</string>
     <string name="rules_migration_banner_action">Review rules</string>
+    <string name="behavior_wave_hold_title">مدة تثبيت الموجة</string>
+    <string name="behavior_wave_hold_description">المدة التي يجب أن يبقى فيها مستشعر القرب مغطى قبل تفعيل Wave to Stop.</string>
+    <string name="behavior_wave_hold_0ms">0 مللي ثانية</string>
+    <string name="behavior_wave_hold_500ms">500 مللي ثانية</string>
+    <string name="behavior_wave_hold_label_ms">%1$d مللي ثانية</string>
+    <string name="behavior_wave_hold_current">مدة التثبيت: %1$d مللي ثانية</string>
+    <string name="behavior_wave_hold_current_placeholder">مدة التثبيت: -- مللي ثانية</string>
 </resources>
 

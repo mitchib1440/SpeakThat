@@ -1379,6 +1379,13 @@ SpeakThat은 하나의 음성만 지원합니다. 여러 언어로 알림을 받
     <string name="behavior_wave_threshold_90">90%</string>
     <string name="behavior_wave_threshold_30">30%</string>
     <string name="behavior_wave_threshold_description">손 흔들어 멈추기를 일으킬 센서의 최대 거리를 퍼센트로 지정하세요. (보정 필요)</string>
+    <string name="behavior_wave_hold_title">웨이브 유지 시간</string>
+    <string name="behavior_wave_hold_description">Wave to Stop이 작동하기 전에 근접 센서를 얼마나 오래 가려야 하는지.</string>
+    <string name="behavior_wave_hold_0ms">0 ms</string>
+    <string name="behavior_wave_hold_500ms">500 ms</string>
+    <string name="behavior_wave_hold_label_ms">%1$d ms</string>
+    <string name="behavior_wave_hold_current">유지 시간: %1$d ms</string>
+    <string name="behavior_wave_hold_current_placeholder">유지 시간: -- ms</string>
     <string name="behavior_audio_ducking_hint">팁: 값을 낮추면 알림 중 미디어 음량이 줄어듭니다</string>
     <string name="behavior_audio_ducking_system">
 가능한 경우 이 앱은 자동으로 고급 시스템 음량 줄이기 기능을 사용합니다. 수동 음량 줄이기 기능은 최대한 많은 기기에서 이 앱을 지원하기 위해 보조 수단으로 사용됩니다.

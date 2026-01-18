@@ -672,5 +672,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rules_migration_banner_body_ok">Rules migrated: %1$d. Please review your rules for accuracy.</string>
     <string name="rules_migration_banner_body_attention">Rules migrated: %1$d. Rules needing attention: %2$d. Please review your rules.</string>
     <string name="rules_migration_banner_action">Review rules</string>
+    <string name="behavior_wave_hold_title">Hålltid för wave</string>
+    <string name="behavior_wave_hold_description">Hur länge närhetssensorn måste vara täckt innan Wave to Stop utlöses.</string>
+    <string name="behavior_wave_hold_0ms">0 ms</string>
+    <string name="behavior_wave_hold_500ms">500 ms</string>
+    <string name="behavior_wave_hold_label_ms">%1$d ms</string>
+    <string name="behavior_wave_hold_current">Hålltid: %1$d ms</string>
+    <string name="behavior_wave_hold_current_placeholder">Hålltid: -- ms</string>
 </resources>
 

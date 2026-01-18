@@ -18,6 +18,7 @@ public class BehaviorSettingsStore {
     public static final String KEY_WAVE_TO_STOP_ENABLED = "wave_to_stop_enabled";
     public static final String KEY_WAVE_THRESHOLD = "wave_threshold";
     public static final String KEY_WAVE_TIMEOUT_SECONDS = "wave_timeout_seconds";
+    public static final String KEY_WAVE_HOLD_DURATION_MS = "wave_hold_duration_ms";
     public static final String KEY_PRESS_TO_STOP_ENABLED = "press_to_stop_enabled";
     public static final String KEY_POCKET_MODE_ENABLED = "pocket_mode_enabled";
     public static final String KEY_MEDIA_BEHAVIOR = "media_behavior";
@@ -62,6 +63,7 @@ public class BehaviorSettingsStore {
     public static final boolean DEFAULT_NOTIFICATION_DEDUPLICATION = false;
     public static final boolean DEFAULT_DISMISSAL_MEMORY_ENABLED = true;
     public static final int DEFAULT_DISMISSAL_MEMORY_TIMEOUT = 15;
+    public static final int DEFAULT_WAVE_HOLD_DURATION_MS = 150;
 
     public static final String DEFAULT_CONTENT_CAP_MODE = "disabled";
     public static final int DEFAULT_CONTENT_CAP_WORD_COUNT = 6;

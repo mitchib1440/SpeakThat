@@ -656,5 +656,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rules_migration_banner_body_ok">Rules migrated: %1$d. Please review your rules for accuracy.</string>
     <string name="rules_migration_banner_body_attention">Rules migrated: %1$d. Rules needing attention: %2$d. Please review your rules.</string>
     <string name="rules_migration_banner_action">Review rules</string>
+    <string name="behavior_wave_hold_title">ระยะเวลาการบังเซ็นเซอร์</string>
+    <string name="behavior_wave_hold_description">ระยะเวลาที่เซ็นเซอร์ความใกล้ชิดต้องถูกบังก่อนที่ Wave to Stop จะทำงาน</string>
+    <string name="behavior_wave_hold_0ms">0 มิลลิวินาที</string>
+    <string name="behavior_wave_hold_500ms">500 มิลลิวินาที</string>
+    <string name="behavior_wave_hold_label_ms">%1$d มิลลิวินาที</string>
+    <string name="behavior_wave_hold_current">เวลาการบัง: %1$d มิลลิวินาที</string>
+    <string name="behavior_wave_hold_current_placeholder">เวลาการบัง: -- มิลลิวินาที</string>
 </resources>
 

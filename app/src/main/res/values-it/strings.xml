@@ -149,6 +149,13 @@ This feature is especially loved by people who get notifications during meetings
 â€¢ Works great for different hand sizes and distances
 
 This feature is especially useful for accessibility, desk users, and anyone who prefers gesture control over physical movement.</string>
+    <string name="behavior_wave_hold_title">Tempo di mantenimento del gesto</string>
+    <string name="behavior_wave_hold_description">Per quanto tempo il sensore di prossimità deve restare coperto prima che si attivi Wave to Stop.</string>
+    <string name="behavior_wave_hold_0ms">0 ms</string>
+    <string name="behavior_wave_hold_500ms">500 ms</string>
+    <string name="behavior_wave_hold_label_ms">%1$d ms</string>
+    <string name="behavior_wave_hold_current">Tempo di mantenimento: %1$d ms</string>
+    <string name="behavior_wave_hold_current_placeholder">Tempo di mantenimento: -- ms</string>
     <!-- About Page -->
     <string name="about">About</string>
     <string name="about_description_title">About SpeakThat!</string>

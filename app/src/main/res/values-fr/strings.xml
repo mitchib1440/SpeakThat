@@ -1549,6 +1549,13 @@ L\'application utilise automatiquement le système de sourdine avancé si il est
     <string name="behavior_wave_threshold_description">
 Règle le pourcentage de la distance maximale de votre détecteur qui déclenchera le agiter pour arrêter. (nécessite une calibration)
 </string>
+    <string name="behavior_wave_hold_title">Durée de maintien du geste</string>
+    <string name="behavior_wave_hold_description">Durée pendant laquelle le capteur de proximité doit rester couvert avant d’activer Wave to Stop.</string>
+    <string name="behavior_wave_hold_0ms">0 ms</string>
+    <string name="behavior_wave_hold_500ms">500 ms</string>
+    <string name="behavior_wave_hold_label_ms">%1$d ms</string>
+    <string name="behavior_wave_hold_current">Durée de maintien : %1$d ms</string>
+    <string name="behavior_wave_hold_current_placeholder">Durée de maintien : -- ms</string>
     <string name="behavior_wave_threshold_30">30 %</string>
     <string name="behavior_wave_threshold_90">90 %</string>
     <string name="behavior_wave_test_button">Essai de l\'agitation de la main</string>

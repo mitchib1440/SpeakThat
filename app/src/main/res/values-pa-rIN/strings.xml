@@ -672,5 +672,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rules_migration_banner_body_ok">Rules migrated: %1$d. Please review your rules for accuracy.</string>
     <string name="rules_migration_banner_body_attention">Rules migrated: %1$d. Rules needing attention: %2$d. Please review your rules.</string>
     <string name="rules_migration_banner_action">Review rules</string>
+    <string name="behavior_wave_hold_title">ਵੇਵ ਹੋਲਡ ਸਮਾਂ</string>
+    <string name="behavior_wave_hold_description">Wave to Stop ਚਾਲੂ ਹੋਣ ਤੋਂ ਪਹਿਲਾਂ ਨਜ਼ਦੀਕੀ ਸੈਂਸਰ ਨੂੰ ਕਿੰਨਾ ਸਮਾਂ ਢੱਕਿਆ ਰਹਿਣਾ ਚਾਹੀਦਾ ਹੈ।</string>
+    <string name="behavior_wave_hold_0ms">0 ਮਿ.ਸੇ.</string>
+    <string name="behavior_wave_hold_500ms">500 ਮਿ.ਸੇ.</string>
+    <string name="behavior_wave_hold_label_ms">%1$d ਮਿ.ਸੇ.</string>
+    <string name="behavior_wave_hold_current">ਹੋਲਡ ਸਮਾਂ: %1$d ਮਿ.ਸੇ.</string>
+    <string name="behavior_wave_hold_current_placeholder">ਹੋਲਡ ਸਮਾਂ: -- ਮਿ.ਸੇ.</string>
 </resources>
 

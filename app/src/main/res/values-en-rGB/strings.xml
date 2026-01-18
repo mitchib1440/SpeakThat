@@ -1446,6 +1446,13 @@ This permission is completely optional; SpeakThat! will still function without i
 
     <!-- Wave Detection Settings -->
     <string name="behavior_wave_threshold_description">Set the percentage of your sensor\'s maximum distance that will trigger wave-to-stop. (Only works on certain devices)</string>
+    <string name="behavior_wave_hold_title">Wave hold time</string>
+    <string name="behavior_wave_hold_description">How long the proximity sensor must stay covered before Wave to Stop triggers.</string>
+    <string name="behavior_wave_hold_0ms">0 ms</string>
+    <string name="behavior_wave_hold_500ms">500 ms</string>
+    <string name="behavior_wave_hold_label_ms">%1$d ms</string>
+    <string name="behavior_wave_hold_current">Hold time: %1$d ms</string>
+    <string name="behavior_wave_hold_current_placeholder">Hold time: -- ms</string>
     <string name="behavior_wave_threshold_30">30%</string>
     <string name="behavior_wave_threshold_90">90%</string>
     <string name="behavior_wave_test_button">Wave Test</string>

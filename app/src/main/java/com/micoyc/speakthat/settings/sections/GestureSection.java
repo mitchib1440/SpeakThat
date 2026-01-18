@@ -173,6 +173,20 @@ public class GestureSection implements BehaviorSettingsSection {
             updateWaveThresholdText(threshold);
         });
 
+        binding.sliderWaveHold.setValueFrom(0f);
+        binding.sliderWaveHold.setValueTo(500f);
+        binding.sliderWaveHold.setStepSize(10f);
+        binding.sliderWaveHold.setLabelFormatter(value ->
+            activity.getString(R.string.behavior_wave_hold_label_ms, Math.round(value))
+        );
+        binding.sliderWaveHold.addOnChangeListener((slider, value, fromUser) -> {
+            if (fromUser) {
+                int holdMs = Math.round(value);
+                updateWaveHoldDisplay(holdMs);
+                saveWaveHoldDurationMs(holdMs);
+            }
+        });
+
         binding.btnWaveTest.setOnClickListener(v -> {
             if (waveSensorManager.isTesting()) {
                 stopWaveTest();
@@ -318,6 +332,17 @@ public class GestureSection implements BehaviorSettingsSection {
             isProgrammaticallySettingSwitch = false;
         }
         updateWaveTimeoutDisplay(waveTimeoutSeconds);
+
+        int waveHoldMs = store.prefs().getInt(
+            BehaviorSettingsStore.KEY_WAVE_HOLD_DURATION_MS,
+            BehaviorSettingsStore.DEFAULT_WAVE_HOLD_DURATION_MS
+        );
+        if (waveHoldMs < 0 || waveHoldMs > 500) {
+            waveHoldMs = BehaviorSettingsStore.DEFAULT_WAVE_HOLD_DURATION_MS;
+            saveWaveHoldDurationMs(waveHoldMs);
+        }
+        binding.sliderWaveHold.setValue(waveHoldMs);
+        updateWaveHoldDisplay(waveHoldMs);
 
         boolean pressEnabled = store.prefs().getBoolean(BehaviorSettingsStore.KEY_PRESS_TO_STOP_ENABLED, false);
         boolean hasAccessibilityPermission = isAccessibilityServiceEnabled();
@@ -584,6 +609,16 @@ public class GestureSection implements BehaviorSettingsSection {
         InAppLogger.log("BehaviorSettings", "Wave timeout changed to: " + validatedTimeout + " seconds");
     }
 
+    private void saveWaveHoldDurationMs(int holdMs) {
+        int validatedHold = validateWaveHoldDurationMs(holdMs);
+        if (validatedHold != holdMs) {
+            binding.sliderWaveHold.setValue(validatedHold);
+            updateWaveHoldDisplay(validatedHold);
+        }
+        store.prefs().edit().putInt(BehaviorSettingsStore.KEY_WAVE_HOLD_DURATION_MS, validatedHold).apply();
+        InAppLogger.log("BehaviorSettings", "Wave hold duration changed to: " + validatedHold + " ms");
+    }
+
     private void savePocketModeEnabled(boolean enabled) {
         store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_POCKET_MODE_ENABLED, enabled).apply();
         InAppLogger.log("BehaviorSettings", "Pocket mode changed to: " + enabled);
@@ -708,6 +743,14 @@ public class GestureSection implements BehaviorSettingsSection {
         } else {
             binding.textWaveTimeout.setText("Timeout: " + timeoutSeconds + " seconds");
         }
+    }
+
+    private void updateWaveHoldDisplay(int holdMs) {
+        binding.textWaveHold.setText(activity.getString(R.string.behavior_wave_hold_current, holdMs));
+    }
+
+    private int validateWaveHoldDurationMs(int holdMs) {
+        return Math.max(0, Math.min(500, holdMs));
     }
 
     private void showTimeoutDisableWarning(String type) {

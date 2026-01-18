@@ -1485,6 +1485,13 @@ Uygulama, mevcut olduğunda otomatik olarak gelişmiş sistem ses kısma özelli
     <string name="behavior_wave_threshold_description">
 Sensörünüzün maksimum mesafesinin yüzde kaçının el sallayarak durdurmayı tetikleyeceğini ayarlayın. (Kalibrasyon gerektirir)
 </string>
+    <string name="behavior_wave_hold_title">Dalga tutma süresi</string>
+    <string name="behavior_wave_hold_description">Wave to Stop tetiklenmeden önce yakınlık sensörünün ne kadar süre kapalı kalması gerektiği.</string>
+    <string name="behavior_wave_hold_0ms">0 ms</string>
+    <string name="behavior_wave_hold_500ms">500 ms</string>
+    <string name="behavior_wave_hold_label_ms">%1$d ms</string>
+    <string name="behavior_wave_hold_current">Tutma süresi: %1$d ms</string>
+    <string name="behavior_wave_hold_current_placeholder">Tutma süresi: -- ms</string>
     <string name="behavior_wave_threshold_30">%30</string>
     <string name="behavior_wave_threshold_90">%90</string>
     <string name="behavior_wave_test_button">El Sallama Testi</string>

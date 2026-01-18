@@ -657,5 +657,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rules_migration_banner_body_ok">Rules migrated: %1$d. Please review your rules for accuracy.</string>
     <string name="rules_migration_banner_body_attention">Rules migrated: %1$d. Rules needing attention: %2$d. Please review your rules.</string>
     <string name="rules_migration_banner_action">Review rules</string>
+    <string name="behavior_wave_hold_title">挥手保持时间</string>
+    <string name="behavior_wave_hold_description">在触发 Wave to Stop 之前，距离传感器需要被遮挡的时间。</string>
+    <string name="behavior_wave_hold_0ms">0 毫秒</string>
+    <string name="behavior_wave_hold_500ms">500 毫秒</string>
+    <string name="behavior_wave_hold_label_ms">%1$d 毫秒</string>
+    <string name="behavior_wave_hold_current">保持时间：%1$d 毫秒</string>
+    <string name="behavior_wave_hold_current_placeholder">保持时间：-- 毫秒</string>
 </resources>
 

@@ -1537,6 +1537,13 @@ Tipp: Durch Verringern des Wertes wird die Medienlautstärke bei Benachrichtigun
     <string name="behavior_wave_threshold_description">
 Stellen Sie den Prozentsatz der maximalen Entfernung Ihres Sensors ein, der \"Winken zum Stoppen\" auslöst. (Erfordert Kalibrierung)
 </string>
+    <string name="behavior_wave_hold_title">Wave-Haltedauer</string>
+    <string name="behavior_wave_hold_description">Wie lange der Näherungssensor bedeckt bleiben muss, bevor Wave to Stop auslöst.</string>
+    <string name="behavior_wave_hold_0ms">0 ms</string>
+    <string name="behavior_wave_hold_500ms">500 ms</string>
+    <string name="behavior_wave_hold_label_ms">%1$d ms</string>
+    <string name="behavior_wave_hold_current">Haltedauer: %1$d ms</string>
+    <string name="behavior_wave_hold_current_placeholder">Haltedauer: -- ms</string>
     <string name="behavior_wave_threshold_30">30%</string>
     <string name="behavior_wave_threshold_90">90%</string>
     <string name="behavior_wave_test_button">Wink-Test</string>

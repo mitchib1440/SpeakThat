@@ -671,5 +671,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rules_migration_banner_body_ok">Rules migrated: %1$d. Please review your rules for accuracy.</string>
     <string name="rules_migration_banner_body_attention">Rules migrated: %1$d. Rules needing attention: %2$d. Please review your rules.</string>
     <string name="rules_migration_banner_action">Review rules</string>
+    <string name="behavior_wave_hold_title">Tempo de manutenção do gesto</string>
+    <string name="behavior_wave_hold_description">Quanto tempo o sensor de proximidade precisa ficar coberto antes do Wave to Stop acionar.</string>
+    <string name="behavior_wave_hold_0ms">0 ms</string>
+    <string name="behavior_wave_hold_500ms">500 ms</string>
+    <string name="behavior_wave_hold_label_ms">%1$d ms</string>
+    <string name="behavior_wave_hold_current">Tempo de manutenção: %1$d ms</string>
+    <string name="behavior_wave_hold_current_placeholder">Tempo de manutenção: -- ms</string>
 </resources>
 
