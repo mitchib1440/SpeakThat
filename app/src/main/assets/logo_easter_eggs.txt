@@ -441,7 +441,7 @@ SpeakThat! You should be able to fix your stuff!
 SpeakThat! I will never say never! Unless of course it's in a notification!
 SpeakThat! If you ever do something for someone and they don't seem to appreciate it, don't get mad. Just scrub it off your to-do list next time!
 SpeakThat! When life gives you lemons, don’t make lemonade. Make life take the lemons back! Get mad! I don’t want your damn lemons, what the hell am I supposed to do with these? Demand to see life’s manager! Make life rue the day it thought it could give Cave Johnson lemons! Do you know who I am? I’m the man who’s gonna burn your house down! With the lemons! I’m gonna get my engineers to invent a combustible lemon that burns your house down!
-SpeakThat! There are one zero types of people. Those who understand binary, and those who don't.
+SpeakThat! There are 10 types of people. Those who understand binary, and those who don't.
 SpeakThat! Make sure to visit w w w dot, speak that dot app!
 SpeakThat! Reject digital ID! Your privacy matters!
 SpeakThat! I believe in two things - notifications, and boobs!
@@ -451,3 +451,4 @@ SpeakThat! More entertaining than the X-Factor!
 SpeakThat! Smarter than every Twitch streamer in existence!
 SpeakThat! Speaks more clearly than XQC!
 SpeakThat! Commits fewer hate crimes than Asmongold!
+SpeakThat! Friendship is magic!
