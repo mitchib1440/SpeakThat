@@ -163,6 +163,24 @@
 
                     </FrameLayout>
 
+                    <!-- View Rules JSON Button -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_advanced_voice_section">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnViewRulesJson"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="View Rules JSON"
+                            android:background="@android:color/transparent"
+                            android:textColor="@color/white_100"
+                            style="@style/Widget.Material3.Button.TextButton" />
+
+                    </FrameLayout>
+
                     <!-- Test Settings Button -->
                     <FrameLayout
                         android:layout_width="match_parent"

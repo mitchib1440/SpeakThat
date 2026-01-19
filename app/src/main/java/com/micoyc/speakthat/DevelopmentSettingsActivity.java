@@ -293,6 +293,16 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         // Add Rule System Test button
         binding.btnRuleSystemTest.setOnClickListener(v -> testRuleSystem());
         
+        // Add View Rules JSON button (if it exists in layout)
+        try {
+            View btnViewRulesJson = findViewById(R.id.btnViewRulesJson);
+            if (btnViewRulesJson != null) {
+                btnViewRulesJson.setOnClickListener(v -> showRulesJson());
+            }
+        } catch (Exception e) {
+            // Button doesn't exist, that's fine
+        }
+        
         // Add Test Settings button
         binding.btnTestSettings.setOnClickListener(v -> {
             Intent intent = new Intent(this, TestSettingsActivity.class);
@@ -1498,6 +1508,61 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
                 });
             }
         }).start();
+    }
+    
+    private void showRulesJson() {
+        try {
+            SharedPreferences rulesPrefs = getSharedPreferences("SpeakThatRules", MODE_PRIVATE);
+            String rulesJson = rulesPrefs.getString("rules_list", "[]");
+            
+            // Pretty print JSON if possible
+            String displayJson = rulesJson;
+            try {
+                // Try to format JSON for readability
+                com.google.gson.JsonParser parser = new com.google.gson.JsonParser();
+                com.google.gson.JsonElement jsonElement = parser.parse(rulesJson);
+                com.google.gson.Gson gson = new com.google.gson.GsonBuilder().setPrettyPrinting().create();
+                displayJson = gson.toJson(jsonElement);
+            } catch (Exception e) {
+                // If formatting fails, just show raw JSON
+                InAppLogger.log("Development", "Could not format JSON: " + e.getMessage());
+            }
+            
+            // Create a scrollable dialog with the JSON
+            ScrollView scrollView = new ScrollView(this);
+            TextView textView = new TextView(this);
+            textView.setText(displayJson);
+            textView.setTextIsSelectable(true);
+            textView.setPadding(32, 32, 32, 32);
+            textView.setTextSize(12);
+            textView.setFontFeatureSettings("monospace");
+            scrollView.addView(textView);
+            
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Rules JSON (rules_list)");
+            builder.setView(scrollView);
+            builder.setPositiveButton("Copy", (dialog, which) -> {
+                android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                android.content.ClipData clip = android.content.ClipData.newPlainText("Rules JSON", rulesJson);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(this, "Copied to clipboard", Toast.LENGTH_SHORT).show();
+            });
+            builder.setNegativeButton(R.string.button_ok, null);
+            
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            
+            InAppLogger.log("Development", "Showing rules JSON (length: " + rulesJson.length() + " chars)");
+            
+        } catch (Exception e) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Error");
+            builder.setMessage("Failed to load rules JSON: " + e.getMessage());
+            builder.setPositiveButton(R.string.button_ok, null);
+            builder.show();
+            
+            InAppLogger.logError("Development", "Failed to show rules JSON: " + e.getMessage());
+        }
     }
     
     private void resetStatistics() {

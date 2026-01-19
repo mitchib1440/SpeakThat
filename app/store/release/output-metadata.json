@@ -11,9 +11,9 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 25,
-      "versionName": "1.6.1",
-      "outputFile": "SpeakThat-NoUpdater-v1.6.1.apk"
+      "versionCode": 43,
+      "versionName": "1.7.0",
+      "outputFile": "SpeakThat-NoUpdater-v1.7.0.apk"
     }
   ],
   "elementType": "File",
@@ -22,14 +22,14 @@
       "minApi": 28,
       "maxApi": 30,
       "baselineProfiles": [
-        "baselineProfiles/1/SpeakThat-NoUpdater-v1.6.1.dm"
+        "baselineProfiles/1/SpeakThat-NoUpdater-v1.7.0.dm"
       ]
     },
     {
       "minApi": 31,
       "maxApi": 2147483647,
       "baselineProfiles": [
-        "baselineProfiles/0/SpeakThat-NoUpdater-v1.6.1.dm"
+        "baselineProfiles/0/SpeakThat-NoUpdater-v1.7.0.dm"
       ]
     }
   ],
