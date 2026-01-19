@@ -217,12 +217,6 @@ class TemplateSelectionActivity : AppCompatActivity() {
             requestWifiPermissions()
             return
         }
-
-        // Check if we can resolve WiFi SSIDs
-        if (!WifiCapabilityChecker.canResolveWifiSSID(this)) {
-            showWifiCompatibilityWarning(template)
-            return
-        }
         
         try {
             val wifiManager = getSystemService(Context.WIFI_SERVICE) as WifiManager
@@ -232,29 +226,57 @@ class TemplateSelectionActivity : AppCompatActivity() {
                 return
             }
             
-            // Get configured networks (saved WiFi networks)
-            val configuredNetworks = wifiManager.configuredNetworks
-            
-            if (configuredNetworks == null || configuredNetworks.isEmpty()) {
+            val availableNetworks = mutableListOf<String>()
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                @Suppress("DEPRECATION")
+                val configuredNetworks = wifiManager.configuredNetworks
+                if (configuredNetworks != null) {
+                    availableNetworks.addAll(configuredNetworks.map { network ->
+                        @Suppress("DEPRECATION")
+                        network.SSID.removeSurrounding("\"")
+                    })
+                }
+            }
+
+            if (availableNetworks.isEmpty()) {
+                try {
+                    val scanResults = wifiManager.scanResults
+                    if (scanResults.isNotEmpty()) {
+                        availableNetworks.addAll(scanResults.map { result ->
+                            result.SSID.removeSurrounding("\"")
+                        }.distinct())
+                    }
+                } catch (e: SecurityException) {
+                    InAppLogger.logDebug("TemplateSelectionActivity", "Cannot access scan results: ${e.message}")
+                }
+            }
+
+            val uniqueNetworks = availableNetworks.filter { it.isNotBlank() }.distinct().sorted()
+
+            if (uniqueNetworks.isEmpty()) {
+                val canResolve = WifiCapabilityChecker.canResolveWifiSSID(this)
+                if (!canResolve) {
+                    showWifiCompatibilityWarning(template)
+                    return
+                }
+
                 // Fallback to manual input if no networks detected
                 showManualWifiInputDialog(template)
                 return
             }
             
             // Create network selection dialog
-            val networkNames = configuredNetworks.map { network ->
-                network.SSID?.removeSurrounding("\"") ?: "Unknown Network"
-            }.toTypedArray()
+            val networkNames = uniqueNetworks.toTypedArray()
             
             AlertDialog.Builder(this)
                 .setTitle("Select WiFi Network")
                 .setMessage("Choose the WiFi network for this rule:")
                 .setItems(networkNames) { _, which ->
-                    val selectedNetwork = configuredNetworks[which]
-                    val networkSsid = selectedNetwork.SSID?.removeSurrounding("\"") ?: "Unknown Network"
+                    val networkSsid = networkNames[which]
                     createRuleFromTemplate(template, mapOf(
                         "ssid" to networkSsid,
-                        "networkId" to selectedNetwork.networkId
+                        "networkId" to -1
                     ))
                 }
                 .setNegativeButton("Manual Input") { _, _ ->

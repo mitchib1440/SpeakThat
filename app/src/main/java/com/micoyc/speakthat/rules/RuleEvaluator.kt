@@ -4,7 +4,8 @@ import android.content.Context
 import com.micoyc.speakthat.AccessibilityUtils
 import com.micoyc.speakthat.ForegroundAppTracker
 import com.micoyc.speakthat.InAppLogger
-import com.micoyc.speakthat.utils.WifiCapabilityChecker
+import android.net.NetworkCapabilities
+import android.net.wifi.WifiInfo
 
 /**
  * Rule evaluation engine
@@ -725,7 +726,7 @@ class RuleEvaluator(private val context: Context) {
             )
         }
         
-        InAppLogger.logDebug(TAG, "ALL METHODS FAILED: No Bluetooth device is actively connected (paired/bonded devices are NOT considered connected)")
+        InAppLogger.logDebug(TAG, "ALL METHODS FAILED: No Bluetooth device is actively connected")
         return EvaluationResult(
             success = false,
             message = "No Bluetooth device is actively connected",
@@ -777,7 +778,7 @@ class RuleEvaluator(private val context: Context) {
             )
         }
         
-        InAppLogger.logDebug(TAG, "ALL METHODS FAILED: Required Bluetooth device is not connected (paired/bonded devices are NOT considered connected)")
+        InAppLogger.logDebug(TAG, "ALL METHODS FAILED: Required Bluetooth device is not connected")
         return EvaluationResult(
             success = false,
             message = "Required Bluetooth device is not connected",
@@ -1090,7 +1091,11 @@ class RuleEvaluator(private val context: Context) {
         try {
             val wifiManager = context.getSystemService(Context.WIFI_SERVICE) as android.net.wifi.WifiManager
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as android.net.ConnectivityManager
-            
+
+            val activeNetwork = connectivityManager.activeNetwork
+            val networkCapabilities = activeNetwork?.let { connectivityManager.getNetworkCapabilities(it) }
+            val isWifiConnected = networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
+
             if (!wifiManager.isWifiEnabled) {
                 InAppLogger.logDebug(TAG, "WiFi is disabled")
                 return EvaluationResult(
@@ -1098,41 +1103,18 @@ class RuleEvaluator(private val context: Context) {
                     message = "WiFi is disabled"
                 )
             }
-            
-            // Try multiple methods to get current WiFi SSID
-            var currentSSID = ""
-            
-            // Method 1: Direct WiFi manager
-            val connectionInfo = wifiManager.connectionInfo
-            val rawSSID = connectionInfo.ssid
-            currentSSID = rawSSID?.removeSurrounding("\"") ?: ""
-            
-            InAppLogger.logDebug(TAG, "WiFi detection Method 1 - Raw SSID: '$rawSSID', Cleaned SSID: '$currentSSID'")
-            
-            // Method 2: ConnectivityManager fallback if Method 1 fails
-            if (currentSSID.isEmpty() || currentSSID == "<unknown ssid>" || currentSSID == "0x") {
-                try {
-                    val activeNetwork = connectivityManager.activeNetwork
-                    if (activeNetwork != null) {
-                        val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
-                        if (networkCapabilities?.hasTransport(android.net.NetworkCapabilities.TRANSPORT_WIFI) == true) {
-                            // Try to get SSID from network info
-                            val networkInfo = connectivityManager.getNetworkInfo(activeNetwork)
-                            InAppLogger.logDebug(TAG, "WiFi detection Method 2 - NetworkInfo: $networkInfo")
-                            
-                            // For Android 15, we might need to use a different approach
-                            // Let's try to at least detect if we're connected to WiFi
-                            if (networkInfo?.isConnected == true) {
-                                InAppLogger.logDebug(TAG, "WiFi detection Method 2 - Connected to WiFi but SSID unknown")
-                                // We know we're connected to WiFi, but can't get the SSID
-                                // This is a limitation of Android 15
-                            }
-                        }
-                    }
-                } catch (e: Throwable) {
-                    InAppLogger.logDebug(TAG, "WiFi detection Method 2 failed: ${e.message}")
-                }
-            }
+
+            val wifiInfoFromTransport = networkCapabilities?.transportInfo as? WifiInfo
+            val rawSSID = wifiInfoFromTransport?.ssid ?: wifiManager.connectionInfo?.ssid
+            val currentSSID = rawSSID?.removeSurrounding("\"") ?: ""
+            val isSsidKnown = currentSSID.isNotBlank() &&
+                !currentSSID.equals("<unknown ssid>", ignoreCase = true) &&
+                currentSSID != "0x"
+
+            InAppLogger.logDebug(
+                TAG,
+                "WiFi detection - Connected=$isWifiConnected, Raw SSID='$rawSSID', Cleaned SSID='$currentSSID', SSID known=$isSsidKnown"
+            )
             
             // Get required networks from trigger data
             // Handle both Set<String> and List<String> since JSON serialization converts Sets to Lists
@@ -1145,20 +1127,19 @@ class RuleEvaluator(private val context: Context) {
             
             if (requiredNetworks.isEmpty()) {
                 // Check if connected to any network
-                val isConnected = currentSSID.isNotEmpty() && currentSSID != "<unknown ssid>" && currentSSID != "0x"
-                
-                InAppLogger.logDebug(TAG, "No specific network required, connected: $isConnected (SSID: $currentSSID)")
+                InAppLogger.logDebug(TAG, "No specific network required, WiFi connected: $isWifiConnected (SSID: $currentSSID)")
                 
                 return EvaluationResult(
-                    success = isConnected,
-                    message = if (isConnected) "Connected to WiFi network" else "Not connected to WiFi",
-                    data = mapOf("current_ssid" to currentSSID)
+                    success = isWifiConnected,
+                    message = if (isWifiConnected) "Connected to WiFi network" else "Not connected to WiFi",
+                    data = mapOf(
+                        "current_ssid" to currentSSID,
+                        "ssid_known" to isSsidKnown,
+                        "wifi_connected" to isWifiConnected
+                    )
                 )
             } else {
-                // Check if we can resolve SSIDs
-                val canResolveSSID = WifiCapabilityChecker.canResolveWifiSSID(context)
-                
-                if (canResolveSSID) {
+                if (isSsidKnown) {
                     // We can resolve SSIDs, so check for specific networks
                     val isConnectedToRequired = currentSSID in requiredNetworks
                     
@@ -1167,24 +1148,23 @@ class RuleEvaluator(private val context: Context) {
                     return EvaluationResult(
                         success = isConnectedToRequired,
                         message = if (isConnectedToRequired) "Connected to required WiFi network" else "Not connected to required WiFi network",
-                        data = mapOf("current_ssid" to currentSSID)
+                        data = mapOf(
+                            "current_ssid" to currentSSID,
+                            "ssid_known" to true,
+                            "wifi_connected" to isWifiConnected
+                        )
                     )
                 } else {
-                    // Cannot resolve SSIDs due to Android security restrictions
-                    // Fallback to WiFi connection state instead of specific networks
-                    val isConnectedToWiFi = currentSSID.isNotEmpty() && currentSSID != "<unknown ssid>" && currentSSID != "0x"
-                    
-                    InAppLogger.logDebug(TAG, "SSID resolution not possible due to Android security restrictions. Using WiFi connection state instead.")
-                    InAppLogger.logDebug(TAG, "WiFi connected: $isConnectedToWiFi, Required networks: $requiredNetworks (ignored due to SSID resolution limitation)")
-                    
+                    InAppLogger.logDebug(TAG, "SSID unavailable; cannot verify required networks. WiFi connected: $isWifiConnected")
+
                     return EvaluationResult(
-                        success = isConnectedToWiFi,
-                        message = if (isConnectedToWiFi) "Connected to WiFi (specific network unknown due to Android security)" else "Not connected to WiFi",
+                        success = false,
+                        message = if (isWifiConnected) "Connected to WiFi but SSID unavailable" else "Not connected to WiFi",
                         data = mapOf(
                             "required_networks" to requiredNetworks,
                             "current_ssid" to currentSSID,
-                            "ssid_resolution_limited" to true,
-                            "wifi_connected" to isConnectedToWiFi
+                            "ssid_known" to false,
+                            "wifi_connected" to isWifiConnected
                         )
                     )
                 }

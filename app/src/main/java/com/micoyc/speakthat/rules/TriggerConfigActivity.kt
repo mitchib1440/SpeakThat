@@ -214,11 +214,6 @@ class TriggerConfigActivity : AppCompatActivity() {
     private fun setupWifiUI() {
         binding.cardWifi.visibility = View.VISIBLE
         
-        // Check if we can resolve WiFi SSIDs
-        if (!WifiCapabilityChecker.canResolveWifiSSID(this)) {
-            showWifiCompatibilityWarning()
-        }
-        
         // Set up WiFi options
         binding.switchAnyNetwork.setOnCheckedChangeListener { _, isChecked ->
             binding.editNetworkSSIDs.isEnabled = !isChecked
@@ -265,26 +260,6 @@ class TriggerConfigActivity : AppCompatActivity() {
             selectedForegroundApps.size
         )
         binding.textForegroundAppsSummary.text = countText
-    }
-    
-    private fun showWifiCompatibilityWarning() {
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("Note on WiFi Compatibility")
-            .setMessage("SpeakThat was unable to resolve your current SSID. This is likely because your version of Android has security restrictions that prevent SpeakThat from identifying what network you're connected to.\n\nIt's not impossible, however. So if you're a better developer than me then please contribute on the GitHub.")
-            .setPositiveButton("Create Anyway") { _, _ ->
-                // User wants to create the rule anyway
-            }
-            .setNegativeButton("Nevermind") { _, _ ->
-                // User wants to go back
-            }
-            .setNeutralButton("Open GitHub") { _, _ ->
-                // Open GitHub link
-                val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/mitchib1440/SpeakThat"))
-                startActivity(intent)
-            }
-            .create()
-        
-        dialog.show()
     }
     
     private fun setupDaySelection() {

@@ -717,12 +717,6 @@ class OnboardingPagerAdapter(
         }
 
         private fun showWifiConfigurationDialog(template: RuleTemplate) {
-            // Check if we can resolve WiFi SSIDs
-            if (!WifiCapabilityChecker.canResolveWifiSSID(binding.root.context)) {
-                showWifiCompatibilityWarningOnboarding(template)
-                return
-            }
-            
             val dialogView = android.view.LayoutInflater.from(binding.root.context)
                 .inflate(R.layout.dialog_wifi_configuration, null)
             
@@ -744,26 +738,6 @@ class OnboardingPagerAdapter(
                     }
                 }
                 .setNegativeButton("Cancel", null)
-                .create()
-            
-            dialog.show()
-        }
-        
-        private fun showWifiCompatibilityWarningOnboarding(template: RuleTemplate) {
-            val dialog = androidx.appcompat.app.AlertDialog.Builder(binding.root.context)
-                .setTitle("Note on WiFi Compatibility")
-                .setMessage("SpeakThat was unable to resolve your current SSID. This is likely because your version of Android has security restrictions that prevent SpeakThat from identifying what network you're connected to.\n\nIt's not impossible, however. So if you're a better developer than me then please contribute on the GitHub.")
-                .setPositiveButton("Add Rule Anyway") { _, _ ->
-                    // Create the rule with empty network list (will work with any WiFi)
-                    val customData = mapOf("network_ssids" to setOf<String>())
-                    addRuleFromTemplateWithData(template, customData)
-                }
-                .setNegativeButton("Nevermind", null)
-                .setNeutralButton("Open GitHub") { _, _ ->
-                    // Open GitHub link
-                    val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://github.com/mitchib1440/SpeakThat"))
-                    binding.root.context.startActivity(intent)
-                }
                 .create()
             
             dialog.show()

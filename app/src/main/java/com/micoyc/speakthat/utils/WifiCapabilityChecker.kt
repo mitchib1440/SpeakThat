@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.os.Build
 import androidx.core.content.ContextCompat
@@ -22,7 +21,8 @@ object WifiCapabilityChecker {
     /**
      * Check if the device can resolve WiFi SSIDs
      * @param context Application context
-     * @return true if SSID resolution is possible, false if limited by Android security
+     * @return true if permissions and system settings allow SSID resolution,
+     * false if limited by Android security or system state
      */
     fun canResolveWifiSSID(context: Context): Boolean {
         try {
@@ -57,28 +57,16 @@ object WifiCapabilityChecker {
                 InAppLogger.logDebug(TAG, "SSID resolution blocked: WiFi disabled")
                 return false
             }
-            
+
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val activeNetwork = connectivityManager.activeNetwork ?: return false
-            val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
-                ?: return false
+            val activeNetwork = connectivityManager.activeNetwork
+            val capabilities = activeNetwork?.let { connectivityManager.getNetworkCapabilities(it) }
+            val isWifiConnected = capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
 
-            if (!capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                InAppLogger.logDebug(TAG, "SSID resolution blocked: active network not WiFi")
-                return false
-            }
+            InAppLogger.logDebug(TAG, "SSID resolution prerequisites OK. WiFi connected=$isWifiConnected")
 
-            val wifiInfo = (capabilities.transportInfo as? WifiInfo) ?: wifiManager.connectionInfo
-            val ssid = wifiInfo?.ssid?.removeSurrounding("\"") ?: ""
-            
-            // If we can get a valid SSID, we can resolve WiFi networks
-            val canResolve = ssid.isNotEmpty() &&
-                !ssid.equals("<unknown ssid>", ignoreCase = true) &&
-                ssid != "0x"
-            
-            InAppLogger.logDebug(TAG, "SSID resolution check - Raw SSID: '$ssid', Can resolve: $canResolve")
-            
-            return canResolve
+            // Permissions and system settings allow SSID resolution; actual SSID may still be transiently unavailable.
+            return true
         } catch (e: Throwable) {
             InAppLogger.logDebug(TAG, "Error checking SSID resolution capability: ${e.message}")
             return false
