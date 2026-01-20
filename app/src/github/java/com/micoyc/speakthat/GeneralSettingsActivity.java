@@ -20,6 +20,9 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.micoyc.speakthat.databinding.ActivityGeneralSettingsBinding;
 import org.json.JSONException;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -28,6 +31,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import com.micoyc.speakthat.rules.Rule;
+import com.micoyc.speakthat.rules.RuleConfigManager;
+import com.micoyc.speakthat.rules.RuleConfigManager.RulePermissionType;
 
 public class GeneralSettingsActivity extends AppCompatActivity {
     private ActivityGeneralSettingsBinding binding;
@@ -38,6 +44,10 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private ActivityResultLauncher<Intent> filePickerLauncher;
     private ActivityResultLauncher<Intent> fileSaverLauncher;
+    private List<Rule> pendingRulesImport = null;
+    private boolean includeRulesInExport = false;
+
+    private static final int REQUEST_RULES_IMPORT_PERMISSIONS = 3001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +93,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             new ActivityResultContracts.RequestPermission(),
             isGranted -> {
                 if (isGranted) {
-                    performExport();
+                    promptExportIncludeRules();
                 } else {
                     Toast.makeText(this, "Storage permission required for export", Toast.LENGTH_LONG).show();
                 }
@@ -442,7 +452,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     private void performExport() {
         try {
             // Generate export data
-            String exportData = FilterConfigManager.exportFullConfiguration(this);
+            String exportData = FilterConfigManager.exportFullConfiguration(this, includeRulesInExport);
             
             // Create filename with timestamp
             String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault()).format(new Date());
@@ -463,7 +473,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     private void exportToUri(Uri uri) {
         try {
             // Generate export data
-            String exportData = FilterConfigManager.exportFullConfiguration(this);
+            String exportData = FilterConfigManager.exportFullConfiguration(this, includeRulesInExport);
             
             // Write to file using ContentResolver
             try (java.io.OutputStream outputStream = getContentResolver().openOutputStream(uri)) {
@@ -496,8 +506,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             
             if (result.success) {
                 Toast.makeText(this, "Configuration imported successfully: " + result.message, Toast.LENGTH_LONG).show();
-                // Refresh the activity to show updated settings
-                recreate();
+                handleOptionalRulesImport(content.toString());
             } else {
                 Toast.makeText(this, "Import failed: " + result.message, Toast.LENGTH_LONG).show();
             }
@@ -564,11 +573,11 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         // The ACTION_CREATE_DOCUMENT intent will handle the file creation
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             // Android 11+ - no permission needed for document creation
-            performExport();
+            promptExportIncludeRules();
         } else {
             // Android 10 and below - check for storage permission
             if (checkStoragePermission()) {
-                performExport();
+                promptExportIncludeRules();
             } else {
                 requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             }
@@ -648,6 +657,128 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 // Permission denied
                 Toast.makeText(this, "Notification permission denied - feature will not work", Toast.LENGTH_LONG).show();
             }
+        } else if (requestCode == REQUEST_RULES_IMPORT_PERMISSIONS) {
+            handleRulesImportPermissionsResult();
         }
+    }
+
+    private void promptExportIncludeRules() {
+        new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.rules_export_choice_title))
+            .setMessage(getString(R.string.rules_export_choice_message))
+            .setPositiveButton(getString(R.string.rules_export_choice_include), (dialog, which) -> {
+                includeRulesInExport = true;
+                performExport();
+            })
+            .setNegativeButton(getString(R.string.rules_export_choice_exclude), (dialog, which) -> {
+                includeRulesInExport = false;
+                performExport();
+            })
+            .setNeutralButton(getString(R.string.button_cancel), null)
+            .show();
+    }
+
+    private void handleOptionalRulesImport(String jsonData) {
+        List<Rule> rules = RuleConfigManager.extractRulesFromFullConfig(jsonData);
+        if (rules.isEmpty()) {
+            recreate();
+            return;
+        }
+        new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.rules_import_master_title))
+            .setMessage(getString(R.string.rules_import_master_message, rules.size()))
+            .setPositiveButton(getString(R.string.rules_import_master_confirm), (dialog, which) -> handleRulesImportWithPermissions(rules))
+            .setNegativeButton(getString(R.string.rules_import_master_skip), (dialog, which) -> recreate())
+            .show();
+    }
+
+    private void handleRulesImportWithPermissions(List<Rule> rules) {
+        EnumSet<RulePermissionType> required = RuleConfigManager.getRequiredPermissionTypes(rules);
+        List<String> missingPermissions = new ArrayList<>();
+
+        if (required.contains(RulePermissionType.BLUETOOTH) && !hasBluetoothPermissions()) {
+            missingPermissions.addAll(getBluetoothPermissions());
+        }
+        if (required.contains(RulePermissionType.WIFI) && !hasWifiPermissions()) {
+            missingPermissions.addAll(getWifiPermissions());
+        }
+
+        if (!missingPermissions.isEmpty()) {
+            pendingRulesImport = rules;
+            requestPermissions(missingPermissions.toArray(new String[0]), REQUEST_RULES_IMPORT_PERMISSIONS);
+        } else {
+            applyImportedRules(rules, 0);
+        }
+    }
+
+    private void handleRulesImportPermissionsResult() {
+        if (pendingRulesImport == null) {
+            return;
+        }
+        List<Rule> rules = pendingRulesImport;
+        pendingRulesImport = null;
+
+        EnumSet<RulePermissionType> required = RuleConfigManager.getRequiredPermissionTypes(rules);
+        boolean allowBluetooth = !required.contains(RulePermissionType.BLUETOOTH) || hasBluetoothPermissions();
+        boolean allowWifi = !required.contains(RulePermissionType.WIFI) || hasWifiPermissions();
+        List<Rule> filtered = RuleConfigManager.filterRulesByPermissions(rules, allowBluetooth, allowWifi);
+        int skippedCount = rules.size() - filtered.size();
+        applyImportedRules(filtered, skippedCount);
+    }
+
+    private void applyImportedRules(List<Rule> rules, int skippedCount) {
+        RuleConfigManager.RuleImportResult result = RuleConfigManager.importRules(this, rules, skippedCount);
+        if (result.getSuccess()) {
+            String message;
+            if (skippedCount > 0) {
+                message = getString(R.string.rules_import_master_success_with_skips, rules.size(), skippedCount);
+            } else {
+                message = getString(R.string.rules_import_master_success, rules.size());
+            }
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, getString(R.string.rules_import_failed, result.getMessage()), Toast.LENGTH_LONG).show();
+        }
+        recreate();
+    }
+
+    private boolean hasBluetoothPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return checkSelfPermission(android.Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED &&
+                checkSelfPermission(android.Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED;
+        }
+        return checkSelfPermission(android.Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED &&
+            checkSelfPermission(android.Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private List<String> getBluetoothPermissions() {
+        List<String> permissions = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions.add(android.Manifest.permission.BLUETOOTH_CONNECT);
+            permissions.add(android.Manifest.permission.BLUETOOTH_SCAN);
+        } else {
+            permissions.add(android.Manifest.permission.BLUETOOTH);
+            permissions.add(android.Manifest.permission.BLUETOOTH_ADMIN);
+        }
+        return permissions;
+    }
+
+    private boolean hasWifiPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return checkSelfPermission(android.Manifest.permission.NEARBY_WIFI_DEVICES) == PackageManager.PERMISSION_GRANTED &&
+                checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        }
+        return checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private List<String> getWifiPermissions() {
+        List<String> permissions = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(android.Manifest.permission.NEARBY_WIFI_DEVICES);
+            permissions.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
+        } else {
+            permissions.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        return permissions;
     }
 } 

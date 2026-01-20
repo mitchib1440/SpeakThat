@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import com.micoyc.speakthat.StatsSnapshot;
+import com.micoyc.speakthat.rules.RuleConfigManager;
 
 public class FilterConfigManager {
     
@@ -268,6 +269,13 @@ public class FilterConfigManager {
      * Export full configuration including all settings
      */
     public static String exportFullConfiguration(Context context) throws JSONException {
+        return exportFullConfiguration(context, false);
+    }
+
+    /**
+     * Export full configuration including all settings, optionally including rules.
+     */
+    public static String exportFullConfiguration(Context context, boolean includeRules) throws JSONException {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences voicePrefs = context.getSharedPreferences("VoiceSettings", Context.MODE_PRIVATE);
         
@@ -432,6 +440,19 @@ public class FilterConfigManager {
         statistics.put("filterReasons", new JSONObject(config.statistics.filterReasons));
         statistics.put("appsRead", new JSONArray(config.statistics.appsRead));
         json.put("statistics", statistics);
+
+        if (includeRules) {
+            try {
+                String rulesExport = RuleConfigManager.exportRules(context);
+                JSONObject rulesJson = new JSONObject(rulesExport);
+                JSONArray rulesArray = rulesJson.optJSONArray("rules");
+                if (rulesArray != null) {
+                    json.put("rules", rulesArray);
+                }
+            } catch (Exception e) {
+                InAppLogger.logError("FilterConfig", "Failed to append rules to export: " + e.getMessage());
+            }
+        }
         
         return json.toString(2); // Pretty print with 2-space indentation
     }
