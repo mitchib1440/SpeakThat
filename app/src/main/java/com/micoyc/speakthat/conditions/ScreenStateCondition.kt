@@ -39,11 +39,11 @@ class ScreenStateConditionChecker(
         }
         
         try {
-            val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            val display = windowManager.defaultDisplay
+            val displayManager = context.getSystemService(Context.DISPLAY_SERVICE) as android.hardware.display.DisplayManager
+            val display = displayManager.getDisplay(android.view.Display.DEFAULT_DISPLAY)
             
             // Check if screen is on
-            val isScreenOn = display.state == android.view.Display.STATE_ON
+            val isScreenOn = display?.state == android.view.Display.STATE_ON
             
             val shouldAllow = if (condition.onlyWhenScreenOff) {
                 !isScreenOn // Allow only when screen is OFF

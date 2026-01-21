@@ -93,7 +93,7 @@ object UpdateFeature {
             }
             
             // Perform the update check
-            GlobalScope.launch {
+            kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
                 try {
                     val updateInfo = updateManager.checkForUpdates()
                     if (updateInfo != null) {

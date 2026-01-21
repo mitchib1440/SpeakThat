@@ -14,6 +14,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.BatteryManager
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.speech.tts.TextToSpeech
@@ -1491,7 +1492,13 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             // Test audio manager
             val audioManager = getSystemService(Context.AUDIO_SERVICE) as android.media.AudioManager
             val isMusicActive = audioManager.isMusicActive
-            val isSpeakerphoneOn = audioManager.isSpeakerphoneOn
+            val isSpeakerphoneOn = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                val device = audioManager.communicationDevice
+                device?.type == android.media.AudioDeviceInfo.TYPE_BUILTIN_SPEAKER
+            } else {
+                @Suppress("DEPRECATION")
+                audioManager.isSpeakerphoneOn
+            }
             
             DiagnosticResult("OK", getString(R.string.diagnostics_output_stream_ok))
         } catch (e: Exception) {

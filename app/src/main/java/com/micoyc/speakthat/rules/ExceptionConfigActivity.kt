@@ -1,5 +1,6 @@
 package com.micoyc.speakthat.rules
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -54,7 +55,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Configure Exception"
         
-        exceptionType = intent.getSerializableExtra(EXTRA_EXCEPTION_TYPE) as? ExceptionType
+        exceptionType = intent.getSerializableExtraCompat(EXTRA_EXCEPTION_TYPE)
         isEditing = intent.getBooleanExtra(EXTRA_IS_EDITING, false)
         
         if (isEditing) {
@@ -347,7 +348,8 @@ class ExceptionConfigActivity : AppCompatActivity() {
         }
         
         try {
-            val bluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
+            val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as? android.bluetooth.BluetoothManager
+            val bluetoothAdapter = bluetoothManager?.adapter
             
             if (bluetoothAdapter == null) {
                 AlertDialog.Builder(this)
@@ -464,7 +466,9 @@ class ExceptionConfigActivity : AppCompatActivity() {
                     val scanResults = wifiManager.scanResults
                     if (scanResults.isNotEmpty()) {
                         availableNetworks.addAll(scanResults.map { result ->
-                            result.SSID.removeSurrounding("\"")
+                            @Suppress("DEPRECATION")
+                            val ssid = result.SSID
+                            ssid.removeSurrounding("\"")
                         }.distinct())
                     }
                 } catch (e: SecurityException) {
@@ -605,7 +609,10 @@ class ExceptionConfigActivity : AppCompatActivity() {
                 ExceptionType.TIME_SCHEDULE -> {
                     val startTime = exception.data["start_time"] as? Long ?: 0L
                     val endTime = exception.data["end_time"] as? Long ?: 0L
-                    val daysOfWeek = exception.data["days_of_week"] as? Set<Int> ?: emptySet()
+                    val daysOfWeek = (exception.data["days_of_week"] as? Collection<*>)
+                        ?.mapNotNull { it as? Int }
+                        ?.toSet()
+                        ?: emptySet()
                     
                     // Set time displays
                     val startHour = (startTime / (60 * 60 * 1000)).toInt()
@@ -671,7 +678,8 @@ class ExceptionConfigActivity : AppCompatActivity() {
                         // Try to get device names for better display
                         val deviceInfo = mutableListOf<String>()
                         try {
-                            val bluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
+                            val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as? android.bluetooth.BluetoothManager
+                            val bluetoothAdapter = bluetoothManager?.adapter
                             if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) {
                                 val bondedDevices = bluetoothAdapter.bondedDevices
                                 for (address in deviceAddresses) {
@@ -755,7 +763,9 @@ class ExceptionConfigActivity : AppCompatActivity() {
                 val wifiException = createWifiException()
                 
                 // Check if this is a WiFi exception with specific networks
-                val networkSSIDs = wifiException.data["network_ssids"] as? Set<String>
+                val networkSSIDs = (wifiException.data["network_ssids"] as? Collection<*>)
+                    ?.mapNotNull { it as? String }
+                    ?.toSet()
                 if (networkSSIDs?.isNotEmpty() == true) {
                     val canResolve = WifiCapabilityChecker.canResolveWifiSSID(this)
                     if (!canResolve) {
@@ -1072,6 +1082,15 @@ class ExceptionConfigActivity : AppCompatActivity() {
         )
     }
 
+    private inline fun <reified T : java.io.Serializable> Intent.getSerializableExtraCompat(key: String): T? {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            getSerializableExtra(key, T::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            getSerializableExtra(key) as? T
+        }
+    }
+
     private fun createBluetoothException(): Exception {
         val isAnyDevice = binding.switchAnyDevice.isChecked
         
@@ -1079,7 +1098,9 @@ class ExceptionConfigActivity : AppCompatActivity() {
             emptySet<String>()
         } else {
             // Try to get from tag first, then parse from text
-            val addressesFromTag = binding.editDeviceAddresses.tag as? Set<String>
+            val addressesFromTag = (binding.editDeviceAddresses.tag as? Set<*>)
+                ?.filterIsInstance<String>()
+                ?.toSet()
             if (addressesFromTag != null) {
                 addressesFromTag
             } else {
@@ -1130,7 +1151,9 @@ class ExceptionConfigActivity : AppCompatActivity() {
             emptySet<String>()
         } else {
             // Try to get from tag first, then parse from text
-            val ssidsFromTag = binding.editNetworkSSIDs.tag as? Set<String>
+            val ssidsFromTag = (binding.editNetworkSSIDs.tag as? Set<*>)
+                ?.filterIsInstance<String>()
+                ?.toSet()
             if (ssidsFromTag != null) {
                 ssidsFromTag
             } else {

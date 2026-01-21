@@ -1,6 +1,7 @@
 package com.micoyc.speakthat.rules
 
 import android.graphics.Typeface
+import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
@@ -42,7 +43,7 @@ class ActionConfigActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Configure Action"
 
-        actionType = intent.getSerializableExtra(EXTRA_ACTION_TYPE) as? ActionType
+        actionType = intent.getSerializableExtraCompat(EXTRA_ACTION_TYPE)
         isEditing = intent.getBooleanExtra(EXTRA_IS_EDITING, false)
 
         if (isEditing) {
@@ -60,6 +61,15 @@ class ActionConfigActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(
             if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
         )
+    }
+
+    private inline fun <reified T : java.io.Serializable> Intent.getSerializableExtraCompat(key: String): T? {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            getSerializableExtra(key, T::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            getSerializableExtra(key) as? T
+        }
     }
 
     private fun setupUI() {

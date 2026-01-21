@@ -356,7 +356,8 @@ class RuleEvaluator(private val context: Context) {
             InAppLogger.logDebug(TAG, "Trigger data: ${trigger.data}")
             
             // Step 1: Check Bluetooth availability and permissions
-            val bluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
+            val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as? android.bluetooth.BluetoothManager
+            val bluetoothAdapter = bluetoothManager?.adapter
             
             if (bluetoothAdapter == null) {
                 InAppLogger.logDebug(TAG, "Bluetooth not available on this device")
@@ -845,18 +846,20 @@ class RuleEvaluator(private val context: Context) {
         
         try {
             val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as android.media.AudioManager
-            
-            // Check various audio routing indicators
-            val isBluetoothA2dpOn = audioManager.isBluetoothA2dpOn
-            val isBluetoothScoOn = audioManager.isBluetoothScoOn
             val audioMode = audioManager.mode
             val isCallOrCommMode = isCallOrCommunicationMode(audioMode)
-            val isScoRoutable = isBluetoothScoOn && isCallOrCommMode
-            val hasAudioRoute = isBluetoothA2dpOn || isScoRoutable
+            val hasBluetoothOutput = audioManager.getDevices(android.media.AudioManager.GET_DEVICES_OUTPUTS)
+                .any { device ->
+                    device.type == android.media.AudioDeviceInfo.TYPE_BLUETOOTH_A2DP ||
+                        device.type == android.media.AudioDeviceInfo.TYPE_BLUETOOTH_SCO ||
+                        device.type == android.media.AudioDeviceInfo.TYPE_BLE_HEADSET ||
+                        device.type == android.media.AudioDeviceInfo.TYPE_HEARING_AID
+                }
+            val hasAudioRoute = hasBluetoothOutput
             
             InAppLogger.logDebug(
                 TAG,
-                "Audio routing check - A2DP: $isBluetoothA2dpOn, SCO: $isBluetoothScoOn, Mode: $audioMode, Call/Comm mode: $isCallOrCommMode"
+                "Audio routing check - Bluetooth output: $hasBluetoothOutput, Mode: $audioMode, Call/Comm mode: $isCallOrCommMode"
             )
             
             // Conservative fallback: require A2DP, or SCO while in a call/comm mode.
@@ -881,7 +884,8 @@ class RuleEvaluator(private val context: Context) {
         InAppLogger.logDebug(TAG, "--- Checking if specific bonded devices are connected via audio routing ---")
         
         try {
-            val bluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
+            val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as? android.bluetooth.BluetoothManager
+            val bluetoothAdapter = bluetoothManager?.adapter
             val bondedDevices = bluetoothAdapter?.bondedDevices ?: emptySet()
             
             // Check if any required device is in the bonded list
@@ -898,16 +902,20 @@ class RuleEvaluator(private val context: Context) {
             
             // Check if audio is being routed to Bluetooth
             val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as android.media.AudioManager
-            val isBluetoothA2dpOn = audioManager.isBluetoothA2dpOn
-            val isBluetoothScoOn = audioManager.isBluetoothScoOn
             val audioMode = audioManager.mode
             val isCallOrCommMode = isCallOrCommunicationMode(audioMode)
-            val isScoRoutable = isBluetoothScoOn && isCallOrCommMode
-            val hasAudioRoute = isBluetoothA2dpOn || isScoRoutable
+            val hasBluetoothOutput = audioManager.getDevices(android.media.AudioManager.GET_DEVICES_OUTPUTS)
+                .any { device ->
+                    device.type == android.media.AudioDeviceInfo.TYPE_BLUETOOTH_A2DP ||
+                        device.type == android.media.AudioDeviceInfo.TYPE_BLUETOOTH_SCO ||
+                        device.type == android.media.AudioDeviceInfo.TYPE_BLE_HEADSET ||
+                        device.type == android.media.AudioDeviceInfo.TYPE_HEARING_AID
+                }
+            val hasAudioRoute = hasBluetoothOutput
             
             InAppLogger.logDebug(
                 TAG,
-                "Audio routing check - A2DP: $isBluetoothA2dpOn, SCO: $isBluetoothScoOn, Mode: $audioMode, Call/Comm mode: $isCallOrCommMode"
+                "Audio routing check - Bluetooth output: $hasBluetoothOutput, Mode: $audioMode, Call/Comm mode: $isCallOrCommMode"
             )
             
             // Conservative fallback: require A2DP, or SCO while in a call/comm mode.
@@ -1105,7 +1113,10 @@ class RuleEvaluator(private val context: Context) {
             }
 
             val wifiInfoFromTransport = networkCapabilities?.transportInfo as? WifiInfo
-            val rawSSID = wifiInfoFromTransport?.ssid ?: wifiManager.connectionInfo?.ssid
+            val rawSSID = wifiInfoFromTransport?.ssid ?: run {
+                @Suppress("DEPRECATION")
+                wifiManager.connectionInfo?.ssid
+            }
             val currentSSID = rawSSID?.removeSurrounding("\"") ?: ""
             val isSsidKnown = currentSSID.isNotBlank() &&
                 !currentSSID.equals("<unknown ssid>", ignoreCase = true) &&

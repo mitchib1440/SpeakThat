@@ -71,13 +71,13 @@ class MediaNotificationDetector {
             
             // Check for media session object (most reliable indicator)
             val mediaSession = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                extras.getParcelable("android.mediaSession", android.media.session.MediaSession::class.java)
+                extras.getParcelable("android.mediaSession", android.os.Parcelable::class.java)
             } else {
                 @Suppress("DEPRECATION")
                 extras.getParcelable("android.mediaSession")
             }
             val mediaController = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                extras.getParcelable("android.mediaController", android.media.session.MediaController::class.java)
+                extras.getParcelable("android.mediaController", android.os.Parcelable::class.java)
             } else {
                 @Suppress("DEPRECATION")
                 extras.getParcelable("android.mediaController")

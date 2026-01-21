@@ -1,6 +1,7 @@
 package com.micoyc.speakthat.rules
 
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -46,7 +47,7 @@ class TriggerConfigActivity : AppCompatActivity() {
         supportActionBar?.title = "Configure Trigger"
         
         // Get intent data
-        triggerType = intent.getSerializableExtra(EXTRA_TRIGGER_TYPE) as? TriggerType
+        triggerType = intent.getSerializableExtraCompat(EXTRA_TRIGGER_TYPE)
         isEditing = intent.getBooleanExtra(EXTRA_IS_EDITING, false)
         
         if (isEditing) {
@@ -65,6 +66,15 @@ class TriggerConfigActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(
             if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
         )
+    }
+
+    private inline fun <reified T : java.io.Serializable> Intent.getSerializableExtraCompat(key: String): T? {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            getSerializableExtra(key, T::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            getSerializableExtra(key) as? T
+        }
     }
     
     private fun setupUI() {
@@ -376,7 +386,8 @@ class TriggerConfigActivity : AppCompatActivity() {
         }
         
         try {
-            val bluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
+            val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as? android.bluetooth.BluetoothManager
+            val bluetoothAdapter = bluetoothManager?.adapter
             
             if (bluetoothAdapter == null) {
                 AlertDialog.Builder(this)
@@ -498,7 +509,9 @@ class TriggerConfigActivity : AppCompatActivity() {
                     val scanResults = wifiManager.scanResults
                     if (scanResults.isNotEmpty()) {
                         availableNetworks.addAll(scanResults.map { result ->
-                            result.SSID.removeSurrounding("\"")
+                            @Suppress("DEPRECATION")
+                            val ssid = result.SSID
+                            ssid.removeSurrounding("\"")
                         }.distinct())
                         InAppLogger.log("TriggerConfig", "Found ${availableNetworks.size} WiFi networks from scan results")
                     } else {
@@ -757,7 +770,8 @@ class TriggerConfigActivity : AppCompatActivity() {
                         // Try to get device names for better display
                         val deviceInfo = mutableListOf<String>()
                         try {
-                            val bluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
+                            val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as? android.bluetooth.BluetoothManager
+                            val bluetoothAdapter = bluetoothManager?.adapter
                             if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) {
                                 val bondedDevices = bluetoothAdapter.bondedDevices
                                 for (address in deviceAddresses) {
@@ -841,7 +855,9 @@ class TriggerConfigActivity : AppCompatActivity() {
                 val wifiTrigger = createWifiTrigger()
                 
                 // Check if this is a WiFi trigger with specific networks
-                val networkSSIDs = wifiTrigger.data["network_ssids"] as? Set<String>
+                val networkSSIDs = (wifiTrigger.data["network_ssids"] as? Collection<*>)
+                    ?.mapNotNull { it as? String }
+                    ?.toSet()
                 if (networkSSIDs?.isNotEmpty() == true) {
                     val canResolve = WifiCapabilityChecker.canResolveWifiSSID(this)
                     if (!canResolve) {
@@ -1151,7 +1167,9 @@ class TriggerConfigActivity : AppCompatActivity() {
             emptySet<String>()
         } else {
             // Use stored addresses from tag if available, otherwise parse from text
-            val storedAddresses = binding.editDeviceAddresses.tag as? Set<String>
+            val storedAddresses = (binding.editDeviceAddresses.tag as? Set<*>)
+                ?.filterIsInstance<String>()
+                ?.toSet()
             if (storedAddresses != null) {
                 storedAddresses
             } else {
@@ -1197,7 +1215,9 @@ class TriggerConfigActivity : AppCompatActivity() {
             emptySet<String>()
         } else {
             // Use stored SSIDs from tag if available, otherwise parse from text
-            val storedSSIDs = binding.editNetworkSSIDs.tag as? Set<String>
+            val storedSSIDs = (binding.editNetworkSSIDs.tag as? Set<*>)
+                ?.filterIsInstance<String>()
+                ?.toSet()
             if (storedSSIDs != null) {
                 storedSSIDs
             } else {

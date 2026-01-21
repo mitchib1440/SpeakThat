@@ -46,7 +46,7 @@ class PersistentIndicatorService : Service() {
         Log.d(TAG, "PersistentIndicatorService destroyed")
         InAppLogger.log("PersistentService", "PersistentIndicatorService destroyed")
         if (isForegroundActive) {
-            stopForeground(true)
+            stopForegroundCompat()
             isForegroundActive = false
         }
     }
@@ -57,7 +57,7 @@ class PersistentIndicatorService : Service() {
         Log.d(TAG, "Stopping persistent indicator: $reason")
         InAppLogger.log("PersistentService", "Stopping persistent indicator: $reason")
         if (isForegroundActive) {
-            stopForeground(true)
+            stopForegroundCompat()
             isForegroundActive = false
         }
         stopSelf()
@@ -65,6 +65,15 @@ class PersistentIndicatorService : Service() {
 
     companion object {
         private const val TAG = "PersistentIndicatorSvc"
+    }
+
+    private fun stopForegroundCompat() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            stopForeground(STOP_FOREGROUND_REMOVE)
+        } else {
+            @Suppress("DEPRECATION")
+            stopForeground(true)
+        }
     }
 }
 

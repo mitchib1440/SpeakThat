@@ -118,7 +118,10 @@ class WifiNetworkConditionChecker(
             
             // Get current WiFi SSID (prefer modern transportInfo, fall back to connectionInfo)
             val wifiInfoFromTransport = networkCapabilities.transportInfo as? WifiInfo
-            val currentSSID = wifiInfoFromTransport?.ssid ?: wifiManager.connectionInfo?.ssid
+            val currentSSID = wifiInfoFromTransport?.ssid ?: run {
+                @Suppress("DEPRECATION")
+                wifiManager.connectionInfo?.ssid
+            }
             
             // Remove quotes from SSID if present
             val cleanSSID = currentSSID?.removeSurrounding("\"") ?: ""

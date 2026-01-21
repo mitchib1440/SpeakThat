@@ -244,7 +244,9 @@ class TemplateSelectionActivity : AppCompatActivity() {
                     val scanResults = wifiManager.scanResults
                     if (scanResults.isNotEmpty()) {
                         availableNetworks.addAll(scanResults.map { result ->
-                            result.SSID.removeSurrounding("\"")
+                            @Suppress("DEPRECATION")
+                            val ssid = result.SSID
+                            ssid.removeSurrounding("\"")
                         }.distinct())
                     }
                 } catch (e: SecurityException) {

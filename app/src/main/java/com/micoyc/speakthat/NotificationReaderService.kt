@@ -17,6 +17,7 @@ import android.media.AudioManager
 import android.media.session.MediaController
 import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
+import android.net.Uri
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
@@ -2924,18 +2925,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 (it.sound == null && !it.shouldVibrate() && it.importance <= NotificationManager.IMPORTANCE_LOW)
             } ?: run {
                 // Fallback if channel not found: check notification flags and importance
-                val hasNoAlerts = notification.sound == null && 
-                                 (notification.vibrate == null || notification.vibrate.isEmpty()) &&
-                                 (notification.defaults and (Notification.DEFAULT_SOUND or Notification.DEFAULT_VIBRATE)) == 0
-                val importance = notification.priority
-                hasNoAlerts && importance <= Notification.PRIORITY_LOW
+                val hasNoAlerts = hasNoAlertsLegacy(notification)
+                val importance = getPriorityLegacy(notification)
+                @Suppress("DEPRECATION")
+                val isLow = importance <= Notification.PRIORITY_LOW
+                hasNoAlerts && isLow
             }
         } else {
             // For pre-Oreo devices, check notification flags and settings
-            val hasNoAlerts = notification.sound == null && 
-                            (notification.vibrate == null || notification.vibrate.isEmpty()) &&
-                            (notification.defaults and (Notification.DEFAULT_SOUND or Notification.DEFAULT_VIBRATE)) == 0
-            val lowPriority = notification.priority <= Notification.PRIORITY_LOW
+            val hasNoAlerts = hasNoAlertsLegacy(notification)
+            @Suppress("DEPRECATION")
+            val lowPriority = getPriorityLegacy(notification) <= Notification.PRIORITY_LOW
             
             // Only consider truly silent if it has no alerts and low priority
             hasNoAlerts && lowPriority
@@ -2945,9 +2945,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val isForegroundService = (flags and Notification.FLAG_FOREGROUND_SERVICE) != 0
         
         // Check notification priority level
-        val priority = notification.priority
-        val isLowPriorityLevel = priority == Notification.PRIORITY_MIN || 
-                                priority == Notification.PRIORITY_LOW
+        val priority = getPriorityLegacy(notification)
+        @Suppress("DEPRECATION")
+        val isLowPriorityLevel = priority == Notification.PRIORITY_MIN ||
+            priority == Notification.PRIORITY_LOW
         
         // Check for system notifications (from system apps)
         val isSystemNotification = sbn.packageName.startsWith("com.android.") ||
@@ -2998,10 +2999,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                               "Channel sound: ${channel?.sound}, " +
                               "Channel vibration: ${channel?.shouldVibrate()}")
                 } else {
-                    Log.d(TAG, "Silent notification details - Priority: ${notification.priority}, " +
-                              "Sound: ${notification.sound}, " +
-                              "Defaults: ${notification.defaults}, " +
-                              "Vibration: ${notification.vibrate?.isNotEmpty()}")
+                    Log.d(TAG, "Silent notification details - Priority: ${getPriorityLegacy(notification)}, " +
+                              "Sound: ${getSoundLegacy(notification)}, " +
+                              "Defaults: ${getDefaultsLegacy(notification)}, " +
+                              "Vibration: ${getVibrateLegacy(notification)?.isNotEmpty()}")
                 }
             }
             
@@ -3009,6 +3010,61 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         return FilterResult(true, "", "Not a persistent/silent notification or category not enabled")
+    }
+
+    @Suppress("DEPRECATION")
+    private fun hasNoAlertsLegacy(notification: Notification): Boolean {
+        return notification.sound == null &&
+            (notification.vibrate == null || notification.vibrate.isEmpty()) &&
+            (notification.defaults and (Notification.DEFAULT_SOUND or Notification.DEFAULT_VIBRATE)) == 0
+    }
+
+    @Suppress("DEPRECATION")
+    private fun getPriorityLegacy(notification: Notification): Int {
+        return notification.priority
+    }
+
+    @Suppress("DEPRECATION")
+    private fun getSoundLegacy(notification: Notification): Uri? {
+        return notification.sound
+    }
+
+    @Suppress("DEPRECATION")
+    private fun getVibrateLegacy(notification: Notification): LongArray? {
+        return notification.vibrate
+    }
+
+    @Suppress("DEPRECATION")
+    private fun getDefaultsLegacy(notification: Notification): Int {
+        return notification.defaults
+    }
+
+    private fun isSpeakerphoneEnabled(audioManager: AudioManager): Boolean {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            val device = audioManager.communicationDevice
+            device?.type == android.media.AudioDeviceInfo.TYPE_BUILTIN_SPEAKER
+        } else {
+            @Suppress("DEPRECATION")
+            audioManager.isSpeakerphoneOn
+        }
+    }
+
+    private fun setSpeakerphoneEnabled(audioManager: AudioManager, enabled: Boolean) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            if (enabled) {
+                val speaker = audioManager.availableCommunicationDevices.firstOrNull { device ->
+                    device.type == android.media.AudioDeviceInfo.TYPE_BUILTIN_SPEAKER
+                }
+                if (speaker != null) {
+                    audioManager.setCommunicationDevice(speaker)
+                }
+            } else {
+                audioManager.clearCommunicationDevice()
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            audioManager.isSpeakerphoneOn = enabled
+        }
     }
     
     override fun onSensorChanged(event: SensorEvent) {
@@ -3170,8 +3226,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Disable speakerphone if it was enabled
         try {
-            if (audioManager.isSpeakerphoneOn) {
-                audioManager.isSpeakerphoneOn = false
+            if (isSpeakerphoneEnabled(audioManager)) {
+                setSpeakerphoneEnabled(audioManager, false)
                 InAppLogger.log("Service", "Speakerphone disabled after stopping speech")
             }
         } catch (e: Exception) {
@@ -5166,7 +5222,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (ttsUsage == android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION && speakerphoneEnabled) {
             try {
                 // Log current speakerphone state and audio mode
-                val currentSpeakerphoneState = audioManager.isSpeakerphoneOn
+                val currentSpeakerphoneState = isSpeakerphoneEnabled(audioManager)
                 val currentAudioMode = audioManager.mode
                 InAppLogger.log("Service", "Current speakerphone state: $currentSpeakerphoneState, audio mode: $currentAudioMode")
                 
@@ -5211,7 +5267,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     
                     // Enable speakerphone with proper error handling
                     InAppLogger.log("Service", "Attempting to enable speakerphone...")
-                    audioManager.isSpeakerphoneOn = true
+                    setSpeakerphoneEnabled(audioManager, true)
                     InAppLogger.log("Service", "Called audioManager.isSpeakerphoneOn = true")
                     
                     // If audio focus failed, try an alternative approach for some devices
@@ -5222,7 +5278,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         try {
                             audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
                             android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                                audioManager.isSpeakerphoneOn = true
+                                setSpeakerphoneEnabled(audioManager, true)
                                 InAppLogger.log("Service", "Alternative speakerphone attempt completed")
                             }, 100) // Increased delay from 50ms to 100ms
                         } catch (e: Exception) {
@@ -5231,13 +5287,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     }
                     
                     // Check immediate state
-                    val immediateState = audioManager.isSpeakerphoneOn
+                    val immediateState = isSpeakerphoneEnabled(audioManager)
                     InAppLogger.log("Service", "Immediate speakerphone state after setting: $immediateState")
                     
                     // Add a longer delay to allow speakerphone state to take effect
                     android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
                         // Verify speakerphone was actually enabled
-                        val delayedState = audioManager.isSpeakerphoneOn
+                        val delayedState = isSpeakerphoneEnabled(audioManager)
                         InAppLogger.log("Service", "Speakerphone state after 200ms delay: $delayedState")
                         
                         if (delayedState) {
@@ -5256,8 +5312,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                                     InAppLogger.log("Service", "Permission granted but speakerphone still not working - trying final attempt")
                                     // Try setting speakerphone again with a longer delay
                                     android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                                        audioManager.isSpeakerphoneOn = true
-                                        val finalState = audioManager.isSpeakerphoneOn
+                                        setSpeakerphoneEnabled(audioManager, true)
+                                        val finalState = isSpeakerphoneEnabled(audioManager)
                                         InAppLogger.log("Service", "Final speakerphone attempt result: $finalState")
                                     }, 300) // 300ms delay for final attempt
                                 }
@@ -5393,8 +5449,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     
                     // Disable speakerphone if it was enabled
                     try {
-                        if (audioManager.isSpeakerphoneOn) {
-                            audioManager.isSpeakerphoneOn = false
+                        if (isSpeakerphoneEnabled(audioManager)) {
+                            setSpeakerphoneEnabled(audioManager, false)
                             InAppLogger.log("Service", "Speakerphone disabled after speech completion")
                         }
                     } catch (e: Exception) {
@@ -5447,8 +5503,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     
                     // Disable speakerphone if it was enabled
                     try {
-                        if (audioManager.isSpeakerphoneOn) {
-                            audioManager.isSpeakerphoneOn = false
+                        if (isSpeakerphoneEnabled(audioManager)) {
+                            setSpeakerphoneEnabled(audioManager, false)
                             InAppLogger.log("Service", "Speakerphone disabled after TTS error")
                         }
                     } catch (e: Exception) {
@@ -5650,7 +5706,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         // Get notification metadata
-        val priority = when (sbn?.notification?.priority ?: 0) {
+        @Suppress("DEPRECATION")
+        val priority = when (sbn?.notification?.let { getPriorityLegacy(it) } ?: Notification.PRIORITY_DEFAULT) {
             Notification.PRIORITY_MIN -> "Min"
             Notification.PRIORITY_LOW -> "Low"
             Notification.PRIORITY_DEFAULT -> "Default"
