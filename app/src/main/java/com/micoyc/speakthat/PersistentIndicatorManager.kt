@@ -70,7 +70,7 @@ object PersistentIndicatorManager {
             .setOngoing(true)
             .setSilent(true)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
             .setContentIntent(openAppPendingIntent)
             .setVisibility(NotificationCompat.VISIBILITY_SECRET)
             .addAction(R.drawable.speakthaticon, actionLabel, openAppPendingIntent)

@@ -30,7 +30,7 @@ object SpeakThatNotificationChannel {
             val channel = NotificationChannel(
                 CHANNEL_ID,
                 CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_LOW
             ).apply {
                 description = CHANNEL_DESCRIPTION
                 setSound(null, null)
