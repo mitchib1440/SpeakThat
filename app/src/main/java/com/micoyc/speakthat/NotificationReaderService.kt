@@ -356,8 +356,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         }
         
-        // Pre-compiled regex for URL detection (restrictive - only http/https/www URLs)
-        private val URL_PATTERN = Regex("""(?i)(?:https?://[^\s]+|www\.[^\s]+)""")
+        // Pre-compiled regex for URL detection (includes http/https/www URLs, bare domains with TLD, IP addresses, and IPv6)
+        private val URL_PATTERN = Regex("""(?i)(?:https?://[^\s]+|www\.[^\s]+|(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.(?:[a-zA-Z]{2,}|[0-9]+)|\[[0-9a-fA-F:]+\])(?::[0-9]+)?(?:/[^\s]*)?)""")
     }
     
     data class NotificationData(
@@ -2557,7 +2557,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     /**
      * Handles URL processing based on user preferences
-     * Supports various URL formats: http, https, www, localhost, IP addresses, IPv6
+     * Supports various URL formats: http, https, www, bare domains (e.g., speakthat.app, youtu.be), localhost, IP addresses, IPv6
      */
     private fun applyUrlHandling(text: String): String {
         if (urlHandlingMode == "read_full") {
@@ -2589,6 +2589,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * Examples:
      * - https://www.speakthat.app/subdirectory -> speakthat.app
      * - www.amazon.com/dp/B08N5WRWNW -> amazon.com
+     * - speakthat.app -> speakthat.app
+     * - youtu.be -> youtu.be
      * - localhost:8080 -> localhost
      * - 192.168.1.1:3000 -> 192.168.1.1
      * Note: Never includes protocol (http/https) in the result
