@@ -1809,6 +1809,22 @@ Farklı cihazların Ses Odaklama isteklerini nasıl işlediği konusundaki tutar
     <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
     <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
 
+    <!-- Notification From trigger -->
+    <string name="trigger_notification_from_title">Bildirim Şuradan</string>
+    <string name="trigger_notification_from_description">Gelen bildirim seçilen bir uygulamadan olduğunda koşul karşılanmış sayılır.</string>
+    <string name="trigger_notification_from_manage_apps">Uygulamaları Yönet</string>
+    <string name="trigger_notification_from_selected_count">Seçili: %1$d uygulama</string>
+    <string name="trigger_notification_from_selected_count_default">Seçili: 0 uygulama</string>
+
+    <string name="rule_trigger_notification_from_single">Bildirim %1$s uygulamasından</string>
+    <string name="rule_trigger_notification_from_multiple">Bildirim %1$d uygulamadan birinden</string>
+    <string name="rule_trigger_notification_from_not">%1$s (ters)</string>
+    <string name="rule_exception_notification_from_single">Bildirim %1$s uygulamasından</string>
+    <string name="rule_exception_notification_from_multiple">Bildirim %1$d uygulamadan birinden</string>
+    <string name="rule_exception_notification_from_not">%1$s (ters)</string>
+
+    <string name="rule_error_invalid_notification_from_apps">Bildirim uygulaması seçimi geçersiz</string>
+
     <!-- Foreground App trigger -->
     <string name="trigger_foreground_app_title">Foreground App</string>
     <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>

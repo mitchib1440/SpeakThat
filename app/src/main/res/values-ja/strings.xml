@@ -1725,6 +1725,22 @@ Notification permission denied - SpeakThat notifications may not appear
     <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
     <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
 
+    <!-- Notification From trigger -->
+    <string name="trigger_notification_from_title">通知元</string>
+    <string name="trigger_notification_from_description">受信した通知が選択したアプリからのとき、条件が満たされます。</string>
+    <string name="trigger_notification_from_manage_apps">アプリを管理</string>
+    <string name="trigger_notification_from_selected_count">選択済み: %1$d 件</string>
+    <string name="trigger_notification_from_selected_count_default">選択済み: 0 件</string>
+
+    <string name="rule_trigger_notification_from_single">通知は %1$s からです</string>
+    <string name="rule_trigger_notification_from_multiple">通知は %1$d 件のアプリのいずれかからです</string>
+    <string name="rule_trigger_notification_from_not">%1$s（反転）</string>
+    <string name="rule_exception_notification_from_single">通知は %1$s からです</string>
+    <string name="rule_exception_notification_from_multiple">通知は %1$d 件のアプリのいずれかからです</string>
+    <string name="rule_exception_notification_from_not">%1$s（反転）</string>
+
+    <string name="rule_error_invalid_notification_from_apps">通知アプリの選択が無効です</string>
+
     <!-- Foreground App trigger -->
     <string name="trigger_foreground_app_title">Foreground App</string>
     <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>

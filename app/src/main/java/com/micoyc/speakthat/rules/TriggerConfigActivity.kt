@@ -31,6 +31,8 @@ class TriggerConfigActivity : AppCompatActivity() {
 
     private val selectedForegroundApps = mutableListOf<String>()
     private lateinit var foregroundAppPickerLauncher: ActivityResultLauncher<Intent>
+    private val selectedNotificationFromApps = mutableListOf<String>()
+    private lateinit var notificationFromPickerLauncher: ActivityResultLauncher<Intent>
     
 
     
@@ -56,6 +58,7 @@ class TriggerConfigActivity : AppCompatActivity() {
         }
         
         setupForegroundAppPickerLauncher()
+        setupNotificationFromPickerLauncher()
         setupUI()
         loadCurrentValues()
     }
@@ -83,6 +86,7 @@ class TriggerConfigActivity : AppCompatActivity() {
             TriggerType.CHARGING_STATUS -> setupChargingStatusUI()
             TriggerType.DEVICE_UNLOCKED -> setupDeviceUnlockedUI()
             TriggerType.NOTIFICATION_CONTAINS -> setupNotificationContainsUI()
+            TriggerType.NOTIFICATION_FROM -> setupNotificationFromUI()
             TriggerType.FOREGROUND_APP -> setupForegroundAppUI()
             TriggerType.SCREEN_ORIENTATION -> setupScreenOrientationUI()
             TriggerType.SCREEN_STATE -> setupScreenStateUI()
@@ -148,6 +152,15 @@ class TriggerConfigActivity : AppCompatActivity() {
 
     private fun setupNotificationContainsUI() {
         binding.cardNotificationContains.visibility = View.VISIBLE
+    }
+
+    private fun setupNotificationFromUI() {
+        binding.cardNotificationFrom.visibility = View.VISIBLE
+        binding.textNotificationFromDescription.text = getString(R.string.trigger_notification_from_description)
+        binding.btnManageNotificationFromApps.setOnClickListener {
+            openNotificationFromAppPicker()
+        }
+        updateNotificationFromSummary()
     }
 
     private fun setupForegroundAppUI() {
@@ -252,6 +265,33 @@ class TriggerConfigActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupNotificationFromPickerLauncher() {
+        notificationFromPickerLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK && result.data != null) {
+                val selected = result.data?.getStringArrayListExtra(
+                    AppPickerActivity.EXTRA_SELECTED_PACKAGES
+                ) ?: arrayListOf()
+                selectedNotificationFromApps.clear()
+                selectedNotificationFromApps.addAll(selected)
+                updateNotificationFromSummary()
+            }
+        }
+    }
+
+    private fun openNotificationFromAppPicker() {
+        val selectedPackages = ArrayList(selectedNotificationFromApps)
+        val intent = AppPickerActivity.createIntent(
+            this,
+            getString(R.string.trigger_notification_from_title),
+            selectedPackages,
+            arrayListOf(),
+            false
+        )
+        notificationFromPickerLauncher.launch(intent)
+    }
+
     private fun openForegroundAppPicker() {
         val selectedPackages = ArrayList(selectedForegroundApps)
         val intent = AppPickerActivity.createIntent(
@@ -262,6 +302,14 @@ class TriggerConfigActivity : AppCompatActivity() {
             false
         )
         foregroundAppPickerLauncher.launch(intent)
+    }
+
+    private fun updateNotificationFromSummary() {
+        val countText = getString(
+            R.string.trigger_notification_from_selected_count,
+            selectedNotificationFromApps.size
+        )
+        binding.textNotificationFromSummary.text = countText
     }
 
     private fun updateForegroundAppSummary() {
@@ -634,6 +682,18 @@ class TriggerConfigActivity : AppCompatActivity() {
                     binding.checkNotificationCaseSensitive.isChecked = caseSensitive
                     binding.switchInvertNotificationContains.isChecked = trigger.inverted
                 }
+                TriggerType.NOTIFICATION_FROM -> {
+                    val packagesData = trigger.data["app_packages"]
+                    val packages = when (packagesData) {
+                        is Set<*> -> packagesData.filterIsInstance<String>()
+                        is List<*> -> packagesData.filterIsInstance<String>()
+                        else -> emptyList()
+                    }
+                    selectedNotificationFromApps.clear()
+                    selectedNotificationFromApps.addAll(packages)
+                    binding.switchInvertNotificationFrom.isChecked = trigger.inverted
+                    updateNotificationFromSummary()
+                }
                 TriggerType.FOREGROUND_APP -> {
                     val packagesData = trigger.data["app_packages"]
                     val packages = when (packagesData) {
@@ -846,6 +906,7 @@ class TriggerConfigActivity : AppCompatActivity() {
             TriggerType.CHARGING_STATUS -> createChargingStatusTrigger()
             TriggerType.DEVICE_UNLOCKED -> createDeviceUnlockedTrigger()
             TriggerType.NOTIFICATION_CONTAINS -> createNotificationContainsTrigger()
+            TriggerType.NOTIFICATION_FROM -> createNotificationFromTrigger()
             TriggerType.FOREGROUND_APP -> createForegroundAppTrigger()
             TriggerType.SCREEN_ORIENTATION -> createScreenOrientationTrigger()
             TriggerType.SCREEN_STATE -> createScreenStateTrigger()
@@ -996,6 +1057,35 @@ class TriggerConfigActivity : AppCompatActivity() {
                     "phrase" to phrase,
                     "case_sensitive" to caseSensitive
                 ),
+                description = description,
+                inverted = inverted
+            )
+        }
+    }
+
+    private fun createNotificationFromTrigger(): Trigger {
+        val selectedPackages = selectedNotificationFromApps.toSet()
+        val inverted = binding.switchInvertNotificationFrom.isChecked
+        val description = if (selectedPackages.size == 1) {
+            val packageName = selectedPackages.first()
+            val appName = AppListManager.findAppByPackage(this, packageName)?.displayName ?: packageName
+            getString(R.string.rule_trigger_notification_from_single, appName)
+        } else {
+            getString(R.string.rule_trigger_notification_from_multiple, selectedPackages.size)
+        }.let { base ->
+            if (inverted) getString(R.string.rule_trigger_notification_from_not, base) else base
+        }
+
+        return if (isEditing && originalTrigger != null) {
+            originalTrigger!!.copy(
+                data = mapOf("app_packages" to selectedPackages),
+                description = description,
+                inverted = inverted
+            )
+        } else {
+            Trigger(
+                type = TriggerType.NOTIFICATION_FROM,
+                data = mapOf("app_packages" to selectedPackages),
                 description = description,
                 inverted = inverted
             )

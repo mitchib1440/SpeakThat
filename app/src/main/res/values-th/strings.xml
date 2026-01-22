@@ -612,6 +612,22 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
     <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
 
+    <!-- Notification From trigger -->
+    <string name="trigger_notification_from_title">การแจ้งเตือนจาก</string>
+    <string name="trigger_notification_from_description">เงื่อนไขจะถือว่าเป็นจริงเมื่อการแจ้งเตือนที่เข้ามามาจากแอปที่เลือก</string>
+    <string name="trigger_notification_from_manage_apps">จัดการแอป</string>
+    <string name="trigger_notification_from_selected_count">เลือกแล้ว: %1$d แอป</string>
+    <string name="trigger_notification_from_selected_count_default">เลือกแล้ว: 0 แอป</string>
+
+    <string name="rule_trigger_notification_from_single">การแจ้งเตือนมาจาก %1$s</string>
+    <string name="rule_trigger_notification_from_multiple">การแจ้งเตือนมาจากหนึ่งใน %1$d แอป</string>
+    <string name="rule_trigger_notification_from_not">%1$s (กลับเงื่อนไข)</string>
+    <string name="rule_exception_notification_from_single">การแจ้งเตือนมาจาก %1$s</string>
+    <string name="rule_exception_notification_from_multiple">การแจ้งเตือนมาจากหนึ่งใน %1$d แอป</string>
+    <string name="rule_exception_notification_from_not">%1$s (กลับเงื่อนไข)</string>
+
+    <string name="rule_error_invalid_notification_from_apps">การเลือกแอปสำหรับการแจ้งเตือนไม่ถูกต้อง</string>
+
     <!-- Foreground App trigger -->
     <string name="trigger_foreground_app_title">Foreground App</string>
     <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>

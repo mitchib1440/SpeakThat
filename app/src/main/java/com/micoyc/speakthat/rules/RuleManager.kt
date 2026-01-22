@@ -569,6 +569,17 @@ class RuleManager(private val context: Context) {
                     errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_case_sensitive))
                 }
             }
+            TriggerType.NOTIFICATION_FROM -> {
+                val packagesData = trigger.data["app_packages"]
+                val packages = when (packagesData) {
+                    is Set<*> -> packagesData.filterIsInstance<String>()
+                    is List<*> -> packagesData.filterIsInstance<String>()
+                    else -> emptyList()
+                }
+                if (packages.isEmpty() || !isStringSetOrList(packagesData)) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_notification_from_apps))
+                }
+            }
             TriggerType.FOREGROUND_APP -> {
                 val packagesData = trigger.data["app_packages"]
                 val packages = when (packagesData) {
@@ -658,6 +669,17 @@ class RuleManager(private val context: Context) {
                 }
                 if (caseSensitive != null && caseSensitive !is Boolean) {
                     errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_case_sensitive))
+                }
+            }
+            ExceptionType.NOTIFICATION_FROM -> {
+                val packagesData = exception.data["app_packages"]
+                val packages = when (packagesData) {
+                    is Set<*> -> packagesData.filterIsInstance<String>()
+                    is List<*> -> packagesData.filterIsInstance<String>()
+                    else -> emptyList()
+                }
+                if (packages.isEmpty() || !isStringSetOrList(packagesData)) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_notification_from_apps))
                 }
             }
             ExceptionType.FOREGROUND_APP -> {

@@ -1594,6 +1594,22 @@ SpeakThat은 하나의 음성만 지원합니다. \n\n✅ 문제가 없는 경�
     <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
     <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
 
+    <!-- Notification From trigger -->
+    <string name="trigger_notification_from_title">알림 출처</string>
+    <string name="trigger_notification_from_description">들어오는 알림이 선택한 앱에서 온 경우 조건이 충족됩니다.</string>
+    <string name="trigger_notification_from_manage_apps">앱 관리</string>
+    <string name="trigger_notification_from_selected_count">선택됨: %1$d개 앱</string>
+    <string name="trigger_notification_from_selected_count_default">선택됨: 0개 앱</string>
+
+    <string name="rule_trigger_notification_from_single">알림이 %1$s에서 옴</string>
+    <string name="rule_trigger_notification_from_multiple">%1$d개 앱 중 하나에서 온 알림</string>
+    <string name="rule_trigger_notification_from_not">%1$s (반전)</string>
+    <string name="rule_exception_notification_from_single">알림이 %1$s에서 옴</string>
+    <string name="rule_exception_notification_from_multiple">%1$d개 앱 중 하나에서 온 알림</string>
+    <string name="rule_exception_notification_from_not">%1$s (반전)</string>
+
+    <string name="rule_error_invalid_notification_from_apps">알림 앱 선택이 유효하지 않습니다</string>
+
     <!-- Foreground App trigger -->
     <string name="trigger_foreground_app_title">Foreground App</string>
     <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>

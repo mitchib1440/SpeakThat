@@ -2052,6 +2052,22 @@ Es kann nicht festgestellt werden, ob Benachrichtigungen gelesen werden sollten
     <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
     <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
 
+    <!-- Notification From trigger -->
+    <string name="trigger_notification_from_title">Benachrichtigung von</string>
+    <string name="trigger_notification_from_description">Bedingung gilt als erfüllt, wenn die eingehende Benachrichtigung von einer ausgewählten App stammt.</string>
+    <string name="trigger_notification_from_manage_apps">Apps verwalten</string>
+    <string name="trigger_notification_from_selected_count">Ausgewählt: %1$d Apps</string>
+    <string name="trigger_notification_from_selected_count_default">Ausgewählt: 0 Apps</string>
+
+    <string name="rule_trigger_notification_from_single">Benachrichtigung stammt von %1$s</string>
+    <string name="rule_trigger_notification_from_multiple">Benachrichtigung stammt von einer der %1$d Apps</string>
+    <string name="rule_trigger_notification_from_not">%1$s (invertiert)</string>
+    <string name="rule_exception_notification_from_single">Benachrichtigung stammt von %1$s</string>
+    <string name="rule_exception_notification_from_multiple">Benachrichtigung stammt von einer der %1$d Apps</string>
+    <string name="rule_exception_notification_from_not">%1$s (invertiert)</string>
+
+    <string name="rule_error_invalid_notification_from_apps">Auswahl der Benachrichtigungs-Apps ist ungültig</string>
+
     <!-- Foreground App trigger -->
     <string name="trigger_foreground_app_title">Foreground App</string>
     <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>

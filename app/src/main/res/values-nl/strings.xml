@@ -1827,6 +1827,22 @@ Vanwege inconsistenties in hoe verschillende apparaten Audio Focus verzoeken ver
     <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
     <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
 
+    <!-- Notification From trigger -->
+    <string name="trigger_notification_from_title">Melding van</string>
+    <string name="trigger_notification_from_description">De voorwaarde wordt als voldaan beschouwd wanneer de inkomende melding van een geselecteerde app komt.</string>
+    <string name="trigger_notification_from_manage_apps">Apps beheren</string>
+    <string name="trigger_notification_from_selected_count">Geselecteerd: %1$d apps</string>
+    <string name="trigger_notification_from_selected_count_default">Geselecteerd: 0 apps</string>
+
+    <string name="rule_trigger_notification_from_single">Melding is van %1$s</string>
+    <string name="rule_trigger_notification_from_multiple">Melding is van een van %1$d apps</string>
+    <string name="rule_trigger_notification_from_not">%1$s (omgekeerd)</string>
+    <string name="rule_exception_notification_from_single">Melding is van %1$s</string>
+    <string name="rule_exception_notification_from_multiple">Melding is van een van %1$d apps</string>
+    <string name="rule_exception_notification_from_not">%1$s (omgekeerd)</string>
+
+    <string name="rule_error_invalid_notification_from_apps">Selectie van melding-apps is ongeldig</string>
+
     <!-- Foreground App trigger -->
     <string name="trigger_foreground_app_title">Foreground App</string>
     <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>

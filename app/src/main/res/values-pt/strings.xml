@@ -651,6 +651,22 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
     <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
 
+    <!-- Notification From trigger -->
+    <string name="trigger_notification_from_title">Notificação de</string>
+    <string name="trigger_notification_from_description">A condição será considerada cumprida quando a notificação recebida for de uma app selecionada.</string>
+    <string name="trigger_notification_from_manage_apps">Gerir apps</string>
+    <string name="trigger_notification_from_selected_count">Selecionadas: %1$d apps</string>
+    <string name="trigger_notification_from_selected_count_default">Selecionadas: 0 apps</string>
+
+    <string name="rule_trigger_notification_from_single">A notificação é de %1$s</string>
+    <string name="rule_trigger_notification_from_multiple">A notificação é de uma das %1$d apps</string>
+    <string name="rule_trigger_notification_from_not">%1$s (invertido)</string>
+    <string name="rule_exception_notification_from_single">A notificação é de %1$s</string>
+    <string name="rule_exception_notification_from_multiple">A notificação é de uma das %1$d apps</string>
+    <string name="rule_exception_notification_from_not">%1$s (invertido)</string>
+
+    <string name="rule_error_invalid_notification_from_apps">A seleção de apps de notificação é inválida</string>
+
     <!-- Foreground App trigger -->
     <string name="trigger_foreground_app_title">Foreground App</string>
     <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>

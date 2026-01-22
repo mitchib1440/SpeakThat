@@ -34,6 +34,8 @@ class ExceptionConfigActivity : AppCompatActivity() {
 
     private val selectedForegroundApps = mutableListOf<String>()
     private lateinit var foregroundAppPickerLauncher: ActivityResultLauncher<Intent>
+    private val selectedNotificationFromApps = mutableListOf<String>()
+    private lateinit var notificationFromPickerLauncher: ActivityResultLauncher<Intent>
 
     companion object {
         const val EXTRA_EXCEPTION_TYPE = "exception_type"
@@ -64,6 +66,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
         }
 
         setupForegroundAppPickerLauncher()
+        setupNotificationFromPickerLauncher()
         setupUI()
         loadCurrentValues()
     }
@@ -82,6 +85,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
             ExceptionType.CHARGING_STATUS -> setupChargingStatusUI()
             ExceptionType.DEVICE_UNLOCKED -> setupDeviceUnlockedUI()
             ExceptionType.NOTIFICATION_CONTAINS -> setupNotificationContainsUI()
+            ExceptionType.NOTIFICATION_FROM -> setupNotificationFromUI()
             ExceptionType.FOREGROUND_APP -> setupForegroundAppUI()
             ExceptionType.SCREEN_ORIENTATION -> setupScreenOrientationUI()
             ExceptionType.SCREEN_STATE -> setupScreenStateUI()
@@ -147,6 +151,15 @@ class ExceptionConfigActivity : AppCompatActivity() {
 
     private fun setupNotificationContainsUI() {
         binding.cardNotificationContains.visibility = View.VISIBLE
+    }
+
+    private fun setupNotificationFromUI() {
+        binding.cardNotificationFrom.visibility = View.VISIBLE
+        binding.textNotificationFromDescription.text = getString(R.string.trigger_notification_from_description)
+        binding.btnManageNotificationFromApps.setOnClickListener {
+            openNotificationFromAppPicker()
+        }
+        updateNotificationFromSummary()
     }
 
     private fun setupForegroundAppUI() {
@@ -251,6 +264,33 @@ class ExceptionConfigActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupNotificationFromPickerLauncher() {
+        notificationFromPickerLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK && result.data != null) {
+                val selected = result.data?.getStringArrayListExtra(
+                    AppPickerActivity.EXTRA_SELECTED_PACKAGES
+                ) ?: arrayListOf()
+                selectedNotificationFromApps.clear()
+                selectedNotificationFromApps.addAll(selected)
+                updateNotificationFromSummary()
+            }
+        }
+    }
+
+    private fun openNotificationFromAppPicker() {
+        val selectedPackages = ArrayList(selectedNotificationFromApps)
+        val intent = AppPickerActivity.createIntent(
+            this,
+            getString(R.string.trigger_notification_from_title),
+            selectedPackages,
+            arrayListOf(),
+            false
+        )
+        notificationFromPickerLauncher.launch(intent)
+    }
+
     private fun openForegroundAppPicker() {
         val selectedPackages = ArrayList(selectedForegroundApps)
         val intent = AppPickerActivity.createIntent(
@@ -261,6 +301,14 @@ class ExceptionConfigActivity : AppCompatActivity() {
             false
         )
         foregroundAppPickerLauncher.launch(intent)
+    }
+
+    private fun updateNotificationFromSummary() {
+        val countText = getString(
+            R.string.trigger_notification_from_selected_count,
+            selectedNotificationFromApps.size
+        )
+        binding.textNotificationFromSummary.text = countText
     }
 
     private fun updateForegroundAppSummary() {
@@ -583,6 +631,18 @@ class ExceptionConfigActivity : AppCompatActivity() {
                     binding.checkNotificationCaseSensitive.isChecked = caseSensitive
                     binding.switchInvertNotificationContains.isChecked = exception.inverted
                 }
+                ExceptionType.NOTIFICATION_FROM -> {
+                    val packagesData = exception.data["app_packages"]
+                    val packages = when (packagesData) {
+                        is Set<*> -> packagesData.filterIsInstance<String>()
+                        is List<*> -> packagesData.filterIsInstance<String>()
+                        else -> emptyList()
+                    }
+                    selectedNotificationFromApps.clear()
+                    selectedNotificationFromApps.addAll(packages)
+                    binding.switchInvertNotificationFrom.isChecked = exception.inverted
+                    updateNotificationFromSummary()
+                }
                 ExceptionType.FOREGROUND_APP -> {
                     val packagesData = exception.data["app_packages"]
                     val packages = when (packagesData) {
@@ -754,6 +814,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
             ExceptionType.CHARGING_STATUS -> createChargingStatusException()
             ExceptionType.DEVICE_UNLOCKED -> createDeviceUnlockedException()
             ExceptionType.NOTIFICATION_CONTAINS -> createNotificationContainsException()
+            ExceptionType.NOTIFICATION_FROM -> createNotificationFromException()
             ExceptionType.FOREGROUND_APP -> createForegroundAppException()
             ExceptionType.SCREEN_ORIENTATION -> createScreenOrientationException()
             ExceptionType.SCREEN_STATE -> createScreenStateException()
@@ -904,6 +965,35 @@ class ExceptionConfigActivity : AppCompatActivity() {
                     "phrase" to phrase,
                     "case_sensitive" to caseSensitive
                 ),
+                description = description,
+                inverted = inverted
+            )
+        }
+    }
+
+    private fun createNotificationFromException(): Exception {
+        val selectedPackages = selectedNotificationFromApps.toSet()
+        val inverted = binding.switchInvertNotificationFrom.isChecked
+        val description = if (selectedPackages.size == 1) {
+            val packageName = selectedPackages.first()
+            val appName = AppListManager.findAppByPackage(this, packageName)?.displayName ?: packageName
+            getString(R.string.rule_exception_notification_from_single, appName)
+        } else {
+            getString(R.string.rule_exception_notification_from_multiple, selectedPackages.size)
+        }.let { base ->
+            if (inverted) getString(R.string.rule_exception_notification_from_not, base) else base
+        }
+
+        return if (isEditing && originalException != null) {
+            originalException!!.copy(
+                data = mapOf("app_packages" to selectedPackages),
+                description = description,
+                inverted = inverted
+            )
+        } else {
+            Exception(
+                type = ExceptionType.NOTIFICATION_FROM,
+                data = mapOf("app_packages" to selectedPackages),
                 description = description,
                 inverted = inverted
             )

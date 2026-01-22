@@ -253,6 +253,7 @@ enum class TriggerType(
     CHARGING_STATUS("Charging Status", "When the device is charging or discharging", true),
     DEVICE_UNLOCKED("Device Unlocked", "When the device is locked or unlocked", true),
     NOTIFICATION_CONTAINS("Notification Contains", "When notification contains a word or phrase", false),
+    NOTIFICATION_FROM("Notification From", "When notification is from a selected app", false),
     FOREGROUND_APP("Foreground App", "When a specific app is in the foreground", false),
     SCREEN_ORIENTATION("Screen Orientation", "When the screen is portrait or landscape", true),
     SCREEN_STATE("Screen State (On/Off)", "When the screen is on or off", true),
@@ -297,6 +298,7 @@ enum class ExceptionType(
     CHARGING_STATUS("Charging Status", "When the device is charging or discharging", true),
     DEVICE_UNLOCKED("Device Unlocked", "When the device is locked or unlocked", true),
     NOTIFICATION_CONTAINS("Notification Contains", "When notification contains a word or phrase", false),
+    NOTIFICATION_FROM("Notification From", "When notification is from a selected app", false),
     FOREGROUND_APP("Foreground App", "When a specific app is in the foreground", false),
     SCREEN_ORIENTATION("Screen Orientation", "When the screen is portrait or landscape", true),
     SCREEN_STATE("Screen State (On/Off)", "When the screen is on or off", true),
@@ -586,6 +588,26 @@ data class Rule(
                     ) + caseSuffix
                 }
             }
+            TriggerType.NOTIFICATION_FROM -> {
+                val packagesData = trigger.data["app_packages"]
+                val packages = when (packagesData) {
+                    is Set<*> -> packagesData.filterIsInstance<String>()
+                    is List<*> -> packagesData.filterIsInstance<String>()
+                    else -> emptyList()
+                }
+                val description = if (packages.size == 1) {
+                    val packageName = packages.first()
+                    val appName = AppListManager.findAppByPackage(context, packageName)?.displayName ?: packageName
+                    context.getString(com.micoyc.speakthat.R.string.rule_trigger_notification_from_single, appName)
+                } else {
+                    context.getString(com.micoyc.speakthat.R.string.rule_trigger_notification_from_multiple, packages.size)
+                }
+                if (trigger.inverted) {
+                    context.getString(com.micoyc.speakthat.R.string.rule_trigger_notification_from_not, description)
+                } else {
+                    description
+                }
+            }
             TriggerType.FOREGROUND_APP -> {
                 val packagesData = trigger.data["app_packages"]
                 val packages = when (packagesData) {
@@ -801,6 +823,26 @@ data class Rule(
                         com.micoyc.speakthat.R.string.rule_exception_notification_contains,
                         phrase
                     ) + caseSuffix
+                }
+            }
+            ExceptionType.NOTIFICATION_FROM -> {
+                val packagesData = exception.data["app_packages"]
+                val packages = when (packagesData) {
+                    is Set<*> -> packagesData.filterIsInstance<String>()
+                    is List<*> -> packagesData.filterIsInstance<String>()
+                    else -> emptyList()
+                }
+                val description = if (packages.size == 1) {
+                    val packageName = packages.first()
+                    val appName = AppListManager.findAppByPackage(context, packageName)?.displayName ?: packageName
+                    context.getString(com.micoyc.speakthat.R.string.rule_exception_notification_from_single, appName)
+                } else {
+                    context.getString(com.micoyc.speakthat.R.string.rule_exception_notification_from_multiple, packages.size)
+                }
+                if (exception.inverted) {
+                    context.getString(com.micoyc.speakthat.R.string.rule_exception_notification_from_not, description)
+                } else {
+                    description
                 }
             }
             ExceptionType.FOREGROUND_APP -> {

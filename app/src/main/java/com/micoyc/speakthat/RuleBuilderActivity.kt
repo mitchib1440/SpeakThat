@@ -404,6 +404,7 @@ class RuleBuilderActivity : AppCompatActivity() {
             getString(R.string.trigger_battery_percentage_title),
             getString(R.string.trigger_charging_status_title),
             getString(R.string.trigger_notification_contains_title),
+            getString(R.string.trigger_notification_from_title),
             getString(R.string.trigger_foreground_app_title),
             getString(R.string.trigger_device_unlocked_title),
             getString(R.string.trigger_screen_orientation_title),
@@ -420,13 +421,14 @@ class RuleBuilderActivity : AppCompatActivity() {
                     0 -> addBatteryPercentageTrigger()
                     1 -> addChargingStatusTrigger()
                     2 -> addNotificationContainsTrigger()
-                    3 -> addForegroundAppTrigger()
-                    4 -> addDeviceUnlockedTrigger()
-                    5 -> addScreenOrientationTrigger()
-                    6 -> addBluetoothTrigger()
-                    7 -> addScreenStateTrigger()
-                    8 -> addTimeScheduleTrigger()
-                    9 -> addWifiNetworkTrigger()
+                    3 -> addNotificationFromTrigger()
+                    4 -> addForegroundAppTrigger()
+                    5 -> addDeviceUnlockedTrigger()
+                    6 -> addScreenOrientationTrigger()
+                    7 -> addBluetoothTrigger()
+                    8 -> addScreenStateTrigger()
+                    9 -> addTimeScheduleTrigger()
+                    10 -> addWifiNetworkTrigger()
                 }
             }
             .show()
@@ -458,6 +460,7 @@ class RuleBuilderActivity : AppCompatActivity() {
             getString(R.string.trigger_battery_percentage_title),
             getString(R.string.trigger_charging_status_title),
             getString(R.string.trigger_notification_contains_title),
+            getString(R.string.trigger_notification_from_title),
             getString(R.string.trigger_foreground_app_title),
             getString(R.string.trigger_device_unlocked_title),
             getString(R.string.trigger_screen_orientation_title),
@@ -474,13 +477,14 @@ class RuleBuilderActivity : AppCompatActivity() {
                     0 -> addBatteryPercentageException()
                     1 -> addChargingStatusException()
                     2 -> addNotificationContainsException()
-                    3 -> addForegroundAppException()
-                    4 -> addDeviceUnlockedException()
-                    5 -> addScreenOrientationException()
-                    6 -> addBluetoothException()
-                    7 -> addScreenStateException()
-                    8 -> addTimeScheduleException()
-                    9 -> addWifiNetworkException()
+                    3 -> addNotificationFromException()
+                    4 -> addForegroundAppException()
+                    5 -> addDeviceUnlockedException()
+                    6 -> addScreenOrientationException()
+                    7 -> addBluetoothException()
+                    8 -> addScreenStateException()
+                    9 -> addTimeScheduleException()
+                    10 -> addWifiNetworkException()
                 }
             }
             .show()
@@ -501,6 +505,10 @@ class RuleBuilderActivity : AppCompatActivity() {
 
     private fun addNotificationContainsTrigger() {
         launchTriggerConfig(TriggerType.NOTIFICATION_CONTAINS, null)
+    }
+
+    private fun addNotificationFromTrigger() {
+        launchTriggerConfig(TriggerType.NOTIFICATION_FROM, null)
     }
 
     private fun addForegroundAppTrigger() {
@@ -617,6 +625,10 @@ class RuleBuilderActivity : AppCompatActivity() {
 
     private fun addNotificationContainsException() {
         launchExceptionConfig(ExceptionType.NOTIFICATION_CONTAINS, null)
+    }
+
+    private fun addNotificationFromException() {
+        launchExceptionConfig(ExceptionType.NOTIFICATION_FROM, null)
     }
 
     private fun addForegroundAppException() {

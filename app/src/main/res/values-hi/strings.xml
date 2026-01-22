@@ -628,6 +628,22 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
     <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
 
+    <!-- Notification From trigger -->
+    <string name="trigger_notification_from_title">सूचना से</string>
+    <string name="trigger_notification_from_description">जब आने वाली सूचना किसी चुने हुए ऐप से हो, तब शर्त पूरी मानी जाएगी।</string>
+    <string name="trigger_notification_from_manage_apps">ऐप्स प्रबंधित करें</string>
+    <string name="trigger_notification_from_selected_count">चयनित: %1$d ऐप्स</string>
+    <string name="trigger_notification_from_selected_count_default">चयनित: 0 ऐप्स</string>
+
+    <string name="rule_trigger_notification_from_single">सूचना %1$s से है</string>
+    <string name="rule_trigger_notification_from_multiple">सूचना %1$d ऐप्स में से किसी एक से है</string>
+    <string name="rule_trigger_notification_from_not">%1$s (उलटा)</string>
+    <string name="rule_exception_notification_from_single">सूचना %1$s से है</string>
+    <string name="rule_exception_notification_from_multiple">सूचना %1$d ऐप्स में से किसी एक से है</string>
+    <string name="rule_exception_notification_from_not">%1$s (उलटा)</string>
+
+    <string name="rule_error_invalid_notification_from_apps">सूचना ऐप चयन अमान्य है</string>
+
     <!-- Foreground App trigger -->
     <string name="trigger_foreground_app_title">Foreground App</string>
     <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>

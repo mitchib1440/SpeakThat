@@ -231,6 +231,7 @@ class RuleEvaluator(private val context: Context) {
             TriggerType.CHARGING_STATUS -> evaluateChargingStatusTrigger(trigger)
             TriggerType.DEVICE_UNLOCKED -> evaluateDeviceUnlockedTrigger(trigger)
             TriggerType.NOTIFICATION_CONTAINS -> evaluateNotificationContainsTrigger(trigger, notificationContext)
+            TriggerType.NOTIFICATION_FROM -> evaluateNotificationFromTrigger(trigger, notificationContext)
             TriggerType.FOREGROUND_APP -> evaluateForegroundAppTrigger(trigger)
             TriggerType.SCREEN_ORIENTATION -> evaluateScreenOrientationTrigger(trigger)
             TriggerType.BLUETOOTH_DEVICE -> evaluateBluetoothTrigger(trigger)
@@ -325,6 +326,7 @@ class RuleEvaluator(private val context: Context) {
             ExceptionType.CHARGING_STATUS -> evaluateChargingStatusException(exception)
             ExceptionType.DEVICE_UNLOCKED -> evaluateDeviceUnlockedException(exception)
             ExceptionType.NOTIFICATION_CONTAINS -> evaluateNotificationContainsException(exception, notificationContext)
+            ExceptionType.NOTIFICATION_FROM -> evaluateNotificationFromException(exception, notificationContext)
             ExceptionType.FOREGROUND_APP -> evaluateForegroundAppException(exception)
             ExceptionType.SCREEN_ORIENTATION -> evaluateScreenOrientationException(exception)
             ExceptionType.BLUETOOTH_DEVICE -> evaluateBluetoothException(exception)
@@ -604,6 +606,41 @@ class RuleEvaluator(private val context: Context) {
                 message = "Notification contains evaluation error: ${e.message}"
             )
         }
+    }
+
+    private fun evaluateNotificationFromTrigger(
+        trigger: Trigger,
+        notificationContext: NotificationContext
+    ): EvaluationResult {
+        InAppLogger.logDebug(TAG, "Evaluating Notification From trigger: ${trigger.getLogMessage()}")
+        val packagesData = trigger.data["app_packages"]
+        val packages = when (packagesData) {
+            is Set<*> -> packagesData.filterIsInstance<String>()
+            is List<*> -> packagesData.filterIsInstance<String>()
+            else -> emptyList()
+        }
+
+        if (packages.isEmpty()) {
+            InAppLogger.logDebug(TAG, "Notification From trigger has no selected packages")
+            return EvaluationResult(false, "No notification apps selected")
+        }
+
+        val incomingPackage = notificationContext.packageName
+        val isMatch = packages.any { it.equals(incomingPackage, ignoreCase = true) }
+        val message = if (isMatch) {
+            "Notification from matched app: $incomingPackage"
+        } else {
+            "Notification from app does not match: $incomingPackage"
+        }
+
+        return EvaluationResult(
+            isMatch,
+            message,
+            mapOf<String, Any>(
+                "notification_package" to incomingPackage,
+                "selected_packages" to packages
+            )
+        )
     }
 
     private fun evaluateForegroundAppTrigger(trigger: Trigger): EvaluationResult {
@@ -1236,6 +1273,16 @@ class RuleEvaluator(private val context: Context) {
     ): EvaluationResult {
         return evaluateNotificationContainsTrigger(Trigger(
             type = TriggerType.NOTIFICATION_CONTAINS,
+            data = exception.data
+        ), notificationContext)
+    }
+
+    private fun evaluateNotificationFromException(
+        exception: Exception,
+        notificationContext: NotificationContext
+    ): EvaluationResult {
+        return evaluateNotificationFromTrigger(Trigger(
+            type = TriggerType.NOTIFICATION_FROM,
             data = exception.data
         ), notificationContext)
     }

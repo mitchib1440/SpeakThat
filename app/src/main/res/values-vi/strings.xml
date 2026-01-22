@@ -612,6 +612,22 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
     <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
 
+    <!-- Notification From trigger -->
+    <string name="trigger_notification_from_title">Thông báo từ</string>
+    <string name="trigger_notification_from_description">Điều kiện sẽ được coi là thỏa khi thông báo đến từ một ứng dụng đã chọn.</string>
+    <string name="trigger_notification_from_manage_apps">Quản lý ứng dụng</string>
+    <string name="trigger_notification_from_selected_count">Đã chọn: %1$d ứng dụng</string>
+    <string name="trigger_notification_from_selected_count_default">Đã chọn: 0 ứng dụng</string>
+
+    <string name="rule_trigger_notification_from_single">Thông báo đến từ %1$s</string>
+    <string name="rule_trigger_notification_from_multiple">Thông báo đến từ một trong %1$d ứng dụng</string>
+    <string name="rule_trigger_notification_from_not">%1$s (đảo)</string>
+    <string name="rule_exception_notification_from_single">Thông báo đến từ %1$s</string>
+    <string name="rule_exception_notification_from_multiple">Thông báo đến từ một trong %1$d ứng dụng</string>
+    <string name="rule_exception_notification_from_not">%1$s (đảo)</string>
+
+    <string name="rule_error_invalid_notification_from_apps">Lựa chọn ứng dụng thông báo không hợp lệ</string>
+
     <!-- Foreground App trigger -->
     <string name="trigger_foreground_app_title">Foreground App</string>
     <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>

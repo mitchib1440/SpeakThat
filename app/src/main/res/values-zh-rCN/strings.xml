@@ -613,6 +613,22 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
     <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
 
+    <!-- Notification From trigger -->
+    <string name="trigger_notification_from_title">通知来自</string>
+    <string name="trigger_notification_from_description">当收到的通知来自所选应用时，条件被视为满足。</string>
+    <string name="trigger_notification_from_manage_apps">管理应用</string>
+    <string name="trigger_notification_from_selected_count">已选择：%1$d 个应用</string>
+    <string name="trigger_notification_from_selected_count_default">已选择：0 个应用</string>
+
+    <string name="rule_trigger_notification_from_single">通知来自 %1$s</string>
+    <string name="rule_trigger_notification_from_multiple">通知来自 %1$d 个应用之一</string>
+    <string name="rule_trigger_notification_from_not">%1$s（反转）</string>
+    <string name="rule_exception_notification_from_single">通知来自 %1$s</string>
+    <string name="rule_exception_notification_from_multiple">通知来自 %1$d 个应用之一</string>
+    <string name="rule_exception_notification_from_not">%1$s（反转）</string>
+
+    <string name="rule_error_invalid_notification_from_apps">通知应用选择无效</string>
+
     <!-- Foreground App trigger -->
     <string name="trigger_foreground_app_title">Foreground App</string>
     <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>

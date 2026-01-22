@@ -2000,6 +2000,22 @@ Veuillez noter que cela ne fonctionnera que si l\'écran est activé.
     <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
     <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
 
+    <!-- Notification From trigger -->
+    <string name="trigger_notification_from_title">Notification de</string>
+    <string name="trigger_notification_from_description">La condition est considérée comme remplie lorsque la notification entrante provient d\'une application sélectionnée.</string>
+    <string name="trigger_notification_from_manage_apps">Gérer les applications</string>
+    <string name="trigger_notification_from_selected_count">Sélectionnées : %1$d applis</string>
+    <string name="trigger_notification_from_selected_count_default">Sélectionnées : 0 applis</string>
+
+    <string name="rule_trigger_notification_from_single">La notification provient de %1$s</string>
+    <string name="rule_trigger_notification_from_multiple">La notification provient de l\'une des %1$d applis</string>
+    <string name="rule_trigger_notification_from_not">%1$s (inversé)</string>
+    <string name="rule_exception_notification_from_single">La notification provient de %1$s</string>
+    <string name="rule_exception_notification_from_multiple">La notification provient de l\'une des %1$d applis</string>
+    <string name="rule_exception_notification_from_not">%1$s (inversé)</string>
+
+    <string name="rule_error_invalid_notification_from_apps">La sélection des applis de notification n\'est pas valide</string>
+
     <!-- Foreground App trigger -->
     <string name="trigger_foreground_app_title">Foreground App</string>
     <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>

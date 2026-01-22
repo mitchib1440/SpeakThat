@@ -628,6 +628,22 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
     <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
 
+    <!-- Notification From trigger -->
+    <string name="trigger_notification_from_title">الإشعار من</string>
+    <string name="trigger_notification_from_description">يُعتبر الشرط محققًا عندما يكون الإشعار الوارد من تطبيق محدد.</string>
+    <string name="trigger_notification_from_manage_apps">إدارة التطبيقات</string>
+    <string name="trigger_notification_from_selected_count">المحدد: %1$d تطبيقات</string>
+    <string name="trigger_notification_from_selected_count_default">المحدد: 0 تطبيقات</string>
+
+    <string name="rule_trigger_notification_from_single">الإشعار من %1$s</string>
+    <string name="rule_trigger_notification_from_multiple">الإشعار من أحد %1$d تطبيقات</string>
+    <string name="rule_trigger_notification_from_not">%1$s (معكوس)</string>
+    <string name="rule_exception_notification_from_single">الإشعار من %1$s</string>
+    <string name="rule_exception_notification_from_multiple">الإشعار من أحد %1$d تطبيقات</string>
+    <string name="rule_exception_notification_from_not">%1$s (معكوس)</string>
+
+    <string name="rule_error_invalid_notification_from_apps">تحديد تطبيقات الإشعارات غير صالح</string>
+
     <!-- Foreground App trigger -->
     <string name="trigger_foreground_app_title">Foreground App</string>
     <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>
