@@ -921,6 +921,10 @@ SpeakThat이 선택된 엔진을 사용할 수 없었습니다. 엔진이 이미
     <string name="filter_word_blacklist_title">단어 제외목록</string>
     <string name="filter_word_blacklist_description">특정 단어를 포함한 알림을 차단하거나 보호하세요</string>
     <string name="filter_word_blacklist_info">차단 = 아예 읽지 않기, 보호 = 알림 내용 읽지 않기</string>
+    <string name="tidy_speech_title">음성 정리</string>
+    <string name="tidy_speech_description">읽어주는 알림에서 이모지 같은 비언어 문자를 제거해 음성을 정리합니다</string>
+    <string name="tidy_speech_remove_emojis_title">이모지 제거</string>
+    <string name="tidy_speech_remove_emojis_description">읽어주는 알림에서 이모지와 기타 기호를 제거합니다</string>
     <string name="filter_blacklisted_words">📋 제외된 단어</string>
     <string name="general_theme_title">테마</string>
     <string name="general_dark_mode">다크 모드</string>

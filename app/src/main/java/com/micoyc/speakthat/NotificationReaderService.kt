@@ -23,6 +23,8 @@ import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.util.Log
+import android.icu.lang.UCharacter
+import android.icu.lang.UProperty
 import androidx.core.app.NotificationCompat
 import com.micoyc.speakthat.VoiceSettingsActivity
 import com.micoyc.speakthat.settings.BehaviorSettingsActivity
@@ -61,6 +63,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var wordReplacements: Map<String, String> = emptyMap()
     private var urlHandlingMode = DEFAULT_URL_HANDLING_MODE
     private var urlReplacementText = DEFAULT_URL_REPLACEMENT_TEXT
+    private var tidySpeechRemoveEmojisEnabled = false
     private var contentCapMode = DEFAULT_CONTENT_CAP_MODE
     private var contentCapWordCount = DEFAULT_CONTENT_CAP_WORD_COUNT
     private var contentCapSentenceCount = DEFAULT_CONTENT_CAP_SENTENCE_COUNT
@@ -310,6 +313,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // URL handling constants
         private const val KEY_URL_HANDLING_MODE = "url_handling_mode"
         private const val KEY_URL_REPLACEMENT_TEXT = "url_replacement_text"
+        private const val KEY_TIDY_SPEECH_REMOVE_EMOJIS = "tidy_speech_remove_emojis"
         private const val DEFAULT_URL_HANDLING_MODE = "domain_only"
         private const val DEFAULT_URL_REPLACEMENT_TEXT = ""
         
@@ -2203,6 +2207,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         urlHandlingMode = sharedPreferences?.getString(KEY_URL_HANDLING_MODE, DEFAULT_URL_HANDLING_MODE) ?: DEFAULT_URL_HANDLING_MODE
         urlReplacementText = sharedPreferences?.getString(KEY_URL_REPLACEMENT_TEXT, DEFAULT_URL_REPLACEMENT_TEXT) ?: DEFAULT_URL_REPLACEMENT_TEXT
         Log.d(TAG, "Loaded URL handling: mode=$urlHandlingMode, replacement='$urlReplacementText'")
+
+        // Load tidy speech settings
+        tidySpeechRemoveEmojisEnabled = sharedPreferences?.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false) ?: false
+        Log.d(TAG, "Loaded tidy speech settings: removeEmojis=$tidySpeechRemoveEmojisEnabled")
         
         // Load Content Cap settings
         contentCapMode = sharedPreferences?.getString(KEY_CONTENT_CAP_MODE, DEFAULT_CONTENT_CAP_MODE) ?: DEFAULT_CONTENT_CAP_MODE
@@ -5139,6 +5147,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         } else {
             formatSpeechText(appName, text, packageName, sbn, speechTemplateOverride)
         }
+
+        val tidySpeechText = if (tidySpeechRemoveEmojisEnabled) {
+            removeSpokenEmojis(speechText)
+        } else {
+            speechText
+        }
         
         // Determine which delay to use (conditional delay overrides global delay)
         val effectiveDelay = if (conditionalDelaySeconds > 0) {
@@ -5151,11 +5165,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (effectiveDelay > 0) {
             Log.d(TAG, "Delaying speech by ${effectiveDelay}s")
             pendingReadoutRunnable = Runnable {
-                executeSpeech(speechText, appName, text, originalAppName)
+                executeSpeech(tidySpeechText, appName, text, originalAppName)
             }
             delayHandler?.postDelayed(pendingReadoutRunnable!!, (effectiveDelay * 1000).toLong())
         } else {
-            executeSpeech(speechText, appName, text, originalAppName)
+            executeSpeech(tidySpeechText, appName, text, originalAppName)
         }
     }
     
@@ -5656,6 +5670,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 Log.d(TAG, "Content Cap settings updated: mode=$contentCapMode, wordCount=$contentCapWordCount, sentenceCount=$contentCapSentenceCount, timeLimit=$contentCapTimeLimit")
                 InAppLogger.log("Service", "Content Cap settings updated: mode=$contentCapMode, wordCount=$contentCapWordCount, sentenceCount=$contentCapSentenceCount, timeLimit=${contentCapTimeLimit}s")
             }
+            KEY_TIDY_SPEECH_REMOVE_EMOJIS -> {
+                tidySpeechRemoveEmojisEnabled = sharedPreferences?.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false) ?: false
+                Log.d(TAG, "Tidy speech setting updated: removeEmojis=$tidySpeechRemoveEmojisEnabled")
+                InAppLogger.log("Service", "Tidy speech setting updated: removeEmojis=$tidySpeechRemoveEmojisEnabled")
+            }
             KEY_SHAKE_TO_STOP_ENABLED,
             KEY_SHAKE_THRESHOLD,
             KEY_SHAKE_TIMEOUT_SECONDS,
@@ -5749,6 +5768,46 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
     private fun matchesWordFilter(text: String, word: String): Boolean {
         return text.contains(word, ignoreCase = true)
+    }
+
+    private fun isSpokenEmojiCodePoint(codePoint: Int): Boolean {
+        return UCharacter.hasBinaryProperty(codePoint, UProperty.EXTENDED_PICTOGRAPHIC) ||
+            UCharacter.hasBinaryProperty(codePoint, UProperty.EMOJI_PRESENTATION) ||
+            UCharacter.hasBinaryProperty(codePoint, UProperty.EMOJI_MODIFIER) ||
+            UCharacter.hasBinaryProperty(codePoint, UProperty.EMOJI_MODIFIER_BASE) ||
+            UCharacter.hasBinaryProperty(codePoint, UProperty.REGIONAL_INDICATOR)
+    }
+
+    private fun isEmojiSequenceControl(codePoint: Int): Boolean {
+        return codePoint == 0x200D || // ZERO WIDTH JOINER
+            codePoint == 0xFE0F ||    // VARIATION SELECTOR-16
+            codePoint == 0xFE0E       // VARIATION SELECTOR-15
+    }
+
+    private fun removeSpokenEmojis(text: String): String {
+        var index = 0
+        var hasEmoji = false
+        while (index < text.length) {
+            val codePoint = text.codePointAt(index)
+            if (isSpokenEmojiCodePoint(codePoint) || isEmojiSequenceControl(codePoint)) {
+                hasEmoji = true
+                break
+            }
+            index += Character.charCount(codePoint)
+        }
+        if (!hasEmoji) {
+            return text
+        }
+        val builder = StringBuilder(text.length)
+        index = 0
+        while (index < text.length) {
+            val codePoint = text.codePointAt(index)
+            if (!isSpokenEmojiCodePoint(codePoint) && !isEmojiSequenceControl(codePoint)) {
+                builder.appendCodePoint(codePoint)
+            }
+            index += Character.charCount(codePoint)
+        }
+        return builder.toString()
     }
     
     /**

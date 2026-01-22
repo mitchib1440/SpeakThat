@@ -732,5 +732,9 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rules_import_master_success">Imported %1$d rules from backup.</string>
     <string name="rules_import_master_success_with_skips">Imported %1$d rules from backup. Skipped %2$d rules due to missing permissions.</string>
     <string name="rules_summary_format">Total: %1$d | Enabled: %2$d | Disabled: %3$d</string>
+    <string name="tidy_speech_title">बोली साफ़ करें</string>
+    <string name="tidy_speech_description">बोलकर पढ़ी जाने वाली सूचनाओं से इमोजी जैसे गैर-शाब्दिक अक्षर हटाकर बोली को परिष्कृत करें</string>
+    <string name="tidy_speech_remove_emojis_title">इमोजी हटाएं</string>
+    <string name="tidy_speech_remove_emojis_description">बोलकर पढ़ी जाने वाली सूचनाओं से इमोजी और अन्य प्रतीक हटाएं</string>
 </resources>
 

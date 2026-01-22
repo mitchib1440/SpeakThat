@@ -1001,6 +1001,10 @@ Bloque ou rend privées les notifications contenant des mots spécifiques
     <string name="filter_word_blacklist_info">
 Bloque=ignore totalement, Privée=annonce de façon privée
 </string>
+    <string name="tidy_speech_title">Nettoyer la voix</string>
+    <string name="tidy_speech_description">Affinez la voix en supprimant les caractères non verbaux, tels que les emojis, des notifications lues</string>
+    <string name="tidy_speech_remove_emojis_title">Supprimer les emojis</string>
+    <string name="tidy_speech_remove_emojis_description">Supprimer les emojis et autres symboles des notifications lues</string>
     <string name="filter_blacklisted_words">📋 Mots interdits</string>
     <string name="general_theme_title">Thème</string>
     <string name="general_dark_mode">Mode sombre</string>

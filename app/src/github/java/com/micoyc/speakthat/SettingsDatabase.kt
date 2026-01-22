@@ -356,6 +356,28 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "tidy_speech_section",
+                title = context.getString(R.string.tidy_speech_title),
+                description = context.getString(R.string.tidy_speech_description),
+                category = "filter",
+                categoryTitle = context.getString(R.string.title_filter_settings),
+                categoryIcon = "🔍",
+                settingType = SettingType.CARD,
+                searchKeywords = listOf("tidy", "speech", "clean", "cleanup", "emoji", "emojis", "symbol", "symbols", "nonverbal", "non-verbal"),
+                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "tidy_speech_remove_emojis",
+                title = context.getString(R.string.tidy_speech_remove_emojis_title),
+                description = context.getString(R.string.tidy_speech_remove_emojis_description),
+                category = "filter",
+                categoryTitle = context.getString(R.string.title_filter_settings),
+                categoryIcon = "🔍",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("remove", "emoji", "emojis", "symbol", "symbols", "speech", "spoken", "nonverbal", "non-verbal"),
+                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "url_handling",
                 title = "URL Handling",
                 description = "Control how web links are read aloud in notifications",

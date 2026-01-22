@@ -28,6 +28,7 @@ public class FilterConfigManager {
     private static final String KEY_WORD_REPLACEMENTS = "word_replacements";
     private static final String KEY_URL_HANDLING_MODE = "url_handling_mode";
     private static final String KEY_URL_REPLACEMENT_TEXT = "url_replacement_text";
+    private static final String KEY_TIDY_SPEECH_REMOVE_EMOJIS = "tidy_speech_remove_emojis";
     
     public static class FilterConfig {
         public String appListMode;
@@ -38,6 +39,7 @@ public class FilterConfigManager {
         public String wordReplacements; // Stored as delimited string
         public String urlHandlingMode;
         public String urlReplacementText;
+        public boolean tidySpeechRemoveEmojis;
         public String exportDate;
         public String appVersion;
         public String configVersion;
@@ -50,6 +52,7 @@ public class FilterConfigManager {
             this.wordReplacements = "";
             this.urlHandlingMode = "domain_only";
             this.urlReplacementText = "";
+            this.tidySpeechRemoveEmojis = false;
             this.exportDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
             this.appVersion = "1.0"; // Static version for export compatibility
             this.configVersion = CONFIG_VERSION;
@@ -234,6 +237,7 @@ public class FilterConfigManager {
         config.wordReplacements = prefs.getString(KEY_WORD_REPLACEMENTS, "");
         config.urlHandlingMode = prefs.getString(KEY_URL_HANDLING_MODE, "domain_only");
         config.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
+        config.tidySpeechRemoveEmojis = prefs.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false);
         
         // Create JSON structure
         JSONObject json = new JSONObject();
@@ -256,6 +260,7 @@ public class FilterConfigManager {
         filters.put("wordReplacements", config.wordReplacements);
         filters.put("urlHandlingMode", config.urlHandlingMode);
         filters.put("urlReplacementText", config.urlReplacementText);
+        filters.put("tidySpeechRemoveEmojis", config.tidySpeechRemoveEmojis);
         json.put("filters", filters);
         
         // Future extension point - we can add more sections here
@@ -290,6 +295,7 @@ public class FilterConfigManager {
         config.filters.wordReplacements = prefs.getString(KEY_WORD_REPLACEMENTS, "");
         config.filters.urlHandlingMode = prefs.getString(KEY_URL_HANDLING_MODE, "domain_only");
         config.filters.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
+        config.filters.tidySpeechRemoveEmojis = prefs.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false);
         
         // Load voice settings
         config.voice.speechRate = voicePrefs.getFloat("speech_rate", 1.0f);
@@ -372,6 +378,7 @@ public class FilterConfigManager {
         filters.put("wordBlacklist", new JSONArray(config.filters.wordBlacklist));
         filters.put("wordBlacklistPrivate", new JSONArray(config.filters.wordBlacklistPrivate));
         filters.put("wordReplacements", config.filters.wordReplacements);
+        filters.put("tidySpeechRemoveEmojis", config.filters.tidySpeechRemoveEmojis);
         json.put("filters", filters);
         
         // Voice settings
@@ -539,6 +546,11 @@ public class FilterConfigManager {
                 editor.putString(KEY_URL_REPLACEMENT_TEXT, filters.getString("urlReplacementText"));
                 filtersImported++;
             }
+
+            if (filters.has("tidySpeechRemoveEmojis")) {
+                editor.putBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, filters.getBoolean("tidySpeechRemoveEmojis"));
+                filtersImported++;
+            }
             
             // Apply all changes
             editor.apply();
@@ -635,6 +647,11 @@ public class FilterConfigManager {
                 
                 if (filters.has("urlReplacementText")) {
                     mainEditor.putString(KEY_URL_REPLACEMENT_TEXT, filters.getString("urlReplacementText"));
+                    totalImported++;
+                }
+
+                if (filters.has("tidySpeechRemoveEmojis")) {
+                    mainEditor.putBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, filters.getBoolean("tidySpeechRemoveEmojis"));
                     totalImported++;
                 }
             }

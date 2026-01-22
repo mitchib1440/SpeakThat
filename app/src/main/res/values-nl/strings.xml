@@ -898,6 +898,10 @@ Blokkeer of privatiseer meldingen met specifieke woorden
     <string name="filter_word_blacklist_info">
 Block = Sla volledig over, Privé = kondig privaat aan
 </string>
+    <string name="tidy_speech_title">Spraak opschonen</string>
+    <string name="tidy_speech_description">Verfijn spraak door niet-verbale tekens, zoals emoji’s, uit gesproken meldingen te verwijderen</string>
+    <string name="tidy_speech_remove_emojis_title">Emoji’s verwijderen</string>
+    <string name="tidy_speech_remove_emojis_description">Verwijder emoji’s en andere symbolen uit gesproken meldingen</string>
     <string name="filter_blacklisted_words">📋 Geblokkeerde woorden</string>
     <!-- General Settings Strings -->
     <string name="general_theme_title">Thema</string>

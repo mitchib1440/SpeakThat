@@ -61,6 +61,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private static final String KEY_WORD_REPLACEMENTS = "word_replacements";
     private static final String KEY_URL_HANDLING_MODE = "url_handling_mode";
     private static final String KEY_URL_REPLACEMENT_TEXT = "url_replacement_text";
+    private static final String KEY_TIDY_SPEECH_REMOVE_EMOJIS = "tidy_speech_remove_emojis";
     private static final String DEFAULT_URL_HANDLING_MODE = "domain_only";
     private static final String DEFAULT_URL_REPLACEMENT_TEXT = "";
     private static final String KEY_DEFAULTS_INITIALIZED = "defaults_initialized";
@@ -304,6 +305,11 @@ public class FilterSettingsActivity extends AppCompatActivity {
         binding.appListHeader.setOnClickListener(v -> toggleAppList());
         binding.blacklistHeader.setOnClickListener(v -> toggleBlacklist());
         binding.replacementHeader.setOnClickListener(v -> toggleReplacement());
+
+        // Set up tidy speech switch
+        binding.switchRemoveEmojis.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveTidySpeechRemoveEmojis(isChecked);
+        });
         
         // Set up media excepted app input field
         setupMediaExceptedAppSelector();
@@ -496,6 +502,10 @@ public class FilterSettingsActivity extends AppCompatActivity {
         
         // Set custom replacement text
         binding.editUrlReplacementText.setText(urlReplacementText);
+
+        // Load tidy speech settings
+        boolean removeEmojis = sharedPreferences.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false); // Default to disabled
+        binding.switchRemoveEmojis.setChecked(removeEmojis);
         
         // Load media notification filtering settings
         boolean isMediaFilteringEnabled = sharedPreferences.getBoolean(KEY_MEDIA_FILTERING_ENABLED, true); // Default to enabled
@@ -1116,6 +1126,12 @@ public class FilterSettingsActivity extends AppCompatActivity {
         urlReplacementText = text;
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_URL_REPLACEMENT_TEXT, text);
+        editor.apply();
+    }
+
+    private void saveTidySpeechRemoveEmojis(boolean enabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, enabled);
         editor.apply();
     }
 

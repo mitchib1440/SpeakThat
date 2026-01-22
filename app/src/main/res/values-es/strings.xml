@@ -920,6 +920,10 @@ Bloquea o priva notificaciones que contengan palabras específicas
     <string name="filter_word_blacklist_info">
 Bloquear = omitir por completo, Privar = anunciar en privado
 </string>
+    <string name="tidy_speech_title">Pulir voz</string>
+    <string name="tidy_speech_description">Refina la voz eliminando caracteres no verbales, como emojis, de las notificaciones habladas</string>
+    <string name="tidy_speech_remove_emojis_title">Eliminar emojis</string>
+    <string name="tidy_speech_remove_emojis_description">Eliminar emojis y otros símbolos de las notificaciones habladas</string>
     <string name="filter_blacklisted_words">📋 Palabras prohibidas</string>
     <!-- General Settings Strings -->
     <string name="general_theme_title">Temas</string>

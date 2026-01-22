@@ -948,6 +948,10 @@ Benachrichtigungen mit bestimmten Wörtern blockieren oder privatisieren
     <string name="filter_word_blacklist_info">
 Block = komplett überspringen, Privat = privat ankündigen
 </string>
+    <string name="tidy_speech_title">Sprache bereinigen</string>
+    <string name="tidy_speech_description">Sprachausgabe verfeinern, indem nonverbale Zeichen wie Emojis aus gesprochenen Benachrichtigungen entfernt werden</string>
+    <string name="tidy_speech_remove_emojis_title">Emojis entfernen</string>
+    <string name="tidy_speech_remove_emojis_description">Emojis und andere Symbole aus gesprochenen Benachrichtigungen entfernen</string>
     <string name="filter_blacklisted_words">📋 Gesperrte Worte</string>
     <!-- General Settings Strings -->
     <string name="general_theme_title">Design</string>

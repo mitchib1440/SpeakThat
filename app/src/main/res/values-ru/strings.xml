@@ -675,4 +675,8 @@
     <string name="rules_import_master_success">Imported %1$d rules from backup.</string>
     <string name="rules_import_master_success_with_skips">Imported %1$d rules from backup. Skipped %2$d rules due to missing permissions.</string>
     <string name="rules_summary_format">Total: %1$d | Enabled: %2$d | Disabled: %3$d</string>
+    <string name="tidy_speech_title">Очистка речи</string>
+    <string name="tidy_speech_description">Улучшайте речь, удаляя невербальные символы, такие как эмодзи, из озвучиваемых уведомлений</string>
+    <string name="tidy_speech_remove_emojis_title">Удалить эмодзи</string>
+    <string name="tidy_speech_remove_emojis_description">Удалить эмодзи и другие символы из озвучиваемых уведомлений</string>
 </resources>

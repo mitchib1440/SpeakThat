@@ -906,6 +906,10 @@ Yüklü uygulamalarınızı ada veya pakete göre arayın. Anında eklemek için
 Belirli kelimeler içeren bildirimleri engelleyin veya özelleştirin
 </string>
     <string name="filter_word_blacklist_info">Engelle = tamamen atla, Özel = özel olarak duyur</string>
+    <string name="tidy_speech_title">Konuşmayı Temizle</string>
+    <string name="tidy_speech_description">Okunan bildirimlerden emojiler gibi sözlü olmayan karakterleri kaldırarak konuşmayı iyileştir</string>
+    <string name="tidy_speech_remove_emojis_title">Emojileri kaldır</string>
+    <string name="tidy_speech_remove_emojis_description">Okunan bildirimlerden emojileri ve diğer sembolleri kaldır</string>
     <string name="filter_blacklisted_words">📋 Kara Listeye Alınan Kelimeler</string>
     <!-- General Settings Strings -->
     <string name="general_theme_title">Tema</string>

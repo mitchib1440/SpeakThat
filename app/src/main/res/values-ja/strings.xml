@@ -836,6 +836,10 @@ Block or privatize notifications containing specific words
     <string name="filter_word_blacklist_info">
 Block = skip entirely, Private = announce privately
 </string>
+    <string name="tidy_speech_title">読み上げを整える</string>
+    <string name="tidy_speech_description">通知の読み上げから絵文字などの非言語文字を除去します</string>
+    <string name="tidy_speech_remove_emojis_title">絵文字を削除</string>
+    <string name="tidy_speech_remove_emojis_description">通知の読み上げから絵文字や記号を削除します</string>
     <string name="filter_blacklisted_words">📋 Blacklisted Words</string>
     <!-- General Settings Strings -->
     <string name="general_theme_title">Theme</string>

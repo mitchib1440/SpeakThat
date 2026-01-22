@@ -716,5 +716,9 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rules_import_master_success">Imported %1$d rules from backup.</string>
     <string name="rules_import_master_success_with_skips">Imported %1$d rules from backup. Skipped %2$d rules due to missing permissions.</string>
     <string name="rules_summary_format">Total: %1$d | Enabled: %2$d | Disabled: %3$d</string>
+    <string name="tidy_speech_title">整理語音</string>
+    <string name="tidy_speech_description">透過移除如表情符號等非語言字元來改善朗讀通知</string>
+    <string name="tidy_speech_remove_emojis_title">移除表情符號</string>
+    <string name="tidy_speech_remove_emojis_description">從朗讀通知中移除表情符號和其他符號</string>
 </resources>
 

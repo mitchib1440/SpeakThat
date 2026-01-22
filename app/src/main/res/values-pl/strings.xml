@@ -708,5 +708,9 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rules_import_master_success">Imported %1$d rules from backup.</string>
     <string name="rules_import_master_success_with_skips">Imported %1$d rules from backup. Skipped %2$d rules due to missing permissions.</string>
     <string name="rules_summary_format">Total: %1$d | Enabled: %2$d | Disabled: %3$d</string>
+    <string name="tidy_speech_title">Porządkowanie mowy</string>
+    <string name="tidy_speech_description">Ulepsz mowę, usuwając niewerbalne znaki, takie jak emoji, z odczytywanych powiadomień</string>
+    <string name="tidy_speech_remove_emojis_title">Usuń emoji</string>
+    <string name="tidy_speech_remove_emojis_description">Usuń emoji i inne symbole z odczytywanych powiadomień</string>
 </resources>
 
