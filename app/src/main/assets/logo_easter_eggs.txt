@@ -211,7 +211,7 @@ SpeakThat! I'm basically a mind reader now - I know when you want me to stop tal
 SpeakThat! Your phone can sense your hand! What a time to be alive! [WAVE_ONLY]
 SpeakThat! I'm like a cat - I can sense when you're about to touch me! [WAVE_ONLY]
 SpeakThat! Wave-to-stop: Because sometimes shaking your phone just isn't dramatic enough! [WAVE_ONLY]
-SpeakThat! I can feel your hand approaching! It's like I have notification ESP! [WAVE_ONLY]
+SpeakThat! I can feel your hand approaching! It's like I have human E S P! [WAVE_ONLY]
 SpeakThat! Wave detection only makes me shut up because I'm afraid you're about to slap me! [WAVE_ONLY]
 SpeakThat! Look at you, controlling your phone with your hand! [WAVE_ONLY]
 SpeakThat! Google tried the whole wave-sensing thing many years ago with the Pixel 4. I still do it better! [WAVE_ONLY]
