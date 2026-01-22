@@ -59,7 +59,10 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         // Make text clickable for editing
         holder.textAppName.setOnClickListener(v -> {
             if (editListener != null) {
-                editListener.onAction(holder.getAdapterPosition());
+                int pos = holder.getBindingAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION) {
+                    editListener.onAction(pos);
+                }
             }
         });
         
@@ -68,7 +71,10 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
             holder.checkBoxPrivate.setOnCheckedChangeListener(null); // Clear previous listener
             holder.checkBoxPrivate.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (privateToggleListener != null) {
-                    privateToggleListener.onAction(holder.getAdapterPosition());
+                    int pos = holder.getBindingAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        privateToggleListener.onAction(pos);
+                    }
                 }
             });
         }
@@ -76,7 +82,10 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         // Set up remove button listener
         holder.buttonRemove.setOnClickListener(v -> {
             if (removeListener != null) {
-                removeListener.onAction(holder.getAdapterPosition());
+                int pos = holder.getBindingAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION) {
+                    removeListener.onAction(pos);
+                }
             }
         });
     }

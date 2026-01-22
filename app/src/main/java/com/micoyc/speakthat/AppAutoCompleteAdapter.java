@@ -150,6 +150,7 @@ public class AppAutoCompleteAdapter extends ArrayAdapter<AppInfo> {
         }
         
         @Override
+        @SuppressWarnings("unchecked")
         protected void publishResults(CharSequence constraint, FilterResults results) {
             filteredApps.clear();
             if (results.values != null) {

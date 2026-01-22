@@ -123,6 +123,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var delayHandler: android.os.Handler? = null
     private var pendingReadoutRunnable: Runnable? = null
     private var contentCapTimerRunnable: Runnable? = null
+    private var speechSafetyTimeoutRunnable: Runnable? = null
     
     // Rule system
     private lateinit var ruleManager: RuleManager
@@ -258,6 +259,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val LISTENER_REBIND_DELAY_MS = 7_500L
         private const val LEGACY_COMPONENT_REENABLE_DELAY_MS = 2_000L
         private const val DEFAULT_TTS_USAGE_INDEX = 4
+        private const val SAFETY_TIMEOUT_MIN_MS = 15_000L
+        private const val SAFETY_TIMEOUT_MAX_MS = 180_000L
+        private const val SAFETY_TIMEOUT_BUFFER_MS = 8_000L
         
         // Filter system keys
         private const val KEY_APP_LIST_MODE = "app_list_mode"
@@ -3223,6 +3227,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             pendingReadoutRunnable = null
             Log.d(TAG, "Cancelled pending delayed readout due to $triggerType")
         }
+
+        cancelSpeechSafetyTimeout("stopSpeaking:$triggerType")
         
         // Disable speakerphone if it was enabled
         try {
@@ -3272,6 +3278,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         currentOriginalAppName = ""
         currentTtsText = ""
         unregisterShakeListener()
+
+        cancelSpeechSafetyTimeout("stopCurrentSpeech")
         
         // CRITICAL: Stop foreground service when TTS is interrupted
         stopForegroundService()
@@ -3284,6 +3292,57 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         Log.d(TAG, "Current TTS speech stopped by audio focus change")
         InAppLogger.logTTSEvent("TTS stopped by audio focus", "Focus loss interrupted speech")
+    }
+
+    private fun resumeQueueAfterSpeechEnd(reason: String) {
+        if (notificationQueue.isEmpty()) {
+            return
+        }
+        if (isCurrentlySpeaking) {
+            Log.d(TAG, "Queue resume skipped ($reason) - still speaking")
+            return
+        }
+        if (!MainActivity.isMasterSwitchEnabled(this)) {
+            Log.d(TAG, "Queue resume skipped ($reason) - master switch disabled")
+            InAppLogger.log("Service", "Queue resume skipped ($reason) - master switch disabled")
+            return
+        }
+        Log.d(TAG, "Resuming queue after $reason (size=${notificationQueue.size})")
+        InAppLogger.log("Service", "Resuming queue after $reason (size=${notificationQueue.size})")
+        processNotificationQueue()
+    }
+
+    private fun scheduleSpeechSafetyTimeout(reason: String, speechText: String) {
+        cancelSpeechSafetyTimeout("reschedule:$reason")
+        if (speechText.isBlank()) {
+            return
+        }
+        val wordCount = speechText.trim().split(Regex("\\s+")).size
+        // Rough estimate: ~2.5 words/sec plus a buffer, clamped to sane bounds.
+        val estimatedMs = ((wordCount / 2.5f) * 1000f).toLong()
+        val timeoutMs = (estimatedMs + SAFETY_TIMEOUT_BUFFER_MS)
+            .coerceAtLeast(SAFETY_TIMEOUT_MIN_MS)
+            .coerceAtMost(SAFETY_TIMEOUT_MAX_MS)
+        speechSafetyTimeoutRunnable = Runnable {
+            if (!isCurrentlySpeaking) {
+                return@Runnable
+            }
+            Log.w(TAG, "Speech safety timeout triggered after ${timeoutMs}ms ($reason)")
+            InAppLogger.logWarning("Service", "Speech safety timeout triggered ($reason)")
+            stopCurrentSpeech()
+            resumeQueueAfterSpeechEnd("safety timeout")
+        }
+        delayHandler?.postDelayed(speechSafetyTimeoutRunnable!!, timeoutMs)
+        Log.d(TAG, "Speech safety timeout scheduled for ${timeoutMs}ms ($reason)")
+        InAppLogger.log("Service", "Speech safety timeout scheduled (${timeoutMs}ms, reason=$reason)")
+    }
+
+    private fun cancelSpeechSafetyTimeout(reason: String) {
+        speechSafetyTimeoutRunnable?.let { runnable ->
+            delayHandler?.removeCallbacks(runnable)
+            speechSafetyTimeoutRunnable = null
+            Log.d(TAG, "Speech safety timeout cancelled ($reason)")
+        }
     }
     
     // Call this when settings change
@@ -5020,6 +5079,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
 
     private fun processNotificationQueue() {
+        if (!MainActivity.isMasterSwitchEnabled(this)) {
+            Log.d(TAG, "Queue processing skipped - master switch disabled (size=${notificationQueue.size})")
+            InAppLogger.log("Service", "Queue processing skipped - master switch disabled")
+            return
+        }
         Log.d(TAG, "Processing queue - Currently speaking: $isCurrentlySpeaking, Queue size: ${notificationQueue.size}")
         if (!isCurrentlySpeaking && notificationQueue.isNotEmpty()) {
             val queuedNotification = notificationQueue.removeAt(0)
@@ -5368,6 +5432,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 Log.d(TAG, "=== DUCKING DEBUG: TTS utterance STARTED: $utteranceId ===")
                 InAppLogger.log("Service", "=== DUCKING DEBUG: TTS utterance STARTED: $utteranceId ===")
                 InAppLogger.logTTSEvent("TTS started", speechText.take(50))
+                scheduleSpeechSafetyTimeout("utterance_start", currentTtsText)
                 
                 // Log current volume state when TTS starts
                 val currentVolume = audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
@@ -5397,6 +5462,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         // Manually trigger cleanup since stop() doesn't always trigger onDone/onError
                         isCurrentlySpeaking = false
                         contentCapTimerRunnable = null
+                        cancelSpeechSafetyTimeout("content cap")
                         
                         // Stop foreground service
                         stopForegroundService()
@@ -5409,6 +5475,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                             cleanupMediaBehavior()
                         }, 250)
                         
+                        // Resume queue now that the readout has ended early
+                        resumeQueueAfterSpeechEnd("content cap")
+
                         Log.d(TAG, "Content Cap cleanup completed")
                         InAppLogger.logTTSEvent("TTS stopped by Content Cap", "Time limit: ${contentCapTimeLimit}s")
                     }
@@ -5423,6 +5492,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     Log.d(TAG, "=== DUCKING DEBUG: TTS utterance COMPLETED: $utteranceId ===")
                     InAppLogger.log("Service", "=== DUCKING DEBUG: TTS utterance COMPLETED: $utteranceId ===")
                     isCurrentlySpeaking = false
+                    cancelSpeechSafetyTimeout("utterance_done")
                     
                     // Cancel content cap timer if active
                     contentCapTimerRunnable?.let { runnable ->
@@ -5485,6 +5555,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (utteranceId == "notification_utterance") {
                     Log.e(TAG, "TTS utterance error: $utteranceId")
                     isCurrentlySpeaking = false
+                    cancelSpeechSafetyTimeout("utterance_error")
                     
                     // Cancel content cap timer if active
                     contentCapTimerRunnable?.let { runnable ->
@@ -5644,7 +5715,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 checkAndShowPersistentNotification()
             }
             KEY_MASTER_SWITCH_ENABLED -> {
-                Log.d(TAG, "Master switch changed - updating persistent indicator state")
+                val isMasterEnabled = sharedPreferences?.getBoolean(KEY_MASTER_SWITCH_ENABLED, true) ?: true
+                Log.d(TAG, "Master switch changed - enabled: $isMasterEnabled")
+                if (!isMasterEnabled) {
+                    if (isCurrentlySpeaking) {
+                        stopSpeaking("master switch")
+                    } else {
+                        notificationQueue.clear()
+                        pendingReadoutRunnable?.let { runnable ->
+                            delayHandler?.removeCallbacks(runnable)
+                            pendingReadoutRunnable = null
+                            Log.d(TAG, "Cancelled pending delayed readout due to master switch")
+                        }
+                    }
+                }
                 checkAndShowPersistentNotification()
             }
             KEY_NOTIFICATION_WHILE_READING -> {
