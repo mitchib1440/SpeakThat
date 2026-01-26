@@ -317,21 +317,57 @@ class SelfTestActivity : AppCompatActivity() {
         currentStep = 5
         InAppLogger.log("SelfTest", "Step 5: Checking volume levels")
         
+        // Get the configured audio stream type from Voice Settings
+        val voicePrefs = getSharedPreferences("VoiceSettings", Context.MODE_PRIVATE)
+        val audioUsageIndex = voicePrefs.getInt("audio_usage", 0) // Default to Media (index 0)
+        val streamType = getStreamTypeFromAudioUsage(audioUsageIndex)
+        val streamName = getStreamTypeName(streamType)
+        
         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        val streamType = AudioManager.STREAM_NOTIFICATION
         val currentVolume = audioManager.getStreamVolume(streamType)
         val maxVolume = audioManager.getStreamMaxVolume(streamType)
+        
+        InAppLogger.log("SelfTest", "Step 5: Checking $streamName stream volume (audio_usage index: $audioUsageIndex)")
         
         if (currentVolume > 0) {
             val percentage = (currentVolume.toFloat() / maxVolume * 100).toInt()
             setStepStatus(binding.step5.root, "✓", getString(R.string.selftest_step5_title), 
                 getString(R.string.selftest_step5_pass, percentage))
-            InAppLogger.log("SelfTest", "Step 5: PASS - Volume at $percentage%")
+            InAppLogger.log("SelfTest", "Step 5: PASS - $streamName volume at $percentage% ($currentVolume/$maxVolume)")
             handler.postDelayed({ checkAudioMode() }, 300)
         } else {
             setStepStatus(binding.step5.root, "✗", getString(R.string.selftest_step5_title), getString(R.string.selftest_step5_fail))
-            InAppLogger.log("SelfTest", "Step 5: FAIL - Volume is 0")
-            showError(440, getString(R.string.selftest_error_0440_title), getString(R.string.selftest_error_0440_description))
+            InAppLogger.log("SelfTest", "Step 5: FAIL - $streamName volume is 0")
+            showError(441, getString(R.string.selftest_error_0441_title), getString(R.string.selftest_error_0441_description, streamName))
+        }
+    }
+    
+    /**
+     * Convert audio usage index to Android stream type
+     * Matches the mapping used in VoiceSettingsActivity
+     */
+    private fun getStreamTypeFromAudioUsage(audioUsageIndex: Int): Int {
+        return when (audioUsageIndex) {
+            0 -> AudioManager.STREAM_MUSIC      // Media
+            1 -> AudioManager.STREAM_NOTIFICATION // Notification
+            2 -> AudioManager.STREAM_ALARM      // Alarm
+            3 -> AudioManager.STREAM_VOICE_CALL // Voice Call
+            4 -> AudioManager.STREAM_SYSTEM     // Assistance (using SYSTEM as closest match)
+            else -> AudioManager.STREAM_NOTIFICATION // Default fallback
+        }
+    }
+    
+    /**
+     * Get a human-readable name for the stream type
+     */
+    private fun getStreamTypeName(streamType: Int): String {
+        return when (streamType) {
+            AudioManager.STREAM_MUSIC -> "Media"
+            AudioManager.STREAM_NOTIFICATION -> "Notification"
+            AudioManager.STREAM_ALARM -> "Alarm"
+            AudioManager.STREAM_VOICE_CALL -> "Voice Call"
+            AudioManager.STREAM_SYSTEM -> "System"
+            else -> "Unknown"
         }
     }
     
@@ -512,7 +548,7 @@ class SelfTestActivity : AppCompatActivity() {
             noCallback = {
                 // TTS worked but user didn't hear it - this is a failure
                 setStepStatus(binding.step9.root, "✗", getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_success))
-                showError(440, getString(R.string.selftest_error_0440_title), getString(R.string.selftest_error_0440_description))
+                showError(443, getString(R.string.selftest_error_0443_title), getString(R.string.selftest_error_0443_description))
             }
         )
     }
@@ -563,6 +599,8 @@ class SelfTestActivity : AppCompatActivity() {
         // Determine error code based on the blocking reason
         val determinedErrorCode = when {
             reason.contains("Test interrupted", ignoreCase = true) -> 999 // Special code for user interruption
+            reason.contains("TTS_STARTED_NOT_COMPLETED", ignoreCase = true) -> 442 // TTS started but didn't complete
+            reason.contains("TTS_NEVER_STARTED", ignoreCase = true) -> 444 // TTS never started
             reason.contains("deduplication", ignoreCase = true) -> 414
             reason.contains("dismissal memory", ignoreCase = true) -> 414
             reason.contains("master switch", ignoreCase = true) -> 410
@@ -570,7 +608,9 @@ class SelfTestActivity : AppCompatActivity() {
             reason.contains("do not disturb", ignoreCase = true) -> 412
             reason.contains("rules", ignoreCase = true) -> 413
             reason.contains("content filter", ignoreCase = true) -> 414
-            reason.contains("tts", ignoreCase = true) -> 415
+            reason.contains("tts not initialized", ignoreCase = true) -> 415
+            reason.contains("tts error", ignoreCase = true) -> 415
+            reason.contains("volume is 0", ignoreCase = true) || reason.contains("volume: 0", ignoreCase = true) -> 441
             reason.contains("volume", ignoreCase = true) -> 440
             else -> 420
         }
@@ -583,12 +623,21 @@ class SelfTestActivity : AppCompatActivity() {
             return
         }
         
+        // For TTS-specific errors, extract the clean reason
+        val cleanReason = when {
+            reason.contains("TTS_STARTED_NOT_COMPLETED", ignoreCase = true) -> 
+                reason.substringAfter("TTS_STARTED_NOT_COMPLETED: ").trim()
+            reason.contains("TTS_NEVER_STARTED", ignoreCase = true) -> 
+                reason.substringAfter("TTS_NEVER_STARTED: ").trim()
+            else -> reason
+        }
+        
         // For other errors, show both the generic error description AND the specific reason
         val errorTitle = getString(getErrorTitleResourceId(determinedErrorCode))
         val errorDescription = getString(getErrorDescriptionResourceId(determinedErrorCode))
         
         // Combine the generic description with the specific reason
-        val detailedDescription = "$errorDescription\n\n📋 Specific Issue:\n$reason"
+        val detailedDescription = "$errorDescription\n\n📋 Specific Issue:\n$cleanReason"
         showError(determinedErrorCode, errorTitle, detailedDescription)
     }
     
@@ -637,6 +686,10 @@ class SelfTestActivity : AppCompatActivity() {
             415 -> R.string.selftest_error_0415_title
             420 -> R.string.selftest_error_0420_title
             440 -> R.string.selftest_error_0440_title
+            441 -> R.string.selftest_error_0441_title
+            442 -> R.string.selftest_error_0442_title
+            443 -> R.string.selftest_error_0443_title
+            444 -> R.string.selftest_error_0444_title
             else -> R.string.selftest_error_unknown_title
         }
     }
@@ -653,6 +706,10 @@ class SelfTestActivity : AppCompatActivity() {
             415 -> R.string.selftest_error_0415_description
             420 -> R.string.selftest_error_0420_description
             440 -> R.string.selftest_error_0440_description
+            441 -> R.string.selftest_error_0441_description
+            442 -> R.string.selftest_error_0442_description
+            443 -> R.string.selftest_error_0443_description
+            444 -> R.string.selftest_error_0444_description
             else -> R.string.selftest_error_unknown_description
         }
     }

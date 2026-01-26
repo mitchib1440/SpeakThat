@@ -1846,7 +1846,19 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="selftest_error_0420_description">The notification was received but not read for an unknown reason. Please export the debug logs and report this issue.</string>
 
     <string name="selftest_error_0440_title">Audio Output Issue</string>
-    <string name="selftest_error_0440_description">TTS completed successfully, but you didn\'t hear it. Check your volume settings, audio output device (Bluetooth headphones, etc.), or try a different audio stream in Voice Settings.</string>
+    <string name="selftest_error_0440_description">General audio output issue detected. Check your volume settings, audio output device (Bluetooth headphones, etc.), or try a different audio stream in Voice Settings.</string>
+
+    <string name="selftest_error_0441_title">Volume Too Low</string>
+    <string name="selftest_error_0441_description">The %1$s volume is set to 0 (muted). Please increase the volume using your device\'s volume buttons or system settings, then run the test again.</string>
+
+    <string name="selftest_error_0442_title">TTS Started But Didn\'t Complete</string>
+    <string name="selftest_error_0442_description">Text-to-Speech started speaking but didn\'t complete within the expected time. This may indicate a TTS engine hang, audio routing issue, or the speech was interrupted. Check your TTS engine settings, try a different TTS engine, or restart the app.</string>
+
+    <string name="selftest_error_0443_title">TTS Completed But Not Heard</string>
+    <string name="selftest_error_0443_description">Text-to-Speech completed successfully, but you didn\'t hear it. Check your volume settings, audio output device (Bluetooth headphones, USB audio, etc.), audio routing, or try a different audio stream type in Voice Settings.</string>
+
+    <string name="selftest_error_0444_title">TTS Never Started</string>
+    <string name="selftest_error_0444_description">The notification was received and passed all filters, but Text-to-Speech never started speaking. This may indicate a TTS initialization issue, audio stream problem, or the TTS engine is not responding. Check your TTS engine settings, try restarting the app, or select a different TTS engine in Voice Settings.</string>
 
     <string name="selftest_error_unknown_title">Unknown Error</string>
     <string name="selftest_error_unknown_description">An unexpected error occurred during the test.</string>

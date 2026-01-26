@@ -161,7 +161,7 @@ class SelfTestHelper(private val context: Context) {
                     speaking && timeSinceSpeaking != null && timeSinceSpeaking >= extendedTimeoutMs -> {
                         // Speaking started but didn't complete within extended timeout
                         InAppLogger.log("SelfTest", "Test notification started speaking but didn't complete after ${extendedTimeoutMs}ms")
-                        val reason = "TTS started but didn't complete (possible TTS hang)"
+                        val reason = "TTS_STARTED_NOT_COMPLETED: TTS started but didn't complete within timeout (possible TTS hang or audio routing issue)"
                         monitoringCallback?.invoke(TestResult(TestStatus.RECEIVED_NOT_READ, reason))
                         monitoringCallback = null
                         return
@@ -171,7 +171,13 @@ class SelfTestHelper(private val context: Context) {
                         if (elapsed >= timeoutMs) {
                             InAppLogger.log("SelfTest", "Test notification received and filtered but not speaking after ${timeoutMs}ms")
                             val reason = findBlockingReason(logsText)
-                            monitoringCallback?.invoke(TestResult(TestStatus.RECEIVED_NOT_READ, reason))
+                            // If no specific reason found, this means TTS never started
+                            val finalReason = if (reason.contains("Unknown reason", ignoreCase = true)) {
+                                "TTS_NEVER_STARTED: Notification was received and passed filtering, but TTS never started speaking"
+                            } else {
+                                reason
+                            }
+                            monitoringCallback?.invoke(TestResult(TestStatus.RECEIVED_NOT_READ, finalReason))
                             monitoringCallback = null
                             return
                         }
@@ -181,7 +187,13 @@ class SelfTestHelper(private val context: Context) {
                         InAppLogger.log("SelfTest", "Timeout reached (${timeoutMs}ms) - test notification not received or not speaking")
                         if (receivedNotification) {
                             val reason = findBlockingReason(logsText)
-                            monitoringCallback?.invoke(TestResult(TestStatus.RECEIVED_NOT_READ, reason))
+                            // If notification was received and passed filtering but TTS never started, provide specific reason
+                            val finalReason = if (passedFiltering && reason.contains("Unknown reason", ignoreCase = true)) {
+                                "TTS_NEVER_STARTED: Notification was received and passed filtering, but TTS never started speaking"
+                            } else {
+                                reason
+                            }
+                            monitoringCallback?.invoke(TestResult(TestStatus.RECEIVED_NOT_READ, finalReason))
                         } else {
                             monitoringCallback?.invoke(TestResult(TestStatus.NOT_RECEIVED))
                         }
