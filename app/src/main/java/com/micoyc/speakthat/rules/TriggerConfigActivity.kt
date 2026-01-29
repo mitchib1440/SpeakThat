@@ -92,6 +92,7 @@ class TriggerConfigActivity : AppCompatActivity() {
             TriggerType.SCREEN_STATE -> setupScreenStateUI()
             TriggerType.TIME_SCHEDULE -> setupTimeScheduleUI()
             TriggerType.BLUETOOTH_DEVICE -> setupBluetoothUI()
+            TriggerType.WIRED_HEADPHONES -> setupWiredHeadphonesUI()
             TriggerType.WIFI_NETWORK -> setupWifiUI()
             else -> {
                 InAppLogger.logError("TriggerConfigActivity", "Unknown trigger type: $triggerType")
@@ -232,6 +233,21 @@ class TriggerConfigActivity : AppCompatActivity() {
         binding.btnSelectDevices.setOnClickListener {
             showBluetoothDeviceSelection()
         }
+    }
+    
+    private fun setupWiredHeadphonesUI() {
+        binding.cardWiredHeadphones.visibility = View.VISIBLE
+        
+        // Set up connection state options
+        val connectionStateOptions = arrayOf(
+            getString(R.string.trigger_wired_headphones_disconnected),
+            getString(R.string.trigger_wired_headphones_connected)
+        )
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, connectionStateOptions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerWiredHeadphonesConnectionState.adapter = adapter
+        // Default to "Disconnected" (index 0)
+        binding.spinnerWiredHeadphonesConnectionState.setSelection(0)
     }
     
     private fun setupWifiUI() {
@@ -809,6 +825,11 @@ class TriggerConfigActivity : AppCompatActivity() {
                     updateSelectedDaysDisplay()
                 }
                 
+                TriggerType.WIRED_HEADPHONES -> {
+                    val connectionState = trigger.data["connection_state"] as? String ?: "disconnected"
+                    val stateIndex = if (connectionState == "connected") 1 else 0
+                    binding.spinnerWiredHeadphonesConnectionState.setSelection(stateIndex)
+                }
                 TriggerType.BLUETOOTH_DEVICE -> {
                     val deviceAddressesData = trigger.data["device_addresses"]
                     val deviceAddresses = when (deviceAddressesData) {
@@ -912,6 +933,7 @@ class TriggerConfigActivity : AppCompatActivity() {
             TriggerType.SCREEN_STATE -> createScreenStateTrigger()
             TriggerType.TIME_SCHEDULE -> createTimeScheduleTrigger()
             TriggerType.BLUETOOTH_DEVICE -> createBluetoothTrigger()
+            TriggerType.WIRED_HEADPHONES -> createWiredHeadphonesTrigger()
             TriggerType.WIFI_NETWORK -> {
                 val wifiTrigger = createWifiTrigger()
                 
@@ -1296,6 +1318,36 @@ class TriggerConfigActivity : AppCompatActivity() {
                 data = mapOf("device_addresses" to deviceAddresses),
                 description = description,
                 inverted = inverted
+            )
+        }
+    }
+    
+    private fun createWiredHeadphonesTrigger(): Trigger {
+        val connectionState = if (binding.spinnerWiredHeadphonesConnectionState.selectedItemPosition == 1) {
+            "connected"
+        } else {
+            "disconnected"
+        }
+        
+        val description = if (connectionState == "connected") {
+            getString(R.string.rule_trigger_wired_headphones_connected)
+        } else {
+            getString(R.string.rule_trigger_wired_headphones_disconnected)
+        }
+        
+        return if (isEditing && originalTrigger != null) {
+            originalTrigger!!.copy(
+                type = TriggerType.WIRED_HEADPHONES,
+                data = mapOf("connection_state" to connectionState),
+                description = description,
+                inverted = false
+            )
+        } else {
+            Trigger(
+                type = TriggerType.WIRED_HEADPHONES,
+                data = mapOf("connection_state" to connectionState),
+                description = description,
+                inverted = false
             )
         }
     }

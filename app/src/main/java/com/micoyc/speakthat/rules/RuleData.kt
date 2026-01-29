@@ -249,6 +249,7 @@ enum class TriggerType(
     val isCacheable: Boolean
 ) {
     BLUETOOTH_DEVICE("Bluetooth Device Connected", "When a specific Bluetooth device is connected", true),
+    WIRED_HEADPHONES("Wired Headphones", "When headphones are connected to your device via a cable", false),
     BATTERY_PERCENTAGE("Battery Percentage", "When battery is above or below a percentage", false),
     CHARGING_STATUS("Charging Status", "When the device is charging or discharging", true),
     DEVICE_UNLOCKED("Device Unlocked", "When the device is locked or unlocked", true),
@@ -294,6 +295,7 @@ enum class ExceptionType(
     val isCacheable: Boolean
 ) {
     BLUETOOTH_DEVICE("Bluetooth Device Connected", "When a specific Bluetooth device is connected", true),
+    WIRED_HEADPHONES("Wired Headphones", "When headphones are connected to your device via a cable", false),
     BATTERY_PERCENTAGE("Battery Percentage", "When battery is above or below a percentage", false),
     CHARGING_STATUS("Charging Status", "When the device is charging or discharging", true),
     DEVICE_UNLOCKED("Device Unlocked", "When the device is locked or unlocked", true),
@@ -635,6 +637,14 @@ data class Rule(
                     context.getString(com.micoyc.speakthat.R.string.rule_trigger_bluetooth_connected)
                 }
             }
+            TriggerType.WIRED_HEADPHONES -> {
+                val connectionState = trigger.data["connection_state"] as? String ?: "disconnected"
+                if (connectionState == "connected") {
+                    context.getString(com.micoyc.speakthat.R.string.rule_trigger_wired_headphones_connected)
+                } else {
+                    context.getString(com.micoyc.speakthat.R.string.rule_trigger_wired_headphones_disconnected)
+                }
+            }
             TriggerType.SCREEN_STATE -> {
                 val screenState = trigger.data["screen_state"] as? String ?: "on"
                 val screenOn = screenState == "on"
@@ -870,6 +880,14 @@ data class Rule(
                     context.getString(com.micoyc.speakthat.R.string.rule_exception_bluetooth_disconnected)
                 } else {
                     context.getString(com.micoyc.speakthat.R.string.rule_exception_bluetooth_connected)
+                }
+            }
+            ExceptionType.WIRED_HEADPHONES -> {
+                val connectionState = exception.data["connection_state"] as? String ?: "disconnected"
+                if (connectionState == "connected") {
+                    context.getString(com.micoyc.speakthat.R.string.rule_exception_wired_headphones_connected)
+                } else {
+                    context.getString(com.micoyc.speakthat.R.string.rule_exception_wired_headphones_disconnected)
                 }
             }
             ExceptionType.SCREEN_STATE -> {

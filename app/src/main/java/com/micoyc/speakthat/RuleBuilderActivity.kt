@@ -409,6 +409,7 @@ class RuleBuilderActivity : AppCompatActivity() {
             getString(R.string.trigger_device_unlocked_title),
             getString(R.string.trigger_screen_orientation_title),
             getString(R.string.trigger_bluetooth_device_connected),
+            getString(R.string.item_trigger_wired_headphones),
             getString(R.string.trigger_screen_state_title),
             getString(R.string.trigger_time_schedule_title),
             getString(R.string.trigger_wifi_network_connected)
@@ -426,9 +427,10 @@ class RuleBuilderActivity : AppCompatActivity() {
                     5 -> addDeviceUnlockedTrigger()
                     6 -> addScreenOrientationTrigger()
                     7 -> addBluetoothTrigger()
-                    8 -> addScreenStateTrigger()
-                    9 -> addTimeScheduleTrigger()
-                    10 -> addWifiNetworkTrigger()
+                    8 -> addWiredHeadphonesTrigger()
+                    9 -> addScreenStateTrigger()
+                    10 -> addTimeScheduleTrigger()
+                    11 -> addWifiNetworkTrigger()
                 }
             }
             .show()
@@ -465,6 +467,7 @@ class RuleBuilderActivity : AppCompatActivity() {
             getString(R.string.trigger_device_unlocked_title),
             getString(R.string.trigger_screen_orientation_title),
             getString(R.string.trigger_bluetooth_device_connected),
+            getString(R.string.item_trigger_wired_headphones),
             getString(R.string.trigger_screen_state_title),
             getString(R.string.trigger_time_schedule_title),
             getString(R.string.trigger_wifi_network_connected)
@@ -482,9 +485,10 @@ class RuleBuilderActivity : AppCompatActivity() {
                     5 -> addDeviceUnlockedException()
                     6 -> addScreenOrientationException()
                     7 -> addBluetoothException()
-                    8 -> addScreenStateException()
-                    9 -> addTimeScheduleException()
-                    10 -> addWifiNetworkException()
+                    8 -> addWiredHeadphonesException()
+                    9 -> addScreenStateException()
+                    10 -> addTimeScheduleException()
+                    11 -> addWifiNetworkException()
                 }
             }
             .show()
@@ -493,6 +497,10 @@ class RuleBuilderActivity : AppCompatActivity() {
     // Trigger methods
     private fun addBluetoothTrigger() {
         launchTriggerConfig(TriggerType.BLUETOOTH_DEVICE, null)
+    }
+
+    private fun addWiredHeadphonesTrigger() {
+        launchTriggerConfig(TriggerType.WIRED_HEADPHONES, null)
     }
 
     private fun addBatteryPercentageTrigger() {
@@ -613,6 +621,10 @@ class RuleBuilderActivity : AppCompatActivity() {
         
         exceptionAdapter.addException(exception)
         InAppLogger.logUserAction("Added Bluetooth exception", "RuleBuilderActivity")
+    }
+
+    private fun addWiredHeadphonesException() {
+        launchExceptionConfig(ExceptionType.WIRED_HEADPHONES, null)
     }
 
     private fun addBatteryPercentageException() {

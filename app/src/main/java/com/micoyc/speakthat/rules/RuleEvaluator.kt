@@ -235,6 +235,7 @@ class RuleEvaluator(private val context: Context) {
             TriggerType.FOREGROUND_APP -> evaluateForegroundAppTrigger(trigger)
             TriggerType.SCREEN_ORIENTATION -> evaluateScreenOrientationTrigger(trigger)
             TriggerType.BLUETOOTH_DEVICE -> evaluateBluetoothTrigger(trigger)
+            TriggerType.WIRED_HEADPHONES -> evaluateWiredHeadphonesTrigger(trigger)
             TriggerType.SCREEN_STATE -> evaluateScreenStateTrigger(trigger)
             TriggerType.TIME_SCHEDULE -> evaluateTimeScheduleTrigger(trigger)
             TriggerType.WIFI_NETWORK -> evaluateWifiNetworkTrigger(trigger)
@@ -330,6 +331,7 @@ class RuleEvaluator(private val context: Context) {
             ExceptionType.FOREGROUND_APP -> evaluateForegroundAppException(exception)
             ExceptionType.SCREEN_ORIENTATION -> evaluateScreenOrientationException(exception)
             ExceptionType.BLUETOOTH_DEVICE -> evaluateBluetoothException(exception)
+            ExceptionType.WIRED_HEADPHONES -> evaluateWiredHeadphonesException(exception)
             ExceptionType.SCREEN_STATE -> evaluateScreenStateException(exception)
             ExceptionType.TIME_SCHEDULE -> evaluateTimeScheduleException(exception)
             ExceptionType.WIFI_NETWORK -> evaluateWifiNetworkException(exception)
@@ -420,6 +422,69 @@ class RuleEvaluator(private val context: Context) {
             )
         }
     }
+
+    private fun evaluateWiredHeadphonesTrigger(trigger: Trigger): EvaluationResult {
+        return try {
+            InAppLogger.logDebug(TAG, "Evaluating wired headphones trigger: ${trigger.getLogMessage()}")
+            InAppLogger.logDebug(TAG, "Trigger data: ${trigger.data}")
+
+            val requiredState = (trigger.data["connection_state"] as? String)?.lowercase() ?: "disconnected"
+            val shouldBeConnected = requiredState == "connected"
+
+            val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as android.media.AudioManager
+
+            // Only outputs: this matches what users mean by "headphones connected"
+            val outputDevices = audioManager.getDevices(android.media.AudioManager.GET_DEVICES_OUTPUTS)
+
+            val matchingOutputs = outputDevices.filter { device ->
+                when (device.type) {
+                    android.media.AudioDeviceInfo.TYPE_WIRED_HEADPHONES,
+                    android.media.AudioDeviceInfo.TYPE_WIRED_HEADSET,
+                    android.media.AudioDeviceInfo.TYPE_USB_HEADSET -> true
+                    else -> false
+                }
+            }
+
+            val hasWiredHeadphones = matchingOutputs.isNotEmpty()
+
+            // Optional: more helpful logs
+            if (matchingOutputs.isNotEmpty()) {
+                matchingOutputs.forEach { d ->
+                    InAppLogger.logDebug(
+                        TAG,
+                        "Wired output device: type=${d.type}, name=${d.productName}, isSink=${d.isSink}, isSource=${d.isSource}"
+                    )
+                }
+            }
+
+            InAppLogger.logDebug(TAG, "Wired headphones check - Required state: $requiredState, Connected: $hasWiredHeadphones")
+            InAppLogger.logDebug(TAG, "Output devices: ${outputDevices.map { "type=${it.type}, name=${it.productName}" }}")
+            InAppLogger.logDebug(TAG, "Matching wired output devices: ${matchingOutputs.size}")
+
+            val success = (hasWiredHeadphones == shouldBeConnected)
+
+            EvaluationResult(
+                success = success,
+                message = if (success) {
+                    "Wired headphones are $requiredState"
+                } else {
+                    "Wired headphones are not $requiredState"
+                },
+                data = mapOf(
+                    "connection_state" to requiredState,
+                    "is_connected" to hasWiredHeadphones,
+                    "matching_device_types" to matchingOutputs.map { it.type }
+                )
+            )
+        } catch (e: Throwable) {
+            InAppLogger.logError(TAG, "Error evaluating wired headphones trigger: ${e.message}")
+            EvaluationResult(
+                success = false,
+                message = "Wired headphones evaluation error: ${e.message}"
+            )
+        }
+    }
+
     
     private fun evaluateBatteryPercentageTrigger(trigger: Trigger): EvaluationResult {
         try {
@@ -1235,6 +1300,14 @@ class RuleEvaluator(private val context: Context) {
         // Use the same logic as Bluetooth trigger
         return evaluateBluetoothTrigger(Trigger(
             type = TriggerType.BLUETOOTH_DEVICE,
+            data = exception.data
+        ))
+    }
+    
+    private fun evaluateWiredHeadphonesException(exception: Exception): EvaluationResult {
+        // Use the same logic as wired headphones trigger
+        return evaluateWiredHeadphonesTrigger(Trigger(
+            type = TriggerType.WIRED_HEADPHONES,
             data = exception.data
         ))
     }

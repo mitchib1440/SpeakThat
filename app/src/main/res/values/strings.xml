@@ -370,6 +370,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <!-- Rule Component Descriptions -->
     <string name="rule_trigger_bluetooth_connected">Bluetooth device is connected</string>
     <string name="rule_trigger_bluetooth_disconnected">Bluetooth device is disconnected</string>
+    <string name="rule_trigger_wired_headphones_connected">wired headphones are connected</string>
+    <string name="rule_trigger_wired_headphones_disconnected">wired headphones are disconnected</string>
     <string name="rule_trigger_screen_on">screen is on</string>
     <string name="rule_trigger_screen_off">screen is off</string>
     <string name="rule_trigger_time_between">time is between %1$s and %2$s</string>
@@ -395,6 +397,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
 
     <string name="rule_exception_bluetooth_connected">Bluetooth device is connected</string>
     <string name="rule_exception_bluetooth_disconnected">Bluetooth device is disconnected</string>
+    <string name="rule_exception_wired_headphones_connected">wired headphones are connected</string>
+    <string name="rule_exception_wired_headphones_disconnected">wired headphones are disconnected</string>
     <string name="rule_exception_screen_on">screen is on</string>
     <string name="rule_exception_screen_off">screen is off</string>
     <string name="rule_exception_time_between">time is between %1$s and %2$s</string>
@@ -927,6 +931,10 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="exception_bluetooth_devices_title">Choose which Bluetooth devices this exception applies to:</string>
     <string name="exception_specific_devices">Specific Devices (one per line):</string>
     <string name="exception_select_devices">Select Devices</string>
+    <string name="exception_wired_headphones_description">Condition will be met when headphones are connected to your device via a cable</string>
+    <string name="exception_wired_headphones_connection_state_label">Connection State</string>
+    <string name="exception_wired_headphones_connected">Connected</string>
+    <string name="exception_wired_headphones_disconnected">Disconnected</string>
     <string name="exception_wifi_networks_title">Choose which WiFi networks this exception applies to:</string>
     <string name="exception_specific_networks">Specific Networks (one per line):</string>
     <string name="exception_select_networks">Select Networks</string>
@@ -954,6 +962,10 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="trigger_any_bluetooth_description">Applies when any device is connected</string>
     <string name="trigger_specific_devices">Specific Devices (one per line):</string>
     <string name="trigger_select_devices">Select Devices</string>
+    <string name="trigger_wired_headphones_description">Condition will be met when headphones are connected to your device via a cable</string>
+    <string name="trigger_wired_headphones_connection_state_label">Connection State</string>
+    <string name="trigger_wired_headphones_connected">Connected</string>
+    <string name="trigger_wired_headphones_disconnected">Disconnected</string>
     <string name="trigger_wifi_networks_title">Choose which WiFi networks this rule applies to:</string>
     <string name="trigger_any_wifi_network">Any WiFi Network</string>
     <string name="trigger_any_wifi_description">Applies when connected to any network</string>
@@ -1413,6 +1425,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="item_exception_time_range">Between 19:00 and 07:00</string>
     <string name="item_trigger_bluetooth_device">Bluetooth Device</string>
     <string name="item_trigger_bluetooth_connected">Connected to Car Bluetooth</string>
+    <string name="item_trigger_wired_headphones">Wired Headphones</string>
 
     <!-- More Item Strings -->
     <string name="item_template_arrow">→</string>
@@ -1937,6 +1950,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="rule_error_invalid_battery_mode">Battery mode must be above or below</string>
     <string name="rule_error_invalid_battery_percentage">Battery percentage must be between 0 and 100</string>
     <string name="rule_error_invalid_charging_status">Charging status must be charging or discharging</string>
+    <string name="rule_error_invalid_wired_headphones_state">Connection state must be connected or disconnected</string>
 
     <!-- Trigger menu labels -->
     <string name="trigger_bluetooth_device_connected">Bluetooth Device Connected</string>

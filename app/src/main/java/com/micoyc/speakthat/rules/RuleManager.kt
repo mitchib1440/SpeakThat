@@ -624,6 +624,12 @@ class RuleManager(private val context: Context) {
                     errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_wifi_networks))
                 }
             }
+            TriggerType.WIRED_HEADPHONES -> {
+                val connectionState = trigger.data["connection_state"] as? String
+                if (connectionState !in setOf("connected", "disconnected")) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_wired_headphones_state))
+                }
+            }
         }
         return errors
     }
@@ -724,6 +730,12 @@ class RuleManager(private val context: Context) {
             ExceptionType.WIFI_NETWORK -> {
                 if (!isStringSetOrList(exception.data["network_ssids"])) {
                     errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_wifi_networks))
+                }
+            }
+            ExceptionType.WIRED_HEADPHONES -> {
+                val connectionState = exception.data["connection_state"] as? String
+                if (connectionState !in setOf("connected", "disconnected")) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_wired_headphones_state))
                 }
             }
         }

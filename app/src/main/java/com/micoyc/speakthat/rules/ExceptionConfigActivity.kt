@@ -91,6 +91,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
             ExceptionType.SCREEN_STATE -> setupScreenStateUI()
             ExceptionType.TIME_SCHEDULE -> setupTimeScheduleUI()
             ExceptionType.BLUETOOTH_DEVICE -> setupBluetoothUI()
+            ExceptionType.WIRED_HEADPHONES -> setupWiredHeadphonesUI()
             ExceptionType.WIFI_NETWORK -> setupWifiUI()
             else -> {
                 InAppLogger.logError("ExceptionConfigActivity", "Unknown exception type: $exceptionType")
@@ -231,7 +232,22 @@ class ExceptionConfigActivity : AppCompatActivity() {
             showBluetoothDeviceSelection()
         }
     }
-
+    
+    private fun setupWiredHeadphonesUI() {
+        binding.cardWiredHeadphones.visibility = View.VISIBLE
+        
+        // Set up connection state options
+        val connectionStateOptions = arrayOf(
+            getString(R.string.exception_wired_headphones_disconnected),
+            getString(R.string.exception_wired_headphones_connected)
+        )
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, connectionStateOptions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerWiredHeadphonesConnectionState.adapter = adapter
+        // Default to "Disconnected" (index 0)
+        binding.spinnerWiredHeadphonesConnectionState.setSelection(0)
+    }
+    
     private fun setupWifiUI() {
         binding.cardWifi.visibility = View.VISIBLE
         
@@ -717,6 +733,11 @@ class ExceptionConfigActivity : AppCompatActivity() {
                     updateSelectedDays(0, false) // Update display
                 }
                 
+                ExceptionType.WIRED_HEADPHONES -> {
+                    val connectionState = exception.data["connection_state"] as? String ?: "disconnected"
+                    val stateIndex = if (connectionState == "connected") 1 else 0
+                    binding.spinnerWiredHeadphonesConnectionState.setSelection(stateIndex)
+                }
                 ExceptionType.BLUETOOTH_DEVICE -> {
                     val deviceAddressesData = exception.data["device_addresses"]
                     val deviceAddresses = when (deviceAddressesData) {
@@ -820,6 +841,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
             ExceptionType.SCREEN_STATE -> createScreenStateException()
             ExceptionType.TIME_SCHEDULE -> createTimeScheduleException()
             ExceptionType.BLUETOOTH_DEVICE -> createBluetoothException()
+            ExceptionType.WIRED_HEADPHONES -> createWiredHeadphonesException()
             ExceptionType.WIFI_NETWORK -> {
                 val wifiException = createWifiException()
                 
@@ -1233,7 +1255,37 @@ class ExceptionConfigActivity : AppCompatActivity() {
             )
         }
     }
-
+    
+    private fun createWiredHeadphonesException(): Exception {
+        val connectionState = if (binding.spinnerWiredHeadphonesConnectionState.selectedItemPosition == 1) {
+            "connected"
+        } else {
+            "disconnected"
+        }
+        
+        val description = if (connectionState == "connected") {
+            getString(R.string.rule_exception_wired_headphones_connected)
+        } else {
+            getString(R.string.rule_exception_wired_headphones_disconnected)
+        }
+        
+        return if (isEditing && originalException != null) {
+            originalException!!.copy(
+                type = ExceptionType.WIRED_HEADPHONES,
+                data = mapOf("connection_state" to connectionState),
+                description = description,
+                inverted = false
+            )
+        } else {
+            Exception(
+                type = ExceptionType.WIRED_HEADPHONES,
+                data = mapOf("connection_state" to connectionState),
+                description = description,
+                inverted = false
+            )
+        }
+    }
+    
     private fun createWifiException(): Exception {
         val isAnyNetwork = binding.switchAnyNetwork.isChecked
         
