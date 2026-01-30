@@ -6,6 +6,8 @@ import com.micoyc.speakthat.ForegroundAppTracker
 import com.micoyc.speakthat.InAppLogger
 import android.net.NetworkCapabilities
 import android.net.wifi.WifiInfo
+import android.media.AudioDeviceInfo
+import android.media.AudioManager
 
 /**
  * Rule evaluation engine
@@ -438,9 +440,10 @@ class RuleEvaluator(private val context: Context) {
 
             val matchingOutputs = outputDevices.filter { device ->
                 when (device.type) {
-                    android.media.AudioDeviceInfo.TYPE_WIRED_HEADPHONES,
-                    android.media.AudioDeviceInfo.TYPE_WIRED_HEADSET,
-                    android.media.AudioDeviceInfo.TYPE_USB_HEADSET -> true
+                    AudioDeviceInfo.TYPE_WIRED_HEADPHONES,
+                    AudioDeviceInfo.TYPE_WIRED_HEADSET,
+                    AudioDeviceInfo.TYPE_USB_HEADSET
+                        -> true
                     else -> false
                 }
             }

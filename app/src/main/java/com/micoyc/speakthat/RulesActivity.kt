@@ -44,8 +44,6 @@ class RulesActivity : AppCompatActivity() {
     private lateinit var ruleManager: RuleManager
     private lateinit var automationModeManager: AutomationModeManager
     private lateinit var rulesAdapter: RulesAdapter
-    private var hasShownExperimentalWarning = false
-    private var experimentalWarningDialog: AlertDialog? = null
     private var suppressModeCallback = false
     private var currentMode: AutomationMode = AutomationMode.OFF
     private lateinit var importFileLauncher: ActivityResultLauncher<Intent>
@@ -174,14 +172,6 @@ class RulesActivity : AppCompatActivity() {
         val mode = automationModeManager.getMode()
         InAppLogger.logDebug("RulesActivity", "onResume() called - refreshing UI (mode=$mode)")
         updateUI(mode)
-        
-        if (!hasShownExperimentalWarning &&
-            mode == AutomationMode.CONDITIONAL_RULES &&
-            ruleManager.isRulesEnabled()
-        ) {
-            hasShownExperimentalWarning = true
-            showExperimentalFeatureWarning()
-        }
     }
     
     private fun updateUI(modeOverride: AutomationMode? = null) {
@@ -245,23 +235,6 @@ class RulesActivity : AppCompatActivity() {
             .setTitle(R.string.rules_error_title)
             .setMessage(message)
             .setPositiveButton(R.string.button_ok, null)
-            .show()
-    }
-    
-    private fun showExperimentalFeatureWarning() {
-        // Dismiss any existing dialog first
-        experimentalWarningDialog?.dismiss()
-        
-        experimentalWarningDialog = AlertDialog.Builder(this)
-            .setTitle(R.string.rules_experimental_title)
-            .setMessage(R.string.rules_experimental_message)
-            .setPositiveButton(R.string.rules_experimental_acknowledge) { _, _ ->
-                InAppLogger.logUserAction("Experimental feature warning acknowledged")
-                experimentalWarningDialog = null
-            }
-            .setOnDismissListener {
-                experimentalWarningDialog = null
-            }
             .show()
     }
     
@@ -579,9 +552,6 @@ class RulesActivity : AppCompatActivity() {
     
     override fun onDestroy() {
         super.onDestroy()
-        // Clean up dialog to prevent window leaks
-        experimentalWarningDialog?.dismiss()
-        experimentalWarningDialog = null
     }
     
     override fun onSupportNavigateUp(): Boolean {
