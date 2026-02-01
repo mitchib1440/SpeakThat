@@ -2055,5 +2055,57 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="rule_exception_orientation_portrait">Screen is portrait</string>
     <string name="rule_exception_orientation_landscape">Screen is landscape</string>
     <string name="rule_error_invalid_orientation_mode">Orientation mode must be portrait or landscape</string>
+    
+    <!-- Loading lines -->
+    <string name="loading_line_1">Thinking… Hard…</string>
+    <string name="loading_line_2">Good things come to those who wait…</string>
+    <string name="loading_line_3">Frustrated SpeakThat noises…</string>
+    <string name="loading_line_4">Nobody move; I might break…</string>
+    <string name="loading_line_5">Loading…</string>
+    <string name="loading_line_6">Patience is a virtue…</string>
+    <string name="loading_line_7">I\'m doing my best…</string>
+    <string name="loading_line_8">Never say never…</string>
+    <string name="loading_line_9">Concentration face…</string>
+    <string name="loading_line_10">Loading the crap…</string>
+    <string name="loading_line_11">But I don\'t want to get up…</string>
+    <string name="loading_line_12">Getting older by the second…</string>
+    <string name="loading_line_13">Warming up the vocal cords…</string>
+    <string name="loading_line_14">Just a sec…</string>
+    <string name="loading_line_15">Making sense of it all…</string>
+    <string name="loading_line_16">One moment, please stand by…</string>
+    <string name="loading_line_17">Interpreting human intent…</string>
+    <string name="loading_line_18">Still faster than reading it yourself…</string>
+    <string name="loading_line_19">Doing the thing…</string>
+    <string name="loading_line_20">Almost there… probably…</string>
+    <string name="loading_line_21">Untangling notifications…</string>
+    <string name="loading_line_22">Preparing to speak…</string>
+    <string name="loading_line_23">Please hold…</string>
+    <string name="loading_line_24">If you can read this, it\'s still loading…</string>
+    <string name="loading_line_25">Blame the laws of physics…</string>
+    <string name="loading_line_26">This is why we can\'t have instant everything…</string>
+    <string name="loading_line_27">Loading… but dramatically…</string>
+    <string name="loading_line_28">Poking code with a stick…</string>
+    <string name="loading_line_29">Doing important app things…</string>
+    <string name="loading_line_30">Just vibing for a second…</string>
+    <string name="loading_line_31">Consulting the crystal ball…</string>
+    <string name="loading_line_32">Convincing the bits to cooperate…</string>
+    <string name="loading_line_33">Assembling words… poorly…</string>
+    <string name="loading_line_34">Please enjoy this brief moment of nothing…</string>
+    <string name="loading_line_35">Buffering my thoughts…</string>
+    <string name="loading_line_36">Turning caffeine into code…</string>
+    <string name="loading_line_37">Applying unnecessary suspense…</string>
+    <string name="loading_line_38">Installing updates… Just kidding…</string>
+    <string name="loading_line_39">Checking with my manager…</string>
+    <string name="loading_line_40">Hold my beer…</string>
+    <string name="loading_line_41">Greatness awaits…</string>
+    <string name="loading_line_42">Petting the dog…</string>
+    <string name="loading_line_43">Defeating the villain…</string>
+    <string name="loading_line_44">Asking my parents…</string>
+    <string name="loading_line_45">Making sure…</string>
+    <string name="loading_line_46">I need a raise…</string>
+    <string name="loading_line_47">Checking with the wife…</string>
+    <string name="loading_line_48">SO… MUCH… DATA…</string>
+    <string name="loading_line_49">Gears are turning…</string>
+    <string name="loading_line_50">This is fine… Everything is fine…</string>
 
 </resources>
