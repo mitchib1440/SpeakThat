@@ -401,19 +401,19 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonEnablePermission"
+                    style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
                     android:minHeight="56dp"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="16dp"
                     android:paddingStart="12dp"
+                    android:paddingTop="16dp"
                     android:paddingEnd="12dp"
+                    android:paddingBottom="16dp"
                     android:text="@string/open_settings"
                     android:textColor="@color/white_100"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:background="@android:color/transparent"
-                    style="@style/Widget.Material3.Button.TextButton" />
+                    android:textSize="14sp" />
 
             </FrameLayout>
 
