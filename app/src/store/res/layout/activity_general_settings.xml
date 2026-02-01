@@ -517,7 +517,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginEnd="16dp"
-                            android:src="@drawable/ic_notification_add_24"
+                            android:src="@drawable/ic_toast_24"
                             android:tint="@color/white_100"
                             android:contentDescription="@string/general_toast_notifications_title" />
 
