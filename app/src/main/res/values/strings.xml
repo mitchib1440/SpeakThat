@@ -2055,7 +2055,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="rule_exception_orientation_portrait">Screen is portrait</string>
     <string name="rule_exception_orientation_landscape">Screen is landscape</string>
     <string name="rule_error_invalid_orientation_mode">Orientation mode must be portrait or landscape</string>
-    
+
     <!-- Loading lines -->
     <string name="loading_line_1">Thinking… Hard…</string>
     <string name="loading_line_2">Good things come to those who wait…</string>
