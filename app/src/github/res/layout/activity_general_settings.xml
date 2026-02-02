@@ -687,14 +687,36 @@
                     android:padding="20dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/auto_update_settings"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="12dp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:id="@+id/iconAutoUpdateSettings"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_mobile_arrow_down__24"
+                            android:tint="@color/white_100"
+                            android:contentDescription="@string/auto_update_settings" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/auto_update_settings"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_secondary"/>
+
+
+                    </LinearLayout>
+
+
+
+
 
                     <!-- Auto-Update Toggle -->
                     <LinearLayout
