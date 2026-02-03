@@ -94,11 +94,11 @@ SpeakThat! I invented the notification squad!
 SpeakThat! Your phone probably scratches at a level 6 with deeper grooves at a level 7!
 SpeakThat! I see you've discovered the delay feature. Now I can build suspense before delivering your pizza notifications! [DELAY_ONLY]
 SpeakThat! That awkward moment when your notification delay is longer than your attention span. [DELAY_ONLY]
-SpeakThat! I'm not procrastinating, I'm just using your new delay setting. There's a difference! [DELAY_ONLY]
+SpeakThat! I'm not procrastinating, I'm just using your delay setting. There's a difference! [DELAY_ONLY]
 SpeakThat! Fun fact: During my delay period, I like to practice my pronunciation. Worcestershire. Worcestershire. Nailed it! [DELAY_ONLY]
 SpeakThat! Your {DELAY_TIME} gives me just enough time to clear my digital throat. Ahem!
 SpeakThat! Did you know SpeakThat has a sister app called TestThat? It's never been released because it was built specifically to test me. But my developer will send you a copy if you ask nicely for it.
-SpeakThat! I love the new delay feature! It's like dramatic pause... for notifications!
+SpeakThat! I love the delay feature! It's like dramatic pause... for notifications!
 SpeakThat! If you ever drop your phone in the sea, I'll make sure to tell you about the current events.
 SpeakThat! Breaking: Local app learns patience. Experts baffled by this revolutionary concept.
 SpeakThat! With great delay comes great responsibility. And slightly less jarring notification experiences.
@@ -261,7 +261,7 @@ SpeakThat! Not recommended for FBI agents!
 SpeakThat! All forks must be spooned!
 SpeakThat! If buying isn't owning, piracy isn't stealing!
 SpeakThat! Did you know it's impossible to pirate this app? It's true!
-SpeakThat! If the app has been helpful to you, consider supporting development! Go to SpeakThat Settings, then to Donate!
+SpeakThat! If the app has been helpful to you, consider supporting development! Go to SpeakThat Settings, then Say Thanks!
 SpeakThat! Email your best jokes to my developer using the Support and Feedback option! They might make it onto this list!
 SpeakThat! We sincerely apologise for the time you have wasted on the flashy logo. We won't stop you, however.
 SpeakThat! PullThat! TwistThat! FlipThat! BopThat! PushThat! DropThat! TapThat!
@@ -288,7 +288,7 @@ SpeakThat! Why read a URL when I can just say the domain? It's like the differen
 SpeakThat! I used to be a URL megaphone. Now I'm a domain diplomat. Much more civilized!
 SpeakThat! URL handling: Because life's too short to listen to someone spell out 'https://www.reddit.com/r/notifications/comments/abc123/this_is_why_we_cant_have_nice_things/'
 SpeakThat! I'm like a URL GPS - I take the scenic route and show you only the important landmarks!
-SpeakThat! My new URL handling features are so good, even Amazon's tracking department is impressed with my brevity!
+SpeakThat! My URL handling features are so good, even Amazon's tracking department is impressed with my brevity!
 SpeakThat! URL shortening: When 'bit.ly' becomes 'bit.ly' and everyone's happy about it!
 SpeakThat! Better for Britain than the BNP!
 SpeakThat! Born in 2025, and still too old for Donald Trump!
