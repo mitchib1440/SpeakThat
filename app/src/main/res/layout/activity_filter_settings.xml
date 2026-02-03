@@ -1069,6 +1069,14 @@
                         android:layout_marginBottom="16dp"
                         android:gravity="center_vertical">
 
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/filter_media_enable"
+                            android:textSize="16sp"
+                            android:textColor="@color/purple_card_text_primary" />
+
                         <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchMediaFiltering"
                             android:layout_width="wrap_content"
@@ -1078,14 +1086,6 @@
                             android:trackTint="@color/switch_track_color"
                             app:thumbTint="@color/switch_thumb_color"
                             app:trackTint="@color/switch_track_color" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/filter_media_enable"
-                            android:textSize="16sp"
-                            android:textColor="@color/purple_card_text_primary" />
 
                     </LinearLayout>
 
@@ -1485,6 +1485,14 @@
                         android:layout_marginBottom="16dp"
                         android:gravity="center_vertical">
 
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/enable_persistent_filtering"
+                            android:textSize="16sp"
+                            android:textColor="@color/purple_card_text_primary" />
+
                         <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchPersistentFiltering"
                             android:layout_width="wrap_content"
@@ -1494,14 +1502,6 @@
                             android:trackTint="@color/switch_track_color"
                             app:thumbTint="@color/switch_thumb_color"
                             app:trackTint="@color/switch_track_color" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/enable_persistent_filtering"
-                            android:textSize="16sp"
-                            android:textColor="@color/purple_card_text_primary" />
 
                     </LinearLayout>
 
@@ -1529,6 +1529,15 @@
                                 android:gravity="center_vertical"
                                 android:layout_marginBottom="4dp">
 
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/filter_persistent_notifications"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/purple_card_text_primary"
+                                    android:textStyle="bold" />
+
                                 <com.google.android.material.materialswitch.MaterialSwitch
                                     android:id="@+id/switchFilterPersistent"
                                     android:layout_width="wrap_content"
@@ -1539,15 +1548,6 @@
                                     app:thumbTint="@color/switch_thumb_color"
                                     app:trackTint="@color/switch_track_color" />
 
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/filter_persistent_notifications"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/purple_card_text_primary"
-                                    android:textStyle="bold" />
-
                             </LinearLayout>
 
                             <TextView
@@ -1555,8 +1555,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/persistent_notifications_desc"
                                 android:textSize="12sp"
-                                android:textColor="@color/purple_card_text_secondary"
-                                android:layout_marginStart="48dp" />
+                                android:textColor="@color/purple_card_text_secondary" />
 
                         </LinearLayout>
 
@@ -1576,6 +1575,15 @@
                                 android:gravity="center_vertical"
                                 android:layout_marginBottom="4dp">
 
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/filter_silent_notifications"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/purple_card_text_primary"
+                                    android:textStyle="bold" />
+
                                 <com.google.android.material.materialswitch.MaterialSwitch
                                     android:id="@+id/switchFilterSilent"
                                     android:layout_width="wrap_content"
@@ -1586,15 +1594,6 @@
                                     app:thumbTint="@color/switch_thumb_color"
                                     app:trackTint="@color/switch_track_color" />
 
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/filter_silent_notifications"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/purple_card_text_primary"
-                                    android:textStyle="bold" />
-
                             </LinearLayout>
 
                             <TextView
@@ -1602,8 +1601,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/silent_notifications_desc"
                                 android:textSize="12sp"
-                                android:textColor="@color/purple_card_text_secondary"
-                                android:layout_marginStart="48dp" />
+                                android:textColor="@color/purple_card_text_secondary" />
 
                         </LinearLayout>
 
@@ -1623,6 +1621,15 @@
                                 android:gravity="center_vertical"
                                 android:layout_marginBottom="4dp">
 
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/filter_foreground_services"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/purple_card_text_primary"
+                                    android:textStyle="bold" />
+
                                 <com.google.android.material.materialswitch.MaterialSwitch
                                     android:id="@+id/switchFilterForegroundServices"
                                     android:layout_width="wrap_content"
@@ -1633,15 +1640,6 @@
                                     app:thumbTint="@color/switch_thumb_color"
                                     app:trackTint="@color/switch_track_color" />
 
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/filter_foreground_services"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/purple_card_text_primary"
-                                    android:textStyle="bold" />
-
                             </LinearLayout>
 
                             <TextView
@@ -1649,8 +1647,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/foreground_services_desc"
                                 android:textSize="12sp"
-                                android:textColor="@color/purple_card_text_secondary"
-                                android:layout_marginStart="48dp" />
+                                android:textColor="@color/purple_card_text_secondary" />
 
                         </LinearLayout>
 
@@ -1670,6 +1667,15 @@
                                 android:gravity="center_vertical"
                                 android:layout_marginBottom="4dp">
 
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/filter_low_priority"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/purple_card_text_primary"
+                                    android:textStyle="bold" />
+
                                 <com.google.android.material.materialswitch.MaterialSwitch
                                     android:id="@+id/switchFilterLowPriority"
                                     android:layout_width="wrap_content"
@@ -1680,15 +1686,6 @@
                                     app:thumbTint="@color/switch_thumb_color"
                                     app:trackTint="@color/switch_track_color" />
 
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/filter_low_priority"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/purple_card_text_primary"
-                                    android:textStyle="bold" />
-
                             </LinearLayout>
 
                             <TextView
@@ -1696,8 +1693,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/low_priority_desc"
                                 android:textSize="12sp"
-                                android:textColor="@color/purple_card_text_secondary"
-                                android:layout_marginStart="48dp" />
+                                android:textColor="@color/purple_card_text_secondary" />
 
                         </LinearLayout>
 
@@ -1717,6 +1713,15 @@
                                 android:gravity="center_vertical"
                                 android:layout_marginBottom="4dp">
 
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/filter_system_notifications"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/purple_card_text_primary"
+                                    android:textStyle="bold" />
+
                                 <com.google.android.material.materialswitch.MaterialSwitch
                                     android:id="@+id/switchFilterSystemNotifications"
                                     android:layout_width="wrap_content"
@@ -1727,15 +1732,6 @@
                                     app:thumbTint="@color/switch_thumb_color"
                                     app:trackTint="@color/switch_track_color" />
 
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/filter_system_notifications"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/purple_card_text_primary"
-                                    android:textStyle="bold" />
-
                             </LinearLayout>
 
                             <TextView
@@ -1743,8 +1739,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/system_notifications_desc"
                                 android:textSize="12sp"
-                                android:textColor="@color/purple_card_text_secondary"
-                                android:layout_marginStart="48dp" />
+                                android:textColor="@color/purple_card_text_secondary" />
 
                         </LinearLayout>
 
