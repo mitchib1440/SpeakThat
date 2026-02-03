@@ -37,6 +37,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
         binding = ActivityBehaviorSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Show loading initially
+        setLoading(true);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(getString(com.micoyc.speakthat.R.string.title_behavior_settings));
@@ -52,6 +55,47 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
 
         if (cooldownSection != null) {
             cooldownSection.testAppListFunctionality();
+        }
+
+        // Hide loading after sections are loaded
+        setLoading(false);
+    }
+
+    private void setLoading(boolean loading) {
+        android.view.View loadingContainer = findViewById(com.micoyc.speakthat.R.id.loadingContainer);
+        android.view.View scrollView = findViewById(com.micoyc.speakthat.R.id.behaviorSettingsScrollView);
+        android.widget.TextView loadingText = findViewById(com.micoyc.speakthat.R.id.loadingText);
+        
+        if (loadingContainer != null) {
+            loadingContainer.setVisibility(loading ? android.view.View.VISIBLE : android.view.View.GONE);
+        }
+        if (scrollView != null) {
+            scrollView.setVisibility(loading ? android.view.View.INVISIBLE : android.view.View.VISIBLE);
+        }
+        
+        // Set random loading text
+        if (loading && loadingText != null) {
+            int[] loadingLines = {
+                com.micoyc.speakthat.R.string.loading_line_1, com.micoyc.speakthat.R.string.loading_line_2, com.micoyc.speakthat.R.string.loading_line_3,
+                com.micoyc.speakthat.R.string.loading_line_4, com.micoyc.speakthat.R.string.loading_line_5, com.micoyc.speakthat.R.string.loading_line_6,
+                com.micoyc.speakthat.R.string.loading_line_7, com.micoyc.speakthat.R.string.loading_line_8, com.micoyc.speakthat.R.string.loading_line_9,
+                com.micoyc.speakthat.R.string.loading_line_10, com.micoyc.speakthat.R.string.loading_line_11, com.micoyc.speakthat.R.string.loading_line_12,
+                com.micoyc.speakthat.R.string.loading_line_13, com.micoyc.speakthat.R.string.loading_line_14, com.micoyc.speakthat.R.string.loading_line_15,
+                com.micoyc.speakthat.R.string.loading_line_16, com.micoyc.speakthat.R.string.loading_line_17, com.micoyc.speakthat.R.string.loading_line_18,
+                com.micoyc.speakthat.R.string.loading_line_19, com.micoyc.speakthat.R.string.loading_line_20, com.micoyc.speakthat.R.string.loading_line_21,
+                com.micoyc.speakthat.R.string.loading_line_22, com.micoyc.speakthat.R.string.loading_line_23, com.micoyc.speakthat.R.string.loading_line_24,
+                com.micoyc.speakthat.R.string.loading_line_25, com.micoyc.speakthat.R.string.loading_line_26, com.micoyc.speakthat.R.string.loading_line_27,
+                com.micoyc.speakthat.R.string.loading_line_28, com.micoyc.speakthat.R.string.loading_line_29, com.micoyc.speakthat.R.string.loading_line_30,
+                com.micoyc.speakthat.R.string.loading_line_31, com.micoyc.speakthat.R.string.loading_line_32, com.micoyc.speakthat.R.string.loading_line_33,
+                com.micoyc.speakthat.R.string.loading_line_34, com.micoyc.speakthat.R.string.loading_line_35, com.micoyc.speakthat.R.string.loading_line_36,
+                com.micoyc.speakthat.R.string.loading_line_37, com.micoyc.speakthat.R.string.loading_line_38, com.micoyc.speakthat.R.string.loading_line_39,
+                com.micoyc.speakthat.R.string.loading_line_40, com.micoyc.speakthat.R.string.loading_line_41, com.micoyc.speakthat.R.string.loading_line_42,
+                com.micoyc.speakthat.R.string.loading_line_43, com.micoyc.speakthat.R.string.loading_line_44, com.micoyc.speakthat.R.string.loading_line_45,
+                com.micoyc.speakthat.R.string.loading_line_46, com.micoyc.speakthat.R.string.loading_line_47, com.micoyc.speakthat.R.string.loading_line_48,
+                com.micoyc.speakthat.R.string.loading_line_49, com.micoyc.speakthat.R.string.loading_line_50
+            };
+            int randomLine = loadingLines[new java.util.Random().nextInt(loadingLines.length)];
+            loadingText.setText(randomLine);
         }
     }
 
@@ -100,7 +144,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        InAppLogger.logAppLifecycle("Behavior Settings resumed", "BehaviorSettingsActivity");
+        InAppLogger.logAppLifecycle("Behaviour Settings resumed", "BehaviorSettingsActivity");
     }
 
     @Override

@@ -38,7 +38,7 @@ public class TestSettingsActivity extends AppCompatActivity {
         
         // Apply saved theme
         mainPrefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        boolean isDarkMode = mainPrefs.getBoolean("dark_mode", false);
+        boolean isDarkMode = mainPrefs.getBoolean("dark_mode", true); // Default to dark mode
         if (isDarkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {

@@ -65,7 +65,7 @@ class TriggerConfigActivity : AppCompatActivity() {
     
     private fun applySavedTheme() {
         val sharedPreferences = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE)
-        val isDarkMode = sharedPreferences.getBoolean("dark_mode", false)
+        val isDarkMode = sharedPreferences.getBoolean("dark_mode", true) // Default to dark mode
         AppCompatDelegate.setDefaultNightMode(
             if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
         )

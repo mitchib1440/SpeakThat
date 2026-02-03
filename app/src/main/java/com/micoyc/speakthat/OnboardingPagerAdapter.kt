@@ -28,7 +28,7 @@ class OnboardingPagerAdapter(
             descriptionResId = R.string.onboarding_language_theme_description,
             icon = "🌍",
             showLanguageSelector = true,
-            showThemeSelector = true
+            showThemeSelector = false
         ),
         OnboardingPage(
             titleResId = R.string.onboarding_welcome_title,
@@ -74,7 +74,7 @@ class OnboardingPagerAdapter(
             descriptionResId = R.string.onboarding_language_theme_description,
             icon = "🌍",
             showLanguageSelector = true,
-            showThemeSelector = true
+            showThemeSelector = false
         ),
         OnboardingPage(
             titleResId = R.string.onboarding_welcome_title,
@@ -319,7 +319,7 @@ class OnboardingPagerAdapter(
         private fun setupThemeSelector() {
             // Get current theme setting
             val sharedPreferences = binding.root.context.getSharedPreferences("SpeakThatPrefs", android.content.Context.MODE_PRIVATE)
-            val isDarkMode = sharedPreferences.getBoolean("dark_mode", false)
+            val isDarkMode = sharedPreferences.getBoolean("dark_mode", true) // Default to dark mode
             
             // Set initial state
             binding.themeSwitch.isChecked = isDarkMode

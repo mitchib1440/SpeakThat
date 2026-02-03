@@ -171,9 +171,15 @@ public class FilterSettingsActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(R.string.title_filter_settings);
         }
 
+        // Show loading initially
+        setLoading(true);
+
         initializeUI();
         loadSettings();
         initializeFilePicker();
+
+        // Hide loading after initialization
+        setLoading(false);
 
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
         repairBlacklistReceiver = new android.content.BroadcastReceiver() {
@@ -195,6 +201,44 @@ public class FilterSettingsActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+    }
+
+    private void setLoading(boolean loading) {
+        View loadingContainer = binding.loadingContainer;
+        View scrollView = binding.filterSettingsScrollView;
+        TextView loadingText = binding.loadingText;
+        
+        if (loadingContainer != null) {
+            loadingContainer.setVisibility(loading ? View.VISIBLE : View.GONE);
+        }
+        if (scrollView != null) {
+            scrollView.setVisibility(loading ? View.INVISIBLE : View.VISIBLE);
+        }
+        
+        // Set random loading text
+        if (loading && loadingText != null) {
+            int[] loadingLines = {
+                R.string.loading_line_1, R.string.loading_line_2, R.string.loading_line_3,
+                R.string.loading_line_4, R.string.loading_line_5, R.string.loading_line_6,
+                R.string.loading_line_7, R.string.loading_line_8, R.string.loading_line_9,
+                R.string.loading_line_10, R.string.loading_line_11, R.string.loading_line_12,
+                R.string.loading_line_13, R.string.loading_line_14, R.string.loading_line_15,
+                R.string.loading_line_16, R.string.loading_line_17, R.string.loading_line_18,
+                R.string.loading_line_19, R.string.loading_line_20, R.string.loading_line_21,
+                R.string.loading_line_22, R.string.loading_line_23, R.string.loading_line_24,
+                R.string.loading_line_25, R.string.loading_line_26, R.string.loading_line_27,
+                R.string.loading_line_28, R.string.loading_line_29, R.string.loading_line_30,
+                R.string.loading_line_31, R.string.loading_line_32, R.string.loading_line_33,
+                R.string.loading_line_34, R.string.loading_line_35, R.string.loading_line_36,
+                R.string.loading_line_37, R.string.loading_line_38, R.string.loading_line_39,
+                R.string.loading_line_40, R.string.loading_line_41, R.string.loading_line_42,
+                R.string.loading_line_43, R.string.loading_line_44, R.string.loading_line_45,
+                R.string.loading_line_46, R.string.loading_line_47, R.string.loading_line_48,
+                R.string.loading_line_49, R.string.loading_line_50
+            };
+            int randomLine = loadingLines[new java.util.Random().nextInt(loadingLines.length)];
+            loadingText.setText(randomLine);
         }
     }
 

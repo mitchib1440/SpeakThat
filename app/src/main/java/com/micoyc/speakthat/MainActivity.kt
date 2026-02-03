@@ -482,7 +482,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     // showNotificationHistory moved to DevelopmentSettingsActivity
     
     private fun applySavedTheme() {
-        val isDarkMode = sharedPreferences?.getBoolean(KEY_DARK_MODE, false) ?: false // Default to light mode
+        val isDarkMode = sharedPreferences?.getBoolean(KEY_DARK_MODE, true) ?: true // Default to dark mode
         
         if (isDarkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)

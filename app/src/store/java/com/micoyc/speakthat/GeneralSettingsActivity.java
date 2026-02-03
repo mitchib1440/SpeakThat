@@ -68,16 +68,14 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         // Initialize activity result launchers
         initializeActivityResultLaunchers();
 
-        setupThemeSettings();
         setupPerformanceSettings();
         setupToastNotifications();
         setupAccessibilityPermission();
         setupDataManagement();
-        setupThemeIcon();
     }
 
     private void applySavedTheme() {
-        boolean isDarkMode = sharedPreferences.getBoolean("dark_mode", false);
+        boolean isDarkMode = sharedPreferences.getBoolean("dark_mode", true); // Default to dark mode
         
         if (isDarkMode) {
             androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES);
@@ -126,49 +124,6 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         );
     }
 
-    private void setupThemeSettings() {
-        // Dark Mode Toggle
-        MaterialSwitch darkModeSwitch = binding.switchDarkMode;
-        boolean isDarkMode = sharedPreferences.getBoolean(getString(R.string.prefs_dark_mode), false);
-        darkModeSwitch.setChecked(isDarkMode);
-
-        darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            sharedPreferences.edit().putBoolean(getString(R.string.prefs_dark_mode), isChecked).apply();
-            
-            // Apply theme immediately
-            if (isChecked) {
-                androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES);
-            } else {
-                androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO);
-            }
-            
-            // Update theme icon
-            setupThemeIcon();
-            
-            // Show restart dialog
-            new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.theme_changed_title))
-                .setMessage(getString(R.string.theme_changed_message))
-                .setPositiveButton(getString(R.string.restart_now), (dialog, which) -> {
-                    Intent intent = new Intent(this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
-                })
-                .setNegativeButton(getString(R.string.later), null)
-                .show();
-        });
-    }
-
-    private void setupThemeIcon() {
-        // Set the appropriate icon for Theme section based on current theme
-        boolean isDarkMode = (getResources().getConfiguration().uiMode & 
-            android.content.res.Configuration.UI_MODE_NIGHT_MASK) == 
-            android.content.res.Configuration.UI_MODE_NIGHT_YES;
-        
-        int iconRes = isDarkMode ? R.drawable.ic_light_mode_24 : R.drawable.ic_dark_mode_24;
-        binding.iconTheme.setImageResource(iconRes);
-    }
 
     private void setupPerformanceSettings() {
         // Persistent Notification Toggle

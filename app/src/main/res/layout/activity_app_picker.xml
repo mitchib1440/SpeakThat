@@ -56,13 +56,33 @@
                 android:paddingBottom="96dp"
                 android:nestedScrollingEnabled="true" />
 
-            <ProgressBar
-                android:id="@+id/progressLoading"
-                style="?android:attr/progressBarStyleLarge"
+            <LinearLayout
+                android:id="@+id/loadingContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:visibility="gone" />
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <ProgressBar
+                    android:id="@+id/progressLoading"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/loadingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/white_100"
+                    android:textSize="14sp"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:text="@string/loading_line_5" />
+
+            </LinearLayout>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabSave"

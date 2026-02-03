@@ -202,7 +202,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="update_notification_channel_name">SpeakThat Updates</string>
     <string name="update_notification_channel_description">Alerts for new SpeakThat versions in the GitHub build.</string>
     <string name="app_description">SpeakThat! is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="app_features">• Real-time notification reading\n• Customizable voice settings\n• Smart notification filtering\n• App-specific controls\n• Media-aware behaviour\n• Notification history\n• Shake/Wave to stop\n• Custom speech formatting\n• Dark/Light theme support\n• Conditional rules for advanced logic and schedules\n• Fully ad-free and offline functionality</string>
+    <string name="app_features">• Real-time notification reading\n• Customizable voice settings\n• Smart notification filtering\n• App-specific controls\n• Media-aware behaviour\n• Notification history\n• Shake/Wave to stop\n• Custom speech formatting\n• Conditional rules for advanced logic and schedules\n• Fully ad-free and offline functionality</string>
     <string name="developer_info">Developed with ❤️ by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day.\n\nSpeakThat! was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers.\n\nThis project was accelerated by AI-assisted programming.</string>
     <string name="license_info">SpeakThat is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed.\n\nThis license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices.\n\nYou can view the full license text and source code on GitHub. Contributions and feedback are welcome!\n\nSpeakThat! Copyright © Mitchell Bell\nSPEAKTHAT is a registered trademark of Mitchell Bell</string>
 
@@ -303,7 +303,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_engine_info_title">TTS Engine Information</string>
 
     <!-- Onboarding TTS -->
-    <string name="tts_onboarding_language_theme">Choose your preferred language and theme to get started with SpeakThat.</string>
+    <string name="tts_onboarding_language_theme">Welcome to SpeakThat! Choose your preferred language to get started.</string>
     <string name="tts_onboarding_welcome">Welcome to SpeakThat! Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.</string>
     <string name="tts_onboarding_permission">SpeakThat needs permission to read your notifications aloud. Everything stays on your device and you control what gets read.</string>
     <string name="tts_onboarding_privacy">Your privacy matters. You control exactly what gets read aloud. Shake your phone to stop any announcement instantly. Everything stays on your device.</string>
@@ -719,7 +719,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
 
     <!-- Settings Activity Strings -->
     <string name="settings_general_title">General Settings</string>
-    <string name="settings_general_description">App preferences, theme settings</string>
+    <string name="settings_general_description">Options that affect SpeakThat\'s service</string>
     <string name="settings_voice_title">Voice Settings</string>
     <string name="settings_voice_description">Text-to-speech voice and speed</string>
     <string name="settings_behavior_title">Behaviour Settings</string>
@@ -1209,8 +1209,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="onboarding_mute_button">Mute</string>
 
     <!-- Language and Theme Onboarding -->
-    <string name="onboarding_language_theme_title">Language and Theme</string>
-    <string name="onboarding_language_theme_description">Choose which language SpeakThat should use. You can also enable dark mode if you\'d like.</string>
+    <string name="onboarding_language_theme_title">Language</string>
+    <string name="onboarding_language_theme_description">Choose which language SpeakThat should use.</string>
     <string name="onboarding_language_section_title">Language</string>
     <string name="onboarding_language_help_title">Is your language not listed?</string>
     <string name="onboarding_language_help_description">I\'m working as hard as I can to support more languages. Please contribute translations on the Weblate page if you can!</string>

@@ -82,7 +82,7 @@ class WaveCalibrationActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun applySavedTheme(prefs: android.content.SharedPreferences) {
-        val isDarkMode = prefs.getBoolean("dark_mode", false)
+        val isDarkMode = prefs.getBoolean("dark_mode", true) // Default to dark mode
         
         if (isDarkMode) {
             androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES)

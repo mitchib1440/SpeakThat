@@ -72,12 +72,48 @@ class RulesActivity : AppCompatActivity() {
         ruleManager = RuleManager(this)
         automationModeManager = AutomationModeManager(this)
         
+        // Show loading initially
+        setLoading(true)
+
         setupModeSelector()
         setupAutomationStringsCard()
         setupButtons()
         setupRecyclerView()
         initializeImportExportLaunchers()
         updateUI(automationModeManager.getMode())
+
+        // Hide loading after initialization
+        setLoading(false)
+    }
+
+    private fun setLoading(loading: Boolean) {
+        binding.loadingContainer.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.rulesScrollView.visibility = if (loading) View.INVISIBLE else View.VISIBLE
+        
+        // Set random loading text
+        if (loading) {
+            val loadingLines = listOf(
+                R.string.loading_line_1, R.string.loading_line_2, R.string.loading_line_3,
+                R.string.loading_line_4, R.string.loading_line_5, R.string.loading_line_6,
+                R.string.loading_line_7, R.string.loading_line_8, R.string.loading_line_9,
+                R.string.loading_line_10, R.string.loading_line_11, R.string.loading_line_12,
+                R.string.loading_line_13, R.string.loading_line_14, R.string.loading_line_15,
+                R.string.loading_line_16, R.string.loading_line_17, R.string.loading_line_18,
+                R.string.loading_line_19, R.string.loading_line_20, R.string.loading_line_21,
+                R.string.loading_line_22, R.string.loading_line_23, R.string.loading_line_24,
+                R.string.loading_line_25, R.string.loading_line_26, R.string.loading_line_27,
+                R.string.loading_line_28, R.string.loading_line_29, R.string.loading_line_30,
+                R.string.loading_line_31, R.string.loading_line_32, R.string.loading_line_33,
+                R.string.loading_line_34, R.string.loading_line_35, R.string.loading_line_36,
+                R.string.loading_line_37, R.string.loading_line_38, R.string.loading_line_39,
+                R.string.loading_line_40, R.string.loading_line_41, R.string.loading_line_42,
+                R.string.loading_line_43, R.string.loading_line_44, R.string.loading_line_45,
+                R.string.loading_line_46, R.string.loading_line_47, R.string.loading_line_48,
+                R.string.loading_line_49, R.string.loading_line_50
+            )
+            val randomLine = loadingLines.random()
+            binding.loadingText.setText(randomLine)
+        }
     }
     
     private fun applySavedTheme() {

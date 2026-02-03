@@ -44,6 +44,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
     private ActivityDevelopmentSettingsBinding binding;
     private SharedPreferences sharedPreferences;
     private Handler uiHandler = new Handler(Looper.getMainLooper());
+    private boolean isLoadingSettings = false; // Flag to prevent dialog during initialization
     
     // SharedPreferences keys
     private static final String PREFS_NAME = "SpeakThatPrefs";
@@ -83,9 +84,59 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         }
 
         InAppLogger.logAppLifecycle("Development Settings created", "DevelopmentSettingsActivity");
+        
+        // Show loading initially
+        setLoading(true);
+        
         initializeUI();
+        
+        // Set flag to prevent dialog during initialization
+        isLoadingSettings = true;
         loadSettings();
+        isLoadingSettings = false;
+        
+        // Hide loading after initialization
+        setLoading(false);
+        
         // Don't start log updates in onCreate - wait for onResume
+    }
+
+    private void setLoading(boolean loading) {
+        View loadingContainer = binding.loadingContainer;
+        View scrollView = binding.developmentSettingsScrollView;
+        TextView loadingText = binding.loadingText;
+        
+        if (loadingContainer != null) {
+            loadingContainer.setVisibility(loading ? View.VISIBLE : View.GONE);
+        }
+        if (scrollView != null) {
+            scrollView.setVisibility(loading ? View.INVISIBLE : View.VISIBLE);
+        }
+        
+        // Set random loading text
+        if (loading && loadingText != null) {
+            int[] loadingLines = {
+                R.string.loading_line_1, R.string.loading_line_2, R.string.loading_line_3,
+                R.string.loading_line_4, R.string.loading_line_5, R.string.loading_line_6,
+                R.string.loading_line_7, R.string.loading_line_8, R.string.loading_line_9,
+                R.string.loading_line_10, R.string.loading_line_11, R.string.loading_line_12,
+                R.string.loading_line_13, R.string.loading_line_14, R.string.loading_line_15,
+                R.string.loading_line_16, R.string.loading_line_17, R.string.loading_line_18,
+                R.string.loading_line_19, R.string.loading_line_20, R.string.loading_line_21,
+                R.string.loading_line_22, R.string.loading_line_23, R.string.loading_line_24,
+                R.string.loading_line_25, R.string.loading_line_26, R.string.loading_line_27,
+                R.string.loading_line_28, R.string.loading_line_29, R.string.loading_line_30,
+                R.string.loading_line_31, R.string.loading_line_32, R.string.loading_line_33,
+                R.string.loading_line_34, R.string.loading_line_35, R.string.loading_line_36,
+                R.string.loading_line_37, R.string.loading_line_38, R.string.loading_line_39,
+                R.string.loading_line_40, R.string.loading_line_41, R.string.loading_line_42,
+                R.string.loading_line_43, R.string.loading_line_44, R.string.loading_line_45,
+                R.string.loading_line_46, R.string.loading_line_47, R.string.loading_line_48,
+                R.string.loading_line_49, R.string.loading_line_50
+            };
+            int randomLine = loadingLines[new java.util.Random().nextInt(loadingLines.length)];
+            loadingText.setText(randomLine);
+        }
     }
 
     @Override
@@ -144,7 +195,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
     }
 
     private void applySavedTheme() {
-        boolean isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, false); // Default to light mode
+        boolean isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, true); // Default to dark mode
         
         if (isDarkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -272,6 +323,37 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             InAppLogger.log("Development", "Legacy ducking " + (isChecked ? "enabled" : "disabled"));
         });
         
+        // Set up deprecated features - Theme toggle
+        binding.switchDeprecatedTheme.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Skip if we're just loading settings
+            if (isLoadingSettings) {
+                return;
+            }
+            
+            saveThemeMode(isChecked);
+            
+            // Apply theme immediately
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+            
+            InAppLogger.log("Development", "Theme mode changed to: " + (isChecked ? "Dark" : "Light"));
+            
+            // Show restart dialog
+            new AlertDialog.Builder(this)
+                .setTitle("Theme Changed")
+                .setMessage("The theme has been applied. For the best experience, you may want to restart the app.")
+                .setPositiveButton("Restart Now", (dialog, which) -> {
+                    Intent intent = new Intent(this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                })
+                .setNegativeButton("Later", null)
+                .show();
+        });
 
         
         // Set up log display
@@ -761,6 +843,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         boolean logSystemEvents = sharedPreferences.getBoolean(KEY_LOG_SYSTEM_EVENTS, true); // Default to enabled
         boolean disableMediaFallback = sharedPreferences.getBoolean(KEY_DISABLE_MEDIA_FALLBACK, false); // Default to disabled
         boolean enableLegacyDucking = sharedPreferences.getBoolean(KEY_ENABLE_LEGACY_DUCKING, false); // Default to disabled
+        boolean isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, true); // Default to dark mode
         
         binding.switchVerboseLogging.setChecked(verboseLogging);
         binding.switchLogFilters.setChecked(logFilters);
@@ -769,6 +852,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         binding.switchLogSystemEvents.setChecked(logSystemEvents);
         binding.switchDisableMediaFallback.setChecked(disableMediaFallback);
         binding.switchEnableLegacyDucking.setChecked(enableLegacyDucking);
+        binding.switchDeprecatedTheme.setChecked(isDarkMode);
     }
 
     private void showNotificationHistory() {
@@ -1130,6 +1214,13 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         editor.putBoolean(KEY_ENABLE_LEGACY_DUCKING, enabled);
         editor.apply();
         InAppLogger.log("Development", "Legacy ducking setting saved: " + enabled);
+    }
+
+    private void saveThemeMode(boolean isDarkMode) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_DARK_MODE, isDarkMode);
+        editor.apply();
+        InAppLogger.log("Development", "Theme mode setting saved: " + (isDarkMode ? "Dark" : "Light"));
     }
 
 
