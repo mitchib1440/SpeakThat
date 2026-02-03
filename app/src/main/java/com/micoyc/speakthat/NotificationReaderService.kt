@@ -1325,21 +1325,22 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             return false
         }
         
-        // Check if TTS is available
+        // Language availability check is informational only
+        // LANG_NOT_SUPPORTED means "this language isn't available" NOT "TTS is broken"
+        // The engine will use its default language/voice and continue working
         try {
             val isAvailable = textToSpeech?.isLanguageAvailable(Locale.getDefault()) ?: TextToSpeech.LANG_NOT_SUPPORTED
             if (isAvailable == TextToSpeech.LANG_NOT_SUPPORTED) {
-                Log.w(TAG, "TTS language not available - attempting recovery")
-                attemptTtsRecovery("Language not available")
-                return false
+                Log.w(TAG, "Language ${Locale.getDefault()} not supported by TTS engine — engine will use defaults (non-fatal)")
+                InAppLogger.log("Service", "Language ${Locale.getDefault()} not supported — using engine defaults")
             }
         } catch (e: Exception) {
-            Log.w(TAG, "Error checking TTS availability - attempting recovery", e)
-            attemptTtsRecovery("TTS availability check failed")
-            return false
+            // Even if language check throws, TTS might still work - don't abort
+            Log.w(TAG, "Error checking TTS language availability (non-fatal): ${e.message}", e)
+            InAppLogger.log("Service", "TTS language check failed (non-fatal): ${e.message}")
         }
         
-        return true
+        return true  // TTS is healthy - proceed with speaking
     }
 
     private fun checkListenerHealth() {
