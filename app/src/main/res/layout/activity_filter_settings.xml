@@ -307,7 +307,7 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Word Blacklist Section -->
+            <!-- Word List Filtering Section -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -337,12 +337,12 @@
                             android:layout_marginEnd="16dp"
                             android:src="@drawable/ic_spellcheck_24"
                             android:tint="@color/white_100"
-                            android:contentDescription="Word Blacklist" />
+                            android:contentDescription="Word List Filtering" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/filter_word_blacklist_title"
+                            android:text="@string/filter_word_list_title"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -352,10 +352,57 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/filter_word_blacklist_description"
+                        android:text="@string/filter_word_list_description"
                         android:textSize="14sp"
                         android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Word List Mode Selection -->
+                    <RadioGroup
+                        android:id="@+id/wordListModeGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp">
+
+                        <RadioButton
+                            android:id="@+id/radioWordNone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/filter_no_word_filtering"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:buttonTint="@color/radio_button_color"
+                            app:buttonTint="@color/radio_button_color" />
+
+                        <RadioButton
+                            android:id="@+id/radioWordWhitelist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/filter_word_whitelist"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:buttonTint="@color/radio_button_color"
+                            app:buttonTint="@color/radio_button_color"
+                            android:layout_marginTop="8dp" />
+
+                        <RadioButton
+                            android:id="@+id/radioWordBlacklist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/filter_word_blacklist"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:buttonTint="@color/radio_button_color"
+                            app:buttonTint="@color/radio_button_color"
+                            android:layout_marginTop="8dp"
+                            android:checked="true" />
+
+                    </RadioGroup>
+
+                    <!-- Word List Management -->
+                    <LinearLayout
+                        android:id="@+id/wordListSection"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="visible">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -375,12 +422,12 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/filter_word_blacklist_info"
+                            android:text="@string/filter_word_list_info"
                             android:textSize="12sp"
                             android:textColor="@color/purple_card_text_secondary" />
                     </LinearLayout>
 
-                    <!-- Word Blacklist Header (Collapsible) -->
+                    <!-- Word List Header (Collapsible) -->
                     <LinearLayout
                         android:id="@+id/blacklistHeader"
                         android:layout_width="match_parent"
@@ -397,7 +444,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/filter_blacklisted_words"
+                            android:text="@string/filter_word_list_header"
                             android:textStyle="bold"
                             android:textSize="16sp"
                             android:textColor="@color/purple_card_text_primary" />
@@ -416,7 +463,7 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@android:drawable/arrow_up_float"
-                                android:contentDescription="Toggle blacklist" />
+                                android:contentDescription="Toggle word list" />
 
                     </LinearLayout>
 
@@ -451,7 +498,7 @@
                                     android:id="@+id/editBlacklistWord"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="@string/hint_word_to_blacklist"
+                                    android:hint="@string/hint_word_to_list"
                                     android:inputType="text"
                                     android:textColor="@color/purple_card_text_primary"
                                     android:textColorHint="@color/white_100" />
@@ -476,13 +523,15 @@
 
                         </LinearLayout>
 
-                        <!-- Word Blacklist -->
+                        <!-- Word List -->
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerBlacklistWords"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:nestedScrollingEnabled="false" />
+
+                    </LinearLayout>
 
                     </LinearLayout>
 

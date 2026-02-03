@@ -56,6 +56,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private static final String KEY_APP_LIST_MODE = "app_list_mode";
     private static final String KEY_APP_LIST = "app_list";
     private static final String KEY_APP_PRIVATE_FLAGS = "app_private_flags";
+    private static final String KEY_WORD_LIST_MODE = "word_list_mode";
     private static final String KEY_WORD_BLACKLIST = "word_blacklist";
     private static final String KEY_WORD_BLACKLIST_PRIVATE = "word_blacklist_private";
     private static final String KEY_WORD_REPLACEMENTS = "word_replacements";
@@ -99,6 +100,9 @@ public class FilterSettingsActivity extends AppCompatActivity {
     // URL handling variables
     private String urlHandlingMode = DEFAULT_URL_HANDLING_MODE;
     private String urlReplacementText = DEFAULT_URL_REPLACEMENT_TEXT;
+    
+    // Word list mode
+    private String wordListMode = "blacklist"; // Default to blacklist for backward compatibility
     
     private List<AppFilterItem> mediaExceptedAppsList = new ArrayList<>();
     private List<WordFilterItem> mediaImportantKeywordsList = new ArrayList<>();
@@ -211,6 +215,26 @@ public class FilterSettingsActivity extends AppCompatActivity {
             
             // R.string.button_save setting
             saveAppListMode(mode);
+        });
+        
+        // Set up word list mode radio buttons
+        binding.wordListModeGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            String mode = "blacklist"; // Default to blacklist
+            if (checkedId == R.id.radioWordNone) {
+                mode = "none";
+            } else if (checkedId == R.id.radioWordWhitelist) {
+                mode = "whitelist";
+            } else if (checkedId == R.id.radioWordBlacklist) {
+                mode = "blacklist";
+            }
+            
+            // Show/hide word list section
+            binding.wordListSection.setVisibility(
+                "none".equals(mode) ? View.GONE : View.VISIBLE
+            );
+            
+            // Save setting
+            saveWordListMode(mode);
         });
 
         // Set up RecyclerViews
@@ -433,6 +457,23 @@ public class FilterSettingsActivity extends AppCompatActivity {
             default:
                 binding.radioNone.setChecked(true);
                 binding.appListSection.setVisibility(View.GONE);
+                break;
+        }
+        
+        // Load word list mode (default to blacklist for backward compatibility)
+        wordListMode = sharedPreferences.getString(KEY_WORD_LIST_MODE, "blacklist");
+        switch (wordListMode) {
+            case "whitelist":
+                binding.radioWordWhitelist.setChecked(true);
+                binding.wordListSection.setVisibility(View.VISIBLE);
+                break;
+            case "blacklist":
+                binding.radioWordBlacklist.setChecked(true);
+                binding.wordListSection.setVisibility(View.VISIBLE);
+                break;
+            default:
+                binding.radioWordNone.setChecked(true);
+                binding.wordListSection.setVisibility(View.GONE);
                 break;
         }
 
@@ -1112,6 +1153,13 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private void saveAppListMode(String mode) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_APP_LIST_MODE, mode);
+        editor.apply();
+    }
+    
+    private void saveWordListMode(String mode) {
+        wordListMode = mode;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_WORD_LIST_MODE, mode);
         editor.apply();
     }
     

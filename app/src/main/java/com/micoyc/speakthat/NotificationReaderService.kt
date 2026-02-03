@@ -58,6 +58,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var appListMode = "none"
     private var appList: Set<String> = emptySet()
     private var privateApps: Set<String> = emptySet()
+    private var wordListMode = "blacklist" // Default to blacklist for backward compatibility
     private var blockedWords: Set<String> = emptySet()
     private var privateWords: Set<String> = emptySet()
     private var wordReplacements: Map<String, String> = emptyMap()
@@ -270,6 +271,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val KEY_APP_LIST_MODE = "app_list_mode"
         private const val KEY_APP_LIST = "app_list"
         private const val KEY_APP_PRIVATE_FLAGS = "app_private_flags"
+        private const val KEY_WORD_LIST_MODE = "word_list_mode"
         private const val KEY_WORD_BLACKLIST = "word_blacklist"
         private const val KEY_WORD_BLACKLIST_PRIVATE = "word_blacklist_private"
         private const val KEY_WORD_REPLACEMENTS = "word_replacements"
@@ -2185,6 +2187,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         appListMode = sharedPreferences?.getString(KEY_APP_LIST_MODE, "none") ?: "none"
         appList = HashSet(sharedPreferences?.getStringSet(KEY_APP_LIST, HashSet()) ?: HashSet())
         privateApps = HashSet(sharedPreferences?.getStringSet(KEY_APP_PRIVATE_FLAGS, HashSet()) ?: HashSet())
+        wordListMode = sharedPreferences?.getString(KEY_WORD_LIST_MODE, "blacklist") ?: "blacklist"
         blockedWords = HashSet(sharedPreferences?.getStringSet(KEY_WORD_BLACKLIST, HashSet()) ?: HashSet())
         privateWords = HashSet(sharedPreferences?.getStringSet(KEY_WORD_BLACKLIST_PRIVATE, HashSet()) ?: HashSet())
         
@@ -2458,20 +2461,55 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Note: Even if no word filters are configured, we still need to apply URL handling and Content Cap
         // So we can't early return here anymore
         
-        // 1. Check for blocked words (including smart filters) - EARLY EXIT on first match
-        for (blockedWord in blockedWords) {
-            if (matchesWordFilter(processedText, blockedWord)) {
-                // Track filter reason
-                try {
-                    StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_WORD_FILTERS)
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error tracking word filter", e)
+        // 1. Apply word list filtering based on mode (none/whitelist/blacklist)
+        when (wordListMode) {
+            "none" -> {
+                // No word filtering - skip blocked words check entirely
+                Log.d(TAG, "Word list filtering disabled (mode: none)")
+            }
+            "blacklist" -> {
+                // BLACKLIST MODE: Block notifications containing these words
+                for (blockedWord in blockedWords) {
+                    if (matchesWordFilter(processedText, blockedWord)) {
+                        // Track filter reason
+                        try {
+                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_WORD_FILTERS)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error tracking word filter", e)
+                        }
+                        Log.d(TAG, "Notification blocked by blacklist word: $blockedWord")
+                        return FilterResult(false, "", "Blocked by blacklist word: $blockedWord")
+                    }
                 }
-                return FilterResult(false, "", "Blocked by filter: $blockedWord")
+            }
+            "whitelist" -> {
+                // WHITELIST MODE: Only allow notifications containing these words
+                if (blockedWords.isNotEmpty()) {
+                    var foundMatchingWord = false
+                    for (allowedWord in blockedWords) {
+                        if (matchesWordFilter(processedText, allowedWord)) {
+                            foundMatchingWord = true
+                            Log.d(TAG, "Notification allowed by whitelist word: $allowedWord")
+                            break
+                        }
+                    }
+                    
+                    if (!foundMatchingWord) {
+                        // No matching word found - block the notification
+                        try {
+                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_WORD_FILTERS)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error tracking word filter", e)
+                        }
+                        Log.d(TAG, "Notification blocked - no whitelist word found")
+                        return FilterResult(false, "", "Blocked - no whitelist word match")
+                    }
+                }
             }
         }
         
-        // 2. Check for private words and replace entire notification with [PRIVATE] - EARLY EXIT on first match
+        // 2. Check for private words and replace entire notification with [PRIVATE]
+        // This works independently of the word list mode - private words ALWAYS make notifications private
         if (!overridePrivate) {
             for (privateWord in privateWords) {
                 if (matchesWordFilter(processedText, privateWord)) {
@@ -5655,7 +5693,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 InAppLogger.log("Service", "Media behavior settings updated - mode: $mediaBehavior, ducking volume: $duckingVolume%, fallback: $duckingFallbackStrategy")
             }
             KEY_APP_LIST_MODE, KEY_APP_LIST, KEY_APP_PRIVATE_FLAGS, 
-            KEY_WORD_BLACKLIST, KEY_WORD_BLACKLIST_PRIVATE, KEY_WORD_REPLACEMENTS -> {
+            KEY_WORD_LIST_MODE, KEY_WORD_BLACKLIST, KEY_WORD_BLACKLIST_PRIVATE, KEY_WORD_REPLACEMENTS -> {
                 // Reload filter settings
                 loadFilterSettings()
                 Log.d(TAG, "Filter settings updated")

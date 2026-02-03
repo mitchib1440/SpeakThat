@@ -853,14 +853,17 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="filter_app_list_button">App List</string>
     <string name="filter_app_count">(0 apps)</string>
     <string name="filter_search_description">Search through your installed apps by name or package. Click a suggestion to add it instantly. (Tap for more info)</string>
-    <string name="filter_word_blacklist_title">Word Blacklist</string>
-    <string name="filter_word_blacklist_description">Block or privatize notifications containing specific words</string>
-    <string name="filter_word_blacklist_info">Block = skip entirely, Private = announce privately</string>
+    <string name="filter_word_list_title">Word List Filtering</string>
+    <string name="filter_word_list_description">Filter notifications based on words or phrases</string>
+    <string name="filter_word_list_info">Block = skip entirely, Private = announce privately</string>
+    <string name="filter_no_word_filtering">No word filtering</string>
+    <string name="filter_word_whitelist">Whitelist</string>
+    <string name="filter_word_blacklist">Blacklist</string>
     <string name="tidy_speech_title">Tidy Speech</string>
     <string name="tidy_speech_description">Refine speech by removing non-verbal characters, such as emojis, from spoken notifications</string>
     <string name="tidy_speech_remove_emojis_title">Remove emojis</string>
     <string name="tidy_speech_remove_emojis_description">Remove emojis and other symbols from spoken notifications</string>
-    <string name="filter_blacklisted_words">Blacklisted Words</string>
+    <string name="filter_word_list_header">Word List</string>
 
     <!-- General Settings Strings -->
     <string name="general_theme_title">Theme</string>
@@ -1559,7 +1562,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="hint_search_apps_or_package">Search apps or enter package name</string>
     <string name="hint_device_addresses">Device addresses or names</string>
     <string name="hint_network_ssids">Network SSIDs</string>
-    <string name="hint_word_to_blacklist">Word to blacklist</string>
+    <string name="hint_word_to_list">Word or phrase to add</string>
     <string name="hint_word_to_swap">Word to swap</string>
     <string name="hint_swap_with_optional">Swap with (optional)</string>
     <string name="hint_search_media_filter">Search apps to add to media filter</string>

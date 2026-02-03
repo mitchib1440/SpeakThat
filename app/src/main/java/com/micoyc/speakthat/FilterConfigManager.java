@@ -23,6 +23,7 @@ public class FilterConfigManager {
     private static final String KEY_APP_LIST_MODE = "app_list_mode";
     private static final String KEY_APP_LIST = "app_list";
     private static final String KEY_APP_PRIVATE_FLAGS = "app_private_flags";
+    private static final String KEY_WORD_LIST_MODE = "word_list_mode";
     private static final String KEY_WORD_BLACKLIST = "word_blacklist";
     private static final String KEY_WORD_BLACKLIST_PRIVATE = "word_blacklist_private";
     private static final String KEY_WORD_REPLACEMENTS = "word_replacements";
@@ -34,6 +35,7 @@ public class FilterConfigManager {
         public String appListMode;
         public Set<String> appList;
         public Set<String> appPrivateFlags;
+        public String wordListMode;
         public Set<String> wordBlacklist;
         public Set<String> wordBlacklistPrivate;
         public String wordReplacements; // Stored as delimited string
@@ -47,6 +49,7 @@ public class FilterConfigManager {
         public FilterConfig() {
             this.appList = new HashSet<>();
             this.appPrivateFlags = new HashSet<>();
+            this.wordListMode = "blacklist"; // Default to blacklist for backward compatibility
             this.wordBlacklist = new HashSet<>();
             this.wordBlacklistPrivate = new HashSet<>();
             this.wordReplacements = "";
@@ -232,6 +235,7 @@ public class FilterConfigManager {
         config.appListMode = prefs.getString(KEY_APP_LIST_MODE, "none");
         config.appList = new HashSet<>(prefs.getStringSet(KEY_APP_LIST, new HashSet<>()));
         config.appPrivateFlags = new HashSet<>(prefs.getStringSet(KEY_APP_PRIVATE_FLAGS, new HashSet<>()));
+        config.wordListMode = prefs.getString(KEY_WORD_LIST_MODE, "blacklist");
         config.wordBlacklist = new HashSet<>(prefs.getStringSet(KEY_WORD_BLACKLIST, new HashSet<>()));
         config.wordBlacklistPrivate = new HashSet<>(prefs.getStringSet(KEY_WORD_BLACKLIST_PRIVATE, new HashSet<>()));
         config.wordReplacements = prefs.getString(KEY_WORD_REPLACEMENTS, "");
@@ -255,6 +259,7 @@ public class FilterConfigManager {
         filters.put("appListMode", config.appListMode);
         filters.put("appList", new JSONArray(config.appList));
         filters.put("appPrivateFlags", new JSONArray(config.appPrivateFlags));
+        filters.put("wordListMode", config.wordListMode);
         filters.put("wordBlacklist", new JSONArray(config.wordBlacklist));
         filters.put("wordBlacklistPrivate", new JSONArray(config.wordBlacklistPrivate));
         filters.put("wordReplacements", config.wordReplacements);
@@ -290,6 +295,7 @@ public class FilterConfigManager {
         config.filters.appListMode = prefs.getString(KEY_APP_LIST_MODE, "none");
         config.filters.appList = new HashSet<>(prefs.getStringSet(KEY_APP_LIST, new HashSet<>()));
         config.filters.appPrivateFlags = new HashSet<>(prefs.getStringSet(KEY_APP_PRIVATE_FLAGS, new HashSet<>()));
+        config.filters.wordListMode = prefs.getString(KEY_WORD_LIST_MODE, "blacklist");
         config.filters.wordBlacklist = new HashSet<>(prefs.getStringSet(KEY_WORD_BLACKLIST, new HashSet<>()));
         config.filters.wordBlacklistPrivate = new HashSet<>(prefs.getStringSet(KEY_WORD_BLACKLIST_PRIVATE, new HashSet<>()));
         config.filters.wordReplacements = prefs.getString(KEY_WORD_REPLACEMENTS, "");
@@ -375,6 +381,7 @@ public class FilterConfigManager {
         filters.put("appListMode", config.filters.appListMode);
         filters.put("appList", new JSONArray(config.filters.appList));
         filters.put("appPrivateFlags", new JSONArray(config.filters.appPrivateFlags));
+        filters.put("wordListMode", config.filters.wordListMode);
         filters.put("wordBlacklist", new JSONArray(config.filters.wordBlacklist));
         filters.put("wordBlacklistPrivate", new JSONArray(config.filters.wordBlacklistPrivate));
         filters.put("wordReplacements", config.filters.wordReplacements);
@@ -513,6 +520,15 @@ public class FilterConfigManager {
                 filtersImported += appPrivateFlags.size();
             }
             
+            // Import word list mode (default to blacklist for backward compatibility)
+            if (filters.has("wordListMode")) {
+                editor.putString(KEY_WORD_LIST_MODE, filters.getString("wordListMode"));
+                filtersImported++;
+            } else {
+                // If importing old config without wordListMode, default to blacklist
+                editor.putString(KEY_WORD_LIST_MODE, "blacklist");
+            }
+            
             // Import word blacklist
             if (filters.has("wordBlacklist")) {
                 Set<String> wordBlacklist = jsonArrayToStringSet(filters.getJSONArray("wordBlacklist"));
@@ -617,6 +633,15 @@ public class FilterConfigManager {
                     Set<String> appPrivateFlags = jsonArrayToStringSet(filters.getJSONArray("appPrivateFlags"));
                     mainEditor.putStringSet(KEY_APP_PRIVATE_FLAGS, appPrivateFlags);
                     totalImported += appPrivateFlags.size();
+                }
+                
+                // Import word list mode (default to blacklist for backward compatibility)
+                if (filters.has("wordListMode")) {
+                    mainEditor.putString(KEY_WORD_LIST_MODE, filters.getString("wordListMode"));
+                    totalImported++;
+                } else {
+                    // If importing old config without wordListMode, default to blacklist
+                    mainEditor.putString(KEY_WORD_LIST_MODE, "blacklist");
                 }
                 
                 if (filters.has("wordBlacklist")) {
@@ -990,11 +1015,15 @@ public class FilterConfigManager {
         summary.append("\n");
         
         // Word filtering
+        String wordMode = prefs.getString(KEY_WORD_LIST_MODE, "blacklist");
         Set<String> blockedWords = prefs.getStringSet(KEY_WORD_BLACKLIST, new HashSet<>());
         Set<String> privateWords = prefs.getStringSet(KEY_WORD_BLACKLIST_PRIVATE, new HashSet<>());
         String replacements = prefs.getString(KEY_WORD_REPLACEMENTS, "");
         
-        summary.append("🚫 Word Filtering: ").append(blockedWords.size()).append(" blocked");
+        summary.append("🚫 Word Filtering: ").append(wordMode);
+        if (!blockedWords.isEmpty() || !privateWords.isEmpty()) {
+            summary.append(" (").append(blockedWords.size() + privateWords.size()).append(" words)");
+        }
         if (!privateWords.isEmpty()) {
             summary.append(", ").append(privateWords.size()).append(" private");
         }
