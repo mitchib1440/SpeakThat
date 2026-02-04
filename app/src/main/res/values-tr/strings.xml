@@ -1844,4 +1844,9 @@ Günlük ekranı başlatılıyor...\nGünlükler burada gerçek zamanlı olarak 
     <string name="tts_init_failed_permissions"></string>
     <string name="accessibility_permission_required_message"></string>
     <string name="selftest_step5_fail"></string>
+    <string name="dialog_dismissal_memory_explanation"></string>
+    <string name="behavior_ducking_device_tip"></string>
+    <string name="voice_tts_volume_boost_warning"></string>
+    <string name="behavior_dismissal_memory_info_button"></string>
+    <string name="behavior_dismissal_memory_benefits"></string>
 </resources>
