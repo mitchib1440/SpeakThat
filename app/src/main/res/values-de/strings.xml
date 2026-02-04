@@ -1828,4 +1828,5 @@ Deaktivieren Sie Fallback-Methoden für das Medienverhalten. Wenn eine Funktion 
     <string name="listener_status_disconnected"></string>
     <string name="selftest_error_0412_title"></string>
     <string name="selftest_step5_fail"></string>
+    <string name="rules_mode_info_description"></string>
 </resources>
