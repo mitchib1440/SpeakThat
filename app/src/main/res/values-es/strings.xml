@@ -1803,4 +1803,5 @@ Iniciando la visualización del registro…\nLos registros aparecerán aquí en 
     <string name="behavior_ducking_device_tip"></string>
     <string name="voice_tts_volume_boost_warning"></string>
     <string name="behavior_dismissal_memory_benefits"></string>
+    <string name="behavior_dismissal_memory_timeout_label"></string>
 </resources>
