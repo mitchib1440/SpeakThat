@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SpeakThat!</string>
     <string name="service_name">SpeakThat Notification Reader</string>
@@ -343,8 +343,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_logic_and">and</string>
     <string name="rule_logic_or">or</string>
     <string name="rule_logic_xor">either</string>
-    <string name="rule_logic_separator">, </string>
-    <string name="rule_logic_final_separator">, and </string>
+    <string name="rule_logic_separator">,</string>
+    <string name="rule_logic_final_separator">, and</string>
     <!-- Critical Hardcoded Strings - Activity Titles -->
     <string name="title_behavior_settings">Behavior Settings</string>
     <string name="title_general_settings">General Settings</string>
@@ -487,8 +487,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="selftest_step1_rebinding">Permissão ativada - reconectando o listener de notificações...</string>
     <string name="selftest_step9_rebinding">Listener desconectado - tentando novamente automaticamente...</string>
     <string name="listener_warning_title">O listener de notificações precisa de atenção</string>
-    <string name="listener_warning_body_disconnected">O Android desconectou o serviço de notificações há %1$s. Toque em "Repetir" para pedir ao sistema que reconecte. Se acontecer com frequência, desative a otimização de bateria nas Configurações gerais.</string>
-    <string name="listener_warning_body_stale">O serviço de notificações não se conecta há %1$s. Toque em "Repetir" para despertá-lo e revise a otimização de bateria nas Configurações gerais se o problema continuar.</string>
+    <string name="listener_warning_body_disconnected">O Android desconectou o serviço de notificações há %1$s. Toque em Repetir para pedir ao sistema que reconecte. Se acontecer com frequência, desative a otimização de bateria nas Configurações gerais.</string>
+    <string name="listener_warning_body_stale">O serviço de notificações não se conecta há %1$s. Toque em Repetir para despertá-lo e revise a otimização de bateria nas Configurações gerais se o problema continuar.</string>
     <string name="listener_warning_time_unknown">há pouco</string>
     <string name="listener_warning_retry_in_progress">Solicitação de reconexão enviada</string>
     <string name="listener_warning_retry_denied">Aguarde um momento antes de tentar novamente</string>
@@ -554,7 +554,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_action_custom_speech_format">Apply custom speech format</string>
     <string name="rule_action_force_private">Force private mode</string>
     <string name="rule_action_override_private">Override private mode</string>
-
     <!-- Action Configuration -->
     <string name="action_custom_speech_format_title">Apply Custom Speech Format</string>
     <string name="action_custom_speech_format_description">Read this notification using a custom speech format.</string>
@@ -598,17 +597,14 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="speech_placeholder_channel_label">{channel}</string>
     <string name="speech_placeholder_channel_desc">Notification channel ID</string>
     <string name="action_skip_notification_title">Skip this notification</string>
-
     <!-- Rule validation: battery/charging -->
     <string name="rule_error_invalid_battery_mode">Battery mode must be above or below</string>
     <string name="rule_error_invalid_battery_percentage">Battery percentage must be between 0 and 100</string>
     <string name="rule_error_invalid_charging_status">Charging status must be charging or discharging</string>
-
     <!-- Trigger menu labels -->
     <string name="trigger_bluetooth_device_connected">Bluetooth Device Connected</string>
     <string name="trigger_screen_state_title">Screen State (On/Off)</string>
     <string name="trigger_wifi_network_connected">WiFi Network Connected</string>
-
     <!-- Battery Percentage trigger -->
     <string name="trigger_battery_percentage_title">Battery Percentage</string>
     <string name="trigger_battery_percentage_description">Condition is considered met when the battery is above or below a certain percentage.</string>
@@ -617,14 +613,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="trigger_battery_mode_below">Below</string>
     <string name="trigger_battery_percentage_default">Selected value: 50%</string>
     <string name="trigger_battery_percentage_value">Selected value: %d%%</string>
-
     <!-- Charging Status trigger -->
     <string name="trigger_charging_status_title">Charging Status</string>
     <string name="trigger_charging_status_description">Condition is considered met when your device is being charged.</string>
     <string name="trigger_charging_status_label">Status</string>
     <string name="trigger_battery_status_charging">Charging</string>
     <string name="trigger_battery_status_discharging">Discharging</string>
-
     <!-- Battery trigger descriptions -->
     <string name="rule_trigger_battery_above">Battery is above %d%%</string>
     <string name="rule_trigger_battery_below">Battery is below %d%%</string>
@@ -634,39 +628,32 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_exception_battery_below">Battery is below %d%%</string>
     <string name="rule_exception_battery_charging">Device is charging</string>
     <string name="rule_exception_battery_discharging">Device is discharging</string>
-
     <!-- Notification Contains trigger -->
     <string name="trigger_notification_contains_title">Notification Contains</string>
     <string name="trigger_notification_contains_description">Condition will be considered met when a specific word or phrase is found in the notification.</string>
     <string name="trigger_notification_contains_hint">Enter word or phrase</string>
     <string name="trigger_notification_contains_case_sensitive">Case-sensitive</string>
-
     <string name="rule_trigger_notification_contains">Notification contains "%1$s"</string>
     <string name="rule_trigger_notification_not_contains">Notification does not contain "%1$s"</string>
     <string name="rule_exception_notification_contains">Notification contains "%1$s"</string>
     <string name="rule_exception_notification_not_contains">Notification does not contain "%1$s"</string>
     <string name="rule_trigger_case_sensitive_suffix"> (case-sensitive)</string>
     <string name="rule_exception_case_sensitive_suffix"> (case-sensitive)</string>
-
     <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
     <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
-
     <!-- Notification From trigger -->
     <string name="trigger_notification_from_title">Notificação de</string>
     <string name="trigger_notification_from_description">A condição será considerada cumprida quando a notificação recebida for de uma app selecionada.</string>
     <string name="trigger_notification_from_manage_apps">Gerir apps</string>
     <string name="trigger_notification_from_selected_count">Selecionadas: %1$d apps</string>
     <string name="trigger_notification_from_selected_count_default">Selecionadas: 0 apps</string>
-
     <string name="rule_trigger_notification_from_single">A notificação é de %1$s</string>
     <string name="rule_trigger_notification_from_multiple">A notificação é de uma das %1$d apps</string>
     <string name="rule_trigger_notification_from_not">%1$s (invertido)</string>
     <string name="rule_exception_notification_from_single">A notificação é de %1$s</string>
     <string name="rule_exception_notification_from_multiple">A notificação é de uma das %1$d apps</string>
     <string name="rule_exception_notification_from_not">%1$s (invertido)</string>
-
     <string name="rule_error_invalid_notification_from_apps">A seleção de apps de notificação é inválida</string>
-
     <!-- Foreground App trigger -->
     <string name="trigger_foreground_app_title">Foreground App</string>
     <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>
@@ -674,14 +661,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="trigger_foreground_app_selected_count">Selected: %1$d apps</string>
     <string name="trigger_foreground_app_selected_count_default">Selected: 0 apps</string>
     <string name="trigger_foreground_app_accessibility_required">Please go to General Settings and enable the Accessibility Permission</string>
-
     <string name="rule_trigger_foreground_app_single">Foreground app is %1$s</string>
     <string name="rule_trigger_foreground_app_multiple">Foreground app is one of %1$d apps</string>
     <string name="rule_trigger_foreground_app_not">%1$s (inverted)</string>
     <string name="rule_exception_foreground_app_single">Foreground app is %1$s</string>
     <string name="rule_exception_foreground_app_multiple">Foreground app is one of %1$d apps</string>
     <string name="rule_exception_foreground_app_not">%1$s (inverted)</string>
-
     <string name="rule_error_invalid_foreground_apps">Foreground app selection is invalid</string>
     <string name="rules_migration_banner_title">Rules migration notice</string>
     <string name="rules_migration_banner_body_ok">Rules migrated: %1$d. Please review your rules for accuracy.</string>
@@ -736,4 +721,3 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tidy_speech_remove_emojis_title">Remover emojis</string>
     <string name="tidy_speech_remove_emojis_description">Remover emojis e outros símbolos das notificações faladas</string>
 </resources>
-
