@@ -864,6 +864,15 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tidy_speech_remove_emojis_title">Remove emojis</string>
     <string name="tidy_speech_remove_emojis_description">Remove emojis and other symbols from spoken notifications</string>
     <string name="filter_word_list_header">Word List</string>
+    <string name="filter_word_blacklist_title">Palabras prohibidas</string>
+    <string name="filter_word_blacklist_description">
+Block or private notifications that contain specific words
+</string>
+    <string name="filter_word_blacklist_info">
+Block = completely ignore, Private = speak privately
+</string>
+    <string name="filter_blacklisted_words">Blacklisted Words</string>
+    <string name="hint_word_to_blacklist">Palabra a lista negra</string>
 
     <!-- General Settings Strings -->
     <string name="general_theme_title">Theme</string>
