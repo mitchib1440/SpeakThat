@@ -1702,4 +1702,12 @@
     <string name="listener_status_disconnected"></string>
     <string name="selftest_error_0412_title"></string>
     <string name="selftest_step5_fail"></string>
+    <string name="store_update_dialog_info"></string>
+    <string name="shake_to_stop_dialog_message"></string>
+    <string name="dialog_title_add_action"></string>
+    <string name="notification_behavior_dialog_message"></string>
+    <string name="developer_info"></string>
+    <string name="media_behavior_dialog_message"></string>
+    <string name="wave_to_stop_dialog_message"></string>
+    <string name="rule_exception_not_wifi_network"></string>
 </resources>
