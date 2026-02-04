@@ -1642,22 +1642,4 @@ Bloque=ignore totalement, Privée=annonce de façon privée
     <string name="listener_status_disconnected">Android a déconnecté le listener il y a %1$s</string>
     <string name="selftest_error_0412_title">\"Ne pas déranger\" actif</string>
     <string name="selftest_step5_fail">Volume coupé</string>
-    <string name="master_switch_disabled_toast" translatable="false"></string>
-    <string name="master_switch_enabled_toast_automation" translatable="false"></string>
-    <string name="rules_quick_strings_action_disable_label" translatable="false"></string>
-    <string name="rules_quick_strings_copied" translatable="false"></string>
-    <string name="rules_quick_strings_title" translatable="false"></string>
-    <string name="master_switch_enabled_toast" translatable="false"></string>
-    <string name="rules_quick_strings_action_enable_label" translatable="false"></string>
-    <string name="rules_quick_strings_package_label" translatable="false"></string>
-    <string name="rules_quick_strings_package_value" translatable="false"></string>
-    <string name="rules_quick_strings_receiver_label" translatable="false"></string>
-    <string name="rules_quick_strings_receiver_value" translatable="false"></string>
-    <string name="rules_quick_strings_flags_title" translatable="false"></string>
-    <string name="rules_quick_strings_action_enable_value" translatable="false"></string>
-    <string name="master_switch_disabled_toast_automation" translatable="false"></string>
-    <string name="rules_quick_strings_flags_description" translatable="false"></string>
-    <string name="rules_quick_strings_note" translatable="false"></string>
-    <string name="rules_quick_strings_source_hint" translatable="false"></string>
-    <string name="rules_quick_strings_action_disable_value" translatable="false"></string>
 </resources>
