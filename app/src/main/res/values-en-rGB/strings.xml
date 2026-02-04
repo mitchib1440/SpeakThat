@@ -1027,7 +1027,7 @@
     <string name="rules_quick_strings_receiver_value" translatable="false">com.micoyc.speakthat.automation.AutomationBroadcastReceiver</string>
     <string name="rules_quick_strings_package_value" translatable="false">com.micoyc.speakthat</string>
     <string name="rules_quick_strings_flags_title" translatable="false">Recommended flags &amp; extras</string>
-    <string name="rules_quick_strings_flags_description" translatable="false">Enable the flag \"INCLUDE_STOPPED_PACKAGES\\" so intents still reach SpeakThat! after reboot, and use the flag \"RECEIVER_FOREGROUND\" if your automation app supports it for faster delivery.</string>
+    <string name="rules_quick_strings_flags_description" translatable="false">Enable the flag \"INCLUDE_STOPPED_PACKAGES\\\" so intents still reach SpeakThat! after reboot, and use the flag \"RECEIVER_FOREGROUND\" if your automation app supports it for faster delivery.</string>
     <string name="rules_quick_strings_source_hint" translatable="false">Optional: an \"Extra\" slot can be used to identify the automation in debug logs. Set the parameter name to \"source\", and the value to a key identifier of your choosing (e.g. \"enable-speakthat-when-i-get-home\") so you can tell which profile toggled the master switch.</string>
     <string name="master_switch_enabled_toast" translatable="false">SpeakThat enabled - notifications will be read</string>
     <string name="master_switch_disabled_toast" translatable="false">SpeakThat disabled - notifications will be silent</string>
