@@ -67,17 +67,7 @@
     </string-array>
     <!-- Behavior Settings Dialogs -->
     <string name="notification_behavior_dialog_title">Opciones de conducta de notificación</string>
-    <string name="notification_behavior_dialog_message">
-Elige cómo maneja SpeakThat las notificaciones múltiples:
-<b>🔄 Interrumpir</b>
-- Detiene la notificación actual y lee la nueva inmediatamente. Ideal para notificaciones urgentes.
-<b>📋 Cola</b>
-- Termina la notificación actual y, a continuación, lee las nuevas en orden. No se pierde nada.
-<b>⏭️ Saltar</b>
-- Ignora nuevas notificaciones mientras lees. Sencillo, pero puedes perder las importantes.
-<b>🧠 Inteligente (Recomendado)</b>
-- Interrumpe en apps proritarias y deja en cola a las demás. Un balance perfecto de lo urgente y lo complementario. El modo inteligente te permite elegir qué aplicaciones son lo suficientemente urgentes como para interrumpirlas (como llamadas o mensajes) mientras otras esperan su turno.
-</string>
+    <string name="notification_behavior_dialog_message">Elige cómo maneja SpeakThat las notificaciones múltiples: <b>🔄 Interrumpir</b> - Detiene la notificación actual y lee la nueva inmediatamente. Ideal para notificaciones urgentes. <b>📋 Cola</b> - Termina la notificación actual y, a continuación, lee las nuevas en orden. No se pierde nada. <b>⏭️ Saltar</b> - Ignora nuevas notificaciones mientras lees. Sencillo, pero puedes perder las importantes. <b>🧠 Inteligente (Recomendado)</b> - Interrumpe en apps proritarias y deja en cola a las demás. Un balance perfecto de lo urgente y lo complementario. El modo inteligente te permite elegir qué aplicaciones son lo suficientemente urgentes como para interrumpirlas (como llamadas o mensajes) mientras otras esperan su turno.</string>
     <string name="custom_app_names_title">Nombres de apps personalizados</string>
     <string name="custom_app_names_description">Personaliza cómo se pronuncian las apps en las notificaciones</string>
     <string name="add_custom_app_name">Añadir nombre de app personalizado</string>
@@ -85,27 +75,9 @@ Elige cómo maneja SpeakThat las notificaciones múltiples:
     <string name="custom_name_hint">Nombre personalizado (por ej., Twitter)</string>
     <string name="custom_app_names_example">Ejemplo: la app X se lee como Twitter</string>
     <string name="media_behavior_dialog_title">Opciones de conducta multimedia</string>
-    <string name="media_behavior_dialog_message">
-Elige cómo SpeakThat maneja las notificaciones mientras reproduce músicas/vídeos:
-<b>🎵 Ignorar</b>
-- Habla sobre el multimedia. Simple pero puede ser disruptiva.
-<b>⏸️ Pausar</b>
-- Pausa el multimedia mientras habla. Bueno para podcasts, pero interrumpe el flujo de música.
-<b>🔉 Audio bajo</b>
-- Reduce temporalmente el volumen multimedia para que pueda escuchar ambos.
-<b>🔇 Silenciar</b>
-- No habla mientras se reproduce el multimedia. Tranquilo, pero puede que pierdas importantes notificaciones. Bajo audio funciona como una radio para un coche. Cuando hablas, se atenúa la música y se vuelve a subir.
-</string>
+    <string name="media_behavior_dialog_message">Elige cómo SpeakThat maneja las notificaciones mientras reproduce músicas/vídeos: <b>🎵 Ignorar</b> - Habla sobre el multimedia. Simple pero puede ser disruptiva. <b>⏸️ Pausar</b> - Pausa el multimedia mientras habla. Bueno para podcasts, pero interrumpe el flujo de música. <b>🔉 Audio bajo</b> - Reduce temporalmente el volumen multimedia para que pueda escuchar ambos. <b>🔇 Silenciar</b> - No habla mientras se reproduce el multimedia. Tranquilo, pero puede que pierdas importantes notificaciones. Bajo audio funciona como una radio para un coche. Cuando hablas, se atenúa la música y se vuelve a subir.</string>
     <string name="shake_to_stop_dialog_title">Función sacudir para detener</string>
-    <string name="shake_to_stop_dialog_message">
-Sacudir para detener te permite silenciar instantáneamente SpeakThat agitando tu dispositivo:
-<b>✨ Porqué resulta útil:</b>
-• Deja de recibir notificaciones bulliciosas en lugares tranquilos • Control rápido cuando tienes las manos ocupadas • Funciona incluso con la pantalla apagada • Sin necesidad de buscar botones
-<b>🎯 Cómo funciona:</b>
-• Sacude tu equipo con firmeza (como agitar los dados) • Las notificaciones actuales se detienen en seco • Se limpia la cola de notificaciones • Otras notificaciones trabajan con normalidad
-<b>⚙️ Personalización:</b>
-• Ajusta la sensibilidad a tus preferencias • Prueba tu fuerza de sacudida y mídela • Trabaja bien con personas serenas o nerviosas Esta función gusta especialmente a quienes reciben notificaciones durante reuniones, películas o mientras conducen.
-</string>
+    <string name="shake_to_stop_dialog_message">Sacudir para detener te permite silenciar instantáneamente SpeakThat agitando tu dispositivo: <b>✨ Porqué resulta útil:</b> • Deja de recibir notificaciones bulliciosas en lugares tranquilos • Control rápido cuando tienes las manos ocupadas • Funciona incluso con la pantalla apagada • Sin necesidad de buscar botones <b>🎯 Cómo funciona:</b> • Sacude tu equipo con firmeza (como agitar los dados) • Las notificaciones actuales se detienen en seco • Se limpia la cola de notificaciones • Otras notificaciones trabajan con normalidad <b>⚙️ Personalización:</b> • Ajusta la sensibilidad a tus preferencias • Prueba tu fuerza de sacudida y mídela • Trabaja bien con personas serenas o nerviosas Esta función gusta especialmente a quienes reciben notificaciones durante reuniones, películas o mientras conducen.</string>
     <string name="use_recommended">Uso Recomendado</string>
     <string name="got_it">Entendido</string>
     <!-- Persistent/Silent Notification Filtering -->
@@ -127,15 +99,7 @@ Sacudir para detener te permite silenciar instantáneamente SpeakThat agitando t
     <string name="system_notifications_desc">Notificaciones de aplicaciones del sistema (Android, servicios de Google)</string>
     <!-- Wave to Stop Feature -->
     <string name="wave_to_stop_dialog_title">Función ondular para detener</string>
-    <string name="wave_to_stop_dialog_message">
-Ondular para detener te permite silenciar instantáneamente SpeakThat agitando tu dispositivo:
-<b>✨ Porqué resulta útil:</b>
-• Perfecto para usuarios que no deseas sacudir sus dispositivos • Ideal para teléfonos en escritorios o soportes • Trabajan con una sola mano • No se necesita mover el dispositivo físicamente
-<b>🎯 Cómo funciona:</b>
-• Mueve la mano delante del dispositivo (como si fuera un gesto mágico) • Utiliza el sensor de proximidad para detectar el movimiento de la mano • Las notificaciones actuales se detienen inmediatamente • Las notificaciones en cola se borran • Las nuevas notificaciones funcionan con normalidad
-<b>⚙️ Personalización:</b>
-• Ajusta la sensibilidad a tu gusto • Prueba tu detección de ondulado y compruébalo • Trabaja bien con diferentes manos y distancias Esta función es especialmente útil para la accesibilidad, los usuarios de escritorio y cualquier persona que prefiera el control por gestos al movimiento físico.
-</string>
+    <string name="wave_to_stop_dialog_message">Ondular para detener te permite silenciar instantáneamente SpeakThat agitando tu dispositivo: <b>✨ Porqué resulta útil:</b> • Perfecto para usuarios que no deseas sacudir sus dispositivos • Ideal para teléfonos en escritorios o soportes • Trabajan con una sola mano • No se necesita mover el dispositivo físicamente <b>🎯 Cómo funciona:</b> • Mueve la mano delante del dispositivo (como si fuera un gesto mágico) • Utiliza el sensor de proximidad para detectar el movimiento de la mano • Las notificaciones actuales se detienen inmediatamente • Las notificaciones en cola se borran • Las nuevas notificaciones funcionan con normalidad <b>⚙️ Personalización:</b> • Ajusta la sensibilidad a tu gusto • Prueba tu detección de ondulado y compruébalo • Trabaja bien con diferentes manos y distancias Esta función es especialmente útil para la accesibilidad, los usuarios de escritorio y cualquier persona que prefiera el control por gestos al movimiento físico.</string>
     <!-- About Page -->
     <string name="about">Acerca de</string>
     <string name="about_description_title">Sobre SpeakThat!</string>
@@ -508,16 +472,12 @@ La mayoría de los usuarios deben usar: Pausar Audio
     <string name="behavior_calls_description">Evitar lecturas de notificaciones cuando estás en una llamada</string>
     <string name="behavior_calls_recommendation">La mayoría de los usuarios deberían: Activar esta función</string>
     <string name="behavior_calls_checkbox">Considerar llamadas telefónicas</string>
-    <string name="behavior_calls_benefits">
-✨ Beneficios:\n\n• Evita interrupciones durante llamadas importantes\n• Respeta tu privacidad de conversación\n• Funciona con todo tipo de llamadas telefónicas\n• Detección automática del estado de las llamadas
-</string>
+    <string name="behavior_calls_benefits">✨ Beneficios:\n\n• Evita interrupciones durante llamadas importantes\n• Respeta tu privacidad de conversación\n• Funciona con todo tipo de llamadas telefónicas\n• Detección automática del estado de las llamadas</string>
     <string name="behavior_audio_title">🔇 Considerar modo audio</string>
     <string name="behavior_audio_description">Sólo leer notificaciones cuando el dispositivo está en modo sonido (no silencioso o vibrante)</string>
     <string name="behavior_audio_recommendation">Recomendado: Activar esta función</string>
     <string name="behavior_audio_checkbox">Considerar modo audio (solo sonido)</string>
-    <string name="behavior_audio_benefits">
-✨ Beneficios:\n\n• Evita el audio no deseado cuando el teléfono está silenciado\n• Respeta la configuración de audio de su dispositivo\n• Funciona con modos de vibración y silencio\n• Asegura que las notificaciones se reproduzcan solo cuando pueda oírlas
-</string>
+    <string name="behavior_audio_benefits">✨ Beneficios:\n\n• Evita el audio no deseado cuando el teléfono está silenciado\n• Respeta la configuración de audio de su dispositivo\n• Funciona con modos de vibración y silencio\n• Asegura que las notificaciones se reproduzcan solo cuando pueda oírlas</string>
     <string name="behavior_shake_current">Sacudido actual: 0.0</string>
     <string name="behavior_shake_threshold">Umbral: 12.0</string>
     <string name="behavior_timeout_display">Tiempo de espera: 30 segundos</string>
@@ -537,9 +497,7 @@ La mayoría de los usuarios deben usar: Pausar Audio
     <string name="behavior_delay_1s">1 segundo - Pausa rápida</string>
     <string name="behavior_delay_2s">2 segundos - Recomendado</string>
     <string name="behavior_delay_3s">3 segundos - Tiempo extra para reaccionar</string>
-    <string name="behavior_delay_benefits">
-✨ Beneficios:\n\n• Evita la superposición con los sonidos de notificación\n• Te da tiempo de agitar\n• Menos estridente en entornos silenciosos\n• Perfecto para reuniones y espacios públicos
-</string>
+    <string name="behavior_delay_benefits">✨ Beneficios:\n\n• Evita la superposición con los sonidos de notificación\n• Te da tiempo de agitar\n• Menos estridente en entornos silenciosos\n• Perfecto para reuniones y espacios públicos</string>
     <string name="behavior_cooldown_title">Tiempo de reposo de notificación</string>
     <string name="behavior_cooldown_description">Evita que las aplicaciones tengan múltiples notificaciones leídas dentro de un periodo de tiempo especificado</string>
     <string name="behavior_cooldown_recommendation">Excelente para: aplicaciones que notifican spam</string>
@@ -634,17 +592,13 @@ Marcadores comunes: {app}, {content}, {time}, {title}, {text}, {priority}, {cate
     <string name="behavior_dnd_description">Respeta el modo No molestar de tu dispositivo y silencia las notificaciones cuando está activado</string>
     <string name="behavior_dnd_recommendation">La mayoría de los usuarios deberían: Activar esta función</string>
     <string name="behavior_dnd_switch_label">Considerar no molestar</string>
-    <string name="behavior_dnd_benefits">
-✨ Beneficios:\n\n• Respeta la configuración No molestar de tu dispositivo\n• Perfecto para reuniones, sueños y tiempo silencioso\n• Funciona con DND programado y activación manual\n• Conserva tu privacidad y enfoque cuando sea necesario
-</string>
+    <string name="behavior_dnd_benefits">✨ Beneficios:\n\n• Respeta la configuración No molestar de tu dispositivo\n• Perfecto para reuniones, sueños y tiempo silencioso\n• Funciona con DND programado y activación manual\n• Conserva tu privacidad y enfoque cuando sea necesario</string>
     <!-- Behavior Settings - Phone Calls -->
     <string name="section_honor_phone_calls">Considerar llamadas telefónicas</string>
     <string name="behavior_phone_calls_description">Evita lecturas de notificaciones cuando estás en una llamada</string>
     <string name="behavior_phone_calls_recommendation">La mayoría de los usuarios deberían: Activar esta función</string>
     <string name="behavior_phone_calls_switch_label">Considerar llamadas telefónicas</string>
-    <string name="behavior_phone_calls_benefits">
-✨ Beneficios:\n\n• Evita interrupciones durante llamadas importantes\n• Respeta tu privacidad de conversación\n• Funciona con todo tipo de llamadas telefónicas\n• Detección automática del estado de las llamadas
-</string>
+    <string name="behavior_phone_calls_benefits">✨ Beneficios:\n\n• Evita interrupciones durante llamadas importantes\n• Respeta tu privacidad de conversación\n• Funciona con todo tipo de llamadas telefónicas\n• Detección automática del estado de las llamadas</string>
     <!-- Behavior Settings - Notification Deduplication -->
     <string name="section_notification_deduplication">Deduplicación de notificación</string>
     <string name="behavior_deduplication_description">Evita que la misma notificación sea leída varias veces consecutivamente</string>
@@ -672,9 +626,7 @@ Marcadores comunes: {app}, {content}, {time}, {title}, {text}, {priority}, {cate
     <string name="behavior_wave_description">Detiene las lecturas agitando la mano sobre el sensor de proximidad</string>
     <string name="behavior_wave_recommendation">Recomendado: Activar esta función</string>
     <string name="behavior_wave_switch_label">Activar ondular para detener</string>
-    <string name="behavior_wave_benefits">
-✨ Benefits:\n\n• Gesto silencioso para detener lecturas\n• Funciona en entornos silenciosos\n• No se requiere contacto físico\n• Control rápido y conveniente
-</string>
+    <string name="behavior_wave_benefits">✨ Benefits:\n\n• Gesto silencioso para detener lecturas\n• Funciona en entornos silenciosos\n• No se requiere contacto físico\n• Control rápido y conveniente</string>
     <!-- Behavior Settings - Additional Labels -->
     <string name="label_calibrate">Calibrar</string>
     <string name="label_test_shake">Prueba de sacudido</string>
@@ -1347,9 +1299,7 @@ Iniciando la visualización del registro…\nLos registros aparecerán aquí en 
     <string name="restart_policy_periodic">periodo</string>
     <!-- MainActivity Hardcoded Strings -->
     <string name="main_master_switch_enabled">SpeakThat leerá notificaciones cuando esté activo</string>
-    <string name="main_master_switch_disabled">
-SpeakThat está desactivado - las notificaciones no se leerán
-</string>
+    <string name="main_master_switch_disabled">SpeakThat está desactivado - las notificaciones no se leerán</string>
     <string name="main_notification_access_granted">SpeakThat tiene acceso de notificación</string>
     <string name="main_tts_init_failed">La inicialización TTS falló. Algunas características pueden no funcionar.</string>
     <string name="main_tts_not_ready">TTS no está listo. Inténtalo de nuevo en un momento.</string>
@@ -1597,4 +1547,256 @@ SpeakThat está desactivado - las notificaciones no se leerán
     <string name="behavior_ducking_test_warning_title">Prueba Completada</string>
     <string name="behavior_ducking_fallback_description">Elegir que sucede cuando el enfoque de audio falla en tu dispositivo</string>
     <string name="tts_engine_restart_confirm">Reiniciar</string>
+    <string name="diagnostics_notification_access_ok"></string>
+    <string name="selftest_error_0400_title"></string>
+    <string name="selftest_step7_pass_disabled"></string>
+    <string name="diagnostics_clipboard_copied"></string>
+    <string name="dev_disable_media_fallback_description"></string>
+    <string name="diagnostics_output_stream_ok"></string>
+    <string name="statistics_filter_reason_dnd"></string>
+    <string name="diagnostics_should_read_no"></string>
+    <string name="statistics_filter_reason_dismissal_memory"></string>
+    <string name="general_toast_quick_settings"></string>
+    <string name="content_cap_word_count_label"></string>
+    <string name="tts_init_failed_service_unavailable"></string>
+    <string name="selftest_step2_not_needed"></string>
+    <string name="update_banner_body"></string>
+    <string name="dev_enable_legacy_ducking"></string>
+    <string name="selftest_error_unknown_title"></string>
+    <string name="statistics_filter_reason_word_filters"></string>
+    <string name="master_switch_disabled_toast" translatable="false"></string>
+    <string name="master_switch_enabled_toast_automation" translatable="false"></string>
+    <string name="statistics_filter_reasons"></string>
+    <string name="notification_permission_required"></string>
+    <string name="selftest_step6_fail"></string>
+    <string name="statistics_filter_reason_audio_mode"></string>
+    <string name="url_handling_domain_only"></string>
+    <string name="selftest_error_0415_description"></string>
+    <string name="content_cap_time"></string>
+    <string name="diagnostics_should_read"></string>
+    <string name="voice_speakerphone_description"></string>
+    <string name="open_accessibility_settings"></string>
+    <string name="diagnostics_status_no"></string>
+    <string name="selftest_step2_fail"></string>
+    <string name="content_cap_sentences"></string>
+    <string name="selftest_subtitle"></string>
+    <string name="content_cap_time_limit_label"></string>
+    <string name="behavior_press_to_stop_description"></string>
+    <string name="diagnostics_tts_engine_err"></string>
+    <string name="statistics_filter_count_format"></string>
+    <string name="rules_quick_strings_action_disable_label" translatable="false"></string>
+    <string name="selftest_error_0404_description"></string>
+    <string name="selftest_error_unknown_description"></string>
+    <string name="selftest_yes"></string>
+    <string name="selftest_error_0411_description"></string>
+    <string name="rules_quick_strings_copied" translatable="false"></string>
+    <string name="selftest_title"></string>
+    <string name="statistics_filter_reason_media_behavior"></string>
+    <string name="tts_recovery_in_progress"></string>
+    <string name="accessibility_permission_explanation_message"></string>
+    <string name="content_cap_sentence_count_value"></string>
+    <string name="diagnostics_status_ok"></string>
+    <string name="diagnostics_tts_engine_ok"></string>
+    <string name="diagnostics_should_read_err"></string>
+    <string name="dialog_dismissal_memory_explanation"></string>
+    <string name="selftest_step4_fail"></string>
+    <string name="test_settings_btn_filters"></string>
+    <string name="selftest_monitoring_message"></string>
+    <string name="general_toast_quick_settings_description"></string>
+    <string name="press_to_stop_dialog_message"></string>
+    <string name="review_reminder_rate_now"></string>
+    <string name="selftest_step3_fail"></string>
+    <string name="selftest_logs_export_failed"></string>
+    <string name="selftest_step8_posting"></string>
+    <string name="voice_speakerphone_option"></string>
+    <string name="content_cap_words"></string>
+    <string name="url_handling_dont_read"></string>
+    <string name="rules_quick_strings_title" translatable="false"></string>
+    <string name="tts_init_failed_generic"></string>
+    <string name="tts_init_failed_android15"></string>
+    <string name="statistics_filter_reason_master_switch"></string>
+    <string name="master_switch_enabled_toast" translatable="false"></string>
+    <string name="accessibility_permission_required_title"></string>
+    <string name="behavior_speech_placeholder_ticker_note" formatted="false"></string>
+    <string name="behavior_dismissal_memory_timeout_30min"></string>
+    <string name="selftest_step9_monitoring"></string>
+    <string name="selftest_logs_exported"></string>
+    <string name="dev_reset_statistics"></string>
+    <string name="behavior_enable_press_stop"></string>
+    <string name="rules_quick_strings_action_enable_label" translatable="false"></string>
+    <string name="behavior_press_to_stop_title"></string>
+    <string name="behavior_dismissal_memory_timeout_15min"></string>
+    <string name="selftest_no"></string>
+    <string name="statistics_filter_reason_self_package"></string>
+    <string name="selftest_step1_pass"></string>
+    <string name="tts_troubleshooting_title"></string>
+    <string name="review_reminder_never"></string>
+    <string name="selftest_error_0420_title"></string>
+    <string name="press_to_stop_dialog_title"></string>
+    <string name="url_handling_title"></string>
+    <string name="diagnostics_tts_language_dash"></string>
+    <string name="selftest_step2_pass"></string>
+    <string name="accessibility_permission_open_settings"></string>
+    <string name="test_settings_btn_tts"></string>
+    <string name="selftest_error_0400_description"></string>
+    <string name="selftest_question_notification_appeared"></string>
+    <string name="behavior_requires_accessibility_permission"></string>
+    <string name="statistics_notifications_received"></string>
+    <string name="selftest_step9_received_not_read"></string>
+    <string name="dialog_message_add_package_manual"></string>
+    <string name="statistics_percentage_format"></string>
+    <string name="test_settings_btn_shake"></string>
+    <string name="general_accessibility_permission_description"></string>
+    <string name="update_notification_channel_description"></string>
+    <string name="statistics_apps_read"></string>
+    <string name="selftest_step9_success"></string>
+    <string name="selftest_step9_title"></string>
+    <string name="rules_quick_strings_package_label" translatable="false"></string>
+    <string name="selftest_error_0440_title"></string>
+    <string name="selftest_error_0413_title"></string>
+    <string name="selftest_error_0414_description"></string>
+    <string name="url_handling_example"></string>
+    <string name="content_cap_sentence_count_label"></string>
+    <string name="test_settings_btn_refresh"></string>
+    <string name="statistics_filter_reason_group_summary"></string>
+    <string name="general_toast_automation_description"></string>
+    <string name="selftest_step5_title"></string>
+    <string name="statistics_filter_reason_phone_calls"></string>
+    <string name="selftest_error_0411_title"></string>
+    <string name="url_handling_custom_text_description"></string>
+    <string name="diagnostics_tts_engine"></string>
+    <string name="rules_quick_strings_package_value" translatable="false"></string>
+    <string name="behavior_speech_example_ticker_html"></string>
+    <string name="selftest_step8_posted"></string>
+    <string name="diagnostics_tts_init_ok"></string>
+    <string name="url_handling_read_full"></string>
+    <string name="behavior_dismissal_memory_timeout_5min"></string>
+    <string name="update_notification_channel_name"></string>
+    <string name="selftest_success_title"></string>
+    <string name="dev_reset_statistics_message"></string>
+    <string name="rules_quick_strings_receiver_label" translatable="false"></string>
+    <string name="update_banner_title"></string>
+    <string name="selftest_share_report"></string>
+    <string name="content_cap_disabled"></string>
+    <string name="behavior_speech_placeholder_ticker_html"></string>
+    <string name="behavior_dismissal_memory_timeout_1hour"></string>
+    <string name="notification_while_reading_enabled"></string>
+    <string name="rules_quick_strings_receiver_value" translatable="false"></string>
+    <string name="rules_quick_strings_flags_title" translatable="false"></string>
+    <string name="selftest_step3_title"></string>
+    <string name="app_picker_manual_placeholder"></string>
+    <string name="onboarding_mute_button"></string>
+    <string name="accessibility_permission_cancel"></string>
+    <string name="general_toast_main_app_description"></string>
+    <string name="tts_init_failed_recovery_attempts"></string>
+    <string name="diagnostics_tts_initialization"></string>
+    <string name="diagnostics_output_stream_dash"></string>
+    <string name="review_reminder_message"></string>
+    <string name="content_cap_mode_label"></string>
+    <string name="diagnostics_output_stream_err"></string>
+    <string name="selftest_success_description"></string>
+    <string name="selftest_step4_title"></string>
+    <string name="statistics_title"></string>
+    <string name="tts_recovery_successful"></string>
+    <string name="selftest_error_0410_description"></string>
+    <string name="selftest_error_0413_description"></string>
+    <string name="statistics_notifications_read"></string>
+    <string name="test_settings_btn_export"></string>
+    <string name="statistics_filter_reason_conditional_rules"></string>
+    <string name="accessibility_service_name"></string>
+    <string name="selftest_step9_not_received"></string>
+    <string name="behavior_dismissal_memory_info_button"></string>
+    <string name="update_notification_title"></string>
+    <string name="diagnostics_tts_engine_dash"></string>
+    <string name="diagnostics_notification_access"></string>
+    <string name="selftest_error_0412_description"></string>
+    <string name="dialog_error_package_empty"></string>
+    <string name="dev_reset_statistics_success"></string>
+    <string name="selftest_step3_pass"></string>
+    <string name="content_cap_time_limit_value"></string>
+    <string name="selftest_error_0410_title"></string>
+    <string name="selftest_step5_pass"></string>
+    <string name="accessibility_permission_explanation_title"></string>
+    <string name="statistics_percentage_read"></string>
+    <string name="update_notification_text"></string>
+    <string name="update_banner_action"></string>
+    <string name="statistics_no_filter_reasons"></string>
+    <string name="dev_disable_media_fallback"></string>
+    <string name="general_toast_main_app"></string>
+    <string name="rules_quick_strings_action_enable_value" translatable="false"></string>
+    <string name="voice_stream_volume_description"></string>
+    <string name="diagnostics_copy_clipboard"></string>
+    <string name="accessibility_service_description"></string>
+    <string name="selftest_step6_pass"></string>
+    <string name="master_switch_disabled_toast_automation" translatable="false"></string>
+    <string name="rules_quick_strings_flags_description" translatable="false"></string>
+    <string name="selftest_step6_title"></string>
+    <string name="accessibility_permission_granted"></string>
+    <string name="selftest_step8_fail"></string>
+    <string name="quick_diagnostics"></string>
+    <string name="dialog_error_package_exists"></string>
+    <string name="accessibility_permission_denied"></string>
+    <string name="diagnostics_notification_access_err"></string>
+    <string name="diagnostics_tts_language_err"></string>
+    <string name="selftest_try_again"></string>
+    <string name="diagnostics_status_yes"></string>
+    <string name="behavior_dismissal_memory_timeout_description"></string>
+    <string name="action_add_package_manual"></string>
+    <string name="selftest_step8_title"></string>
+    <string name="selftest_step4_pass"></string>
+    <string name="statistics_notifications_read_label"></string>
+    <string name="selftest_error_0420_description"></string>
+    <string name="statistics_readouts_interrupted"></string>
+    <string name="selftest_step1_fail"></string>
+    <string name="selftest_error_0415_title"></string>
+    <string name="rules_quick_strings_note" translatable="false"></string>
+    <string name="diagnostics_status_err"></string>
+    <string name="url_handling_custom_text_hint"></string>
+    <string name="statistics_no_apps_read"></string>
+    <string name="selftest_step7_title"></string>
+    <string name="tts_troubleshooting_message"></string>
+    <string name="url_handling_description"></string>
+    <string name="rules_quick_strings_source_hint" translatable="false"></string>
+    <string name="selftest_step2_title"></string>
+    <string name="dev_enable_legacy_ducking_description"></string>
+    <string name="diagnostics_tts_language_ok"></string>
+    <string name="selftest_export_logs"></string>
+    <string name="dialog_success_package_added"></string>
+    <string name="dialog_title_dismissal_memory"></string>
+    <string name="diagnostics_tts_language"></string>
+    <string name="statistics_filter_reason_app_list"></string>
+    <string name="diagnostics_should_read_yes"></string>
+    <string name="selftest_question_heard_notification"></string>
+    <string name="dialog_title_add_package_manual"></string>
+    <string name="diagnostics_title"></string>
+    <string name="diagnostics_status_dash"></string>
+    <string name="content_cap_word_count_value"></string>
+    <string name="accessibility_permission_request"></string>
+    <string name="statistics_filter_reason_skip_mode"></string>
+    <string name="general_toast_automation"></string>
+    <string name="diagnostics_tts_init_err"></string>
+    <string name="diagnostics_reinitialize_tts"></string>
+    <string name="url_handling_custom_text_title"></string>
+    <string name="diagnostics_output_stream"></string>
+    <string name="statistics_filter_reason_deduplication"></string>
+    <string name="selftest_error_0414_title"></string>
+    <string name="general_toast_notifications_title"></string>
+    <string name="diagnostics_tts_init_dash"></string>
+    <string name="selftest_error_0404_title"></string>
+    <string name="review_reminder_later"></string>
+    <string name="selftest_step7_warning"></string>
+    <string name="diagnostics_tts_reinitialized"></string>
+    <string name="selftest_step2_requesting"></string>
+    <string name="selftest_error_code"></string>
+    <string name="voice_stream_volume"></string>
+    <string name="general_accessibility_permission"></string>
+    <string name="selftest_step1_title"></string>
+    <string name="dev_reset_statistics_title"></string>
+    <string name="content_cap_help_message"></string>
+    <string name="rules_quick_strings_action_disable_value" translatable="false"></string>
+    <string name="review_reminder_title"></string>
+    <string name="selftest_error_0412_title"></string>
+    <string name="tts_init_failed_permissions"></string>
+    <string name="accessibility_permission_required_message"></string>
+    <string name="selftest_step5_fail"></string>
 </resources>
