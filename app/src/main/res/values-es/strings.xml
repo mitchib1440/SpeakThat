@@ -1799,4 +1799,8 @@ Iniciando la visualización del registro…\nLos registros aparecerán aquí en 
     <string name="tts_init_failed_permissions"></string>
     <string name="accessibility_permission_required_message"></string>
     <string name="selftest_step5_fail"></string>
+    <string name="behavior_ducking_fallback_tip"></string>
+    <string name="behavior_ducking_device_tip"></string>
+    <string name="voice_tts_volume_boost_warning"></string>
+    <string name="behavior_dismissal_memory_benefits"></string>
 </resources>
