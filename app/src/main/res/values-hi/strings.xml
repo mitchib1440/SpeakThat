@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SpeakThat!</string>
     <string name="service_name">SpeakThat Notification Reader</string>
@@ -320,8 +320,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_logic_and">and</string>
     <string name="rule_logic_or">or</string>
     <string name="rule_logic_xor">either</string>
-    <string name="rule_logic_separator">, </string>
-    <string name="rule_logic_final_separator">, and </string>
+    <string name="rule_logic_separator">,</string>
+    <string name="rule_logic_final_separator">, and</string>
     <!-- Critical Hardcoded Strings - Activity Titles -->
     <string name="title_behavior_settings">Behavior Settings</string>
     <string name="title_general_settings">General Settings</string>
@@ -464,8 +464,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="selftest_step1_rebinding">अनुमति सक्षम है - नोटिफिकेशन लिस्नर को दोबारा जोड़ा जा रहा है...</string>
     <string name="selftest_step9_rebinding">लिस्नर का कनेक्शन टूट गया - स्वचालित रूप से दोबारा प्रयास हो रहा है...</string>
     <string name="listener_warning_title">नोटिफिकेशन लिस्नर को ध्यान की आवश्यकता है</string>
-    <string name="listener_warning_body_disconnected">एंड्रॉयड ने %1$s पहले नोटिफिकेशन सेवा को डिस्कनेक्ट कर दिया। सिस्टम से दोबारा जुड़ने का अनुरोध करने के लिए "फिर से आज़माएँ" दबाएँ। अगर यह बार-बार हो, तो जनरल सेटिंग्स में बैटरी ऑप्टिमाइज़ेशन बंद करें।</string>
-    <string name="listener_warning_body_stale">नोटिफिकेशन सेवा ने %1$s से कनेक्ट नहीं किया है। इसे जगाने के लिए "फिर से आज़माएँ" दबाएँ और समस्या जारी रहे तो जनरल सेटिंग्स में बैटरी ऑप्टिमाइज़ेशन की जाँच करें।</string>
+    <string name="listener_warning_body_disconnected">एंड्रॉयड ने %1$s पहले नोटिफिकेशन सेवा को डिस्कनेक्ट कर दिया। सिस्टम से दोबारा जुड़ने का अनुरोध करने के लिए फिर से आज़माएँ दबाएँ। अगर यह बार-बार हो, तो जनरल सेटिंग्स में बैटरी ऑप्टिमाइज़ेशन बंद करें।</string>
+    <string name="listener_warning_body_stale">नोटिफिकेशन सेवा ने %1$s से कनेक्ट नहीं किया है। इसे जगाने के लिए फिर से आज़माएँ दबाएँ और समस्या जारी रहे तो जनरल सेटिंग्स में बैटरी ऑप्टिमाइज़ेशन की जाँच करें।</string>
     <string name="listener_warning_time_unknown">हाल ही में</string>
     <string name="listener_warning_retry_in_progress">रीबाइंड अनुरोध भेजा गया</string>
     <string name="listener_warning_retry_denied">दोबारा प्रयास करने से पहले थोड़ा इंतजार करें</string>
@@ -531,7 +531,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_action_custom_speech_format">Apply custom speech format</string>
     <string name="rule_action_force_private">Force private mode</string>
     <string name="rule_action_override_private">Override private mode</string>
-
     <!-- Action Configuration -->
     <string name="action_custom_speech_format_title">Apply Custom Speech Format</string>
     <string name="action_custom_speech_format_description">Read this notification using a custom speech format.</string>
@@ -575,17 +574,14 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="speech_placeholder_channel_label">{channel}</string>
     <string name="speech_placeholder_channel_desc">Notification channel ID</string>
     <string name="action_skip_notification_title">Skip this notification</string>
-
     <!-- Rule validation: battery/charging -->
     <string name="rule_error_invalid_battery_mode">Battery mode must be above or below</string>
     <string name="rule_error_invalid_battery_percentage">Battery percentage must be between 0 and 100</string>
     <string name="rule_error_invalid_charging_status">Charging status must be charging or discharging</string>
-
     <!-- Trigger menu labels -->
     <string name="trigger_bluetooth_device_connected">Bluetooth Device Connected</string>
     <string name="trigger_screen_state_title">Screen State (On/Off)</string>
     <string name="trigger_wifi_network_connected">WiFi Network Connected</string>
-
     <!-- Battery Percentage trigger -->
     <string name="trigger_battery_percentage_title">Battery Percentage</string>
     <string name="trigger_battery_percentage_description">Condition is considered met when the battery is above or below a certain percentage.</string>
@@ -594,14 +590,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="trigger_battery_mode_below">Below</string>
     <string name="trigger_battery_percentage_default">Selected value: 50%</string>
     <string name="trigger_battery_percentage_value">Selected value: %d%%</string>
-
     <!-- Charging Status trigger -->
     <string name="trigger_charging_status_title">Charging Status</string>
     <string name="trigger_charging_status_description">Condition is considered met when your device is being charged.</string>
     <string name="trigger_charging_status_label">Status</string>
     <string name="trigger_battery_status_charging">Charging</string>
     <string name="trigger_battery_status_discharging">Discharging</string>
-
     <!-- Battery trigger descriptions -->
     <string name="rule_trigger_battery_above">Battery is above %d%%</string>
     <string name="rule_trigger_battery_below">Battery is below %d%%</string>
@@ -611,39 +605,32 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_exception_battery_below">Battery is below %d%%</string>
     <string name="rule_exception_battery_charging">Device is charging</string>
     <string name="rule_exception_battery_discharging">Device is discharging</string>
-
     <!-- Notification Contains trigger -->
     <string name="trigger_notification_contains_title">Notification Contains</string>
     <string name="trigger_notification_contains_description">Condition will be considered met when a specific word or phrase is found in the notification.</string>
     <string name="trigger_notification_contains_hint">Enter word or phrase</string>
     <string name="trigger_notification_contains_case_sensitive">Case-sensitive</string>
-
     <string name="rule_trigger_notification_contains">Notification contains "%1$s"</string>
     <string name="rule_trigger_notification_not_contains">Notification does not contain "%1$s"</string>
     <string name="rule_exception_notification_contains">Notification contains "%1$s"</string>
     <string name="rule_exception_notification_not_contains">Notification does not contain "%1$s"</string>
     <string name="rule_trigger_case_sensitive_suffix"> (case-sensitive)</string>
     <string name="rule_exception_case_sensitive_suffix"> (case-sensitive)</string>
-
     <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
     <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
-
     <!-- Notification From trigger -->
     <string name="trigger_notification_from_title">सूचना से</string>
     <string name="trigger_notification_from_description">जब आने वाली सूचना किसी चुने हुए ऐप से हो, तब शर्त पूरी मानी जाएगी।</string>
     <string name="trigger_notification_from_manage_apps">ऐप्स प्रबंधित करें</string>
     <string name="trigger_notification_from_selected_count">चयनित: %1$d ऐप्स</string>
     <string name="trigger_notification_from_selected_count_default">चयनित: 0 ऐप्स</string>
-
     <string name="rule_trigger_notification_from_single">सूचना %1$s से है</string>
     <string name="rule_trigger_notification_from_multiple">सूचना %1$d ऐप्स में से किसी एक से है</string>
     <string name="rule_trigger_notification_from_not">%1$s (उलटा)</string>
     <string name="rule_exception_notification_from_single">सूचना %1$s से है</string>
     <string name="rule_exception_notification_from_multiple">सूचना %1$d ऐप्स में से किसी एक से है</string>
     <string name="rule_exception_notification_from_not">%1$s (उलटा)</string>
-
     <string name="rule_error_invalid_notification_from_apps">सूचना ऐप चयन अमान्य है</string>
-
     <!-- Foreground App trigger -->
     <string name="trigger_foreground_app_title">Foreground App</string>
     <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>
@@ -651,16 +638,13 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="trigger_foreground_app_selected_count">Selected: %1$d apps</string>
     <string name="trigger_foreground_app_selected_count_default">Selected: 0 apps</string>
     <string name="trigger_foreground_app_accessibility_required">Please go to General Settings and enable the Accessibility Permission</string>
-
     <string name="rule_trigger_foreground_app_single">Foreground app is %1$s</string>
     <string name="rule_trigger_foreground_app_multiple">Foreground app is one of %1$d apps</string>
     <string name="rule_trigger_foreground_app_not">%1$s (inverted)</string>
     <string name="rule_exception_foreground_app_single">Foreground app is %1$s</string>
     <string name="rule_exception_foreground_app_multiple">Foreground app is one of %1$d apps</string>
     <string name="rule_exception_foreground_app_not">%1$s (inverted)</string>
-
     <string name="rule_error_invalid_foreground_apps">Foreground app selection is invalid</string>
-
     <!-- Device Unlocked trigger -->
     <string name="trigger_device_unlocked_title">Device Unlocked</string>
     <string name="trigger_device_unlocked_description">Condition is considered met when the device is locked or unlocked.</string>
@@ -672,7 +656,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="rule_exception_device_unlocked">Device is unlocked</string>
     <string name="rule_exception_device_locked">Device is locked</string>
     <string name="rule_error_invalid_unlock_mode">Unlock mode must be locked or unlocked</string>
-
     <!-- Screen Orientation trigger -->
     <string name="trigger_screen_orientation_title">Screen Orientation</string>
     <string name="trigger_screen_orientation_description">Condition is considered met when your screen is either in portrait mode or landscape mode.</string>
@@ -737,4 +720,3 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tidy_speech_remove_emojis_title">इमोजी हटाएं</string>
     <string name="tidy_speech_remove_emojis_description">बोलकर पढ़ी जाने वाली सूचनाओं से इमोजी और अन्य प्रतीक हटाएं</string>
 </resources>
-
