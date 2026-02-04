@@ -1663,4 +1663,15 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="voice_tts_language_description"></string>
     <string name="item_rule_example"></string>
     <string name="hint_enter_format_placeholders"></string>
+    <string name="button_cancel"></string>
+    <string name="button_ok"></string>
+    <string name="button_add"></string>
+    <string name="button_close"></string>
+    <string name="quick_settings_tile_label"></string>
+    <string name="button_re_detect"></string>
+    <string name="button_clear"></string>
+    <string name="button_save"></string>
+    <string name="quick_settings_tile_disabled"></string>
+    <string name="button_test"></string>
+    <string name="quick_settings_tile_enabled"></string>
 </resources>
