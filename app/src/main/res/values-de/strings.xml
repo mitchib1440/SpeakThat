@@ -67,17 +67,7 @@
     </string-array>
     <!-- Behavior Settings Dialogs -->
     <string name="notification_behavior_dialog_title">Benachrichtigungsverhalten Optionen</string>
-    <string name="notification_behavior_dialog_message">
-Wählen Sie, wie SpeakThat mit mehreren Benachrichtigung umgeht:
-<b>🔄 Unterbrechen</b>
-- Stoppt die schon laufende Benachrichtigung und liest die Neuere sofort vor. Am besten für dringliche Benachrichtigungen.
-<b>📋 Warteschlange</b>
-- Liest die laufende Benachrichtigung komplett vor und liest dann die Folgenden der Reihe nach vor. Nichts wird verpasst.
-<b>⏭️ Überspringe</b>
-- Während des Vorlesens einer Benachrichtigung werden neue Benachrichtigungen ignoriert. Einfach, aber Sie könnten wichtige Infos verpassen.
-<b>🧠 Smart (Empfohlen)</b>
-- Priorisierte Apps dürfen unterbrechen, andere nutzen die Warteschlange. Perfektes Gleichgewicht von Dringlichkeit und Vollständigkeit. Der Smart-Modus erlaubt es Ihnen, selber Apps auszuwählen, die derart Wichtig sind, dass sie unterbrechen dürfen (z.B. Anrufe, Textnachrichten) während andere Apps warten müssen.
-</string>
+    <string name="notification_behavior_dialog_message">Wählen Sie, wie SpeakThat mit mehreren Benachrichtigung umgeht: <b>🔄 Unterbrechen</b> - Stoppt die schon laufende Benachrichtigung und liest die Neuere sofort vor. Am besten für dringliche Benachrichtigungen. <b>📋 Warteschlange</b> - Liest die laufende Benachrichtigung komplett vor und liest dann die Folgenden der Reihe nach vor. Nichts wird verpasst. <b>⏭️ Überspringe</b> - Während des Vorlesens einer Benachrichtigung werden neue Benachrichtigungen ignoriert. Einfach, aber Sie könnten wichtige Infos verpassen. <b>🧠 Smart (Empfohlen)</b> - Priorisierte Apps dürfen unterbrechen, andere nutzen die Warteschlange. Perfektes Gleichgewicht von Dringlichkeit und Vollständigkeit. Der Smart-Modus erlaubt es Ihnen, selber Apps auszuwählen, die derart Wichtig sind, dass sie unterbrechen dürfen (z.B. Anrufe, Textnachrichten) während andere Apps warten müssen.</string>
     <string name="custom_app_names_title">Benutzerdefinierte App-Namen</string>
     <string name="custom_app_names_description">Passen Sie an, wie App-Namen in Benachrichtigungen ausgesprochen werden</string>
     <string name="add_custom_app_name">Benutzerdefinierten App-Namen hinzufügen</string>
@@ -85,27 +75,9 @@ Wählen Sie, wie SpeakThat mit mehreren Benachrichtigung umgeht:
     <string name="custom_name_hint">Benutzerdefinierter Name (z.B. Twitter)</string>
     <string name="custom_app_names_example">Beispiel: X App wird als Twitter vorgelesen</string>
     <string name="media_behavior_dialog_title">Medienverhalten</string>
-    <string name="media_behavior_dialog_message">
-Wählen Sie, wie SpeakThat Benachrichtigungen behandelt, während Musik/Videos wiedergegeben werden:
-<b>🎵 Ignorieren</b>
-- Spricht während Medien abgespielt werden. Einfach aber störend.
-<b>⏸️ Pausieren</b>
-- Pausiert Medien während des Sprechens. Gut für Podcasts, unterbricht aber den Musikfluss.
-<b>🔉 Audio verringern</b>
-- Reduziert vorübergehend die Medienlautstärke, damit Sie beides hören können. Erscheint am natürlichsten.
-<b>🔇 Still</b>
-- Spricht nicht während Medienwiedergabe. Ruhig, aber Sie könnten wichtige Benachrichtigungen verpassen. Audio verringern funktioniert wie beim Autoradio - es senkt die Musiklautstärke beim Sprechen und hebt sie dann wieder an. Perfekt für Musikliebhaber, die trotzdem noch Benachrichtigungen hören möchten.
-</string>
+    <string name="media_behavior_dialog_message">Wählen Sie, wie SpeakThat Benachrichtigungen behandelt, während Musik/Videos wiedergegeben werden: <b>🎵 Ignorieren</b> - Spricht während Medien abgespielt werden. Einfach aber störend. <b>⏸️ Pausieren</b> - Pausiert Medien während des Sprechens. Gut für Podcasts, unterbricht aber den Musikfluss. <b>🔉 Audio verringern</b> - Reduziert vorübergehend die Medienlautstärke, damit Sie beides hören können. Erscheint am natürlichsten. <b>🔇 Still</b> - Spricht nicht während Medienwiedergabe. Ruhig, aber Sie könnten wichtige Benachrichtigungen verpassen. Audio verringern funktioniert wie beim Autoradio - es senkt die Musiklautstärke beim Sprechen und hebt sie dann wieder an. Perfekt für Musikliebhaber, die trotzdem noch Benachrichtigungen hören möchten.</string>
     <string name="shake_to_stop_dialog_title">Schütteln-zum-Stoppen Funktion</string>
-    <string name="shake_to_stop_dialog_message">
-Schütteln-zum-Stoppen lässt SpeakThat sofort verstummen, wenn das Gerät geschüttelt wird:
-<b>✨ Warum ist das nützlich:</b>
-• Peinliche Benachrichtigungen an ruhigen Orten stoppen • Schnelle Kontrolle, wenn deine Hände beschäftigt sind • Funktioniert sogar, wenn der Bildschirm aus ist • Kein Suchen nach Tasten
-<b>🎯 So funktioniert es:</b>
-• Schüttle dein Gerät fest (wie ein Würfelbecher) • Die aktuelle Benachrichtigung stoppt sofort • Benachrichtigungen in Warteschlange werden gelöscht • Neue Benachrichtigungen funktionieren normal
-<b>⚙️ Anpassung:</b>
-• Empfindlichkeit nach deinen Vorgaben einstellen • Schüttelstärke mittels Messung testen • Funktioniert gut bei sanften als auch kräftigen Schüttler Dieses Feature wird besonders von Menschen geschätzt, die während Meetings, Filmen oder beim Fahren Benachrichtigungen erhalten.
-</string>
+    <string name="shake_to_stop_dialog_message">Schütteln-zum-Stoppen lässt SpeakThat sofort verstummen, wenn das Gerät geschüttelt wird: <b>✨ Warum ist das nützlich:</b> • Peinliche Benachrichtigungen an ruhigen Orten stoppen • Schnelle Kontrolle, wenn deine Hände beschäftigt sind • Funktioniert sogar, wenn der Bildschirm aus ist • Kein Suchen nach Tasten <b>🎯 So funktioniert es:</b> • Schüttle dein Gerät fest (wie ein Würfelbecher) • Die aktuelle Benachrichtigung stoppt sofort • Benachrichtigungen in Warteschlange werden gelöscht • Neue Benachrichtigungen funktionieren normal <b>⚙️ Anpassung:</b> • Empfindlichkeit nach deinen Vorgaben einstellen • Schüttelstärke mittels Messung testen • Funktioniert gut bei sanften als auch kräftigen Schüttler Dieses Feature wird besonders von Menschen geschätzt, die während Meetings, Filmen oder beim Fahren Benachrichtigungen erhalten.</string>
     <string name="use_recommended">Empfohlen verwenden</string>
     <string name="got_it">Verstanden</string>
     <!-- Persistent/Silent Notification Filtering -->
@@ -127,15 +99,7 @@ Schütteln-zum-Stoppen lässt SpeakThat sofort verstummen, wenn das Gerät gesch
     <string name="system_notifications_desc">Benachrichtigungen von System-Apps (Android, Google-Services)</string>
     <!-- Wave to Stop Feature -->
     <string name="wave_to_stop_dialog_title">Winken-zum-Stoppen Funktion</string>
-    <string name="wave_to_stop_dialog_message">
-Mit Winken zum Stoppen können Sie SpeakThat sofort stummschalten, indem Sie mit der Hand vor dem Gerät winken:
-<b>✨ Warum das hilfreich ist:</b>
-• Perfekt für Benutzer, die ihr Gerät nicht schütteln können • Ideal für Telefone auf Schreibtischen oder Halterungen • Mit einer Hand bedienbar • Keine physische Bewegung des Geräts erforderlich • Barrierefreie Alternative zum Schütteln
-<b>🎯 So funktioniert es:</b>
-• Winken Sie mit der Hand vor dem Gerät (wie eine magische Geste) • Nutzt den Näherungssensor, um Handbewegungen zu erkennen • Aktuelle Benachrichtigungen werden sofort gestoppt • Benachrichtigungen in der Warteschlange werden gelöscht • Neue Benachrichtigungen funktionieren normal
-<b>⚙️ Anpassung:</b>
-• Passen Sie die Empfindlichkeit nach Ihren Wünschen an • Testen Sie Ihre Wellenerkennung mit dem Messgerät • Funktioniert hervorragend für verschiedene Handgrößen und Entfernungen Diese Funktion ist besonders nützlich für Barrierefreiheit, Schreibtischbenutzer und alle, die Gestensteuerung gegenüber physischen Bewegungen bevorzugen.
-</string>
+    <string name="wave_to_stop_dialog_message">Mit Winken zum Stoppen können Sie SpeakThat sofort stummschalten, indem Sie mit der Hand vor dem Gerät winken: <b>✨ Warum das hilfreich ist:</b> • Perfekt für Benutzer, die ihr Gerät nicht schütteln können • Ideal für Telefone auf Schreibtischen oder Halterungen • Mit einer Hand bedienbar • Keine physische Bewegung des Geräts erforderlich • Barrierefreie Alternative zum Schütteln <b>🎯 So funktioniert es:</b> • Winken Sie mit der Hand vor dem Gerät (wie eine magische Geste) • Nutzt den Näherungssensor, um Handbewegungen zu erkennen • Aktuelle Benachrichtigungen werden sofort gestoppt • Benachrichtigungen in der Warteschlange werden gelöscht • Neue Benachrichtigungen funktionieren normal <b>⚙️ Anpassung:</b> • Passen Sie die Empfindlichkeit nach Ihren Wünschen an • Testen Sie Ihre Wellenerkennung mit dem Messgerät • Funktioniert hervorragend für verschiedene Handgrößen und Entfernungen Diese Funktion ist besonders nützlich für Barrierefreiheit, Schreibtischbenutzer und alle, die Gestensteuerung gegenüber physischen Bewegungen bevorzugen.</string>
     <!-- About Page -->
     <string name="about">Über</string>
     <string name="about_description_title">Über SpeakThat!</string>
@@ -504,16 +468,12 @@ Dieses Projekt ist Open Source und unter der GPL-3.0-Lizenz verfügbar. Du kanns
     <string name="behavior_calls_description">Benachrichtigungen bei Anrufen nicht vorlesen</string>
     <string name="behavior_calls_recommendation">Die meisten Nutzer sollten diese Funktion aktivieren</string>
     <string name="behavior_calls_checkbox">Telefongespräch beachten</string>
-    <string name="behavior_calls_benefits">
-✨ Vorteile:\n\n• Keine Störung bei wichtigen Telefonaten\n• Respektiert Ihre Privatsphäre\n• Funktioniert mit allen Anrufen\n• Automatische Erkennung des Anrufstatus
-</string>
+    <string name="behavior_calls_benefits">✨ Vorteile:\n\n• Keine Störung bei wichtigen Telefonaten\n• Respektiert Ihre Privatsphäre\n• Funktioniert mit allen Anrufen\n• Automatische Erkennung des Anrufstatus</string>
     <string name="behavior_audio_title">🔇 Audio-Modus beachten</string>
     <string name="behavior_audio_description">Benachrichtigungen nur lesen, wenn Ihr Gerät im Ton-Modus ist (nicht Lautlos oder Vibrieren)</string>
     <string name="behavior_audio_recommendation">Empfehlung: Funktion aktivieren</string>
     <string name="behavior_audio_checkbox">Audio-Modus beachten (nur im Modus Ton)</string>
-    <string name="behavior_audio_benefits">
-✨ Vorteile:\n\n• Verhindert unerwünschte Sprachausgaben wenn das Telefon stumm geschaltet ist\n• Respektiert die Audio-Einstellungen Ihres Geräts\n• Funktioniert mit Lautlos und Vibration\n• Liest Benachrichtigungen nur vor, wenn abhören möglich ist
-</string>
+    <string name="behavior_audio_benefits">✨ Vorteile:\n\n• Verhindert unerwünschte Sprachausgaben wenn das Telefon stumm geschaltet ist\n• Respektiert die Audio-Einstellungen Ihres Geräts\n• Funktioniert mit Lautlos und Vibration\n• Liest Benachrichtigungen nur vor, wenn abhören möglich ist</string>
     <string name="behavior_shake_current">Aktueller Schüttler: 0.0</string>
     <string name="behavior_shake_threshold">Grenzwert: 12.0</string>
     <string name="behavior_timeout_display">Timeout: 30 Sekunden</string>
@@ -533,9 +493,7 @@ Dieses Projekt ist Open Source und unter der GPL-3.0-Lizenz verfügbar. Du kanns
     <string name="behavior_delay_1s">1 Sekunde - Kurze Pause</string>
     <string name="behavior_delay_2s">2 Sekunden - Empfohlen</string>
     <string name="behavior_delay_3s">3 Sekunden - Extra Zeit zum reagieren</string>
-    <string name="behavior_delay_benefits">
-✨ Vorteile:\n\n• Vermeide Überschneidung mit Benachrichtigungston\n• Bietet Zeit zum Abbrechen durch Schütteln \n• Weniger störend in ruhigen Umgebungen\n• Perfekt für Meetings und öffentliche Räume
-</string>
+    <string name="behavior_delay_benefits">✨ Vorteile:\n\n• Vermeide Überschneidung mit Benachrichtigungston\n• Bietet Zeit zum Abbrechen durch Schütteln \n• Weniger störend in ruhigen Umgebungen\n• Perfekt für Meetings und öffentliche Räume</string>
     <string name="behavior_cooldown_title">Cooldown für Benachrichtigungen</string>
     <string name="behavior_cooldown_description">Verhindern, mehrere Benachrichtigungen einer App innerhalb einer bestimmten Zeit vorgelesen werden</string>
     <string name="behavior_cooldown_recommendation">Gut für: Apps mit vielen unnützen Benachrichtigungen</string>
@@ -611,9 +569,7 @@ Allgemeine Platzhalter: {app}, {content}, {time}, {title}, {text}, {priority}, {
     <string name="settings_support_title">Unterstützung &amp; Feedback</string>
     <string name="settings_support_description">Hilfe erhalten, Fehler melden, Funktionen anfragen</string>
     <string name="settings_donate_title">Spenden</string>
-    <string name="settings_donate_description">
-Unterstützen Sie die Entwicklung und eine weiterhin kostenlose App
-</string>
+    <string name="settings_donate_description">Unterstützen Sie die Entwicklung und eine weiterhin kostenlose App</string>
     <!-- Critical Hardcoded Strings - Other -->
     <string name="unknown_device">Unbekanntes Gerät</string>
     <string name="export_full_config_text">Komplette Konfigurationssicherung erstellt auf %s</string>
@@ -632,33 +588,25 @@ Unterstützen Sie die Entwicklung und eine weiterhin kostenlose App
     <string name="behavior_dnd_description">Den \'Nicht stören\' Modus beachten und Benachrichtigungen stumm schalten, wenn aktiviert</string>
     <string name="behavior_dnd_recommendation">Die meisten Nutzer sollten diese Funktion aktivieren</string>
     <string name="behavior_dnd_switch_label">Nicht stören-Modus beachten</string>
-    <string name="behavior_dnd_benefits">
-✨ Vorteile:\n\n• Beachtet die Einstellung \"Nicht stören\"\n• Perfekt für Meetings, Schlaf und Ruhezeiten\n• Funktioniert mit geplanter und manueller Aktivierung\n• Unterstützt Ihre Privatsphäre und Konzentration bei Bedarf
-</string>
+    <string name="behavior_dnd_benefits">✨ Vorteile:\n\n• Beachtet die Einstellung \"Nicht stören\"\n• Perfekt für Meetings, Schlaf und Ruhezeiten\n• Funktioniert mit geplanter und manueller Aktivierung\n• Unterstützt Ihre Privatsphäre und Konzentration bei Bedarf</string>
     <!-- Behavior Settings - Phone Calls -->
     <string name="section_honor_phone_calls">Telefongespräche beachten</string>
     <string name="behavior_phone_calls_description">Benachrichtigungen vorlesen bei einem Anruf verhindern</string>
     <string name="behavior_phone_calls_recommendation">Die meisten Nutzer sollten diese Funktion aktivieren</string>
     <string name="behavior_phone_calls_switch_label">Telefongespräche beachten</string>
-    <string name="behavior_phone_calls_benefits">
-✨ Vorteile:\n\n• Keine Unterbrechung bei wichtigen Telefonaten\n• Respektiert Ihre Privatsphäre\n• Funktioniert mit allen Anrufen\n• Automatische Erkennung des Anrufstatus
-</string>
+    <string name="behavior_phone_calls_benefits">✨ Vorteile:\n\n• Keine Unterbrechung bei wichtigen Telefonaten\n• Respektiert Ihre Privatsphäre\n• Funktioniert mit allen Anrufen\n• Automatische Erkennung des Anrufstatus</string>
     <!-- Behavior Settings - Notification Deduplication -->
     <string name="section_notification_deduplication">Doppelte Benachrichtigung verhindern</string>
     <string name="behavior_deduplication_description">Verhindern, dass die gleiche Benachrichtigung mehrmals in schneller Folge vorgelesen wird</string>
     <string name="behavior_deduplication_recommendation">Aktivieren, wenn doppelte Benachrichtigungen auftreten</string>
     <string name="behavior_deduplication_switch_label">Doppelte Benachrichtigungen verhindern aktivieren</string>
-    <string name="behavior_deduplication_benefits">
-✨ Vorteile:\n\n• Verhindert doppeltes Vorlesen\n• Energiesparen durch Vermeidung unnötiger TTS\n• Funktioniert automatisch innerhalb 5-Sekunden-Fenster\n• Hilft bei Apps, die mehrere Benachrichtigungen ausgeben
-</string>
+    <string name="behavior_deduplication_benefits">✨ Vorteile:\n\n• Verhindert doppeltes Vorlesen\n• Energiesparen durch Vermeidung unnötiger TTS\n• Funktioniert automatisch innerhalb 5-Sekunden-Fenster\n• Hilft bei Apps, die mehrere Benachrichtigungen ausgeben</string>
     <!-- Behavior Settings - Dismissal Memory -->
     <string name="section_dismissal_memory">Verworfen-Speicher</string>
     <string name="behavior_dismissal_memory_description">An verworfene Benachrichtigungen erinnern, um zu verhindern, dass sie erneut vorgelesen werden</string>
     <string name="behavior_dismissal_memory_recommendation">Aktivieren, wenn Benachrichtigungen nach dem Verwerfen wieder vorgelesen werden</string>
     <string name="behavior_dismissal_memory_switch_label">Verworfen-Speicher aktivieren</string>
-    <string name="behavior_dismissal_memory_benefits">
-✨ Vorteile:\n\n• Verhindert das erneute Vorlesen von verworfenen Benachrichtigungen\n• Beendet das Vorlesen von Benachrichtigungen nach dem Verwerfen\n• Konfigurierbare Speicherdauer (5 Minuten bis 1 Stunde)\n• Automatische Bereinigung um Speicher und Batterie zu schonen
-</string>
+    <string name="behavior_dismissal_memory_benefits">✨ Vorteile:\n\n• Verhindert das erneute Vorlesen von verworfenen Benachrichtigungen\n• Beendet das Vorlesen von Benachrichtigungen nach dem Verwerfen\n• Konfigurierbare Speicherdauer (5 Minuten bis 1 Stunde)\n• Automatische Bereinigung um Speicher und Batterie zu schonen</string>
     <string name="behavior_dismissal_memory_timeout_label">Speicherzeit</string>
     <string name="behavior_dismissal_memory_timeout_description">Wie lange sollen verworfene Benachrichtigungen erinnert werden</string>
     <string name="behavior_dismissal_memory_timeout_5min">5 Minuten</string>
@@ -667,18 +615,12 @@ Unterstützen Sie die Entwicklung und eine weiterhin kostenlose App
     <string name="behavior_dismissal_memory_timeout_1hour">1 Stunde</string>
     <string name="behavior_dismissal_memory_info_button">ℹ️</string>
     <string name="dialog_title_dismissal_memory">Verworfen Speicher</string>
-    <string name="dialog_dismissal_memory_explanation">
-Die Funktion „Benachrichtigungen ignorieren” verhindert, dass Benachrichtigungen nach dem Ignorieren erneut vorgelesen werden:<br/><br/><b>Funktionsweise:</b><br/>Wenn Sie eine Benachrichtigung ignorieren, speichert SpeakThat diese für einen konfigurierbaren Zeitraum. Wenn derselbe Benachrichtigungsinhalt während dieser Zeit erneut erscheint, wird er nicht vorgelesen.<br/><br/><b>Wann ist dies nützlich:</b><br/>• <b>Abgeschlossene Benachrichtigungen</b> – Verhindert das erneute Vorlesen, nachdem Sie sie weggewischt haben<br/>• <b>App-Updates</b> – Einige Apps senden nach Updates erneut Benachrichtigungen<br/>• <b>Systemaktualisierungen</b> – Android kann Benachrichtigungen während Systemereignissen erneut senden<br/>• <b>Netzwerk-Wiederverbindungen</b> – Apps können Benachrichtigungen erneut senden, wenn die Verbindung wiederhergestellt ist<br/><br/><b>So funktioniert es:</b><br/>• Verfolgt abgelehnte Benachrichtigungen anhand des Inhalts-Hashs<br/>• Konfigurierbare Speicherdauer (5 Minuten bis 1 Stunde)<br/>• Automatische Bereinigung, um Speicherüberlastung zu verhindern<br/>• Batterieschonend durch effiziente Speicherung<br/>• Detaillierte Protokollierung zur Fehlerbehebung<br/><br/><b>Tipp:</b> Aktivieren Sie diese Funktion, wenn Benachrichtigungen nach dem Schließen erneut gelesen werden. Die meisten Benutzer werden von dieser Funktion profitieren!
-</string>
+    <string name="dialog_dismissal_memory_explanation">Die Funktion „Benachrichtigungen ignorieren” verhindert, dass Benachrichtigungen nach dem Ignorieren erneut vorgelesen werden:<br/><br/><b>Funktionsweise:</b><br/>Wenn Sie eine Benachrichtigung ignorieren, speichert SpeakThat diese für einen konfigurierbaren Zeitraum. Wenn derselbe Benachrichtigungsinhalt während dieser Zeit erneut erscheint, wird er nicht vorgelesen.<br/><br/><b>Wann ist dies nützlich:</b><br/>• <b>Abgeschlossene Benachrichtigungen</b> – Verhindert das erneute Vorlesen, nachdem Sie sie weggewischt haben<br/>• <b>App-Updates</b> – Einige Apps senden nach Updates erneut Benachrichtigungen<br/>• <b>Systemaktualisierungen</b> – Android kann Benachrichtigungen während Systemereignissen erneut senden<br/>• <b>Netzwerk-Wiederverbindungen</b> – Apps können Benachrichtigungen erneut senden, wenn die Verbindung wiederhergestellt ist<br/><br/><b>So funktioniert es:</b><br/>• Verfolgt abgelehnte Benachrichtigungen anhand des Inhalts-Hashs<br/>• Konfigurierbare Speicherdauer (5 Minuten bis 1 Stunde)<br/>• Automatische Bereinigung, um Speicherüberlastung zu verhindern<br/>• Batterieschonend durch effiziente Speicherung<br/>• Detaillierte Protokollierung zur Fehlerbehebung<br/><br/><b>Tipp:</b> Aktivieren Sie diese Funktion, wenn Benachrichtigungen nach dem Schließen erneut gelesen werden. Die meisten Benutzer werden von dieser Funktion profitieren!</string>
     <!-- Behavior Settings - Audio Mode -->
     <string name="section_honor_audio_mode">Audio Modus beachten</string>
-    <string name="behavior_audio_mode_description">
-Benachrichtigungen nur lesen, wenn Ihr Gerät im Ton-Modus ist (nicht Lautlos oder Vibrieren)
-</string>
+    <string name="behavior_audio_mode_description">Benachrichtigungen nur lesen, wenn Ihr Gerät im Ton-Modus ist (nicht Lautlos oder Vibrieren)</string>
     <string name="behavior_audio_mode_recommendation">Empfohlen: Diese Funktion aktivieren</string>
-    <string name="behavior_audio_mode_benefits">
-✨ Vorteile:\n\n• Verhindert unerwünschte Sprachausgaben, wenn das Telefon stummgeschaltet ist\n• Berücksichtigt die Audioeinstellungen Ihres Geräts\n• Funktioniert im Lautlos- und Vibrationsmodus\n• Stellt sicher, dass Benachrichtigungen nur abgespielt werden, wenn Sie sie abhören können
-</string>
+    <string name="behavior_audio_mode_benefits">✨ Vorteile:\n\n• Verhindert unerwünschte Sprachausgaben, wenn das Telefon stummgeschaltet ist\n• Berücksichtigt die Audioeinstellungen Ihres Geräts\n• Funktioniert im Lautlos- und Vibrationsmodus\n• Stellt sicher, dass Benachrichtigungen nur abgespielt werden, wenn Sie sie abhören können</string>
     <!-- Behavior Settings - Shake to Stop -->
     <string name="section_shake_to_stop">Schütteln zum Stoppen</string>
     <string name="behavior_shake_description">Stoppe das Vorlesen sofort durch Schütteln deines Geräts</string>
@@ -693,9 +635,7 @@ Benachrichtigungen nur lesen, wenn Ihr Gerät im Ton-Modus ist (nicht Lautlos od
     <string name="behavior_wave_description">Stoppe das Vorlesen, indem Sie ihre Hand über den Näherungssensor bewegen</string>
     <string name="behavior_wave_recommendation">Empfohlen: Diese Funktion aktivieren</string>
     <string name="behavior_wave_switch_label">Winken zum Stoppen aktivieren</string>
-    <string name="behavior_wave_benefits">
-✨ Vorteile:\n\n• Lautlose Geste, um Vorlesen zu stoppen\n• Funktioniert in ruhigen Umgebungen\n• Kein physischer Kontakt erforderlich\n• Schnelle und bequeme Steuerung
-</string>
+    <string name="behavior_wave_benefits">✨ Vorteile:\n\n• Lautlose Geste, um Vorlesen zu stoppen\n• Funktioniert in ruhigen Umgebungen\n• Kein physischer Kontakt erforderlich\n• Schnelle und bequeme Steuerung</string>
     <!-- Behavior Settings - Additional Labels -->
     <string name="label_calibrate">Kalibrieren</string>
     <string name="label_test_shake">Schütteln testen</string>
@@ -1374,12 +1314,8 @@ Protokollanzeige starten...\nDie Protokolle werden hier in Echtzeit angezeigt.\n
     <string name="restart_policy_crash">Absturz</string>
     <string name="restart_policy_periodic">periodisch</string>
     <!-- MainActivity Hardcoded Strings -->
-    <string name="main_master_switch_enabled">
-SpeakThat wird Benachrichtigungen lesen, wenn aktiv
-</string>
-    <string name="main_master_switch_disabled">
-SpeakThat ist deaktiviert – Benachrichtigungen werden nicht vorgelesen
-</string>
+    <string name="main_master_switch_enabled">SpeakThat wird Benachrichtigungen lesen, wenn aktiv</string>
+    <string name="main_master_switch_disabled">SpeakThat ist deaktiviert – Benachrichtigungen werden nicht vorgelesen</string>
     <string name="main_notification_access_granted">SpeakThat hat Benachrichtigungszugriff</string>
     <string name="main_tts_init_failed">TTS Initialisierung fehlgeschlagen. Einige Funktionen funktionieren möglicherweise nicht.</string>
     <string name="main_tts_not_ready">TTS nicht bereit. Bitte versuchen Sie es in einem Moment erneut.</string>
@@ -1432,9 +1368,7 @@ SpeakThat ist deaktiviert – Benachrichtigungen werden nicht vorgelesen
     <string name="behavior_content_cap_description">Begrenzen Sie, wie viel von jeder Benachrichtigung vorgelesen wird</string>
     <string name="behavior_content_cap_recommendation">Ideal für: Lange Benachrichtigungen, bei denen Sie nur den Anfang benötigen</string>
     <string name="label_150_percent">150%</string>
-    <string name="voice_tts_volume_boost_warning">
-⚠️ Eine Lautstärke über 100 % kann zu Tonverzerrungen führen
-</string>
+    <string name="voice_tts_volume_boost_warning">⚠️ Eine Lautstärke über 100 % kann zu Tonverzerrungen führen</string>
     <string name="general_accessibility_permission">Barrierefreiheit Berechtigung</string>
     <string name="general_accessibility_permission_description">Erweiterte Steuerelemente wie Lautstärketasten-Shortcuts aktivieren (vollständig optional)</string>
     <string name="accessibility_permission_request">Barrierefreiheitsberechtigung anfordern</string>
@@ -1495,9 +1429,7 @@ Bitte beachten Sie, dass dies nur funktioniert, wenn der Bildschirm eingeschalte
     <string name="content_cap_word_count_value">%d Worte</string>
     <string name="content_cap_sentence_count_value">%d Sätze</string>
     <string name="content_cap_time_limit_value">%d Sekunden</string>
-    <string name="content_cap_help_message">
-Mit der Inhaltsbegrenzung können Sie festlegen, wie viel von jeder Benachrichtigung vorgelesen wird:<br/><br/><b>Wortanzahl</b> – Nur die ersten N Wörter werden vorgelesen<br/>• Ideal für Zahlungsbenachrichtigungen, bei denen wichtige Informationen am Anfang stehen<br/>• Funktioniert zuverlässig in den meisten Sprachen<br/>• <b>Hinweis:</b> Zählt die Wörter im Titel und im Text zusammen<br/>• Beispiel: Zahlung von 50,00 $ von John Smith für das Mittagessen → Zahlung von 50,00 $ von John<br/><br/><b>Anzahl der Sätze</b> – Nur die ersten N vollständigen Sätze werden vorgelesen<br/>• Natürlicherer Satzumbruch als bei Wortbegrenzungen<br/>• Verwendet intelligente Satzerkennung für internationale Sprachen<br/>• Behandelt Zeilenumbrüche in E-Mails korrekt<br/>• <b>Hinweis:</b> Titel ohne Satzendzeichen werden nicht als separate Sätze gezählt<br/>• Beispiel: Hallo! Wie geht es dir heute? → Hallo!<br/><br/><b>Zeitlimit</b> – Beendet das Lesen nach N Sekunden<br/>• Universell – funktioniert mit allen Sprachen<br/>• Vorhersehbare Benachrichtigungsdauer<br/>• Ideal für konsistentes Timing<br/>• Beispiel: Hört nach 10 Sekunden auf, unabhängig von der Länge des Inhalts<br/><br/><b>Tipps:</b><br/>• Die Wortanzahl funktioniert für die meisten Benutzer am besten<br/>• Die Satzanzahl ist natürlicher, aber möglicherweise weniger präzise<br/>• Das Zeitlimit ist universell und vorhersehbar<br/>• Alle Optionen funktionieren mit Ihren vorhandenen Sprachvorlagen<br/>• Kombinieren Sie es mit „Zum Stoppen schütteln” für maximale Kontrolle
-</string>
+    <string name="content_cap_help_message">Mit der Inhaltsbegrenzung können Sie festlegen, wie viel von jeder Benachrichtigung vorgelesen wird:<br/><br/><b>Wortanzahl</b> – Nur die ersten N Wörter werden vorgelesen<br/>• Ideal für Zahlungsbenachrichtigungen, bei denen wichtige Informationen am Anfang stehen<br/>• Funktioniert zuverlässig in den meisten Sprachen<br/>• <b>Hinweis:</b> Zählt die Wörter im Titel und im Text zusammen<br/>• Beispiel: Zahlung von 50,00 $ von John Smith für das Mittagessen → Zahlung von 50,00 $ von John<br/><br/><b>Anzahl der Sätze</b> – Nur die ersten N vollständigen Sätze werden vorgelesen<br/>• Natürlicherer Satzumbruch als bei Wortbegrenzungen<br/>• Verwendet intelligente Satzerkennung für internationale Sprachen<br/>• Behandelt Zeilenumbrüche in E-Mails korrekt<br/>• <b>Hinweis:</b> Titel ohne Satzendzeichen werden nicht als separate Sätze gezählt<br/>• Beispiel: Hallo! Wie geht es dir heute? → Hallo!<br/><br/><b>Zeitlimit</b> – Beendet das Lesen nach N Sekunden<br/>• Universell – funktioniert mit allen Sprachen<br/>• Vorhersehbare Benachrichtigungsdauer<br/>• Ideal für konsistentes Timing<br/>• Beispiel: Hört nach 10 Sekunden auf, unabhängig von der Länge des Inhalts<br/><br/><b>Tipps:</b><br/>• Die Wortanzahl funktioniert für die meisten Benutzer am besten<br/>• Die Satzanzahl ist natürlicher, aber möglicherweise weniger präzise<br/>• Das Zeitlimit ist universell und vorhersehbar<br/>• Alle Optionen funktionieren mit Ihren vorhandenen Sprachvorlagen<br/>• Kombinieren Sie es mit „Zum Stoppen schütteln” für maximale Kontrolle</string>
     <string name="dev_disable_media_fallback">Fallback für Medienverhalten deaktivieren</string>
     <string name="dev_disable_media_fallback_description">
 Deaktivieren Sie Fallback-Methoden für das Medienverhalten. Wenn eine Funktion nicht funktioniert, werden keine Alternativen ausprobiert. Hilft bei der Isolierung von Problemen. Hinweis: Wenn diese Option deaktiviert ist, wechselt der Audio verringern-Modus in den Pausenmodus, wenn das Verringern fehlschlägt. Wenn beide fehlschlagen, werden Benachrichtigungen weiterhin ohne Audiofokus vorgelesen.
@@ -1723,4 +1655,177 @@ Deaktivieren Sie Fallback-Methoden für das Medienverhalten. Wenn eine Funktion 
     <string name="voice_audio_usage_voice_call">Sprachanruf</string>
     <string name="general_toast_automation">Automatisierungsanfragen</string>
     <string name="general_toast_notifications_title">Toast-Benachrichtigungen aktivieren</string>
+    <string name="selftest_error_0400_title"></string>
+    <string name="selftest_step7_pass_disabled"></string>
+    <string name="statistics_filter_reason_dnd"></string>
+    <string name="statistics_filter_reason_dismissal_memory"></string>
+    <string name="selftest_step2_not_needed"></string>
+    <string name="update_banner_body"></string>
+    <string name="dev_enable_audio_ducking_description"></string>
+    <string name="dev_enable_legacy_ducking"></string>
+    <string name="selftest_step9_rebinding"></string>
+    <string name="selftest_error_unknown_title"></string>
+    <string name="statistics_filter_reason_word_filters"></string>
+    <string name="master_switch_disabled_toast" translatable="false"></string>
+    <string name="master_switch_enabled_toast_automation" translatable="false"></string>
+    <string name="statistics_filter_reasons"></string>
+    <string name="notification_permission_required"></string>
+    <string name="selftest_step6_fail"></string>
+    <string name="statistics_filter_reason_audio_mode"></string>
+    <string name="selftest_error_0415_description"></string>
+    <string name="listener_health_last_connect"></string>
+    <string name="statistics_logo_taps_label"></string>
+    <string name="selftest_step2_fail"></string>
+    <string name="statistics_listener_rebind_requests"></string>
+    <string name="selftest_subtitle"></string>
+    <string name="statistics_filter_count_format"></string>
+    <string name="rules_quick_strings_action_disable_label" translatable="false"></string>
+    <string name="listener_health_last_heartbeat"></string>
+    <string name="selftest_error_0404_description"></string>
+    <string name="selftest_error_unknown_description"></string>
+    <string name="selftest_yes"></string>
+    <string name="rules_mode_external_empty_title"></string>
+    <string name="selftest_error_0411_description"></string>
+    <string name="rules_quick_strings_copied" translatable="false"></string>
+    <string name="selftest_title"></string>
+    <string name="statistics_filter_reason_media_behavior"></string>
+    <string name="selftest_step4_fail"></string>
+    <string name="selftest_monitoring_message"></string>
+    <string name="rules_mode_external_empty_description"></string>
+    <string name="selftest_step3_fail"></string>
+    <string name="selftest_logs_export_failed"></string>
+    <string name="selftest_step8_posting"></string>
+    <string name="rules_quick_strings_title" translatable="false"></string>
+    <string name="statistics_filter_reason_master_switch"></string>
+    <string name="master_switch_enabled_toast" translatable="false"></string>
+    <string name="behavior_speech_placeholder_ticker_note" formatted="false"></string>
+    <string name="selftest_step9_monitoring"></string>
+    <string name="selftest_logs_exported"></string>
+    <string name="dev_reset_statistics"></string>
+    <string name="behavior_silent_mode_switch_label"></string>
+    <string name="rules_quick_strings_action_enable_label" translatable="false"></string>
+    <string name="dev_listener_health_title"></string>
+    <string name="statistics_summary_read_and_taps"></string>
+    <string name="selftest_no"></string>
+    <string name="statistics_listener_rebind_recoveries"></string>
+    <string name="statistics_filter_reason_self_package"></string>
+    <string name="selftest_step1_pass"></string>
+    <string name="selftest_error_0420_title"></string>
+    <string name="selftest_step2_pass"></string>
+    <string name="diagnostics_should_read_yes_conditional"></string>
+    <string name="selftest_error_0400_description"></string>
+    <string name="selftest_question_notification_appeared"></string>
+    <string name="statistics_notifications_received"></string>
+    <string name="selftest_step9_received_not_read"></string>
+    <string name="dialog_message_add_package_manual"></string>
+    <string name="statistics_percentage_format"></string>
+    <string name="listener_warning_title"></string>
+    <string name="listener_status_ok"></string>
+    <string name="update_notification_channel_description"></string>
+    <string name="statistics_apps_read"></string>
+    <string name="selftest_step9_success"></string>
+    <string name="selftest_step9_title"></string>
+    <string name="rules_quick_strings_package_label" translatable="false"></string>
+    <string name="selftest_error_0440_title"></string>
+    <string name="listener_warning_retry_in_progress"></string>
+    <string name="selftest_error_0413_title"></string>
+    <string name="selftest_error_0414_description"></string>
+    <string name="listener_warning_retry_denied"></string>
+    <string name="main_notification_action_open_app"></string>
+    <string name="statistics_filter_reason_group_summary"></string>
+    <string name="selftest_step5_title"></string>
+    <string name="statistics_filter_reason_phone_calls"></string>
+    <string name="selftest_error_0411_title"></string>
+    <string name="rules_quick_strings_package_value" translatable="false"></string>
+    <string name="behavior_speech_example_ticker_html"></string>
+    <string name="selftest_step8_posted"></string>
+    <string name="update_notification_channel_name"></string>
+    <string name="selftest_success_title"></string>
+    <string name="dev_reset_statistics_message"></string>
+    <string name="rules_quick_strings_receiver_label" translatable="false"></string>
+    <string name="update_banner_title"></string>
+    <string name="selftest_share_report"></string>
+    <string name="behavior_speech_placeholder_ticker_html"></string>
+    <string name="notification_while_reading_enabled"></string>
+    <string name="rules_quick_strings_receiver_value" translatable="false"></string>
+    <string name="rules_quick_strings_flags_title" translatable="false"></string>
+    <string name="listener_status_permission_missing"></string>
+    <string name="diagnostics_should_read_yes_external"></string>
+    <string name="selftest_step3_title"></string>
+    <string name="app_picker_manual_placeholder"></string>
+    <string name="selftest_success_description"></string>
+    <string name="selftest_step4_title"></string>
+    <string name="statistics_apps_read_list_label"></string>
+    <string name="statistics_title"></string>
+    <string name="section_honor_system_modes"></string>
+    <string name="selftest_error_0410_description"></string>
+    <string name="selftest_error_0413_description"></string>
+    <string name="statistics_notifications_read"></string>
+    <string name="statistics_filter_reason_conditional_rules"></string>
+    <string name="selftest_step9_not_received"></string>
+    <string name="update_notification_title"></string>
+    <string name="selftest_error_0412_description"></string>
+    <string name="dialog_error_package_empty"></string>
+    <string name="dev_reset_statistics_success"></string>
+    <string name="selftest_step3_pass"></string>
+    <string name="listener_health_last_rebind_success"></string>
+    <string name="statistics_listener_rebind_skips"></string>
+    <string name="selftest_error_0410_title"></string>
+    <string name="listener_status_idle"></string>
+    <string name="selftest_step5_pass"></string>
+    <string name="statistics_percentage_read"></string>
+    <string name="update_notification_text"></string>
+    <string name="update_banner_action"></string>
+    <string name="statistics_no_filter_reasons"></string>
+    <string name="rules_quick_strings_action_enable_value" translatable="false"></string>
+    <string name="selftest_step6_pass"></string>
+    <string name="master_switch_disabled_toast_automation" translatable="false"></string>
+    <string name="rules_quick_strings_flags_description" translatable="false"></string>
+    <string name="selftest_step6_title"></string>
+    <string name="selftest_step8_fail"></string>
+    <string name="dialog_error_package_exists"></string>
+    <string name="listener_warning_body_disconnected"></string>
+    <string name="listener_health_last_activity"></string>
+    <string name="selftest_try_again"></string>
+    <string name="listener_warning_body_stale"></string>
+    <string name="action_add_package_manual"></string>
+    <string name="selftest_step8_title"></string>
+    <string name="selftest_step4_pass"></string>
+    <string name="statistics_notifications_read_label"></string>
+    <string name="listener_health_last_disconnect"></string>
+    <string name="selftest_error_0420_description"></string>
+    <string name="statistics_readouts_interrupted"></string>
+    <string name="selftest_step1_fail"></string>
+    <string name="selftest_error_0415_title"></string>
+    <string name="rules_quick_strings_note" translatable="false"></string>
+    <string name="dev_enable_audio_ducking"></string>
+    <string name="statistics_no_apps_read"></string>
+    <string name="selftest_step7_title"></string>
+    <string name="rules_quick_strings_source_hint" translatable="false"></string>
+    <string name="selftest_step2_title"></string>
+    <string name="dev_enable_legacy_ducking_description"></string>
+    <string name="selftest_export_logs"></string>
+    <string name="dialog_success_package_added"></string>
+    <string name="behavior_vibrate_mode_switch_label"></string>
+    <string name="statistics_filter_reason_app_list"></string>
+    <string name="selftest_question_heard_notification"></string>
+    <string name="dialog_title_add_package_manual"></string>
+    <string name="behavior_system_modes_description"></string>
+    <string name="statistics_filter_reason_skip_mode"></string>
+    <string name="listener_warning_time_unknown"></string>
+    <string name="listener_warning_last_attempt"></string>
+    <string name="statistics_filter_reason_deduplication"></string>
+    <string name="selftest_error_0414_title"></string>
+    <string name="selftest_step7_external"></string>
+    <string name="selftest_error_0404_title"></string>
+    <string name="selftest_step7_warning"></string>
+    <string name="selftest_step2_requesting"></string>
+    <string name="selftest_error_code"></string>
+    <string name="selftest_step1_title"></string>
+    <string name="dev_reset_statistics_title"></string>
+    <string name="rules_quick_strings_action_disable_value" translatable="false"></string>
+    <string name="selftest_step1_rebinding"></string>
+    <string name="listener_status_disconnected"></string>
+    <string name="selftest_error_0412_title"></string>
+    <string name="selftest_step5_fail"></string>
 </resources>
