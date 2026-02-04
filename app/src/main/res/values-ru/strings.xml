@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SpeakThat!</string>
     <string name="service_name">SpeakThat Чтение Уведомлений</string>
@@ -9,7 +10,7 @@
     <string name="permission_read_external_storage">Используется для импорта /экспорта настроек приложения и файлов конфигурации. Позволяет пользователям создавать резервные копии и восстанавливать свои настройки. Доступ к персональным данным отсутствует.</string>
     <string name="permission_needed">Требуется доступ к уведомлениями</string>
     <string name="permission_description">Приложению SpeakThat! Требуется доступ к вашим уведомлениям, чтобы озвучивать их. Это разрешение необходимо для работы приложения.</string>
-    <string name="master_switch_battery_tip">💡 Turn off when not needed to save battery</string>
+    <string name="master_switch_battery_tip">💡 Выключайте, когда не используете, для экономии заряда</string>
     <string name="open_settings">Permission Settings</string>
     <string name="service_enabled">Notification Reader: Enabled</string>
     <string name="service_disabled">Notification Reader: Disabled</string>
@@ -93,7 +94,7 @@
     <string name="persistent_notification_filtering_title">🔇 Persistent/Silent Notification Filtering</string>
     <string name="persistent_notification_filtering_description">Skip notifications that are persistent (ongoing) or silent (no sound/vibration)</string>
     <string name="enable_persistent_filtering">Enable persistent/silent notification filtering</string>
-    <string name="persistent_filtering_help">💡 Persistent notifications are ongoing (like music controls, navigation, etc.) and silent notifications have no sound/vibration. This option helps reduce notification spam from background services.</string>
+    <string name="persistent_filtering_help">Постоянные оповещения поступают (например управление музыкой, навигация и т.д.), а заглушенные уведомления не издают звуков/вибрации. Этот параметр помогает снизить засорение уведомлений фоновыми службами.</string>
     <!-- Individual Persistent Filtering Categories -->
     <string name="filter_persistent_notifications">Filter persistent notifications</string>
     <string name="filter_silent_notifications">Filter silent notifications</string>
@@ -287,8 +288,8 @@
     <string name="rule_logic_and">and</string>
     <string name="rule_logic_or">or</string>
     <string name="rule_logic_xor">either</string>
-    <string name="rule_logic_separator">, </string>
-    <string name="rule_logic_final_separator">, and </string>
+    <string name="rule_logic_separator">,</string>
+    <string name="rule_logic_final_separator">, and</string>
     <!-- Critical Hardcoded Strings - Activity Titles -->
     <string name="title_behavior_settings">Behavior Settings</string>
     <string name="title_general_settings">General Settings</string>
@@ -498,7 +499,6 @@
     <string name="rule_action_custom_speech_format">Apply custom speech format</string>
     <string name="rule_action_force_private">Force private mode</string>
     <string name="rule_action_override_private">Override private mode</string>
-
     <!-- Action Configuration -->
     <string name="action_custom_speech_format_title">Apply Custom Speech Format</string>
     <string name="action_custom_speech_format_description">Read this notification using a custom speech format.</string>
@@ -542,17 +542,14 @@
     <string name="speech_placeholder_channel_label">{channel}</string>
     <string name="speech_placeholder_channel_desc">Notification channel ID</string>
     <string name="action_skip_notification_title">Skip this notification</string>
-
     <!-- Rule validation: battery/charging -->
     <string name="rule_error_invalid_battery_mode">Battery mode must be above or below</string>
     <string name="rule_error_invalid_battery_percentage">Battery percentage must be between 0 and 100</string>
     <string name="rule_error_invalid_charging_status">Charging status must be charging or discharging</string>
-
     <!-- Trigger menu labels -->
     <string name="trigger_bluetooth_device_connected">Bluetooth Device Connected</string>
     <string name="trigger_screen_state_title">Screen State (On/Off)</string>
     <string name="trigger_wifi_network_connected">WiFi Network Connected</string>
-
     <!-- Battery Percentage trigger -->
     <string name="trigger_battery_percentage_title">Battery Percentage</string>
     <string name="trigger_battery_percentage_description">Condition is considered met when the battery is above or below a certain percentage.</string>
@@ -561,14 +558,12 @@
     <string name="trigger_battery_mode_below">Below</string>
     <string name="trigger_battery_percentage_default">Selected value: 50%</string>
     <string name="trigger_battery_percentage_value">Selected value: %d%%</string>
-
     <!-- Charging Status trigger -->
     <string name="trigger_charging_status_title">Charging Status</string>
     <string name="trigger_charging_status_description">Condition is considered met when your device is being charged.</string>
     <string name="trigger_charging_status_label">Status</string>
     <string name="trigger_battery_status_charging">Charging</string>
     <string name="trigger_battery_status_discharging">Discharging</string>
-
     <!-- Battery trigger descriptions -->
     <string name="rule_trigger_battery_above">Battery is above %d%%</string>
     <string name="rule_trigger_battery_below">Battery is below %d%%</string>
@@ -578,39 +573,32 @@
     <string name="rule_exception_battery_below">Battery is below %d%%</string>
     <string name="rule_exception_battery_charging">Device is charging</string>
     <string name="rule_exception_battery_discharging">Device is discharging</string>
-
     <!-- Notification Contains trigger -->
     <string name="trigger_notification_contains_title">Notification Contains</string>
     <string name="trigger_notification_contains_description">Condition will be considered met when a specific word or phrase is found in the notification.</string>
     <string name="trigger_notification_contains_hint">Enter word or phrase</string>
     <string name="trigger_notification_contains_case_sensitive">Case-sensitive</string>
-
     <string name="rule_trigger_notification_contains">Notification contains "%1$s"</string>
     <string name="rule_trigger_notification_not_contains">Notification does not contain "%1$s"</string>
     <string name="rule_exception_notification_contains">Notification contains "%1$s"</string>
     <string name="rule_exception_notification_not_contains">Notification does not contain "%1$s"</string>
     <string name="rule_trigger_case_sensitive_suffix"> (case-sensitive)</string>
     <string name="rule_exception_case_sensitive_suffix"> (case-sensitive)</string>
-
     <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
     <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
-
     <!-- Notification From trigger -->
     <string name="trigger_notification_from_title">Уведомление от</string>
     <string name="trigger_notification_from_description">Условие считается выполненным, когда входящее уведомление от выбранного приложения.</string>
     <string name="trigger_notification_from_manage_apps">Управление приложениями</string>
     <string name="trigger_notification_from_selected_count">Выбрано: %1$d приложений</string>
     <string name="trigger_notification_from_selected_count_default">Выбрано: 0 приложений</string>
-
     <string name="rule_trigger_notification_from_single">Уведомление от %1$s</string>
     <string name="rule_trigger_notification_from_multiple">Уведомление от одного из %1$d приложений</string>
     <string name="rule_trigger_notification_from_not">%1$s (инвертировано)</string>
     <string name="rule_exception_notification_from_single">Уведомление от %1$s</string>
     <string name="rule_exception_notification_from_multiple">Уведомление от одного из %1$d приложений</string>
     <string name="rule_exception_notification_from_not">%1$s (инвертировано)</string>
-
     <string name="rule_error_invalid_notification_from_apps">Выбор приложения для уведомлений недействителен</string>
-
     <!-- Foreground App trigger -->
     <string name="trigger_foreground_app_title">Foreground App</string>
     <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>
@@ -618,14 +606,12 @@
     <string name="trigger_foreground_app_selected_count">Selected: %1$d apps</string>
     <string name="trigger_foreground_app_selected_count_default">Selected: 0 apps</string>
     <string name="trigger_foreground_app_accessibility_required">Please go to General Settings and enable the Accessibility Permission</string>
-
     <string name="rule_trigger_foreground_app_single">Foreground app is %1$s</string>
     <string name="rule_trigger_foreground_app_multiple">Foreground app is one of %1$d apps</string>
     <string name="rule_trigger_foreground_app_not">%1$s (inverted)</string>
     <string name="rule_exception_foreground_app_single">Foreground app is %1$s</string>
     <string name="rule_exception_foreground_app_multiple">Foreground app is one of %1$d apps</string>
     <string name="rule_exception_foreground_app_not">%1$s (inverted)</string>
-
     <string name="rule_error_invalid_foreground_apps">Foreground app selection is invalid</string>
     <string name="rules_migration_banner_title">Rules migration notice</string>
     <string name="rules_migration_banner_body_ok">Rules migrated: %1$d. Please review your rules for accuracy.</string>
@@ -679,4 +665,123 @@
     <string name="tidy_speech_description">Улучшайте речь, удаляя невербальные символы, такие как эмодзи, из озвучиваемых уведомлений</string>
     <string name="tidy_speech_remove_emojis_title">Удалить эмодзи</string>
     <string name="tidy_speech_remove_emojis_description">Удалить эмодзи и другие символы из озвучиваемых уведомлений</string>
+    <string name="tts_engine_failure_title">Движок TTS недоступен</string>
+    <string name="behavior_queue_mode">Очередь (закончить текущее, затем читать новое)</string>
+    <string name="recommendation_lower_audio">Рекомендуется приглушение звука</string>
+    <string name="button_cancel">Отмена</string>
+    <string name="button_clear_analytics">Очистить аналитику</string>
+    <string name="behavior_media_pause">Пауза — Приостанавливать медиа во время чтения</string>
+    <string name="dialog_title_edit_media_exception_app">Изменить приложение-исключение медиа</string>
+    <string name="update_banner_body">Готова новая версия (%1$s). Нажмите, чтобы открыть обновление.</string>
+    <string name="button_clear_crash_logs">Очистить журналы сбоев</string>
+    <string name="recommendation_smart_mode">Рекомендуется умный режим</string>
+    <string name="behavior_priority_apps_description">Эти приложения прервут текущее уведомление. Все остальные встанут в очередь.</string>
+    <string name="dialog_title_edit_app_filter">Изменить фильтр приложений</string>
+    <string name="behavior_media_silence">Тишина — Не читать во время воспроизведения медиа</string>
+    <string name="behavior_calls_benefits">Преимущества\n\n• Предотвращает прерывания во время важных звонков\n• Соблюдает конфиденциальность вашего разговора\n• Работает со всеми типами звонков\n• Автоматическое определение состояния вызова</string>
+    <string name="tts_engine_info_title">Информация о движке TTS</string>
+    <string name="audio_ducking_disabled_title">Функция приглушения звука</string>
+    <string name="button_ok">ОК</string>
+    <string name="tts_engine_restart_required">Необходимо перезапустить SpeakThat для применения нового движка TTS. Перезапустить сейчас?</string>
+    <string name="button_close">Закрыть</string>
+    <string name="quick_settings_tile_label">SpeakThat!</string>
+    <string name="behavior_ducking_fallback_manual">Ручное управление громкостью</string>
+    <string name="button_re_detect">Повторное обнаружение</string>
+    <string name="wifi_compatibility_warning_add_anyway">Всё равно добавить правило</string>
+    <string name="tts_engine_label">Движок TTS</string>
+    <string name="behavior_ducking_test_message">Проверка корректности работы запросов аудиофокуса на вашем устройстве...</string>
+    <string name="button_force_test_crash">Вызвать тестовый сбой</string>
+    <string name="tts_onboarding_language_theme">Выберите предпочитаемый язык и тему чтобы начать пользоваться SpeakThat.</string>
+    <string name="button_clear">Очистить</string>
+    <string name="behavior_priority_apps">⚡ Приоритетные приложения</string>
+    <string name="wifi_compatibility_warning_open_github">Открыть Github</string>
+    <string name="dialog_message_add_package_manual">Введите имя пакета, чтобы добавить его в список.</string>
+    <string name="behavior_ducking_fallback_tip">Приложение автоматически использует системное приглушение, если оно доступно, или плавное ручное приглушение в качестве резервного варианта для максимальной совместимости.</string>
+    <string name="behavior_ducking_fallback_pause">Вместо этого ставить на паузу</string>
+    <string name="button_save">Сохранить</string>
+    <string name="update_notification_channel_description">Оповещения о новых версиях SpeakThat в сборке GitHub.</string>
+    <string name="quick_settings_tile_disabled">Выключено</string>
+    <string name="behavior_ducking_fallback_pause_desc">Полностью останавливать медиа, если аудиофокус не срабатывает (более надежно)</string>
+    <string name="behavior_calls_description">Не читать уведомления, когда вы разговариваете по телефону</string>
+    <string name="dialog_title_import_filter_configuration">Импорт конфигурации фильтров</string>
+    <string name="behavior_skip_mode">Пропуск (игнорировать новые во время чтения)</string>
+    <string name="audio_ducking_disabled_enable">Включить приглушение звука</string>
+    <string name="update_notification_channel_name">Обновления SpeakThat</string>
+    <string name="update_banner_title">Доступно обновление: %1$s</string>
+    <string name="dialog_title_content_cap">Ограничение длины текста</string>
+    <string name="behavior_audio_checkbox">Учитывать звуковой режим (только звук)</string>
+    <string name="button_reset_cache">Сбросить кэш</string>
+    <string name="dialog_title_notification_deduplication">Удаление дубликатов уведомлений</string>
+    <string name="button_restart_app">Перезапустить</string>
+    <string name="app_picker_manual_placeholder">Приложение вручную</string>
+    <string name="behavior_interrupt_mode">Прерывание (остановить текущее, сразу читать новое)</string>
+    <string name="behavior_media_lower">Приглушение — Временно снижать громкость медиа</string>
+    <string name="wifi_compatibility_warning_create_anyway">Всё равно создать правило</string>
+    <string name="dialog_title_edit_word_swap">Изменить замену слов</string>
+    <string name="behavior_calls_checkbox">Учитывать телефонные звонки</string>
+    <string name="wifi_compatibility_warning_nevermind">Неважно</string>
+    <string name="tts_engine_system_default">Системный по-умолчанию</string>
+    <string name="behavior_ducking_device_tip">Если приглушение работает плохо: попробуйте разные аудиопотоки в настройках голоса («Голосовой вызов» или «Уведомления» часто работают лучше всего). Избегайте потока «Медиа», так как он может приглушать голос синтезатора вместе с музыкой.</string>
+    <string name="master_switch_battery_tip_no_emoji">Выключать когда не используется для экономии батареи</string>
+    <string name="behavior_media_description">Управление обработкой уведомлений при воспроизведении музыки или видео</string>
+    <string name="behavior_ducking_volume">Громкость приглушения</string>
+    <string name="quick_settings_tile_disabled_toast">SpeakThat выключен через Быстрые Настройки</string>
+    <string name="dialog_title_honour_phone_calls">Учитывать телефонные звонки</string>
+    <string name="tts_engine_failure_spoken">Кстати, SpeakThat не смог использовать выбранный движок TTS (текст-в-речь). Пожалуйста откройте Голосовые Параметры чтобы выбрать другой.</string>
+    <string name="behavior_ducking_test_button">Тестировать приглушение</string>
+    <string name="wifi_compatibility_warning_title">Примечание о совместимости WiFi</string>
+    <string name="behavior_ducking_test_success">✅ Ваше устройство хорошо поддерживает приглушение звука!</string>
+    <string name="section_media_behavior">Поведение медиа</string>
+    <string name="update_notification_title">Доступно обновление: %1$s</string>
+    <string name="dialog_title_smart_media_filter">Умный фильтр медиа-уведомлений</string>
+    <string name="dialog_title_edit_media_important_keyword">Изменить важное ключевое слово медиа</string>
+    <string name="dialog_error_package_empty">Имя пакета не может быть пустым</string>
+    <string name="tts_onboarding_rules">Настройте умные правила, которые будут автоматически определять когда уведомления будут читаться в зависимости от ваших потребностей. Например, читать уведомления только когда подключены наушники, или пропускать уведомления когда экран включен.</string>
+    <string name="behavior_media_ignore">Игнорировать — Продолжать как обычно</string>
+    <string name="audio_ducking_disabled_message">Приглушение звука работает по-разному на разных устройствах. Некоторые устройства могут некорректно реагировать на изменения громкости, что может повлиять на громкость синтеза речи.\n\nВы все равно можете включить эту функцию, но имейте в виду, что она может работать нестабильно.</string>
+    <string name="update_notification_text">Нажмите, чтобы скачать и установить последнюю версию.</string>
+    <string name="behavior_calls_title">Учитывать телефонные звонки</string>
+    <string name="update_banner_action">Обновить сейчас</string>
+    <string name="open_system_tts_settings">Открыть системные настройки TTS</string>
+    <string name="wifi_compatibility_warning_message">Некоторые версии Android имеют ограничения безопасности для запрета приложениям детектирования определенных названий сетей WiFi. Хотя SpeakThat на данный момент может найти вашу WiFi сеть, этот функционал может не всегда работать надежно (особенно когда приложение в фоне).\n\nПравило откатится к определению состояния соединения WiFi если попытка определения SSID будет неудачной, но это может работать не совсем корректно.\n\nТем не менее, сделать это правильно возможно. Если вы хороший разработчик, пожалуйста внесите свой вклад на GitHub.</string>
+    <string name="behavior_audio_description">Читать уведомления только тогда, когда устройство находится в режиме «Звук» (не «Без звука» или «Вибрация»)</string>
+    <string name="behavior_ducking_enhanced_warning">⚠️ «Приглушение звука» работает по-разному на разных устройствах и версиях Android. Некоторые устройства могут некорректно приглушать определенные приложения или аудиопотоки.</string>
+    <string name="toast_language_restarting">Перезапуск приложения с новым языком...</string>
+    <string name="dialog_error_package_exists">Этот пакет уже есть в списке</string>
+    <string name="dialog_title_edit_word_filter">Изменить фильтр слов</string>
+    <string name="button_export_report">Экспорт отчёта</string>
+    <string name="quick_settings_tile_error_toast">Ошибки переключения SpeakThat</string>
+    <string name="tts_engine_failure_message">SpeakThat не смог использовать выбранный движок TTS. Возможно он был удалён. Используется системный движок по-умолчанию.</string>
+    <string name="action_add_package_manual">Добавить пакет</string>
+    <string name="section_notification_behavior">Поведение уведомлений</string>
+    <string name="behavior_ducking_fallback_manual_desc">Использовать ручную регулировку громкости (может работать не на всех устройствах)</string>
+    <string name="behavior_ducking_test_success_title">Тест завершен</string>
+    <string name="behavior_audio_recommendation">Рекомендуется: включить эту функцию</string>
+    <string name="dialog_title_edit_filtered_media_app">Изменить фильтруемое медиа-приложение</string>
+    <string name="behavior_ducking_tip">Совет: Более низкие значения делают медиа тише во время уведомлений</string>
+    <string name="dialog_message_language_changed">Язык приложения был изменен с %1$s на %2$s.\n\n• Применить сейчас: Немедленно обновляет этот экран\n• Перезапустить: Гарантирует использование нового языка на всех экранах и в службах\n\nДля наилучшей работы мы рекомендуем перезапустить приложение.</string>
+    <string name="dialog_success_package_added">Пакет успешно добавлен</string>
+    <string name="behavior_smart_mode">Умный режим (приоритетные прерывают, остальные в очередь)</string>
+    <string name="rule_trigger_wifi_disconnected_android15">не подключено к %1$s (Android 15+: любой WiFi)</string>
+    <string name="audio_ducking_disabled_ok">Понятно</string>
+    <string name="behavior_calls_recommendation">Рекомендация для большинства: включить эту функцию</string>
+    <string name="dialog_title_add_package_manual">Добавить пакет вручную</string>
+    <string name="behavior_ducking_test_warning">⚠️ Ваше устройство может иметь ограниченную поддержку приглушения звука. Некоторые приложения могут некорректно реагировать на изменение громкости.</string>
+    <string name="quick_settings_tile_enabled_toast">SpeakThat включён через Быстрые Настройки</string>
+    <string name="button_export_crash_logs">Экспорт журналов сбоев</string>
+    <string name="behavior_ducking_test_title">Проверить совместимость приглушения звука</string>
+    <string name="dialog_title_app_filter_help">📱 Справка по фильтру приложений</string>
+    <string name="behavior_ducking_warning">⚠️ На некоторых устройствах снижение громкости медиа может также снижать громкость уведомлений. Если уведомления плохо слышно, попробуйте режим «Пауза» или измените настройки TTS.</string>
+    <string name="button_apply_now">Применить сейчас</string>
+    <string name="dialog_title_language_changed">Язык изменён</string>
+    <string name="behavior_ducking_fallback_title">Резервная стратегия</string>
+    <string name="quick_settings_tile_enabled">Включено</string>
+    <string name="behavior_audio_title">Учитывать звуковой режим</string>
+    <string name="behavior_notification_description">Управление обработкой уведомлений, когда одно уже читается</string>
+    <string name="behavior_ducking_test_warning_title">Тест завершен</string>
+    <string name="toast_language_manual_restart">Язык будет полностью применён после перезапуска приложения</string>
+    <string name="behavior_ducking_description">Настройка громкости медиа во время чтения уведомлений</string>
+    <string name="rule_trigger_wifi_connected_android15">подключено к %1$s (Android 15+: любой WiFi)</string>
+    <string name="behavior_ducking_fallback_description">Выберите, что делать, если аудиофокус на вашем устройстве не срабатывает</string>
+    <string name="tts_engine_restart_confirm">Перезапуск</string>
 </resources>
