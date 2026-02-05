@@ -5694,7 +5694,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 InAppLogger.log("Service", "Media behavior settings updated - mode: $mediaBehavior, ducking volume: $duckingVolume%, fallback: $duckingFallbackStrategy")
             }
             KEY_APP_LIST_MODE, KEY_APP_LIST, KEY_APP_PRIVATE_FLAGS, 
-            KEY_WORD_LIST_MODE, KEY_WORD_BLACKLIST, KEY_WORD_BLACKLIST_PRIVATE, KEY_WORD_REPLACEMENTS -> {
+            KEY_WORD_LIST_MODE, KEY_WORD_BLACKLIST, KEY_WORD_BLACKLIST_PRIVATE, KEY_WORD_REPLACEMENTS,
+            KEY_URL_HANDLING_MODE, KEY_URL_REPLACEMENT_TEXT -> {
                 // Reload filter settings
                 loadFilterSettings()
                 Log.d(TAG, "Filter settings updated")
