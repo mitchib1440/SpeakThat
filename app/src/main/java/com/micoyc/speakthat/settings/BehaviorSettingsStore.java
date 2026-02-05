@@ -74,6 +74,9 @@ public class BehaviorSettingsStore {
 
     private final SharedPreferences prefs;
     private final SharedPreferences behaviorPrefs;
+    
+    // Flag to prevent preference writes during initialization (fixes activity recreation loop)
+    private boolean isInitializing = true;
 
     public BehaviorSettingsStore(Context context) {
         prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -86,6 +89,22 @@ public class BehaviorSettingsStore {
 
     public SharedPreferences behaviorPrefs() {
         return behaviorPrefs;
+    }
+    
+    /**
+     * Check if the store is currently initializing (loading settings).
+     * During initialization, sections should NOT write to SharedPreferences to avoid
+     * triggering preference change listeners that cause activity recreation loops.
+     */
+    public boolean isInitializing() {
+        return isInitializing;
+    }
+    
+    /**
+     * Mark initialization as complete. After this, sections can freely write preferences.
+     */
+    public void setInitializationComplete() {
+        isInitializing = false;
     }
 
     public void trackDialogUsage(String dialogType) {

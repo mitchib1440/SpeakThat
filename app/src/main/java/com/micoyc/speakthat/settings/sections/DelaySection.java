@@ -69,6 +69,10 @@ public class DelaySection implements BehaviorSettingsSection {
     }
 
     private void saveDelayBeforeReadout(int delaySeconds) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putInt(BehaviorSettingsStore.KEY_DELAY_BEFORE_READOUT, delaySeconds).apply();
         InAppLogger.log("BehaviorSettings", "Delay before readout changed to: " + delaySeconds + " seconds");
     }

@@ -151,10 +151,18 @@ public class NotificationBehaviorSection implements BehaviorSettingsSection {
     }
 
     private void saveBehaviorMode(String mode) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putString(BehaviorSettingsStore.KEY_NOTIFICATION_BEHAVIOR, mode).apply();
     }
 
     private void savePriorityApps() {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         Set<String> appsSet = new HashSet<>(priorityAppsList);
         store.prefs().edit().putStringSet(BehaviorSettingsStore.KEY_PRIORITY_APPS, appsSet).apply();
     }

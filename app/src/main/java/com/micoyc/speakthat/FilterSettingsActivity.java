@@ -50,6 +50,9 @@ public class FilterSettingsActivity extends AppCompatActivity {
     // File picker for import
     private ActivityResultLauncher<Intent> importFileLauncher;
     
+    // Flag to prevent preference writes during initialization (fixes activity recreation loop)
+    private boolean isLoadingSettings = false;
+    
     // SharedPreferences keys
     private static final String PREFS_NAME = "SpeakThatPrefs";
     private static final String KEY_DARK_MODE = "dark_mode";
@@ -175,7 +178,12 @@ public class FilterSettingsActivity extends AppCompatActivity {
         setLoading(true);
 
         initializeUI();
+        
+        // Set flag to prevent preference writes during initialization
+        isLoadingSettings = true;
         loadSettings();
+        isLoadingSettings = false;
+        
         initializeFilePicker();
 
         // Hide loading after initialization
@@ -195,12 +203,14 @@ public class FilterSettingsActivity extends AppCompatActivity {
     }
 
     private void applySavedTheme() {
-        boolean isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, false); // Default to light mode
+        boolean isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, true); // Default to dark mode
+        int desiredMode = isDarkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
+        int currentMode = AppCompatDelegate.getDefaultNightMode();
         
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        // Only set the night mode if it's different from the current mode
+        // This prevents unnecessary configuration changes that cause activity recreation loops
+        if (currentMode != desiredMode) {
+            AppCompatDelegate.setDefaultNightMode(desiredMode);
         }
     }
 
@@ -1195,6 +1205,10 @@ public class FilterSettingsActivity extends AppCompatActivity {
     }
 
     private void saveAppListMode(String mode) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_APP_LIST_MODE, mode);
         editor.apply();
@@ -1202,6 +1216,10 @@ public class FilterSettingsActivity extends AppCompatActivity {
     
     private void saveWordListMode(String mode) {
         wordListMode = mode;
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_WORD_LIST_MODE, mode);
         editor.apply();
@@ -1209,6 +1227,10 @@ public class FilterSettingsActivity extends AppCompatActivity {
     
     private void saveUrlHandlingMode(String mode) {
         urlHandlingMode = mode;
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_URL_HANDLING_MODE, mode);
         editor.apply();
@@ -1216,12 +1238,20 @@ public class FilterSettingsActivity extends AppCompatActivity {
     
     private void saveUrlReplacementText(String text) {
         urlReplacementText = text;
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_URL_REPLACEMENT_TEXT, text);
         editor.apply();
     }
 
     private void saveTidySpeechRemoveEmojis(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, enabled);
         editor.apply();
@@ -1347,42 +1377,70 @@ public class FilterSettingsActivity extends AppCompatActivity {
     }
     
     private void saveMediaFilteringEnabled(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_MEDIA_FILTERING_ENABLED, enabled);
         editor.apply();
     }
     
     private void savePersistentFilteringEnabled(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_PERSISTENT_FILTERING_ENABLED, enabled);
         editor.apply();
     }
     
     private void saveFilterPersistent(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_FILTER_PERSISTENT, enabled);
         editor.apply();
     }
     
     private void saveFilterSilent(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_FILTER_SILENT, enabled);
         editor.apply();
     }
     
     private void saveFilterForegroundServices(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_FILTER_FOREGROUND_SERVICES, enabled);
         editor.apply();
     }
     
     private void saveFilterLowPriority(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_FILTER_LOW_PRIORITY, enabled);
         editor.apply();
     }
     
     private void saveFilterSystemNotifications(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_FILTER_SYSTEM_NOTIFICATIONS, enabled);
         editor.apply();
@@ -1460,7 +1518,9 @@ public class FilterSettingsActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        // Simply close this activity instead of navigating to parent
+        // This prevents the activity recreation loop caused by parent activity chain
+        finish();
         return true;
     }
 

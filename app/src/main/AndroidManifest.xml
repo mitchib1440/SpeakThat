@@ -120,18 +120,15 @@
         <!-- Settings Activities -->
         <activity
             android:name=".SettingsActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:exported="false" />
 
         <activity
             android:name=".GeneralSettingsActivity"
-            android:exported="false"
-            android:parentActivityName=".SettingsActivity" />
+            android:exported="false" />
 
         <activity
             android:name=".settings.BehaviorSettingsActivity"
-            android:exported="false"
-            android:parentActivityName=".SettingsActivity" />
+            android:exported="false" />
 
 
 
@@ -172,13 +169,11 @@
 
         <activity
             android:name=".VoiceSettingsActivity"
-            android:exported="false"
-            android:parentActivityName=".SettingsActivity" />
+            android:exported="false" />
 
         <activity
             android:name=".FilterSettingsActivity"
-            android:exported="false"
-            android:parentActivityName=".SettingsActivity" />
+            android:exported="false" />
 
         <activity
             android:name=".AppPickerActivity"

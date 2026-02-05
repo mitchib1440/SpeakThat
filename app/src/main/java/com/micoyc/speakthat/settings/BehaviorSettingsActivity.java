@@ -52,6 +52,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
         for (BehaviorSettingsSection section : sections) {
             section.load();
         }
+        
+        // Mark initialization complete - sections can now save preferences without causing loops
+        store.setInitializationComplete();
 
         if (cooldownSection != null) {
             cooldownSection.testAppListFunctionality();
@@ -127,17 +130,22 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
     }
 
     private void applySavedTheme() {
-        boolean isDarkMode = store.prefs().getBoolean(BehaviorSettingsStore.KEY_DARK_MODE, false);
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        boolean isDarkMode = store.prefs().getBoolean(BehaviorSettingsStore.KEY_DARK_MODE, true); // Default to dark mode
+        int desiredMode = isDarkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
+        int currentMode = AppCompatDelegate.getDefaultNightMode();
+        
+        // Only set the night mode if it's different from the current mode
+        // This prevents unnecessary configuration changes that cause activity recreation loops
+        if (currentMode != desiredMode) {
+            AppCompatDelegate.setDefaultNightMode(desiredMode);
         }
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        // Simply close this activity instead of navigating to parent
+        // This prevents the activity recreation loop caused by parent activity chain
+        finish();
         return true;
     }
 

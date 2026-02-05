@@ -165,6 +165,10 @@ public class CustomAppNamesSection implements BehaviorSettingsSection, CustomApp
     }
 
     private void saveCustomAppNames() {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         try {
             JSONArray jsonArray = new JSONArray();
             for (CustomAppNameAdapter.CustomAppNameEntry entry : customAppNamesList) {

@@ -135,11 +135,19 @@ public class MediaBehaviorSection implements BehaviorSettingsSection {
     }
 
     private void saveMediaBehavior(String mediaBehavior) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putString(BehaviorSettingsStore.KEY_MEDIA_BEHAVIOR, mediaBehavior).apply();
         InAppLogger.log("BehaviorSettings", "Media behavior changed to: " + mediaBehavior);
     }
 
     private void saveDuckingVolume(int volume) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putInt(BehaviorSettingsStore.KEY_DUCKING_VOLUME, volume).apply();
         InAppLogger.log("BehaviorSettings", "Ducking volume changed to: " + volume + "%");
     }
@@ -149,6 +157,10 @@ public class MediaBehaviorSection implements BehaviorSettingsSection {
     }
 
     private void saveDuckingFallbackStrategy(String strategy) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putString(BehaviorSettingsStore.KEY_DUCKING_FALLBACK_STRATEGY, strategy).apply();
         InAppLogger.log("LowerAudio", "Ducking fallback strategy saved: " + strategy);
     }

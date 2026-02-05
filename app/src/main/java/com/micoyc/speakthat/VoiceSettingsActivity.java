@@ -89,6 +89,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     // TTS and data
     private TextToSpeech textToSpeech;
     private boolean isTtsReady = false;
+    
+    // Flag to prevent preference writes during initialization (fixes activity recreation loop)
+    private boolean isLoadingSettings = false;
     private List<Voice> availableVoices = new ArrayList<>();
     private List<Locale> availableLanguages = new ArrayList<>();
     private List<TextToSpeech.EngineInfo> availableEngines = new ArrayList<>();
@@ -138,11 +141,13 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
     private void applySavedTheme(SharedPreferences prefs) {
         boolean isDarkMode = prefs.getBoolean("dark_mode", true); // Default to dark mode
+        int desiredMode = isDarkMode ? androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES : androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
+        int currentMode = androidx.appcompat.app.AppCompatDelegate.getDefaultNightMode();
         
-        if (isDarkMode) {
-            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO);
+        // Only set the night mode if it's different from the current mode
+        // This prevents unnecessary configuration changes that cause activity recreation loops
+        if (currentMode != desiredMode) {
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(desiredMode);
         }
     }
 
@@ -207,7 +212,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        // Simply close this activity instead of navigating to parent
+        // This prevents the activity recreation loop caused by parent activity chain
+        finish();
         return true;
     }
 
@@ -1119,6 +1126,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     }
 
     private void loadSavedSettings() {
+        // Set flag to prevent preference writes during initialization
+        isLoadingSettings = true;
+        
         // Load speech rate
         currentSpeechRate = sharedPreferences.getFloat(KEY_SPEECH_RATE, DEFAULT_SPEECH_RATE);
         int speechRateProgress = (int) ((currentSpeechRate - 0.1f) * 100);
@@ -1224,6 +1234,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         
         // Initialize stream volume display
         updateStreamVolumeDisplay();
+        
+        // Mark initialization complete - saves can now happen
+        isLoadingSettings = false;
     }
 
     /**
@@ -2130,6 +2143,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     }
 
     private void saveSpeechRate(float speechRate) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putFloat(KEY_SPEECH_RATE, speechRate);
         editor.apply();
@@ -2137,6 +2154,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     }
 
     private void savePitch(float pitch) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putFloat(KEY_PITCH, pitch);
         editor.apply();
@@ -2144,6 +2165,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     }
 
     private void saveVoice(String voiceName) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         if (!voiceName.isEmpty()) {
             editor.putString(KEY_VOICE_NAME, voiceName);
@@ -2156,6 +2181,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     }
 
     private void saveLanguage(String language) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_LANGUAGE, language);
         editor.apply();
@@ -2163,6 +2192,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     }
 
     private void saveTtsLanguage(String languageCode) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         if (!"system".equals(languageCode)) {
             editor.putString(KEY_TTS_LANGUAGE, languageCode);
@@ -2175,6 +2208,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     }
 
     private void saveAudioUsage(int audioUsageIndex) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(KEY_AUDIO_USAGE, audioUsageIndex);
         editor.apply();
@@ -2182,6 +2219,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     }
 
     private void saveContentType(int contentTypeIndex) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(KEY_CONTENT_TYPE, contentTypeIndex);
         editor.apply();
@@ -2189,6 +2230,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     }
 
     private void saveAdvancedVoiceEnabled(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_SHOW_ADVANCED, enabled);
         editor.apply();
@@ -2196,6 +2241,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     }
 
     private void saveTtsVolume(float volume) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putFloat(KEY_TTS_VOLUME, volume);
         editor.apply();
@@ -2203,6 +2252,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     }
     
     private void saveSpeakerphoneEnabled(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_SPEAKERPHONE_ENABLED, enabled);
         editor.apply();
@@ -2300,6 +2353,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
      * Save TTS Engine selection and show restart dialog if changed
      */
     private void saveTtsEngine(String enginePackage) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
         String currentEngine = sharedPreferences.getString(KEY_TTS_ENGINE, "");
         
         SharedPreferences.Editor editor = sharedPreferences.edit();

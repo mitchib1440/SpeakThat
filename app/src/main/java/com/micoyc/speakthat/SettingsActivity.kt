@@ -48,11 +48,17 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun applySavedTheme(prefs: android.content.SharedPreferences) {
         val isDarkMode = prefs.getBoolean("dark_mode", true) // Default to dark mode
-        
-        if (isDarkMode) {
-            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES)
+        val desiredMode = if (isDarkMode) {
+            androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
         } else {
-            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO)
+            androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+        }
+        val currentMode = androidx.appcompat.app.AppCompatDelegate.getDefaultNightMode()
+        
+        // Only set the night mode if it's different from the current mode
+        // This prevents unnecessary configuration changes that cause activity recreation loops
+        if (currentMode != desiredMode) {
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(desiredMode)
         }
     }
     
@@ -240,12 +246,9 @@ class SettingsActivity : AppCompatActivity() {
     }
     
     override fun onSupportNavigateUp(): Boolean {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            onBackPressedDispatcher.onBackPressed()
-        } else {
-            @Suppress("DEPRECATION")
-            onBackPressed()
-        }
+        // Simply close this activity instead of navigating to parent
+        // This prevents the activity recreation loop caused by parent activity chain
+        finish()
         return true
     }
     

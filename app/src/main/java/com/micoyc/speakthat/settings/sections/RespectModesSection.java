@@ -141,36 +141,64 @@ public class RespectModesSection implements BehaviorSettingsSection {
     }
 
     private void saveHonourDoNotDisturb(boolean honour) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_HONOUR_DO_NOT_DISTURB, honour).apply();
         InAppLogger.log("BehaviorSettings", "Honour Do Not Disturb changed to: " + honour);
     }
 
     private void saveHonourSilentMode(boolean honour) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_HONOUR_SILENT_MODE, honour).apply();
         InAppLogger.log("BehaviorSettings", "Honour Silent Mode changed to: " + honour);
     }
 
     private void saveHonourVibrateMode(boolean honour) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_HONOUR_VIBRATE_MODE, honour).apply();
         InAppLogger.log("BehaviorSettings", "Honour Vibrate Mode changed to: " + honour);
     }
 
     private void saveHonourPhoneCalls(boolean honour) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_HONOUR_PHONE_CALLS, honour).apply();
         InAppLogger.log("BehaviorSettings", "Honour phone calls changed to: " + honour);
     }
 
     private void saveNotificationDeduplication(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_NOTIFICATION_DEDUPLICATION, enabled).apply();
         InAppLogger.log("BehaviorSettings", "Notification deduplication changed to: " + enabled);
     }
 
     private void saveDismissalMemoryEnabled(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_DISMISSAL_MEMORY_ENABLED, enabled).apply();
         InAppLogger.log("BehaviorSettings", "Dismissal memory enabled changed to: " + enabled);
     }
 
     private void saveDismissalMemoryTimeout(int timeoutMinutes) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putInt(BehaviorSettingsStore.KEY_DISMISSAL_MEMORY_TIMEOUT, timeoutMinutes).apply();
         InAppLogger.log("BehaviorSettings", "Dismissal memory timeout changed to: " + timeoutMinutes + " minutes");
     }

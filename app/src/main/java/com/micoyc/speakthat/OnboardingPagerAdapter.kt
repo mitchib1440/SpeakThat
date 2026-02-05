@@ -329,10 +329,17 @@ class OnboardingPagerAdapter(
                 sharedPreferences.edit().putBoolean("dark_mode", isChecked).apply()
                 
                 // Apply theme immediately
-                if (isChecked) {
-                    androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES)
+                val desiredMode = if (isChecked) {
+                    androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
                 } else {
-                    androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO)
+                    androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+                }
+                val currentMode = androidx.appcompat.app.AppCompatDelegate.getDefaultNightMode()
+                
+                // Only set the night mode if it's different from the current mode
+                // This prevents unnecessary configuration changes that cause activity recreation loops
+                if (currentMode != desiredMode) {
+                    androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(desiredMode)
                 }
                 
                 InAppLogger.log("OnboardingThemeSelector", "Theme changed to: ${if (isChecked) "dark" else "light"}")

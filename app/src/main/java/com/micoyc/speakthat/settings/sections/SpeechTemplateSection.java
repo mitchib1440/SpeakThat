@@ -194,11 +194,19 @@ public class SpeechTemplateSection implements BehaviorSettingsSection {
         if (templateKey == null || templateKey.isEmpty()) {
             templateKey = SpeechTemplateConstants.TEMPLATE_KEY_CUSTOM;
         }
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putString(BehaviorSettingsStore.KEY_SPEECH_TEMPLATE_KEY, templateKey).apply();
         InAppLogger.log("BehaviorSettings", "Speech template key saved: " + templateKey);
     }
 
     private void saveSpeechTemplate(String template) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putString(BehaviorSettingsStore.KEY_SPEECH_TEMPLATE, template).apply();
         InAppLogger.log("BehaviorSettings", "Speech template saved: " + template);
     }

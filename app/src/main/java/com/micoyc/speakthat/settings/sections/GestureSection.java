@@ -560,14 +560,26 @@ public class GestureSection implements BehaviorSettingsSection {
     }
 
     private void saveShakeToStopEnabled(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_SHAKE_TO_STOP_ENABLED, enabled).apply();
     }
 
     private void saveShakeThreshold(float threshold) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putFloat(BehaviorSettingsStore.KEY_SHAKE_THRESHOLD, threshold).apply();
     }
 
     private void saveShakeTimeoutSeconds(int timeoutSeconds) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         int validatedTimeout = timeoutSeconds;
         if (timeoutSeconds < 0 || (timeoutSeconds > 0 && timeoutSeconds < 5) || timeoutSeconds > 300) {
             validatedTimeout = 30;
@@ -585,14 +597,26 @@ public class GestureSection implements BehaviorSettingsSection {
     }
 
     private void saveWaveToStopEnabled(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_WAVE_TO_STOP_ENABLED, enabled).apply();
     }
 
     private void savePressToStopEnabled(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_PRESS_TO_STOP_ENABLED, enabled).apply();
     }
 
     private void saveWaveTimeoutSeconds(int timeoutSeconds) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         int validatedTimeout = timeoutSeconds;
         if (timeoutSeconds < 0 || (timeoutSeconds > 0 && timeoutSeconds < 5) || timeoutSeconds > 300) {
             validatedTimeout = 30;
@@ -610,6 +634,10 @@ public class GestureSection implements BehaviorSettingsSection {
     }
 
     private void saveWaveHoldDurationMs(int holdMs) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         int validatedHold = validateWaveHoldDurationMs(holdMs);
         if (validatedHold != holdMs) {
             binding.sliderWaveHold.setValue(validatedHold);
@@ -620,11 +648,19 @@ public class GestureSection implements BehaviorSettingsSection {
     }
 
     private void savePocketModeEnabled(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_POCKET_MODE_ENABLED, enabled).apply();
         InAppLogger.log("BehaviorSettings", "Pocket mode changed to: " + enabled);
     }
 
     private void saveWaveThreshold(float threshold) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         float validatedThreshold = validateWaveThreshold(threshold);
 
         if (validatedThreshold != threshold) {
@@ -711,6 +747,10 @@ public class GestureSection implements BehaviorSettingsSection {
     }
 
     private void saveWaveThresholdPercent(float percent) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         float clamped = (percent < 30f || percent > 90f) ? 60f : Math.max(30f, Math.min(90f, percent));
         if (clamped != percent) {
             Toast.makeText(

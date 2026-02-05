@@ -194,6 +194,10 @@ public class CooldownSection implements BehaviorSettingsSection {
     }
 
     private void saveCooldownApps() {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         try {
             JSONArray jsonArray = new JSONArray();
             for (CooldownAppAdapter.CooldownAppItem item : cooldownAppsList) {

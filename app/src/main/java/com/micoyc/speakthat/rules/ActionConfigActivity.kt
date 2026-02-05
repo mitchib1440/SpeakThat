@@ -58,9 +58,14 @@ class ActionConfigActivity : AppCompatActivity() {
     private fun applySavedTheme() {
         val sharedPreferences = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE)
         val isDarkMode = sharedPreferences.getBoolean("dark_mode", true) // Default to dark mode
-        AppCompatDelegate.setDefaultNightMode(
-            if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-        )
+        val desiredMode = if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+        val currentMode = AppCompatDelegate.getDefaultNightMode()
+        
+        // Only set the night mode if it's different from the current mode
+        // This prevents unnecessary configuration changes that cause activity recreation loops
+        if (currentMode != desiredMode) {
+            AppCompatDelegate.setDefaultNightMode(desiredMode)
+        }
     }
 
     private inline fun <reified T : java.io.Serializable> Intent.getSerializableExtraCompat(key: String): T? {

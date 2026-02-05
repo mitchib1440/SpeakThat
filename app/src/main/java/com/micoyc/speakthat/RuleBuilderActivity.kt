@@ -183,12 +183,14 @@ class RuleBuilderActivity : AppCompatActivity() {
     }
     
     private fun applySavedTheme() {
-        val isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, false)
+        val isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, true) // Default to dark mode
+        val desiredMode = if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+        val currentMode = AppCompatDelegate.getDefaultNightMode()
         
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        // Only set the night mode if it's different from the current mode
+        // This prevents unnecessary configuration changes that cause activity recreation loops
+        if (currentMode != desiredMode) {
+            AppCompatDelegate.setDefaultNightMode(desiredMode)
         }
     }
     

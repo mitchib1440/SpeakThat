@@ -154,21 +154,37 @@ public class ContentCapSection implements BehaviorSettingsSection {
     }
 
     private void saveContentCapMode(String mode) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putString(BehaviorSettingsStore.KEY_CONTENT_CAP_MODE, mode).apply();
         InAppLogger.log("BehaviorSettings", "Content Cap mode changed to: " + mode);
     }
 
     private void saveContentCapWordCount(int wordCount) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putInt(BehaviorSettingsStore.KEY_CONTENT_CAP_WORD_COUNT, wordCount).apply();
         InAppLogger.log("BehaviorSettings", "Content Cap word count changed to: " + wordCount);
     }
 
     private void saveContentCapSentenceCount(int sentenceCount) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putInt(BehaviorSettingsStore.KEY_CONTENT_CAP_SENTENCE_COUNT, sentenceCount).apply();
         InAppLogger.log("BehaviorSettings", "Content Cap sentence count changed to: " + sentenceCount);
     }
 
     private void saveContentCapTimeLimit(int timeLimit) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
         store.prefs().edit().putInt(BehaviorSettingsStore.KEY_CONTENT_CAP_TIME_LIMIT, timeLimit).apply();
         InAppLogger.log("BehaviorSettings", "Content Cap time limit changed to: " + timeLimit + " seconds");
     }

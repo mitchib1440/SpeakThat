@@ -39,10 +39,13 @@ public class TestSettingsActivity extends AppCompatActivity {
         // Apply saved theme
         mainPrefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         boolean isDarkMode = mainPrefs.getBoolean("dark_mode", true); // Default to dark mode
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        int desiredMode = isDarkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
+        int currentMode = AppCompatDelegate.getDefaultNightMode();
+        
+        // Only set the night mode if it's different from the current mode
+        // This prevents unnecessary configuration changes that cause activity recreation loops
+        if (currentMode != desiredMode) {
+            AppCompatDelegate.setDefaultNightMode(desiredMode);
         }
         
         // Initialize voice preferences
