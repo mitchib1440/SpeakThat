@@ -59,6 +59,10 @@ class SelfTestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
+        // Apply saved theme FIRST before anything else
+        val mainPrefs = getSharedPreferences("SpeakThatPrefs", Context.MODE_PRIVATE)
+        applySavedTheme(mainPrefs)
+        
         binding = ActivitySelftestBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
@@ -83,6 +87,22 @@ class SelfTestActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true
+    }
+
+    private fun applySavedTheme(prefs: SharedPreferences) {
+        val isDarkMode = prefs.getBoolean("dark_mode", true) // Default to dark mode
+        val desiredMode = if (isDarkMode) {
+            androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+        }
+        val currentMode = androidx.appcompat.app.AppCompatDelegate.getDefaultNightMode()
+        
+        // Only set the night mode if it's different from the current mode
+        // This prevents unnecessary configuration changes that cause activity recreation loops
+        if (currentMode != desiredMode) {
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(desiredMode)
+        }
     }
     
     private fun initializeSteps() {
