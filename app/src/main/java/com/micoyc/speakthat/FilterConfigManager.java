@@ -42,6 +42,21 @@ public class FilterConfigManager {
         public String urlHandlingMode;
         public String urlReplacementText;
         public boolean tidySpeechRemoveEmojis;
+        // Media filtering settings
+        public boolean mediaFilteringEnabled;
+        public Set<String> mediaFilterExceptedApps;
+        public Set<String> mediaFilterExceptedAppsPrivate;
+        public Set<String> mediaFilterImportantKeywords;
+        public Set<String> mediaFilterImportantKeywordsPrivate;
+        public Set<String> mediaFilteredApps;
+        public Set<String> mediaFilteredAppsPrivate;
+        // Persistent/silent filtering settings
+        public boolean persistentFilteringEnabled;
+        public boolean filterPersistent;
+        public boolean filterSilent;
+        public boolean filterForegroundServices;
+        public boolean filterLowPriority;
+        public boolean filterSystemNotifications;
         public String exportDate;
         public String appVersion;
         public String configVersion;
@@ -56,6 +71,21 @@ public class FilterConfigManager {
             this.urlHandlingMode = "domain_only";
             this.urlReplacementText = "";
             this.tidySpeechRemoveEmojis = false;
+            // Media filtering defaults
+            this.mediaFilteringEnabled = false;
+            this.mediaFilterExceptedApps = new HashSet<>();
+            this.mediaFilterExceptedAppsPrivate = new HashSet<>();
+            this.mediaFilterImportantKeywords = new HashSet<>();
+            this.mediaFilterImportantKeywordsPrivate = new HashSet<>();
+            this.mediaFilteredApps = new HashSet<>();
+            this.mediaFilteredAppsPrivate = new HashSet<>();
+            // Persistent/silent filtering defaults
+            this.persistentFilteringEnabled = false;
+            this.filterPersistent = true;
+            this.filterSilent = true;
+            this.filterForegroundServices = false;
+            this.filterLowPriority = false;
+            this.filterSystemNotifications = false;
             this.exportDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
             this.appVersion = "1.0"; // Static version for export compatibility
             this.configVersion = CONFIG_VERSION;
@@ -96,6 +126,8 @@ public class FilterConfigManager {
         public boolean advancedEnabled;  // NEW: Whether advanced options are enabled
         public int audioUsage;
         public int contentType;
+        public String ttsEngine;         // TTS engine package name
+        public boolean speakerphoneEnabled; // Force speakerphone output
         
         public VoiceConfig() {
             this.speechRate = 1.0f;
@@ -109,6 +141,8 @@ public class FilterConfigManager {
             this.advancedEnabled = false;    // Advanced options off by default
             this.audioUsage = 0;
             this.contentType = 0;
+            this.ttsEngine = "";             // Empty means use system default
+            this.speakerphoneEnabled = false; // Default to false
         }
     }
     
@@ -132,6 +166,7 @@ public class FilterConfigManager {
         public boolean notificationWhileReading; // Add notification while reading setting
         public boolean waveToStopEnabled;
         public int waveTimeoutSeconds;
+        public long waveHoldDurationMs; // Wave hold duration in milliseconds
         public boolean pocketModeEnabled;
         public String customAppNames;
         public String cooldownApps;
@@ -140,6 +175,9 @@ public class FilterConfigManager {
         public int contentCapWordCount;
         public int contentCapSentenceCount;
         public int contentCapTimeLimit;
+        public boolean notificationDeduplication; // Deduplication setting
+        public boolean dismissalMemoryEnabled; // Dismissal memory setting
+        public int dismissalMemoryTimeout; // Dismissal memory timeout in minutes
         
         public BehaviorConfig() {
             this.notificationBehavior = "interrupt";
@@ -160,6 +198,7 @@ public class FilterConfigManager {
             this.notificationWhileReading = false; // Default to false
             this.waveToStopEnabled = false;
             this.waveTimeoutSeconds = 30;
+            this.waveHoldDurationMs = 150; // Default wave hold duration
             this.pocketModeEnabled = false;
             this.customAppNames = "[]";
             this.cooldownApps = "[]";
@@ -168,6 +207,9 @@ public class FilterConfigManager {
             this.contentCapWordCount = 6;
             this.contentCapSentenceCount = 1;
             this.contentCapTimeLimit = 10;
+            this.notificationDeduplication = false; // Default to false
+            this.dismissalMemoryEnabled = true; // Default to true
+            this.dismissalMemoryTimeout = 15; // Default 15 minutes
         }
     }
     
@@ -303,6 +345,23 @@ public class FilterConfigManager {
         config.filters.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
         config.filters.tidySpeechRemoveEmojis = prefs.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false);
         
+        // Load media filtering settings
+        config.filters.mediaFilteringEnabled = prefs.getBoolean("media_filtering_enabled", false);
+        config.filters.mediaFilterExceptedApps = new HashSet<>(prefs.getStringSet("media_filter_excepted_apps", new HashSet<>()));
+        config.filters.mediaFilterExceptedAppsPrivate = new HashSet<>(prefs.getStringSet("media_filter_excepted_apps_private", new HashSet<>()));
+        config.filters.mediaFilterImportantKeywords = new HashSet<>(prefs.getStringSet("media_filter_important_keywords", new HashSet<>()));
+        config.filters.mediaFilterImportantKeywordsPrivate = new HashSet<>(prefs.getStringSet("media_filter_important_keywords_private", new HashSet<>()));
+        config.filters.mediaFilteredApps = new HashSet<>(prefs.getStringSet("media_filtered_apps", new HashSet<>()));
+        config.filters.mediaFilteredAppsPrivate = new HashSet<>(prefs.getStringSet("media_filtered_apps_private", new HashSet<>()));
+        
+        // Load persistent/silent filtering settings
+        config.filters.persistentFilteringEnabled = prefs.getBoolean("persistent_filtering_enabled", false);
+        config.filters.filterPersistent = prefs.getBoolean("filter_persistent", true);
+        config.filters.filterSilent = prefs.getBoolean("filter_silent", true);
+        config.filters.filterForegroundServices = prefs.getBoolean("filter_foreground_services", false);
+        config.filters.filterLowPriority = prefs.getBoolean("filter_low_priority", false);
+        config.filters.filterSystemNotifications = prefs.getBoolean("filter_system_notifications", false);
+        
         // Load voice settings
         config.voice.speechRate = voicePrefs.getFloat("speech_rate", 1.0f);
         config.voice.pitch = voicePrefs.getFloat("pitch", 1.0f);
@@ -315,6 +374,8 @@ public class FilterConfigManager {
         config.voice.advancedEnabled = voicePrefs.getBoolean("show_advanced_voice", false); // NEW
         config.voice.audioUsage = voicePrefs.getInt("audio_usage", 0);
         config.voice.contentType = voicePrefs.getInt("content_type", 0);
+        config.voice.ttsEngine = voicePrefs.getString("tts_engine_package", "");
+        config.voice.speakerphoneEnabled = voicePrefs.getBoolean("speakerphone_enabled", false);
         
         // Load behavior settings
         config.behavior.notificationBehavior = prefs.getString("notification_behavior", "interrupt");
@@ -337,6 +398,7 @@ public class FilterConfigManager {
         config.behavior.notificationWhileReading = prefs.getBoolean("notification_while_reading", false); // Add notification while reading
         config.behavior.waveToStopEnabled = prefs.getBoolean("wave_to_stop_enabled", false);
         config.behavior.waveTimeoutSeconds = prefs.getInt("wave_timeout_seconds", 30);
+        config.behavior.waveHoldDurationMs = prefs.getInt("wave_hold_duration_ms", 150); // Read as int, auto-converts to long
         config.behavior.pocketModeEnabled = prefs.getBoolean("pocket_mode_enabled", false);
         config.behavior.customAppNames = prefs.getString("custom_app_names", "[]");
         config.behavior.cooldownApps = prefs.getString("cooldown_apps", "[]");
@@ -345,6 +407,9 @@ public class FilterConfigManager {
         config.behavior.contentCapWordCount = prefs.getInt("content_cap_word_count", 6);
         config.behavior.contentCapSentenceCount = prefs.getInt("content_cap_sentence_count", 1);
         config.behavior.contentCapTimeLimit = prefs.getInt("content_cap_time_limit", 10);
+        config.behavior.notificationDeduplication = prefs.getBoolean("notification_deduplication", false);
+        config.behavior.dismissalMemoryEnabled = prefs.getBoolean("dismissal_memory_enabled", true);
+        config.behavior.dismissalMemoryTimeout = prefs.getInt("dismissal_memory_timeout", 15);
         
         // Load general settings
         config.general.darkMode = prefs.getBoolean("dark_mode", true);
@@ -385,7 +450,24 @@ public class FilterConfigManager {
         filters.put("wordBlacklist", new JSONArray(config.filters.wordBlacklist));
         filters.put("wordBlacklistPrivate", new JSONArray(config.filters.wordBlacklistPrivate));
         filters.put("wordReplacements", config.filters.wordReplacements);
+        filters.put("urlHandlingMode", config.filters.urlHandlingMode);
+        filters.put("urlReplacementText", config.filters.urlReplacementText);
         filters.put("tidySpeechRemoveEmojis", config.filters.tidySpeechRemoveEmojis);
+        // Media filtering settings
+        filters.put("mediaFilteringEnabled", config.filters.mediaFilteringEnabled);
+        filters.put("mediaFilterExceptedApps", new JSONArray(config.filters.mediaFilterExceptedApps));
+        filters.put("mediaFilterExceptedAppsPrivate", new JSONArray(config.filters.mediaFilterExceptedAppsPrivate));
+        filters.put("mediaFilterImportantKeywords", new JSONArray(config.filters.mediaFilterImportantKeywords));
+        filters.put("mediaFilterImportantKeywordsPrivate", new JSONArray(config.filters.mediaFilterImportantKeywordsPrivate));
+        filters.put("mediaFilteredApps", new JSONArray(config.filters.mediaFilteredApps));
+        filters.put("mediaFilteredAppsPrivate", new JSONArray(config.filters.mediaFilteredAppsPrivate));
+        // Persistent/silent filtering settings
+        filters.put("persistentFilteringEnabled", config.filters.persistentFilteringEnabled);
+        filters.put("filterPersistent", config.filters.filterPersistent);
+        filters.put("filterSilent", config.filters.filterSilent);
+        filters.put("filterForegroundServices", config.filters.filterForegroundServices);
+        filters.put("filterLowPriority", config.filters.filterLowPriority);
+        filters.put("filterSystemNotifications", config.filters.filterSystemNotifications);
         json.put("filters", filters);
         
         // Voice settings
@@ -401,6 +483,8 @@ public class FilterConfigManager {
         voice.put("advancedEnabled", config.voice.advancedEnabled); // NEW
         voice.put("audioUsage", config.voice.audioUsage);
         voice.put("contentType", config.voice.contentType);
+        voice.put("ttsEngine", config.voice.ttsEngine);
+        voice.put("speakerphoneEnabled", config.voice.speakerphoneEnabled);
         json.put("voice", voice);
         
         // Behavior settings
@@ -423,6 +507,7 @@ public class FilterConfigManager {
         behavior.put("notificationWhileReading", config.behavior.notificationWhileReading); // Add notification while reading
         behavior.put("waveToStopEnabled", config.behavior.waveToStopEnabled);
         behavior.put("waveTimeoutSeconds", config.behavior.waveTimeoutSeconds);
+        behavior.put("waveHoldDurationMs", (int) config.behavior.waveHoldDurationMs); // Cast long to int for JSON
         behavior.put("pocketModeEnabled", config.behavior.pocketModeEnabled);
         behavior.put("customAppNames", config.behavior.customAppNames);
         behavior.put("cooldownApps", config.behavior.cooldownApps);
@@ -431,6 +516,9 @@ public class FilterConfigManager {
         behavior.put("contentCapWordCount", config.behavior.contentCapWordCount);
         behavior.put("contentCapSentenceCount", config.behavior.contentCapSentenceCount);
         behavior.put("contentCapTimeLimit", config.behavior.contentCapTimeLimit);
+        behavior.put("notificationDeduplication", config.behavior.notificationDeduplication);
+        behavior.put("dismissalMemoryEnabled", config.behavior.dismissalMemoryEnabled);
+        behavior.put("dismissalMemoryTimeout", config.behavior.dismissalMemoryTimeout);
         json.put("behavior", behavior);
         
         // General settings
@@ -679,6 +767,79 @@ public class FilterConfigManager {
                     mainEditor.putBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, filters.getBoolean("tidySpeechRemoveEmojis"));
                     totalImported++;
                 }
+                
+                // Import media filtering settings
+                if (filters.has("mediaFilteringEnabled")) {
+                    mainEditor.putBoolean("media_filtering_enabled", filters.getBoolean("mediaFilteringEnabled"));
+                    totalImported++;
+                }
+                
+                if (filters.has("mediaFilterExceptedApps")) {
+                    Set<String> excepted = jsonArrayToStringSet(filters.getJSONArray("mediaFilterExceptedApps"));
+                    mainEditor.putStringSet("media_filter_excepted_apps", excepted);
+                    totalImported += excepted.size();
+                }
+                
+                if (filters.has("mediaFilterExceptedAppsPrivate")) {
+                    Set<String> exceptedPrivate = jsonArrayToStringSet(filters.getJSONArray("mediaFilterExceptedAppsPrivate"));
+                    mainEditor.putStringSet("media_filter_excepted_apps_private", exceptedPrivate);
+                    totalImported += exceptedPrivate.size();
+                }
+                
+                if (filters.has("mediaFilterImportantKeywords")) {
+                    Set<String> keywords = jsonArrayToStringSet(filters.getJSONArray("mediaFilterImportantKeywords"));
+                    mainEditor.putStringSet("media_filter_important_keywords", keywords);
+                    totalImported += keywords.size();
+                }
+                
+                if (filters.has("mediaFilterImportantKeywordsPrivate")) {
+                    Set<String> keywordsPrivate = jsonArrayToStringSet(filters.getJSONArray("mediaFilterImportantKeywordsPrivate"));
+                    mainEditor.putStringSet("media_filter_important_keywords_private", keywordsPrivate);
+                    totalImported += keywordsPrivate.size();
+                }
+                
+                if (filters.has("mediaFilteredApps")) {
+                    Set<String> filtered = jsonArrayToStringSet(filters.getJSONArray("mediaFilteredApps"));
+                    mainEditor.putStringSet("media_filtered_apps", filtered);
+                    totalImported += filtered.size();
+                }
+                
+                if (filters.has("mediaFilteredAppsPrivate")) {
+                    Set<String> filteredPrivate = jsonArrayToStringSet(filters.getJSONArray("mediaFilteredAppsPrivate"));
+                    mainEditor.putStringSet("media_filtered_apps_private", filteredPrivate);
+                    totalImported += filteredPrivate.size();
+                }
+                
+                // Import persistent/silent filtering settings
+                if (filters.has("persistentFilteringEnabled")) {
+                    mainEditor.putBoolean("persistent_filtering_enabled", filters.getBoolean("persistentFilteringEnabled"));
+                    totalImported++;
+                }
+                
+                if (filters.has("filterPersistent")) {
+                    mainEditor.putBoolean("filter_persistent", filters.getBoolean("filterPersistent"));
+                    totalImported++;
+                }
+                
+                if (filters.has("filterSilent")) {
+                    mainEditor.putBoolean("filter_silent", filters.getBoolean("filterSilent"));
+                    totalImported++;
+                }
+                
+                if (filters.has("filterForegroundServices")) {
+                    mainEditor.putBoolean("filter_foreground_services", filters.getBoolean("filterForegroundServices"));
+                    totalImported++;
+                }
+                
+                if (filters.has("filterLowPriority")) {
+                    mainEditor.putBoolean("filter_low_priority", filters.getBoolean("filterLowPriority"));
+                    totalImported++;
+                }
+                
+                if (filters.has("filterSystemNotifications")) {
+                    mainEditor.putBoolean("filter_system_notifications", filters.getBoolean("filterSystemNotifications"));
+                    totalImported++;
+                }
             }
             
             // Import voice settings (if present)
@@ -751,6 +912,31 @@ public class FilterConfigManager {
                 
                 if (voice.has("advancedEnabled")) {
                     voiceEditor.putBoolean("show_advanced_voice", voice.getBoolean("advancedEnabled"));
+                    totalImported++;
+                }
+                
+                // Import TTS engine with graceful fallback
+                if (voice.has("ttsEngine")) {
+                    String ttsEngine = voice.getString("ttsEngine");
+                    if (!ttsEngine.isEmpty()) {
+                        // Check if the TTS engine is available on this device
+                        boolean engineAvailable = isTtsEngineAvailable(context, ttsEngine);
+                        if (engineAvailable) {
+                            voiceEditor.putString("tts_engine_package", ttsEngine);
+                            InAppLogger.log("FilterConfig", "Imported TTS engine: " + ttsEngine);
+                        } else {
+                            // Fall back to system default
+                            voiceEditor.putString("tts_engine_package", "");
+                            InAppLogger.log("FilterConfig", "TTS engine not available (" + ttsEngine + "), using system default");
+                        }
+                    } else {
+                        voiceEditor.putString("tts_engine_package", "");
+                    }
+                    totalImported++;
+                }
+                
+                if (voice.has("speakerphoneEnabled")) {
+                    voiceEditor.putBoolean("speakerphone_enabled", voice.getBoolean("speakerphoneEnabled"));
                     totalImported++;
                 }
             }
@@ -868,6 +1054,17 @@ public class FilterConfigManager {
                     totalImported++;
                 }
                 
+                if (behavior.has("waveHoldDurationMs")) {
+                    int holdDuration = behavior.getInt("waveHoldDurationMs");
+                    // Safety validation
+                    if (holdDuration < 50 || holdDuration > 1000) {
+                        holdDuration = 150; // Reset to safe default
+                        InAppLogger.log("FilterConfig", "Invalid wave hold duration imported, reset to 150ms");
+                    }
+                    mainEditor.putInt("wave_hold_duration_ms", holdDuration);
+                    totalImported++;
+                }
+                
                 if (behavior.has("pocketModeEnabled")) {
                     mainEditor.putBoolean("pocket_mode_enabled", behavior.getBoolean("pocketModeEnabled"));
                     totalImported++;
@@ -905,6 +1102,27 @@ public class FilterConfigManager {
                 
                 if (behavior.has("contentCapTimeLimit")) {
                     mainEditor.putInt("content_cap_time_limit", behavior.getInt("contentCapTimeLimit"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("notificationDeduplication")) {
+                    mainEditor.putBoolean("notification_deduplication", behavior.getBoolean("notificationDeduplication"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("dismissalMemoryEnabled")) {
+                    mainEditor.putBoolean("dismissal_memory_enabled", behavior.getBoolean("dismissalMemoryEnabled"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("dismissalMemoryTimeout")) {
+                    int timeout = behavior.getInt("dismissalMemoryTimeout");
+                    // Safety validation
+                    if (timeout < 1 || timeout > 120) {
+                        timeout = 15; // Reset to safe default
+                        InAppLogger.log("FilterConfig", "Invalid dismissal memory timeout imported, reset to 15 minutes");
+                    }
+                    mainEditor.putInt("dismissal_memory_timeout", timeout);
                     totalImported++;
                 }
             }
@@ -1082,6 +1300,41 @@ public class FilterConfigManager {
             
             InAppLogger.log("FilterConfig", "Legacy import migrated to preset: " + bestMatch.displayName + 
                            " (custom: " + bestMatch.isCustom + ")");
+        }
+    }
+    
+    /**
+     * Check if a TTS engine is available on this device
+     * @param context Application context
+     * @param enginePackage Package name of the TTS engine
+     * @return true if the engine is installed and available, false otherwise
+     */
+    private static boolean isTtsEngineAvailable(Context context, String enginePackage) {
+        if (enginePackage == null || enginePackage.isEmpty()) {
+            return false;
+        }
+        
+        try {
+            // Check if the package is installed
+            context.getPackageManager().getPackageInfo(enginePackage, 0);
+            
+            // Additionally check if it's a valid TTS engine by checking available engines
+            android.speech.tts.TextToSpeech.EngineInfo[] engines = 
+                new android.speech.tts.TextToSpeech(context, null).getEngines().toArray(
+                    new android.speech.tts.TextToSpeech.EngineInfo[0]);
+            
+            for (android.speech.tts.TextToSpeech.EngineInfo engine : engines) {
+                if (engine.name.equals(enginePackage)) {
+                    return true;
+                }
+            }
+            
+            // Package exists but isn't a TTS engine
+            return false;
+        } catch (Exception e) {
+            // Package not found or other error
+            InAppLogger.log("FilterConfig", "TTS engine check failed for " + enginePackage + ": " + e.getMessage());
+            return false;
         }
     }
 } 

@@ -249,7 +249,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
             AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
             if (audioManager != null) {
                 int audioMode = audioManager.getMode();
-                if (audioMode == AudioManager.MODE_IN_CALL) {
+                // Check for both traditional phone calls (MODE_IN_CALL) AND VoIP calls (MODE_IN_COMMUNICATION)
+                // VoIP apps like WhatsApp, Zoom, Discord, Skype, Teams use MODE_IN_COMMUNICATION
+                if (audioMode == AudioManager.MODE_IN_CALL || audioMode == AudioManager.MODE_IN_COMMUNICATION) {
                     return true;
                 }
             }
@@ -269,7 +271,8 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
             AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
             if (audioManager != null) {
                 int audioMode = audioManager.getMode();
-                return audioMode == AudioManager.MODE_IN_CALL;
+                // Check for both traditional phone calls AND VoIP calls in fallback too
+                return audioMode == AudioManager.MODE_IN_CALL || audioMode == AudioManager.MODE_IN_COMMUNICATION;
             }
             return false;
         } catch (Exception e) {
