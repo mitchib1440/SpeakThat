@@ -668,7 +668,6 @@
     <string name="filter_suggestion_exact_preview">미리보기: 2시 30분에 위치 업데이트...</string>
     <string name="item_priority_app_name">최우선 앱 이름</string>
     <string name="donate_privacy">개인정보: 모든 후원금은 해당 플랫폼에서 처리됩니다. 개발자는 어떠한 결제 정보도 수집 및 저장하지 않습니다.</string>
-    <string name="support_logs_privacy">🔒 개인정보: 디버깅 기록은 사용자가 공유하지 않는 이상 기기에만 저장됩니다. 이메일에 첨부하기 전에 기록의 내용을 검토할 수 있습니다.</string>
     <string name="item_app_filter_private">개인</string>
     <string name="behavior_proximity_threshold">근접 센서 임계값</string>
     <string name="donate_friendly_message">고마움을 담은 메일만 써 주셔도 개발자에게 큰 힘이 됩니다! :)</string>
