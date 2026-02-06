@@ -2168,7 +2168,4 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="support_email_subject_bug">SpeakThat! Bug Report</string>
     <string name="support_email_subject_question">SpeakThat! Support</string>
 
-    <!-- Depreciated -->
-    <string name="support_logs_privacy">🔒 Privacy: Debugging logs are stored only on your device unless you choose to share them. You can review the log contents before attaching them to an email.</string>
-
 </resources>
