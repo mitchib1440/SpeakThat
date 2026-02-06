@@ -5694,7 +5694,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 InAppLogger.log("Service", "Media behavior settings updated - mode: $mediaBehavior, ducking volume: $duckingVolume%, fallback: $duckingFallbackStrategy")
             }
             KEY_APP_LIST_MODE, KEY_APP_LIST, KEY_APP_PRIVATE_FLAGS, 
-            KEY_WORD_LIST_MODE, KEY_WORD_BLACKLIST, KEY_WORD_BLACKLIST_PRIVATE, KEY_WORD_REPLACEMENTS -> {
+            KEY_WORD_LIST_MODE, KEY_WORD_BLACKLIST, KEY_WORD_BLACKLIST_PRIVATE, KEY_WORD_REPLACEMENTS,
+            KEY_URL_HANDLING_MODE, KEY_URL_REPLACEMENT_TEXT -> {
                 // Reload filter settings
                 loadFilterSettings()
                 Log.d(TAG, "Filter settings updated")
@@ -5795,7 +5796,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 // Handle notification while reading setting change
                 val isNotificationWhileReadingEnabled = sharedPreferences?.getBoolean(KEY_NOTIFICATION_WHILE_READING, false) ?: false
                 Log.d(TAG, "Notification while reading setting updated: $isNotificationWhileReadingEnabled")
-                // Note: Reading notifications are shown/hidden dynamically during TTS, so no immediate action needed here
+                
+                // If TTS is currently speaking, update the notification immediately
+                if (isCurrentlySpeaking) {
+                    Log.d(TAG, "TTS is currently speaking, updating notification to reflect new preference")
+                    promoteToForegroundService()
+                }
             }
             "enable_legacy_ducking" -> {
                 legacyDuckingEnabled = sharedPreferences?.getBoolean("enable_legacy_ducking", false) ?: false
@@ -6091,10 +6097,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      */
     private fun promoteToForegroundService() {
         try {
-            val foregroundNotification = createForegroundNotification(currentAppName, currentSpeechText, currentTtsText)
+            // Check if notification while reading is enabled
+            val showNotificationWhileReading = sharedPreferences?.getBoolean(KEY_NOTIFICATION_WHILE_READING, false) ?: false
+            
+            // Create foreground notification (detailed or minimal based on preference)
+            val foregroundNotification = createForegroundNotification(
+                appName = currentAppName, 
+                content = currentSpeechText, 
+                ttsText = currentTtsText,
+                showDetails = showNotificationWhileReading
+            )
             startForeground(FOREGROUND_SERVICE_ID, foregroundNotification)
-            Log.d(TAG, "Service promoted to foreground for reading (id=$FOREGROUND_SERVICE_ID)")
-            InAppLogger.log("Service", "Service promoted to foreground for reading (id=$FOREGROUND_SERVICE_ID)")
+            Log.d(TAG, "Service promoted to foreground for reading (id=$FOREGROUND_SERVICE_ID, showDetails=$showNotificationWhileReading)")
+            InAppLogger.log("Service", "Service promoted to foreground for reading (id=$FOREGROUND_SERVICE_ID, showDetails=$showNotificationWhileReading)")
         } catch (e: Exception) {
             Log.e(TAG, "Failed to promote service to foreground", e)
             InAppLogger.logError("Service", "Failed to promote service to foreground: ${e.message}")
@@ -6146,9 +6161,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     /**
-     * Create a detailed notification for foreground service that shows what's being read
+     * Create a notification for foreground service
+     * @param showDetails If true, shows detailed content; if false, creates a minimal invisible notification
      */
-    private fun createForegroundNotification(appName: String = "", content: String = "", ttsText: String = ""): Notification {
+    private fun createForegroundNotification(appName: String = "", content: String = "", ttsText: String = "", showDetails: Boolean = true): Notification {
         // Create notification channel for Android O+
         SpeakThatNotificationChannel.ensureExists(this)
         
@@ -6169,6 +6185,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             this, 0, stopTtsIntent, 
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+        
+        // If showDetails is false, create a minimal notification
+        if (!showDetails) {
+            // Create minimal, nearly invisible notification for foreground service requirement
+            return NotificationCompat.Builder(this, SpeakThatNotificationChannel.CHANNEL_ID)
+                .setContentTitle("SpeakThat")
+                .setSmallIcon(R.drawable.speakthaticon)
+                .setOngoing(true)
+                .setSilent(true)
+                .setPriority(NotificationCompat.PRIORITY_MIN) // Minimal priority
+                .setContentIntent(openAppPendingIntent)
+                .setAutoCancel(false)
+                .setShowWhen(false) // Don't show timestamp
+                .build()
+        }
         
         // Build foreground notification with detailed content
         val notificationBuilder = NotificationCompat.Builder(this, SpeakThatNotificationChannel.CHANNEL_ID)

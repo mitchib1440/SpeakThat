@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="16dp">
+
+    <TextView
+        android:id="@+id/textQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/purple_card_text_primary"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/textDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/purple_card_text_secondary"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/editAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="120dp"
+        android:gravity="top|start"
+        android:inputType="textMultiLine|textCapSentences"
+        android:padding="12dp"
+        android:textSize="14sp"
+        android:textColor="@color/purple_card_text_primary"
+        android:textColorHint="@color/purple_card_text_secondary"
+        android:background="@drawable/dialog_input_background" />
+
+</LinearLayout>

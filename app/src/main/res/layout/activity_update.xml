@@ -97,7 +97,7 @@
                     android:visibility="gone"
                     android:background="@android:color/transparent"
                     android:textColor="@color/white_100"
-                    app:icon="@drawable/ic_file_upload_24"
+                    app:icon="@drawable/ic_download_24"
                     app:iconTint="@color/white_100"
                     style="@style/Widget.Material3.Button.TextButton" />
 

@@ -209,6 +209,28 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "dismissal_memory",
+                title = "Dismissal Memory",
+                description = "Remember and don't read notifications you've dismissed",
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("dismissal", "memory", "dismissed", "remember", "swiped", "cleared", "notification", "ignore", "skip"),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "dismissal_memory_timeout",
+                title = "Dismissal Memory Timeout",
+                description = "How long to remember dismissed notifications",
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.SEEK_BAR,
+                searchKeywords = listOf("dismissal", "memory", "timeout", "duration", "remember", "time", "minutes"),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "persistent_notification",
                 title = "Persistent Notification",
                 description = "Show a persistent notification when SpeakThat is active",
@@ -320,6 +342,28 @@ object SettingsDatabase {
                 searchKeywords = listOf("engine", "tts", "voice", "speech", "google", "samsung", "text to speech"),
                 navigationAction = { context.startActivity(Intent(context, VoiceSettingsActivity::class.java)) }
             ),
+            SettingsItem(
+                id = "tts_volume",
+                title = "TTS Volume",
+                description = "Adjust the volume for text-to-speech",
+                category = "voice",
+                categoryTitle = "Voice Settings",
+                categoryIcon = "🎙️",
+                settingType = SettingType.SEEK_BAR,
+                searchKeywords = listOf("volume", "tts", "loud", "quiet", "sound", "level"),
+                navigationAction = { context.startActivity(Intent(context, VoiceSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "speakerphone_enabled",
+                title = "Force Speakerphone",
+                description = "Force audio output through speakerphone",
+                category = "voice",
+                categoryTitle = "Voice Settings",
+                categoryIcon = "🎙️",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("speakerphone", "speaker", "audio", "output", "force", "loud"),
+                navigationAction = { context.startActivity(Intent(context, VoiceSettingsActivity::class.java)) }
+            ),
 
             // Filter Settings
             SettingsItem(
@@ -410,6 +454,83 @@ object SettingsDatabase {
                 searchKeywords = listOf("persistent", "silent", "filter", "ongoing", "background", "system"),
                 navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
             ),
+            SettingsItem(
+                id = "filter_persistent",
+                title = "Filter Persistent Notifications",
+                description = "Filter out persistent notifications specifically",
+                category = "filter",
+                categoryTitle = "Filter Settings",
+                categoryIcon = "🔍",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("persistent", "filter", "ongoing", "continuous", "notification"),
+                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "filter_silent",
+                title = "Filter Silent Notifications",
+                description = "Filter out silent notifications",
+                category = "filter",
+                categoryTitle = "Filter Settings",
+                categoryIcon = "🔍",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("silent", "filter", "quiet", "no sound", "notification"),
+                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "filter_foreground_services",
+                title = "Filter Foreground Service Notifications",
+                description = "Filter out foreground service notifications",
+                category = "filter",
+                categoryTitle = "Filter Settings",
+                categoryIcon = "🔍",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("foreground", "service", "filter", "background", "running", "notification"),
+                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "filter_low_priority",
+                title = "Filter Low Priority Notifications",
+                description = "Filter out low priority notifications",
+                category = "filter",
+                categoryTitle = "Filter Settings",
+                categoryIcon = "🔍",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("low", "priority", "filter", "importance", "notification"),
+                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "filter_system_notifications",
+                title = "Filter System Notifications",
+                description = "Filter out system notifications",
+                category = "filter",
+                categoryTitle = "Filter Settings",
+                categoryIcon = "🔍",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("system", "filter", "android", "os", "notification"),
+                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "media_filter_excepted_apps",
+                title = "Media Filter Excepted Apps",
+                description = "Apps that are excepted from media filtering",
+                category = "filter",
+                categoryTitle = "Filter Settings",
+                categoryIcon = "🔍",
+                settingType = SettingType.CARD,
+                searchKeywords = listOf("media", "filter", "exception", "exempt", "app", "whitelist", "music", "video"),
+                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "media_filter_important_keywords",
+                title = "Media Filter Important Keywords",
+                description = "Keywords that make media notifications important",
+                category = "filter",
+                categoryTitle = "Filter Settings",
+                categoryIcon = "🔍",
+                settingType = SettingType.CARD,
+                searchKeywords = listOf("media", "filter", "keyword", "important", "exception", "music", "video"),
+                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+            ),
 
             SettingsItem(
                 id = "export_filter_config",
@@ -472,6 +593,83 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, DevelopmentSettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "verbose_logging",
+                title = "Verbose Logging",
+                description = "Enable verbose logging output",
+                category = "development",
+                categoryTitle = "Development Settings",
+                categoryIcon = "🛠️",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("verbose", "logging", "log", "debug", "detailed", "extra"),
+                navigationAction = { context.startActivity(Intent(context, DevelopmentSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "log_filters",
+                title = "Log Filters",
+                description = "Log filter operations and decisions",
+                category = "development",
+                categoryTitle = "Development Settings",
+                categoryIcon = "🛠️",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("log", "filter", "filtering", "debug", "operations"),
+                navigationAction = { context.startActivity(Intent(context, DevelopmentSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "log_notifications",
+                title = "Log Notifications",
+                description = "Log notification processing details",
+                category = "development",
+                categoryTitle = "Development Settings",
+                categoryIcon = "🛠️",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("log", "notification", "processing", "debug", "details"),
+                navigationAction = { context.startActivity(Intent(context, DevelopmentSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "log_user_actions",
+                title = "Log User Actions",
+                description = "Log user interactions and actions",
+                category = "development",
+                categoryTitle = "Development Settings",
+                categoryIcon = "🛠️",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("log", "user", "action", "interaction", "debug", "click"),
+                navigationAction = { context.startActivity(Intent(context, DevelopmentSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "log_system_events",
+                title = "Log System Events",
+                description = "Log system events and changes",
+                category = "development",
+                categoryTitle = "Development Settings",
+                categoryIcon = "🛠️",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("log", "system", "event", "debug", "android", "os"),
+                navigationAction = { context.startActivity(Intent(context, DevelopmentSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "disable_media_fallback",
+                title = "Disable Media Fallback",
+                description = "Disable media playback fallback mechanisms",
+                category = "development",
+                categoryTitle = "Development Settings",
+                categoryIcon = "🛠️",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("disable", "media", "fallback", "audio", "debug", "experimental"),
+                navigationAction = { context.startActivity(Intent(context, DevelopmentSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "enable_legacy_ducking",
+                title = "Enable Legacy Ducking",
+                description = "Use legacy audio ducking behavior",
+                category = "development",
+                categoryTitle = "Development Settings",
+                categoryIcon = "🛠️",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("legacy", "ducking", "audio", "volume", "debug", "old"),
+                navigationAction = { context.startActivity(Intent(context, DevelopmentSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "test_notifications",
                 title = "Test Notifications",
                 description = "Send test notifications to verify settings",
@@ -515,7 +713,7 @@ object SettingsDatabase {
                 categoryIcon = "💬",
                 settingType = SettingType.BUTTON,
                 searchKeywords = listOf("feature", "request", "suggestion", "idea", "new", "improvement"),
-                navigationAction = { /* Will be handled in SettingsActivity */ }
+                navigationAction = { context.startActivity(Intent(context, SupportActivity::class.java)) }
             ),
             SettingsItem(
                 id = "bug_report",
@@ -526,7 +724,7 @@ object SettingsDatabase {
                 categoryIcon = "💬",
                 settingType = SettingType.BUTTON,
                 searchKeywords = listOf("bug", "report", "issue", "problem", "error", "crash"),
-                navigationAction = { /* Will be handled in SettingsActivity */ }
+                navigationAction = { context.startActivity(Intent(context, SupportActivity::class.java)) }
             ),
             SettingsItem(
                 id = "general_support",
@@ -537,7 +735,7 @@ object SettingsDatabase {
                 categoryIcon = "💬",
                 settingType = SettingType.BUTTON,
                 searchKeywords = listOf("support", "help", "assistance", "question", "guide"),
-                navigationAction = { /* Will be handled in SettingsActivity */ }
+                navigationAction = { context.startActivity(Intent(context, SupportActivity::class.java)) }
             ),
 
             // Re-run Onboarding

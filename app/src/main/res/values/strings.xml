@@ -303,10 +303,10 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_engine_info_title">TTS Engine Information</string>
 
     <!-- Onboarding TTS -->
-    <string name="tts_onboarding_language_theme">Welcome to SpeakThat! Choose your preferred language to get started.</string>
-    <string name="tts_onboarding_welcome">Welcome to SpeakThat! Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.</string>
-    <string name="tts_onboarding_permission">SpeakThat needs permission to read your notifications aloud. Everything stays on your device and you control what gets read.</string>
-    <string name="tts_onboarding_privacy">Your privacy matters. You control exactly what gets read aloud. Shake your phone to stop any announcement instantly. Everything stays on your device.</string>
+    <string name="tts_onboarding_language_theme">Choose your preferred language to get started.</string>
+    <string name="tts_onboarding_welcome">Welcome to SpeakThat! Stay connected without staring at your screen. Your phone will read notifications out loud so you can focus on what matters.</string>
+    <string name="tts_onboarding_permission">SpeakThat needs access to your notifications. Notification reading will not work without this permission.</string>
+    <string name="tts_onboarding_privacy">Your privacy matters. You control exactly what gets read aloud. SpeakThat\'s processing happens entirely on your device. No data is sent to its developer or any third parties.</string>
     <string name="tts_onboarding_filters">Let\'s set up some basic privacy filters to get you started. SpeakThat features a powerful filtering system that allows you to choose what gets read and what doesn\'t.</string>
     <string name="tts_onboarding_apps">Type the name of an app you want me to never read notifications from. Common examples include banking apps, medical apps, and dating apps.</string>
     <string name="tts_onboarding_words">Type words or phrases that you want me to never read notifications containing. Common examples include password, PIN, credit card, and medical terms.</string>
@@ -1065,19 +1065,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="filter_suggestion_make_private">Make private</string>
     <string name="filter_suggestion_create_filter">Create Filter</string>
 
-    <!-- Dialog Strings - Support & Feedback -->
-    <string name="support_chat">💬</string>
-    <string name="icon_refresh">🔄</string>
-    <string name="support_lightbulb">💡</string>
-    <string name="support_bug">🐛</string>
-    <string name="support_question">❓</string>
-    <string name="support_general_title">General Support</string>
-    <string name="support_general_description">Get help with setup, usage, or general questions</string>
-    <string name="support_clipboard">📋</string>
-    <string name="support_include_logs">Include Debug Logs</string>
-    <string name="support_logs_description">Recommended for bug reports and technical issues. Debug logs help me identify and fix problems faster.\nLogs may contain information about your notification content! Please proofread the logs before sending.</string>
-    <string name="support_log_entries">Current log entries: 0</string>
-    <string name="support_logs_privacy">🔒 Privacy: Debug logs remain on your device unless you choose to share them. You can review the log content before sending any email.</string>
 
     <!-- Action Configuration -->
     <string name="action_configure_voice_settings">Configure voice settings to apply when this rule is applied:</string>
@@ -1092,12 +1079,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="exception_any_bluetooth_device">Any Bluetooth Device</string>
     <string name="exception_any_wifi_network">Any WiFi Network</string>
 
-    <string name="dialog_support_title">Support &amp; Feedback</string>
-    <string name="dialog_support_description">How can we help you today? Choose the option that best describes your needs:</string>
-    <string name="dialog_support_feature_request">Feature Request</string>
-    <string name="dialog_support_feature_description">Suggest new features or improvements</string>
-    <string name="dialog_support_bug_report">Bug Report</string>
-    <string name="dialog_support_bug_description">Report crashes, errors, or unexpected behaviour</string>
+    <!-- Icon strings used in various dialogs -->
+    <string name="icon_refresh">🔄</string>
 
     <!-- Dialog Strings - Donate -->
     <string name="dialog_donate_title">Support SpeakThat!</string>
@@ -2119,5 +2102,70 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="loading_line_48">SO… MUCH… DATA…</string>
     <string name="loading_line_49">Gears are turning…</string>
     <string name="loading_line_50">This is fine… Everything is fine…</string>
+
+    <!-- Support & Feedback Screen -->
+    <string name="support_request">Support Request</string>
+    <string name="support_intro_title">SpeakThat! isn\'t flawless!</string>
+    <string name="support_intro_message">SpeakThat relies on lots of different Android systems and tries to be as widely compatible as possible. But with something as fragmented as Android, problems will occur from time to time.</string>
+    <string name="support_intro_details">I offer support during my spare time and ask for your patience and respect as I get to everyone. Please fill in the details below so I know how to support you.</string>
+    
+    <string name="support_type">Support Type</string>
+    <string name="support_type_description">Select what you want to do.</string>
+    
+    <string name="support_type_feature">Suggest a feature</string>
+    <string name="support_type_bug">Report a bug</string>
+    <string name="support_type_question">Ask a question</string>
+    
+    <!-- Feature Request Questions -->
+    <string name="support_feature_title">Feature Details</string>
+    <string name="support_feature_q1">What problem would your feature solve? (required)</string>
+    <string name="support_feature_q1_desc">Describe the situation or limitation you\'re currently experiencing.\n\nFocus on what you\'re unable to do or what feels inconvenient.</string>
+    <string name="support_feature_q1_hint">When I\'m…</string>
+    
+    <string name="support_feature_q2">How do you currently work around this?</string>
+    <string name="support_feature_q2_desc">If you\'ve found a workaround or an alternative way of handling this, describe it here.\n\nThis helps identify how important the feature is and what trade-offs users are making.</string>
+    <string name="support_feature_q2_hint">I normally have to…</string>
+    
+    <string name="support_feature_q3">How would you implement your idea?</string>
+    <string name="support_feature_q3_desc">If you have a particular idea in mind, describe how you imagine it working.\n\nDon\'t worry about technical details. This is just to understand your expectations.</string>
+    <string name="support_feature_q3_hint">I\'d introduce…</string>
+    
+    <!-- Bug Report Questions -->
+    <string name="support_bug_title">Bug Details</string>
+    <string name="support_bug_q1">How did you get the bug to occur? (required)</string>
+    <string name="support_bug_q1_desc">Describe anything that happened shortly before the issue appeared.\n\nThis might include steps you took, settings you changed, notifications you received, connecting a device (such as headphones or a car), or anything else that might be relevant.</string>
+    <string name="support_bug_q1_hint">Just before it broke, I…</string>
+    
+    <string name="support_bug_q2">What were you trying to do? (required)</string>
+    <string name="support_bug_q2_desc">Describe what you expected to happen.\n\nThis could be an action you took, a setting you enabled, or a situation you were in when the problem occurred.</string>
+    <string name="support_bug_q2_hint">I was trying to…</string>
+    
+    <string name="support_bug_q3">What happened instead? (required)</string>
+    <string name="support_bug_q3_desc">Describe what actually happened.\n\nThis might include unexpected behaviour, incorrect speech, a crash, nothing happening at all, or anything that didn\'t match what you expected.</string>
+    <string name="support_bug_q3_hint">Instead, it…</string>
+    
+    <!-- General Support Questions -->
+    <string name="support_question_title">Support Details</string>
+    <string name="support_question_q1">What would you like help with? (required)</string>
+    <string name="support_question_q1_desc">Describe the situation or limitation you\'re currently experiencing.\n\nFocus on what you\'re unable to do or what feels inconvenient.</string>
+    <string name="support_question_q1_hint">I want to…</string>
+    
+    <string name="support_question_q2">What have you already tried or checked?</string>
+    <string name="support_question_q2_desc">If you\'ve found a workaround or an alternative way of handling this, describe it here.\n\nThis helps identify how important the feature is and what trade-offs users are making.</string>
+    <string name="support_question_q2_hint">I\'ve tried…</string>
+    
+    <!-- Submit Section -->
+    <string name="support_submit">Submit</string>
+    <string name="support_include_logs">Include event logs</string>
+    <string name="support_log_info">All event logs have been saved. Send them along with this email?</string>
+    <string name="support_log_message_bug">All current event logs ([number] entries) will be attached to the email. This is required for bug reports.</string>
+    <string name="support_log_message_feature">No event logs will be sent in this email as they are not required for feature requests.</string>
+    <string name="support_validation_warning">Please answer all required questions!</string>
+    <string name="support_send_via_email">Send via email</string>
+    
+    <!-- Email Subject Lines -->
+    <string name="support_email_subject_feature">SpeakThat! Feature Request</string>
+    <string name="support_email_subject_bug">SpeakThat! Bug Report</string>
+    <string name="support_email_subject_question">SpeakThat! Support</string>
 
 </resources>

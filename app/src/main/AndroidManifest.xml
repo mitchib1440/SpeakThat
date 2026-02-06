@@ -123,6 +123,11 @@
             android:exported="false" />
 
         <activity
+            android:name=".SupportActivity"
+            android:exported="false"
+            android:parentActivityName=".SettingsActivity" />
+
+        <activity
             android:name=".GeneralSettingsActivity"
             android:exported="false" />
 

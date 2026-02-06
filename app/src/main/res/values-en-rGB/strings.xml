@@ -303,10 +303,10 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_engine_info_title">TTS Engine Information</string>
 
     <!-- Onboarding TTS -->
-    <string name="tts_onboarding_language_theme">Welcome to SpeakThat! Choose your preferred language to get started.</string>
-    <string name="tts_onboarding_welcome">Welcome to SpeakThat! Stay connected without staring at your screen. Your phone will read notifications aloud so you can focus on what matters.</string>
-    <string name="tts_onboarding_permission">SpeakThat needs permission to read your notifications aloud. Everything stays on your device and you control what gets read.</string>
-    <string name="tts_onboarding_privacy">Your privacy matters. You control exactly what gets read aloud. Shake your phone to stop any announcement instantly. Everything stays on your device.</string>
+    <string name="tts_onboarding_language_theme">Choose your preferred language to get started.</string>
+    <string name="tts_onboarding_welcome">Welcome to SpeakThat! Stay connected without staring at your screen. Your phone will read notifications out loud so you can focus on what matters.</string>
+    <string name="tts_onboarding_permission">SpeakThat needs access to your notifications. Notification reading will not work without this permission.</string>
+    <string name="tts_onboarding_privacy">Your privacy matters. You control exactly what gets read aloud. SpeakThat\'s processing happens entirely on your device. No data is sent to its developer or any third parties.</string>
     <string name="tts_onboarding_filters">Let\'s set up some basic privacy filters to get you started. SpeakThat features a powerful filtering system that allows you to choose what gets read and what doesn\'t.</string>
     <string name="tts_onboarding_apps">Type the name of an app you want me to never read notifications from. Common examples include banking apps, medical apps, and dating apps.</string>
     <string name="tts_onboarding_words">Type words or phrases that you want me to never read notifications containing. Common examples include password, PIN, credit card, and medical terms.</string>

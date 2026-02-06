@@ -65,13 +65,32 @@ class SelfTestHelper(private val context: Context) {
             }
             
             // Create the notification with special marker
-            val notification = NotificationCompat.Builder(context, TEST_CHANNEL_ID)
+            // Populate ALL notification fields (including deprecated ones like Ticker) so that
+            // users with custom reading formats can test their exact configuration
+            val builder = NotificationCompat.Builder(context, TEST_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification_add_24)
                 .setContentTitle("SpeakThat Test")
                 .setContentText("This is a test notification. If you can hear this, the test passed.")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true)
-                .build()
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE) // Populate category field
+            
+            // Populate extended notification fields for custom templates
+            // These fields are commonly used in custom reading formats
+            val extras = android.os.Bundle()
+            extras.putCharSequence(Notification.EXTRA_TITLE, "SpeakThat Test")
+            extras.putCharSequence(Notification.EXTRA_TEXT, "This is a test notification. If you can hear this, the test passed.")
+            extras.putCharSequence(Notification.EXTRA_BIG_TEXT, "This is a test notification from SpeakThat. If you can hear this message, your notification reading is working correctly and the test has passed.")
+            extras.putCharSequence(Notification.EXTRA_SUMMARY_TEXT, "SelfTest")
+            extras.putCharSequence(Notification.EXTRA_INFO_TEXT, "Test in progress")
+            builder.setExtras(extras)
+            
+            // Set deprecated ticker text for users with custom formats that still reference it
+            // Even though ticker is deprecated, some custom formats may use {ticker} placeholder
+            @Suppress("DEPRECATION")
+            builder.setTicker("SpeakThat test notification")
+            
+            val notification = builder.build()
             
             // Add custom extra to mark this as a test notification
             notification.extras.putBoolean(EXTRA_IS_SELFTEST, true)
