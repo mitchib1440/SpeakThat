@@ -831,18 +831,8 @@ Choose which WiFi networks should trigger this rule:
     <string name="filter_suggestion_make_private">Make private</string>
     <string name="filter_suggestion_create_filter">Create Filter</string>
     <!-- Dialog Strings - Support & Feedback -->
-    <string name="support_chat">💬</string>
     <string name="icon_refresh">🔄</string>
-    <string name="support_lightbulb">💡</string>
-    <string name="support_bug">🐛</string>
-    <string name="support_question">❓</string>
-    <string name="support_general_title">General Support</string>
-    <string name="support_general_description">Get help with setup, usage, or general questions</string>
-    <string name="support_clipboard">📋</string>
     <string name="support_include_logs">Include Debug Logs</string>
-    <string name="support_logs_description">Recommended for bug reports and technical issues. Debug logs help me identify and fix problems faster.\nLogs may contain information about your notification content! Please proofread the logs before sending.</string>
-    <string name="support_log_entries">Current log entries: 0</string>
-    <string name="support_logs_privacy">🔒 Privacy: Debug logs remain on your device unless you choose to share them. You can review the log content before sending any email.</string>
     <!-- Action Configuration -->
     <string name="action_configure_voice_settings">
 Configure voice settings to apply when this rule is triggered:
@@ -854,12 +844,6 @@ Configure voice settings to apply when this rule is triggered:
     <!-- Exception Configuration -->
     <string name="exception_any_bluetooth_device">Any Bluetooth Device</string>
     <string name="exception_any_wifi_network">Any WiFi Network</string>
-    <string name="dialog_support_title">Support &amp; Feedback</string>
-    <string name="dialog_support_description">How can we help you today? Choose the option that best describes your needs:</string>
-    <string name="dialog_support_feature_request">Feature Request</string>
-    <string name="dialog_support_feature_description">Suggest new features or improvements</string>
-    <string name="dialog_support_bug_report">Bug Report</string>
-    <string name="dialog_support_bug_description">Report crashes, errors, or unexpected behavior</string>
     <!-- Dialog Strings - Donate -->
     <string name="dialog_donate_title">Support SpeakThat!</string>
     <string name="dialog_donate_message">Hey! Mitchi here. A lot goes into making SpeakThat! I handle the UI/UX design, quality assurance and testing, project management, distribution and publishing, app store compliance, and user support just to name a few!\n\nIf SpeakThat has been helpful for you, or if you would have paid for it, please consider supporting its development!\n\nEvery donation keeps this app totally free and open-source for everyone who needs it.\n\nThank you! ❤️</string>

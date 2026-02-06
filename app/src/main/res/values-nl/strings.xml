@@ -841,18 +841,8 @@ Kies welke WiFi-netwerken deze regel moeten activeren:
     <string name="filter_suggestion_make_private">Privé maken</string>
     <string name="filter_suggestion_create_filter">Filter maken</string>
     <!-- Dialog Strings - Support & Feedback -->
-    <string name="support_chat">💬</string>
     <string name="icon_refresh">🔄</string>
-    <string name="support_lightbulb">💡</string>
-    <string name="support_bug">🐛</string>
-    <string name="support_question">❓</string>
-    <string name="support_general_title">Algemene ondersteuning</string>
-    <string name="support_general_description">Krijg hulp bij de installatie, gebruik of algemene vragen</string>
-    <string name="support_clipboard">📋</string>
     <string name="support_include_logs">Foutopsporingslogboek bijvoegen</string>
-    <string name="support_logs_description">Aanbevolen voor foutrapporten en technische problemen. foutopsporingslogs helpen me problemen sneller te identificeren en op te lossen.\nLogs kunnen informatie bevatten over de inhoud van uw meldingen! Lees eerst de logs voordat u deze verstuurt.</string>
-    <string name="support_log_entries">Huidige logboekvermeldingen: 0</string>
-    <string name="support_logs_privacy">🔒 Privacy: de foutopsporingslogs blijven op je apparaat tenzij je ervoor kiest ze te delen. Je kunt de log inhoud bekijken voordat je een e-mail verstuurt.</string>
     <!-- Action Configuration -->
     <string name="action_configure_voice_settings">
 Stem-instellingen aanpassen wanneer deze regel wordt geactiveerd:
@@ -864,12 +854,6 @@ Stem-instellingen aanpassen wanneer deze regel wordt geactiveerd:
     <!-- Exception Configuration -->
     <string name="exception_any_bluetooth_device">Elk Bluetooth-apparaat</string>
     <string name="exception_any_wifi_network">Elk wifi-netwerk</string>
-    <string name="dialog_support_title">Ondersteuning &amp; Feedback</string>
-    <string name="dialog_support_description">Hoe kunnen we u vandaag helpen? Kies de optie die het beste uw behoeften beschrijft:</string>
-    <string name="dialog_support_feature_request">Suggestie voor nieuwe feature</string>
-    <string name="dialog_support_feature_description">Nieuwe functies of verbeteringen voorstellen</string>
-    <string name="dialog_support_bug_report">Fout melden</string>
-    <string name="dialog_support_bug_description">Rapporteer crashes, fouten of onverwacht gedrag</string>
     <!-- Dialog Strings - Donate -->
     <string name="dialog_donate_title">Steun SpreakThat!</string>
     <string name="dialog_donate_message">Hey! Mitchi hier. Het kost veel om SpeakThat maken! Ik ontwerp de gebruikersinterface, kwaliteitsgarantie en testen, projectbeheer, distributie en publicatie, app store compliance en gebruikersondersteuning om er maar een paar te noemen!\n\nAls SpeakThat! handig is geweest voor jou of als je het zou hebben betaald, overweeg dan de ontwikkeling ervan te ondersteunen!\n\nElke donatie houdt deze app volledig gratis en open-source voor iedereen die het nodig heeft.\n\nDank je! ❤️</string>

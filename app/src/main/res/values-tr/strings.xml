@@ -843,18 +843,8 @@ Bu kuralı hangi WiFi ağlarının tetiklemesi gerektiğini seçin:
     <string name="filter_suggestion_make_private">Özel yap</string>
     <string name="filter_suggestion_create_filter">Filtre Oluştur</string>
     <!-- Dialog Strings - Support & Feedback -->
-    <string name="support_chat">💬</string>
     <string name="icon_refresh">🔄</string>
-    <string name="support_lightbulb">💡</string>
-    <string name="support_bug">🐛</string>
-    <string name="support_question">❓</string>
-    <string name="support_general_title">Genel Destek</string>
-    <string name="support_general_description">Kurulum, kullanım veya genel sorularla ilgili yardım alın</string>
-    <string name="support_clipboard">📋</string>
     <string name="support_include_logs">Hata Ayıklama Günlüklerini Dahil Et</string>
-    <string name="support_logs_description">Hata raporları ve teknik sorunlar için önerilir. Hata ayıklama günlükleri, sorunları daha hızlı tanımlamama ve düzeltmeme yardımcı olur.\nGünlükler, bildirim içeriğiniz hakkında bilgi içerebilir! Lütfen göndermeden önce günlükleri gözden geçirin.</string>
-    <string name="support_log_entries">Mevcut günlük girdileri: 0</string>
-    <string name="support_logs_privacy">🔒 Gizlilik: Hata ayıklama günlükleri, siz paylaşmayı seçmediğiniz sürece cihazınızda kalır. Herhangi bir e-posta göndermeden önce günlük içeriğini inceleyebilirsiniz.</string>
     <!-- Action Configuration -->
     <string name="action_configure_voice_settings">
 Bu kural tetiklendiğinde uygulanacak ses ayarlarını yapılandırın:
@@ -866,12 +856,6 @@ Bu kural tetiklendiğinde uygulanacak ses ayarlarını yapılandırın:
     <!-- Exception Configuration -->
     <string name="exception_any_bluetooth_device">Herhangi Bir Bluetooth Cihazı</string>
     <string name="exception_any_wifi_network">Herhangi Bir WiFi Ağı</string>
-    <string name="dialog_support_title">Destek ve Geri Bildirim</string>
-    <string name="dialog_support_description">Bugün size nasıl yardımcı olabiliriz? İhtiyaçlarınızı en iyi tanımlayan seçeneği seçin:</string>
-    <string name="dialog_support_feature_request">Özellik İsteği</string>
-    <string name="dialog_support_feature_description">Yeni özellikler veya iyileştirmeler önerin</string>
-    <string name="dialog_support_bug_report">Hata Raporu</string>
-    <string name="dialog_support_bug_description">Kilitlenmeleri, hataları veya beklenmedik davranışları bildir</string>
     <!-- Dialog Strings - Donate -->
     <string name="dialog_donate_title">SpeakThat\'i Destekleyin!</string>
     <string name="dialog_donate_message">Merhaba! Ben Mitchi. SpeakThat\'i yapmak için çok çaba harcıyorum. Arayüz/kullanıcı deneyimi tasarımı, kalite güvence ve test, proje yönetimi, dağıtım ve yayınlama, uygulama mağazası uyumluluğu ve kullanıcı desteği gibi birçok konuyu bizzat yönetiyorum!\n\nEğer SpeakThat sizin için faydalı olduysa veya bu uygulama için para ödemeyi düşündüyseniz, lütfen gelişimini desteklemeyi düşünün!\n\nHer bağış, bu uygulamanın ihtiyacı olan herkes için tamamen ücretsiz ve açık kaynaklı kalmasını sağlar.\n\nTeşekkür ederim! ❤️</string>

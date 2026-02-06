@@ -797,18 +797,8 @@ Elegir qué dispositivos Bluetooth deben activar esta regla:
     <string name="filter_suggestion_make_private">Hacer privado</string>
     <string name="filter_suggestion_create_filter">Crear filtro</string>
     <!-- Dialog Strings - Support & Feedback -->
-    <string name="support_chat">💬</string>
     <string name="icon_refresh">🔄</string>
-    <string name="support_lightbulb">💡</string>
-    <string name="support_bug">🐛</string>
-    <string name="support_question">❓</string>
-    <string name="support_general_title">Soporte general</string>
-    <string name="support_general_description">Obtén ayuda con la configuración, uso o preguntas generales</string>
-    <string name="support_clipboard">📋</string>
     <string name="support_include_logs">Incluir registros de depuración</string>
-    <string name="support_logs_description">Recomendado para informes de errores y problemas técnicos. Los registros de depuración me ayudan a identificar y solucionar problemas más rápidamente.\nLos registros pueden contener información sobre el contenido de sus notificaciones. Por favor, revisa los registros antes de enviarlos.</string>
-    <string name="support_log_entries">Entradas de registro actuales: 0</string>
-    <string name="support_logs_privacy">🔒 Privacidad: Los registros de depuración permanecen en tu dispositivo a menos que elijas compartirlos. Puedes revisar el contenido del registro antes de enviar cualquier correo electrónico.</string>
     <!-- Action Configuration -->
     <string name="action_configure_voice_settings">
 Configurar los ajustes de voz a aplicar cuando se activa esta regla:
@@ -820,12 +810,6 @@ Configurar los ajustes de voz a aplicar cuando se activa esta regla:
     <!-- Exception Configuration -->
     <string name="exception_any_bluetooth_device">Cualquier dispositivo Bluetooth</string>
     <string name="exception_any_wifi_network">Cualquier red WiFi</string>
-    <string name="dialog_support_title">Soporte &amp; Comentarios</string>
-    <string name="dialog_support_description">¿Cómo podemos ayudarte hoy? Elige la opción que mejor describe tus necesidades:</string>
-    <string name="dialog_support_feature_request">Solicitud de característica</string>
-    <string name="dialog_support_feature_description">Sugiere nuevas características o mejoras</string>
-    <string name="dialog_support_bug_report">Reportar un error</string>
-    <string name="dialog_support_bug_description">Reporta fallos, errores o comportamiento inesperado</string>
     <!-- Dialog Strings - Donate -->
     <string name="dialog_donate_title">Apoya a SpeakThat!</string>
     <string name="dialog_donate_message">¡Hola! Soy Mitchi. Hay mucho trabajo detrás de SpeakThat! Me encargo del diseño de la interfaz y de la experiencia de usuario, del control de calidad y de las pruebas, de la gestión de proyectos, de la distribución y de la publicación, del cumplimiento de las normas de la tienda de aplicaciones y de la asistencia al usuario, por nombrar solo algunas cosas.\n\nSi SpeakThat te ha resultado útil o si habrías pagado por él, ¡considera la posibilidad de apoyar su desarrollo!\n\nCada donación contribuye a que esta aplicación siga siendo totalmente gratuita y de código abierto para todos los que la necesitan.\n\n¡Gracias! ❤️</string>

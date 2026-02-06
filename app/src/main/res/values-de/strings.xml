@@ -810,18 +810,8 @@ Wähle, welche WLAN-Netzwerke diese Regel auslösen sollen:
     <string name="filter_suggestion_make_private">Als Privat festlegen</string>
     <string name="filter_suggestion_create_filter">Filter Erstellen</string>
     <!-- Dialog Strings - Support & Feedback -->
-    <string name="support_chat">💬</string>
     <string name="icon_refresh">🔄</string>
-    <string name="support_lightbulb">💡</string>
-    <string name="support_bug">🐛</string>
-    <string name="support_question">❓</string>
-    <string name="support_general_title">Allgemeiner Support</string>
-    <string name="support_general_description">Hilfe bei Einrichtung, Benutzung oder allgemeinen Fragen erhalten</string>
-    <string name="support_clipboard">📋</string>
     <string name="support_include_logs">Debug-Protokolle einschließen</string>
-    <string name="support_logs_description">Empfohlen für Fehlerberichte und technische Probleme. Debug-Protokolle helfen mir, Probleme schneller zu erkennen und zu beheben.\nProtokolle können Informationen über Ihren Benachrichtigungsinhalt enthalten! Bitte lesen Sie die Protokolle vor dem Versenden.</string>
-    <string name="support_log_entries">Aktuelle Protokolleinträge: 0</string>
-    <string name="support_logs_privacy">🔒 Privatsphäre: Debug-Protokolle bleiben auf Ihrem Gerät, es sei denn, Sie möchten sie teilen. Sie können den Logininhalt überprüfen, bevor Sie eine E-Mail senden.</string>
     <!-- Action Configuration -->
     <string name="action_configure_voice_settings">
 Spracheinstellungen konfigurieren, die angewendet werden, wenn diese Regel ausgelöst wird:
@@ -833,12 +823,6 @@ Spracheinstellungen konfigurieren, die angewendet werden, wenn diese Regel ausge
     <!-- Exception Configuration -->
     <string name="exception_any_bluetooth_device">Jedes Bluetooth-Gerät</string>
     <string name="exception_any_wifi_network">Jedes WLAN-Netzwerk</string>
-    <string name="dialog_support_title">Unterstützung &amp; Feedback</string>
-    <string name="dialog_support_description">Wie können wir Ihnen heute helfen? Wählen Sie die Option, die Ihre Bedürfnisse am besten beschreibt:</string>
-    <string name="dialog_support_feature_request">Funktionswunsch</string>
-    <string name="dialog_support_feature_description">Neue Funktionen oder Verbesserungen vorschlagen</string>
-    <string name="dialog_support_bug_report">Fehlerbericht</string>
-    <string name="dialog_support_bug_description">Abstürze melden, Fehler oder unerwartetes Verhalten</string>
     <!-- Dialog Strings - Donate -->
     <string name="dialog_donate_title">Unterstützen Sie SpeakThat!</string>
     <string name="dialog_donate_message">Hey! Mitchi hier. Viel Arbeit steckt in SpeakThat! Ich befasse mich mit dem UI/UX-Design, Qualitätssicherungen und Testings, Projektmanagement, Distribution und Veröffentlichung, AppStore Konformitäten und Benutzerunterstützung, um nur einige Aufgaben zu nennen!\n\nWenn SpeakThat für Sie hilfreich war oder wenn Sie dafür bezahlt hätten, dann würde ich Sie bitten, zu überlegen ob Sie die weitere Entwicklung der App mit unterstützen können!\n\nJede Spende hält diese App völlig kostenfrei und als Open-Source für alle, die sie benötigen.\n\nIch danke Ihnen! ❤️</string>
