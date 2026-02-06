@@ -703,7 +703,7 @@ object SettingsDatabase {
                 categoryIcon = "💬",
                 settingType = SettingType.BUTTON,
                 searchKeywords = listOf("feature", "request", "suggestion", "idea", "new", "improvement"),
-                navigationAction = { /* Will be handled in SettingsActivity */ }
+                navigationAction = { context.startActivity(Intent(context, SupportActivity::class.java)) }
             ),
             SettingsItem(
                 id = "bug_report",
@@ -714,7 +714,7 @@ object SettingsDatabase {
                 categoryIcon = "💬",
                 settingType = SettingType.BUTTON,
                 searchKeywords = listOf("bug", "report", "issue", "problem", "error", "crash"),
-                navigationAction = { /* Will be handled in SettingsActivity */ }
+                navigationAction = { context.startActivity(Intent(context, SupportActivity::class.java)) }
             ),
             SettingsItem(
                 id = "general_support",
@@ -725,7 +725,7 @@ object SettingsDatabase {
                 categoryIcon = "💬",
                 settingType = SettingType.BUTTON,
                 searchKeywords = listOf("support", "help", "assistance", "question", "guide"),
-                navigationAction = { /* Will be handled in SettingsActivity */ }
+                navigationAction = { context.startActivity(Intent(context, SupportActivity::class.java)) }
             ),
 
             // Re-run Onboarding

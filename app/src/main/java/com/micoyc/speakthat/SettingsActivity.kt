@@ -76,15 +76,8 @@ class SettingsActivity : AppCompatActivity() {
             binding.settingsScrollView.visibility = View.VISIBLE
             binding.searchEditText.setText("")
             
-            // Handle special cases for support items
-            when (settingsItem.id) {
-                "feature_request", "bug_report", "general_support" -> {
-                    showSupportDialog(settingsItem.id)
-                }
-                else -> {
-                    settingsItem.navigationAction()
-                }
-            }
+            // Execute the settings item action
+            settingsItem.navigationAction()
         }
         
         binding.searchResultsRecyclerView.apply {
@@ -163,7 +156,7 @@ class SettingsActivity : AppCompatActivity() {
                 title = "Support & Feedback",
                 description = "Get help, report bugs, request features",
                 cardView = binding.cardSupportFeedback,
-                onClickAction = { showSupportDialog() }
+                onClickAction = { startActivity(Intent(this, SupportActivity::class.java)) }
             )
         ))
     }
@@ -232,7 +225,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         binding.cardSupportFeedback.setOnClickListener {
-            showSupportDialog()
+            startActivity(Intent(this, SupportActivity::class.java))
         }
         
         binding.cardDonate.setOnClickListener {
@@ -265,127 +258,6 @@ class SettingsActivity : AppCompatActivity() {
                 android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
                 android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             )
-        }
-    }
-    
-    private fun showSupportDialog(type: String = "") {
-        InAppLogger.logUserAction("Support dialog opened")
-        
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_support_feedback, null)
-        val dialog = AlertDialog.Builder(this)
-            .setView(dialogView)
-            .create()
-        
-        // Get UI elements
-        val cardFeatureRequest = dialogView.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardFeatureRequest)
-        val cardBugReport = dialogView.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardBugReport)
-        val cardGeneralSupport = dialogView.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardGeneralSupport)
-        val switchIncludeLogs = dialogView.findViewById<MaterialSwitch>(R.id.switchIncludeLogs)
-        val textLogInfo = dialogView.findViewById<android.widget.TextView>(R.id.textLogInfo)
-        val btnCancel = dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnCancel)
-        
-        // Update log info
-        val logCount = InAppLogger.getLogCount()
-        textLogInfo.text = "Current log entries: $logCount"
-        
-        // Set up click listeners
-        cardFeatureRequest.setOnClickListener {
-            InAppLogger.logUserAction("Feature request selected")
-            dialog.dismiss()
-            sendSupportEmail("Feature Request", switchIncludeLogs.isChecked)
-        }
-        
-        cardBugReport.setOnClickListener {
-            InAppLogger.logUserAction("Bug report selected")
-            dialog.dismiss()
-            sendSupportEmail("Bug Report", switchIncludeLogs.isChecked)
-        }
-        
-        cardGeneralSupport.setOnClickListener {
-            InAppLogger.logUserAction("General support selected")
-            dialog.dismiss()
-            sendSupportEmail("Support", switchIncludeLogs.isChecked)
-        }
-        
-        btnCancel.setOnClickListener {
-            InAppLogger.logUserAction("Support dialog cancelled")
-            dialog.dismiss()
-        }
-        
-        // If a specific type was requested, automatically trigger it
-        when (type) {
-            "feature_request" -> {
-                dialog.dismiss()
-                sendSupportEmail("Feature Request", false)
-            }
-            "bug_report" -> {
-                dialog.dismiss()
-                sendSupportEmail("Bug Report", true)
-            }
-            "general_support" -> {
-                dialog.dismiss()
-                sendSupportEmail("Support", true)
-            }
-            else -> {
-                dialog.show()
-            }
-        }
-    }
-    
-    private fun sendSupportEmail(type: String, includeLogs: Boolean) {
-        try {
-            val subject = "SpeakThat! $type"
-            val recipient = "micoycbusiness@gmail.com"
-            
-            val bodyBuilder = StringBuilder()
-            
-            when (type) {
-                "Feature Request" -> {
-                    bodyBuilder.append("I would like to request the following feature:\n\n")
-                    bodyBuilder.append("[Please explain your idea]\n\n\n\n")
-                }
-                "Bug Report" -> {
-                    bodyBuilder.append("I encountered the following issue:\n\n")
-                    bodyBuilder.append("[Please explain the issue]\n\n\n\n")
-                }
-                "Support" -> {
-                    bodyBuilder.append("I need help with:\n\n")
-                    bodyBuilder.append("[Please explain what you need help with]\n\n\n\n")
-                }
-            }
-            
-            if (includeLogs) {
-                bodyBuilder.append("=== DEBUG INFORMATION ===\n")
-                bodyBuilder.append(InAppLogger.getSystemInfo(this))
-                bodyBuilder.append("\n\n=== DEBUG LOGS ===\n")
-                bodyBuilder.append(InAppLogger.getLogsForSupport())
-                bodyBuilder.append("\n=== END DEBUG INFO ===\n\n")
-            }
-            
-            val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
-                data = Uri.parse("mailto:")
-                putExtra(Intent.EXTRA_EMAIL, arrayOf(recipient))
-                putExtra(Intent.EXTRA_SUBJECT, subject)
-                putExtra(Intent.EXTRA_TEXT, bodyBuilder.toString())
-            }
-            
-            try {
-                startActivity(emailIntent)
-                InAppLogger.logUserAction("Support email opened", "Type: $type, Logs: $includeLogs")
-            } catch (e: Exception) {
-                // Fallback: try with chooser
-                try {
-                    startActivity(Intent.createChooser(emailIntent, "Send email"))
-                    InAppLogger.logUserAction("Support email opened via chooser", "Type: $type, Logs: $includeLogs")
-                } catch (e2: Exception) {
-                    Toast.makeText(this, "No email app found. Please install an email app to send support requests.", Toast.LENGTH_LONG).show()
-                    InAppLogger.logError("Support", "No email app available: ${e2.message}")
-                }
-            }
-            
-        } catch (e: Exception) {
-            Toast.makeText(this, "Error opening email: ${e.message}", Toast.LENGTH_LONG).show()
-            InAppLogger.logCrash(e, "Support email")
         }
     }
     
