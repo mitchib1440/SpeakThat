@@ -18,7 +18,29 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var binding: ActivityOnboardingBinding
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var adapter: OnboardingPagerAdapterNew
-    private lateinit var onboardingAppPickerLauncher: androidx.activity.result.ActivityResultLauncher<Intent>
+    
+    // App Picker Launcher
+    private val appPickerLauncher = registerForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val selectedPackages = result.data?.getStringArrayListExtra(AppPickerActivity.EXTRA_SELECTED_PACKAGES)
+            val privatePackages = result.data?.getStringArrayListExtra(AppPickerActivity.EXTRA_PRIVATE_PACKAGES)
+            
+            if (selectedPackages != null) {
+                val prefs = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE)
+                prefs.edit()
+                    .putStringSet("app_list", selectedPackages.toSet())
+                    .putStringSet("app_private_flags", privatePackages?.toSet() ?: emptySet())
+                    .apply()
+                
+                InAppLogger.log(TAG, "App selection saved: ${selectedPackages.size} apps")
+                
+                // Update the ViewHolder
+                adapter.onAppPickerResult()
+            }
+        }
+    }
     
     // TTS support
     private var textToSpeech: TextToSpeech? = null
@@ -290,7 +312,8 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             3 -> getLocalizedTtsString(R.string.tts_onboarding_permission_new)
             4 -> getLocalizedTtsString(R.string.tts_onboarding_system_check)
             5 -> getLocalizedTtsString(R.string.tts_onboarding_kill_noise)
-            6, 7, 8, 9 -> getLocalizedTtsString(R.string.tts_onboarding_placeholder)
+            6 -> getLocalizedTtsString(R.string.tts_onboarding_select_apps)
+            7, 8, 9 -> getLocalizedTtsString(R.string.tts_onboarding_placeholder)
             else -> ""
         }
         
@@ -347,6 +370,12 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         adapter.onSkipToPage = { pageIndex ->
             binding.viewPager.currentItem = pageIndex
             InAppLogger.log(TAG, "Skipped to page ${pageIndex + 1}")
+        }
+        
+        // Callback to launch app picker
+        adapter.onLaunchAppPicker = { intent ->
+            appPickerLauncher.launch(intent)
+            InAppLogger.log(TAG, "Launching app picker")
         }
         
         // Set callback for system check completion
