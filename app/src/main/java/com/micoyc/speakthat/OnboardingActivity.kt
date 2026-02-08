@@ -17,8 +17,7 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     
     private lateinit var binding: ActivityOnboardingBinding
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var adapter: OnboardingPagerAdapter
-    private var skipPermissionPage = false
+    private lateinit var adapter: OnboardingPagerAdapterNew
     private lateinit var onboardingAppPickerLauncher: androidx.activity.result.ActivityResultLauncher<Intent>
     
     // TTS support
@@ -59,9 +58,8 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // Apply saved theme FIRST before anything else
-        val mainPrefs = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE)
-        applySavedTheme(mainPrefs)
+        // Force dark mode - light mode is not officially supported
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         
         // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
@@ -74,97 +72,34 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        onboardingAppPickerLauncher = registerForActivityResult(
-            androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == RESULT_OK && result.data != null) {
-                val selected = result.data?.getStringArrayListExtra(AppPickerActivity.EXTRA_SELECTED_PACKAGES) ?: arrayListOf()
-                val priv = result.data?.getStringArrayListExtra(AppPickerActivity.EXTRA_PRIVATE_PACKAGES) ?: arrayListOf()
-                val prefs = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE)
-                val editor = prefs.edit()
-                editor.putStringSet("app_list", selected.toSet())
-                editor.putStringSet("app_private_flags", priv.toSet())
-                if (prefs.getString("app_list_mode", "none") == "none") {
-                    editor.putString("app_list_mode", "blacklist")
-                }
-                editor.apply()
-                val currentPage = binding.viewPager.currentItem
-                adapter.notifyDataSetChanged()
-                binding.viewPager.setCurrentItem(currentPage, false)
-                InAppLogger.log("OnboardingAppSelector", "Updated onboarding app list via picker: ${selected.size} apps, private: ${priv.size}")
-            }
-        }
-
         // Configure system UI for proper insets handling
         configureSystemUI()
 
-        // Determine if we should skip the permission page
-        skipPermissionPage = isNotificationServiceEnabled()
+        // Set up the new onboarding flow
         setupOnboarding()
         
         // Initialize TTS after setup is complete to ensure language settings are loaded
         initializeTextToSpeech()
     }
 
-    private fun applySavedTheme(prefs: android.content.SharedPreferences) {
-        val isDarkMode = prefs.getBoolean("dark_mode", true) // Default to dark mode
-        val desiredMode = if (isDarkMode) {
-            androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
-        } else {
-            androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
-        }
-        val currentMode = androidx.appcompat.app.AppCompatDelegate.getDefaultNightMode()
-        
-        // Only set the night mode if it's different from the current mode
-        // This prevents unnecessary configuration changes that cause activity recreation loops
-        if (currentMode != desiredMode) {
-            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(desiredMode)
-        }
-    }
     
     override fun onResume() {
         super.onResume()
         
-        // Check if permission status has changed since we last checked
-        val currentPermissionStatus = isNotificationServiceEnabled()
-        val permissionStatusChanged = (skipPermissionPage != currentPermissionStatus)
-        
-        if (permissionStatusChanged) {
-            InAppLogger.log(TAG, "Permission status changed: skipPermissionPage=$skipPermissionPage, currentPermissionStatus=$currentPermissionStatus")
-            skipPermissionPage = currentPermissionStatus
-            
-            // Recreate the adapter with the new permission status
-            adapter = if (skipPermissionPage) {
-                OnboardingPagerAdapter(skipPermissionPage = true)
-            } else {
-                OnboardingPagerAdapter()
-            }
-            adapter.appPickerLauncher = onboardingAppPickerLauncher
-            binding.viewPager.adapter = adapter
-            
-            // Update page indicator for the new page count
-            setupPageIndicator(adapter.itemCount)
-            
-            // Reset to first page if we were on a page that no longer exists
-            val maxPage = adapter.itemCount - 1
-            if (binding.viewPager.currentItem > maxPage) {
-                binding.viewPager.setCurrentItem(0, false)
-            }
-            
-            InAppLogger.log(TAG, "Adapter recreated due to permission status change. New page count: ${adapter.itemCount}")
-        } else {
-            // Force a full rebind to ensure permission button is visible and text updates
-            adapter.notifyDataSetChanged()
-        }
+        // Force a full rebind to ensure UI is up to date
+        adapter.notifyDataSetChanged()
         
         val currentPage = binding.viewPager.currentItem
-        updateButtonText(currentPage, adapter.itemCount)
+        updateButtonStates(currentPage, adapter.itemCount)
         
         // Refresh UI text to ensure it's in the correct language
         adapter.refreshUIText()
         
         // Update mute button icon to ensure it's correct
         updateMuteButtonIcon()
+        
+        // Update permission status if we're on the permission page
+        checkAndUpdatePermissionStatus()
         
         // Speak current page content when resuming (only if not muted)
         speakCurrentPageContent()
@@ -174,7 +109,6 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         super.onSaveInstanceState(outState)
         // Save current page position for language change recreation
         outState.putInt("current_page", binding.viewPager.currentItem)
-        outState.putBoolean("skip_permission_page", skipPermissionPage)
         outState.putBoolean("is_muted", isMuted)
     }
     
@@ -182,14 +116,10 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         super.onRestoreInstanceState(savedInstanceState)
         // Restore current page position after language change recreation
         val savedPage = savedInstanceState.getInt("current_page", 0)
-        val savedSkipPermission = savedInstanceState.getBoolean("skip_permission_page", false)
         val savedMuted = savedInstanceState.getBoolean("is_muted", false)
         
-        // Only restore if the skip permission setting matches (to avoid page mismatch)
-        if (savedSkipPermission == skipPermissionPage) {
-            binding.viewPager.setCurrentItem(savedPage, false)
-            InAppLogger.log(TAG, "Restored onboarding page position: $savedPage")
-        }
+        binding.viewPager.setCurrentItem(savedPage, false)
+        InAppLogger.log(TAG, "Restored onboarding page position: $savedPage")
         
         // Restore mute state
         isMuted = savedMuted
@@ -353,33 +283,15 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         if (!isTtsInitialized) return
         
         val currentPage = binding.viewPager.currentItem
-        val pageContent = if (skipPermissionPage) {
-            // When permission page is skipped (8 pages total - language/theme + 7 original)
-            when (currentPage) {
-                0 -> getLocalizedTtsString(R.string.tts_onboarding_language_theme) // Language/Theme page - dedicated message
-                1 -> getLocalizedTtsString(R.string.tts_onboarding_welcome)
-                2 -> getLocalizedTtsString(R.string.tts_onboarding_privacy)
-                3 -> getLocalizedTtsString(R.string.tts_onboarding_filters)
-                4 -> getLocalizedTtsString(R.string.tts_onboarding_apps)
-                5 -> getLocalizedTtsString(R.string.tts_onboarding_words)
-                6 -> getLocalizedTtsString(R.string.tts_onboarding_rules)
-                7 -> getLocalizedTtsString(R.string.tts_onboarding_complete)
-                else -> ""
-            }
-        } else {
-            // When permission page is included (9 pages total - language/theme + 8 original)
-            when (currentPage) {
-                0 -> getLocalizedTtsString(R.string.tts_onboarding_language_theme) // Language/Theme page - dedicated message
-                1 -> getLocalizedTtsString(R.string.tts_onboarding_welcome)
-                2 -> getLocalizedTtsString(R.string.tts_onboarding_permission)
-                3 -> getLocalizedTtsString(R.string.tts_onboarding_privacy)
-                4 -> getLocalizedTtsString(R.string.tts_onboarding_filters)
-                5 -> getLocalizedTtsString(R.string.tts_onboarding_apps)
-                6 -> getLocalizedTtsString(R.string.tts_onboarding_words)
-                7 -> getLocalizedTtsString(R.string.tts_onboarding_rules)
-                8 -> getLocalizedTtsString(R.string.tts_onboarding_complete)
-                else -> ""
-            }
+        val pageContent = when (currentPage) {
+            0 -> getLocalizedTtsString(R.string.tts_onboarding_language_new)
+            1 -> getLocalizedTtsString(R.string.tts_onboarding_welcome_new)
+            2 -> getLocalizedTtsString(R.string.tts_onboarding_privacy_new)
+            3 -> getLocalizedTtsString(R.string.tts_onboarding_permission_new)
+            4 -> getLocalizedTtsString(R.string.tts_onboarding_system_check)
+            5 -> getLocalizedTtsString(R.string.tts_onboarding_kill_noise)
+            6, 7, 8, 9 -> getLocalizedTtsString(R.string.tts_onboarding_placeholder)
+            else -> ""
         }
         
         if (pageContent.isNotEmpty()) {
@@ -400,17 +312,57 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
 
     private fun setupOnboarding() {
-        // Set up ViewPager2 with or without permission page
-        adapter = if (skipPermissionPage) {
-            OnboardingPagerAdapter(skipPermissionPage = true)
-        } else {
-            OnboardingPagerAdapter()
+        // Set up ViewPager2 with new 10-page adapter
+        adapter = OnboardingPagerAdapterNew()
+        
+        // Set callback for permission status changes
+        adapter.onPermissionStatusChanged = {
+            val currentPage = binding.viewPager.currentItem
+            updateButtonStates(currentPage, adapter.itemCount)
+            // Also update swipe control in case permission changed
+            updateSwipeControl(currentPage)
         }
-            adapter.appPickerLauncher = onboardingAppPickerLauncher
+        
+        // Set callback for navigation control (enable/disable next/back during system check)
+        adapter.onNavigationControlChanged = { nextEnabled, backEnabled ->
+            binding.buttonNext.isEnabled = nextEnabled
+            binding.buttonNext.alpha = if (nextEnabled) 1.0f else 0.3f
+            binding.buttonBack.isEnabled = backEnabled
+            binding.buttonBack.alpha = if (backEnabled) 1.0f else 0.3f
+        }
+        
+        // Set callback for swipe control (enable/disable swiping)
+        adapter.onSwipeControlChanged = { swipeEnabled ->
+            binding.viewPager.isUserInputEnabled = swipeEnabled
+            InAppLogger.log(TAG, "Swipe control changed: enabled=$swipeEnabled")
+        }
+        
+        // Set callback to stop TTS
+        adapter.onStopTts = {
+            textToSpeech?.stop()
+            InAppLogger.log(TAG, "TTS stopped via adapter callback")
+        }
+        
+        // Callback to skip to a specific page
+        adapter.onSkipToPage = { pageIndex ->
+            binding.viewPager.currentItem = pageIndex
+            InAppLogger.log(TAG, "Skipped to page ${pageIndex + 1}")
+        }
+        
+        // Set callback for system check completion
+        adapter.onSystemCheckCompleted = { success ->
+            if (success) {
+                // Move to next page on success
+                if (binding.viewPager.currentItem < adapter.itemCount - 1) {
+                    binding.viewPager.currentItem += 1
+                }
+            }
+        }
+        
         binding.viewPager.adapter = adapter
         
-        // Set up page indicator dots
-        setupPageIndicator(adapter.itemCount)
+        // Set up page indicator dots (9 dots for pages 1-9, page 10 is the completion page without a dot)
+        setupPageIndicator(9)
         
         // Set up button listeners
         binding.buttonSkip.setOnClickListener {
@@ -421,38 +373,50 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             toggleMute()
         }
         
+        binding.buttonBack.setOnClickListener {
+            if (binding.viewPager.currentItem > 0) {
+                binding.viewPager.currentItem -= 1
+            }
+        }
+        
         binding.buttonNext.setOnClickListener {
-            if (binding.viewPager.currentItem < adapter.itemCount - 1) {
+            val currentPage = binding.viewPager.currentItem
+            
+            // Prevent navigation from permission page if permission not granted
+            if (currentPage == 3 && !isNotificationServiceEnabled()) {
+                InAppLogger.log(TAG, "Blocked Next button - permission not granted")
+                // Ensure UI state is correct even though we're not navigating
+                updateButtonStates(currentPage, adapter.itemCount)
+                updateSwipeControl(currentPage)
+                return@setOnClickListener
+            }
+            
+            if (currentPage < adapter.itemCount - 1) {
                 binding.viewPager.currentItem += 1
             } else {
                 completeOnboarding()
             }
         }
         
-        // Prevent swiping past permission page until permission is granted
+        // Register page change callback
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                updateButtonText(position, adapter.itemCount)
+                updateButtonStates(position, adapter.itemCount)
                 updatePageIndicator(position)
+                
+                // Update swipe control based on current page
+                updateSwipeControl(position)
+                
                 // Speak the content of the new page immediately
                 speakCurrentPageContent()
             }
         })
-        binding.viewPager.isUserInputEnabled = true // default
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrollStateChanged(state: Int) {
-                val currentPage = binding.viewPager.currentItem
-                if (!skipPermissionPage && currentPage == 2 && !isNotificationServiceEnabled()) { // Permission page is now at index 2
-                    // Disable swiping on permission page if permission not granted
-                    binding.viewPager.isUserInputEnabled = false
-                } else {
-                    binding.viewPager.isUserInputEnabled = true
-                }
-            }
-        })
         
-        // Set initial button text
-        updateButtonText(0, adapter.itemCount)
+        // Enable user swiping
+        binding.viewPager.isUserInputEnabled = true
+        
+        // Set initial button states
+        updateButtonStates(0, adapter.itemCount)
     }
     
     private fun configureSystemUI() {
@@ -481,6 +445,8 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 setImageResource(R.drawable.tab_selector)
                 isClickable = false
                 isFocusable = false
+                // Start with full opacity - dots will be faded as pages are completed
+                alpha = 1.0f
             }
             binding.pageIndicator.addView(dot)
         }
@@ -490,29 +456,66 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private fun updatePageIndicator(currentPage: Int) {
         for (i in 0 until binding.pageIndicator.childCount) {
             val dot = binding.pageIndicator.getChildAt(i) as android.widget.ImageView
-            dot.isSelected = (i == currentPage)
+            
+            if (i < currentPage) {
+                // Pages before current page are completed - fade to 15% opacity
+                dot.isSelected = false
+                dot.alpha = 0.15f
+            } else if (i == currentPage) {
+                // Current page is selected
+                dot.isSelected = true
+                dot.alpha = 1.0f
+            } else {
+                // Pages after current page are not yet completed
+                dot.isSelected = false
+                dot.alpha = 1.0f
+            }
         }
     }
     
-    private fun updateButtonText(currentPage: Int, totalPages: Int) {
-        if (currentPage == totalPages - 1) {
-            binding.buttonNext.text = "Get Started"
-        } else {
-            binding.buttonNext.text = "Next"
-        }
-        
-        // Disable Next button on permission page if permissions not granted
-        if (!skipPermissionPage && currentPage == 2) { // Permission page is at index 2 (third page)
+    private fun updateSwipeControl(currentPage: Int) {
+        // Page 4 (index 3) is the permission page - disable swiping if permission not granted
+        if (currentPage == 3) {
             val hasPermission = isNotificationServiceEnabled()
-            binding.buttonNext.isEnabled = hasPermission
-            // Keep the button text as "Next" but disable it when permission not granted
-            // The separate permission button handles opening settings
+            binding.viewPager.isUserInputEnabled = hasPermission
+            InAppLogger.log(TAG, "Permission page - swipe ${if (hasPermission) "enabled" else "disabled"}")
+        } else if (currentPage != 4) {
+            // For all pages except system check (page 5, index 4), enable swiping
+            // System check manages its own swipe state via the callback
+            binding.viewPager.isUserInputEnabled = true
+        }
+        // Note: Page 5 (system check) controls swiping via onSwipeControlChanged callback
+    }
+    
+    private fun updateButtonStates(currentPage: Int, totalPages: Int) {
+        // Back button is disabled on first page
+        binding.buttonBack.isEnabled = currentPage > 0
+        binding.buttonBack.alpha = if (currentPage > 0) 1.0f else 0.3f
+        
+        // Next button is disabled on permission page (page 3, index 3) if permission not granted
+        val isPermissionPage = currentPage == 3
+        val hasPermission = isNotificationServiceEnabled()
+        
+        if (isPermissionPage && !hasPermission) {
+            binding.buttonNext.isEnabled = false
+            binding.buttonNext.alpha = 0.3f
+            InAppLogger.log(TAG, "Next button disabled - permission not granted")
         } else {
             binding.buttonNext.isEnabled = true
+            binding.buttonNext.alpha = 1.0f
         }
     }
     
-    private fun isNotificationServiceEnabled(): Boolean {
+    private fun checkAndUpdatePermissionStatus() {
+        val currentPage = binding.viewPager.currentItem
+        if (currentPage == 3) {
+            // We're on the permission page - update button states
+            updateButtonStates(currentPage, adapter.itemCount)
+            InAppLogger.log(TAG, "Checked permission status on resume")
+        }
+    }
+    
+    internal fun isNotificationServiceEnabled(): Boolean {
         val packageName = packageName
         val flat = android.provider.Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
         if (!android.text.TextUtils.isEmpty(flat)) {
@@ -527,7 +530,6 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
         return false
     }
-    
     private fun completeOnboarding() {
         // Mark onboarding as completed
         sharedPreferences.edit().putBoolean(KEY_HAS_SEEN_ONBOARDING, true).apply()
@@ -538,17 +540,6 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         finish()
     }
     
-    private fun openNotificationSettings() {
-        val intent = Intent(android.provider.Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
-        startActivity(intent)
-    }
-    
-    fun refreshPermissionStatus() {
-        // Update the current page to reflect permission status
-        val currentPage = binding.viewPager.currentItem
-        updateButtonText(currentPage, binding.viewPager.adapter?.itemCount ?: 4)
-    }
-    
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -556,35 +547,14 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         
-        when (requestCode) {
-            1001 -> { // Bluetooth permission
-                if (grantResults.isNotEmpty() && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
-                    InAppLogger.log("OnboardingActivity", "Bluetooth permission granted")
-                    // Refresh the current page to reload Bluetooth devices
-                    adapter.notifyDataSetChanged()
-                } else {
-                    InAppLogger.log("OnboardingActivity", "Bluetooth permission denied")
-                    android.widget.Toast.makeText(
-                        this,
-                        "Bluetooth permission is required to configure Bluetooth rules",
-                        android.widget.Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
-            1002 -> { // WiFi permission
-                if (grantResults.isNotEmpty() && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
-                    InAppLogger.log("OnboardingActivity", "WiFi permission granted")
-                    // Refresh the current page to reload WiFi networks
-                    adapter.notifyDataSetChanged()
-                } else {
-                    InAppLogger.log("OnboardingActivity", "WiFi permission denied")
-                    android.widget.Toast.makeText(
-                        this,
-                        "WiFi permission is required to configure WiFi rules",
-                        android.widget.Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
+        if (requestCode == OnboardingPagerAdapterNew.REQUEST_POST_NOTIFICATIONS) {
+            val granted = grantResults.isNotEmpty() && 
+                          grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED
+            
+            InAppLogger.log(TAG, "POST_NOTIFICATIONS permission result: granted=$granted")
+            
+            // Forward result to the adapter
+            adapter.onPostNotificationsPermissionResult(granted)
         }
     }
     
