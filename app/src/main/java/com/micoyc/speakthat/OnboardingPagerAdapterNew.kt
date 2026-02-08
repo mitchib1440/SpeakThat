@@ -1,6 +1,7 @@
 package com.micoyc.speakthat
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -16,11 +17,13 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.micoyc.speakthat.databinding.FragmentOnboardingKillNoiseBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingLanguageBinding
+import com.micoyc.speakthat.databinding.FragmentOnboardingSelectAppsBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingPermissionBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingPlaceholderBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingPrivacyBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingSystemCheckBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingWelcomeBinding
+import java.util.LinkedHashSet
 
 /**
  * New Onboarding Pager Adapter for 10-page onboarding flow
@@ -46,6 +49,9 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
     // Callback to skip to a specific page
     var onSkipToPage: ((pageIndex: Int) -> Unit)? = null
     
+    // Callback to launch app picker
+    var onLaunchAppPicker: ((intent: Intent) -> Unit)? = null
+    
     companion object {
         private const val VIEW_TYPE_LANGUAGE = 0
         private const val VIEW_TYPE_WELCOME = 1
@@ -53,7 +59,8 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         private const val VIEW_TYPE_PERMISSION = 3
         private const val VIEW_TYPE_SYSTEM_CHECK = 4
         private const val VIEW_TYPE_KILL_NOISE = 5
-        private const val VIEW_TYPE_PLACEHOLDER = 6
+        private const val VIEW_TYPE_SELECT_APPS = 6
+        private const val VIEW_TYPE_PLACEHOLDER = 7
         
         private const val PAGE_COUNT = 10
         
@@ -71,6 +78,7 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
             3 -> VIEW_TYPE_PERMISSION
             4 -> VIEW_TYPE_SYSTEM_CHECK
             5 -> VIEW_TYPE_KILL_NOISE
+            6 -> VIEW_TYPE_SELECT_APPS
             else -> VIEW_TYPE_PLACEHOLDER
         }
     }
@@ -103,6 +111,10 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
                 val binding = FragmentOnboardingKillNoiseBinding.inflate(inflater, parent, false)
                 KillNoiseViewHolder(binding)
             }
+            VIEW_TYPE_SELECT_APPS -> {
+                val binding = FragmentOnboardingSelectAppsBinding.inflate(inflater, parent, false)
+                SelectAppsViewHolder(binding)
+            }
             else -> {
                 val binding = FragmentOnboardingPlaceholderBinding.inflate(inflater, parent, false)
                 PlaceholderViewHolder(binding)
@@ -118,6 +130,7 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
             is PermissionViewHolder -> holder.bind()
             is SystemCheckViewHolder -> holder.bind()
             is KillNoiseViewHolder -> holder.bind()
+            is SelectAppsViewHolder -> holder.bind()
             is PlaceholderViewHolder -> holder.bind(position)
         }
     }
@@ -741,7 +754,90 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
     }
     
     /**
-     * ViewHolder for Placeholder Pages (Pages 7-10)
+     * ViewHolder for Select Your Apps Page (Page 7)
+     */
+    inner class SelectAppsViewHolder(
+        private val binding: FragmentOnboardingSelectAppsBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        
+        private val PREFS_NAME = "SpeakThatPrefs"
+        private val KEY_APP_LIST_MODE = "app_list_mode"
+        private val KEY_APP_LIST = "app_list"
+        private val KEY_APP_PRIVATE_FLAGS = "app_private_flags"
+        
+        fun bind() {
+            val context = binding.root.context
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            
+            // Load current mode
+            val currentMode = prefs.getString(KEY_APP_LIST_MODE, "blacklist") ?: "blacklist"
+            
+            // Set radio button states
+            when (currentMode) {
+                "blacklist" -> binding.radioBlacklist.isChecked = true
+                "whitelist" -> binding.radioWhitelist.isChecked = true
+            }
+            
+            // Update app count
+            updateAppCount()
+            
+            // Set up radio button listeners
+            binding.radioBlacklist.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    prefs.edit().putString(KEY_APP_LIST_MODE, "blacklist").apply()
+                    InAppLogger.log("OnboardingSelectApps", "Mode set to: blacklist")
+                    binding.radioWhitelist.isChecked = false
+                }
+            }
+            
+            binding.radioWhitelist.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    prefs.edit().putString(KEY_APP_LIST_MODE, "whitelist").apply()
+                    InAppLogger.log("OnboardingSelectApps", "Mode set to: whitelist")
+                    binding.radioBlacklist.isChecked = false
+                }
+            }
+            
+            // Set up Select Apps button
+            binding.buttonSelectApps.setOnClickListener {
+                launchAppPicker()
+            }
+        }
+        
+        private fun launchAppPicker() {
+            val context = binding.root.context
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            val selected = prefs.getStringSet(KEY_APP_LIST, LinkedHashSet())?.toCollection(ArrayList()) ?: arrayListOf()
+            
+            // No private flags for onboarding - pass empty list
+            val intent = AppPickerActivity.createIntent(
+                context,
+                context.getString(R.string.onboarding_select_apps_button),
+                selected,
+                arrayListOf(), // No private flags in onboarding
+                false // allowPrivate = false
+            )
+            
+            // Launch via callback
+            onLaunchAppPicker?.invoke(intent)
+        }
+        
+        fun updateAppCount() {
+            val context = binding.root.context
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            val apps = prefs.getStringSet(KEY_APP_LIST, LinkedHashSet()) ?: LinkedHashSet()
+            val count = apps.size
+            
+            binding.textAppsCount.text = if (count == 1) {
+                "1 app selected"
+            } else {
+                context.getString(R.string.onboarding_select_apps_count, count)
+            }
+        }
+    }
+    
+    /**
+     * ViewHolder for Placeholder Pages (Pages 8-10)
      */
     inner class PlaceholderViewHolder(
         private val binding: FragmentOnboardingPlaceholderBinding
@@ -766,10 +862,18 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
      */
     private var currentSystemCheckViewHolder: SystemCheckViewHolder? = null
     
+    /**
+     * Get the SelectAppsViewHolder if currently visible
+     * Used for updating app count after selection
+     */
+    private var currentSelectAppsViewHolder: SelectAppsViewHolder? = null
+    
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
         if (holder is SystemCheckViewHolder) {
             currentSystemCheckViewHolder = holder
+        } else if (holder is SelectAppsViewHolder) {
+            currentSelectAppsViewHolder = holder
         }
     }
     
@@ -778,10 +882,16 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         if (holder is SystemCheckViewHolder) {
             holder.cancelTest()
             currentSystemCheckViewHolder = null
+        } else if (holder is SelectAppsViewHolder) {
+            currentSelectAppsViewHolder = null
         }
     }
     
     fun onPostNotificationsPermissionResult(granted: Boolean) {
         currentSystemCheckViewHolder?.onPermissionResult(granted)
+    }
+    
+    fun onAppPickerResult() {
+        currentSelectAppsViewHolder?.updateAppCount()
     }
 }

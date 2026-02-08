@@ -1335,7 +1335,24 @@ This permission is completely optional; SpeakThat! will still function without i
     <!-- TTS String for Page 6 -->
     <string name="tts_onboarding_kill_noise">Kill the Noise. Not all notifications need to be read out loud. SpeakThat helps you skip the boring stuff like background updates and progress notifications so you only hear what matters to you. You are always in control, and you can change SpeakThat\'s filters anytime with ease.</string>
     
-    <!-- Placeholder Pages (6-10) -->
+    <!-- New Onboarding Flow (v2) - Page 7: Select Your Apps -->
+    <string name="onboarding_select_apps_title">Select Your Apps</string>
+    <string name="onboarding_select_apps_subheading">Select which apps SpeakThat should read, and which apps it shouldn\'t.</string>
+    <string name="onboarding_select_apps_icon_description">Block icon</string>
+    <string name="onboarding_select_apps_card_title">How talkative should SpeakThat be?</string>
+    <string name="onboarding_select_apps_card_description">SpeakThat can either read notifications from apps you select, or read everything except those apps.\nYou can change this at any time.</string>
+    <string name="onboarding_select_apps_option_blacklist_title">Read everything except selected</string>
+    <string name="onboarding_select_apps_option_blacklist_description">Read notifications from every app except the ones I choose</string>
+    <string name="onboarding_select_apps_option_whitelist_title">Read only selected</string>
+    <string name="onboarding_select_apps_option_whitelist_description">Only read notifications from selected apps</string>
+    <string name="onboarding_select_apps_button">Select Apps</string>
+    <string name="onboarding_select_apps_count_placeholder">0 apps selected</string>
+    <string name="onboarding_select_apps_count">%d apps selected</string>
+    
+    <!-- TTS String for Page 7 -->
+    <string name="tts_onboarding_select_apps">Select Your Apps. Select which apps SpeakThat should read, and which apps it should not. SpeakThat can either read notifications from apps you select, or read everything except those apps. You can change this at any time.</string>
+    
+    <!-- Placeholder Pages (8-10) -->
     <string name="onboarding_placeholder_title">Coming Soon</string>
     <string name="onboarding_placeholder_description">This page is still being developed.</string>
     <string name="tts_onboarding_placeholder">This onboarding page is still being developed.</string>
