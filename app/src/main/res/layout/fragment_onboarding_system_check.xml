@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="?attr/colorBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="24dp">
+
+        <!-- Icon (consistent across all states) -->
+        <ImageView
+            android:id="@+id/iconTop"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:src="@drawable/ic_stethoscope_24"
+            android:tint="@color/white_100"
+            android:layout_marginBottom="24dp"
+            android:contentDescription="@string/onboarding_system_check_icon_description" />
+
+        <!-- Title (consistent across all states) -->
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/onboarding_system_check_title"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/white_100"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Subheading (consistent across all states) -->
+        <TextView
+            android:id="@+id/textSubheading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/onboarding_system_check_subheading"
+            android:textSize="16sp"
+            android:textColor="@color/white_200"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Main Card with all state content -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:background="@drawable/gradient_card_purple_subtle">
+
+                <!-- STATE 1: Introduction -->
+                <LinearLayout
+                    android:id="@+id/layoutStateIntro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/onboarding_system_check_intro_card_title"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/purple_card_text_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/onboarding_system_check_intro_card_description"
+                        android:textSize="16sp"
+                        android:textColor="@color/purple_card_text_secondary"
+                        android:lineSpacingExtra="2dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonRunTest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/onboarding_system_check_run_button"
+                        android:textColor="@color/black_100"
+                        android:backgroundTint="@color/white_100"
+                        app:cornerRadius="24dp"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="12dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_gravity="center"
+                        style="@style/Widget.Material3.Button.TextButton" />
+                </LinearLayout>
+
+                <!-- STATE 2: Testing in Progress -->
+                <LinearLayout
+                    android:id="@+id/layoutStateTesting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/onboarding_system_check_testing_card_title"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/purple_card_text_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/onboarding_system_check_testing_card_description"
+                        android:textSize="16sp"
+                        android:textColor="@color/purple_card_text_secondary"
+                        android:lineSpacingExtra="2dp"
+                        android:layout_marginBottom="24dp" />
+
+                    <!-- Determinate Progress Bar -->
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:indicatorColor="@color/purple_200"
+                        app:trackColor="@color/purple_card_text_secondary"
+                        app:trackCornerRadius="4dp"
+                        app:trackThickness="8dp"
+                        android:max="100"
+                        android:progress="0" />
+                </LinearLayout>
+
+                <!-- STATE 3: User Feedback -->
+                <LinearLayout
+                    android:id="@+id/layoutStateFeedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/onboarding_system_check_feedback_card_title"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/purple_card_text_primary"
+                        android:gravity="center"
+                        android:layout_marginBottom="24dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/buttonFeedbackNo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/onboarding_system_check_feedback_no"
+                            android:textColor="@color/white_100"
+                            app:backgroundTint="@color/black_overlay_25"
+                            app:cornerRadius="24dp"
+                            android:paddingVertical="12dp"
+                            style="@style/Widget.Material3.Button" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/buttonFeedbackYes"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
+                            android:text="@string/onboarding_system_check_feedback_yes"
+                            android:textColor="@color/white_100"
+                            app:backgroundTint="@color/black_overlay_25"
+                            app:cornerRadius="24dp"
+                            android:paddingVertical="12dp"
+                            style="@style/Widget.Material3.Button" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- STATE 4: Failure/Skip Result -->
+                <LinearLayout
+                    android:id="@+id/layoutStateFailure"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/onboarding_system_check_failure_card_title"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/purple_card_text_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:id="@+id/textFailureReason"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/onboarding_system_check_failure_card_description"
+                        android:textSize="16sp"
+                        android:textColor="@color/purple_card_text_secondary"
+                        android:lineSpacingExtra="2dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>
