@@ -34,20 +34,20 @@
 
         <!-- Version & Credit -->
         <TextView
-            android:id="@+id/versionnumber"
+            android:id="@+id/credit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/main_version_placeholder"
+            android:text="@string/main_copyright_holder"
             android:textAlignment="viewEnd"
             android:paddingTop="4dp"
             android:paddingBottom="0dp"
             android:textSize="10sp"/>
 
         <TextView
-            android:id="@+id/credit"
+            android:id="@+id/versionnumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/main_copyright_holder"
+            android:text="@string/main_version_placeholder"
             android:textAlignment="viewEnd"
             android:textSize="10sp"/>
 
