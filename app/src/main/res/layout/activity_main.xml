@@ -47,7 +47,7 @@
             android:id="@+id/credit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/main_author"
+            android:text="@string/main_copyright_holder"
             android:textAlignment="viewEnd"
             android:textSize="10sp"/>
 

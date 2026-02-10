@@ -712,7 +712,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
 
     <!-- Main Activity Strings -->
     <string name="main_version_placeholder">version x.x.x</string>
-    <string name="main_author">by Mitchi</string>
+    <string name="main_author">Mitchi Bell</string>
+    <string name="main_copyright_holder">© 2026 Mitchi Bell</string>
     <string name="main_service_active">SpeakThat! Active</string>
     <string name="main_service_enable">Tap to enable notification reading</string>
     <string name="main_notification_permissions">Notification permissions:</string>
