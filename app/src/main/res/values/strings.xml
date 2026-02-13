@@ -850,7 +850,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="filter_no_filtering">No app filtering</string>
     <string name="filter_whitelist">Whitelist (only selected apps)</string>
     <string name="filter_blacklist">Blacklist (exclude selected apps)</string>
-    <string name="filter_manage_apps">Manage Apps:</string>
+    <string name="filter_manage_apps">Manage Apps</string>
     <string name="filter_app_list_button">App List</string>
     <string name="filter_app_count">(0 apps)</string>
     <string name="filter_search_description">Search through your installed apps by name or package. Click a suggestion to add it instantly. (Tap for more info)</string>

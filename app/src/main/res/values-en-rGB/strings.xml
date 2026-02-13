@@ -204,7 +204,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="app_description">SpeakThat! is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
     <string name="app_features">• Real-time notification reading\n• Customizable voice settings\n• Smart notification filtering\n• App-specific controls\n• Media-aware behaviour\n• Notification history\n• Shake/Wave to stop\n• Custom speech formatting\n• Conditional rules for advanced logic and schedules\n• Fully ad-free and offline functionality</string>
     <string name="developer_info">Developed with ❤️ by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day.\n\nSpeakThat! was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers.\n\nThis project was accelerated by AI-assisted programming.</string>
-    <string name="license_info">SpeakThat is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed.\n\nThis license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices.\n\nYou can view the full license text and source code on GitHub. Contributions and feedback are welcome!\n\nSpeakThat! Copyright © Mitchell Bell\nSPEAKTHAT is a registered trademark of Mitchell Bell</string>
+    <string name="license_info">SpeakThat is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed.\n\nThis license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices.\n\nYou can view the full license text and source code on GitHub. Contributions and feedback are welcome!\n\nSpeakThat! Copyright © 2025-2026 Mitchi Bell\nSPEAKTHAT is a registered trademark of Mitchell Bell</string>
 
     <string name="read_about_app">Read About App</string>
     <string name="stop_reading">Stop Reading</string>
@@ -215,7 +215,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_features_intro">Key features include:</string>
     <string name="tts_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behaviour, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and fully ad-free, offline functionality.</string>
     <string name="tts_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
-    <string name="tts_license">SpeakThat is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed. This license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices. You can view the full license text and source code on GitHub. Contributions and feedback are welcome! SpeakThat is the copyright-protected work of Mitchell Bell. SPEAKTHAT is a registered trademark of Mitchell Bell</string>
+    <string name="tts_license">SpeakThat is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed. This license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices. You can view the full license text and source code on GitHub. Contributions and feedback are welcome! SpeakThat is the 2025 to 2026 copyright-protected work of Mitchell Bell. SPEAKTHAT is a registered trademark of Mitchell Bell</string>
     <string name="tts_thank_you">Thank you for using SpeakThat!</string>
 
 
@@ -285,7 +285,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_about_features_intro">Key features include:</string>
     <string name="tts_about_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behaviour, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and full ad-free, offline functionality.</string>
     <string name="tts_about_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
-    <string name="tts_about_license">SpeakThat is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed. This license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices. You can view the full license text and source code on GitHub. Contributions and feedback are welcome! SpeakThat is the copyright-protected work of Mitchell Bell. SPEAKTHAT is a registered trademark of Mitchell Bell</string>
+    <string name="tts_about_license">SpeakThat is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed. This license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices. You can view the full license text and source code on GitHub. Contributions and feedback are welcome! SpeakThat is the 2025 to 2026 copyright-protected work of Mitchell Bell. SPEAKTHAT is a registered trademark of Mitchell Bell</string>
     <string name="tts_about_thank_you">Thank you for using SpeakThat!</string>
 
     <!-- Voice Settings Test -->
@@ -712,7 +712,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
 
     <!-- Main Activity Strings -->
     <string name="main_version_placeholder">version x.x.x</string>
-    <string name="main_author">by Mitchi</string>
+    <string name="main_author">Mitchi Bell</string>
+    <string name="main_copyright_holder">© 2025-2026 Mitchi Bell</string>
     <string name="main_service_active">SpeakThat! Active</string>
     <string name="main_service_enable">Tap to enable notification reading</string>
     <string name="main_notification_permissions">Notification permissions:</string>
@@ -849,7 +850,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="filter_no_filtering">No app filtering</string>
     <string name="filter_whitelist">Whitelist (only selected apps)</string>
     <string name="filter_blacklist">Blacklist (exclude selected apps)</string>
-    <string name="filter_manage_apps">Manage Apps:</string>
+    <string name="filter_manage_apps">Manage Apps</string>
     <string name="filter_app_list_button">App List</string>
     <string name="filter_app_count">(0 apps)</string>
     <string name="filter_search_description">Search through your installed apps by name or package. Click a suggestion to add it instantly. (Tap for more info)</string>
@@ -1199,6 +1200,9 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_next">Next</string>
     <string name="onboarding_mute_button">Mute</string>
+    <string name="onboarding_back_button">Back</string>
+    <string name="onboarding_next_button">Next</string>
+    <string name="onboarding_skip_button">Skip</string>
 
     <!-- Language and Theme Onboarding -->
     <string name="onboarding_language_theme_title">Language</string>
@@ -1235,6 +1239,124 @@ This permission is completely optional; SpeakThat! will still function without i
 
     <string name="onboarding_complete_title">You\'re All Set!</string>
     <string name="onboarding_complete_description">SpeakThat is ready to help you stay connected while keeping your eyes free!\n\n💡 You can add more filters anytime in the app settings.</string>
+
+    <!-- New Onboarding Flow (v2) - Page 1: Language -->
+    <string name="onboarding_language_title">Language</string>
+    <string name="onboarding_language_subtitle">Choose which language you would like SpeakThat to use!</string>
+    <string name="onboarding_language_icon_description">Language icon</string>
+    <string name="onboarding_language_card_title">Language</string>
+    <string name="onboarding_language_card_description">Tap the box below to pick which language SpeakThat should use for its interface and speech!</string>
+    <string name="onboarding_language_info_title">Is your language not listed?</string>
+    <string name="onboarding_language_info_description">I try to include as many languages as possible, but please remember I am just one person. You can help translate SpeakThat by contributing to its Weblate page!</string>
+    <string name="onboarding_language_translate_button">Help Translate SpeakThat</string>
+    <string name="info_icon_description">Information icon</string>
+
+    <!-- New Onboarding Flow (v2) - Page 2: Welcome -->
+    <string name="onboarding_welcome_title_new">Welcome to SpeakThat!</string>
+    <string name="onboarding_welcome_subtitle">Stay connected without staring at your screen!</string>
+    <string name="onboarding_welcome_icon_description">SpeakThat icon</string>
+    <string name="onboarding_welcome_card_title">How does SpeakThat work?</string>
+    <string name="onboarding_welcome_card_description">When you receive a notification, SpeakThat will read it out to you using a text-to-speech engine.\n\nAll processing happens entirely on your device, and you remain fully in control of what gets read.</string>
+
+    <!-- New Onboarding Flow (v2) - Page 3: Privacy -->
+    <string name="onboarding_privacy_title_new">Privacy-First</string>
+    <string name="onboarding_privacy_subtitle">Your privacy is SpeakThat\'s priority. Learn how it ensures this.</string>
+    <string name="onboarding_privacy_icon_description">Privacy shield icon</string>
+    <string name="onboarding_privacy_card1_title">Will it read sensitive notifications?</string>
+    <string name="onboarding_privacy_card1_description">SpeakThat gives you complete control over what gets read out.\n\nYou can create filters that prevent reading:</string>
+    <string name="onboarding_privacy_card1_bullet1">• notifications from specific apps</string>
+    <string name="onboarding_privacy_card1_bullet2">• notifications containing specific words</string>
+    <string name="onboarding_privacy_card1_bullet3">• in certain places</string>
+    <string name="onboarding_privacy_card1_bullet4">• between certain times</string>
+    <string name="onboarding_privacy_card1_bullet5">• without a specific Bluetooth device connected</string>
+    <string name="onboarding_privacy_card1_conclusion">And many more!</string>
+    <string name="onboarding_privacy_card2_title">What data does SpeakThat collect?</string>
+    <string name="onboarding_privacy_card2_description">None! All processing happens entirely on your device and nothing is ever sent to external servers, data farms, or AI models unless you explicitly submit a bug report and agree to include app data.</string>
+    <string name="onboarding_privacy_policy_title">View the privacy policy</string>
+    <string name="onboarding_privacy_policy_description">Full details and a bug report example are available on SpeakThat\'s website.</string>
+    <string name="onboarding_privacy_policy_button">Open privacy policy</string>
+
+    <!-- New Onboarding Flow (v2) - Page 4: Permission -->
+    <string name="onboarding_permission_title_new">Permission Required</string>
+    <string name="onboarding_permission_subtitle">SpeakThat requires notifications access to read aloud incoming notifications.</string>
+    <string name="onboarding_permission_icon_description">Notification bell icon</string>
+    <string name="onboarding_permission_card_title">Grant SpeakThat access to your notifications</string>
+    <string name="onboarding_permission_card_description">SpeakThat can\'t read your notifications if it can\'t see them. You will need to open your device settings and allow SpeakThat access to your notifications.</string>
+    <string name="onboarding_permission_bullet1">• Read notification content to speak it aloud</string>
+    <string name="onboarding_permission_bullet2">• Apply your custom filters to protect privacy</string>
+    <string name="onboarding_permission_bullet3">• Keep you informed without looking at your screen</string>
+    <string name="onboarding_permission_bullet4">• Process everything locally on your device</string>
+    <string name="onboarding_permission_tip">Tip: In the list, tap \'SpeakThat\' to enable</string>
+    <string name="onboarding_permission_open_settings">Open Settings</string>
+    <string name="onboarding_permission_granted">✓ Permission granted! You can continue.</string>
+    <string name="onboarding_permission_not_granted">Permission not yet granted</string>
+
+    <!-- New Onboarding Flow (v2) - TTS Strings -->
+    <string name="tts_onboarding_language_new">Choose your preferred language to get started with SpeakThat.</string>
+    <string name="tts_onboarding_welcome_new">Welcome to SpeakThat! Stay connected without staring at your screen. When you receive a notification, SpeakThat will read it out to you using a text-to-speech engine. All processing happens entirely on your device, and you remain fully in control of what gets read.</string>
+    <string name="tts_onboarding_privacy_new">Your privacy is SpeakThat\'s priority. You have complete control over what gets read out. You can create filters for apps, words, places, times, and more. All processing happens entirely on your device and nothing is ever sent to external servers, data farms, or AI models unless you explicitly submit a bug report and agree to include app data.</string>
+    <string name="tts_onboarding_permission_new">SpeakThat requires notifications access to read aloud incoming notifications. You will need to open your device settings and allow SpeakThat access to your notifications. Tap the Open Settings button to grant permission. In the list, tap SpeakThat to enable it. Everything stays on your device and no data is sent to anyone.</string>
+
+    <!-- New Onboarding Flow (v2) - Page 5: System Check -->
+    <string name="onboarding_system_check_title">Quick System Check</string>
+    <string name="onboarding_system_check_subheading">SpeakThat will quickly verify that it is ready to run on your device.</string>
+    <string name="onboarding_system_check_icon_description">Stethoscope icon</string>
+
+    <!-- State 1: Introduction -->
+    <string name="onboarding_system_check_intro_card_title">Ensuring reliability</string>
+    <string name="onboarding_system_check_intro_card_description">SpeakThat will send a test notification and read it out to ensure it is working on your device.\n\nThis is just a quick check. You\'ll be able to choose what gets read next.</string>
+    <string name="onboarding_system_check_run_button">Run System Check</string>
+
+    <!-- State 2: Testing in Progress -->
+    <string name="onboarding_system_check_testing_card_title">Testing...</string>
+    <string name="onboarding_system_check_testing_card_description">This won\'t take long!</string>
+
+    <!-- State 3: User Feedback -->
+    <string name="onboarding_system_check_feedback_card_title">Did you hear SpeakThat read the notification?</string>
+    <string name="onboarding_system_check_feedback_no">No, I didn\'t</string>
+    <string name="onboarding_system_check_feedback_yes">Yes, I did</string>
+
+    <!-- State 4: Failure/Skip Result -->
+    <string name="onboarding_system_check_failure_card_title">Almost there</string>
+    <string name="onboarding_system_check_failure_card_description">SpeakThat didn\'t read the test notification.\n\n%1$s\n\nYou can continue the setup, but you might find SpeakThat isn\'t ready to function just yet.\n\nFeel free to contact me if you need help getting the app working.</string>
+    <string name="onboarding_system_check_failure_permission_denied">You denied the notification permission.</string>
+    <string name="onboarding_system_check_failure_test_skipped">The test was skipped.</string>
+
+    <!-- TTS String for Page 5 -->
+    <string name="tts_onboarding_system_check">Quick System Check. SpeakThat will quickly verify that it is ready to run on your device. SpeakThat will send a test notification and read it out to ensure it is working on your device. This is just a quick check. You will be able to choose what gets read next.</string>
+
+    <!-- New Onboarding Flow (v2) - Page 6: Kill the Noise -->
+    <string name="onboarding_kill_noise_title">Kill the Noise</string>
+    <string name="onboarding_kill_noise_subheading">Not all notifications need to be read out loud. So let\'s silence the spammy ones.</string>
+    <string name="onboarding_kill_noise_icon_description">Settings icon</string>
+    <string name="onboarding_kill_noise_card_title">Notification filtering</string>
+    <string name="onboarding_kill_noise_card_description">SpeakThat helps you skip the boring stuff (like background updates and progress notifications) so you only hear what matters to you.\n\nYou\'re always in control, and you can change SpeakThat\'s filters anytime with ease.</string>
+    <string name="onboarding_kill_noise_skip_button">Skip this for now</string>
+
+    <!-- TTS String for Page 6 -->
+    <string name="tts_onboarding_kill_noise">Kill the Noise. Not all notifications need to be read out loud. SpeakThat helps you skip the boring stuff like background updates and progress notifications so you only hear what matters to you. You are always in control, and you can change SpeakThat\'s filters anytime with ease.</string>
+
+    <!-- New Onboarding Flow (v2) - Page 7: Select Your Apps -->
+    <string name="onboarding_select_apps_title">Select Your Apps</string>
+    <string name="onboarding_select_apps_subheading">Select which apps SpeakThat should read, and which apps it shouldn\'t.</string>
+    <string name="onboarding_select_apps_icon_description">Block icon</string>
+    <string name="onboarding_select_apps_card_title">How talkative should SpeakThat be?</string>
+    <string name="onboarding_select_apps_card_description">SpeakThat can either read notifications from apps you select, or read everything except those apps.\nYou can change this at any time.</string>
+    <string name="onboarding_select_apps_option_blacklist_title">Read everything except selected</string>
+    <string name="onboarding_select_apps_option_blacklist_description">Read notifications from every app except the ones I choose</string>
+    <string name="onboarding_select_apps_option_whitelist_title">Read only selected</string>
+    <string name="onboarding_select_apps_option_whitelist_description">Only read notifications from selected apps</string>
+    <string name="onboarding_select_apps_button">Select Apps</string>
+    <string name="onboarding_select_apps_count_placeholder">0 apps selected</string>
+    <string name="onboarding_select_apps_count">%d apps selected</string>
+
+    <!-- TTS String for Page 7 -->
+    <string name="tts_onboarding_select_apps">Select Your Apps. Select which apps SpeakThat should read, and which apps it should not. SpeakThat can either read notifications from apps you select, or read everything except those apps. You can change this at any time.</string>
+
+    <!-- Placeholder Pages (8-10) -->
+    <string name="onboarding_placeholder_title">Coming Soon</string>
+    <string name="onboarding_placeholder_description">This page is still being developed.</string>
+    <string name="tts_onboarding_placeholder">This onboarding page is still being developed.</string>
 
     <!-- Condition Configuration -->
     <string name="trigger_screen_state">Screen State</string>
