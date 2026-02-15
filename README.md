@@ -105,8 +105,8 @@ SpeakThat! is free and open-source software, released under the GNU GPL v3.0, a 
 
 This license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices.
 
-SpeakThat! Copyright © Mitchell Bell
-SPEAKTHAT is a registered trademark of Mitchell Bell 
+- SpeakThat! Copyright © Mitchell Bell
+- SPEAKTHAT is a registered trademark of Mitchell Bell 
 
 ---
 
