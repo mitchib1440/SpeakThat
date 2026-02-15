@@ -1,6 +1,6 @@
 <img width="1500" height="429" alt="SpeakThat! Header" src="https://github.com/user-attachments/assets/f7acb89c-9c81-406f-9e7f-dad3e01ffce0" />
 
-SpeakThat (styled as “**_SpeakThat!_**”) is an open-source Android application that reads incoming notifications out loud using Android’s text-to-speech (TTS) engine. It was designed to continue the legacy of older notification reading applications, mainly Touchless Notifications developed by [DYNA Logix](https://dynalogix.eu/) in the mid-2010s. SpeakThat differs from other notification readers in its customization and user interface. Some notifications contain information that you would rather not be made public. SpeakThat allows you to control exactly what gets read out, and when. You can decide what apps get their notifications read out, set up words that prevent readouts, enable private mode for certain notifications, add cooldown periods to prevent spam, and just about anything else you could want. While plenty of notification readers feature adverts or in-app purchases, SpeakThat offers all of its features for free. No ads, no paying for extra readouts, and absolutely no subscriptions. SpeakThat is open-source under the GPL-3.0 license, giving you permission to use it, modify it, and share it provided any derivatives are under the same license and its original copyright holder, Mitchi Bell, is attributed.
+SpeakThat (styled as “**_SpeakThat!_**”) is an open-source Android application that reads incoming notifications out loud using Android’s text-to-speech (TTS) engine. It was designed to continue the legacy of older notification reading applications, mainly Touchless Notifications developed by [DYNA Logix](https://dynalogix.eu/) in the mid-2010s. SpeakThat differs from other notification readers in its customization and user interface. Some notifications contain information that you would rather not be made public. SpeakThat allows you to control exactly what gets read out, and when. You can decide what apps get their notifications read out, set up words that prevent readouts, enable private mode for certain notifications, add cooldown periods to prevent spam, and just about anything else you could want. While plenty of notification readers feature adverts or in-app purchases, SpeakThat offers all of its features for free. No ads, no paying for extra readouts, and absolutely no subscriptions. SpeakThat is open-source under the GPL-3.0 license, giving you permission to use it, modify it, and share it provided any derivatives are under the same license and its original copyright holder is attributed.
 
 [![IzzyOnDroid](https://img.shields.io/badge/IzzyOnDroid-Available-green?logo=android)](https://apt.izzysoft.de/fdroid/index/apk/com.micoyc.speakthat)
 [<img src="https://img.shields.io/badge/SpeakThat!-Google_Play-blue?logo=googleplay" alt="RB shield">](https://play.google.com/store/apps/details?id=com.micoyc.speakthat)
@@ -105,8 +105,8 @@ SpeakThat! is free and open-source software, released under the GNU GPL v3.0, a 
 
 This license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices.
 
-SpeakThat! Copyright © Mitchell Bell
-SPEAKTHAT is a registered trademark of Mitchell Bell 
+- SpeakThat! Copyright © Mitchell Bell
+- SPEAKTHAT is a registered trademark of Mitchell Bell 
 
 ---
 
