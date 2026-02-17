@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SpeakThat!</string>
-    <string name="service_name">SpeakThat Notification Reader</string>
+    <string name="service_name">SpeakThat! Notification Reader</string>
     <!-- Permission Explanations for IzzyOnDroid/F-Droid -->
     <string name="permission_request_install_packages">Used for auto-update system to install new versions from GitHub releases. Only used when user explicitly enables auto-updates and app was not installed from Google Play Store.</string>
     <string name="permission_access_location">Required for Bluetooth and WiFi conditional filtering features. Used to detect nearby Bluetooth devices and WiFi networks for user-defined rules. No location tracking or data collection.</string>
@@ -55,17 +55,7 @@
     </string-array>
     <!-- Behavior Settings Dialogs -->
     <string name="notification_behavior_dialog_title">Notification Behavior Options</string>
-    <string name="notification_behavior_dialog_message">Choose how SpeakThat handles multiple notifications:
-
-<b>ðŸ”„ Interrupt</b> - Stops current notification and reads new one immediately. Best for urgent notifications.
-
-<b>ðŸ“‹ Queue</b> - Finishes current notification, then reads new ones in order. Nothing gets missed.
-
-<b>â­ï¸ Skip</b> - Ignores new notifications while reading. Simple but you might miss important ones.
-
-<b>ðŸ§  Smart (Recommended)</b> - Priority apps interrupt, others queue. Perfect balance of urgency and completeness.
-
-Smart mode lets you choose which apps are urgent enough to interrupt (like calls, messages) while other apps wait their turn.</string>
+    <string name="notification_behavior_dialog_message">Escolhe como o SpeakThat lida com múltiplas notificações: <b>🔄 Interromper</b> - Para a notificação em que se encontra e passa para a próxima, imediatamente. Melhor opção para notificações urgentes. <b>📋 Fila</b> - Acaba a notificação em que está e passa para a próxima, mantendo a ordem. Nenhuma informação se perde. <b>⏭⏭️ Avançar</b> - Ignora novas notificações enquanto lê. Simples, mas pode ignorar notificações importantes. <b>🧠 Inteligente (Recomendado)</b> - Aplicações prioritárias interrompem, as restantes ficam em lista de espera. Balanço perfeito entre urgência e receber todas as notificações. O modo Inteligente permite a selecção de quais as aplicações urgentes o suficiente para interromperem (como chamadas ou mensagens) enquanto as restantes aguardam a sua vez na fila.</string>
     <string name="custom_app_names_title">Custom App Names</string>
     <string name="custom_app_names_description">Customize how app names are spoken in notifications</string>
     <string name="add_custom_app_name">Add Custom App Name</string>
@@ -720,4 +710,11 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tidy_speech_description">Aprimore a fala removendo caracteres não verbais, como emojis, das notificações faladas</string>
     <string name="tidy_speech_remove_emojis_title">Remover emojis</string>
     <string name="tidy_speech_remove_emojis_description">Remover emojis e outros símbolos das notificações faladas</string>
+    <string name="quick_settings_tile_label"></string>
+    <string name="quick_settings_tile_enabled">Activar</string>
+    <string name="quick_settings_tile_disabled">Desactivar</string>
+    <string name="quick_settings_tile_enabled_toast">SpeakThat activado atarvés do Painel de Configurações Rápidas</string>
+    <string name="quick_settings_tile_disabled_toast">SpeakThat desactivado atarvés do Painel de Configurações Rápidas</string>
+    <string name="quick_settings_tile_error_toast">Erro ao mudar estado de SpeakThat</string>
+    <string name="master_switch_battery_tip_no_emoji">Desactivar quando desnecessário para conservar bateria</string>
 </resources>
