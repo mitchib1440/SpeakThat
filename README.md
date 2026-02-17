@@ -9,6 +9,7 @@ SpeakThat (styled as “**_SpeakThat!_**”) is an open-source Android applicati
 [![Weblate](https://hosted.weblate.org/widgets/speakthat/-/svg-badge.svg)](https://speakthat.app/translate)
 [<img src="https://img.shields.io/badge/SpeakThat!-Official_Website-purple" alt="RB shield">](https://speakthat.app)
 
+
 ## The Journey to get here!
 
 I have been using notification readers for almost as long as I have used smartphones. On my first proper smartphone, I had been using Utter!, created by Ben Randall. It had a notification reader function and while it didn't offer as many options as modern readers do, it showed me how great it was to have a phone read notifications. My eyes felt more free, not being forced to look at what was a very small screen to see very small announcements.
@@ -126,8 +127,21 @@ I’d also like to thank my work colleagues, especially Connagh, who convinced m
 
 As this is the first time I had ever attempted anything like this, I ended up checking some of my basic notification reading and audio processing code to that of [Voice Notify](https://voicenotify.app/), created by [Pilot51](https://github.com/pilot51). I didn’t take any code directly, but since a lot of users were telling me certain things were working with Voice Notify but not with SpeakThat, its publicly-accessible code was incredibly helpful in making sure I wasn’t taking the wrong path. So massive thanks to Pilot51.
 
+Thanks to [HowToMen](https://www.youtube.com/@howtomen) for [featuring SpeakThat](https://youtu.be/iwvHk4SUrMQ?si=DVL6sAUJEvglgTdu&t=222) on his YouTube channel!
+
 And of course, thank you to all of the contributors, of which there are far too many to list at this point. But whether you contributed translations, code, donations, or even just constructive criticism, thank you so much. You shaped SpeakThat into something that truly helps people.
 
 ---
 
 **Enjoy using SpeakThat! Stay safe, stay connected, and let your phone do the talking!**
+
+
+## Star History
+
+<a href="https://www.star-history.com/#mitchib1440/speakthat&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=mitchib1440/speakthat&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=mitchib1440/speakthat&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=mitchib1440/speakthat&type=date&legend=top-left" />
+ </picture>
+</a>
