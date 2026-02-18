@@ -710,7 +710,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tidy_speech_description">Aprimore a fala removendo caracteres não verbais, como emojis, das notificações faladas</string>
     <string name="tidy_speech_remove_emojis_title">Remover emojis</string>
     <string name="tidy_speech_remove_emojis_description">Remover emojis e outros símbolos das notificações faladas</string>
-    <string name="quick_settings_tile_label"></string>
     <string name="quick_settings_tile_enabled">Activar</string>
     <string name="quick_settings_tile_disabled">Desactivar</string>
     <string name="quick_settings_tile_enabled_toast">SpeakThat activado atarvés do Painel de Configurações Rápidas</string>
