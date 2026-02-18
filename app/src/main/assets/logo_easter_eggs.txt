@@ -462,3 +462,4 @@ SpeakThat! No witty easter eggs here! Just speech!
 SpeakThat! You're unique. Just like everyone else.
 SpeakThat! If SpeakThat speaks that, speak that it should speak this instead. If SpeakThat speaks that but then tries to sneak that… SpeakThat knows what it has done.
 SpeakThat! You wanna know why I'm so cool? I live in the notification shade!
+SpeakThat! Knowing how to perform some basic emergency medical procedures can save someone's life! If you don't know any, it's time to learn!
