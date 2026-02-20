@@ -228,8 +228,8 @@ public class GeneralSettingsActivity extends AppCompatActivity {
 
     private void setupBadgeSelector() {
         if (!"play".equals(BuildConfig.DISTRIBUTION_CHANNEL)) {
-            if (binding.rowBadgeSelector != null) {
-                binding.rowBadgeSelector.setVisibility(View.GONE);
+            if (binding.cardBadgeSettings != null) {
+                binding.cardBadgeSettings.setVisibility(View.GONE);
             }
             return;
         }
@@ -349,8 +349,8 @@ public class GeneralSettingsActivity extends AppCompatActivity {
 
     private void renderBadgeSelection() {
         int badgeCount = BadgeAssets.getPlayBadgeCount(this);
-        if (binding.rowBadgeSelector != null) {
-            binding.rowBadgeSelector.setVisibility(badgeCount > 0 ? View.VISIBLE : View.GONE);
+        if (binding.cardBadgeSettings != null) {
+            binding.cardBadgeSettings.setVisibility(badgeCount > 0 ? View.VISIBLE : View.GONE);
         }
         String storedSelection = sharedPreferences.getString(getString(R.string.prefs_badge_selection), BadgeAssets.KEY_DEFAULT);
         String resolvedSelection = BadgeAssets.ensureValidSelection(storedSelection, badgeCount);

@@ -5,6 +5,9 @@
     <string name="play_donate_badge_count">Donations: %1$d</string>
     <string name="play_donate_badge_placeholder">Hi! My name is Mitchi and SpeakThat is a passion project of mine. I originally created it for my own use, and released it under an open source license. As more people have been using it lately, I\'m spending a lot of time maintaining it and answering support emails. If you can help me in any way, I\'d greatly appreciate it!</string>
     <string name="play_donate_tip_label">Support SpeakThat</string>
+    <string name="play_donate_tip_label_small">Small tip</string>
+    <string name="play_donate_tip_label_mid">Tip</string>
+    <string name="play_donate_tip_label_large">Large tip</string>
     <string name="play_donate_price_unavailable">Price unavailable</string>
     <string name="play_donate_buy">Confirm</string>
     <string name="play_donate_more_ways">More ways to support</string>
