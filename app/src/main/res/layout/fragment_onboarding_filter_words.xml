@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="?attr/colorBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="24dp">
+
+        <!-- Icon -->
+        <ImageView
+            android:id="@+id/iconTop"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:src="@drawable/ic_block_24"
+            android:tint="@color/white_100"
+            android:layout_marginBottom="24dp"
+            android:contentDescription="@string/onboarding_filter_words_icon_description" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/onboarding_filter_words_title"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/white_100"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Subheading -->
+        <TextView
+            android:id="@+id/textSubheading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/onboarding_filter_words_subheading"
+            android:textSize="16sp"
+            android:textColor="@color/white_200"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Main Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:background="@drawable/gradient_card_purple_subtle">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/onboarding_filter_words_card_title"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/purple_card_text_primary"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/onboarding_filter_words_card_description"
+                    android:textSize="16sp"
+                    android:textColor="@color/purple_card_text_secondary"
+                    android:lineSpacingExtra="2dp"
+                    android:layout_marginBottom="20dp" />
+
+                <!-- Radio Button Option 1: Blacklist -->
+                <RadioButton
+                    android:id="@+id/radioBlacklist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/onboarding_filter_words_option_blacklist_title"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/purple_card_text_primary"
+                    android:buttonTint="@color/white_100"
+                    android:padding="8dp"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/onboarding_filter_words_option_blacklist_description"
+                    android:textSize="14sp"
+                    android:textColor="@color/purple_card_text_secondary"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="8dp"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Radio Button Option 2: Whitelist -->
+                <RadioButton
+                    android:id="@+id/radioWhitelist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/onboarding_filter_words_option_whitelist_title"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/purple_card_text_primary"
+                    android:buttonTint="@color/white_100"
+                    android:padding="8dp"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/onboarding_filter_words_option_whitelist_description"
+                    android:textSize="14sp"
+                    android:textColor="@color/purple_card_text_secondary"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="8dp"
+                    android:layout_marginBottom="20dp" />
+
+                <!-- Word Input Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/gradient_card_subtle_right"
+                    android:padding="8dp">
+
+                    <EditText
+                        android:id="@+id/editWordInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/onboarding_filter_words_input_hint"
+                        android:textSize="16sp"
+                        android:textColor="@color/purple_card_text_primary"
+                        android:textColorHint="@color/purple_card_text_secondary"
+                        android:background="@android:color/transparent"
+                        android:inputType="text"
+                        android:imeOptions="actionDone"
+                        android:maxLines="1"
+                        android:padding="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/buttonAddWord"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/check_24px"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/onboarding_filter_words_add_button"
+                        app:tint="@color/white_100" />
+
+                </LinearLayout>
+
+                <!-- Word List -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerWordList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>
