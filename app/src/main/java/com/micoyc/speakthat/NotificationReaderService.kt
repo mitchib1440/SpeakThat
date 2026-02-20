@@ -5886,14 +5886,25 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val rawInfoText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString() ?: ""
         val rawTickerText = sbn?.notification?.tickerText?.toString() ?: ""
         
+        // Apply URL handling to all notification text fields so URLs are processed
+        // regardless of which template placeholders the user chooses to use.
+        // Note: {content} (the 'text' param) is already URL-processed by applyWordFiltering(),
+        // but these fields are extracted fresh from the notification extras.
+        val urlProcessedTitle = if (rawTitle.isNotEmpty()) applyUrlHandling(rawTitle) else rawTitle
+        val urlProcessedNotificationText = if (rawNotificationText.isNotEmpty()) applyUrlHandling(rawNotificationText) else rawNotificationText
+        val urlProcessedBigText = if (rawBigText.isNotEmpty()) applyUrlHandling(rawBigText) else rawBigText
+        val urlProcessedSummaryText = if (rawSummaryText.isNotEmpty()) applyUrlHandling(rawSummaryText) else rawSummaryText
+        val urlProcessedInfoText = if (rawInfoText.isNotEmpty()) applyUrlHandling(rawInfoText) else rawInfoText
+        val urlProcessedTickerText = if (rawTickerText.isNotEmpty()) applyUrlHandling(rawTickerText) else rawTickerText
+        
         // Apply Content Cap to all notification text fields to ensure consistent behavior
         // This ensures Content Cap works regardless of which template placeholders are used
-        val title = if (contentCapMode != "disabled" && rawTitle.isNotEmpty()) applyContentCap(rawTitle) else rawTitle
-        val notificationText = if (contentCapMode != "disabled" && rawNotificationText.isNotEmpty()) applyContentCap(rawNotificationText) else rawNotificationText
-        val bigText = if (contentCapMode != "disabled" && rawBigText.isNotEmpty()) applyContentCap(rawBigText) else rawBigText
-        val summaryText = if (contentCapMode != "disabled" && rawSummaryText.isNotEmpty()) applyContentCap(rawSummaryText) else rawSummaryText
-        val infoText = if (contentCapMode != "disabled" && rawInfoText.isNotEmpty()) applyContentCap(rawInfoText) else rawInfoText
-        val tickerText = if (contentCapMode != "disabled" && rawTickerText.isNotEmpty()) applyContentCap(rawTickerText) else rawTickerText
+        val title = if (contentCapMode != "disabled" && urlProcessedTitle.isNotEmpty()) applyContentCap(urlProcessedTitle) else urlProcessedTitle
+        val notificationText = if (contentCapMode != "disabled" && urlProcessedNotificationText.isNotEmpty()) applyContentCap(urlProcessedNotificationText) else urlProcessedNotificationText
+        val bigText = if (contentCapMode != "disabled" && urlProcessedBigText.isNotEmpty()) applyContentCap(urlProcessedBigText) else urlProcessedBigText
+        val summaryText = if (contentCapMode != "disabled" && urlProcessedSummaryText.isNotEmpty()) applyContentCap(urlProcessedSummaryText) else urlProcessedSummaryText
+        val infoText = if (contentCapMode != "disabled" && urlProcessedInfoText.isNotEmpty()) applyContentCap(urlProcessedInfoText) else urlProcessedInfoText
+        val tickerText = if (contentCapMode != "disabled" && urlProcessedTickerText.isNotEmpty()) applyContentCap(urlProcessedTickerText) else urlProcessedTickerText
         
         // Get current time and date
         val time = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
