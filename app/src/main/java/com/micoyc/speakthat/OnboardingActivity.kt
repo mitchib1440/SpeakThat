@@ -313,7 +313,8 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             4 -> getLocalizedTtsString(R.string.tts_onboarding_system_check)
             5 -> getLocalizedTtsString(R.string.tts_onboarding_kill_noise)
             6 -> getLocalizedTtsString(R.string.tts_onboarding_select_apps)
-            7, 8, 9 -> getLocalizedTtsString(R.string.tts_onboarding_placeholder)
+            7 -> getLocalizedTtsString(R.string.tts_onboarding_when_to_read)
+            8, 9 -> getLocalizedTtsString(R.string.tts_onboarding_placeholder)
             else -> ""
         }
         
@@ -376,6 +377,18 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         adapter.onLaunchAppPicker = { intent ->
             appPickerLauncher.launch(intent)
             InAppLogger.log(TAG, "Launching app picker")
+        }
+        
+        // Callback to request Bluetooth permission
+        adapter.onRequestBluetoothPermission = {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                androidx.core.app.ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.BLUETOOTH_CONNECT),
+                    OnboardingPagerAdapterNew.REQUEST_BLUETOOTH_CONNECT
+                )
+                InAppLogger.log(TAG, "Requesting BLUETOOTH_CONNECT permission")
+            }
         }
         
         // Set callback for system check completion
@@ -576,14 +589,21 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         
-        if (requestCode == OnboardingPagerAdapterNew.REQUEST_POST_NOTIFICATIONS) {
-            val granted = grantResults.isNotEmpty() && 
-                          grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED
-            
-            InAppLogger.log(TAG, "POST_NOTIFICATIONS permission result: granted=$granted")
-            
-            // Forward result to the adapter
-            adapter.onPostNotificationsPermissionResult(granted)
+        when (requestCode) {
+            OnboardingPagerAdapterNew.REQUEST_POST_NOTIFICATIONS -> {
+                val granted = grantResults.isNotEmpty() && 
+                              grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED
+                
+                InAppLogger.log(TAG, "POST_NOTIFICATIONS permission result: granted=$granted")
+                adapter.onPostNotificationsPermissionResult(granted)
+            }
+            OnboardingPagerAdapterNew.REQUEST_BLUETOOTH_CONNECT -> {
+                val granted = grantResults.isNotEmpty() && 
+                              grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED
+                
+                InAppLogger.log(TAG, "BLUETOOTH_CONNECT permission result: granted=$granted")
+                adapter.onBluetoothPermissionResult(granted)
+            }
         }
     }
     

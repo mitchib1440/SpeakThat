@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.micoyc.speakthat.automation.AutomationMode
+import com.micoyc.speakthat.automation.AutomationModeManager
 import com.micoyc.speakthat.databinding.FragmentOnboardingKillNoiseBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingLanguageBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingSelectAppsBinding
@@ -23,6 +25,10 @@ import com.micoyc.speakthat.databinding.FragmentOnboardingPlaceholderBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingPrivacyBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingSystemCheckBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingWelcomeBinding
+import com.micoyc.speakthat.databinding.FragmentOnboardingWhenToReadBinding
+import com.micoyc.speakthat.rules.RuleManager
+import com.micoyc.speakthat.rules.RuleTemplate
+import com.micoyc.speakthat.rules.RuleTemplates
 import java.util.LinkedHashSet
 
 /**
@@ -52,6 +58,9 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
     // Callback to launch app picker
     var onLaunchAppPicker: ((intent: Intent) -> Unit)? = null
     
+    // Callback to request Bluetooth permission
+    var onRequestBluetoothPermission: (() -> Unit)? = null
+    
     companion object {
         private const val VIEW_TYPE_LANGUAGE = 0
         private const val VIEW_TYPE_WELCOME = 1
@@ -61,11 +70,13 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         private const val VIEW_TYPE_KILL_NOISE = 5
         private const val VIEW_TYPE_SELECT_APPS = 6
         private const val VIEW_TYPE_PLACEHOLDER = 7
+        private const val VIEW_TYPE_WHEN_TO_READ = 8
         
         private const val PAGE_COUNT = 10
         
         // Request code for POST_NOTIFICATIONS permission
         const val REQUEST_POST_NOTIFICATIONS = 1001
+        const val REQUEST_BLUETOOTH_CONNECT = 1002
     }
     
     override fun getItemCount(): Int = PAGE_COUNT
@@ -79,6 +90,7 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
             4 -> VIEW_TYPE_SYSTEM_CHECK
             5 -> VIEW_TYPE_KILL_NOISE
             6 -> VIEW_TYPE_SELECT_APPS
+            7 -> VIEW_TYPE_WHEN_TO_READ
             else -> VIEW_TYPE_PLACEHOLDER
         }
     }
@@ -115,6 +127,10 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
                 val binding = FragmentOnboardingSelectAppsBinding.inflate(inflater, parent, false)
                 SelectAppsViewHolder(binding)
             }
+            VIEW_TYPE_WHEN_TO_READ -> {
+                val binding = FragmentOnboardingWhenToReadBinding.inflate(inflater, parent, false)
+                WhenToReadViewHolder(binding)
+            }
             else -> {
                 val binding = FragmentOnboardingPlaceholderBinding.inflate(inflater, parent, false)
                 PlaceholderViewHolder(binding)
@@ -131,6 +147,7 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
             is SystemCheckViewHolder -> holder.bind()
             is KillNoiseViewHolder -> holder.bind()
             is SelectAppsViewHolder -> holder.bind()
+            is WhenToReadViewHolder -> holder.bind()
             is PlaceholderViewHolder -> holder.bind(position)
         }
     }
@@ -837,7 +854,278 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
     }
     
     /**
-     * ViewHolder for Placeholder Pages (Pages 8-10)
+     * ViewHolder for When to Read Page (Page 8)
+     * Presents three rule template cards: Headphones, Screen Off, Time Schedule
+     */
+    inner class WhenToReadViewHolder(
+        private val binding: FragmentOnboardingWhenToReadBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        
+        private var headphonesConfigured = false
+        private var screenOffConfigured = false
+        private var timeScheduleConfigured = false
+        
+        private var pendingBluetoothTemplate: RuleTemplate? = null
+        
+        fun bind() {
+            val context = binding.root.context
+            
+            checkExistingRules(context)
+            setupTemplateCards(context)
+            
+            InAppLogger.log("OnboardingWhenToRead", "When to Read page loaded")
+        }
+        
+        private fun checkExistingRules(context: Context) {
+            val ruleManager = RuleManager(context)
+            val existingRules = ruleManager.loadRules()
+            
+            headphonesConfigured = existingRules.any { it.name == context.getString(R.string.template_headphones_only_name) }
+            screenOffConfigured = existingRules.any { it.name == context.getString(R.string.template_screen_off_name) }
+            timeScheduleConfigured = existingRules.any { it.name == context.getString(R.string.template_time_schedule_name) }
+            
+            updateStatusIcons()
+        }
+        
+        private fun updateStatusIcons() {
+            updateStatusIcon(binding.iconHeadphonesStatus, headphonesConfigured)
+            updateStatusIcon(binding.iconScreenOffStatus, screenOffConfigured)
+            updateStatusIcon(binding.iconTimeScheduleStatus, timeScheduleConfigured)
+        }
+        
+        private fun updateStatusIcon(icon: android.widget.ImageView, configured: Boolean) {
+            if (configured) {
+                icon.setImageResource(R.drawable.check_circle_24px)
+                icon.setColorFilter(icon.context.getColor(R.color.green_200))
+            } else {
+                icon.setImageResource(R.drawable.ic_arrow_right_24)
+                icon.setColorFilter(icon.context.getColor(R.color.white_200))
+            }
+        }
+        
+        private fun setupTemplateCards(context: Context) {
+            val allTemplates = RuleTemplates.getAllTemplates(context)
+            
+            val headphonesTemplate = allTemplates.find { it.id == "headphones_only" }
+            val screenOffTemplate = allTemplates.find { it.id == "screen_off" }
+            val timeScheduleTemplate = allTemplates.find { it.id == "time_schedule" }
+            
+            binding.templateHeadphones.setOnClickListener {
+                if (headphonesTemplate != null) {
+                    launchHeadphonesConfiguration(headphonesTemplate)
+                }
+            }
+            
+            binding.templateScreenOff.setOnClickListener {
+                if (screenOffTemplate != null) {
+                    addScreenOffRule(context, screenOffTemplate)
+                }
+            }
+            
+            binding.templateTimeSchedule.setOnClickListener {
+                if (timeScheduleTemplate != null) {
+                    showTimeScheduleConfigurationDialog(context, timeScheduleTemplate)
+                }
+            }
+        }
+        
+        private fun launchHeadphonesConfiguration(template: RuleTemplate) {
+            val context = binding.root.context
+            
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                if (context.checkSelfPermission(android.Manifest.permission.BLUETOOTH_CONNECT) 
+                    != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                    pendingBluetoothTemplate = template
+                    onRequestBluetoothPermission?.invoke()
+                    return
+                }
+            }
+            
+            showBluetoothConfigurationDialog(context, template)
+        }
+        
+        fun onBluetoothPermissionGranted(granted: Boolean) {
+            val template = pendingBluetoothTemplate ?: return
+            pendingBluetoothTemplate = null
+            
+            if (granted) {
+                showBluetoothConfigurationDialog(binding.root.context, template)
+            } else {
+                android.widget.Toast.makeText(
+                    binding.root.context,
+                    R.string.onboarding_template_bluetooth_permission_needed,
+                    android.widget.Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+        
+        private fun showBluetoothConfigurationDialog(context: Context, template: RuleTemplate) {
+            val dialogView = LayoutInflater.from(context)
+                .inflate(R.layout.dialog_bluetooth_configuration, null)
+            
+            val recyclerView = dialogView.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recyclerBluetoothDevices)
+            val btAdapter = OnboardingBluetoothDeviceAdapter { }
+            recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+            recyclerView.adapter = btAdapter
+            
+            loadBluetoothDevices(context, btAdapter)
+            
+            val dialog = androidx.appcompat.app.AlertDialog.Builder(context)
+                .setTitle(R.string.onboarding_template_dialog_configure_headphones)
+                .setView(dialogView)
+                .setPositiveButton(R.string.onboarding_template_dialog_add_rule) { _, _ ->
+                    val selectedDevices = btAdapter.getSelectedDevices()
+                    val customData = if (selectedDevices.isNotEmpty()) {
+                        mapOf("device_addresses" to selectedDevices)
+                    } else {
+                        mapOf("device_addresses" to emptySet<String>())
+                    }
+                    addRuleFromTemplate(context, template, customData)
+                    headphonesConfigured = true
+                    updateStatusIcons()
+                }
+                .setNegativeButton(R.string.onboarding_template_dialog_cancel, null)
+                .create()
+            
+            dialog.show()
+        }
+        
+        private fun loadBluetoothDevices(context: Context, adapter: OnboardingBluetoothDeviceAdapter) {
+            try {
+                val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as android.bluetooth.BluetoothManager
+                val bluetoothAdapter = bluetoothManager.adapter
+                if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) {
+                    val pairedDevices = bluetoothAdapter.bondedDevices
+                    adapter.updateDevices(pairedDevices.toList())
+                    InAppLogger.log("OnboardingWhenToRead", "Loaded ${pairedDevices.size} paired Bluetooth devices")
+                } else {
+                    android.widget.Toast.makeText(context, R.string.onboarding_template_bluetooth_disabled, android.widget.Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: SecurityException) {
+                InAppLogger.logError("OnboardingWhenToRead", "Security exception loading Bluetooth devices: ${e.message}")
+                android.widget.Toast.makeText(context, R.string.onboarding_template_bluetooth_permission_needed, android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
+        
+        private fun addScreenOffRule(context: Context, template: RuleTemplate) {
+            addRuleFromTemplate(context, template, emptyMap())
+            screenOffConfigured = true
+            updateStatusIcons()
+            
+            android.widget.Toast.makeText(
+                context,
+                context.getString(R.string.onboarding_template_rule_added, template.name),
+                android.widget.Toast.LENGTH_SHORT
+            ).show()
+        }
+        
+        private fun showTimeScheduleConfigurationDialog(context: Context, template: RuleTemplate) {
+            val displayMetrics = context.resources.displayMetrics
+            val screenHeight = displayMetrics.heightPixels
+            val screenWidth = displayMetrics.widthPixels
+            
+            val layoutResId = when {
+                screenHeight < 600 || screenWidth < 400 -> R.layout.dialog_time_schedule_compact
+                else -> R.layout.dialog_time_schedule_configuration
+            }
+            
+            val dialogView = LayoutInflater.from(context).inflate(layoutResId, null)
+            
+            setupTimeScheduleDefaults(dialogView)
+            
+            val dialog = androidx.appcompat.app.AlertDialog.Builder(context)
+                .setTitle(R.string.onboarding_template_dialog_configure_schedule)
+                .setView(dialogView)
+                .setPositiveButton(R.string.onboarding_template_dialog_add_rule) { _, _ ->
+                    val timeData = extractTimeScheduleData(dialogView)
+                    addRuleFromTemplate(context, template, timeData)
+                    timeScheduleConfigured = true
+                    updateStatusIcons()
+                }
+                .setNegativeButton(R.string.onboarding_template_dialog_cancel, null)
+                .create()
+            
+            dialog.show()
+            
+            val window = dialog.window
+            if (window != null) {
+                val width = when {
+                    screenWidth < 600 -> (screenWidth * 0.98).toInt()
+                    screenWidth < 800 -> (screenWidth * 0.95).toInt()
+                    else -> (screenWidth * 0.90).toInt()
+                }
+                val maxHeight = when {
+                    screenHeight < 600 -> (screenHeight * 0.70).toInt()
+                    screenHeight < 800 -> (screenHeight * 0.75).toInt()
+                    screenHeight < 1200 -> (screenHeight * 0.80).toInt()
+                    else -> ViewGroup.LayoutParams.WRAP_CONTENT
+                }
+                window.setLayout(width, maxHeight)
+            }
+        }
+        
+        private fun setupTimeScheduleDefaults(dialogView: View) {
+            val timePickerStart = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerStart)
+            val timePickerEnd = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerEnd)
+            
+            timePickerStart.hour = 22
+            timePickerStart.minute = 0
+            timePickerEnd.hour = 8
+            timePickerEnd.minute = 0
+            
+            dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxMonday)?.isChecked = true
+            dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxTuesday)?.isChecked = true
+            dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxWednesday)?.isChecked = true
+            dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxThursday)?.isChecked = true
+            dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxFriday)?.isChecked = true
+            dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSaturday)?.isChecked = true
+            dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSunday)?.isChecked = true
+        }
+        
+        private fun extractTimeScheduleData(dialogView: View): Map<String, Any> {
+            val timePickerStart = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerStart)
+            val timePickerEnd = dialogView.findViewById<android.widget.TimePicker>(R.id.timePickerEnd)
+            
+            val selectedDays = mutableSetOf<Int>()
+            if (dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxMonday)?.isChecked == true) selectedDays.add(1)
+            if (dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxTuesday)?.isChecked == true) selectedDays.add(2)
+            if (dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxWednesday)?.isChecked == true) selectedDays.add(3)
+            if (dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxThursday)?.isChecked == true) selectedDays.add(4)
+            if (dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxFriday)?.isChecked == true) selectedDays.add(5)
+            if (dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSaturday)?.isChecked == true) selectedDays.add(6)
+            if (dialogView.findViewById<android.widget.CheckBox>(R.id.checkBoxSunday)?.isChecked == true) selectedDays.add(7)
+            
+            return mapOf(
+                "startHour" to timePickerStart.hour,
+                "startMinute" to timePickerStart.minute,
+                "endHour" to timePickerEnd.hour,
+                "endMinute" to timePickerEnd.minute,
+                "selectedDays" to selectedDays
+            )
+        }
+        
+        private fun addRuleFromTemplate(context: Context, template: RuleTemplate, customData: Map<String, Any>) {
+            try {
+                val rule = RuleTemplates.createRuleFromTemplate(template, customData)
+                val ruleManager = RuleManager(context)
+                ruleManager.addRule(rule)
+                
+                val automationModeManager = AutomationModeManager(context)
+                if (automationModeManager.getMode() != AutomationMode.CONDITIONAL_RULES) {
+                    automationModeManager.setMode(AutomationMode.CONDITIONAL_RULES)
+                    InAppLogger.log("OnboardingWhenToRead", "Enabled Conditional Rules mode")
+                }
+                
+                InAppLogger.log("OnboardingWhenToRead", "Added rule from template: ${template.name}")
+            } catch (e: Exception) {
+                InAppLogger.logError("OnboardingWhenToRead", "Error adding rule: ${e.message}")
+                android.widget.Toast.makeText(context, R.string.onboarding_template_rule_error, android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    
+    /**
+     * ViewHolder for Placeholder Pages (Pages 9-10)
      */
     inner class PlaceholderViewHolder(
         private val binding: FragmentOnboardingPlaceholderBinding
@@ -868,22 +1156,30 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
      */
     private var currentSelectAppsViewHolder: SelectAppsViewHolder? = null
     
+    /**
+     * Get the WhenToReadViewHolder if currently visible
+     * Used for handling Bluetooth permission results
+     */
+    private var currentWhenToReadViewHolder: WhenToReadViewHolder? = null
+    
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
-        if (holder is SystemCheckViewHolder) {
-            currentSystemCheckViewHolder = holder
-        } else if (holder is SelectAppsViewHolder) {
-            currentSelectAppsViewHolder = holder
+        when (holder) {
+            is SystemCheckViewHolder -> currentSystemCheckViewHolder = holder
+            is SelectAppsViewHolder -> currentSelectAppsViewHolder = holder
+            is WhenToReadViewHolder -> currentWhenToReadViewHolder = holder
         }
     }
     
     override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
         super.onViewDetachedFromWindow(holder)
-        if (holder is SystemCheckViewHolder) {
-            holder.cancelTest()
-            currentSystemCheckViewHolder = null
-        } else if (holder is SelectAppsViewHolder) {
-            currentSelectAppsViewHolder = null
+        when (holder) {
+            is SystemCheckViewHolder -> {
+                holder.cancelTest()
+                currentSystemCheckViewHolder = null
+            }
+            is SelectAppsViewHolder -> currentSelectAppsViewHolder = null
+            is WhenToReadViewHolder -> currentWhenToReadViewHolder = null
         }
     }
     
@@ -893,5 +1189,9 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
     
     fun onAppPickerResult() {
         currentSelectAppsViewHolder?.updateAppCount()
+    }
+    
+    fun onBluetoothPermissionResult(granted: Boolean) {
+        currentWhenToReadViewHolder?.onBluetoothPermissionGranted(granted)
     }
 }
