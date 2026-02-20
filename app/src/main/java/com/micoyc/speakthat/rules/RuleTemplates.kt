@@ -17,7 +17,8 @@ data class RuleTemplate(
     val triggers: List<TriggerTemplate>,
     val actions: List<ActionTemplate>,
     val requiresDeviceSelection: Boolean = false,
-    val deviceType: String? = null
+    val deviceType: String? = null,
+    val triggerLogic: LogicGate = LogicGate.AND
 )
 
 data class TriggerTemplate(
@@ -81,7 +82,8 @@ object RuleTemplates {
         val rule = Rule(
             name = template.name,
             triggers = triggers,
-            actions = actions
+            actions = actions,
+            triggerLogic = template.triggerLogic
         )
         
         InAppLogger.logDebug(TAG, "Created rule: ${rule.name} with ${triggers.size} triggers")
@@ -162,13 +164,23 @@ object RuleTemplates {
             iconDrawable = R.drawable.ic_bluetooth_24,
             requiresDeviceSelection = true,
             deviceType = "bluetooth",
+            triggerLogic = LogicGate.OR,
             triggers = listOf(
                 TriggerTemplate(
                     type = TriggerType.BLUETOOTH_DEVICE,
-                    inverted = true, // Inverted means "when NOT connected"
+                    inverted = false,
                     data = mapOf(
                         "device_addresses" to emptySet<String>(),
-                        "device_display_text" to ""
+                        "device_display_text" to "",
+                        "connection_state" to "disconnected"
+                    ),
+                    description = context.getString(R.string.template_trigger_headphones_disconnected)
+                ),
+                TriggerTemplate(
+                    type = TriggerType.WIRED_HEADPHONES,
+                    inverted = false,
+                    data = mapOf(
+                        "connection_state" to "disconnected"
                     ),
                     description = context.getString(R.string.template_trigger_headphones_disconnected)
                 )

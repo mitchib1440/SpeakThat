@@ -1365,7 +1365,36 @@ This permission is completely optional; SpeakThat! will still function without i
     <!-- TTS String for Page 7 -->
     <string name="tts_onboarding_select_apps">Select Your Apps. Select which apps SpeakThat should read, and which apps it should not. SpeakThat can either read notifications from apps you select, or read everything except those apps. You can change this at any time.</string>
     
-    <!-- Placeholder Pages (8-10) -->
+    <!-- Page 8: When to Read -->
+    <string name="onboarding_when_to_read_title">When to Read</string>
+    <string name="onboarding_when_to_read_subheading">Let\'s make sure SpeakThat doesn\'t read at an inconvenient time.</string>
+    <string name="onboarding_when_to_read_icon_description">Rules icon</string>
+    <string name="onboarding_when_to_read_card_title">When should SpeakThat read?</string>
+    <string name="onboarding_when_to_read_card_description">Sometimes it\'s not about what is read, but when. These shortcuts help SpeakThat stay quiet in the wrong moments, and speak up at the right ones.\n\nThese are entirely optional and can be changed later.</string>
+
+    <!-- Page 8: Template card titles and descriptions -->
+    <string name="onboarding_template_headphones_title">Only when headphones are connected</string>
+    <string name="onboarding_template_headphones_description">SpeakThat will only read when Bluetooth or wired headphones are connected</string>
+    <string name="onboarding_template_screen_off_title">Only when screen is off</string>
+    <string name="onboarding_template_screen_off_description">Notifications will only be read when your screen is off</string>
+    <string name="onboarding_template_time_schedule_title">Not between certain times</string>
+    <string name="onboarding_template_time_schedule_description">Set quiet hours when SpeakThat should stay silent</string>
+    <string name="onboarding_template_status_tap">Tap to set up</string>
+    <string name="onboarding_template_status_configured">Configured</string>
+    <string name="onboarding_template_bluetooth_no_devices">No paired Bluetooth devices found. Please pair a device first.</string>
+    <string name="onboarding_template_bluetooth_permission_needed">Bluetooth permission is needed to detect your headphones.</string>
+    <string name="onboarding_template_bluetooth_disabled">Bluetooth is not available or is turned off.</string>
+    <string name="onboarding_template_dialog_add_rule">Add Rule</string>
+    <string name="onboarding_template_dialog_cancel">Cancel</string>
+    <string name="onboarding_template_dialog_configure_headphones">Select your Bluetooth headphones</string>
+    <string name="onboarding_template_dialog_configure_schedule">Set your quiet hours</string>
+    <string name="onboarding_template_rule_added">Rule added: %s</string>
+    <string name="onboarding_template_rule_error">Error adding rule. Please try again.</string>
+
+    <!-- TTS String for Page 8 -->
+    <string name="tts_onboarding_when_to_read">When to Read. Let\'s make sure SpeakThat doesn\'t read at an inconvenient time. Sometimes it\'s not about what is read, but when. These shortcuts help SpeakThat stay quiet in the wrong moments, and speak up at the right ones. These are entirely optional and can be changed later.</string>
+
+    <!-- Placeholder Pages (9-10) -->
     <string name="onboarding_placeholder_title">Coming Soon</string>
     <string name="onboarding_placeholder_description">This page is still being developed.</string>
     <string name="tts_onboarding_placeholder">This onboarding page is still being developed.</string>
