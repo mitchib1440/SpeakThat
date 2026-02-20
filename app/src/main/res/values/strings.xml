@@ -1394,10 +1394,30 @@ This permission is completely optional; SpeakThat! will still function without i
     <!-- TTS String for Page 8 -->
     <string name="tts_onboarding_when_to_read">When to Read. Let\'s make sure SpeakThat doesn\'t read at an inconvenient time. Sometimes it\'s not about what is read, but when. These shortcuts help SpeakThat stay quiet in the wrong moments, and speak up at the right ones. These are entirely optional and can be changed later.</string>
 
-    <!-- Placeholder Pages (9-10) -->
-    <string name="onboarding_placeholder_title">Coming Soon</string>
-    <string name="onboarding_placeholder_description">This page is still being developed.</string>
-    <string name="tts_onboarding_placeholder">This onboarding page is still being developed.</string>
+    <!-- Page 9: Filter by Words -->
+    <string name="onboarding_filter_words_title">Filter by Words</string>
+    <string name="onboarding_filter_words_subheading">Optionally fine-tune your filtering by selecting specific words and phrases.</string>
+    <string name="onboarding_filter_words_icon_description">Filter icon</string>
+    <string name="onboarding_filter_words_card_title">Filter by specific words (Optional)</string>
+    <string name="onboarding_filter_words_card_description">You can add to your app filter by specifying a list of words you\'d like SpeakThat to either read or not read notifications containing.</string>
+    <string name="onboarding_filter_words_option_blacklist_title">Read everything except selected</string>
+    <string name="onboarding_filter_words_option_blacklist_description">Read notifications from every app except the ones I choose</string>
+    <string name="onboarding_filter_words_option_whitelist_title">Read only selected</string>
+    <string name="onboarding_filter_words_option_whitelist_description">Only read notifications from selected apps</string>
+    <string name="onboarding_filter_words_input_hint">Type a word…</string>
+    <string name="onboarding_filter_words_add_button">Add word</string>
+
+    <!-- TTS String for Page 9 -->
+    <string name="tts_onboarding_filter_words">Filter by Words. Optionally fine-tune your filtering by selecting specific words and phrases. You can add to your app filter by specifying a list of words you\'d like SpeakThat to either read or not read notifications containing.</string>
+
+    <!-- Page 10: All Set! -->
+    <string name="onboarding_all_set_title">All Set!</string>
+    <string name="onboarding_all_set_icon_description">Celebration icon</string>
+    <string name="onboarding_all_set_card_title">Phew, all done!</string>
+    <string name="onboarding_all_set_card_description">SpeakThat is ready to read your notifications to you so you can focus on what matters!\n\nYou can customise SpeakThat even further when you\'re ready. Open the settings page and explore the various options, or press \"Re-run Onboarding\" to see this setup again!\n\nStay safe, have fun, and let your phone do the talking!</string>
+
+    <!-- TTS String for Page 10 -->
+    <string name="tts_onboarding_all_set">All Set! Phew, all done! SpeakThat is ready to read your notifications to you so you can focus on what matters. You can customise SpeakThat even further when you are ready. Open the settings page and explore the various options, or press Re-run Onboarding to see this setup again. Stay safe, have fun, and let your phone do the talking!</string>
 
     <!-- Condition Configuration -->
     <string name="trigger_screen_state">Screen State</string>

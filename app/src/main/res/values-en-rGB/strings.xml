@@ -1353,11 +1353,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <!-- TTS String for Page 7 -->
     <string name="tts_onboarding_select_apps">Select Your Apps. Select which apps SpeakThat should read, and which apps it should not. SpeakThat can either read notifications from apps you select, or read everything except those apps. You can change this at any time.</string>
 
-    <!-- Placeholder Pages (8-10) -->
-    <string name="onboarding_placeholder_title">Coming Soon</string>
-    <string name="onboarding_placeholder_description">This page is still being developed.</string>
-    <string name="tts_onboarding_placeholder">This onboarding page is still being developed.</string>
-
     <!-- Condition Configuration -->
     <string name="trigger_screen_state">Screen State</string>
     <string name="trigger_screen_choose">Choose when this condition is met</string>
