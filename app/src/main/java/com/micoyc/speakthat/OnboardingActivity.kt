@@ -314,7 +314,8 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             5 -> getLocalizedTtsString(R.string.tts_onboarding_kill_noise)
             6 -> getLocalizedTtsString(R.string.tts_onboarding_select_apps)
             7 -> getLocalizedTtsString(R.string.tts_onboarding_when_to_read)
-            8, 9 -> getLocalizedTtsString(R.string.tts_onboarding_placeholder)
+            8 -> getLocalizedTtsString(R.string.tts_onboarding_filter_words)
+            9 -> getLocalizedTtsString(R.string.tts_onboarding_all_set)
             else -> ""
         }
         

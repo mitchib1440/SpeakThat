@@ -21,10 +21,11 @@ import com.micoyc.speakthat.databinding.FragmentOnboardingKillNoiseBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingLanguageBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingSelectAppsBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingPermissionBinding
-import com.micoyc.speakthat.databinding.FragmentOnboardingPlaceholderBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingPrivacyBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingSystemCheckBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingWelcomeBinding
+import com.micoyc.speakthat.databinding.FragmentOnboardingAllSetBinding
+import com.micoyc.speakthat.databinding.FragmentOnboardingFilterWordsBinding
 import com.micoyc.speakthat.databinding.FragmentOnboardingWhenToReadBinding
 import com.micoyc.speakthat.rules.RuleManager
 import com.micoyc.speakthat.rules.RuleTemplate
@@ -69,8 +70,9 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         private const val VIEW_TYPE_SYSTEM_CHECK = 4
         private const val VIEW_TYPE_KILL_NOISE = 5
         private const val VIEW_TYPE_SELECT_APPS = 6
-        private const val VIEW_TYPE_PLACEHOLDER = 7
         private const val VIEW_TYPE_WHEN_TO_READ = 8
+        private const val VIEW_TYPE_FILTER_WORDS = 9
+        private const val VIEW_TYPE_ALL_SET = 10
         
         private const val PAGE_COUNT = 10
         
@@ -91,7 +93,9 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
             5 -> VIEW_TYPE_KILL_NOISE
             6 -> VIEW_TYPE_SELECT_APPS
             7 -> VIEW_TYPE_WHEN_TO_READ
-            else -> VIEW_TYPE_PLACEHOLDER
+            8 -> VIEW_TYPE_FILTER_WORDS
+            9 -> VIEW_TYPE_ALL_SET
+            else -> VIEW_TYPE_ALL_SET
         }
     }
     
@@ -131,9 +135,17 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
                 val binding = FragmentOnboardingWhenToReadBinding.inflate(inflater, parent, false)
                 WhenToReadViewHolder(binding)
             }
+            VIEW_TYPE_FILTER_WORDS -> {
+                val binding = FragmentOnboardingFilterWordsBinding.inflate(inflater, parent, false)
+                FilterWordsViewHolder(binding)
+            }
+            VIEW_TYPE_ALL_SET -> {
+                val binding = FragmentOnboardingAllSetBinding.inflate(inflater, parent, false)
+                AllSetViewHolder(binding)
+            }
             else -> {
-                val binding = FragmentOnboardingPlaceholderBinding.inflate(inflater, parent, false)
-                PlaceholderViewHolder(binding)
+                val binding = FragmentOnboardingAllSetBinding.inflate(inflater, parent, false)
+                AllSetViewHolder(binding)
             }
         }
     }
@@ -148,7 +160,8 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
             is KillNoiseViewHolder -> holder.bind()
             is SelectAppsViewHolder -> holder.bind()
             is WhenToReadViewHolder -> holder.bind()
-            is PlaceholderViewHolder -> holder.bind(position)
+            is FilterWordsViewHolder -> holder.bind()
+            is AllSetViewHolder -> holder.bind()
         }
     }
     
@@ -1125,14 +1138,129 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
     }
     
     /**
-     * ViewHolder for Placeholder Pages (Pages 9-10)
+     * ViewHolder for Filter by Words Page (Page 9)
+     * Manages word list mode (blacklist/whitelist) and word add/remove
      */
-    inner class PlaceholderViewHolder(
-        private val binding: FragmentOnboardingPlaceholderBinding
+    inner class FilterWordsViewHolder(
+        private val binding: FragmentOnboardingFilterWordsBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         
-        fun bind(position: Int) {
-            InAppLogger.log("OnboardingPlaceholderPage", "Placeholder page ${position + 1} loaded")
+        private val PREFS_NAME = "SpeakThatPrefs"
+        private val KEY_WORD_LIST_MODE = "word_list_mode"
+        private val KEY_WORD_BLACKLIST = "word_blacklist"
+        
+        private lateinit var wordAdapter: OnboardingWordListAdapter
+        
+        fun bind() {
+            val context = binding.root.context
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            
+            setupWordAdapter(context)
+            setupRadioButtons(prefs)
+            setupWordInput(context, prefs)
+            loadExistingWords(prefs)
+            
+            InAppLogger.log("OnboardingFilterWords", "Filter by Words page loaded")
+        }
+        
+        private fun setupWordAdapter(context: Context) {
+            wordAdapter = OnboardingWordListAdapter { word ->
+                removeWord(context, word)
+            }
+            binding.recyclerWordList.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+            binding.recyclerWordList.adapter = wordAdapter
+        }
+        
+        private fun setupRadioButtons(prefs: android.content.SharedPreferences) {
+            val currentMode = prefs.getString(KEY_WORD_LIST_MODE, "blacklist") ?: "blacklist"
+            
+            when (currentMode) {
+                "blacklist" -> binding.radioBlacklist.isChecked = true
+                "whitelist" -> binding.radioWhitelist.isChecked = true
+            }
+            
+            binding.radioBlacklist.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    prefs.edit().putString(KEY_WORD_LIST_MODE, "blacklist").apply()
+                    binding.radioWhitelist.isChecked = false
+                    InAppLogger.log("OnboardingFilterWords", "Word list mode set to: blacklist")
+                }
+            }
+            
+            binding.radioWhitelist.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    prefs.edit().putString(KEY_WORD_LIST_MODE, "whitelist").apply()
+                    binding.radioBlacklist.isChecked = false
+                    InAppLogger.log("OnboardingFilterWords", "Word list mode set to: whitelist")
+                }
+            }
+        }
+        
+        private fun setupWordInput(context: Context, prefs: android.content.SharedPreferences) {
+            binding.buttonAddWord.setOnClickListener {
+                addWordFromInput(context, prefs)
+            }
+            
+            binding.editWordInput.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+                    addWordFromInput(context, prefs)
+                    true
+                } else {
+                    false
+                }
+            }
+        }
+        
+        private fun addWordFromInput(context: Context, prefs: android.content.SharedPreferences) {
+            val word = binding.editWordInput.text?.toString()?.trim() ?: return
+            if (word.isEmpty()) return
+            
+            val currentWords = prefs.getStringSet(KEY_WORD_BLACKLIST, LinkedHashSet())?.toMutableSet() ?: mutableSetOf()
+            
+            if (currentWords.contains(word)) {
+                InAppLogger.log("OnboardingFilterWords", "Word '$word' already exists")
+                binding.editWordInput.text?.clear()
+                return
+            }
+            
+            currentWords.add(word)
+            prefs.edit().putStringSet(KEY_WORD_BLACKLIST, currentWords).apply()
+            wordAdapter.updateWords(currentWords.toList())
+            binding.editWordInput.text?.clear()
+            
+            // Hide keyboard
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+            imm.hideSoftInputFromWindow(binding.editWordInput.windowToken, 0)
+            
+            InAppLogger.log("OnboardingFilterWords", "Added word: '$word'")
+        }
+        
+        private fun removeWord(context: Context, word: String) {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            val currentWords = prefs.getStringSet(KEY_WORD_BLACKLIST, LinkedHashSet())?.toMutableSet() ?: mutableSetOf()
+            
+            if (currentWords.remove(word)) {
+                prefs.edit().putStringSet(KEY_WORD_BLACKLIST, currentWords).apply()
+                wordAdapter.updateWords(currentWords.toList())
+                InAppLogger.log("OnboardingFilterWords", "Removed word: '$word'")
+            }
+        }
+        
+        private fun loadExistingWords(prefs: android.content.SharedPreferences) {
+            val currentWords = prefs.getStringSet(KEY_WORD_BLACKLIST, LinkedHashSet()) ?: LinkedHashSet()
+            wordAdapter.updateWords(currentWords.toList())
+        }
+    }
+    
+    /**
+     * ViewHolder for All Set Page (Page 10)
+     */
+    inner class AllSetViewHolder(
+        private val binding: FragmentOnboardingAllSetBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        
+        fun bind() {
+            InAppLogger.log("OnboardingAllSet", "All Set page loaded")
         }
     }
     
