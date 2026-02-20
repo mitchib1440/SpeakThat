@@ -26,63 +26,73 @@ And so after a few failed versions, I'm pleased to introduce SpeakThat! The noti
 
 ## Features
 
-- **Privacy-first:**
-  - Nothing from your phone is sent to me or anyone else unless you submit a bug report or support request from within the app
-  - All processing happens on your device
-  - You control exactly what gets read
-- **App filtering:**
-  - Choose which apps get read and which will stay silent
-- **Word Filtering**
-  - Stop notifications containing certain words or phrases from ever being read, or substitute words with alternatives for SpeakThat to read
-- **Private Mode**
-  - When a notification is read in Private Mode, its app name will be read out loud but its notification content won't
-- **Shake to Stop:**
-  - Instantly silence SpeakThat! by shaking your device with an adjustable threshold
-- **Wave to Stop:**
-  - Instantly silence SpeakThat! by covering your device's proximity sensor
-- **Behaviour Settings**
-  - Add a delay before readout, 
-- **Smart onboarding:**
-  - Guided setup for privacy and permissions
-- **Accessible UI:**
-  - Makes use of the Material design system
-- **Customizable voice settings:**
-  - Change speech rate, pitch, and voice
-  - Supports external TTS engines
-  - Preview voice output
-- **No ads, no tracking, no nonsense**
-  - Open-source for total transparency
-  - Free to download here on GitHub
+* **Privacy-First:**
+ - Nothing from your phone is sent to me or anyone else unless you explicitly submit a bug report from within the app.
+ - All processing happens locally on your device.
+ - You control exactly what gets read.
+
+
+* **Smart Rules & Automation:**
+ - Only read notifications when specific Bluetooth headphones are connected, when connected to your home WiFi, or when your screen is off.
+ - Set time schedules to silence readouts during certain hours.
+
+
+* **App & Word Filtering:**
+ - **App Filters:** Choose exactly which apps get read and which stay silent.
+ - **Word Filters:** Stop notifications containing certain words or phrases from being read, or substitute words with custom alternatives.
+
+
+* **Private Mode:**
+ - When a notification is flagged for Private Mode, its app name will be read out loud, but its potentially sensitive content won't be.
+
+
+* **Gesture Controls:**
+ - **Shake to Stop:** Instantly silence SpeakThat! by shaking your device (adjustable threshold).
+ - **Wave to Stop:** Instantly silence SpeakThat! by covering your device's proximity sensor.
+
+
+* **Behaviour Settings:**
+ - Add a delay before readout, enable cooldown prevention to avoid notification spam, and utilize media detection.
+
+
+* **Accessible & Customizable:**
+ - Guided setup for privacy and permissions via smart onboarding.
+ - Clean Material Design UI.
+ - Adjust speech rate, pitch, select preferred voices, and preview outputs. Supports external TTS engines.
+ - Export and import your configuration to easily switch devices without losing your settings.
+ - Built-in **SelfTest** diagnostic tool to troubleshoot common faults.
+
+
+* **No ads, no tracking, no nonsense:**
+Open-source for total transparency.
+Free to download here on GitHub (includes a built-in self-updater).
 
 ---
 
 ## Getting Started
 
-1. Download the APK and save it to your phone
-2. Tap the APK to install it (You may be prompted to grant install permissions if you haven't already)
-3. Android will scan the app to make sure it is safe, and it will be installed on your device
-4. Run the app and complete the setup
+1. Download the latest APK from the Releases tab and save it to your phone. *(Note: Different editions are available for F-Droid and Google Play depending on your preference).*
+2. Tap the APK to install it.
+3. Open SpeakThat! and follow the Smart Onboarding process.
+4. **Important Permission Step:** SpeakThat requires **Notification Access** to function.
 
 ---
 
 ## Privacy & Security
-- SpeakThat! never sends your notifications or data off your device
-- All processing is local and under your control
-- You can block or privatize any app at any time
 
----
+Notification readers are fundamentally a privacy risk because they take information on your phone and speak it loudly to anybody nearby. SpeakThat! was built to solve this:
 
-## Customization
-- **App Filters:** Block, allow, or privatize notifications from any app
-- **Voice Settings:** Adjust speech rate, pitch, and select your preferred voice
-
-- **Re-run Onboarding:** Accessible from settings if you want to revisit setup
+* Your notifications and data **never** leave your device. All text-to-speech processing is entirely local.
+* SpeakThat! features a built-in event logging system to help diagnose bugs. Up to 500 log entries are saved purely on your local device.
+* If you submit a bug report, you can review and redact any diagnostic data or logs before sending the email.
 
 ---
 
 ## Feedback & Support
-- Found a bug? Have a feature request? [Open an issue](https://github.com/mitchib1440/SpeakThat/issues)
-- For support, use the in-app "Support & Feedback" option or email the developer
+
+* Found a bug? Have a feature request? [Open an issue](https://github.com/mitchib1440/SpeakThat/issues).
+* For support, use the in-app **"Support & Feedback"** option. This will automatically draft an email with helpful diagnostic data (which you can review/redact) so I can better assist you.
+* **Please Note:** SpeakThat! is entirely free, and support is provided voluntarily. Please ensure all interactions remain respectful and constructive!
 
 ---
 
