@@ -224,6 +224,17 @@ class ExceptionConfigActivity : AppCompatActivity() {
     private fun setupBluetoothUI() {
         binding.cardBluetooth.visibility = View.VISIBLE
         
+        // Set up connection state spinner
+        val connectionStateOptions = arrayOf(
+            getString(R.string.exception_bluetooth_connected),
+            getString(R.string.exception_bluetooth_disconnected)
+        )
+        val stateAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, connectionStateOptions)
+        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerBluetoothConnectionState.adapter = stateAdapter
+        // Default to "Connected" (index 0)
+        binding.spinnerBluetoothConnectionState.setSelection(0)
+        
         // Set up any device switch
         binding.switchAnyDevice.setOnCheckedChangeListener { _, isChecked ->
             binding.editDeviceAddresses.isEnabled = !isChecked
@@ -255,6 +266,17 @@ class ExceptionConfigActivity : AppCompatActivity() {
     
     private fun setupWifiUI() {
         binding.cardWifi.visibility = View.VISIBLE
+        
+        // Set up connection state spinner
+        val connectionStateOptions = arrayOf(
+            getString(R.string.exception_wifi_connected),
+            getString(R.string.exception_wifi_disconnected)
+        )
+        val stateAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, connectionStateOptions)
+        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerWifiConnectionState.adapter = stateAdapter
+        // Default to "Connected" (index 0)
+        binding.spinnerWifiConnectionState.setSelection(0)
         
         // Set up any network switch
         binding.switchAnyNetwork.setOnCheckedChangeListener { _, isChecked ->
@@ -611,10 +633,8 @@ class ExceptionConfigActivity : AppCompatActivity() {
 
     private fun loadCurrentValues() {
         originalException?.let { exception ->
-            // Load inversion state for supported exception types
+            // Load inversion state for supported exception types (only TIME_SCHEDULE still uses inversion)
             binding.switchInvertTimeSchedule.isChecked = exception.inverted
-            binding.switchInvertBluetooth.isChecked = exception.inverted
-            binding.switchInvertWifi.isChecked = exception.inverted
             
             when (exception.type) {
                 ExceptionType.BATTERY_PERCENTAGE -> {
@@ -751,6 +771,15 @@ class ExceptionConfigActivity : AppCompatActivity() {
                         else -> emptySet<String>()
                     }
                     
+                    // Handle backwards compatibility: check if connection_state exists in data
+                    // If not, use the inverted field to determine the state
+                    val connectionState = exception.data["connection_state"] as? String
+                        ?: if (exception.inverted) "disconnected" else "connected"
+                    
+                    // Set connection state spinner (0=Connected, 1=Disconnected)
+                    val stateIndex = if (connectionState == "disconnected") 1 else 0
+                    binding.spinnerBluetoothConnectionState.setSelection(stateIndex)
+                    
                     // Temporarily remove listener to prevent interference during loading
                     binding.switchAnyDevice.setOnCheckedChangeListener(null)
                     
@@ -807,6 +836,15 @@ class ExceptionConfigActivity : AppCompatActivity() {
                         is List<*> -> networkSSIDsData.filterIsInstance<String>().toSet()
                         else -> emptySet<String>()
                     }
+                    
+                    // Handle backwards compatibility: check if connection_state exists in data
+                    // If not, use the inverted field to determine the state
+                    val connectionState = exception.data["connection_state"] as? String
+                        ?: if (exception.inverted) "disconnected" else "connected"
+                    
+                    // Set connection state spinner (0=Connected, 1=Disconnected)
+                    val stateIndex = if (connectionState == "disconnected") 1 else 0
+                    binding.spinnerWifiConnectionState.setSelection(stateIndex)
                     
                     // Temporarily remove listener to prevent interference during loading
                     binding.switchAnyNetwork.setOnCheckedChangeListener(null)
@@ -1234,29 +1272,49 @@ class ExceptionConfigActivity : AppCompatActivity() {
             }
         }
         
+        // Get connection state from spinner (0=Connected, 1=Disconnected)
+        val connectionState = if (binding.spinnerBluetoothConnectionState.selectedItemPosition == 1) {
+            "disconnected"
+        } else {
+            "connected"
+        }
+        
         val description = if (isAnyDevice) {
-            "Any Bluetooth device"
+            if (connectionState == "connected") {
+                "Any Bluetooth device connected"
+            } else {
+                "Any Bluetooth device disconnected"
+            }
         } else if (deviceAddresses.isEmpty()) {
             "No devices specified"
         } else {
-            "Specific devices (${deviceAddresses.size})"
+            if (connectionState == "connected") {
+                "Specific devices connected (${deviceAddresses.size})"
+            } else {
+                "Specific devices disconnected (${deviceAddresses.size})"
+            }
         }
-        val inverted = binding.switchInvertBluetooth.isChecked
         
         return if (isEditing && originalException != null) {
             // Preserve the original exception ID when editing
             originalException!!.copy(
-                data = mapOf("device_addresses" to deviceAddresses),
+                data = mapOf(
+                    "device_addresses" to deviceAddresses,
+                    "connection_state" to connectionState
+                ),
                 description = description,
-                inverted = inverted
+                inverted = false // Clear the inverted flag as we're now using connection_state
             )
         } else {
             // Create new exception
             Exception(
                 type = ExceptionType.BLUETOOTH_DEVICE,
-                data = mapOf("device_addresses" to deviceAddresses),
+                data = mapOf(
+                    "device_addresses" to deviceAddresses,
+                    "connection_state" to connectionState
+                ),
                 description = description,
-                inverted = inverted
+                inverted = false // No longer using inverted
             )
         }
     }
@@ -1313,29 +1371,49 @@ class ExceptionConfigActivity : AppCompatActivity() {
             }
         }
         
+        // Get connection state from spinner (0=Connected, 1=Disconnected)
+        val connectionState = if (binding.spinnerWifiConnectionState.selectedItemPosition == 1) {
+            "disconnected"
+        } else {
+            "connected"
+        }
+        
         val description = if (isAnyNetwork) {
-            "Any WiFi network"
+            if (connectionState == "connected") {
+                "Any WiFi network connected"
+            } else {
+                "Any WiFi network disconnected"
+            }
         } else if (networkSSIDs.isEmpty()) {
             "No networks specified"
         } else {
-            "Specific networks (${networkSSIDs.size})"
+            if (connectionState == "connected") {
+                "Specific networks connected (${networkSSIDs.size})"
+            } else {
+                "Specific networks disconnected (${networkSSIDs.size})"
+            }
         }
-        val inverted = binding.switchInvertWifi.isChecked
         
         return if (isEditing && originalException != null) {
             // Preserve the original exception ID when editing
             originalException!!.copy(
-                data = mapOf("network_ssids" to networkSSIDs),
+                data = mapOf(
+                    "network_ssids" to networkSSIDs,
+                    "connection_state" to connectionState
+                ),
                 description = description,
-                inverted = inverted
+                inverted = false // Clear the inverted flag as we're now using connection_state
             )
         } else {
             // Create new exception
             Exception(
                 type = ExceptionType.WIFI_NETWORK,
-                data = mapOf("network_ssids" to networkSSIDs),
+                data = mapOf(
+                    "network_ssids" to networkSSIDs,
+                    "connection_state" to connectionState
+                ),
                 description = description,
-                inverted = inverted
+                inverted = false // No longer using inverted
             )
         }
     }

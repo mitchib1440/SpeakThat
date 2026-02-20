@@ -403,18 +403,36 @@ class RuleEvaluator(private val context: Context) {
                 InAppLogger.logDebug(TAG, "Required devices from trigger data: $requiredDevices")
             }
             
+            // Get connection state from trigger data (defaults to "connected" for backwards compatibility)
+            val connectionState = trigger.data["connection_state"] as? String ?: "connected"
+            val shouldBeConnected = connectionState == "connected"
+            
             // Step 4: Handle "any device" vs "specific device" logic
-            if (requiredDevices.isEmpty()) {
+            val baseResult = if (requiredDevices.isEmpty()) {
                 if (shouldLogBluetoothDetails()) {
                     InAppLogger.logDebug(TAG, "No specific devices required - checking if ANY Bluetooth device is connected")
                 }
-                return evaluateAnyBluetoothDevice()
+                evaluateAnyBluetoothDevice()
             } else {
                 if (shouldLogBluetoothDetails()) {
                     InAppLogger.logDebug(TAG, "Specific devices required - checking for: $requiredDevices")
                 }
-                return evaluateSpecificBluetoothDevices(requiredDevices)
+                evaluateSpecificBluetoothDevices(requiredDevices)
             }
+            
+            // Apply connection state logic
+            val success = if (shouldBeConnected) baseResult.success else !baseResult.success
+            val message = if (success) {
+                if (shouldBeConnected) baseResult.message else "Bluetooth device is NOT connected (as required)"
+            } else {
+                if (shouldBeConnected) "Bluetooth device is NOT connected (but should be)" else "Bluetooth device IS connected (but should not be)"
+            }
+            
+            return EvaluationResult(
+                success = success,
+                message = message,
+                data = baseResult.data + mapOf("connection_state" to connectionState)
+            )
             
         } catch (e: Throwable) {
             InAppLogger.logError(TAG, "Error evaluating Bluetooth trigger: ${e.message}")
@@ -1241,50 +1259,53 @@ class RuleEvaluator(private val context: Context) {
                 else -> emptySet<String>()
             }
             
-            if (requiredNetworks.isEmpty()) {
+            // Get connection state from trigger data (defaults to "connected" for backwards compatibility)
+            val connectionState = trigger.data["connection_state"] as? String ?: "connected"
+            val shouldBeConnected = connectionState == "connected"
+            
+            val baseSuccess = if (requiredNetworks.isEmpty()) {
                 // Check if connected to any network
                 InAppLogger.logDebug(TAG, "No specific network required, WiFi connected: $isWifiConnected (SSID: $currentSSID)")
-                
-                return EvaluationResult(
-                    success = isWifiConnected,
-                    message = if (isWifiConnected) "Connected to WiFi network" else "Not connected to WiFi",
-                    data = mapOf(
-                        "current_ssid" to currentSSID,
-                        "ssid_known" to isSsidKnown,
-                        "wifi_connected" to isWifiConnected
-                    )
-                )
+                isWifiConnected
             } else {
                 if (isSsidKnown) {
                     // We can resolve SSIDs, so check for specific networks
                     val isConnectedToRequired = currentSSID in requiredNetworks
-                    
                     InAppLogger.logDebug(TAG, "SSID resolution possible. Required networks: $requiredNetworks, Current: $currentSSID, Match: $isConnectedToRequired")
-                    
-                    return EvaluationResult(
-                        success = isConnectedToRequired,
-                        message = if (isConnectedToRequired) "Connected to required WiFi network" else "Not connected to required WiFi network",
-                        data = mapOf(
-                            "current_ssid" to currentSSID,
-                            "ssid_known" to true,
-                            "wifi_connected" to isWifiConnected
-                        )
-                    )
+                    isConnectedToRequired
                 } else {
                     InAppLogger.logDebug(TAG, "SSID unavailable; cannot verify required networks. WiFi connected: $isWifiConnected")
-
-                    return EvaluationResult(
-                        success = false,
-                        message = if (isWifiConnected) "Connected to WiFi but SSID unavailable" else "Not connected to WiFi",
-                        data = mapOf(
-                            "required_networks" to requiredNetworks,
-                            "current_ssid" to currentSSID,
-                            "ssid_known" to false,
-                            "wifi_connected" to isWifiConnected
-                        )
-                    )
+                    false
                 }
             }
+            
+            // Apply connection state logic
+            val success = if (shouldBeConnected) baseSuccess else !baseSuccess
+            
+            val message = if (success) {
+                if (requiredNetworks.isEmpty()) {
+                    if (shouldBeConnected) "Connected to WiFi network" else "Not connected to WiFi"
+                } else {
+                    if (shouldBeConnected) "Connected to required WiFi network" else "Not connected to required WiFi network"
+                }
+            } else {
+                if (requiredNetworks.isEmpty()) {
+                    if (shouldBeConnected) "Not connected to WiFi" else "Connected to WiFi network"
+                } else {
+                    if (shouldBeConnected) "Not connected to required WiFi network" else "Connected to required WiFi network"
+                }
+            }
+            
+            return EvaluationResult(
+                success = success,
+                message = message,
+                data = mapOf(
+                    "current_ssid" to currentSSID,
+                    "ssid_known" to isSsidKnown,
+                    "wifi_connected" to isWifiConnected,
+                    "connection_state" to connectionState
+                )
+            )
             
         } catch (e: Throwable) {
             InAppLogger.logError(TAG, "Error evaluating WiFi network trigger: ${e.message}")

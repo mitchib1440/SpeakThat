@@ -227,6 +227,17 @@ class TriggerConfigActivity : AppCompatActivity() {
     private fun setupBluetoothUI() {
         binding.cardBluetooth.visibility = View.VISIBLE
         
+        // Set up connection state spinner
+        val connectionStateOptions = arrayOf(
+            getString(R.string.trigger_bluetooth_connected),
+            getString(R.string.trigger_bluetooth_disconnected)
+        )
+        val stateAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, connectionStateOptions)
+        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerBluetoothConnectionState.adapter = stateAdapter
+        // Default to "Connected" (index 0)
+        binding.spinnerBluetoothConnectionState.setSelection(0)
+        
         // Set up Bluetooth options
         binding.switchAnyDevice.setOnCheckedChangeListener { _, isChecked ->
             binding.editDeviceAddresses.isEnabled = !isChecked
@@ -257,6 +268,17 @@ class TriggerConfigActivity : AppCompatActivity() {
     
     private fun setupWifiUI() {
         binding.cardWifi.visibility = View.VISIBLE
+        
+        // Set up connection state spinner
+        val connectionStateOptions = arrayOf(
+            getString(R.string.trigger_wifi_connected),
+            getString(R.string.trigger_wifi_disconnected)
+        )
+        val stateAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, connectionStateOptions)
+        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerWifiConnectionState.adapter = stateAdapter
+        // Default to "Connected" (index 0)
+        binding.spinnerWifiConnectionState.setSelection(0)
         
         // Set up WiFi options
         binding.switchAnyNetwork.setOnCheckedChangeListener { _, isChecked ->
@@ -662,10 +684,8 @@ class TriggerConfigActivity : AppCompatActivity() {
     
     private fun loadCurrentValues() {
         originalTrigger?.let { trigger ->
-            // Load inversion state for supported trigger types
+            // Load inversion state for supported trigger types (only TIME_SCHEDULE still uses inversion)
             binding.switchInvertTimeSchedule.isChecked = trigger.inverted
-            binding.switchInvertBluetooth.isChecked = trigger.inverted
-            binding.switchInvertWifi.isChecked = trigger.inverted
             
             when (trigger.type) {
                 TriggerType.BATTERY_PERCENTAGE -> {
@@ -843,6 +863,15 @@ class TriggerConfigActivity : AppCompatActivity() {
                         else -> emptySet<String>()
                     }
                     
+                    // Handle backwards compatibility: check if connection_state exists in data
+                    // If not, use the inverted field to determine the state
+                    val connectionState = trigger.data["connection_state"] as? String
+                        ?: if (trigger.inverted) "disconnected" else "connected"
+                    
+                    // Set connection state spinner (0=Connected, 1=Disconnected)
+                    val stateIndex = if (connectionState == "disconnected") 1 else 0
+                    binding.spinnerBluetoothConnectionState.setSelection(stateIndex)
+                    
                     // Temporarily remove listener to prevent interference during loading
                     binding.switchAnyDevice.setOnCheckedChangeListener(null)
                     
@@ -899,6 +928,15 @@ class TriggerConfigActivity : AppCompatActivity() {
                         is List<*> -> networkSSIDsData.filterIsInstance<String>().toSet()
                         else -> emptySet<String>()
                     }
+                    
+                    // Handle backwards compatibility: check if connection_state exists in data
+                    // If not, use the inverted field to determine the state
+                    val connectionState = trigger.data["connection_state"] as? String
+                        ?: if (trigger.inverted) "disconnected" else "connected"
+                    
+                    // Set connection state spinner (0=Connected, 1=Disconnected)
+                    val stateIndex = if (connectionState == "disconnected") 1 else 0
+                    binding.spinnerWifiConnectionState.setSelection(stateIndex)
                     
                     // Temporarily remove listener to prevent interference during loading
                     binding.switchAnyNetwork.setOnCheckedChangeListener(null)
@@ -1302,27 +1340,47 @@ class TriggerConfigActivity : AppCompatActivity() {
             }
         }
         
-        val description = if (deviceAddresses.isEmpty()) {
-            "Any Bluetooth device connected"
+        // Get connection state from spinner (0=Connected, 1=Disconnected)
+        val connectionState = if (binding.spinnerBluetoothConnectionState.selectedItemPosition == 1) {
+            "disconnected"
         } else {
-            "Specific Bluetooth devices: ${deviceAddresses.joinToString(", ")}"
+            "connected"
         }
-        val inverted = binding.switchInvertBluetooth.isChecked
+        
+        val description = if (deviceAddresses.isEmpty()) {
+            if (connectionState == "connected") {
+                "Any Bluetooth device connected"
+            } else {
+                "Any Bluetooth device disconnected"
+            }
+        } else {
+            if (connectionState == "connected") {
+                "Specific Bluetooth devices connected: ${deviceAddresses.joinToString(", ")}"
+            } else {
+                "Specific Bluetooth devices disconnected: ${deviceAddresses.joinToString(", ")}"
+            }
+        }
         
         return if (isEditing && originalTrigger != null) {
             // Preserve the original trigger ID when editing
             originalTrigger!!.copy(
-                data = mapOf("device_addresses" to deviceAddresses),
+                data = mapOf(
+                    "device_addresses" to deviceAddresses,
+                    "connection_state" to connectionState
+                ),
                 description = description,
-                inverted = inverted
+                inverted = false // Clear the inverted flag as we're now using connection_state
             )
         } else {
             // Create new trigger
             Trigger(
                 type = TriggerType.BLUETOOTH_DEVICE,
-                data = mapOf("device_addresses" to deviceAddresses),
+                data = mapOf(
+                    "device_addresses" to deviceAddresses,
+                    "connection_state" to connectionState
+                ),
                 description = description,
-                inverted = inverted
+                inverted = false // No longer using inverted
             )
         }
     }
@@ -1375,27 +1433,47 @@ class TriggerConfigActivity : AppCompatActivity() {
             }
         }
         
-        val description = if (networkSSIDs.isEmpty()) {
-            "Connected to any WiFi network"
+        // Get connection state from spinner (0=Connected, 1=Disconnected)
+        val connectionState = if (binding.spinnerWifiConnectionState.selectedItemPosition == 1) {
+            "disconnected"
         } else {
-            "Connected to: ${networkSSIDs.joinToString(", ")}"
+            "connected"
         }
-        val inverted = binding.switchInvertWifi.isChecked
+        
+        val description = if (networkSSIDs.isEmpty()) {
+            if (connectionState == "connected") {
+                "Connected to any WiFi network"
+            } else {
+                "Disconnected from any WiFi network"
+            }
+        } else {
+            if (connectionState == "connected") {
+                "Connected to: ${networkSSIDs.joinToString(", ")}"
+            } else {
+                "Disconnected from: ${networkSSIDs.joinToString(", ")}"
+            }
+        }
         
         return if (isEditing && originalTrigger != null) {
             // Preserve the original trigger ID when editing
             originalTrigger!!.copy(
-                data = mapOf("network_ssids" to networkSSIDs),
+                data = mapOf(
+                    "network_ssids" to networkSSIDs,
+                    "connection_state" to connectionState
+                ),
                 description = description,
-                inverted = inverted
+                inverted = false // Clear the inverted flag as we're now using connection_state
             )
         } else {
             // Create new trigger
             Trigger(
                 type = TriggerType.WIFI_NETWORK,
-                data = mapOf("network_ssids" to networkSSIDs),
+                data = mapOf(
+                    "network_ssids" to networkSSIDs,
+                    "connection_state" to connectionState
+                ),
                 description = description,
-                inverted = inverted
+                inverted = false // No longer using inverted
             )
         }
     }

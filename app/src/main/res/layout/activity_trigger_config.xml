@@ -842,47 +842,22 @@
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
 
-                    <!-- Inversion Toggle -->
-                    <LinearLayout
+                    <!-- Connection State Spinner -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/trigger_bluetooth_connection_state_label"
+                        android:textSize="16sp"
+                        android:textColor="@color/purple_card_text_primary"
+                        android:layout_marginBottom="8dp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerBluetoothConnectionState"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/trigger_invert_condition"
-                                android:textSize="16sp"
-                                android:textColor="@color/purple_card_text_primary" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/trigger_invert_description"
-                                android:textSize="14sp"
-                                android:textColor="@color/purple_card_text_secondary" />
-
-                        </LinearLayout>
-
-                        <com.google.android.material.materialswitch.MaterialSwitch
-                            android:id="@+id/switchInvertBluetooth"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="false"
-                            android:thumbTint="@color/switch_thumb_color"
-                            android:trackTint="@color/switch_track_color"
-                            app:thumbTint="@color/switch_thumb_color"
-                            app:trackTint="@color/switch_track_color" />
-
-                    </LinearLayout>
+                        android:background="@drawable/spinner_background"
+                        android:padding="12dp"
+                        android:layout_marginBottom="16dp" />
 
                     <!-- Any Device Switch -->
                     <LinearLayout
@@ -1063,47 +1038,22 @@
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="16dp" />
 
-                    <!-- Inversion Toggle -->
-                    <LinearLayout
+                    <!-- Connection State Spinner -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/trigger_wifi_connection_state_label"
+                        android:textSize="16sp"
+                        android:textColor="@color/purple_card_text_primary"
+                        android:layout_marginBottom="8dp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerWifiConnectionState"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/trigger_invert_condition"
-                                android:textSize="16sp"
-                                android:textColor="@color/purple_card_text_primary" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/trigger_invert_description"
-                                android:textSize="14sp"
-                                android:textColor="@color/purple_card_text_secondary" />
-
-                        </LinearLayout>
-
-                        <com.google.android.material.materialswitch.MaterialSwitch
-                            android:id="@+id/switchInvertWifi"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="false"
-                            android:thumbTint="@color/switch_thumb_color"
-                            android:trackTint="@color/switch_track_color"
-                            app:thumbTint="@color/switch_thumb_color"
-                            app:trackTint="@color/switch_track_color" />
-
-                    </LinearLayout>
+                        android:background="@drawable/spinner_background"
+                        android:padding="12dp"
+                        android:layout_marginBottom="16dp" />
 
                     <!-- Any Network Switch -->
                     <LinearLayout
