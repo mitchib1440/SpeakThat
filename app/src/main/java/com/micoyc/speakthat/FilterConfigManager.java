@@ -543,6 +543,15 @@ public class FilterConfigManager {
         statistics.put("appsRead", new JSONArray(config.statistics.appsRead));
         json.put("statistics", statistics);
 
+        // Play donation badge count (safe to read on any flavor; prefs will simply be empty on non-Play builds)
+        SharedPreferences donationPrefs = context.getSharedPreferences("play_donations", Context.MODE_PRIVATE);
+        int badgeCount = donationPrefs.getInt("badge_count", 0);
+        if (badgeCount > 0) {
+            JSONObject playDonations = new JSONObject();
+            playDonations.put("badgeCount", badgeCount);
+            json.put("playDonations", playDonations);
+        }
+
         if (includeRules) {
             try {
                 String rulesExport = RuleConfigManager.exportRules(context);
@@ -1187,6 +1196,21 @@ public class FilterConfigManager {
                 }
 
                 totalImported += statsImported;
+            }
+
+            // Import Play donation badge count (if present)
+            if (json.has("playDonations")) {
+                JSONObject playDonations = json.getJSONObject("playDonations");
+                if (playDonations.has("badgeCount")) {
+                    int importedBadgeCount = playDonations.getInt("badgeCount");
+                    if (importedBadgeCount >= 0) {
+                        SharedPreferences.Editor donationEditor = context.getSharedPreferences("play_donations", Context.MODE_PRIVATE).edit();
+                        donationEditor.putInt("badge_count", importedBadgeCount);
+                        donationEditor.apply();
+                        totalImported++;
+                        InAppLogger.log("FilterConfig", "Imported Play donation badge count: " + importedBadgeCount);
+                    }
+                }
             }
             
             // Apply all changes
