@@ -30,7 +30,7 @@ import java.lang.ref.WeakReference
  */
 class PlayDonationManager(private val appContext: Context) : DonationManager, PurchasesUpdatedListener {
 
-    private val productIds = listOf(PRODUCT_TIP)
+    private val productIds = listOf(PRODUCT_TIP_SMALL, PRODUCT_TIP_MID, PRODUCT_TIP_LARGE)
 
     private val store = PlayDonationStore(appContext)
 
@@ -166,8 +166,16 @@ class PlayDonationManager(private val appContext: Context) : DonationManager, Pu
             }
         }
 
-        view.findViewById<MaterialButton>(R.id.btnBuySingle).setOnClickListener {
-            launchPurchase(activity, PRODUCT_TIP)
+        view.findViewById<MaterialButton>(R.id.btnBuySmall).setOnClickListener {
+            launchPurchase(activity, PRODUCT_TIP_SMALL)
+        }
+
+        view.findViewById<MaterialButton>(R.id.btnBuyMid).setOnClickListener {
+            launchPurchase(activity, PRODUCT_TIP_MID)
+        }
+
+        view.findViewById<MaterialButton>(R.id.btnBuyLarge).setOnClickListener {
+            launchPurchase(activity, PRODUCT_TIP_LARGE)
         }
 
         view.findViewById<MaterialButton>(R.id.btnMoreWays).setOnClickListener {
@@ -188,12 +196,14 @@ class PlayDonationManager(private val appContext: Context) : DonationManager, Pu
     }
 
     private fun populateProductsIntoView(view: android.view.View, activity: Activity) {
-        view.findViewById<TextView>(R.id.textPriceSingle)?.text = formattedPrice(PRODUCT_TIP, activity)
+        view.findViewById<TextView>(R.id.textPriceSmall)?.text = formattedPrice(PRODUCT_TIP_SMALL, activity)
+        view.findViewById<TextView>(R.id.textPriceMid)?.text = formattedPrice(PRODUCT_TIP_MID, activity)
+        view.findViewById<TextView>(R.id.textPriceLarge)?.text = formattedPrice(PRODUCT_TIP_LARGE, activity)
     }
 
     private fun setLoadingState(view: android.view.View, activity: Activity, isLoading: Boolean) {
         val loadingContainer = view.findViewById<android.view.View>(R.id.loadingContainer)
-        val controls = listOf(R.id.btnBuySingle)
+        val controls = listOf(R.id.btnBuySmall, R.id.btnBuyMid, R.id.btnBuyLarge)
 
         loadingContainer?.visibility = if (isLoading) android.view.View.VISIBLE else android.view.View.GONE
 
@@ -202,7 +212,10 @@ class PlayDonationManager(private val appContext: Context) : DonationManager, Pu
         }
 
         if (isLoading) {
-            view.findViewById<TextView>(R.id.textPriceSingle)?.text = activity.getString(R.string.play_donate_loading)
+            val loadingText = activity.getString(R.string.play_donate_loading)
+            view.findViewById<TextView>(R.id.textPriceSmall)?.text = loadingText
+            view.findViewById<TextView>(R.id.textPriceMid)?.text = loadingText
+            view.findViewById<TextView>(R.id.textPriceLarge)?.text = loadingText
         }
     }
 
@@ -252,10 +265,12 @@ class PlayDonationManager(private val appContext: Context) : DonationManager, Pu
 
         billingClient.consumeAsync(consumeParams) { billingResult, _ ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                val quantity = purchase.quantity
-                store.incrementBadgeCount(quantity)
+                val productId = purchase.products.firstOrNull()
+                val weight = PRODUCT_WEIGHTS[productId] ?: 1
+                val increment = weight * purchase.quantity
+                store.incrementBadgeCount(increment)
                 val newCount = store.getBadgeCount()
-                InAppLogger.logUserAction("Billing", "Donation consumed x$quantity, total=$newCount")
+                InAppLogger.logUserAction("Billing", "Donation consumed: product=$productId, qty=${purchase.quantity}, weight=$weight, increment=$increment, total=$newCount")
                 runOnUiThread {
                     badgeUpdateCallback?.invoke(newCount)
                     currentActivityRef?.get()?.let { activity ->
@@ -290,7 +305,15 @@ class PlayDonationManager(private val appContext: Context) : DonationManager, Pu
     }
 
     private companion object {
-        const val PRODUCT_TIP = "donation_tip_low"
+        const val PRODUCT_TIP_SMALL = "donation_tip_low"
+        const val PRODUCT_TIP_MID = "donation_tip"
+        const val PRODUCT_TIP_LARGE = "donation_tip_large"
+
+        val PRODUCT_WEIGHTS = mapOf(
+            PRODUCT_TIP_SMALL to 1,
+            PRODUCT_TIP_MID to 7,
+            PRODUCT_TIP_LARGE to 12
+        )
     }
 }
 
