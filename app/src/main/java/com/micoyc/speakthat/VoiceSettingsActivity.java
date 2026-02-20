@@ -2401,7 +2401,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
      */
     private void openSystemTtsSettings() {
         try {
-            android.content.Intent intent = new android.content.Intent(android.provider.Settings.ACTION_SETTINGS);
+            android.content.Intent intent = new android.content.Intent("com.android.settings.TTS_SETTINGS");
             startActivity(intent);
             InAppLogger.logUserAction("System TTS Settings opened from Voice Settings", "");
         } catch (Exception e) {
