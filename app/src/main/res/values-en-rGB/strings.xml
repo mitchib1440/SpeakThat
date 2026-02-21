@@ -942,6 +942,9 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="exception_set_end_time">Set End Time</string>
     <string name="exception_no_days_selected">No days selected</string>
     <string name="exception_bluetooth_devices_title">Choose which Bluetooth devices this exception applies to:</string>
+    <string name="exception_bluetooth_connection_state_label">Connection State</string>
+    <string name="exception_bluetooth_connected">Connected</string>
+    <string name="exception_bluetooth_disconnected">Disconnected</string>
     <string name="exception_specific_devices">Specific Devices (one per line):</string>
     <string name="exception_select_devices">Select Devices</string>
     <string name="exception_wired_headphones_description">Condition will be met when headphones are connected to your device via a cable</string>
@@ -949,6 +952,9 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="exception_wired_headphones_connected">Connected</string>
     <string name="exception_wired_headphones_disconnected">Disconnected</string>
     <string name="exception_wifi_networks_title">Choose which WiFi networks this exception applies to:</string>
+    <string name="exception_wifi_connection_state_label">Connection State</string>
+    <string name="exception_wifi_connected">Connected</string>
+    <string name="exception_wifi_disconnected">Disconnected</string>
     <string name="exception_specific_networks">Specific Networks (one per line):</string>
     <string name="exception_select_networks">Select Networks</string>
 
@@ -971,6 +977,9 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="trigger_set_button">Set</string>
     <string name="trigger_no_days_selected">No days selected</string>
     <string name="trigger_bluetooth_devices_title">Choose which Bluetooth devices this rule applies to:</string>
+    <string name="trigger_bluetooth_connection_state_label">Connection State</string>
+    <string name="trigger_bluetooth_connected">Connected</string>
+    <string name="trigger_bluetooth_disconnected">Disconnected</string>
     <string name="trigger_any_bluetooth_device">Any Bluetooth Device</string>
     <string name="trigger_any_bluetooth_description">Applies when any device is connected</string>
     <string name="trigger_specific_devices">Specific Devices (one per line):</string>
@@ -980,6 +989,9 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="trigger_wired_headphones_connected">Connected</string>
     <string name="trigger_wired_headphones_disconnected">Disconnected</string>
     <string name="trigger_wifi_networks_title">Choose which WiFi networks this rule applies to:</string>
+    <string name="trigger_wifi_connection_state_label">Connection State</string>
+    <string name="trigger_wifi_connected">Connected</string>
+    <string name="trigger_wifi_disconnected">Disconnected</string>
     <string name="trigger_any_wifi_network">Any WiFi Network</string>
     <string name="trigger_any_wifi_description">Applies when connected to any network</string>
     <string name="trigger_specific_networks">Specific Networks (one per line):</string>
@@ -1208,7 +1220,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="onboarding_language_theme_title">Language</string>
     <string name="onboarding_language_theme_description">Choose which language SpeakThat should use.</string>
     <string name="onboarding_language_section_title">Language</string>
-    <string name="onboarding_language_help_title">Is your language not listed?</string>
+    <string name="onboarding_language_help_title">Is your language not complete?</string>
     <string name="onboarding_language_help_description">I\'m working as hard as I can to support more languages. Please contribute translations on the Weblate page if you can!</string>
     <string name="onboarding_theme_section_title">Theme</string>
     <string name="onboarding_theme_description">Use dark mode in this app</string>
@@ -1246,8 +1258,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="onboarding_language_icon_description">Language icon</string>
     <string name="onboarding_language_card_title">Language</string>
     <string name="onboarding_language_card_description">Tap the box below to pick which language SpeakThat should use for its interface and speech!</string>
-    <string name="onboarding_language_info_title">Is your language not listed?</string>
-    <string name="onboarding_language_info_description">I try to include as many languages as possible, but please remember I am just one person. You can help translate SpeakThat by contributing to its Weblate page!</string>
+    <string name="onboarding_language_info_title">Is your language not complete?</string>
+    <string name="onboarding_language_info_description">Please remember I am just one person and translations are done by kind volunteers. Not all languages are fully translated yet. You can help translate SpeakThat by contributing to its Weblate page!</string>
     <string name="onboarding_language_translate_button">Help Translate SpeakThat</string>
     <string name="info_icon_description">Information icon</string>
 
@@ -1352,6 +1364,60 @@ This permission is completely optional; SpeakThat! will still function without i
 
     <!-- TTS String for Page 7 -->
     <string name="tts_onboarding_select_apps">Select Your Apps. Select which apps SpeakThat should read, and which apps it should not. SpeakThat can either read notifications from apps you select, or read everything except those apps. You can change this at any time.</string>
+
+    <!-- Page 8: When to Read -->
+    <string name="onboarding_when_to_read_title">When to Read</string>
+    <string name="onboarding_when_to_read_subheading">Let\'s make sure SpeakThat doesn\'t read at an inconvenient time.</string>
+    <string name="onboarding_when_to_read_icon_description">Rules icon</string>
+    <string name="onboarding_when_to_read_card_title">When should SpeakThat read?</string>
+    <string name="onboarding_when_to_read_card_description">Sometimes it\'s not about what is read, but when. These shortcuts help SpeakThat stay quiet in the wrong moments, and speak up at the right ones.\n\nThese are entirely optional and can be changed later.</string>
+
+    <!-- Page 8: Template card titles and descriptions -->
+    <string name="onboarding_template_headphones_title">Only when headphones are connected</string>
+    <string name="onboarding_template_headphones_description">SpeakThat will only read when Bluetooth or wired headphones are connected</string>
+    <string name="onboarding_template_screen_off_title">Only when screen is off</string>
+    <string name="onboarding_template_screen_off_description">Notifications will only be read when your screen is off</string>
+    <string name="onboarding_template_time_schedule_title">Not between certain times</string>
+    <string name="onboarding_template_time_schedule_description">Set quiet hours when SpeakThat should stay silent</string>
+    <string name="onboarding_template_status_tap">Tap to set up</string>
+    <string name="onboarding_template_status_configured">Configured</string>
+    <string name="onboarding_template_bluetooth_no_devices">No paired Bluetooth devices found. Please pair a device first.</string>
+    <string name="onboarding_template_bluetooth_permission_needed">Bluetooth permission is needed to detect your headphones.</string>
+    <string name="onboarding_template_bluetooth_disabled">Bluetooth is not available or is turned off.</string>
+    <string name="onboarding_template_dialog_add_rule">Add Rule</string>
+    <string name="onboarding_template_dialog_cancel">Cancel</string>
+    <string name="onboarding_template_dialog_configure_headphones">Select your Bluetooth headphones</string>
+    <string name="onboarding_template_dialog_configure_schedule">Set your quiet hours</string>
+    <string name="onboarding_template_rule_added">Rule added: %s</string>
+    <string name="onboarding_template_rule_error">Error adding rule. Please try again.</string>
+
+    <!-- TTS String for Page 8 -->
+    <string name="tts_onboarding_when_to_read">When to Read. Let\'s make sure SpeakThat doesn\'t read at an inconvenient time. Sometimes it\'s not about what is read, but when. These shortcuts help SpeakThat stay quiet in the wrong moments, and speak up at the right ones. These are entirely optional and can be changed later.</string>
+
+    <!-- Page 9: Filter by Words -->
+    <string name="onboarding_filter_words_title">Filter by Words</string>
+    <string name="onboarding_filter_words_subheading">Optionally fine-tune your filtering by selecting specific words and phrases.</string>
+    <string name="onboarding_filter_words_icon_description">Filter icon</string>
+    <string name="onboarding_filter_words_card_title">Filter by specific words (Optional)</string>
+    <string name="onboarding_filter_words_card_description">You can add to your app filter by specifying a list of words you\'d like SpeakThat to either read or not read notifications containing.</string>
+    <string name="onboarding_filter_words_option_blacklist_title">Read everything except selected</string>
+    <string name="onboarding_filter_words_option_blacklist_description">Read notifications from every app except the ones I choose</string>
+    <string name="onboarding_filter_words_option_whitelist_title">Read only selected</string>
+    <string name="onboarding_filter_words_option_whitelist_description">Only read notifications from selected apps</string>
+    <string name="onboarding_filter_words_input_hint">Type a word…</string>
+    <string name="onboarding_filter_words_add_button">Add word</string>
+
+    <!-- TTS String for Page 9 -->
+    <string name="tts_onboarding_filter_words">Filter by Words. Optionally fine-tune your filtering by selecting specific words and phrases. You can add to your app filter by specifying a list of words you\'d like SpeakThat to either read or not read notifications containing.</string>
+
+    <!-- Page 10: All Set! -->
+    <string name="onboarding_all_set_title">All Set!</string>
+    <string name="onboarding_all_set_icon_description">Celebration icon</string>
+    <string name="onboarding_all_set_card_title">Phew, all done!</string>
+    <string name="onboarding_all_set_card_description">SpeakThat is ready to read your notifications to you so you can focus on what matters!\n\nYou can customise SpeakThat even further when you\'re ready. Open the settings page and explore the various options, or press \"Re-run Onboarding\" to see this setup again!\n\nStay safe, have fun, and let your phone do the talking!</string>
+
+    <!-- TTS String for Page 10 -->
+    <string name="tts_onboarding_all_set">All Set! Phew, all done! SpeakThat is ready to read your notifications to you so you can focus on what matters. You can customise SpeakThat even further when you are ready. Open the settings page and explore the various options, or press Re-run Onboarding to see this setup again. Stay safe, have fun, and let your phone do the talking!</string>
 
     <!-- Condition Configuration -->
     <string name="trigger_screen_state">Screen State</string>

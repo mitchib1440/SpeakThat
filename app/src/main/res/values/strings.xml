@@ -1220,7 +1220,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="onboarding_language_theme_title">Language</string>
     <string name="onboarding_language_theme_description">Choose which language SpeakThat should use.</string>
     <string name="onboarding_language_section_title">Language</string>
-    <string name="onboarding_language_help_title">Is your language not listed?</string>
+    <string name="onboarding_language_help_title">Is your language not complete?</string>
     <string name="onboarding_language_help_description">I\'m working as hard as I can to support more languages. Please contribute translations on the Weblate page if you can!</string>
     <string name="onboarding_theme_section_title">Theme</string>
     <string name="onboarding_theme_description">Use dark mode in this app</string>
@@ -1258,8 +1258,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="onboarding_language_icon_description">Language icon</string>
     <string name="onboarding_language_card_title">Language</string>
     <string name="onboarding_language_card_description">Tap the box below to pick which language SpeakThat should use for its interface and speech!</string>
-    <string name="onboarding_language_info_title">Is your language not listed?</string>
-    <string name="onboarding_language_info_description">I try to include as many languages as possible, but please remember I am just one person. You can help translate SpeakThat by contributing to its Weblate page!</string>
+    <string name="onboarding_language_info_title">Is your language not complete?</string>
+    <string name="onboarding_language_info_description">Please remember I am just one person and translations are done by kind volunteers. Not all languages are fully translated yet. You can help translate SpeakThat by contributing to its Weblate page!</string>
     <string name="onboarding_language_translate_button">Help Translate SpeakThat</string>
     <string name="info_icon_description">Information icon</string>
     

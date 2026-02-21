@@ -57,19 +57,18 @@ public class LanguagePresetManager {
     
     /**
      * Get all available language presets.
-     * Starting with English and Japanese as requested by user.
-     * More languages can be easily added here when ready.
+     * Includes all languages with Weblate translations (at various completion levels).
      */
     public static List<LanguagePreset> getAllPresets() {
         List<LanguagePreset> presets = new ArrayList<>();
         
-        // English variants - well-supported and tested
+        // English variants
         presets.add(new LanguagePreset(
             "en_US", 
             "English (United States)", 
             "en_US", 
             "en_US", 
-            null,  // Let system choose best English voice
+            null,
             false
         ));
         
@@ -78,7 +77,7 @@ public class LanguagePresetManager {
             "English (United Kingdom)", 
             "en_GB", 
             "en_GB", 
-            null,  // Let system choose best UK English voice
+            null,
             false
         ));
         
@@ -87,7 +86,7 @@ public class LanguagePresetManager {
             "English (Canada)", 
             "en_CA", 
             "en_CA", 
-            null,  // Let system choose best Canadian English voice
+            null,
             false
         ));
         
@@ -96,77 +95,206 @@ public class LanguagePresetManager {
             "English (Australia)", 
             "en_AU", 
             "en_AU", 
-            null,  // Let system choose best Australian English voice
+            null,
             false
         ));
         
-        // Japanese - complete UI translations available, good test case
+        // All other supported languages, alphabetical
         presets.add(new LanguagePreset(
-            "ja_JP", 
-            "日本語 (日本)", 
-            "ja_JP", 
-            "ja_JP", 
-            null,  // Let system choose best Japanese voice
+            "ar",
+            "العربية",
+            "ar",
+            "ar",
+            null,
             false
         ));
         
-        // Dutch - complete UI translations available
+        presets.add(new LanguagePreset(
+            "zh_CN",
+            "中文 (简体)",
+            "zh_CN",
+            "zh_CN",
+            null,
+            false
+        ));
+        
+        presets.add(new LanguagePreset(
+            "zh_TW",
+            "中文 (繁體)",
+            "zh_TW",
+            "zh_TW",
+            null,
+            false
+        ));
+        
         presets.add(new LanguagePreset(
             "nl_NL", 
             "Nederlands (Nederland)", 
             "nl_NL", 
             "nl_NL", 
-            null,  // Let system choose best Dutch voice
+            null,
             false
         ));
         
-        // Turkish - complete UI translations available
         presets.add(new LanguagePreset(
-            "tr_TR", 
-            "Türkçe (Türkiye)", 
-            "tr_TR", 
-            "tr_TR", 
-            null,  // Let system choose best Turkish voice
+            "et_EE",
+            "Eesti (Eesti)",
+            "et_EE",
+            "et_EE",
+            null,
             false
         ));
         
-        // Spanish - complete UI translations available
-        presets.add(new LanguagePreset(
-            "es_ES", 
-            "Español (España)", 
-            "es_ES", 
-            "es_ES", 
-            null,  // Let system choose best Spanish voice
-            false
-        ));
-        
-        // French - complete UI translations available
         presets.add(new LanguagePreset(
             "fr_FR",
             "Français (France)",
             "fr_FR",
             "fr_FR",
-            null,  // Let system choose best French voice
+            null,
             false
         ));
         
-        // German - complete UI translations available
         presets.add(new LanguagePreset(
             "de_DE", 
             "Deutsch (Deutschland)", 
             "de_DE", 
             "de_DE", 
-            null,  // Let system choose best German voice
+            null,
             false
         ));
-
-        // Korean - complete UI translations available
+        
+        presets.add(new LanguagePreset(
+            "hi_IN",
+            "हिन्दी (भारत)",
+            "hi_IN",
+            "hi_IN",
+            null,
+            false
+        ));
+        
+        presets.add(new LanguagePreset(
+            "id_ID",
+            "Bahasa Indonesia",
+            "id_ID",
+            "id_ID",
+            null,
+            false
+        ));
+        
+        presets.add(new LanguagePreset(
+            "it_IT",
+            "Italiano (Italia)",
+            "it_IT",
+            "it_IT",
+            null,
+            false
+        ));
+        
+        presets.add(new LanguagePreset(
+            "ja_JP", 
+            "日本語 (日本)", 
+            "ja_JP", 
+            "ja_JP", 
+            null,
+            false
+        ));
+        
         presets.add(new LanguagePreset(
             "ko_KR",
             "한국어 (대한민국)",
             "ko_KR",
             "ko_KR",
-            null,  // Let system choose best Korean voice
+            null,
+            false
+        ));
+        
+        presets.add(new LanguagePreset(
+            "pl_PL",
+            "Polski (Polska)",
+            "pl_PL",
+            "pl_PL",
+            null,
+            false
+        ));
+        
+        presets.add(new LanguagePreset(
+            "pt_PT",
+            "Português (Portugal)",
+            "pt_PT",
+            "pt_PT",
+            null,
+            false
+        ));
+        
+        presets.add(new LanguagePreset(
+            "pa_IN",
+            "ਪੰਜਾਬੀ (ਭਾਰਤ)",
+            "pa_IN",
+            "pa_IN",
+            null,
+            false
+        ));
+        
+        presets.add(new LanguagePreset(
+            "ru_RU",
+            "Русский (Россия)",
+            "ru_RU",
+            "ru_RU",
+            null,
+            false
+        ));
+        
+        presets.add(new LanguagePreset(
+            "es_ES", 
+            "Español (España)", 
+            "es_ES", 
+            "es_ES", 
+            null,
+            false
+        ));
+        
+        presets.add(new LanguagePreset(
+            "sv_SE",
+            "Svenska (Sverige)",
+            "sv_SE",
+            "sv_SE",
+            null,
+            false
+        ));
+        
+        presets.add(new LanguagePreset(
+            "th_TH",
+            "ไทย (ประเทศไทย)",
+            "th_TH",
+            "th_TH",
+            null,
+            false
+        ));
+        
+        presets.add(new LanguagePreset(
+            "tr_TR", 
+            "Türkçe (Türkiye)", 
+            "tr_TR", 
+            "tr_TR", 
+            null,
+            false
+        ));
+        
+        presets.add(new LanguagePreset(
+            "ur_PK",
+            "اردو (پاکستان)",
+            "ur_PK",
+            "ur_PK",
+            null,
+            false
+        ));
+        
+        presets.add(new LanguagePreset(
+            "vi_VN",
+            "Tiếng Việt (Việt Nam)",
+            "vi_VN",
+            "vi_VN",
+            null,
             false
         ));
         
