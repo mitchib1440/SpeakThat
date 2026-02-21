@@ -103,9 +103,7 @@
     <string name="store_update_dialog_got_it">이해했어요</string>
     <string name="app_description">SpeakThat!은 텍스트 읽어주기 기능을 사용하여 알림을 읽어주는 오픈소스 안드로이드 앱입니다. 핸즈프리 동작, 접근성, 멀티태스킹 중 소식을 놓치지 않는 데 유용합니다.</string>
     <string name="app_features">• 실시간 알림 읽어주기\n• 사용자 음성 설정\n• 스마트 알림 필터\n• 개별 앱 설정\n• 미디어 재생에 따른 동작\n• 알림 기록\n• 기기나 손을 흔들어 멈추기\n• 읽어주기 형식 설정\n• 라이트/다크 테마 지원\n• 고급 규칙 및 스케줄을 위한 조건화 지원\n• 무광고, 오프라인 동작</string>
-    <string name="license_info">
-이 프로젝트는 오픈소스이며 GPL-3.0 라이센스를 준수합니다.\n\n라이센스 문서와 소스 코드는 GitHub에서 확인 가능합니다. 기여 및 피드백은 언제나 환영입니다!
-</string>
+    <string name="license_info">이 프로젝트는 오픈소스이며 GPL-3.0 라이센스를 준수합니다.\n\n라이센스 문서와 소스 코드는 GitHub에서 확인 가능합니다. 기여 및 피드백은 언제나 환영입니다!</string>
     <string name="read_about_app">앱에 관하여 읽어보기</string>
     <string name="stop_reading">읽기 멈추기</string>
     <!--
@@ -116,9 +114,7 @@
     <string name="tts_features_intro">주요 기능:</string>
     <string name="tts_features">실시간 알림 읽어주기, 사용자 음성 설정, 스마트 알림 필터, 개별 앱 설정, 미디어 재생에 따른 동작, 알림 기록, 기기나 손을 흔들어 멈추기, 읽어주기 형식 설정, 라이트/다크 테마 지원, 고급 규칙 및 스케줄을 위한 조건화 지원, 무광고, 오프라인 동작.</string>
     <string name="tts_developer">개발자 Mitchi는 12년 이상 알림 읽어주기 도구를 테스트하고 사용한 경험이 있는 영국의 1인 개발자입니다. SpeakThat은 DYNA Logix에서 개발된 Touchless Notifications에서 영감을 받았으며, 사용자가 입맛대로 설정 가능한 알림 읽어주기 도구의 가치를 잇고자 합니다. 이 프로젝트의 빠른 개발을 위해 인공지능이 사용되었습니다.</string>
-    <string name="tts_license">
-이 프로젝트는 오픈소스이며 GPL-3.0 라이센스를 준수합니다. 라이센스 문서와 소스 코드는 GitHub에서 확인 가능합니다. 기여 및 피드백은 언제나 환영입니다!
-</string>
+    <string name="tts_license">이 프로젝트는 오픈소스이며 GPL-3.0 라이센스를 준수합니다. 라이센스 문서와 소스 코드는 GitHub에서 확인 가능합니다. 기여 및 피드백은 언제나 환영입니다!</string>
     <string name="tts_thank_you">SpeakThat!을 사용해 주셔서 감사합니다!</string>
     <!-- Update System -->
     <string name="check_for_updates">업데이트 확인</string>
@@ -184,9 +180,7 @@
     <string name="tts_about_features_intro">주요 기능:</string>
     <string name="tts_about_features">실시간 알림 읽어주기, 사용자 음성 설정, 스마트 알림 필터, 개별 앱 설정, 미디어 재생에 따른 동작, 알림 기록, 기기나 손을 흔들어 멈추기, 읽어주기 형식 설정, 라이트/다크 테마 지원, 고급 규칙 및 스케줄을 위한 조건화 지원, 무광고, 오프라인 동작.</string>
     <string name="tts_about_developer">개발자 Mitchi는 12년 이상 알림 읽어주기 도구를 테스트하고 사용한 경험이 있는 영국의 1인 개발자입니다. SpeakThat은 DYNA Logix에서 개발된 Touchless Notifications에서 영감을 받았으며, 사용자가 입맛대로 설정 가능한 알림 읽어주기 도구의 가치를 잇고자 합니다. 이 프로젝트의 빠른 개발을 위해 인공지능이 사용되었습니다.</string>
-    <string name="tts_about_license">
-이 프로젝트는 오픈소스이며 GPL-3.0 라이센스를 준수합니다. 라이센스 문서와 소스 코드는 GitHub에서 확인 가능합니다. 기여 및 피드백은 언제나 환영입니다!
-</string>
+    <string name="tts_about_license">이 프로젝트는 오픈소스이며 GPL-3.0 라이센스를 준수합니다. 라이센스 문서와 소스 코드는 GitHub에서 확인 가능합니다. 기여 및 피드백은 언제나 환영입니다!</string>
     <string name="tts_about_thank_you">SpeakThat!을 사용해 주셔서 감사합니다!</string>
     <!-- Voice Settings Test -->
     <string name="tts_voice_test">위 음성 설정에 따른 알림 소리를 미리 들려드려요.</string>
