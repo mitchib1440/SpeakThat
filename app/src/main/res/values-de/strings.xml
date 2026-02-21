@@ -119,9 +119,7 @@
     <string name="app_description">SpeakThat! ist ein Android-Benachrichtigungsvorleser, der Deine Benachrichtigungen mittels Text-zu-Sprache vorliest. Perfekt für eine freihändige Bedienung, Barrierefreiheit und um informiert zu bleiben, während Du andere Dinge tust.</string>
     <string name="app_features">• Benachrichtigung in Echtzeit vorlesen\n• Anpassbare Spracheinstellungen\n• Intelligente Benachrichtigungsfilter\n• App-spezifische Einstellungen\n• Berücksichtigung von Medienwiedergabe\n• Benachrichtigungsverlauf\n• Schütteln/Winken zum Stoppen\n• Benutzerdefinierte Spracheinstellungen\n• Darkmode Unterstützung\n• Definiere Regeln für fortgeschrittene Logik und Zeitpläne\n• Komplett werbefrei und funktioniert Offline</string>
     <string name="developer_info">Entwickelt mit ❤️ von Mitchi, einem Solo-Entwickler aus Großbritannien mit über 12 Jahren Erfahrung im Testen und täglichen Gebrauch von Benachrichtigungslesern.\n\nSpeakThat! wurde von Touchless Notifications inspiriert, ursprünglich entwickelt von DYNA Logix, und zielt darauf ab, das Erbe der anpassbaren Benachrichtigungsleser fortzuführen.\n\nDieses Projekt wurde durch KI-gestützte Programmierung beschleunigt.</string>
-    <string name="license_info">
-Dieses Projekt ist Open Source und unter der GPL-3.0-Lizenz verfügbar.\n\nDen vollständigen Lizenztext und den Quellcode können Sie auf GitHub einsehen. Beiträge und Feedback sind willkommen!
-</string>
+    <string name="license_info">Dieses Projekt ist Open Source und unter der GPL-3.0-Lizenz verfügbar.\n\nDen vollständigen Lizenztext und den Quellcode können Sie auf GitHub einsehen. Beiträge und Feedback sind willkommen!</string>
     <string name="read_about_app">Über die App vorlesen</string>
     <string name="stop_reading">Vorlesen Beenden</string>
     <!--
@@ -134,9 +132,7 @@ Dieses Projekt ist Open Source und unter der GPL-3.0-Lizenz verfügbar.\n\nDen v
     <string name="tts_features_intro">Zu den wichtigsten Funktionen gehören:</string>
     <string name="tts_features">Lesen von Benachrichtigungen in Echtzeit, anpassbare Spracheinstellungen, intelligente Benachrichtigungsfilterung, app-spezifische Steuerelemente, medienbewusstes Verhalten, Nachverfolgung des Benachrichtigungsverlaufs, „Schütteln zum Stoppen“ und „Winken zum Stoppen“, benutzerdefinierte Sprachformatierung, Unterstützung für Dunkel- und Hellmodus, bedingte Regeln für erweiterte Logik und Zeitpläne sowie vollständig werbefreie Offline-Funktionalität.</string>
     <string name="tts_developer">Entwickelt mit Liebe von Mitchi, einem Solo-Entwickler aus Großbritannien mit über 12 Jahren Erfahrung beim täglichen Testen und Verwenden von Benachrichtigungsvorlesern. SpeakThat wurde von Touchless Notifications inspiriert, ursprünglich entwickelt von DYNA Logix, und zielt darauf ab, das Erbe anpassbarer Benachrichtigungsvorleser fortzuführen. Dieses Projekt wurde durch KI-gestützte Programmierung beschleunigt.</string>
-    <string name="tts_license">
-Dieses Projekt ist Open Source und unter der GPL-3.0-Lizenz verfügbar. Du kannst den vollständigen Lizenztext und Quellcode auf GitHub einsehen. Beiträge und Feedback sind willkommen!
-</string>
+    <string name="tts_license">Dieses Projekt ist Open Source und unter der GPL-3.0-Lizenz verfügbar. Du kannst den vollständigen Lizenztext und Quellcode auf GitHub einsehen. Beiträge und Feedback sind willkommen!</string>
     <string name="tts_thank_you">Vielen Dank, dass Sie SpeakThat nutzen!</string>
     <!-- Update System -->
     <string name="check_for_updates">Auf Updates prüfen</string>
@@ -206,9 +202,7 @@ Dieses Projekt ist Open Source und unter der GPL-3.0-Lizenz verfügbar. Du kanns
     <string name="tts_about_features_intro">Hauptfunktionen sind:</string>
     <string name="tts_about_features">Benachrichtigung in Echtzeit vorlesen, anpassbare Spracheinstellungen, Intelligente Benachrichtigungsfilter, App-spezifische Einstellungen, berücksichtigung von Medienwiedergabe, Benachrichtigungsverlauf, Schütteln oder Winken zum Stoppen, benutzerdefinierte Spracheinstellungen, Dunkelmodus, definiere Regeln für fortgeschrittene Logik und Zeitpläne, komplett werbefrei und funktioniert Offline.</string>
     <string name="tts_about_developer">Entwickelt mit Liebe von Mitchi, einem Solo-Entwickler aus Großbritannien mit über 12 Jahren Erfahrung beim täglichen Testen und Verwenden von Benachrichtigungslesern. SpeakThat wurde von Touchless Notifications inspiriert, ursprünglich entwickelt von DYNA Logix, und zielt darauf ab, das Erbe anpassbarer Benachrichtigungsleser fortzuführen. Dieses Projekt wurde durch KI-gestützte Programmierung beschleunigt.</string>
-    <string name="tts_about_license">
-Dieses Projekt ist Open Source und unter der GPL-3.0-Lizenz verfügbar. Du kannst den vollständigen Lizenztext und Quellcode auf GitHub einsehen. Beiträge und Feedback sind willkommen!
-</string>
+    <string name="tts_about_license">Dieses Projekt ist Open Source und unter der GPL-3.0-Lizenz verfügbar. Du kannst den vollständigen Lizenztext und Quellcode auf GitHub einsehen. Beiträge und Feedback sind willkommen!</string>
     <string name="tts_about_thank_you">Vielen Dank für die Nutzung von SpeakThat!</string>
     <!-- Voice Settings Test -->
     <string name="tts_voice_test">So werden deine Benachrichtigungen mit diesen Stimmeinstellungen klingen.</string>
