@@ -704,4 +704,6 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tidy_speech_description">通过移除诸如表情符号等非语言字符来优化朗读通知</string>
     <string name="tidy_speech_remove_emojis_title">移除表情符号</string>
     <string name="tidy_speech_remove_emojis_description">从朗读通知中移除表情符号和其他符号</string>
+    <string name="quick_settings_tile_enabled">启用</string>
+    <string name="quick_settings_tile_disabled">禁用</string>
 </resources>
