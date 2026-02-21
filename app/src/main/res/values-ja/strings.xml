@@ -153,9 +153,7 @@
     <string name="app_description">SpeakThat!は、テキスト読み上げを使用して通知を音声で知らせるオープンソースのAndroid通知リーダーです。マルチタスク中に操作、アクセシビリティ、通知を受けるのに最適です。</string>
     <string name="app_features">• リアルタイム通知読み取り\n• カスタマイズ可能な音声設定\n• スマート通知フィルタリング\n• アプリごとの制御\n• メディア対応動作\n• 通知履歴追跡\n• 振って停止と手振りで停止\n• 読み上げフォーマットのカスタマイズ\n• ダークモードとライトモードのサポート\n• 高度なロジックとスケジュールによる条件ルール\n• 広告なし、オフラインで機能</string>
     <string name="developer_info">イギリスのソロ開発者であるMitchiが❤️を込めて開発しました。12年以上にわたって毎日通知リーダーをテストし使用してきた経験を活かしています。SpeakThat!は、DYNA Logixによって開発されたTouchless Notificationsに触発され、カスタマイズ可能な通知リーダーの遺産を継承することを目指しています。このプロジェクトはAI支援プログラミングによって加速されました。</string>
-    <string name="license_info">
-このプロジェクトはオープンソースで、GPL-3.0ライセンスの下で利用可能です。GitHubでライセンスの全文とソースコードを確認できます。貢献とフィードバックを歓迎します！
-</string>
+    <string name="license_info">このプロジェクトはオープンソースで、GPL-3.0ライセンスの下で利用可能です。GitHubでライセンスの全文とソースコードを確認できます。貢献とフィードバックを歓迎します！</string>
     <string name="read_about_app">アプリについてを読む</string>
     <string name="stop_reading">読むのを停止する</string>
     <!--
@@ -166,9 +164,7 @@
     <string name="tts_features_intro">主な機能:</string>
     <string name="tts_features">リアルタイム通知読み取り、カスタマイズ可能な音声設定、スマート通知フィルタリング、アプリごとの制御、メディア対応動作、通知履歴追跡、振って停止と手振りで停止、読み上げフォーマットのカスタマイズ、ダークモードとライトモードのサポート、高度なロジックとスケジュールによる条件ルール、広告なし、オフラインで機能。</string>
     <string name="tts_developer">イギリスのソロ開発者であるMitchiが愛を込めて開発しました。12年以上にわたって毎日通知リーダーをテストし使用してきた経験を活かしています。SpeakThat!は、DYNA Logixによって開発されたTouchless Notificationsに触発され、カスタマイズ可能な通知リーダーの遺産を継承することを目指しています。このプロジェクトはAI支援プログラミングによって加速されました。</string>
-    <string name="tts_license">
-このプロジェクトはオープンソースで、GPL-3.0ライセンスの下で利用可能です。GitHubでライセンスの全文とソースコードを確認できます。貢献とフィードバックを歓迎します！
-</string>
+    <string name="tts_license">このプロジェクトはオープンソースで、GPL-3.0ライセンスの下で利用可能です。GitHubでライセンスの全文とソースコードを確認できます。貢献とフィードバックを歓迎します！</string>
     <string name="tts_thank_you">SpeakThat!をご利用いただき、ありがとうございます</string>
     <!-- Update System -->
     <string name="check_for_updates">アップデートの確認</string>
@@ -234,9 +230,7 @@
     <string name="tts_about_features_intro">主な機能には以下が含まれます:</string>
     <string name="tts_about_features">リアルタイム通知読み取り、カスタマイズ可能な音声設定、スマート通知フィルタリング、アプリ固有の制御、メディア対応動作、通知履歴追跡、振って停止と波で停止、カスタム音声フォーマット、ダークモードとライトモードのサポート、高度なロジックとスケジュールの条件付きルール、完全なオフライン機能。</string>
     <string name="tts_about_developer">イギリスのソロ開発者であるミッチが愛を込めて開発しました。12年以上にわたって毎日通知リーダーをテストし使用してきた経験があります。SpeakThatは、もともとDYNA Logixによって開発されたTouchless Notificationsに触発され、カスタマイズ可能な通知リーダーの遺産を継承することを目指しています。このプロジェクトは人工知能支援プログラミングによって加速されました。</string>
-    <string name="tts_about_license">
-このプロジェクトはオープンソースで、GPL-3.0ライセンスの下で利用可能です。GitHubでライセンスの全文とソースコードを確認できます。貢献とフィードバックを歓迎します！
-</string>
+    <string name="tts_about_license">このプロジェクトはオープンソースで、GPL-3.0ライセンスの下で利用可能です。GitHubでライセンスの全文とソースコードを確認できます。貢献とフィードバックを歓迎します！</string>
     <string name="tts_about_thank_you">SpeakThatをご利用いただき、ありがとうございます！</string>
     <!-- Voice Settings Test -->
     <string name="tts_voice_test">これがこの音声設定での通知の聞こえ方です。</string>
