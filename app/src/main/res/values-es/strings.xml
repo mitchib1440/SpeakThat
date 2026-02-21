@@ -119,9 +119,7 @@
     <string name="app_description">SpeakThat! es un lector de notificaciones de Android de código abierto que las anuncia en voz alta mediante texto a voz. Es perfecto para el modo manos libres, para mejorar la accesibilidad y para mantenerse informado mientras se realizan varias tareas a la vez.</string>
     <string name="app_features">• Lectura de notificaciones en tiempo real\n• configuración de voz personalizable\n• Filtrado inteligente de notificaciones\n• Controles específicos por aplicación\n• Comportamiento consciente de medios\n• Seguimiento del historial de notificaciones\n• Opción de sacudir o hacer una onda para detener\n• Formato de habla personalizado\n• Soporte para modo oscuro y claro\n• Reglas condicionales para lógica avanzada y cronometrada\n• Con funciones completas, sin conexión y libres de anuncios</string>
     <string name="developer_info">Desarrollado con amor por Mitchi, un desarrollador independiente del Reino Unido con más de 12 años de experiencia probando y usando lectores de notificaciones todos los días.\n\nSpeakThat! fue inspirado por Touchless Notifications, originalmente desarrollado por DYNA Logix, y busca continuar el legado de lectores de notificaciones personalizables.\n\nEste proyecto fue acelerado por programación asistida por Inteligencia Artificial.</string>
-    <string name="license_info">
-Este proyecto es de código abierto y está disponible bajo la Licencia GPL-3.0.\n\nPuedes ver el texto completo de la licencia y el código fuente en GitHub. ¡Las contribuciones y comentarios son bienvenidos!
-</string>
+    <string name="license_info">Este proyecto es de código abierto y está disponible bajo la Licencia GPL-3.0.\n\nPuedes ver el texto completo de la licencia y el código fuente en GitHub. ¡Las contribuciones y comentarios son bienvenidos!</string>
     <string name="read_about_app">Leer Acerca de App</string>
     <string name="stop_reading">Parar lectura</string>
     <!--
@@ -134,9 +132,7 @@ Este proyecto es de código abierto y está disponible bajo la Licencia GPL-3.0.
     <string name="tts_features_intro">Las características principales incluyen:</string>
     <string name="tts_features">Lectura de notificaciones en tiempo real, configuración de voz personalizable, filtrado inteligente de notificaciones, controles específicos por aplicación, comportamiento consciente de medios, seguimiento del historial de notificaciones, opción de sacudir o hacer una onda para detener, formato de habla personalizado, soporte para modo oscuro y claro, reglas condicionales para lógica avanzada y cronometrada, y con funciones completas, sin conexión y libres de anuncios.</string>
     <string name="tts_developer">Desarrollado con amor por Mitchi, un desarrollador independiente del Reino Unido con más de 12 años de experiencia probando y usando lectores de notificaciones todos los días. SpeakThat fue inspirado por Touchless Notifications, originalmente desarrollado por DYNA Logix, y busca continuar el legado de lectores de notificaciones personalizables. Este proyecto fue acelerado por programación asistida por Inteligencia Artificial.</string>
-    <string name="tts_license">
-Este proyecto es de código abierto y está disponible bajo la Licencia GPL-3.0. Puedes ver el texto completo de la licencia y el código fuente en GitHub. ¡Las contribuciones y comentarios son bienvenidos!
-</string>
+    <string name="tts_license">Este proyecto es de código abierto y está disponible bajo la Licencia GPL-3.0. Puedes ver el texto completo de la licencia y el código fuente en GitHub. ¡Las contribuciones y comentarios son bienvenidos!</string>
     <string name="tts_thank_you">Gracias por usar SpeakThat!</string>
     <!-- Update System -->
     <string name="check_for_updates">Buscar actualizaciones</string>
@@ -206,9 +202,7 @@ Este proyecto es de código abierto y está disponible bajo la Licencia GPL-3.0.
     <string name="tts_about_features_intro">Las características principales incluyen:</string>
     <string name="tts_about_features">Lectura de notificaciones en tiempo real, configuración de voz personalizable, filtrado inteligente de notificaciones, controles específicos por aplicación, comportamiento consciente de medios, seguimiento del historial de notificaciones, opción de sacudir o hacer una onda para detener, formato de habla personalizado, soporte para modo oscuro y claro, reglas condicionales para lógica avanzada y cronometrada, y con funciones completas, sin conexión y libres de anuncios.</string>
     <string name="tts_about_developer">Desarrollado con amor por Mitchi, un desarrollador independiente del Reino Unido con más de 12 años de experiencia probando y usando lectores de notificaciones todos los días. SpeakThat fue inspirado por Touchless Notifications, originalmente desarrollado por DYNA Logix, y busca continuar el legado de lectores de notificaciones personalizables. Este proyecto fue acelerado por programación asistida por Inteligencia Artificial.</string>
-    <string name="tts_about_license">
-Este proyecto es de código abierto y está disponible bajo la Licencia GPL-3.0. Puedes ver el texto completo de la licencia y el código fuente en GitHub. ¡Las contribuciones y comentarios son bienvenidos!
-</string>
+    <string name="tts_about_license">Este proyecto es de código abierto y está disponible bajo la Licencia GPL-3.0. Puedes ver el texto completo de la licencia y el código fuente en GitHub. ¡Las contribuciones y comentarios son bienvenidos!</string>
     <string name="tts_about_thank_you">Gracias por usar SpeakThat!</string>
     <!-- Voice Settings Test -->
     <string name="tts_voice_test">Así es como sonarán tus notificaciones con esta configuración de voz.</string>
