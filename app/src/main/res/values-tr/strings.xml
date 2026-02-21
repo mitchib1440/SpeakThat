@@ -155,9 +155,7 @@ El Sallayarak Durdurma, elinizi cihazın önünde sallayarak SpeakThat\'i anınd
     <string name="app_description">SpeakThat!, metin okuma teknolojisini kullanarak bildirimlerinizi sesli olarak duyuran açık kaynaklı bir Android Bildirim Okuyucusudur. Eller serbest kullanım, erişilebilirlik ve çoklu görev sırasında bilgi sahibi olmak için mükemmeldir.</string>
     <string name="app_features">• Gerçek zamanlı bildirim okuma\n• Özelleştirilebilir ses ayarları\n• Akıllı bildirim filtreleme\n• Uygulamaya özel kontroller\n• Medyaya duyarlı davranış\n• Bildirim geçmişi\n• Durdurmak için salla/el salla\n• Özel konuşma biçimlendirme\n• Koyu/Açık tema desteği\n• Gelişmiş mantık ve zamanlamalar için koşullu kurallar\n• Tamamen reklamsız ve çevrimdışı işlevsellik</string>
     <string name="developer_info">İngiltere\'den, 12 yılı aşkın süredir her gün bildirim okuyucularını test edip kullanan tek bir geliştirici olan Mitchi tarafından ❤️ ile geliştirildi.\n\nSpeakThat!, ilk olarak DYNA Logix tarafından geliştirilen Touchless Notifications\'tan ilham aldı ve özelleştirilebilir bildirim okuyucularının mirasını devam ettirmeyi amaçlıyor.\n\nBu proje, yapay zeka destekli programlama ile hızlandırıldı.</string>
-    <string name="license_info">
-Bu proje açık kaynaklıdır ve GPL-3.0 Lisansı altında mevcuttur.\n\nLisans metninin tamamını ve kaynak kodunu GitHub\'da görüntüleyebilirsiniz. Katkı ve geri bildirimleriniz memnuniyetle karşılanır!
-</string>
+    <string name="license_info">Bu proje açık kaynaklıdır ve GPL-3.0 Lisansı altında mevcuttur.\n\nLisans metninin tamamını ve kaynak kodunu GitHub\'da görüntüleyebilirsiniz. Katkı ve geri bildirimleriniz memnuniyetle karşılanır!</string>
     <string name="read_about_app">Uygulama Hakkında Oku</string>
     <string name="stop_reading">Okumayı Durdur</string>
     <!--
@@ -170,9 +168,7 @@ Bu proje açık kaynaklıdır ve GPL-3.0 Lisansı altında mevcuttur.\n\nLisans 
     <string name="tts_features_intro">Temel özellikler şunları içerir:</string>
     <string name="tts_features">Gerçek zamanlı bildirim okuma, özelleştirilebilir ses ayarları, akıllı bildirim filtreleme, uygulamaya özel kontroller, medyaya duyarlı davranış, bildirim geçmişi takibi, Sallayarak ve El Sallayarak Durdurma, özel konuşma biçimlendirme, koyu mod ve açık mod desteği, gelişmiş mantık ve zamanlamalar için koşullu kurallar ve tamamen reklamsız, çevrimdışı işlevsellik.</string>
     <string name="tts_developer">İngiltere\'den, 12 yılı aşkın süredir her gün bildirim okuyucularını test edip kullanan tek bir geliştirici olan Mitchi tarafından sevgiyle geliştirildi. SpeakThat, ilk olarak DYNA Logix tarafından geliştirilen Touchless Notifications\'tan ilham aldı ve özelleştirilebilir bildirim okuyucularının mirasını devam ettirmeyi amaçlıyor. Bu proje, Yapay Zeka destekli programlama ile hızlandırıldı.</string>
-    <string name="tts_license">
-Bu proje açık kaynaklıdır ve GPL-3.0 Lisansı altında mevcuttur. Lisans metninin tamamını ve kaynak kodunu GitHub\'da görüntüleyebilirsiniz. Katkı ve geri bildirimleriniz memnuniyetle karşılanır!
-</string>
+    <string name="tts_license">Bu proje açık kaynaklıdır ve GPL-3.0 Lisansı altında mevcuttur. Lisans metninin tamamını ve kaynak kodunu GitHub\'da görüntüleyebilirsiniz. Katkı ve geri bildirimleriniz memnuniyetle karşılanır!</string>
     <string name="tts_thank_you">SpeakThat kullandığınız için teşekkür ederiz!</string>
     <!-- Update System -->
     <string name="check_for_updates">Güncellemeleri Kontrol Et</string>
@@ -242,9 +238,7 @@ Bu proje açık kaynaklıdır ve GPL-3.0 Lisansı altında mevcuttur. Lisans met
     <string name="tts_about_features_intro">Temel özellikler şunları içerir:</string>
     <string name="tts_about_features">Gerçek zamanlı bildirim okuma, özelleştirilebilir ses ayarları, akıllı bildirim filtreleme, uygulamaya özel kontroller, medyaya duyarlı davranış, bildirim geçmişi takibi, Sallayarak ve El Sallayarak Durdurma, özel konuşma biçimlendirme, koyu mod ve açık mod desteği, gelişmiş mantık ve zamanlamalar için koşullu kurallar ve tamamen reklamsız, çevrimdışı işlevsellik.</string>
     <string name="tts_about_developer">İngiltere\'den, 12 yılı aşkın süredir her gün bildirim okuyucularını test edip kullanan tek bir geliştirici olan Mitchi tarafından sevgiyle geliştirildi. SpeakThat, ilk olarak DYNA Logix tarafından geliştirilen Touchless Notifications\'tan ilham aldı ve özelleştirilebilir bildirim okuyucularının mirasını devam ettirmeyi amaçlıyor. Bu proje, Yapay Zeka destekli programlama ile hızlandırıldı.</string>
-    <string name="tts_about_license">
-Bu proje açık kaynaklıdır ve GPL-3.0 Lisansı altında mevcuttur. Lisans metninin tamamını ve kaynak kodunu GitHub\'da görüntüleyebilirsiniz. Katkı ve geri bildirimleriniz memnuniyetle karşılanır!
-</string>
+    <string name="tts_about_license">Bu proje açık kaynaklıdır ve GPL-3.0 Lisansı altında mevcuttur. Lisans metninin tamamını ve kaynak kodunu GitHub\'da görüntüleyebilirsiniz. Katkı ve geri bildirimleriniz memnuniyetle karşılanır!</string>
     <string name="tts_about_thank_you">SpeakThat kullandığınız için teşekkür ederiz!</string>
     <!-- Voice Settings Test -->
     <string name="tts_voice_test">Bildirimleriniz bu ses ayarlarıyla böyle duyulacak.</string>
