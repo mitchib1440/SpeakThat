@@ -155,9 +155,7 @@ Door Zwaaien voor Stoppen kun je SpeakThat! meteen stoppen door met jouw hand vo
     <string name="app_description">SpeakThat is een open-source Android meldingslezer die uw meldingen hardop voorleest met behulp van tekst-naar-spraak. Perfect voor hands-free bediening, toegankelijkheid en geïnformeerd blijven tijdens multitasking.</string>
     <string name="app_features">• Real-time notificatielezen\n• Aanpasbare spraakinstellingen\n• Slim filteren\n• App-specifieke besturingselementen\n• Media-bewust gedrag\n• Berichtgeschiedenis\n• Shake/Wave om te stoppen\n• Aangepaste spraakopmaak\n• Donker/Licht thema ondersteuning\n• Voorwaardelijke regels voor geavanceerde logica en schema\'s\n• Volledig advertentievrij en offline functionaliteit</string>
     <string name="developer_info">Met liefde ontwikkeld door Michi, een onafhankelijke ontwikkelaar uit het Verenigd Koninkrijk met meer dan 12 jaar ervaring in het dagelijks testen en gebruiken van een meldingslezer. .\n\nSpeakThat! is geïnspireerd door Touchless Notifications, oorspronkelijk ontwikkeld door DYNA Logix, en streeft ernaar de erfenis van aanpasbare meldingslezer voort te zetten. .\n\nDit project is versneld door AI-ondersteunde programmering.</string>
-    <string name="license_info">
-Dit project is open source en beschikbaar onder de GPL-3.0 licentie.\n\nJe kunt de volledige licentietekst en broncode bekijken op GitHub. Bijdragen en feedback zijn welkom!
-</string>
+    <string name="license_info">Dit project is open source en beschikbaar onder de GPL-3.0 licentie.\n\nJe kunt de volledige licentietekst en broncode bekijken op GitHub. Bijdragen en feedback zijn welkom!</string>
     <string name="read_about_app">Lees over de app</string>
     <string name="stop_reading">Stop met lezen</string>
     <!--
@@ -170,9 +168,7 @@ Dit project is open source en beschikbaar onder de GPL-3.0 licentie.\n\nJe kunt 
     <string name="tts_features_intro">Belangrijkste functies omvatten:</string>
     <string name="tts_features">Real-time kennisgeving lezen, aanpasbare spraakinstellingen, slimme filteren, app-specifieke besturen, media-bewust gedrag, opvolgen van kennisgevingsgeschiedenis, Schud voor Stop en Wave aan Stop, aangepaste spraakopmaak, donkere modus en ondersteuning voor lichte modus. voorwaardelijke regels voor geavanceerde logica en schema\'s, en volledig advertentievrije, offline functionaliteit.</string>
     <string name="tts_developer">Met liefde ontwikkeld door Michi, een onafhankelijke ontwikkelaar uit het Verenigd Koninkrijk met meer dan 12 jaar ervaring in het dagelijks testen en gebruiken van een meldingslezer. SpeakThat! is geïnspireerd door Touchless Notifications, oorspronkelijk ontwikkeld door DYNA Logix, en streeft ernaar de erfenis van aanpasbare meldingslezer voort te zetten. Dit project is versneld door AI-ondersteunde programmering.</string>
-    <string name="tts_license">
-Dit project is open-source en beschikbaar onder de GPL-3.0 licentie. U kunt de volledige licentietekst en broncode bekijken op GitHub. Bijdragen en feedback zijn welkom!
-</string>
+    <string name="tts_license">Dit project is open-source en beschikbaar onder de GPL-3.0 licentie. U kunt de volledige licentietekst en broncode bekijken op GitHub. Bijdragen en feedback zijn welkom!</string>
     <string name="tts_thank_you">Bedankt voor het gebruik van SpeakThat!</string>
     <!-- Update System -->
     <string name="check_for_updates">Op updates controleren</string>
@@ -242,9 +238,7 @@ Dit project is open-source en beschikbaar onder de GPL-3.0 licentie. U kunt de v
     <string name="tts_about_features_intro">Belangrijkste functies omvatten:</string>
     <string name="tts_about_features">Real-time kennisgeving lezen, aanpasbare spraakinstellingen, slimme filteren, app-specifieke besturen, media-bewust gedrag, opvolgen van kennisgevingsgeschiedenis, Schud voor Stop en Wave aan Stop, aangepaste spraakopmaak, donkere modus en ondersteuning voor lichte modus. voorwaardelijke regels voor geavanceerde logica en schema\'s, en volledige advertentievrije, offline functionaliteit.</string>
     <string name="tts_about_developer">Met liefde ontwikkeld door Michi, een onafhankelijke ontwikkelaar uit het Verenigd Koninkrijk met meer dan 12 jaar ervaring in het dagelijks testen en gebruiken van een meldingslezer. SpeakThat! is geïnspireerd door Touchless Notifications, oorspronkelijk ontwikkeld door DYNA Logix, en streeft ernaar de erfenis van aanpasbare meldingslezer voort te zetten. Dit project is versneld door AI-ondersteunde programmering.</string>
-    <string name="tts_about_license">
-Dit project is open-source en beschikbaar onder de GPL-3.0 licentie. U kunt de volledige licentietekst en broncode bekijken op GitHub. Bijdragen en feedback zijn welkom!
-</string>
+    <string name="tts_about_license">Dit project is open-source en beschikbaar onder de GPL-3.0 licentie. U kunt de volledige licentietekst en broncode bekijken op GitHub. Bijdragen en feedback zijn welkom!</string>
     <string name="tts_about_thank_you">Bedankt voor het gebruik van SpeakThat!</string>
     <!-- Voice Settings Test -->
     <string name="tts_voice_test">Dit is hoe uw meldingen zullen klinken met deze steminstellingen.</string>
