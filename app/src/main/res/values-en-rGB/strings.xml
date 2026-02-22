@@ -663,7 +663,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_speech_preset">Format Preset:</string>
     <string name="behavior_speech_custom">Custom Format:</string>
     <string name="behavior_speech_preview">Preview: Messages notified you: Mitchi: I heard you\'re using SpeakThat!</string>
-    <string name="behavior_speech_placeholders">Common placeholders: {app}, {content}, {time}, {title}, {text}, {priority}, {category}, {ticker}</string>
+    <string name="behavior_speech_placeholders">Common placeholders: {app}, {content}, {time}, {title}, {text}, {bigtext}</string>
     <string name="behavior_speech_placeholder_ticker_html">• <b>{ticker}</b> - Legacy ticker text (older apps only; often empty on modern notifications)</string>
     <string name="behavior_speech_placeholder_ticker_note" formatted="false">- {ticker} stays blank if the notification does not include ticker text (most modern apps leave this empty)</string>
     <string name="behavior_speech_example_ticker_html">• <b>Legacy ticker:</b> &quot;{app} - {ticker}&quot; → &quot;Music Player - Now playing: Synthwave Essentials&quot;</string>
