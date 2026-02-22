@@ -43,7 +43,6 @@ class SettingsActivity : AppCompatActivity() {
         setupSettingsCategories()
         setupAllSettings()
         setupClickListeners()
-        setupThemeIcon()
     }
 
     private fun applySavedTheme(prefs: android.content.SharedPreferences) {
@@ -334,20 +333,6 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
     
-    private fun setupThemeIcon() {
-        // Set the appropriate icon for General Settings based on current theme
-        val isDarkMode = resources.configuration.uiMode and 
-            android.content.res.Configuration.UI_MODE_NIGHT_MASK == 
-            android.content.res.Configuration.UI_MODE_NIGHT_YES
-        
-        val iconRes = if (isDarkMode) {
-            R.drawable.ic_light_mode_24
-        } else {
-            R.drawable.ic_dark_mode_24
-        }
-        
-        binding.iconGeneralSettings.setImageResource(iconRes)
-    }
     
 
 } 

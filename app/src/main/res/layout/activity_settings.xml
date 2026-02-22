@@ -99,7 +99,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_dark_mode_24"
+                        android:src="@drawable/ic_mobile_gear_24"
                         android:tint="@color/white_100"
                         android:contentDescription="@string/settings_general_title" />
 
@@ -569,7 +569,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_send_24"
+                        android:src="@drawable/ic_lifering_24"
                         android:tint="@color/white_100"
                         android:contentDescription="@string/settings_support_title" />
 
@@ -637,7 +637,7 @@
                         android:layout_height="24dp"
                         android:layout_marginEnd="16dp"
                         android:contentDescription="@string/settings_development_title"
-                        android:src="@drawable/ic_bugdroid_24"
+                        android:src="@drawable/ic_code_24"
                         android:tint="@color/white_100" />
 
                     <LinearLayout
