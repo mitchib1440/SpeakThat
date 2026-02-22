@@ -99,7 +99,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_dark_mode_24"
+                        android:src="@drawable/ic_mobile_gear_24"
                         android:tint="@color/white_100"
                         android:contentDescription="@string/settings_general_title" />
 
@@ -406,11 +406,9 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-
-
-            <!-- Development Settings Card -->
+            <!-- Compatibility Settings Card -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardDevelopmentSettings"
+                android:id="@+id/cardCompatibilitySettings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -432,13 +430,13 @@
                     android:background="@drawable/gradient_card_subtle_right">
 
                     <ImageView
-                        android:id="@+id/iconDevelopmentSettings"
+                        android:id="@+id/iconCompatibilitySettings"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_bugdroid_24"
+                        android:src="@drawable/ic_framebug_24"
                         android:tint="@color/white_100"
-                        android:contentDescription="@string/settings_development_title" />
+                        android:contentDescription="@string/settings_compatibility_title" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -449,7 +447,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/settings_development_title"
+                            android:text="@string/settings_compatibility_title"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary" />
@@ -457,7 +455,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/settings_development_description"
+                            android:text="@string/settings_compatibility_description"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginTop="4dp" />
@@ -541,6 +539,7 @@
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
+
 
             <!-- Donate Card -->
             <com.google.android.material.card.MaterialCardView
@@ -637,7 +636,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_send_24"
+                        android:src="@drawable/ic_lifering_24"
                         android:tint="@color/white_100"
                         android:contentDescription="@string/settings_support_title" />
 
@@ -671,6 +670,73 @@
                         android:text="@string/arrow_right"
                         android:textSize="24sp"
                         android:textColor="@color/white_100" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Development Settings Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardDevelopmentSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeColor="@color/purple_200"
+                app:strokeWidth="0dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/gradient_card_subtle_right"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="20dp">
+
+                    <ImageView
+                        android:id="@+id/iconDevelopmentSettings"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="@string/settings_development_title"
+                        android:src="@drawable/ic_code_24"
+                        android:tint="@color/white_100" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_development_title"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/settings_development_description"
+                            android:textColor="@color/purple_card_text_secondary"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/arrow_right"
+                        android:textColor="@color/white_100"
+                        android:textSize="24sp" />
 
                 </LinearLayout>
 

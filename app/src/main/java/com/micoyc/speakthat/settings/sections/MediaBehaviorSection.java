@@ -1,5 +1,6 @@
 package com.micoyc.speakthat.settings.sections;
 
+import android.content.SharedPreferences;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -45,29 +46,11 @@ public class MediaBehaviorSection implements BehaviorSettingsSection {
                 mediaBehavior = MEDIA_BEHAVIOR_SILENCE;
             }
 
-            boolean showDucking = MEDIA_BEHAVIOR_DUCK.equals(mediaBehavior);
-            binding.duckingVolumeContainer.setVisibility(showDucking ? View.VISIBLE : View.GONE);
-            binding.duckingWarningText.setVisibility(showDucking ? View.VISIBLE : View.GONE);
-            if (showDucking) {
-                binding.duckingWarningText.setText(
-                    activity.getString(R.string.behavior_ducking_enhanced_warning) + "\n\n" +
-                    activity.getString(R.string.behavior_ducking_device_tip) + "\n\n" +
-                    activity.getString(R.string.behavior_ducking_fallback_tip)
-                );
-            }
-
+            updateDuckingVolumeVisibility(mediaBehavior);
             saveMediaBehavior(mediaBehavior);
         });
 
         binding.btnMediaBehaviorInfo.setOnClickListener(v -> showMediaBehaviorDialog());
-
-        binding.duckingFallbackGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            String fallbackStrategy = "manual";
-            if (checkedId == R.id.radioFallbackPause) {
-                fallbackStrategy = "pause";
-            }
-            saveDuckingFallbackStrategy(fallbackStrategy);
-        });
 
         binding.duckingVolumeSeekBar.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
@@ -91,28 +74,19 @@ public class MediaBehaviorSection implements BehaviorSettingsSection {
         switch (savedMediaBehavior) {
             case MEDIA_BEHAVIOR_PAUSE:
                 binding.radioMediaPause.setChecked(true);
-                binding.duckingVolumeContainer.setVisibility(View.GONE);
                 break;
             case MEDIA_BEHAVIOR_DUCK:
                 binding.radioMediaDuck.setChecked(true);
-                binding.duckingVolumeContainer.setVisibility(View.VISIBLE);
-                binding.duckingWarningText.setVisibility(View.VISIBLE);
-                binding.duckingWarningText.setText(
-                    activity.getString(R.string.behavior_ducking_enhanced_warning) + "\n\n" +
-                    activity.getString(R.string.behavior_ducking_device_tip) + "\n\n" +
-                    activity.getString(R.string.behavior_ducking_fallback_tip)
-                );
                 break;
             case MEDIA_BEHAVIOR_SILENCE:
                 binding.radioMediaSilence.setChecked(true);
-                binding.duckingVolumeContainer.setVisibility(View.GONE);
                 break;
             default:
                 binding.radioMediaIgnore.setChecked(true);
-                binding.duckingVolumeContainer.setVisibility(View.GONE);
                 break;
         }
 
+        updateDuckingVolumeVisibility(savedMediaBehavior);
         binding.radioMediaDuck.setEnabled(true);
 
         int savedDuckingVolume = store.prefs().getInt(
@@ -121,13 +95,6 @@ public class MediaBehaviorSection implements BehaviorSettingsSection {
         );
         binding.duckingVolumeSeekBar.setValue(savedDuckingVolume);
         updateDuckingVolumeDisplay(savedDuckingVolume);
-
-        String savedFallbackStrategy = loadDuckingFallbackStrategy();
-        if ("pause".equals(savedFallbackStrategy)) {
-            binding.radioFallbackPause.setChecked(true);
-        } else {
-            binding.radioFallbackManual.setChecked(true);
-        }
     }
 
     @Override
@@ -156,17 +123,12 @@ public class MediaBehaviorSection implements BehaviorSettingsSection {
         binding.duckingVolumeValue.setText(volume + "%");
     }
 
-    private void saveDuckingFallbackStrategy(String strategy) {
-        // Skip saving during initialization to prevent activity recreation loop
-        if (store.isInitializing()) {
-            return;
-        }
-        store.prefs().edit().putString(BehaviorSettingsStore.KEY_DUCKING_FALLBACK_STRATEGY, strategy).apply();
-        InAppLogger.log("LowerAudio", "Ducking fallback strategy saved: " + strategy);
-    }
-
-    private String loadDuckingFallbackStrategy() {
-        return store.prefs().getString(BehaviorSettingsStore.KEY_DUCKING_FALLBACK_STRATEGY, "manual");
+    private void updateDuckingVolumeVisibility(String mediaBehavior) {
+        boolean isDuck = MEDIA_BEHAVIOR_DUCK.equals(mediaBehavior);
+        SharedPreferences mainPrefs = activity.getSharedPreferences("SpeakThatPrefs", 0);
+        boolean legacyDuckingEnabled = mainPrefs.getBoolean("enable_legacy_ducking", false);
+        binding.duckingVolumeContainer.setVisibility(
+            (isDuck && legacyDuckingEnabled) ? View.VISIBLE : View.GONE);
     }
 
     private void showMediaBehaviorDialog() {
@@ -185,7 +147,7 @@ public class MediaBehaviorSection implements BehaviorSettingsSection {
             .setPositiveButton(R.string.use_recommended, (dialog, which) -> {
                 store.trackDialogUsage("media_behavior_recommended");
                 binding.radioMediaDuck.setChecked(true);
-                binding.duckingVolumeContainer.setVisibility(View.VISIBLE);
+                updateDuckingVolumeVisibility(MEDIA_BEHAVIOR_DUCK);
                 saveMediaBehavior(MEDIA_BEHAVIOR_DUCK);
             })
             .setNegativeButton(R.string.got_it, null)

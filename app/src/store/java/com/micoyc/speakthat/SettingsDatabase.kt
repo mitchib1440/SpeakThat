@@ -2,6 +2,7 @@ package com.micoyc.speakthat
 
 import android.content.Intent
 import com.micoyc.speakthat.settings.BehaviorSettingsActivity
+import com.micoyc.speakthat.CompatibilitySettingsActivity
 
 object SettingsDatabase {
     
@@ -187,39 +188,7 @@ object SettingsDatabase {
                 searchKeywords = listOf("honour", "phone", "calls", "respect", "call", "telephone", "conversation", "interrupt", "during", "call", "phone call", "telephony", "call state"),
                 navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
             ),
-            SettingsItem(
-                id = "notification_deduplication",
-                title = "Notification Deduplication",
-                description = "Prevent duplicate notifications from being read multiple times",
-                category = "behavior",
-                categoryTitle = "Behavior Settings",
-                categoryIcon = "🔔",
-                settingType = SettingType.SWITCH,
-                searchKeywords = listOf("deduplication", "duplicate", "notification", "same", "multiple", "times", "prevent", "avoid", "repeated", "duplicate notifications", "same notification", "multiple readouts"),
-                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
-            ),
-            SettingsItem(
-                id = "dismissal_memory",
-                title = "Dismissal Memory",
-                description = "Remember and don't read notifications you've dismissed",
-                category = "behavior",
-                categoryTitle = "Behavior Settings",
-                categoryIcon = "🔔",
-                settingType = SettingType.SWITCH,
-                searchKeywords = listOf("dismissal", "memory", "dismissed", "remember", "swiped", "cleared", "notification", "ignore", "skip"),
-                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
-            ),
-            SettingsItem(
-                id = "dismissal_memory_timeout",
-                title = "Dismissal Memory Timeout",
-                description = "How long to remember dismissed notifications",
-                category = "behavior",
-                categoryTitle = "Behavior Settings",
-                categoryIcon = "🔔",
-                settingType = SettingType.SEEK_BAR,
-                searchKeywords = listOf("dismissal", "memory", "timeout", "duration", "remember", "time", "minutes"),
-                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
-            ),
+            
             SettingsItem(
                 id = "persistent_notification",
                 title = "Persistent Notification",
@@ -288,28 +257,7 @@ object SettingsDatabase {
                 searchKeywords = listOf("language", "locale", "speech", "voice", "tts"),
                 navigationAction = { context.startActivity(Intent(context, VoiceSettingsActivity::class.java)) }
             ),
-            SettingsItem(
-                id = "audio_usage",
-                title = "Audio Usage",
-                description = "Configure audio usage for speech output",
-                category = "voice",
-                categoryTitle = "Voice Settings",
-                categoryIcon = "🎙️",
-                settingType = SettingType.SPINNER,
-                searchKeywords = listOf("audio", "usage", "channel", "output", "speaker", "headphones"),
-                navigationAction = { context.startActivity(Intent(context, VoiceSettingsActivity::class.java)) }
-            ),
-            SettingsItem(
-                id = "content_type",
-                title = "Content Type",
-                description = "Configure content type for speech output",
-                category = "voice",
-                categoryTitle = "Voice Settings",
-                categoryIcon = "🎙️",
-                settingType = SettingType.SPINNER,
-                searchKeywords = listOf("content", "type", "speech", "audio", "format"),
-                navigationAction = { context.startActivity(Intent(context, VoiceSettingsActivity::class.java)) }
-            ),
+            
             SettingsItem(
                 id = "preview_voice",
                 title = "Preview Voice",
@@ -343,17 +291,7 @@ object SettingsDatabase {
                 searchKeywords = listOf("volume", "tts", "loud", "quiet", "sound", "level"),
                 navigationAction = { context.startActivity(Intent(context, VoiceSettingsActivity::class.java)) }
             ),
-            SettingsItem(
-                id = "speakerphone_enabled",
-                title = "Force Speakerphone",
-                description = "Force audio output through speakerphone",
-                category = "voice",
-                categoryTitle = "Voice Settings",
-                categoryIcon = "🎙️",
-                settingType = SettingType.SWITCH,
-                searchKeywords = listOf("speakerphone", "speaker", "audio", "output", "force", "loud"),
-                navigationAction = { context.startActivity(Intent(context, VoiceSettingsActivity::class.java)) }
-            ),
+            
 
             // Filter Settings
             SettingsItem(
@@ -637,28 +575,7 @@ object SettingsDatabase {
                 searchKeywords = listOf("log", "system", "event", "debug", "android", "os"),
                 navigationAction = { context.startActivity(Intent(context, DevelopmentSettingsActivity::class.java)) }
             ),
-            SettingsItem(
-                id = "disable_media_fallback",
-                title = "Disable Media Fallback",
-                description = "Disable media playback fallback mechanisms",
-                category = "development",
-                categoryTitle = "Development Settings",
-                categoryIcon = "🛠️",
-                settingType = SettingType.SWITCH,
-                searchKeywords = listOf("disable", "media", "fallback", "audio", "debug", "experimental"),
-                navigationAction = { context.startActivity(Intent(context, DevelopmentSettingsActivity::class.java)) }
-            ),
-            SettingsItem(
-                id = "enable_legacy_ducking",
-                title = "Enable Legacy Ducking",
-                description = "Use legacy audio ducking behavior",
-                category = "development",
-                categoryTitle = "Development Settings",
-                categoryIcon = "🛠️",
-                settingType = SettingType.SWITCH,
-                searchKeywords = listOf("legacy", "ducking", "audio", "volume", "debug", "old"),
-                navigationAction = { context.startActivity(Intent(context, DevelopmentSettingsActivity::class.java)) }
-            ),
+            
             SettingsItem(
                 id = "test_notifications",
                 title = "Test Notifications",
@@ -726,6 +643,107 @@ object SettingsDatabase {
                 settingType = SettingType.BUTTON,
                 searchKeywords = listOf("support", "help", "assistance", "question", "guide"),
                 navigationAction = { context.startActivity(Intent(context, SupportActivity::class.java)) }
+            ),
+
+            // Compatibility Settings
+            SettingsItem(
+                id = "audio_usage",
+                title = "Audio Usage",
+                description = "Configure audio usage for speech output",
+                category = "compatibility",
+                categoryTitle = "Compatibility Settings",
+                categoryIcon = "🔧",
+                settingType = SettingType.SPINNER,
+                searchKeywords = listOf("audio", "usage", "channel", "output", "speaker", "headphones", "routing"),
+                navigationAction = { context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "content_type",
+                title = "Content Type",
+                description = "Configure content type for speech output",
+                category = "compatibility",
+                categoryTitle = "Compatibility Settings",
+                categoryIcon = "🔧",
+                settingType = SettingType.SPINNER,
+                searchKeywords = listOf("content", "type", "speech", "audio", "format"),
+                navigationAction = { context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "speakerphone_enabled",
+                title = "Force Speakerphone",
+                description = "Force audio output through speakerphone",
+                category = "compatibility",
+                categoryTitle = "Compatibility Settings",
+                categoryIcon = "🔧",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("speakerphone", "speaker", "audio", "output", "force", "loud"),
+                navigationAction = { context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "disable_media_fallback",
+                title = "Disable Media Fallback",
+                description = "Disable media playback fallback mechanisms",
+                category = "compatibility",
+                categoryTitle = "Compatibility Settings",
+                categoryIcon = "🔧",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("disable", "media", "fallback", "audio", "ducking", "compatibility"),
+                navigationAction = { context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "enable_legacy_ducking",
+                title = "Enable Legacy Ducking",
+                description = "Use legacy audio ducking behavior",
+                category = "compatibility",
+                categoryTitle = "Compatibility Settings",
+                categoryIcon = "🔧",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("legacy", "ducking", "audio", "volume", "old", "compatibility"),
+                navigationAction = { context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "ducking_fallback_strategy",
+                title = "Ducking Fallback Strategy",
+                description = "Choose what happens when audio ducking fails",
+                category = "compatibility",
+                categoryTitle = "Compatibility Settings",
+                categoryIcon = "🔧",
+                settingType = SettingType.RADIO_GROUP,
+                searchKeywords = listOf("ducking", "fallback", "strategy", "manual", "pause", "audio", "lower"),
+                navigationAction = { context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "notification_deduplication",
+                title = "Notification Deduplication",
+                description = "Prevent duplicate notifications from being read multiple times",
+                category = "compatibility",
+                categoryTitle = "Compatibility Settings",
+                categoryIcon = "🔧",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("deduplication", "duplicate", "notification", "same", "multiple", "times", "prevent", "avoid", "repeated"),
+                navigationAction = { context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "dismissal_memory",
+                title = "Dismissal Memory",
+                description = "Remember and don't read notifications you've dismissed",
+                category = "compatibility",
+                categoryTitle = "Compatibility Settings",
+                categoryIcon = "🔧",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("dismissal", "memory", "dismissed", "remember", "swiped", "cleared", "notification", "ignore", "skip"),
+                navigationAction = { context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "dismissal_memory_timeout",
+                title = "Dismissal Memory Timeout",
+                description = "How long to remember dismissed notifications",
+                category = "compatibility",
+                categoryTitle = "Compatibility Settings",
+                categoryIcon = "🔧",
+                settingType = SettingType.SEEK_BAR,
+                searchKeywords = listOf("dismissal", "memory", "timeout", "duration", "remember", "time", "minutes"),
+                navigationAction = { context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java)) }
             ),
 
             // Re-run Onboarding

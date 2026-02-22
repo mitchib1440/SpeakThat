@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp"
+                    android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
                     <LinearLayout
@@ -266,7 +266,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp"
+                    android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
                     <LinearLayout
@@ -633,7 +633,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp"
+                    android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
                     <LinearLayout
@@ -768,258 +768,6 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Audio Output Settings Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="@android:color/transparent"
-                app:strokeWidth="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp"
-                    android:background="@drawable/gradient_card_subtle_right">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_mobile_speaker_24"
-                            android:tint="@color/white_100"
-                            android:contentDescription="Audio Output Settings"
-                            android:layout_marginEnd="16dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/voice_audio_output_settings"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/voice_audio_output_description"
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="16dp" />
-
-                    <!-- Audio Usage -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/voice_audio_stream_type"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="8dp"
-                        android:textColor="@color/purple_card_text_primary" />
-
-                    <Spinner
-                        android:id="@+id/audioUsageSpinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:background="@drawable/spinner_background"
-                        android:popupBackground="@drawable/dropdown_background"
-                        android:padding="12dp"
-                        android:minHeight="48dp" />
-
-                    <!-- Stream Volume -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/voice_stream_volume"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp"
-                        android:textColor="@color/purple_card_text_primary" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/voice_stream_volume_description"
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="8dp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp">
-
-                        <SeekBar
-                            android:id="@+id/streamVolumeSeekBar"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="16dp"
-                            android:max="100"
-                            android:progress="50"
-                            android:progressTint="@color/white_100"
-                            android:thumbTint="@color/white_100"
-                            android:splitTrack="false" />
-
-                        <TextView
-                            android:id="@+id/streamVolumeValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="50%"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/white_100"
-                            android:minWidth="40dp"
-                            android:gravity="center" />
-
-                    </LinearLayout>
-
-                    <!-- Content Type -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/voice_content_type"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp"
-                        android:textColor="@color/purple_card_text_primary" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/voice_content_type_description"
-                        android:textSize="14sp"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:layout_marginBottom="8dp" />
-
-                    <Spinner
-                        android:id="@+id/contentTypeSpinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:background="@drawable/spinner_background"
-                        android:popupBackground="@drawable/dropdown_background"
-                        android:padding="12dp"
-                        android:minHeight="48dp" />
-
-                    <!-- Speakerphone Option for VOICE_CALL -->
-                    <LinearLayout
-                        android:id="@+id/speakerphoneOptionLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_mobile_speaker_24"
-                            android:tint="@color/white_100"
-                            android:layout_marginEnd="12dp"
-                            android:contentDescription="Speakerphone icon" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/voice_speakerphone_option"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/purple_card_text_primary" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/voice_speakerphone_description"
-                                android:textSize="14sp"
-                                android:textColor="@color/purple_card_text_secondary" />
-
-                        </LinearLayout>
-
-                        <com.google.android.material.materialswitch.MaterialSwitch
-                            android:id="@+id/speakerphoneSwitch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="false"
-                            android:thumbTint="@color/switch_thumb_color"
-                            android:trackTint="@color/switch_track_color"
-                            app:thumbTint="@color/switch_thumb_color"
-                            app:trackTint="@color/switch_track_color" />
-
-                    </LinearLayout>
-
-                    <!-- Audio Channel Help Text -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:padding="12dp">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-                            
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/lightbulb_2_24px"
-                                app:tint="@color/white_100"
-                                android:layout_marginEnd="6dp"
-                                android:contentDescription="Recommendation icon" />
-                            
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/voice_audio_recommendation"
-                                android:textSize="14sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/purple_card_text_secondary" />
-                        </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/btnAudioHelp"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/help_24px"
-                            android:contentDescription="More Info"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                            android:padding="4dp"
-                            app:tint="@color/white_100" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
             <!-- Preview & Actions Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -1034,7 +782,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp"
+                    android:padding="16dp"
                     android:background="@drawable/gradient_card_subtle_right">
 
                     <LinearLayout

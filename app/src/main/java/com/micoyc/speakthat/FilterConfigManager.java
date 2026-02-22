@@ -175,9 +175,11 @@ public class FilterConfigManager {
         public int contentCapWordCount;
         public int contentCapSentenceCount;
         public int contentCapTimeLimit;
-        public boolean notificationDeduplication; // Deduplication setting
-        public boolean dismissalMemoryEnabled; // Dismissal memory setting
-        public int dismissalMemoryTimeout; // Dismissal memory timeout in minutes
+        public boolean notificationDeduplication;
+        public boolean dismissalMemoryEnabled;
+        public int dismissalMemoryTimeout;
+        public boolean disableMediaFallback;
+        public boolean enableLegacyDucking;
         
         public BehaviorConfig() {
             this.notificationBehavior = "interrupt";
@@ -207,9 +209,11 @@ public class FilterConfigManager {
             this.contentCapWordCount = 6;
             this.contentCapSentenceCount = 1;
             this.contentCapTimeLimit = 10;
-            this.notificationDeduplication = false; // Default to false
-            this.dismissalMemoryEnabled = true; // Default to true
-            this.dismissalMemoryTimeout = 15; // Default 15 minutes
+            this.notificationDeduplication = false;
+            this.dismissalMemoryEnabled = true;
+            this.dismissalMemoryTimeout = 15;
+            this.disableMediaFallback = false;
+            this.enableLegacyDucking = false;
         }
     }
     
@@ -410,6 +414,8 @@ public class FilterConfigManager {
         config.behavior.notificationDeduplication = prefs.getBoolean("notification_deduplication", false);
         config.behavior.dismissalMemoryEnabled = prefs.getBoolean("dismissal_memory_enabled", true);
         config.behavior.dismissalMemoryTimeout = prefs.getInt("dismissal_memory_timeout", 15);
+        config.behavior.disableMediaFallback = prefs.getBoolean("disable_media_fallback", false);
+        config.behavior.enableLegacyDucking = prefs.getBoolean("enable_legacy_ducking", false);
         
         // Load general settings
         config.general.darkMode = prefs.getBoolean("dark_mode", true);
@@ -519,6 +525,8 @@ public class FilterConfigManager {
         behavior.put("notificationDeduplication", config.behavior.notificationDeduplication);
         behavior.put("dismissalMemoryEnabled", config.behavior.dismissalMemoryEnabled);
         behavior.put("dismissalMemoryTimeout", config.behavior.dismissalMemoryTimeout);
+        behavior.put("disableMediaFallback", config.behavior.disableMediaFallback);
+        behavior.put("enableLegacyDucking", config.behavior.enableLegacyDucking);
         json.put("behavior", behavior);
         
         // General settings
@@ -1126,12 +1134,21 @@ public class FilterConfigManager {
                 
                 if (behavior.has("dismissalMemoryTimeout")) {
                     int timeout = behavior.getInt("dismissalMemoryTimeout");
-                    // Safety validation
                     if (timeout < 1 || timeout > 120) {
-                        timeout = 15; // Reset to safe default
+                        timeout = 15;
                         InAppLogger.log("FilterConfig", "Invalid dismissal memory timeout imported, reset to 15 minutes");
                     }
                     mainEditor.putInt("dismissal_memory_timeout", timeout);
+                    totalImported++;
+                }
+                
+                if (behavior.has("disableMediaFallback")) {
+                    mainEditor.putBoolean("disable_media_fallback", behavior.getBoolean("disableMediaFallback"));
+                    totalImported++;
+                }
+                
+                if (behavior.has("enableLegacyDucking")) {
+                    mainEditor.putBoolean("enable_legacy_ducking", behavior.getBoolean("enableLegacyDucking"));
                     totalImported++;
                 }
             }

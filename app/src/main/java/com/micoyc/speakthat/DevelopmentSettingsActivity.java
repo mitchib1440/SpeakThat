@@ -54,8 +54,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
     private static final String KEY_LOG_NOTIFICATIONS = "log_notifications";
     private static final String KEY_LOG_USER_ACTIONS = "log_user_actions";
     private static final String KEY_LOG_SYSTEM_EVENTS = "log_system_events";
-    private static final String KEY_DISABLE_MEDIA_FALLBACK = "disable_media_fallback";
-    private static final String KEY_ENABLE_LEGACY_DUCKING = "enable_legacy_ducking";
+    
     private static final long LISTENER_WARNING_THRESHOLD_MS = 5 * 60 * 1000L;
 
     private boolean isLogAutoRefreshPaused = false;
@@ -313,16 +312,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             saveLogSystemEvents(isChecked);
             InAppLogger.setLogSystemEvents(isChecked);
             InAppLogger.log("Development", "System event logging " + (isChecked ? "enabled" : "disabled"));
-        });
-        
-        binding.switchDisableMediaFallback.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            saveDisableMediaFallback(isChecked);
-            InAppLogger.log("Development", "Media behavior fallback " + (isChecked ? "disabled" : "enabled"));
-        });
-
-        binding.switchEnableLegacyDucking.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            saveLegacyDucking(isChecked);
-            InAppLogger.log("Development", "Legacy ducking " + (isChecked ? "enabled" : "disabled"));
         });
         
         // Set up deprecated features - Theme toggle
@@ -846,8 +835,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         boolean logNotifications = sharedPreferences.getBoolean(KEY_LOG_NOTIFICATIONS, true); // Default to enabled
         boolean logUserActions = sharedPreferences.getBoolean(KEY_LOG_USER_ACTIONS, true); // Default to enabled
         boolean logSystemEvents = sharedPreferences.getBoolean(KEY_LOG_SYSTEM_EVENTS, true); // Default to enabled
-        boolean disableMediaFallback = sharedPreferences.getBoolean(KEY_DISABLE_MEDIA_FALLBACK, false); // Default to disabled
-        boolean enableLegacyDucking = sharedPreferences.getBoolean(KEY_ENABLE_LEGACY_DUCKING, false); // Default to disabled
         boolean isDarkMode = sharedPreferences.getBoolean(KEY_DARK_MODE, true); // Default to dark mode
         
         binding.switchVerboseLogging.setChecked(verboseLogging);
@@ -855,8 +842,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         binding.switchLogNotifications.setChecked(logNotifications);
         binding.switchLogUserActions.setChecked(logUserActions);
         binding.switchLogSystemEvents.setChecked(logSystemEvents);
-        binding.switchDisableMediaFallback.setChecked(disableMediaFallback);
-        binding.switchEnableLegacyDucking.setChecked(enableLegacyDucking);
         binding.switchDeprecatedTheme.setChecked(isDarkMode);
     }
 
@@ -1207,19 +1192,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         InAppLogger.log("Development", "Log system events setting saved: " + enabled);
     }
 
-    private void saveDisableMediaFallback(boolean enabled) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(KEY_DISABLE_MEDIA_FALLBACK, enabled);
-        editor.apply();
-        InAppLogger.log("Development", "Disable media fallback setting saved: " + enabled);
-    }
-
-    private void saveLegacyDucking(boolean enabled) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(KEY_ENABLE_LEGACY_DUCKING, enabled);
-        editor.apply();
-        InAppLogger.log("Development", "Legacy ducking setting saved: " + enabled);
-    }
+    
 
     private void saveThemeMode(boolean isDarkMode) {
         SharedPreferences.Editor editor = sharedPreferences.edit();

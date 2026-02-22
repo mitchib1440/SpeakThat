@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/colorBackground"
+    android:fitsSystemWindows="true"
+    tools:context=".CompatibilitySettingsActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/compatibilitySettingsScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_compatibility_description"
+                    android:textSize="14sp"
+                    android:textColor="@color/purple_card_text_secondary"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- ============================================ -->
+                <!-- Card 1: Android Audio Routing                -->
+                <!-- ============================================ -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="20dp"
+                        android:background="@drawable/gradient_card_subtle_right">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_routing_24"
+                                android:tint="@color/white_100"
+                                android:contentDescription="@string/compatibility_section_audio_routing"
+                                android:layout_marginEnd="16dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/compatibility_section_audio_routing"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/voice_audio_output_description"
+                            android:textSize="14sp"
+                            android:textColor="@color/purple_card_text_secondary"
+                            android:layout_marginBottom="16dp" />
+
+                        <!-- Audio Usage -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/voice_audio_stream_type"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="8dp"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                        <Spinner
+                            android:id="@+id/audioUsageSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:background="@drawable/spinner_background"
+                            android:popupBackground="@drawable/dropdown_background"
+                            android:padding="12dp"
+                            android:minHeight="48dp" />
+
+                        <!-- Content Type -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/voice_content_type"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="4dp"
+                            android:textColor="@color/purple_card_text_primary" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/voice_content_type_description"
+                            android:textSize="14sp"
+                            android:textColor="@color/purple_card_text_secondary"
+                            android:layout_marginBottom="8dp" />
+
+                        <Spinner
+                            android:id="@+id/contentTypeSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:background="@drawable/spinner_background"
+                            android:popupBackground="@drawable/dropdown_background"
+                            android:padding="12dp"
+                            android:minHeight="48dp" />
+
+                        <!-- Speakerphone Option -->
+                        <LinearLayout
+                            android:id="@+id/speakerphoneOptionLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="16dp"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_mobile_speaker_24"
+                                android:tint="@color/white_100"
+                                android:layout_marginEnd="12dp"
+                                android:contentDescription="Speakerphone icon" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/voice_speakerphone_option"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/purple_card_text_primary" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/voice_speakerphone_description"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/purple_card_text_secondary" />
+
+                            </LinearLayout>
+
+                            <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/speakerphoneSwitch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:thumbTint="@color/switch_thumb_color"
+                                android:trackTint="@color/switch_track_color"
+                                app:thumbTint="@color/switch_thumb_color"
+                                app:trackTint="@color/switch_track_color" />
+
+                        </LinearLayout>
+
+                        <!-- Audio Help -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:padding="12dp">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/lightbulb_2_24px"
+                                    app:tint="@color/white_100"
+                                    android:layout_marginEnd="6dp"
+                                    android:contentDescription="Recommendation icon" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/voice_audio_recommendation"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/purple_card_text_secondary" />
+
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/btnAudioHelp"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/help_24px"
+                                android:contentDescription="More Info"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                                android:padding="4dp"
+                                app:tint="@color/white_100" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- ============================================ -->
+                <!-- Card 2: Audio Ducking Compatibility          -->
+                <!-- ============================================ -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:background="@drawable/gradient_card_subtle_right">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_volume_down_24"
+                                android:tint="@color/white_100"
+                                android:contentDescription="@string/compatibility_section_ducking"
+                                android:layout_marginEnd="16dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/compatibility_section_ducking"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <!-- Disable Media Fallback Switch -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/dev_disable_media_fallback"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/purple_card_text_primary" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/dev_disable_media_fallback_description"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/purple_card_text_secondary" />
+
+                            </LinearLayout>
+
+                            <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/switchDisableMediaFallback"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:thumbTint="@color/switch_thumb_color"
+                                android:trackTint="@color/switch_track_color"
+                                app:thumbTint="@color/switch_thumb_color"
+                                app:trackTint="@color/switch_track_color"
+                                android:paddingLeft="12dp" />
+
+                        </LinearLayout>
+
+                        <!-- Legacy Ducking Switch -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/dev_enable_legacy_ducking"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/purple_card_text_primary" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/dev_enable_legacy_ducking_description"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/purple_card_text_secondary" />
+
+                            </LinearLayout>
+
+                            <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/switchEnableLegacyDucking"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:thumbTint="@color/switch_thumb_color"
+                                android:trackTint="@color/switch_track_color"
+                                app:thumbTint="@color/switch_thumb_color"
+                                app:trackTint="@color/switch_track_color"
+                                android:paddingLeft="12dp" />
+
+                        </LinearLayout>
+
+                        <!-- Fallback Strategy Section -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginBottom="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/behavior_ducking_fallback_title"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:layout_marginBottom="4dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/behavior_ducking_fallback_description"
+                                android:textSize="12sp"
+                                android:textColor="@color/purple_card_text_secondary"
+                                android:layout_marginBottom="8dp" />
+
+                            <RadioGroup
+                                android:id="@+id/duckingFallbackGroup"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <RadioButton
+                                    android:id="@+id/radioFallbackManual"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_ducking_fallback_manual"
+                                    android:textSize="12sp"
+                                    android:buttonTint="@color/white_100"
+                                    app:buttonTint="@color/white_100"
+                                    android:textColor="@color/purple_card_text_primary"
+                                    android:layout_marginBottom="4dp" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_ducking_fallback_manual_desc"
+                                    android:textSize="10sp"
+                                    android:textColor="@color/purple_card_text_secondary"
+                                    android:layout_marginStart="24dp"
+                                    android:layout_marginBottom="8dp" />
+
+                                <RadioButton
+                                    android:id="@+id/radioFallbackPause"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_ducking_fallback_pause"
+                                    android:textSize="12sp"
+                                    android:buttonTint="@color/white_100"
+                                    app:buttonTint="@color/white_100"
+                                    android:textColor="@color/purple_card_text_primary"
+                                    android:layout_marginBottom="4dp" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_ducking_fallback_pause_desc"
+                                    android:textSize="10sp"
+                                    android:textColor="@color/purple_card_text_secondary"
+                                    android:layout_marginStart="24dp"
+                                    android:layout_marginBottom="8dp" />
+
+                            </RadioGroup>
+
+                        </LinearLayout>
+
+                        <!-- Ducking Warning -->
+                        <TextView
+                            android:id="@+id/duckingWarningText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/behavior_ducking_warning"
+                            android:textSize="13sp"
+                            android:textColor="@color/text_warning"
+                            android:background="@color/warning_background"
+                            android:padding="8dp"
+                            android:visibility="gone"
+                            android:gravity="center" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:src="@drawable/lightbulb_2_24px"
+                                android:contentDescription="Tip"
+                                android:layout_marginEnd="4dp"
+                                app:tint="@color/purple_card_text_secondary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/behavior_media_volume_tip"
+                                android:textSize="12sp"
+                                android:textColor="@color/purple_card_text_secondary"
+                                android:textStyle="italic" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- ============================================ -->
+                <!-- Card 3: Duplication Workarounds              -->
+                <!-- ============================================ -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:background="@drawable/gradient_card_subtle_right">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_repeat_24"
+                                android:tint="@color/white_100"
+                                android:contentDescription="@string/compatibility_section_duplication"
+                                android:layout_marginEnd="16dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/compatibility_section_duplication"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                        <!-- Notification Deduplication -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/behavior_deduplication_description"
+                            android:textSize="14sp"
+                            android:textColor="@color/purple_card_text_secondary"
+                            android:layout_marginBottom="8dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="@drawable/bg_advanced_voice_section"
+                            android:padding="12dp"
+                            android:layout_marginBottom="16dp"
+                            android:gravity="center_vertical">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginEnd="8dp">
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/lightbulb_2_24px"
+                                    android:contentDescription="Tip"
+                                    android:layout_marginEnd="6dp"
+                                    app:tint="@color/purple_card_text_primary" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_deduplication_recommendation"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/purple_card_text_primary" />
+
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/btnDeduplicationInfo"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/help_24px"
+                                android:contentDescription="More Info"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                                android:padding="4dp"
+                                app:tint="@color/white_100" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="16dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/behavior_deduplication_switch_label"
+                                android:textSize="16sp"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                            <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/switchNotificationDeduplication"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:thumbTint="@color/switch_thumb_color"
+                                android:trackTint="@color/switch_track_color"
+                                app:thumbTint="@color/switch_thumb_color"
+                                app:trackTint="@color/switch_track_color" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/white_200"
+                            android:layout_marginVertical="8dp" />
+
+                        <!-- Dismissal Memory -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/behavior_dismissal_memory_description"
+                            android:textSize="14sp"
+                            android:textColor="@color/purple_card_text_secondary"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginTop="8dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="@drawable/bg_advanced_voice_section"
+                            android:padding="12dp"
+                            android:layout_marginBottom="16dp"
+                            android:gravity="center_vertical">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginEnd="8dp">
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/lightbulb_2_24px"
+                                    android:contentDescription="Tip"
+                                    android:layout_marginEnd="6dp"
+                                    app:tint="@color/purple_card_text_primary" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_dismissal_memory_recommendation"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/purple_card_text_primary" />
+
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/btnDismissalMemoryInfo"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/help_24px"
+                                android:contentDescription="More Info"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                                android:padding="4dp"
+                                app:tint="@color/white_100" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="16dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/behavior_dismissal_memory_switch_label"
+                                android:textSize="16sp"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                            <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/switchDismissalMemory"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:thumbTint="@color/switch_thumb_color"
+                                android:trackTint="@color/switch_track_color"
+                                app:thumbTint="@color/switch_thumb_color"
+                                app:trackTint="@color/switch_track_color" />
+
+                        </LinearLayout>
+
+                        <!-- Memory Duration Section -->
+                        <LinearLayout
+                            android:id="@+id/dismissalMemorySettingsSection"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/behavior_dismissal_memory_timeout_label"
+                                android:textSize="16sp"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:layout_marginBottom="8dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/behavior_dismissal_memory_timeout_description"
+                                android:textSize="14sp"
+                                android:textColor="@color/purple_card_text_secondary"
+                                android:layout_marginBottom="12dp" />
+
+                            <RadioGroup
+                                android:id="@+id/dismissalMemoryTimeoutGroup"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginBottom="16dp">
+
+                                <RadioButton
+                                    android:id="@+id/radioDismissalMemory5min"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_dismissal_memory_timeout_5min"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/purple_card_text_primary"
+                                    android:buttonTint="@color/radio_button_color"
+                                    android:layout_marginBottom="8dp" />
+
+                                <RadioButton
+                                    android:id="@+id/radioDismissalMemory15min"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_dismissal_memory_timeout_15min"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/purple_card_text_primary"
+                                    android:buttonTint="@color/radio_button_color"
+                                    android:layout_marginBottom="8dp" />
+
+                                <RadioButton
+                                    android:id="@+id/radioDismissalMemory30min"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_dismissal_memory_timeout_30min"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/purple_card_text_primary"
+                                    android:buttonTint="@color/radio_button_color"
+                                    android:layout_marginBottom="8dp" />
+
+                                <RadioButton
+                                    android:id="@+id/radioDismissalMemory1hour"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_dismissal_memory_timeout_1hour"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/purple_card_text_primary"
+                                    android:buttonTint="@color/radio_button_color" />
+
+                            </RadioGroup>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/loadingContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="?attr/colorBackground">
+
+            <ProgressBar
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:indeterminateTint="@color/purple_200" />
+
+            <TextView
+                android:id="@+id/loadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/purple_card_text_secondary"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>
