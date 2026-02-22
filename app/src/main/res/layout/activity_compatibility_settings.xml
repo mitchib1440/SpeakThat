@@ -61,7 +61,7 @@
                             <ImageView
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
-                                android:src="@drawable/ic_settings_24"
+                                android:src="@drawable/ic_routing_24"
                                 android:tint="@color/white_100"
                                 android:contentDescription="@string/compatibility_section_audio_routing"
                                 android:layout_marginEnd="16dp" />
@@ -266,7 +266,7 @@
                             <ImageView
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
-                                android:src="@drawable/ic_settings_24"
+                                android:src="@drawable/ic_volume_down_24"
                                 android:tint="@color/white_100"
                                 android:contentDescription="@string/compatibility_section_ducking"
                                 android:layout_marginEnd="16dp" />
@@ -513,7 +513,7 @@
                             <ImageView
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
-                                android:src="@drawable/ic_settings_24"
+                                android:src="@drawable/ic_repeat_24"
                                 android:tint="@color/white_100"
                                 android:contentDescription="@string/compatibility_section_duplication"
                                 android:layout_marginEnd="16dp" />
