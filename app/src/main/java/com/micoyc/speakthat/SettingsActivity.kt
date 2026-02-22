@@ -134,6 +134,13 @@ class SettingsActivity : AppCompatActivity() {
                 onClickAction = { startActivity(Intent(this, RulesActivity::class.java)) }
             ),
             SettingsCategory(
+                id = "compatibility",
+                title = "Compatibility Settings",
+                description = "Fixes for common device-related issues",
+                cardView = binding.cardCompatibilitySettings,
+                onClickAction = { startActivity(Intent(this, CompatibilitySettingsActivity::class.java)) }
+            ),
+            SettingsCategory(
                 id = "development",
                 title = "Development Settings",
                 description = "Debug tools and logging system",
@@ -217,6 +224,10 @@ class SettingsActivity : AppCompatActivity() {
         
         binding.cardConditionalRules.setOnClickListener {
             startActivity(Intent(this, RulesActivity::class.java))
+        }
+        
+        binding.cardCompatibilitySettings.setOnClickListener {
+            startActivity(Intent(this, CompatibilitySettingsActivity::class.java))
         }
         
         binding.cardDevelopmentSettings.setOnClickListener {

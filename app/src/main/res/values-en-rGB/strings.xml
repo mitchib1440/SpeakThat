@@ -729,6 +729,11 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="settings_filter_description">Choose which apps to read</string>
     <string name="settings_rules_title">Conditional Rules</string>
     <string name="settings_rules_description">Configure Bluetooth, time schedules, etc</string>
+    <string name="settings_compatibility_title">Compatibility Settings</string>
+    <string name="settings_compatibility_description">Fixes for common device-related issues</string>
+    <string name="compatibility_section_audio_routing">Android Audio Routing</string>
+    <string name="compatibility_section_ducking">Audio Ducking Compatibility</string>
+    <string name="compatibility_section_duplication">Duplication Workarounds</string>
     <string name="settings_development_title">Development Settings</string>
     <string name="settings_development_description">Debug tools and logging system</string>
     <string name="settings_rerun_onboarding">Re-run Onboarding</string>

@@ -198,6 +198,11 @@
             android:parentActivityName=".SettingsActivity" />
 
         <activity
+            android:name=".CompatibilitySettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".SettingsActivity" />
+
+        <activity
             android:name=".TestSettingsActivity"
             android:exported="false"
             android:parentActivityName=".GeneralSettingsActivity" />
