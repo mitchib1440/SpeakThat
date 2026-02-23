@@ -497,9 +497,7 @@
     <string name="behavior_speech_preset">Formatvorlage:</string>
     <string name="behavior_speech_custom">Eigenes Format:</string>
     <string name="behavior_speech_preview">Vorschau: Messenger Benachrichtigung: Mitchi: Ich habe gehört, dass Du SpeakThat benutzt!</string>
-    <string name="behavior_speech_placeholders">
-Allgemeine Platzhalter: {app}, {content}, {time}, {title}, {text}, {priority}, {category}
-</string>
+    <string name="behavior_speech_placeholders">Allgemeine Platzhalter: {app}, {content}, {time}, {title}, {text}, {priority}, {category}</string>
     <string name="button_start_test">Test starten</string>
     <string name="button_test">Test</string>
     <string name="button_add">Hinzufügen</string>
