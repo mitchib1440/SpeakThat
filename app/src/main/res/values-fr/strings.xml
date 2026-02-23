@@ -534,7 +534,7 @@
     <string name="behavior_speech_preset">Formatage préréglés :</string>
     <string name="behavior_speech_custom">Formatage personnalisé :</string>
     <string name="behavior_speech_preview">Aperçu : Messages vous a notifié : Michel : J\'ai entendu que tu utilises SpeakThat !</string>
-    <string name="behavior_speech_placeholders">Marqueurs usuels : {app}, {content}, {time}, {title}, {text}, {priority}, {category}, {ticker}</string>
+    <string name="behavior_speech_placeholders">Marqueurs usuels : {app}, {content}, {time}, {title}, {text}, {priority}, {category}, {ticker}</string>
     <string name="button_start_test">Commencer l\'essai</string>
     <string name="button_test">Essai</string>
     <string name="button_add">Ajouter</string>
