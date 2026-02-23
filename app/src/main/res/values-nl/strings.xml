@@ -541,9 +541,7 @@ Weet je zeker dat je deze activering wil verwijderen?
     <string name="behavior_speech_preset">Opmaak Voorinstelling:</string>
     <string name="behavior_speech_custom">Aangepaste opmaak:</string>
     <string name="behavior_speech_preview">Voorbeeld: Berichten hebben je een melding gegeven: Mitchi, ik heb gehoord dat je SpeakThat! gebruikt!</string>
-    <string name="behavior_speech_placeholders">
-Gewone aanduidingen: {app}, {content}, {time}, {title}, {text}, {priority}, {category}
-</string>
+    <string name="behavior_speech_placeholders">Gewone aanduidingen: {app}, {content}, {time}, {title}, {text}, {priority}, {category}</string>
     <string name="button_start_test">Start Test</string>
     <string name="button_test">Test</string>
     <string name="button_add">Toevoegen</string>
