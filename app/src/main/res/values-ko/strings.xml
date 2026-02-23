@@ -549,9 +549,7 @@
     <string name="behavior_speech_preset">사전 형식:</string>
     <string name="behavior_speech_custom">사용자 설정 형식:</string>
     <string name="behavior_speech_preview">미리보기: Messages notified you: Mitchi: I heard you\'re using SpeakThat!</string>
-    <string name="behavior_speech_placeholders">
-자주 사용되는 표시자: {app}, {content}, {time}, {title}, {text}, {priority}, {category}
-</string>
+    <string name="behavior_speech_placeholders">자주 사용되는 표시자: {app}, {content}, {time}, {title}, {text}, {priority}, {category}</string>
     <string name="button_start_test">테스트 시작</string>
     <string name="button_test">테스트</string>
     <string name="button_add">추가</string>
