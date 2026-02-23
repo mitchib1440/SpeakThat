@@ -531,9 +531,7 @@
     <string name="behavior_speech_preset">Format Preset:</string>
     <string name="behavior_speech_custom">Custom Format:</string>
     <string name="behavior_speech_preview">Preview: Messages notified you: Mitchi: I heard you\'re using SpeakThat!</string>
-    <string name="behavior_speech_placeholders">
-Common placeholders: {app}, {content}, {time}, {title}, {text}, {priority}, {category}
-</string>
+    <string name="behavior_speech_placeholders">Common placeholders: {app}, {content}, {time}, {title}, {text}, {priority}, {category}</string>
     <string name="button_start_test">テスト開始</string>
     <string name="button_test">テスト</string>
     <string name="button_add">追加</string>
