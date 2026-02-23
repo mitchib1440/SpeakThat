@@ -501,9 +501,7 @@ La mayoría de los usuarios deben usar: Pausar Audio
     <string name="behavior_speech_preset">Formato preestablecido:</string>
     <string name="behavior_speech_custom">Formato personalizado:</string>
     <string name="behavior_speech_preview">Vista previa: Mensajes te notificó: Mitchi: He oído que estás usando SpeakThat!</string>
-    <string name="behavior_speech_placeholders">
-Marcadores comunes: {app}, {content}, {time}, {title}, {text}, {priority}, {category}
-</string>
+    <string name="behavior_speech_placeholders">Marcadores comunes: {app}, {content}, {time}, {title}, {text}, {priority}, {category}</string>
     <string name="button_start_test">Iniciar prueba</string>
     <string name="button_test">Probar</string>
     <string name="button_add">Añadir</string>
