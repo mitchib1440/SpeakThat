@@ -541,9 +541,7 @@ Bu tetikleyiciyi kaldırmak istediğinizden emin misiniz?
     <string name="behavior_speech_preset">Format Hazır Ayarı:</string>
     <string name="behavior_speech_custom">Özel Format:</string>
     <string name="behavior_speech_preview">Önizleme: Mesajlar bildirdi: Mitchi: SpeakThat kullandığını duydum!</string>
-    <string name="behavior_speech_placeholders">
-Yaygın yer tutucular: {app}, {content}, {time}, {title}, {text}, {priority}, {category}
-</string>
+    <string name="behavior_speech_placeholders">Yaygın yer tutucular: {app}, {content}, {time}, {title}, {text}, {priority}, {category}</string>
     <string name="button_start_test">Testi Başlat</string>
     <string name="button_test">Test Et</string>
     <string name="button_add">Ekle</string>
