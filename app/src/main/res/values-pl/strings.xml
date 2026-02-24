@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SpeakThat!</string>
-    <string name="service_name">SpeakThat Notification Reader</string>
+    <string name="service_name">Czytnik powiadomień SpeakThat!</string>
     <!-- Permission Explanations for IzzyOnDroid/F-Droid -->
-    <string name="permission_request_install_packages">Used for auto-update system to install new versions from GitHub releases. Only used when user explicitly enables auto-updates and app was not installed from Google Play Store.</string>
+    <string name="permission_request_install_packages">Używane przez system automatycznych aktualizacji do instalowania nowych wersji z serwisu GitHub. Wykorzystywane tylko wtedy, gdy użytkownik wyraźnie włączy automatyczne aktualizacje, a aplikacja nie została zainstalowana ze sklepu Google Play.</string>
     <string name="permission_access_location">Required for Bluetooth and WiFi conditional filtering features. Used to detect nearby Bluetooth devices and WiFi networks for user-defined rules. No location tracking or data collection.</string>
     <string name="permission_bluetooth_scan">Required for Bluetooth conditional filtering. Allows the app to detect when specific Bluetooth devices are connected for notification rules. No data is collected or transmitted.</string>
-    <string name="permission_nearby_wifi_devices">Required for WiFi network conditional filtering on Android 13+. Allows the app to detect WiFi network changes for user-defined notification rules. No network data is collected.</string>
+    <string name="permission_nearby_wifi_devices">Wymagane do filtrowania warunkowego sieci Wi-Fi w systemie Android 13+. Pozwala aplikacji wykrywać zmiany sieci Wi-Fi na potrzeby reguł powiadomień zdefiniowanych przez użytkownika. Żadne dane sieciowe nie są gromadzone.</string>
     <string name="permission_read_external_storage">Used for importing/exporting app settings and configuration files. Allows users to backup and restore their settings. No personal data is accessed.</string>
     <string name="permission_needed">Notification Access Required</string>
     <string name="permission_description">SpeakThat! needs access to your notifications to read them aloud. This permission is required for the app to function.</string>
@@ -697,4 +697,44 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tidy_speech_description">Ulepsz mowę, usuwając niewerbalne znaki, takie jak emoji, z odczytywanych powiadomień</string>
     <string name="tidy_speech_remove_emojis_title">Usuń emoji</string>
     <string name="tidy_speech_remove_emojis_description">Usuń emoji i inne symbole z odczytywanych powiadomień</string>
+    <string name="quick_settings_tile_label">SpeakThat!</string>
+    <string name="quick_settings_tile_enabled">Włączone</string>
+    <string name="quick_settings_tile_disabled">Wyłączone</string>
+    <string name="quick_settings_tile_enabled_toast">SpeakThat! włączone przez szybkie ustawienia</string>
+    <string name="quick_settings_tile_disabled_toast">SpeakThat! wyłączone przez szybkie ustawienia</string>
+    <string name="quick_settings_tile_error_toast">Wystąpił błąd podczas uruchamiania SpeakThat</string>
+    <string name="master_switch_battery_tip_no_emoji">Wyłączaj, gdy nie jest potrzebne, aby oszczędzać baterię</string>
+    <string name="update_banner_title">Dostępna aktualizacja: %1$s</string>
+    <string name="update_banner_body">Nowa wersja gotowa (%1$s). Dotknij, aby otworzyć aktualizator.</string>
+    <string name="update_banner_action">Zaktualizuj teraz</string>
+    <string name="update_notification_title">Dostępna aktualizacja: %1$s</string>
+    <string name="update_notification_text">Dotknij, aby pobrać i zainstalować najnowszą wersję.</string>
+    <string name="update_notification_channel_name">Aktualizacje SpeakThat</string>
+    <string name="update_notification_channel_description">Powiadomienia o nowych wersjach SpeakThat w serwisie GitHub.</string>
+    <string name="tts_engine_label">Silnik TTS</string>
+    <string name="tts_engine_system_default">Domyślny dla systemu</string>
+    <string name="tts_engine_restart_required">Aby zastosować nowy silnik TTS, SpeakThat musi się ponownie uruchomić. Uruchomić teraz?</string>
+    <string name="tts_engine_restart_confirm">Uruchom ponownie</string>
+    <string name="tts_engine_failure_spoken">Przy okazji, SpeakThat nie mógł użyć wybranego przez Ciebie silnika syntezy mowy. Otwórz Ustawienia głosu, aby wybrać inny silnik.</string>
+    <string name="tts_engine_failure_title">Silnik TTS niedostępny</string>
+    <string name="tts_engine_failure_message">SpeakThat nie mógł użyć wybranego silnika TTS. Możliwe że został odinstalowany. Obecnie używany jest domyślny silnik systemowy.</string>
+    <string name="open_system_tts_settings">Otwórz ustawienia systemowe TTS</string>
+    <string name="tts_engine_info_title">Informacje o silniku TTS</string>
+    <string name="tts_onboarding_language_theme">Wybierz preferowany język, aby rozpocząć.</string>
+    <string name="tts_onboarding_rules">Skonfiguruj inteligentne reguły, które automatycznie kontrolują odczytywanie powiadomień w zależności od sytuacji. Na przykład: odczytuj powiadomienia tylko wtedy, gdy podłączone są słuchawki, lub pomijaj powiadomienia, gdy ekran jest włączony.</string>
+    <string name="rule_trigger_wired_headphones_connected">podłączone są słuchawki przewodowe</string>
+    <string name="rule_trigger_wired_headphones_disconnected">słuchawki przewodowe zostały odłączone</string>
+    <string name="rule_trigger_wifi_connected_android15">Połączono z %1$s (Android 15+: dowolna sieć WiFi)</string>
+    <string name="rule_trigger_wifi_disconnected_android15">Nie połączono z %1$s (Android 15+: dowolna sieć WiFi)</string>
+    <string name="wifi_compatibility_warning_title">Informacja o zgodności z WiFi</string>
+    <string name="wifi_compatibility_warning_message">Niektóre wersje systemu Android posiadają ograniczenia bezpieczeństwa, które uniemożliwiają aplikacjom wykrywanie nazw konkretnych sieci Wi-Fi. Choć SpeakThat potrafi obecnie wykryć Twoją sieć, funkcja ta może nie działać niezawodnie w każdych warunkach (zwłaszcza gdy aplikacja działa w tle).\n\nW przypadku niepowodzenia przy wykrywaniu nazwy sieci (SSID), reguła powróci do sprawdzania samego stanu połączenia Wi-Fi, jednak może to nie działać dokładnie tak, jak oczekiwano.\n\nPrawidłowa implementacja tego rozwiązania nie jest jednak niemożliwa. Jeśli więc jesteś lepszym programistą niż ja, zachęcam do wsparcia projektu w serwisie GitHub.</string>
+    <string name="wifi_compatibility_warning_create_anyway">Utwórz regułę mimo to</string>
+    <string name="wifi_compatibility_warning_add_anyway">Dodaj regułę mimo to</string>
+    <string name="wifi_compatibility_warning_nevermind">Nieważne</string>
+    <string name="wifi_compatibility_warning_open_github">Przejdź do GitHub</string>
+    <string name="rule_exception_wired_headphones_connected">przewodowe słuchawki są podłączone</string>
+    <string name="rule_exception_wired_headphones_disconnected">przewodowe słuchawki są odłączone</string>
+    <string name="dialog_title_honour_phone_calls">Uwzględniaj połączenia telefoniczne</string>
+    <string name="dialog_title_notification_deduplication">Usuwanie duplikatów powiadomień</string>
+    <string name="dialog_title_content_cap">Limit treści</string>
 </resources>
