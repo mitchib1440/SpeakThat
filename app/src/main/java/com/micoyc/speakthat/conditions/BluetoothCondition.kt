@@ -1,13 +1,13 @@
 package com.micoyc.speakthat.conditions
 
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.Context
+import android.media.AudioManager
 import android.util.Log
 import com.micoyc.speakthat.BaseCondition
 import com.micoyc.speakthat.ConditionChecker
 import com.micoyc.speakthat.InAppLogger
+import com.micoyc.speakthat.utils.BluetoothConnectionHelper
 
 /**
  * Bluetooth device condition
@@ -96,7 +96,7 @@ class BluetoothConditionChecker(
         InAppLogger.logDebug(TAG, "Checking if allowed devices are connected: $allowedDevices")
         
         // Method 1: Try to get actively connected devices via BluetoothManager
-        val connectedDevices = getActivelyConnectedDevices()
+        val connectedDevices = BluetoothConnectionHelper.getActivelyConnectedDevices(context, TAG)
         val connectedAddresses = connectedDevices.map { it.address }.toSet()
         
         // Check if any allowed device is actively connected
@@ -119,65 +119,17 @@ class BluetoothConditionChecker(
     }
     
     /**
-     * Get actively connected Bluetooth devices using multiple detection methods
-     */
-    private fun getActivelyConnectedDevices(): Set<BluetoothDevice> {
-        InAppLogger.logDebug(TAG, "Getting actively connected devices")
-        
-        val allConnectedDevices = mutableSetOf<BluetoothDevice>()
-        
-        try {
-            val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-            
-            // Try multiple Bluetooth profiles to catch different types of devices
-            val profiles = listOf(
-                android.bluetooth.BluetoothProfile.A2DP,      // Audio devices (music, podcasts)
-                android.bluetooth.BluetoothProfile.HEADSET    // Headset devices (calls)
-            )
-            
-            var profilesSupported = false
-            for (profile in profiles) {
-                try {
-                    val devices = bluetoothManager.getConnectedDevices(profile)
-                    allConnectedDevices.addAll(devices)
-                    profilesSupported = true
-                    InAppLogger.logDebug(TAG, "Profile $profile: ${devices.map { it.address }}")
-                    if (devices.isNotEmpty()) {
-                        InAppLogger.logDebug(TAG, "Profile $profile devices: ${devices.map { "${it.name} (${it.address})" }}")
-                    }
-                } catch (e: Throwable) {
-                    InAppLogger.logDebug(TAG, "Profile $profile not supported: ${e.message}")
-                }
-            }
-            
-            if (!profilesSupported) {
-                InAppLogger.logDebug(TAG, "WARNING: No Bluetooth profiles are supported on this device")
-                InAppLogger.logDebug(TAG, "This is a device limitation - will use fallback detection methods")
-            }
-            
-        } catch (e: Throwable) {
-            InAppLogger.logError(TAG, "Error getting connected devices via BluetoothManager: ${e.message}")
-        }
-        
-        InAppLogger.logDebug(TAG, "Total actively connected devices found: ${allConnectedDevices.size}")
-        return allConnectedDevices
-    }
-    
-    /**
      * Check if specific bonded devices are connected via audio routing
      */
     private fun checkSpecificBondedDeviceConnected(requiredDevices: Set<String>): Boolean {
         InAppLogger.logDebug(TAG, "Checking if specific bonded devices are connected via audio routing")
         
         try {
-            val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as? android.bluetooth.BluetoothManager
-            val bluetoothAdapter = bluetoothManager?.adapter
-            val bondedDevices = bluetoothAdapter?.bondedDevices ?: emptySet()
-            
-            // Check if any required device is in the bonded list
-            val matchingBondedDevices = bondedDevices.filter { device ->
-                requiredDevices.contains(device.address)
-            }
+            val matchingBondedDevices = BluetoothConnectionHelper.getMatchingBondedDevices(
+                context,
+                requiredDevices,
+                TAG
+            )
             
             if (matchingBondedDevices.isEmpty()) {
                 InAppLogger.logDebug(TAG, "No required devices found in bonded devices list")
@@ -187,14 +139,8 @@ class BluetoothConditionChecker(
             InAppLogger.logDebug(TAG, "Found ${matchingBondedDevices.size} matching bonded devices: ${matchingBondedDevices.map { "${it.name} (${it.address})" }}")
             
             // Check if audio is being routed to Bluetooth
-            val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as android.media.AudioManager
-            val hasBluetoothOutput = audioManager.getDevices(android.media.AudioManager.GET_DEVICES_OUTPUTS)
-                .any { device ->
-                    device.type == android.media.AudioDeviceInfo.TYPE_BLUETOOTH_A2DP ||
-                        device.type == android.media.AudioDeviceInfo.TYPE_BLUETOOTH_SCO ||
-                        device.type == android.media.AudioDeviceInfo.TYPE_BLE_HEADSET ||
-                        device.type == android.media.AudioDeviceInfo.TYPE_HEARING_AID
-                }
+            val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            val hasBluetoothOutput = BluetoothConnectionHelper.hasBluetoothOutputRoute(audioManager, TAG)
             val audioMode = audioManager.mode
             
             InAppLogger.logDebug(TAG, "Audio routing check - Bluetooth output: $hasBluetoothOutput, Mode: $audioMode")
