@@ -534,7 +534,7 @@
     <string name="behavior_speech_preset">Formatage préréglés :</string>
     <string name="behavior_speech_custom">Formatage personnalisé :</string>
     <string name="behavior_speech_preview">Aperçu : Messages vous a notifié : Michel : J\'ai entendu que tu utilises SpeakThat !</string>
-    <string name="behavior_speech_placeholders">Marqueurs usuels : {app}, {content}, {time}, {title}, {text}, {priority}, {category}, {ticker}</string>
+    <string name="behavior_speech_placeholders">Marqueurs usuels : {app}, {content}, {time}, {title}, {text}, {bigtext}</string>
     <string name="button_start_test">Commencer l\'essai</string>
     <string name="button_test">Essai</string>
     <string name="button_add">Ajouter</string>
@@ -1890,4 +1890,9 @@ Bloque=ignore totalement, Privée=annonce de façon privée
     <string name="onboarding_all_set_card_title">Enfin fini !</string>
     <string name="onboarding_all_set_card_description">SpeakThat est prêt à lire vos notifications pour que vous puissiez vous concentrer sur l\'important !\n\nVous pouvez encore plus personnaliser SpeakThat quand vous serez prêts. Ouvrez la page de réglages et explorez les diverses options, ou appuyez sur «Relancer l\'accueil» pour revoir cette configuration de nouveau.\n\nSoyez prudents, amusez vous bien, et laissez votre téléphone parler !</string>
     <string name="tts_onboarding_all_set">Tout est configuré ! Enfin fini ! SpeakThat est prêt à lire vos notifications pour que vous puissiez vous concentrer sur l\'important. Vous pouvez encore plus personnaliser SpeakThat quand vous serez prêts. Ouvrez la page des réglages et explorez les diverses options, ou appuyez sur «Relancer l\'accueil» pour revoir cette configuration. Soyez prudents, amusez vous bien, et laissez votre téléphone parler !</string>
+    <string name="settings_compatibility_title">Réglages de compatibilité</string>
+    <string name="settings_compatibility_description">Corrige les problèmes les plus communs liés aux appareils</string>
+    <string name="compatibility_section_audio_routing">Routage audio de Android</string>
+    <string name="compatibility_section_ducking">Compatibilité de la sourdine audio</string>
+    <string name="compatibility_section_duplication">Contournements de duplication</string>
 </resources>
