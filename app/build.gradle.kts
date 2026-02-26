@@ -118,6 +118,7 @@ dependencies {
     
     // For background work (optional, for future enhancements)
     implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("com.github.woheller69:FreeDroidWarn:V1.+")
 
     // Play-only: Google Play Billing for donation flow (quantity support requires 6.2+)
     add("playImplementation", "com.android.billingclient:billing-ktx:8.1.0")

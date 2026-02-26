@@ -48,6 +48,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import android.graphics.drawable.AnimatedVectorDrawable
 import com.micoyc.speakthat.rules.migration.RuleMigrationManager
+import org.woheller69.freeDroidWarn.FreeDroidWarn
 
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEventListener {
     
@@ -189,6 +190,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             finish() // Close MainActivity
             return
         }
+
+        FreeDroidWarn.showWarningOnUpgrade(this, BuildConfig.VERSION_CODE)
         
         // Initialize crash-persistent logging first
         InAppLogger.initialize(this)
