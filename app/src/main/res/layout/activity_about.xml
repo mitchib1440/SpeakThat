@@ -252,6 +252,18 @@
                         android:textColor="@color/purple_card_text_secondary"
                         android:lineSpacingExtra="4dp" />
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonOssLicenses"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/open_source_licenses"
+                        android:textColor="@color/purple_card_text_primary"
+                        app:icon="@drawable/ic_info_24"
+                        app:iconGravity="textStart"
+                        app:iconTint="@color/purple_card_text_primary" />
+
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>

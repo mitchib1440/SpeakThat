@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.android.gms.oss-licenses-plugin")
 }
 
 android {
@@ -108,6 +109,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.gson)
     implementation("androidx.lifecycle:lifecycle-process:2.8.4")
+    implementation("com.google.android.gms:play-services-oss-licenses:17.1.0")
     
     // Coil for image loading - only used in GitHub variant for online icons
     implementation("io.coil-kt:coil:2.4.0")
