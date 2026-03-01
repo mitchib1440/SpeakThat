@@ -179,6 +179,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="about_features_title">Key Features</string>
     <string name="about_developer_title">Developer</string>
     <string name="about_license_title">License</string>
+    <string name="open_source_licenses">Open Source Licenses</string>
     <string name="version_format">Version %s</string>
     <string name="version_format_with_variant" formatted="false">Version %1$s (%2$s)</string>
 

@@ -164,7 +164,9 @@ object RuleTemplates {
             iconDrawable = R.drawable.ic_bluetooth_24,
             requiresDeviceSelection = true,
             deviceType = "bluetooth",
-            triggerLogic = LogicGate.OR,
+            // Skip only when BOTH selected Bluetooth devices and wired headphones are disconnected.
+            // OR here causes false positives (e.g., Bluetooth connected but wired disconnected).
+            triggerLogic = LogicGate.AND,
             triggers = listOf(
                 TriggerTemplate(
                     type = TriggerType.BLUETOOTH_DEVICE,

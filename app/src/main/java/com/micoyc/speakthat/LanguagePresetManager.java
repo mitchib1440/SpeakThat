@@ -82,15 +82,6 @@ public class LanguagePresetManager {
         ));
         
         presets.add(new LanguagePreset(
-            "en_CA", 
-            "English (Canada)", 
-            "en_CA", 
-            "en_CA", 
-            null,
-            false
-        ));
-        
-        presets.add(new LanguagePreset(
             "en_AU", 
             "English (Australia)", 
             "en_AU", 

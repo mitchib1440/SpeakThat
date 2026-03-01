@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.android.gms.oss-licenses-plugin")
 }
 
 android {
@@ -108,6 +109,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.gson)
     implementation("androidx.lifecycle:lifecycle-process:2.8.4")
+    implementation("com.google.android.gms:play-services-oss-licenses:17.1.0")
     
     // Coil for image loading - only used in GitHub variant for online icons
     implementation("io.coil-kt:coil:2.4.0")
@@ -118,6 +120,7 @@ dependencies {
     
     // For background work (optional, for future enhancements)
     implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("com.github.woheller69:FreeDroidWarn:V1.+")
 
     // Play-only: Google Play Billing for donation flow (quantity support requires 6.2+)
     add("playImplementation", "com.android.billingclient:billing-ktx:8.1.0")

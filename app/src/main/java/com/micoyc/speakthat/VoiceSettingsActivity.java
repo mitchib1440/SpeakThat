@@ -364,6 +364,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         availableLanguages.add(Locale.US);
         availableLanguages.add(Locale.UK);
         availableLanguages.add(Locale.CANADA);
+        availableLanguages.add(safeLocale("en", "AU"));
         availableLanguages.add(Locale.FRANCE);
         availableLanguages.add(Locale.GERMANY);
         availableLanguages.add(Locale.ITALY);
@@ -760,12 +761,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private void updateUIFromPreset(LanguagePresetManager.LanguagePreset preset) {
         InAppLogger.log("VoiceSettings", "Updating UI from preset: " + preset.displayName);
         
-        // Update current language for internal consistency
-        for (int i = 0; i < availableLanguages.size(); i++) {
-            if (availableLanguages.get(i).toString().equals(preset.uiLocale)) {
-                currentLanguage = availableLanguages.get(i);
-                break;
-            }
+        // Keep runtime locale aligned with preset even if it's not in availableLanguages.
+        Locale presetLocale = parseLocaleFromCode(preset.uiLocale);
+        if (presetLocale != null) {
+            currentLanguage = presetLocale;
         }
         
         // Update TTS language spinner (now in advanced options)
@@ -1037,13 +1036,13 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             InAppLogger.log("VoiceSettings", "No saved voice, using default");
         }
 
-        // Load language for internal use (currentLanguage variable)
+        // Load language for runtime use, even if not present in availableLanguages.
         String savedLanguage = sharedPreferences.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE);
-        for (int i = 0; i < availableLanguages.size(); i++) {
-            if (availableLanguages.get(i).toString().equals(savedLanguage)) {
-                currentLanguage = availableLanguages.get(i);
-                break;
-            }
+        Locale savedLocale = parseLocaleFromCode(savedLanguage);
+        if (savedLocale != null) {
+            currentLanguage = savedLocale;
+        } else {
+            currentLanguage = safeLocale("en-US");
         }
 
         // Load TTS language (only if adapter is set up)
@@ -1145,6 +1144,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             return;
         }
 
+        // Ensure preview uses the current visual UI state even if listeners lag.
+        syncCurrentUiRuntimeValues();
+
         // Apply current UI settings
         applyCurrentUISettings();
 
@@ -1195,6 +1197,22 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         InAppLogger.log("VoiceSettings", "Voice preview played - Rate: " + currentSpeechRate + ", Pitch: " + currentPitch + 
                        ", User's TTS Language: " + (effectiveLanguage != null ? effectiveLanguage.toString() : "default") + 
                        ", Preview Text: '" + previewText + "'");
+    }
+
+    /**
+     * Sync mutable runtime values from UI controls before preview/apply operations.
+     * This prevents stale values if a listener has not completed yet.
+     */
+    private void syncCurrentUiRuntimeValues() {
+        if (speechRateSeekBar != null) {
+            currentSpeechRate = 0.1f + (speechRateSeekBar.getProgress() / 100.0f);
+        }
+        if (pitchSeekBar != null) {
+            currentPitch = 0.1f + (pitchSeekBar.getProgress() / 100.0f);
+        }
+        if (ttsVolumeSeekBar != null) {
+            currentTtsVolume = ttsVolumeSeekBar.getProgress() / 100.0f;
+        }
     }
     
     /**
@@ -1391,15 +1409,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             
             // Apply the new preset language directly to TTS instance
             if (!preset.isCustom) {
-                // Parse the preset's UI locale
-                String[] langParts = preset.uiLocale.split("_");
-                Locale presetLocale;
-                if (langParts.length >= 2) {
-                    presetLocale = safeLocale(langParts[0], langParts[1]);
-                } else if (langParts.length == 1) {
-                    presetLocale = safeLocale(langParts[0]);
-                } else {
-                    presetLocale = safeLocale("en-US"); // Safe fallback
+                Locale presetLocale = parseLocaleFromCode(preset.uiLocale);
+                if (presetLocale == null) {
+                    presetLocale = safeLocale("en-US");
                 }
                 
                 // Apply the preset language directly
@@ -1409,6 +1421,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 
                 // Update internal state to match
                 currentLanguage = presetLocale;
+                tryApplyLocaleMatchedVoice(textToSpeech, presetLocale, "Preset reset");
             } else {
                 // For custom preset, use current settings
                 updateUIWithCurrentSettings();
@@ -1447,15 +1460,18 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         // This implements the override logic - specific voice takes complete precedence
         if (!specificVoiceSelected) {
             // No specific voice or voice selection failed - fall back to language setting
-            // Use the current language from the selected preset
-            if (currentLanguage != null) {
-                int langResult = textToSpeech.setLanguage(currentLanguage);
-                InAppLogger.log("VoiceSettings", "Preview: Language set to: " + currentLanguage.toString() + " (result: " + langResult + ")");
+            // Resolve language from saved/apply state to avoid stale in-memory locale.
+            Locale resolvedLanguage = resolveCurrentLanguageFromPreferences();
+            if (resolvedLanguage != null) {
+                int langResult = textToSpeech.setLanguage(resolvedLanguage);
+                InAppLogger.log("VoiceSettings", "Preview: Language set to: " + resolvedLanguage.toString() + " (result: " + langResult + ")");
+                tryApplyLocaleMatchedVoice(textToSpeech, resolvedLanguage, "Preview");
             } else {
                 // Fallback to default if currentLanguage is somehow null
                 Locale defaultLocale = safeLocale("en-US");
                 int langResult = textToSpeech.setLanguage(defaultLocale);
                 InAppLogger.log("VoiceSettings", "Preview: Using default language: " + defaultLocale.toString() + " (result: " + langResult + ")");
+                tryApplyLocaleMatchedVoice(textToSpeech, defaultLocale, "Preview fallback");
             }
         } else {
             // Specific voice was successfully applied - skip language setting entirely
@@ -1476,6 +1492,80 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
         // Apply audio attributes
         applyAudioAttributes();
+    }
+
+    private Locale resolveCurrentLanguageFromPreferences() {
+        String savedLanguage = sharedPreferences.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE);
+        Locale localeFromPrefs = parseLocaleFromCode(savedLanguage);
+        if (localeFromPrefs != null) {
+            currentLanguage = localeFromPrefs;
+            return localeFromPrefs;
+        }
+        if (currentLanguage != null) {
+            return currentLanguage;
+        }
+        currentLanguage = safeLocale("en-US");
+        return currentLanguage;
+    }
+
+    private static boolean localeMatches(Locale target, Locale candidate) {
+        if (target == null || candidate == null) {
+            return false;
+        }
+        return target.getLanguage().equalsIgnoreCase(candidate.getLanguage())
+            && target.getCountry().equalsIgnoreCase(candidate.getCountry());
+    }
+
+    private static void tryApplyLocaleMatchedVoice(TextToSpeech tts, Locale targetLocale, String reason) {
+        if (tts == null || targetLocale == null) {
+            return;
+        }
+        Set<Voice> voices = tts.getVoices();
+        if (voices == null || voices.isEmpty()) {
+            return;
+        }
+
+        Voice exactLocal = null;
+        Voice exactAny = null;
+        Voice languageLocal = null;
+        Voice languageAny = null;
+
+        for (Voice voice : voices) {
+            Locale voiceLocale = voice.getLocale();
+            if (voiceLocale == null || voiceLocale.getLanguage() == null) {
+                continue;
+            }
+            boolean isExact = localeMatches(targetLocale, voiceLocale);
+            boolean isLanguageOnly = targetLocale.getLanguage().equalsIgnoreCase(voiceLocale.getLanguage());
+
+            if (isExact) {
+                if (!voice.isNetworkConnectionRequired()) {
+                    exactLocal = voice;
+                    break;
+                } else if (exactAny == null) {
+                    exactAny = voice;
+                }
+            } else if (isLanguageOnly) {
+                if (!voice.isNetworkConnectionRequired() && languageLocal == null) {
+                    languageLocal = voice;
+                } else if (languageAny == null) {
+                    languageAny = voice;
+                }
+            }
+        }
+
+        Voice bestVoice = exactLocal != null ? exactLocal
+            : exactAny != null ? exactAny
+            : languageLocal != null ? languageLocal
+            : languageAny;
+
+        if (bestVoice != null) {
+            int voiceResult = tts.setVoice(bestVoice);
+            InAppLogger.log("VoiceSettings", reason + ": Locale-matched voice set to " + bestVoice.getName()
+                + " for " + targetLocale.toString() + " (result: " + voiceResult + ")");
+        } else {
+            InAppLogger.log("VoiceSettings", reason + ": No locale-matched voice found for " + targetLocale.toString());
+        }
     }
 
     private void applyAudioAttributes() {
@@ -1713,6 +1803,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             int langResult = tts.setLanguage(targetLocale);
             languageApplied = (langResult == TextToSpeech.LANG_AVAILABLE || langResult == TextToSpeech.LANG_COUNTRY_AVAILABLE || langResult == TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE);
             InAppLogger.log("VoiceSettings", "Language set to: " + targetLocale.toString() + " (result: " + langResult + ", success: " + languageApplied + ")");
+            if (languageApplied) {
+                tryApplyLocaleMatchedVoice(tts, targetLocale, "Service/applyVoiceSettings");
+            }
         } else {
             InAppLogger.log("VoiceSettings", "Skipping language setting - specific voice will override it");
         }

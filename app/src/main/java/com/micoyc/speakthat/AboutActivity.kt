@@ -1,5 +1,6 @@
 package com.micoyc.speakthat
 
+import android.content.Intent
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
@@ -8,6 +9,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.micoyc.speakthat.databinding.ActivityAboutBinding
 import java.util.Locale
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 
 class AboutActivity : AppCompatActivity() {
     
@@ -87,6 +89,9 @@ class AboutActivity : AppCompatActivity() {
         // Add update check button
         binding.buttonCheckUpdates.setOnClickListener {
             UpdateFeature.startUpdateActivity(this, forceCheck = true)
+        }
+        binding.buttonOssLicenses.setOnClickListener {
+            startActivity(Intent(this@AboutActivity, OssLicensesMenuActivity::class.java))
         }
     }
     
