@@ -684,20 +684,17 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     }
 
     private boolean hasWifiPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            return checkSelfPermission(android.Manifest.permission.NEARBY_WIFI_DEVICES) == PackageManager.PERMISSION_GRANTED &&
-                checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        }
-        return checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        return com.micoyc.speakthat.utils.BackgroundLocationHelper.INSTANCE.hasAllWifiPermissions(this);
     }
 
     private List<String> getWifiPermissions() {
         List<String> permissions = new ArrayList<>();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permissions.add(android.Manifest.permission.NEARBY_WIFI_DEVICES);
-            permissions.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
-        } else {
-            permissions.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        permissions.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            permissions.add(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION);
         }
         return permissions;
     }

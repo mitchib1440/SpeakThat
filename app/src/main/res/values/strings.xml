@@ -388,6 +388,21 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="wifi_compatibility_warning_add_anyway">Add Rule Anyway</string>
     <string name="wifi_compatibility_warning_nevermind">Nevermind</string>
     <string name="wifi_compatibility_warning_open_github">Open GitHub</string>
+
+    <!-- Background Location Disclosure (Google Play compliance) -->
+    <string name="background_location_disclosure_title">Background Location Access</string>
+    <string name="background_location_disclosure_message">SpeakThat needs to detect which WiFi network your device is connected to, even when the app is running in the background.\n\nThis is how Android allows apps to read WiFi network names. SpeakThat uses this information only to apply your conditional rules — it never collects or transmits your location.\n\nOn the next screen, please select \"Allow all the time\" for location access.</string>
+    <string name="background_location_disclosure_accept">Continue</string>
+    <string name="background_location_denied_message">Background location access was not granted. WiFi network name detection requires this permission to work when SpeakThat is running in the background.\n\nThe WiFi condition was not added.</string>
+    <string name="background_location_denied_title">Permission Not Granted</string>
+
+    <string name="rule_trigger_wifi_connected_ssid">connected to %1$s</string>
+    <string name="rule_trigger_wifi_disconnected_ssid">not connected to %1$s</string>
+    <string name="rule_trigger_wifi_connected_no_bg_location">connected to WiFi (specific network detection unavailable)</string>
+    <string name="rule_trigger_wifi_disconnected_no_bg_location">not connected to WiFi (specific network detection unavailable)</string>
+    <string name="rule_exception_wifi_connected_no_bg_location">connected to WiFi (specific network detection unavailable)</string>
+    <string name="rule_exception_wifi_disconnected_no_bg_location">not connected to WiFi (specific network detection unavailable)</string>
+
     <string name="rule_trigger_multiple">multiple conditions are met</string>
 
     <string name="rule_action_skip_notification">skip reading notifications</string>
@@ -2129,6 +2144,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="rule_action_custom_speech_format">Apply custom speech format</string>
     <string name="rule_action_force_private">Force private mode</string>
     <string name="rule_action_override_private">Override private mode</string>
+    <string name="rule_action_use_voice_call">Use voice call audio routing</string>
 
     <!-- Rule validation: battery/charging -->
     <string name="rule_error_invalid_battery_mode">Battery mode must be above or below</string>

@@ -26,24 +26,19 @@ object WifiCapabilityChecker {
      */
     fun canResolveWifiSSID(context: Context): Boolean {
         try {
-            val hasFineLocation = ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-            if (!hasFineLocation) {
+            if (!BackgroundLocationHelper.hasForegroundLocationPermission(context)) {
                 InAppLogger.logDebug(TAG, "SSID resolution blocked: missing ACCESS_FINE_LOCATION")
                 return false
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                val hasNearbyWifi = ContextCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.NEARBY_WIFI_DEVICES
-                ) == PackageManager.PERMISSION_GRANTED
-                if (!hasNearbyWifi) {
-                    InAppLogger.logDebug(TAG, "SSID resolution blocked: missing NEARBY_WIFI_DEVICES")
-                    return false
-                }
+            if (!BackgroundLocationHelper.hasNearbyWifiPermission(context)) {
+                InAppLogger.logDebug(TAG, "SSID resolution blocked: missing NEARBY_WIFI_DEVICES")
+                return false
+            }
+
+            if (!BackgroundLocationHelper.hasBackgroundLocationPermission(context)) {
+                InAppLogger.logDebug(TAG, "SSID resolution blocked: missing ACCESS_BACKGROUND_LOCATION (needed for background service)")
+                return false
             }
 
             val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -65,7 +60,6 @@ object WifiCapabilityChecker {
 
             InAppLogger.logDebug(TAG, "SSID resolution prerequisites OK. WiFi connected=$isWifiConnected")
 
-            // Permissions and system settings allow SSID resolution; actual SSID may still be transiently unavailable.
             return true
         } catch (e: Throwable) {
             InAppLogger.logDebug(TAG, "Error checking SSID resolution capability: ${e.message}")

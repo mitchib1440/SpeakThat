@@ -26,6 +26,7 @@ import com.micoyc.speakthat.rules.RuleManager
 import com.micoyc.speakthat.rules.RuleTemplate
 import com.micoyc.speakthat.rules.RuleTemplates
 import com.micoyc.speakthat.rules.TriggerType
+import com.micoyc.speakthat.utils.BackgroundLocationHelper
 import com.micoyc.speakthat.utils.WifiCapabilityChecker
 
 class TemplateSelectionActivity : AppCompatActivity() {
@@ -35,6 +36,7 @@ class TemplateSelectionActivity : AppCompatActivity() {
     private lateinit var ruleManager: RuleManager
     private lateinit var adapter: TemplateAdapter
     private var pendingWifiTemplate: RuleTemplate? = null
+    private var awaitingBackgroundLocation = false
     
     companion object {
         private const val PREFS_NAME = "SpeakThatPrefs"
@@ -459,24 +461,29 @@ class TemplateSelectionActivity : AppCompatActivity() {
     }
     
     private fun hasWifiPermissions(): Boolean {
-        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            checkSelfPermission(android.Manifest.permission.NEARBY_WIFI_DEVICES) == android.content.pm.PackageManager.PERMISSION_GRANTED &&
-            checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
-        } else {
-            checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
-        }
+        return BackgroundLocationHelper.hasAllWifiPermissions(this)
     }
 
     private fun requestWifiPermissions() {
-        val permissions = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            arrayOf(
-                android.Manifest.permission.NEARBY_WIFI_DEVICES,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        } else {
-            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if (!BackgroundLocationHelper.hasForegroundLocationPermission(this) ||
+            !BackgroundLocationHelper.hasNearbyWifiPermission(this)) {
+            requestPermissions(BackgroundLocationHelper.getForegroundWifiPermissions(), REQUEST_WIFI_PERMISSIONS)
+            return
         }
-        requestPermissions(permissions, REQUEST_WIFI_PERMISSIONS)
+        requestBackgroundLocationForWifi()
+    }
+
+    private fun requestBackgroundLocationForWifi() {
+        BackgroundLocationHelper.showBackgroundLocationDisclosure(this,
+            onAccepted = {
+                awaitingBackgroundLocation = true
+                BackgroundLocationHelper.openAppLocationSettings(this)
+            },
+            onDeclined = {
+                pendingWifiTemplate = null
+                InAppLogger.logFilter("Background location disclosure declined in TemplateSelection.")
+            }
+        )
     }
 
     private fun checkBluetoothPermissions(): Boolean {
@@ -499,6 +506,24 @@ class TemplateSelectionActivity : AppCompatActivity() {
             .show()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (awaitingBackgroundLocation) {
+            awaitingBackgroundLocation = false
+            if (BackgroundLocationHelper.hasBackgroundLocationPermission(this)) {
+                pendingWifiTemplate?.let { handleWifiNetworkSelection(it) }
+                pendingWifiTemplate = null
+            } else {
+                AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.background_location_denied_title))
+                    .setMessage(getString(R.string.background_location_denied_message))
+                    .setPositiveButton(getString(R.string.ok), null)
+                    .show()
+                pendingWifiTemplate = null
+            }
+        }
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -509,11 +534,16 @@ class TemplateSelectionActivity : AppCompatActivity() {
         if (requestCode == REQUEST_WIFI_PERMISSIONS) {
             val allGranted = grantResults.isNotEmpty() && grantResults.all { it == android.content.pm.PackageManager.PERMISSION_GRANTED }
             if (allGranted) {
-                pendingWifiTemplate?.let { handleWifiNetworkSelection(it) }
+                if (BackgroundLocationHelper.hasBackgroundLocationPermission(this)) {
+                    pendingWifiTemplate?.let { handleWifiNetworkSelection(it) }
+                    pendingWifiTemplate = null
+                } else {
+                    requestBackgroundLocationForWifi()
+                }
             } else {
                 showErrorDialog("WiFi permissions are required to select networks.")
+                pendingWifiTemplate = null
             }
-            pendingWifiTemplate = null
         }
     }
     

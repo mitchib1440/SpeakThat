@@ -8,6 +8,7 @@ import android.net.NetworkCapabilities
 import android.net.wifi.WifiInfo
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
+import android.location.LocationManager
 import com.micoyc.speakthat.utils.BluetoothConnectionHelper
 
 /**
@@ -1174,15 +1175,33 @@ class RuleEvaluator(private val context: Context) {
                 )
             }
 
+            // Check permissions for SSID resolution
+            val hasLocationPermission = com.micoyc.speakthat.utils.BackgroundLocationHelper.hasForegroundLocationPermission(context)
+            val hasBackgroundLocationPermission = com.micoyc.speakthat.utils.BackgroundLocationHelper.hasBackgroundLocationPermission(context)
+            val hasNearbyWifiPermission = com.micoyc.speakthat.utils.BackgroundLocationHelper.hasNearbyWifiPermission(context)
+            
+            // Check location services status
+            val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as android.location.LocationManager
+            val isLocationEnabled = locationManager.isLocationEnabled
+            
+            InAppLogger.logDebug(TAG, "WiFi SSID permissions - Location: $hasLocationPermission, Background: $hasBackgroundLocationPermission, NearbyWifi: $hasNearbyWifiPermission, LocationEnabled: $isLocationEnabled")
+
             val wifiInfoFromTransport = networkCapabilities?.transportInfo as? WifiInfo
-            val rawSSID = wifiInfoFromTransport?.ssid ?: run {
-                @Suppress("DEPRECATION")
-                wifiManager.connectionInfo?.ssid
+            val transportSSID = wifiInfoFromTransport?.ssid
+            @Suppress("DEPRECATION")
+            val deprecatedSSID = wifiManager.connectionInfo?.ssid
+            
+            InAppLogger.logDebug(TAG, "WiFi SSID retrieval - Transport method: '$transportSSID', Deprecated method: '$deprecatedSSID'")
+            
+            fun isUsableSSID(ssid: String?): Boolean {
+                if (ssid == null) return false
+                val cleaned = ssid.removeSurrounding("\"")
+                return cleaned.isNotBlank() && !cleaned.equals("<unknown ssid>", ignoreCase = true) && cleaned != "0x"
             }
+            
+            val rawSSID = if (isUsableSSID(transportSSID)) transportSSID else deprecatedSSID
             val currentSSID = rawSSID?.removeSurrounding("\"") ?: ""
-            val isSsidKnown = currentSSID.isNotBlank() &&
-                !currentSSID.equals("<unknown ssid>", ignoreCase = true) &&
-                currentSSID != "0x"
+            val isSsidKnown = isUsableSSID(rawSSID)
 
             InAppLogger.logDebug(
                 TAG,
@@ -1202,6 +1221,9 @@ class RuleEvaluator(private val context: Context) {
             val connectionState = trigger.data["connection_state"] as? String ?: "connected"
             val shouldBeConnected = connectionState == "connected"
             
+            // When specific networks are required but SSID is unavailable, we cannot make a determination
+            val canEvaluate = requiredNetworks.isEmpty() || isSsidKnown
+            
             val baseSuccess = if (requiredNetworks.isEmpty()) {
                 // Check if connected to any network
                 InAppLogger.logDebug(TAG, "No specific network required, WiFi connected: $isWifiConnected (SSID: $currentSSID)")
@@ -1214,8 +1236,19 @@ class RuleEvaluator(private val context: Context) {
                     isConnectedToRequired
                 } else {
                     InAppLogger.logDebug(TAG, "SSID unavailable; cannot verify required networks. WiFi connected: $isWifiConnected")
+                    // When SSID is unavailable, we cannot determine connection to specific networks
                     false
                 }
+            }
+            
+            // If we cannot evaluate the condition (SSID unavailable for specific networks), 
+            // the trigger should not be met regardless of the connection state
+            if (!canEvaluate) {
+                InAppLogger.logDebug(TAG, "Cannot evaluate WiFi network condition - SSID unavailable for specific network check")
+                return EvaluationResult(
+                    success = false,
+                    message = "Cannot determine WiFi network - SSID unavailable"
+                )
             }
             
             // Apply connection state logic

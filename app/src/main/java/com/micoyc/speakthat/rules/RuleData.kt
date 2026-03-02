@@ -689,7 +689,6 @@ data class Rule(
                 )
             }
             TriggerType.WIFI_NETWORK -> {
-                // Handle both Set<String> and List<String> since JSON serialization converts Sets to Lists
                 val networkSSIDsData = trigger.data["network_ssids"]
                 val networkSSIDs = when (networkSSIDsData) {
                     is Set<*> -> networkSSIDsData.filterIsInstance<String>().toSet()
@@ -697,16 +696,23 @@ data class Rule(
                     else -> emptySet<String>()
                 }
                 
-                // Android 15+ limitation: We can't detect specific network names
                 if (networkSSIDs.isNotEmpty()) {
-                    // Show warning about Android 15+ limitation
-                    if (trigger.inverted) {
-                        context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_disconnected_android15, "any WiFi network")
+                    val hasBgLocation = com.micoyc.speakthat.utils.BackgroundLocationHelper.hasBackgroundLocationPermission(context)
+                    if (hasBgLocation) {
+                        val networkName = networkSSIDs.joinToString(", ")
+                        if (trigger.inverted) {
+                            context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_disconnected_ssid, networkName)
+                        } else {
+                            context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_connected_ssid, networkName)
+                        }
                     } else {
-                        context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_connected_android15, "any WiFi network")
+                        if (trigger.inverted) {
+                            context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_disconnected_no_bg_location)
+                        } else {
+                            context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_connected_no_bg_location)
+                        }
                     }
                 } else {
-                    // No specific networks selected - use generic WiFi state
                     if (trigger.inverted) {
                         context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_disconnected, "any WiFi network")
                     } else {
@@ -934,18 +940,35 @@ data class Rule(
                 )
             }
             ExceptionType.WIFI_NETWORK -> {
-                // Handle both Set<String> and List<String> since JSON serialization converts Sets to Lists
                 val networkSSIDsData = exception.data["network_ssids"]
                 val networkSSIDs = when (networkSSIDsData) {
                     is Set<*> -> networkSSIDsData.filterIsInstance<String>().toSet()
                     is List<*> -> networkSSIDsData.filterIsInstance<String>().toSet()
                     else -> emptySet<String>()
                 }
-                val networkName = if (networkSSIDs.isEmpty()) "any WiFi network" else networkSSIDs.first()
-                if (exception.inverted) {
-                    context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_disconnected, networkName)
+                if (networkSSIDs.isNotEmpty()) {
+                    val hasBgLocation = com.micoyc.speakthat.utils.BackgroundLocationHelper.hasBackgroundLocationPermission(context)
+                    if (hasBgLocation) {
+                        val networkName = networkSSIDs.joinToString(", ")
+                        if (exception.inverted) {
+                            context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_disconnected, networkName)
+                        } else {
+                            context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_connected, networkName)
+                        }
+                    } else {
+                        if (exception.inverted) {
+                            context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_disconnected_no_bg_location)
+                        } else {
+                            context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_connected_no_bg_location)
+                        }
+                    }
                 } else {
-                    context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_connected, networkName)
+                    val networkName = "any WiFi network"
+                    if (exception.inverted) {
+                        context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_disconnected, networkName)
+                    } else {
+                        context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_connected, networkName)
+                    }
                 }
             }
             ExceptionType.SCREEN_ORIENTATION -> {

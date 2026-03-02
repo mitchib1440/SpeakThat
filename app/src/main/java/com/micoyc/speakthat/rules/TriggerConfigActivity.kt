@@ -18,6 +18,7 @@ import com.micoyc.speakthat.AppPickerActivity
 import com.micoyc.speakthat.InAppLogger
 import com.micoyc.speakthat.R
 import com.micoyc.speakthat.databinding.ActivityTriggerConfigBinding
+import com.micoyc.speakthat.utils.BackgroundLocationHelper
 import com.micoyc.speakthat.utils.WifiCapabilityChecker
 import java.text.SimpleDateFormat
 import java.util.*
@@ -33,9 +34,8 @@ class TriggerConfigActivity : AppCompatActivity() {
     private lateinit var foregroundAppPickerLauncher: ActivityResultLauncher<Intent>
     private val selectedNotificationFromApps = mutableListOf<String>()
     private lateinit var notificationFromPickerLauncher: ActivityResultLauncher<Intent>
-    
+    private var awaitingBackgroundLocation = false
 
-    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTriggerConfigBinding.inflate(layoutInflater)
@@ -1490,12 +1490,7 @@ class TriggerConfigActivity : AppCompatActivity() {
     }
     
     private fun checkWifiPermissions(): Boolean {
-        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            checkSelfPermission(android.Manifest.permission.NEARBY_WIFI_DEVICES) == android.content.pm.PackageManager.PERMISSION_GRANTED &&
-            checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
-        } else {
-            checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
-        }
+        return BackgroundLocationHelper.hasAllWifiPermissions(this)
     }
     
     private fun requestBluetoothPermissions() {
@@ -1517,18 +1512,42 @@ class TriggerConfigActivity : AppCompatActivity() {
     
     private fun requestWifiPermissions() {
         InAppLogger.log("TriggerConfig", "Requesting WiFi permissions")
-        val permissions = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            arrayOf(
-                android.Manifest.permission.NEARBY_WIFI_DEVICES,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        } else {
-            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if (!BackgroundLocationHelper.hasForegroundLocationPermission(this) ||
+            !BackgroundLocationHelper.hasNearbyWifiPermission(this)) {
+            requestPermissions(BackgroundLocationHelper.getForegroundWifiPermissions(), REQUEST_WIFI_PERMISSIONS)
+            return
         }
-        
-        requestPermissions(permissions, REQUEST_WIFI_PERMISSIONS)
+        requestBackgroundLocationForWifi()
     }
-    
+
+    private fun requestBackgroundLocationForWifi() {
+        BackgroundLocationHelper.showBackgroundLocationDisclosure(this,
+            onAccepted = {
+                awaitingBackgroundLocation = true
+                BackgroundLocationHelper.openAppLocationSettings(this)
+            },
+            onDeclined = {
+                InAppLogger.logFilter("Background location disclosure declined in TriggerConfig.")
+            }
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (awaitingBackgroundLocation) {
+            awaitingBackgroundLocation = false
+            if (BackgroundLocationHelper.hasBackgroundLocationPermission(this)) {
+                showWifiNetworkSelection()
+            } else {
+                AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.background_location_denied_title))
+                    .setMessage(getString(R.string.background_location_denied_message))
+                    .setPositiveButton(getString(R.string.ok), null)
+                    .show()
+            }
+        }
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -1550,9 +1569,14 @@ class TriggerConfigActivity : AppCompatActivity() {
                 }
             }
             REQUEST_WIFI_PERMISSIONS -> {
-                if (grantResults.isNotEmpty() && grantResults.all { it == android.content.pm.PackageManager.PERMISSION_GRANTED }) {
-                    InAppLogger.logDebug("TriggerConfigActivity", "WiFi permissions granted")
-                    showWifiNetworkSelection()
+                val allGranted = grantResults.isNotEmpty() && grantResults.all { it == android.content.pm.PackageManager.PERMISSION_GRANTED }
+                if (allGranted) {
+                    if (BackgroundLocationHelper.hasBackgroundLocationPermission(this)) {
+                        InAppLogger.logDebug("TriggerConfigActivity", "All WiFi permissions granted")
+                        showWifiNetworkSelection()
+                    } else {
+                        requestBackgroundLocationForWifi()
+                    }
                 } else {
                     AlertDialog.Builder(this)
                         .setTitle("Permission Required")

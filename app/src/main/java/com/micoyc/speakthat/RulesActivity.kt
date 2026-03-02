@@ -528,23 +528,19 @@ class RulesActivity : AppCompatActivity() {
     }
 
     private fun hasWifiPermissions(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            checkSelfPermission(android.Manifest.permission.NEARBY_WIFI_DEVICES) == PackageManager.PERMISSION_GRANTED &&
-                checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-        } else {
-            checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-        }
+        return com.micoyc.speakthat.utils.BackgroundLocationHelper.hasAllWifiPermissions(this)
     }
 
     private fun getWifiPermissions(): List<String> {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            listOf(
-                android.Manifest.permission.NEARBY_WIFI_DEVICES,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        } else {
-            listOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        val perms = mutableListOf<String>()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            perms.add(android.Manifest.permission.NEARBY_WIFI_DEVICES)
         }
+        perms.add(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            perms.add(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+        }
+        return perms
     }
     
     // Rule management methods

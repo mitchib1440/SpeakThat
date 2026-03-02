@@ -26,6 +26,7 @@ import com.micoyc.speakthat.rules.ExceptionAdapter
 import com.micoyc.speakthat.rules.TriggerConfigActivity
 import com.micoyc.speakthat.rules.ActionConfigActivity
 import com.micoyc.speakthat.rules.ExceptionConfigActivity
+import com.micoyc.speakthat.utils.BackgroundLocationHelper
 
 class RuleBuilderActivity : AppCompatActivity() {
     
@@ -44,6 +45,7 @@ class RuleBuilderActivity : AppCompatActivity() {
     private var pendingWifiAction: PendingWifiAction? = null
     private var pendingExistingTrigger: Trigger? = null
     private var pendingExistingException: Exception? = null
+    private var awaitingBackgroundLocation = false
     
     companion object {
         private const val PREFS_NAME = "SpeakThatPrefs"
@@ -731,24 +733,46 @@ class RuleBuilderActivity : AppCompatActivity() {
     }
 
     private fun hasWifiPermissions(): Boolean {
-        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            checkSelfPermission(android.Manifest.permission.NEARBY_WIFI_DEVICES) == android.content.pm.PackageManager.PERMISSION_GRANTED &&
-            checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
-        } else {
-            checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
-        }
+        return BackgroundLocationHelper.hasAllWifiPermissions(this)
     }
 
     private fun requestWifiPermissions() {
-        val permissions = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            arrayOf(
-                android.Manifest.permission.NEARBY_WIFI_DEVICES,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        } else {
-            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if (!BackgroundLocationHelper.hasForegroundLocationPermission(this) ||
+            !BackgroundLocationHelper.hasNearbyWifiPermission(this)) {
+            requestPermissions(BackgroundLocationHelper.getForegroundWifiPermissions(), REQUEST_WIFI_PERMISSIONS)
+            return
         }
-        requestPermissions(permissions, REQUEST_WIFI_PERMISSIONS)
+        requestBackgroundLocationStep()
+    }
+
+    private fun requestBackgroundLocationStep() {
+        BackgroundLocationHelper.showBackgroundLocationDisclosure(this,
+            onAccepted = {
+                awaitingBackgroundLocation = true
+                BackgroundLocationHelper.openAppLocationSettings(this)
+            },
+            onDeclined = {
+                clearPendingWifiState()
+                InAppLogger.logFilter("Background location disclosure declined; WiFi condition not added.")
+            }
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (awaitingBackgroundLocation) {
+            awaitingBackgroundLocation = false
+            if (BackgroundLocationHelper.hasBackgroundLocationPermission(this)) {
+                executePendingWifiAction()
+            } else {
+                AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.background_location_denied_title))
+                    .setMessage(getString(R.string.background_location_denied_message))
+                    .setPositiveButton(getString(R.string.ok), null)
+                    .show()
+                clearPendingWifiState()
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -761,20 +785,33 @@ class RuleBuilderActivity : AppCompatActivity() {
         if (requestCode == REQUEST_WIFI_PERMISSIONS) {
             val allGranted = grantResults.isNotEmpty() && grantResults.all { it == android.content.pm.PackageManager.PERMISSION_GRANTED }
             if (allGranted) {
-                when (pendingWifiAction) {
-                    PendingWifiAction.ADD_TRIGGER -> launchTriggerConfig(TriggerType.WIFI_NETWORK, null)
-                    PendingWifiAction.EDIT_TRIGGER -> launchTriggerConfig(TriggerType.WIFI_NETWORK, pendingExistingTrigger)
-                    PendingWifiAction.ADD_EXCEPTION -> launchExceptionConfig(ExceptionType.WIFI_NETWORK, null)
-                    PendingWifiAction.EDIT_EXCEPTION -> launchExceptionConfig(ExceptionType.WIFI_NETWORK, pendingExistingException)
-                    null -> { /* no-op */ }
+                if (BackgroundLocationHelper.hasBackgroundLocationPermission(this)) {
+                    executePendingWifiAction()
+                } else {
+                    requestBackgroundLocationStep()
                 }
             } else {
                 InAppLogger.logFilter("WiFi permissions denied; cannot configure WiFi rules.")
+                clearPendingWifiState()
             }
-            pendingWifiAction = null
-            pendingExistingTrigger = null
-            pendingExistingException = null
         }
+    }
+
+    private fun executePendingWifiAction() {
+        when (pendingWifiAction) {
+            PendingWifiAction.ADD_TRIGGER -> launchTriggerConfig(TriggerType.WIFI_NETWORK, null)
+            PendingWifiAction.EDIT_TRIGGER -> launchTriggerConfig(TriggerType.WIFI_NETWORK, pendingExistingTrigger)
+            PendingWifiAction.ADD_EXCEPTION -> launchExceptionConfig(ExceptionType.WIFI_NETWORK, null)
+            PendingWifiAction.EDIT_EXCEPTION -> launchExceptionConfig(ExceptionType.WIFI_NETWORK, pendingExistingException)
+            null -> { /* no-op */ }
+        }
+        clearPendingWifiState()
+    }
+
+    private fun clearPendingWifiState() {
+        pendingWifiAction = null
+        pendingExistingTrigger = null
+        pendingExistingException = null
     }
 
     private enum class PendingWifiAction {

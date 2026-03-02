@@ -17,6 +17,7 @@ import com.micoyc.speakthat.AppPickerActivity
 import com.micoyc.speakthat.InAppLogger
 import com.micoyc.speakthat.R
 import com.micoyc.speakthat.databinding.ActivityExceptionConfigBinding
+import com.micoyc.speakthat.utils.BackgroundLocationHelper
 import com.micoyc.speakthat.utils.WifiCapabilityChecker
 import com.google.gson.Gson
 import java.util.*
@@ -36,6 +37,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
     private lateinit var foregroundAppPickerLauncher: ActivityResultLauncher<Intent>
     private val selectedNotificationFromApps = mutableListOf<String>()
     private lateinit var notificationFromPickerLauncher: ActivityResultLauncher<Intent>
+    private var awaitingBackgroundLocation = false
 
     companion object {
         const val EXTRA_EXCEPTION_TYPE = "exception_type"
@@ -1430,12 +1432,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
     }
     
     private fun checkWifiPermissions(): Boolean {
-        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            checkSelfPermission(android.Manifest.permission.NEARBY_WIFI_DEVICES) == android.content.pm.PackageManager.PERMISSION_GRANTED &&
-            checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
-        } else {
-            checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED
-        }
+        return BackgroundLocationHelper.hasAllWifiPermissions(this)
     }
     
     private fun requestBluetoothPermissions() {
@@ -1455,18 +1452,42 @@ class ExceptionConfigActivity : AppCompatActivity() {
     }
     
     private fun requestWifiPermissions() {
-        val permissions = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            arrayOf(
-                android.Manifest.permission.NEARBY_WIFI_DEVICES,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        } else {
-            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if (!BackgroundLocationHelper.hasForegroundLocationPermission(this) ||
+            !BackgroundLocationHelper.hasNearbyWifiPermission(this)) {
+            requestPermissions(BackgroundLocationHelper.getForegroundWifiPermissions(), REQUEST_WIFI_PERMISSIONS)
+            return
         }
-        
-        requestPermissions(permissions, REQUEST_WIFI_PERMISSIONS)
+        requestBackgroundLocationForWifi()
     }
-    
+
+    private fun requestBackgroundLocationForWifi() {
+        BackgroundLocationHelper.showBackgroundLocationDisclosure(this,
+            onAccepted = {
+                awaitingBackgroundLocation = true
+                BackgroundLocationHelper.openAppLocationSettings(this)
+            },
+            onDeclined = {
+                InAppLogger.logFilter("Background location disclosure declined in ExceptionConfig.")
+            }
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (awaitingBackgroundLocation) {
+            awaitingBackgroundLocation = false
+            if (BackgroundLocationHelper.hasBackgroundLocationPermission(this)) {
+                showWifiNetworkSelection()
+            } else {
+                AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.background_location_denied_title))
+                    .setMessage(getString(R.string.background_location_denied_message))
+                    .setPositiveButton(getString(R.string.ok), null)
+                    .show()
+            }
+        }
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -1488,9 +1509,14 @@ class ExceptionConfigActivity : AppCompatActivity() {
                 }
             }
             REQUEST_WIFI_PERMISSIONS -> {
-                if (grantResults.isNotEmpty() && grantResults.all { it == android.content.pm.PackageManager.PERMISSION_GRANTED }) {
-                    InAppLogger.logDebug("ExceptionConfigActivity", "WiFi permissions granted")
-                    showWifiNetworkSelection()
+                val allGranted = grantResults.isNotEmpty() && grantResults.all { it == android.content.pm.PackageManager.PERMISSION_GRANTED }
+                if (allGranted) {
+                    if (BackgroundLocationHelper.hasBackgroundLocationPermission(this)) {
+                        InAppLogger.logDebug("ExceptionConfigActivity", "All WiFi permissions granted")
+                        showWifiNetworkSelection()
+                    } else {
+                        requestBackgroundLocationForWifi()
+                    }
                 } else {
                     AlertDialog.Builder(this)
                         .setTitle("Permission Required")
