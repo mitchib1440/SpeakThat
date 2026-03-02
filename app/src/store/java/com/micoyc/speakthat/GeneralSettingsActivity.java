@@ -62,8 +62,11 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         binding = ActivityGeneralSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Set the activity title
-        getSupportActionBar().setTitle(getString(R.string.title_general_settings));
+        // Set title and enable back navigation in app bar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.title_general_settings));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         // Initialize activity result launchers
         initializeActivityResultLaunchers();
@@ -697,5 +700,11 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             permissions.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
         }
         return permissions;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 } 
