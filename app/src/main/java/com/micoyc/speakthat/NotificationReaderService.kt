@@ -236,7 +236,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     companion object {
         private const val TAG = "NotificationReader"
         private val notificationHistory = ArrayList<NotificationData>()
-        private const val MAX_HISTORY_SIZE = 20
+        private const val MAX_HISTORY_SIZE = 15
         private const val PREFS_NAME = "SpeakThatPrefs"
         private const val KEY_SHAKE_TO_STOP_ENABLED = "shake_to_stop_enabled"
         private const val KEY_SHAKE_THRESHOLD = "shake_threshold"
@@ -369,6 +369,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     data class NotificationData(
         val appName: String,
         val packageName: String,
+        val title: String,
         val text: String,
         val timestamp: String
     )
@@ -979,7 +980,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         Log.d(TAG, "Will speak notification from $finalAppName: '${filterResult.processedText.take(100)}...' (ID: ${sbn?.id})")
                         
                         // Add to history
-                        addToHistory(finalAppName, packageName, filterResult.processedText)
+                        val rawTitle = if (isPrivateContent) "" else sbn?.notification?.extras?.getCharSequence(android.app.Notification.EXTRA_TITLE)?.toString() ?: ""
+                        addToHistory(finalAppName, packageName, rawTitle, filterResult.processedText)
                         
                         // Handle notification based on behavior mode (pass conditional delay info)
                         handleNotificationBehavior(
@@ -1914,10 +1916,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
-    private fun addToHistory(appName: String, packageName: String, text: String) {
+    private fun addToHistory(appName: String, packageName: String, title: String, text: String) {
         try {
             val timestamp = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
-            val notificationData = NotificationData(appName, packageName, text, timestamp)
+            val notificationData = NotificationData(appName, packageName, title, text, timestamp)
             
             // Add to batch queue instead of immediate database write
             historyBatchQueue.add(notificationData)

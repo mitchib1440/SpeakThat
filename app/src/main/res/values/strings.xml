@@ -1134,9 +1134,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="dev_installation_debug">Installation Source Debug</string>
     <string name="dev_test_rules">Test Rule System</string>
 
-    <!-- Notification History -->
-    <string name="notification_history_title">Notification History</string>
-    <string name="notification_history_description">Recent notifications processed by SpeakThat</string>
+    <!-- Notification History (Development Settings dialog) -->
     <string name="notification_history_empty">No notifications to display</string>
     <string name="notification_history_clear">Clear History</string>
     <string name="notification_history_recent">Recent Notifications</string>
@@ -2082,6 +2080,34 @@ This permission is completely optional; SpeakThat! will still function without i
     <!-- SelfTest Log Export -->
     <string name="selftest_logs_exported">Debug logs exported to: %s</string>
     <string name="selftest_logs_export_failed">Failed to export debug logs</string>
+
+    <!-- Home Screen Notification History Card -->
+    <string name="app_icon_description">App icon</string>
+    <string name="filter_notification_description">Filter notification</string>
+    <string name="notification_history_title">Notification History</string>
+    <string name="notification_history_description">SpeakThat! records your 15 most recent notifications so you can filter them later. Tap a notification to easily filter ones just like it in the future.</string>
+    <string name="notification_history_home_empty">No notifications recorded yet. Notifications will appear here as SpeakThat! reads them.</string>
+    <string name="all_time_statistics_title">All-Time Statistics</string>
+
+    <!-- Filter Bottom Sheet -->
+    <string name="filter_sheet_title">Filter Similar</string>
+    <string name="filter_sheet_type_title">Filter Type</string>
+    <string name="filter_sheet_type_description">Select how notifications like this should be filtered.</string>
+    <string name="filter_sheet_smart_title">Smart filter</string>
+    <string name="filter_sheet_smart_description">Replace numbers and values with placeholders</string>
+    <string name="filter_sheet_exact_title">Exact match</string>
+    <string name="filter_sheet_exact_description">Create a filter that matches the text exactly</string>
+    <string name="filter_sheet_app_title">Everything from %s</string>
+    <string name="filter_sheet_app_description">Never read out another notification from this app</string>
+    <string name="filter_sheet_preview_title">Filter preview</string>
+    <string name="filter_sheet_preview_description">SpeakThat will silence messages that look like this:</string>
+    <string name="filter_sheet_private_title">Private mode</string>
+    <string name="filter_sheet_private_description">Read app name but not contents</string>
+    <string name="filter_sheet_create_button">Create Filter</string>
+    <string name="filter_sheet_toast_created">Filter created! Similar notifications will be %s</string>
+    <string name="filter_sheet_toast_blocked">silenced</string>
+    <string name="filter_sheet_toast_private">made private</string>
+    <string name="undo_action">Undo</string>
 
     <!-- Statistics -->
     <string name="statistics_notifications_read">Notifications read: %d</string>

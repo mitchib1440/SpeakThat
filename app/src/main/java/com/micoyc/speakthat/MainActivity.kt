@@ -46,13 +46,19 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import android.graphics.Typeface
 import android.graphics.drawable.AnimatedVectorDrawable
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.micoyc.speakthat.rules.migration.RuleMigrationManager
 import org.woheller69.freeDroidWarn.FreeDroidWarn
+import java.text.NumberFormat
 
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEventListener {
     
     private lateinit var binding: ActivityMainBinding
+    private var homeNotificationAdapter: HomeNotificationAdapter? = null
     private var sharedPreferences: SharedPreferences? = null
     private var updatePrefs: SharedPreferences? = null
     private var migrationPrefs: SharedPreferences? = null
@@ -326,6 +332,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private fun setupUI() {
         setupClickListeners()
+        setupNotificationHistoryCard()
         // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
 
     }
@@ -424,17 +431,71 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
 
     }
     
+    private fun setupNotificationHistoryCard() {
+        homeNotificationAdapter = HomeNotificationAdapter(
+            emptyList(),
+            onItemClick = { showFilterBottomSheet(it) },
+            onFilterClick = { showFilterBottomSheet(it) }
+        )
+        binding.recyclerNotificationHistory.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = homeNotificationAdapter
+        }
+    }
+
+    private fun showFilterBottomSheet(notification: NotificationReaderService.NotificationData) {
+        val sheet = FilterBottomSheetFragment.newInstance(notification)
+        sheet.show(supportFragmentManager, "filter_bottom_sheet")
+        InAppLogger.logUserAction("Filter bottom sheet opened", "App: ${notification.appName}")
+    }
+
     private fun updateStatisticsDisplay() {
         try {
+            // Update notification history list
+            val notifications = NotificationReaderService.getRecentNotifications()
+            if (notifications.isEmpty()) {
+                binding.textNotificationHistoryEmpty.visibility = View.VISIBLE
+                binding.recyclerNotificationHistory.visibility = View.GONE
+            } else {
+                binding.textNotificationHistoryEmpty.visibility = View.GONE
+                binding.recyclerNotificationHistory.visibility = View.VISIBLE
+                homeNotificationAdapter?.updateNotifications(notifications.reversed())
+            }
+
+            // Update all-time statistics
             val statsManager = StatisticsManager.getInstance(this)
-            val notificationsRead = statsManager.getNotificationsRead()
-            binding.textStatistics.text = getString(
-                R.string.statistics_notifications_read,
-                notificationsRead
-            )
+            val received = statsManager.getNotificationsReceived()
+            val read = statsManager.getNotificationsRead()
+            val percentage = statsManager.getPercentageRead()
+
+            val nf = NumberFormat.getIntegerInstance()
+            val receivedStr = nf.format(received)
+            val readStr = nf.format(read)
+            val percentStr = String.format("%.1f", percentage)
+
+            val statsText = "SpeakThat! has received $receivedStr notifications, and read $readStr of them! That's $percentStr% of your notifications!"
+            val spannable = SpannableStringBuilder(statsText)
+
+            boldSubstring(spannable, receivedStr)
+            boldSubstring(spannable, readStr)
+            boldSubstring(spannable, "$percentStr%")
+
+            binding.textAllTimeStats.text = spannable
         } catch (e: Exception) {
             Log.e(TAG, "Error updating statistics display", e)
-            binding.textStatistics.text = ""
+        }
+    }
+
+    private fun boldSubstring(spannable: SpannableStringBuilder, target: String) {
+        var start = spannable.indexOf(target)
+        while (start >= 0) {
+            spannable.setSpan(
+                StyleSpan(Typeface.BOLD),
+                start,
+                start + target.length,
+                SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            start = spannable.indexOf(target, start + target.length)
         }
     }
     

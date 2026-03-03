@@ -179,6 +179,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="about_features_title">Key Features</string>
     <string name="about_developer_title">Developer</string>
     <string name="about_license_title">License</string>
+    <string name="open_source_licenses">Open Source Licenses</string>
     <string name="version_format">Version %s</string>
     <string name="version_format_with_variant" formatted="false">Version %1$s (%2$s)</string>
 
@@ -387,6 +388,21 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="wifi_compatibility_warning_add_anyway">Add Rule Anyway</string>
     <string name="wifi_compatibility_warning_nevermind">Nevermind</string>
     <string name="wifi_compatibility_warning_open_github">Open GitHub</string>
+
+    <!-- Background Location Disclosure (Google Play compliance) -->
+    <string name="background_location_disclosure_title">Background Location Access</string>
+    <string name="background_location_disclosure_message">SpeakThat needs to detect which WiFi network your device is connected to, even when the app is running in the background.\n\nThis is how Android allows apps to read WiFi network names. SpeakThat uses this information only to apply your conditional rules — it never collects or transmits your location.\n\nOn the next screen, please select \"Allow all the time\" for location access.</string>
+    <string name="background_location_disclosure_accept">Continue</string>
+    <string name="background_location_denied_message">Background location access was not granted. WiFi network name detection requires this permission to work when SpeakThat is running in the background.\n\nThe WiFi condition was not added.</string>
+    <string name="background_location_denied_title">Permission Not Granted</string>
+
+    <string name="rule_trigger_wifi_connected_ssid">connected to %1$s</string>
+    <string name="rule_trigger_wifi_disconnected_ssid">not connected to %1$s</string>
+    <string name="rule_trigger_wifi_connected_no_bg_location">connected to WiFi (specific network detection unavailable)</string>
+    <string name="rule_trigger_wifi_disconnected_no_bg_location">not connected to WiFi (specific network detection unavailable)</string>
+    <string name="rule_exception_wifi_connected_no_bg_location">connected to WiFi (specific network detection unavailable)</string>
+    <string name="rule_exception_wifi_disconnected_no_bg_location">not connected to WiFi (specific network detection unavailable)</string>
+
     <string name="rule_trigger_multiple">multiple conditions are met</string>
 
     <string name="rule_action_skip_notification">skip reading notifications</string>
@@ -1118,9 +1134,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="dev_installation_debug">Installation Source Debug</string>
     <string name="dev_test_rules">Test Rule System</string>
 
-    <!-- Notification History -->
-    <string name="notification_history_title">Notification History</string>
-    <string name="notification_history_description">Recent notifications processed by SpeakThat</string>
+    <!-- Notification History (Development Settings dialog) -->
     <string name="notification_history_empty">No notifications to display</string>
     <string name="notification_history_clear">Clear History</string>
     <string name="notification_history_recent">Recent Notifications</string>
@@ -2067,6 +2081,34 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="selftest_logs_exported">Debug logs exported to: %s</string>
     <string name="selftest_logs_export_failed">Failed to export debug logs</string>
 
+    <!-- Home Screen Notification History Card -->
+    <string name="app_icon_description">App icon</string>
+    <string name="filter_notification_description">Filter notification</string>
+    <string name="notification_history_title">Notification History</string>
+    <string name="notification_history_description">SpeakThat! records your 15 most recent notifications so you can filter them later. Tap a notification to easily filter ones just like it in the future.</string>
+    <string name="notification_history_home_empty">No notifications recorded yet. Notifications will appear here as SpeakThat! reads them.</string>
+    <string name="all_time_statistics_title">All-Time Statistics</string>
+
+    <!-- Filter Bottom Sheet -->
+    <string name="filter_sheet_title">Filter Similar</string>
+    <string name="filter_sheet_type_title">Filter Type</string>
+    <string name="filter_sheet_type_description">Select how notifications like this should be filtered.</string>
+    <string name="filter_sheet_smart_title">Smart filter</string>
+    <string name="filter_sheet_smart_description">Replace numbers and values with placeholders</string>
+    <string name="filter_sheet_exact_title">Exact match</string>
+    <string name="filter_sheet_exact_description">Create a filter that matches the text exactly</string>
+    <string name="filter_sheet_app_title">Everything from %s</string>
+    <string name="filter_sheet_app_description">Never read out another notification from this app</string>
+    <string name="filter_sheet_preview_title">Filter preview</string>
+    <string name="filter_sheet_preview_description">SpeakThat will silence messages that look like this:</string>
+    <string name="filter_sheet_private_title">Private mode</string>
+    <string name="filter_sheet_private_description">Read app name but not contents</string>
+    <string name="filter_sheet_create_button">Create Filter</string>
+    <string name="filter_sheet_toast_created">Filter created! Similar notifications will be %s</string>
+    <string name="filter_sheet_toast_blocked">silenced</string>
+    <string name="filter_sheet_toast_private">made private</string>
+    <string name="undo_action">Undo</string>
+
     <!-- Statistics -->
     <string name="statistics_notifications_read">Notifications read: %d</string>
     <string name="statistics_summary_read_and_taps">Notifications read: %1$d\nSpeakThat logo taps: %2$d</string>
@@ -2128,6 +2170,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="rule_action_custom_speech_format">Apply custom speech format</string>
     <string name="rule_action_force_private">Force private mode</string>
     <string name="rule_action_override_private">Override private mode</string>
+    <string name="rule_action_use_voice_call">Use voice call audio routing</string>
 
     <!-- Rule validation: battery/charging -->
     <string name="rule_error_invalid_battery_mode">Battery mode must be above or below</string>
