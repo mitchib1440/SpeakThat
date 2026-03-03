@@ -1754,6 +1754,13 @@ This permission is completely optional; SpeakThat! will still function without i
     <!-- Hint Strings -->
     <string name="hint_app_package_name">App Package Name</string>
     <string name="hint_search_apps_or_package">Search apps or enter package name</string>
+    <string name="desc_open_filter_sort">Open filter and sort options</string>
+    <string name="filter_sort_title">Filter &amp; Sort</string>
+    <string name="filter_show_system_apps">Show System Apps</string>
+    <string name="filter_show_selected_only">Show Selected Only</string>
+    <string name="filter_sort_by">Sort</string>
+    <string name="filter_sort_az">Sort A-Z</string>
+    <string name="filter_sort_za">Sort Z-A</string>
     <string name="hint_device_addresses">Device addresses or names</string>
     <string name="hint_network_ssids">Network SSIDs</string>
     <string name="hint_word_to_list">Word or phrase to add</string>

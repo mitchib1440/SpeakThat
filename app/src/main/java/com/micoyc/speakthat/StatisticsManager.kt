@@ -67,6 +67,7 @@ class StatisticsManager private constructor(private val context: Context) {
         const val FILTER_DEDUPLICATION = "deduplication"
         const val FILTER_DISMISSAL_MEMORY = "dismissal_memory"
         const val FILTER_GROUP_SUMMARY = "group_summary"
+        const val FILTER_GROUP_CHILD_REPOST = "group_child_repost"
         const val FILTER_SELF_PACKAGE = "self_package"
         
         // Use WeakReference to prevent memory leaks

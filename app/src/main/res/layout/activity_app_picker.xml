@@ -22,12 +22,16 @@
         android:padding="16dp">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/searchInputLayout"
             style="@style/WhiteHintTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             app:boxBackgroundMode="outline"
+            app:endIconContentDescription="@string/desc_open_filter_sort"
+            app:endIconDrawable="@drawable/ic_filter_list_24"
+            app:endIconMode="custom"
             app:boxStrokeColor="@color/white_100"
             app:hintTextColor="@color/white_100"
             app:placeholderTextColor="@color/white_100">

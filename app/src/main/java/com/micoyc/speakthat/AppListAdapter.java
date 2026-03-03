@@ -2,10 +2,12 @@ package com.micoyc.speakthat;
 
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -47,6 +49,8 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         FilterSettingsActivity.AppFilterItem item = items.get(position);
         
         holder.textAppName.setText(resolveDisplayName(holder.itemView.getContext(), item.packageName));
+        holder.textPackageName.setText(item.packageName);
+        bindAppIcon(holder.itemView.getContext(), item.packageName, holder.imageAppIcon);
         // Show/hide private toggle based on caller intent
         holder.checkBoxPrivate.setVisibility(showPrivateToggle ? View.VISIBLE : View.GONE);
         if (showPrivateToggle) {
@@ -96,13 +100,17 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView imageAppIcon;
         TextView textAppName;
+        TextView textPackageName;
         CheckBox checkBoxPrivate;
         ImageButton buttonRemove;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            imageAppIcon = itemView.findViewById(R.id.imageAppIcon);
             textAppName = itemView.findViewById(R.id.textAppName);
+            textPackageName = itemView.findViewById(R.id.textPackageName);
             checkBoxPrivate = itemView.findViewById(R.id.checkBoxPrivate);
             buttonRemove = itemView.findViewById(R.id.buttonRemove);
         }
@@ -130,5 +138,17 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
 
         appNameCache.put(packageName, displayName);
         return displayName;
+    }
+
+    private void bindAppIcon(android.content.Context context, String packageName, ImageView imageView) {
+        PackageManager pm = context.getPackageManager();
+        try {
+            Drawable icon = pm.getApplicationIcon(packageName);
+            imageView.setImageDrawable(icon);
+        } catch (PackageManager.NameNotFoundException ignored) {
+            imageView.setImageResource(R.drawable.ic_icon_not_found_32);
+        } catch (RuntimeException ignored) {
+            imageView.setImageResource(R.drawable.ic_icon_not_found_32);
+        }
     }
 } 

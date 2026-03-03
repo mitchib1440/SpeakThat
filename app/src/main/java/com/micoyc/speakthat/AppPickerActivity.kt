@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.micoyc.speakthat.databinding.ActivityAppPickerBinding
 import java.util.concurrent.Executors
 
-class AppPickerActivity : AppCompatActivity() {
+class AppPickerActivity : AppCompatActivity(), AppFilterBottomSheetFragment.Listener {
 
     private lateinit var binding: ActivityAppPickerBinding
     private lateinit var sharedPreferences: SharedPreferences
@@ -41,6 +41,9 @@ class AppPickerActivity : AppCompatActivity() {
     private var allowPrivate = false
     private var initialPrivateSet: Set<String> = emptySet()
     private var isLoading = false
+    private var showSystemApps = false
+    private var showSelectedOnly = false
+    private var sortOrder = AppFilterBottomSheetFragment.SortOrder.AZ
 
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
@@ -72,11 +75,15 @@ class AppPickerActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                applyFilter(s?.toString().orEmpty())
+                applyFilter()
             }
 
             override fun afterTextChanged(s: Editable?) {}
         })
+
+        binding.searchInputLayout.setEndIconOnClickListener {
+            showAppFilterBottomSheet()
+        }
 
         setLoading(true)
         loadInstalledApps(initialSelection)
@@ -163,7 +170,8 @@ class AppPickerActivity : AppCompatActivity() {
                             icon = icon,
                             selected = isSelected,
                             isPrivate = isPrivate,
-                            isManual = false
+                            isManual = false,
+                            isSystemApp = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
                         )
                     )
                 } catch (e: Exception) {
@@ -178,7 +186,7 @@ class AppPickerActivity : AppCompatActivity() {
                 allApps.clear()
                 allApps.addAll(selectableApps)
                 InAppLogger.log("AppPicker", "Loaded ${allApps.size} apps into picker")
-                applyFilter(binding.searchInput.text?.toString().orEmpty())
+                applyFilter()
             }
         }
     }
@@ -203,30 +211,60 @@ class AppPickerActivity : AppCompatActivity() {
         return targetPre33 || requestsPermission
     }
 
-    private fun applyFilter(query: String) {
+    private fun applyFilter() {
+        val query = binding.searchInput.text?.toString().orEmpty()
         val lower = query.lowercase().trim()
-        val filtered = if (lower.isEmpty()) {
-            allApps
-        } else {
-            allApps.filter { app ->
-                app.label.lowercase().contains(lower) || app.packageName.lowercase().contains(lower)
-            }
+        val selectedPackages = if (showSelectedOnly) getSelectedPackagesForFilter() else emptySet()
+
+        val filtered = allApps.filter { app ->
+            val matchesQuery = lower.isEmpty() ||
+                app.label.lowercase().contains(lower) ||
+                app.packageName.lowercase().contains(lower)
+            val matchesSystemApps = showSystemApps || !app.isSystemApp
+            val matchesSelectedOnly = !showSelectedOnly || selectedPackages.contains(app.packageName)
+            matchesQuery && matchesSystemApps && matchesSelectedOnly
         }
 
-        // Keep manual entries grouped at the bottom, each group sorted alphabetically
-        val regularApps = filtered
-            .filter { !it.isManual }
-            .sortedBy { it.label.lowercase() }
-        val manualApps = filtered
-            .filter { it.isManual }
-            .sortedBy { it.label.lowercase() }
+        val sorted = when (sortOrder) {
+            AppFilterBottomSheetFragment.SortOrder.AZ -> filtered.sortedBy { it.label.lowercase() }
+            AppFilterBottomSheetFragment.SortOrder.ZA -> filtered.sortedByDescending { it.label.lowercase() }
+        }
 
-        val combined = regularApps + manualApps
-
-        InAppLogger.log("AppPicker", "Filter query='$query' matches=${combined.size}")
+        InAppLogger.log(
+            "AppPicker",
+            "Filter query='$query' system=$showSystemApps selectedOnly=$showSelectedOnly sort=$sortOrder matches=${sorted.size}"
+        )
         filteredApps.clear()
-        filteredApps.addAll(combined)
+        filteredApps.addAll(sorted)
         adapter.updateData(filteredApps)
+    }
+
+    private fun getSelectedPackagesForFilter(): Set<String> {
+        val savedSelection = sharedPreferences.getStringSet(KEY_APP_LIST, emptySet()) ?: emptySet()
+        val currentSelection = allApps.filter { it.selected }.map { it.packageName }.toSet()
+        return savedSelection + currentSelection
+    }
+
+    private fun showAppFilterBottomSheet() {
+        val tag = TAG_APP_FILTER_BOTTOM_SHEET
+        if (supportFragmentManager.findFragmentByTag(tag) != null) return
+
+        AppFilterBottomSheetFragment.newInstance(
+            showSystemApps = showSystemApps,
+            showSelectedOnly = showSelectedOnly,
+            sortOrder = sortOrder
+        ).show(supportFragmentManager, tag)
+    }
+
+    override fun onAppFilterChanged(
+        showSystemApps: Boolean,
+        showSelectedOnly: Boolean,
+        sortOrder: AppFilterBottomSheetFragment.SortOrder
+    ) {
+        this.showSystemApps = showSystemApps
+        this.showSelectedOnly = showSelectedOnly
+        this.sortOrder = sortOrder
+        applyFilter()
     }
 
     private fun setLoading(loading: Boolean) {
@@ -322,19 +360,13 @@ class AppPickerActivity : AppCompatActivity() {
                         icon = icon,
                         selected = true, // Automatically select when manually added
                         isPrivate = initialPrivateSet.contains(packageName),
-                        isManual = true
+                        isManual = true,
+                        isSystemApp = (appInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM) ?: 0) != 0
                     )
                     
                     allApps.add(newApp)
                     allApps.sortBy { it.label.lowercase() }
-                    
-                    // Update filtered list if it matches current search
-                    val currentQuery = binding.searchInput.text?.toString().orEmpty().lowercase().trim()
-                    if (currentQuery.isEmpty() || 
-                        label.lowercase().contains(currentQuery) || 
-                        packageName.lowercase().contains(currentQuery)) {
-                        applyFilter(currentQuery)
-                    }
+                    applyFilter()
                     
                     Toast.makeText(this, R.string.dialog_success_package_added, Toast.LENGTH_SHORT).show()
                     InAppLogger.log("AppPicker", "Manually added package: $packageName")
@@ -379,12 +411,15 @@ class AppPickerActivity : AppCompatActivity() {
         val icon: Drawable?,
         var selected: Boolean,
         var isPrivate: Boolean,
-        val isManual: Boolean
+        val isManual: Boolean,
+        val isSystemApp: Boolean
     )
 
     companion object {
         private const val PREFS_NAME = "SpeakThatPrefs"
         private const val KEY_DARK_MODE = "dark_mode"
+        private const val KEY_APP_LIST = "app_list"
+        private const val TAG_APP_FILTER_BOTTOM_SHEET = "app_filter_bottom_sheet"
         const val EXTRA_TITLE = "extra_title"
         const val EXTRA_SELECTED_PACKAGES = "extra_selected_packages"
         const val EXTRA_PRIVATE_PACKAGES = "extra_private_packages"

@@ -175,6 +175,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     // Deduplication tracking - prevent same notification from being processed multiple times
     private val recentNotificationKeys = HashMap<String, Long>() // notificationKey -> timestamp
     
+    // Group child deduplication - prevent re-reading old notifications when Android regroups them
+    private val groupChildDeduplicationMap = HashMap<String, Long>() // contentKey -> timestamp
+    
     // Dismissal memory tracking - prevent re-reading dismissed notifications
     private val dismissedNotificationKeys = HashMap<String, Long>() // contentHash -> dismissal timestamp
     private var dismissalMemoryCleanupHandler: android.os.Handler? = null
@@ -250,6 +253,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Deduplication settings
         private const val DEDUPLICATION_WINDOW_MS = 30000L // 30 seconds window for deduplication (increased to handle notification updates)
+        private const val GROUP_CHILD_DEDUP_WINDOW_MS = 3600000L // 1 hour - covers long gaps between grouped notifications
+        private const val MAX_GROUP_DEDUP_ENTRIES = 500
         
         // Dismissal memory settings
         private const val KEY_DISMISSAL_MEMORY_ENABLED = "dismissal_memory_enabled"
@@ -389,9 +394,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "NotificationReaderService created")
         InAppLogger.log("Service", "NotificationReaderService started")
         
-        // Clear deduplication cache on service start to prevent stale entries
+        // Clear deduplication caches on service start to prevent stale entries
         recentNotificationKeys.clear()
-        Log.d(TAG, "Cleared deduplication cache on service start")
+        groupChildDeduplicationMap.clear()
+        Log.d(TAG, "Cleared deduplication caches on service start")
         
         try {
             Log.d(TAG, "Starting service initialization...")
@@ -546,9 +552,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Unregister accessibility broadcast receiver
             unregisterAccessibilityBroadcastReceiver()
             
-            // Clear deduplication cache
+            // Clear deduplication caches
             recentNotificationKeys.clear()
-            Log.d(TAG, "Cleared deduplication cache during cleanup")
+            groupChildDeduplicationMap.clear()
+            Log.d(TAG, "Cleared deduplication caches during cleanup")
             
             // Clear dismissal memory cache
             dismissedNotificationKeys.clear()
@@ -804,6 +811,34 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (packageName == "com.google.android.gm") {
                     Log.d(TAG, "Gmail notification detected - ID: ${sbn.id}, Post time: ${sbn.postTime}, Update time: ${System.currentTimeMillis()}")
                     InAppLogger.logSystemEvent("Gmail notification", "ID: ${sbn.id}, Content: '${notificationText.take(50)}...'")
+                }
+                
+                // Group child deduplication: when Android regroups notifications (e.g. a new
+                // email arrives and the existing ones get bundled), onNotificationPosted fires
+                // again for every child in the group. The 30-second dedup window will have
+                // expired by then, so we keep a longer-lived map keyed on content.
+                if (!isSelfTest && notificationText.isNotEmpty()) {
+                    val groupContentKey = generateContentKey(packageName, notificationText)
+                    val now = System.currentTimeMillis()
+                    
+                    if (notification.group != null) {
+                        val lastSeen = groupChildDeduplicationMap[groupContentKey]
+                        if (lastSeen != null && now - lastSeen < GROUP_CHILD_DEDUP_WINDOW_MS) {
+                            Log.d(TAG, "Skipping re-posted group child notification from $packageName (already processed ${now - lastSeen}ms ago)")
+                            InAppLogger.logFilter("Skipped re-posted group child from $packageName (${now - lastSeen}ms ago)")
+                            try {
+                                StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_GROUP_CHILD_REPOST)
+                            } catch (e: Exception) {
+                                Log.e(TAG, "Error tracking group child repost filter", e)
+                            }
+                            return
+                        }
+                    }
+                    
+                    if (groupChildDeduplicationMap.size > MAX_GROUP_DEDUP_ENTRIES) {
+                        groupChildDeduplicationMap.entries.removeIf { (_, ts) -> now - ts > GROUP_CHILD_DEDUP_WINDOW_MS }
+                    }
+                    groupChildDeduplicationMap[groupContentKey] = now
                 }
                 
                 // Check for duplicate notifications (only if deduplication is enabled)

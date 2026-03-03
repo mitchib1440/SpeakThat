@@ -129,6 +129,14 @@
                             android:textColor="@color/purple_card_text_primary"
                             android:layout_marginBottom="8dp" />
 
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnManageAppList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/filter_manage_apps"
+                            style="@style/PrimaryButton" />
+
                         <!-- App List Header (Collapsible) -->
                         <LinearLayout
                             android:id="@+id/appListHeader"
@@ -176,30 +184,6 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:visibility="visible">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical"
-                                android:layout_marginBottom="12dp">
-
-                                <TextView
-                                    android:id="@+id/txtAppListSummary"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:textColor="@color/purple_card_text_primary"
-                                    android:textSize="14sp"
-                                    android:text="@string/filter_manage_apps" />
-
-                                <com.google.android.material.button.MaterialButton
-                                    android:id="@+id/btnManageAppList"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/filter_manage_apps"
-                                    style="@style/PrimaryButton" />
-                            </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -299,8 +283,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
-                                android:nestedScrollingEnabled="false"
-                                android:visibility="gone" />
+                                android:nestedScrollingEnabled="false" />
 
                         </LinearLayout>
 

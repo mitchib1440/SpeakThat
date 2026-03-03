@@ -1505,7 +1505,6 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private void updateCountDisplays() {
         // Update app list count
         binding.txtAppListCount.setText("(" + appList.size() + " apps)");
-        binding.txtAppListSummary.setText("(" + appList.size() + " apps)");
         
         // Update blacklist count
         binding.txtBlacklistCount.setText("(" + wordBlacklistItems.size() + " words)");
