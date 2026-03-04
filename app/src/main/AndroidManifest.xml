@@ -230,6 +230,11 @@
             android:exported="false"
             android:parentActivityName=".AboutActivity" />
 
+        <!-- About Libraries Activity -->
+        <activity
+            android:name="com.mikepenz.aboutlibraries.ui.LibsActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+
         <!-- Notification Listener Service -->
         <service
             android:name=".NotificationReaderService"
@@ -311,6 +316,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+
 
     </application>
 

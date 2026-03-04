@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("com.google.android.gms.oss-licenses-plugin")
+    id("com.mikepenz.aboutlibraries.plugin")
 }
 
 android {
@@ -12,8 +12,8 @@ android {
         applicationId = "com.micoyc.speakthat"
         minSdk = 24
         targetSdk = 36
-        versionCode = 48
-        versionName = "1.7.4"
+        versionCode = 49
+        versionName = "1.7.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -115,7 +115,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.gson)
     implementation("androidx.lifecycle:lifecycle-process:2.8.4")
-    implementation("com.google.android.gms:play-services-oss-licenses:17.1.0")
+    implementation("com.mikepenz:aboutlibraries:10.10.0")
     
     // Coil for image loading - only used in GitHub variant for online icons
     implementation("io.coil-kt:coil:2.4.0")

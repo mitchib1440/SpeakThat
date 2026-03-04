@@ -9,7 +9,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.micoyc.speakthat.databinding.ActivityAboutBinding
 import java.util.Locale
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import kotlin.jvm.java
 
 class AboutActivity : AppCompatActivity() {
     
@@ -91,7 +91,8 @@ class AboutActivity : AppCompatActivity() {
             UpdateFeature.startUpdateActivity(this, forceCheck = true)
         }
         binding.buttonOssLicenses.setOnClickListener {
-            startActivity(Intent(this@AboutActivity, OssLicensesMenuActivity::class.java))
+            val intent = Intent(this@AboutActivity, com.mikepenz.aboutlibraries.ui.LibsActivity::class.java)
+            startActivity(intent)
         }
     }
     
