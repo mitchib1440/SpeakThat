@@ -29,6 +29,13 @@ render.experimental.xml
 # Google Services (e.g. APIs or Firebase)
 google-services.json
 
+# Ignore all generated baseline profiles
+**/*.dm
+**/baselineProfiles/
+**/output-metadata.json
+app/github/release/
+app/store/release/
+
 # Android Profiling
 *.hprof
 app/github/release/baselineProfiles/0/SpeakThat-v1.3.2.dm
