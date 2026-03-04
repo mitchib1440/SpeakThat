@@ -60,13 +60,28 @@ object BackgroundLocationHelper {
     // ------------------------------------------------------------------
 
     fun getForegroundWifiPermissions(): Array<String> {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arrayOf(
-                Manifest.permission.NEARBY_WIFI_DEVICES,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        } else {
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        return when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
+                arrayOf(
+                    Manifest.permission.NEARBY_WIFI_DEVICES,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> {
+                // API 30-32: foreground only; background must be requested separately
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
+                // API 29: bundle background with foreground so the system dialog
+                // shows "Allow all the time" in a single step
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                )
+            }
+            else -> {
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
         }
     }
 
@@ -97,11 +112,41 @@ object BackgroundLocationHelper {
     }
 
     // ------------------------------------------------------------------
-    // Open system Settings for background location (Step 2)
+    // Request background location permission (Step 2)
     // ------------------------------------------------------------------
 
-    fun openAppLocationSettings(activity: Activity) {
-        InAppLogger.logDebug(TAG, "Opening app settings for background location grant")
+    fun requestBackgroundLocation(activity: Activity, requestCode: Int) {
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> {
+                // API 30+: request background alone — the system opens the
+                // location-permission page with "Allow all the time" visible
+                InAppLogger.logDebug(TAG, "Requesting ACCESS_BACKGROUND_LOCATION via system dialog (API 30+)")
+                activity.requestPermissions(
+                    arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION),
+                    requestCode
+                )
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
+                // API 29: requesting background alone is unreliable on some OEMs.
+                // Request both foreground + background together so the system shows
+                // a single dialog with "Allow all the time".
+                InAppLogger.logDebug(TAG, "Requesting foreground + background location together (API 29)")
+                activity.requestPermissions(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                    ),
+                    requestCode
+                )
+            }
+            else -> {
+                InAppLogger.logDebug(TAG, "Falling back to app settings page for background location")
+                openAppSettings(activity)
+            }
+        }
+    }
+
+    fun openAppSettings(activity: Activity) {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
             data = Uri.fromParts("package", activity.packageName, null)
         }

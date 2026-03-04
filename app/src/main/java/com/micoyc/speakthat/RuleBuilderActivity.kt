@@ -51,6 +51,7 @@ class RuleBuilderActivity : AppCompatActivity() {
         private const val PREFS_NAME = "SpeakThatPrefs"
         private const val KEY_DARK_MODE = "dark_mode"
         private const val REQUEST_WIFI_PERMISSIONS = 3001
+        private const val REQUEST_BG_LOCATION = 3002
     }
     
     // Activity Result launchers
@@ -749,7 +750,7 @@ class RuleBuilderActivity : AppCompatActivity() {
         BackgroundLocationHelper.showBackgroundLocationDisclosure(this,
             onAccepted = {
                 awaitingBackgroundLocation = true
-                BackgroundLocationHelper.openAppLocationSettings(this)
+                BackgroundLocationHelper.requestBackgroundLocation(this, REQUEST_BG_LOCATION)
             },
             onDeclined = {
                 clearPendingWifiState()
@@ -782,17 +783,33 @@ class RuleBuilderActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == REQUEST_WIFI_PERMISSIONS) {
-            val allGranted = grantResults.isNotEmpty() && grantResults.all { it == android.content.pm.PackageManager.PERMISSION_GRANTED }
-            if (allGranted) {
+        when (requestCode) {
+            REQUEST_WIFI_PERMISSIONS -> {
+                val foregroundGranted = BackgroundLocationHelper.hasForegroundLocationPermission(this) &&
+                    BackgroundLocationHelper.hasNearbyWifiPermission(this)
+                if (foregroundGranted) {
+                    if (BackgroundLocationHelper.hasBackgroundLocationPermission(this)) {
+                        executePendingWifiAction()
+                    } else {
+                        requestBackgroundLocationStep()
+                    }
+                } else {
+                    InAppLogger.logFilter("WiFi permissions denied; cannot configure WiFi rules.")
+                    clearPendingWifiState()
+                }
+            }
+            REQUEST_BG_LOCATION -> {
+                awaitingBackgroundLocation = false
                 if (BackgroundLocationHelper.hasBackgroundLocationPermission(this)) {
                     executePendingWifiAction()
                 } else {
-                    requestBackgroundLocationStep()
+                    AlertDialog.Builder(this)
+                        .setTitle(getString(R.string.background_location_denied_title))
+                        .setMessage(getString(R.string.background_location_denied_message))
+                        .setPositiveButton(getString(R.string.ok), null)
+                        .show()
+                    clearPendingWifiState()
                 }
-            } else {
-                InAppLogger.logFilter("WiFi permissions denied; cannot configure WiFi rules.")
-                clearPendingWifiState()
             }
         }
     }
