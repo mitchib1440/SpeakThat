@@ -16,6 +16,12 @@ android {
         versionName = "1.7.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        resourceConfigurations += setOf(
+            "en", "en-rGB", "ar", "de", "es", "fr", "hi", "id", "it",
+            "ja", "ko", "nl", "pa-rIN", "pl", "pt", "ru", "sv", "th",
+            "tr", "ur", "vi", "zh-rCN", "zh-rTW"
+        )
     }
 
     // Add product flavors for different distribution channels
