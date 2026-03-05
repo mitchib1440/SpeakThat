@@ -135,7 +135,9 @@ Special thanks to my Mum, who supported the project from the very beginning and 
 
 I’d also like to thank my work colleagues, especially Connagh, who convinced me to try AI-assisted programming as I was very hesitant at first!
 
-As this is the first time I had ever attempted anything like this, I ended up checking some of my basic notification reading and audio processing code to that of [Voice Notify](https://voicenotify.app/), created by [Pilot51](https://github.com/pilot51). I didn’t take any code directly, but since a lot of users were telling me certain things were working with Voice Notify but not with SpeakThat, its publicly-accessible code was incredibly helpful in making sure I wasn’t taking the wrong path. So massive thanks to Pilot51.
+As this is the first time I had ever attempted anything like this, I ended up checking some of my basic notification reading and audio processing code to that of [Voice Notify](https://voicenotify.app/), created by [Pilot51](https://pilot51.com/wiki/Main_Page). I didn’t take any code directly, but since a lot of users were telling me certain things were working with Voice Notify but not with SpeakThat, its publicly-accessible code was incredibly helpful in making sure I wasn’t taking the wrong path. So massive thanks to Pilot51.
+
+On the subject of open source, I can't _not_ mention [Izzy](https://www.izzysoft.de/) from the [IzzyOnDroid repository](https://android.izzysoft.de/intro.php), who quite frankly deserves a gold medal and lifetime-supply of free drinks for his patience with me. Not only has he provided [thousands more users access to SpeakThat](https://dlstats.izzyondroid.org/#app-trends?app=com.micoyc.speakthat&from=2025-07-01&to=2026-03-05&clients=_total&top=50&type=F-Droid+Classic&agg=monthly), he makes sure everything is done as ethically and respectfully as possible, **and** he constantly helps clueless fools like me getting started with F/LOSS. I have no idea how you do it, but more power to you, good sir!
 
 Thanks to [HowToMen](https://www.youtube.com/@howtomen) for [featuring SpeakThat](https://youtu.be/iwvHk4SUrMQ?si=DVL6sAUJEvglgTdu&t=222) on his YouTube channel!
 
