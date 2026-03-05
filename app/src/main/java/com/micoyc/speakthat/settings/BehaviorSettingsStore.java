@@ -57,7 +57,7 @@ public class BehaviorSettingsStore {
     public static final int DEFAULT_DUCKING_VOLUME = 30;
     public static final int DEFAULT_DELAY_BEFORE_READOUT = 2;
     public static final boolean DEFAULT_HONOUR_DO_NOT_DISTURB = true;
-    public static final boolean DEFAULT_HONOUR_PHONE_CALLS = true;
+    public static final boolean DEFAULT_HONOUR_PHONE_CALLS = false;
     public static final boolean DEFAULT_HONOUR_SILENT_MODE = true;
     public static final boolean DEFAULT_HONOUR_VIBRATE_MODE = true;
     public static final boolean DEFAULT_NOTIFICATION_DEDUPLICATION = false;

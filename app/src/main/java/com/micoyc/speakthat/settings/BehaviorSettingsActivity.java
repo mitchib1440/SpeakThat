@@ -27,6 +27,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
 
     private GestureSection gestureSection;
     private CooldownSection cooldownSection;
+    private RespectModesSection respectModesSection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +114,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
         CustomAppNamesSection customAppNamesSection =
             new CustomAppNamesSection(this, binding, store);
         cooldownSection = new CooldownSection(this, binding, store);
-        RespectModesSection respectModesSection =
-            new RespectModesSection(this, binding, store);
+        respectModesSection = new RespectModesSection(this, binding, store);
         SpeechTemplateSection speechTemplateSection =
             new SpeechTemplateSection(this, binding, store);
 
@@ -169,6 +169,14 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (gestureSection != null) {
             gestureSection.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (respectModesSection != null) {
+            respectModesSection.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 

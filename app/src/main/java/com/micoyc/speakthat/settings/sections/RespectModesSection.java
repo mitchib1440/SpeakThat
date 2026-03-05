@@ -1,12 +1,16 @@
 package com.micoyc.speakthat.settings.sections;
 
+import android.content.pm.PackageManager;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import com.micoyc.speakthat.InAppLogger;
 import com.micoyc.speakthat.databinding.ActivityBehaviorSettingsBinding;
 import com.micoyc.speakthat.settings.BehaviorSettingsSection;
 import com.micoyc.speakthat.settings.BehaviorSettingsStore;
 
 public class RespectModesSection implements BehaviorSettingsSection {
+    public static final int REQUEST_PHONE_STATE_PERMISSION = 2001;
+
     private final AppCompatActivity activity;
     private final ActivityBehaviorSettingsBinding binding;
     private final BehaviorSettingsStore store;
@@ -36,6 +40,19 @@ public class RespectModesSection implements BehaviorSettingsSection {
         });
 
         binding.switchHonourPhoneCalls.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (store.isInitializing()) {
+                return;
+            }
+            if (isChecked) {
+                if (ContextCompat.checkSelfPermission(activity, android.Manifest.permission.READ_PHONE_STATE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    activity.requestPermissions(
+                        new String[]{android.Manifest.permission.READ_PHONE_STATE},
+                        REQUEST_PHONE_STATE_PERMISSION
+                    );
+                    return;
+                }
+            }
             saveHonourPhoneCalls(isChecked);
         });
 
@@ -99,6 +116,19 @@ public class RespectModesSection implements BehaviorSettingsSection {
         }
         store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_HONOUR_VIBRATE_MODE, honour).apply();
         InAppLogger.log("BehaviorSettings", "Honour Vibrate Mode changed to: " + honour);
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode != REQUEST_PHONE_STATE_PERMISSION) {
+            return;
+        }
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            saveHonourPhoneCalls(true);
+            InAppLogger.log("BehaviorSettings", "READ_PHONE_STATE permission granted");
+        } else {
+            binding.switchHonourPhoneCalls.setChecked(false);
+            InAppLogger.log("BehaviorSettings", "READ_PHONE_STATE permission denied, reverting switch");
+        }
     }
 
     private void saveHonourPhoneCalls(boolean honour) {
