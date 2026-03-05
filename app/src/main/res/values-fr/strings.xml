@@ -816,7 +816,7 @@ Bloque=ignore totalement, Privée=annonce de façon privée
     <string name="dev_installation_debug">Débogage de la source d\'installation</string>
     <string name="dev_test_rules">Test du système de règle</string>
     <string name="notification_history_title">Historique des notifications</string>
-    <string name="notification_history_description">Notifications récemment traitées par SpeakThat</string>
+    <string name="notification_history_description">SpeakThat! enregistre vos 15 dernières notifications pour que vous puissiez les traiter ultérieurement. Appuyez sur une notification pour filtrer celles semblables par la suite.</string>
     <string name="notification_history_empty">Aucune notification à afficher</string>
     <string name="notification_history_clear">Effacer l\'historique</string>
     <string name="notification_history_recent">Notifications récentes</string>
