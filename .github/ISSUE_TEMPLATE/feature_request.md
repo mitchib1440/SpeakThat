@@ -7,6 +7,11 @@ assignees: mitchib1440
 
 ---
 
+**Pre-Flight Checklist**
+Please ensure you have completed the following before submitting:
+- [ ] I have searched the existing issues and confirmed this is not a duplicate.
+- [ ] I have read the Wiki and checked my SpeakThat! configuration settings.
+
 **What problem would your feature solve? (Required)**
 A clear and concise description of the problem or frustration you are facing.
 
