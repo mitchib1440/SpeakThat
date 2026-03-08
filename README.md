@@ -26,46 +26,38 @@ And so after a few failed versions, I'm pleased to introduce SpeakThat! The noti
 
 ## Features
 
-* **Privacy-First:**
- - Nothing from your phone is sent to me or anyone else unless you explicitly submit a bug report from within the app.
- - All processing happens locally on your device.
- - You control exactly what gets read.
+* **Privacy-First By Design**
+  * Absolutely nothing leaves your device unless you explicitly export a debug log.
+  * All text processing happens locally. You have 100% control over what SpeakThat! can see and read.
 
+* **Unmatched Notification Filtering**
+  * **Notification History:** View recent notifications and create custom filters on the fly.
+  * **Smart Patterns:** Automatically strip out changing variables (like `[NUMBER]` or `[TIME]`) from progress bars and dynamic alerts so they don't spam you.
+  * **Word Swaps & Blacklists:** Block specific phrases entirely, or substitute words with custom pronunciation alternatives.
+  * **App Management:** Precisely whitelist or blacklist individual apps.
 
-* **Smart Rules & Automation:**
- - Only read notifications when specific Bluetooth headphones are connected, when connected to your home WiFi, or when your screen is off.
- - Set time schedules to silence readouts during certain hours.
+* **Smart Rules & External Automation**
+  * **Conditional Rules Engine:** Built-in automation and full logic that allows you to control exactly *when* SpeakThat reads. Trigger readouts based on connected Bluetooth devices, specific Wi-Fi networks, time of day, or the current foreground app, and many more.
+  * **External Automation Support:** Seamlessly integrate with Tasker or MacroDroid using standard Android Broadcast Intents for unprecedented control.
 
+* **Private Mode**
+  * Keep sensitive information safe. When an app or filter is flagged for Private Mode, SpeakThat! will announce the app's name out loud, but will keep the actual message content completely hidden.
 
-* **App & Word Filtering:**
- - **App Filters:** Choose exactly which apps get read and which stay silent.
- - **Word Filters:** Stop notifications containing certain words or phrases from being read, or substitute words with custom alternatives.
+* **Smart Audio & Gesture Controls**
+  * **Shake to Stop:** Instantly silence a readout by shaking your device (with adjustable sensitivity).
+  * **Wave to Stop:** Wave your hand over your device's proximity sensor to instantly kill the audio.
+  * **Behaviour Tweaks:** Utilize Audio Ducking (lowers background music during readouts), set readout delays, and enable cooldowns to prevent notification spam from active group chats.
 
+* **Accessible, Customizable, & Debuggable**
+  * Clean, intuitive Material Design UI with a Quick Settings tile for easy lockscreen access.
+  * Adjust speech rate, pitch, and select preferred external TTS engines.
+  * **SelfTest Diagnostics:** A built-in diagnostic tool that outputs specific 4-digit error codes to help pinpoint exactly why a notification wasn't read.
+  * Export and import your configuration to effortlessly switch devices.
 
-* **Private Mode:**
- - When a notification is flagged for Private Mode, its app name will be read out loud, but its potentially sensitive content won't be.
-
-
-* **Gesture Controls:**
- - **Shake to Stop:** Instantly silence SpeakThat! by shaking your device (adjustable threshold).
- - **Wave to Stop:** Instantly silence SpeakThat! by covering your device's proximity sensor.
-
-
-* **Behaviour Settings:**
- - Add a delay before readout, enable cooldown prevention to avoid notification spam, and utilize media detection.
-
-
-* **Accessible & Customizable:**
- - Guided setup for privacy and permissions via smart onboarding.
- - Clean Material Design UI.
- - Adjust speech rate, pitch, select preferred voices, and preview outputs. Supports external TTS engines.
- - Export and import your configuration to easily switch devices without losing your settings.
- - Built-in **SelfTest** diagnostic tool to troubleshoot common faults.
-
-
-* **No ads, no tracking, no nonsense:**
-Open-source for total transparency.
-Free to download here on GitHub (includes a built-in self-updater).
+* **No Ads, No Tracking, Just Speech**
+  * Fully open-source under the GPL-3.0 License for total transparency.
+  * Free to download here on GitHub (includes a built-in self-updater!).
+  * Available on the Google Play Store, Droid-ify, Neo-Store, or anywhere else supporting the [IzzyOnDroid](https://apt.izzysoft.de/fdroid/index/apk/com.micoyc.speakthat) repo!
 
 ---
 
@@ -110,17 +102,6 @@ I greatly value the human experience of creation and thus only use AI as assisti
 
 ---
 
-## Legalities
-
-SpeakThat! is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed.
-
-This license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices.
-
-- SpeakThat! Copyright © Mitchell Bell
-- SPEAKTHAT is a registered trademark of Mitchell Bell 
-
----
-
 ## Acknowledgements
 
 As I mentioned in the overview, SpeakThat was mostly inspired by Touchless Notifications by [DYNA Logix](https://dynalogix.eu/). Without his original app, I may have never fallen in love with notification readers and SpeakThat would simply not exist. Thank you ever so much for creating something truly ahead of its time. And I’m sorry it received such unfair punishment from Google!
@@ -146,6 +127,17 @@ And of course, thank you to all of the contributors, of which there are far too 
 ---
 
 **Enjoy using SpeakThat! Stay safe, stay connected, and let your phone do the talking!**
+
+---
+
+## Legalities
+
+SpeakThat! is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed.
+
+This license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices.
+
+- SpeakThat! Copyright © Mitchell Bell
+- SPEAKTHAT is a registered trademark of Mitchell Bell 
 
 ---
 
