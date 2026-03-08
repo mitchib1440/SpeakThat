@@ -132,7 +132,7 @@ class SpeakThatTileService : TileService() {
             // Update tile icon (using the SpeakThat logo)
             qsTile.icon = Icon.createWithResource(
                 this, 
-                R.drawable.logo_speakthat
+                R.drawable.speakthaticon
             )
             
             // Update the tile
