@@ -376,10 +376,17 @@ class RuleEvaluator(private val context: Context) {
             }
             
             if (!bluetoothAdapter.isEnabled) {
-                InAppLogger.logDebug(TAG, "Bluetooth is disabled")
+                val connectionState = trigger.data["connection_state"] as? String ?: "connected"
+                val wantsDisconnected = connectionState == "disconnected"
+                InAppLogger.logDebug(TAG, "Bluetooth is disabled - required state: $connectionState, trigger met: $wantsDisconnected")
                 return EvaluationResult(
-                    success = false,
-                    message = "Bluetooth is disabled"
+                    success = wantsDisconnected,
+                    message = if (wantsDisconnected) {
+                        "Bluetooth is disabled - device is guaranteed disconnected"
+                    } else {
+                        "Bluetooth is disabled - device cannot be connected"
+                    },
+                    data = mapOf("connection_state" to connectionState)
                 )
             }
             
@@ -969,26 +976,28 @@ class RuleEvaluator(private val context: Context) {
             
             InAppLogger.logDebug(TAG, "Found ${matchingBondedDevices.size} matching bonded devices: ${matchingBondedDevices.map { "${it.name} (${it.address})" }}")
             
-            // Check if audio is being routed to Bluetooth
             val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as android.media.AudioManager
             val audioMode = audioManager.mode
             val isCallOrCommMode = isCallOrCommunicationMode(audioMode)
-            val hasBluetoothOutput = BluetoothConnectionHelper.hasBluetoothOutputRoute(audioManager, TAG)
-            val hasAudioRoute = hasBluetoothOutput
+            val bluetoothRoutes = BluetoothConnectionHelper.getBluetoothOutputRoutes(audioManager, TAG)
+            val hasBluetoothOutput = bluetoothRoutes.isNotEmpty()
             
             InAppLogger.logDebug(
                 TAG,
                 "Audio routing check - Bluetooth output: $hasBluetoothOutput, Mode: $audioMode, Call/Comm mode: $isCallOrCommMode"
             )
             
-            // Conservative fallback: require A2DP, or SCO while in a call/comm mode.
-            if (!hasAudioRoute) {
-                InAppLogger.logDebug(TAG, "Conservative fallback: audio route to required device not confirmed (treating as disconnected)")
+            if (!hasBluetoothOutput) {
+                InAppLogger.logDebug(TAG, "No Bluetooth audio route active (treating as disconnected)")
                 return false
             }
             
-            InAppLogger.logDebug(TAG, "Specific device audio routing check result (conservative): $hasAudioRoute")
-            return true
+            val bondedDeviceNames = matchingBondedDevices.mapNotNull { it.name?.trim() }.filter { it.isNotEmpty() }.toSet()
+            val routeProductNames = bluetoothRoutes.map { (it.productName?.toString() ?: "").trim() }.filter { it.isNotEmpty() }.toSet()
+            val matchedByName = bondedDeviceNames.any { bondedName -> routeProductNames.any { it.equals(bondedName, ignoreCase = true) } }
+            
+            InAppLogger.logDebug(TAG, "Specific device name match - bonded names: $bondedDeviceNames, route names: $routeProductNames, matched: $matchedByName")
+            return matchedByName
             
         } catch (e: Throwable) {
             InAppLogger.logError(TAG, "Error checking specific device audio routing: ${e.message}")

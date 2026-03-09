@@ -90,6 +90,23 @@ object BluetoothConnectionHelper {
         }
     }
 
+    fun getBluetoothOutputRoutes(audioManager: AudioManager, logTag: String = TAG): List<AudioDeviceInfo> {
+        return try {
+            val outputDevices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
+            val bluetoothOutputs = outputDevices.filter { isBluetoothOutputType(it.type) }
+            if (bluetoothOutputs.isNotEmpty()) {
+                InAppLogger.logDebug(
+                    logTag,
+                    "Bluetooth output route detected: ${bluetoothOutputs.map { "type=${it.type}, name=${it.productName}" }}"
+                )
+            }
+            bluetoothOutputs
+        } catch (e: Throwable) {
+            InAppLogger.logError(logTag, "Error getting Bluetooth output routes: ${e.message}")
+            emptyList()
+        }
+    }
+
     fun isBluetoothOutputType(deviceType: Int): Boolean {
         return when (deviceType) {
             AudioDeviceInfo.TYPE_BLUETOOTH_A2DP,
