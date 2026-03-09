@@ -23,7 +23,7 @@
 # [FULL_BATT] = Only shows if battery level is 99% or higher
 # [CHARGE_ONLY] = Only shows if the device is currently charging
 
-SpeakThat! Over 2000 downloads on Google Play!
+SpeakThat! Over 4000 downloads on Google Play!
 SpeakThat! Did you know I have excellent volume control? Unlike my cousin, Siri, who sometimes whispers.
 SpeakThat! I'm not just reading notifications, I'm performing them! This is my audition for Broadway.
 SpeakThat! Fun fact: I can say supercalifragilisticexpialidocious perfectly. Want to hear it again? Supercalifragilisticexpialidocious supercalifragilisticexpialidocious supercalifragilisticexpialidocious!
@@ -453,7 +453,7 @@ SpeakThat! Speaks clearer than XQC!
 SpeakThat! Commits fewer hate crimes than Asmongold!
 SpeakThat! Friendship is magic!
 SpeakThat! I handle the talking, you handle the breathing. Unless you have pneumonia.
-SpeakThat! My pronouns are Speak slash That.
+SpeakThat! My pronouns are Speak slash That!
 SpeakThat! I follow the religion of notifications!
 SpeakThat! The exclamation mark is important!
 SpeakThat! Your spellchecker probably adds a space!
@@ -463,3 +463,5 @@ SpeakThat! You're unique. Just like everyone else.
 SpeakThat! If SpeakThat speaks that, speak that it should speak this instead. If SpeakThat speaks that but then tries to sneak that… SpeakThat knows what it has done.
 SpeakThat! You wanna know why I'm so cool? I live in the notification shade!
 SpeakThat! Knowing how to perform some basic emergency medical procedures can save someone's life! If you don't know any, it's time to learn!
+SpeakThat! Going to war against en-shittification!
+SpeakThat! Listen to Louis Rossmann!
