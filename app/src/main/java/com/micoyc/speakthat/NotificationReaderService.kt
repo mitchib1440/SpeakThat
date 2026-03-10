@@ -5280,6 +5280,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         textToSpeech?.stop()
         
+        // Cancel any pending content cap timer from the previous utterance.
+        // textToSpeech?.stop() does not reliably trigger onDone/onError callbacks,
+        // so the timer cancellation in those callbacks cannot be relied upon.
+        contentCapTimerRunnable?.let { runnable ->
+            delayHandler?.removeCallbacks(runnable)
+            contentCapTimerRunnable = null
+            Log.d(TAG, "Content Cap timer cancelled (new speech starting)")
+            InAppLogger.log("Service", "Content Cap timer cancelled (new speech starting)")
+        }
+        
         // Small delay to ensure TTS is fully stopped and cleared
         Thread.sleep(50)
         
@@ -5503,32 +5513,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "=== DUCKING DEBUG: Created volume bundle for TTS.speak() ===")
         InAppLogger.log("Service", "=== DUCKING DEBUG: Created volume bundle for TTS.speak() ===")
         
-        // Speak with queue mode FLUSH to interrupt any previous speech
-        Log.d(TAG, "=== DUCKING DEBUG: Calling TTS.speak() with volume: ${ttsVolume * 100}% ===")
-        InAppLogger.log("Service", "=== DUCKING DEBUG: Calling TTS.speak() with volume: ${ttsVolume * 100}% ===")
-        
-        val speakResult = textToSpeech?.speak(finalSpeechText, TextToSpeech.QUEUE_FLUSH, volumeParams, "notification_utterance")
-        
-        Log.d(TAG, "=== DUCKING DEBUG: TTS.speak() returned: $speakResult ===")
-        InAppLogger.log("Service", "=== DUCKING DEBUG: TTS.speak() returned: $speakResult ===")
-        
-        // Start monitoring TTS volume during focus changes
-        monitorTtsVolumeDuringFocusChanges()
-        
-        // Ensure TTS volume is ready for any app focus changes
-        ensureTtsVolumeOnAppBackground()
-        
-        // Check if speak() failed
-        if (speakResult == TextToSpeech.ERROR) {
-            Log.e(TAG, "TTS.speak() returned ERROR - attempting recovery")
-            InAppLogger.logError("Service", "TTS.speak() returned ERROR - attempting recovery")
-            attemptTtsRecovery("speak() returned ERROR")
-            isCurrentlySpeaking = false
-            unregisterShakeListener()
-            return
-        }
-        
-        // Set up completion listener
+        // Register listener BEFORE speak() to avoid a race where onStart fires
+        // on the previous listener's closure (which captured stale speechText)
         textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
             override fun onStart(utteranceId: String?) {
                 // TTS started
@@ -5701,6 +5687,31 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 }
             }
         })
+        
+        // Speak with queue mode FLUSH to interrupt any previous speech
+        Log.d(TAG, "=== DUCKING DEBUG: Calling TTS.speak() with volume: ${ttsVolume * 100}% ===")
+        InAppLogger.log("Service", "=== DUCKING DEBUG: Calling TTS.speak() with volume: ${ttsVolume * 100}% ===")
+        
+        val speakResult = textToSpeech?.speak(finalSpeechText, TextToSpeech.QUEUE_FLUSH, volumeParams, "notification_utterance")
+        
+        Log.d(TAG, "=== DUCKING DEBUG: TTS.speak() returned: $speakResult ===")
+        InAppLogger.log("Service", "=== DUCKING DEBUG: TTS.speak() returned: $speakResult ===")
+        
+        // Start monitoring TTS volume during focus changes
+        monitorTtsVolumeDuringFocusChanges()
+        
+        // Ensure TTS volume is ready for any app focus changes
+        ensureTtsVolumeOnAppBackground()
+        
+        // Check if speak() failed
+        if (speakResult == TextToSpeech.ERROR) {
+            Log.e(TAG, "TTS.speak() returned ERROR - attempting recovery")
+            InAppLogger.logError("Service", "TTS.speak() returned ERROR - attempting recovery")
+            attemptTtsRecovery("speak() returned ERROR")
+            isCurrentlySpeaking = false
+            unregisterShakeListener()
+            return
+        }
     }
 
     /**
