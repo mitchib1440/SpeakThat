@@ -273,6 +273,7 @@ enum class TriggerType(
  */
 enum class ActionType(val displayName: String, val description: String) {
     APPLY_CUSTOM_SPEECH_FORMAT("Apply custom speech format", "Read this notification using a custom speech format"),
+    OVERRIDE_VOICE("Override TTS voice", "Temporarily override TTS language and voice for this notification"),
     FORCE_PRIVATE("Force private", "Read the app name, but not the notification content"),
     OVERRIDE_PRIVATE("Override private", "Read the entire notification, even if it would normally be private"),
     SKIP_NOTIFICATION("Skip this notification", "Don't read this notification aloud"),
@@ -751,6 +752,9 @@ data class Rule(
         return when (action.type) {
             ActionType.APPLY_CUSTOM_SPEECH_FORMAT -> {
                 context.getString(com.micoyc.speakthat.R.string.rule_action_custom_speech_format)
+            }
+            ActionType.OVERRIDE_VOICE -> {
+                context.getString(com.micoyc.speakthat.R.string.rule_action_override_tts_voice)
             }
             ActionType.FORCE_PRIVATE -> {
                 context.getString(com.micoyc.speakthat.R.string.rule_action_force_private)

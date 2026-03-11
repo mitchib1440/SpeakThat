@@ -444,6 +444,7 @@ class RuleBuilderActivity : AppCompatActivity() {
     private fun showActionMenu() {
         val actionOptions = arrayOf(
             getString(R.string.action_custom_speech_format_title),
+            getString(R.string.action_override_tts_voice_title),
             getString(R.string.action_force_private_title),
             getString(R.string.action_override_private_title),
             getString(R.string.action_skip_notification_title)
@@ -454,9 +455,10 @@ class RuleBuilderActivity : AppCompatActivity() {
             .setItems(actionOptions) { _, which ->
                 when (which) {
                     0 -> addCustomSpeechFormatAction()
-                    1 -> addForcePrivateAction()
-                    2 -> addOverridePrivateAction()
-                    3 -> addSkipNotificationAction()
+                    1 -> addOverrideVoiceAction()
+                    2 -> addForcePrivateAction()
+                    3 -> addOverridePrivateAction()
+                    4 -> addSkipNotificationAction()
                 }
             }
             .show()
@@ -578,6 +580,10 @@ class RuleBuilderActivity : AppCompatActivity() {
 
     private fun addForcePrivateAction() {
         launchActionConfig(ActionType.FORCE_PRIVATE, null)
+    }
+
+    private fun addOverrideVoiceAction() {
+        launchActionConfig(ActionType.OVERRIDE_VOICE, null)
     }
 
     private fun addOverridePrivateAction() {

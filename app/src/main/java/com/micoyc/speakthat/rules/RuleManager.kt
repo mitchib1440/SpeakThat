@@ -341,6 +341,15 @@ class RuleManager(private val context: Context) {
                         Effect.SetSpeechTemplate(template, templateKey)
                     }
                 }
+                ActionType.OVERRIDE_VOICE -> {
+                    val language = (action.data["language"] as? String).orEmpty().trim()
+                    val voiceName = (action.data["voice_name"] as? String)?.trim()?.takeIf { it.isNotEmpty() }
+                    if (language.isBlank()) {
+                        null
+                    } else {
+                        Effect.OverrideTtsVoice(language = language, voiceName = voiceName)
+                    }
+                }
                 ActionType.FORCE_PRIVATE -> Effect.ForcePrivate
                 ActionType.OVERRIDE_PRIVATE -> Effect.OverridePrivate
                 ActionType.SKIP_NOTIFICATION -> Effect.SkipNotification
@@ -376,6 +385,11 @@ class RuleManager(private val context: Context) {
         val speechTemplate = effects.filterIsInstance<Effect.SetSpeechTemplate>().lastOrNull()
         if (speechTemplate != null) {
             aggregated.add(speechTemplate)
+        }
+
+        val voiceOverride = effects.filterIsInstance<Effect.OverrideTtsVoice>().lastOrNull()
+        if (voiceOverride != null) {
+            aggregated.add(voiceOverride)
         }
 
         val mediaBehavior = effects.filterIsInstance<Effect.SetMediaBehavior>().lastOrNull()
@@ -751,6 +765,16 @@ class RuleManager(private val context: Context) {
                     errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_speech_template))
                 }
             }
+            ActionType.OVERRIDE_VOICE -> {
+                val language = action.data["language"] as? String
+                val voiceName = action.data["voice_name"]
+                if (language.isNullOrBlank() || !isValidLanguageCode(language)) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_voice_override_language))
+                }
+                if (voiceName != null && (voiceName !is String || voiceName.isBlank())) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_voice_override_voice))
+                }
+            }
             ActionType.FORCE_PRIVATE -> {
                 // No additional data required
             }
@@ -799,6 +823,13 @@ class RuleManager(private val context: Context) {
             } ?: return@all false
             day in 0..6
         }
+    }
+
+    private fun isValidLanguageCode(languageCode: String): Boolean {
+        val normalized = languageCode.trim()
+        if (normalized.isEmpty()) return false
+        val languageRegex = Regex("^[a-z]{2,3}(?:_[A-Z]{2})?$")
+        return languageRegex.matches(normalized)
     }
 
     private fun computeContextHash(notificationContext: NotificationContext): Int {

@@ -44,6 +44,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var textToSpeech: TextToSpeech? = null
     private var isTtsInitialized = false
     private var isCurrentlySpeaking = false
+    private var isTemporaryVoiceOverrideActive = false
     private var currentSpeechText = ""
     private var currentAppName = ""
     private var currentOriginalAppName = "" // Store original app name for statistics (before privacy modification)
@@ -387,7 +388,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val conditionalDelaySeconds: Int = -1,
         val sbn: StatusBarNotification? = null,
         val originalAppName: String? = null, // Original app name for statistics (before privacy modification)
-        val speechTemplateOverride: SpeechTemplateOverride? = null
+        val speechTemplateOverride: SpeechTemplateOverride? = null,
+        val voiceOverride: VoiceOverride? = null
     )
     
     override fun onCreate() {
@@ -517,6 +519,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 textToSpeech?.stop()
                 isCurrentlySpeaking = false
             }
+            restoreGlobalVoiceSettingsIfNeeded("service destroy")
             
             // Clean up enhanced ducking if active
             cleanupMediaBehavior()
@@ -1026,7 +1029,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                             filterResult.processedText,
                             filterResult.conditionalDelaySeconds,
                             sbn,
-                            filterResult.speechTemplateOverride
+                            filterResult.speechTemplateOverride,
+                            filterResult.voiceOverride
                         )
                     } else {
                         // Always log the full blocking reason with details
@@ -2349,12 +2353,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val processedText: String,
         val reason: String = "",
         val conditionalDelaySeconds: Int = -1, // -1 means no conditional delay
-        val speechTemplateOverride: SpeechTemplateOverride? = null
+        val speechTemplateOverride: SpeechTemplateOverride? = null,
+        val voiceOverride: VoiceOverride? = null
     )
 
     data class SpeechTemplateOverride(
         val template: String,
         val templateKey: String? = null
+    )
+
+    data class VoiceOverride(
+        val language: String,
+        val voiceName: String? = null
     )
     
     /**
@@ -2440,6 +2450,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val speechTemplateOverride = speechTemplateEffect?.let {
             SpeechTemplateOverride(it.template, it.templateKey)
         }
+        val voiceOverride = effects
+            .filterIsInstance<com.micoyc.speakthat.rules.Effect.OverrideTtsVoice>()
+            .lastOrNull()
+            ?.let { VoiceOverride(language = it.language, voiceName = it.voiceName) }
 
         // 6. Apply word filtering and replacements (optionally overriding private mode)
         val wordFilterResult = applyWordFiltering(text, appName, packageName, overridePrivate)
@@ -2458,12 +2472,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (speechTemplateOverride != null) {
             InAppLogger.logFilter("Rule effect: apply custom speech format")
         }
+        if (voiceOverride != null) {
+            InAppLogger.logFilter("Rule effect: override TTS voice")
+        }
 
         return FilterResult(
             shouldSpeak = true,
             processedText = processedText,
             reason = "Passed all filters",
-            speechTemplateOverride = speechTemplateOverride
+            speechTemplateOverride = speechTemplateOverride,
+            voiceOverride = voiceOverride
         )
     }
     
@@ -3325,6 +3343,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         textToSpeech?.stop()
         isCurrentlySpeaking = false
+        restoreGlobalVoiceSettingsIfNeeded("manual stop")
         
         // Clear current notification variables
         currentSpeechText = ""
@@ -3388,6 +3407,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         textToSpeech?.stop()
         isCurrentlySpeaking = false
+        restoreGlobalVoiceSettingsIfNeeded("audio focus stop")
         
         // Clear current notification variables
         currentSpeechText = ""
@@ -5132,7 +5152,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         text: String,
         conditionalDelaySeconds: Int = -1,
         sbn: StatusBarNotification? = null,
-        speechTemplateOverride: SpeechTemplateOverride? = null
+        speechTemplateOverride: SpeechTemplateOverride? = null,
+        voiceOverride: VoiceOverride? = null
     ) {
         val isPriorityApp = priorityApps.contains(packageName)
         
@@ -5145,7 +5166,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             conditionalDelaySeconds = conditionalDelaySeconds,
             sbn = sbn,
             originalAppName = originalAppName,
-            speechTemplateOverride = speechTemplateOverride
+            speechTemplateOverride = speechTemplateOverride,
+            voiceOverride = voiceOverride
         )
         
         Log.d(TAG, "Handling notification behavior - Mode: $notificationBehavior, App: $appName, Currently speaking: $isCurrentlySpeaking, Queue size: ${notificationQueue.size}")
@@ -5167,7 +5189,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         when (notificationBehavior) {
             "interrupt" -> {
                 Log.d(TAG, "INTERRUPT mode: Speaking immediately and interrupting any current speech")
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride)
             }
             "queue" -> {
                 Log.d(TAG, "QUEUE mode: Adding to queue")
@@ -5178,7 +5200,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "skip" -> {
                 if (!isCurrentlySpeaking) {
                     Log.d(TAG, "SKIP mode: Not currently speaking, will speak now")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride)
                 } else {
                     Log.d(TAG, "SKIP mode: Currently speaking, skipping notification from $appName")
                     // Track filter reason
@@ -5192,7 +5214,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "smart" -> {
                 if (isPriorityApp) {
                     Log.d(TAG, "SMART mode: Priority app $appName - interrupting")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride)
                 } else {
                     Log.d(TAG, "SMART mode: Regular app $appName - adding to queue")
                     notificationQueue.add(queuedNotification)
@@ -5201,7 +5223,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             else -> {
                 Log.d(TAG, "UNKNOWN mode '$notificationBehavior': Defaulting to interrupt")
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride)
             }
         }
     }
@@ -5222,7 +5244,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 queuedNotification.conditionalDelaySeconds,
                 queuedNotification.sbn,
                 queuedNotification.originalAppName,
-                queuedNotification.speechTemplateOverride
+                queuedNotification.speechTemplateOverride,
+                queuedNotification.voiceOverride
             )
         } else if (isCurrentlySpeaking) {
             Log.d(TAG, "Still speaking, queue will be processed when current speech finishes")
@@ -5237,7 +5260,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         conditionalDelaySeconds: Int = -1,
         sbn: StatusBarNotification? = null,
         originalAppName: String? = null,
-        speechTemplateOverride: SpeechTemplateOverride? = null
+        speechTemplateOverride: SpeechTemplateOverride? = null,
+        voiceOverride: VoiceOverride? = null
     ) {
         if (!isTtsInitialized || textToSpeech == null) {
             Log.w(TAG, "TTS not initialized, cannot speak notification")
@@ -5283,15 +5307,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (effectiveDelay > 0) {
             Log.d(TAG, "Delaying speech by ${effectiveDelay}s")
             pendingReadoutRunnable = Runnable {
-                executeSpeech(tidySpeechText, appName, text, originalAppName)
+                executeSpeech(tidySpeechText, appName, text, originalAppName, voiceOverride)
             }
             delayHandler?.postDelayed(pendingReadoutRunnable!!, (effectiveDelay * 1000).toLong())
         } else {
-            executeSpeech(tidySpeechText, appName, text, originalAppName)
+            executeSpeech(tidySpeechText, appName, text, originalAppName, voiceOverride)
         }
     }
     
-    private fun executeSpeech(speechText: String, appName: String, originalText: String, originalAppName: String? = null) {
+    private fun executeSpeech(
+        speechText: String,
+        appName: String,
+        originalText: String,
+        originalAppName: String? = null,
+        voiceOverride: VoiceOverride? = null
+    ) {
         Log.d(TAG, "=== DUCKING DEBUG: executeSpeech called with text: ${speechText.take(50)}... ===")
         InAppLogger.log("Service", "=== DUCKING DEBUG: executeSpeech called with text: ${speechText.take(50)}... ===")
         
@@ -5330,6 +5360,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "=== DUCKING DEBUG: Refreshing voice settings before speech execution ===")
         InAppLogger.log("Service", "=== DUCKING DEBUG: Refreshing voice settings before speech execution ===")
         applyVoiceSettings()
+        if (voiceOverride != null && applyTemporaryVoiceOverride(voiceOverride)) {
+            isTemporaryVoiceOverrideActive = true
+        }
         
         // Add engine failure warning if needed
         var finalSpeechText = speechText
@@ -5344,6 +5377,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (!checkTtsHealth()) {
             Log.e(TAG, "TTS health check failed - cannot speak")
             InAppLogger.logError("Service", "TTS health check failed - cannot speak")
+            restoreGlobalVoiceSettingsIfNeeded("tts health check failed")
             return
         }
         
@@ -5583,6 +5617,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         isCurrentlySpeaking = false
                         contentCapTimerRunnable = null
                         cancelSpeechSafetyTimeout("content cap")
+                        restoreGlobalVoiceSettingsIfNeeded("content cap stop")
                         
                         // Stop foreground service
                         stopForegroundService()
@@ -5648,6 +5683,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     }
                     
                     InAppLogger.logTTSEvent("TTS completed", "Utterance finished")
+                    restoreGlobalVoiceSettingsIfNeeded("utterance done")
                     
                     // Track notification read for review reminder
                     trackNotificationReadForReview()
@@ -5704,6 +5740,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     
                     Log.e(TAG, "TTS error occurred")
                     InAppLogger.logTTSEvent("TTS error", "Utterance failed")
+                    restoreGlobalVoiceSettingsIfNeeded("utterance error")
                     
                     // Attempt recovery for utterance errors
                     attemptTtsRecovery("Utterance error: $utteranceId")
@@ -5741,6 +5778,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             attemptTtsRecovery("speak() returned ERROR")
             isCurrentlySpeaking = false
             unregisterShakeListener()
+            restoreGlobalVoiceSettingsIfNeeded("speak() error")
             return
         }
     }
@@ -5763,6 +5801,56 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         } else {
             InAppLogger.log("Service", "Cannot apply voice settings - TTS not initialized or null")
         }
+    }
+
+    private fun applyTemporaryVoiceOverride(override: VoiceOverride): Boolean {
+        val tts = textToSpeech ?: return false
+        val targetLocale = parseVoiceOverrideLocale(override.language)
+        if (targetLocale != null) {
+            val languageResult = tts.setLanguage(targetLocale)
+            InAppLogger.log(
+                "Service",
+                "Applied temporary override language ${override.language} (result=$languageResult)"
+            )
+        } else {
+            InAppLogger.logError("Service", "Invalid temporary override language: ${override.language}")
+            return false
+        }
+
+        val selectedVoiceName = override.voiceName?.trim().orEmpty()
+        if (selectedVoiceName.isNotEmpty()) {
+            val matchingVoice = tts.voices?.firstOrNull { it.name == selectedVoiceName }
+            if (matchingVoice != null) {
+                val voiceResult = tts.setVoice(matchingVoice)
+                InAppLogger.log(
+                    "Service",
+                    "Applied temporary override voice $selectedVoiceName (result=$voiceResult)"
+                )
+            } else {
+                InAppLogger.logWarning(
+                    "Service",
+                    "Temporary override voice not available on current engine: $selectedVoiceName"
+                )
+            }
+        }
+        return true
+    }
+
+    private fun restoreGlobalVoiceSettingsIfNeeded(reason: String) {
+        if (!isTemporaryVoiceOverrideActive) {
+            return
+        }
+        isTemporaryVoiceOverrideActive = false
+        InAppLogger.log("Service", "Restoring global voice settings after temporary override ($reason)")
+        applyVoiceSettings()
+    }
+
+    private fun parseVoiceOverrideLocale(languageCode: String): Locale? {
+        val normalized = languageCode.trim()
+        if (normalized.isEmpty()) return null
+        val languageTag = normalized.replace('_', '-')
+        val locale = Locale.forLanguageTag(languageTag)
+        return if (locale.language.isNullOrBlank()) null else locale
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {

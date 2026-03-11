@@ -2,7 +2,9 @@ package com.micoyc.speakthat.rules
 
 import android.graphics.Typeface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.util.TypedValue
 import android.view.View
 import android.widget.LinearLayout
@@ -11,10 +13,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import com.micoyc.speakthat.InAppLogger
+import com.micoyc.speakthat.LanguagePresetManager
 import com.micoyc.speakthat.R
 import com.micoyc.speakthat.SpeechTemplateConstants
 import com.micoyc.speakthat.databinding.ActivityActionConfigBinding
 import com.micoyc.speakthat.settings.managers.SpeechTemplateManager
+import java.util.Locale
 
 class ActionConfigActivity : AppCompatActivity() {
 
@@ -25,6 +29,12 @@ class ActionConfigActivity : AppCompatActivity() {
     private lateinit var templateManager: SpeechTemplateManager
     private lateinit var templatePresets: Array<String>
     private lateinit var templateKeys: Array<String>
+    private lateinit var voiceSettingsPrefs: SharedPreferences
+    private var overrideLanguageCodes: List<String> = emptyList()
+    private var overrideLanguageLabels: List<String> = emptyList()
+    private var overrideVoiceNames: List<String> = emptyList()
+    private var voiceOverrideTts: TextToSpeech? = null
+    private var pendingOverrideVoiceSelection: String? = null
 
     companion object {
         const val EXTRA_ACTION_TYPE = "action_type"
@@ -45,6 +55,7 @@ class ActionConfigActivity : AppCompatActivity() {
 
         actionType = intent.getSerializableExtraCompat(EXTRA_ACTION_TYPE)
         isEditing = intent.getBooleanExtra(EXTRA_IS_EDITING, false)
+        voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
 
         if (isEditing) {
             val actionData = intent.getStringExtra(EXTRA_ACTION_DATA)
@@ -82,6 +93,8 @@ class ActionConfigActivity : AppCompatActivity() {
             setupSkipNotificationUI()
         } else if (actionType == ActionType.APPLY_CUSTOM_SPEECH_FORMAT) {
             setupCustomSpeechFormatUI()
+        } else if (actionType == ActionType.OVERRIDE_VOICE) {
+            setupOverrideTtsVoiceUI()
         } else if (actionType == ActionType.FORCE_PRIVATE) {
             setupForcePrivateUI()
         } else if (actionType == ActionType.OVERRIDE_PRIVATE) {
@@ -138,6 +151,109 @@ class ActionConfigActivity : AppCompatActivity() {
         }
 
         setupPlaceholderList()
+    }
+
+    private fun setupOverrideTtsVoiceUI() {
+        binding.cardOverrideTtsVoice.visibility = View.VISIBLE
+        setupOverrideLanguageSpinner()
+
+        binding.switchOverrideVoiceAdvanced.setOnCheckedChangeListener { _, isChecked ->
+            binding.layoutOverrideVoiceAdvancedSection.visibility = if (isChecked) View.VISIBLE else View.GONE
+            if (isChecked) {
+                ensureVoiceOverrideTts()
+            }
+        }
+    }
+
+    private fun setupOverrideLanguageSpinner() {
+        val presets = LanguagePresetManager.getAllPresets()
+            .filter { !it.isCustom }
+        val languageByCode = linkedMapOf<String, String>()
+        presets.forEach { preset ->
+            if (!languageByCode.containsKey(preset.ttsLanguage)) {
+                languageByCode[preset.ttsLanguage] = preset.displayName
+            }
+        }
+        overrideLanguageCodes = languageByCode.keys.toList()
+        overrideLanguageLabels = languageByCode.values.toList()
+
+        val adapter = android.widget.ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            overrideLanguageLabels
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerOverrideVoiceLanguage.adapter = adapter
+        binding.spinnerOverrideVoiceLanguage.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
+                refreshOverrideVoiceOptions()
+            }
+
+            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) = Unit
+        }
+    }
+
+    private fun ensureVoiceOverrideTts() {
+        if (voiceOverrideTts != null) {
+            refreshOverrideVoiceOptions()
+            return
+        }
+
+        val enginePackage = voiceSettingsPrefs.getString("tts_engine_package", "").orEmpty()
+        voiceOverrideTts = if (enginePackage.isBlank()) {
+            TextToSpeech(this) { status -> onVoiceOverrideTtsInit(status) }
+        } else {
+            TextToSpeech(this, { status -> onVoiceOverrideTtsInit(status) }, enginePackage)
+        }
+    }
+
+    private fun onVoiceOverrideTtsInit(status: Int) {
+        if (status != TextToSpeech.SUCCESS) {
+            InAppLogger.logError("ActionConfigActivity", "Voice override TTS init failed: $status")
+            return
+        }
+        refreshOverrideVoiceOptions()
+    }
+
+    private fun refreshOverrideVoiceOptions() {
+        val tts = voiceOverrideTts
+        val languageCode = overrideLanguageCodes.getOrNull(binding.spinnerOverrideVoiceLanguage.selectedItemPosition).orEmpty()
+        val targetLocale = parseLocale(languageCode)
+        val voices = tts?.voices
+            ?.filter { voice ->
+                val voiceLocale = voice.locale
+                targetLocale == null || voiceLocale == null || voiceLocale.language == targetLocale.language
+            }
+            ?.map { it.name }
+            ?.sorted()
+            .orEmpty()
+
+        val entries = mutableListOf(getString(R.string.action_override_tts_voice_default_voice_option))
+        entries.addAll(voices)
+        overrideVoiceNames = entries
+
+        val adapter = android.widget.ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            overrideVoiceNames
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerOverrideVoiceName.adapter = adapter
+
+        val pendingName = pendingOverrideVoiceSelection
+        if (!pendingName.isNullOrBlank()) {
+            val index = overrideVoiceNames.indexOf(pendingName)
+            if (index >= 0) {
+                binding.spinnerOverrideVoiceName.setSelection(index)
+                pendingOverrideVoiceSelection = null
+            }
+        }
+    }
+
+    private fun parseLocale(code: String): Locale? {
+        if (code.isBlank()) return null
+        val locale = Locale.forLanguageTag(code.replace('_', '-'))
+        return if (locale.language.isNullOrBlank()) null else locale
     }
 
     private fun setupForcePrivateUI() {
@@ -242,12 +358,27 @@ class ActionConfigActivity : AppCompatActivity() {
             binding.spinnerSpeechTemplateAction.setSelection(selection)
             binding.editCustomSpeechTemplateAction.setText(template)
             binding.editCustomSpeechTemplateAction.isEnabled = resolvedKey != SpeechTemplateConstants.TEMPLATE_KEY_VARIED
+        } else if (actionType == ActionType.OVERRIDE_VOICE) {
+            val savedLanguage = (originalAction?.data?.get("language") as? String)
+                ?: voiceSettingsPrefs.getString("language", "en_US")
+                ?: "en_US"
+            val languageIndex = overrideLanguageCodes.indexOf(savedLanguage).takeIf { it >= 0 } ?: 0
+            binding.spinnerOverrideVoiceLanguage.setSelection(languageIndex)
+
+            val savedVoiceName = (originalAction?.data?.get("voice_name") as? String).orEmpty()
+            if (savedVoiceName.isNotBlank()) {
+                binding.switchOverrideVoiceAdvanced.isChecked = true
+                binding.layoutOverrideVoiceAdvancedSection.visibility = View.VISIBLE
+                pendingOverrideVoiceSelection = savedVoiceName
+                ensureVoiceOverrideTts()
+            }
         }
     }
 
     private fun saveAction() {
         val action = when (actionType) {
             ActionType.APPLY_CUSTOM_SPEECH_FORMAT -> createCustomSpeechFormatAction()
+            ActionType.OVERRIDE_VOICE -> createOverrideTtsVoiceAction()
             ActionType.FORCE_PRIVATE -> createForcePrivateAction()
             ActionType.OVERRIDE_PRIVATE -> createOverridePrivateAction()
             else -> createSkipNotificationAction()
@@ -308,6 +439,41 @@ class ActionConfigActivity : AppCompatActivity() {
         }
     }
 
+    private fun createOverrideTtsVoiceAction(): Action {
+        val selectedLanguage = overrideLanguageCodes
+            .getOrNull(binding.spinnerOverrideVoiceLanguage.selectedItemPosition)
+            ?: voiceSettingsPrefs.getString("language", "en_US")
+            ?: "en_US"
+        val useSpecificVoice = binding.switchOverrideVoiceAdvanced.isChecked
+        val selectedVoiceName = if (useSpecificVoice) {
+            overrideVoiceNames.getOrNull(binding.spinnerOverrideVoiceName.selectedItemPosition)
+                ?.takeIf { it != getString(R.string.action_override_tts_voice_default_voice_option) }
+        } else {
+            null
+        }
+        val actionData = mutableMapOf<String, Any>(
+            "language" to selectedLanguage
+        )
+        if (!selectedVoiceName.isNullOrBlank()) {
+            actionData["voice_name"] = selectedVoiceName
+        }
+        val description = getString(R.string.action_override_tts_voice_title)
+
+        return if (isEditing && originalAction != null) {
+            originalAction!!.copy(
+                type = ActionType.OVERRIDE_VOICE,
+                data = actionData,
+                description = description
+            )
+        } else {
+            Action(
+                type = ActionType.OVERRIDE_VOICE,
+                data = actionData,
+                description = description
+            )
+        }
+    }
+
     private fun createForcePrivateAction(): Action {
         val description = getString(R.string.action_force_private_title)
 
@@ -348,6 +514,12 @@ class ActionConfigActivity : AppCompatActivity() {
         @Suppress("DEPRECATION")
         onBackPressed()
         return true
+    }
+
+    override fun onDestroy() {
+        voiceOverrideTts?.shutdown()
+        voiceOverrideTts = null
+        super.onDestroy()
     }
 }
 

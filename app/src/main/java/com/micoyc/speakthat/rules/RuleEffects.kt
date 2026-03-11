@@ -8,6 +8,10 @@ sealed class Effect {
     data object SkipNotification : Effect()
     data object ForcePrivate : Effect()
     data object OverridePrivate : Effect()
+    data class OverrideTtsVoice(
+        val language: String,
+        val voiceName: String? = null
+    ) : Effect()
     data class SetSpeechTemplate(
         val template: String,
         val templateKey: String? = null

@@ -1467,6 +1467,13 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="action_custom_speech_format_preset_label">Preset</string>
     <string name="action_custom_speech_format_label">Speech Format</string>
     <string name="action_custom_speech_format_hint">Enter speech format</string>
+    <string name="action_override_tts_voice_title">Override TTS Voice</string>
+    <string name="action_override_tts_voice_description">Temporarily override language and specific voice for this notification only.</string>
+    <string name="action_override_tts_voice_language_label">Language</string>
+    <string name="action_override_tts_voice_show_advanced">Show specific voice</string>
+    <string name="action_override_tts_voice_specific_voice_label">Specific Voice (Advanced)</string>
+    <string name="action_override_tts_voice_specific_voice_description">Optional. Uses the current global TTS engine and applies this voice only to this notification.</string>
+    <string name="action_override_tts_voice_default_voice_option">Default (Use selected language voice)</string>
     <string name="action_force_private_title">Force Private</string>
     <string name="action_force_private_description">Read the app name, but not the notification content.</string>
     <string name="action_override_private_title">Override Private</string>
@@ -2194,8 +2201,11 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="rule_error_invalid_wifi_networks">WiFi network list is invalid</string>
     <string name="rule_error_invalid_master_switch">Master switch action requires enabled true or false</string>
     <string name="rule_error_invalid_speech_template">Speech format cannot be empty</string>
+    <string name="rule_error_invalid_voice_override_language">Override TTS Voice requires a valid language</string>
+    <string name="rule_error_invalid_voice_override_voice">Override TTS Voice has an invalid specific voice</string>
     <string name="rule_action_master_switch">Set SpeakThat master switch</string>
     <string name="rule_action_custom_speech_format">Apply custom speech format</string>
+    <string name="rule_action_override_tts_voice">Override TTS voice</string>
     <string name="rule_action_force_private">Force private mode</string>
     <string name="rule_action_override_private">Override private mode</string>
     <string name="rule_action_use_voice_call">Use voice call audio routing</string>

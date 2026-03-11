@@ -53,6 +53,14 @@ class ActionExecutor(private val context: Context) {
                     message = "Custom speech format handled by rule pipeline"
                 )
             }
+            ActionType.OVERRIDE_VOICE -> {
+                ActionExecutionResult(
+                    actionId = action.id,
+                    actionType = action.type,
+                    success = true,
+                    message = "Override TTS voice handled by rule pipeline"
+                )
+            }
             ActionType.FORCE_PRIVATE -> {
                 ActionExecutionResult(
                     actionId = action.id,
