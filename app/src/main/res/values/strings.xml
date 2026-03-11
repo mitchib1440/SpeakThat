@@ -1581,7 +1581,28 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="item_cooldown_app_name">App Name</string>
     <string name="item_cooldown_package">com.example.app</string>
     <string name="item_cooldown_no_cooldown">No cooldown</string>
+    <string name="cooldown_dialog_title">Set cooldown</string>
+    <string name="cooldown_dialog_value_hint">Enter a number</string>
+    <string name="cooldown_unit_seconds">Seconds</string>
+    <string name="cooldown_unit_minutes">Minutes</string>
+    <string name="cooldown_unit_hours">Hours</string>
+    <string name="cooldown_error_required">Enter a value</string>
+    <string name="cooldown_error_positive">Value must be greater than 0</string>
+    <string name="cooldown_error_max_24_hours">Cooldown cannot exceed 24 hours</string>
     <string name="item_cooldown_delete">🗑️</string>
+
+    <plurals name="cooldown_seconds_label">
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
+    <plurals name="cooldown_minutes_label">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="cooldown_hours_label">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
 
     <!-- More Item Layout Strings -->
     <string name="item_word_filter_word">Word</string>

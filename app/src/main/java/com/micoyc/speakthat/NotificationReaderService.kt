@@ -316,6 +316,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Cooldown settings
         private const val KEY_COOLDOWN_APPS = "cooldown_apps"
+        private const val KEY_COOLDOWN_TIMESTAMPS = "cooldown_timestamps"
         
         // URL handling constants
         private const val KEY_URL_HANDLING_MODE = "url_handling_mode"
@@ -2187,6 +2188,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     private fun loadCooldownSettings() {
         appCooldownSettings.clear()
+        appCooldownTimestamps.clear()
         try {
             val cooldownAppsJson = sharedPreferences?.getString(KEY_COOLDOWN_APPS, "[]") ?: "[]"
             val jsonArray = org.json.JSONArray(cooldownAppsJson)
@@ -2196,7 +2198,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 val cooldownSeconds = jsonObject.optInt("cooldownSeconds", 5)
                 appCooldownSettings[packageName] = cooldownSeconds
             }
+            val cooldownTimestampsJson = sharedPreferences?.getString(KEY_COOLDOWN_TIMESTAMPS, "{}") ?: "{}"
+            val timestampObject = org.json.JSONObject(cooldownTimestampsJson)
+            val iterator = timestampObject.keys()
+            while (iterator.hasNext()) {
+                val packageName = iterator.next()
+                if (!appCooldownSettings.containsKey(packageName)) {
+                    continue
+                }
+                val lastTimestamp = timestampObject.optLong(packageName, 0L)
+                if (lastTimestamp > 0L) {
+                    appCooldownTimestamps[packageName] = lastTimestamp
+                }
+            }
             Log.d(TAG, "Loaded cooldown settings for ${appCooldownSettings.size} apps")
+            Log.d(TAG, "Loaded cooldown timestamps for ${appCooldownTimestamps.size} apps")
         } catch (e: Exception) {
             Log.e(TAG, "Error loading cooldown settings", e)
         }
@@ -2218,7 +2234,22 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         // Update timestamp for this app
         appCooldownTimestamps[packageName] = currentTime
+        persistCooldownTimestamps()
         return FilterResult(true, "", "Cooldown passed")
+    }
+
+    private fun persistCooldownTimestamps() {
+        try {
+            val timestampObject = org.json.JSONObject()
+            for ((packageName, timestamp) in appCooldownTimestamps) {
+                timestampObject.put(packageName, timestamp)
+            }
+            sharedPreferences?.edit()
+                ?.putString(KEY_COOLDOWN_TIMESTAMPS, timestampObject.toString())
+                ?.apply()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error persisting cooldown timestamps", e)
+        }
     }
     
     private fun loadFilterSettings() {

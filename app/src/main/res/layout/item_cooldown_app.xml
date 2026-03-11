@@ -15,7 +15,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginEnd="12dp"
-        android:src="@drawable/ic_app_unknown"
+        android:src="@drawable/ic_icon_not_found_32"
         android:contentDescription="App icon" />
 
     <!-- App Info and Dropdown Container -->
@@ -47,25 +47,15 @@
             android:textColor="@color/white_200"
             android:layout_marginBottom="8dp" />
 
-        <!-- Cooldown Time Dropdown -->
-        <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cooldownTimeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_cooldown_time"
-            app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/white_200"
-            app:hintTextColor="@color/white_200"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-
-            <AutoCompleteTextView
-                android:id="@+id/cooldownTimeDropdown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                android:text="@string/item_cooldown_no_cooldown"
-                android:textColor="@color/white_100" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            android:text="@string/item_cooldown_no_cooldown"
+            android:textColor="@color/black_100"
+            app:iconTint="@color/white_100"
+            app:backgroundTint="@color/white_100"
+            android:layout_marginBottom="8dp"/>
 
     </LinearLayout>
 
