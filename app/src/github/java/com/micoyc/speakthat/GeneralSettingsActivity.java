@@ -172,6 +172,15 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             sharedPreferences.edit().putBoolean("notification_while_reading", isChecked).apply();
         });
 
+        // Show System Blocks in History Toggle
+        MaterialSwitch showSystemBlocksSwitch = binding.switchShowSystemBlocks;
+        boolean showSystemBlocksEnabled = sharedPreferences.getBoolean("show_system_blocks_history", false);
+        showSystemBlocksSwitch.setChecked(showSystemBlocksEnabled);
+
+        showSystemBlocksSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean("show_system_blocks_history", isChecked).apply();
+        });
+
         // Auto-Start Toggle
         MaterialSwitch autoStartSwitch = binding.switchAutoStart;
         boolean autoStartEnabled = sharedPreferences.getBoolean("auto_start_enabled", true);

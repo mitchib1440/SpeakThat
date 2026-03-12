@@ -434,8 +434,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     private fun setupNotificationHistoryCard() {
         homeNotificationAdapter = HomeNotificationAdapter(
             emptyList(),
-            onItemClick = { showFilterBottomSheet(it) },
-            onFilterClick = { showFilterBottomSheet(it) }
+            onItemClick = { showFilterBottomSheet(it) }
         )
         binding.recyclerNotificationHistory.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)

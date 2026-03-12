@@ -11,8 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class HomeNotificationAdapter(
     private var notifications: List<NotificationReaderService.NotificationData>,
-    private val onItemClick: (NotificationReaderService.NotificationData) -> Unit,
-    private val onFilterClick: (NotificationReaderService.NotificationData) -> Unit
+    private val onItemClick: (NotificationReaderService.NotificationData) -> Unit
 ) : RecyclerView.Adapter<HomeNotificationAdapter.ViewHolder>() {
 
     companion object {
@@ -24,7 +23,8 @@ class HomeNotificationAdapter(
         val textAppNameTime: TextView = itemView.findViewById(R.id.textAppNameTime)
         val textNotificationTitle: TextView = itemView.findViewById(R.id.textNotificationTitle)
         val textNotificationBody: TextView = itemView.findViewById(R.id.textNotificationBody)
-        val imageFilterIcon: ImageView = itemView.findViewById(R.id.imageFilterIcon)
+        val imageStatusIcon: ImageView = itemView.findViewById(R.id.imageStatusIcon)
+        val textActionOutcome: TextView = itemView.findViewById(R.id.textActionOutcome)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -57,7 +57,35 @@ class HomeNotificationAdapter(
         }
 
         holder.itemView.setOnClickListener { onItemClick(notification) }
-        holder.imageFilterIcon.setOnClickListener { onFilterClick(notification) }
+
+        if (notification.wasRead) {
+            holder.imageAppIcon.alpha = 1.0f
+            holder.textNotificationTitle.alpha = 1.0f
+            holder.textNotificationBody.alpha = 1.0f
+            holder.imageStatusIcon.setImageResource(R.drawable.ic_read_24)
+
+            if (notification.spokenText != null) {
+                // Grab the context from the itemView
+                val context = holder.itemView.context
+                // Pass the spoken text into the placeholder
+                holder.textActionOutcome.text = context.getString(R.string.mainscreen_notification_history_spoke, notification.spokenText)
+                holder.textActionOutcome.visibility = View.VISIBLE
+            } else {
+                holder.textActionOutcome.visibility = View.GONE
+            }
+        } else {
+            holder.imageAppIcon.alpha = 0.38f
+            holder.textNotificationTitle.alpha = 0.38f
+            holder.textNotificationBody.alpha = 0.38f
+            holder.imageStatusIcon.setImageResource(R.drawable.ic_not_read_24)
+
+            if (notification.blockedReason != null) {
+                holder.textActionOutcome.text = notification.blockedReason
+                holder.textActionOutcome.visibility = View.VISIBLE
+            } else {
+                holder.textActionOutcome.visibility = View.GONE
+            }
+        }
     }
 
     override fun getItemCount(): Int = notifications.size

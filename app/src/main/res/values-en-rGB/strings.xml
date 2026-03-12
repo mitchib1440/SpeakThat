@@ -915,6 +915,8 @@ Block = completely ignore, Private = speak privately
     <string name="general_persistent_notification_description">Show a persistent notification when SpeakThat is active</string>
     <string name="general_notification_while_reading">Notification While Reading</string>
     <string name="general_notification_while_reading_description">Show a notification when TTS is actively reading</string>
+    <string name="general_show_system_blocks">Show System Blocks in History</string>
+    <string name="general_show_system_blocks_description">Displays background system blocks (like duplicates) in the notification history. Helpful for troubleshooting.</string>
     <string name="general_toast_notifications_title">Enable Toast Notifications</string>
     <string name="general_toast_main_app">Main app toggle</string>
     <string name="general_toast_main_app_description">Show toast when toggling master switch in the app</string>
@@ -2123,6 +2125,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="notification_history_description">SpeakThat! records your 15 most recent notifications so you can filter them later. Tap a notification to easily filter ones just like it in the future.</string>
     <string name="notification_history_home_empty">No notifications recorded yet. Notifications will appear here as SpeakThat! reads them.</string>
     <string name="all_time_statistics_title">All-Time Statistics</string>
+    <string name="mainscreen_notification_history_spoke">Spoke: \"%1$s\"</string>
 
     <!-- Filter Bottom Sheet -->
     <string name="filter_sheet_title">Filter Similar</string>

@@ -378,7 +378,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val packageName: String,
         val title: String,
         val text: String,
-        val timestamp: String
+        val timestamp: String,
+        val wasRead: Boolean = true,
+        val spokenText: String? = null,
+        val blockedReason: String? = null
     )
     
     data class QueuedNotification(
@@ -726,6 +729,23 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     } catch (e: Exception) {
                         Log.e(TAG, "Error tracking group summary filter", e)
                     }
+                    val showSystemBlocks = sharedPreferences?.getBoolean("show_system_blocks_history", false) ?: false
+                    if (showSystemBlocks) {
+                        val sysTitle = sbn.notification.extras?.getCharSequence(
+                            android.app.Notification.EXTRA_TITLE
+                        )?.toString() ?: ""
+                        val sysAppName = getAppName(packageName)
+                        val sysText = extractNotificationText(notification)
+                        addToHistory(
+                            appName = sysAppName,
+                            packageName = packageName,
+                            title = sysTitle,
+                            text = sysText,
+                            wasRead = false,
+                            spokenText = null,
+                            blockedReason = "System: Blocked group summary"
+                        )
+                    }
                     return
                 }
                 
@@ -807,6 +827,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 
                 // Extract notification text
                 val notificationText = extractNotificationText(notification)
+                val showSystemBlocks = sharedPreferences?.getBoolean("show_system_blocks_history", false) ?: false
                 
                 // Log notification details for debugging
                 Log.d(TAG, "Processing notification - Package: $packageName, ID: ${sbn.id}, Text: '${notificationText.take(100)}...'")
@@ -834,6 +855,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                                 StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_GROUP_CHILD_REPOST)
                             } catch (e: Exception) {
                                 Log.e(TAG, "Error tracking group child repost filter", e)
+                            }
+                            if (showSystemBlocks) {
+                                val sysTitle = sbn.notification.extras?.getCharSequence(
+                                    android.app.Notification.EXTRA_TITLE
+                                )?.toString() ?: ""
+                                addToHistory(
+                                    appName = appName,
+                                    packageName = packageName,
+                                    title = sysTitle,
+                                    text = notificationText,
+                                    wasRead = false,
+                                    spokenText = null,
+                                    blockedReason = "System: Blocked group child repost"
+                                )
                             }
                             return
                         }
@@ -877,6 +912,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         } catch (e: Exception) {
                             Log.e(TAG, "Error tracking deduplication filter", e)
                         }
+                        if (showSystemBlocks) {
+                            val sysTitle = sbn.notification.extras?.getCharSequence(
+                                android.app.Notification.EXTRA_TITLE
+                            )?.toString() ?: ""
+                            addToHistory(
+                                appName = appName,
+                                packageName = packageName,
+                                title = sysTitle,
+                                text = notificationText,
+                                wasRead = false,
+                                spokenText = null,
+                                blockedReason = "System: Blocked as duplicate"
+                            )
+                        }
                         return
                     }
                     
@@ -899,6 +948,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         } catch (e: Exception) {
                             Log.e(TAG, "Error tracking deduplication filter", e)
                         }
+                        if (showSystemBlocks) {
+                            val sysTitle = sbn.notification.extras?.getCharSequence(
+                                android.app.Notification.EXTRA_TITLE
+                            )?.toString() ?: ""
+                            addToHistory(
+                                appName = appName,
+                                packageName = packageName,
+                                title = sysTitle,
+                                text = notificationText,
+                                wasRead = false,
+                                spokenText = null,
+                                blockedReason = "System: Blocked as duplicate"
+                            )
+                        }
                         return
                     }
                     
@@ -918,6 +981,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                                 StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_DEDUPLICATION)
                             } catch (e: Exception) {
                                 Log.e(TAG, "Error tracking deduplication filter", e)
+                            }
+                            if (showSystemBlocks) {
+                                val sysTitle = sbn.notification.extras?.getCharSequence(
+                                    android.app.Notification.EXTRA_TITLE
+                                )?.toString() ?: ""
+                                addToHistory(
+                                    appName = appName,
+                                    packageName = packageName,
+                                    title = sysTitle,
+                                    text = notificationText,
+                                    wasRead = false,
+                                    spokenText = null,
+                                    blockedReason = "System: Blocked as duplicate"
+                                )
                             }
                             return
                         }
@@ -941,6 +1018,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                                 StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_DEDUPLICATION)
                             } catch (e: Exception) {
                                 Log.e(TAG, "Error tracking deduplication filter", e)
+                            }
+                            if (showSystemBlocks) {
+                                val sysTitle = sbn.notification.extras?.getCharSequence(
+                                    android.app.Notification.EXTRA_TITLE
+                                )?.toString() ?: ""
+                                addToHistory(
+                                    appName = appName,
+                                    packageName = packageName,
+                                    title = sysTitle,
+                                    text = notificationText,
+                                    wasRead = false,
+                                    spokenText = null,
+                                    blockedReason = "System: Blocked as duplicate"
+                                )
                             }
                             return
                         }
@@ -972,6 +1063,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                                 StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_DISMISSAL_MEMORY)
                             } catch (e: Exception) {
                                 Log.e(TAG, "Error tracking dismissal memory filter", e)
+                            }
+                            if (showSystemBlocks) {
+                                val sysTitle = sbn.notification.extras?.getCharSequence(
+                                    android.app.Notification.EXTRA_TITLE
+                                )?.toString() ?: ""
+                                addToHistory(
+                                    appName = appName,
+                                    packageName = packageName,
+                                    title = sysTitle,
+                                    text = notificationText,
+                                    wasRead = false,
+                                    spokenText = null,
+                                    blockedReason = "System: Blocked by dismissal memory"
+                                )
                             }
                             return
                         }
@@ -1020,7 +1125,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         
                         // Add to history
                         val rawTitle = if (isPrivateContent) "" else sbn?.notification?.extras?.getCharSequence(android.app.Notification.EXTRA_TITLE)?.toString() ?: ""
-                        addToHistory(finalAppName, packageName, rawTitle, filterResult.processedText)
+                        addToHistory(
+                            appName = finalAppName,
+                            packageName = packageName,
+                            title = rawTitle,
+                            text = notificationText,
+                            wasRead = true,
+                            spokenText = filterResult.processedText,
+                            blockedReason = null
+                        )
                         
                         // Handle notification based on behavior mode (pass conditional delay info)
                         handleNotificationBehavior(
@@ -1037,6 +1150,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         val reasonType = extractBlockingReasonType(filterResult.reason)
                         Log.d(TAG, "Notification blocked from $appName: Blocked: $reasonType (Details: ${filterResult.reason})")
                         InAppLogger.logFilter("Blocked notification from $appName: Blocked: $reasonType (Details: ${filterResult.reason})")
+                        val rawTitle = sbn.notification.extras?.getCharSequence(
+                            android.app.Notification.EXTRA_TITLE
+                        )?.toString() ?: ""
+                        val uiReason = "Silenced by: ${reasonType.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }}"
+                        addToHistory(
+                            appName = appName,
+                            packageName = packageName,
+                            title = rawTitle,
+                            text = notificationText,
+                            wasRead = false,
+                            spokenText = null,
+                            blockedReason = uiReason
+                        )
                     }
                 }
             } catch (e: Exception) {
@@ -1956,10 +2082,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
-    private fun addToHistory(appName: String, packageName: String, title: String, text: String) {
+    private fun addToHistory(
+        appName: String, packageName: String, title: String, text: String,
+        wasRead: Boolean = true, spokenText: String? = null, blockedReason: String? = null
+    ) {
         try {
             val timestamp = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
-            val notificationData = NotificationData(appName, packageName, title, text, timestamp)
+            val notificationData = NotificationData(appName, packageName, title, text, timestamp, wasRead, spokenText, blockedReason)
             
             // Add to batch queue instead of immediate database write
             historyBatchQueue.add(notificationData)

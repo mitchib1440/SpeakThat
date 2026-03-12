@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
+        android:gravity="top"
         android:padding="12dp">
 
         <!-- App Icon -->
@@ -69,18 +69,27 @@
                 android:ellipsize="end"
                 tools:text="Oh hi. So. How are you holding up? Because I'm a potato" />
 
+            <TextView
+                android:id="@+id/textActionOutcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="12sp"
+                android:fontFamily="monospace"
+                android:textColor="@color/purple_card_text_primary"
+                tools:text="Spoke: Oh hi. So. How are you holding up?"
+                android:maxLines="3"
+                android:ellipsize="end"/>
+
         </LinearLayout>
 
-        <!-- Filter Icon -->
+        <!-- Status Icon -->
         <ImageView
-            android:id="@+id/imageFilterIcon"
+            android:id="@+id/imageStatusIcon"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:src="@drawable/ic_filter_alt_24"
+            android:src="@drawable/ic_read_24"
             android:scaleType="centerInside"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/filter_notification_description"
             app:tint="@color/white_100" />
 
