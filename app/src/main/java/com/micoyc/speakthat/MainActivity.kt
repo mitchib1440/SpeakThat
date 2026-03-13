@@ -330,6 +330,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
 
         val showHistory = sharedPreferences?.getBoolean("show_history_on_main", true) ?: true
         binding.cardNotificationHistory.visibility = if (showHistory) View.VISIBLE else View.GONE
+        binding.textHistoryHiddenReadCount.visibility = if (showHistory) View.GONE else View.VISIBLE
     }
     
     private fun setupUI() {
@@ -511,6 +512,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             val received = statsManager.getNotificationsReceived()
             val read = statsManager.getNotificationsRead()
             val percentage = statsManager.getPercentageRead()
+            binding.textHistoryHiddenReadCount.text = getString(R.string.statistics_notifications_read, read)
 
             val nf = NumberFormat.getIntegerInstance()
             val receivedStr = nf.format(received)

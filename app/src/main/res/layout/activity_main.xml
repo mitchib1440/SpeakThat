@@ -534,5 +534,17 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+        <TextView
+            android:id="@+id/textHistoryHiddenReadCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
+            android:gravity="center"
+            android:textColor="@color/purple_card_text_secondary"
+            android:textSize="14sp"
+            android:visibility="gone"
+            tools:text="Notifications read: 128" />
+
     </LinearLayout>
 </androidx.core.widget.NestedScrollView> 
