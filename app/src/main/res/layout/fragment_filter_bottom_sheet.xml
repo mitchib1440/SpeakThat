@@ -89,6 +89,7 @@
                             android:layout_marginTop="2dp"
                             android:maxLines="2"
                             android:ellipsize="end"
+                            android:textIsSelectable="true"
                             tools:text="GLaDOS" />
 
                         <TextView
@@ -100,17 +101,10 @@
                             android:layout_marginTop="2dp"
                             android:maxLines="4"
                             android:ellipsize="end"
+                            android:textIsSelectable="true"
                             tools:text="Oh hi. So. How are you holding up? Because I'm a potato" />
 
                     </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/ic_filter_alt_24"
-                        android:scaleType="centerInside"
-                        android:contentDescription="@string/filter_notification_description"
-                        app:tint="@color/white_100" />
 
                 </LinearLayout>
             </FrameLayout>
@@ -315,6 +309,7 @@
                         android:textSize="14sp"
                         android:textColor="?android:attr/textColorPrimary"
                         android:fontFamily="monospace"
+                        android:textIsSelectable="true"
                         tools:text="Downloading firmware version [NUMBER]. [SIZE] complete." />
 
                 </com.google.android.material.card.MaterialCardView>

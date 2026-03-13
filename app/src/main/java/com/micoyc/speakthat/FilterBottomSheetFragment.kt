@@ -1,16 +1,23 @@
 package com.micoyc.speakthat
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
+import android.view.ActionMode
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -118,6 +125,9 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment() {
 
         val appOptionTitle: TextView = view.findViewById(R.id.textAppOptionTitle)
         appOptionTitle.text = getString(R.string.filter_sheet_app_title, appName)
+
+        titleView.customSelectionActionModeCallback = createSelectionCallback(titleView)
+        bodyView.customSelectionActionModeCallback = createSelectionCallback(bodyView)
     }
 
     private fun setupRadioOptions(view: View) {
@@ -308,6 +318,62 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment() {
         pattern = pattern.replace(Regex("\\s+"), " ").trim()
 
         return pattern
+    }
+
+    // -- Custom text selection menu --
+
+    private fun createSelectionCallback(textView: TextView): ActionMode.Callback {
+        return object : ActionMode.Callback {
+            override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+                menu.clear()
+                menu.add(0, 1, 0, "Copy")
+                menu.add(0, 2, 1, "Create filter")
+                menu.add(0, 3, 2, "Create swap")
+                return true
+            }
+
+            override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean = false
+
+            override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+                val start = textView.selectionStart
+                val end = textView.selectionEnd
+                if (start < 0 || end <= start) {
+                    mode.finish()
+                    return true
+                }
+                val selected = textView.text.subSequence(start, end).toString()
+
+                when (item.itemId) {
+                    1 -> {
+                        val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        clipboard.setPrimaryClip(ClipData.newPlainText("SpeakThat", selected))
+                        Toast.makeText(requireContext(), "Copied to clipboard", Toast.LENGTH_SHORT).show()
+                        mode.finish()
+                    }
+                    2 -> {
+                        val intent = Intent(requireContext(), FilterSettingsActivity::class.java).apply {
+                            putExtra("extra_prefill_text", selected)
+                            putExtra("extra_target_section", "word_filters")
+                        }
+                        startActivity(intent)
+                        mode.finish()
+                        dismiss()
+                    }
+                    3 -> {
+                        val intent = Intent(requireContext(), FilterSettingsActivity::class.java).apply {
+                            putExtra("extra_prefill_text", selected)
+                            putExtra("extra_target_section", "word_swaps")
+                        }
+                        startActivity(intent)
+                        mode.finish()
+                        dismiss()
+                    }
+                }
+                return true
+            }
+
+            override fun onDestroyActionMode(mode: ActionMode) {}
+        }
     }
 
     // -- Utility --

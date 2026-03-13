@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -188,6 +189,8 @@ public class FilterSettingsActivity extends AppCompatActivity {
 
         // Hide loading after initialization
         setLoading(false);
+
+        handleIntentExtras();
 
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
         repairBlacklistReceiver = new android.content.BroadcastReceiver() {
@@ -655,6 +658,61 @@ public class FilterSettingsActivity extends AppCompatActivity {
         binding.switchFilterForegroundServices.setChecked(filterForegroundServices);
         binding.switchFilterLowPriority.setChecked(filterLowPriority);
         binding.switchFilterSystemNotifications.setChecked(filterSystemNotifications);
+    }
+
+    private void handleIntentExtras() {
+        Intent intent = getIntent();
+        if (intent == null) return;
+
+        String prefillText = intent.getStringExtra("extra_prefill_text");
+        String targetSection = intent.getStringExtra("extra_target_section");
+
+        if (prefillText == null || targetSection == null) return;
+
+        binding.filterSettingsScrollView.post(() -> {
+            View targetView = null;
+
+            if ("word_filters".equals(targetSection)) {
+                if (binding.radioWordNone.isChecked()) {
+                    binding.radioWordBlacklist.setChecked(true);
+                }
+                if (binding.blacklistContent.getVisibility() != View.VISIBLE) {
+                    binding.blacklistContent.setVisibility(View.VISIBLE);
+                    binding.iconBlacklist.setImageResource(android.R.drawable.arrow_up_float);
+                }
+                binding.editBlacklistWord.setText(prefillText);
+                binding.editBlacklistWord.setSelection(prefillText.length());
+                binding.editBlacklistWord.requestFocus();
+                targetView = binding.editBlacklistWord;
+            } else if ("word_swaps".equals(targetSection)) {
+                if (binding.replacementContent.getVisibility() != View.VISIBLE) {
+                    binding.replacementContent.setVisibility(View.VISIBLE);
+                    binding.iconReplacement.setImageResource(android.R.drawable.arrow_up_float);
+                }
+                binding.editReplaceFrom.setText(prefillText);
+                binding.editReplaceFrom.setSelection(prefillText.length());
+                binding.editReplaceFrom.requestFocus();
+                targetView = binding.editReplaceFrom;
+            }
+
+            if (targetView != null) {
+                final View scrollTarget = targetView;
+                scrollTarget.post(() -> {
+                    int y = getRelativeTop(scrollTarget, binding.filterSettingsScrollView);
+                    binding.filterSettingsScrollView.smoothScrollTo(0, Math.max(0, y - 200));
+                });
+            }
+        });
+    }
+
+    private int getRelativeTop(View view, View ancestor) {
+        int top = view.getTop();
+        ViewParent parent = view.getParent();
+        while (parent instanceof View && parent != ancestor) {
+            top += ((View) parent).getTop();
+            parent = parent.getParent();
+        }
+        return top;
     }
 
     private void removeApp(int position) {
