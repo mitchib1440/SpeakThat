@@ -171,10 +171,25 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             sharedPreferences.edit().putBoolean(getString(R.string.prefs_notification_while_reading), isChecked).apply();
         });
 
+        // Main Screen History Toggle
+        MaterialSwitch mainScreenHistorySwitch = binding.switchMainScreenHistory;
+        boolean mainScreenHistoryEnabled = sharedPreferences.getBoolean("show_history_on_main", true);
+        mainScreenHistorySwitch.setChecked(mainScreenHistoryEnabled);
+
         // Show System Blocks in History Toggle
         MaterialSwitch showSystemBlocksSwitch = binding.switchShowSystemBlocks;
         boolean showSystemBlocksEnabled = sharedPreferences.getBoolean("show_system_blocks_history", false);
         showSystemBlocksSwitch.setChecked(showSystemBlocksEnabled);
+
+        // Apply dependent UI state on load
+        showSystemBlocksSwitch.setEnabled(mainScreenHistoryEnabled);
+        showSystemBlocksSwitch.setAlpha(mainScreenHistoryEnabled ? 1.0f : 0.5f);
+
+        mainScreenHistorySwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean("show_history_on_main", isChecked).apply();
+            showSystemBlocksSwitch.setEnabled(isChecked);
+            showSystemBlocksSwitch.setAlpha(isChecked ? 1.0f : 0.5f);
+        });
 
         showSystemBlocksSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             sharedPreferences.edit().putBoolean("show_system_blocks_history", isChecked).apply();

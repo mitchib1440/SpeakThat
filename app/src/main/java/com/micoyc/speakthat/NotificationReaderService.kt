@@ -494,7 +494,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             // Register broadcast receiver for accessibility service
             registerAccessibilityBroadcastReceiver()
-            
+            registerTestFiltersBroadcastReceiver()
+
         } catch (e: Exception) {
             Log.e(TAG, "Critical error during service initialization", e)
             InAppLogger.logError("Service", "Critical initialization error: " + e.message)
@@ -556,9 +557,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Unregister voice settings listener
             voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
             
-            // Unregister accessibility broadcast receiver
+            // Unregister broadcast receivers
             unregisterAccessibilityBroadcastReceiver()
-            
+            unregisterTestFiltersBroadcastReceiver()
+
             // Clear deduplication caches
             recentNotificationKeys.clear()
             groupChildDeduplicationMap.clear()
@@ -626,7 +628,30 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.e(TAG, "Error unregistering accessibility broadcast receiver", e)
         }
     }
-    
+
+    private fun registerTestFiltersBroadcastReceiver() {
+        try {
+            val filter = android.content.IntentFilter("com.micoyc.speakthat.action.TEST_FILTERS")
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                registerReceiver(testFiltersBroadcastReceiver, filter, android.content.Context.RECEIVER_NOT_EXPORTED)
+            } else {
+                registerReceiver(testFiltersBroadcastReceiver, filter)
+            }
+            Log.d(TAG, "Test filters broadcast receiver registered")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error registering test filters broadcast receiver", e)
+        }
+    }
+
+    private fun unregisterTestFiltersBroadcastReceiver() {
+        try {
+            unregisterReceiver(testFiltersBroadcastReceiver)
+            Log.d(TAG, "Test filters broadcast receiver unregistered")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error unregistering test filters broadcast receiver", e)
+        }
+    }
+
     /**
      * Broadcast receiver for accessibility service communication
      * 
@@ -651,7 +676,30 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         }
     }
-    
+
+    private val testFiltersBroadcastReceiver = object : android.content.BroadcastReceiver() {
+        override fun onReceive(context: android.content.Context?, intent: android.content.Intent?) {
+            if (intent?.action != "com.micoyc.speakthat.action.TEST_FILTERS") return
+            val packageName = intent.getStringExtra("extra_package_name") ?: return
+            val appName = intent.getStringExtra("extra_app_name") ?: return
+            val text = intent.getStringExtra("extra_text") ?: return
+
+            Log.d(TAG, "TEST_FILTERS broadcast received for $appName ($packageName)")
+            val filterResult = applyFilters(packageName, appName, text, sbn = null, isSelfTest = true)
+            if (filterResult.shouldSpeak) {
+                speakNotificationImmediate(
+                    appName, filterResult.processedText,
+                    conditionalDelaySeconds = -1,
+                    sbn = null,
+                    speechTemplateOverride = filterResult.speechTemplateOverride,
+                    voiceOverride = filterResult.voiceOverride
+                )
+            } else {
+                Log.d(TAG, "TEST_FILTERS: notification blocked by filters - ${filterResult.reason}")
+            }
+        }
+    }
+
     override fun onListenerConnected() {
         super.onListenerConnected()
         Log.d(TAG, "NotificationListener connected")

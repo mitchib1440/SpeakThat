@@ -328,6 +328,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         updateStatisticsDisplay()
         updateBadgeLogo()
 
+        val showHistory = sharedPreferences?.getBoolean("show_history_on_main", true) ?: true
+        binding.cardNotificationHistory.visibility = if (showHistory) View.VISIBLE else View.GONE
     }
     
     private fun setupUI() {
@@ -434,12 +436,55 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     private fun setupNotificationHistoryCard() {
         homeNotificationAdapter = HomeNotificationAdapter(
             emptyList(),
-            onItemClick = { showFilterBottomSheet(it) }
+            onItemClick = { showFilterBottomSheet(it) },
+            onLongClick = { notification, anchorView -> showNotificationLongPressMenu(notification, anchorView) }
         )
         binding.recyclerNotificationHistory.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = homeNotificationAdapter
         }
+    }
+
+    private fun showNotificationLongPressMenu(
+        notification: NotificationReaderService.NotificationData,
+        anchorView: View
+    ) {
+        val popup = android.widget.PopupMenu(this, anchorView)
+
+        val replayTitle = if (notification.wasRead) "Replay Original" else "Read Raw Text"
+        popup.menu.add(0, 1, 0, replayTitle)
+
+        val template = sharedPreferences?.getString("speech_template", "{app} notified you: {content}")
+            ?: "{app} notified you: {content}"
+        val unsupportedTags = listOf(
+            "{bigtext}", "{summary}", "{info}", "{time}", "{date}",
+            "{timestamp}", "{priority}", "{category}", "{channel}", "{ticker}"
+        )
+        if (unsupportedTags.none { template.contains(it) }) {
+            popup.menu.add(0, 2, 1, "Test Current Filters")
+        }
+
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                1 -> {
+                    val textToSpeak = if (notification.wasRead) notification.spokenText ?: notification.text else notification.text
+                    speakText(textToSpeak)
+                    true
+                }
+                2 -> {
+                    val intent = Intent("com.micoyc.speakthat.action.TEST_FILTERS").apply {
+                        setPackage(packageName)
+                        putExtra("extra_package_name", notification.packageName)
+                        putExtra("extra_app_name", notification.appName)
+                        putExtra("extra_text", notification.text)
+                    }
+                    sendBroadcast(intent)
+                    true
+                }
+                else -> false
+            }
+        }
+        popup.show()
     }
 
     private fun showFilterBottomSheet(notification: NotificationReaderService.NotificationData) {

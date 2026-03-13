@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class HomeNotificationAdapter(
     private var notifications: List<NotificationReaderService.NotificationData>,
-    private val onItemClick: (NotificationReaderService.NotificationData) -> Unit
+    private val onItemClick: (NotificationReaderService.NotificationData) -> Unit,
+    private val onLongClick: (NotificationReaderService.NotificationData, View) -> Unit
 ) : RecyclerView.Adapter<HomeNotificationAdapter.ViewHolder>() {
 
     companion object {
@@ -57,6 +58,10 @@ class HomeNotificationAdapter(
         }
 
         holder.itemView.setOnClickListener { onItemClick(notification) }
+        holder.itemView.setOnLongClickListener {
+            onLongClick(notification, it)
+            true
+        }
 
         if (notification.wasRead) {
             holder.imageAppIcon.alpha = 1.0f
