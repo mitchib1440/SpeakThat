@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 class HomeNotificationAdapter(
@@ -96,8 +97,56 @@ class HomeNotificationAdapter(
     override fun getItemCount(): Int = notifications.size
 
     fun updateNotifications(newNotifications: List<NotificationReaderService.NotificationData>) {
-        notifications = newNotifications
-        notifyDataSetChanged()
+        val oldNotifications = notifications
+        val newSnapshot = newNotifications.toList()
+
+        // Fast path for history feed behavior: new items arrive at top and
+        // oldest item may fall off the bottom when capped.
+        val canAnimateTopInsert = oldNotifications.isNotEmpty() &&
+            newSnapshot.isNotEmpty() &&
+            !areSameItem(oldNotifications.first(), newSnapshot.first()) &&
+            (newSnapshot.size == oldNotifications.size || newSnapshot.size == oldNotifications.size + 1)
+
+        if (canAnimateTopInsert) {
+            val oldSize = oldNotifications.size
+            val didDropBottom = newSnapshot.size == oldSize &&
+                !areSameItem(oldNotifications.last(), newSnapshot.last())
+            notifications = newSnapshot
+            notifyItemInserted(0)
+            if (didDropBottom) {
+                notifyItemRemoved(oldSize)
+            }
+            return
+        }
+
+        val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize(): Int = oldNotifications.size
+
+            override fun getNewListSize(): Int = newSnapshot.size
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                val oldItem = oldNotifications[oldItemPosition]
+                val newItem = newSnapshot[newItemPosition]
+                return areSameItem(oldItem, newItem)
+            }
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return oldNotifications[oldItemPosition] == newSnapshot[newItemPosition]
+            }
+        })
+
+        notifications = newSnapshot
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    private fun areSameItem(
+        oldItem: NotificationReaderService.NotificationData,
+        newItem: NotificationReaderService.NotificationData
+    ): Boolean {
+        return oldItem.packageName == newItem.packageName &&
+            oldItem.timestamp == newItem.timestamp &&
+            oldItem.title == newItem.title &&
+            oldItem.text == newItem.text
     }
 
     private fun loadAppIcon(context: android.content.Context, packageName: String): Drawable? {

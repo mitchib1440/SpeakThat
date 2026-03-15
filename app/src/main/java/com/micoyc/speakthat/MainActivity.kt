@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -51,6 +52,7 @@ import android.graphics.drawable.AnimatedVectorDrawable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DefaultItemAnimator
 import com.micoyc.speakthat.rules.migration.RuleMigrationManager
 import org.woheller69.freeDroidWarn.FreeDroidWarn
 import java.text.NumberFormat
@@ -157,6 +159,15 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     // Sensor timeout for safety
     private var sensorTimeoutHandler: Handler? = null
     private var sensorTimeoutRunnable: Runnable? = null
+    private var isHistoryUpdatesReceiverRegistered = false
+    private val historyUpdatesReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == NotificationReaderService.ACTION_HISTORY_UPDATED) {
+                Log.d(TAG, "Received history update broadcast")
+                updateStatisticsDisplay()
+            }
+        }
+    }
     
     companion object {
         private const val TAG = "MainActivity"
@@ -279,6 +290,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
 
     
     override fun onPause() {
+        unregisterHistoryUpdatesReceiver()
         super.onPause()
         // Stop shake listening if active
         stopShakeListening()
@@ -310,6 +322,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     override fun onResume() {
         super.onResume()
+        registerHistoryUpdatesReceiver()
         updateServiceStatus()
         
         // Refresh shake and wave settings in case they changed
@@ -331,6 +344,27 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         val showHistory = sharedPreferences?.getBoolean("show_history_on_main", true) ?: true
         binding.cardNotificationHistory.visibility = if (showHistory) View.VISIBLE else View.GONE
         binding.textHistoryHiddenReadCount.visibility = if (showHistory) View.GONE else View.VISIBLE
+    }
+
+    private fun registerHistoryUpdatesReceiver() {
+        if (isHistoryUpdatesReceiverRegistered) return
+
+        ContextCompat.registerReceiver(
+            this,
+            historyUpdatesReceiver,
+            IntentFilter(NotificationReaderService.ACTION_HISTORY_UPDATED),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
+        isHistoryUpdatesReceiverRegistered = true
+        Log.d(TAG, "History updates receiver registered")
+    }
+
+    private fun unregisterHistoryUpdatesReceiver() {
+        if (!isHistoryUpdatesReceiverRegistered) return
+
+        unregisterReceiver(historyUpdatesReceiver)
+        isHistoryUpdatesReceiverRegistered = false
+        Log.d(TAG, "History updates receiver unregistered")
     }
     
     private fun setupUI() {
@@ -443,6 +477,12 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         binding.recyclerNotificationHistory.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = homeNotificationAdapter
+            itemAnimator = DefaultItemAnimator().apply {
+                addDuration = 220
+                removeDuration = 180
+                moveDuration = 180
+                changeDuration = 120
+            }
         }
     }
 
