@@ -1,88 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/summaryOverlayRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_summary_oled_black"
-    android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingTop="18dp"
-    android:paddingRight="16dp"
-    android:paddingBottom="24dp">
+    android:padding="20dp">
 
-    <LinearLayout
-        android:id="@+id/summaryTopBar"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/summaryPaginationText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_summary_pagination_pill"
+        android:paddingLeft="14dp"
+        android:paddingTop="6dp"
+        android:paddingRight="14dp"
+        android:paddingBottom="6dp"
+        android:text="0/0"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tv_logo_placeholder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:lineSpacingExtra="-4sp"
-            android:maxLines="3"
-            android:text="SPEAK\nTHAT!\nSUMMARY"
-            android:textColor="@android:color/white"
-            android:textSize="17sp"
-            android:textStyle="bold|italic" />
-
-        <TextView
-            android:id="@+id/summaryPaginationText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_summary_pagination_pill"
-            android:paddingLeft="14dp"
-            android:paddingTop="6dp"
-            android:paddingRight="14dp"
-            android:paddingBottom="6dp"
-            android:text="0/0"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <ImageButton
-            android:id="@+id/summaryDismissButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="24dp"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/summary_overlay_dismiss"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:tint="@android:color/white" />
-    </LinearLayout>
+    <ImageButton
+        android:id="@+id/summaryDismissButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/summary_overlay_dismiss"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:tint="@android:color/white" />
 
     <LinearLayout
         android:id="@+id/summaryContentContainer"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingTop="20dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="20dp">
 
         <ImageView
-            android:id="@+id/iv_app_icon"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/bg_summary_app_icon_circle"
-            android:contentDescription="@string/summary_overlay_app_icon"
-            android:padding="20dp"
-            android:scaleType="fitCenter" />
+            android:id="@+id/summaryImageView"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/summary_overlay_image"
+            android:scaleType="centerCrop" />
 
         <TextView
-            android:id="@+id/tv_app_time_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:text="App • 00:00"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/tv_sender"
+            android:id="@+id/summarySenderText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
@@ -90,30 +61,19 @@
             android:maxLines="2"
             android:text="@string/summary_overlay_sender_fallback"
             android:textColor="@android:color/white"
-            android:textSize="48sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_message"
+            android:id="@+id/summaryMessageText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
-            android:maxLines="6"
+            android:maxLines="7"
             android:text="@string/summary_overlay_empty_message"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
-
-        <ImageView
-            android:id="@+id/iv_notification_image"
-            android:layout_width="300dp"
-            android:layout_height="260dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/bg_summary_notification_image"
-            android:clipToOutline="true"
-            android:contentDescription="@string/summary_overlay_image"
-            android:scaleType="centerCrop"
-            android:visibility="gone" />
+            android:textSize="18sp" />
     </LinearLayout>
 
-</LinearLayout>
+</FrameLayout>
