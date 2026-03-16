@@ -52,4 +52,6 @@
     <color name="background_light">@color/white_200</color>
     <color name="background_dark">@color/black_200</color>
     <color name="search_results_background">@color/white_200</color>
+    <color name="brand_purple_light">#A245FF</color>
+    <color name="brand_purple_dark">#612999</color>
 </resources> 
