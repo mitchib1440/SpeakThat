@@ -387,37 +387,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 emptyArray()
             }
         }
-
-        /**
-         * Read-only summary bridge that routes text through existing filter/transformation logic.
-         * Returns null if notification should be suppressed by filters.
-         */
-        @JvmStatic
-        fun getSummaryFilteredText(
-            packageName: String,
-            appName: String,
-            text: String,
-            sbn: StatusBarNotification?
-        ): String? {
-            val instance = activeServiceInstance ?: return text
-            if (!listenerConnectedForBridge) {
-                return text
-            }
-
-            return try {
-                val result = instance.applyFilters(
-                    packageName = packageName,
-                    appName = appName,
-                    text = text,
-                    sbn = sbn,
-                    isSelfTest = false
-                )
-                if (result.shouldSpeak) result.processedText else null
-            } catch (e: Exception) {
-                Log.w(TAG, "Summary filter bridge failed for $packageName: ${e.message}")
-                text
-            }
-        }
         
         /**
          * Check if media behavior fallback is disabled in development settings
