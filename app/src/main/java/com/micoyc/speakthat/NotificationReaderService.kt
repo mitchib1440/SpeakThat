@@ -1,10 +1,3 @@
-/*
- * SpeakThat! is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed.
- * This license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices.
- * SpeakThat! Copyright © Mitchell Bell
- * SPEAKTHAT is a registered UK trademark of Mitchell Bell
- */
-
 package com.micoyc.speakthat
 
 import android.app.Notification
@@ -246,7 +239,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     companion object {
         private const val TAG = "NotificationReader"
-        const val ACTION_HISTORY_UPDATED = "com.micoyc.speakthat.action.HISTORY_UPDATED"
         private val notificationHistory = ArrayList<NotificationData>()
         private const val MAX_HISTORY_SIZE = 15
         private const val PREFS_NAME = "SpeakThatPrefs"
@@ -388,76 +380,34 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         }
 
-        data class SummaryFilterBridgeResult(
-            val shouldInclude: Boolean,
-            val processedText: String,
-            val reason: String = ""
-        )
-
         /**
-         * Read-only summary bridge that reuses the existing filter pipeline.
-         * Null-safe fallback behavior:
-         * - If listener instance is unavailable/disconnected, returns the original text.
-         * - Never throws to callers.
+         * Read-only summary bridge that routes text through existing filter/transformation logic.
+         * Returns null if notification should be suppressed by filters.
          */
         @JvmStatic
-        fun applyFiltersForSummary(
-            sbn: StatusBarNotification,
+        fun getSummaryFilteredText(
+            packageName: String,
             appName: String,
-            fallbackText: String
-        ): SummaryFilterBridgeResult {
-            val instance = activeServiceInstance ?: return SummaryFilterBridgeResult(
-                shouldInclude = true,
-                processedText = fallbackText,
-                reason = "listener_unavailable"
-            )
+            text: String,
+            sbn: StatusBarNotification?
+        ): String? {
+            val instance = activeServiceInstance ?: return text
             if (!listenerConnectedForBridge) {
-                return SummaryFilterBridgeResult(
-                    shouldInclude = true,
-                    processedText = fallbackText,
-                    reason = "listener_disconnected"
-                )
+                return text
             }
 
             return try {
-                val text = fallbackText.ifBlank { instance.extractNotificationText(sbn.notification) }
                 val result = instance.applyFilters(
-                    packageName = sbn.packageName,
+                    packageName = packageName,
                     appName = appName,
                     text = text,
                     sbn = sbn,
                     isSelfTest = false
                 )
-                SummaryFilterBridgeResult(
-                    shouldInclude = result.shouldSpeak,
-                    processedText = result.processedText,
-                    reason = result.reason
-                )
+                if (result.shouldSpeak) result.processedText else null
             } catch (e: Exception) {
-                Log.w(TAG, "Summary filter bridge fallback due to error: ${e.message}")
-                SummaryFilterBridgeResult(
-                    shouldInclude = true,
-                    processedText = fallbackText,
-                    reason = "bridge_error"
-                )
-            }
-        }
-
-        /**
-         * Read-only bridge for summary display/speech app names.
-         * Reuses the same custom app-name resolution path as immediate readouts.
-         */
-        @JvmStatic
-        fun getDisplayAppNameForSummary(packageName: String): String {
-            val instance = activeServiceInstance ?: return packageName
-            if (!listenerConnectedForBridge) {
-                return packageName
-            }
-            return try {
-                instance.getAppName(packageName)
-            } catch (e: Exception) {
-                Log.w(TAG, "Summary app-name bridge fallback due to error: ${e.message}")
-                packageName
+                Log.w(TAG, "Summary filter bridge failed for $packageName: ${e.message}")
+                text
             }
         }
         
@@ -2270,13 +2220,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             if (notificationHistory.size > MAX_HISTORY_SIZE) {
                 notificationHistory.removeAt(0)
             }
-
-            // Notify visible UI that history changed (in-app only).
-            val historyIntent = Intent(ACTION_HISTORY_UPDATED).apply {
-                setPackage(this@NotificationReaderService.packageName)
-            }
-            sendBroadcast(historyIntent)
-            Log.d(TAG, "Broadcasted history update to package: ${this@NotificationReaderService.packageName}")
             
             Log.d(TAG, "Added notification to history batch queue: $appName")
             

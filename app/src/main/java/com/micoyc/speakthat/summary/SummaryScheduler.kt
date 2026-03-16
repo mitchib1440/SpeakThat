@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import com.micoyc.speakthat.InAppLogger
 import java.util.Calendar
 
@@ -15,44 +16,25 @@ object SummaryScheduler {
 
     private const val TAG = "SummaryScheduler"
 
-    fun schedule(context: Context): Boolean {
-        val prefs = context.getSharedPreferences(SummaryConstants.SUMMARY_SETTINGS_PREFS_NAME, Context.MODE_PRIVATE)
-        val hourOfDay = prefs.getInt(SummaryConstants.KEY_HOUR_OF_DAY, 8)
-        val minute = prefs.getInt(SummaryConstants.KEY_MINUTE, 0)
-        if (hourOfDay !in 0..23 || minute !in 0..59) {
-            InAppLogger.logError(TAG, "Invalid schedule time: $hourOfDay:$minute")
-            return false
-        }
-
-        return scheduleExactAtNextOccurrence(context, hourOfDay, minute)
-    }
-
-    fun cancel(context: Context) {
-        cancelAlarmOnly(context)
-        InAppLogger.log(TAG, "Daily proactive summary alarm cancelled")
-    }
-
-    // Compatibility wrappers for older call sites.
     fun scheduleDaily(context: Context, hourOfDay: Int, minute: Int): Boolean {
         if (hourOfDay !in 0..23 || minute !in 0..59) {
             InAppLogger.logError(TAG, "Invalid schedule time: $hourOfDay:$minute")
             return false
         }
-        context.getSharedPreferences(SummaryConstants.SUMMARY_SETTINGS_PREFS_NAME, Context.MODE_PRIVATE)
-            .edit()
-            .putInt(SummaryConstants.KEY_HOUR_OF_DAY, hourOfDay)
-            .putInt(SummaryConstants.KEY_MINUTE, minute)
-            .apply()
-        return schedule(context)
+
+        persistSchedule(context, enabled = true, hourOfDay = hourOfDay, minute = minute)
+        return scheduleExactAtNextOccurrence(context, hourOfDay, minute)
     }
 
     fun updateDaily(context: Context, hourOfDay: Int, minute: Int): Boolean {
-        cancel(context)
+        cancelAlarmOnly(context)
         return scheduleDaily(context, hourOfDay, minute)
     }
 
     fun cancelDaily(context: Context) {
-        cancel(context)
+        cancelAlarmOnly(context)
+        persistSchedule(context, enabled = false, hourOfDay = 0, minute = 0)
+        InAppLogger.log(TAG, "Daily proactive summary alarm cancelled")
     }
 
     /**
@@ -60,13 +42,16 @@ object SummaryScheduler {
      */
     @JvmStatic
     fun rescheduleIfEnabled(context: Context): Boolean {
-        val prefs = context.getSharedPreferences(SummaryConstants.SUMMARY_SETTINGS_PREFS_NAME, Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences(SummaryConstants.PREFS_NAME, Context.MODE_PRIVATE)
         val enabled = prefs.getBoolean(SummaryConstants.KEY_ENABLED, false)
         if (!enabled) {
             InAppLogger.log(TAG, "Boot reschedule skipped; summary scheduler is disabled")
             return false
         }
-        return schedule(context)
+
+        val hourOfDay = prefs.getInt(SummaryConstants.KEY_HOUR_OF_DAY, 8)
+        val minute = prefs.getInt(SummaryConstants.KEY_MINUTE, 0)
+        return scheduleExactAtNextOccurrence(context, hourOfDay, minute)
     }
 
     private fun scheduleExactAtNextOccurrence(context: Context, hourOfDay: Int, minute: Int): Boolean {
@@ -92,7 +77,9 @@ object SummaryScheduler {
             }
         }
 
-        InAppLogger.log(TAG, "Scheduled daily summary alarm at $hourOfDay:$minute (next=$triggerAtMillis)")
+        val message = "Scheduled daily summary alarm at $hourOfDay:$minute (next=$triggerAtMillis)"
+        Log.d(TAG, message)
+        InAppLogger.log(TAG, message)
         return true
     }
 
@@ -112,7 +99,7 @@ object SummaryScheduler {
 
     private fun buildAlarmPendingIntent(context: Context): PendingIntent {
         val intent = Intent(context, SummaryTriggerReceiver::class.java).apply {
-            action = SummaryConstants.ACTION_SUMMARY_ALARM
+            action = SummaryConstants.ACTION_TRIGGER_SUMMARY
             putExtra(
                 SummaryConstants.EXTRA_TRIGGER_SOURCE,
                 SummaryConstants.TRIGGER_SOURCE_SCHEDULED_ALARM
@@ -124,6 +111,20 @@ object SummaryScheduler {
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+    }
+
+    private fun persistSchedule(
+        context: Context,
+        enabled: Boolean,
+        hourOfDay: Int,
+        minute: Int
+    ) {
+        context.getSharedPreferences(SummaryConstants.PREFS_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(SummaryConstants.KEY_ENABLED, enabled)
+            .putInt(SummaryConstants.KEY_HOUR_OF_DAY, hourOfDay)
+            .putInt(SummaryConstants.KEY_MINUTE, minute)
+            .apply()
     }
 
     private fun computeNextTriggerTimeMillis(hourOfDay: Int, minute: Int): Long {

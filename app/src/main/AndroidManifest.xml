@@ -130,10 +130,6 @@
             android:exported="false" />
 
         <activity
-            android:name=".summary.SummarySettingsActivity"
-            android:exported="false" />
-
-        <activity
             android:name=".SupportActivity"
             android:exported="false"
             android:parentActivityName=".SettingsActivity" />
@@ -316,7 +312,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="com.micoyc.speakthat.ACTION_TRIGGER_SUMMARY" />
-                <action android:name="com.micoyc.speakthat.ACTION_SUMMARY_ALARM" />
             </intent-filter>
         </receiver>
 
