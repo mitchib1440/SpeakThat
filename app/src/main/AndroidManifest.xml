@@ -56,9 +56,15 @@
     
     <!-- Permission to use text-to-speech -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+    <!-- Permission to draw overlay UI for proactive summaries -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     
     <!-- Permission for foreground service media playback (Android 14+) -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+
+    <!-- Permission for exact proactive summary scheduling -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
 
 
@@ -253,6 +259,12 @@
             android:exported="false"
             android:foregroundServiceType="mediaPlayback" />
 
+        <!-- Foreground service host for proactive summaries -->
+        <service
+            android:name=".summary.SummaryExecutionService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
+
         <!-- Quick Settings Tile Service -->
         <service
             android:name=".SpeakThatTileService"
@@ -290,6 +302,16 @@
             <intent-filter>
                 <action android:name="com.micoyc.speakthat.intent.ACTION_ENABLE_SPEAKTHAT" />
                 <action android:name="com.micoyc.speakthat.intent.ACTION_DISABLE_SPEAKTHAT" />
+            </intent-filter>
+        </receiver>
+
+        <!-- BroadcastReceiver for external and scheduled proactive summary triggers -->
+        <receiver
+            android:name=".summary.SummaryTriggerReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.micoyc.speakthat.ACTION_TRIGGER_SUMMARY" />
             </intent-filter>
         </receiver>
 

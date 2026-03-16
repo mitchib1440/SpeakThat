@@ -4,8 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.util.Log;
+
+import com.micoyc.speakthat.summary.SummaryScheduler;
 
 /**
  * BroadcastReceiver to handle auto-start on boot functionality
@@ -16,8 +17,9 @@ public class BootReceiver extends BroadcastReceiver {
     
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            Log.d(TAG, context.getString(R.string.log_boot_receiver_boot_completed));
+        String action = intent != null ? intent.getAction() : null;
+        if (isBootAction(action)) {
+            Log.d(TAG, "Boot-related action received: " + action);
             
             // Check if auto-start is enabled
             SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.boot_receiver_prefs_name), Context.MODE_PRIVATE);
@@ -54,6 +56,21 @@ public class BootReceiver extends BroadcastReceiver {
                 Log.d(TAG, "Auto-start disabled or master switch off, not starting service");
                 InAppLogger.log("BootReceiver", "Auto-start disabled or master switch off");
             }
+
+            try {
+                boolean restored = SummaryScheduler.rescheduleIfEnabled(context);
+                Log.d(TAG, "SummaryScheduler reschedule after reboot result=" + restored);
+                InAppLogger.log("BootReceiver", "Summary alarm reschedule attempted (result=" + restored + ")");
+            } catch (Exception e) {
+                Log.e(TAG, "Error rescheduling proactive summary alarm", e);
+                InAppLogger.logError("BootReceiver", "Failed to reschedule summary alarm: " + e.getMessage());
+            }
         }
     }
-} 
+
+    private boolean isBootAction(String action) {
+        return Intent.ACTION_BOOT_COMPLETED.equals(action)
+                || "android.intent.action.QUICKBOOT_POWERON".equals(action)
+                || "com.htc.intent.action.QUICKBOOT_POWERON".equals(action);
+    }
+}
