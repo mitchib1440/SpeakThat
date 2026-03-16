@@ -358,10 +358,65 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val TTS_RECOVERY_DELAY_ANDROID15_MS = 5000L // 5 seconds for Android 15
         private const val TTS_INIT_TIMEOUT_MS = 10000L // 10 seconds timeout
         private const val TTS_INIT_TIMEOUT_ANDROID15_MS = 15000L // 15 seconds for Android 15
+
+        @Volatile
+        private var activeServiceInstance: NotificationReaderService? = null
+
+        @Volatile
+        private var listenerConnectedForBridge: Boolean = false
         
         @JvmStatic
         fun getRecentNotifications(): List<NotificationData> {
             return notificationHistory.toList()
+        }
+
+        /**
+         * Null-safe read-only bridge for proactive summaries.
+         * Returns an empty array when listener is unavailable/disconnected.
+         */
+        @JvmStatic
+        fun getActiveNotificationsSnapshot(): Array<StatusBarNotification> {
+            val instance = activeServiceInstance ?: return emptyArray()
+            if (!listenerConnectedForBridge) {
+                return emptyArray()
+            }
+            return try {
+                instance.activeNotifications ?: emptyArray()
+            } catch (e: Exception) {
+                Log.w(TAG, "Active notification snapshot unavailable: ${e.message}")
+                emptyArray()
+            }
+        }
+
+        /**
+         * Read-only summary bridge that routes text through existing filter/transformation logic.
+         * Returns null if notification should be suppressed by filters.
+         */
+        @JvmStatic
+        fun getSummaryFilteredText(
+            packageName: String,
+            appName: String,
+            text: String,
+            sbn: StatusBarNotification?
+        ): String? {
+            val instance = activeServiceInstance ?: return text
+            if (!listenerConnectedForBridge) {
+                return text
+            }
+
+            return try {
+                val result = instance.applyFilters(
+                    packageName = packageName,
+                    appName = appName,
+                    text = text,
+                    sbn = sbn,
+                    isSelfTest = false
+                )
+                if (result.shouldSpeak) result.processedText else null
+            } catch (e: Exception) {
+                Log.w(TAG, "Summary filter bridge failed for $packageName: ${e.message}")
+                text
+            }
         }
         
         /**
@@ -405,6 +460,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     override fun onCreate() {
         super.onCreate()
+        activeServiceInstance = this
+        listenerConnectedForBridge = false
         Log.d(TAG, "NotificationReaderService created")
         InAppLogger.log("Service", "NotificationReaderService started")
         
@@ -512,6 +569,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     override fun onDestroy() {
         super.onDestroy()
+        listenerConnectedForBridge = false
+        activeServiceInstance = null
         
         Log.d(TAG, "NotificationReaderService being destroyed")
         InAppLogger.log("Service", "NotificationReaderService being destroyed")
@@ -710,6 +769,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
     override fun onListenerConnected() {
         super.onListenerConnected()
+        listenerConnectedForBridge = true
         Log.d(TAG, "NotificationListener connected")
         InAppLogger.log("Service", "NotificationListener connected")
         try {
@@ -725,6 +785,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     override fun onListenerDisconnected() {
         super.onListenerDisconnected()
+        listenerConnectedForBridge = false
         Log.w(TAG, "NotificationListener disconnected - scheduling reliability rebind")
         InAppLogger.logWarning("Service", "NotificationListener disconnected - scheduling rebind")
         try {
