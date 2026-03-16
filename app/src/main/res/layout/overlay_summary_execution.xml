@@ -6,54 +6,59 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_summary_oled_black"
     android:paddingStart="16dp"
-    android:paddingTop="18dp"
+    android:paddingTop="24dp"
     android:paddingEnd="16dp"
     android:paddingBottom="24dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/summaryTopBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_gravity="top">
 
-        <TextView
-            android:id="@+id/tv_summary_logo_placeholder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:lines="3"
-            android:text="SPEAK&#10;THAT!&#10;SUMMARY"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold|italic" />
+        <ImageView
+            android:id="@+id/iv_summary_logo"
+            android:layout_width="112dp"
+            android:layout_height="78dp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitCenter"
+            android:src="@drawable/speakthatsummary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/summaryPaginationText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_summary_pagination_pill"
+            android:background="@drawable/gradient_brand_primary"
             android:paddingStart="14dp"
             android:paddingTop="5dp"
             android:paddingEnd="14dp"
             android:paddingBottom="5dp"
             android:text="0/0"
             android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <ImageButton
             android:id="@+id/summaryDismissButton"
             android:layout_width="44dp"
             android:layout_height="44dp"
-            android:layout_marginStart="8dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/summary_overlay_dismiss"
             android:scaleType="center"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:tint="@android:color/white" />
-    </LinearLayout>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@android:color/white" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/summaryContentContainer"
@@ -100,7 +105,7 @@
             android:maxLines="2"
             android:text="@string/summary_overlay_sender_fallback"
             android:textColor="@android:color/white"
-            android:textSize="44sp"
+            android:textSize="34sp"
             android:textStyle="bold" />
 
         <TextView

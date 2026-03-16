@@ -512,12 +512,16 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
 
     private fun buildItemSpeechText(item: SummaryItem): String {
         val relativeTime = formatRelativeTimeForSpeech(item.postTimeMillis)
-        return getString(
-            R.string.summary_tts_item_template,
-            relativeTime,
-            item.senderText,
-            item.messageText
-        )
+        val actualTime = DateFormat.getTimeFormat(this).format(Date(item.postTimeMillis))
+        val isPrivate = item.senderText.equals("Private Notification", ignoreCase = true) ||
+            item.messageText.contains("private notification", ignoreCase = true)
+
+        return if (isPrivate) {
+            // Avoid app-name duplication for private-mode notifications.
+            "$relativeTime, at $actualTime, ${item.messageText}"
+        } else {
+            "$relativeTime, at $actualTime, ${item.appName} notified you: ${item.senderText}. ${item.messageText}"
+        }
     }
 
     private fun formatRelativeTimeForSpeech(postTimeMillis: Long): String {
@@ -775,9 +779,9 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
             }
 
             val appName = resolveAppLabel(sbn.packageName)
-            val sender = extractSender(sbn).ifBlank { appName }
+            val rawSender = extractSender(sbn).ifBlank { appName }
             val rawMessage = extractMessage(sbn)
-            if (sender.isBlank() && rawMessage.isBlank()) {
+            if (rawSender.isBlank() && rawMessage.isBlank()) {
                 return@forEach
             }
 
@@ -791,6 +795,12 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
             }
 
             val message = filterBridgeResult.processedText.ifBlank { rawMessage }
+            val isPrivate = message.contains("private notification", ignoreCase = true)
+            val sender = if (isPrivate) {
+                "Private Notification"
+            } else {
+                rawSender.ifBlank { getString(R.string.summary_overlay_sender_fallback) }
+            }
             val appTime = DateFormat.getTimeFormat(this).format(Date(sbn.postTime))
             val subtitle = "$appName \u2022 $appTime"
 
@@ -805,7 +815,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
                     packageName = sbn.packageName,
                     appName = appName,
                     appTimeSubtitle = subtitle,
-                    senderText = sender.ifBlank { getString(R.string.summary_overlay_sender_fallback) },
+                    senderText = sender,
                     messageText = message.ifBlank { getString(R.string.summary_overlay_empty_message) },
                     notificationImagePath = extractBigPicturePathFromNotification(sbn),
                     postTimeMillis = sbn.postTime
@@ -867,6 +877,25 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
         val pictureBitmap = extras.get(Notification.EXTRA_PICTURE) as? Bitmap
         if (pictureBitmap != null) {
             return persistBitmapAndRecycle(pictureBitmap, sbn, "picture")
+        }
+
+        val largeIconBitmap = extras.get(Notification.EXTRA_LARGE_ICON) as? Bitmap
+        if (largeIconBitmap != null) {
+            return persistBitmapAndRecycle(largeIconBitmap, sbn, "large_icon_bitmap")
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val largeIconFromExtras = extras.get(Notification.EXTRA_LARGE_ICON) as? Icon
+            val iconBitmap = iconToBitmap(largeIconFromExtras)
+            if (iconBitmap != null) {
+                return persistBitmapAndRecycle(iconBitmap, sbn, "large_icon_icon")
+            }
+
+            val notificationLargeIcon = sbn.notification.getLargeIcon()
+            val notificationIconBitmap = iconToBitmap(notificationLargeIcon)
+            if (notificationIconBitmap != null) {
+                return persistBitmapAndRecycle(notificationIconBitmap, sbn, "notif_large_icon")
+            }
         }
         return null
     }
