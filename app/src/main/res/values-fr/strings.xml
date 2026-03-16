@@ -1937,4 +1937,42 @@ Bloque=ignore totalement, Privée=annonce de façon privée
     <string name="filter_sheet_toast_private">rendue privée</string>
     <string name="undo_action">Défaire</string>
     <string name="rule_action_use_voice_call">Utiliser le routage des appels audio</string>
+    <string name="general_show_system_blocks">Journaliser les blocs systèmes dans l\'historique</string>
+    <string name="general_show_system_blocks_description">Sauvegarder les évènements systèmes de fond (comme la déduplication) dans la liste historique. Utile pour le dépannage.</string>
+    <string name="general_main_screen_history">Historique sur l\'écran d\'accueil</string>
+    <string name="general_main_screen_history_description">Affiche les notifications récentes et les diagnostiques sur l\'écran d\'accueil de l\'application.</string>
+    <string name="action_override_tts_voice_title">Forcer la voix de synthèse vocale</string>
+    <string name="action_override_tts_voice_description">Force temporairement le langage et la voix uniquement pour cette notification.</string>
+    <string name="action_override_tts_voice_language_label">Langage</string>
+    <string name="action_override_tts_voice_show_advanced">Afficher la voix spécifique</string>
+    <string name="action_override_tts_voice_specific_voice_label">Voix spécifique (avancé)</string>
+    <string name="action_override_tts_voice_specific_voice_description">Optionnel. Utilise le moteur de synthèse global courant et applique cette voix seulement pour cette notification.</string>
+    <string name="action_override_tts_voice_default_voice_option">Défaut (Utiliser la voix du langage sélectionné)</string>
+    <string name="cooldown_dialog_title">Régler le délai</string>
+    <string name="cooldown_dialog_value_hint">Entrez un nombre</string>
+    <string name="cooldown_unit_seconds">Secondes</string>
+    <string name="cooldown_unit_minutes">Minutes</string>
+    <string name="cooldown_unit_hours">Heures</string>
+    <string name="cooldown_error_required">Entrez une valeur</string>
+    <string name="cooldown_error_positive">La valeur doit être supérieure à 0</string>
+    <string name="cooldown_error_max_24_hours">Le délai ne peut pas dépasser 24 heures</string>
+    <plurals name="cooldown_seconds_label">
+        <item quantity="one">%d seconde</item>
+        <item quantity="many">%d secondes</item>
+        <item quantity="other">%d secondes</item>
+    </plurals>
+    <plurals name="cooldown_minutes_label">
+        <item quantity="one">%d minute</item>
+        <item quantity="many">%d minutes</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="cooldown_hours_label">
+        <item quantity="one">%d heure</item>
+        <item quantity="many">%d heures</item>
+        <item quantity="other">%d heures</item>
+    </plurals>
+    <string name="mainscreen_notification_history_spoke">Prononcé : \"%1$s\"</string>
+    <string name="rule_error_invalid_voice_override_language">Forcer la voix du moteur de synthèse requiert un langage valide</string>
+    <string name="rule_error_invalid_voice_override_voice">Le forçage de la voix du moteur de synthèse a une voix spécifique invalide</string>
+    <string name="rule_action_override_tts_voice">Forçage de la voix de synthèse</string>
 </resources>
