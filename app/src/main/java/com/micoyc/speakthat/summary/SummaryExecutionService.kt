@@ -50,6 +50,13 @@ import java.io.FileOutputStream
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.abs
 
 /**
@@ -62,9 +69,12 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
     private var overlayView: View? = null
     private var contentContainer: View? = null
     private var paginationText: TextView? = null
-    private var imageView: ImageView? = null
+    private var appIconView: ImageView? = null
+    private var appTimeSubtitleText: TextView? = null
     private var senderText: TextView? = null
     private var messageText: TextView? = null
+    private var notificationImageCard: View? = null
+    private var notificationImageView: ImageView? = null
     private var touchStartX: Float = 0f
 
     private val mainHandler = Handler(Looper.getMainLooper())
@@ -85,6 +95,8 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
     private var activeSwipeRecoverySession = -1
     @Volatile
     private var isServiceStopping = false
+    @Volatile
+    private var hasSpokenInitialGreeting = false
 
     private val utteranceIndexMap = ConcurrentHashMap<String, Int>()
     private val utteranceTypeMap = ConcurrentHashMap<String, String>()
@@ -94,6 +106,9 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
     private var audioFocusRequest: AudioFocusRequest? = null
     @Volatile
     private var hasAudioFocus = false
+
+    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    private var buildItemsJob: Job? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -122,18 +137,18 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
             return START_NOT_STICKY
         }
 
-        loadAndRenderSummaryItems()
-        InAppLogger.log(TAG, "SummaryExecutionService running action=$action source=$source items=${summaryItems.size}")
-        startSummarySpeechFromCurrentIndex(triggeredBySwipe = false)
+        buildAndRenderSummaryItemsAsync(source, action)
         return START_NOT_STICKY
     }
 
     override fun onDestroy() {
         isServiceStopping = true
         pendingQueueStart = false
+        buildItemsJob?.cancel()
         mainHandler.removeCallbacksAndMessages(null)
         stopAndReleaseTextToSpeech()
         abandonAudioFocusIfHeld()
+        serviceScope.cancel()
         removeOverlayIfAttached()
         clearSummaryCache()
         super.onDestroy()
@@ -299,21 +314,25 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
             InAppLogger.logError(TAG, "Failed to stop existing TTS queue: ${e.message}")
         }
 
-        val introId = buildUtteranceId(sessionId, SummaryConstants.UTTERANCE_PREFIX_INTRO, -1)
-        enqueueSpeech(
-            text = buildIntroGreetingText(),
-            queueMode = TextToSpeech.QUEUE_FLUSH,
-            utteranceId = introId,
-            type = SummaryConstants.UTTERANCE_PREFIX_INTRO,
-            index = -1,
-            sessionId = sessionId
-        )
+        val shouldSpeakIntro = !hasSpokenInitialGreeting && !triggeredBySwipe && currentIndex == 0
+        if (shouldSpeakIntro) {
+            val introId = buildUtteranceId(sessionId, SummaryConstants.UTTERANCE_PREFIX_INTRO, -1)
+            enqueueSpeech(
+                text = buildIntroGreetingText(),
+                queueMode = TextToSpeech.QUEUE_FLUSH,
+                utteranceId = introId,
+                type = SummaryConstants.UTTERANCE_PREFIX_INTRO,
+                index = -1,
+                sessionId = sessionId
+            )
+            hasSpokenInitialGreeting = true
+        }
 
         if (notificationCountForGreeting <= 0 || summaryItems.isEmpty()) {
             val outroId = buildUtteranceId(sessionId, SummaryConstants.UTTERANCE_PREFIX_OUTRO, -1)
             enqueueSpeech(
                 text = getString(R.string.summary_tts_no_notifications),
-                queueMode = TextToSpeech.QUEUE_ADD,
+                queueMode = if (shouldSpeakIntro) TextToSpeech.QUEUE_ADD else TextToSpeech.QUEUE_FLUSH,
                 utteranceId = outroId,
                 type = SummaryConstants.UTTERANCE_PREFIX_OUTRO,
                 index = -1,
@@ -327,7 +346,11 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
             val itemId = buildUtteranceId(sessionId, SummaryConstants.UTTERANCE_PREFIX_ITEM, index)
             enqueueSpeech(
                 text = buildItemSpeechText(item),
-                queueMode = TextToSpeech.QUEUE_ADD,
+                queueMode = if (!shouldSpeakIntro && index == currentIndex) {
+                    TextToSpeech.QUEUE_FLUSH
+                } else {
+                    TextToSpeech.QUEUE_ADD
+                },
                 utteranceId = itemId,
                 type = SummaryConstants.UTTERANCE_PREFIX_ITEM,
                 index = index,
@@ -632,9 +655,12 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
             val view = LayoutInflater.from(this).inflate(R.layout.overlay_summary_execution, null, false)
 
             paginationText = view.findViewById(R.id.summaryPaginationText)
-            imageView = view.findViewById(R.id.summaryImageView)
-            senderText = view.findViewById(R.id.summarySenderText)
-            messageText = view.findViewById(R.id.summaryMessageText)
+            appIconView = view.findViewById(R.id.iv_app_icon)
+            appTimeSubtitleText = view.findViewById(R.id.tv_app_time_subtitle)
+            senderText = view.findViewById(R.id.tv_sender)
+            messageText = view.findViewById(R.id.tv_message)
+            notificationImageCard = view.findViewById(R.id.notificationImageCard)
+            notificationImageView = view.findViewById(R.id.iv_notification_image)
             contentContainer = view.findViewById(R.id.summaryContentContainer)
             val dismissButton: ImageButton = view.findViewById(R.id.summaryDismissButton)
 
@@ -699,26 +725,44 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
         }
     }
 
-    private fun loadAndRenderSummaryItems() {
-        val activeNotifications = NotificationReaderService.getActiveNotificationsSnapshot()
-        summaryItems.clear()
-        summaryItems.addAll(buildSummaryItems(activeNotifications))
-        notificationCountForGreeting = summaryItems.size
+    private fun buildAndRenderSummaryItemsAsync(source: String, action: String) {
+        buildItemsJob?.cancel()
+        buildItemsJob = CoroutineScope(Dispatchers.IO).launch {
+            val activeNotifications = NotificationReaderService.getActiveNotificationsSnapshot()
+            val builtItems = buildSummaryItems(activeNotifications)
 
-        if (summaryItems.isEmpty()) {
-            summaryItems.add(
-                SummaryItem(
-                    notificationKey = "empty",
-                    packageName = packageName,
-                    senderText = getString(R.string.summary_overlay_sender_fallback),
-                    messageText = getString(R.string.summary_overlay_empty_message),
-                    imagePath = null,
-                    postTimeMillis = System.currentTimeMillis()
+            withContext(Dispatchers.Main) {
+                if (isServiceStopping) {
+                    return@withContext
+                }
+
+                summaryItems.clear()
+                summaryItems.addAll(
+                    if (builtItems.isEmpty()) listOf(createEmptySummaryItem()) else builtItems
                 )
-            )
+                notificationCountForGreeting = builtItems.size
+                currentIndex = 0
+                renderCurrentCard()
+                InAppLogger.log(
+                    TAG,
+                    "SummaryExecutionService running action=$action source=$source items=${summaryItems.size}"
+                )
+                startSummarySpeechFromCurrentIndex(triggeredBySwipe = false)
+            }
         }
-        currentIndex = 0
-        renderCurrentCard()
+    }
+
+    private fun createEmptySummaryItem(): SummaryItem {
+        return SummaryItem(
+            notificationKey = "empty",
+            packageName = packageName,
+            appName = getString(R.string.summary_overlay_sender_fallback),
+            appTimeSubtitle = getString(R.string.summary_overlay_sender_fallback),
+            senderText = getString(R.string.summary_overlay_sender_fallback),
+            messageText = getString(R.string.summary_overlay_empty_message),
+            notificationImagePath = null,
+            postTimeMillis = System.currentTimeMillis()
+        )
     }
 
     private fun buildSummaryItems(active: Array<StatusBarNotification>): List<SummaryItem> {
@@ -730,11 +774,25 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
                 return@forEach
             }
 
-            val sender = extractSender(sbn)
-            val message = extractMessage(sbn)
-            if (sender.isBlank() && message.isBlank()) {
+            val appName = resolveAppLabel(sbn.packageName)
+            val sender = extractSender(sbn).ifBlank { appName }
+            val rawMessage = extractMessage(sbn)
+            if (sender.isBlank() && rawMessage.isBlank()) {
                 return@forEach
             }
+
+            val filterBridgeResult = NotificationReaderService.applyFiltersForSummary(
+                sbn = sbn,
+                appName = appName,
+                fallbackText = rawMessage
+            )
+            if (!filterBridgeResult.shouldInclude) {
+                return@forEach
+            }
+
+            val message = filterBridgeResult.processedText.ifBlank { rawMessage }
+            val appTime = DateFormat.getTimeFormat(this).format(Date(sbn.postTime))
+            val subtitle = "$appName \u2022 $appTime"
 
             val fingerprint = "${sbn.packageName}|${sender.lowercase()}|${message.lowercase()}"
             if (!seenFingerprints.add(fingerprint)) {
@@ -745,9 +803,11 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
                 SummaryItem(
                     notificationKey = sbn.key ?: fingerprint,
                     packageName = sbn.packageName,
+                    appName = appName,
+                    appTimeSubtitle = subtitle,
                     senderText = sender.ifBlank { getString(R.string.summary_overlay_sender_fallback) },
                     messageText = message.ifBlank { getString(R.string.summary_overlay_empty_message) },
-                    imagePath = extractImagePathFromNotification(sbn),
+                    notificationImagePath = extractBigPicturePathFromNotification(sbn),
                     postTimeMillis = sbn.postTime
                 )
             )
@@ -801,31 +861,12 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
         return extras.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString().orEmpty()
     }
 
-    private fun extractImagePathFromNotification(sbn: StatusBarNotification): String? {
+    private fun extractBigPicturePathFromNotification(sbn: StatusBarNotification): String? {
         val extras = sbn.notification.extras ?: return null
 
         val pictureBitmap = extras.get(Notification.EXTRA_PICTURE) as? Bitmap
         if (pictureBitmap != null) {
             return persistBitmapAndRecycle(pictureBitmap, sbn, "picture")
-        }
-
-        val largeIconBitmap = extras.get(Notification.EXTRA_LARGE_ICON) as? Bitmap
-        if (largeIconBitmap != null) {
-            return persistBitmapAndRecycle(largeIconBitmap, sbn, "large_icon_bitmap")
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val largeIconFromExtras = extras.get(Notification.EXTRA_LARGE_ICON) as? Icon
-            val iconBitmap = iconToBitmap(largeIconFromExtras)
-            if (iconBitmap != null) {
-                return persistBitmapAndRecycle(iconBitmap, sbn, "large_icon_icon")
-            }
-
-            val notificationLargeIcon = sbn.notification.getLargeIcon()
-            val notificationIconBitmap = iconToBitmap(notificationLargeIcon)
-            if (notificationIconBitmap != null) {
-                return persistBitmapAndRecycle(notificationIconBitmap, sbn, "notif_large_icon")
-            }
         }
         return null
     }
@@ -881,13 +922,14 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
         }
         val card = summaryItems[currentIndex]
         paginationText?.text = "${currentIndex + 1}/${summaryItems.size}"
+        appTimeSubtitleText?.text = card.appTimeSubtitle
         senderText?.text = card.senderText
         messageText?.text = card.messageText
 
-        val loaded = if (!card.imagePath.isNullOrBlank()) {
-            val bitmap = BitmapFactory.decodeFile(card.imagePath)
+        val hasPicture = if (!card.notificationImagePath.isNullOrBlank()) {
+            val bitmap = BitmapFactory.decodeFile(card.notificationImagePath)
             if (bitmap != null) {
-                imageView?.setImageBitmap(bitmap)
+                notificationImageView?.setImageBitmap(bitmap)
                 true
             } else {
                 false
@@ -896,9 +938,16 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
             false
         }
 
-        if (!loaded) {
-            setFallbackAppIcon(card.packageName)
+        if (hasPicture) {
+            notificationImageCard?.visibility = View.VISIBLE
+            notificationImageView?.visibility = View.VISIBLE
+        } else {
+            notificationImageCard?.visibility = View.GONE
+            notificationImageView?.visibility = View.GONE
+            notificationImageView?.setImageDrawable(null)
         }
+
+        setAppIcon(card.packageName)
     }
 
     private fun showNextCard() {
@@ -926,16 +975,16 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
         startSummarySpeechFromCurrentIndex(triggeredBySwipe = true)
     }
 
-    private fun setFallbackAppIcon(packageName: String?) {
+    private fun setAppIcon(packageName: String?) {
         if (packageName.isNullOrBlank()) {
-            imageView?.setImageResource(R.drawable.speakthaticon)
+            appIconView?.setImageResource(R.drawable.speakthaticon)
             return
         }
         try {
             val appIcon = packageManager.getApplicationIcon(packageName)
-            imageView?.setImageDrawable(appIcon)
+            appIconView?.setImageDrawable(appIcon)
         } catch (e: Exception) {
-            imageView?.setImageResource(R.drawable.speakthaticon)
+            appIconView?.setImageResource(R.drawable.speakthaticon)
         }
     }
 
@@ -974,9 +1023,12 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
             overlayView = null
             contentContainer = null
             paginationText = null
-            imageView = null
+            appIconView = null
+            appTimeSubtitleText = null
             senderText = null
             messageText = null
+            notificationImageCard = null
+            notificationImageView = null
         }
     }
 
@@ -1013,9 +1065,11 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
     private data class SummaryItem(
         val notificationKey: String,
         val packageName: String,
+        val appName: String,
+        val appTimeSubtitle: String,
         val senderText: String,
         val messageText: String,
-        val imagePath: String?,
+        val notificationImagePath: String?,
         val postTimeMillis: Long
     )
 
