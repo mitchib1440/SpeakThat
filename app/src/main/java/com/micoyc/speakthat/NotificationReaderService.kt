@@ -379,6 +379,61 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 emptyArray()
             }
         }
+
+        data class SummaryFilterBridgeResult(
+            val shouldInclude: Boolean,
+            val processedText: String,
+            val reason: String = ""
+        )
+
+        /**
+         * Read-only summary bridge that reuses the existing filter pipeline.
+         * Null-safe fallback behavior:
+         * - If listener instance is unavailable/disconnected, returns the original text.
+         * - Never throws to callers.
+         */
+        @JvmStatic
+        fun applyFiltersForSummary(
+            sbn: StatusBarNotification,
+            appName: String,
+            fallbackText: String
+        ): SummaryFilterBridgeResult {
+            val instance = activeServiceInstance ?: return SummaryFilterBridgeResult(
+                shouldInclude = true,
+                processedText = fallbackText,
+                reason = "listener_unavailable"
+            )
+            if (!listenerConnectedForBridge) {
+                return SummaryFilterBridgeResult(
+                    shouldInclude = true,
+                    processedText = fallbackText,
+                    reason = "listener_disconnected"
+                )
+            }
+
+            return try {
+                val text = fallbackText.ifBlank { instance.extractNotificationText(sbn.notification) }
+                val result = instance.applyFilters(
+                    packageName = sbn.packageName,
+                    appName = appName,
+                    text = text,
+                    sbn = sbn,
+                    isSelfTest = false
+                )
+                SummaryFilterBridgeResult(
+                    shouldInclude = result.shouldSpeak,
+                    processedText = result.processedText,
+                    reason = result.reason
+                )
+            } catch (e: Exception) {
+                Log.w(TAG, "Summary filter bridge fallback due to error: ${e.message}")
+                SummaryFilterBridgeResult(
+                    shouldInclude = true,
+                    processedText = fallbackText,
+                    reason = "bridge_error"
+                )
+            }
+        }
         
         /**
          * Check if media behavior fallback is disabled in development settings
