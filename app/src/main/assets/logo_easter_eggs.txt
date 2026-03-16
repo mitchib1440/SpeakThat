@@ -467,3 +467,4 @@ SpeakThat! Going to war against en-shittification!
 SpeakThat! Listen to Louis Rossmann!
 SpeakThat! We're making history! You can view it on the main screen!
 SpeakThat! We will be making history. Dinging, buzzing, notification history, but history nonetheless.
+SpeakThat! More ergonomic than the Magic Mouse!
