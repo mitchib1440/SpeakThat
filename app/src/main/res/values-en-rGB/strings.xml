@@ -2442,4 +2442,22 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="support_email_subject_bug">SpeakThat! Bug Report</string>
     <string name="support_email_subject_question">SpeakThat! Support</string>
 
+    <!-- Proactive summary overlay -->
+    <string name="summary_overlay_dismiss">Dismiss proactive summary overlay</string>
+    <string name="summary_overlay_image">Notification preview image</string>
+    <string name="summary_overlay_sender_fallback">Summary Loading...</string>
+    <string name="summary_overlay_empty_message">No active notifications available right now.</string>
+    <string name="summary_service_preparing">Preparing proactive summary...</string>
+    <string name="summary_tts_day_period_morning">morning</string>
+    <string name="summary_tts_day_period_afternoon">afternoon</string>
+    <string name="summary_tts_day_period_evening">evening</string>
+    <string name="summary_tts_intro_template">Good %1$s, %2$s. It is %3$s, and your battery level is %4$d percent. %5$s</string>
+    <string name="summary_tts_no_notifications">No active notifications to read right now.</string>
+    <string name="summary_tts_relative_time_fallback">a moment ago</string>
+    <string name="summary_tts_item_template">%1$s. %2$s. %3$s</string>
+    <plurals name="summary_tts_notification_count">
+        <item quantity="one">You have %d notification.</item>
+        <item quantity="other">You have %d notifications.</item>
+    </plurals>
+
 </resources>
