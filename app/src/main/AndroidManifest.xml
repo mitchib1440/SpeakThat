@@ -130,6 +130,11 @@
             android:exported="false" />
 
         <activity
+            android:name=".summary.SummarySettingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SpeakThat.NoActionBar" />
+
+        <activity
             android:name=".SupportActivity"
             android:exported="false"
             android:parentActivityName=".SettingsActivity" />
