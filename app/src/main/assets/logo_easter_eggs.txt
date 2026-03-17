@@ -470,9 +470,9 @@ SpeakThat! We will be making history. Dinging, buzzing, notification history, bu
 SpeakThat! More ergonomic than the Magic Mouse!
 SpeakThat! Largely untested depending on your view!
 Rampart! I mean, SpeakThat!
-SpeakThat! Summaries: For when you're too afraid to look at your phone, so you make me read the damage out loud instead. Coming in 1.8.0!
+SpeakThat! Summaries: For when you're too afraid to look at your phone, so you make me read the damage out loud instead.
 SpeakThat! Yes, you can set your Summary greeting to "Supreme Overlord." No, I won't judge you for it. Much.
-SpeakThat! Delivering your daily scheduled Summary. Because doomscrolling before breakfast is bad for your posture. Coming in 1.8.0!
-SpeakThat! Summaries feature an OLED-black background. I’m saving your battery and your retinas simultaneously. You're welcome. Coming in 1.8.0!
-SpeakThat! I see you swiping back and forth on the Summary overlay just to watch my buttery smooth transitions. I don't blame you. Coming in 1.8.0!
-SpeakThat! Compiling your daily Summary... filtering out the spam... masking your private messages... Wow, you really owe me a raise. Coming in 1.8.0!
+SpeakThat! Delivering your daily scheduled Summary. Because doomscrolling before breakfast is bad for your posture.
+SpeakThat! Summaries feature an OLED-black background. I’m saving your battery and your retinas simultaneously. You're welcome.
+SpeakThat! I see you swiping back and forth on the Summary overlay just to watch my buttery smooth transitions. I don't blame you.
+SpeakThat! Compiling your daily Summary... filtering out the spam... masking your private messages... Wow, you really owe me a raise.
