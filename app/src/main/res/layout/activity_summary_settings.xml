@@ -87,11 +87,10 @@
                                 android:textColor="@color/purple_card_text_primary"
                                 android:textStyle="bold" />
                             <TextView
-                                android:id="@+id/tvScheduleTime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="12dp"
-                                android:text="@string/placeholder_string"
+                                android:text="@string/summary_settings_master_toggle_row_subtitle"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:textSize="14sp" />
 
@@ -220,6 +219,47 @@
                         android:textSize="14sp" />
 
                     <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingVertical="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/summary_settings_scheduler_toggle_title"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:text="@string/summary_settings_scheduler_toggle_subtitle"
+                                android:textColor="@color/purple_card_text_secondary"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switchEnableScheduler"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="12dp"
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/rowScheduleTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -234,7 +274,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/summary_settings_schedule_time"
+                            android:text="@string/summary_settings_scheduler_run_time"
                             android:textColor="@color/purple_card_text_primary"
                             android:textSize="16sp"
                             android:textStyle="bold" />

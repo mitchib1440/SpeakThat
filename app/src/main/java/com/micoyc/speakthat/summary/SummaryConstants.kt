@@ -9,7 +9,10 @@ object SummaryConstants {
 
     const val ALARM_REQUEST_CODE = 60241
     const val SUMMARY_SETTINGS_PREFS_NAME = "SummarySettings"
+    // Legacy combined scheduler/global key kept for migration.
     const val KEY_ENABLED = "enabled"
+    const val KEY_GLOBAL_ENABLED = "global_enabled"
+    const val KEY_SCHEDULER_ENABLED = "scheduler_enabled"
     const val KEY_HOUR_OF_DAY = "schedule_hour"
     const val KEY_MINUTE = "schedule_minute"
     const val KEY_GREETING_NAME = "greeting_name"
