@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
@@ -24,6 +25,7 @@ class SummarySettingsActivity : AppCompatActivity() {
 
     private lateinit var prefs: SharedPreferences
 
+    private lateinit var backButton: ImageButton
     private lateinit var enableSummarySwitch: SwitchCompat
     private lateinit var overlayPermissionButton: MaterialButton
     private lateinit var overlayPermissionStatus: TextView
@@ -39,9 +41,6 @@ class SummarySettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_summary_settings)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.title = getString(R.string.settings_summary_title)
 
         prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
 
@@ -56,6 +55,7 @@ class SummarySettingsActivity : AppCompatActivity() {
     }
 
     private fun bindViews() {
+        backButton = findViewById(R.id.btnBackSummarySettings)
         enableSummarySwitch = findViewById(R.id.switchEnableSummary)
         overlayPermissionButton = findViewById(R.id.btnGrantOverlayPermission)
         overlayPermissionStatus = findViewById(R.id.tvOverlayPermissionStatus)
@@ -83,6 +83,8 @@ class SummarySettingsActivity : AppCompatActivity() {
     }
 
     private fun setupInteractions() {
+        backButton.setOnClickListener { finish() }
+
         overlayPermissionButton.setOnClickListener {
             val intent = Intent(
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -93,11 +95,6 @@ class SummarySettingsActivity : AppCompatActivity() {
 
         enableSummarySwitch.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit().putBoolean(KEY_ENABLED, isChecked).apply()
-            if (isChecked) {
-                SummaryScheduler.schedule(this)
-            } else {
-                SummaryScheduler.cancel(this)
-            }
         }
 
         scheduleTimeRow.setOnClickListener {
@@ -111,9 +108,6 @@ class SummarySettingsActivity : AppCompatActivity() {
                         .putInt(KEY_SCHEDULE_HOUR, selectedHour)
                         .putInt(KEY_SCHEDULE_MINUTE, selectedMinute)
                         .apply()
-                    if (enableSummarySwitch.isChecked) {
-                        SummaryScheduler.schedule(this)
-                    }
                 },
                 selectedHour,
                 selectedMinute,
@@ -145,11 +139,6 @@ class SummarySettingsActivity : AppCompatActivity() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
             override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
         })
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        finish()
-        return true
     }
 
     private fun refreshOverlayPermissionUi() {
