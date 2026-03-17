@@ -22,15 +22,21 @@ class SummaryTriggerReceiver : BroadcastReceiver() {
             return
         }
 
-        if (isScheduledAlarm) {
-            val enabled = context.getSharedPreferences(
-                SummaryConstants.SUMMARY_SETTINGS_PREFS_NAME,
-                Context.MODE_PRIVATE
-            ).getBoolean(SummaryConstants.KEY_ENABLED, false)
-            if (!enabled) {
-                InAppLogger.log("SummaryTriggerReceiver", "Summary alarm fired while disabled; skipping service start")
-                return
+        if (!SummarySettingsGate.isGlobalGateOpen(context)) {
+            if (isScheduledAlarm) {
+                SummaryScheduler.cancel(context)
             }
+            InAppLogger.log(
+                "SummaryTriggerReceiver",
+                "Summary trigger blocked; global prerequisites are not satisfied"
+            )
+            return
+        }
+
+        if (isScheduledAlarm && !SummarySettingsGate.canSchedule(context)) {
+            SummaryScheduler.cancel(context)
+            InAppLogger.log("SummaryTriggerReceiver", "Summary alarm fired while scheduler disabled; skipping service start")
+            return
         }
 
         val source = when {
@@ -48,8 +54,9 @@ class SummaryTriggerReceiver : BroadcastReceiver() {
         InAppLogger.log("SummaryTriggerReceiver", "SummaryExecutionService started from source=$source")
 
         if (isScheduledAlarm) {
-            SummaryScheduler.schedule(context)
-            InAppLogger.log("SummaryTriggerReceiver", "Scheduled next daily summary alarm")
+            if (SummaryScheduler.schedule(context)) {
+                InAppLogger.log("SummaryTriggerReceiver", "Scheduled next daily summary alarm")
+            }
         }
     }
 }

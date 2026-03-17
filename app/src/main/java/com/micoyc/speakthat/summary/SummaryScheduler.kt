@@ -16,7 +16,12 @@ object SummaryScheduler {
     private const val TAG = "SummaryScheduler"
 
     fun schedule(context: Context): Boolean {
-        val prefs = context.getSharedPreferences(SummaryConstants.SUMMARY_SETTINGS_PREFS_NAME, Context.MODE_PRIVATE)
+        val prefs = SummarySettingsGate.prefs(context)
+        if (!SummarySettingsGate.canSchedule(context)) {
+            cancelAlarmOnly(context)
+            InAppLogger.log(TAG, "Schedule skipped; scheduler or global prerequisites not satisfied")
+            return false
+        }
         val hourOfDay = prefs.getInt(SummaryConstants.KEY_HOUR_OF_DAY, 8)
         val minute = prefs.getInt(SummaryConstants.KEY_MINUTE, 0)
         if (hourOfDay !in 0..23 || minute !in 0..59) {
@@ -60,10 +65,10 @@ object SummaryScheduler {
      */
     @JvmStatic
     fun rescheduleIfEnabled(context: Context): Boolean {
-        val prefs = context.getSharedPreferences(SummaryConstants.SUMMARY_SETTINGS_PREFS_NAME, Context.MODE_PRIVATE)
-        val enabled = prefs.getBoolean(SummaryConstants.KEY_ENABLED, false)
-        if (!enabled) {
-            InAppLogger.log(TAG, "Boot reschedule skipped; summary scheduler is disabled")
+        SummarySettingsGate.prefs(context)
+        if (!SummarySettingsGate.canSchedule(context)) {
+            cancelAlarmOnly(context)
+            InAppLogger.log(TAG, "Boot reschedule skipped; scheduler/global prerequisites not satisfied")
             return false
         }
         return schedule(context)

@@ -24,7 +24,8 @@ class SummarySettingsActivity : AppCompatActivity() {
 
     private lateinit var prefs: SharedPreferences
 
-    private lateinit var enableSummarySwitch: SwitchCompat
+    private lateinit var globalSummarySwitch: SwitchCompat
+    private lateinit var schedulerSwitch: SwitchCompat
     private lateinit var overlayPermissionButton: MaterialButton
     private lateinit var overlayPermissionStatus: TextView
     private lateinit var scheduleTimeRow: LinearLayout
@@ -35,6 +36,7 @@ class SummarySettingsActivity : AppCompatActivity() {
 
     private var selectedHour = DEFAULT_HOUR
     private var selectedMinute = DEFAULT_MINUTE
+    private var isApplyingUiState = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +45,7 @@ class SummarySettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.title = getString(R.string.settings_summary_title)
 
-        prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        prefs = SummarySettingsGate.prefs(this)
 
         bindViews()
         loadState()
@@ -56,7 +58,8 @@ class SummarySettingsActivity : AppCompatActivity() {
     }
 
     private fun bindViews() {
-        enableSummarySwitch = findViewById(R.id.switchEnableSummary)
+        globalSummarySwitch = findViewById(R.id.switchEnableSummary)
+        schedulerSwitch = findViewById(R.id.switchEnableScheduler)
         overlayPermissionButton = findViewById(R.id.btnGrantOverlayPermission)
         overlayPermissionStatus = findViewById(R.id.tvOverlayPermissionStatus)
         scheduleTimeRow = findViewById(R.id.rowScheduleTime)
@@ -67,19 +70,27 @@ class SummarySettingsActivity : AppCompatActivity() {
     }
 
     private fun loadState() {
-        selectedHour = prefs.getInt(KEY_SCHEDULE_HOUR, DEFAULT_HOUR)
-        selectedMinute = prefs.getInt(KEY_SCHEDULE_MINUTE, DEFAULT_MINUTE)
+        selectedHour = prefs.getInt(SummaryConstants.KEY_HOUR_OF_DAY, DEFAULT_HOUR)
+        selectedMinute = prefs.getInt(SummaryConstants.KEY_MINUTE, DEFAULT_MINUTE)
         selectedScheduleTime.text = formatTime(selectedHour, selectedMinute)
 
-        val greetingName = prefs.getString(KEY_GREETING_NAME, SummaryConstants.DEFAULT_GREETING_NAME)
+        val greetingName = prefs.getString(SummaryConstants.KEY_GREETING_NAME, SummaryConstants.DEFAULT_GREETING_NAME)
             ?: SummaryConstants.DEFAULT_GREETING_NAME
         greetingNameInput.setText(greetingName)
 
-        val pauseSeconds = prefs.getInt(KEY_PAUSE_SECONDS, DEFAULT_PAUSE_SECONDS).coerceIn(0, 5)
+        val pauseSeconds = prefs.getInt(SummaryConstants.KEY_PAUSE_SECONDS, DEFAULT_PAUSE_SECONDS).coerceIn(0, 5)
         speechPacingSeekBar.progress = pauseSeconds
         updatePacingLabel(pauseSeconds)
 
-        enableSummarySwitch.isChecked = prefs.getBoolean(KEY_ENABLED, false)
+        setSwitchCheckedSilently(
+            globalSummarySwitch,
+            prefs.getBoolean(SummaryConstants.KEY_GLOBAL_ENABLED, false)
+        )
+        setSwitchCheckedSilently(
+            schedulerSwitch,
+            prefs.getBoolean(SummaryConstants.KEY_SCHEDULER_ENABLED, false)
+        )
+        refreshOverlayPermissionUi()
     }
 
     private fun setupInteractions() {
@@ -91,16 +102,38 @@ class SummarySettingsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        enableSummarySwitch.setOnCheckedChangeListener { _, isChecked ->
-            prefs.edit().putBoolean(KEY_ENABLED, isChecked).apply()
+        globalSummarySwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isApplyingUiState) {
+                return@setOnCheckedChangeListener
+            }
+
+            prefs.edit().putBoolean(SummaryConstants.KEY_GLOBAL_ENABLED, isChecked).apply()
+            if (!isChecked) {
+                SummaryScheduler.cancel(this)
+            } else if (SummarySettingsGate.canSchedule(this)) {
+                SummaryScheduler.schedule(this)
+            }
+            refreshOverlayPermissionUi()
+        }
+
+        schedulerSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isApplyingUiState) {
+                return@setOnCheckedChangeListener
+            }
+
+            prefs.edit().putBoolean(SummaryConstants.KEY_SCHEDULER_ENABLED, isChecked).apply()
             if (isChecked) {
                 SummaryScheduler.schedule(this)
             } else {
                 SummaryScheduler.cancel(this)
             }
+            refreshOverlayPermissionUi()
         }
 
         scheduleTimeRow.setOnClickListener {
+            if (!scheduleTimeRow.isEnabled) {
+                return@setOnClickListener
+            }
             android.app.TimePickerDialog(
                 this,
                 { _, hourOfDay, minute ->
@@ -108,10 +141,10 @@ class SummarySettingsActivity : AppCompatActivity() {
                     selectedMinute = minute
                     selectedScheduleTime.text = formatTime(selectedHour, selectedMinute)
                     prefs.edit()
-                        .putInt(KEY_SCHEDULE_HOUR, selectedHour)
-                        .putInt(KEY_SCHEDULE_MINUTE, selectedMinute)
+                        .putInt(SummaryConstants.KEY_HOUR_OF_DAY, selectedHour)
+                        .putInt(SummaryConstants.KEY_MINUTE, selectedMinute)
                         .apply()
-                    if (enableSummarySwitch.isChecked) {
+                    if (SummarySettingsGate.canSchedule(this)) {
                         SummaryScheduler.schedule(this)
                     }
                 },
@@ -128,7 +161,7 @@ class SummarySettingsActivity : AppCompatActivity() {
                 val name = s?.toString()?.trim().orEmpty()
                 prefs.edit()
                     .putString(
-                        KEY_GREETING_NAME,
+                        SummaryConstants.KEY_GREETING_NAME,
                         if (name.isBlank()) SummaryConstants.DEFAULT_GREETING_NAME else name
                     )
                     .apply()
@@ -139,7 +172,7 @@ class SummarySettingsActivity : AppCompatActivity() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 val seconds = progress.coerceIn(0, 5)
                 updatePacingLabel(seconds)
-                prefs.edit().putInt(KEY_PAUSE_SECONDS, seconds).apply()
+                prefs.edit().putInt(SummaryConstants.KEY_PAUSE_SECONDS, seconds).apply()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
@@ -153,7 +186,19 @@ class SummarySettingsActivity : AppCompatActivity() {
     }
 
     private fun refreshOverlayPermissionUi() {
-        val granted = Settings.canDrawOverlays(this)
+        val granted = SummarySettingsGate.isOverlayPermissionGranted(this)
+        if (!granted) {
+            prefs.edit().putBoolean(SummaryConstants.KEY_GLOBAL_ENABLED, false).apply()
+            SummaryScheduler.cancel(this)
+        }
+
+        val globalEnabled = prefs.getBoolean(SummaryConstants.KEY_GLOBAL_ENABLED, false)
+        val schedulerEnabled = prefs.getBoolean(SummaryConstants.KEY_SCHEDULER_ENABLED, false)
+        val schedulerControlsEnabled = granted && globalEnabled
+
+        setSwitchCheckedSilently(globalSummarySwitch, globalEnabled)
+        setSwitchCheckedSilently(schedulerSwitch, schedulerEnabled)
+
         overlayPermissionButton.visibility = if (granted) android.view.View.GONE else android.view.View.VISIBLE
         overlayPermissionStatus.text = if (granted) {
             getString(R.string.summary_settings_permission_granted)
@@ -161,8 +206,24 @@ class SummarySettingsActivity : AppCompatActivity() {
             getString(R.string.summary_settings_permission_subtitle)
         }
 
-        enableSummarySwitch.isEnabled = granted
-        enableSummarySwitch.alpha = if (granted) 1f else 0.45f
+        globalSummarySwitch.isEnabled = granted
+        globalSummarySwitch.alpha = if (granted) 1f else 0.45f
+
+        schedulerSwitch.isEnabled = schedulerControlsEnabled
+        schedulerSwitch.alpha = if (schedulerControlsEnabled) 1f else 0.45f
+        scheduleTimeRow.isEnabled = schedulerControlsEnabled
+        scheduleTimeRow.isClickable = schedulerControlsEnabled
+        scheduleTimeRow.alpha = if (schedulerControlsEnabled) 1f else 0.45f
+
+        if (schedulerControlsEnabled && schedulerEnabled) {
+            SummaryScheduler.schedule(this)
+        }
+    }
+
+    private fun setSwitchCheckedSilently(switch: SwitchCompat, value: Boolean) {
+        isApplyingUiState = true
+        switch.isChecked = value
+        isApplyingUiState = false
     }
 
     private fun updatePacingLabel(seconds: Int) {
@@ -180,13 +241,6 @@ class SummarySettingsActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val PREFS_NAME = "SummarySettings"
-        private const val KEY_ENABLED = "enabled"
-        private const val KEY_SCHEDULE_HOUR = "schedule_hour"
-        private const val KEY_SCHEDULE_MINUTE = "schedule_minute"
-        private const val KEY_GREETING_NAME = "greeting_name"
-        private const val KEY_PAUSE_SECONDS = "pause_seconds"
-
         private const val DEFAULT_HOUR = 8
         private const val DEFAULT_MINUTE = 0
         private const val DEFAULT_PAUSE_SECONDS = 2

@@ -62,6 +62,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.micoyc.speakthat.rules.migration.RuleMigrationManager
 import com.micoyc.speakthat.summary.SummaryConstants
+import com.micoyc.speakthat.summary.SummarySettingsGate
 import org.woheller69.freeDroidWarn.FreeDroidWarn
 import java.text.NumberFormat
 
@@ -446,6 +447,11 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
 
     private fun triggerProactiveSummaryFromLogo() {
+        if (!SummarySettingsGate.isGlobalGateOpen(this)) {
+            Toast.makeText(this, getString(R.string.summary_trigger_blocked_globally), Toast.LENGTH_SHORT).show()
+            InAppLogger.log("MainActivity", "Summary trigger blocked from logo long-press; global gate closed")
+            return
+        }
         try {
             val triggerIntent = Intent(SummaryConstants.ACTION_TRIGGER_SUMMARY).apply {
                 `package` = packageName

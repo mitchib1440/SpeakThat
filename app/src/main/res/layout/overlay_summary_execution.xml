@@ -69,7 +69,8 @@
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingStart="8dp"
-        android:paddingEnd="8dp">
+        android:paddingEnd="8dp"
+        android:visibility="invisible">
 
         <androidx.cardview.widget.CardView
             android:layout_width="126dp"
@@ -137,6 +138,32 @@
                 android:scaleType="centerCrop"
                 android:visibility="gone" />
         </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/summaryLoadingContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/white_100" />
+
+        <TextView
+            android:id="@+id/tv_summary_loading_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/loading_line_5"
+            android:textColor="@color/white_100"
+            android:textSize="16sp" />
     </LinearLayout>
 
 </FrameLayout>

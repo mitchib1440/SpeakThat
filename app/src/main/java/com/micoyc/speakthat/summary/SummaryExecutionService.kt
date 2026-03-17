@@ -5,10 +5,12 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
+import android.content.ComponentCallbacks
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ServiceInfo
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -59,12 +61,13 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.abs
+import kotlin.random.Random
 
 /**
  * Phase 3 execution service for proactive summaries.
  * Adds TTS sequencing + overlay synchronization on top of the Phase 2 overlay/data pipeline.
  */
-class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
+class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, ComponentCallbacks {
 
     private var windowManager: WindowManager? = null
     private var overlayView: View? = null
@@ -76,6 +79,8 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
     private var messageText: TextView? = null
     private var notificationImageCard: View? = null
     private var notificationImageView: ImageView? = null
+    private var loadingContainer: View? = null
+    private var loadingLineText: TextView? = null
     private var touchStartX: Float = 0f
     private var touchStartY: Float = 0f
 
@@ -112,9 +117,17 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private var buildItemsJob: Job? = null
+    private var lastOrientation: Int = Configuration.ORIENTATION_UNDEFINED
 
     override fun onCreate() {
         super.onCreate()
+        registerComponentCallbacks(this)
+        val initialOrientation = resources.configuration.orientation
+        lastOrientation = if (initialOrientation != Configuration.ORIENTATION_UNDEFINED) {
+            initialOrientation
+        } else {
+            Configuration.ORIENTATION_PORTRAIT
+        }
         ensureNotificationChannel()
         ensureCacheDirExists()
         initializeTextToSpeech()
@@ -149,6 +162,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
         pendingQueueStart = false
         buildItemsJob?.cancel()
         mainHandler.removeCallbacksAndMessages(null)
+        unregisterComponentCallbacks(this)
         stopAndReleaseTextToSpeech()
         abandonAudioFocusIfHeld()
         serviceScope.cancel()
@@ -160,6 +174,36 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        val newOrientation = newConfig.orientation
+        if (newOrientation == Configuration.ORIENTATION_UNDEFINED || newOrientation == lastOrientation) {
+            return
+        }
+
+        lastOrientation = newOrientation
+        if (overlayView == null) {
+            return
+        }
+
+        removeOverlayIfAttached()
+        val attached = ensureOverlayAttached()
+        if (!attached) {
+            return
+        }
+
+        if (summaryItems.isNotEmpty()) {
+            loadingContainer?.visibility = View.GONE
+            contentContainer?.visibility = View.VISIBLE
+            contentContainer?.alpha = 1f
+        }
+        renderCurrentCard()
+    }
+
+    override fun onLowMemory() {
+        InAppLogger.logWarning(TAG, "System low memory callback received while summary overlay is active")
+    }
 
     override fun onInit(status: Int) {
         if (status != TextToSpeech.SUCCESS) {
@@ -696,7 +740,10 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
             notificationImageCard = view.findViewById(R.id.notificationImageCard)
             notificationImageView = view.findViewById(R.id.iv_notification_image)
             contentContainer = view.findViewById(R.id.summaryContentContainer)
+            loadingContainer = view.findViewById(R.id.summaryLoadingContainer)
+            loadingLineText = view.findViewById(R.id.tv_summary_loading_line)
             val dismissButton: ImageButton = view.findViewById(R.id.summaryDismissButton)
+            setRandomLoadingLine()
 
             dismissButton.setOnClickListener {
                 InAppLogger.log(TAG, "Summary overlay dismissed by user")
@@ -773,6 +820,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
                     return@withContext
                 }
 
+                animateFromLoadingToContent()
                 summaryItems.clear()
                 summaryItems.addAll(
                     if (builtItems.isEmpty()) listOf(createEmptySummaryItem()) else builtItems
@@ -786,6 +834,42 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
                 )
                 startSummarySpeechFromCurrentIndex(triggeredBySwipe = false)
             }
+        }
+    }
+
+    private fun setRandomLoadingLine() {
+        val randomNum = Random.nextInt(1, 51)
+        val loadingStringRes = resources.getIdentifier("loading_line_$randomNum", "string", packageName)
+        val loadingText = if (loadingStringRes != 0) {
+            getString(loadingStringRes)
+        } else {
+            getString(R.string.loading_line_5)
+        }
+        loadingLineText?.text = loadingText
+    }
+
+    private fun animateFromLoadingToContent() {
+        val loading = loadingContainer
+        val content = contentContainer
+
+        if (content != null) {
+            content.visibility = View.VISIBLE
+            content.alpha = 0f
+            content.animate()
+                .alpha(1f)
+                .setDuration(220L)
+                .start()
+        }
+
+        if (loading != null) {
+            loading.animate()
+                .alpha(0f)
+                .setDuration(220L)
+                .withEndAction {
+                    loading.visibility = View.GONE
+                    loading.alpha = 1f
+                }
+                .start()
         }
     }
 
@@ -1150,6 +1234,8 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
             messageText = null
             notificationImageCard = null
             notificationImageView = null
+            loadingContainer = null
+            loadingLineText = null
         }
     }
 
