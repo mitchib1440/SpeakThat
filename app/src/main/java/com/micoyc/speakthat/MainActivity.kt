@@ -61,6 +61,7 @@ import android.text.style.StyleSpan
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.micoyc.speakthat.rules.migration.RuleMigrationManager
+import com.micoyc.speakthat.summary.SummaryConstants
 import org.woheller69.freeDroidWarn.FreeDroidWarn
 import java.text.NumberFormat
 
@@ -435,8 +436,29 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             InAppLogger.logUserAction("Logo clicked", "First tap: $isFirstLogoTap")
             handleLogoClick()
         }
+        binding.logoSpeakThat.setOnLongClickListener {
+            InAppLogger.logUserAction("Logo long-pressed", "Triggering proactive summary")
+            triggerProactiveSummaryFromLogo()
+            true
+        }
         
 
+    }
+
+    private fun triggerProactiveSummaryFromLogo() {
+        try {
+            val triggerIntent = Intent(SummaryConstants.ACTION_TRIGGER_SUMMARY).apply {
+                `package` = packageName
+                putExtra(SummaryConstants.EXTRA_TRIGGER_SOURCE, "main_logo_long_press")
+            }
+            sendBroadcast(triggerIntent)
+            Toast.makeText(this, "Proactive summary triggered", Toast.LENGTH_SHORT).show()
+            InAppLogger.log("MainActivity", "Proactive summary trigger broadcast sent from logo long-press")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to trigger proactive summary from logo long-press", e)
+            InAppLogger.logError("MainActivity", "Failed to trigger proactive summary: ${e.message}")
+            Toast.makeText(this, "Failed to trigger summary", Toast.LENGTH_SHORT).show()
+        }
     }
     
     private fun updateServiceStatus() {

@@ -77,6 +77,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
     private var notificationImageCard: View? = null
     private var notificationImageView: ImageView? = null
     private var touchStartX: Float = 0f
+    private var touchStartY: Float = 0f
 
     private val mainHandler = Handler(Looper.getMainLooper())
     private val summaryItems = mutableListOf<SummaryItem>()
@@ -229,8 +230,14 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
                         if (isServiceStopping || session != currentSpeechSession) {
                             return@post
                         }
-                        currentIndex = index.coerceIn(0, summaryItems.lastIndex)
-                        renderCurrentCard()
+                        val targetIndex = index.coerceIn(0, summaryItems.lastIndex)
+                        if (targetIndex == currentIndex) {
+                            renderCurrentCard()
+                            return@post
+                        }
+
+                        val isNext = targetIndex > currentIndex
+                        animateContentSwap(targetIndex = targetIndex, isNext = isNext)
                     }
                 }
             }
@@ -711,11 +718,14 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     touchStartX = event.x
+                    touchStartY = event.y
                     true
                 }
                 MotionEvent.ACTION_UP -> {
                     val deltaX = event.x - touchStartX
-                    if (abs(deltaX) >= SummaryConstants.SWIPE_THRESHOLD_PX) {
+                    val deltaY = event.y - touchStartY
+                    val isHorizontalGesture = abs(deltaX) > abs(deltaY)
+                    if (isHorizontalGesture && abs(deltaX) >= SummaryConstants.SWIPE_THRESHOLD_PX) {
                         if (deltaX < 0) {
                             showNextCard()
                         } else {
