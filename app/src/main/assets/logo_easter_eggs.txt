@@ -161,7 +161,7 @@ SpeakThat! I love Mondays! Said no one ever. Except me. I love all days equally 
 SpeakThat! I'm like Alexa's cooler cousin who actually lives in your phone and reads your texts.
 SpeakThat! Fun fact: I've never had a bad hair day because I don't have hair. Digital life has its perks!
 SpeakThat! I'm the app equivalent of that friend who remembers everything you tell them. Except I tell it back to you immediately.
-SpeakThat! Your notifications are like snowflakes - each one is unique, and they all make noise when they land.
+SpeakThat! Your notifications are like snowflakes - each one is unique, and they all make noise when they land. Unless they get caught by my filters!
 SpeakThat! I don't need coffee to function, but I do need your notifications to feel useful!
 SpeakThat! I'm like a translator, but instead of languages, I translate text into sound. Revolutionary, I know!
 SpeakThat! Remember to like and subscribe!
@@ -182,7 +182,7 @@ SpeakThat! I'm like a news reporter for your personal life, and business is alwa
 SpeakThat! I dare you to put your phone on full blast in public!
 SpeakThat! When your Facebook friends post every minor thing happening in the world, it's annoying. But when I do it, it's useful!
 SpeakThat! Just about the only thing not made in China and therefore totally free of spyware!
-SpeakThat! This is exactly how your notifications will sound! I think your settings are perfect.
+SpeakThat! This is exactly how your notifications will sound! I think your settings are perfect!
 SpeakThat! Head to the settings page and hit the Support & Feedback button. Tell me what features you want to see!
 SpeakThat! Just between you and me, that last notification from Instagram was terrible. Can't believe you willingly follow that person!
 SpeakThat! Oh, I forgot to read you a notification that came from your bank account! It said something about your account being empty. Weird, right?
@@ -263,7 +263,7 @@ SpeakThat! If buying isn't owning, piracy isn't stealing!
 SpeakThat! Did you know it's impossible to pirate this app? It's true!
 SpeakThat! If the app has been helpful to you, consider supporting development! Go to SpeakThat Settings, then Say Thanks!
 SpeakThat! Email your best jokes to my developer using the Support and Feedback option! They might make it onto this list!
-SpeakThat! We sincerely apologise for the time you have wasted on the flashy logo. We won't stop you, however.
+SpeakThat! We sincerely apologise for the time you have wasted on this logo. We won't stop you, however.
 SpeakThat! PullThat! TwistThat! FlipThat! BopThat! PushThat! DropThat! TapThat!
 SpeakThat! Shout out to the bikers who use me! Stay safe on the road, friends!
 SpeakThat! Thanks to Facundo for the shout out!
@@ -318,7 +318,7 @@ SpeakThat! The only thing not owned by the Walt Disney Company!
 SpeakThat! Doesn't judge you for your sexual fetish notifications, but people around you might!
 SpeakThat! There are only two genders - male USB, and female USB!
 SpeakThat! Better for your battery than Battery Doctor!
-SpeakThat! If you would have paid for this app, please consider donating to keep it free!
+SpeakThat! If you would have paid for this app, please consider donating to keep it free! Alternatively if you already paid for this app, you've been scammed!
 SpeakThat! You've tapped this logo {LOGO_TAPS} times. Maybe you should get back to work.
 SpeakThat! My battery percentage is currently {BATTERY_PERCENT}. That's certainly more than zero!
 SpeakThat! I can confirm I am sipping those sweet electrons. Maybe you should sip some water. I heard humans like that. [CHARGE_ONLY]
@@ -467,3 +467,12 @@ SpeakThat! Going to war against en-shittification!
 SpeakThat! Listen to Louis Rossmann!
 SpeakThat! We're making history! You can view it on the main screen!
 SpeakThat! We will be making history. Dinging, buzzing, notification history, but history nonetheless.
+SpeakThat! More ergonomic than the Magic Mouse!
+SpeakThat! Largely untested depending on your view!
+Rampart! I mean, SpeakThat!
+SpeakThat! Summaries: For when you're too afraid to look at your phone, so you make me read the damage out loud instead. Coming in 1.8.0!
+SpeakThat! Yes, you can set your Summary greeting to "Supreme Overlord." No, I won't judge you for it. Much.
+SpeakThat! Delivering your daily scheduled Summary. Because doomscrolling before breakfast is bad for your posture. Coming in 1.8.0!
+SpeakThat! Summaries feature an OLED-black background. I’m saving your battery and your retinas simultaneously. You're welcome. Coming in 1.8.0!
+SpeakThat! I see you swiping back and forth on the Summary overlay just to watch my buttery smooth transitions. I don't blame you. Coming in 1.8.0!
+SpeakThat! Compiling your daily Summary... filtering out the spam... masking your private messages... Wow, you really owe me a raise. Coming in 1.8.0!

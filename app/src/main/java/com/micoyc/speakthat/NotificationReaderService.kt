@@ -1,3 +1,10 @@
+/*
+ * SpeakThat! is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed.
+ * This license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices.
+ * SpeakThat! Copyright © Mitchell Bell
+ * SPEAKTHAT is a registered UK trademark of Mitchell Bell
+ */
+
 package com.micoyc.speakthat
 
 import android.app.Notification
@@ -239,6 +246,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     companion object {
         private const val TAG = "NotificationReader"
+        const val ACTION_HISTORY_UPDATED = "com.micoyc.speakthat.action.HISTORY_UPDATED"
         private val notificationHistory = ArrayList<NotificationData>()
         private const val MAX_HISTORY_SIZE = 15
         private const val PREFS_NAME = "SpeakThatPrefs"
@@ -2159,6 +2167,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             if (notificationHistory.size > MAX_HISTORY_SIZE) {
                 notificationHistory.removeAt(0)
             }
+
+            // Notify visible UI that history changed (in-app only).
+            val historyIntent = Intent(ACTION_HISTORY_UPDATED).apply {
+                setPackage(this@NotificationReaderService.packageName)
+            }
+            sendBroadcast(historyIntent)
+            Log.d(TAG, "Broadcasted history update to package: ${this@NotificationReaderService.packageName}")
             
             Log.d(TAG, "Added notification to history batch queue: $appName")
             

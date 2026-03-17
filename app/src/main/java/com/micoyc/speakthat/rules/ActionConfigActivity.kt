@@ -1,3 +1,10 @@
+/*
+ * SpeakThat! is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed.
+ * This license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices.
+ * SpeakThat! Copyright © Mitchell Bell
+ * SPEAKTHAT is a registered UK trademark of Mitchell Bell
+ */
+
 package com.micoyc.speakthat.rules
 
 import android.graphics.Typeface
@@ -5,6 +12,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.speech.tts.Voice
 import android.util.TypedValue
 import android.view.View
 import android.widget.LinearLayout
@@ -18,7 +26,6 @@ import com.micoyc.speakthat.R
 import com.micoyc.speakthat.SpeechTemplateConstants
 import com.micoyc.speakthat.databinding.ActivityActionConfigBinding
 import com.micoyc.speakthat.settings.managers.SpeechTemplateManager
-import java.util.Locale
 
 class ActionConfigActivity : AppCompatActivity() {
 
@@ -32,7 +39,7 @@ class ActionConfigActivity : AppCompatActivity() {
     private lateinit var voiceSettingsPrefs: SharedPreferences
     private var overrideLanguageCodes: List<String> = emptyList()
     private var overrideLanguageLabels: List<String> = emptyList()
-    private var overrideVoiceNames: List<String> = emptyList()
+    private var overrideVoiceOptions: List<OverrideVoiceOption> = emptyList()
     private var voiceOverrideTts: TextToSpeech? = null
     private var pendingOverrideVoiceSelection: String? = null
 
@@ -217,32 +224,31 @@ class ActionConfigActivity : AppCompatActivity() {
 
     private fun refreshOverrideVoiceOptions() {
         val tts = voiceOverrideTts
-        val languageCode = overrideLanguageCodes.getOrNull(binding.spinnerOverrideVoiceLanguage.selectedItemPosition).orEmpty()
-        val targetLocale = parseLocale(languageCode)
-        val voices = tts?.voices
-            ?.filter { voice ->
-                val voiceLocale = voice.locale
-                targetLocale == null || voiceLocale == null || voiceLocale.language == targetLocale.language
-            }
-            ?.map { it.name }
-            ?.sorted()
+        val voiceOptions = tts?.voices
+            ?.map { buildOverrideVoiceOption(it) }
+            ?.sortedBy { it.label.lowercase() }
             .orEmpty()
 
-        val entries = mutableListOf(getString(R.string.action_override_tts_voice_default_voice_option))
-        entries.addAll(voices)
-        overrideVoiceNames = entries
+        val entries = mutableListOf(
+            OverrideVoiceOption(
+                label = getString(R.string.action_override_tts_voice_default_voice_option),
+                voiceName = null
+            )
+        )
+        entries.addAll(voiceOptions)
+        overrideVoiceOptions = entries
 
         val adapter = android.widget.ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
-            overrideVoiceNames
+            overrideVoiceOptions.map { it.label }
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerOverrideVoiceName.adapter = adapter
 
         val pendingName = pendingOverrideVoiceSelection
         if (!pendingName.isNullOrBlank()) {
-            val index = overrideVoiceNames.indexOf(pendingName)
+            val index = overrideVoiceOptions.indexOfFirst { it.voiceName == pendingName }
             if (index >= 0) {
                 binding.spinnerOverrideVoiceName.setSelection(index)
                 pendingOverrideVoiceSelection = null
@@ -250,10 +256,25 @@ class ActionConfigActivity : AppCompatActivity() {
         }
     }
 
-    private fun parseLocale(code: String): Locale? {
-        if (code.isBlank()) return null
-        val locale = Locale.forLanguageTag(code.replace('_', '-'))
-        return if (locale.language.isNullOrBlank()) null else locale
+    private fun buildOverrideVoiceOption(voice: Voice): OverrideVoiceOption {
+        val locale = voice.locale
+        val language = locale?.displayLanguage?.takeIf { it.isNotBlank() } ?: "Unknown language"
+        val region = locale?.country?.takeIf { it.isNotBlank() }?.let { " ($it)" }.orEmpty()
+        val quality = extractVoiceQuality(voice.name)
+        val networkType = if (voice.isNetworkConnectionRequired) "Network" else "Local"
+        val label = "$language$region - $quality ($networkType)"
+        return OverrideVoiceOption(label = label, voiceName = voice.name)
+    }
+
+    private fun extractVoiceQuality(voiceName: String): String {
+        val normalized = voiceName.lowercase()
+        return when {
+            "local" in normalized -> "High Quality"
+            "network" in normalized -> "Network"
+            "enhanced" in normalized -> "Enhanced"
+            "compact" in normalized -> "Compact"
+            else -> "Standard"
+        }
     }
 
     private fun setupForcePrivateUI() {
@@ -346,6 +367,11 @@ class ActionConfigActivity : AppCompatActivity() {
     private data class PlaceholderItem(
         val labelRes: Int,
         val descRes: Int
+    )
+
+    private data class OverrideVoiceOption(
+        val label: String,
+        val voiceName: String?
     )
 
     private fun loadCurrentValues() {
@@ -446,8 +472,9 @@ class ActionConfigActivity : AppCompatActivity() {
             ?: "en_US"
         val useSpecificVoice = binding.switchOverrideVoiceAdvanced.isChecked
         val selectedVoiceName = if (useSpecificVoice) {
-            overrideVoiceNames.getOrNull(binding.spinnerOverrideVoiceName.selectedItemPosition)
-                ?.takeIf { it != getString(R.string.action_override_tts_voice_default_voice_option) }
+            overrideVoiceOptions
+                .getOrNull(binding.spinnerOverrideVoiceName.selectedItemPosition)
+                ?.voiceName
         } else {
             null
         }
