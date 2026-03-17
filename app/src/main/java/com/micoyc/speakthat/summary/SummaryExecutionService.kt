@@ -35,6 +35,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
+import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -106,6 +107,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
     private var audioFocusRequest: AudioFocusRequest? = null
     @Volatile
     private var hasAudioFocus = false
+    private var transitionGeneration = 0L
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private var buildItemsJob: Job? = null
@@ -778,7 +780,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
                 return@forEach
             }
 
-            val appName = resolveAppLabel(sbn.packageName)
+            val appName = resolveDisplayAppName(sbn.packageName)
             val rawSender = extractSender(sbn).ifBlank { appName }
             val rawMessage = extractMessage(sbn)
             if (rawSender.isBlank() && rawMessage.isBlank()) {
@@ -851,7 +853,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
         if (title.isNotBlank()) {
             return title
         }
-        return resolveAppLabel(sbn.packageName)
+        return resolveDisplayAppName(sbn.packageName)
     }
 
     private fun extractMessage(sbn: StatusBarNotification): String {
@@ -983,8 +985,9 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
         if (summaryItems.size <= 1) {
             return
         }
-        currentIndex = (currentIndex + 1) % summaryItems.size
-        renderCurrentCard()
+        val targetIndex = (currentIndex + 1) % summaryItems.size
+        currentIndex = targetIndex
+        animateContentSwap(targetIndex = targetIndex, isNext = true)
         restartSpeechFromGesture()
     }
 
@@ -992,9 +995,63 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
         if (summaryItems.size <= 1) {
             return
         }
-        currentIndex = if (currentIndex == 0) summaryItems.lastIndex else currentIndex - 1
-        renderCurrentCard()
+        val targetIndex = if (currentIndex == 0) summaryItems.lastIndex else currentIndex - 1
+        currentIndex = targetIndex
+        animateContentSwap(targetIndex = targetIndex, isNext = false)
         restartSpeechFromGesture()
+    }
+
+    private fun animateContentSwap(targetIndex: Int, isNext: Boolean) {
+        val container = contentContainer
+        if (container == null) {
+            renderCurrentCard()
+            return
+        }
+
+        transitionGeneration += 1L
+        val generation = transitionGeneration
+
+        // Rapid swipe safety: cancel any in-flight transitions first.
+        container.animate().cancel()
+        container.clearAnimation()
+
+        val distance = (container.width.takeIf { it > 0 } ?: 140).toFloat()
+        val exitTranslationX = if (isNext) -distance else distance
+        val entryTranslationX = -exitTranslationX
+
+        container.animate()
+            .translationX(exitTranslationX)
+            .alpha(0f)
+            .setDuration(CARD_SWAP_DURATION_MS)
+            .withEndAction {
+                if (generation != transitionGeneration || isServiceStopping) {
+                    return@withEndAction
+                }
+
+                // Data swap happens only after animate-out completes.
+                currentIndex = targetIndex
+                renderCurrentCard()
+
+                // Reset off-screen for entry transition.
+                container.translationX = entryTranslationX
+                container.alpha = 0f
+
+                container.animate().cancel()
+                container.animate()
+                    .translationX(0f)
+                    .alpha(1f)
+                    .setDuration(CARD_SWAP_DURATION_MS)
+                    .setInterpolator(DecelerateInterpolator())
+                    .withEndAction {
+                        if (generation != transitionGeneration) {
+                            return@withEndAction
+                        }
+                        container.translationX = 0f
+                        container.alpha = 1f
+                    }
+                    .start()
+            }
+            .start()
     }
 
     private fun restartSpeechFromGesture() {
@@ -1017,7 +1074,11 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
         }
     }
 
-    private fun resolveAppLabel(packageName: String): String {
+    private fun resolveDisplayAppName(packageName: String): String {
+        val bridgedName = NotificationReaderService.getDisplayAppNameForSummary(packageName)
+        if (bridgedName.isNotBlank() && bridgedName != packageName) {
+            return bridgedName
+        }
         return try {
             val appInfo = packageManager.getApplicationInfo(packageName, 0)
             packageManager.getApplicationLabel(appInfo).toString()
@@ -1104,5 +1165,6 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
 
     companion object {
         private const val TAG = "SummaryExecutionSvc"
+        private const val CARD_SWAP_DURATION_MS = 200L
     }
 }

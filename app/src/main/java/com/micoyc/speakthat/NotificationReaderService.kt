@@ -434,6 +434,24 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 )
             }
         }
+
+        /**
+         * Read-only bridge for summary display/speech app names.
+         * Reuses the same custom app-name resolution path as immediate readouts.
+         */
+        @JvmStatic
+        fun getDisplayAppNameForSummary(packageName: String): String {
+            val instance = activeServiceInstance ?: return packageName
+            if (!listenerConnectedForBridge) {
+                return packageName
+            }
+            return try {
+                instance.getAppName(packageName)
+            } catch (e: Exception) {
+                Log.w(TAG, "Summary app-name bridge fallback due to error: ${e.message}")
+                packageName
+            }
+        }
         
         /**
          * Check if media behavior fallback is disabled in development settings
