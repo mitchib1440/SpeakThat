@@ -745,6 +745,26 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="settings_filter_description">Choose which apps to read</string>
     <string name="settings_rules_title">Conditional Rules</string>
     <string name="settings_rules_description">Configure Bluetooth, time schedules, etc</string>
+    <string name="settings_summary_title">Summary Settings</string>
+    <string name="settings_summary_description">Tweak SpeakThat\'s notification summaries</string>
+    <string name="summary_settings_back">Go back</string>
+    <string name="summary_settings_master_toggle_title">Enable Summaries</string>
+    <string name="summary_settings_master_toggle_subtitle">Allow SpeakThat to run scheduled notification summaries.</string>
+    <string name="summary_settings_permission_title">Overlay Permission</string>
+    <string name="summary_settings_permission_subtitle">Required to display summary cards over your screen.</string>
+    <string name="summary_settings_permission_granted">Overlay permission granted.</string>
+    <string name="summary_settings_grant_permission">Grant Overlay Permission</string>
+    <string name="summary_settings_schedule_time">Schedule Time</string>
+    <string name="summary_settings_schedule_subtitle">Begin a daily summary readout at a certain time.</string>
+    <string name="summary_settings_default_time">08:00 AM</string>
+    <string name="summary_settings_greeting_name">Greeting Name</string>
+    <string name="summary_settings_greeting_name_subtitle">Set the name SpeakThat will use when starting a summary to read active notifications.</string>
+    <string name="summary_settings_speech_pacing">Speech Pacing</string>
+    <string name="summary_settings_speech_pacing_subtitle">Set the gap between one notification being read and the next during summaries.</string>
+    <string name="summary_settings_pacing_value">2 sec</string>
+    <string name="summary_settings_pacing_value_format">%1$d sec</string>
+    <string name="summary_settings_pacing_min">0s</string>
+    <string name="summary_settings_pacing_max">5s</string>
     <string name="settings_compatibility_title">Compatibility Settings</string>
     <string name="settings_compatibility_description">Fixes for common device-related issues</string>
     <string name="compatibility_section_audio_routing">Android Audio Routing</string>
@@ -2442,12 +2462,12 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="support_email_subject_bug">SpeakThat! Bug Report</string>
     <string name="support_email_subject_question">SpeakThat! Support</string>
 
-    <!-- Proactive summary overlay -->
-    <string name="summary_overlay_dismiss">Dismiss proactive summary overlay</string>
+    <!-- summary overlay -->
+    <string name="summary_overlay_dismiss">Dismiss summary overlay</string>
     <string name="summary_overlay_image">Notification preview image</string>
     <string name="summary_overlay_sender_fallback">Summary Loading...</string>
     <string name="summary_overlay_empty_message">No active notifications available right now.</string>
-    <string name="summary_service_preparing">Preparing proactive summary...</string>
+    <string name="summary_service_preparing">Preparing summary...</string>
     <string name="summary_tts_day_period_morning">morning</string>
     <string name="summary_tts_day_period_afternoon">afternoon</string>
     <string name="summary_tts_day_period_evening">evening</string>
@@ -2459,5 +2479,8 @@ This permission is completely optional; SpeakThat! will still function without i
         <item quantity="one">You have %d notification.</item>
         <item quantity="other">You have %d notifications.</item>
     </plurals>
+
+
+    <string name="placeholder_string">Placeholder string. Don\'t forget to remove this.</string>
 
 </resources>
