@@ -350,6 +350,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
             return
         }
 
+        val pauseGapMs = readSummaryPauseGapMs()
         for (index in currentIndex until summaryItems.size) {
             val item = summaryItems[index]
             val itemId = buildUtteranceId(sessionId, SummaryConstants.UTTERANCE_PREFIX_ITEM, index)
@@ -372,7 +373,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
                 utteranceIndexMap[pauseId] = index
                 utteranceSessionMap[pauseId] = sessionId
                 tts.playSilentUtterance(
-                    SummaryConstants.TTS_PAUSE_GAP_MS,
+                    pauseGapMs,
                     TextToSpeech.QUEUE_ADD,
                     pauseId
                 )
@@ -484,6 +485,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
         val dayPeriod = resolveDayPeriodString()
         val currentTime = DateFormat.getTimeFormat(this).format(Date(System.currentTimeMillis()))
         val batteryPercent = readBatteryPercent()
+        val greetingName = readSummaryGreetingName()
         val countText = resources.getQuantityString(
             R.plurals.summary_tts_notification_count,
             notificationCountForGreeting,
@@ -492,11 +494,30 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
         return getString(
             R.string.summary_tts_intro_template,
             dayPeriod,
-            SummaryConstants.DEFAULT_GREETING_NAME,
+            greetingName,
             currentTime,
             batteryPercent,
             countText
         )
+    }
+
+    private fun readSummaryGreetingName(): String {
+        val name = getSummarySettingsPrefs()
+            .getString(SUMMARY_SETTINGS_KEY_GREETING_NAME, "User")
+            ?.trim()
+            .orEmpty()
+        return if (name.isBlank()) "User" else name
+    }
+
+    private fun readSummaryPauseGapMs(): Long {
+        val seconds = getSummarySettingsPrefs()
+            .getInt(SUMMARY_SETTINGS_KEY_PAUSE_SECONDS, 2)
+            .coerceIn(0, 5)
+        return seconds * 1000L
+    }
+
+    private fun getSummarySettingsPrefs(): SharedPreferences {
+        return getSharedPreferences(SUMMARY_SETTINGS_PREFS_NAME, MODE_PRIVATE)
     }
 
     private fun resolveDayPeriodString(): String {
@@ -1176,5 +1197,8 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener {
     companion object {
         private const val TAG = "SummaryExecutionSvc"
         private const val CARD_SWAP_DURATION_MS = 200L
+        private const val SUMMARY_SETTINGS_PREFS_NAME = "SummarySettings"
+        private const val SUMMARY_SETTINGS_KEY_GREETING_NAME = "greeting_name"
+        private const val SUMMARY_SETTINGS_KEY_PAUSE_SECONDS = "pause_seconds"
     }
 }
