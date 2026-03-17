@@ -16,6 +16,7 @@ import com.micoyc.speakthat.databinding.ActivitySettingsBinding
 import com.micoyc.speakthat.donations.DonationManager
 import com.micoyc.speakthat.donations.DonationManagerProvider
 import com.micoyc.speakthat.settings.BehaviorSettingsActivity
+import com.micoyc.speakthat.summary.SummarySettingsActivity
 
 class SettingsActivity : AppCompatActivity() {
     
@@ -228,6 +229,10 @@ class SettingsActivity : AppCompatActivity() {
         
         binding.cardCompatibilitySettings.setOnClickListener {
             startActivity(Intent(this, CompatibilitySettingsActivity::class.java))
+        }
+
+        binding.cardSummarySettings.setOnClickListener {
+            startActivity(Intent(this, SummarySettingsActivity::class.java))
         }
         
         binding.cardDevelopmentSettings.setOnClickListener {
