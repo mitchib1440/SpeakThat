@@ -755,11 +755,16 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="summary_settings_permission_granted">Overlay permission granted.</string>
     <string name="summary_settings_grant_permission">Grant Overlay Permission</string>
     <string name="summary_settings_schedule_time">Schedule Time</string>
+    <string name="summary_settings_schedule_subtitle">Begin a daily summary readout at a certain time.</string>
     <string name="summary_settings_default_time">08:00 AM</string>
     <string name="summary_settings_greeting_name">Greeting Name</string>
+    <string name="summary_settings_greeting_name_subtitle">Set the name SpeakThat will use when starting a summary to read active notifications.</string>
     <string name="summary_settings_speech_pacing">Speech Pacing</string>
+    <string name="summary_settings_speech_pacing_subtitle">Set the gap between one notification being read and the next during summaries.</string>
     <string name="summary_settings_pacing_value">2 sec</string>
     <string name="summary_settings_pacing_value_format">%1$d sec</string>
+    <string name="summary_settings_pacing_min">0s</string>
+    <string name="summary_settings_pacing_max">5s</string>
     <string name="settings_compatibility_title">Compatibility Settings</string>
     <string name="settings_compatibility_description">Fixes for common device-related issues</string>
     <string name="compatibility_section_audio_routing">Android Audio Routing</string>
