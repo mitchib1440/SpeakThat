@@ -759,7 +759,10 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
             }
             val flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
 
             val params = WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
@@ -769,6 +772,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
                 PixelFormat.TRANSLUCENT
             ).apply {
                 gravity = Gravity.TOP or Gravity.START
+                screenOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR
             }
 
             windowManager?.addView(view, params)
