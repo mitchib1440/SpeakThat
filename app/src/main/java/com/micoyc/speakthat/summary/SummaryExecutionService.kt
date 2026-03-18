@@ -64,7 +64,7 @@ import kotlin.math.abs
 import kotlin.random.Random
 
 /**
- * Phase 3 execution service for proactive summaries.
+ * Phase 3 execution service for summaries.
  * Adds TTS sequencing + overlay synchronization on top of the Phase 2 overlay/data pipeline.
  */
 class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, ComponentCallbacks {
@@ -690,10 +690,10 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         val channel = NotificationChannel(
             SummaryConstants.NOTIFICATION_CHANNEL_ID,
-            "Proactive Summary",
+            "Ongoing Summary",
             NotificationManager.IMPORTANCE_LOW
         ).apply {
-            description = "Foreground service channel for proactive summary execution"
+            description = "Foreground service channel for summary execution"
             setSound(null, null)
             enableVibration(false)
         }

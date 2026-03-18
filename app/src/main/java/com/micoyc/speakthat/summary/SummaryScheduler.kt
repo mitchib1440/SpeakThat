@@ -9,7 +9,7 @@ import com.micoyc.speakthat.InAppLogger
 import java.util.Calendar
 
 /**
- * Schedules/cancels daily exact alarms for proactive summaries.
+ * Schedules/cancels daily exact alarms for summaries.
  */
 object SummaryScheduler {
 
@@ -34,7 +34,7 @@ object SummaryScheduler {
 
     fun cancel(context: Context) {
         cancelAlarmOnly(context)
-        InAppLogger.log(TAG, "Daily proactive summary alarm cancelled")
+        InAppLogger.log(TAG, "Daily summary alarm cancelled")
     }
 
     // Compatibility wrappers for older call sites.
