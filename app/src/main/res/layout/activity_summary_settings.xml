@@ -69,8 +69,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:gravity="center_vertical"
+                        android:orientation="horizontal"
                         android:paddingVertical="12dp">
 
                         <LinearLayout
@@ -83,9 +83,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/summary_settings_master_toggle_title"
-                                android:textSize="16sp"
                                 android:textColor="@color/purple_card_text_primary"
+                                android:textSize="16sp"
                                 android:textStyle="bold" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -100,11 +101,11 @@
                             android:id="@+id/switchEnableSummary"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:paddingLeft="12dp"
                             android:thumbTint="@color/switch_thumb_color"
                             android:trackTint="@color/switch_track_color"
                             app:thumbTint="@color/switch_thumb_color"
-                            app:trackTint="@color/switch_track_color"
-                            android:paddingLeft="12dp"/>
+                            app:trackTint="@color/switch_track_color" />
 
                     </LinearLayout>
 
@@ -184,6 +185,7 @@
                     android:background="@drawable/gradient_card_subtle_right"
                     android:orientation="vertical"
                     android:padding="16dp">
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
