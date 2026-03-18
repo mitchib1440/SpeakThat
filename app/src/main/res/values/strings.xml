@@ -2470,9 +2470,11 @@ This permission is completely optional; SpeakThat! will still function without i
     <!-- summary overlay -->
     <string name="summary_overlay_dismiss">Dismiss summary overlay</string>
     <string name="summary_overlay_image">Notification preview image</string>
-    <string name="summary_overlay_sender_fallback">Summary Loading...</string>
+    <string name="summary_overlay_sender_fallback">Nothing to see here</string>
     <string name="summary_overlay_empty_message">No active notifications available right now.</string>
-    <string name="summary_service_preparing">Preparing summary...</string>
+    <string name="summary_service_preparing">Summary in progress...</string>
+    <string name="summary_service_action_stop">Stop summary</string>
+    <string name="summary_service_action_skip">Skip current notification</string>
     <string name="summary_tts_day_period_morning">morning</string>
     <string name="summary_tts_day_period_afternoon">afternoon</string>
     <string name="summary_tts_day_period_evening">evening</string>

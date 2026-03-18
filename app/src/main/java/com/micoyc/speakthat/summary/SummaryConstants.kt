@@ -3,6 +3,8 @@ package com.micoyc.speakthat.summary
 object SummaryConstants {
     const val ACTION_TRIGGER_SUMMARY = "com.micoyc.speakthat.ACTION_TRIGGER_SUMMARY"
     const val ACTION_SUMMARY_ALARM = "com.micoyc.speakthat.ACTION_SUMMARY_ALARM"
+    const val ACTION_STOP_SUMMARY = "com.micoyc.speakthat.ACTION_STOP_SUMMARY"
+    const val ACTION_SKIP_CURRENT_NOTIFICATION = "com.micoyc.speakthat.ACTION_SKIP_CURRENT_NOTIFICATION"
     const val EXTRA_TRIGGER_SOURCE = "extra_trigger_source"
     const val TRIGGER_SOURCE_EXTERNAL_INTENT = "external_intent"
     const val TRIGGER_SOURCE_SCHEDULED_ALARM = "scheduled_alarm"
@@ -20,6 +22,9 @@ object SummaryConstants {
 
     const val NOTIFICATION_CHANNEL_ID = "summary_execution_channel"
     const val NOTIFICATION_ID = 60242
+    const val REQUEST_CODE_OPEN_SUMMARY_APP = 60243
+    const val REQUEST_CODE_STOP_SUMMARY = 60244
+    const val REQUEST_CODE_SKIP_SUMMARY_NOTIFICATION = 60245
 
     const val CACHE_DIR_NAME = "summary_overlay_cache"
     const val OVERLAY_PREFS_NAME = "summary_overlay_prefs"

@@ -69,7 +69,7 @@ public class BootReceiver extends BroadcastReceiver {
                 Log.d(TAG, "SummaryScheduler reschedule after reboot result=" + restored);
                 InAppLogger.log("BootReceiver", "Summary alarm reschedule attempted (result=" + restored + ")");
             } catch (Exception e) {
-                Log.e(TAG, "Error rescheduling proactive summary alarm", e);
+                Log.e(TAG, "Error rescheduling summary alarm", e);
                 InAppLogger.logError("BootReceiver", "Failed to reschedule summary alarm: " + e.getMessage());
             }
         }

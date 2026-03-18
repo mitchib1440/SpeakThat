@@ -57,13 +57,13 @@
     <!-- Permission to use text-to-speech -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
-    <!-- Permission to draw overlay UI for proactive summaries -->
+    <!-- Permission to draw overlay UI for summaries -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     
     <!-- Permission for foreground service media playback (Android 14+) -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
-    <!-- Permission for exact proactive summary scheduling -->
+    <!-- Permission for exact summary scheduling -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
 
@@ -263,7 +263,7 @@
             android:exported="false"
             android:foregroundServiceType="mediaPlayback" />
 
-        <!-- Foreground service host for proactive summaries -->
+        <!-- Foreground service host for summaries -->
         <service
             android:name=".summary.SummaryExecutionService"
             android:exported="false"
@@ -309,7 +309,7 @@
             </intent-filter>
         </receiver>
 
-        <!-- BroadcastReceiver for external and scheduled proactive summary triggers -->
+        <!-- BroadcastReceiver for external and scheduled summary triggers -->
         <receiver
             android:name=".summary.SummaryTriggerReceiver"
             android:enabled="true"

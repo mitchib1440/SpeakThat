@@ -438,7 +438,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             handleLogoClick()
         }
         binding.logoSpeakThat.setOnLongClickListener {
-            InAppLogger.logUserAction("Logo long-pressed", "Triggering proactive summary")
+            InAppLogger.logUserAction("Logo long-pressed", "Triggering summary")
             triggerProactiveSummaryFromLogo()
             true
         }
@@ -458,11 +458,11 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 putExtra(SummaryConstants.EXTRA_TRIGGER_SOURCE, "main_logo_long_press")
             }
             sendBroadcast(triggerIntent)
-            Toast.makeText(this, "Proactive summary triggered", Toast.LENGTH_SHORT).show()
-            InAppLogger.log("MainActivity", "Proactive summary trigger broadcast sent from logo long-press")
+            Toast.makeText(this, "Summary triggered", Toast.LENGTH_SHORT).show()
+            InAppLogger.log("MainActivity", "Summary trigger broadcast sent from logo long-press")
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to trigger proactive summary from logo long-press", e)
-            InAppLogger.logError("MainActivity", "Failed to trigger proactive summary: ${e.message}")
+            Log.e(TAG, "Failed to trigger summary from logo long-press", e)
+            InAppLogger.logError("MainActivity", "Failed to trigger summary: ${e.message}")
             Toast.makeText(this, "Failed to trigger summary", Toast.LENGTH_SHORT).show()
         }
     }
