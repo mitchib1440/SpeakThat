@@ -6,7 +6,7 @@ import android.os.Build
 import android.provider.Settings
 
 /**
- * Centralized preference and runtime gating rules for proactive summaries.
+ * Centralized preference and runtime gating rules for summaries.
  */
 object SummarySettingsGate {
 

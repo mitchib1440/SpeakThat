@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import com.micoyc.speakthat.InAppLogger
 
 /**
- * Static broadcast entrypoint for proactive summaries.
+ * Static broadcast entrypoint for summaries.
  *
  * This receiver is intentionally standalone and does not depend on the conditional rules engine.
  */
