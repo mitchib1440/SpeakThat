@@ -135,8 +135,18 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val source = intent?.getStringExtra(SummaryConstants.EXTRA_TRIGGER_SOURCE) ?: "unknown"
         val action = intent?.action ?: SummaryConstants.ACTION_TRIGGER_SUMMARY
+        when (action) {
+            SummaryConstants.ACTION_STOP_SUMMARY -> {
+                requestGracefulStop("notification_action_stop")
+                return START_NOT_STICKY
+            }
+            SummaryConstants.ACTION_SKIP_CURRENT_NOTIFICATION -> {
+                skipCurrentFromNotificationAction()
+                return START_NOT_STICKY
+            }
+        }
+        val source = intent?.getStringExtra(SummaryConstants.EXTRA_TRIGGER_SOURCE) ?: "unknown"
 
         val notification = buildForegroundNotification(source)
         startForegroundCompat(notification)
@@ -706,8 +716,24 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         }
         val openAppPendingIntent = PendingIntent.getActivity(
             this,
-            0,
+            SummaryConstants.REQUEST_CODE_OPEN_SUMMARY_APP,
             openAppIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        val stopSummaryPendingIntent = PendingIntent.getService(
+            this,
+            SummaryConstants.REQUEST_CODE_STOP_SUMMARY,
+            Intent(this, SummaryExecutionService::class.java).apply {
+                action = SummaryConstants.ACTION_STOP_SUMMARY
+            },
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        val skipCurrentPendingIntent = PendingIntent.getService(
+            this,
+            SummaryConstants.REQUEST_CODE_SKIP_SUMMARY_NOTIFICATION,
+            Intent(this, SummaryExecutionService::class.java).apply {
+                action = SummaryConstants.ACTION_SKIP_CURRENT_NOTIFICATION
+            },
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
@@ -720,6 +746,16 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
             .setSilent(true)
             .setOngoing(true)
             .setContentIntent(openAppPendingIntent)
+            .addAction(
+                R.drawable.speakthaticon,
+                getString(R.string.summary_service_action_stop),
+                stopSummaryPendingIntent
+            )
+            .addAction(
+                R.drawable.speakthaticon,
+                getString(R.string.summary_service_action_skip),
+                skipCurrentPendingIntent
+            )
             .build()
     }
 
@@ -1117,6 +1153,22 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         val targetIndex = if (currentIndex == 0) summaryItems.lastIndex else currentIndex - 1
         currentIndex = targetIndex
         animateContentSwap(targetIndex = targetIndex, isNext = false)
+        restartSpeechFromGesture()
+    }
+
+    private fun skipCurrentFromNotificationAction() {
+        if (isServiceStopping || summaryItems.isEmpty()) {
+            return
+        }
+
+        if (currentIndex >= summaryItems.lastIndex) {
+            requestGracefulStop("notification_action_skip_last_item")
+            return
+        }
+
+        val targetIndex = (currentIndex + 1).coerceAtMost(summaryItems.lastIndex)
+        currentIndex = targetIndex
+        animateContentSwap(targetIndex = targetIndex, isNext = true)
         restartSpeechFromGesture()
     }
 

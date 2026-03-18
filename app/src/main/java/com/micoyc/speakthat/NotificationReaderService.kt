@@ -371,7 +371,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
 
         /**
-         * Null-safe read-only bridge for proactive summaries.
+         * Null-safe read-only bridge for summaries.
          * Returns an empty array when listener is unavailable/disconnected.
          */
         @JvmStatic
