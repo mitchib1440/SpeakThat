@@ -761,6 +761,11 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="summary_settings_scheduler_toggle_subtitle">Stores your preference and runs only when summaries are globally enabled.</string>
     <string name="summary_settings_scheduler_run_time">Run Time</string>
     <string name="summary_settings_default_time">08:00 AM</string>
+    <string name="summary_settings_order_title">Notification Order</string>
+    <string name="summary_settings_order_subtitle">Choose whether summaries read notifications from oldest to newest or newest to oldest.</string>
+    <string name="summary_settings_order_spinner_label">Read notifications</string>
+    <string name="summary_settings_order_oldest_first">Oldest first</string>
+    <string name="summary_settings_order_newest_first">Newest first</string>
     <string name="summary_settings_greeting_name">Greeting Name</string>
     <string name="summary_settings_greeting_name_subtitle">Set the name SpeakThat will use when starting a summary to read active notifications.</string>
     <string name="summary_settings_speech_pacing">Speech Pacing</string>
@@ -2361,7 +2366,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="loading_line_8">Never say never…</string>
     <string name="loading_line_9">Concentration face…</string>
     <string name="loading_line_10">Loading the crap…</string>
-    <string name="loading_line_11">But I don\'t want to get up…</string>
+    <string name="loading_line_11">Loading the loading screens…</string>
     <string name="loading_line_12">Getting older by the second…</string>
     <string name="loading_line_13">Warming up the vocal cords…</string>
     <string name="loading_line_14">Just a sec…</string>
