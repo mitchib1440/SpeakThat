@@ -19,6 +19,9 @@ object SummaryConstants {
     const val KEY_MINUTE = "schedule_minute"
     const val KEY_GREETING_NAME = "greeting_name"
     const val KEY_PAUSE_SECONDS = "pause_seconds"
+    const val KEY_NOTIFICATION_ORDER = "notification_order"
+    const val ORDER_OLDEST_FIRST = "oldest_first"
+    const val ORDER_NEWEST_FIRST = "newest_first"
 
     const val NOTIFICATION_CHANNEL_ID = "summary_execution_channel"
     const val NOTIFICATION_ID = 60242

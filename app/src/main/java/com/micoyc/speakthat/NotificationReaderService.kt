@@ -420,7 +420,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
 
             return try {
-                val text = fallbackText.ifBlank { instance.extractNotificationText(sbn.notification) }
+                val text = fallbackText.ifBlank {
+                    instance.extractNotificationText(
+                        notification = sbn.notification,
+                        packageNameForLog = sbn.packageName
+                    )
+                }
                 val result = instance.applyFilters(
                     packageName = sbn.packageName,
                     appName = appName,
@@ -894,7 +899,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                             android.app.Notification.EXTRA_TITLE
                         )?.toString() ?: ""
                         val sysAppName = getAppName(packageName)
-                        val sysText = extractNotificationText(notification)
+                        val sysText = extractNotificationText(
+                            notification = notification,
+                            packageNameForLog = packageName
+                        )
                         addToHistory(
                             appName = sysAppName,
                             packageName = packageName,
@@ -985,7 +993,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 val appName = getAppName(packageName)
                 
                 // Extract notification text
-                val notificationText = extractNotificationText(notification)
+                val notificationText = extractNotificationText(
+                    notification = notification,
+                    packageNameForLog = packageName
+                )
                 val showSystemBlocks = sharedPreferences?.getBoolean("show_system_blocks_history", false) ?: false
                 
                 // Log notification details for debugging
@@ -1325,12 +1336,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     }
                 }
             } catch (e: Exception) {
+                val exceptionName = e.javaClass.simpleName
+                val contextMessage = "Error processing notification for ${sbn.packageName}#${sbn.id}: $exceptionName: ${e.message}"
                 Log.e(TAG, "Error processing notification (inner)", e)
-                InAppLogger.logError("Service", "Error processing notification: " + e.message)
+                InAppLogger.logError("Service", contextMessage)
+                // Keep a Development-tagged warning to surface failures in the current debug log workflow.
+                InAppLogger.logWarning("Development", contextMessage)
             }
         } catch (e: Throwable) {
             Log.e(TAG, "Critical error in onNotificationPosted", e)
-            InAppLogger.logError("Service", "Critical error in onNotificationPosted: " + e.message)
+            val exceptionName = e.javaClass.simpleName
+            val contextMessage = "Critical error in onNotificationPosted for ${sbn.packageName}#${sbn.id}: $exceptionName: ${e.message}"
+            InAppLogger.logError("Service", contextMessage)
+            InAppLogger.logWarning("Development", contextMessage)
         }
     }
     
@@ -1351,7 +1369,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             
             // Extract notification content for tracking
-            val notificationText = extractNotificationText(sbn.notification)
+            val notificationText = extractNotificationText(
+                notification = sbn.notification,
+                packageNameForLog = sbn.packageName
+            )
             if (notificationText.isEmpty()) {
                 Log.d(TAG, "Dismissed notification has empty content - not tracking")
                 return
@@ -2172,72 +2193,97 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                packageName == "com.twitter.android" // Twitter
     }
     
-    private fun extractNotificationText(notification: Notification): String {
-        val extras = notification.extras
-        val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
-        val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
-        val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
-        val summaryText = extras.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString() ?: ""
-        val infoText = extras.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString() ?: ""
-        
-        // Log the available notification content for debugging
-        Log.d(TAG, "Notification content - Title: '$title', Text: '$text', BigText: '$bigText', Summary: '$summaryText', Info: '$infoText'")
-        
-        // Special handling for Gmail notifications to better handle their update behavior
-        // Gmail often updates a single notification with new content rather than creating new notifications
-        if (extras.getString("android.template")?.contains("gmail") == true || 
-            title.contains("Gmail", ignoreCase = true) ||
-            summaryText.contains("new message", ignoreCase = true) ||
-            text.contains("new message", ignoreCase = true)) {
+    private fun extractNotificationText(
+        notification: Notification,
+        packageNameForLog: String? = null
+    ): String {
+        val safePackageName = packageNameForLog ?: "unknown"
+        return try {
+            val extras = notification.extras
+            val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
+            val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
+            val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
+            val summaryText = extras.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString() ?: ""
+            val infoText = extras.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString() ?: ""
             
-            Log.d(TAG, "Detected Gmail-style notification - applying special content extraction logic")
+            // Log the available notification content for debugging
+            Log.d(TAG, "Notification content - Title: '$title', Text: '$text', BigText: '$bigText', Summary: '$summaryText', Info: '$infoText'")
             
-            // For Gmail-style notifications, prioritize the most recent content
-            // Gmail typically puts the latest email content in bigText
-            return when {
-                bigText.isNotEmpty() && !bigText.contains("new message", ignoreCase = true) -> {
-                    // If bigText contains actual email content (not just "3 new messages"), use it
-                    Log.d(TAG, "Gmail: Using bigText as primary content: '$bigText'")
-                    bigText
-                }
-                text.isNotEmpty() && !text.contains("new message", ignoreCase = true) -> {
-                    // If text contains actual email content, use it
-                    Log.d(TAG, "Gmail: Using text as primary content: '$text'")
-                    text
-                }
-                title.isNotEmpty() && text.isNotEmpty() -> {
-                    // Fallback: combine title and text, but filter out generic "new messages" text
-                    val combinedText = if (text.contains("new message", ignoreCase = true)) {
-                        title
-                    } else {
-                        "$title: $text"
+            // Special handling for Gmail notifications to better handle their update behavior
+            // Gmail often updates a single notification with new content rather than creating new notifications
+            if (extras.getString("android.template")?.contains("gmail") == true || 
+                title.contains("Gmail", ignoreCase = true) ||
+                summaryText.contains("new message", ignoreCase = true) ||
+                text.contains("new message", ignoreCase = true)) {
+                
+                Log.d(TAG, "Detected Gmail-style notification - applying special content extraction logic")
+                
+                // For Gmail-style notifications, prioritize the most recent content
+                // Gmail typically puts the latest email content in bigText
+                return when {
+                    bigText.isNotEmpty() && !bigText.contains("new message", ignoreCase = true) -> {
+                        // If bigText contains actual email content (not just "3 new messages"), use it
+                        Log.d(TAG, "Gmail: Using bigText as primary content: '$bigText'")
+                        bigText
                     }
-                    Log.d(TAG, "Gmail: Using combined title/text: '$combinedText'")
-                    combinedText
-                }
-                else -> {
-                    // Last resort: use whatever content is available
-                    val fallbackContent = bigText.ifEmpty { text.ifEmpty { title.ifEmpty { summaryText.ifEmpty { infoText } } } }
-                    Log.d(TAG, "Gmail: Using fallback content: '$fallbackContent'")
-                    fallbackContent
+                    text.isNotEmpty() && !text.contains("new message", ignoreCase = true) -> {
+                        // If text contains actual email content, use it
+                        Log.d(TAG, "Gmail: Using text as primary content: '$text'")
+                        text
+                    }
+                    title.isNotEmpty() && text.isNotEmpty() -> {
+                        // Fallback: combine title and text, but filter out generic "new messages" text
+                        val combinedText = if (text.contains("new message", ignoreCase = true)) {
+                            title
+                        } else {
+                            "$title: $text"
+                        }
+                        Log.d(TAG, "Gmail: Using combined title/text: '$combinedText'")
+                        combinedText
+                    }
+                    else -> {
+                        // Last resort: use whatever content is available
+                        val fallbackContent = bigText.ifEmpty { text.ifEmpty { title.ifEmpty { summaryText.ifEmpty { infoText } } } }
+                        Log.d(TAG, "Gmail: Using fallback content: '$fallbackContent'")
+                        fallbackContent
+                    }
                 }
             }
-        }
-        
-        // Enhanced logic to ensure title is always included when available
-        // This fixes the issue where notifications with both title and bigText would lose the title
-        // The previous logic prioritized bigText over title, but bigText often doesn't include the title
-        return when {
-            title.isNotEmpty() && bigText.isNotEmpty() -> "$title: $bigText"
-            title.isNotEmpty() && text.isNotEmpty() -> "$title: $text"
-            title.isNotEmpty() && summaryText.isNotEmpty() -> "$title: $summaryText"
-            title.isNotEmpty() && infoText.isNotEmpty() -> "$title: $infoText"
-            bigText.isNotEmpty() -> bigText
-            title.isNotEmpty() -> title
-            text.isNotEmpty() -> text
-            summaryText.isNotEmpty() -> summaryText
-            infoText.isNotEmpty() -> infoText
-            else -> ""
+            
+            // Enhanced logic to ensure title is always included when available
+            // This fixes the issue where notifications with both title and bigText would lose the title
+            // The previous logic prioritized bigText over title, but bigText often doesn't include the title
+            when {
+                title.isNotEmpty() && bigText.isNotEmpty() -> "$title: $bigText"
+                title.isNotEmpty() && text.isNotEmpty() -> "$title: $text"
+                title.isNotEmpty() && summaryText.isNotEmpty() -> "$title: $summaryText"
+                title.isNotEmpty() && infoText.isNotEmpty() -> "$title: $infoText"
+                bigText.isNotEmpty() -> bigText
+                title.isNotEmpty() -> title
+                text.isNotEmpty() -> text
+                summaryText.isNotEmpty() -> summaryText
+                infoText.isNotEmpty() -> infoText
+                else -> ""
+            }
+        } catch (e: Exception) {
+            val fallbackMessage = "Failed to unparcel extras for $safePackageName - using fallback"
+            Log.w(TAG, "$fallbackMessage (${e.javaClass.simpleName}: ${e.message})", e)
+            InAppLogger.logWarning("Development", fallbackMessage)
+            
+            val tickerFallback = try {
+                notification.tickerText?.toString()?.trim().orEmpty()
+            } catch (tickerException: Exception) {
+                Log.w(TAG, "tickerText fallback failed for $safePackageName", tickerException)
+                InAppLogger.logWarning("Development", "tickerText fallback failed for $safePackageName - returning empty text")
+                ""
+            }
+            
+            if (tickerFallback.isNotEmpty()) {
+                InAppLogger.log("Extraction", "Using tickerText fallback for $safePackageName")
+            } else {
+                InAppLogger.logWarning("Development", "No tickerText fallback available for $safePackageName - returning empty text")
+            }
+            tickerFallback
         }
     }
     

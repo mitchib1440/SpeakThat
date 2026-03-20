@@ -1064,7 +1064,7 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
 
     private void refreshLogs() {
         try {
-            String logs = InAppLogger.getRecentLogs(200); // Get last 200 logs
+            String logs = InAppLogger.getRecentLogs(500); // Show full in-memory buffer to avoid hiding recent errors
             binding.textLogDisplay.setText(logs);
             
             // Update indicators

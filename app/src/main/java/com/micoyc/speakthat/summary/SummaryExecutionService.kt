@@ -929,8 +929,14 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
     private fun buildSummaryItems(active: Array<StatusBarNotification>): List<SummaryItem> {
         val seenFingerprints = HashSet<String>()
         val result = ArrayList<SummaryItem>()
+        val notificationOrder = readSummaryNotificationOrder()
+        val sortedNotifications = if (notificationOrder == SummaryConstants.ORDER_OLDEST_FIRST) {
+            active.sortedBy { it.postTime }
+        } else {
+            active.sortedByDescending { it.postTime }
+        }
 
-        active.sortedByDescending { it.postTime }.forEach { sbn ->
+        sortedNotifications.forEach { sbn ->
             if (shouldSkipNotification(sbn)) {
                 return@forEach
             }
@@ -980,6 +986,13 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
             )
         }
         return result
+    }
+
+    private fun readSummaryNotificationOrder(): String {
+        return getSummarySettingsPrefs().getString(
+            SummaryConstants.KEY_NOTIFICATION_ORDER,
+            SummaryConstants.ORDER_NEWEST_FIRST
+        ) ?: SummaryConstants.ORDER_NEWEST_FIRST
     }
 
     private fun shouldSkipNotification(sbn: StatusBarNotification): Boolean {

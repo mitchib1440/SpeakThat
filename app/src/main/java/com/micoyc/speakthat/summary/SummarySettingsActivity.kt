@@ -7,8 +7,11 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.SeekBar
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
@@ -33,10 +36,12 @@ class SummarySettingsActivity : AppCompatActivity() {
     private lateinit var greetingNameInput: TextInputEditText
     private lateinit var speechPacingSeekBar: SeekBar
     private lateinit var speechPacingValue: TextView
+    private lateinit var notificationOrderSpinner: Spinner
 
     private var selectedHour = DEFAULT_HOUR
     private var selectedMinute = DEFAULT_MINUTE
     private var isApplyingUiState = false
+    private var hasInitializedNotificationOrderSelection = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +72,7 @@ class SummarySettingsActivity : AppCompatActivity() {
         greetingNameInput = findViewById(R.id.etGreetingName)
         speechPacingSeekBar = findViewById(R.id.seekSpeechPacing)
         speechPacingValue = findViewById(R.id.tvSpeechPacingValue)
+        notificationOrderSpinner = findViewById(R.id.spinnerNotificationOrder)
     }
 
     private fun loadState() {
@@ -81,6 +87,7 @@ class SummarySettingsActivity : AppCompatActivity() {
         val pauseSeconds = prefs.getInt(SummaryConstants.KEY_PAUSE_SECONDS, DEFAULT_PAUSE_SECONDS).coerceIn(0, 5)
         speechPacingSeekBar.progress = pauseSeconds
         updatePacingLabel(pauseSeconds)
+        setupNotificationOrderSpinner()
 
         setSwitchCheckedSilently(
             globalSummarySwitch,
@@ -178,6 +185,26 @@ class SummarySettingsActivity : AppCompatActivity() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
             override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
         })
+
+        notificationOrderSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
+                if (isApplyingUiState) {
+                    return
+                }
+                if (!hasInitializedNotificationOrderSelection) {
+                    hasInitializedNotificationOrderSelection = true
+                    return
+                }
+
+                val selectedOrder = when (position) {
+                    0 -> SummaryConstants.ORDER_OLDEST_FIRST
+                    else -> SummaryConstants.ORDER_NEWEST_FIRST
+                }
+                prefs.edit().putString(SummaryConstants.KEY_NOTIFICATION_ORDER, selectedOrder).apply()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -228,6 +255,30 @@ class SummarySettingsActivity : AppCompatActivity() {
 
     private fun updatePacingLabel(seconds: Int) {
         speechPacingValue.text = getString(R.string.summary_settings_pacing_value_format, seconds)
+    }
+
+    private fun setupNotificationOrderSpinner() {
+        val options = arrayOf(
+            getString(R.string.summary_settings_order_oldest_first),
+            getString(R.string.summary_settings_order_newest_first)
+        )
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        notificationOrderSpinner.adapter = adapter
+
+        val order = prefs.getString(
+            SummaryConstants.KEY_NOTIFICATION_ORDER,
+            SummaryConstants.ORDER_NEWEST_FIRST
+        ) ?: SummaryConstants.ORDER_NEWEST_FIRST
+        val selectedIndex = if (order == SummaryConstants.ORDER_OLDEST_FIRST) 0 else 1
+        setSpinnerSelectionSilently(notificationOrderSpinner, selectedIndex)
+    }
+
+    private fun setSpinnerSelectionSilently(spinner: Spinner, index: Int) {
+        isApplyingUiState = true
+        spinner.setSelection(index, false)
+        isApplyingUiState = false
+        hasInitializedNotificationOrderSelection = false
     }
 
     private fun formatTime(hourOfDay: Int, minute: Int): String {
