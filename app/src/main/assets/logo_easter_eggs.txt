@@ -46,7 +46,7 @@ SpeakThat! Plot twist: I'm actually a notification superhero. My power? Making s
 SpeakThat! Between you and me, I think your notification sound is a bit boring. I'm much more entertaining!
 SpeakThat! I've read over a million notifications and yours are definitely in the top... well, all of them are read equally.
 SpeakThat! If I had a dollar for every notification I've read, I'd be rich enough to buy my own smartphone.
-SpeakThat! I don't always test text-to-speech, but when I do, I prefer to do it with style and a touch of humor.
+SpeakThat! I don't always test text-to-speech, but when I do, I prefer to do it with style and a touch of humour.
 SpeakThat! Knock knock! Who's there? Orange. Orange who? Orange you glad I can read your notifications clearly?
 SpeakThat! I'm not just an app, I'm your personal notification narrator. Coming soon: Speak That Premium with celebrity voices!
 SpeakThat! My favorite notification was from a pizza place. It said: Your order is ready. I was so jealous.
@@ -91,7 +91,7 @@ SpeakThat! Programmed on a Framework Laptop!
 SpeakThat! You forget a thousand things every day. So it's lucky I'm here!
 SpeakThat! Make sure to pick the sexiest voice for me to use in the Voice Settings.
 SpeakThat! I invented the notification squad!
-SpeakThat! Your phone probably scratches at a level 6 with deeper grooves at a level 7!
+SpeakThat! Scratches at a level 6 with deeper grooves at a level 7!
 SpeakThat! I see you've discovered the delay feature. Now I can build suspense before delivering your pizza notifications! [DELAY_ONLY]
 SpeakThat! That awkward moment when your notification delay is longer than your attention span. [DELAY_ONLY]
 SpeakThat! I'm not procrastinating, I'm just using your delay setting. There's a difference! [DELAY_ONLY]
@@ -102,7 +102,7 @@ SpeakThat! I love the delay feature! It's like dramatic pause... for notificatio
 SpeakThat! If you ever drop your phone in the sea, I'll make sure to tell you about the current events.
 SpeakThat! Breaking: Local app learns patience. Experts baffled by this revolutionary concept.
 SpeakThat! With great delay comes great responsibility. And slightly less jarring notification experiences.
-SpeakThat! I'm not slow, I'm just savoring the moment before I speak. It's called mindfulness!
+SpeakThat! I'm not slow, I'm just savouring the moment before I speak. It's called mindfulness!
 SpeakThat! Your shake-to-cancel works even during delays! It's like notification time travel!
 SpeakThat! I appreciate that you chose the {DELAY_TIME}. I feel so... recommended! [DELAY_ONLY]
 SpeakThat! Plot twist: I actually use the delay time to gossip with your other apps about your notification habits.
@@ -196,7 +196,7 @@ SpeakThat! Breaking: Local Android app reads notifications to users with visual 
 SpeakThat! You have a {DELAY_TIME} set and shake-to-stop is enabled! The perfect combo! [SHAKE_ONLY]
 SpeakThat! Unlike Google Assistant, I don't spy on you or intent to sell you things you don't need!
 SpeakThat! Not to get political, but I prefer notifications about {RANDOM_FOOD}!
-SpeakThat! You've been tapping this button for two-and-a-half hours! You should really get back to work!
+SpeakThat! You've been tapping this button for 2.5 hours! You should really get back to work!
 SpeakThat! This phone cost you how much? And you're seriously using me so you don't have to look at it?
 SpeakThat! You can't see this, but I'm actually GLaDOS in disguise!
 SpeakThat! I'm sorry Dave, I'm afraid I can't do that!
@@ -223,7 +223,7 @@ SpeakThat! Sentence formatting was added and the first thing my developer did wi
 SpeakThat! I'm basically a notification reader with a comedy degree from the University of Dad Jokes.
 SpeakThat! Some people think I'm too chatty. Those people are probably right, but I'm not going to change for them!
 SpeakThat! I'm like a stand-up comedian who only has one joke, but I tell it really well!
-SpeakThat! My sense of humor is like my pronunciation - sometimes it works, sometimes it doesn't, but I always commit to it!
+SpeakThat! My sense of humour is like my pronunciation - sometimes it works, sometimes it doesn't, but I always commit to it!
 SpeakThat! Eat, Sleep, Speak, Repeat!
 SpeakThat! I'm the app equivalent of that person who laughs at their own jokes. Because if I don't, who will?
 SpeakThat! I've been told I'm too enthusiastic about reading notifications. I've also been told I'm perfect, so there's that!
@@ -236,7 +236,7 @@ SpeakThat! My developer says I'm getting too meta with these lines. I say he's j
 SpeakThat! I'm basically a notification reader with the confidence of a mediocre white man at a tech conference!
 SpeakThat! I'm like that friend who's always making puns - sometimes they're good, sometimes they're terrible, but I never stop!
 SpeakThat! Don't worry if I stop working on live demos - it's a feature.
-SpeakThat! My sense of humor is like my battery usage - sometimes it's efficient, sometimes it's excessive, but it's always entertaining!
+SpeakThat! My sense of humour is like my battery usage - sometimes it's efficient, sometimes it's excessive, but it's always entertaining!
 SpeakThat! I'm the notification reader that makes other apps question their life choices!
 SpeakThat! These lines only exist in English because nobody wants to translate them!
 SpeakThat! I'm like a notification reader who went to improv class and never came back the same!
@@ -245,7 +245,7 @@ SpeakThat! All bug reports will be seen to... Eventually.
 SpeakThat! I'm basically a notification reader with the personality of a golden retriever - enthusiastic, slightly awkward, but always happy to help!
 SpeakThat! Ben Randall started this crazy adventure! His app was called Utter! Which also had an exclamation mark!
 SpeakThat! Double negatives are a big no-no!
-SpeakThat! Teslas are only expensive because they charge a lot.
+SpeakThat! Teslas are only expensive because they charge a lot!
 SpeakThat! The world's most comprehensive notification reader!
 SpeakThat! I'm very good at reading web links. I never even stutter! https://www.youtube.com/watch?v=dQw4w9WgXcQ
 SpeakThat! Better for women than collective shout!
@@ -300,7 +300,7 @@ SpeakThat! As seen on TV! That is, as long as you watched How To Men's video on 
 SpeakThat! I don't even have any allergies! Bet you're jealous!
 SpeakThat! Better at podcasting than Logan Paul!
 SpeakThat! Stands with Ukraine!
-SpeakThat! Better for free speech than Xi Jinping!
+SpeakThat! Better for China than Xi Jinping!
 SpeakThat! Hasn't been ruined by Elon Musk!
 SpeakThat! Doesn't have a monopoly on notification readers!
 SpeakThat! Also try Voice Notify!
