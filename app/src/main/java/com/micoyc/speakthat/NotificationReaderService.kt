@@ -1003,9 +1003,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             isSelfTest = false,
             isSystemEvent = true
         )
+        val blockedReason = if (filterResult.shouldSpeak) {
+            null
+        } else {
+            val reasonType = extractBlockingReasonType(filterResult.reason)
+            "Silenced by: ${reasonType.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }}"
+        }
         if (!filterResult.shouldSpeak) {
             Log.d(TAG, "SpeakThat Clock blocked by filters - ${filterResult.reason}")
-            return
         }
 
         addToHistory(
@@ -1013,20 +1018,22 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             packageName = CLOCK_PACKAGE_NAME,
             title = CLOCK_TITLE,
             text = spokenBody,
-            wasRead = true,
-            spokenText = filterResult.processedText,
-            blockedReason = null,
+            wasRead = filterResult.shouldSpeak,
+            spokenText = if (filterResult.shouldSpeak) filterResult.processedText else null,
+            blockedReason = blockedReason,
             isSystemEvent = true
         )
-        handleNotificationBehavior(
-            CLOCK_PACKAGE_NAME,
-            CLOCK_APP_NAME,
-            filterResult.processedText,
-            filterResult.conditionalDelaySeconds,
-            null,
-            filterResult.speechTemplateOverride,
-            filterResult.voiceOverride
-        )
+        if (filterResult.shouldSpeak) {
+            handleNotificationBehavior(
+                CLOCK_PACKAGE_NAME,
+                CLOCK_APP_NAME,
+                filterResult.processedText,
+                filterResult.conditionalDelaySeconds,
+                null,
+                filterResult.speechTemplateOverride,
+                filterResult.voiceOverride
+            )
+        }
     }
 
     fun registerClockReceiver() {

@@ -5,9 +5,15 @@
 
 package com.micoyc.speakthat
 
+import android.app.AlarmManager
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.TextInputEditText
@@ -54,8 +60,23 @@ class ClockSettingsActivity : AppCompatActivity() {
     private fun loadState() {
         isApplyingUiState = true
         switchClockEnabled.isChecked = prefs.getBoolean(NotificationReaderService.PREF_SPEAKTHAT_CLOCK_ENABLED, false)
-        switchClockPrecision.isChecked =
-            prefs.getBoolean(NotificationReaderService.PREF_SPEAKTHAT_CLOCK_PRECISION_MODE, false)
+        val precisionPref = prefs.getBoolean(NotificationReaderService.PREF_SPEAKTHAT_CLOCK_PRECISION_MODE, false)
+        switchClockPrecision.isChecked = if (
+            precisionPref &&
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+        ) {
+            val am = getSystemService(AlarmManager::class.java)
+            if (am.canScheduleExactAlarms()) {
+                true
+            } else {
+                prefs.edit()
+                    .putBoolean(NotificationReaderService.PREF_SPEAKTHAT_CLOCK_PRECISION_MODE, false)
+                    .apply()
+                false
+            }
+        } else {
+            precisionPref
+        }
         val interval = coerceInterval(
             prefs.getInt(
                 NotificationReaderService.PREF_SPEAKTHAT_CLOCK_INTERVAL_MINUTES,
@@ -103,6 +124,30 @@ class ClockSettingsActivity : AppCompatActivity() {
 
         switchClockPrecision.setOnCheckedChangeListener { _, isChecked ->
             if (isApplyingUiState) return@setOnCheckedChangeListener
+            if (isChecked && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                val am = getSystemService(AlarmManager::class.java)
+                if (!am.canScheduleExactAlarms()) {
+                    isApplyingUiState = true
+                    switchClockPrecision.isChecked = false
+                    isApplyingUiState = false
+                    Toast.makeText(
+                        this,
+                        getString(R.string.clock_settings_exact_alarm_permission_toast),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    try {
+                        startActivity(
+                            Intent(
+                                Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
+                                Uri.parse("package:$packageName")
+                            )
+                        )
+                    } catch (_: Exception) {
+                        // Some builds may not resolve the exact-alarm settings screen.
+                    }
+                    return@setOnCheckedChangeListener
+                }
+            }
             prefs.edit().putBoolean(NotificationReaderService.PREF_SPEAKTHAT_CLOCK_PRECISION_MODE, isChecked).apply()
         }
 

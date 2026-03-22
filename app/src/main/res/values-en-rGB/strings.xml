@@ -749,8 +749,9 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="settings_summary_description">Tweak SpeakThat\'s notification summaries</string>
     <string name="settings_clock_title">Clock Settings</string>
     <string name="settings_clock_description">Enable and customise time announcements</string>
-    <string name="clock_settings_master_header">SpeakThat Clock</string>
+    <string name="clock_settings_master_header">SpeakThat! Clock</string>
     <string name="clock_settings_master_description">Announce the time at the interval you choose. Respects the same filters and Conditional Rule behaviour as notification readouts.</string>
+    <string name="tip_speakthat_clock">SpeakThat\'s time announcements follow the same rules and filters as all other notifications!</string>
     <string name="clock_settings_master_row_title">Enable Time Announcements</string>
     <string name="clock_settings_master_row_subtitle">When on, the app listens for each minute tick and speaks at your chosen interval.</string>
     <string name="clock_settings_interval_header">Announcement Interval</string>
