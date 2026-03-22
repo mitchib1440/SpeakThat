@@ -7,6 +7,7 @@
 
 package com.micoyc.speakthat
 
+import android.app.AlarmManager
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -30,6 +31,7 @@ import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.text.format.DateFormat
+import android.os.Build
 import android.util.Log
 import android.icu.lang.UCharacter
 import android.icu.lang.UProperty
@@ -168,7 +170,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private val notificationQueue = mutableListOf<QueuedNotification>()
 
     private var clockTickReceiverRegistered = false
-    
+    private var clockAlarmReceiverRegistered = false
+
+    /**
+     * Last calendar minute when we announced the clock (hour-of-day * 60 + minute).
+     * Prevents duplicate TIME_TICK deliveries in the same wall-clock minute (e.g. screen wake).
+     */
+    private var lastSpokenClockMinute: Int = -1
+
     // Batch processing for database operations
     private val historyBatchQueue = mutableListOf<NotificationData>()
     private val batchHandler = android.os.Handler(android.os.Looper.getMainLooper())
@@ -258,8 +267,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         const val PREF_SPEAKTHAT_CLOCK_ENABLED = "pref_speakthat_clock_enabled"
         const val PREF_SPEAKTHAT_CLOCK_INTERVAL_MINUTES = "pref_speakthat_clock_interval_minutes"
         const val DEFAULT_SPEAKTHAT_CLOCK_INTERVAL_MINUTES = 60
+        /** Stored in prefs as minutes; chimes at 0:00, 3:00, 6:00, … (local wall clock). */
+        const val SPEAKTHAT_CLOCK_INTERVAL_3_HOURS_MINUTES = 180
         const val PREF_SPEAKTHAT_CLOCK_TEMPLATE = "pref_speakthat_clock_template"
         const val DEFAULT_SPEAKTHAT_CLOCK_TEMPLATE = "It's {time}"
+        const val PREF_SPEAKTHAT_CLOCK_PRECISION_MODE = "pref_speakthat_clock_precision_mode"
+
+        private const val ACTION_SPEAKTHAT_CLOCK_ALARM = "com.micoyc.speakthat.ACTION_CLOCK_ALARM"
+        private const val CLOCK_ALARM_REQUEST_CODE = 9042
         private const val KEY_SHAKE_TO_STOP_ENABLED = "shake_to_stop_enabled"
         private const val KEY_SHAKE_THRESHOLD = "shake_threshold"
         private const val KEY_SHAKE_TIMEOUT_SECONDS = "shake_timeout_seconds"
@@ -622,7 +637,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Register broadcast receiver for accessibility service
             registerAccessibilityBroadcastReceiver()
             registerTestFiltersBroadcastReceiver()
-            syncSpeakThatClockReceiverWithPrefs()
+            syncSpeakThatClockScheduling()
 
         } catch (e: Exception) {
             Log.e(TAG, "Critical error during service initialization", e)
@@ -690,6 +705,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Unregister broadcast receivers
             unregisterAccessibilityBroadcastReceiver()
             unregisterTestFiltersBroadcastReceiver()
+            cancelSpeakThatClockAlarm()
+            unregisterClockAlarmReceiver()
             unregisterClockReceiver()
 
             // Clear deduplication caches
@@ -813,27 +830,162 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             DEFAULT_SPEAKTHAT_CLOCK_INTERVAL_MINUTES
         ) ?: DEFAULT_SPEAKTHAT_CLOCK_INTERVAL_MINUTES
         return when (raw) {
-            15, 30, 60 -> raw
+            15, 30, 60, SPEAKTHAT_CLOCK_INTERVAL_3_HOURS_MINUTES -> raw
             else -> DEFAULT_SPEAKTHAT_CLOCK_INTERVAL_MINUTES
         }
     }
 
-    private fun syncSpeakThatClockReceiverWithPrefs() {
-        val enabled = sharedPreferences?.getBoolean(PREF_SPEAKTHAT_CLOCK_ENABLED, false) ?: false
-        if (enabled) {
-            registerClockReceiver()
-        } else {
-            unregisterClockReceiver()
+    private fun isSpeakThatClockAlignedToInterval(
+        calendar: java.util.Calendar,
+        intervalMinutes: Int
+    ): Boolean {
+        val minute = calendar.get(java.util.Calendar.MINUTE)
+        val hour = calendar.get(java.util.Calendar.HOUR_OF_DAY)
+        return when (intervalMinutes) {
+            SPEAKTHAT_CLOCK_INTERVAL_3_HOURS_MINUTES -> minute == 0 && hour % 3 == 0
+            60 -> minute == 0
+            else -> intervalMinutes > 0 && minute % intervalMinutes == 0
         }
     }
 
-    private fun processSpeakThatClockTimeTick() {
+    private fun syncSpeakThatClockScheduling() {
+        val enabled = sharedPreferences?.getBoolean(PREF_SPEAKTHAT_CLOCK_ENABLED, false) ?: false
+        if (!enabled) {
+            cancelSpeakThatClockAlarm()
+            unregisterClockAlarmReceiver()
+            unregisterClockReceiver()
+            return
+        }
+        val precision = sharedPreferences?.getBoolean(PREF_SPEAKTHAT_CLOCK_PRECISION_MODE, false) ?: false
+        if (precision) {
+            unregisterClockReceiver()
+            cancelSpeakThatClockAlarm()
+            registerClockAlarmReceiver()
+            scheduleNextClockAlarm()
+        } else {
+            cancelSpeakThatClockAlarm()
+            unregisterClockAlarmReceiver()
+            registerClockReceiver()
+        }
+    }
+
+    private fun canScheduleExactAlarmsForClock(alarmManager: AlarmManager): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            return true
+        }
+        return alarmManager.canScheduleExactAlarms()
+    }
+
+    private fun buildClockAlarmPendingIntent(): PendingIntent {
+        val intent = Intent(ACTION_SPEAKTHAT_CLOCK_ALARM).setPackage(packageName)
+        return PendingIntent.getBroadcast(
+            this,
+            CLOCK_ALARM_REQUEST_CODE,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+    }
+
+    private fun cancelSpeakThatClockAlarm() {
+        try {
+            val am = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val pi = buildClockAlarmPendingIntent()
+            am.cancel(pi)
+            pi.cancel()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error cancelling SpeakThat Clock alarm", e)
+        }
+    }
+
+    private fun computeNextClockAlarmTriggerMillis(): Long {
+        val intervalMinutes = getSpeakThatClockIntervalMinutes()
+        val now = System.currentTimeMillis()
+        val cal = java.util.Calendar.getInstance()
+        cal.set(java.util.Calendar.SECOND, 0)
+        cal.set(java.util.Calendar.MILLISECOND, 0)
+        if (cal.timeInMillis <= now) {
+            cal.add(java.util.Calendar.MINUTE, 1)
+        }
+        var guard = 0
+        while (guard++ < 1440) {
+            if (isSpeakThatClockAlignedToInterval(cal, intervalMinutes) && cal.timeInMillis > now) {
+                return cal.timeInMillis
+            }
+            cal.add(java.util.Calendar.MINUTE, 1)
+        }
+        return now + intervalMinutes.coerceAtLeast(1) * 60_000L
+    }
+
+    private fun scheduleNextClockAlarm() {
+        if (!clockAlarmReceiverRegistered) return
+        val am = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        if (!canScheduleExactAlarmsForClock(am)) {
+            Log.w(TAG, "Exact alarms not permitted; skipping SpeakThat Clock precision schedule")
+            InAppLogger.logError("Service", "SpeakThat Clock: exact alarms not permitted")
+            return
+        }
+        val triggerAt = computeNextClockAlarmTriggerMillis()
+        val pi = buildClockAlarmPendingIntent()
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
+                am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAt, pi)
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT -> {
+                am.setExact(AlarmManager.RTC_WAKEUP, triggerAt, pi)
+            }
+            else -> {
+                @Suppress("DEPRECATION")
+                am.set(AlarmManager.RTC_WAKEUP, triggerAt, pi)
+            }
+        }
+        Log.d(TAG, "Scheduled SpeakThat Clock precision alarm at $triggerAt")
+    }
+
+    private fun registerClockAlarmReceiver() {
+        if (clockAlarmReceiverRegistered) {
+            Log.d(TAG, "Clock alarm receiver already registered")
+            return
+        }
+        try {
+            val filter = android.content.IntentFilter(ACTION_SPEAKTHAT_CLOCK_ALARM)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                registerReceiver(clockAlarmBroadcastReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+            } else {
+                registerReceiver(clockAlarmBroadcastReceiver, filter)
+            }
+            clockAlarmReceiverRegistered = true
+            Log.d(TAG, "Clock alarm broadcast receiver registered")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error registering clock alarm broadcast receiver", e)
+        }
+    }
+
+    private fun unregisterClockAlarmReceiver() {
+        if (!clockAlarmReceiverRegistered) return
+        try {
+            unregisterReceiver(clockAlarmBroadcastReceiver)
+            Log.d(TAG, "Clock alarm broadcast receiver unregistered")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error unregistering clock alarm broadcast receiver", e)
+        } finally {
+            clockAlarmReceiverRegistered = false
+        }
+    }
+
+    private fun processSpeakThatClockTimeTick(fromAlignedAlarm: Boolean = false) {
         if (shouldGloballySuppressSpeakThatReadouts()) return
 
         val calendar = java.util.Calendar.getInstance()
         val minute = calendar.get(java.util.Calendar.MINUTE)
         val intervalMinutes = getSpeakThatClockIntervalMinutes()
-        if (intervalMinutes <= 0 || minute % intervalMinutes != 0) return
+        if (!fromAlignedAlarm) {
+            if (intervalMinutes <= 0 || !isSpeakThatClockAlignedToInterval(calendar, intervalMinutes)) return
+        }
+
+        val minuteOfDay =
+            calendar.get(java.util.Calendar.HOUR_OF_DAY) * 60 + minute
+        if (minuteOfDay == lastSpokenClockMinute) return
+        lastSpokenClockMinute = minuteOfDay
 
         val formattedTime = DateFormat.getTimeFormat(this).format(calendar.time)
         val storedTemplate = sharedPreferences?.getString(
@@ -963,6 +1115,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 processSpeakThatClockTimeTick()
             } catch (e: Exception) {
                 Log.e(TAG, "Clock tick handling failed", e)
+            }
+        }
+    }
+
+    private val clockAlarmBroadcastReceiver = object : android.content.BroadcastReceiver() {
+        override fun onReceive(context: android.content.Context?, intent: android.content.Intent?) {
+            if (intent?.action != ACTION_SPEAKTHAT_CLOCK_ALARM) return
+            try {
+                processSpeakThatClockTimeTick(fromAlignedAlarm = true)
+                scheduleNextClockAlarm()
+            } catch (e: Exception) {
+                Log.e(TAG, "Clock alarm handling failed", e)
             }
         }
     }
@@ -6506,10 +6670,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 InAppLogger.log("MediaBehavior", "Legacy ducking ${if (legacyDuckingEnabled) "enabled" else "disabled"} via dev settings")
             }
             PREF_SPEAKTHAT_CLOCK_ENABLED -> {
-                syncSpeakThatClockReceiverWithPrefs()
+                syncSpeakThatClockScheduling()
                 Log.d(TAG, "SpeakThat Clock enabled pref updated")
             }
+            PREF_SPEAKTHAT_CLOCK_PRECISION_MODE -> {
+                syncSpeakThatClockScheduling()
+                Log.d(TAG, "SpeakThat Clock precision pref updated")
+            }
             PREF_SPEAKTHAT_CLOCK_INTERVAL_MINUTES -> {
+                val enabled = sharedPreferences?.getBoolean(PREF_SPEAKTHAT_CLOCK_ENABLED, false) ?: false
+                val precision = sharedPreferences?.getBoolean(PREF_SPEAKTHAT_CLOCK_PRECISION_MODE, false) ?: false
+                if (enabled && precision) {
+                    cancelSpeakThatClockAlarm()
+                    scheduleNextClockAlarm()
+                }
                 Log.d(TAG, "SpeakThat Clock interval pref updated (effective ${getSpeakThatClockIntervalMinutes()} min)")
             }
             PREF_SPEAKTHAT_CLOCK_TEMPLATE -> {
