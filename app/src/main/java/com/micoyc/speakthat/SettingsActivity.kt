@@ -241,6 +241,10 @@ class SettingsActivity : AppCompatActivity() {
         binding.cardSummarySettings.setOnClickListener {
             startActivity(Intent(this, SummarySettingsActivity::class.java))
         }
+
+        binding.cardClockSettings.setOnClickListener {
+            startActivity(Intent(this, ClockSettingsActivity::class.java))
+        }
         
         binding.cardDevelopmentSettings.setOnClickListener {
             startActivity(Intent(this, DevelopmentSettingsActivity::class.java))

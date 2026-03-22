@@ -29,6 +29,7 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
+import android.text.format.DateFormat
 import android.util.Log
 import android.icu.lang.UCharacter
 import android.icu.lang.UProperty
@@ -165,6 +166,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     // TTS queue for different behavior modes
     private val notificationQueue = mutableListOf<QueuedNotification>()
+
+    private var clockTickReceiverRegistered = false
     
     // Batch processing for database operations
     private val historyBatchQueue = mutableListOf<NotificationData>()
@@ -249,7 +252,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         const val ACTION_HISTORY_UPDATED = "com.micoyc.speakthat.action.HISTORY_UPDATED"
         private val notificationHistory = ArrayList<NotificationData>()
         private const val MAX_HISTORY_SIZE = 15
-        private const val PREFS_NAME = "SpeakThatPrefs"
+        const val PREFS_NAME = "SpeakThatPrefs"
+
+        /** SpeakThat Clock (SpeakThatPrefs) — keys match user-facing preference names. */
+        const val PREF_SPEAKTHAT_CLOCK_ENABLED = "pref_speakthat_clock_enabled"
+        const val PREF_SPEAKTHAT_CLOCK_INTERVAL_MINUTES = "pref_speakthat_clock_interval_minutes"
+        const val DEFAULT_SPEAKTHAT_CLOCK_INTERVAL_MINUTES = 60
+        const val PREF_SPEAKTHAT_CLOCK_TEMPLATE = "pref_speakthat_clock_template"
+        const val DEFAULT_SPEAKTHAT_CLOCK_TEMPLATE = "It's {time}"
         private const val KEY_SHAKE_TO_STOP_ENABLED = "shake_to_stop_enabled"
         private const val KEY_SHAKE_THRESHOLD = "shake_threshold"
         private const val KEY_SHAKE_TIMEOUT_SECONDS = "shake_timeout_seconds"
@@ -264,6 +274,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val DEDUPLICATION_WINDOW_MS = 30000L // 30 seconds window for deduplication (increased to handle notification updates)
         private const val GROUP_CHILD_DEDUP_WINDOW_MS = 3600000L // 1 hour - covers long gaps between grouped notifications
         private const val MAX_GROUP_DEDUP_ENTRIES = 500
+
+        private const val CLOCK_PACKAGE_NAME = "com.micoyc.speakthat.internal.clock"
+        private const val CLOCK_APP_NAME = "SpeakThat Clock"
+        private const val CLOCK_TITLE = "Time Announcement"
         
         // Dismissal memory settings
         private const val KEY_DISMISSAL_MEMORY_ENABLED = "dismissal_memory_enabled"
@@ -491,7 +505,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val timestamp: String,
         val wasRead: Boolean = true,
         val spokenText: String? = null,
-        val blockedReason: String? = null
+        val blockedReason: String? = null,
+        val isSystemEvent: Boolean = false
     )
     
     data class QueuedNotification(
@@ -607,6 +622,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Register broadcast receiver for accessibility service
             registerAccessibilityBroadcastReceiver()
             registerTestFiltersBroadcastReceiver()
+            syncSpeakThatClockReceiverWithPrefs()
 
         } catch (e: Exception) {
             Log.e(TAG, "Critical error during service initialization", e)
@@ -674,6 +690,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Unregister broadcast receivers
             unregisterAccessibilityBroadcastReceiver()
             unregisterTestFiltersBroadcastReceiver()
+            unregisterClockReceiver()
 
             // Clear deduplication caches
             recentNotificationKeys.clear()
@@ -767,6 +784,131 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
 
     /**
+     * Same global gates as [onNotificationPosted] (master switch, DND, silent/vibrate, active call).
+     * Used before SpeakThat Clock ticks to avoid speaking when notifications would be suppressed.
+     */
+    private fun shouldGloballySuppressSpeakThatReadouts(): Boolean {
+        if (!MainActivity.isMasterSwitchEnabled(this)) {
+            Log.d(TAG, "Clock tick skipped - master switch disabled")
+            return true
+        }
+        if (BehaviorSettingsActivity.shouldHonourDoNotDisturb(this)) {
+            Log.d(TAG, "Clock tick skipped - Do Not Disturb honoured")
+            return true
+        }
+        if (BehaviorSettingsActivity.getAudioModeBlockReason(this) != null) {
+            Log.d(TAG, "Clock tick skipped - audio mode (silent/vibrate) honoured")
+            return true
+        }
+        if (BehaviorSettingsActivity.shouldHonourPhoneCalls(this)) {
+            Log.d(TAG, "Clock tick skipped - active phone call honoured")
+            return true
+        }
+        return false
+    }
+
+    private fun getSpeakThatClockIntervalMinutes(): Int {
+        val raw = sharedPreferences?.getInt(
+            PREF_SPEAKTHAT_CLOCK_INTERVAL_MINUTES,
+            DEFAULT_SPEAKTHAT_CLOCK_INTERVAL_MINUTES
+        ) ?: DEFAULT_SPEAKTHAT_CLOCK_INTERVAL_MINUTES
+        return when (raw) {
+            15, 30, 60 -> raw
+            else -> DEFAULT_SPEAKTHAT_CLOCK_INTERVAL_MINUTES
+        }
+    }
+
+    private fun syncSpeakThatClockReceiverWithPrefs() {
+        val enabled = sharedPreferences?.getBoolean(PREF_SPEAKTHAT_CLOCK_ENABLED, false) ?: false
+        if (enabled) {
+            registerClockReceiver()
+        } else {
+            unregisterClockReceiver()
+        }
+    }
+
+    private fun processSpeakThatClockTimeTick() {
+        if (shouldGloballySuppressSpeakThatReadouts()) return
+
+        val calendar = java.util.Calendar.getInstance()
+        val minute = calendar.get(java.util.Calendar.MINUTE)
+        val intervalMinutes = getSpeakThatClockIntervalMinutes()
+        if (intervalMinutes <= 0 || minute % intervalMinutes != 0) return
+
+        val formattedTime = DateFormat.getTimeFormat(this).format(calendar.time)
+        val storedTemplate = sharedPreferences?.getString(
+            PREF_SPEAKTHAT_CLOCK_TEMPLATE,
+            DEFAULT_SPEAKTHAT_CLOCK_TEMPLATE
+        ) ?: DEFAULT_SPEAKTHAT_CLOCK_TEMPLATE
+        val effectiveTemplate = storedTemplate.trim().ifEmpty { DEFAULT_SPEAKTHAT_CLOCK_TEMPLATE }
+        val spokenBody = effectiveTemplate.replace("{time}", formattedTime)
+
+        val filterResult = applyFilters(
+            packageName = CLOCK_PACKAGE_NAME,
+            appName = CLOCK_APP_NAME,
+            text = spokenBody,
+            sbn = null,
+            isSelfTest = false,
+            isSystemEvent = true
+        )
+        if (!filterResult.shouldSpeak) {
+            Log.d(TAG, "SpeakThat Clock blocked by filters - ${filterResult.reason}")
+            return
+        }
+
+        addToHistory(
+            appName = CLOCK_APP_NAME,
+            packageName = CLOCK_PACKAGE_NAME,
+            title = CLOCK_TITLE,
+            text = spokenBody,
+            wasRead = true,
+            spokenText = filterResult.processedText,
+            blockedReason = null,
+            isSystemEvent = true
+        )
+        handleNotificationBehavior(
+            CLOCK_PACKAGE_NAME,
+            CLOCK_APP_NAME,
+            filterResult.processedText,
+            filterResult.conditionalDelaySeconds,
+            null,
+            filterResult.speechTemplateOverride,
+            filterResult.voiceOverride
+        )
+    }
+
+    fun registerClockReceiver() {
+        if (clockTickReceiverRegistered) {
+            Log.d(TAG, "Clock tick receiver already registered")
+            return
+        }
+        try {
+            val filter = android.content.IntentFilter(Intent.ACTION_TIME_TICK)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                registerReceiver(clockTickBroadcastReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+            } else {
+                registerReceiver(clockTickBroadcastReceiver, filter)
+            }
+            clockTickReceiverRegistered = true
+            Log.d(TAG, "Clock tick broadcast receiver registered")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error registering clock tick broadcast receiver", e)
+        }
+    }
+
+    fun unregisterClockReceiver() {
+        if (!clockTickReceiverRegistered) return
+        try {
+            unregisterReceiver(clockTickBroadcastReceiver)
+            Log.d(TAG, "Clock tick broadcast receiver unregistered")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error unregistering clock tick broadcast receiver", e)
+        } finally {
+            clockTickReceiverRegistered = false
+        }
+    }
+
+    /**
      * Broadcast receiver for accessibility service communication
      * 
      * This receiver listens for broadcasts from the SpeakThatAccessibilityService
@@ -810,6 +952,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 )
             } else {
                 Log.d(TAG, "TEST_FILTERS: notification blocked by filters - ${filterResult.reason}")
+            }
+        }
+    }
+
+    private val clockTickBroadcastReceiver = object : android.content.BroadcastReceiver() {
+        override fun onReceive(context: android.content.Context?, intent: android.content.Intent?) {
+            if (intent?.action != Intent.ACTION_TIME_TICK) return
+            try {
+                processSpeakThatClockTimeTick()
+            } catch (e: Exception) {
+                Log.e(TAG, "Clock tick handling failed", e)
             }
         }
     }
@@ -2289,11 +2442,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     private fun addToHistory(
         appName: String, packageName: String, title: String, text: String,
-        wasRead: Boolean = true, spokenText: String? = null, blockedReason: String? = null
+        wasRead: Boolean = true, spokenText: String? = null, blockedReason: String? = null,
+        isSystemEvent: Boolean = false
     ) {
         try {
             val timestamp = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
-            val notificationData = NotificationData(appName, packageName, title, text, timestamp, wasRead, spokenText, blockedReason)
+            val notificationData = NotificationData(
+                appName, packageName, title, text, timestamp, wasRead, spokenText, blockedReason, isSystemEvent
+            )
             
             // Add to batch queue instead of immediate database write
             historyBatchQueue.add(notificationData)
@@ -2563,7 +2719,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
-    private fun checkCooldown(packageName: String): FilterResult {
+    private fun checkCooldown(packageName: String, isSystemEvent: Boolean = false): FilterResult {
+        if (isSystemEvent) {
+            Log.d(TAG, "System event bypass - skipping cooldown for $packageName")
+            return FilterResult(true, "", "System event bypassed cooldown")
+        }
         val cooldownSeconds = appCooldownSettings[packageName] ?: return FilterResult(true, "", "No cooldown set for app")
         if (cooldownSeconds <= 0) {
             return FilterResult(true, "", "Cooldown disabled for app")
@@ -2736,15 +2896,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         appName: String,
         text: String,
         sbn: StatusBarNotification? = null,
-        isSelfTest: Boolean = false
+        isSelfTest: Boolean = false,
+        isSystemEvent: Boolean = false
     ): FilterResult {
         // 1. Check app filtering
-        val appFilterResult = checkAppFilter(packageName, isSelfTest)
+        val appFilterResult = checkAppFilter(packageName, isSelfTest, isSystemEvent)
         if (!appFilterResult.shouldSpeak) {
             return appFilterResult
         }
         // 2. Check cooldown
-        val cooldownResult = checkCooldown(packageName)
+        val cooldownResult = checkCooldown(packageName, isSystemEvent)
         if (!cooldownResult.shouldSpeak) {
             return cooldownResult
         }
@@ -2796,8 +2957,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             .lastOrNull()
             ?.let { VoiceOverride(language = it.language, voiceName = it.voiceName) }
 
+        val effectiveOverridePrivate = overridePrivate || isSystemEvent
+
         // 6. Apply word filtering and replacements (optionally overriding private mode)
-        val wordFilterResult = applyWordFiltering(text, appName, packageName, overridePrivate)
+        val wordFilterResult = applyWordFiltering(text, appName, packageName, effectiveOverridePrivate)
         if (!wordFilterResult.shouldSpeak) {
             return wordFilterResult
         }
@@ -2817,20 +2980,35 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             InAppLogger.logFilter("Rule effect: override TTS voice")
         }
 
+        val effectiveSpeechTemplateOverride = if (isSystemEvent && speechTemplateOverride == null) {
+            InAppLogger.logFilter("System event: speech template override to content-only (no app wrapper)")
+            SpeechTemplateOverride("{content}", null)
+        } else {
+            speechTemplateOverride
+        }
+
         return FilterResult(
             shouldSpeak = true,
             processedText = processedText,
             reason = "Passed all filters",
-            speechTemplateOverride = speechTemplateOverride,
+            speechTemplateOverride = effectiveSpeechTemplateOverride,
             voiceOverride = voiceOverride
         )
     }
     
-    private fun checkAppFilter(packageName: String, isSelfTest: Boolean = false): FilterResult {
+    private fun checkAppFilter(
+        packageName: String,
+        isSelfTest: Boolean = false,
+        isSystemEvent: Boolean = false
+    ): FilterResult {
         if (isSelfTest) {
             Log.d(TAG, "SelfTest bypass - skipping app list checks for $packageName")
             InAppLogger.log("SelfTest", "App list bypassed for SelfTest notification")
             return FilterResult(true, "", "SelfTest bypassed app list")
+        }
+        if (isSystemEvent) {
+            Log.d(TAG, "System event bypass - skipping app list checks for $packageName")
+            return FilterResult(true, "", "System event bypassed app list")
         }
         return when (appListMode) {
             "whitelist" -> {
@@ -6326,6 +6504,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 legacyDuckingEnabled = sharedPreferences?.getBoolean("enable_legacy_ducking", false) ?: false
                 Log.d(TAG, "Legacy ducking toggled: $legacyDuckingEnabled")
                 InAppLogger.log("MediaBehavior", "Legacy ducking ${if (legacyDuckingEnabled) "enabled" else "disabled"} via dev settings")
+            }
+            PREF_SPEAKTHAT_CLOCK_ENABLED -> {
+                syncSpeakThatClockReceiverWithPrefs()
+                Log.d(TAG, "SpeakThat Clock enabled pref updated")
+            }
+            PREF_SPEAKTHAT_CLOCK_INTERVAL_MINUTES -> {
+                Log.d(TAG, "SpeakThat Clock interval pref updated (effective ${getSpeakThatClockIntervalMinutes()} min)")
+            }
+            PREF_SPEAKTHAT_CLOCK_TEMPLATE -> {
+                Log.d(TAG, "SpeakThat Clock speech template pref updated")
             }
         }
     }
