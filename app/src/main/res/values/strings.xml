@@ -1338,14 +1338,14 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="onboarding_language_info_description">Please remember I am just one person and translations are done by kind volunteers. Not all languages are fully translated yet. You can help translate SpeakThat by contributing to its Weblate page!</string>
     <string name="onboarding_language_translate_button">Help Translate SpeakThat</string>
     <string name="info_icon_description">Information icon</string>
-    
+
     <!-- New Onboarding Flow (v2) - Page 2: Welcome -->
     <string name="onboarding_welcome_title_new">Welcome to SpeakThat!</string>
     <string name="onboarding_welcome_subtitle">Stay connected without staring at your screen!</string>
     <string name="onboarding_welcome_icon_description">SpeakThat icon</string>
     <string name="onboarding_welcome_card_title">How does SpeakThat work?</string>
     <string name="onboarding_welcome_card_description">When you receive a notification, SpeakThat will read it out to you using a text-to-speech engine.\n\nAll processing happens entirely on your device, and you remain fully in control of what gets read.</string>
-    
+
     <!-- New Onboarding Flow (v2) - Page 3: Privacy -->
     <string name="onboarding_privacy_title_new">Privacy-First</string>
     <string name="onboarding_privacy_subtitle">Your privacy is SpeakThat\'s priority. Learn how it ensures this.</string>
@@ -1363,7 +1363,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="onboarding_privacy_policy_title">View the privacy policy</string>
     <string name="onboarding_privacy_policy_description">Full details and a bug report example are available on SpeakThat\'s website.</string>
     <string name="onboarding_privacy_policy_button">Open privacy policy</string>
-    
+
     <!-- New Onboarding Flow (v2) - Page 4: Permission -->
     <string name="onboarding_permission_title_new">Permission Required</string>
     <string name="onboarding_permission_subtitle">SpeakThat requires notifications access to read aloud incoming notifications.</string>
@@ -1378,41 +1378,41 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="onboarding_permission_open_settings">Open Settings</string>
     <string name="onboarding_permission_granted">✓ Permission granted! You can continue.</string>
     <string name="onboarding_permission_not_granted">Permission not yet granted</string>
-    
+
     <!-- New Onboarding Flow (v2) - TTS Strings -->
     <string name="tts_onboarding_language_new">Choose your preferred language to get started with SpeakThat.</string>
     <string name="tts_onboarding_welcome_new">Welcome to SpeakThat! Stay connected without staring at your screen. When you receive a notification, SpeakThat will read it out to you using a text-to-speech engine. All processing happens entirely on your device, and you remain fully in control of what gets read.</string>
     <string name="tts_onboarding_privacy_new">Your privacy is SpeakThat\'s priority. You have complete control over what gets read out. You can create filters for apps, words, places, times, and more. All processing happens entirely on your device and nothing is ever sent to external servers, data farms, or AI models unless you explicitly submit a bug report and agree to include app data.</string>
     <string name="tts_onboarding_permission_new">SpeakThat requires notifications access to read aloud incoming notifications. You will need to open your device settings and allow SpeakThat access to your notifications. Tap the Open Settings button to grant permission. In the list, tap SpeakThat to enable it. Everything stays on your device and no data is sent to anyone.</string>
-    
+
     <!-- New Onboarding Flow (v2) - Page 5: System Check -->
     <string name="onboarding_system_check_title">Quick System Check</string>
     <string name="onboarding_system_check_subheading">SpeakThat will quickly verify that it is ready to run on your device.</string>
     <string name="onboarding_system_check_icon_description">Stethoscope icon</string>
-    
+
     <!-- State 1: Introduction -->
     <string name="onboarding_system_check_intro_card_title">Ensuring reliability</string>
     <string name="onboarding_system_check_intro_card_description">SpeakThat will send a test notification and read it out to ensure it is working on your device.\n\nThis is just a quick check. You\'ll be able to choose what gets read next.</string>
     <string name="onboarding_system_check_run_button">Run System Check</string>
-    
+
     <!-- State 2: Testing in Progress -->
     <string name="onboarding_system_check_testing_card_title">Testing...</string>
     <string name="onboarding_system_check_testing_card_description">This won\'t take long!</string>
-    
+
     <!-- State 3: User Feedback -->
     <string name="onboarding_system_check_feedback_card_title">Did you hear SpeakThat read the notification?</string>
     <string name="onboarding_system_check_feedback_no">No, I didn\'t</string>
     <string name="onboarding_system_check_feedback_yes">Yes, I did</string>
-    
+
     <!-- State 4: Failure/Skip Result -->
     <string name="onboarding_system_check_failure_card_title">Almost there</string>
     <string name="onboarding_system_check_failure_card_description">SpeakThat didn\'t read the test notification.\n\n%1$s\n\nYou can continue the setup, but you might find SpeakThat isn\'t ready to function just yet.\n\nFeel free to contact me if you need help getting the app working.</string>
     <string name="onboarding_system_check_failure_permission_denied">You denied the notification permission.</string>
     <string name="onboarding_system_check_failure_test_skipped">The test was skipped.</string>
-    
+
     <!-- TTS String for Page 5 -->
     <string name="tts_onboarding_system_check">Quick System Check. SpeakThat will quickly verify that it is ready to run on your device. SpeakThat will send a test notification and read it out to ensure it is working on your device. This is just a quick check. You will be able to choose what gets read next.</string>
-    
+
     <!-- New Onboarding Flow (v2) - Page 6: Kill the Noise -->
     <string name="onboarding_kill_noise_title">Kill the Noise</string>
     <string name="onboarding_kill_noise_subheading">Not all notifications need to be read out loud. So let\'s silence the spammy ones.</string>
@@ -1420,10 +1420,10 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="onboarding_kill_noise_card_title">Notification filtering</string>
     <string name="onboarding_kill_noise_card_description">SpeakThat helps you skip the boring stuff (like background updates and progress notifications) so you only hear what matters to you.\n\nYou\'re always in control, and you can change SpeakThat\'s filters anytime with ease.</string>
     <string name="onboarding_kill_noise_skip_button">Skip this for now</string>
-    
+
     <!-- TTS String for Page 6 -->
     <string name="tts_onboarding_kill_noise">Kill the Noise. Not all notifications need to be read out loud. SpeakThat helps you skip the boring stuff like background updates and progress notifications so you only hear what matters to you. You are always in control, and you can change SpeakThat\'s filters anytime with ease.</string>
-    
+
     <!-- New Onboarding Flow (v2) - Page 7: Select Your Apps -->
     <string name="onboarding_select_apps_title">Select Your Apps</string>
     <string name="onboarding_select_apps_subheading">Select which apps SpeakThat should read, and which apps it shouldn\'t.</string>
@@ -1437,10 +1437,10 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="onboarding_select_apps_button">Select Apps</string>
     <string name="onboarding_select_apps_count_placeholder">0 apps selected</string>
     <string name="onboarding_select_apps_count">%d apps selected</string>
-    
+
     <!-- TTS String for Page 7 -->
     <string name="tts_onboarding_select_apps">Select Your Apps. Select which apps SpeakThat should read, and which apps it should not. SpeakThat can either read notifications from apps you select, or read everything except those apps. You can change this at any time.</string>
-    
+
     <!-- Page 8: When to Read -->
     <string name="onboarding_when_to_read_title">When to Read</string>
     <string name="onboarding_when_to_read_subheading">Let\'s make sure SpeakThat doesn\'t read at an inconvenient time.</string>
@@ -2435,52 +2435,52 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="support_intro_title">SpeakThat! isn\'t flawless!</string>
     <string name="support_intro_message">SpeakThat relies on lots of different Android systems and tries to be as widely compatible as possible. But with something as fragmented as Android, problems will occur from time to time.</string>
     <string name="support_intro_details">I offer support during my spare time and ask for your patience and respect as I get to everyone. Please fill in the details below so I know how to support you.</string>
-    
+
     <string name="support_type">Support Type</string>
     <string name="support_type_description">Select what you want to do.</string>
-    
+
     <string name="support_type_feature">Suggest a feature</string>
     <string name="support_type_bug">Report a bug</string>
     <string name="support_type_question">Ask a question</string>
-    
+
     <!-- Feature Request Questions -->
     <string name="support_feature_title">Feature Details</string>
     <string name="support_feature_q1">What problem would your feature solve? (required)</string>
     <string name="support_feature_q1_desc">Describe the situation or limitation you\'re currently experiencing.\n\nFocus on what you\'re unable to do or what feels inconvenient.</string>
     <string name="support_feature_q1_hint">When I\'m…</string>
-    
+
     <string name="support_feature_q2">How do you currently work around this?</string>
     <string name="support_feature_q2_desc">If you\'ve found a workaround or an alternative way of handling this, describe it here.\n\nThis helps identify how important the feature is and what trade-offs users are making.</string>
     <string name="support_feature_q2_hint">I normally have to…</string>
-    
+
     <string name="support_feature_q3">How would you implement your idea?</string>
     <string name="support_feature_q3_desc">If you have a particular idea in mind, describe how you imagine it working.\n\nDon\'t worry about technical details. This is just to understand your expectations.</string>
     <string name="support_feature_q3_hint">I\'d introduce…</string>
-    
+
     <!-- Bug Report Questions -->
     <string name="support_bug_title">Bug Details</string>
     <string name="support_bug_q1">How did you get the bug to occur? (required)</string>
     <string name="support_bug_q1_desc">Describe anything that happened shortly before the issue appeared.\n\nThis might include steps you took, settings you changed, notifications you received, connecting a device (such as headphones or a car), or anything else that might be relevant.</string>
     <string name="support_bug_q1_hint">Just before it broke, I…</string>
-    
+
     <string name="support_bug_q2">What were you trying to do? (required)</string>
     <string name="support_bug_q2_desc">Describe what you expected to happen.\n\nThis could be an action you took, a setting you enabled, or a situation you were in when the problem occurred.</string>
     <string name="support_bug_q2_hint">I was trying to…</string>
-    
+
     <string name="support_bug_q3">What happened instead? (required)</string>
     <string name="support_bug_q3_desc">Describe what actually happened.\n\nThis might include unexpected behaviour, incorrect speech, a crash, nothing happening at all, or anything that didn\'t match what you expected.</string>
     <string name="support_bug_q3_hint">Instead, it…</string>
-    
+
     <!-- General Support Questions -->
     <string name="support_question_title">Support Details</string>
     <string name="support_question_q1">What would you like help with? (required)</string>
     <string name="support_question_q1_desc">Describe the situation or limitation you\'re currently experiencing.\n\nFocus on what you\'re unable to do or what feels inconvenient.</string>
     <string name="support_question_q1_hint">I want to…</string>
-    
+
     <string name="support_question_q2">What have you already tried or checked?</string>
     <string name="support_question_q2_desc">If you\'ve found a workaround or an alternative way of handling this, describe it here.\n\nThis helps identify how important the feature is and what trade-offs users are making.</string>
     <string name="support_question_q2_hint">I\'ve tried…</string>
-    
+
     <!-- Submit Section -->
     <string name="support_submit">Submit</string>
     <string name="support_include_logs">Include event logs</string>
@@ -2489,7 +2489,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="support_log_message_feature">No event logs will be sent in this email as they are not required for feature requests.</string>
     <string name="support_validation_warning">Please answer all required questions!</string>
     <string name="support_send_via_email">Send via email</string>
-    
+
     <!-- Email Subject Lines -->
     <string name="support_email_subject_feature">SpeakThat! Feature Request</string>
     <string name="support_email_subject_bug">SpeakThat! Bug Report</string>
@@ -2515,7 +2515,7 @@ This permission is completely optional; SpeakThat! will still function without i
         <item quantity="other">You have %d notifications.</item>
     </plurals>
 
-
+    <!-- Dummy strings. Leave these in the app release if you're a dummy -->
     <string name="placeholder_string">Placeholder string. Don\'t forget to remove this.</string>
 
 </resources>

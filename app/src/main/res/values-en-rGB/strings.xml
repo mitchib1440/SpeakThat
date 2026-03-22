@@ -2515,7 +2515,7 @@ This permission is completely optional; SpeakThat! will still function without i
         <item quantity="other">You have %d notifications.</item>
     </plurals>
 
-
+    <!-- Dummy strings. Leave these in the app release if you're a dummy -->
     <string name="placeholder_string">Placeholder string. Don\'t forget to remove this.</string>
 
 </resources>
