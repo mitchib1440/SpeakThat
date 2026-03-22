@@ -16,6 +16,7 @@ class ClockSettingsActivity : AppCompatActivity() {
 
     private lateinit var prefs: SharedPreferences
     private lateinit var switchClockEnabled: MaterialSwitch
+    private lateinit var switchClockPrecision: MaterialSwitch
     private lateinit var radioGroupClockInterval: RadioGroup
     private lateinit var editClockTemplate: TextInputEditText
 
@@ -30,6 +31,7 @@ class ClockSettingsActivity : AppCompatActivity() {
 
         prefs = getSharedPreferences(NotificationReaderService.PREFS_NAME, MODE_PRIVATE)
         switchClockEnabled = findViewById(R.id.switchClockEnabled)
+        switchClockPrecision = findViewById(R.id.switchClockPrecision)
         radioGroupClockInterval = findViewById(R.id.radioGroupClockInterval)
         editClockTemplate = findViewById(R.id.editClockTemplate)
 
@@ -44,7 +46,7 @@ class ClockSettingsActivity : AppCompatActivity() {
 
     private fun coerceInterval(raw: Int): Int {
         return when (raw) {
-            15, 30, 60 -> raw
+            15, 30, 60, NotificationReaderService.SPEAKTHAT_CLOCK_INTERVAL_3_HOURS_MINUTES -> raw
             else -> NotificationReaderService.DEFAULT_SPEAKTHAT_CLOCK_INTERVAL_MINUTES
         }
     }
@@ -52,6 +54,8 @@ class ClockSettingsActivity : AppCompatActivity() {
     private fun loadState() {
         isApplyingUiState = true
         switchClockEnabled.isChecked = prefs.getBoolean(NotificationReaderService.PREF_SPEAKTHAT_CLOCK_ENABLED, false)
+        switchClockPrecision.isChecked =
+            prefs.getBoolean(NotificationReaderService.PREF_SPEAKTHAT_CLOCK_PRECISION_MODE, false)
         val interval = coerceInterval(
             prefs.getInt(
                 NotificationReaderService.PREF_SPEAKTHAT_CLOCK_INTERVAL_MINUTES,
@@ -61,7 +65,8 @@ class ClockSettingsActivity : AppCompatActivity() {
         val radioId = when (interval) {
             15 -> R.id.radioClockInterval15
             30 -> R.id.radioClockInterval30
-            else -> R.id.radioClockInterval60
+            60 -> R.id.radioClockInterval60
+            else -> R.id.radioClockInterval180
         }
         radioGroupClockInterval.check(radioId)
         val template = prefs.getString(
@@ -96,12 +101,18 @@ class ClockSettingsActivity : AppCompatActivity() {
             prefs.edit().putBoolean(NotificationReaderService.PREF_SPEAKTHAT_CLOCK_ENABLED, isChecked).apply()
         }
 
+        switchClockPrecision.setOnCheckedChangeListener { _, isChecked ->
+            if (isApplyingUiState) return@setOnCheckedChangeListener
+            prefs.edit().putBoolean(NotificationReaderService.PREF_SPEAKTHAT_CLOCK_PRECISION_MODE, isChecked).apply()
+        }
+
         radioGroupClockInterval.setOnCheckedChangeListener { _, checkedId ->
             if (isApplyingUiState) return@setOnCheckedChangeListener
             val minutes = when (checkedId) {
                 R.id.radioClockInterval15 -> 15
                 R.id.radioClockInterval30 -> 30
                 R.id.radioClockInterval60 -> 60
+                R.id.radioClockInterval180 -> NotificationReaderService.SPEAKTHAT_CLOCK_INTERVAL_3_HOURS_MINUTES
                 else -> return@setOnCheckedChangeListener
             }
             prefs.edit().putInt(NotificationReaderService.PREF_SPEAKTHAT_CLOCK_INTERVAL_MINUTES, minutes).apply()
