@@ -2511,7 +2511,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="summary_tts_relative_time_fallback">a moment ago</string>
     <string name="summary_tts_item_template">%1$s. %2$s. %3$s</string>
     <plurals name="summary_tts_notification_count">
-        <item quantity="one">You have %d notification.</item>
+        <item quantity="one">You only have %d notification.</item>
         <item quantity="other">You have %d notifications.</item>
     </plurals>
 
