@@ -134,6 +134,11 @@
             android:exported="false" />
 
         <activity
+            android:name=".ClockSettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".SettingsActivity" />
+
+        <activity
             android:name=".SupportActivity"
             android:exported="false"
             android:parentActivityName=".SettingsActivity" />
