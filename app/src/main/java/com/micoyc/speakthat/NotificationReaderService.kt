@@ -262,7 +262,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         /** Stored in prefs as minutes; chimes at 0:00, 3:00, 6:00, … (local wall clock). */
         const val SPEAKTHAT_CLOCK_INTERVAL_3_HOURS_MINUTES = 180
         const val PREF_SPEAKTHAT_CLOCK_TEMPLATE = "pref_speakthat_clock_template"
-        const val DEFAULT_SPEAKTHAT_CLOCK_TEMPLATE = "It's {time}"
+        const val DEFAULT_SPEAKTHAT_CLOCK_TEMPLATE = "This is Speak That! The current time is {time}!"
         const val PREF_SPEAKTHAT_CLOCK_PRECISION_MODE = "pref_speakthat_clock_precision_mode"
 
         private const val ACTION_SPEAKTHAT_CLOCK_ALARM = "com.micoyc.speakthat.ACTION_CLOCK_ALARM"
