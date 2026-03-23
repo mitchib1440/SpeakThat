@@ -667,6 +667,22 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_delay_2s">2 seconds (Recommended)</string>
     <string name="behavior_delay_3s">3 seconds</string>
     <string name="behavior_delay_benefits">Benefits:\n\n• Avoids overlap with notification sounds\n• Gives you time to shake-to-cancel\n• Less jarring in quiet environments\n• Perfect for meetings and public spaces</string>
+    <string name="behavior_earcon_title">Earcon</string>
+    <string name="behavior_earcon_description">Play a sound before speech is started. This can be helpful if you find the sudden speech a little jarring. This is also helpful if you find readouts seem to be starting mid-sentence.</string>
+    <string name="behavior_earcon_spinner_hint">This is all most users need. Use Advanced Voice Options below to customise individual settings.</string>
+    <string name="behavior_earcon_custom_header">Custom Earcon</string>
+    <string name="behavior_earcon_custom_description">Import your own sound to use as an earcon. This should ideally be under one second in length and soft enough to prevent you from being startled by a sudden readout.</string>
+    <string name="behavior_earcon_select_sound">Select Sound</string>
+    <string name="behavior_earcon_preview">Preview Earcon</string>
+    <string name="behavior_earcon_warning">Warning: Large files will cause SpeakThat to use more memory and storage!</string>
+    <string name="behavior_earcon_saved_toast">Custom earcon saved</string>
+    <string name="behavior_earcon_preview_none">Choose Soft click or Custom to preview an earcon.</string>
+    <string name="behavior_earcon_operation_failed">Could not complete that action. Please try again.</string>
+    <string-array name="behavior_earcon_modes">
+        <item>None</item>
+        <item>Soft click</item>
+        <item>Custom</item>
+    </string-array>
     <string name="behavior_cooldown_title">Notification Cooldown</string>
     <string name="behavior_cooldown_description">Prevent apps from having multiple notifications read within a specified time period</string>
     <string name="behavior_cooldown_recommendation">Great for: Apps that spam notifications</string>

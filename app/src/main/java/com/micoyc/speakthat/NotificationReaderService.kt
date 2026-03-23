@@ -32,6 +32,8 @@ import android.icu.lang.UProperty
 import androidx.core.app.NotificationCompat
 import com.micoyc.speakthat.VoiceSettingsActivity
 import com.micoyc.speakthat.settings.BehaviorSettingsActivity
+import com.micoyc.speakthat.settings.BehaviorSettingsStore
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.HashMap
@@ -80,6 +82,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var duckingVolume = 30
     private var duckingFallbackStrategy = "manual"
     private var delayBeforeReadout = 0
+    private var earconMode: String = BehaviorSettingsStore.DEFAULT_EARCON_MODE
     private var isPersistentFilteringEnabled = true
     private var legacyDuckingEnabled = false
     
@@ -324,6 +327,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Delay settings
         private const val KEY_DELAY_BEFORE_READOUT = "delay_before_readout"
+
+        private const val EARCON_PRE_CUE = "[pre_cue]"
+        private const val UTTERANCE_ID_EARCON = "earcon_id"
         
         // Speech template settings
         private const val KEY_SPEECH_TEMPLATE = "speech_template"
@@ -2340,6 +2346,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 }
                 Log.d(TAG, "TextToSpeech initialized successfully")
                 InAppLogger.log("Service", "TextToSpeech initialized successfully")
+
+                registerEarcons()
                 
                 // Reset recovery counters on successful initialization
                 ttsRecoveryAttempts = 0
@@ -2972,6 +2980,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Load delay settings
         delayBeforeReadout = sharedPreferences?.getInt(KEY_DELAY_BEFORE_READOUT, 0) ?: 0
+
+        earconMode = sharedPreferences?.getString(
+            BehaviorSettingsStore.KEY_EARCON_MODE,
+            BehaviorSettingsStore.DEFAULT_EARCON_MODE
+        ) ?: BehaviorSettingsStore.DEFAULT_EARCON_MODE
         
         // Load media notification filtering settings
         val isMediaFilteringEnabled = sharedPreferences?.getBoolean(KEY_MEDIA_FILTERING_ENABLED, true) ?: true
@@ -6286,19 +6299,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // on the previous listener's closure (which captured stale speechText)
         textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
             override fun onStart(utteranceId: String?) {
-                // TTS started
                 Log.d(TAG, "=== DUCKING DEBUG: TTS utterance STARTED: $utteranceId ===")
                 InAppLogger.log("Service", "=== DUCKING DEBUG: TTS utterance STARTED: $utteranceId ===")
+                if (utteranceId != "notification_utterance") {
+                    return
+                }
                 InAppLogger.logTTSEvent("TTS started", speechText.take(50))
                 scheduleSpeechSafetyTimeout("utterance_start", currentTtsText)
                 
-                // Log current volume state when TTS starts
                 val currentVolume = audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)
                 val maxVolume = audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)
                 Log.d(TAG, "=== DUCKING DEBUG: TTS started - Music volume: $currentVolume/$maxVolume ===")
                 InAppLogger.log("Service", "=== DUCKING DEBUG: TTS started - Music volume: $currentVolume/$maxVolume ===")
                 
-                // Apply time cap if enabled
                 if (contentCapMode == "time" && contentCapTimeLimit > 0) {
                     contentCapTimerRunnable = Runnable {
                         Log.d(TAG, "Content Cap time limit reached (${contentCapTimeLimit}s) - stopping TTS")
@@ -6461,12 +6474,36 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 }
             }
         })
-        
-        // Speak with queue mode FLUSH to interrupt any previous speech
-        Log.d(TAG, "=== DUCKING DEBUG: Calling TTS.speak() with volume: ${ttsVolume * 100}% ===")
-        InAppLogger.log("Service", "=== DUCKING DEBUG: Calling TTS.speak() with volume: ${ttsVolume * 100}% ===")
-        
-        val speakResult = textToSpeech?.speak(finalSpeechText, TextToSpeech.QUEUE_FLUSH, volumeParams, "notification_utterance")
+
+        registerEarcons()
+
+        val useEarcon = shouldQueueEarconBeforeSpeech()
+        Log.d(TAG, "=== DUCKING DEBUG: Calling TTS (earcon=$useEarcon) with volume: ${ttsVolume * 100}% ===")
+        InAppLogger.log("Service", "=== DUCKING DEBUG: Calling TTS (earcon=$useEarcon) with volume: ${ttsVolume * 100}% ===")
+
+        var speakQueueMode = TextToSpeech.QUEUE_FLUSH
+        if (useEarcon) {
+            val earconResult = textToSpeech?.playEarcon(
+                EARCON_PRE_CUE,
+                TextToSpeech.QUEUE_ADD,
+                volumeParams,
+                UTTERANCE_ID_EARCON
+            )
+            speakQueueMode = if (earconResult == TextToSpeech.SUCCESS) {
+                TextToSpeech.QUEUE_ADD
+            } else {
+                Log.w(TAG, "playEarcon returned $earconResult, falling back to FLUSH speak")
+                InAppLogger.logWarning("Service", "playEarcon failed, using FLUSH for speech only")
+                TextToSpeech.QUEUE_FLUSH
+            }
+        }
+
+        val speakResult = textToSpeech?.speak(
+            finalSpeechText,
+            speakQueueMode,
+            volumeParams,
+            "notification_utterance"
+        )
         
         Log.d(TAG, "=== DUCKING DEBUG: TTS.speak() returned: $speakResult ===")
         InAppLogger.log("Service", "=== DUCKING DEBUG: TTS.speak() returned: $speakResult ===")
@@ -6498,6 +6535,44 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * 
      * The voice settings will respect the override logic (specific voice > language).
      */
+    private fun registerEarcons() {
+        val tts = textToSpeech ?: return
+        if (!isTtsInitialized) {
+            return
+        }
+        when (earconMode) {
+            BehaviorSettingsStore.EARCON_SOFT_CLICK -> {
+                val result = tts.addEarcon(EARCON_PRE_CUE, packageName, R.raw.soft_click)
+                if (result != TextToSpeech.SUCCESS) {
+                    Log.w(TAG, "addEarcon (soft click) returned $result")
+                    InAppLogger.logWarning("Service", "addEarcon (soft click) returned $result")
+                }
+            }
+            BehaviorSettingsStore.EARCON_CUSTOM -> {
+                val f = File(filesDir, BehaviorSettingsStore.CUSTOM_EARCON_FILE_NAME)
+                if (f.exists()) {
+                    val result = tts.addEarcon(EARCON_PRE_CUE, f)
+                    if (result != TextToSpeech.SUCCESS) {
+                        Log.w(TAG, "addEarcon (custom file) returned $result")
+                        InAppLogger.logWarning("Service", "addEarcon (custom file) returned $result")
+                    }
+                }
+            }
+            else -> {
+                // No earcon mapping
+            }
+        }
+    }
+
+    private fun shouldQueueEarconBeforeSpeech(): Boolean {
+        return when (earconMode) {
+            BehaviorSettingsStore.EARCON_SOFT_CLICK -> true
+            BehaviorSettingsStore.EARCON_CUSTOM ->
+                File(filesDir, BehaviorSettingsStore.CUSTOM_EARCON_FILE_NAME).exists()
+            else -> false
+        }
+    }
+
     private fun applyVoiceSettings() {
         if (isTtsInitialized && textToSpeech != null) {
             InAppLogger.log("Service", "Applying voice settings to service TTS instance")
@@ -6615,6 +6690,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 delayBeforeReadout = sharedPreferences?.getInt(KEY_DELAY_BEFORE_READOUT, 0) ?: 0
                 Log.d(TAG, "Delay settings updated - delay: ${delayBeforeReadout}s")
                 InAppLogger.log("Service", "Delay settings updated - delay: ${delayBeforeReadout}s")
+            }
+            BehaviorSettingsStore.KEY_EARCON_MODE -> {
+                earconMode = sharedPreferences?.getString(
+                    BehaviorSettingsStore.KEY_EARCON_MODE,
+                    BehaviorSettingsStore.DEFAULT_EARCON_MODE
+                ) ?: BehaviorSettingsStore.DEFAULT_EARCON_MODE
+                registerEarcons()
+                Log.d(TAG, "Earcon mode updated: $earconMode")
+                InAppLogger.log("Service", "Earcon mode updated: $earconMode")
             }
             KEY_MEDIA_FILTERING_ENABLED, KEY_MEDIA_FILTER_EXCEPTED_APPS, KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, KEY_MEDIA_FILTERED_APPS, KEY_MEDIA_FILTERED_APPS_PRIVATE -> {
                 // Reload media filtering settings

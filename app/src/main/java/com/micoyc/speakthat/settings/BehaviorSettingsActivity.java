@@ -19,6 +19,7 @@ import com.micoyc.speakthat.settings.sections.ContentCapSection;
 import com.micoyc.speakthat.settings.sections.CooldownSection;
 import com.micoyc.speakthat.settings.sections.CustomAppNamesSection;
 import com.micoyc.speakthat.settings.sections.DelaySection;
+import com.micoyc.speakthat.settings.sections.EarconSection;
 import com.micoyc.speakthat.settings.sections.GestureSection;
 import com.micoyc.speakthat.settings.sections.MediaBehaviorSection;
 import com.micoyc.speakthat.settings.sections.NotificationBehaviorSection;
@@ -117,6 +118,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
         MediaBehaviorSection mediaBehaviorSection =
             new MediaBehaviorSection(this, binding, store);
         DelaySection delaySection = new DelaySection(this, binding, store);
+        EarconSection earconSection = new EarconSection(this, binding, store);
         ContentCapSection contentCapSection = new ContentCapSection(this, binding, store);
         CustomAppNamesSection customAppNamesSection =
             new CustomAppNamesSection(this, binding, store);
@@ -129,6 +131,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
         sections.add(gestureSection);
         sections.add(mediaBehaviorSection);
         sections.add(delaySection);
+        sections.add(earconSection);
         sections.add(contentCapSection);
         sections.add(customAppNamesSection);
         sections.add(cooldownSection);

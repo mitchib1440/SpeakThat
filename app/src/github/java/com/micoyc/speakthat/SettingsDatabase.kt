@@ -129,6 +129,20 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "earcon",
+                title = "Earcon",
+                description = "Play a short sound before readouts start",
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.CARD,
+                searchKeywords = listOf(
+                    "earcon", "pre-speech", "pre speech", "cue", "click", "sound", "audio",
+                    "jarring", "notification", "readout", "tts", "before speak", "soft click", "custom sound"
+                ),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "shake_to_stop",
                 title = "Shake to Stop",
                 description = "Stop notifications by shaking your device",

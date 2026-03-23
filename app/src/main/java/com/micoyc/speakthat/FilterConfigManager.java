@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import java.util.Locale;
 import java.util.Set;
 import com.micoyc.speakthat.StatsSnapshot;
 import com.micoyc.speakthat.rules.RuleConfigManager;
+import com.micoyc.speakthat.settings.BehaviorSettingsStore;
 
 public class FilterConfigManager {
     
@@ -187,6 +189,7 @@ public class FilterConfigManager {
         public int dismissalMemoryTimeout;
         public boolean disableMediaFallback;
         public boolean enableLegacyDucking;
+        public String earconMode;
         
         public BehaviorConfig() {
             this.notificationBehavior = "interrupt";
@@ -221,6 +224,7 @@ public class FilterConfigManager {
             this.dismissalMemoryTimeout = 15;
             this.disableMediaFallback = false;
             this.enableLegacyDucking = false;
+            this.earconMode = BehaviorSettingsStore.EARCON_NONE;
         }
     }
     
@@ -398,6 +402,10 @@ public class FilterConfigManager {
         config.behavior.duckingVolume = prefs.getInt("ducking_volume", 30);
         config.behavior.duckingFallbackStrategy = prefs.getString("ducking_fallback_strategy", "manual");
         config.behavior.delayBeforeReadout = prefs.getInt("delay_before_readout", 0);
+        config.behavior.earconMode = prefs.getString(
+            BehaviorSettingsStore.KEY_EARCON_MODE,
+            BehaviorSettingsStore.DEFAULT_EARCON_MODE
+        );
         config.behavior.honourDoNotDisturb = prefs.getBoolean("honour_do_not_disturb", true);
         config.behavior.honourPhoneCalls = prefs.getBoolean("honour_phone_calls", true); // Add honour phone calls
         // Split audio mode: prefer new keys, fall back to legacy combined flag
@@ -511,6 +519,7 @@ public class FilterConfigManager {
         behavior.put("duckingVolume", config.behavior.duckingVolume);
         behavior.put("duckingFallbackStrategy", config.behavior.duckingFallbackStrategy);
         behavior.put("delayBeforeReadout", config.behavior.delayBeforeReadout);
+        behavior.put("earconMode", config.behavior.earconMode);
         behavior.put("honourDoNotDisturb", config.behavior.honourDoNotDisturb);
         behavior.put("honourPhoneCalls", config.behavior.honourPhoneCalls); // Add honour phone calls
         behavior.put("honourSilentMode", config.behavior.honourSilentMode); // Split audio mode
@@ -1018,6 +1027,25 @@ public class FilterConfigManager {
                 
                 if (behavior.has("delayBeforeReadout")) {
                     mainEditor.putInt("delay_before_readout", behavior.getInt("delayBeforeReadout"));
+                    totalImported++;
+                }
+
+                if (behavior.has("earconMode")) {
+                    String earconVal = behavior.getString("earconMode");
+                    if (BehaviorSettingsStore.EARCON_CUSTOM.equals(earconVal)) {
+                        File customEarcon = new File(
+                            context.getFilesDir(),
+                            BehaviorSettingsStore.CUSTOM_EARCON_FILE_NAME
+                        );
+                        if (!customEarcon.exists()) {
+                            earconVal = BehaviorSettingsStore.EARCON_NONE;
+                            InAppLogger.log(
+                                "FilterConfig",
+                                "Imported earcon_custom but no custom file present; using earcon_none"
+                            );
+                        }
+                    }
+                    mainEditor.putString(BehaviorSettingsStore.KEY_EARCON_MODE, earconVal);
                     totalImported++;
                 }
                 
