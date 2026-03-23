@@ -56,6 +56,7 @@
     
     <!-- Permission to use text-to-speech -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!-- Permission to draw overlay UI for summaries -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />

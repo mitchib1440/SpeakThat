@@ -32,6 +32,7 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.text.format.DateFormat
 import android.os.Build
+import android.os.PowerManager
 import android.util.Log
 import android.icu.lang.UCharacter
 import android.icu.lang.UProperty
@@ -122,6 +123,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var originalMusicVolume = -1 // Store original volume for restoration
     private var originalAudioMode = -1 // Store original audio mode for restoration
     private var audioFocusRequest: android.media.AudioFocusRequest? = null
+    private var speechWakeLock: PowerManager.WakeLock? = null
     private val pausedMediaSessions = mutableListOf<MediaController>() // Track paused sessions when legacy ducking is enabled
     
     // Media notification filtering
@@ -1130,6 +1132,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         override fun onReceive(context: android.content.Context?, intent: android.content.Intent?) {
             if (intent?.action != ACTION_SPEAKTHAT_CLOCK_ALARM) return
             try {
+                val powerManager = getSystemService(Context.POWER_SERVICE) as? PowerManager
+                val handoffLock = powerManager?.newWakeLock(
+                    PowerManager.PARTIAL_WAKE_LOCK,
+                    "SpeakThat:ClockHandoff"
+                )
+                handoffLock?.acquire(5000L)
                 processSpeakThatClockTimeTick(fromAlignedAlarm = true)
                 scheduleNextClockAlarm()
             } catch (e: Exception) {
@@ -4524,6 +4532,26 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             result == android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED
         }
     }
+
+    private fun acquireSpeechWakeLock() {
+        val powerManager = getSystemService(Context.POWER_SERVICE) as? PowerManager ?: return
+        if (speechWakeLock == null) {
+            speechWakeLock = powerManager.newWakeLock(
+                PowerManager.PARTIAL_WAKE_LOCK,
+                "SpeakThat:SpeechExecutionLock"
+            )
+        }
+
+        if (speechWakeLock?.isHeld != true) {
+            speechWakeLock?.acquire(20_000L)
+        }
+    }
+
+    private fun releaseSpeechWakeLock() {
+        if (speechWakeLock?.isHeld == true) {
+            speechWakeLock?.release()
+        }
+    }
     
     /**
      * Attempt direct media session control to pause active media playback.
@@ -6012,6 +6040,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         originalAppName: String? = null,
         voiceOverride: VoiceOverride? = null
     ) {
+        acquireSpeechWakeLock()
         Log.d(TAG, "=== DUCKING DEBUG: executeSpeech called with text: ${speechText.take(50)}... ===")
         InAppLogger.log("Service", "=== DUCKING DEBUG: executeSpeech called with text: ${speechText.take(50)}... ===")
         
@@ -6336,6 +6365,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (utteranceId == "notification_utterance") {
                     Log.d(TAG, "=== DUCKING DEBUG: TTS utterance COMPLETED: $utteranceId ===")
                     InAppLogger.log("Service", "=== DUCKING DEBUG: TTS utterance COMPLETED: $utteranceId ===")
+                    releaseSpeechWakeLock()
                     isCurrentlySpeaking = false
                     cancelSpeechSafetyTimeout("utterance_done")
                     
@@ -6400,6 +6430,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             override fun onError(utteranceId: String?) {
                 if (utteranceId == "notification_utterance") {
                     Log.e(TAG, "TTS utterance error: $utteranceId")
+                    releaseSpeechWakeLock()
                     isCurrentlySpeaking = false
                     cancelSpeechSafetyTimeout("utterance_error")
                     
