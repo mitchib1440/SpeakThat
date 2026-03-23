@@ -43,6 +43,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.NotificationCompat
+import androidx.core.os.BundleCompat
 import com.micoyc.speakthat.InAppLogger
 import com.micoyc.speakthat.MainActivity
 import com.micoyc.speakthat.NotificationReaderService
@@ -793,12 +794,15 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
                 @Suppress("DEPRECATION")
                 WindowManager.LayoutParams.TYPE_PHONE
             }
-            val flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+            var flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
-                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
-                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O_MR1) {
+                @Suppress("DEPRECATION")
+                flags = flags or WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+            }
 
             val params = WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
@@ -1044,27 +1048,25 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
     private fun extractBigPicturePathFromNotification(sbn: StatusBarNotification): String? {
         val extras = sbn.notification.extras ?: return null
 
-        val pictureBitmap = extras.get(Notification.EXTRA_PICTURE) as? Bitmap
+        val pictureBitmap = BundleCompat.getParcelable(extras, Notification.EXTRA_PICTURE, Bitmap::class.java)
         if (pictureBitmap != null) {
             return persistBitmapAndRecycle(pictureBitmap, sbn, "picture")
         }
 
-        val largeIconBitmap = extras.get(Notification.EXTRA_LARGE_ICON) as? Bitmap
+        val largeIconBitmap = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            BundleCompat.getParcelable(extras, Notification.EXTRA_LARGE_ICON, Bitmap::class.java)
+        } else {
+            null
+        }
         if (largeIconBitmap != null) {
             return persistBitmapAndRecycle(largeIconBitmap, sbn, "large_icon_bitmap")
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val largeIconFromExtras = extras.get(Notification.EXTRA_LARGE_ICON) as? Icon
-            val iconBitmap = iconToBitmap(largeIconFromExtras)
-            if (iconBitmap != null) {
-                return persistBitmapAndRecycle(iconBitmap, sbn, "large_icon_icon")
-            }
-
             val notificationLargeIcon = sbn.notification.getLargeIcon()
-            val notificationIconBitmap = iconToBitmap(notificationLargeIcon)
-            if (notificationIconBitmap != null) {
-                return persistBitmapAndRecycle(notificationIconBitmap, sbn, "notif_large_icon")
+            val iconBitmap = iconToBitmap(notificationLargeIcon)
+            if (iconBitmap != null) {
+                return persistBitmapAndRecycle(iconBitmap, sbn, "notif_large_icon")
             }
         }
         return null
