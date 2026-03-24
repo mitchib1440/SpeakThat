@@ -6640,14 +6640,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     InAppLogger.logWarning("Service", "addEarcon (soft click) returned $result")
                 }
             }
-            BehaviorSettingsStore.EARCON_CUSTOM -> {
-                val f = File(filesDir, BehaviorSettingsStore.CUSTOM_EARCON_FILE_NAME)
-                if (f.exists()) {
-                    val result = tts.addEarcon(EARCON_PRE_CUE, f)
-                    if (result != TextToSpeech.SUCCESS) {
-                        Log.w(TAG, "addEarcon (custom file) returned $result")
-                        InAppLogger.logWarning("Service", "addEarcon (custom file) returned $result")
-                    }
+            BehaviorSettingsStore.EARCON_DIGITAL_BEEP -> {
+                val result = tts.addEarcon(EARCON_PRE_CUE, packageName, R.raw.digital_beep)
+                if (result != TextToSpeech.SUCCESS) {
+                    Log.w(TAG, "addEarcon (digital beep) returned $result")
+                    InAppLogger.logWarning("Service", "addEarcon (digital beep) returned $result")
                 }
             }
             else -> {
@@ -6659,8 +6656,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private fun shouldQueueEarconBeforeSpeech(): Boolean {
         return when (earconMode) {
             BehaviorSettingsStore.EARCON_SOFT_CLICK -> true
-            BehaviorSettingsStore.EARCON_CUSTOM ->
-                File(filesDir, BehaviorSettingsStore.CUSTOM_EARCON_FILE_NAME).exists()
+            BehaviorSettingsStore.EARCON_DIGITAL_BEEP -> true
             else -> false
         }
     }

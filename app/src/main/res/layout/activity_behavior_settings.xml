@@ -2200,66 +2200,6 @@
                         app:cornerRadius="12dp"
                         style="@style/SecondaryButton" />
 
-                    <LinearLayout
-                        android:id="@+id/layoutEarconCustom"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone"
-                        android:alpha="0">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/behavior_earcon_custom_header"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/purple_card_text_primary"
-                                android:layout_marginEnd="12dp" />
-
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="1dp"
-                                android:layout_weight="1"
-                                android:background="@color/white_100" />
-
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/behavior_earcon_custom_description"
-                            android:textSize="14sp"
-                            android:textColor="@color/purple_card_text_secondary"
-                            android:layout_marginBottom="12dp" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnEarconSelectSound"
-                            android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:text="@string/behavior_earcon_select_sound"
-                            android:layout_marginBottom="12dp"
-                            app:cornerRadius="12dp"
-                            style="@style/PrimaryButton" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/behavior_earcon_warning"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/purple_card_text_primary" />
-
-                    </LinearLayout>
-
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>

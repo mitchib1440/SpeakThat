@@ -31,13 +31,11 @@ public class BehaviorSettingsStore {
     public static final String KEY_MEDIA_BEHAVIOR = "media_behavior";
     public static final String KEY_DUCKING_VOLUME = "ducking_volume";
     public static final String KEY_DELAY_BEFORE_READOUT = "delay_before_readout";
-    /** Stored values: {@link #EARCON_NONE}, {@link #EARCON_SOFT_CLICK}, {@link #EARCON_CUSTOM} */
+    /** Stored values: {@link #EARCON_NONE}, {@link #EARCON_SOFT_CLICK}, {@link #EARCON_DIGITAL_BEEP} */
     public static final String KEY_EARCON_MODE = "pref_speakthat_earcon_mode";
     public static final String EARCON_NONE = "earcon_none";
     public static final String EARCON_SOFT_CLICK = "earcon_soft_click";
-    public static final String EARCON_CUSTOM = "earcon_custom";
-    /** Internal files-dir name for imported custom earcon (no extension). */
-    public static final String CUSTOM_EARCON_FILE_NAME = "custom_earcon_audio";
+    public static final String EARCON_DIGITAL_BEEP = "earcon_digital_beep";
     public static final String KEY_CUSTOM_APP_NAMES = "custom_app_names";
     public static final String KEY_COOLDOWN_APPS = "cooldown_apps";
     public static final String KEY_HONOUR_DO_NOT_DISTURB = "honour_do_not_disturb";

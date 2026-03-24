@@ -12,7 +12,6 @@ import android.content.SharedPreferences;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -1031,21 +1030,10 @@ public class FilterConfigManager {
                 }
 
                 if (behavior.has("earconMode")) {
-                    String earconVal = behavior.getString("earconMode");
-                    if (BehaviorSettingsStore.EARCON_CUSTOM.equals(earconVal)) {
-                        File customEarcon = new File(
-                            context.getFilesDir(),
-                            BehaviorSettingsStore.CUSTOM_EARCON_FILE_NAME
-                        );
-                        if (!customEarcon.exists()) {
-                            earconVal = BehaviorSettingsStore.EARCON_NONE;
-                            InAppLogger.log(
-                                "FilterConfig",
-                                "Imported earcon_custom but no custom file present; using earcon_none"
-                            );
-                        }
-                    }
-                    mainEditor.putString(BehaviorSettingsStore.KEY_EARCON_MODE, earconVal);
+                    mainEditor.putString(
+                        BehaviorSettingsStore.KEY_EARCON_MODE,
+                        behavior.getString("earconMode")
+                    );
                     totalImported++;
                 }
                 
