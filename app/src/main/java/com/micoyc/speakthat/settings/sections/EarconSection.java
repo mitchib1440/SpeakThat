@@ -187,7 +187,7 @@ public class EarconSection implements BehaviorSettingsSection {
             } else if (BehaviorSettingsStore.EARCON_CUSTOM.equals(mode)) {
                 File f = new File(activity.getFilesDir(), BehaviorSettingsStore.CUSTOM_EARCON_FILE_NAME);
                 if (!f.exists()) {
-                    Toast.makeText(activity, R.string.error_generic, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, R.string.behavior_earcon_operation_failed, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 previewPlayer.setDataSource(f.getAbsolutePath());

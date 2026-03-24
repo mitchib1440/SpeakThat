@@ -126,6 +126,7 @@ dependencies {
     
     // For background work (optional, for future enhancements)
     implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
     implementation("com.github.woheller69:FreeDroidWarn:V1.+")
 
     // Play-only: Google Play Billing for donation flow (quantity support requires 6.2+)
