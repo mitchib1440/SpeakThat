@@ -88,7 +88,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     // Wave detection
     private var proximitySensor: Sensor? = null
     private var isWaveToStopEnabled = false
-    private var waveThreshold = 5.0f
     
     // Voice settings listener
     private var voiceSettingsPrefs: SharedPreferences? = null
@@ -1029,8 +1028,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         
         // Log wave-to-stop settings for debugging
         val waveEnabled = sharedPreferences?.getBoolean(KEY_WAVE_TO_STOP_ENABLED, false) ?: false
-        val waveThreshold = sharedPreferences?.getFloat("wave_threshold", 3.0f) ?: 3.0f
-        InAppLogger.log("MainActivity", "Wave-to-stop settings - enabled: $waveEnabled, threshold: ${waveThreshold}cm")
+        InAppLogger.log("MainActivity", "Wave-to-stop settings - enabled: $waveEnabled (universal proximity covered rule)")
         
         if (!isTtsInitialized) {
             Log.w(TAG, "TTS not initialized, cannot play logo easter egg")
@@ -1195,13 +1193,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
 
     private fun loadWaveSettings() {
         isWaveToStopEnabled = sharedPreferences?.getBoolean(KEY_WAVE_TO_STOP_ENABLED, false) ?: false
-        // Use calibrated threshold if available, otherwise fall back to old system
-        waveThreshold = if (sharedPreferences?.contains("wave_threshold_v1") == true) {
-            sharedPreferences?.getFloat("wave_threshold_v1", 3.0f) ?: 3.0f
-        } else {
-            sharedPreferences?.getFloat("wave_threshold", 3.0f) ?: 3.0f
-        }
-        Log.d(TAG, "MainActivity wave settings - enabled: $isWaveToStopEnabled, threshold: $waveThreshold")
+        Log.d(TAG, "MainActivity wave settings - enabled: $isWaveToStopEnabled")
     }
     
     private fun startShakeListening() {
@@ -1263,39 +1255,17 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 stopSpeaking("shake")
             }
         } else if (event.sensor.type == Sensor.TYPE_PROXIMITY && isWaveToStopEnabled) {
-            // Proximity sensor returns distance in cm
             val proximityValue = event.values[0]
-            
-            // Handle different proximity sensor behaviors:
-            // Some sensors return 0 when close, others return actual distance
-            val isTriggered = if (proximityValue == 0f) {
-                // Sensor returns 0 when object is very close (most common)
-                true
-            } else {
-                // Sensor returns actual distance, check if closer than threshold
-                // Use < instead of <= to avoid triggering when sensor is at max range
-                // ADDITIONAL SAFETY: Only trigger if the value is significantly different from max range
-                // This prevents false triggers on devices like Pixel 2 XL that read ~5cm when uncovered
-                val maxRange = proximitySensor?.maximumRange ?: 5.0f
-                val significantChange = maxRange * 0.3f // Require at least 30% change from max
-                val distanceFromMax = maxRange - proximityValue
-                
-                proximityValue < waveThreshold && distanceFromMax > significantChange
-            }
-            
+            val maxRange = proximitySensor?.maximumRange ?: 5.0f
+            val isTriggered = ProximityCover.isCovered(proximityValue, proximitySensor)
+
             if (isTriggered) {
-                val maxRange = proximitySensor?.maximumRange ?: 5.0f
-                val distanceFromMax = maxRange - proximityValue
-                
-                Log.d(TAG, "Wave detected in MainActivity! Stopping TTS. Proximity: $proximityValue cm, threshold: $waveThreshold cm, maxRange: $maxRange cm, distanceFromMax: $distanceFromMax cm")
-                InAppLogger.log("MainActivity", "Wave detected - proximity: ${proximityValue}cm, threshold: ${waveThreshold}cm, maxRange: ${maxRange}cm")
+                Log.d(TAG, "Wave detected in MainActivity! Stopping TTS. Proximity: $proximityValue cm, maxRange: $maxRange cm, covered=true")
+                InAppLogger.log("MainActivity", "Wave detected - proximity: ${proximityValue}cm, maxRange: ${maxRange}cm")
                 stopSpeaking("wave")
             } else {
-                // Log proximity values for debugging (but not too frequently)
-                if (System.currentTimeMillis() % 1000 < 100) { // Log ~10% of the time
-                    val maxRange = proximitySensor?.maximumRange ?: 5.0f
-                    val distanceFromMax = maxRange - proximityValue
-                    Log.d(TAG, "Proximity sensor reading: $proximityValue cm (threshold: $waveThreshold cm, maxRange: $maxRange cm, distanceFromMax: $distanceFromMax cm)")
+                if (System.currentTimeMillis() % 1000 < 100) {
+                    Log.d(TAG, "Proximity sensor reading: $proximityValue cm (maxRange: $maxRange cm, covered=false)")
                 }
             }
         }

@@ -265,10 +265,8 @@ public class TestSettingsActivity extends AppCompatActivity {
             boolean readNotificationText = mainPrefs.getBoolean("read_notification_text", true);
             int maxReadoutLength = mainPrefs.getInt("max_readout_length", 200);
             boolean waveToStop = mainPrefs.getBoolean("wave_to_stop_enabled", false);
-            float waveThresholdCm = mainPrefs.getFloat("wave_threshold", 3.0f);
             int waveTimeoutSeconds = mainPrefs.getInt("wave_timeout_seconds", 30);
-            SharedPreferences behaviorPrefs = getSharedPreferences("BehaviorSettings", MODE_PRIVATE);
-            float waveThresholdPercent = behaviorPrefs.getFloat("wave_threshold_percent", 60f);
+            int waveHoldMs = mainPrefs.getInt("wave_hold_duration_ms", 150);
             boolean honourDnd = mainPrefs.getBoolean("honour_do_not_disturb", true);
             boolean honourPhoneCalls = mainPrefs.getBoolean("honour_phone_calls", true);
             boolean honourSilentMode = mainPrefs.getBoolean("honour_silent_mode", true);
@@ -290,7 +288,8 @@ public class TestSettingsActivity extends AppCompatActivity {
             results.append("Read Text: ").append(readNotificationText ? "✅ Yes" : "❌ No").append("\n");
             results.append("Max Readout Length: ").append(maxReadoutLength).append(" chars\n");
             results.append("Wave to Stop: ").append(waveToStop ? "✅ Enabled" : "❌ Disabled").append("\n");
-            results.append("Wave Threshold: ").append(String.format(Locale.getDefault(), "%.1f cm (%.0f%%)", waveThresholdCm, waveThresholdPercent)).append("\n");
+            results.append("Wave detection: standard proximity (covered if reading < max range and < 5 cm)\n");
+            results.append("Wave Hold: ").append(waveHoldMs).append(" ms\n");
             results.append("Wave Timeout: ").append(waveTimeoutSeconds == 0 ? "Disabled" : waveTimeoutSeconds + "s").append("\n");
             results.append("Honour Do Not Disturb: ").append(honourDnd ? "✅ Yes" : "❌ No").append("\n");
             results.append("Honour Phone Calls: ").append(honourPhoneCalls ? "✅ Yes" : "❌ No").append("\n");

@@ -150,7 +150,7 @@ This feature is especially loved by people who get notifications during meetings
 
     <!-- Wave to Stop Feature -->
     <string name="wave_to_stop_dialog_title">Wave to Stop Feature</string>
-    <string name="wave_to_stop_dialog_message">Wave to Stop lets you instantly silence SpeakThat by waving your hand in front of the device:
+    <string name="wave_to_stop_dialog_message">Wave to Stop lets you instantly silence SpeakThat by covering the proximity sensor (for example by waving your hand close to the top of the device):
 
 <b> Why it\'s helpful:</b>
 • Perfect for users who can\'t shake their device
@@ -160,16 +160,13 @@ This feature is especially loved by people who get notifications during meetings
 • Accessibility-friendly alternative to shake
 
 <b>🎯 How it works:</b>
-• Wave your hand in front of the device (like a magic gesture)
-• Uses the proximity sensor to detect hand movement
-• Current notification stops immediately
-• Queued notifications are cleared
-• New notifications work normally
+• Uses the standard Android proximity sensor: the sensor is treated as covered when the reading is closer than the sensor\'s max range and within about 5 cm
+• You can set how long the sensor must stay covered (wave hold) before it triggers
+• A timeout can still stop a stuck readout for battery safety
+• Pocket mode can allow readouts to continue if the sensor was already covered when the readout started—see behaviour settings for details
 
 <b>⚙️ Customization:</b>
-• Adjust sensitivity for your preference
-• Test your wave detection with the meter
-• Works great for different hand sizes and distances
+• Wave hold duration, timeout, and pocket mode in Behaviour settings
 
 This feature is especially useful for accessibility, desk users, and anyone who prefers gesture control over physical movement.</string>
 

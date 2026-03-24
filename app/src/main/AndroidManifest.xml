@@ -225,11 +225,6 @@
             android:parentActivityName=".GeneralSettingsActivity" />
 
         <activity
-            android:name=".WaveCalibrationActivity"
-            android:exported="false"
-            android:parentActivityName=".settings.BehaviorSettingsActivity" />
-
-        <activity
             android:name=".AboutActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />

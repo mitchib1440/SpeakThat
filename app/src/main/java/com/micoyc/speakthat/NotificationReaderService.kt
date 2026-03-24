@@ -101,7 +101,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     // Wave detection
     private var proximitySensor: Sensor? = null
     private var isWaveToStopEnabled = false
-    private var waveThreshold = 5.0f
     private var waveTimeoutSeconds = 30
     private var waveHoldDurationMs = 150L
     private var isPocketModeEnabled = false
@@ -2781,13 +2780,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
     private fun loadWaveSettings() {
         isWaveToStopEnabled = sharedPreferences?.getBoolean("wave_to_stop_enabled", false) ?: false
-        // Use calibrated threshold if available, otherwise fall back to old system
-        waveThreshold = if (sharedPreferences?.contains("wave_threshold_v1") == true) {
-            sharedPreferences?.getFloat("wave_threshold_v1", 3.0f) ?: 3.0f
-        } else {
-            sharedPreferences?.getFloat("wave_threshold", 3.0f) ?: 3.0f
-        }
-        
+
         // Safety validation: ensure timeout is within valid range (0 or 5-300)
         var timeout = sharedPreferences?.getInt(KEY_WAVE_TIMEOUT_SECONDS, 30) ?: 30
         if (timeout < 0 || (timeout > 0 && timeout < 5) || timeout > 300) {
@@ -2817,7 +2810,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         Log.d(
             TAG,
-            "Wave settings loaded - enabled: $isWaveToStopEnabled, threshold: $waveThreshold, timeout: ${waveTimeoutSeconds}s, hold: ${waveHoldDurationMs}ms, pocket mode: $isPocketModeEnabled"
+            "Wave settings loaded - enabled: $isWaveToStopEnabled, timeout: ${waveTimeoutSeconds}s, hold: ${waveHoldDurationMs}ms, pocket mode: $isPocketModeEnabled"
         )
     }
     
@@ -3980,26 +3973,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Log proximity sensor values for debugging (but limit frequency to avoid spam)
             if (now - lastWaveDebugLogTime > 500) {
                 lastWaveDebugLogTime = now
+                val covered = ProximityCover.isCovered(proximityValue, proximitySensor)
                 Log.d(
                     TAG,
-                    "Wave sensor event: value=$proximityValue cm, max=$maxRange cm, threshold=$waveThreshold cm, hold=${waveHoldDurationMs}ms, speaking=$isCurrentlySpeaking"
+                    "Wave sensor event: value=$proximityValue cm, max=$maxRange cm, covered=$covered, hold=${waveHoldDurationMs}ms, speaking=$isCurrentlySpeaking"
                 )
             }
-            
-            // Handle different proximity sensor behaviors:
-            // Some sensors return 0 when close, others return actual distance
-            val isNear = if (proximityValue == 0f) {
-                // Sensor returns 0 when object is very close (most common)
-                true
-            } else {
-                // Sensor returns actual distance, check if closer than threshold
-                // Use < instead of <= to avoid triggering when sensor is at max range
-                // ADDITIONAL SAFETY: Only trigger if the value is significantly different from max range
-                // This prevents false triggers on devices like Pixel 2 XL that read ~5cm when uncovered
-                val significantChange = maxRange * 0.3f // Require at least 30% change from max
-                val distanceFromMax = maxRange - proximityValue
-                proximityValue < waveThreshold && distanceFromMax > significantChange
-            }
+
+            val isNear = ProximityCover.isCovered(proximityValue, proximitySensor)
             
             // Track sensor state changes for pocket mode
             val wasCovered = isSensorCurrentlyCovered
@@ -4050,8 +4031,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         Log.i(TAG, "Wave ignored - pocket mode active (covered at start)")
                         return
                     }
-                    Log.d(TAG, "Wave detected! Stopping TTS (instant). Proximity value: $proximityValue cm, threshold: $waveThreshold cm, pocket mode: $isPocketModeEnabled, was covered at start: $wasSensorCoveredAtStart, has been uncovered: $hasSensorBeenUncovered")
-                    InAppLogger.logSystemEvent("Wave detected", "Proximity: ${proximityValue}cm, threshold: ${waveThreshold}cm")
+                    Log.d(TAG, "Wave detected! Stopping TTS (instant). Proximity value: $proximityValue cm, maxRange: $maxRange cm, pocket mode: $isPocketModeEnabled, was covered at start: $wasSensorCoveredAtStart, has been uncovered: $hasSensorBeenUncovered")
+                    InAppLogger.logSystemEvent("Wave detected", "Proximity: ${proximityValue}cm, maxRange: ${maxRange}cm")
                     stopSpeaking("wave")
                     return
                 }
@@ -4066,8 +4047,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                             Log.i(TAG, "Wave ignored - pocket mode active (covered at start)")
                             return@Runnable
                         }
-                        Log.d(TAG, "Wave detected! Stopping TTS. Proximity value: ${lastProximityValue} cm, threshold: $waveThreshold cm, pocket mode: $isPocketModeEnabled, was covered at start: $wasSensorCoveredAtStart, has been uncovered: $hasSensorBeenUncovered")
-                        InAppLogger.logSystemEvent("Wave detected", "Proximity: ${lastProximityValue}cm, threshold: ${waveThreshold}cm")
+                        Log.d(TAG, "Wave detected! Stopping TTS. Proximity value: ${lastProximityValue} cm, maxRange: $maxRange cm, pocket mode: $isPocketModeEnabled, was covered at start: $wasSensorCoveredAtStart, has been uncovered: $hasSensorBeenUncovered")
+                        InAppLogger.logSystemEvent("Wave detected", "Proximity: ${lastProximityValue}cm, maxRange: ${maxRange}cm")
                         stopSpeaking("wave")
                     }
                     sensorTimeoutHandler?.postDelayed(pendingWaveTriggerRunnable!!, waveHoldDurationMs)
@@ -6193,7 +6174,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         hasCapturedStartProximity = false
         Log.d(
             TAG,
-            "Wave session start - hold=${waveHoldDurationMs}ms, threshold=$waveThreshold cm, timeout=${waveTimeoutSeconds}s, pocketMode=$isPocketModeEnabled"
+            "Wave session start - hold=${waveHoldDurationMs}ms, timeout=${waveTimeoutSeconds}s, pocketMode=$isPocketModeEnabled"
         )
         if (isPocketModeEnabled) {
             hasSensorBeenUncovered = false

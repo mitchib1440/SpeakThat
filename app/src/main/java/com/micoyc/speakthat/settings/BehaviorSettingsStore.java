@@ -23,7 +23,6 @@ public class BehaviorSettingsStore {
     public static final String KEY_SHAKE_THRESHOLD = "shake_threshold";
     public static final String KEY_SHAKE_TIMEOUT_SECONDS = "shake_timeout_seconds";
     public static final String KEY_WAVE_TO_STOP_ENABLED = "wave_to_stop_enabled";
-    public static final String KEY_WAVE_THRESHOLD = "wave_threshold";
     public static final String KEY_WAVE_TIMEOUT_SECONDS = "wave_timeout_seconds";
     public static final String KEY_WAVE_HOLD_DURATION_MS = "wave_hold_duration_ms";
     public static final String KEY_PRESS_TO_STOP_ENABLED = "press_to_stop_enabled";
@@ -55,12 +54,7 @@ public class BehaviorSettingsStore {
     public static final String KEY_SPEECH_TEMPLATE = "speech_template";
     public static final String KEY_SPEECH_TEMPLATE_KEY = SpeechTemplateConstants.KEY_SPEECH_TEMPLATE_KEY;
 
-    // Calibration prefs keys
     public static final String PREFS_BEHAVIOR_SETTINGS = "BehaviorSettings";
-    public static final String KEY_WAVE_THRESHOLD_PERCENT = "wave_threshold_percent";
-    public static final String KEY_SENSOR_MAX_RANGE = "sensor_max_range_v1";
-    public static final String KEY_WAVE_THRESHOLD_V1 = "wave_threshold_v1";
-    public static final String KEY_CALIBRATION_TIMESTAMP = "calibration_timestamp_v1";
 
     public static final String KEY_DUCKING_FALLBACK_STRATEGY = "ducking_fallback_strategy";
 
