@@ -666,7 +666,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_delay_benefits">Benefits:\n\n• Avoids overlap with notification sounds\n• Gives you time to shake-to-cancel\n• Less jarring in quiet environments\n• Perfect for meetings and public spaces</string>
     <string name="behavior_earcon_title">Earcon</string>
     <string name="behavior_earcon_description">Play a sound before speech is started. This can be helpful if you find the sudden speech a little jarring. This is also helpful if you find readouts seem to be starting mid-sentence.</string>
-    <string name="behavior_earcon_spinner_hint">This is all most users need. Use Advanced Voice Options below to customise individual settings.</string>
+    <string name="behavior_earcon_spinner_hint">It\'s not uncommon for the earcon to be occasionally skipped or missed by your hardware.</string>
     <string name="behavior_earcon_preview">Preview Earcon</string>
     <string name="behavior_earcon_preview_none">Choose Soft Click or Digital Beep to preview an earcon.</string>
     <string name="behavior_earcon_operation_failed">Could not complete that action. Please try again.</string>
