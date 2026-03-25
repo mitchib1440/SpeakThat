@@ -25,6 +25,7 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.text.format.DateFormat
 import android.os.Build
+import android.os.SystemClock
 import android.os.PowerManager
 import android.util.Log
 import android.icu.lang.UCharacter
@@ -88,6 +89,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var duckingFallbackStrategy = "manual"
     private var delayBeforeReadout = 0
     private var earconMode: String = BehaviorSettingsStore.DEFAULT_EARCON_MODE
+    private var lastEarconStartMs: Long? = null
     private var isPersistentFilteringEnabled = true
     private var legacyDuckingEnabled = false
     
@@ -6344,15 +6346,39 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (utteranceId == "notification_utterance") {
                     Log.d(TAG, "TTS utterance stopped (interrupted=$interrupted): $utteranceId")
                     releaseSpeechWakeLock()
+                } else if (utteranceId == UTTERANCE_ID_EARCON) {
+                    InAppLogger.logTTSEvent(
+                        "Earcon stopped",
+                        "mode=$earconMode interrupted=$interrupted"
+                    )
                 }
             }
 
             override fun onStart(utteranceId: String?) {
                 Log.d(TAG, "=== DUCKING DEBUG: TTS utterance STARTED: $utteranceId ===")
                 InAppLogger.log("Service", "=== DUCKING DEBUG: TTS utterance STARTED: $utteranceId ===")
+                
+                if (utteranceId == UTTERANCE_ID_EARCON) {
+                    lastEarconStartMs = SystemClock.elapsedRealtime()
+                    InAppLogger.logTTSEvent(
+                        "Earcon started",
+                        "mode=$earconMode"
+                    )
+                }
                 if (utteranceId != "notification_utterance") {
                     return
                 }
+                
+                val readoutStartMs = SystemClock.elapsedRealtime()
+                lastEarconStartMs?.let { earconMs ->
+                    val delta = readoutStartMs - earconMs
+                    InAppLogger.logTTSEvent(
+                        "Earcon->Readout delta",
+                        "deltaMs=$delta (earconAt=$earconMs, readoutAt=$readoutStartMs)"
+                    )
+                }
+                lastEarconStartMs = null
+                
                 InAppLogger.logTTSEvent("TTS started", speechText.take(50))
                 scheduleSpeechSafetyTimeout("utterance_start", currentTtsText)
                 
@@ -6471,6 +6497,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     
                     // Process next item in queue if any
                     processNotificationQueue()
+                } else if (utteranceId == UTTERANCE_ID_EARCON) {
+                    InAppLogger.logTTSEvent(
+                        "Earcon completed",
+                        "mode=$earconMode"
+                    )
                 }
             }
             
@@ -6521,6 +6552,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     
                     // Process next item in queue if any
                     processNotificationQueue()
+                } else if (utteranceId == UTTERANCE_ID_EARCON) {
+                    InAppLogger.logTTSEvent(
+                        "Earcon error",
+                        "mode=$earconMode utteranceId=$utteranceId"
+                    )
                 }
             }
         })
@@ -6537,11 +6573,24 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             else -> TextToSpeech.QUEUE_FLUSH
         }
         if (useEarcon) {
+            val earconLabel = when (earconMode) {
+                BehaviorSettingsStore.EARCON_SOFT_CLICK -> "soft_click"
+                BehaviorSettingsStore.EARCON_DIGITAL_BEEP -> "digital_beep"
+                else -> "none"
+            }
+            InAppLogger.logTTSEvent(
+                "Earcon play requested",
+                "mode=$earconMode resource=$earconLabel queue=QUEUE_ADD"
+            )
             val earconResult = textToSpeech?.playEarcon(
                 EARCON_PRE_CUE,
                 TextToSpeech.QUEUE_ADD,
                 volumeParams,
                 UTTERANCE_ID_EARCON
+            )
+            InAppLogger.logTTSEvent(
+                "Earcon play result",
+                "result=$earconResult mode=$earconMode resource=$earconLabel"
             )
             speakQueueMode = if (earconResult == TextToSpeech.SUCCESS) {
                 TextToSpeech.QUEUE_ADD
@@ -6619,6 +6668,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (result != TextToSpeech.SUCCESS) {
                     Log.w(TAG, "addEarcon (soft click) returned $result")
                     InAppLogger.logWarning("Service", "addEarcon (soft click) returned $result")
+                } else {
+                    InAppLogger.logTTSEvent(
+                        "Earcon registered",
+                        "mode=$earconMode resource=soft_click result=$result"
+                    )
                 }
             }
             BehaviorSettingsStore.EARCON_DIGITAL_BEEP -> {
@@ -6626,6 +6680,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (result != TextToSpeech.SUCCESS) {
                     Log.w(TAG, "addEarcon (digital beep) returned $result")
                     InAppLogger.logWarning("Service", "addEarcon (digital beep) returned $result")
+                } else {
+                    InAppLogger.logTTSEvent(
+                        "Earcon registered",
+                        "mode=$earconMode resource=digital_beep result=$result"
+                    )
                 }
             }
             else -> {

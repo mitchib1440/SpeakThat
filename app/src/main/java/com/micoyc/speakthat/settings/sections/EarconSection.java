@@ -106,6 +106,7 @@ public class EarconSection implements BehaviorSettingsSection {
     private void playPreview() {
         releasePreviewPlayer();
         String mode = positionToMode(binding.spinnerEarcon.getSelectedItemPosition());
+        InAppLogger.log("BehaviorSettings", "Earcon preview requested. mode=" + mode);
         try {
             previewPlayer = new MediaPlayer();
             if (BehaviorSettingsStore.EARCON_SOFT_CLICK.equals(mode)) {
