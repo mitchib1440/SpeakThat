@@ -558,10 +558,10 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
 
     private fun readSummaryGreetingName(): String {
         val name = getSummarySettingsPrefs()
-            .getString(SUMMARY_SETTINGS_KEY_GREETING_NAME, "User")
+            .getString(SUMMARY_SETTINGS_KEY_GREETING_NAME, "Human")
             ?.trim()
             .orEmpty()
-        return if (name.isBlank()) "User" else name
+        return if (name.isBlank()) "Human" else name
     }
 
     private fun readSummaryPauseGapMs(): Long {
