@@ -30,11 +30,25 @@ public class BehaviorSettingsStore {
     public static final String KEY_MEDIA_BEHAVIOR = "media_behavior";
     public static final String KEY_DUCKING_VOLUME = "ducking_volume";
     public static final String KEY_DELAY_BEFORE_READOUT = "delay_before_readout";
-    /** Stored values: {@link #EARCON_NONE}, {@link #EARCON_SOFT_CLICK}, {@link #EARCON_DIGITAL_BEEP} */
+    /**
+     * Stored values (see {@code behavior_earcon_mode_values}): {@link #EARCON_NONE},
+     * {@link #EARCON_DIGITAL_BEEP}, {@link #EARCON_ANDROID_TAP}, {@link #EARCON_SOFT_CLICK},
+     * {@link #EARCON_HARD_CLICK}, {@link #EARCON_REVERB_TAP}, {@link #EARCON_SQUEAK},
+     * {@link #EARCON_SOFT_PLOP}, {@link #EARCON_HARD_PLOP}, {@link #EARCON_SOFT_POP},
+     * {@link #EARCON_HARD_POP}.
+     */
     public static final String KEY_EARCON_MODE = "pref_speakthat_earcon_mode";
     public static final String EARCON_NONE = "earcon_none";
-    public static final String EARCON_SOFT_CLICK = "earcon_soft_click";
     public static final String EARCON_DIGITAL_BEEP = "earcon_digital_beep";
+    public static final String EARCON_ANDROID_TAP = "earcon_android_tap";
+    public static final String EARCON_SOFT_CLICK = "earcon_soft_click";
+    public static final String EARCON_HARD_CLICK = "earcon_hard_click";
+    public static final String EARCON_REVERB_TAP = "earcon_reverb_tap";
+    public static final String EARCON_SQUEAK = "earcon_squeak";
+    public static final String EARCON_SOFT_PLOP = "earcon_soft_plop";
+    public static final String EARCON_HARD_PLOP = "earcon_hard_plop";
+    public static final String EARCON_SOFT_POP = "earcon_soft_pop";
+    public static final String EARCON_HARD_POP = "earcon_hard_pop";
     public static final String KEY_CUSTOM_APP_NAMES = "custom_app_names";
     public static final String KEY_COOLDOWN_APPS = "cooldown_apps";
     public static final String KEY_HONOUR_DO_NOT_DISTURB = "honour_do_not_disturb";

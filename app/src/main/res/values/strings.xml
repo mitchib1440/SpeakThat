@@ -668,12 +668,34 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_earcon_description">Play a sound before speech is started. This can be helpful if you find the sudden speech a little jarring. This is also helpful if you find readouts seem to be starting mid-sentence.</string>
     <string name="behavior_earcon_spinner_hint">It\'s not uncommon for the earcon to be occasionally skipped or missed by your hardware.</string>
     <string name="behavior_earcon_preview">Preview Earcon</string>
-    <string name="behavior_earcon_preview_none">Choose Soft Click or Digital Beep to preview an earcon.</string>
+    <string name="behavior_earcon_preview_none">Select a sound above to preview an earcon.</string>
+    <string name="behavior_earcon_delay_disclaimer">ⓘ Playing a sound will naturally add a minor delay (approx. 500ms) before the readout begins.</string>
     <string name="behavior_earcon_operation_failed">Could not complete that action. Please try again.</string>
     <string-array name="behavior_earcon_modes">
         <item>None</item>
-        <item>Soft Click</item>
         <item>Digital Beep</item>
+        <item>Android Tap</item>
+        <item>Soft Click</item>
+        <item>Hard Click</item>
+        <item>Reverb Tap</item>
+        <item>Squeak</item>
+        <item>Soft Plop</item>
+        <item>Hard Plop</item>
+        <item>Soft Pop</item>
+        <item>Hard Pop</item>
+    </string-array>
+    <string-array name="behavior_earcon_mode_values" translatable="false">
+        <item>earcon_none</item>
+        <item>earcon_digital_beep</item>
+        <item>earcon_android_tap</item>
+        <item>earcon_soft_click</item>
+        <item>earcon_hard_click</item>
+        <item>earcon_reverb_tap</item>
+        <item>earcon_squeak</item>
+        <item>earcon_soft_plop</item>
+        <item>earcon_hard_plop</item>
+        <item>earcon_soft_pop</item>
+        <item>earcon_hard_pop</item>
     </string-array>
     <string name="behavior_cooldown_title">Notification Cooldown</string>
     <string name="behavior_cooldown_description">Prevent apps from having multiple notifications read within a specified time period</string>

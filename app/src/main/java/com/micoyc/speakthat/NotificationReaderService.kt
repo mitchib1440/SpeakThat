@@ -6573,11 +6573,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             else -> TextToSpeech.QUEUE_FLUSH
         }
         if (useEarcon) {
-            val earconLabel = when (earconMode) {
-                BehaviorSettingsStore.EARCON_SOFT_CLICK -> "soft_click"
-                BehaviorSettingsStore.EARCON_DIGITAL_BEEP -> "digital_beep"
-                else -> "none"
-            }
+            val earconRes = earconRawRes(earconMode)
+            val earconLabel = earconRes?.let { resources.getResourceEntryName(it) } ?: "none"
             InAppLogger.logTTSEvent(
                 "Earcon play requested",
                 "mode=$earconMode resource=$earconLabel queue=QUEUE_ADD"
@@ -6657,48 +6654,52 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * 
      * The voice settings will respect the override logic (specific voice > language).
      */
+    /**
+     * Maps persisted earcon mode to a raw resource, or null for [BehaviorSettingsStore.EARCON_NONE] / unknown.
+     */
+    private fun earconRawRes(mode: String): Int? = when (mode) {
+        BehaviorSettingsStore.EARCON_DIGITAL_BEEP -> R.raw.digital_beep
+        BehaviorSettingsStore.EARCON_ANDROID_TAP -> R.raw.android_tap
+        BehaviorSettingsStore.EARCON_SOFT_CLICK -> R.raw.soft_click
+        BehaviorSettingsStore.EARCON_HARD_CLICK -> R.raw.hard_click
+        BehaviorSettingsStore.EARCON_REVERB_TAP -> R.raw.reverb_tap
+        BehaviorSettingsStore.EARCON_SQUEAK -> R.raw.squeak
+        BehaviorSettingsStore.EARCON_SOFT_PLOP -> R.raw.soft_plop
+        BehaviorSettingsStore.EARCON_HARD_PLOP -> R.raw.hard_plop
+        BehaviorSettingsStore.EARCON_SOFT_POP -> R.raw.soft_pop
+        BehaviorSettingsStore.EARCON_HARD_POP -> R.raw.hard_pop
+        else -> null
+    }
+
     private fun registerEarcons() {
         val tts = textToSpeech ?: return
         if (!isTtsInitialized) {
             return
         }
-        when (earconMode) {
-            BehaviorSettingsStore.EARCON_SOFT_CLICK -> {
-                val result = tts.addEarcon(EARCON_PRE_CUE, packageName, R.raw.soft_click)
-                if (result != TextToSpeech.SUCCESS) {
-                    Log.w(TAG, "addEarcon (soft click) returned $result")
-                    InAppLogger.logWarning("Service", "addEarcon (soft click) returned $result")
-                } else {
-                    InAppLogger.logTTSEvent(
-                        "Earcon registered",
-                        "mode=$earconMode resource=soft_click result=$result"
-                    )
-                }
-            }
-            BehaviorSettingsStore.EARCON_DIGITAL_BEEP -> {
-                val result = tts.addEarcon(EARCON_PRE_CUE, packageName, R.raw.digital_beep)
-                if (result != TextToSpeech.SUCCESS) {
-                    Log.w(TAG, "addEarcon (digital beep) returned $result")
-                    InAppLogger.logWarning("Service", "addEarcon (digital beep) returned $result")
-                } else {
-                    InAppLogger.logTTSEvent(
-                        "Earcon registered",
-                        "mode=$earconMode resource=digital_beep result=$result"
-                    )
-                }
-            }
-            else -> {
-                // No earcon mapping
-            }
+        if (earconMode == BehaviorSettingsStore.EARCON_NONE) {
+            return
+        }
+        val rawId = earconRawRes(earconMode)
+        if (rawId == null) {
+            Log.w(TAG, "Unknown earcon mode: $earconMode")
+            InAppLogger.logWarning("Service", "Unknown earcon mode: $earconMode")
+            return
+        }
+        val label = resources.getResourceEntryName(rawId)
+        val result = tts.addEarcon(EARCON_PRE_CUE, packageName, rawId)
+        if (result != TextToSpeech.SUCCESS) {
+            Log.w(TAG, "addEarcon ($label) returned $result")
+            InAppLogger.logWarning("Service", "addEarcon ($label) returned $result")
+        } else {
+            InAppLogger.logTTSEvent(
+                "Earcon registered",
+                "mode=$earconMode resource=$label result=$result"
+            )
         }
     }
 
     private fun shouldQueueEarconBeforeSpeech(): Boolean {
-        return when (earconMode) {
-            BehaviorSettingsStore.EARCON_SOFT_CLICK -> true
-            BehaviorSettingsStore.EARCON_DIGITAL_BEEP -> true
-            else -> false
-        }
+        return earconRawRes(earconMode) != null
     }
 
     private fun applyVoiceSettings() {
