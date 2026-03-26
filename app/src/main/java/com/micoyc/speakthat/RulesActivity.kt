@@ -43,6 +43,8 @@ import com.micoyc.speakthat.rules.RulesAdapter
 import com.micoyc.speakthat.rules.RuleTemplates
 import com.micoyc.speakthat.rules.RuleConfigManager
 import com.micoyc.speakthat.rules.RuleConfigManager.RulePermissionType
+import com.micoyc.speakthat.permissions.PermissionSyncManager
+import com.micoyc.speakthat.permissions.PermissionSyncSession
 
 class RulesActivity : AppCompatActivity() {
     
@@ -54,8 +56,7 @@ class RulesActivity : AppCompatActivity() {
     private var suppressModeCallback = false
     private var currentMode: AutomationMode = AutomationMode.OFF
     private lateinit var importFileLauncher: ActivityResultLauncher<Intent>
-    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
-    private var pendingRulesImport: List<Rule>? = null
+    private var permissionSyncSession: PermissionSyncSession? = null
     
     companion object {
         private const val PREFS_NAME = "SpeakThatPrefs"
@@ -217,6 +218,21 @@ class RulesActivity : AppCompatActivity() {
         val mode = automationModeManager.getMode()
         InAppLogger.logDebug("RulesActivity", "onResume() called - refreshing UI (mode=$mode)")
         updateUI(mode)
+        permissionSyncSession?.let { session ->
+            session.onResume()
+            if (session.isFinished()) {
+                permissionSyncSession = null
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        val session = permissionSyncSession ?: return
+        session.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (session.isFinished()) {
+            permissionSyncSession = null
+        }
     }
     
     private fun updateUI(modeOverride: AutomationMode? = null) {
@@ -301,19 +317,6 @@ class RulesActivity : AppCompatActivity() {
                     importRulesFromUri(uri)
                 }
             }
-        }
-
-        permissionLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { _ ->
-            val pendingRules = pendingRulesImport ?: return@registerForActivityResult
-            val requiredTypes = RuleConfigManager.getRequiredPermissionTypes(pendingRules)
-            val allowBluetooth = !requiredTypes.contains(RulePermissionType.BLUETOOTH) || hasBluetoothPermissions()
-            val allowWifi = !requiredTypes.contains(RulePermissionType.WIFI) || hasWifiPermissions()
-            val filteredRules = RuleConfigManager.filterRulesByPermissions(pendingRules, allowBluetooth, allowWifi)
-            val skippedCount = pendingRules.size - filteredRules.size
-            pendingRulesImport = null
-            applyImportedRules(filteredRules, skippedCount)
         }
     }
 
@@ -467,21 +470,19 @@ class RulesActivity : AppCompatActivity() {
 
     private fun handleRulesImportWithPermissions(rules: List<Rule>) {
         val requiredTypes = RuleConfigManager.getRequiredPermissionTypes(rules)
-        val missingPermissions = mutableListOf<String>()
-
-        if (requiredTypes.contains(RulePermissionType.BLUETOOTH) && !hasBluetoothPermissions()) {
-            missingPermissions.addAll(getBluetoothPermissions())
-        }
-        if (requiredTypes.contains(RulePermissionType.WIFI) && !hasWifiPermissions()) {
-            missingPermissions.addAll(getWifiPermissions())
-        }
-
-        if (missingPermissions.isNotEmpty()) {
-            pendingRulesImport = rules
-            permissionLauncher.launch(missingPermissions.toTypedArray())
-        } else {
-            applyImportedRules(rules, 0)
-        }
+        permissionSyncSession = PermissionSyncManager.startSync(
+            activity = this,
+            syncCore = false,
+            importedRules = rules,
+            callback = Runnable {
+                permissionSyncSession = null
+                val allowBluetooth = !requiredTypes.contains(RulePermissionType.BLUETOOTH) || hasBluetoothPermissions()
+                val allowWifi = !requiredTypes.contains(RulePermissionType.WIFI) || hasWifiPermissions()
+                val filteredRules = RuleConfigManager.filterRulesByPermissions(rules, allowBluetooth, allowWifi)
+                val skippedCount = rules.size - filteredRules.size
+                applyImportedRules(filteredRules, skippedCount)
+            }
+        )
     }
 
     private fun applyImportedRules(rules: List<Rule>, skippedCount: Int) {

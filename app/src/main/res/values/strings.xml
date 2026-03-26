@@ -1952,6 +1952,11 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="reading_notification_enabled">Reading notification enabled</string>
     <string name="notification_while_reading_enabled">Notification while reading enabled</string>
     <string name="notification_permission_required">Notification permission required</string>
+
+    <string name="permissions_required_title">Permissions Required</string>
+    <string name="permissions_required_message">To apply the imported settings, SpeakThat needs the following permissions/features enabled:</string>
+    <string name="permissions_required_enable">Enable</string>
+    <string name="permissions_required_not_now">Not now</string>
     <string name="notification_permission_denied">Notification permission denied - feature will not work</string>
 
     <!-- AppAutoCompleteAdapter Hardcoded Strings -->
