@@ -802,7 +802,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="clock_settings_precision_row_title">Exact alarm mode</string>
     <string name="clock_settings_precision_row_subtitle">Requires permission to schedule exact alarms on Android 12 and newer.</string>
     <string name="clock_settings_exact_alarm_permission_toast">Exact alarm permission is required for precision timing. Opening Settings so you can allow it for SpeakThat.</string>
-    <string name="clock_settings_doze_disclaimer">ⓘ To save power, Android may occasionally delay clock announcements by a minute or two when your phone is resting.</string>
+    <string name="clock_settings_doze_disclaimer">To save power, Android may occasionally delay clock announcements by a minute or two when your phone is resting.</string>
     <string name="summary_settings_back">Go back</string>
     <string name="summary_settings_master_toggle_title">Enable Summaries</string>
     <string name="summary_settings_master_toggle_subtitle">Master control for all summary triggers. Requires overlay permission.</string>

@@ -174,7 +174,7 @@
                             android:layout_height="24dp"
                             android:layout_marginEnd="16dp"
                             android:contentDescription="@string/clock_settings_interval_header"
-                            android:src="@drawable/ic_alarm_clock_24"
+                            android:src="@drawable/ic_timer_24"
                             app:tint="@color/white_100" />
 
                         <TextView
@@ -291,14 +291,29 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="@string/clock_settings_template_title"
-                        android:textColor="@color/purple_card_text_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:layout_marginBottom="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/clock_settings_precision_header"
+                            android:src="@drawable/ic_space_bar_24"
+                            app:tint="@color/white_100" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/clock_settings_template_title"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -352,7 +367,7 @@
                             android:layout_height="24dp"
                             android:layout_marginEnd="16dp"
                             android:contentDescription="@string/clock_settings_precision_header"
-                            android:src="@drawable/ic_alarm_clock_24"
+                            android:src="@drawable/ic_acute_24"
                             app:tint="@color/white_100" />
 
                         <TextView
@@ -372,14 +387,43 @@
                         android:textColor="@color/purple_card_text_secondary"
                         android:textSize="14sp" />
 
-                    <TextView
-                        android:id="@+id/txtClockDozeDisclaimer"
-                        android:layout_width="wrap_content"
+                    <!-- Recommendation Box -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:text="@string/clock_settings_doze_disclaimer"
-                        android:textColor="@color/purple_card_text_secondary"
-                        android:textSize="14sp" />
+                        android:orientation="horizontal"
+                        android:background="@drawable/bg_advanced_voice_section"
+                        android:padding="12dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="8dp">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/info_24px"
+                                android:contentDescription="Tip"
+                                android:layout_marginEnd="6dp"
+                                app:tint="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/clock_settings_doze_disclaimer"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
