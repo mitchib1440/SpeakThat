@@ -12,6 +12,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,9 @@ import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.TextInputEditText
 
 class ClockSettingsActivity : AppCompatActivity() {
+    companion object {
+        private const val TAG = "ClockSettings"
+    }
 
     private lateinit var prefs: SharedPreferences
     private lateinit var switchClockEnabled: MaterialSwitch
@@ -69,6 +73,8 @@ class ClockSettingsActivity : AppCompatActivity() {
             if (am.canScheduleExactAlarms()) {
                 true
             } else {
+                Log.w(TAG, "Precision pref was ON but exact alarm permission is denied; resetting toggle")
+                InAppLogger.logWarning("ClockSettings", "Precision pref reset: exact alarm permission denied")
                 prefs.edit()
                     .putBoolean(NotificationReaderService.PREF_SPEAKTHAT_CLOCK_PRECISION_MODE, false)
                     .apply()
@@ -124,9 +130,13 @@ class ClockSettingsActivity : AppCompatActivity() {
 
         switchClockPrecision.setOnCheckedChangeListener { _, isChecked ->
             if (isApplyingUiState) return@setOnCheckedChangeListener
+            Log.d(TAG, "Precision switch toggled: $isChecked")
+            InAppLogger.log("ClockSettings", "Precision switch toggled: $isChecked")
             if (isChecked && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 val am = getSystemService(AlarmManager::class.java)
                 if (!am.canScheduleExactAlarms()) {
+                    Log.w(TAG, "Exact alarm permission missing; reverting precision switch and opening Settings")
+                    InAppLogger.logWarning("ClockSettings", "Exact alarm permission missing; opening Settings")
                     isApplyingUiState = true
                     switchClockPrecision.isChecked = false
                     isApplyingUiState = false
@@ -142,13 +152,21 @@ class ClockSettingsActivity : AppCompatActivity() {
                                 Uri.parse("package:$packageName")
                             )
                         )
+                        Log.d(TAG, "Opened exact alarm settings for package $packageName")
+                        InAppLogger.log("ClockSettings", "Opened exact alarm settings for package $packageName")
                     } catch (_: Exception) {
                         // Some builds may not resolve the exact-alarm settings screen.
+                        Log.e(TAG, "Failed to open exact alarm settings")
+                        InAppLogger.logError("ClockSettings", "Failed to open exact alarm settings")
                     }
                     return@setOnCheckedChangeListener
                 }
+                Log.d(TAG, "Exact alarm permission already granted; enabling precision mode")
+                InAppLogger.log("ClockSettings", "Exact alarm permission granted; enabling precision mode")
             }
             prefs.edit().putBoolean(NotificationReaderService.PREF_SPEAKTHAT_CLOCK_PRECISION_MODE, isChecked).apply()
+            Log.d(TAG, "Saved precision mode preference: $isChecked")
+            InAppLogger.log("ClockSettings", "Saved precision mode preference: $isChecked")
         }
 
         radioGroupClockInterval.setOnCheckedChangeListener { _, checkedId ->

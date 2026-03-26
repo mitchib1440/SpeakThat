@@ -889,22 +889,30 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
     private fun syncSpeakThatClockScheduling() {
         val enabled = sharedPreferences?.getBoolean(PREF_SPEAKTHAT_CLOCK_ENABLED, false) ?: false
+        val precision = sharedPreferences?.getBoolean(PREF_SPEAKTHAT_CLOCK_PRECISION_MODE, false) ?: false
+        Log.d(TAG, "Clock scheduling sync: enabled=$enabled, precision=$precision")
+        InAppLogger.log("Clock", "Scheduling sync: enabled=$enabled, precision=$precision")
         if (!enabled) {
             cancelSpeakThatClockAlarm()
             unregisterClockAlarmReceiver()
             unregisterClockReceiver()
+            Log.d(TAG, "Clock scheduling route -> disabled (all receivers/alarm torn down)")
+            InAppLogger.log("Clock", "Scheduling route: disabled")
             return
         }
-        val precision = sharedPreferences?.getBoolean(PREF_SPEAKTHAT_CLOCK_PRECISION_MODE, false) ?: false
         if (precision) {
             unregisterClockReceiver()
             cancelSpeakThatClockAlarm()
             registerClockAlarmReceiver()
             scheduleNextClockAlarm()
+            Log.d(TAG, "Clock scheduling route -> precision alarm engine")
+            InAppLogger.log("Clock", "Scheduling route: precision alarm engine")
         } else {
             cancelSpeakThatClockAlarm()
             unregisterClockAlarmReceiver()
             registerClockReceiver()
+            Log.d(TAG, "Clock scheduling route -> TIME_TICK engine")
+            InAppLogger.log("Clock", "Scheduling route: TIME_TICK engine")
         }
     }
 
@@ -977,7 +985,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 am.set(AlarmManager.RTC_WAKEUP, triggerAt, pi)
             }
         }
-        Log.d(TAG, "Scheduled SpeakThat Clock precision alarm at $triggerAt")
+        Log.d(
+            TAG,
+            "Scheduled SpeakThat Clock precision alarm at $triggerAt (${java.util.Date(triggerAt)})"
+        )
+        InAppLogger.log("Clock", "Scheduled precision alarm for ${java.util.Date(triggerAt)}")
     }
 
     private fun registerClockAlarmReceiver() {
@@ -1169,16 +1181,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         override fun onReceive(context: android.content.Context?, intent: android.content.Intent?) {
             if (intent?.action != ACTION_SPEAKTHAT_CLOCK_ALARM) return
             try {
+                Log.d(TAG, "Clock precision alarm broadcast received")
+                InAppLogger.log("Clock", "Precision alarm broadcast received")
                 val powerManager = getSystemService(Context.POWER_SERVICE) as? PowerManager
                 val handoffLock = powerManager?.newWakeLock(
                     PowerManager.PARTIAL_WAKE_LOCK,
                     "SpeakThat:ClockHandoff"
                 )
                 handoffLock?.acquire(5000L)
-                processingChannel.trySend(IncomingSpeechEvent.ClockTick(fromAlignedAlarm = true))
+                val sendResult = processingChannel.trySend(IncomingSpeechEvent.ClockTick(fromAlignedAlarm = true))
+                Log.d(TAG, "Clock precision event queued: success=${sendResult.isSuccess}")
+                InAppLogger.log("Clock", "Precision event queued: success=${sendResult.isSuccess}")
                 scheduleNextClockAlarm()
             } catch (e: Exception) {
                 Log.e(TAG, "Clock alarm handling failed", e)
+                InAppLogger.logError("Clock", "Clock alarm handling failed: ${e.message}")
             }
         }
     }
