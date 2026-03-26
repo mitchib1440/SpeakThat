@@ -795,12 +795,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="clock_settings_interval_180_title">Every 3 hours</string>
     <string name="clock_settings_interval_180_subtitle">On the hour at 03:00, 06:00, 09:00, and 12:00.</string>
     <string name="clock_settings_template_title">Speech Format</string>
-    <string name="clock_settings_template_desc">Use the placeholder {time} where the current time should be spoken. The time uses your system\'s locale and 12/24-hour setting. If enabled, you can also use {batt} for battery percent.</string>
+    <string name="clock_settings_template_desc">Use the placeholder {time} where the current time should be spoken. The time uses your system\'s locale and 12/24-hour setting. You can also include {batt} for the current battery percentage (0–100).</string>
     <string name="clock_settings_template_hint">Enter your speech format</string>
-    <string name="clock_settings_battery_header">Battery</string>
-    <string name="clock_settings_battery_description">Optionally append your battery percentage to clock announcements.</string>
-    <string name="clock_settings_battery_row_title">Announce Battery Level</string>
-    <string name="clock_settings_battery_row_subtitle">Adds your current battery percentage after the time.</string>
     <string name="clock_settings_precision_header">Precision Timing</string>
     <string name="clock_settings_precision_description">Enable this if you find SpeakThat misses some announcements. Uses a little more battery.</string>
     <string name="clock_settings_precision_row_title">Exact alarm mode</string>

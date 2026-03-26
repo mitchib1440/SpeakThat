@@ -289,7 +289,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         const val PREF_SPEAKTHAT_CLOCK_TEMPLATE = "pref_speakthat_clock_template"
         const val DEFAULT_SPEAKTHAT_CLOCK_TEMPLATE = "This is Speak That! The current time is {time}!"
         const val PREF_SPEAKTHAT_CLOCK_PRECISION_MODE = "pref_speakthat_clock_precision_mode"
-        const val PREF_SPEAKTHAT_CLOCK_ANNOUNCE_BATTERY = "pref_speakthat_clock_announce_battery"
 
         private const val ACTION_SPEAKTHAT_CLOCK_ALARM = "com.micoyc.speakthat.ACTION_CLOCK_ALARM"
         private const val CLOCK_ALARM_REQUEST_CODE = 9042
@@ -1047,39 +1046,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             DEFAULT_SPEAKTHAT_CLOCK_TEMPLATE
         ) ?: DEFAULT_SPEAKTHAT_CLOCK_TEMPLATE
         val effectiveTemplate = storedTemplate.trim().ifEmpty { DEFAULT_SPEAKTHAT_CLOCK_TEMPLATE }
-        val announceBattery =
-            sharedPreferences?.getBoolean(PREF_SPEAKTHAT_CLOCK_ANNOUNCE_BATTERY, false) ?: false
         var spokenBody = effectiveTemplate.replace("{time}", formattedTime)
 
-        if (announceBattery) {
+        if (effectiveTemplate.contains("{batt}")) {
             val batteryStatus: Intent? = registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
             val level: Int = batteryStatus?.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) ?: -1
             val scale: Int = batteryStatus?.getIntExtra(BatteryManager.EXTRA_SCALE, -1) ?: -1
             val batteryPct = if (level != -1 && scale != -1) (level * 100 / scale) else -1
-
-            if (batteryPct in 0..100) {
-                spokenBody = if (spokenBody.contains("{batt}")) {
-                    spokenBody.replace("{batt}", batteryPct.toString())
-                } else {
-                    val trimmed = spokenBody.trimEnd()
-                    val joiner = if (
-                        trimmed.endsWith(".") ||
-                        trimmed.endsWith("!") ||
-                        trimmed.endsWith("?")
-                    ) {
-                        " "
-                    } else {
-                        ". "
-                    }
-                    trimmed + joiner + "Your battery is at $batteryPct percent."
-                }
-            } else if (spokenBody.contains("{batt}")) {
-                // Avoid speaking the placeholder literally if battery is unavailable.
-                spokenBody = spokenBody.replace("{batt}", "")
+            spokenBody = if (batteryPct in 0..100) {
+                spokenBody.replace("{batt}", batteryPct.toString())
+            } else {
+                spokenBody.replace("{batt}", "")
             }
-        } else if (spokenBody.contains("{batt}")) {
-            // Toggle is off; ensure placeholder doesn't get spoken literally.
-            spokenBody = spokenBody.replace("{batt}", "")
         }
 
         val filterResult = applyFilters(
@@ -6977,9 +6955,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             PREF_SPEAKTHAT_CLOCK_TEMPLATE -> {
                 Log.d(TAG, "SpeakThat Clock speech template pref updated")
-            }
-            PREF_SPEAKTHAT_CLOCK_ANNOUNCE_BATTERY -> {
-                Log.d(TAG, "SpeakThat Clock battery announce pref updated")
             }
         }
     }

@@ -27,7 +27,6 @@ class ClockSettingsActivity : AppCompatActivity() {
     private lateinit var prefs: SharedPreferences
     private lateinit var switchClockEnabled: MaterialSwitch
     private lateinit var switchClockPrecision: MaterialSwitch
-    private lateinit var switchClockAnnounceBattery: MaterialSwitch
     private lateinit var radioGroupClockInterval: RadioGroup
     private lateinit var editClockTemplate: TextInputEditText
 
@@ -43,7 +42,6 @@ class ClockSettingsActivity : AppCompatActivity() {
         prefs = getSharedPreferences(NotificationReaderService.PREFS_NAME, MODE_PRIVATE)
         switchClockEnabled = findViewById(R.id.switchClockEnabled)
         switchClockPrecision = findViewById(R.id.switchClockPrecision)
-        switchClockAnnounceBattery = findViewById(R.id.switchClockAnnounceBattery)
         radioGroupClockInterval = findViewById(R.id.radioGroupClockInterval)
         editClockTemplate = findViewById(R.id.editClockTemplate)
 
@@ -103,10 +101,6 @@ class ClockSettingsActivity : AppCompatActivity() {
             NotificationReaderService.DEFAULT_SPEAKTHAT_CLOCK_TEMPLATE
         ) ?: NotificationReaderService.DEFAULT_SPEAKTHAT_CLOCK_TEMPLATE
         editClockTemplate.setText(template)
-        switchClockAnnounceBattery.isChecked = prefs.getBoolean(
-            NotificationReaderService.PREF_SPEAKTHAT_CLOCK_ANNOUNCE_BATTERY,
-            false
-        )
         isApplyingUiState = false
     }
 
@@ -173,13 +167,6 @@ class ClockSettingsActivity : AppCompatActivity() {
             prefs.edit().putBoolean(NotificationReaderService.PREF_SPEAKTHAT_CLOCK_PRECISION_MODE, isChecked).apply()
             Log.d(TAG, "Saved precision mode preference: $isChecked")
             InAppLogger.log("ClockSettings", "Saved precision mode preference: $isChecked")
-        }
-
-        switchClockAnnounceBattery.setOnCheckedChangeListener { _, isChecked ->
-            if (isApplyingUiState) return@setOnCheckedChangeListener
-            prefs.edit()
-                .putBoolean(NotificationReaderService.PREF_SPEAKTHAT_CLOCK_ANNOUNCE_BATTERY, isChecked)
-                .apply()
         }
 
         radioGroupClockInterval.setOnCheckedChangeListener { _, checkedId ->
