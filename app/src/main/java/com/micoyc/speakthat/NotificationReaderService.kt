@@ -34,6 +34,7 @@ import android.icu.lang.UCharacter
 import android.icu.lang.UProperty
 import androidx.core.app.NotificationCompat
 import com.micoyc.speakthat.VoiceSettingsActivity
+import com.micoyc.speakthat.GlobalReadoutSuppression
 import com.micoyc.speakthat.settings.BehaviorSettingsActivity
 import com.micoyc.speakthat.settings.BehaviorSettingsStore
 import java.io.File
@@ -582,6 +583,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "Registering preference change listener...")
             sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
             Log.d(TAG, "Preference change listener registered")
+            sharedPreferences?.let { prefs ->
+                ServiceRestartPolicy.migrateIfNeeded(prefs)
+                ServiceRestartPolicyScheduler.syncPeriodicWork(
+                    this,
+                    ServiceRestartPolicy.readPolicy(prefs)
+                )
+            }
             legacyDuckingEnabled = sharedPreferences?.getBoolean("enable_legacy_ducking", false) ?: false
             Log.d(
                 TAG,
@@ -846,23 +854,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * Used before SpeakThat Clock ticks to avoid speaking when notifications would be suppressed.
      */
     private fun shouldGloballySuppressSpeakThatReadouts(): Boolean {
-        if (!MainActivity.isMasterSwitchEnabled(this)) {
-            Log.d(TAG, "Clock tick skipped - master switch disabled")
-            return true
+        val reason = GlobalReadoutSuppression.getGlobalSuppressionReason(this) ?: return false
+        when (reason) {
+            "master_switch" -> Log.d(TAG, "Clock tick skipped - master switch disabled")
+            "do_not_disturb" -> Log.d(TAG, "Clock tick skipped - Do Not Disturb honoured")
+            "audio_mode" -> Log.d(TAG, "Clock tick skipped - audio mode (silent/vibrate) honoured")
+            "phone_call" -> Log.d(TAG, "Clock tick skipped - active phone call honoured")
+            else -> Log.d(TAG, "Clock tick skipped - global suppression ($reason)")
         }
-        if (BehaviorSettingsActivity.shouldHonourDoNotDisturb(this)) {
-            Log.d(TAG, "Clock tick skipped - Do Not Disturb honoured")
-            return true
-        }
-        if (BehaviorSettingsActivity.getAudioModeBlockReason(this) != null) {
-            Log.d(TAG, "Clock tick skipped - audio mode (silent/vibrate) honoured")
-            return true
-        }
-        if (BehaviorSettingsActivity.shouldHonourPhoneCalls(this)) {
-            Log.d(TAG, "Clock tick skipped - active phone call honoured")
-            return true
-        }
-        return false
+        return true
     }
 
     private fun getSpeakThatClockIntervalMinutes(): Int {
@@ -1314,71 +1314,66 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 return
             }
                 
-            // Check master switch first - if disabled, don't process any notifications
-            if (!MainActivity.isMasterSwitchEnabled(this)) {
-                Log.d(TAG, "Master switch disabled - ignoring notification from $packageName")
-                InAppLogger.log("MasterSwitch", "Notification ignored due to master switch being disabled")
-                // Track filter reason
-                try {
-                    StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_MASTER_SWITCH)
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error tracking master switch filter", e)
+            val globalSuppressReason = GlobalReadoutSuppression.getGlobalSuppressionReason(this)
+            if (globalSuppressReason != null) {
+                when (globalSuppressReason) {
+                    "master_switch" -> {
+                        Log.d(TAG, "Master switch disabled - ignoring notification from $packageName")
+                        InAppLogger.log("MasterSwitch", "Notification ignored due to master switch being disabled")
+                        try {
+                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_MASTER_SWITCH)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error tracking master switch filter", e)
+                        }
+                    }
+                    "do_not_disturb" -> {
+                        Log.d(TAG, "Do Not Disturb mode active - ignoring notification from $packageName")
+                        InAppLogger.log("DoNotDisturb", "Notification ignored due to Do Not Disturb mode")
+                        try {
+                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_DND)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error tracking DND filter", e)
+                        }
+                    }
+                    "audio_mode" -> {
+                        val audioBlockReason = BehaviorSettingsActivity.getAudioModeBlockReason(this)
+                        Log.d(
+                            TAG,
+                            "Audio mode - ignoring notification from $packageName (mode=${audioBlockReason ?: "unknown"})"
+                        )
+                        InAppLogger.log("AudioMode", "Notification ignored due to audio mode: $audioBlockReason")
+                        try {
+                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_AUDIO_MODE)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error tracking audio mode filter", e)
+                        }
+                    }
+                    "phone_call" -> {
+                        Log.d(TAG, "Active phone call - ignoring notification from $packageName")
+                        InAppLogger.log("PhoneCalls", "Notification ignored due to active phone call")
+                        try {
+                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_PHONE_CALLS)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error tracking phone calls filter", e)
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, "Global suppression ($globalSuppressReason) - ignoring notification from $packageName")
+                        InAppLogger.log("Service", "Notification ignored: global suppression ($globalSuppressReason)")
+                    }
                 }
                 return
             }
 
-            // Check Do Not Disturb mode - if enabled and honouring DND, don't process notifications
-            if (BehaviorSettingsActivity.shouldHonourDoNotDisturb(this)) {
-                Log.d(TAG, "Do Not Disturb mode enabled - ignoring notification from $packageName")
-                InAppLogger.log("DoNotDisturb", "Notification ignored due to Do Not Disturb mode")
-                // Track filter reason
-                try {
-                    StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_DND)
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error tracking DND filter", e)
-                }
-                return
+            val ringerMode = audioManager.ringerMode
+            val modeName = when (ringerMode) {
+                AudioManager.RINGER_MODE_SILENT -> "Silent"
+                AudioManager.RINGER_MODE_VIBRATE -> "Vibrate"
+                AudioManager.RINGER_MODE_NORMAL -> "Sound"
+                else -> "Unknown"
             }
-                
-            // Check audio mode - block according to per-mode preferences
-            val audioBlockReason = BehaviorSettingsActivity.getAudioModeBlockReason(this)
-            if (audioBlockReason != null) {
-                Log.d(TAG, "Audio mode check failed - device is in $audioBlockReason mode, ignoring notification from $packageName")
-                InAppLogger.log("AudioMode", "Notification ignored due to audio mode: $audioBlockReason")
-                try {
-                    StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_AUDIO_MODE)
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error tracking audio mode filter", e)
-                }
-                return
-            } else {
-                val ringerMode = audioManager.ringerMode
-                val modeName = when (ringerMode) {
-                    AudioManager.RINGER_MODE_SILENT -> "Silent"
-                    AudioManager.RINGER_MODE_VIBRATE -> "Vibrate"
-                    AudioManager.RINGER_MODE_NORMAL -> "Sound"
-                    else -> "Unknown"
-                }
-                Log.d(TAG, "Audio mode check passed - device is in $modeName mode, proceeding with notification from $packageName")
-                InAppLogger.log("AudioMode", "Audio mode check passed: $modeName")
-            }
-                
-            // Check phone calls - if on a call and honouring phone calls, don't process notifications
-            if (BehaviorSettingsActivity.shouldHonourPhoneCalls(this)) {
-                Log.d(TAG, "Phone call check failed - device is on a call, ignoring notification from $packageName")
-                InAppLogger.log("PhoneCalls", "Notification ignored due to active phone call")
-                // Track filter reason
-                try {
-                    StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_PHONE_CALLS)
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error tracking phone calls filter", e)
-                }
-                return
-            } else {
-                // Log when phone call check passes (for debugging)
-                Log.d(TAG, "Phone call check passed - device is not on a call, proceeding with notification from $packageName")
-                InAppLogger.log("PhoneCalls", "Phone call check passed: no active call")
-            }
+            Log.d(TAG, "Global gates passed - device ringer: $modeName, proceeding with notification from $packageName")
+            InAppLogger.log("AudioMode", "Global gates passed; ringer: $modeName")
                 
             // Track notification received (after passing basic checks)
             try {
@@ -6592,6 +6587,27 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         })
 
+        val jitSuppressReason = GlobalReadoutSuppression.getGlobalSuppressionReason(this)
+        if (jitSuppressReason != null) {
+            Log.d(TAG, "JIT global suppression ($jitSuppressReason) — skipping earcon/delay/speak; advancing queue")
+            InAppLogger.log("JIT suppression", "Aborted readout: $jitSuppressReason")
+            try {
+                textToSpeech?.stop()
+            } catch (e: Exception) {
+                Log.e(TAG, "TTS stop during JIT suppression", e)
+            }
+            isCurrentlySpeaking = false
+            restoreGlobalVoiceSettingsIfNeeded("JIT global suppression: $jitSuppressReason")
+            releaseSpeechWakeLock()
+            unregisterShakeListener()
+            stopForegroundService()
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                cleanupMediaBehavior()
+            }, 250)
+            processNotificationQueue()
+            return
+        }
+
         registerEarcons()
 
         val useEarcon = shouldQueueEarconBeforeSpeech()
@@ -6798,6 +6814,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "Settings changed: $key")
         
         when (key) {
+            ServiceRestartPolicy.PREFS_KEY -> {
+                val policy = ServiceRestartPolicy.readPolicy(sharedPreferences ?: return)
+                ServiceRestartPolicyScheduler.syncPeriodicWork(this, policy)
+                Log.d(TAG, "Service restart policy updated: $policy")
+            }
             KEY_NOTIFICATION_BEHAVIOR, KEY_PRIORITY_APPS -> {
                 // Reload behavior settings
                 notificationBehavior = sharedPreferences?.getString(KEY_NOTIFICATION_BEHAVIOR, "interrupt") ?: "interrupt"
@@ -7417,15 +7438,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * Handle notification actions
      */
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        val startStickiness = if (ServiceRestartPolicy.readPolicy(prefs) == ServiceRestartPolicy.VALUE_NEVER) {
+            START_NOT_STICKY
+        } else {
+            START_STICKY
+        }
         when (intent?.action) {
             "STOP_TTS" -> {
                 Log.d(TAG, "Stop TTS action received")
                 InAppLogger.log("Notifications", "Stop TTS action received from notification")
                 stopTts()
-                return START_STICKY
+                return startStickiness
             }
         }
-        return super.onStartCommand(intent, flags, startId)
+        return startStickiness
     }
     
     /**

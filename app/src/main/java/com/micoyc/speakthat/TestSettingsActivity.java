@@ -207,7 +207,7 @@ public class TestSettingsActivity extends AppCompatActivity {
             boolean darkMode = mainPrefs.getBoolean("dark_mode", false);
             boolean autoStart = mainPrefs.getBoolean("auto_start_on_boot", false);
             boolean batteryOpt = mainPrefs.getBoolean("battery_optimization_disabled", false);
-            String restartPolicy = mainPrefs.getString("service_restart_policy", "periodic");
+            String restartPolicy = mainPrefs.getString("service_restart_policy", "crash");
             boolean dataExportEnabled = mainPrefs.getBoolean("data_export_enabled", false);
             boolean dataImportEnabled = mainPrefs.getBoolean("data_import_enabled", false);
             String backupFrequency = mainPrefs.getString("backup_frequency", "weekly");
@@ -361,7 +361,7 @@ public class TestSettingsActivity extends AppCompatActivity {
     private void testPerformanceImpact(StringBuilder results) {
         try {
             boolean batteryOpt = mainPrefs.getBoolean("battery_optimization_disabled", false);
-            String restartPolicy = mainPrefs.getString("service_restart_policy", "periodic");
+            String restartPolicy = mainPrefs.getString("service_restart_policy", "crash");
             int delayBeforeReadout = mainPrefs.getInt("delay_before_readout", 0);
             int maxReadoutLength = mainPrefs.getInt("max_readout_length", 200);
             Set<String> appList = mainPrefs.getStringSet("app_list", null);

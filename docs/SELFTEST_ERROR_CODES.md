@@ -98,7 +98,7 @@ This document catalogs all error codes, their meanings, and troubleshooting step
 
 ### 0411 - Audio Mode Blocking ❌
 
-**Meaning:** The device is in Silent or Vibrate mode, and "Honor Audio Mode" is enabled in Voice Settings.
+**Meaning:** The device is in Silent or Vibrate mode, and the Honour Silent/Vibrate toggles are enabled in Behaviour settings.
 
 **User Experience:** The notification was received and passed filtering, but TTS was blocked due to respecting the device's audio mode.
 
@@ -107,19 +107,18 @@ This document catalogs all error codes, their meanings, and troubleshooting step
    - Switch device to Normal/Ring mode
    - Run the test again
 
-2. **Option B - Disable Honor Audio Mode:**
-   - Go to Voice Settings in SpeakThat
-   - Scroll to "Honor Audio Mode"
-   - Disable this setting
-   - Note: Notifications will now be read even in Silent mode
+2. **Option B - Disable Honour Silent/Vibrate:**
+   - Go to Behaviour settings in SpeakThat
+   - Under Honour System Modes, adjust Honour Silent mode and Honour Vibrate mode as needed
+   - Note: Notifications can be read in Silent/Vibrate when those toggles are off
 
 **Technical Details:** 
-- Blocked in `checkAudioMode()` or similar audio environment checks
-- Controlled by `honor_audio_mode` preference in VoiceSettings
+- Blocked via `BehaviorSettingsActivity.getAudioModeBlockReason()` using `AudioManager.getRingerMode()`
+- Controlled by `honour_silent_mode` and `honour_vibrate_mode` in `SpeakThatPrefs` (legacy `honour_audio_mode` seeds these when migrating)
 - Common issue when testing at night or in meetings
 
 **Related Settings:**
-- Honor Audio Mode (VoiceSettings)
+- Honour Silent mode / Honour Vibrate mode (Behaviour settings, `SpeakThatPrefs`)
 - Ringer Mode detection
 - Audio stream routing
 
@@ -136,11 +135,11 @@ This document catalogs all error codes, their meanings, and troubleshooting step
    - Turn off Do Not Disturb mode
    - Run the test again
 
-2. **Option B - Disable Honor DND:**
-   - Go to Voice Settings in SpeakThat
-   - Find "Honor Do Not Disturb"
+2. **Option B - Disable Honour DND:**
+   - Go to Behaviour settings in SpeakThat
+   - Find Honour Do Not Disturb
    - Disable this setting
-   - Note: Notifications will now interrupt DND mode
+   - Note: Notifications will now be read while DND is on (if other gates allow)
 
 3. **Option C - Configure DND Exceptions:**
    - In Android settings, allow SpeakThat to bypass DND
@@ -149,7 +148,7 @@ This document catalogs all error codes, their meanings, and troubleshooting step
 **Technical Details:**
 - Detected via `NotificationManager.getCurrentInterruptionFilter()`
 - Blocked when filter is not `INTERRUPTION_FILTER_ALL`
-- Controlled by `honor_dnd` preference
+- Controlled by `honour_do_not_disturb` in `SpeakThatPrefs`; notification policy access may be required to read the filter reliably
 
 **Related Features:**
 - DND scheduling

@@ -141,6 +141,8 @@ public class GeneralSettingsActivity extends AppCompatActivity {
 
 
     private void setupPerformanceSettings() {
+        ServiceRestartPolicy.migrateIfNeeded(sharedPreferences);
+
         // Persistent Notification Toggle
         MaterialSwitch persistentNotificationSwitch = binding.switchPersistentNotification;
         boolean persistentNotificationEnabled = sharedPreferences.getBoolean(getString(R.string.prefs_persistent_notification), false);
@@ -232,32 +234,37 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         });
 
 
-        // Service Restart Policy
-        String restartPolicy = sharedPreferences.getString(getString(R.string.prefs_restart_policy), getString(R.string.restart_policy_never));
+        // Service Restart Policy (stored values are always English: never | crash | periodic)
+        String restartPolicy = ServiceRestartPolicy.readPolicy(sharedPreferences);
         switch (restartPolicy) {
-            case "never":
+            case ServiceRestartPolicy.VALUE_NEVER:
                 binding.radioRestartNever.setChecked(true);
                 break;
-            case "crash":
+            case ServiceRestartPolicy.VALUE_CRASH:
                 binding.radioRestartOnCrash.setChecked(true);
                 break;
-            case "periodic":
+            case ServiceRestartPolicy.VALUE_PERIODIC:
                 binding.radioRestartPeriodic.setChecked(true);
                 break;
+            default:
+                binding.radioRestartOnCrash.setChecked(true);
+                break;
         }
+        ServiceRestartPolicyScheduler.syncPeriodicWork(this, restartPolicy);
 
         binding.radioGroupRestartPolicy.setOnCheckedChangeListener((group, checkedId) -> {
             String policy;
             if (checkedId == R.id.radioRestartNever) {
-                policy = getString(R.string.restart_policy_never);
+                policy = ServiceRestartPolicy.VALUE_NEVER;
             } else if (checkedId == R.id.radioRestartOnCrash) {
-                policy = getString(R.string.restart_policy_crash);
+                policy = ServiceRestartPolicy.VALUE_CRASH;
             } else if (checkedId == R.id.radioRestartPeriodic) {
-                policy = getString(R.string.restart_policy_periodic);
+                policy = ServiceRestartPolicy.VALUE_PERIODIC;
             } else {
-                policy = getString(R.string.restart_policy_never);
+                policy = ServiceRestartPolicy.DEFAULT_POLICY;
             }
-            sharedPreferences.edit().putString(getString(R.string.prefs_restart_policy), policy).apply();
+            sharedPreferences.edit().putString(ServiceRestartPolicy.PREFS_KEY, policy).apply();
+            ServiceRestartPolicyScheduler.syncPeriodicWork(GeneralSettingsActivity.this, policy);
         });
     }
 

@@ -240,7 +240,7 @@ public class FilterConfigManager {
             this.autoStartOnBoot = false;
             this.batteryOptimizationDisabled = false;
             this.aggressiveBackgroundProcessing = false;
-            this.serviceRestartPolicy = "periodic";
+            this.serviceRestartPolicy = "crash";
         }
     }
 
@@ -436,7 +436,7 @@ public class FilterConfigManager {
         config.general.autoStartOnBoot = prefs.getBoolean("auto_start_on_boot", false);
         config.general.batteryOptimizationDisabled = prefs.getBoolean("battery_optimization_disabled", false);
         config.general.aggressiveBackgroundProcessing = prefs.getBoolean("aggressive_background_processing", false);
-        config.general.serviceRestartPolicy = prefs.getString("service_restart_policy", "periodic");
+        config.general.serviceRestartPolicy = prefs.getString("service_restart_policy", "crash");
 
         // Load statistics from main prefs
         StatsSnapshot statsSnapshot = StatisticsManager.Companion.exportSnapshot(context);

@@ -1673,24 +1673,18 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
      */
     private fun checkShouldReadNotifications(): DiagnosticResult {
         return try {
-            // Check master switch
-            if (!MainActivity.isMasterSwitchEnabled(this)) {
-                return DiagnosticResult("N", "Master switch disabled")
-            }
-            
-            // Check Do Not Disturb if honor DND is enabled
-            val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-            val honorDnd = voiceSettingsPrefs.getBoolean("honor_dnd", false)
-            if (honorDnd) {
-                val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    val dndMode = notificationManager.currentInterruptionFilter
-                    if (dndMode == android.app.NotificationManager.INTERRUPTION_FILTER_NONE) {
-                        return DiagnosticResult("N", "Do Not Disturb is active")
-                    }
+            val suppressReason = GlobalReadoutSuppression.getGlobalSuppressionReason(this)
+            if (suppressReason != null) {
+                val message = when (suppressReason) {
+                    "master_switch" -> "Master switch disabled"
+                    "do_not_disturb" -> "Do Not Disturb is active"
+                    "audio_mode" -> "Honour Silent/Vibrate mode"
+                    "phone_call" -> "Active phone call"
+                    else -> "Readout suppressed ($suppressReason)"
                 }
+                return DiagnosticResult("N", message)
             }
-            
+
             // Check if any rules are blocking (simplified check)
             val automationMode = AutomationModeManager(this).getMode()
             when (automationMode) {

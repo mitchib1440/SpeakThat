@@ -7,23 +7,30 @@
 
 package com.micoyc.speakthat.settings.sections;
 
+import android.app.NotificationManager;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Build;
+import android.provider.Settings;
+import android.util.Log;
 import androidx.core.content.ContextCompat;
 import com.micoyc.speakthat.InAppLogger;
 import com.micoyc.speakthat.databinding.ActivityBehaviorSettingsBinding;
+import com.micoyc.speakthat.settings.BehaviorSettingsActivity;
 import com.micoyc.speakthat.settings.BehaviorSettingsSection;
 import com.micoyc.speakthat.settings.BehaviorSettingsStore;
 
 public class RespectModesSection implements BehaviorSettingsSection {
     public static final int REQUEST_PHONE_STATE_PERMISSION = 2001;
 
-    private final AppCompatActivity activity;
+    private final BehaviorSettingsActivity activity;
     private final ActivityBehaviorSettingsBinding binding;
     private final BehaviorSettingsStore store;
 
     public RespectModesSection(
-        AppCompatActivity activity,
+        BehaviorSettingsActivity activity,
         ActivityBehaviorSettingsBinding binding,
         BehaviorSettingsStore store
     ) {
@@ -34,9 +41,7 @@ public class RespectModesSection implements BehaviorSettingsSection {
 
     @Override
     public void bind() {
-        binding.switchHonourDoNotDisturb.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            saveHonourDoNotDisturb(isChecked);
-        });
+        attachHonourDoNotDisturbListener();
 
         binding.switchHonourSilentMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             saveHonourSilentMode(isChecked);
@@ -63,6 +68,55 @@ public class RespectModesSection implements BehaviorSettingsSection {
             saveHonourPhoneCalls(isChecked);
         });
 
+    }
+
+    private void attachHonourDoNotDisturbListener() {
+        binding.switchHonourDoNotDisturb.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (store.isInitializing()) {
+                return;
+            }
+            if (isChecked && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                NotificationManager nm =
+                    (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
+                if (nm != null && !nm.isNotificationPolicyAccessGranted()) {
+                    activity.setAwaitingNotificationPolicyAccess(true);
+                    binding.switchHonourDoNotDisturb.setOnCheckedChangeListener(null);
+                    binding.switchHonourDoNotDisturb.setChecked(false);
+                    attachHonourDoNotDisturbListener();
+                    try {
+                        activity.startActivity(new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS));
+                    } catch (ActivityNotFoundException e) {
+                        Log.w("BehaviorSettings", "Notification policy settings not found", e);
+                        activity.setAwaitingNotificationPolicyAccess(false);
+                        InAppLogger.log("BehaviorSettings", "Could not open notification policy settings");
+                    }
+                    return;
+                }
+            }
+            saveHonourDoNotDisturb(isChecked);
+        });
+    }
+
+    /**
+     * Called from {@link BehaviorSettingsActivity#onResume()} after returning from system settings.
+     */
+    public void onHostResume() {
+        if (!activity.takeAwaitingNotificationPolicyAccess()) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            NotificationManager nm =
+                (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
+            if (nm != null && nm.isNotificationPolicyAccessGranted()) {
+                saveHonourDoNotDisturb(true);
+                binding.switchHonourDoNotDisturb.setOnCheckedChangeListener(null);
+                binding.switchHonourDoNotDisturb.setChecked(true);
+                attachHonourDoNotDisturbListener();
+                InAppLogger.log("BehaviorSettings", "Notification policy access granted; Honour DND enabled");
+            } else {
+                InAppLogger.log("BehaviorSettings", "Notification policy access still not granted");
+            }
+        }
     }
 
     @Override

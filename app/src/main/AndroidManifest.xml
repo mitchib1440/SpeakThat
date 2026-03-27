@@ -85,6 +85,9 @@
     <!-- Permission to detect phone calls for Honour Phone Calls feature -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <!-- Read Do Not Disturb / interruption filter for Honour Do Not Disturb -->
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+
     <!-- Conditional filtering permissions -->
     <!-- Location permissions are required for Bluetooth scanning and WiFi SSID detection -->
     <uses-permission android:name="android.permission.BLUETOOTH" />

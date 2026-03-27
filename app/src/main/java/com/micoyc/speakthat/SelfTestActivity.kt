@@ -32,6 +32,7 @@ import androidx.core.content.ContextCompat
 import com.micoyc.speakthat.automation.AutomationMode
 import com.micoyc.speakthat.automation.AutomationModeManager
 import com.micoyc.speakthat.databinding.ActivitySelftestBinding
+import com.micoyc.speakthat.settings.BehaviorSettingsStore
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -846,7 +847,18 @@ class SelfTestActivity : AppCompatActivity() {
                 append("  Press to Stop: ${mainPrefs.getBoolean("press_volume_to_stop", false)}\n")
                 append("  Shake Threshold: ${mainPrefs.getFloat("shake_threshold", 15.0f)}\n")
                 append("  Read App Name: ${mainPrefs.getBoolean("read_app_name", true)}\n")
-                append("  Honor Audio Mode: ${voicePrefs.getBoolean("honor_audio_mode", true)}\n")
+                append(
+                    "  Honour Do Not Disturb: ${mainPrefs.getBoolean(BehaviorSettingsStore.KEY_HONOUR_DO_NOT_DISTURB, BehaviorSettingsStore.DEFAULT_HONOUR_DO_NOT_DISTURB)}\n"
+                )
+                append(
+                    "  Honour Phone Calls: ${mainPrefs.getBoolean(BehaviorSettingsStore.KEY_HONOUR_PHONE_CALLS, BehaviorSettingsStore.DEFAULT_HONOUR_PHONE_CALLS)}\n"
+                )
+                append(
+                    "  Honour Silent Mode: ${mainPrefs.getBoolean(BehaviorSettingsStore.KEY_HONOUR_SILENT_MODE, BehaviorSettingsStore.DEFAULT_HONOUR_SILENT_MODE)}\n"
+                )
+                append(
+                    "  Honour Vibrate Mode: ${mainPrefs.getBoolean(BehaviorSettingsStore.KEY_HONOUR_VIBRATE_MODE, BehaviorSettingsStore.DEFAULT_HONOUR_VIBRATE_MODE)}\n"
+                )
                 
                 // Filter Settings
                 append("\n🔍 Filter Settings:\n")

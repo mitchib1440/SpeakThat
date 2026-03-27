@@ -72,6 +72,17 @@ public class BootReceiver extends BroadcastReceiver {
                 Log.e(TAG, "Error rescheduling summary alarm", e);
                 InAppLogger.logError("BootReceiver", "Failed to reschedule summary alarm: " + e.getMessage());
             }
+
+            try {
+                SharedPreferences speakThatPrefs = context.getSharedPreferences(
+                        context.getString(R.string.boot_receiver_prefs_name), Context.MODE_PRIVATE);
+                ServiceRestartPolicy.migrateIfNeeded(speakThatPrefs);
+                ServiceRestartPolicyScheduler.syncPeriodicWork(
+                        context, ServiceRestartPolicy.readPolicy(speakThatPrefs));
+            } catch (Exception e) {
+                Log.e(TAG, "Error syncing service restart policy periodic work", e);
+                InAppLogger.logError("BootReceiver", "Failed to sync service restart policy work: " + e.getMessage());
+            }
         }
     }
 
