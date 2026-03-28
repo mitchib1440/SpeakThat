@@ -2556,4 +2556,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <!-- Dummy strings. Leave these in the app release if you're a dummy -->
     <string name="placeholder_string">Placeholder string. Don\'t forget to remove this.</string>
 
+    <!-- Shown when a clock/timer notification has no standard text but appears to be firing -->
+    <string name="fallback_timer_complete">Timer or alarm complete</string>
+
 </resources>

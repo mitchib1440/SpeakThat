@@ -313,6 +313,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val CLOCK_APP_NAME = "SpeakThat Clock"
         private const val CLOCK_TITLE = "Time Announcement"
         
+        /** Substrings matched against [packageName] (lowercased) for blank-notification clock fallback. */
+        private val CLOCK_PACKAGE_SUBSTRINGS = listOf("deskclock", "clock", "alarm", "timer")
+        
         // Dismissal memory settings
         private const val KEY_DISMISSAL_MEMORY_ENABLED = "dismissal_memory_enabled"
         private const val KEY_DISMISSAL_MEMORY_TIMEOUT = "dismissal_memory_timeout"
@@ -2610,30 +2613,23 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Log the available notification content for debugging
             Log.d(TAG, "Notification content - Title: '$title', Text: '$text', BigText: '$bigText', Summary: '$summaryText', Info: '$infoText'")
             
-            // Special handling for Gmail notifications to better handle their update behavior
-            // Gmail often updates a single notification with new content rather than creating new notifications
-            if (extras.getString("android.template")?.contains("gmail") == true || 
+            val extracted = if (extras.getString("android.template")?.contains("gmail") == true ||
                 title.contains("Gmail", ignoreCase = true) ||
                 summaryText.contains("new message", ignoreCase = true) ||
                 text.contains("new message", ignoreCase = true)) {
                 
                 Log.d(TAG, "Detected Gmail-style notification - applying special content extraction logic")
                 
-                // For Gmail-style notifications, prioritize the most recent content
-                // Gmail typically puts the latest email content in bigText
-                return when {
+                when {
                     bigText.isNotEmpty() && !bigText.contains("new message", ignoreCase = true) -> {
-                        // If bigText contains actual email content (not just "3 new messages"), use it
                         Log.d(TAG, "Gmail: Using bigText as primary content: '$bigText'")
                         bigText
                     }
                     text.isNotEmpty() && !text.contains("new message", ignoreCase = true) -> {
-                        // If text contains actual email content, use it
                         Log.d(TAG, "Gmail: Using text as primary content: '$text'")
                         text
                     }
                     title.isNotEmpty() && text.isNotEmpty() -> {
-                        // Fallback: combine title and text, but filter out generic "new messages" text
                         val combinedText = if (text.contains("new message", ignoreCase = true)) {
                             title
                         } else {
@@ -2643,29 +2639,26 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         combinedText
                     }
                     else -> {
-                        // Last resort: use whatever content is available
                         val fallbackContent = bigText.ifEmpty { text.ifEmpty { title.ifEmpty { summaryText.ifEmpty { infoText } } } }
                         Log.d(TAG, "Gmail: Using fallback content: '$fallbackContent'")
                         fallbackContent
                     }
                 }
+            } else {
+                when {
+                    title.isNotEmpty() && bigText.isNotEmpty() -> "$title: $bigText"
+                    title.isNotEmpty() && text.isNotEmpty() -> "$title: $text"
+                    title.isNotEmpty() && summaryText.isNotEmpty() -> "$title: $summaryText"
+                    title.isNotEmpty() && infoText.isNotEmpty() -> "$title: $infoText"
+                    bigText.isNotEmpty() -> bigText
+                    title.isNotEmpty() -> title
+                    text.isNotEmpty() -> text
+                    summaryText.isNotEmpty() -> summaryText
+                    infoText.isNotEmpty() -> infoText
+                    else -> ""
+                }
             }
-            
-            // Enhanced logic to ensure title is always included when available
-            // This fixes the issue where notifications with both title and bigText would lose the title
-            // The previous logic prioritized bigText over title, but bigText often doesn't include the title
-            when {
-                title.isNotEmpty() && bigText.isNotEmpty() -> "$title: $bigText"
-                title.isNotEmpty() && text.isNotEmpty() -> "$title: $text"
-                title.isNotEmpty() && summaryText.isNotEmpty() -> "$title: $summaryText"
-                title.isNotEmpty() && infoText.isNotEmpty() -> "$title: $infoText"
-                bigText.isNotEmpty() -> bigText
-                title.isNotEmpty() -> title
-                text.isNotEmpty() -> text
-                summaryText.isNotEmpty() -> summaryText
-                infoText.isNotEmpty() -> infoText
-                else -> ""
-            }
+            maybeBlankClockFiringFallback(extracted, notification, packageNameForLog)
         } catch (e: Exception) {
             val fallbackMessage = "Failed to unparcel extras for $safePackageName - using fallback"
             Log.w(TAG, "$fallbackMessage (${e.javaClass.simpleName}: ${e.message})", e)
@@ -2684,7 +2677,49 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             } else {
                 InAppLogger.logWarning("Development", "No tickerText fallback available for $safePackageName - returning empty text")
             }
-            tickerFallback
+            maybeBlankClockFiringFallback(tickerFallback, notification, packageNameForLog)
+        }
+    }
+    
+    /**
+     * When standard notification extras are empty, infer "timer/alarm complete" for clock-like packages
+     * only if the notification looks like a firing alert (not a running countdown with Pause).
+     */
+    private fun maybeBlankClockFiringFallback(
+        extracted: String,
+        notification: Notification,
+        packageNameForLog: String?
+    ): String {
+        if (extracted.isNotBlank()) return extracted
+        
+        val pkg = packageNameForLog?.lowercase(Locale.ROOT) ?: ""
+        val isClockLike = CLOCK_PACKAGE_SUBSTRINGS.any { pkg.contains(it) }
+        if (!isClockLike) return extracted
+        
+        val actions = notification.actions
+        val hasPauseAction = actions?.any { action ->
+            action.title?.toString()?.lowercase(Locale.ROOT)?.contains("pause") == true
+        } == true
+        if (hasPauseAction) return ""
+        
+        val firingSignal = when {
+            notification.fullScreenIntent != null -> "fullScreenIntent"
+            notification.category == Notification.CATEGORY_ALARM -> "CATEGORY_ALARM"
+            actions?.any { action ->
+                val t = action.title?.toString()?.lowercase(Locale.ROOT) ?: return@any false
+                t.contains("stop") || t.contains("dismiss") || t.contains("turn off")
+            } == true -> "dismiss_or_stop_action"
+            else -> null
+        }
+        
+        return if (firingSignal != null) {
+            Log.d(
+                TAG,
+                "Blank clock notification fallback: package=${packageNameForLog ?: "unknown"}, signal=$firingSignal"
+            )
+            getString(R.string.fallback_timer_complete)
+        } else {
+            ""
         }
     }
     
