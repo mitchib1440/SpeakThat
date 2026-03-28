@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.speech.tts.Voice;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -37,9 +38,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private static final String PREFS_NAME = "VoiceSettings";
     private static final String WEBLATE_TRANSLATION_URL = "https://speakthat.app/translate";
     
-    // Throttling for repetitive volume boost logs
-    private static long lastVolumeBoostLogTime = 0L;
-    private static final long VOLUME_BOOST_LOG_THROTTLE_MS = 10000L; // Only log volume boosts every 10 seconds
     private static final String KEY_SPEECH_RATE = "speech_rate";
     private static final String KEY_PITCH = "pitch";
     private static final String KEY_TTS_VOLUME = "tts_volume";
@@ -1690,64 +1688,28 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
     /**
      * Creates a Bundle with volume parameters for TTS speak calls.
-     * This is the proper way to control TTS volume in Android.
-     * 
-     * @param ttsVolume Volume level (0.0 to 1.5)
-     * @param audioUsage The audio usage type to determine volume boost
-     * @param speakerphoneEnabled Whether speakerphone is enabled for VOICE_CALL stream
-     * @return Bundle with volume parameters
+     * {@code KEY_PARAM_VOLUME} is set to {@code ttsVolume} with no usage-based scaling.
+     * {@code audioUsage} only selects {@link AudioManager} stream via {@link #mapUsageToStream(int)}.
+     * {@code speakerphoneEnabled} is unused here; VOICE_CALL routing is handled in {@code NotificationReaderService}.
+     *
+     * @param ttsVolume Volume level (0.0 to 1.5 per app UI)
+     * @param audioUsage {@link android.media.AudioAttributes} usage constant for stream mapping
+     * @param speakerphoneEnabled Retained for API stability with existing call sites
+     * @return Bundle with {@link TextToSpeech.Engine#KEY_PARAM_VOLUME} and {@link TextToSpeech.Engine#KEY_PARAM_STREAM}
      */
+    @SuppressWarnings("unused")
     public static Bundle createVolumeBundle(float ttsVolume, int audioUsage, boolean speakerphoneEnabled) {
         Bundle params = new Bundle();
-        
-        // Apply base volume
-        params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, ttsVolume);
-        
         int streamType = mapUsageToStream(audioUsage);
-        params.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, streamType);
-        
-        // Volume boosting logic for different audio usage types
-        // Note: With extended volume range (0.0 to 1.5), we allow higher boosted volumes
-        // but still cap them at reasonable levels to prevent excessive distortion
-        if (audioUsage == android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION) {
-            if (speakerphoneEnabled) {
-                // If speakerphone is enabled, use a different approach
-                // We'll handle speakerphone routing in the service using AudioManager
-                InAppLogger.log("VoiceSettings", "VOICE_CALL stream with speakerphone enabled - will route to speaker via AudioManager");
-            } else {
-                // VOICE_CALL stream routes to earpiece by default, which is very quiet
-                // Boost the volume by 4.0x to compensate for earpiece routing
-                // Cap at 2.0f to prevent excessive distortion even with extended range
-                float boostedVolume = Math.min(2.0f, ttsVolume * 4.0f);
-                params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, boostedVolume);
-                InAppLogger.log("VoiceSettings", "VOICE_CALL stream detected - boosting volume from " + (ttsVolume * 100) + "% to " + (boostedVolume * 100) + "% for earpiece routing");
-            }
-        } else if (audioUsage == android.media.AudioAttributes.USAGE_NOTIFICATION) {
-            // NOTIFICATION stream can be quiet on some devices, apply moderate boost
-            // Cap at 1.8f to prevent excessive distortion
-            float boostedVolume = Math.min(1.8f, ttsVolume * 2.0f);
-            params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, boostedVolume);
-            InAppLogger.log("VoiceSettings", "NOTIFICATION stream detected - boosting volume from " + (ttsVolume * 100) + "% to " + (boostedVolume * 100) + "% for better audibility");
-        } else if (audioUsage == android.media.AudioAttributes.USAGE_ALARM) {
-            // ALARM stream can be quiet on some devices, apply moderate boost
-            // Cap at 2.0f to prevent excessive distortion
-            float boostedVolume = Math.min(2.0f, ttsVolume * 2.5f);
-            params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, boostedVolume);
-            InAppLogger.log("VoiceSettings", "ALARM stream detected - boosting volume from " + (ttsVolume * 100) + "% to " + (boostedVolume * 100) + "% for better audibility");
-        } else if (audioUsage == android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE) {
-            // ASSISTANCE_NAVIGATION_GUIDANCE can be quiet, apply moderate boost
-            // Cap at 1.8f to prevent excessive distortion
-            float boostedVolume = Math.min(1.8f, ttsVolume * 1.5f);
-            params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, boostedVolume);
-            // Throttle volume boost logging to reduce noise
-            long currentTime = System.currentTimeMillis();
-            if (currentTime - lastVolumeBoostLogTime > VOLUME_BOOST_LOG_THROTTLE_MS) {
-                InAppLogger.log("VoiceSettings", "ASSISTANCE_NAVIGATION_GUIDANCE stream detected - boosting volume from " + (ttsVolume * 100) + "% to " + (boostedVolume * 100) + "% for better audibility");
-                lastVolumeBoostLogTime = currentTime;
-            }
+
+        if (ttsVolume > 1.0f) {
+            Log.w("VoiceSettings", "TTS KEY_PARAM_VOLUME > 1.0 (" + ttsVolume + "): may cause digital clipping or distortion on some engines (e.g. Google TTS).");
         }
-        
-        InAppLogger.log("VoiceSettings", "TTS bundle -> usage: " + audioUsage + ", stream: " + streamType + ", volume: " + (ttsVolume * 100) + "%");
+
+        params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, ttsVolume);
+        params.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, streamType);
+
+        InAppLogger.log("VoiceSettings", "TTS bundle -> usage: " + audioUsage + ", stream: " + streamType + ", KEY_PARAM_VOLUME (raw): " + (ttsVolume * 100) + "%");
         return params;
     }
     
