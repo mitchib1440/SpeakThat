@@ -1129,7 +1129,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             // CRITICAL: Apply audio attributes to TTS instance before creating volume bundle
             // This ensures the audio usage matches what we pass to createVolumeBundle
             val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-            val ttsVolume = voiceSettingsPrefs.getFloat("tts_volume", 1.0f)
+            val ttsVolume = minOf(1.0f, voiceSettingsPrefs.getFloat("tts_volume", 1.0f))
             val ttsUsageIndex = voiceSettingsPrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
             val contentTypeIndex = voiceSettingsPrefs.getInt("content_type", 0) // Default to SPEECH
             val speakerphoneEnabled = voiceSettingsPrefs.getBoolean("speakerphone_enabled", false)

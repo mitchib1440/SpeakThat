@@ -835,7 +835,7 @@ class SelfTestActivity : AppCompatActivity() {
                 append("  Speech Rate: ${speechRate}x\n")
                 append("  Pitch: ${pitch}x\n")
                 append("  Language: $language\n")
-                append("  TTS Volume: ${voicePrefs.getFloat("tts_volume", 1.0f)}\n")
+                append("  TTS Volume: ${minOf(1.0f, voicePrefs.getFloat("tts_volume", 1.0f))}\n")
                 append("  Audio Usage: ${voicePrefs.getInt("audio_usage", 4)}\n")
                 append("  Content Type: ${voicePrefs.getInt("content_type", 0)}\n")
                 append("  Ducking Enabled: ${voicePrefs.getBoolean("ducking_enabled", true)}\n")

@@ -267,7 +267,7 @@ class AboutActivity : AppCompatActivity() {
         
         // CRITICAL: Apply audio attributes to TTS instance before creating volume bundle
         // This ensures the audio usage matches what we pass to createVolumeBundle
-        val ttsVolume = voiceSettingsPrefs?.getFloat("tts_volume", 1.0f) ?: 1.0f
+        val ttsVolume = minOf(1.0f, voiceSettingsPrefs?.getFloat("tts_volume", 1.0f) ?: 1.0f)
         val ttsUsageIndex = voiceSettingsPrefs?.getInt("audio_usage", 4) ?: 4 // Default to ASSISTANT index
         val contentTypeIndex = voiceSettingsPrefs?.getInt("content_type", 0) ?: 0 // Default to SPEECH
         val speakerphoneEnabled = voiceSettingsPrefs?.getBoolean("speakerphone_enabled", false) ?: false

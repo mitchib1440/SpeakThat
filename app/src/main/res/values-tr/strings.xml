@@ -1543,7 +1543,6 @@ Günlük ekranı başlatılıyor...\nGünlükler burada gerçek zamanlı olarak 
     <string name="behavior_press_to_stop_title">Durdurmak İçin Bas</string>
     <string name="behavior_dismissal_memory_timeout_15min">15 dakika</string>
     <string name="rules_mode_external_description">MacroDroid veya Tasker 3. taraf otomasyon araçlarından istek almayı etkinleştir.</string>
-    <string name="label_150_percent">%150</string>
     <string name="tts_engine_label">Metinden Sese Motoru</string>
     <string name="behavior_ducking_test_message">Cihazınızın ses odaklama isteklerini doğru şekilde destekleyip desteklemediğini test ediyor...</string>
     <string name="press_to_stop_dialog_title">Durdurmak İçin Bas</string>

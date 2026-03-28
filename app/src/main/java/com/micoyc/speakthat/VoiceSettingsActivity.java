@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.util.Log;
 import android.speech.tts.Voice;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -72,7 +71,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private TextView speechRateValue;
     private TextView pitchValue;
     private TextView ttsVolumeValue;
-    private TextView ttsVolumeWarning;
     private Spinner voiceSpinner;
     private Spinner languagePresetSpinner; // New preset-based spinner
     private Spinner ttsLanguageSpinner;
@@ -158,7 +156,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         pitchValue = findViewById(R.id.pitchValue);
         ttsVolumeSeekBar = findViewById(R.id.ttsVolumeSeekBar);
         ttsVolumeValue = findViewById(R.id.ttsVolumeValue);
-        ttsVolumeWarning = findViewById(R.id.ttsVolumeWarning);
         voiceSpinner = findViewById(R.id.voiceSpinner);
         languagePresetSpinner = findViewById(R.id.languagePresetSpinner);
         ttsLanguageSpinner = findViewById(R.id.ttsLanguageSpinner);
@@ -297,21 +294,14 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        // TTS Volume SeekBar (0.0 to 1.5)
-        ttsVolumeSeekBar.setMax(150); // 0.0 to 1.5 in 0.01 increments
+        // TTS Volume SeekBar (0.0 to 1.0)
+        ttsVolumeSeekBar.setMax(100);
         ttsVolumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                currentTtsVolume = progress / 100.0f;
+                currentTtsVolume = Math.min(1.0f, progress / 100.0f);
                 ttsVolumeValue.setText(String.format("%.0f%%", currentTtsVolume * 100));
-                
-                // Show/hide volume boost warning
-                if (progress > 100) {
-                    ttsVolumeWarning.setVisibility(View.VISIBLE);
-                } else {
-                    ttsVolumeWarning.setVisibility(View.GONE);
-                }
-                
+
                 if (fromUser && isTtsReady) {
                     // Apply volume through audio attributes
                     applyAudioAttributes();
@@ -1003,18 +993,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         int pitchProgress = (int) ((currentPitch - 0.1f) * 100);
         pitchSeekBar.setProgress(pitchProgress);
 
-        // Load TTS volume
-        currentTtsVolume = sharedPreferences.getFloat(KEY_TTS_VOLUME, DEFAULT_TTS_VOLUME);
+        // Load TTS volume (clamp legacy values above 100%)
+        currentTtsVolume = Math.min(1.0f, sharedPreferences.getFloat(KEY_TTS_VOLUME, DEFAULT_TTS_VOLUME));
         int volumeProgress = (int) (currentTtsVolume * 100);
         ttsVolumeSeekBar.setProgress(volumeProgress);
         ttsVolumeValue.setText(String.format("%.0f%%", currentTtsVolume * 100));
-        
-        // Show/hide volume boost warning based on current volume
-        if (volumeProgress > 100) {
-            ttsVolumeWarning.setVisibility(View.VISIBLE);
-        } else {
-            ttsVolumeWarning.setVisibility(View.GONE);
-        }
 
         // Load voice
         String savedVoiceName = sharedPreferences.getString(KEY_VOICE_NAME, "");
@@ -1216,7 +1199,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             currentPitch = 0.1f + (pitchSeekBar.getProgress() / 100.0f);
         }
         if (ttsVolumeSeekBar != null) {
-            currentTtsVolume = ttsVolumeSeekBar.getProgress() / 100.0f;
+            currentTtsVolume = Math.min(1.0f, ttsVolumeSeekBar.getProgress() / 100.0f);
         }
     }
     
@@ -1631,9 +1614,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         pitchSeekBar.setProgress((int) ((DEFAULT_PITCH - 0.1f) * 100));
         ttsVolumeSeekBar.setProgress((int) (DEFAULT_TTS_VOLUME * 100));
         ttsVolumeValue.setText(String.format("%.0f%%", DEFAULT_TTS_VOLUME * 100));
-        
-        // Hide volume boost warning when resetting to default (100%)
-        ttsVolumeWarning.setVisibility(View.GONE);
 
         // Reset current language to default for internal consistency
         for (int i = 0; i < availableLanguages.size(); i++) {
@@ -1692,7 +1672,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
      * {@code audioUsage} only selects {@link AudioManager} stream via {@link #mapUsageToStream(int)}.
      * {@code speakerphoneEnabled} is unused here; VOICE_CALL routing is handled in {@code NotificationReaderService}.
      *
-     * @param ttsVolume Volume level (0.0 to 1.5 per app UI)
+     * @param ttsVolume Volume level (0.0 to 1.0 per app UI)
      * @param audioUsage {@link android.media.AudioAttributes} usage constant for stream mapping
      * @param speakerphoneEnabled Retained for API stability with existing call sites
      * @return Bundle with {@link TextToSpeech.Engine#KEY_PARAM_VOLUME} and {@link TextToSpeech.Engine#KEY_PARAM_STREAM}
@@ -1701,10 +1681,6 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     public static Bundle createVolumeBundle(float ttsVolume, int audioUsage, boolean speakerphoneEnabled) {
         Bundle params = new Bundle();
         int streamType = mapUsageToStream(audioUsage);
-
-        if (ttsVolume > 1.0f) {
-            Log.w("VoiceSettings", "TTS KEY_PARAM_VOLUME > 1.0 (" + ttsVolume + "): may cause digital clipping or distortion on some engines (e.g. Google TTS).");
-        }
 
         params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, ttsVolume);
         params.putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, streamType);
@@ -1743,8 +1719,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             return;
         }
 
-        // Load settings from preferences
-        float ttsVolume = prefs.getFloat(KEY_TTS_VOLUME, DEFAULT_TTS_VOLUME);
+        // Load settings from preferences (clamp legacy values above 100%)
+        float ttsVolume = Math.min(1.0f, prefs.getFloat(KEY_TTS_VOLUME, DEFAULT_TTS_VOLUME));
         float speechRate = prefs.getFloat(KEY_SPEECH_RATE, DEFAULT_SPEECH_RATE);
         float pitch = prefs.getFloat(KEY_PITCH, DEFAULT_PITCH);
         String voiceName = prefs.getString(KEY_VOICE_NAME, "");
@@ -2063,10 +2039,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         if (isLoadingSettings) {
             return;
         }
+        float clamped = Math.min(1.0f, volume);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putFloat(KEY_TTS_VOLUME, volume);
+        editor.putFloat(KEY_TTS_VOLUME, clamped);
         editor.apply();
-        InAppLogger.log("VoiceSettings", "TTS volume saved: " + (volume * 100) + "%");
+        InAppLogger.log("VoiceSettings", "TTS volume saved: " + (clamped * 100) + "%");
     }
     
     private void openTranslationPage() {

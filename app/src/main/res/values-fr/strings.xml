@@ -571,8 +571,6 @@
     <string name="label_2_0x">2.0x</string>
     <string name="label_0_percent">0%</string>
     <string name="label_100_percent">100%</string>
-    <string name="label_150_percent">150%</string>
-    <string name="voice_tts_volume_boost_warning">⚠️ Un volume supérieur à 100% peut provoquer des distorsions et ne fonctionne pas sur tous les appareils</string>
     <string name="arrow_right">›</string>
     <string name="main_version_placeholder">version x.x.x</string>
     <string name="main_author">Mitchi Bell</string>

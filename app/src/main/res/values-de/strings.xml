@@ -1343,8 +1343,6 @@ Protokollanzeige starten...\nDie Protokolle werden hier in Echtzeit angezeigt.\n
     <string name="behavior_content_cap_title">Inhaltsbegrenzung</string>
     <string name="behavior_content_cap_description">Begrenzen Sie, wie viel von jeder Benachrichtigung vorgelesen wird</string>
     <string name="behavior_content_cap_recommendation">Ideal für: Lange Benachrichtigungen, bei denen Sie nur den Anfang benötigen</string>
-    <string name="label_150_percent">150%</string>
-    <string name="voice_tts_volume_boost_warning">⚠️ Eine Lautstärke über 100 % kann zu Tonverzerrungen führen</string>
     <string name="general_accessibility_permission">Barrierefreiheit Berechtigung</string>
     <string name="general_accessibility_permission_description">Erweiterte Steuerelemente wie Lautstärketasten-Shortcuts aktivieren (vollständig optional)</string>
     <string name="accessibility_permission_request">Barrierefreiheitsberechtigung anfordern</string>

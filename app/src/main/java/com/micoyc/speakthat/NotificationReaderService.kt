@@ -4765,7 +4765,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         try {
             // Get current TTS settings
             val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-            val ttsVolume = voicePrefs.getFloat("tts_volume", 1.0f)
+            val ttsVolume = minOf(1.0f, voicePrefs.getFloat("tts_volume", 1.0f))
             val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
             val speakerphoneEnabled = voicePrefs.getBoolean("speakerphone_enabled", false)
             
@@ -5103,7 +5103,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 
                 // Get current TTS settings
                 val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-                val currentTtsVolume = voicePrefs.getFloat("tts_volume", 1.0f)
+                val currentTtsVolume = minOf(1.0f, voicePrefs.getFloat("tts_volume", 1.0f))
                 val speakerphoneEnabled = voicePrefs.getBoolean("speakerphone_enabled", false)
                 val duckingVolume = voicePrefs.getInt("ducking_volume", 50)
                 
@@ -6249,7 +6249,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Create volume bundle with proper volume parameters
         val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-        val ttsVolume = voicePrefs.getFloat("tts_volume", 1.0f)
+        val ttsVolume = minOf(1.0f, voicePrefs.getFloat("tts_volume", 1.0f))
         val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
         val speakerphoneEnabled = voicePrefs.getBoolean("speakerphone_enabled", false)
         val ttsUsage = when (ttsUsageIndex) {

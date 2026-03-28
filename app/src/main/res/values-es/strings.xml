@@ -1500,7 +1500,6 @@ Iniciando la visualización del registro…\nLos registros aparecerán aquí en 
     <string name="behavior_content_cap_recommendation">Bueno para: Notificaciones largas donde solo necesitar saber la primera parte del texto</string>
     <string name="tts_engine_restart_required">SpeakThat necesita reiniciarse para aplicar el nuevo motor de Texto a Voz, ¿Reiniciar ahora?</string>
     <string name="behavior_ducking_fallback_manual">Control Manual del Volumen</string>
-    <string name="label_150_percent">150%</string>
     <string name="tts_engine_label">Motor de Texto a Voz</string>
     <string name="behavior_ducking_test_message">Probando si tu dispositivo soporta las peticiones de enfoque de audio apropiadamente...</string>
     <string name="behavior_ducking_fallback_pause">Pausar la Reproducción Multimedia</string>
