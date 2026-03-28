@@ -36,6 +36,7 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
     private static final String KEY_NOTIFICATION_DEDUPLICATION = "notification_deduplication";
     private static final String KEY_DISMISSAL_MEMORY_ENABLED = "dismissal_memory_enabled";
     private static final String KEY_DISMISSAL_MEMORY_TIMEOUT = "dismissal_memory_timeout";
+    private static final String KEY_MEDIA_FILTERING_ENABLED = "media_filtering_enabled";
 
     private static final int DEFAULT_AUDIO_USAGE = 0;
     private static final int DEFAULT_CONTENT_TYPE = 0;
@@ -61,6 +62,7 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
         isLoadingSettings = true;
         setupAudioRouting();
         setupDuckingCompatibility();
+        setupSmartMediaNotificationFilter();
         setupDuplicationWorkarounds();
         loadSettings();
         isLoadingSettings = false;
@@ -166,6 +168,19 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
         });
     }
 
+    // ========== Smart Media Notification Filtering (SpeakThatPrefs) ==========
+
+    private void setupSmartMediaNotificationFilter() {
+        binding.switchMediaFiltering.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!isLoadingSettings) {
+                mainPrefs.edit().putBoolean(KEY_MEDIA_FILTERING_ENABLED, isChecked).apply();
+                InAppLogger.log("CompatibilitySettings", "Smart media notification filtering " + (isChecked ? "enabled" : "disabled"));
+            }
+        });
+
+        binding.txtMediaFilterHelp.setOnClickListener(v -> showSmartMediaFilterHelp());
+    }
+
     // ========== Card 3: Duplication Workarounds ==========
 
     private void setupDuplicationWorkarounds() {
@@ -231,6 +246,8 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
         } else {
             binding.radioFallbackManual.setChecked(true);
         }
+
+        binding.switchMediaFiltering.setChecked(mainPrefs.getBoolean(KEY_MEDIA_FILTERING_ENABLED, true));
 
         // Duplication Workarounds
         boolean deduplicationEnabled = mainPrefs.getBoolean(KEY_NOTIFICATION_DEDUPLICATION, false);
@@ -320,6 +337,23 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
             .setMessage(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_LEGACY))
             .setPositiveButton(R.string.got_it, null)
             .show();
+    }
+
+    private void showSmartMediaFilterHelp() {
+        String message = "When enabled, SpeakThat skips readouts for notifications Android exposes as real media controls.\n\n" +
+                "Detection uses only platform signals:\n" +
+                "• Media session / controller extras on the notification\n" +
+                "• Progress bar (playback position) extras\n" +
+                "• Notification category such as media_session, media_control, or playback\n\n" +
+                "There are no per-app lists or keyword exceptions; if a post is classified as media, it is filtered while this option is on.";
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.dialog_title_smart_media_filter)
+                .setMessage(message)
+                .setPositiveButton(R.string.button_got_it, null)
+                .show();
+
+        InAppLogger.log("CompatibilitySettings", "Smart media filter help dialog shown");
     }
 
     // ========== Navigation ==========

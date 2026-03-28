@@ -1152,7 +1152,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="url_handling_custom_text_description">What to say instead of URLs (leave empty to omit entirely)</string>
     <string name="url_handling_custom_text_hint">e.g., \'web link\', \'link to site\', or leave blank to omit</string>
 
-    <string name="filter_media_description">When on, skip readouts for notifications Android reports as media playback controls (session extras, progress bar, or media category). No per-app lists.</string>
+    <string name="filter_media_description">Primarily for older Android versions. Attempts to detect and block media playback notifications that appear as standard notifications (session extras, progress bar, or media category). No per-app lists.</string>
     <string name="filter_media_enable">Enable smart media notification filtering</string>
     <string name="filter_media_apps_title">Filtered Media Apps:</string>
     <string name="filter_media_apps_description">Apps that are automatically filtered for media notifications. Add media apps you want to filter out.</string>

@@ -74,8 +74,6 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private static final String DEFAULT_URL_REPLACEMENT_TEXT = "";
     private static final String KEY_DEFAULTS_INITIALIZED = "defaults_initialized";
     
-    private static final String KEY_MEDIA_FILTERING_ENABLED = "media_filtering_enabled";
-    
     // Persistent/Silent notification filtering key
     private static final String KEY_PERSISTENT_FILTERING_ENABLED = "persistent_filtering_enabled";
     
@@ -272,12 +270,6 @@ public class FilterSettingsActivity extends AppCompatActivity {
         binding.btnAddBlacklistWord.setOnClickListener(v -> addBlacklistWord());
         binding.btnAddReplacement.setOnClickListener(v -> addWordReplacement());
         
-        binding.txtMediaFilterHelp.setOnClickListener(v -> showMediaFilterHelp());
-
-        binding.switchMediaFiltering.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            saveMediaFilteringEnabled(isChecked);
-        });
-        
         // Set up persistent/silent notification filtering switch
         binding.switchPersistentFiltering.setOnCheckedChangeListener((buttonView, isChecked) -> {
             binding.persistentFilteringCategories.setVisibility(isChecked ? View.VISIBLE : View.GONE);
@@ -387,11 +379,8 @@ public class FilterSettingsActivity extends AppCompatActivity {
     }
 
     private void loadSettings() {
-        // Remove default initialization for word blacklist, media keywords, app blacklist, and media exception apps
-        // These should be empty by default
+        // Remove default initialization for word blacklist and app blacklist by default
         // initializeDefaultWordBlacklist();
-        // initializeDefaultMediaKeywords();
-        // initializeDefaultMediaExceptionApps();
         // initializeDefaultAppBlacklist();
 
         // Load app list mode
@@ -499,9 +488,6 @@ public class FilterSettingsActivity extends AppCompatActivity {
         boolean removeEmojis = sharedPreferences.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false); // Default to disabled
         binding.switchRemoveEmojis.setChecked(removeEmojis);
         
-        boolean isMediaFilteringEnabled = sharedPreferences.getBoolean(KEY_MEDIA_FILTERING_ENABLED, true); // Default to enabled
-        binding.switchMediaFiltering.setChecked(isMediaFilteringEnabled);
-
         // Load persistent/silent notification filtering setting
         boolean isPersistentFilteringEnabled = sharedPreferences.getBoolean(KEY_PERSISTENT_FILTERING_ENABLED, true); // Default to enabled
         binding.switchPersistentFiltering.setChecked(isPersistentFilteringEnabled);
@@ -954,16 +940,6 @@ public class FilterSettingsActivity extends AppCompatActivity {
         editor.apply();
     }
     
-    private void saveMediaFilteringEnabled(boolean enabled) {
-        // Skip saving during initialization to prevent activity recreation loop
-        if (isLoadingSettings) {
-            return;
-        }
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(KEY_MEDIA_FILTERING_ENABLED, enabled);
-        editor.apply();
-    }
-    
     private void savePersistentFilteringEnabled(boolean enabled) {
         // Skip saving during initialization to prevent activity recreation loop
         if (isLoadingSettings) {
@@ -1343,18 +1319,4 @@ public class FilterSettingsActivity extends AppCompatActivity {
         InAppLogger.log("FilterSettings", "App filter help dialog shown");
     }
     
-    private void showMediaFilterHelp() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.dialog_title_smart_media_filter)
-               .setMessage("When enabled, SpeakThat skips readouts for notifications Android exposes as real media controls.\n\n" +
-                          "Detection uses only platform signals:\n" +
-                          "• Media session / controller extras on the notification\n" +
-                          "• Progress bar (playback position) extras\n" +
-                          "• Notification category such as media_session, media_control, or playback\n\n" +
-                          "There are no per-app lists or keyword exceptions; if a post is classified as media, it is filtered while this option is on.")
-               .setPositiveButton(R.string.button_got_it, (dialog, which) -> dialog.dismiss())
-               .show();
-        
-        InAppLogger.log("FilterSettings", "Smart media filter help dialog shown");
-    }
 } 

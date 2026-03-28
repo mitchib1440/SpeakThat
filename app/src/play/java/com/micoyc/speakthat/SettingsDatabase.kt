@@ -386,8 +386,8 @@ object SettingsDatabase {
                 categoryTitle = "Filter Settings",
                 categoryIcon = "🔍",
                 settingType = SettingType.SWITCH,
-                searchKeywords = listOf("media", "filter", "music", "video", "playback", "youtube", "spotify", "smart"),
-                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+                searchKeywords = listOf("media", "filter", "music", "video", "playback", "youtube", "spotify", "smart", "compatibility", "legacy"),
+                navigationAction = { context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java)) }
             ),
             SettingsItem(
                 id = "persistent_filtering",
