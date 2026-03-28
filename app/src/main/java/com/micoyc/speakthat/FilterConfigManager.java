@@ -50,14 +50,7 @@ public class FilterConfigManager {
         public String urlHandlingMode;
         public String urlReplacementText;
         public boolean tidySpeechRemoveEmojis;
-        // Media filtering settings
         public boolean mediaFilteringEnabled;
-        public Set<String> mediaFilterExceptedApps;
-        public Set<String> mediaFilterExceptedAppsPrivate;
-        public Set<String> mediaFilterImportantKeywords;
-        public Set<String> mediaFilterImportantKeywordsPrivate;
-        public Set<String> mediaFilteredApps;
-        public Set<String> mediaFilteredAppsPrivate;
         // Persistent/silent filtering settings
         public boolean persistentFilteringEnabled;
         public boolean filterPersistent;
@@ -79,14 +72,7 @@ public class FilterConfigManager {
             this.urlHandlingMode = "domain_only";
             this.urlReplacementText = "";
             this.tidySpeechRemoveEmojis = false;
-            // Media filtering defaults
             this.mediaFilteringEnabled = false;
-            this.mediaFilterExceptedApps = new HashSet<>();
-            this.mediaFilterExceptedAppsPrivate = new HashSet<>();
-            this.mediaFilterImportantKeywords = new HashSet<>();
-            this.mediaFilterImportantKeywordsPrivate = new HashSet<>();
-            this.mediaFilteredApps = new HashSet<>();
-            this.mediaFilteredAppsPrivate = new HashSet<>();
             // Persistent/silent filtering defaults
             this.persistentFilteringEnabled = false;
             this.filterPersistent = true;
@@ -298,6 +284,7 @@ public class FilterConfigManager {
         config.urlHandlingMode = prefs.getString(KEY_URL_HANDLING_MODE, "domain_only");
         config.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
         config.tidySpeechRemoveEmojis = prefs.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false);
+        config.mediaFilteringEnabled = prefs.getBoolean("media_filtering_enabled", true);
         
         // Create JSON structure
         JSONObject json = new JSONObject();
@@ -322,6 +309,7 @@ public class FilterConfigManager {
         filters.put("urlHandlingMode", config.urlHandlingMode);
         filters.put("urlReplacementText", config.urlReplacementText);
         filters.put("tidySpeechRemoveEmojis", config.tidySpeechRemoveEmojis);
+        filters.put("mediaFilteringEnabled", config.mediaFilteringEnabled);
         json.put("filters", filters);
         
         // Future extension point - we can add more sections here
@@ -359,14 +347,7 @@ public class FilterConfigManager {
         config.filters.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
         config.filters.tidySpeechRemoveEmojis = prefs.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false);
         
-        // Load media filtering settings
         config.filters.mediaFilteringEnabled = prefs.getBoolean("media_filtering_enabled", false);
-        config.filters.mediaFilterExceptedApps = new HashSet<>(prefs.getStringSet("media_filter_excepted_apps", new HashSet<>()));
-        config.filters.mediaFilterExceptedAppsPrivate = new HashSet<>(prefs.getStringSet("media_filter_excepted_apps_private", new HashSet<>()));
-        config.filters.mediaFilterImportantKeywords = new HashSet<>(prefs.getStringSet("media_filter_important_keywords", new HashSet<>()));
-        config.filters.mediaFilterImportantKeywordsPrivate = new HashSet<>(prefs.getStringSet("media_filter_important_keywords_private", new HashSet<>()));
-        config.filters.mediaFilteredApps = new HashSet<>(prefs.getStringSet("media_filtered_apps", new HashSet<>()));
-        config.filters.mediaFilteredAppsPrivate = new HashSet<>(prefs.getStringSet("media_filtered_apps_private", new HashSet<>()));
         
         // Load persistent/silent filtering settings
         config.filters.persistentFilteringEnabled = prefs.getBoolean("persistent_filtering_enabled", false);
@@ -473,14 +454,7 @@ public class FilterConfigManager {
         filters.put("urlHandlingMode", config.filters.urlHandlingMode);
         filters.put("urlReplacementText", config.filters.urlReplacementText);
         filters.put("tidySpeechRemoveEmojis", config.filters.tidySpeechRemoveEmojis);
-        // Media filtering settings
         filters.put("mediaFilteringEnabled", config.filters.mediaFilteringEnabled);
-        filters.put("mediaFilterExceptedApps", new JSONArray(config.filters.mediaFilterExceptedApps));
-        filters.put("mediaFilterExceptedAppsPrivate", new JSONArray(config.filters.mediaFilterExceptedAppsPrivate));
-        filters.put("mediaFilterImportantKeywords", new JSONArray(config.filters.mediaFilterImportantKeywords));
-        filters.put("mediaFilterImportantKeywordsPrivate", new JSONArray(config.filters.mediaFilterImportantKeywordsPrivate));
-        filters.put("mediaFilteredApps", new JSONArray(config.filters.mediaFilteredApps));
-        filters.put("mediaFilteredAppsPrivate", new JSONArray(config.filters.mediaFilteredAppsPrivate));
         // Persistent/silent filtering settings
         filters.put("persistentFilteringEnabled", config.filters.persistentFilteringEnabled);
         filters.put("filterPersistent", config.filters.filterPersistent);
@@ -687,6 +661,11 @@ public class FilterConfigManager {
                 editor.putBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, filters.getBoolean("tidySpeechRemoveEmojis"));
                 filtersImported++;
             }
+
+            if (filters.has("mediaFilteringEnabled")) {
+                editor.putBoolean("media_filtering_enabled", filters.getBoolean("mediaFilteringEnabled"));
+                filtersImported++;
+            }
             
             // Apply all changes
             editor.apply();
@@ -804,42 +783,6 @@ public class FilterConfigManager {
                 if (filters.has("mediaFilteringEnabled")) {
                     mainEditor.putBoolean("media_filtering_enabled", filters.getBoolean("mediaFilteringEnabled"));
                     totalImported++;
-                }
-                
-                if (filters.has("mediaFilterExceptedApps")) {
-                    Set<String> excepted = jsonArrayToStringSet(filters.getJSONArray("mediaFilterExceptedApps"));
-                    mainEditor.putStringSet("media_filter_excepted_apps", excepted);
-                    totalImported += excepted.size();
-                }
-                
-                if (filters.has("mediaFilterExceptedAppsPrivate")) {
-                    Set<String> exceptedPrivate = jsonArrayToStringSet(filters.getJSONArray("mediaFilterExceptedAppsPrivate"));
-                    mainEditor.putStringSet("media_filter_excepted_apps_private", exceptedPrivate);
-                    totalImported += exceptedPrivate.size();
-                }
-                
-                if (filters.has("mediaFilterImportantKeywords")) {
-                    Set<String> keywords = jsonArrayToStringSet(filters.getJSONArray("mediaFilterImportantKeywords"));
-                    mainEditor.putStringSet("media_filter_important_keywords", keywords);
-                    totalImported += keywords.size();
-                }
-                
-                if (filters.has("mediaFilterImportantKeywordsPrivate")) {
-                    Set<String> keywordsPrivate = jsonArrayToStringSet(filters.getJSONArray("mediaFilterImportantKeywordsPrivate"));
-                    mainEditor.putStringSet("media_filter_important_keywords_private", keywordsPrivate);
-                    totalImported += keywordsPrivate.size();
-                }
-                
-                if (filters.has("mediaFilteredApps")) {
-                    Set<String> filtered = jsonArrayToStringSet(filters.getJSONArray("mediaFilteredApps"));
-                    mainEditor.putStringSet("media_filtered_apps", filtered);
-                    totalImported += filtered.size();
-                }
-                
-                if (filters.has("mediaFilteredAppsPrivate")) {
-                    Set<String> filteredPrivate = jsonArrayToStringSet(filters.getJSONArray("mediaFilteredAppsPrivate"));
-                    mainEditor.putStringSet("media_filtered_apps_private", filteredPrivate);
-                    totalImported += filteredPrivate.size();
                 }
                 
                 // Import persistent/silent filtering settings

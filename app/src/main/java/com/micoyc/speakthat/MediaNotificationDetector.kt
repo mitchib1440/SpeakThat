@@ -162,75 +162,15 @@ class MediaNotificationDetector {
         }
         
         /**
-         * Check if a notification should be filtered based on user preferences
-         * This method now focuses on reliable detection only
+         * Filter when the feature is enabled and the notification is a native media-style notification.
          */
         fun shouldFilterMediaNotification(sbn: StatusBarNotification, userPreferences: MediaFilterPreferences): Boolean {
-            if (!userPreferences.isMediaFilteringEnabled) {
-                return false
-            }
-            
-            val isMedia = isMediaNotification(sbn)
-            if (!isMedia) {
-                return false
-            }
-            
-            val packageName = sbn.packageName
-            
-            // Check if this app is in the filtered media apps list
-            if (userPreferences.filteredMediaApps.contains(packageName)) {
-                Log.d(TAG, "Media notification from filtered media app: $packageName")
-                return true
-            }
-            
-            // Check if this app is in the exception list
-            if (userPreferences.exceptedApps.contains(packageName)) {
-                Log.d(TAG, "Media notification from excepted app: $packageName")
-                return false
-            }
-            
-            // Check if notification contains important keywords (like "reply", "comment", etc.)
-            if (containsImportantKeywords(sbn.notification, userPreferences.importantKeywords)) {
-                Log.d(TAG, "Media notification contains important keywords")
-                return false
-            }
-            
-            return true
-        }
-        
-        /**
-         * Check if notification contains important keywords that should not be filtered
-         * This is the only text-based check we keep, and it's for allowing important notifications
-         */
-        private fun containsImportantKeywords(notification: Notification, importantKeywords: Set<String>): Boolean {
-            val extras = notification.extras
-            val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
-            val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
-            val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
-            val summaryText = extras.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString() ?: ""
-            val infoText = extras.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString() ?: ""
-            
-            val fullText = "$title $text $bigText $summaryText $infoText".lowercase()
-            
-            for (keyword in importantKeywords) {
-                if (fullText.contains(keyword.lowercase())) {
-                    Log.d(TAG, "Found important keyword: $keyword")
-                    return true
-                }
-            }
-            
-            return false
+            return userPreferences.isMediaFilteringEnabled && isMediaNotification(sbn)
         }
     }
     
-    /**
-     * User preferences for media notification filtering
-     * Simplified to focus on reliable detection methods
-     */
+    /** Master toggle only; classification uses [isMediaNotification]. */
     data class MediaFilterPreferences(
-        val isMediaFilteringEnabled: Boolean = false,
-        val exceptedApps: Set<String> = emptySet(),
-        val importantKeywords: Set<String> = emptySet(),
-        val filteredMediaApps: Set<String> = emptySet()
+        val isMediaFilteringEnabled: Boolean = false
     )
 } 

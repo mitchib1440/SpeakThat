@@ -2,6 +2,7 @@ package com.micoyc.speakthat
 
 import android.app.AlarmManager
 import android.app.Notification
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.ComponentName
@@ -367,10 +368,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Media notification filtering settings
         private const val KEY_MEDIA_FILTERING_ENABLED = "media_filtering_enabled"
-        private const val KEY_MEDIA_FILTER_EXCEPTED_APPS = "media_filter_excepted_apps"
-        private const val KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS = "media_filter_important_keywords"
-        private const val KEY_MEDIA_FILTERED_APPS = "media_filtered_apps"
-        private const val KEY_MEDIA_FILTERED_APPS_PRIVATE = "media_filtered_apps_private"
         
         // Persistent/silent notification filtering settings
         private const val KEY_PERSISTENT_FILTERING_ENABLED = "persistent_filtering_enabled"
@@ -3063,15 +3060,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Load media notification filtering settings
         val isMediaFilteringEnabled = sharedPreferences?.getBoolean(KEY_MEDIA_FILTERING_ENABLED, true) ?: true
-        val exceptedApps = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTER_EXCEPTED_APPS, HashSet()) ?: HashSet())
-        val importantKeywords = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, HashSet()) ?: HashSet())
-        val filteredMediaApps = HashSet(sharedPreferences?.getStringSet(KEY_MEDIA_FILTERED_APPS, HashSet()) ?: HashSet())
-        
+
         mediaFilterPreferences = MediaNotificationDetector.MediaFilterPreferences(
-            isMediaFilteringEnabled = isMediaFilteringEnabled,
-            exceptedApps = exceptedApps,
-            importantKeywords = importantKeywords,
-            filteredMediaApps = filteredMediaApps
+            isMediaFilteringEnabled = isMediaFilteringEnabled
         )
         
         // Load persistent filtering settings
@@ -3096,7 +3087,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "Behavior settings loaded - mode: $notificationBehavior, priority apps: ${priorityApps.size}")
         Log.d(TAG, "Media behavior settings loaded - mode: $mediaBehavior, ducking volume: $duckingVolume%, fallback: $duckingFallbackStrategy")
         Log.d(TAG, "Delay settings loaded - delay: ${delayBeforeReadout}s")
-        Log.d(TAG, "Media filtering settings loaded - enabled: $isMediaFilteringEnabled, excepted apps: ${exceptedApps.size}, important keywords: ${importantKeywords.size}")
+        Log.d(TAG, "Media filtering settings loaded - enabled: $isMediaFilteringEnabled")
         Log.d(TAG, "Persistent filtering enabled: $isPersistentFilteringEnabled")
         InAppLogger.log("Service", "Settings loaded - Filter mode: $appListMode, Behavior: $notificationBehavior, Media: $mediaBehavior, Delay: ${delayBeforeReadout}s, Media filtering: $isMediaFilteringEnabled, Persistent filtering: $isPersistentFilteringEnabled")
     }
@@ -3799,42 +3790,37 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             return FilterResult(false, "", "Media notification filtered: $reason (unified logic)")
         }
 
-        // If it was a media-style notification but passed due to exceptions/keywords, log for traceability
-        if (MediaNotificationDetector.isMediaNotification(sbn)) {
-            val reason = MediaNotificationDetector.getMediaDetectionReason(sbn)
-            Log.d(TAG, "Media notification allowed (unified logic): $reason")
-        }
-
         return FilterResult(true, "", "Not filtered by media rules (unified logic)")
+    }
+
+    private fun resolveNotificationChannel(notification: Notification): NotificationChannel? {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return null
+        return try {
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.getNotificationChannel(notification.channelId)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting notification channel", e)
+            null
+        }
     }
 
     private fun applyPersistentFiltering(sbn: StatusBarNotification): FilterResult {
         val notification = sbn.notification
         val flags = notification.flags
-        
+
         // Check for persistent notifications (ongoing notifications that don't auto-dismiss)
-        val isPersistent = (flags and Notification.FLAG_ONGOING_EVENT) != 0 || 
-                          (flags and Notification.FLAG_NO_CLEAR) != 0
-        
-        // Improved silent notification detection
-        val isSilent = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            // For Android O and above, check notification channel settings
-            val channel = try {
-                val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                notificationManager.getNotificationChannel(notification.channelId)
-            } catch (e: Exception) {
-                Log.e(TAG, "Error getting notification channel", e)
-                null
-            }
-            
-            // Consider a notification silent if:
-            // 1. Channel is muted (importance NONE) OR
-            // 2. Channel has no sound AND no vibration AND importance <= LOW
-            channel?.let {
-                it.importance == NotificationManager.IMPORTANCE_NONE ||
-                (it.sound == null && !it.shouldVibrate() && it.importance <= NotificationManager.IMPORTANCE_LOW)
-            } ?: run {
-                // Fallback if channel not found: check notification flags and importance
+        val isPersistent = (flags and Notification.FLAG_ONGOING_EVENT) != 0 ||
+            (flags and Notification.FLAG_NO_CLEAR) != 0
+
+        val notificationChannel =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) resolveNotificationChannel(notification) else null
+
+        val isSilent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = notificationChannel
+            if (channel != null) {
+                channel.importance <= NotificationManager.IMPORTANCE_LOW ||
+                    (channel.sound == null && !channel.shouldVibrate())
+            } else {
                 val hasNoAlerts = hasNoAlertsLegacy(notification)
                 val importance = getPriorityLegacy(notification)
                 @Suppress("DEPRECATION")
@@ -3842,83 +3828,88 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 hasNoAlerts && isLow
             }
         } else {
-            // For pre-Oreo devices, check notification flags and settings
             val hasNoAlerts = hasNoAlertsLegacy(notification)
             @Suppress("DEPRECATION")
             val lowPriority = getPriorityLegacy(notification) <= Notification.PRIORITY_LOW
-            
-            // Only consider truly silent if it has no alerts and low priority
             hasNoAlerts && lowPriority
         }
-        
-        // Check for foreground service notifications (ongoing services)
+
         val isForegroundService = (flags and Notification.FLAG_FOREGROUND_SERVICE) != 0
-        
-        // Check notification priority level
+
         val priority = getPriorityLegacy(notification)
         @Suppress("DEPRECATION")
-        val isLowPriorityLevel = priority == Notification.PRIORITY_MIN ||
-            priority == Notification.PRIORITY_LOW
-        
-        // Check for system notifications (from system apps)
-        val isSystemNotification = sbn.packageName.startsWith("com.android.") ||
-                                 sbn.packageName.startsWith("android.") ||
-                                 sbn.packageName == "com.google.android.apps.messaging" ||
-                                 sbn.packageName == "com.android.phone"
-        
-        // Check each category individually based on user settings
+        val isLowPriorityLevel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = notificationChannel
+            if (channel != null) {
+                channel.importance == NotificationManager.IMPORTANCE_LOW ||
+                    channel.importance == NotificationManager.IMPORTANCE_MIN
+            } else {
+                priority == Notification.PRIORITY_MIN || priority == Notification.PRIORITY_LOW
+            }
+        } else {
+            priority == Notification.PRIORITY_MIN || priority == Notification.PRIORITY_LOW
+        }
+
+        val isSystemNotification = try {
+            val appInfo = cachedPackageManager.getApplicationInfo(sbn.packageName, 0)
+            (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        } catch (e: Exception) {
+            Log.e(TAG, "Error resolving application info for ${sbn.packageName}", e)
+            false
+        }
+
         val reasons = mutableListOf<String>()
-        
+
         if (filterPersistent && isPersistent) {
             reasons.add("persistent")
         }
-        
+
         if (filterSilent && isSilent) {
             reasons.add("silent")
         }
-        
+
         if (filterForegroundServices && isForegroundService) {
             reasons.add("foreground service")
         }
-        
+
         if (filterLowPriority && isLowPriorityLevel) {
             reasons.add("low priority")
         }
-        
+
         if (filterSystemNotifications && isSystemNotification) {
             reasons.add("system notification")
         }
-        
-        // If any category is enabled and matches, filter the notification
+
         if (reasons.isNotEmpty()) {
             val reason = reasons.joinToString(", ")
             Log.d(TAG, "Persistent/silent notification filtered: $reason from ${sbn.packageName}")
             InAppLogger.logFilter("Blocked persistent/silent notification from ${sbn.packageName}: $reason")
-            
-            // Add more detailed logging for silent notifications to help debugging
+
             if (reasons.contains("silent")) {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    val channel = try {
-                        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                        notificationManager.getNotificationChannel(notification.channelId)
-                    } catch (e: Exception) {
-                        null
-                    }
-                    Log.d(TAG, "Silent notification details - Channel: ${notification.channelId}, " +
-                              "Channel importance: ${channel?.importance}, " +
-                              "Channel sound: ${channel?.sound}, " +
-                              "Channel vibration: ${channel?.shouldVibrate()}")
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    Log.d(
+                        TAG,
+                        "Silent notification details - Channel: ${notification.channelId}, " +
+                            "Channel importance: ${notificationChannel?.importance}, " +
+                            "Channel sound: ${notificationChannel?.sound}, " +
+                            "Channel vibration: ${notificationChannel?.shouldVibrate()}"
+                    )
                 } else {
-                    Log.d(TAG, "Silent notification details - Priority: ${getPriorityLegacy(notification)}, " +
-                              "Sound: ${getSoundLegacy(notification)}, " +
-                              "Defaults: ${getDefaultsLegacy(notification)}, " +
-                              "Vibration: ${getVibrateLegacy(notification)?.isNotEmpty()}")
+                    Log.d(
+                        TAG,
+                        "Silent notification details - Priority: ${getPriorityLegacy(notification)}, " +
+                            "Sound: ${getSoundLegacy(notification)}, " +
+                            "Defaults: ${getDefaultsLegacy(notification)}, " +
+                            "Vibration: ${getVibrateLegacy(notification)?.isNotEmpty()}"
+                    )
                 }
             }
-            
+
             return FilterResult(false, "", "Persistent/silent notification: $reason")
         }
-        
+
         return FilterResult(true, "", "Not a persistent/silent notification or category not enabled")
     }
 
@@ -6881,7 +6872,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 Log.d(TAG, "Earcon mode updated: $earconMode")
                 InAppLogger.log("Service", "Earcon mode updated: $earconMode")
             }
-            KEY_MEDIA_FILTERING_ENABLED, KEY_MEDIA_FILTER_EXCEPTED_APPS, KEY_MEDIA_FILTER_IMPORTANT_KEYWORDS, KEY_MEDIA_FILTERED_APPS, KEY_MEDIA_FILTERED_APPS_PRIVATE -> {
+            KEY_MEDIA_FILTERING_ENABLED -> {
                 // Reload media filtering settings
                 loadFilterSettings()
                 Log.d(TAG, "Media filtering settings updated")

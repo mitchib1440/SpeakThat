@@ -456,29 +456,6 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
             ),
             SettingsItem(
-                id = "media_filter_excepted_apps",
-                title = "Media Filter Excepted Apps",
-                description = "Apps that are excepted from media filtering",
-                category = "filter",
-                categoryTitle = "Filter Settings",
-                categoryIcon = "🔍",
-                settingType = SettingType.CARD,
-                searchKeywords = listOf("media", "filter", "exception", "exempt", "app", "whitelist", "music", "video"),
-                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
-            ),
-            SettingsItem(
-                id = "media_filter_important_keywords",
-                title = "Media Filter Important Keywords",
-                description = "Keywords that make media notifications important",
-                category = "filter",
-                categoryTitle = "Filter Settings",
-                categoryIcon = "🔍",
-                settingType = SettingType.CARD,
-                searchKeywords = listOf("media", "filter", "keyword", "important", "exception", "music", "video"),
-                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
-            ),
-
-            SettingsItem(
                 id = "export_filter_config",
                 title = "Export Filter Configuration",
                 description = "Export filter settings to a file",
