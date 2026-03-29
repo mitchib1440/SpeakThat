@@ -312,6 +312,9 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         if (!isTtsInitialized) return
         
         val currentPage = binding.viewPager.currentItem
+        if (currentPage == 4 && adapter.suppressAutoTtsForSystemCheckPage) {
+            return
+        }
         val pageContent = when (currentPage) {
             0 -> getLocalizedTtsString(R.string.tts_onboarding_language_new)
             1 -> getLocalizedTtsString(R.string.tts_onboarding_welcome_new)
@@ -451,6 +454,9 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         // Register page change callback
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
+                if (position != 4) {
+                    adapter.clearSystemCheckAutoTtsSuppression()
+                }
                 updateButtonStates(position, adapter.itemCount)
                 updatePageIndicator(position)
                 

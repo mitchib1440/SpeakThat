@@ -59,7 +59,18 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
     
     // Callback to stop TTS
     var onStopTts: (() -> Unit)? = null
-    
+
+    /**
+     * When true, [OnboardingActivity] must not auto-speak the system-check page (index 4).
+     * Set when the user starts the quick test; cleared when leaving that page.
+     */
+    var suppressAutoTtsForSystemCheckPage: Boolean = false
+        private set
+
+    fun clearSystemCheckAutoTtsSuppression() {
+        suppressAutoTtsForSystemCheckPage = false
+    }
+
     // Callback to skip to a specific page
     var onSkipToPage: ((pageIndex: Int) -> Unit)? = null
     
@@ -492,7 +503,8 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         private fun requestPermissionAndStartTest() {
             val context = binding.root.context
             
-            // Stop any ongoing TTS first
+            // Stop any ongoing TTS first; suppress resume/page auto-TTS until user leaves system check
+            suppressAutoTtsForSystemCheckPage = true
             onStopTts?.invoke()
             InAppLogger.log("OnboardingSystemCheck", "Stopped TTS before starting test")
             
@@ -533,6 +545,7 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         }
         
         private fun startSystemCheck() {
+            onStopTts?.invoke()
             InAppLogger.log("OnboardingSystemCheck", "=== SYSTEM CHECK STARTED ===")
             showTestingState()
             
