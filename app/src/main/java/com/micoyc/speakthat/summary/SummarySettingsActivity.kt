@@ -42,6 +42,7 @@ class SummarySettingsActivity : AppCompatActivity() {
     private lateinit var speechPacingValue: TextView
     private lateinit var notificationOrderSpinner: Spinner
     private lateinit var summaryActionTriggerRow: LinearLayout
+    private lateinit var automationPackageRow: LinearLayout
 
     private var selectedHour = DEFAULT_HOUR
     private var selectedMinute = DEFAULT_MINUTE
@@ -79,6 +80,7 @@ class SummarySettingsActivity : AppCompatActivity() {
         speechPacingValue = findViewById(R.id.tvSpeechPacingValue)
         notificationOrderSpinner = findViewById(R.id.spinnerNotificationOrder)
         summaryActionTriggerRow = findViewById(R.id.cardSummaryStringActionTrigger)
+        automationPackageRow = findViewById(R.id.cardAutomationStringPackage)
     }
 
     private fun loadState() {
@@ -123,6 +125,17 @@ class SummarySettingsActivity : AppCompatActivity() {
             Toast.makeText(
                 this,
                 getString(R.string.rules_quick_strings_copied, getString(R.string.summary_action_start_title)),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        automationPackageRow.setOnClickListener {
+            val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val packageValue = getString(R.string.rules_quick_strings_package_value)
+            clipboard.setPrimaryClip(ClipData.newPlainText("SpeakThat automation", packageValue))
+            Toast.makeText(
+                this,
+                getString(R.string.rules_quick_strings_copied, getString(R.string.rules_quick_strings_package_label)),
                 Toast.LENGTH_SHORT
             ).show()
         }
