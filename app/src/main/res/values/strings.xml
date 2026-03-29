@@ -830,6 +830,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="summary_settings_pacing_min">0s</string>
     <string name="summary_settings_pacing_max">5s</string>
     <string name="summary_trigger_blocked_globally">Summaries are disabled or missing overlay permission.</string>
+    <string name="summary_action_start_title">Start summary</string>
+    <string name="summary_quick_strings_source_hint">Optional: an \"Extra\" slot can be used to identify the automation in debug logs. Set the parameter name to \"source\", and the value to a key identifier of your choosing (e.g. \"start-summary-when-charging\") so you can tell which profile triggered the summary.</string>
     <string name="settings_compatibility_title">Compatibility Settings</string>
     <string name="settings_compatibility_description">Fixes for common device-related issues</string>
     <string name="compatibility_section_audio_routing">Android Audio Routing</string>

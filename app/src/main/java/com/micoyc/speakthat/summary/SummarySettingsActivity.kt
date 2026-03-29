@@ -1,5 +1,8 @@
 package com.micoyc.speakthat.summary
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
@@ -13,6 +16,7 @@ import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.google.android.material.button.MaterialButton
@@ -37,6 +41,7 @@ class SummarySettingsActivity : AppCompatActivity() {
     private lateinit var speechPacingSeekBar: SeekBar
     private lateinit var speechPacingValue: TextView
     private lateinit var notificationOrderSpinner: Spinner
+    private lateinit var summaryActionTriggerRow: LinearLayout
 
     private var selectedHour = DEFAULT_HOUR
     private var selectedMinute = DEFAULT_MINUTE
@@ -73,6 +78,7 @@ class SummarySettingsActivity : AppCompatActivity() {
         speechPacingSeekBar = findViewById(R.id.seekSpeechPacing)
         speechPacingValue = findViewById(R.id.tvSpeechPacingValue)
         notificationOrderSpinner = findViewById(R.id.spinnerNotificationOrder)
+        summaryActionTriggerRow = findViewById(R.id.cardSummaryStringActionTrigger)
     }
 
     private fun loadState() {
@@ -107,6 +113,18 @@ class SummarySettingsActivity : AppCompatActivity() {
                 Uri.parse("package:$packageName")
             )
             startActivity(intent)
+        }
+
+        summaryActionTriggerRow.setOnClickListener {
+            val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            clipboard.setPrimaryClip(
+                ClipData.newPlainText("SpeakThat automation", SummaryConstants.ACTION_TRIGGER_SUMMARY)
+            )
+            Toast.makeText(
+                this,
+                getString(R.string.rules_quick_strings_copied, getString(R.string.summary_action_start_title)),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         globalSummarySwitch.setOnCheckedChangeListener { _, isChecked ->
