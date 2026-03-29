@@ -75,7 +75,7 @@ class SelfTestHelper(private val context: Context) {
             // Populate ALL notification fields (including deprecated ones like Ticker) so that
             // users with custom reading formats can test their exact configuration
             val builder = NotificationCompat.Builder(context, TEST_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_notification_add_24)
+                .setSmallIcon(R.drawable.ic_stethoscope_24)
                 .setContentTitle("SpeakThat Test")
                 .setContentText("This is a test notification. If you can hear this, the test passed.")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

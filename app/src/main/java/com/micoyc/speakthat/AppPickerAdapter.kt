@@ -34,7 +34,7 @@ class AppPickerAdapter(
         holder.appName.text = item.label
         holder.packageName.text = item.packageName
 
-        val iconDrawable = item.icon ?: ContextCompat.getDrawable(holder.itemView.context, R.drawable.ic_app_unknown)
+        val iconDrawable = item.icon ?: ContextCompat.getDrawable(holder.itemView.context, R.drawable.ic_icon_not_found_32)
         holder.appIcon.setImageDrawable(iconDrawable)
 
         holder.selectCheck.setOnCheckedChangeListener(null)

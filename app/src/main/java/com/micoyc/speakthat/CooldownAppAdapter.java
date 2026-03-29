@@ -130,7 +130,7 @@ public class CooldownAppAdapter extends RecyclerView.Adapter<CooldownAppAdapter.
                 item.icon = icon; // Cache the icon for future use
             } catch (android.content.pm.PackageManager.NameNotFoundException e) {
                 // Fall back to default icon
-                holder.appIcon.setImageResource(R.drawable.ic_app_unknown);
+                holder.appIcon.setImageResource(R.drawable.ic_icon_not_found_32);
             }
         }
 

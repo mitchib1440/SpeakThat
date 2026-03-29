@@ -83,7 +83,7 @@ class OnboardingAppListAdapter(private val onRemoveClick: (String) -> Unit) :
                 } catch (e2: Exception) {
                     android.util.Log.w("OnboardingAppListAdapter", "Second method failed for $app: ${e2.message}")
                     // Fallback to default icon if we can't get the app icon
-                    appIcon.setImageResource(R.drawable.ic_app_unknown)
+                    appIcon.setImageResource(R.drawable.ic_icon_not_found_32)
                     appIcon.visibility = android.view.View.VISIBLE
                     android.util.Log.w("OnboardingAppListAdapter", "Using default icon for $app")
                 }
