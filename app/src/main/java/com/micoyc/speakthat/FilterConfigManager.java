@@ -363,7 +363,7 @@ public class FilterConfigManager {
         
         // Load voice settings
         config.voice.speechRate = voicePrefs.getFloat("speech_rate", 1.0f);
-        config.voice.pitch = voicePrefs.getFloat("pitch", 1.0f);
+        config.voice.pitch = VoiceSettingsActivity.sanitizePitchForStorage(voicePrefs.getFloat("pitch", 1.0f));
         config.voice.ttsVolume = Math.min(1.0f, voicePrefs.getFloat("tts_volume", 1.0f));
         config.voice.voiceName = voicePrefs.getString("voice_name", "");
         config.voice.language = voicePrefs.getString("language", "en_US");
@@ -832,7 +832,7 @@ public class FilterConfigManager {
                 }
                 
                 if (voice.has("pitch")) {
-                    float pitch = roundToTwoDecimalPlaces((float) voice.getDouble("pitch"));
+                    float pitch = VoiceSettingsActivity.sanitizePitchForStorage((float) voice.getDouble("pitch"));
                     voiceEditor.putFloat("pitch", pitch);
                     totalImported++;
                 }

@@ -117,11 +117,11 @@ public class TestSettingsActivity extends AppCompatActivity {
         if (!isTtsReady) return;
         
         float speechRate = voicePrefs.getFloat("speech_rate", 1.0f);
-        float pitch = voicePrefs.getFloat("pitch", 1.0f);
+        float pitch = VoiceSettingsActivity.sanitizePitchForStorage(voicePrefs.getFloat("pitch", 1.0f));
         String language = voicePrefs.getString("language", "en_US");
         
         tts.setSpeechRate(speechRate);
-        tts.setPitch(pitch);
+        tts.setPitch(VoiceSettingsActivity.pitchForTtsEngine(pitch));
         
         // Set language
         String[] langParts = language.split("_");

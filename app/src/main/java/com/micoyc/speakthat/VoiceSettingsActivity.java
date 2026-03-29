@@ -61,6 +61,16 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private static final int DEFAULT_AUDIO_USAGE = 0; // USAGE_MEDIA
     private static final int DEFAULT_CONTENT_TYPE = 0; // CONTENT_TYPE_SPEECH
 
+    /** Pitch UI and storage: 0.1x–2.0x in 0.1 steps only (SeekBar progress 0..19). */
+    private static final float PITCH_UI_MIN = 0.1f;
+    private static final float PITCH_UI_MAX = 2.0f;
+    private static final int PITCH_SEEKBAR_MAX_PROGRESS = 19;
+    /** One-time migration: rewrite prefs pitch to 1dp + align SeekBar scale. */
+    private static final String KEY_PITCH_DECIMAL_STEPS_APPLIED = "pitch_decimal_steps_applied";
+    /** Values in this inclusive range are passed to TTS as exactly 1.0f to avoid unnecessary pitch DSP. */
+    private static final float PITCH_NEAR_DEFAULT_LOW = 0.95f;
+    private static final float PITCH_NEAR_DEFAULT_HIGH = 1.05f;
+
     // UI Components
     private ScrollView voiceSettingsScrollView;
     private View loadingContainer;
@@ -92,6 +102,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private boolean isLoadingSettings = false;
     private List<Voice> availableVoices = new ArrayList<>();
     private List<Locale> availableLanguages = new ArrayList<>();
+    /** Entries shown in ttsLanguageSpinner (may be filtered by active engine); keep in sync with adapter. */
+    private List<TtsLanguageManager.TtsLanguage> ttsLanguageSpinnerEntries = new ArrayList<>();
     private List<TextToSpeech.EngineInfo> availableEngines = new ArrayList<>();
     private SharedPreferences sharedPreferences;
     private AudioManager audioManager;
@@ -251,75 +263,123 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         }
     }
 
-    /** Quantize TTS rate/pitch to cent precision to avoid float noise in engine/DSP paths. */
+    /** Quantize speech rate to cent precision to avoid float noise in engine/DSP paths. */
     private static float roundToTwoDecimalPlaces(float value) {
         return Math.round(value * 100.0f) / 100.0f;
+    }
+
+    /** Round pitch to one decimal and clamp to the UI range; use for prefs and in-memory voice state. */
+    public static float sanitizePitchForStorage(float pitch) {
+        float rounded = Math.round(pitch * 10.0f) / 10.0f;
+        return Math.max(PITCH_UI_MIN, Math.min(PITCH_UI_MAX, rounded));
+    }
+
+    /**
+     * Pitch passed to {@link TextToSpeech#setPitch(float)}: near-default values become exactly 1.0f;
+     * others are sanitized to one decimal.
+     */
+    public static float pitchForTtsEngine(float pitch) {
+        if (pitch >= PITCH_NEAR_DEFAULT_LOW && pitch <= PITCH_NEAR_DEFAULT_HIGH) {
+            return 1.0f;
+        }
+        return sanitizePitchForStorage(pitch);
+    }
+
+    private static int pitchProgressFromStored(float pitch) {
+        float s = sanitizePitchForStorage(pitch);
+        int p = Math.round((s - PITCH_UI_MIN) / 0.1f);
+        return Math.max(0, Math.min(PITCH_SEEKBAR_MAX_PROGRESS, p));
+    }
+
+    private static float pitchFromProgress(int progress) {
+        int p = Math.max(0, Math.min(PITCH_SEEKBAR_MAX_PROGRESS, progress));
+        return Math.round((PITCH_UI_MIN + p * 0.1f) * 10.0f) / 10.0f;
     }
 
     private void setupSeekBars() {
         // Speech Rate SeekBar (0.1x to 3.0x)
         speechRateSeekBar.setMax(290); // (3.0 - 0.1) * 100
         speechRateSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            private boolean userTracking;
+
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 currentSpeechRate = roundToTwoDecimalPlaces(0.1f + (progress / 100.0f));
                 speechRateValue.setText(String.format("%.1fx", currentSpeechRate));
                 if (fromUser && isTtsReady) {
                     textToSpeech.setSpeechRate(currentSpeechRate);
-                    // Save immediately when user changes the setting
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                userTracking = true;
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (userTracking) {
+                    userTracking = false;
                     saveSpeechRate(currentSpeechRate);
                 }
             }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        // Pitch SeekBar (0.1x to 2.0x)
-        pitchSeekBar.setMax(190); // (2.0 - 0.1) * 100
+        // Pitch SeekBar (0.1x to 2.0x, 0.1 steps only)
+        pitchSeekBar.setMax(PITCH_SEEKBAR_MAX_PROGRESS);
         pitchSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            private boolean userTracking;
+
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                currentPitch = roundToTwoDecimalPlaces(0.1f + (progress / 100.0f));
+                currentPitch = pitchFromProgress(progress);
                 pitchValue.setText(String.format("%.1fx", currentPitch));
                 if (fromUser && isTtsReady) {
-                    textToSpeech.setPitch(currentPitch);
-                    // Save immediately when user changes the setting
-                    savePitch(currentPitch);
+                    textToSpeech.setPitch(pitchForTtsEngine(currentPitch));
                 }
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                userTracking = true;
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (userTracking) {
+                    userTracking = false;
+                    savePitch(currentPitch);
+                }
+            }
         });
 
         // TTS Volume SeekBar (0.0 to 1.0)
         ttsVolumeSeekBar.setMax(100);
         ttsVolumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            private boolean userTracking;
+
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 currentTtsVolume = Math.min(1.0f, progress / 100.0f);
                 ttsVolumeValue.setText(String.format("%.0f%%", currentTtsVolume * 100));
 
                 if (fromUser && isTtsReady) {
-                    // Apply volume through audio attributes
                     applyAudioAttributes();
-                    // Save immediately when user changes the setting
-                    saveTtsVolume(currentTtsVolume);
                 }
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                userTracking = true;
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (userTracking) {
+                    userTracking = false;
+                    saveTtsVolume(currentTtsVolume);
+                }
+            }
         });
 
     }
@@ -769,11 +829,13 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         
         // Update TTS language spinner (now in advanced options)
         if (ttsLanguageSpinner != null && ttsLanguageSpinner.getAdapter() != null) {
-            List<TtsLanguageManager.TtsLanguage> supportedLanguages = TtsLanguageManager.getSupportedTtsLanguages(this);
             String targetTtsLanguage = preset.ttsLanguage;
-            
-            for (int i = 0; i < supportedLanguages.size(); i++) {
-                TtsLanguageManager.TtsLanguage lang = supportedLanguages.get(i);
+            List<TtsLanguageManager.TtsLanguage> entries = ttsLanguageSpinnerEntries.isEmpty()
+                ? TtsLanguageManager.getSupportedTtsLanguages(this)
+                : ttsLanguageSpinnerEntries;
+
+            for (int i = 0; i < entries.size(); i++) {
+                TtsLanguageManager.TtsLanguage lang = entries.get(i);
                 if (lang.localeCode.equals(targetTtsLanguage)) {
                     ttsLanguageSpinner.setSelection(i);
                     break;
@@ -791,11 +853,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     }
 
     private void setupTtsLanguageSpinner() {
-        // Use the TtsLanguageManager to get only languages with actual translations
-        List<TtsLanguageManager.TtsLanguage> supportedLanguages = TtsLanguageManager.getSupportedTtsLanguages(this);
-        
+        ttsLanguageSpinnerEntries = computeTtsLanguageSpinnerEntries();
+
         List<String> ttsLanguageNames = new ArrayList<>();
-        for (TtsLanguageManager.TtsLanguage language : supportedLanguages) {
+        for (TtsLanguageManager.TtsLanguage language : ttsLanguageSpinnerEntries) {
             ttsLanguageNames.add(language.displayName);
         }
 
@@ -804,17 +865,17 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         ttsLanguageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ttsLanguageSpinner.setAdapter(ttsLanguageAdapter);
         
-        InAppLogger.log("VoiceSettings", "TTS Language spinner setup with " + supportedLanguages.size() + " supported languages");
+        InAppLogger.log("VoiceSettings", "TTS Language spinner setup with " + ttsLanguageSpinnerEntries.size() + " entries");
         
         // Add listener to save TTS language selection automatically
         ttsLanguageSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                if (position >= 0 && position < supportedLanguages.size()) {
+                if (position >= 0 && position < ttsLanguageSpinnerEntries.size()) {
                     String selectedDisplayName = ttsLanguageNames.get(position);
                     String languageCode = "system"; // Default
                     
-                    for (TtsLanguageManager.TtsLanguage language : supportedLanguages) {
+                    for (TtsLanguageManager.TtsLanguage language : ttsLanguageSpinnerEntries) {
                         if (language.displayName.equals(selectedDisplayName)) {
                             languageCode = language.localeCode;
                             break;
@@ -837,6 +898,66 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         });
     }
 
+    /**
+     * Curated translations list intersected with {@link TextToSpeech#getAvailableLanguages()} for the
+     * active engine. Falls back to the full curated list if the engine reports nothing useful or the
+     * saved preference would disappear from the spinner.
+     */
+    private List<TtsLanguageManager.TtsLanguage> computeTtsLanguageSpinnerEntries() {
+        List<TtsLanguageManager.TtsLanguage> all = TtsLanguageManager.getSupportedTtsLanguages(this);
+        if (textToSpeech == null || !isTtsReady) {
+            return new ArrayList<>(all);
+        }
+        Set<Locale> avail = textToSpeech.getAvailableLanguages();
+        if (avail == null || avail.isEmpty()) {
+            return new ArrayList<>(all);
+        }
+        List<TtsLanguageManager.TtsLanguage> filtered = new ArrayList<>();
+        for (TtsLanguageManager.TtsLanguage lang : all) {
+            if ("system".equals(lang.localeCode)) {
+                filtered.add(lang);
+            } else if (lang.locale != null && isLocaleSupportedByEngine(lang.locale, avail)) {
+                filtered.add(lang);
+            }
+        }
+        if (filtered.size() <= 1) {
+            return new ArrayList<>(all);
+        }
+        String savedTts = sharedPreferences.getString(KEY_TTS_LANGUAGE, "system");
+        if (savedTts != null && !savedTts.isEmpty() && !"system".equals(savedTts)) {
+            boolean savedPresent = false;
+            for (TtsLanguageManager.TtsLanguage l : filtered) {
+                if (savedTts.equals(l.localeCode)) {
+                    savedPresent = true;
+                    break;
+                }
+            }
+            if (!savedPresent) {
+                return new ArrayList<>(all);
+            }
+        }
+        InAppLogger.log("VoiceSettings", "TTS language list filtered to " + filtered.size() + " entries for current engine");
+        return filtered;
+    }
+
+    private static boolean isLocaleSupportedByEngine(Locale locale, Set<Locale> avail) {
+        String tag = locale.toLanguageTag();
+        for (Locale a : avail) {
+            if (a != null && a.toLanguageTag().equalsIgnoreCase(tag)) {
+                return true;
+            }
+        }
+        String lang = locale.getLanguage();
+        String country = locale.getCountry();
+        for (Locale a : avail) {
+            if (a == null) continue;
+            if (!lang.equals(a.getLanguage())) continue;
+            if (country.isEmpty() || a.getCountry().isEmpty() || country.equalsIgnoreCase(a.getCountry())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     
@@ -993,10 +1114,17 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         int speechRateProgress = (int) ((currentSpeechRate - 0.1f) * 100);
         speechRateSeekBar.setProgress(speechRateProgress);
 
-        // Load pitch
-        currentPitch = sharedPreferences.getFloat(KEY_PITCH, DEFAULT_PITCH);
-        int pitchProgress = (int) ((currentPitch - 0.1f) * 100);
-        pitchSeekBar.setProgress(pitchProgress);
+        // Load pitch (migrate legacy cent-scale / noisy floats once)
+        float rawPitch = sharedPreferences.getFloat(KEY_PITCH, DEFAULT_PITCH);
+        float sanitizedPitch = sanitizePitchForStorage(rawPitch);
+        if (!sharedPreferences.getBoolean(KEY_PITCH_DECIMAL_STEPS_APPLIED, false)) {
+            sharedPreferences.edit()
+                    .putFloat(KEY_PITCH, sanitizedPitch)
+                    .putBoolean(KEY_PITCH_DECIMAL_STEPS_APPLIED, true)
+                    .apply();
+        }
+        currentPitch = sanitizedPitch;
+        pitchSeekBar.setProgress(pitchProgressFromStored(currentPitch));
 
         // Load TTS volume (clamp legacy values above 100%)
         currentTtsVolume = Math.min(1.0f, sharedPreferences.getFloat(KEY_TTS_VOLUME, DEFAULT_TTS_VOLUME));
@@ -1114,7 +1242,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
         // Apply speech rate and pitch (these don't conflict with voice/language settings)
         textToSpeech.setSpeechRate(currentSpeechRate);
-        textToSpeech.setPitch(currentPitch);
+        textToSpeech.setPitch(pitchForTtsEngine(currentPitch));
         
         // CRITICAL: Apply voice settings with proper override logic
         // The order matters - specific voice should override language setting
@@ -1201,7 +1329,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             currentSpeechRate = roundToTwoDecimalPlaces(0.1f + (speechRateSeekBar.getProgress() / 100.0f));
         }
         if (pitchSeekBar != null) {
-            currentPitch = roundToTwoDecimalPlaces(0.1f + (pitchSeekBar.getProgress() / 100.0f));
+            currentPitch = pitchFromProgress(pitchSeekBar.getProgress());
         }
         if (ttsVolumeSeekBar != null) {
             currentTtsVolume = Math.min(1.0f, ttsVolumeSeekBar.getProgress() / 100.0f);
@@ -1433,7 +1561,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private void applyCurrentUISettings() {
         // Apply speech rate and pitch (these don't conflict with voice/language settings)
         textToSpeech.setSpeechRate(currentSpeechRate);
-        textToSpeech.setPitch(currentPitch);
+        textToSpeech.setPitch(pitchForTtsEngine(currentPitch));
 
         // CRITICAL: Apply selected voice with override logic
         // Check if user selected a specific voice (not the "Default" option)
@@ -1616,7 +1744,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
         // Reset UI
         speechRateSeekBar.setProgress((int) ((DEFAULT_SPEECH_RATE - 0.1f) * 100));
-        pitchSeekBar.setProgress((int) ((DEFAULT_PITCH - 0.1f) * 100));
+        pitchSeekBar.setProgress(pitchProgressFromStored(DEFAULT_PITCH));
         ttsVolumeSeekBar.setProgress((int) (DEFAULT_TTS_VOLUME * 100));
         ttsVolumeValue.setText(String.format("%.0f%%", DEFAULT_TTS_VOLUME * 100));
 
@@ -1732,12 +1860,20 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         float ttsVolume = Math.min(1.0f, prefs.getFloat(KEY_TTS_VOLUME, DEFAULT_TTS_VOLUME));
         float speechRate = prefs.getFloat(KEY_SPEECH_RATE, DEFAULT_SPEECH_RATE);
         float pitch = prefs.getFloat(KEY_PITCH, DEFAULT_PITCH);
+        if (!prefs.getBoolean(KEY_PITCH_DECIMAL_STEPS_APPLIED, false)) {
+            float sanitized = sanitizePitchForStorage(pitch);
+            prefs.edit()
+                    .putFloat(KEY_PITCH, sanitized)
+                    .putBoolean(KEY_PITCH_DECIMAL_STEPS_APPLIED, true)
+                    .apply();
+            pitch = sanitized;
+        }
         String voiceName = prefs.getString(KEY_VOICE_NAME, "");
         String language = prefs.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE);
         
         // Apply basic TTS settings
         tts.setSpeechRate(speechRate);
-        tts.setPitch(pitch);
+        tts.setPitch(pitchForTtsEngine(pitch));
         
         // Apply language setting first (may be overridden by specific voice)
         boolean languageApplied = false;
@@ -1983,10 +2119,11 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         if (isLoadingSettings) {
             return;
         }
+        float stored = sanitizePitchForStorage(pitch);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putFloat(KEY_PITCH, pitch);
+        editor.putFloat(KEY_PITCH, stored);
         editor.apply();
-        InAppLogger.log("VoiceSettings", "Pitch saved: " + pitch);
+        InAppLogger.log("VoiceSettings", "Pitch saved: " + stored);
     }
 
     private void saveVoice(String voiceName) {

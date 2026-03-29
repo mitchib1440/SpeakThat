@@ -153,8 +153,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginHorizontal="8dp"
-                            android:max="190"
-                            android:progress="90"
+                            android:max="19"
+                            android:progress="9"
                             android:progressTint="@color/white_100"
                             android:thumbTint="@color/white_100"
                             android:progressBackgroundTint="@color/white_200" />
