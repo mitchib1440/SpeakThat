@@ -545,7 +545,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
 
     <!-- Language Change Dialog -->
     <string name="dialog_title_language_changed">Language Changed</string>
-    <string name="dialog_message_language_changed">The app language has been changed from %1$s to %2$s.\n\n• Apply Now: Updates this screen immediately\n• Restart App: Ensures all screens and services use the new language\n\nFor the best experience, we recommend restarting the app.</string>
+    <string name="dialog_message_language_changed">The app language has been changed from %1$s to %2$s.\n\n• Apply Now: Updates this screen immediately\n• Restart App: Ensures all screens and services use the new language\n\nFor the best experience, I recommend restarting the app.</string>
     <string name="button_restart_app">Restart App</string>
     <string name="button_apply_now">Apply Now</string>
     <string name="toast_language_restarting">Restarting app with new language...</string>
@@ -670,7 +670,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_earcon_preview">Preview Earcon</string>
     <string name="behavior_earcon_preview_none">Select a sound above to preview an earcon.</string>
     <string name="behavior_earcon_delay_disclaimer">ⓘ Playing a sound will naturally add a minor delay (approx. 500ms) before the readout begins.</string>
-    <string name="behavior_earcon_engine_warning">⚠️ Your current text-to-speech engine may not support custom sounds. If you hear no click, we recommend using Google Speech Services.</string>
+    <string name="behavior_earcon_engine_warning">⚠️ Your current text-to-speech engine may not support custom sounds. If you hear no sound, ask the developer of your speech engine to include earcon support.</string>
     <string name="behavior_earcon_operation_failed">Could not complete that action. Please try again.</string>
     <string-array name="behavior_earcon_modes">
         <item>None</item>
@@ -1612,7 +1612,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="wave_calibration_ready">Ready to calibrate wave detection</string>
     <string name="wave_calibration_threshold">Threshold: 3.2cm (60% of 5.3cm)</string>
     <string name="wave_calibration_how_it_works">💡 How it works:</string>
-    <string name="wave_calibration_instructions">• Move your hand closer and farther from the sensor for 8 seconds\n• We\'ll record sensor readings every 50ms\n• Need at least 20 readings for calibration\n• Set threshold to 60% of maximum distance detected</string>
+    <string name="wave_calibration_instructions">• Move your hand closer and farther from the sensor for 8 seconds\n• I\'ll record sensor readings every 50ms\n• Need at least 20 readings for calibration\n• Set threshold to 60% of maximum distance detected</string>
     <string name="wave_calibration_start">Start Calibration</string>
 
 
