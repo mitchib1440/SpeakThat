@@ -6689,6 +6689,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             delayMs > 0L -> TextToSpeech.QUEUE_ADD
             else -> TextToSpeech.QUEUE_FLUSH
         }
+        if (delayMs > 0L) {
+            val silentMs = delayMs.coerceIn(1L, Long.MAX_VALUE)
+            val silentResult = textToSpeech?.playSilentUtterance(
+                silentMs,
+                TextToSpeech.QUEUE_ADD,
+                UTTERANCE_ID_READOUT_DELAY
+            )
+            if (silentResult != TextToSpeech.SUCCESS) {
+                Log.w(TAG, "playSilentUtterance returned $silentResult")
+                InAppLogger.logWarning("Service", "playSilentUtterance failed: $silentResult")
+            }
+            speakQueueMode = TextToSpeech.QUEUE_ADD
+        }
+
         if (useEarcon) {
             val earconRes = earconRawRes(earconMode)
             val earconLabel = earconRes?.let { resources.getResourceEntryName(it) } ?: "none"
@@ -6717,20 +6731,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     else -> TextToSpeech.QUEUE_FLUSH
                 }
             }
-        }
-
-        if (delayMs > 0L) {
-            val silentMs = delayMs.coerceIn(1L, Long.MAX_VALUE)
-            val silentResult = textToSpeech?.playSilentUtterance(
-                silentMs,
-                TextToSpeech.QUEUE_ADD,
-                UTTERANCE_ID_READOUT_DELAY
-            )
-            if (silentResult != TextToSpeech.SUCCESS) {
-                Log.w(TAG, "playSilentUtterance returned $silentResult")
-                InAppLogger.logWarning("Service", "playSilentUtterance failed: $silentResult")
-            }
-            speakQueueMode = TextToSpeech.QUEUE_ADD
         }
 
         val speakResult = textToSpeech?.speak(
