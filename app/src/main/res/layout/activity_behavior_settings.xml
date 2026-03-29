@@ -2651,6 +2651,8 @@
                             android:textColor="@color/purple_card_text_primary"
                             android:layout_marginBottom="8dp" />
 
+
+                        <!-- Test button has been temporarily removed as I don't think it belongs here anymore. It can be safely deleted later -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnTestSpeechTemplate"
                             android:layout_width="match_parent"
@@ -2658,7 +2660,8 @@
                             android:text="@string/button_test"
                             android:textSize="12sp"
                             app:cornerRadius="12dp"
-                            style="@style/PrimaryButton" />
+                            style="@style/PrimaryButton"
+                            android:visibility="gone"/>
 
                     </LinearLayout>
 
