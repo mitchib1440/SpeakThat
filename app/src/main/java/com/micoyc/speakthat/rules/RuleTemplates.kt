@@ -197,7 +197,7 @@ object RuleTemplates {
             actions = listOf(
                 ActionTemplate(
                     type = ActionType.SKIP_NOTIFICATION,
-                    description = context.getString(R.string.template_action_skip_notification)
+                    description = context.getString(R.string.action_skip_notification_title)
                 )
             )
         )
@@ -228,7 +228,7 @@ object RuleTemplates {
             actions = listOf(
                 ActionTemplate(
                     type = ActionType.SKIP_NOTIFICATION,
-                    description = context.getString(R.string.template_action_skip_notification)
+                    description = context.getString(R.string.action_skip_notification_title)
                 )
             )
         )
@@ -246,14 +246,14 @@ object RuleTemplates {
                 TriggerTemplate(
                     type = TriggerType.SCREEN_STATE,
                     inverted = false, // Not inverted - trigger when screen is ON (to skip notifications)
-                    data = mapOf("screenOn" to true),
+                    data = mapOf("screen_state" to "on"),
                     description = context.getString(R.string.template_trigger_screen_on)
                 )
             ),
             actions = listOf(
                 ActionTemplate(
                     type = ActionType.SKIP_NOTIFICATION,
-                    description = context.getString(R.string.template_action_skip_notification)
+                    description = context.getString(R.string.action_skip_notification_title)
                 )
             )
         )
@@ -277,7 +277,7 @@ object RuleTemplates {
             actions = listOf(
                 ActionTemplate(
                     type = ActionType.SKIP_NOTIFICATION,
-                    description = context.getString(R.string.template_action_skip_notification)
+                    description = context.getString(R.string.action_skip_notification_title)
                 )
             )
         )

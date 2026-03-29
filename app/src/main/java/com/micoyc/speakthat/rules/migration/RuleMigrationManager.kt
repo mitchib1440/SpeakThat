@@ -16,6 +16,7 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import com.micoyc.speakthat.InAppLogger
+import com.micoyc.speakthat.R
 import com.micoyc.speakthat.rules.Action
 import com.micoyc.speakthat.rules.ActionTypeAdapter
 import com.micoyc.speakthat.rules.ExceptionType
@@ -53,6 +54,37 @@ object RuleMigrationManager {
     private const val LEGACY_ACTION_DISABLE_SPEAKTHAT = "DISABLE_SPEAKTHAT"
     private const val LEGACY_FIELD_CONDITIONS = "conditions"
     private const val LEGACY_FIELD_CONDITION_LOGIC = "conditionLogic"
+
+    /**
+     * Exact English template label from older default `values/strings.xml` (equality match only — no substring heuristics).
+     */
+    private const val LEGACY_SKIP_ACTION_DESC_EN_OLD_TEMPLATE = "Don't read notifications"
+
+    /**
+     * Some installs were rewritten to this fixed English phrase by an older migration pass.
+     */
+    private const val LEGACY_SKIP_ACTION_DESC_EN_OLD_MIGRATION = "Don't read this notification aloud"
+
+    /**
+     * Descriptions that should be refreshed to [R.string.action_skip_notification_title] for the current locale.
+     * Uses the localized template string plus a small set of exact legacy English literals (stored JSON may not match
+     * the device locale after language changes or restores).
+     */
+    private fun legacySkipNotificationDescriptionsExact(context: Context): Set<String> {
+        val canonical = context.getString(R.string.action_skip_notification_title)
+        return buildSet {
+            val localizedTemplate = context.getString(R.string.template_action_skip_notification)
+            if (localizedTemplate.isNotEmpty() && localizedTemplate != canonical) {
+                add(localizedTemplate)
+            }
+            if (LEGACY_SKIP_ACTION_DESC_EN_OLD_TEMPLATE != canonical) {
+                add(LEGACY_SKIP_ACTION_DESC_EN_OLD_TEMPLATE)
+            }
+            if (LEGACY_SKIP_ACTION_DESC_EN_OLD_MIGRATION != canonical) {
+                add(LEGACY_SKIP_ACTION_DESC_EN_OLD_MIGRATION)
+            }
+        }
+    }
 
     fun runIfNeeded(context: Context) {
         val rulesPrefs = context.getSharedPreferences(RULES_PREFS, Context.MODE_PRIVATE)
@@ -104,6 +136,9 @@ object RuleMigrationManager {
             )
             return
         }
+
+        val canonicalSkipActionDescription = context.getString(R.string.action_skip_notification_title)
+        val legacySkipActionDescriptions = legacySkipNotificationDescriptionsExact(context)
 
         for ((index, ruleElement) in jsonArray.withIndex()) {
             if (!ruleElement.isJsonObject) {
@@ -218,23 +253,21 @@ object RuleMigrationManager {
                     val normalizedType = normalizeLegacyActionType(normalized.typeName)
                     val actionObject = normalized.element.asJsonObject
                     var needsDescriptionUpdate = false
-                    
-                    // Check if description needs updating for SKIP_NOTIFICATION
+
                     if (normalizedType == "SKIP_NOTIFICATION") {
                         val currentDesc = actionObject.get("description")?.asString ?: ""
-                        val expectedDesc = "Don't read this notification aloud"
-                        if (currentDesc != expectedDesc && 
-                            (currentDesc.contains("Don't read", ignoreCase = true) || 
-                             currentDesc.contains("Don't read notifications", ignoreCase = true))) {
+                        if (currentDesc.isNotEmpty() &&
+                            currentDesc != canonicalSkipActionDescription &&
+                            currentDesc in legacySkipActionDescriptions
+                        ) {
                             needsDescriptionUpdate = true
                         }
                     }
-                    
+
                     val finalElement = if (normalizedType != normalized.typeName || needsDescriptionUpdate) {
                         actionObject.addProperty("type", normalizedType)
-                        // Update description to match the new action type
                         val newDescription = when (normalizedType) {
-                            "SKIP_NOTIFICATION" -> "Don't read this notification aloud"
+                            "SKIP_NOTIFICATION" -> canonicalSkipActionDescription
                             else -> actionObject.get("description")?.asString ?: ""
                         }
                         actionObject.addProperty("description", newDescription)
