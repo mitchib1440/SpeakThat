@@ -35,7 +35,7 @@ object SummaryConstants {
     const val SWIPE_THRESHOLD_PX = 120
 
     const val TTS_PAUSE_GAP_MS = 1500L
-    const val DEFAULT_GREETING_NAME = "User"
+    const val DEFAULT_GREETING_NAME = "Human"
 
     const val UTTERANCE_PREFIX_INTRO = "intro"
     const val UTTERANCE_PREFIX_ITEM = "item"
