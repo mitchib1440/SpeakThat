@@ -323,7 +323,7 @@ public class TestSettingsActivity extends AppCompatActivity {
             results.append("Private Apps: ").append(privateApps != null ? privateApps.size() : 0).append(" apps\n");
             results.append("Blocked Words: ").append(wordBlacklist != null ? wordBlacklist.size() : 0).append(" words\n");
             results.append("Private Words: ").append(privateWords != null ? privateWords.size() : 0).append(" words\n");
-            results.append("Word Swaps: ").append(wordReplacements.split("\\|").length - (wordReplacements.isEmpty() ? 0 : 1)).append(" swaps\n");
+            results.append("Word Swaps: ").append(WordReplacementsStorage.countSwaps(wordReplacements)).append(" swaps\n");
             results.append("Case Sensitive: ").append(caseSensitive ? "✅ Yes" : "❌ No").append("\n");
             results.append("Regex Enabled: ").append(regexEnabled ? "✅ Yes" : "❌ No").append("\n");
             results.append("Min Word Length: ").append(minWordLength).append(" chars\n");

@@ -50,7 +50,7 @@ public class FilterConfigManager {
         public String wordListMode;
         public Set<String> wordBlacklist;
         public Set<String> wordBlacklistPrivate;
-        public String wordReplacements; // Stored as delimited string
+        public String wordReplacements; // JSON array of {"from","to"} in prefs
         public String urlHandlingMode;
         public String urlReplacementText;
         public boolean tidySpeechRemoveEmojis;
@@ -641,12 +641,13 @@ public class FilterConfigManager {
                 filtersImported += wordBlacklistPrivate.size();
             }
             
-            // Import word swaps
+            // Import word swaps (normalize legacy pipe/colon backups to JSON)
             if (filters.has("wordReplacements")) {
                 String wordReplacements = filters.getString("wordReplacements");
-                editor.putString(KEY_WORD_REPLACEMENTS, wordReplacements);
-                if (!wordReplacements.isEmpty()) {
-                    filtersImported += wordReplacements.split("\\|").length;
+                String normalized = WordReplacementsStorage.normalizeImportedValue(wordReplacements);
+                editor.putString(KEY_WORD_REPLACEMENTS, normalized);
+                if (!normalized.isEmpty()) {
+                    filtersImported += WordReplacementsStorage.countSwaps(normalized);
                 }
             }
             
@@ -761,9 +762,10 @@ public class FilterConfigManager {
                 
                 if (filters.has("wordReplacements")) {
                     String wordReplacements = filters.getString("wordReplacements");
-                    mainEditor.putString(KEY_WORD_REPLACEMENTS, wordReplacements);
-                    if (!wordReplacements.isEmpty()) {
-                        totalImported += wordReplacements.split("\\|").length;
+                    String normalized = WordReplacementsStorage.normalizeImportedValue(wordReplacements);
+                    mainEditor.putString(KEY_WORD_REPLACEMENTS, normalized);
+                    if (!normalized.isEmpty()) {
+                        totalImported += WordReplacementsStorage.countSwaps(normalized);
                     }
                 }
                 
@@ -1259,7 +1261,7 @@ public class FilterConfigManager {
             summary.append(", ").append(privateWords.size()).append(" private");
         }
         if (!replacements.isEmpty()) {
-            int replacementCount = replacements.split("\\|").length;
+            int replacementCount = WordReplacementsStorage.countSwaps(replacements);
             summary.append(", ").append(replacementCount).append(" replacements");
         }
         

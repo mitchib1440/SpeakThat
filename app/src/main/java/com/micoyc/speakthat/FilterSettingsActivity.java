@@ -442,17 +442,10 @@ public class FilterSettingsActivity extends AppCompatActivity {
         wordBlacklistAdapter.notifyDataSetChanged();
         updateCountDisplays();
 
-        // Load word swaps
-        String replacementData = sharedPreferences.getString(KEY_WORD_REPLACEMENTS, "");
+        // Load word swaps (JSON with auto-migration from legacy pipe/colon format)
         wordReplacementItems.clear();
-        if (!replacementData.isEmpty()) {
-            String[] pairs = replacementData.split("\\|");
-            for (String pair : pairs) {
-                String[] parts = pair.split(":", 2);
-                if (parts.length == 2) {
-                    wordReplacementItems.add(new WordReplacementItem(parts[0], parts[1]));
-                }
-            }
+        for (WordReplacementsStorage.WordReplacement wr : WordReplacementsStorage.loadWithAutoMigrate(sharedPreferences, KEY_WORD_REPLACEMENTS)) {
+            wordReplacementItems.add(new WordReplacementItem(wr.getFrom(), wr.getTo()));
         }
         wordSwapAdapter.notifyDataSetChanged();
         updateCountDisplays();
@@ -928,15 +921,13 @@ public class FilterSettingsActivity extends AppCompatActivity {
     }
 
     private void saveWordReplacements() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < wordReplacementItems.size(); i++) {
-            WordReplacementItem item = wordReplacementItems.get(i);
-            if (i > 0) sb.append("|");
-            sb.append(item.from).append(":").append(item.to);
+        List<WordReplacementsStorage.WordReplacement> list = new ArrayList<>(wordReplacementItems.size());
+        for (WordReplacementItem item : wordReplacementItems) {
+            list.add(new WordReplacementsStorage.WordReplacement(item.from, item.to));
         }
-
+        String json = WordReplacementsStorage.toJson(list);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(KEY_WORD_REPLACEMENTS, sb.toString());
+        editor.putString(KEY_WORD_REPLACEMENTS, json);
         editor.apply();
     }
     

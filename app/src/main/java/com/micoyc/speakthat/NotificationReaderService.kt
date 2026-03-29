@@ -53,6 +53,9 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.channels.Channel
 
+/** Ordered word swap rule (matches JSON array order in prefs). */
+private data class WordSwapRule(val from: String, val to: String)
+
 class NotificationReaderService : NotificationListenerService(), TextToSpeech.OnInitListener, SensorEventListener, SharedPreferences.OnSharedPreferenceChangeListener {
     
     private var sharedPreferences: SharedPreferences? = null
@@ -78,7 +81,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var wordListMode = "blacklist" // Default to blacklist for backward compatibility
     private var blockedWords: Set<String> = emptySet()
     private var privateWords: Set<String> = emptySet()
-    private var wordReplacements: Map<String, String> = emptyMap()
+    private var wordReplacements: List<WordSwapRule> = emptyList()
     private var urlHandlingMode = DEFAULT_URL_HANDLING_MODE
     private var urlReplacementText = DEFAULT_URL_REPLACEMENT_TEXT
     private var tidySpeechRemoveEmojisEnabled = false
@@ -3044,20 +3047,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         blockedWords = HashSet(sharedPreferences?.getStringSet(KEY_WORD_BLACKLIST, HashSet()) ?: HashSet())
         privateWords = HashSet(sharedPreferences?.getStringSet(KEY_WORD_BLACKLIST_PRIVATE, HashSet()) ?: HashSet())
         
-        // Load word swaps
-        val replacementData = sharedPreferences?.getString(KEY_WORD_REPLACEMENTS, "") ?: ""
-        val newWordReplacements = HashMap<String, String>()
-        if (replacementData.isNotEmpty()) {
-            val pairs = replacementData.split("|")
-            for (pair in pairs) {
-                val parts = pair.split(":", limit = 2)
-                if (parts.size == 2) {
-                    newWordReplacements[parts[0]] = parts[1]
-                }
-            }
+        // Load word swaps (JSON with auto-migration from legacy format; order preserved)
+        val prefsNonNull = sharedPreferences
+        wordReplacements = if (prefsNonNull != null) {
+            WordReplacementsStorage.loadWithAutoMigrate(prefsNonNull, KEY_WORD_REPLACEMENTS)
+                .map { WordSwapRule(it.from, it.to) }
+        } else {
+            emptyList()
         }
-        wordReplacements = newWordReplacements
-        Log.d(TAG, "Loaded word replacements: $wordReplacements")
+        Log.d(TAG, "Loaded word replacements (${wordReplacements.size} rules, ordered)")
         
         // Load URL handling settings
         urlHandlingMode = sharedPreferences?.getString(KEY_URL_HANDLING_MODE, DEFAULT_URL_HANDLING_MODE) ?: DEFAULT_URL_HANDLING_MODE
@@ -3325,6 +3323,49 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
+    /**
+     * Temporary diagnostics for NBSP / RTL marks / hidden chars when a word swap does not match.
+     * Verbose mode adds a truncated codepoint dump of the notification text; tone down after investigation.
+     */
+    private fun logWordSwapMissDiagnostics(from: String, processedText: String) {
+        val containsExact = processedText.contains(from)
+        val containsIgnoreCase = processedText.contains(from, ignoreCase = true)
+        Log.d(
+            TAG,
+            "WordSwap miss: fromLen=${from.length} textLen=${processedText.length} " +
+                "containsExact=$containsExact containsIgnoreCase=$containsIgnoreCase " +
+                "fromCp=${codePointHexDump(from, Int.MAX_VALUE)}"
+        )
+        if (InAppLogger.verboseMode) {
+            Log.d(TAG, "WordSwap miss textCp=${codePointHexDump(processedText, 256)}")
+            if (InAppLogger.logFilters) {
+                InAppLogger.logFilter(
+                    "WordSwap miss: fromCp=${codePointHexDump(from, 64)} | " +
+                        "textCp(first256)=${codePointHexDump(processedText, 256)}"
+                )
+            }
+        }
+    }
+
+    private fun codePointHexDump(s: String, maxCodePoints: Int): String {
+        if (s.isEmpty()) return "(empty)"
+        val sb = StringBuilder()
+        var count = 0
+        var i = 0
+        while (i < s.length && count < maxCodePoints) {
+            val cp = s.codePointAt(i)
+            if (count > 0) sb.append(' ')
+            sb.append("U+").append(Integer.toHexString(cp).uppercase(Locale.US))
+            i += Character.charCount(cp)
+            count++
+        }
+        val totalCp = s.codePointCount(0, s.length)
+        if (i < s.length || totalCp > count) {
+            sb.append(" …(totalCp=").append(totalCp).append(')')
+        }
+        return sb.toString()
+    }
+
     private fun applyWordFiltering(
         text: String,
         appName: String,
@@ -3416,7 +3457,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         if (wordReplacements.isNotEmpty()) {
             Log.d(TAG, "Word replacements available: ${wordReplacements.size} items")
-            for ((from, to) in wordReplacements) {
+            for (rule in wordReplacements) {
+                val from = rule.from
+                val to = rule.to
                 val originalText = processedText
                 processedText = processedText.replace(from, to, ignoreCase = true)
                 if (originalText != processedText) {
@@ -3425,6 +3468,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     appliedReplacements.add("'$from' -> '$to'")
                 } else {
                     Log.d(TAG, "Word replacement not found: '$from' in text: '$processedText'")
+                    logWordSwapMissDiagnostics(from, processedText)
                 }
             }
         }
