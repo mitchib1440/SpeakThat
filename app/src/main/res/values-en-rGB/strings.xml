@@ -670,6 +670,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_earcon_preview">Preview Earcon</string>
     <string name="behavior_earcon_preview_none">Select a sound above to preview an earcon.</string>
     <string name="behavior_earcon_delay_disclaimer">ⓘ Playing a sound will naturally add a minor delay (approx. 500ms) before the readout begins.</string>
+    <string name="behavior_earcon_engine_warning">⚠️ Your current text-to-speech engine may not support custom sounds. If you hear no click, we recommend using Google Speech Services.</string>
     <string name="behavior_earcon_operation_failed">Could not complete that action. Please try again.</string>
     <string-array name="behavior_earcon_modes">
         <item>None</item>

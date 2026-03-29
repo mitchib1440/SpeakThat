@@ -7,13 +7,18 @@
 
 package com.micoyc.speakthat.settings.sections;
 
+import android.content.Context;
 import android.content.res.AssetFileDescriptor;
+import android.content.res.ColorStateList;
 import android.media.MediaPlayer;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
 import com.micoyc.speakthat.InAppLogger;
 import com.micoyc.speakthat.R;
 import com.micoyc.speakthat.databinding.ActivityBehaviorSettingsBinding;
@@ -24,6 +29,10 @@ import java.util.Arrays;
 // Earcon used to support custom sounds, but it required using the media player which didn't play nice with other SpeakThat features.
 
 public class EarconSection implements BehaviorSettingsSection {
+    private static final String VOICE_PREFS_NAME = "VoiceSettings";
+    private static final String KEY_TTS_ENGINE = "tts_engine_package";
+    private static final String GOOGLE_TTS_PACKAGE = "com.google.android.tts";
+
     private final AppCompatActivity activity;
     private final ActivityBehaviorSettingsBinding binding;
     private final BehaviorSettingsStore store;
@@ -57,7 +66,7 @@ public class EarconSection implements BehaviorSettingsSection {
             @Override
             public void onItemSelected(AdapterView<?> parent, android.view.View view, int position, long id) {
                 String mode = positionToMode(position);
-                updateDelayDisclaimerVisibility(mode);
+                applyEarconDelayDisclaimer(mode);
                 if (store.isInitializing()) {
                     return;
                 }
@@ -71,6 +80,7 @@ public class EarconSection implements BehaviorSettingsSection {
         });
 
         binding.btnPreviewEarcon.setOnClickListener(v -> playPreview());
+        applyEarconDelayDisclaimer(positionToMode(binding.spinnerEarcon.getSelectedItemPosition()));
     }
 
     @Override
@@ -81,12 +91,19 @@ public class EarconSection implements BehaviorSettingsSection {
         );
         int pos = modeToPosition(mode);
         binding.spinnerEarcon.setSelection(pos, false);
-        updateDelayDisclaimerVisibility(positionToMode(pos));
+        applyEarconDelayDisclaimer(positionToMode(pos));
     }
 
     @Override
     public void release() {
         releasePreviewPlayer();
+    }
+
+    /**
+     * Refreshes the earcon disclaimer when the host activity resumes (e.g. after changing TTS engine in Voice settings).
+     */
+    public void onHostResume() {
+        applyEarconDelayDisclaimer(positionToMode(binding.spinnerEarcon.getSelectedItemPosition()));
     }
 
     private int modeToPosition(String mode) {
@@ -104,9 +121,43 @@ public class EarconSection implements BehaviorSettingsSection {
         return earconValues[position];
     }
 
-    private void updateDelayDisclaimerVisibility(String mode) {
-        int vis = BehaviorSettingsStore.EARCON_NONE.equals(mode) ? View.GONE : View.VISIBLE;
-        binding.layoutEarconDelayDisclaimer.setVisibility(vis);
+    private String resolveEffectiveTtsEnginePackage() {
+        android.content.SharedPreferences voicePrefs =
+            activity.getSharedPreferences(VOICE_PREFS_NAME, Context.MODE_PRIVATE);
+        String saved = voicePrefs.getString(KEY_TTS_ENGINE, "");
+        if (saved != null && !saved.isEmpty()) {
+            return saved;
+        }
+        String def = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.TTS_DEFAULT_SYNTH);
+        return def != null ? def : "";
+    }
+
+    private static boolean isGoogleSpeechServices(String packageName) {
+        return GOOGLE_TTS_PACKAGE.equals(packageName);
+    }
+
+    private void applyEarconDelayDisclaimer(String mode) {
+        if (BehaviorSettingsStore.EARCON_NONE.equals(mode)) {
+            binding.layoutEarconDelayDisclaimer.setVisibility(View.GONE);
+            return;
+        }
+        binding.layoutEarconDelayDisclaimer.setVisibility(View.VISIBLE);
+
+        boolean google = isGoogleSpeechServices(resolveEffectiveTtsEnginePackage());
+        int textRes = google ? R.string.behavior_earcon_delay_disclaimer : R.string.behavior_earcon_engine_warning;
+        int textColor = ContextCompat.getColor(
+            activity,
+            google ? R.color.purple_card_text_primary : R.color.text_warning
+        );
+        CharSequence text = activity.getText(textRes);
+        binding.textEarconDelayDisclaimer.setText(textRes);
+        binding.textEarconDelayDisclaimer.setTextColor(textColor);
+        binding.textEarconDelayDisclaimer.setContentDescription(text);
+        ImageViewCompat.setImageTintList(
+            binding.imageEarconDelayDisclaimerIcon,
+            ColorStateList.valueOf(textColor)
+        );
+        binding.imageEarconDelayDisclaimerIcon.setContentDescription(text);
     }
 
     private void playPreview() {

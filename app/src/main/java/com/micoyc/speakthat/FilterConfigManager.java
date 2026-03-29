@@ -38,6 +38,10 @@ public class FilterConfigManager {
     private static final String KEY_URL_HANDLING_MODE = "url_handling_mode";
     private static final String KEY_URL_REPLACEMENT_TEXT = "url_replacement_text";
     private static final String KEY_TIDY_SPEECH_REMOVE_EMOJIS = "tidy_speech_remove_emojis";
+
+    private static float roundToTwoDecimalPlaces(float value) {
+        return Math.round(value * 100.0f) / 100.0f;
+    }
     
     public static class FilterConfig {
         public String appListMode;
@@ -822,12 +826,14 @@ public class FilterConfigManager {
                 JSONObject voice = json.getJSONObject("voice");
                 
                 if (voice.has("speechRate")) {
-                    voiceEditor.putFloat("speech_rate", (float) voice.getDouble("speechRate"));
+                    float speechRate = roundToTwoDecimalPlaces((float) voice.getDouble("speechRate"));
+                    voiceEditor.putFloat("speech_rate", speechRate);
                     totalImported++;
                 }
                 
                 if (voice.has("pitch")) {
-                    voiceEditor.putFloat("pitch", (float) voice.getDouble("pitch"));
+                    float pitch = roundToTwoDecimalPlaces((float) voice.getDouble("pitch"));
+                    voiceEditor.putFloat("pitch", pitch);
                     totalImported++;
                 }
                 

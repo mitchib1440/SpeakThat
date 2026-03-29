@@ -251,13 +251,18 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         }
     }
 
+    /** Quantize TTS rate/pitch to cent precision to avoid float noise in engine/DSP paths. */
+    private static float roundToTwoDecimalPlaces(float value) {
+        return Math.round(value * 100.0f) / 100.0f;
+    }
+
     private void setupSeekBars() {
         // Speech Rate SeekBar (0.1x to 3.0x)
         speechRateSeekBar.setMax(290); // (3.0 - 0.1) * 100
         speechRateSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                currentSpeechRate = 0.1f + (progress / 100.0f);
+                currentSpeechRate = roundToTwoDecimalPlaces(0.1f + (progress / 100.0f));
                 speechRateValue.setText(String.format("%.1fx", currentSpeechRate));
                 if (fromUser && isTtsReady) {
                     textToSpeech.setSpeechRate(currentSpeechRate);
@@ -278,7 +283,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         pitchSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                currentPitch = 0.1f + (progress / 100.0f);
+                currentPitch = roundToTwoDecimalPlaces(0.1f + (progress / 100.0f));
                 pitchValue.setText(String.format("%.1fx", currentPitch));
                 if (fromUser && isTtsReady) {
                     textToSpeech.setPitch(currentPitch);
@@ -1193,10 +1198,10 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
      */
     private void syncCurrentUiRuntimeValues() {
         if (speechRateSeekBar != null) {
-            currentSpeechRate = 0.1f + (speechRateSeekBar.getProgress() / 100.0f);
+            currentSpeechRate = roundToTwoDecimalPlaces(0.1f + (speechRateSeekBar.getProgress() / 100.0f));
         }
         if (pitchSeekBar != null) {
-            currentPitch = 0.1f + (pitchSeekBar.getProgress() / 100.0f);
+            currentPitch = roundToTwoDecimalPlaces(0.1f + (pitchSeekBar.getProgress() / 100.0f));
         }
         if (ttsVolumeSeekBar != null) {
             currentTtsVolume = Math.min(1.0f, ttsVolumeSeekBar.getProgress() / 100.0f);
@@ -1654,8 +1659,12 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         layoutAdvancedVoiceSection.setVisibility(View.GONE);
         saveAdvancedVoiceEnabled(false);
 
-        // Reset audio settings in SharedPreferences
+        // Reset audio and TTS scalar settings in SharedPreferences (sliders use programmatic
+        // setProgress, so save* listeners do not run; persist defaults explicitly for the service)
         sharedPreferences.edit()
+            .putFloat(KEY_SPEECH_RATE, DEFAULT_SPEECH_RATE)
+            .putFloat(KEY_PITCH, DEFAULT_PITCH)
+            .putFloat(KEY_TTS_VOLUME, DEFAULT_TTS_VOLUME)
             .putInt(KEY_AUDIO_USAGE, DEFAULT_AUDIO_USAGE)
             .putInt(KEY_CONTENT_TYPE, DEFAULT_CONTENT_TYPE)
             .putBoolean(KEY_SPEAKERPHONE_ENABLED, false)

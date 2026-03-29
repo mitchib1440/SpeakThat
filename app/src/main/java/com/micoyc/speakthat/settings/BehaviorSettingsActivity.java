@@ -36,6 +36,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
     private GestureSection gestureSection;
     private CooldownSection cooldownSection;
     private RespectModesSection respectModesSection;
+    private EarconSection earconSection;
 
     /**
      * True after the user turns on Honour DND without notification-policy access and we sent them
@@ -137,7 +138,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
         MediaBehaviorSection mediaBehaviorSection =
             new MediaBehaviorSection(this, binding, store);
         DelaySection delaySection = new DelaySection(this, binding, store);
-        EarconSection earconSection = new EarconSection(this, binding, store);
+        earconSection = new EarconSection(this, binding, store);
         ContentCapSection contentCapSection = new ContentCapSection(this, binding, store);
         CustomAppNamesSection customAppNamesSection =
             new CustomAppNamesSection(this, binding, store);
@@ -184,6 +185,9 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
         InAppLogger.logAppLifecycle("Behaviour Settings resumed", "BehaviorSettingsActivity");
         if (respectModesSection != null) {
             respectModesSection.onHostResume();
+        }
+        if (earconSection != null) {
+            earconSection.onHostResume();
         }
     }
 
