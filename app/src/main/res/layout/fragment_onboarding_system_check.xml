@@ -219,6 +219,20 @@
                         android:textSize="16sp"
                         android:textColor="@color/purple_card_text_secondary"
                         android:lineSpacingExtra="2dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonRetrySystemCheck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/onboarding_system_check_retry"
+                        android:textColor="@color/black_100"
+                        android:backgroundTint="@color/white_100"
+                        app:cornerRadius="24dp"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="12dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_gravity="center"
+                        style="@style/Widget.Material3.Button.TextButton" />
                 </LinearLayout>
 
             </LinearLayout>

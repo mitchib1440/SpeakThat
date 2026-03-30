@@ -419,6 +419,11 @@ class OnboardingPagerAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>(
             binding.buttonFeedbackNo.setOnClickListener {
                 onUserReportedFailure()
             }
+            
+            binding.buttonRetrySystemCheck.setOnClickListener {
+                selfTestHelper.cancelTestNotification()
+                requestPermissionAndStartTest()
+            }
         }
         
         private fun showIntroState() {

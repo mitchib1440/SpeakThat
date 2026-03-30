@@ -1443,6 +1443,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="onboarding_system_check_failure_card_description">SpeakThat didn\'t read the test notification.\n\n%1$s\n\nYou can continue the setup, but you might find SpeakThat isn\'t ready to function just yet.\n\nFeel free to contact me if you need help getting the app working.</string>
     <string name="onboarding_system_check_failure_permission_denied">You denied the notification permission.</string>
     <string name="onboarding_system_check_failure_test_skipped">The test was skipped.</string>
+    <string name="onboarding_system_check_retry">Retry</string>
 
     <!-- TTS String for Page 5 -->
     <string name="tts_onboarding_system_check">Quick System Check. SpeakThat will quickly verify that it is ready to run on your device. SpeakThat will send a test notification and read it out to ensure it is working on your device. This is just a quick check. You will be able to choose what gets read next.</string>
