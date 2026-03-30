@@ -1444,6 +1444,22 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="onboarding_system_check_failure_permission_denied">You denied the notification permission.</string>
     <string name="onboarding_system_check_failure_test_skipped">The test was skipped.</string>
     <string name="onboarding_system_check_retry">Retry</string>
+    <string name="onboarding_system_check_failure_category_post_notifications">Notification permission denied</string>
+    <string name="onboarding_system_check_failure_category_notification_access">Notification access required</string>
+    <string name="onboarding_system_check_failure_category_master_switch">SpeakThat is off</string>
+    <string name="onboarding_system_check_failure_category_volume">Volume too low</string>
+    <string name="onboarding_system_check_failure_category_sound_mode">Blocked by sound mode</string>
+    <string name="onboarding_system_check_failure_category_post_failed">Could not show test notification</string>
+    <string name="onboarding_system_check_failure_category_not_received">Notification not received</string>
+    <string name="onboarding_system_check_failure_category_no_audio_heard">No audio heard</string>
+    <string name="onboarding_system_check_failure_category_dnd">Blocked by Do Not Disturb</string>
+    <string name="onboarding_system_check_failure_category_rule">Blocked by a rule</string>
+    <string name="onboarding_system_check_failure_category_filter">Blocked by a filter</string>
+    <string name="onboarding_system_check_failure_category_duplicate">Blocked by duplicate detection</string>
+    <string name="onboarding_system_check_failure_category_dismissal">Blocked by dismissal memory</string>
+    <string name="onboarding_system_check_failure_category_tts">Text-to-speech issue</string>
+    <string name="onboarding_system_check_failure_category_test_interrupted">Test interrupted</string>
+    <string name="onboarding_system_check_failure_category_unknown">Something went wrong</string>
 
     <!-- TTS String for Page 5 -->
     <string name="tts_onboarding_system_check">Quick System Check. SpeakThat will quickly verify that it is ready to run on your device. SpeakThat will send a test notification and read it out to ensure it is working on your device. This is just a quick check. You will be able to choose what gets read next.</string>

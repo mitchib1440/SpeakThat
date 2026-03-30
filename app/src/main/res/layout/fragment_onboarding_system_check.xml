@@ -212,6 +212,15 @@
                         android:layout_marginBottom="12dp" />
 
                     <TextView
+                        android:id="@+id/textFailureCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/purple_200"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
                         android:id="@+id/textFailureReason"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
