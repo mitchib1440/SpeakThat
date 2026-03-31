@@ -15,4 +15,7 @@
     <cache-path 
         name="cache" 
         path="." />
-</paths> 
+    <cache-path
+        name="earcons"
+        path="earcons/" />
+</paths>
