@@ -30,6 +30,7 @@ import com.google.android.material.materialswitch.MaterialSwitch;
 import android.view.View;
 import android.widget.LinearLayout;
 import java.util.HashSet;
+import com.micoyc.speakthat.tts.SpeakThatTtsManager;
 
 public class VoiceSettingsActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
@@ -188,16 +189,12 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     }
 
     private void initializeTextToSpeech() {
-        // Get selected TTS engine from preferences
-        String selectedEngine = sharedPreferences.getString(KEY_TTS_ENGINE, "");
-        
-        if (selectedEngine.isEmpty()) {
-            // Use system default engine
-            textToSpeech = new TextToSpeech(this, this);
+        SpeakThatTtsManager.initIfNeeded(this, false, status -> onInit(status));
+        textToSpeech = SpeakThatTtsManager.getTextToSpeech();
+        String selectedEngine = SpeakThatTtsManager.getActiveEnginePackage();
+        if (selectedEngine == null || selectedEngine.isEmpty()) {
             InAppLogger.log("VoiceSettings", "Using system default TTS engine");
         } else {
-            // Use selected custom engine
-            textToSpeech = new TextToSpeech(this, this, selectedEngine);
             InAppLogger.log("VoiceSettings", "Using custom TTS engine: " + selectedEngine);
         }
     }
@@ -219,6 +216,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
     @Override
     public void onInit(int status) {
+        textToSpeech = SpeakThatTtsManager.getTextToSpeech();
         if (status == TextToSpeech.SUCCESS) {
             isTtsReady = true;
             setupVoicesAndLanguages();
@@ -1313,7 +1311,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         boolean speakerphoneEnabled = sharedPreferences.getBoolean(KEY_SPEAKERPHONE_ENABLED, false);
         Bundle volumeParams = createVolumeBundle(currentTtsVolume, audioUsage, speakerphoneEnabled);
         
-        textToSpeech.speak(previewText, TextToSpeech.QUEUE_FLUSH, volumeParams, "preview");
+        SpeakThatTtsManager.speak(this, previewText, TextToSpeech.QUEUE_FLUSH, volumeParams, "preview", null);
         
         InAppLogger.log("VoiceSettings", "Voice preview played - Rate: " + currentSpeechRate + ", Pitch: " + currentPitch + 
                        ", User's TTS Language: " + (effectiveLanguage != null ? effectiveLanguage.toString() : "default") + 
@@ -2395,8 +2393,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     @Override
     protected void onDestroy() {
         if (textToSpeech != null) {
-            textToSpeech.stop();
-            textToSpeech.shutdown();
+            SpeakThatTtsManager.stop();
         }
         super.onDestroy();
     }

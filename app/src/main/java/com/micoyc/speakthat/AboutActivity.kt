@@ -9,12 +9,13 @@ package com.micoyc.speakthat
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.SystemClock
 import android.speech.tts.TextToSpeech
-import android.speech.tts.UtteranceProgressListener
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.micoyc.speakthat.databinding.ActivityAboutBinding
+import com.micoyc.speakthat.tts.SpeakThatTtsManager
 import java.util.Locale
 import kotlin.jvm.java
 
@@ -219,47 +220,26 @@ class AboutActivity : AppCompatActivity() {
     }
     
     private fun startTTS() {
-        if (textToSpeech == null) {
-            textToSpeech = TextToSpeech(this) { status ->
+        if (SpeakThatTtsManager.getTextToSpeech() == null) {
+            SpeakThatTtsManager.initIfNeeded(this, false) { status ->
                 if (status == TextToSpeech.SUCCESS) {
-                    // Set audio stream to assistant usage to avoid triggering media detection
-                    textToSpeech?.setAudioAttributes(
+                    SpeakThatTtsManager.setAudioAttributes(
                         android.media.AudioAttributes.Builder()
                             .setUsage(android.media.AudioAttributes.USAGE_ASSISTANT)
                             .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
                             .build()
                     )
-                    
-                    // Apply saved voice settings (which will handle language/voice selection)
                     applyVoiceSettings()
-                    
-                    // Set up utterance progress listener
-                    textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-                        override fun onStart(utteranceId: String?) {
-                            isSpeaking = true
-                            updateButtonState()
-                        }
-                        
-                        override fun onDone(utteranceId: String?) {
-                            isSpeaking = false
-                            updateButtonState()
-                        }
-                        
-                        override fun onError(utteranceId: String?) {
-                            isSpeaking = false
-                            updateButtonState()
-                            Toast.makeText(this@AboutActivity, getString(R.string.tts_error_occurred), Toast.LENGTH_SHORT).show()
-                        }
-                    })
-                    
+                    textToSpeech = SpeakThatTtsManager.getTextToSpeech()
                     speakAboutApp()
                 } else {
                     Toast.makeText(this, getString(R.string.tts_initialization_failed), Toast.LENGTH_SHORT).show()
                 }
             }
-        } else {
-            speakAboutApp()
+            return
         }
+        textToSpeech = SpeakThatTtsManager.getTextToSpeech()
+        speakAboutApp()
     }
     
     private fun speakAboutApp() {
@@ -295,17 +275,49 @@ class AboutActivity : AppCompatActivity() {
             .setContentType(contentType)
             .build()
             
-        textToSpeech?.setAudioAttributes(audioAttributes)
+        SpeakThatTtsManager.setAudioAttributes(audioAttributes)
         InAppLogger.log("AboutActivity", "Audio attributes applied - Usage: $ttsUsage, Content: $contentType")
         
         // Create volume bundle with proper volume parameters
         val volumeParams = VoiceSettingsActivity.createVolumeBundle(ttsVolume, ttsUsage, speakerphoneEnabled)
         
-        textToSpeech?.speak(aboutText, TextToSpeech.QUEUE_FLUSH, volumeParams, getString(R.string.tts_utterance_about_app))
+        val utteranceId = "about_app_${SystemClock.elapsedRealtime()}"
+        val result = SpeakThatTtsManager.speak(
+            context = this,
+            text = aboutText,
+            queueMode = TextToSpeech.QUEUE_FLUSH,
+            params = volumeParams,
+            utteranceId = utteranceId,
+            callback = object : SpeakThatTtsManager.TtsCallback {
+                override fun onStart(utteranceId: String?) {
+                    isSpeaking = true
+                    updateButtonState()
+                }
+
+                override fun onDone(utteranceId: String?) {
+                    isSpeaking = false
+                    updateButtonState()
+                }
+
+                override fun onError(utteranceId: String?) {
+                    isSpeaking = false
+                    updateButtonState()
+                    Toast.makeText(this@AboutActivity, getString(R.string.tts_error_occurred), Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onStop(utteranceId: String?, interrupted: Boolean) {
+                    isSpeaking = false
+                    updateButtonState()
+                }
+            }
+        )
+        if (result == TextToSpeech.ERROR) {
+            Toast.makeText(this, getString(R.string.tts_error_occurred), Toast.LENGTH_SHORT).show()
+        }
     }
     
     private fun stopTTS() {
-        textToSpeech?.stop()
+        SpeakThatTtsManager.stop()
         isSpeaking = false
         updateButtonState()
     }
@@ -323,58 +335,26 @@ class AboutActivity : AppCompatActivity() {
     }
     
     private fun applyVoiceSettings() {
-        textToSpeech?.let { tts ->
-            voiceSettingsPrefs?.let { prefs ->
-                VoiceSettingsActivity.applyVoiceSettings(tts, prefs)
-            }
-        }
+        SpeakThatTtsManager.applyVoiceSettings(this)
+        textToSpeech = SpeakThatTtsManager.getTextToSpeech()
     }
     
     private fun reinitializeTtsWithCurrentSettings() {
         // Stop any current speech
-        textToSpeech?.stop()
+        SpeakThatTtsManager.stop()
         isSpeaking = false
         updateButtonState()
-        
-        // Shutdown existing TTS instance
-        textToSpeech?.shutdown()
-        
-        // Create new TTS instance with current settings
-        textToSpeech = TextToSpeech(this) { status ->
+
+        SpeakThatTtsManager.initIfNeeded(this, true) { status ->
             if (status == TextToSpeech.SUCCESS) {
-                // Set audio stream to assistant usage to avoid triggering media detection
-                textToSpeech?.setAudioAttributes(
+                SpeakThatTtsManager.setAudioAttributes(
                     android.media.AudioAttributes.Builder()
                         .setUsage(android.media.AudioAttributes.USAGE_ASSISTANT)
                         .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
                         .build()
                 )
-                
-                // Apply saved voice settings (which will handle language/voice selection)
                 applyVoiceSettings()
-                
-                // Set up utterance progress listener
-                textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-                    @Suppress("DEPRECATION")
-                    override fun onStart(utteranceId: String?) {
-                        isSpeaking = true
-                        updateButtonState()
-                    }
-                    
-                    @Suppress("DEPRECATION")
-                    override fun onDone(utteranceId: String?) {
-                        isSpeaking = false
-                        updateButtonState()
-                    }
-                    
-                    @Suppress("DEPRECATION")
-                    override fun onError(utteranceId: String?) {
-                        isSpeaking = false
-                        updateButtonState()
-                        Toast.makeText(this@AboutActivity, getString(R.string.tts_error_occurred), Toast.LENGTH_SHORT).show()
-                    }
-                })
-                
+                textToSpeech = SpeakThatTtsManager.getTextToSpeech()
                 InAppLogger.log("AboutActivity", "TTS reinitialized successfully with new language settings")
             } else {
                 InAppLogger.log("AboutActivity", "TTS reinitialization failed with status: $status")
@@ -425,11 +405,7 @@ class AboutActivity : AppCompatActivity() {
         super.onDestroy()
         // Unregister voice settings listener
         voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
-        
-        textToSpeech?.let { tts ->
-            tts.stop()
-            tts.shutdown()
-        }
+        SpeakThatTtsManager.stop()
     }
     
     override fun onSupportNavigateUp(): Boolean {

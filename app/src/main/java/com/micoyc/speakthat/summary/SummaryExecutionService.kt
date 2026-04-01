@@ -30,7 +30,6 @@ import android.os.Looper
 import android.provider.Settings
 import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
-import android.speech.tts.UtteranceProgressListener
 import android.text.format.DateFormat
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -49,6 +48,7 @@ import com.micoyc.speakthat.MainActivity
 import com.micoyc.speakthat.NotificationReaderService
 import com.micoyc.speakthat.R
 import com.micoyc.speakthat.VoiceSettingsActivity
+import com.micoyc.speakthat.tts.SpeakThatTtsManager
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Date
@@ -217,6 +217,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
     }
 
     override fun onInit(status: Int) {
+        textToSpeech = SpeakThatTtsManager.getTextToSpeech()
         if (status != TextToSpeech.SUCCESS) {
             InAppLogger.logError(TAG, "TextToSpeech init failed (status=$status)")
             requestGracefulStop("tts_init_failed")
@@ -231,7 +232,6 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         }
 
         configureTextToSpeech(tts)
-        registerUtteranceProgressListener(tts)
         isTtsReady = true
         InAppLogger.log(TAG, "TextToSpeech initialized successfully")
 
@@ -242,11 +242,11 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
     }
 
     private fun initializeTextToSpeech() {
-        if (textToSpeech != null) {
-            return
-        }
         isTtsReady = false
-        textToSpeech = TextToSpeech(this, this)
+        SpeakThatTtsManager.initIfNeeded(this, false) { status ->
+            onInit(status)
+        }
+        textToSpeech = SpeakThatTtsManager.getTextToSpeech()
     }
 
     private fun configureTextToSpeech(tts: TextToSpeech) {
@@ -264,83 +264,96 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         VoiceSettingsActivity.applyVoiceSettings(tts, prefs)
     }
 
-    private fun registerUtteranceProgressListener(tts: TextToSpeech) {
-        tts.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-            override fun onStart(utteranceId: String?) {
-                val id = utteranceId ?: return
-                val session = utteranceSessionMap[id] ?: return
-                if (session != currentSpeechSession) {
-                    return
-                }
-
-                val type = utteranceTypeMap[id] ?: return
-                if (type == SummaryConstants.UTTERANCE_PREFIX_INTRO && activeSwipeRecoverySession == session) {
-                    isUserSwiping = false
-                    activeSwipeRecoverySession = -1
-                }
-
-                if (type == SummaryConstants.UTTERANCE_PREFIX_ITEM) {
-                    val index = utteranceIndexMap[id] ?: return
-                    mainHandler.post {
-                        if (isServiceStopping || session != currentSpeechSession) {
-                            return@post
-                        }
-                        val targetIndex = index.coerceIn(0, summaryItems.lastIndex)
-                        if (targetIndex == currentIndex) {
-                            renderCurrentCard()
-                            return@post
-                        }
-
-                        val isNext = targetIndex > currentIndex
-                        animateContentSwap(targetIndex = targetIndex, isNext = isNext)
-                    }
-                }
+    private fun summaryCallbackFor(utteranceId: String): SpeakThatTtsManager.TtsCallback {
+        return object : SpeakThatTtsManager.TtsCallback {
+            override fun onStart(utteranceIdFromCallback: String?) {
+                handleUtteranceStart(utteranceIdFromCallback ?: utteranceId)
             }
 
-            override fun onDone(utteranceId: String?) {
-                val id = utteranceId ?: return
-                val session = utteranceSessionMap[id] ?: return
-                if (session != currentSpeechSession) {
-                    return
-                }
-
-                val type = utteranceTypeMap[id] ?: return
-                val index = utteranceIndexMap[id] ?: -1
-
-                if (isUserSwiping && session != activeSwipeRecoverySession) {
-                    return
-                }
-
-                val isFinalItem = type == SummaryConstants.UTTERANCE_PREFIX_ITEM &&
-                    index == summaryItems.lastIndex &&
-                    summaryItems.isNotEmpty()
-                val isOutro = type == SummaryConstants.UTTERANCE_PREFIX_OUTRO
-
-                if (isFinalItem || isOutro) {
-                    mainHandler.post {
-                        if (!isServiceStopping && session == currentSpeechSession) {
-                            requestGracefulStop("tts_queue_completed")
-                        }
-                    }
-                }
+            override fun onDone(utteranceIdFromCallback: String?) {
+                handleUtteranceDone(utteranceIdFromCallback ?: utteranceId)
             }
 
-            override fun onError(utteranceId: String?) {
-                val id = utteranceId ?: return
-                val session = utteranceSessionMap[id] ?: return
-                if (session != currentSpeechSession) {
-                    return
+            override fun onError(utteranceIdFromCallback: String?) {
+                handleUtteranceError(utteranceIdFromCallback ?: utteranceId)
+            }
+
+            override fun onStop(utteranceIdFromCallback: String?, interrupted: Boolean) {
+                // No-op for summary queue control.
+            }
+        }
+    }
+
+    private fun handleUtteranceStart(utteranceId: String) {
+        val session = utteranceSessionMap[utteranceId] ?: return
+        if (session != currentSpeechSession) {
+            return
+        }
+
+        val type = utteranceTypeMap[utteranceId] ?: return
+        if (type == SummaryConstants.UTTERANCE_PREFIX_INTRO && activeSwipeRecoverySession == session) {
+            isUserSwiping = false
+            activeSwipeRecoverySession = -1
+        }
+
+        if (type == SummaryConstants.UTTERANCE_PREFIX_ITEM) {
+            val index = utteranceIndexMap[utteranceId] ?: return
+            mainHandler.post {
+                if (isServiceStopping || session != currentSpeechSession) {
+                    return@post
                 }
-                if (isUserSwiping && session != activeSwipeRecoverySession) {
-                    return
+                val targetIndex = index.coerceIn(0, summaryItems.lastIndex)
+                if (targetIndex == currentIndex) {
+                    renderCurrentCard()
+                    return@post
                 }
-                mainHandler.post {
-                    if (!isServiceStopping && session == currentSpeechSession) {
-                        requestGracefulStop("tts_error")
-                    }
+
+                val isNext = targetIndex > currentIndex
+                animateContentSwap(targetIndex = targetIndex, isNext = isNext)
+            }
+        }
+    }
+
+    private fun handleUtteranceDone(utteranceId: String) {
+        val session = utteranceSessionMap[utteranceId] ?: return
+        if (session != currentSpeechSession) {
+            return
+        }
+
+        val type = utteranceTypeMap[utteranceId] ?: return
+        val index = utteranceIndexMap[utteranceId] ?: -1
+
+        if (isUserSwiping && session != activeSwipeRecoverySession) {
+            return
+        }
+
+        val isFinalItem = type == SummaryConstants.UTTERANCE_PREFIX_ITEM &&
+            index == summaryItems.lastIndex &&
+            summaryItems.isNotEmpty()
+        val isOutro = type == SummaryConstants.UTTERANCE_PREFIX_OUTRO
+
+        if (isFinalItem || isOutro) {
+            mainHandler.post {
+                if (!isServiceStopping && session == currentSpeechSession) {
+                    requestGracefulStop("tts_queue_completed")
                 }
             }
-        })
+        }
+    }
+
+    private fun handleUtteranceError(utteranceId: String) {
+        val session = utteranceSessionMap[utteranceId] ?: return
+        if (session != currentSpeechSession) {
+            return
+        }
+        if (isUserSwiping && session != activeSwipeRecoverySession) {
+            return
+        }
+        mainHandler.post {
+            if (!isServiceStopping && session == currentSpeechSession) {
+                requestGracefulStop("tts_error")
+            }
+        }
     }
 
     private fun startSummarySpeechFromCurrentIndex(triggeredBySwipe: Boolean) {
@@ -427,10 +440,10 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
                 utteranceTypeMap[pauseId] = SummaryConstants.UTTERANCE_PREFIX_PAUSE
                 utteranceIndexMap[pauseId] = index
                 utteranceSessionMap[pauseId] = sessionId
-                tts.playSilentUtterance(
-                    pauseGapMs,
-                    TextToSpeech.QUEUE_ADD,
-                    pauseId
+                SpeakThatTtsManager.playSilentUtterance(
+                    durationMs = pauseGapMs,
+                    queueMode = TextToSpeech.QUEUE_ADD,
+                    utteranceId = pauseId
                 )
             }
         }
@@ -444,11 +457,18 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         index: Int,
         sessionId: Int
     ) {
-        val tts = textToSpeech ?: return
+        if (textToSpeech == null) return
         utteranceTypeMap[utteranceId] = type
         utteranceIndexMap[utteranceId] = index
         utteranceSessionMap[utteranceId] = sessionId
-        tts.speak(text, queueMode, null, utteranceId)
+        SpeakThatTtsManager.speak(
+            context = this,
+            text = text,
+            queueMode = queueMode,
+            params = null,
+            utteranceId = utteranceId,
+            callback = summaryCallbackFor(utteranceId)
+        )
     }
 
     private fun buildUtteranceId(sessionId: Int, prefix: String, index: Int): String {
@@ -508,9 +528,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
 
     private fun stopAndReleaseTextToSpeech() {
         try {
-            textToSpeech?.setOnUtteranceProgressListener(null)
-            textToSpeech?.stop()
-            textToSpeech?.shutdown()
+            SpeakThatTtsManager.stop()
         } catch (e: Exception) {
             InAppLogger.logError(TAG, "Error shutting down TTS: ${e.message}")
         } finally {
@@ -528,7 +546,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         InAppLogger.log(TAG, "Stopping summary execution: $reason")
 
         try {
-            textToSpeech?.stop()
+            SpeakThatTtsManager.stop()
         } catch (e: Exception) {
             InAppLogger.logError(TAG, "Failed to stop TTS during shutdown: ${e.message}")
         }

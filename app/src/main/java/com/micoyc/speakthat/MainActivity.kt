@@ -24,9 +24,9 @@ import android.hardware.SensorManager
 import android.os.BatteryManager
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.provider.Settings
 import android.speech.tts.TextToSpeech
-import android.speech.tts.UtteranceProgressListener
 import android.text.TextUtils
 import android.util.Log
 import android.util.TypedValue
@@ -63,6 +63,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import com.micoyc.speakthat.rules.migration.RuleMigrationManager
 import com.micoyc.speakthat.summary.SummaryConstants
 import com.micoyc.speakthat.summary.SummarySettingsGate
+import com.micoyc.speakthat.tts.SpeakThatTtsManager
 import org.woheller69.freeDroidWarn.FreeDroidWarn
 import java.text.NumberFormat
 
@@ -317,8 +318,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         migrationPrefs?.unregisterOnSharedPreferenceChangeListener(migrationPrefsListener)
         
         // Clean up TTS
-        textToSpeech?.stop()
-        textToSpeech?.shutdown()
+        SpeakThatTtsManager.stop()
         
         // Clean up sensors
         sensorManager?.unregisterListener(this)
@@ -759,40 +759,18 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun initializeTextToSpeech() {
-        // Get selected TTS engine from preferences
-        val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", android.content.Context.MODE_PRIVATE)
-        val selectedEngine = voiceSettingsPrefs.getString("tts_engine_package", "")
-        
-        if (selectedEngine.isNullOrEmpty()) {
-            // Use system default engine
-            textToSpeech = TextToSpeech(this, this)
-            Log.d(TAG, "Using system default TTS engine")
-        } else {
-            // Use selected custom engine
-            textToSpeech = TextToSpeech(this, this, selectedEngine)
-            Log.d(TAG, "Using custom TTS engine: $selectedEngine")
+        SpeakThatTtsManager.initIfNeeded(this, false) { status ->
+            onInit(status)
         }
+        textToSpeech = SpeakThatTtsManager.getTextToSpeech()
     }
     
     private fun reinitializeTtsWithCurrentSettings() {
-        // Shutdown existing TTS instance
-        textToSpeech?.shutdown()
         isTtsInitialized = false
-        
-        // Create new TTS instance with current settings
-        // Get selected TTS engine from preferences
-        val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", android.content.Context.MODE_PRIVATE)
-        val selectedEngine = voiceSettingsPrefs.getString("tts_engine_package", "")
-        
-        if (selectedEngine.isNullOrEmpty()) {
-            // Use system default engine
-            textToSpeech = TextToSpeech(this, this)
-            Log.d(TAG, "Reinitializing with system default TTS engine")
-        } else {
-            // Use selected custom engine
-            textToSpeech = TextToSpeech(this, this, selectedEngine)
-            Log.d(TAG, "Reinitializing with custom TTS engine: $selectedEngine")
+        SpeakThatTtsManager.initIfNeeded(this, true) { status ->
+            onInit(status)
         }
+        textToSpeech = SpeakThatTtsManager.getTextToSpeech()
     }
     
     private fun loadEasterEggs() {
@@ -881,6 +859,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     override fun onInit(status: Int) {
+        textToSpeech = SpeakThatTtsManager.getTextToSpeech()
         if (status == TextToSpeech.SUCCESS) {
             // Apply saved voice settings (which will handle language/voice selection)
             applyVoiceSettings()
@@ -909,7 +888,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 showTtsEngineFailureDialog()
                 
                 // Reinitialize with default engine
-                textToSpeech = TextToSpeech(this, this)
+                SpeakThatTtsManager.refreshEngineIfPreferenceChanged(this) { retryStatus ->
+                    onInit(retryStatus)
+                }
                 Log.d(TAG, "Reverting to system default TTS engine")
                 return
             }
@@ -1100,31 +1081,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun speakText(text: String) {
-        if (isTtsInitialized && textToSpeech != null) {
+        if (isTtsInitialized && SpeakThatTtsManager.getTextToSpeech() != null) {
             // Register shake listener for this TTS session
             startShakeListening()
-            
-            // Set up completion listener to stop shake listening when done
-            textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-                override fun onStart(utteranceId: String?) {
-                    InAppLogger.logTTSEvent("MainActivity TTS started", text.take(50))
-                }
-                
-                @Suppress("DEPRECATION")
-                override fun onDone(utteranceId: String?) {
-                    // Stop shake listening when TTS completes
-                    stopShakeListening()
-                    InAppLogger.logTTSEvent("MainActivity TTS completed", "Easter egg finished")
-                }
-                
-                @Suppress("DEPRECATION")
-                override fun onError(utteranceId: String?) {
-                    // Stop shake listening even on error
-                    stopShakeListening()
-                    InAppLogger.logTTSEvent("MainActivity TTS error", "Easter egg failed")
-                    Log.e(TAG, "TTS error during easter egg playback")
-                }
-            })
             
             // CRITICAL: Apply audio attributes to TTS instance before creating volume bundle
             // This ensures the audio usage matches what we pass to createVolumeBundle
@@ -1157,12 +1116,39 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 .setContentType(contentType)
                 .build()
                 
-            textToSpeech?.setAudioAttributes(audioAttributes)
+            SpeakThatTtsManager.setAudioAttributes(audioAttributes)
             InAppLogger.log("MainActivity", "Audio attributes applied - Usage: $ttsUsage, Content: $contentType")
             
             val volumeParams = VoiceSettingsActivity.createVolumeBundle(ttsVolume, ttsUsage, speakerphoneEnabled)
-            
-            val result = textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, volumeParams, "easter_egg")
+
+            val utteranceId = "easter_egg_${SystemClock.elapsedRealtime()}"
+            val result = SpeakThatTtsManager.speak(
+                context = this,
+                text = text,
+                queueMode = TextToSpeech.QUEUE_FLUSH,
+                params = volumeParams,
+                utteranceId = utteranceId,
+                callback = object : SpeakThatTtsManager.TtsCallback {
+                    override fun onStart(utteranceId: String?) {
+                        InAppLogger.logTTSEvent("MainActivity TTS started", text.take(50))
+                    }
+
+                    override fun onDone(utteranceId: String?) {
+                        stopShakeListening()
+                        InAppLogger.logTTSEvent("MainActivity TTS completed", "Easter egg finished")
+                    }
+
+                    override fun onError(utteranceId: String?) {
+                        stopShakeListening()
+                        InAppLogger.logTTSEvent("MainActivity TTS error", "Easter egg failed")
+                        Log.e(TAG, "TTS error during easter egg playback")
+                    }
+
+                    override fun onStop(utteranceId: String?, interrupted: Boolean) {
+                        stopShakeListening()
+                    }
+                }
+            )
             if (result == TextToSpeech.ERROR) {
                 Log.e(TAG, "TTS speak() returned ERROR")
                 InAppLogger.logError("MainActivity", "TTS speak() failed")
@@ -1276,18 +1262,16 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun stopSpeaking(triggerType: String = "unknown") {
-        textToSpeech?.stop()
+        SpeakThatTtsManager.stop()
         stopShakeListening()
         InAppLogger.logTTSEvent("MainActivity TTS stopped by $triggerType", "User interrupted easter egg")
         Log.d(TAG, "MainActivity TTS stopped due to $triggerType")
     }
     
     private fun applyVoiceSettings() {
-        textToSpeech?.let { tts ->
-            val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-            VoiceSettingsActivity.applyVoiceSettings(tts, voicePrefs)
-            Log.d(TAG, "MainActivity voice settings applied")
-        }
+        SpeakThatTtsManager.applyVoiceSettings(this)
+        textToSpeech = SpeakThatTtsManager.getTextToSpeech()
+        Log.d(TAG, "MainActivity voice settings applied")
     }
     
     /**

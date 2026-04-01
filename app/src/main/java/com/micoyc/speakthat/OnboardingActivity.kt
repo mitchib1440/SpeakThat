@@ -10,14 +10,15 @@ package com.micoyc.speakthat
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.SystemClock
 import android.speech.tts.TextToSpeech
-import android.speech.tts.UtteranceProgressListener
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.viewpager2.widget.ViewPager2
 import com.micoyc.speakthat.databinding.ActivityOnboardingBinding
+import com.micoyc.speakthat.tts.SpeakThatTtsManager
 import java.util.Locale
 
 class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
@@ -158,52 +159,31 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     override fun onPause() {
         super.onPause()
         // Stop TTS when leaving the activity
-        textToSpeech?.stop()
+        SpeakThatTtsManager.stop()
     }
     
     private fun initializeTextToSpeech() {
-        // Get selected TTS engine from preferences
-        val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", android.content.Context.MODE_PRIVATE)
-        val selectedEngine = voiceSettingsPrefs.getString("tts_engine_package", "")
-        
-        if (selectedEngine.isNullOrEmpty()) {
-            // Use system default engine
-            textToSpeech = TextToSpeech(this, this)
-            InAppLogger.log(TAG, "Using system default TTS engine")
-        } else {
-            // Use selected custom engine
-            textToSpeech = TextToSpeech(this, this, selectedEngine)
-            InAppLogger.log(TAG, "Using custom TTS engine: $selectedEngine")
+        SpeakThatTtsManager.initIfNeeded(this, false) { status ->
+            onInit(status)
         }
+        textToSpeech = SpeakThatTtsManager.getTextToSpeech()
     }
     
     private fun reinitializeTtsWithCurrentSettings() {
-        // Shutdown existing TTS instance
-        textToSpeech?.shutdown()
         isTtsInitialized = false
-        
-        // Create new TTS instance with current settings
-        // Get selected TTS engine from preferences
-        val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", android.content.Context.MODE_PRIVATE)
-        val selectedEngine = voiceSettingsPrefs.getString("tts_engine_package", "")
-        
-        if (selectedEngine.isNullOrEmpty()) {
-            // Use system default engine
-            textToSpeech = TextToSpeech(this, this)
-            InAppLogger.log(TAG, "Reinitializing with system default TTS engine")
-        } else {
-            // Use selected custom engine
-            textToSpeech = TextToSpeech(this, this, selectedEngine)
-            InAppLogger.log(TAG, "Reinitializing with custom TTS engine: $selectedEngine")
+        SpeakThatTtsManager.initIfNeeded(this, true) { status ->
+            onInit(status)
         }
+        textToSpeech = SpeakThatTtsManager.getTextToSpeech()
     }
     
     override fun onInit(status: Int) {
+        textToSpeech = SpeakThatTtsManager.getTextToSpeech()
         if (status == TextToSpeech.SUCCESS) {
             InAppLogger.log(TAG, "TTS onInit called with status: $status")
             
             // Set audio stream to assistant usage to avoid triggering media detection
-            textToSpeech?.setAudioAttributes(
+            SpeakThatTtsManager.setAudioAttributes(
                 android.media.AudioAttributes.Builder()
                     .setUsage(android.media.AudioAttributes.USAGE_ASSISTANT)
                     .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
@@ -224,25 +204,20 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
     
     private fun applyVoiceSettings() {
-        textToSpeech?.let { tts ->
-            voiceSettingsPrefs?.let { prefs ->
-                // Log the current language settings before applying
-                val currentLanguage = prefs.getString("language", "en_US")
-                val currentTtsLanguage = prefs.getString("tts_language", "en_US")
-                InAppLogger.log(TAG, "Applying voice settings - UI Language: $currentLanguage, TTS Language: $currentTtsLanguage")
-                
-                VoiceSettingsActivity.applyVoiceSettings(tts, prefs)
-                
-                // Log the result after applying
-                InAppLogger.log(TAG, "Voice settings applied successfully")
-            }
+        voiceSettingsPrefs?.let { prefs ->
+            val currentLanguage = prefs.getString("language", "en_US")
+            val currentTtsLanguage = prefs.getString("tts_language", "en_US")
+            InAppLogger.log(TAG, "Applying voice settings - UI Language: $currentLanguage, TTS Language: $currentTtsLanguage")
+            SpeakThatTtsManager.applyVoiceSettings(this)
+            InAppLogger.log(TAG, "Voice settings applied successfully")
         }
+        textToSpeech = SpeakThatTtsManager.getTextToSpeech()
     }
     
     private fun speakText(text: String) {
-        if (isTtsInitialized && textToSpeech != null && !isMuted) {
+        if (isTtsInitialized && SpeakThatTtsManager.getTextToSpeech() != null && !isMuted) {
             // Stop any current speech first
-            textToSpeech?.stop()
+            SpeakThatTtsManager.stop()
             
             // CRITICAL: Apply audio attributes to TTS instance before creating volume bundle
             // This ensures the audio usage matches what we pass to createVolumeBundle
@@ -274,13 +249,19 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 .setContentType(contentType)
                 .build()
                 
-            textToSpeech?.setAudioAttributes(audioAttributes)
+            SpeakThatTtsManager.setAudioAttributes(audioAttributes)
             InAppLogger.log("OnboardingActivity", "Audio attributes applied - Usage: $ttsUsage, Content: $contentType")
             
             val volumeParams = VoiceSettingsActivity.createVolumeBundle(ttsVolume, ttsUsage, speakerphoneEnabled)
             
             // Then speak the new text
-            textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, volumeParams, "onboarding_utterance")
+            SpeakThatTtsManager.speak(
+                context = this,
+                text = text,
+                queueMode = TextToSpeech.QUEUE_FLUSH,
+                params = volumeParams,
+                utteranceId = "onboarding_${SystemClock.elapsedRealtime()}"
+            )
             InAppLogger.log(TAG, "Speaking: ${text.take(50)}...")
         }
     }
@@ -291,7 +272,7 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         
         if (isMuted) {
             // Stop any current speech when muting
-            textToSpeech?.stop()
+            SpeakThatTtsManager.stop()
             InAppLogger.log(TAG, "Onboarding TTS muted")
         } else {
             InAppLogger.log(TAG, "Onboarding TTS unmuted")
@@ -374,7 +355,7 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         
         // Set callback to stop TTS
         adapter.onStopTts = {
-            textToSpeech?.stop()
+            SpeakThatTtsManager.stop()
             InAppLogger.log(TAG, "TTS stopped via adapter callback")
         }
         
@@ -623,11 +604,7 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     
     override fun onDestroy() {
         super.onDestroy()
-        // Clean up TTS resources
-        if (textToSpeech != null) {
-            textToSpeech?.stop()
-            textToSpeech?.shutdown()
-        }
+        SpeakThatTtsManager.stop()
         
         // Unregister voice settings listener
         voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
