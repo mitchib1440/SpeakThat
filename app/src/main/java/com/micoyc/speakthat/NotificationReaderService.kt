@@ -22,6 +22,8 @@ import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
 import android.net.Uri
 import android.service.notification.NotificationListenerService
+import android.service.notification.NotificationListenerService.Ranking
+import android.service.notification.NotificationListenerService.RankingMap
 import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
 import android.text.format.DateFormat
@@ -186,7 +188,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private val notificationQueue = mutableListOf<QueuedNotification>()
 
     private sealed class IncomingSpeechEvent {
-        data class Notification(val sbn: StatusBarNotification) : IncomingSpeechEvent()
+        data class Notification(
+            val sbn: StatusBarNotification,
+            val rankingMap: RankingMap? = null
+        ) : IncomingSpeechEvent()
         data class ClockTick(val fromAlignedAlarm: Boolean) : IncomingSpeechEvent()
     }
 
@@ -493,7 +498,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     appName = appName,
                     text = text,
                     sbn = sbn,
-                    isSelfTest = false
+                    isSelfTest = false,
+                    rankingMap = null
                 )
                 SummaryFilterBridgeResult(
                     shouldInclude = result.shouldSpeak,
@@ -684,7 +690,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     try {
                         when (event) {
                             is IncomingSpeechEvent.Notification ->
-                                processPostedNotificationPipeline(event.sbn)
+                                processPostedNotificationPipeline(event.sbn, event.rankingMap)
                             is IncomingSpeechEvent.ClockTick ->
                                 processSpeakThatClockTimeTick(fromAlignedAlarm = event.fromAlignedAlarm)
                         }
@@ -1263,7 +1269,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
-    private fun processPostedNotificationPipeline(sbn: StatusBarNotification) {
+    private fun processPostedNotificationPipeline(sbn: StatusBarNotification, rankingMap: RankingMap? = null) {
         try {
             val notification = sbn.notification
             val packageName = sbn.packageName
@@ -1668,7 +1674,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 Log.d(TAG, "Processing notification from $appName: '$notificationText' (ID: ${sbn?.id}, time: ${System.currentTimeMillis()})")
                     
                 // Apply filtering first to determine final privacy status
-                val filterResult = applyFilters(packageName, appName, notificationText, sbn, isSelfTest)
+                val filterResult = applyFilters(
+                    packageName,
+                    appName,
+                    notificationText,
+                    sbn,
+                    isSelfTest,
+                    rankingMap = rankingMap
+                )
                     
                 // Check if the final result is private (either app-level or word-level)
                 val isAppPrivate = privateApps.contains(packageName)
@@ -1750,16 +1763,30 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return
+        }
         super.onNotificationPosted(sbn)
+        postNotificationToProcessingChannel(sbn, null)
+    }
+
+    @androidx.annotation.RequiresApi(Build.VERSION_CODES.Q)
+    override fun onNotificationPosted(sbn: StatusBarNotification, rankingMap: RankingMap) {
+        super.onNotificationPosted(sbn, rankingMap)
+        postNotificationToProcessingChannel(sbn, rankingMap)
+    }
+
+    private fun postNotificationToProcessingChannel(sbn: StatusBarNotification, rankingMap: RankingMap?) {
         try {
-            val result = processingChannel.trySend(IncomingSpeechEvent.Notification(sbn))
+            val result = processingChannel.trySend(IncomingSpeechEvent.Notification(sbn, rankingMap))
             if (!result.isSuccess) {
                 Log.w(TAG, "processingChannel.trySend failed: ${result.exceptionOrNull()?.message}")
             }
         } catch (e: Throwable) {
-            Log.e(TAG, "Critical error in onNotificationPosted", e)
+            Log.e(TAG, "Critical error in postNotificationToProcessingChannel", e)
             val exceptionName = e.javaClass.simpleName
-            val contextMessage = "Critical error in onNotificationPosted for ${sbn.packageName}#${sbn.id}: $exceptionName: ${e.message}"
+            val contextMessage =
+                "Critical error posting notification for ${sbn.packageName}#${sbn.id}: $exceptionName: ${e.message}"
             InAppLogger.logError("Service", contextMessage)
             InAppLogger.logWarning("Development", contextMessage)
         }
@@ -3188,7 +3215,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         text: String,
         sbn: StatusBarNotification? = null,
         isSelfTest: Boolean = false,
-        isSystemEvent: Boolean = false
+        isSystemEvent: Boolean = false,
+        rankingMap: RankingMap? = null
     ): FilterResult {
         // 1. Check app filtering
         val appFilterResult = checkAppFilter(packageName, isSelfTest, isSystemEvent)
@@ -3211,7 +3239,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // 4. Apply persistent/silent notification filtering
         if (sbn != null && isPersistentFilteringEnabled) {
-            val persistentFilterResult = applyPersistentFiltering(sbn)
+            val persistentFilterResult = applyPersistentFiltering(sbn, rankingMap)
             if (!persistentFilterResult.shouldSpeak) {
                 return persistentFilterResult
             }
@@ -3898,7 +3926,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
 
-    private fun applyPersistentFiltering(sbn: StatusBarNotification): FilterResult {
+    private fun applyPersistentFiltering(sbn: StatusBarNotification, rankingMap: RankingMap? = null): FilterResult {
         val notification = sbn.notification
         val flags = notification.flags
 
@@ -3906,20 +3934,33 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val isPersistent = (flags and Notification.FLAG_ONGOING_EVENT) != 0 ||
             (flags and Notification.FLAG_NO_CLEAR) != 0
 
+        val ranking = Ranking()
+        val rankingResolved = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+            rankingMap != null &&
+            rankingMap.getRanking(sbn.key, ranking)
+
         val notificationChannel =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) resolveNotificationChannel(notification) else null
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !rankingResolved) {
+                resolveNotificationChannel(notification)
+            } else {
+                null
+            }
 
         val isSilent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = notificationChannel
-            if (channel != null) {
-                channel.importance <= NotificationManager.IMPORTANCE_LOW ||
-                    (channel.sound == null && !channel.shouldVibrate())
+            if (rankingResolved) {
+                ranking.importance <= NotificationManager.IMPORTANCE_LOW
             } else {
-                val hasNoAlerts = hasNoAlertsLegacy(notification)
-                val importance = getPriorityLegacy(notification)
-                @Suppress("DEPRECATION")
-                val isLow = importance <= Notification.PRIORITY_LOW
-                hasNoAlerts && isLow
+                val channel = notificationChannel
+                if (channel != null) {
+                    channel.importance <= NotificationManager.IMPORTANCE_LOW ||
+                        (channel.sound == null && !channel.shouldVibrate())
+                } else {
+                    val hasNoAlerts = hasNoAlertsLegacy(notification)
+                    val importance = getPriorityLegacy(notification)
+                    @Suppress("DEPRECATION")
+                    val isLow = importance <= Notification.PRIORITY_LOW
+                    hasNoAlerts && isLow
+                }
             }
         } else {
             val hasNoAlerts = hasNoAlertsLegacy(notification)
@@ -3933,12 +3974,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val priority = getPriorityLegacy(notification)
         @Suppress("DEPRECATION")
         val isLowPriorityLevel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = notificationChannel
-            if (channel != null) {
-                channel.importance == NotificationManager.IMPORTANCE_LOW ||
-                    channel.importance == NotificationManager.IMPORTANCE_MIN
+            if (rankingResolved) {
+                ranking.importance <= NotificationManager.IMPORTANCE_LOW
             } else {
-                priority == Notification.PRIORITY_MIN || priority == Notification.PRIORITY_LOW
+                val channel = notificationChannel
+                if (channel != null) {
+                    channel.importance == NotificationManager.IMPORTANCE_LOW ||
+                        channel.importance == NotificationManager.IMPORTANCE_MIN
+                } else {
+                    priority == Notification.PRIORITY_MIN || priority == Notification.PRIORITY_LOW
+                }
             }
         } else {
             priority == Notification.PRIORITY_MIN || priority == Notification.PRIORITY_LOW
@@ -3983,13 +4028,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
             if (reasons.contains("silent")) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    Log.d(
-                        TAG,
-                        "Silent notification details - Channel: ${notification.channelId}, " +
-                            "Channel importance: ${notificationChannel?.importance}, " +
-                            "Channel sound: ${notificationChannel?.sound}, " +
-                            "Channel vibration: ${notificationChannel?.shouldVibrate()}"
-                    )
+                    if (rankingResolved) {
+                        Log.d(
+                            TAG,
+                            "Silent notification details (ranking) - Ranking importance: ${ranking.importance}, " +
+                                "notification channelId: ${notification.channelId}, sbn.key: ${sbn.key}"
+                        )
+                    } else {
+                        Log.d(
+                            TAG,
+                            "Silent notification details - Channel: ${notification.channelId}, " +
+                                "Channel importance: ${notificationChannel?.importance}, " +
+                                "Channel sound: ${notificationChannel?.sound}, " +
+                                "Channel vibration: ${notificationChannel?.shouldVibrate()}"
+                        )
+                    }
                 } else {
                     Log.d(
                         TAG,
