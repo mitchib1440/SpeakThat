@@ -10,6 +10,10 @@ SpeakThat (styled as “**_SpeakThat!_**”) is an open-source Android applicati
 [<img src="https://img.shields.io/badge/SpeakThat!-Official_Website-purple" alt="RB shield">](https://speakthat.app)
 
 
+Make sure you RTFM before creating a feature request! (I spent lots of time writing it so please use it lol)
+[<img src="https://img.shields.io/badge/SpeakThat!-Guide-purple">](https://github.com/mitchib1440/SpeakThat/wiki)
+
+
 ## The Journey to get here!
 
 I have been using notification readers for almost as long as I have used smartphones. On my first proper smartphone, I had been using Utter!, created by Ben Randall. It had a notification reader function and while it didn't offer as many options as modern readers do, it showed me how great it was to have a phone read notifications. My eyes felt more free, not being forced to look at what was a very small screen to see very small announcements.
