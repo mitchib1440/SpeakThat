@@ -117,19 +117,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     // Wave detection
     private var proximitySensor: Sensor? = null
     private var isWaveToStopEnabled = false
+    private var waveEvaluator = com.micoyc.speakthat.gesture.WaveEvaluator()
     private var waveTimeoutSeconds = 30
     private var waveHoldDurationMs = 150L
     private var isPocketModeEnabled = false
-    private var wasSensorCoveredAtStart = false
-    private var isSensorCurrentlyCovered = false
-    private var hasSensorBeenUncovered = false
-    private var hasCapturedStartProximity = false
-    private var speechStartTimestamp = 0L
     private var lastProximityValue = Float.NaN
     private var lastProximityTimestamp = 0L
-    private var lastProximityIsNear = false
-    private var lastFarTimestamp = 0L
-    private var nearStableStartTimestamp = 0L
     private var waveEventCount = 0
     private var lastWaveDebugLogTime = 0L
     private var waveNoEventRunnable: Runnable? = null
@@ -2888,6 +2881,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
     private fun loadWaveSettings() {
         isWaveToStopEnabled = sharedPreferences?.getBoolean("wave_to_stop_enabled", false) ?: false
+        val waveCountTarget = sharedPreferences?.getInt("wave_count_target", 1) ?: 1
+        waveEvaluator.setTargetCount(waveCountTarget)
 
         // Safety validation: ensure timeout is within valid range (0 or 5-300)
         var timeout = sharedPreferences?.getInt(KEY_WAVE_TIMEOUT_SECONDS, 30) ?: 30
@@ -2916,9 +2911,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Load pocket mode setting
         isPocketModeEnabled = sharedPreferences?.getBoolean("pocket_mode_enabled", false) ?: false
         
+        waveEvaluator.setWaveHoldDurationMs(waveHoldDurationMs)
+        waveEvaluator.setPocketModeEnabled(isPocketModeEnabled)
+        
         Log.d(
             TAG,
-            "Wave settings loaded - enabled: $isWaveToStopEnabled, timeout: ${waveTimeoutSeconds}s, hold: ${waveHoldDurationMs}ms, pocket mode: $isPocketModeEnabled"
+            "Wave settings loaded - enabled: $isWaveToStopEnabled, count: $waveCountTarget, timeout: ${waveTimeoutSeconds}s, hold: ${waveHoldDurationMs}ms, pocket mode: $isPocketModeEnabled"
         )
     }
     
@@ -2928,6 +2926,35 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
     private fun registerShakeListener() {
         shakeEvaluator.reset()
+        val sessionStart = System.currentTimeMillis()
+        val lastNear = if (!lastProximityValue.isNaN()) {
+            ProximityCover.isCovered(lastProximityValue, proximitySensor)
+        } else {
+            false
+        }
+        waveEvaluator.prepareForSpeechSession(
+            sessionStart,
+            isPocketModeEnabled,
+            lastProximityTimestamp,
+            lastNear,
+            PROXIMITY_START_SNAPSHOT_MAX_AGE_MS
+        )
+        if (isPocketModeEnabled) {
+            val hasRecent = lastProximityTimestamp > 0L &&
+                sessionStart - lastProximityTimestamp <= PROXIMITY_START_SNAPSHOT_MAX_AGE_MS
+            if (hasRecent) {
+                Log.d(
+                    TAG,
+                    "Pocket mode: Readout starting - using recent proximity sample, covered at start: ${waveEvaluator.pocketCoveredAtStart()}"
+                )
+            } else {
+                Log.d(TAG, "Pocket mode: Readout starting - no recent proximity sample, defaulting to uncovered")
+            }
+        }
+        Log.d(
+            TAG,
+            "Wave session start - hold=${waveHoldDurationMs}ms, timeout=${waveTimeoutSeconds}s, pocketMode=$isPocketModeEnabled"
+        )
         if (isShakeToStopEnabled && accelerometer != null) {
             sensorManager?.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
             Log.d(TAG, "Shake listener registered (TTS active)")
@@ -2986,6 +3013,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
     private fun unregisterShakeListener() {
         shakeEvaluator.reset()
+        waveEvaluator.reset()
         sensorManager?.unregisterListener(this)
         Log.d(TAG, "Shake and wave listeners unregistered (TTS inactive)")
         InAppLogger.logSystemEvent("Shake and wave listeners stopped", "TTS playback finished")
@@ -4132,94 +4160,58 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 stopSpeaking("shake")
             }
         } else if (event.sensor.type == Sensor.TYPE_PROXIMITY && isWaveToStopEnabled) {
-            // Proximity sensor returns distance in cm
             val proximityValue = event.values[0]
             val now = System.currentTimeMillis()
             val maxRange = proximitySensor?.maximumRange ?: 5.0f
             waveEventCount += 1
             
-            // Log proximity sensor values for debugging (but limit frequency to avoid spam)
+            val isNear = ProximityCover.isCovered(proximityValue, proximitySensor)
+            lastProximityValue = proximityValue
+            lastProximityTimestamp = now
+            
             if (now - lastWaveDebugLogTime > 500) {
                 lastWaveDebugLogTime = now
-                val covered = ProximityCover.isCovered(proximityValue, proximitySensor)
                 Log.d(
                     TAG,
-                    "Wave sensor event: value=$proximityValue cm, max=$maxRange cm, covered=$covered, hold=${waveHoldDurationMs}ms, speaking=$isCurrentlySpeaking"
+                    "Wave sensor event: value=$proximityValue cm, max=$maxRange cm, covered=$isNear, hold=${waveHoldDurationMs}ms, speaking=$isCurrentlySpeaking"
                 )
             }
 
-            val isNear = ProximityCover.isCovered(proximityValue, proximitySensor)
+            val result = waveEvaluator.evaluate(isNear, isCurrentlySpeaking, now)
             
-            // Track sensor state changes for pocket mode
-            val wasCovered = isSensorCurrentlyCovered
-            isSensorCurrentlyCovered = isNear
-            lastProximityValue = proximityValue
-            lastProximityTimestamp = now
-            lastProximityIsNear = isNear
-            if (!isSensorCurrentlyCovered) {
-                lastFarTimestamp = now
-                pendingWaveTriggerRunnable?.let { sensorTimeoutHandler?.removeCallbacks(it) }
-                if (pendingWaveTriggerRunnable != null) {
-                    Log.i(TAG, "Wave hold cancelled - sensor uncovered")
-                }
-                pendingWaveTriggerRunnable = null
-            }
-            
-            // Capture initial proximity state if pocket mode is enabled and not yet captured
-            if (isPocketModeEnabled && !hasCapturedStartProximity && isCurrentlySpeaking) {
-                wasSensorCoveredAtStart = isNear
-                hasCapturedStartProximity = true
-                Log.d(TAG, "Pocket mode: Initial proximity captured during speech - covered at start: $wasSensorCoveredAtStart")
-                if (isNear && now - speechStartTimestamp <= WAVE_STARTUP_GRACE_MS) {
-                    Log.d(TAG, "Pocket mode: Ignoring near reading during startup grace window")
-                    return
-                }
-            }
-
-            // Track sensor state transitions
-            if (wasCovered && !isSensorCurrentlyCovered) {
-                hasSensorBeenUncovered = true
-                lastFarTimestamp = now
-                Log.d(TAG, "Pocket mode: Sensor uncovered - has been uncovered: $hasSensorBeenUncovered")
-            } else if (!wasCovered && isSensorCurrentlyCovered) {
-                nearStableStartTimestamp = now
-            }
-
-            if (!isSensorCurrentlyCovered) {
-                nearStableStartTimestamp = 0L
-            }
-            
-            // Pocket mode logic: if enabled, check if sensor was already covered when readout started
-            if (isNear) {
-                if (nearStableStartTimestamp == 0L) {
-                    nearStableStartTimestamp = now
-                }
-                if (waveHoldDurationMs <= MIN_WAVE_HOLD_DURATION_MS) {
-                    if (isPocketModeEnabled && wasSensorCoveredAtStart && !hasSensorBeenUncovered) {
-                        Log.i(TAG, "Wave ignored - pocket mode active (covered at start)")
-                        return
-                    }
-                    Log.d(TAG, "Wave detected! Stopping TTS (instant). Proximity value: $proximityValue cm, maxRange: $maxRange cm, pocket mode: $isPocketModeEnabled, was covered at start: $wasSensorCoveredAtStart, has been uncovered: $hasSensorBeenUncovered")
+            when (result) {
+                is com.micoyc.speakthat.gesture.WaveEvaluator.EvaluationResult.TargetReached -> {
+                    Log.d(TAG, "Wave detected! Stopping TTS. Proximity: $proximityValue cm, maxRange: $maxRange cm")
                     InAppLogger.logSystemEvent("Wave detected", "Proximity: ${proximityValue}cm, maxRange: ${maxRange}cm")
                     stopSpeaking("wave")
-                    return
                 }
-                if (pendingWaveTriggerRunnable == null) {
-                    Log.i(TAG, "Wave hold scheduled - hold=${waveHoldDurationMs}ms")
-                    pendingWaveTriggerRunnable = Runnable {
-                        val runNow = System.currentTimeMillis()
-                        if (!isCurrentlySpeaking || !isWaveToStopEnabled || !isSensorCurrentlyCovered) {
-                            return@Runnable
+                is com.micoyc.speakthat.gesture.WaveEvaluator.EvaluationResult.HoldScheduled -> {
+                    if (pendingWaveTriggerRunnable == null) {
+                        Log.i(TAG, "Wave hold scheduled - hold=${result.holdDurationMs}ms")
+                        pendingWaveTriggerRunnable = Runnable {
+                            if (!isCurrentlySpeaking || !isWaveToStopEnabled || !waveEvaluator.isSensorCurrentlyCovered()) {
+                                return@Runnable
+                            }
+                            if (waveEvaluator.isPocketModeBlocking()) {
+                                Log.i(TAG, "Wave ignored - pocket mode active (covered at start)")
+                                return@Runnable
+                            }
+                            Log.d(TAG, "Wave detected! Stopping TTS. Proximity value: ${lastProximityValue} cm, maxRange: $maxRange cm")
+                            InAppLogger.logSystemEvent("Wave detected", "Proximity: ${lastProximityValue}cm, maxRange: ${maxRange}cm")
+                            stopSpeaking("wave")
                         }
-                        if (isPocketModeEnabled && wasSensorCoveredAtStart && !hasSensorBeenUncovered) {
-                            Log.i(TAG, "Wave ignored - pocket mode active (covered at start)")
-                            return@Runnable
-                        }
-                        Log.d(TAG, "Wave detected! Stopping TTS. Proximity value: ${lastProximityValue} cm, maxRange: $maxRange cm, pocket mode: $isPocketModeEnabled, was covered at start: $wasSensorCoveredAtStart, has been uncovered: $hasSensorBeenUncovered")
-                        InAppLogger.logSystemEvent("Wave detected", "Proximity: ${lastProximityValue}cm, maxRange: ${maxRange}cm")
-                        stopSpeaking("wave")
+                        sensorTimeoutHandler?.postDelayed(pendingWaveTriggerRunnable!!, result.holdDurationMs)
                     }
-                    sensorTimeoutHandler?.postDelayed(pendingWaveTriggerRunnable!!, waveHoldDurationMs)
+                }
+                is com.micoyc.speakthat.gesture.WaveEvaluator.EvaluationResult.HoldCancelled -> {
+                    pendingWaveTriggerRunnable?.let { sensorTimeoutHandler?.removeCallbacks(it) }
+                    if (pendingWaveTriggerRunnable != null) {
+                        Log.i(TAG, "Wave hold cancelled - sensor uncovered")
+                    }
+                    pendingWaveTriggerRunnable = null
+                }
+                else -> {
+                    // Ignored, WindowExpired, ValidWave, NoAction
                 }
             }
         }
@@ -6334,29 +6326,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Show reading notification if enabled (now integrated into foreground notification)
         // showReadingNotification(currentAppName, currentSpeechText)
-        
-        // Set wave/pocket mode tracking variables
-        speechStartTimestamp = System.currentTimeMillis()
-        nearStableStartTimestamp = 0L
-        lastFarTimestamp = 0L
-        hasCapturedStartProximity = false
-        Log.d(
-            TAG,
-            "Wave session start - hold=${waveHoldDurationMs}ms, timeout=${waveTimeoutSeconds}s, pocketMode=$isPocketModeEnabled"
-        )
-        if (isPocketModeEnabled) {
-            hasSensorBeenUncovered = false
-            val hasRecentProximitySample =
-                speechStartTimestamp - lastProximityTimestamp <= PROXIMITY_START_SNAPSHOT_MAX_AGE_MS
-            if (hasRecentProximitySample) {
-                wasSensorCoveredAtStart = lastProximityIsNear
-                hasCapturedStartProximity = true
-                Log.d(TAG, "Pocket mode: Readout starting - using recent proximity sample, covered at start: $wasSensorCoveredAtStart")
-            } else {
-                wasSensorCoveredAtStart = false
-                Log.d(TAG, "Pocket mode: Readout starting - no recent proximity sample, defaulting to uncovered")
-            }
-        }
+        // Wave/pocket session state is initialized in registerShakeListener() via WaveEvaluator.prepareForSpeechSession
         
         // Register shake listener now that we're about to speak
         registerShakeListener()

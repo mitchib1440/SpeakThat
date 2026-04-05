@@ -89,6 +89,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     // Wave detection
     private var proximitySensor: Sensor? = null
     private var isWaveToStopEnabled = false
+    private var waveEvaluator = com.micoyc.speakthat.gesture.WaveEvaluator()
     
     // Voice settings listener
     private var voiceSettingsPrefs: SharedPreferences? = null
@@ -1182,11 +1183,14 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
 
     private fun loadWaveSettings() {
         isWaveToStopEnabled = sharedPreferences?.getBoolean(KEY_WAVE_TO_STOP_ENABLED, false) ?: false
-        Log.d(TAG, "MainActivity wave settings - enabled: $isWaveToStopEnabled")
+        val waveCountTarget = sharedPreferences?.getInt("wave_count_target", 1) ?: 1
+        waveEvaluator.setTargetCount(waveCountTarget)
+        Log.d(TAG, "MainActivity wave settings - enabled: $isWaveToStopEnabled, count: $waveCountTarget")
     }
     
     private fun startShakeListening() {
         shakeEvaluator.reset()
+        waveEvaluator.reset()
         Log.d(TAG, "startShakeListening called - shake enabled: $isShakeToStopEnabled, wave enabled: $isWaveToStopEnabled")
         
         if (isShakeToStopEnabled && accelerometer != null) {
@@ -1220,6 +1224,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private fun stopShakeListening() {
         shakeEvaluator.reset()
+        waveEvaluator.reset()
         sensorManager?.unregisterListener(this)
         Log.d(TAG, "MainActivity shake listener stopped")
         // Cancel timeout
@@ -1247,13 +1252,14 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             val maxRange = proximitySensor?.maximumRange ?: 5.0f
             val isTriggered = ProximityCover.isCovered(proximityValue, proximitySensor)
 
-            if (isTriggered) {
-                Log.d(TAG, "Wave detected in MainActivity! Stopping TTS. Proximity: $proximityValue cm, maxRange: $maxRange cm, covered=true")
+            val result = waveEvaluator.evaluate(isTriggered, true)
+            if (result is com.micoyc.speakthat.gesture.WaveEvaluator.EvaluationResult.TargetReached) {
+                Log.d(TAG, "Wave detected in MainActivity! Stopping TTS. Proximity: $proximityValue cm, maxRange: $maxRange cm")
                 InAppLogger.log("MainActivity", "Wave detected - proximity: ${proximityValue}cm, maxRange: ${maxRange}cm")
                 stopSpeaking("wave")
             } else {
                 if (System.currentTimeMillis() % 1000 < 100) {
-                    Log.d(TAG, "Proximity sensor reading: $proximityValue cm (maxRange: $maxRange cm, covered=false)")
+                    Log.d(TAG, "Proximity sensor reading: $proximityValue cm (maxRange: $maxRange cm, covered=$isTriggered)")
                 }
             }
         }
