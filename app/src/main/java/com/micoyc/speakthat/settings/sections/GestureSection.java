@@ -276,6 +276,10 @@ public class GestureSection implements BehaviorSettingsSection {
             savePressToStopEnabled(isChecked);
         });
 
+        binding.switchHeadsetButtonToStop.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveHeadsetButtonToStopEnabled(isChecked);
+        });
+
         binding.sliderShakeTimeout.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
             public void onValueChange(Slider slider, float value, boolean fromUser) {
@@ -457,6 +461,9 @@ public class GestureSection implements BehaviorSettingsSection {
         binding.switchPressToStop.setChecked(pressEnabled);
         binding.switchPressToStop.setEnabled(hasAccessibilityPermission);
 
+        boolean headsetEnabled = store.prefs().getBoolean(BehaviorSettingsStore.KEY_HEADSET_BUTTON_TO_STOP_ENABLED, false);
+        binding.switchHeadsetButtonToStop.setChecked(headsetEnabled);
+
         boolean pocketModeEnabled = store.prefs().getBoolean(BehaviorSettingsStore.KEY_POCKET_MODE_ENABLED, false);
         binding.switchPocketMode.setChecked(pocketModeEnabled);
     }
@@ -595,6 +602,14 @@ public class GestureSection implements BehaviorSettingsSection {
             return;
         }
         store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_PRESS_TO_STOP_ENABLED, enabled).apply();
+    }
+
+    private void saveHeadsetButtonToStopEnabled(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (store.isInitializing()) {
+            return;
+        }
+        store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_HEADSET_BUTTON_TO_STOP_ENABLED, enabled).apply();
     }
 
     private void saveWaveTimeoutSeconds(int timeoutSeconds) {

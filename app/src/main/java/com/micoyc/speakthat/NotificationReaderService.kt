@@ -118,6 +118,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var proximitySensor: Sensor? = null
     private var isWaveToStopEnabled = false
     private var waveEvaluator = com.micoyc.speakthat.gesture.WaveEvaluator()
+    private var headsetButtonEvaluator = com.micoyc.speakthat.gesture.HeadsetButtonEvaluator()
     private var waveTimeoutSeconds = 30
     private var waveHoldDurationMs = 150L
     private var isPocketModeEnabled = false
@@ -4232,6 +4233,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         }
         
+        headsetButtonEvaluator.stopSession()
         textToSpeech?.stop()
         releaseSpeechWakeLock()
         isCurrentlySpeaking = false
@@ -6521,6 +6523,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         restoreGlobalVoiceSettingsIfNeeded("content cap stop")
                         stopForegroundService()
                         unregisterShakeListener()
+                        headsetButtonEvaluator.stopSession()
 
                         android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
                             cleanupMediaBehavior()
@@ -6533,6 +6536,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     delayHandler?.postDelayed(contentCapTimerRunnable!!, (contentCapTimeLimit * 1000).toLong())
                     Log.d(TAG, "Content Cap timer started: ${contentCapTimeLimit}s")
                     InAppLogger.log("Service", "Content Cap timer started: ${contentCapTimeLimit}s")
+                }
+
+                val isHeadsetStopEnabled = sharedPreferences?.getBoolean(BehaviorSettingsStore.KEY_HEADSET_BUTTON_TO_STOP_ENABLED, false) == true
+                if (isHeadsetStopEnabled) {
+                    headsetButtonEvaluator.startSession(this@NotificationReaderService) {
+                        stopSpeaking("headset")
+                    }
                 }
             }
 
@@ -6556,6 +6566,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
                 stopForegroundService()
                 unregisterShakeListener()
+                headsetButtonEvaluator.stopSession()
 
                 try {
                     if (isSpeakerphoneEnabled(audioManager)) {
@@ -6597,6 +6608,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
                 stopForegroundService()
                 unregisterShakeListener()
+                headsetButtonEvaluator.stopSession()
 
                 try {
                     if (isSpeakerphoneEnabled(audioManager)) {
