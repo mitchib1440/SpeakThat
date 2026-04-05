@@ -891,6 +891,59 @@
 
                         </LinearLayout>
 
+                        <!-- Shake Count Section -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Required Shakes"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Number of shakes required to stop reading"
+                            android:textSize="14sp"
+                            android:textColor="@color/purple_card_text_secondary"
+                            android:layout_marginBottom="8dp" />
+
+                        <RadioGroup
+                            android:id="@+id/radioGroupShakeCount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="16dp">
+
+                            <RadioButton
+                                android:id="@+id/radioShake1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="1 Shake"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:buttonTint="@color/white_100" />
+
+                            <RadioButton
+                                android:id="@+id/radioShake2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="2 Shakes"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:buttonTint="@color/white_100" />
+
+                            <RadioButton
+                                android:id="@+id/radioShake3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="3 Shakes"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:buttonTint="@color/white_100" />
+                        </RadioGroup>
+
                         <!-- Shake Meter Section -->
                         <TextView
                             android:layout_width="wrap_content"
@@ -940,21 +993,56 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
+                            android:gravity="center_vertical"
                             android:layout_marginBottom="16dp">
 
                             <TextView
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="@string/behavior_current_shake"
+                                android:text="Shakes: 0 of 1"
                                 android:textSize="12sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:id="@+id/textCurrentShake" />
 
-                            <TextView
+                            <LinearLayout
+                                android:id="@+id/shakeIndicatorDots"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:orientation="horizontal"
+                                android:gravity="center"
+                                android:layout_marginHorizontal="8dp">
+                                
+                                <ImageView
+                                    android:id="@+id/shakeDot1"
+                                    android:layout_width="12dp"
+                                    android:layout_height="12dp"
+                                    android:layout_marginHorizontal="4dp"
+                                    android:src="@drawable/shake_dot"
+                                    app:tint="@color/purple_300" />
+                                    
+                                <ImageView
+                                    android:id="@+id/shakeDot2"
+                                    android:layout_width="12dp"
+                                    android:layout_height="12dp"
+                                    android:layout_marginHorizontal="4dp"
+                                    android:src="@drawable/shake_dot"
+                                    app:tint="@color/purple_300"
+                                    android:visibility="gone" />
+                                    
+                                <ImageView
+                                    android:id="@+id/shakeDot3"
+                                    android:layout_width="12dp"
+                                    android:layout_height="12dp"
+                                    android:layout_marginHorizontal="4dp"
+                                    android:src="@drawable/shake_dot"
+                                    app:tint="@color/purple_300"
+                                    android:visibility="gone" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:text="@string/behavior_threshold_value"
                                 android:textSize="12sp"
                                 android:textColor="@color/white_100"

@@ -111,7 +111,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var sensorManager: SensorManager? = null
     private var accelerometer: Sensor? = null
     private var isShakeToStopEnabled = false
-    private var shakeThreshold = 12.0f
+    private var shakeEvaluator = com.micoyc.speakthat.gesture.ShakeEvaluator()
     private var shakeTimeoutSeconds = 30
     
     // Wave detection
@@ -2867,7 +2867,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     private fun loadShakeSettings() {
         isShakeToStopEnabled = sharedPreferences?.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, true) ?: true
-        shakeThreshold = sharedPreferences?.getFloat(KEY_SHAKE_THRESHOLD, 12.0f) ?: 12.0f
+        val shakeThreshold = sharedPreferences?.getFloat(KEY_SHAKE_THRESHOLD, 12.0f) ?: 12.0f
+        val shakeCountTarget = sharedPreferences?.getInt("shake_count_target", 1) ?: 1
+        shakeEvaluator.setThreshold(shakeThreshold)
+        shakeEvaluator.setTargetCount(shakeCountTarget)
         
         // Safety validation: ensure timeout is within valid range (0 or 5-300)
         var timeout = sharedPreferences?.getInt(KEY_SHAKE_TIMEOUT_SECONDS, 30) ?: 30
@@ -2880,7 +2883,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         shakeTimeoutSeconds = timeout
         
-        Log.d(TAG, "Shake settings loaded - enabled: $isShakeToStopEnabled, threshold: $shakeThreshold, timeout: ${shakeTimeoutSeconds}s")
+        Log.d(TAG, "Shake settings loaded - enabled: $isShakeToStopEnabled, threshold: $shakeThreshold, count: $shakeCountTarget, timeout: ${shakeTimeoutSeconds}s")
     }
 
     private fun loadWaveSettings() {
@@ -2924,6 +2927,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var sensorTimeoutRunnable: Runnable? = null
 
     private fun registerShakeListener() {
+        shakeEvaluator.reset()
         if (isShakeToStopEnabled && accelerometer != null) {
             sensorManager?.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
             Log.d(TAG, "Shake listener registered (TTS active)")
@@ -2981,6 +2985,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
 
     private fun unregisterShakeListener() {
+        shakeEvaluator.reset()
         sensorManager?.unregisterListener(this)
         Log.d(TAG, "Shake and wave listeners unregistered (TTS inactive)")
         InAppLogger.logSystemEvent("Shake and wave listeners stopped", "TTS playback finished")
@@ -4121,12 +4126,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             val y = event.values[1]
             val z = event.values[2]
             
-            // Calculate total acceleration (subtract gravity)
-            val shakeValue = kotlin.math.sqrt(x * x + y * y + z * z) - SensorManager.GRAVITY_EARTH
-            
-            // Check if shake threshold exceeded
-            if (shakeValue >= shakeThreshold) {
-                Log.d(TAG, "Shake detected! Stopping TTS. Shake value: $shakeValue, threshold: $shakeThreshold")
+            val result = shakeEvaluator.evaluate(x, y, z)
+            if (result is com.micoyc.speakthat.gesture.ShakeEvaluator.EvaluationResult.TargetReached) {
+                Log.d(TAG, "Shake detected! Stopping TTS. Shake value: ${result.shakeValue}")
                 stopSpeaking("shake")
             }
         } else if (event.sensor.type == Sensor.TYPE_PROXIMITY && isWaveToStopEnabled) {

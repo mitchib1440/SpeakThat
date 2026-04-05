@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     private var sensorManager: SensorManager? = null
     private var accelerometer: Sensor? = null
     private var isShakeToStopEnabled = false
-    private var shakeThreshold = 12.0f
+    private var shakeEvaluator = com.micoyc.speakthat.gesture.ShakeEvaluator()
     
     // Wave detection
     private var proximitySensor: Sensor? = null
@@ -1173,8 +1173,11 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private fun loadShakeSettings() {
         isShakeToStopEnabled = sharedPreferences?.getBoolean(KEY_SHAKE_TO_STOP_ENABLED, true) ?: true
-        shakeThreshold = sharedPreferences?.getFloat(KEY_SHAKE_THRESHOLD, 12.0f) ?: 12.0f
-        Log.d(TAG, "MainActivity shake settings - enabled: $isShakeToStopEnabled, threshold: $shakeThreshold")
+        val shakeThreshold = sharedPreferences?.getFloat(KEY_SHAKE_THRESHOLD, 12.0f) ?: 12.0f
+        val shakeCountTarget = sharedPreferences?.getInt("shake_count_target", 1) ?: 1
+        shakeEvaluator.setThreshold(shakeThreshold)
+        shakeEvaluator.setTargetCount(shakeCountTarget)
+        Log.d(TAG, "MainActivity shake settings - enabled: $isShakeToStopEnabled, threshold: $shakeThreshold, count: $shakeCountTarget")
     }
 
     private fun loadWaveSettings() {
@@ -1183,6 +1186,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun startShakeListening() {
+        shakeEvaluator.reset()
         Log.d(TAG, "startShakeListening called - shake enabled: $isShakeToStopEnabled, wave enabled: $isWaveToStopEnabled")
         
         if (isShakeToStopEnabled && accelerometer != null) {
@@ -1215,6 +1219,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     }
     
     private fun stopShakeListening() {
+        shakeEvaluator.reset()
         sensorManager?.unregisterListener(this)
         Log.d(TAG, "MainActivity shake listener stopped")
         // Cancel timeout
@@ -1232,12 +1237,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             val y = event.values[1]
             val z = event.values[2]
             
-            // Calculate total acceleration (subtract gravity)
-            val shakeValue = kotlin.math.sqrt(x * x + y * y + z * z) - SensorManager.GRAVITY_EARTH
-            
-            // Check if shake threshold exceeded
-            if (shakeValue >= shakeThreshold) {
-                Log.d(TAG, "Shake detected in MainActivity! Stopping TTS. Shake value: $shakeValue")
+            val result = shakeEvaluator.evaluate(x, y, z)
+            if (result is com.micoyc.speakthat.gesture.ShakeEvaluator.EvaluationResult.TargetReached) {
+                Log.d(TAG, "Shake detected in MainActivity! Stopping TTS. Shake value: ${result.shakeValue}")
                 stopSpeaking("shake")
             }
         } else if (event.sensor.type == Sensor.TYPE_PROXIMITY && isWaveToStopEnabled) {
