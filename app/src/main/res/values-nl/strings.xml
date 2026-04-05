@@ -127,15 +127,7 @@ Schudden om te Stoppen stopt de uitspraak meteen wanneer je jouw apparaat schudt
     <string name="system_notifications_desc">Meldingen van systeem apps (Android, Google diensten)</string>
     <!-- Wave to Stop Feature -->
     <string name="wave_to_stop_dialog_title">Zwaaien om te Stoppen functie</string>
-    <string name="wave_to_stop_dialog_message">
-Door Zwaaien voor Stoppen kun je SpeakThat! meteen stoppen door met jouw hand voor het apparaat te zwaaien:
-<b>✨ Waarom helpt dit:</b>
-• Perfect als je het apparaat niet kunt schudden • Goed voor apparaten die liggen of in een houder zitten • Werkt met één hand • Het apparaat hoeft niet te bewegen • Toegankelijkheids-vriendelijk alternatief voor schudden
-<b>🎯 Hoe werkt het:</b>
-• Zwaai met jouw hand voor het apparaat (zoals een magisch gebaar) • Gebruikt de nabijheidssensor om de handbeweging te detecteren • Huidige melding stopt meteen • Wachtende meldingen worden verwijderd • Nieuwe meldingen werken gewoon
-<b>⚙️ Aanpassingen:</b>
-• Pas de gevoeligheid aan naar jouw wens • Test jouw zwaai-detectie met de meter • Werkt goed met verschillende handgroottes en afstanden Deze functie werkt bijzonder goed voor toegankelijkheid, bureau gebruikers en iedereen die liever gebaren gebruikt dan schudden.
-</string>
+    <string name="wave_to_stop_dialog_message">Door Zwaaien voor Stoppen kun je SpeakThat! meteen stoppen door met jouw hand voor het apparaat te zwaaien: <b>✨ Waarom helpt dit:</b> • Perfect als je het apparaat niet kunt schudden • Goed voor apparaten die liggen of in een houder zitten • Werkt met één hand • Het apparaat hoeft niet te bewegen • Toegankelijkheids-vriendelijk alternatief voor schudden <b>🎯 Hoe werkt het:</b> • Zwaai met jouw hand voor het apparaat (zoals een magisch gebaar) • Gebruikt de nabijheidssensor om de handbeweging te detecteren • Huidige melding stopt meteen • Wachtende meldingen worden verwijderd • Nieuwe meldingen werken gewoon <b>⚙️ Aanpassingen:</b> • Pas de gevoeligheid aan naar jouw wens • Test jouw zwaai-detectie met de meter • Werkt goed met verschillende handgroottes en afstanden Deze functie werkt bijzonder goed voor toegankelijkheid, bureau gebruikers en iedereen die liever gebaren gebruikt dan schudden.</string>
     <!-- About Page -->
     <string name="about">Over</string>
     <string name="about_description_title">Over SpreakThat!</string>

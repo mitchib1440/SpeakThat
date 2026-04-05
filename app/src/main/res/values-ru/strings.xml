@@ -109,13 +109,7 @@
     <string name="system_notifications_desc">Notifications from system apps (Android, Google services)</string>
     <!-- Wave to Stop Feature -->
     <string name="wave_to_stop_dialog_title">Wave to Stop Feature</string>
-    <string name="wave_to_stop_dialog_message">Wave to Stop lets you instantly silence SpeakThat by waving your hand in front of the device:
-<b>✨ Why it\'s helpful:</b>
-• Perfect for users who can\'t shake their device • Great for phones on desks or mounts • Works with one hand • No physical device movement needed • Accessibility-friendly alternative to shake
-<b>🎯 How it works:</b>
-• Wave your hand in front of the device (like a magic gesture) • Uses the proximity sensor to detect hand movement • Current notification stops immediately • Queued notifications are cleared • New notifications work normally
-<b>⚙️ Customization:</b>
-• Adjust sensitivity for your preference • Test your wave detection with the meter • Works great for different hand sizes and distances This feature is especially useful for accessibility, desk users, and anyone who prefers gesture control over physical movement.</string>
+    <string name="wave_to_stop_dialog_message">Wave to Stop lets you instantly silence SpeakThat by waving your hand in front of the device: <b>✨ Why it\'s helpful:</b> • Perfect for users who can\'t shake their device • Great for phones on desks or mounts • Works with one hand • No physical device movement needed • Accessibility-friendly alternative to shake <b>🎯 How it works:</b> • Wave your hand in front of the device (like a magic gesture) • Uses the proximity sensor to detect hand movement • Current notification stops immediately • Queued notifications are cleared • New notifications work normally <b>⚙️ Customization:</b> • Adjust sensitivity for your preference • Test your wave detection with the meter • Works great for different hand sizes and distances This feature is especially useful for accessibility, desk users, and anyone who prefers gesture control over physical movement.</string>
     <!-- About Page -->
     <string name="about">About</string>
     <string name="about_description_title">About SpeakThat!</string>

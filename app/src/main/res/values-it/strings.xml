@@ -127,28 +127,7 @@ This feature is especially loved by people who get notifications during meetings
     <string name="system_notifications_desc">Notifications from system apps (Android, Google services)</string>
     <!-- Wave to Stop Feature -->
     <string name="wave_to_stop_dialog_title">Wave to Stop Feature</string>
-    <string name="wave_to_stop_dialog_message">Wave to Stop lets you instantly silence SpeakThat by waving your hand in front of the device:
-
-<b>âœ¨ Why it\'s helpful:</b>
-â€¢ Perfect for users who can\'t shake their device
-â€¢ Great for phones on desks or mounts
-â€¢ Works with one hand
-â€¢ No physical device movement needed
-â€¢ Accessibility-friendly alternative to shake
-
-<b>ðŸŽ¯ How it works:</b>
-â€¢ Wave your hand in front of the device (like a magic gesture)
-â€¢ Uses the proximity sensor to detect hand movement
-â€¢ Current notification stops immediately
-â€¢ Queued notifications are cleared
-â€¢ New notifications work normally
-
-<b>âš™ï¸ Customization:</b>
-â€¢ Adjust sensitivity for your preference
-â€¢ Test your wave detection with the meter
-â€¢ Works great for different hand sizes and distances
-
-This feature is especially useful for accessibility, desk users, and anyone who prefers gesture control over physical movement.</string>
+    <string name="wave_to_stop_dialog_message">Wave to Stop lets you instantly silence SpeakThat by waving your hand in front of the device: <b>âœ¨ Why it\'s helpful:</b> â€¢ Perfect for users who can\'t shake their device â€¢ Great for phones on desks or mounts â€¢ Works with one hand â€¢ No physical device movement needed â€¢ Accessibility-friendly alternative to shake <b>ðŸŽ¯ How it works:</b> â€¢ Wave your hand in front of the device (like a magic gesture) â€¢ Uses the proximity sensor to detect hand movement â€¢ Current notification stops immediately â€¢ Queued notifications are cleared â€¢ New notifications work normally <b>âš™ï¸ Customization:</b> â€¢ Adjust sensitivity for your preference â€¢ Test your wave detection with the meter â€¢ Works great for different hand sizes and distances This feature is especially useful for accessibility, desk users, and anyone who prefers gesture control over physical movement.</string>
     <string name="behavior_wave_hold_title">Tempo di mantenimento del gesto</string>
     <string name="behavior_wave_hold_description">Per quanto tempo il sensore di prossimità deve restare coperto prima che si attivi Wave to Stop.</string>
     <string name="behavior_wave_hold_0ms">0 ms</string>
