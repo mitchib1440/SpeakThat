@@ -1820,13 +1820,29 @@
                         android:gravity="center_vertical"
                         android:layout_marginBottom="16dp">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/behavior_enable_press_stop"
-                            android:textSize="16sp"
-                            android:textColor="@color/purple_card_text_primary" />
+                            android:paddingRight="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/behavior_enable_press_stop"
+                                android:textSize="16sp"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/behavior_enable_volume_buttons_stop"
+                                android:textSize="14sp"
+                                android:textColor="@color/purple_card_text_secondary"
+                                android:layout_marginTop="4dp" />
+                        </LinearLayout>
+
 
                         <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchPressToStop"
@@ -1851,6 +1867,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:paddingRight="12dp"
                             android:orientation="vertical">
 
                             <TextView
