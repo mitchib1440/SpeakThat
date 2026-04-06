@@ -922,6 +922,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="1 Shake"
+                                app:buttonTint="@color/white_100"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:buttonTint="@color/white_100" />
 
@@ -931,6 +932,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="2 Shakes"
+                                app:buttonTint="@color/white_100"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:buttonTint="@color/white_100" />
 
@@ -940,6 +942,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="3 Shakes"
+                                app:buttonTint="@color/white_100"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:buttonTint="@color/white_100" />
                         </RadioGroup>
@@ -1210,7 +1213,7 @@
                             android:layout_height="24dp"
                             android:layout_marginEnd="16dp"
                             android:src="@drawable/ic_hand_gesture_24"
-                            android:tint="@color/white_100"
+                            app:tint="@color/white_100"
                             android:contentDescription="Wave to Stop" />
 
                         <TextView
@@ -1353,6 +1356,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="1 Wave"
+                                app:buttonTint="@color/white_100"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:buttonTint="@color/white_100" />
 
@@ -1362,6 +1366,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="2 Waves"
+                                app:buttonTint="@color/white_100"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:buttonTint="@color/white_100" />
 
@@ -1371,6 +1376,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="3 Waves"
+                                app:buttonTint="@color/white_100"
                                 android:textColor="@color/purple_card_text_primary"
                                 android:buttonTint="@color/white_100" />
                         </RadioGroup>
@@ -2623,6 +2629,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/content_cap_disabled"
+                            app:buttonTint="@color/white_100"
                             android:textColor="@color/purple_card_text_primary"
                             android:padding="12dp" />
 
@@ -2631,6 +2638,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/content_cap_words"
+                            app:buttonTint="@color/white_100"
                             android:textColor="@color/purple_card_text_primary"
                             android:padding="12dp" />
 
@@ -2639,6 +2647,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/content_cap_sentences"
+                            app:buttonTint="@color/white_100"
                             android:textColor="@color/purple_card_text_primary"
                             android:padding="12dp" />
 
@@ -2647,6 +2656,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/content_cap_time"
+                            app:buttonTint="@color/white_100"
                             android:textColor="@color/purple_card_text_primary"
                             android:padding="12dp" />
 

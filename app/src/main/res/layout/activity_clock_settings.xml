@@ -206,6 +206,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/clock_settings_interval_15_title"
+                            app:buttonTint="@color/white_100"
                             android:textColor="@color/purple_card_text_primary"
                             android:textSize="16sp" />
 
@@ -224,6 +225,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/clock_settings_interval_30_title"
+                            app:buttonTint="@color/white_100"
                             android:textColor="@color/purple_card_text_primary"
                             android:textSize="16sp" />
 
@@ -242,6 +244,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/clock_settings_interval_60_title"
+                            app:buttonTint="@color/white_100"
                             android:textColor="@color/purple_card_text_primary"
                             android:textSize="16sp" />
 
@@ -260,6 +263,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/clock_settings_interval_180_title"
+                            app:buttonTint="@color/white_100"
                             android:textColor="@color/purple_card_text_primary"
                             android:textSize="16sp" />
 
