@@ -29,6 +29,9 @@ And so after a few failed versions, I'm pleased to introduce SpeakThat! The noti
 
 ---
 
+<img width="3618" height="1245" alt="Frame 6331" src="https://github.com/user-attachments/assets/d25c3f44-e9b4-4c0d-b613-a7ddad144f0e" />
+
+
 ## Features
 
 * **Privacy-First By Design**
