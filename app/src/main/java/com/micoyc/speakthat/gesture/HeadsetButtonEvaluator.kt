@@ -1,6 +1,8 @@
 package com.micoyc.speakthat.gesture
 
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.media.AudioAttributes
 import android.media.AudioFocusRequest
 import android.media.AudioManager
@@ -24,7 +26,7 @@ class HeadsetButtonEvaluator {
         audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
         // Request Audio Focus
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val focusResult = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             audioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
                 .setAudioAttributes(AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE)
@@ -37,8 +39,24 @@ class HeadsetButtonEvaluator {
             audioManager?.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
         }
 
+        if (focusResult != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            Log.e("HeadsetButtonEvaluator", "Audio focus denied, aborting media session")
+            return
+        }
+
         try {
             mediaSession = MediaSession(context, "SpeakThatHeadsetButtonEvaluator").apply {
+                val intent = Intent(context, HeadsetButtonReceiver::class.java).apply {
+                    action = Intent.ACTION_MEDIA_BUTTON
+                }
+                val pendingIntent = PendingIntent.getBroadcast(
+                    context,
+                    0,
+                    intent,
+                    PendingIntent.FLAG_IMMUTABLE
+                )
+                setMediaButtonReceiver(pendingIntent)
+
                 setFlags(MediaSession.FLAG_HANDLES_MEDIA_BUTTONS or MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS)
                 
                 val state = PlaybackState.Builder()

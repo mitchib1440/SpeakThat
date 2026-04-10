@@ -337,6 +337,15 @@
             </intent-filter>
         </receiver>
 
+        <!-- Media Button Receiver for HeadsetButtonEvaluator -->
+        <receiver
+            android:name=".gesture.HeadsetButtonReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+
         <!-- FileProvider for sharing exported files -->
         <provider
             android:name="androidx.core.content.FileProvider"
