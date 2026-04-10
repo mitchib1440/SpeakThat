@@ -1,18 +1,40 @@
 package com.micoyc.speakthat.gesture
 
 import android.content.Context
+import android.media.AudioAttributes
+import android.media.AudioFocusRequest
+import android.media.AudioManager
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
+import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
 
 class HeadsetButtonEvaluator {
 
     private var mediaSession: MediaSession? = null
+    private var audioManager: AudioManager? = null
+    private var audioFocusRequest: AudioFocusRequest? = null
 
     fun startSession(context: Context, onStopAction: () -> Unit) {
         if (mediaSession != null) {
             stopSession()
+        }
+
+        audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+        // Request Audio Focus
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            audioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
+                .setAudioAttributes(AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build())
+                .build()
+            audioManager?.requestAudioFocus(audioFocusRequest!!)
+        } else {
+            @Suppress("DEPRECATION")
+            audioManager?.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
         }
 
         try {
@@ -60,6 +82,15 @@ class HeadsetButtonEvaluator {
 
     fun stopSession() {
         try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                audioFocusRequest?.let { audioManager?.abandonAudioFocusRequest(it) }
+            } else {
+                @Suppress("DEPRECATION")
+                audioManager?.abandonAudioFocus(null)
+            }
+            audioFocusRequest = null
+            audioManager = null
+
             mediaSession?.isActive = false
             mediaSession?.release()
             mediaSession = null
