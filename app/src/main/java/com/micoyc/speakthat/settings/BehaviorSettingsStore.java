@@ -28,7 +28,6 @@ public class BehaviorSettingsStore {
     public static final String KEY_WAVE_TIMEOUT_SECONDS = "wave_timeout_seconds";
     public static final String KEY_WAVE_HOLD_DURATION_MS = "wave_hold_duration_ms";
     public static final String KEY_PRESS_TO_STOP_ENABLED = "press_to_stop_enabled";
-    public static final String KEY_HEADSET_BUTTON_TO_STOP_ENABLED = "headset_button_to_stop_enabled";
     public static final String KEY_POCKET_MODE_ENABLED = "pocket_mode_enabled";
     public static final String KEY_MEDIA_BEHAVIOR = "media_behavior";
     public static final String KEY_DUCKING_VOLUME = "ducking_volume";

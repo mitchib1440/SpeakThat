@@ -90,8 +90,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     private var proximitySensor: Sensor? = null
     private var isWaveToStopEnabled = false
     private var waveEvaluator = com.micoyc.speakthat.gesture.WaveEvaluator()
-    private var headsetButtonEvaluator = com.micoyc.speakthat.gesture.HeadsetButtonEvaluator()
-    
+
     // Voice settings listener
     private var voiceSettingsPrefs: SharedPreferences? = null
     private val voiceSettingsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
@@ -1123,13 +1122,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             
             val volumeParams = VoiceSettingsActivity.createVolumeBundle(ttsVolume, ttsUsage, speakerphoneEnabled)
 
-            val isHeadsetStopEnabled = sharedPreferences?.getBoolean(com.micoyc.speakthat.settings.BehaviorSettingsStore.KEY_HEADSET_BUTTON_TO_STOP_ENABLED, false) == true
-            if (isHeadsetStopEnabled) {
-                headsetButtonEvaluator.startSession(this) {
-                    stopSpeaking("headset")
-                }
-            }
-
             val utteranceId = "easter_egg_${SystemClock.elapsedRealtime()}"
             val result = SpeakThatTtsManager.speak(
                 context = this,
@@ -1144,20 +1136,17 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
 
                     override fun onDone(utteranceId: String?) {
                         stopShakeListening()
-                        headsetButtonEvaluator.stopSession()
                         InAppLogger.logTTSEvent("MainActivity TTS completed", "Easter egg finished")
                     }
 
                     override fun onError(utteranceId: String?) {
                         stopShakeListening()
-                        headsetButtonEvaluator.stopSession()
                         InAppLogger.logTTSEvent("MainActivity TTS error", "Easter egg failed")
                         Log.e(TAG, "TTS error during easter egg playback")
                     }
 
                     override fun onStop(utteranceId: String?, interrupted: Boolean) {
                         stopShakeListening()
-                        headsetButtonEvaluator.stopSession()
                     }
                 }
             )
@@ -1283,7 +1272,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     private fun stopSpeaking(triggerType: String = "unknown") {
         SpeakThatTtsManager.stop()
         stopShakeListening()
-        headsetButtonEvaluator.stopSession()
         InAppLogger.logTTSEvent("MainActivity TTS stopped by $triggerType", "User interrupted easter egg")
         Log.d(TAG, "MainActivity TTS stopped due to $triggerType")
     }
