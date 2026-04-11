@@ -67,7 +67,7 @@
     </string-array>
     <!-- Behavior Settings Dialogs -->
     <string name="notification_behavior_dialog_title">Opciones de conducta de notificación</string>
-    <string name="notification_behavior_dialog_message">Elige cómo maneja SpeakThat las notificaciones múltiples: <b>🔄 Interrumpir</b> - Detiene la notificación actual y lee la nueva inmediatamente. Ideal para notificaciones urgentes. <b>📋 Cola</b> - Termina la notificación actual y, a continuación, lee las nuevas en orden. No se pierde nada. <b>⏭️ Saltar</b> - Ignora nuevas notificaciones mientras lees. Sencillo, pero puedes perder las importantes. <b>🧠 Inteligente (Recomendado)</b> - Interrumpe en apps proritarias y deja en cola a las demás. Un balance perfecto de lo urgente y lo complementario. El modo inteligente te permite elegir qué aplicaciones son lo suficientemente urgentes como para interrumpirlas (como llamadas o mensajes) mientras otras esperan su turno.</string>
+    <string name="notification_behavior_dialog_message">Elige cómo maneja SpeakThat las notificaciones múltiples: <b>🔄 Interrumpir</b> - Detiene la notificación actual y lee la nueva inmediatamente. Ideal para notificaciones urgentes. <b>📋 Cola</b> - Termina la notificación actual y, a continuación, lee las nuevas en orden. No se pierde nada. <b>⏭️ Saltar</b> - Ignora nuevas notificaciones mientras lees. Sencillo, pero puedes perder las importantes. <b>🧠 Inteligente (Recomendado)</b> - Interrumpe en apps propietarias y deja en cola a las demás. Un balance perfecto de lo urgente y lo complementario. El modo inteligente te permite elegir qué aplicaciones son lo suficientemente urgentes como para interrumpirlas (como llamadas o mensajes) mientras otras esperan su turno.</string>
     <string name="custom_app_names_title">Nombres de apps personalizados</string>
     <string name="custom_app_names_description">Personaliza cómo se pronuncian las apps en las notificaciones</string>
     <string name="add_custom_app_name">Añadir nombre de app personalizado</string>
@@ -396,7 +396,7 @@
     <string name="dialog_message_remove_trigger">¿Estás seguro que deseas eliminar este activador?</string>
     <string name="dialog_message_remove_action">¿Estás seguro que deseas eliminar esta acción?</string>
     <string name="dialog_message_remove_exception">¿Estás seguro que deseas eliminar esta excepción?</string>
-    <string name="dialog_message_coming_soon">Introduce el nombre del paquete de la app (por ejemplo, com.whatsapp):</string>
+    <string name="dialog_message_coming_soon">la configuración %s será implementada en la siguiente fase.</string>
     <string name="dialog_message_select_app">Introduce el nombre del paquete de la app (por ejemplo, com.whatsapp):</string>
     <string name="dialog_message_invalid_app_package">Introduce un nombre de paquete de la aplicación.</string>
     <string name="dialog_message_remove_device">¿Eliminar %s de la lista?</string>
@@ -583,7 +583,7 @@ La mayoría de los usuarios deben usar: Pausar Audio
     <string name="section_honor_dnd">Considerar no molestar</string>
     <string name="behavior_dnd_description">Respeta el modo No molestar de tu dispositivo y silencia las notificaciones cuando está activado</string>
     <string name="behavior_dnd_recommendation">La mayoría de los usuarios deberían: Activar esta función</string>
-    <string name="behavior_dnd_switch_label">Considerar no molestar</string>
+    <string name="behavior_dnd_switch_label">Considerar modo no molestar</string>
     <string name="behavior_dnd_benefits">✨ Beneficios:\n\n• Respeta la configuración No molestar de tu dispositivo\n• Perfecto para reuniones, sueños y tiempo silencioso\n• Funciona con DND programado y activación manual\n• Conserva tu privacidad y enfoque cuando sea necesario</string>
     <!-- Behavior Settings - Phone Calls -->
     <string name="section_honor_phone_calls">Considerar llamadas telefónicas</string>
@@ -640,7 +640,7 @@ Controla qué aplicaciones pueden activar notificaciones
     <string name="filter_no_filtering">Sin filtrado de aplicaciones</string>
     <string name="filter_whitelist">Lista blanca (sólo apps seleccionadas)</string>
     <string name="filter_blacklist">Lista negra (excluir apps seleccionadas)</string>
-    <string name="filter_manage_apps">Administrar Apps:</string>
+    <string name="filter_manage_apps">Gestionar Apps</string>
     <string name="filter_app_list_button">📋 Lista de apps</string>
     <string name="filter_app_count">(0 apps)</string>
     <string name="filter_search_description">Busca a través de tus aplicaciones instaladas por nombre o paquete. Haz clic en una sugerencia para añadirla al instante. (Toca para más información)</string>
@@ -694,7 +694,7 @@ Elegir qué dispositivos Bluetooth deben activar esta excepción:
     <string name="exception_wifi_networks_title">
 Elegir qué dispositivos Bluetooth deben activar esta excepción:
 </string>
-    <string name="exception_specific_networks">Dispositivos específicos (uno por línea):</string>
+    <string name="exception_specific_networks">Redes específicas (una por línea):</string>
     <string name="exception_select_networks">Seleccionar Redes</string>
     <!-- Rules Activity -->
     <string name="rules_no_rules_created">No hay reglas creadas</string>
@@ -726,7 +726,7 @@ Elegir qué dispositivos Bluetooth deben activar esta regla:
 </string>
     <string name="trigger_any_wifi_network">Cualquier red WiFi</string>
     <string name="trigger_any_wifi_description">Activar cuando se conecta a cualquier red</string>
-    <string name="trigger_specific_networks">Dispositivos específicos (uno por línea):</string>
+    <string name="trigger_specific_networks">Redes específicas (una por línea):</string>
     <string name="trigger_select_networks">Seleccionar Redes</string>
     <!-- Wave Calibration -->
     <string name="wave_calibration_recalibrate">Recalibrar</string>
@@ -754,7 +754,7 @@ Elegir qué dispositivos Bluetooth deben activar esta regla:
     <string name="filter_swap_description">Intercambiar palabras en notificaciones para censura o corrección de pronunciación</string>
     <string name="filter_swap_count">(0 intercambios)</string>
     <string name="filter_swap_tip">Consejo: Usa minúsculas para la coincidencia sin distinción de mayúsculas. Deja en blanco \'Intercambiar con\' para quitar palabras completamente.</string>
-    <string name="filter_media_description">Filtra automáticamente las notificaciones de aplicaciones como YouTube, que suelen incluir notificaciones no deseadas (controles de medios), y permite las notificaciones deseadas (como respuestas a tus comentarios)</string>
+    <string name="filter_media_description">Principalmente para versiones antiguas de Android. Intenta detectar y bloquear las notificaciones de reproducción multimedia que aparecen como notificaciones estándar (extras de sesión, barra de progreso o categoría multimedia). No hay listas por aplicación.</string>
     <string name="filter_media_enable">Activa el filtro de notificaciones mult. inteligente</string>
     <string name="filter_media_apps_title">Apps multimedia filtrados:</string>
     <string name="filter_media_apps_description">Apps que se filtran automáticamente para las notificaciones multimedia. Añade las aplicaciones multimedia que deseas filtrar.</string>
@@ -820,7 +820,7 @@ Configurar los ajustes de voz a aplicar cuando se activa esta regla:
     <string name="dev_test_rules">🧪 Sistema de reglas de prueba</string>
     <!-- Notification History -->
     <string name="notification_history_title">Historial de notificaciones</string>
-    <string name="notification_history_description">Notificaciones recientes procesadas por SpeakThat</string>
+    <string name="notification_history_description">SpeakThat! registra sus 15 notificaciones más recientes tales que puede filtrarlas más tarde. Pulsa una notificación para filtrar fácilmente las que sean similares en el futuro.</string>
     <string name="notification_history_empty">Ninguna notificación para mostrar</string>
     <string name="notification_history_clear">Borrar historial</string>
     <string name="notification_history_recent">📜 Notificaciones recientes</string>
@@ -872,7 +872,7 @@ Configurar los ajustes de voz a aplicar cuando se activa esta regla:
     <string name="onboarding_complete_description">¡SpeakThat está listo para ayudarte a mantenerte conectado mientras mantienes tus ojos libres!\n\nPuedes agregar más filtros en cualquier momento desde los ajustes de la aplicación.</string>
     <!-- Trigger Configuration -->
     <string name="trigger_screen_state">Estado de pantalla</string>
-    <string name="trigger_screen_choose">Elige cuándo debe funcionar este activador:</string>
+    <string name="trigger_screen_choose">Elija cuando debe condición se cumple</string>
     <string name="trigger_invert_condition">Invertir condición</string>
     <string name="trigger_time_schedule">Horario</string>
     <string name="trigger_time_description">
@@ -883,9 +883,7 @@ Establece el intervalo de tiempo cuando se habilita el activador:
     <string name="rule_builder_description">Las reglas comprueban las condiciones de cada notificación. No recuerdan los cambios de estado - filtran las notificaciones en tiempo real.</string>
     <string name="rule_builder_name_label">Nombre de la regla</string>
     <string name="rule_builder_triggers_label">Activadores</string>
-    <string name="rule_builder_triggers_description">
-Condiciones que deben cumplirse para que esta regla se active
-</string>
+    <string name="rule_builder_triggers_description">Se comprueban las condiciones al recibir una notificación. Si se cumplen las condiciones, se aplica la regla.</string>
     <string name="rule_builder_logic_label">Lógica:</string>
     <!-- Exception Configuration -->
     <string name="exception_screen_state">Estado de pantalla</string>
@@ -893,52 +891,52 @@ Condiciones que deben cumplirse para que esta regla se active
     <string name="exception_time_schedule">Horario</string>
     <string name="exception_time_choose">Elige cuándo se aplicará esta excepción:</string>
     <!-- Action Configuration -->
-    <string name="action_disable_speakthat">Skip this notification</string>
+    <string name="action_disable_speakthat">Omite esta notificación</string>
     <string name="action_disable_description">
 Esta acción desactivará SpeakThat completamente cuando la regla se active.
 </string>
-    <string name="action_custom_speech_format_title">Apply Custom Speech Format</string>
-    <string name="action_custom_speech_format_description">Read this notification using a custom speech format.</string>
-    <string name="action_custom_speech_format_preset_label">Preset</string>
+    <string name="action_custom_speech_format_title">Aplica formato de habla personal</string>
+    <string name="action_custom_speech_format_description">Lee esta notificación utilizando un formato de habla personal.</string>
+    <string name="action_custom_speech_format_preset_label">Preselección</string>
     <string name="action_custom_speech_format_label">Speech Format</string>
     <string name="action_custom_speech_format_hint">Enter speech format</string>
-    <string name="action_force_private_title">Force Private</string>
-    <string name="action_force_private_description">Read the app name, but not the notification content.</string>
-    <string name="action_override_private_title">Override Private</string>
-    <string name="action_override_private_description">Read the entire notification, even if it would normally be in private mode.</string>
-    <string name="action_custom_speech_placeholders_title">Placeholders</string>
-    <string name="action_custom_speech_placeholders_hint">Tap a placeholder to add it to your format.</string>
+    <string name="action_force_private_title">Forzar Privado</string>
+    <string name="action_force_private_description">Lee el nombre de la App, pero no el contenido de la notificación.</string>
+    <string name="action_override_private_title">Anular Privado</string>
+    <string name="action_override_private_description">Lee la notificación completa, incluso si normalmente sería en modo privado.</string>
+    <string name="action_custom_speech_placeholders_title">Contenedores</string>
+    <string name="action_custom_speech_placeholders_hint">Pulse un contenedor para añadirlo a su formato.</string>
     <string name="speech_placeholder_app_label">{app}</string>
-    <string name="speech_placeholder_app_desc">App display name</string>
+    <string name="speech_placeholder_app_desc">Nombre de pantalla de App</string>
     <string name="speech_placeholder_package_label">{package}</string>
-    <string name="speech_placeholder_package_desc">Package name (e.g., "com.google.android.apps.messaging")</string>
+    <string name="speech_placeholder_package_desc">El nombre del paquete (p.ej., com.google.android.apps.messaging)</string>
     <string name="speech_placeholder_content_label">{content}</string>
-    <string name="speech_placeholder_content_desc">Full notification (title + text combined)</string>
+    <string name="speech_placeholder_content_desc">Notificación completa (título + texto combinados)</string>
     <string name="speech_placeholder_title_label">{title}</string>
-    <string name="speech_placeholder_title_desc">Notification title only</string>
+    <string name="speech_placeholder_title_desc">Notificación solo de título</string>
     <string name="speech_placeholder_text_label">{text}</string>
-    <string name="speech_placeholder_text_desc">Notification text only</string>
+    <string name="speech_placeholder_text_desc">Notificación solo de texto</string>
     <string name="speech_placeholder_bigtext_label">{bigtext}</string>
-    <string name="speech_placeholder_bigtext_desc">Big text content (expanded notification)</string>
+    <string name="speech_placeholder_bigtext_desc">Contenido del texto grande (notificación expandida)</string>
     <string name="speech_placeholder_summary_label">{summary}</string>
-    <string name="speech_placeholder_summary_desc">Summary text (e.g., "1 new message")</string>
+    <string name="speech_placeholder_summary_desc">Texto del sumario (p.ej., 1 mensaje nuevo)</string>
     <string name="speech_placeholder_info_label">{info}</string>
-    <string name="speech_placeholder_info_desc">Info text (additional details)</string>
+    <string name="speech_placeholder_info_desc">Texto de informe (detalles adicionales)</string>
     <string name="speech_placeholder_ticker_label">{ticker}</string>
-    <string name="speech_placeholder_ticker_desc">Legacy ticker text (older apps only; often empty on modern notifications)</string>
+    <string name="speech_placeholder_ticker_desc">Texto de ticket heredado (apps más antiguas únicamente; a menudo vacío en notificaciones modernas)</string>
     <string name="speech_placeholder_time_label">{time}</string>
-    <string name="speech_placeholder_time_desc">Current time in HH:mm format (e.g., "14:30")</string>
+    <string name="speech_placeholder_time_desc">Hora actual en formato HH:mm (p.ej., 14:30)</string>
     <string name="speech_placeholder_date_label">{date}</string>
-    <string name="speech_placeholder_date_desc">Current date in MMM dd format (e.g., "Dec 15")</string>
+    <string name="speech_placeholder_date_desc">Fecha actual en formato MMM dd (ep.ej., Dic 15)</string>
     <string name="speech_placeholder_timestamp_label">{timestamp}</string>
-    <string name="speech_placeholder_timestamp_desc">Full timestamp (e.g., "14:30 Dec 15")</string>
+    <string name="speech_placeholder_timestamp_desc">Sello de tiempo completo (p.ej., 14:30 Dic 15)</string>
     <string name="speech_placeholder_priority_label">{priority}</string>
-    <string name="speech_placeholder_priority_desc">Priority level (Min, Low, Default, High, Max)</string>
+    <string name="speech_placeholder_priority_desc">Nivel prioritario (Min, Bajo, Predet., Alto, Máx)</string>
     <string name="speech_placeholder_category_label">{category}</string>
-    <string name="speech_placeholder_category_desc">Notification category (Message, Call, etc.)</string>
+    <string name="speech_placeholder_category_desc">Categoría de notificación (Mensaje, Llamada, etc.)</string>
     <string name="speech_placeholder_channel_label">{channel}</string>
-    <string name="speech_placeholder_channel_desc">Notification channel ID</string>
-    <string name="action_skip_notification_title">Skip this notification</string>
+    <string name="speech_placeholder_channel_desc">ID de canales de notificación</string>
+    <string name="action_skip_notification_title">Descarta esta notificación</string>
     <string name="action_enable_app_filter">Activar filtro de aplicaciones</string>
     <string name="action_enable_app_description">Selecciona qué aplicación activar el filtrado para:</string>
     <string name="action_select_app">Seleccionar aplicación</string>
@@ -1009,7 +1007,7 @@ Esta acción desactivará SpeakThat completamente cuando la regla se active.
     <string name="item_priority_app_icon">⚡</string>
     <string name="item_priority_app_name">Nombre de la aplicación prioritaria</string>
     <string name="item_action_control">Control de SpeakThat</string>
-    <string name="item_action_disable">Skip this notification</string>
+    <string name="item_action_disable">Descarta esta notificación</string>
     <string name="item_app_filter_name">Nombre de app</string>
     <string name="item_app_filter_package">Nombre del paquete</string>
     <string name="item_exception_name">Nombre de excepción</string>
@@ -1185,9 +1183,7 @@ Vista en tiempo real de lo que está ocurriendo bajo el capó
     <string name="dev_view_crash_logs">📄 Ver registros de fallos</string>
     <string name="dev_clear_crash_logs">🗑️ Limpiar registros de fallos</string>
     <string name="dev_debug_crash_logs">🔍 Depurar registros de fallos</string>
-    <string name="dev_starting_log_display">
-Iniciando la visualización del registro…\nLos registros aparecerán aquí en tiempo real.\n
-</string>
+    <string name="dev_starting_log_display">Iniciando exhibición de bitácora…\nLas bitácoras aparecerán aquí\n</string>
     <!-- AboutActivity Hardcoded Strings -->
     <string name="tts_error_occurred">Ocurrió un error TTS</string>
     <string name="tts_initialization_failed">Falló la inicialización TTS</string>
@@ -1214,7 +1210,7 @@ Iniciando la visualización del registro…\nLos registros aparecerán aquí en 
     <string name="app_selector_google_maps_found" formatted="false">GOOGLE/MAPS APP FOUND: %s (%s)</string>
     <string name="app_selector_total_apps">Total: %d apps</string>
     <string name="app_filter_filtering_with">Filtrando con: \'%s\'</string>
-    <string name="app_filter_match" formatted="false">MATCH: %s (%s) - name:%s pkg:%s</string>
+    <string name="app_filter_match" formatted="false">COTEJO: %s (%s) - nombre:%s pkg:%s</string>
     <string name="app_filter_google_maps_candidate" formatted="false">GOOGLE MAPS CANDIDATE: %s (%s)</string>
     <string name="app_filter_found_matches" formatted="false">Se encontraron %d coincidencias para \'%s\'</string>
     <string name="app_filter_no_filter_showing_all">Sin filtro - mostrando todas las %d aplicaciones</string>
@@ -1257,7 +1253,7 @@ Iniciando la visualización del registro…\nLos registros aparecerán aquí en 
     <string name="log_app_selector_app_info" formatted="false">%s (%s)</string>
     <string name="log_app_selector_total">Total: %d apps</string>
     <string name="log_app_filter_filtering">Filtrando con: \'%s\'</string>
-    <string name="log_app_filter_match" formatted="false">MATCH: %s (%s) - name:%s pkg:%s</string>
+    <string name="log_app_filter_match" formatted="false">COTEJO: %s (%s) - nombre:%s pkg:%s</string>
     <string name="log_app_filter_google_maps" formatted="false">GOOGLE MAPS CANDIDATE: %s (%s)</string>
     <string name="log_app_filter_found_matches" formatted="false">Se encontraron %d coincidencias para \'%s\'</string>
     <string name="log_app_filter_no_filter">Sin filtro - mostrando todas las %d aplicaciones</string>
@@ -1267,7 +1263,7 @@ Iniciando la visualización del registro…\nLos registros aparecerán aquí en 
     <string name="log_boot_receiver_service_enabled">Servicio de notificación ya habilitado</string>
     <string name="log_boot_receiver_service_not_enabled">Servicio de notificación no habilitado - el usuario necesita conceder permiso</string>
     <!-- Date/Time Format -->
-    <string name="date_format_export">yyyy-MM-dd_HH-mm-ss</string>
+    <string name="date_format_export">aaaa-MM-dd_HH-mm-ss</string>
     <!-- System Values -->
     <string name="system_default">sistema</string>
     <string name="restart_policy_never">nunca</string>
@@ -1283,7 +1279,7 @@ Iniciando la visualización del registro…\nLos registros aparecerán aquí en 
     <string name="main_notification_permission_granted">Permiso de notificación concedido</string>
     <string name="main_notification_permission_denied">Permiso de notificación denegado - Las notificaciones pueden no aparecer</string>
     <string name="main_notification_title_active">SpeakThat activo</string>
-    <string name="main_notification_content_tap_settings">Toca para abrir la configuración de SpeakThat</string>
+    <string name="main_notification_content_tap_settings">¡SpeakThat! está levantado y preparado para leer notificaciones!</string>
     <string name="main_notification_action_open_app">Abre SpeakThat!</string>
     <!-- Audio Ducking Feature -->
     <string name="dev_enable_audio_ducking">Habilitar Reducción de Audio</string>
@@ -1334,73 +1330,73 @@ Iniciando la visualización del registro…\nLos registros aparecerán aquí en 
     <string name="statistics_logo_taps_label">Toques al logotipo de SpeakThat</string>
     <string name="statistics_apps_read_list_label">Lista de aplicaciones leídas</string>
     <!-- Behavior Settings - System Modes Group -->
-    <string name="section_honor_system_modes">Honour System Modes</string>
-    <string name="behavior_system_modes_description">Keep SpeakThat quiet when your device is in Do Not Disturb, on a call, or using silent or vibrate modes. Toggle each option below.</string>
+    <string name="section_honor_system_modes">Modos del sistema de honor</string>
+    <string name="behavior_system_modes_description">Mantén SpeakThat en silencio cuando tu dispositivo esté en modo No molestar, en una llamada o en modo silencioso o vibración. Activa o desactiva cada opción a continuación.</string>
     <string name="latest_update_dialog_title">Última actualización</string>
     <string name="latest_update_fallback">Última actualización de SpeakThat!: mejoras de estabilidad y ajustes de notificaciones que ahorran batería.</string>
     <string name="dev_hacks_workarounds_title">Trucos y soluciones alternativas</string>
     <!-- Rule validation errors -->
-    <string name="rule_error_name_empty">Rule name cannot be empty</string>
-    <string name="rule_error_no_triggers">Rule must have at least one trigger</string>
-    <string name="rule_error_no_enabled_triggers">Rule must have at least one enabled trigger</string>
-    <string name="rule_error_no_actions">Rule must have at least one action</string>
-    <string name="rule_error_no_enabled_actions">Rule must have at least one enabled action</string>
-    <string name="rule_error_duplicate_name">A rule with this name already exists</string>
-    <string name="rule_error_invalid_bluetooth_devices">Bluetooth device list is invalid</string>
-    <string name="rule_error_invalid_screen_state">Screen state must be on or off</string>
-    <string name="rule_error_invalid_time_schedule">Time schedule is missing a valid start or end time</string>
-    <string name="rule_error_invalid_days_of_week">Days of week must be numbers from 0 to 6</string>
-    <string name="rule_error_invalid_wifi_networks">WiFi network list is invalid</string>
-    <string name="rule_error_invalid_master_switch">Master switch action requires enabled true or false</string>
-    <string name="rule_error_invalid_speech_template">Speech format cannot be empty</string>
-    <string name="rule_action_master_switch">Set SpeakThat master switch</string>
-    <string name="rule_action_custom_speech_format">Apply custom speech format</string>
-    <string name="rule_action_force_private">Force private mode</string>
-    <string name="rule_action_override_private">Override private mode</string>
+    <string name="rule_error_name_empty">El nombre de la regla no puede estar vacío</string>
+    <string name="rule_error_no_triggers">La regla debe tener al menos un disparador</string>
+    <string name="rule_error_no_enabled_triggers">Una regla debe tener al menos un disparador habilitado</string>
+    <string name="rule_error_no_actions">La regla debe tener al menos una acción</string>
+    <string name="rule_error_no_enabled_actions">La regla debe tener al menos una acción habilitada</string>
+    <string name="rule_error_duplicate_name">Ya existe una regla con este nombre</string>
+    <string name="rule_error_invalid_bluetooth_devices">El listado del dispositivos Bluetooth no es válido</string>
+    <string name="rule_error_invalid_screen_state">Es estado de pantalla debe estar encendido o apagado</string>
+    <string name="rule_error_invalid_time_schedule">Tiempo de planificación le falta hora de inicio o final válido</string>
+    <string name="rule_error_invalid_days_of_week">Los días de la semana deben ser números desde 0 a 6</string>
+    <string name="rule_error_invalid_wifi_networks">El listado de red WiFi no es válido</string>
+    <string name="rule_error_invalid_master_switch">La acción de intercambio maestro requiere tener habilitado cierto o falso</string>
+    <string name="rule_error_invalid_speech_template">El formato de habla no puede estar vacío</string>
+    <string name="rule_action_master_switch">Establecer conector maestro de SpeakThat</string>
+    <string name="rule_action_custom_speech_format">Aplicar formato de habla personal</string>
+    <string name="rule_action_force_private">Forzar modo privado</string>
+    <string name="rule_action_override_private">Sobrescribir modo privado</string>
     <!-- Rule validation: battery/charging -->
-    <string name="rule_error_invalid_battery_mode">Battery mode must be above or below</string>
-    <string name="rule_error_invalid_battery_percentage">Battery percentage must be between 0 and 100</string>
-    <string name="rule_error_invalid_charging_status">Charging status must be charging or discharging</string>
+    <string name="rule_error_invalid_battery_mode">Modo de batería debe estar por encima o debajo</string>
+    <string name="rule_error_invalid_battery_percentage">El porcentaje de batería debe estar entre 0 y 100</string>
+    <string name="rule_error_invalid_charging_status">Estado de carga debe estar cargando o descargando</string>
     <!-- Trigger menu labels -->
-    <string name="trigger_bluetooth_device_connected">Bluetooth Device Connected</string>
-    <string name="trigger_screen_state_title">Screen State (On/Off)</string>
-    <string name="trigger_wifi_network_connected">WiFi Network Connected</string>
+    <string name="trigger_bluetooth_device_connected">Dispositivo Bluetooth Conectado</string>
+    <string name="trigger_screen_state_title">Estado de Pantalla (On/Off)</string>
+    <string name="trigger_wifi_network_connected">Red WiFi Conectada</string>
     <!-- Battery Percentage trigger -->
-    <string name="trigger_battery_percentage_title">Battery Percentage</string>
-    <string name="trigger_battery_percentage_description">Condition is considered met when the battery is above or below a certain percentage.</string>
+    <string name="trigger_battery_percentage_title">Porcentaje de Batería</string>
+    <string name="trigger_battery_percentage_description">Condición está considerada encontrada cuando la batería está por encima o debajo de un cierto porcentaje.</string>
     <string name="trigger_battery_mode_label">Mode</string>
-    <string name="trigger_battery_mode_above">Above</string>
-    <string name="trigger_battery_mode_below">Below</string>
-    <string name="trigger_battery_percentage_default">Selected value: 50%</string>
-    <string name="trigger_battery_percentage_value">Selected value: %d%%</string>
+    <string name="trigger_battery_mode_above">Superior</string>
+    <string name="trigger_battery_mode_below">Inferior</string>
+    <string name="trigger_battery_percentage_default">Valor seleccionado: 50%</string>
+    <string name="trigger_battery_percentage_value">Valor seleccionado: %d%%</string>
     <!-- Charging Status trigger -->
-    <string name="trigger_charging_status_title">Charging Status</string>
-    <string name="trigger_charging_status_description">Condition is considered met when your device is being charged.</string>
+    <string name="trigger_charging_status_title">Estado de Carga</string>
+    <string name="trigger_charging_status_description">Condición está considerada encontrada cuando su dispositivo está siendo cargado.</string>
     <string name="trigger_charging_status_label">Status</string>
-    <string name="trigger_battery_status_charging">Charging</string>
-    <string name="trigger_battery_status_discharging">Discharging</string>
+    <string name="trigger_battery_status_charging">Cargando</string>
+    <string name="trigger_battery_status_discharging">Descargando</string>
     <!-- Battery trigger descriptions -->
-    <string name="rule_trigger_battery_above">Battery is above %d%%</string>
-    <string name="rule_trigger_battery_below">Battery is below %d%%</string>
-    <string name="rule_trigger_battery_charging">Device is charging</string>
-    <string name="rule_trigger_battery_discharging">Device is discharging</string>
-    <string name="rule_exception_battery_above">Battery is above %d%%</string>
-    <string name="rule_exception_battery_below">Battery is below %d%%</string>
-    <string name="rule_exception_battery_charging">Device is charging</string>
-    <string name="rule_exception_battery_discharging">Device is discharging</string>
+    <string name="rule_trigger_battery_above">La batería es superior a %d%%</string>
+    <string name="rule_trigger_battery_below">La batería es inferior a %d%%</string>
+    <string name="rule_trigger_battery_charging">Dispositivo cargando</string>
+    <string name="rule_trigger_battery_discharging">Dispositivo descargando</string>
+    <string name="rule_exception_battery_above">Batería superior al %d%%</string>
+    <string name="rule_exception_battery_below">Batería inferior al %d%%</string>
+    <string name="rule_exception_battery_charging">Dispositivo cargándose</string>
+    <string name="rule_exception_battery_discharging">Dispositivo descargándose</string>
     <!-- Notification Contains trigger -->
-    <string name="trigger_notification_contains_title">Notification Contains</string>
-    <string name="trigger_notification_contains_description">Condition will be considered met when a specific word or phrase is found in the notification.</string>
-    <string name="trigger_notification_contains_hint">Enter word or phrase</string>
-    <string name="trigger_notification_contains_case_sensitive">Case-sensitive</string>
-    <string name="rule_trigger_notification_contains">Notification contains "%1$s"</string>
-    <string name="rule_trigger_notification_not_contains">Notification does not contain "%1$s"</string>
-    <string name="rule_exception_notification_contains">Notification contains "%1$s"</string>
-    <string name="rule_exception_notification_not_contains">Notification does not contain "%1$s"</string>
-    <string name="rule_trigger_case_sensitive_suffix"> (case-sensitive)</string>
-    <string name="rule_exception_case_sensitive_suffix"> (case-sensitive)</string>
-    <string name="rule_error_invalid_notification_phrase">Notification phrase cannot be empty</string>
-    <string name="rule_error_invalid_case_sensitive">Case-sensitive flag is invalid</string>
+    <string name="trigger_notification_contains_title">Notificación contiene</string>
+    <string name="trigger_notification_contains_description">Condición será considerada encontrada cuando una palabra o frase específica se encuentra en la notificación.</string>
+    <string name="trigger_notification_contains_hint">Introduzca palabra o frase</string>
+    <string name="trigger_notification_contains_case_sensitive">Distinguir capitalinas</string>
+    <string name="rule_trigger_notification_contains">La notificación contiene %1$s</string>
+    <string name="rule_trigger_notification_not_contains">La notificación no contiene %1$s</string>
+    <string name="rule_exception_notification_contains">La notificación contiene %1$s</string>
+    <string name="rule_exception_notification_not_contains">La notificación no contiene %1$s</string>
+    <string name="rule_trigger_case_sensitive_suffix">(distinguir capitalina)</string>
+    <string name="rule_exception_case_sensitive_suffix">(distinguir capitalina)</string>
+    <string name="rule_error_invalid_notification_phrase">La frase de notificación no puede estar vacía</string>
+    <string name="rule_error_invalid_case_sensitive">Indicador de capitalina no es válida</string>
     <!-- Notification From trigger -->
     <string name="trigger_notification_from_title">Notificación de</string>
     <string name="trigger_notification_from_description">La condición se considerará cumplida cuando la notificación entrante sea de una app seleccionada.</string>
@@ -1415,82 +1411,82 @@ Iniciando la visualización del registro…\nLos registros aparecerán aquí en 
     <string name="rule_exception_notification_from_not">%1$s (invertido)</string>
     <string name="rule_error_invalid_notification_from_apps">La selección de apps de notificación no es válida</string>
     <!-- Foreground App trigger -->
-    <string name="trigger_foreground_app_title">Foreground App</string>
-    <string name="trigger_foreground_app_description">Condition is considered met when a specific app is actively being used.</string>
-    <string name="trigger_foreground_app_manage_apps">Manage Apps</string>
-    <string name="trigger_foreground_app_selected_count">Selected: %1$d apps</string>
-    <string name="trigger_foreground_app_selected_count_default">Selected: 0 apps</string>
-    <string name="trigger_foreground_app_accessibility_required">Please go to General Settings and enable the Accessibility Permission</string>
-    <string name="rule_trigger_foreground_app_single">Foreground app is %1$s</string>
-    <string name="rule_trigger_foreground_app_multiple">Foreground app is one of %1$d apps</string>
-    <string name="rule_trigger_foreground_app_not">%1$s (inverted)</string>
-    <string name="rule_exception_foreground_app_single">Foreground app is %1$s</string>
-    <string name="rule_exception_foreground_app_multiple">Foreground app is one of %1$d apps</string>
-    <string name="rule_exception_foreground_app_not">%1$s (inverted)</string>
-    <string name="rule_error_invalid_foreground_apps">Foreground app selection is invalid</string>
+    <string name="trigger_foreground_app_title">Primer plano de App</string>
+    <string name="trigger_foreground_app_description">Condición está considerada encontrada cuando una app específica está activamente siendo utilizada.</string>
+    <string name="trigger_foreground_app_manage_apps">Gestionar Apps</string>
+    <string name="trigger_foreground_app_selected_count">Seleccionado: %1$d apps</string>
+    <string name="trigger_foreground_app_selected_count_default">Seleccionado: 0 apps</string>
+    <string name="trigger_foreground_app_accessibility_required">Vaya a Ajustes Generales y habilite el Permiso de Accesibilidad</string>
+    <string name="rule_trigger_foreground_app_single">App en primer plano es %1$s</string>
+    <string name="rule_trigger_foreground_app_multiple">App en segundo plano es uno de %1$d apps</string>
+    <string name="rule_trigger_foreground_app_not">%1$s (invertido)</string>
+    <string name="rule_exception_foreground_app_single">Apps en segundo plano es %1$s</string>
+    <string name="rule_exception_foreground_app_multiple">App en primero plano es uno de %1$d apps</string>
+    <string name="rule_exception_foreground_app_not">%1$s (invertido)</string>
+    <string name="rule_error_invalid_foreground_apps">App en selección de primer plano no es válida</string>
     <!-- Device Unlocked trigger -->
-    <string name="trigger_device_unlocked_title">Device Unlocked</string>
-    <string name="trigger_device_unlocked_description">Condition is considered met when the device is locked or unlocked.</string>
+    <string name="trigger_device_unlocked_title">Dispositivo Desbloqueado</string>
+    <string name="trigger_device_unlocked_description">Condición está considerada coincidente cuando el dispositivo está bloqueado o desbloqueado.</string>
     <string name="trigger_device_unlocked_mode_label">Mode</string>
-    <string name="trigger_device_unlocked_mode_unlocked">Unlocked</string>
-    <string name="trigger_device_unlocked_mode_locked">Locked</string>
-    <string name="rule_trigger_device_unlocked">Device is unlocked</string>
-    <string name="rule_trigger_device_locked">Device is locked</string>
-    <string name="rule_exception_device_unlocked">Device is unlocked</string>
-    <string name="rule_exception_device_locked">Device is locked</string>
-    <string name="rule_error_invalid_unlock_mode">Unlock mode must be locked or unlocked</string>
+    <string name="trigger_device_unlocked_mode_unlocked">Desbloqueado</string>
+    <string name="trigger_device_unlocked_mode_locked">Bloqueado</string>
+    <string name="rule_trigger_device_unlocked">El dispositivo está desbloqueado</string>
+    <string name="rule_trigger_device_locked">El dispositivo está bloqueado</string>
+    <string name="rule_exception_device_unlocked">El dispositivo está desbloqueado</string>
+    <string name="rule_exception_device_locked">El dispositivo está bloqueado</string>
+    <string name="rule_error_invalid_unlock_mode">Modo desbloqueado debe estar bloqueado o desbloqueado</string>
     <!-- Screen Orientation trigger -->
     <string name="trigger_screen_orientation_title">Screen Orientation</string>
-    <string name="trigger_screen_orientation_description">Condition is considered met when your screen is either in portrait mode or landscape mode.</string>
+    <string name="trigger_screen_orientation_description">Condición está considerada coincidente cuando su pantalla está o bien en modo retrato o modo paisaje.</string>
     <string name="trigger_screen_orientation_mode_label">Mode</string>
     <string name="trigger_screen_orientation_portrait">Portrait</string>
-    <string name="trigger_screen_orientation_landscape">Landscape</string>
+    <string name="trigger_screen_orientation_landscape">Paisaje</string>
     <string name="rule_trigger_orientation_portrait">Screen is portrait</string>
-    <string name="rule_trigger_orientation_landscape">Screen is landscape</string>
+    <string name="rule_trigger_orientation_landscape">La pantalla es paisaje</string>
     <string name="rule_exception_orientation_portrait">Screen is portrait</string>
-    <string name="rule_exception_orientation_landscape">Screen is landscape</string>
-    <string name="rule_error_invalid_orientation_mode">Orientation mode must be portrait or landscape</string>
-    <string name="rules_migration_banner_title">Rules migration notice</string>
-    <string name="rules_migration_banner_body_ok">Rules migrated: %1$d. Please review your rules for accuracy.</string>
-    <string name="rules_migration_banner_body_attention">Rules migrated: %1$d. Rules needing attention: %2$d. Please review your rules.</string>
-    <string name="rules_migration_banner_action">Review rules</string>
+    <string name="rule_exception_orientation_landscape">La pantalla es paisaje</string>
+    <string name="rule_error_invalid_orientation_mode">Modo de orientación debe ser retrato o paisaje</string>
+    <string name="rules_migration_banner_title">Notificar reglas de migración</string>
+    <string name="rules_migration_banner_body_ok">Reglas migradas: %1$d. Revise sus reglas para verificar su exactitud.</string>
+    <string name="rules_migration_banner_body_attention">Reglas migradas: %1$d. Reglas que requieren atención: %2$d. Por favor, revise sus reglas.</string>
+    <string name="rules_migration_banner_action">Reglas de revisión</string>
     <string name="rules_error_title">Error</string>
-    <string name="rules_experimental_title">Experimental Feature</string>
-    <string name="rules_experimental_message">Rules are experimental. If something feels off, you can turn them off in settings. Your existing filters and privacy settings are still respected.</string>
-    <string name="rules_experimental_acknowledge">I Understand</string>
-    <string name="rules_menu_export">Export Rules</string>
-    <string name="rules_menu_export_description">Export rules configuration</string>
-    <string name="rules_menu_import">Import Rules</string>
-    <string name="rules_menu_import_description">Import rules configuration</string>
-    <string name="rules_export_choice_title">Include Rules in Export?</string>
-    <string name="rules_export_choice_message">Do you want to include conditional rules in this export?</string>
-    <string name="rules_export_choice_include">Include Rules</string>
-    <string name="rules_export_choice_exclude">Export Without Rules</string>
+    <string name="rules_experimental_title">Característica Experimental</string>
+    <string name="rules_experimental_message">Las reglas son experimentales. Si algo no te convence, puedes apagarlas en los ajustes. Tus filtros y ajustes de privacidad actuales se seguirán respetando.</string>
+    <string name="rules_experimental_acknowledge">Comprendo</string>
+    <string name="rules_menu_export">Exportar reglas</string>
+    <string name="rules_menu_export_description">Exportar configuración de reglas</string>
+    <string name="rules_menu_import">Importar reglas</string>
+    <string name="rules_menu_import_description">Importa la configuración de reglas</string>
+    <string name="rules_export_choice_title">¿Incluir reglas al exportar?</string>
+    <string name="rules_export_choice_message">¿Quiere incluir reglas condicionales en esta exportación?</string>
+    <string name="rules_export_choice_include">Incluir Reglas</string>
+    <string name="rules_export_choice_exclude">Exportar Sin Reglas</string>
     <string name="rules_export_filename_format">SpeakThat_Rules_%1$s.json</string>
-    <string name="rules_export_share_subject">SpeakThat! Rules Configuration</string>
-    <string name="rules_export_share_text">Rules configuration backup created on %1$s.</string>
-    <string name="rules_export_chooser_title">Export Rules Configuration</string>
-    <string name="rules_export_success_title">Rules Exported</string>
-    <string name="rules_export_success_message">Rules configuration exported to:\n%1$s\n\nExported rules:\n%2$s</string>
-    <string name="rules_export_text_chooser_title">Export Rules Configuration as Text</string>
-    <string name="rules_export_text_fallback">Configuration exported as text (file creation failed)</string>
-    <string name="rules_export_failed">Export failed: %1$s</string>
-    <string name="rules_import_dialog_title">Import Rules</string>
-    <string name="rules_import_dialog_message">This will replace your current rules with the imported configuration.\n\nCurrent rules:\n%1$s\n\nDo you want to continue?</string>
-    <string name="rules_import_file_picker_title">Select Rules Configuration File</string>
-    <string name="rules_import_success_title">Rules Imported</string>
-    <string name="rules_import_success">Imported %1$d rules.\n\nNew rules:\n%2$s</string>
-    <string name="rules_import_success_with_skips">Imported %1$d rules. Skipped %2$d rules due to missing permissions.\n\nNew rules:\n%3$s</string>
-    <string name="rules_import_failed">Import failed: %1$s</string>
-    <string name="rules_import_invalid">Invalid rules file: %1$s</string>
-    <string name="rules_import_empty">No rules found in the selected file.</string>
-    <string name="rules_import_master_title">Import Conditional Rules?</string>
-    <string name="rules_import_master_message">This backup includes %1$d conditional rules. Do you want to import them as well?</string>
-    <string name="rules_import_master_confirm">Import Rules</string>
-    <string name="rules_import_master_skip">Skip Rules</string>
-    <string name="rules_import_master_success">Imported %1$d rules from backup.</string>
-    <string name="rules_import_master_success_with_skips">Imported %1$d rules from backup. Skipped %2$d rules due to missing permissions.</string>
-    <string name="rules_summary_format">Total: %1$d | Enabled: %2$d | Disabled: %3$d</string>
+    <string name="rules_export_share_subject">Configuración de Reglas SpeakThat!</string>
+    <string name="rules_export_share_text">Configuración de respaldo de reglas creadas el %1$s.</string>
+    <string name="rules_export_chooser_title">Exportar Configuración de Reglas</string>
+    <string name="rules_export_success_title">Reglas Exportadas</string>
+    <string name="rules_export_success_message">Configuración de reglas exportadas a:\n%1$s\n\nReglas exportadas:\n%2$s</string>
+    <string name="rules_export_text_chooser_title">Exportar configuración de reglas como texto</string>
+    <string name="rules_export_text_fallback">Configuración exportada como texto (creación de archivo incorrecta)</string>
+    <string name="rules_export_failed">Exportación incorrecta: %1$s</string>
+    <string name="rules_import_dialog_title">Importar Reglas</string>
+    <string name="rules_import_dialog_message">Esto remplazará tus reglas actuales con la configuración importada.\n\nReglas actuales:\n%1$s\n\n¿Quieres continuar?</string>
+    <string name="rules_import_file_picker_title">Seleccionar archivo de configuración de reglas</string>
+    <string name="rules_import_success_title">Reglas importadas</string>
+    <string name="rules_import_success">Se importaron %1$d reglas.\n\nReglas nuevas:\n%2$s</string>
+    <string name="rules_import_success_with_skips">Se importaron %1$d reglas. Se omitieron %2$d reglas debido a permisos ausentes.\n\nReglas nuevas:\n%3$s</string>
+    <string name="rules_import_failed">Importación incorrecta: %1$s</string>
+    <string name="rules_import_invalid">Archivo de reglas no válido: %1$s</string>
+    <string name="rules_import_empty">Ninguna regla encontrada en el archivo seleccionado.</string>
+    <string name="rules_import_master_title">¿Importar reglas condicionales?</string>
+    <string name="rules_import_master_message">Este respaldo incluye %1$d reglas condicionales. ¿Desea importarlas también?</string>
+    <string name="rules_import_master_confirm">Importar Reglas</string>
+    <string name="rules_import_master_skip">Descartar Reglas</string>
+    <string name="rules_import_master_success">Se importaron %1$d reglas desde el respaldo.</string>
+    <string name="rules_import_master_success_with_skips">Se importaron %1$d reglas desde el respaldo. Se descartaron %2$d reglas debido a permisos ausentes.</string>
+    <string name="rules_summary_format">Total: %1$d | Habilitado: %2$d | Inhabilitado: %3$d</string>
     <string name="tts_engine_failure_title">Motor de Texto a Voz No Disponible</string>
     <string name="behavior_dismissal_memory_switch_label">Activar la Memoria de Omisión</string>
     <string name="behavior_dismissal_memory_description">Recordar las notificaciones omitidas para evitar re-leerlas</string>
@@ -1512,7 +1508,7 @@ Iniciando la visualización del registro…\nLos registros aparecerán aquí en 
     <string name="behavior_ducking_test_success">✅ ¡Tu dispositivo soporta bien el Atenuado de Audio!</string>
     <string name="open_system_tts_settings">Abrir la Configuración de Texto a Voz del Sistema</string>
     <string name="behavior_ducking_enhanced_warning">⚠️ El bajado de volumen funciona de manera diferente entre dispositivos y versiones de Android. Algunos dispositivos podrían omitir ciertas aplicaciones o fuentes de audio.</string>
-    <string name="tts_engine_failure_message">SpeakThat no pudo utilizar tu motor de Texto a Voz seleccionado. Podria haber sido desinstalado. El motor predefinido del sistema esta siendo utilizado ahora.</string>
+    <string name="tts_engine_failure_message">SpeakThat no pudo utilizar tu motor de Texto a Voz seleccionado. Podría haber sido desinstalado. El motor predefinido del sistema esta siendo utilizado ahora.</string>
     <string name="behavior_ducking_fallback_manual_desc">Usar ajustes manuales del volumen (podría no funcionar en todos los dispositivos)</string>
     <string name="behavior_ducking_test_success_title">Prueba Completada</string>
     <string name="section_dismissal_memory">Memoria de Omisión</string>
@@ -1522,4 +1518,44 @@ Iniciando la visualización del registro…\nLos registros aparecerán aquí en 
     <string name="behavior_ducking_test_warning_title">Prueba Completada</string>
     <string name="behavior_ducking_fallback_description">Elegir que sucede cuando el enfoque de audio falla en tu dispositivo</string>
     <string name="tts_engine_restart_confirm">Reiniciar</string>
+    <string name="open_source_licenses">Licencias Open Source</string>
+    <string name="update_banner_title">Actualización disponible: %1$s</string>
+    <string name="update_banner_body">Versión nueva preparada (%1$s). Pulsa para abrir el actualizador.</string>
+    <string name="update_banner_action">Actualizar ahora</string>
+    <string name="update_notification_title">Actualización disponible: %1$s</string>
+    <string name="update_notification_text">Pulsa para descargar e instalar la última versión.</string>
+    <string name="update_notification_channel_name">Actualizaciones de SpeakThat</string>
+    <string name="update_notification_channel_description">Alertas para versiones nuevas de SpeakThat en la creación de GitHub.</string>
+    <string name="rule_trigger_wired_headphones_connected">auriculares con cable están conectados</string>
+    <string name="rule_trigger_wired_headphones_disconnected">auriculares con cable están desconectados</string>
+    <string name="background_location_disclosure_title">Lugar de Acceso en Segundo Plano</string>
+    <string name="background_location_disclosure_message">SpeakThat necesita detectar a qué red Wi-Fi está conectado tu dispositivo, incluso cuando la aplicación se ejecuta en segundo plano.\n\nAsí es como Android permite que las aplicaciones lean los nombres de las redes Wi-Fi. SpeakThat usa esta información únicamente para aplicar tus reglas condicionales; nunca recopila ni transmite tu ubicación.\n\nEn la siguiente pantalla, selecciona «Permitir siempre» para el acceso a la ubicación.</string>
+    <string name="background_location_disclosure_accept">Continuar</string>
+    <string name="background_location_denied_message">No se concedió el acceso a la ubicación en segundo plano. La detección del nombre de la red Wi-Fi requiere este permiso para funcionar cuando SpeakThat se ejecuta en segundo plano.\n\nNo se agregó la condición de Wi-Fi.</string>
+    <string name="background_location_denied_title">Permiso No Concedido</string>
+    <string name="rule_trigger_wifi_connected_ssid">conectado a %1$s</string>
+    <string name="rule_trigger_wifi_disconnected_ssid">no conectado a %1$s</string>
+    <string name="rule_trigger_wifi_connected_no_bg_location">conectado a WiFi (detección de red específica no disponible)</string>
+    <string name="rule_trigger_wifi_disconnected_no_bg_location">no conectado al WiFi (detección de red específica no disponible)</string>
+    <string name="rule_exception_wifi_connected_no_bg_location">conectado a WiFi (detección de red específica no disponible)</string>
+    <string name="rule_exception_wifi_disconnected_no_bg_location">no conectado al WiFi (detección de red específica no disponible)</string>
+    <string name="rule_exception_wired_headphones_connected">auriculares con cable están conectados</string>
+    <string name="rule_exception_wired_headphones_disconnected">auriculares con cable están desconectados</string>
+    <string name="dialog_title_add_package_manual">Añadir paquete manualmente</string>
+    <string name="action_add_package_manual">Añadir paquete</string>
+    <string name="dialog_message_add_package_manual">Introduzca un nombre de paquete para añadirlo al listado.</string>
+    <string name="dialog_error_package_empty">El nombre del paquete no puede estar vacío</string>
+    <string name="dialog_error_package_exists">Este paquete ya está en el listado</string>
+    <string name="dialog_success_package_added">Paquete añadido correctamente</string>
+    <string name="app_picker_manual_placeholder">Manual app</string>
+    <string name="behavior_ducking_device_tip">Si la función de atenuación no funciona correctamente: prueba con diferentes flujos de audio en los ajustes de voz («Llamada de voz» o «Notificación» suelen ser las más efectivas). Evita el flujo «Multimedia», ya que podría atenuar la síntesis de voz junto con la música.</string>
+    <string name="behavior_ducking_fallback_tip">La aplicación utiliza automáticamente la atenuación automática del sistema cuando está disponible, con la atenuación automática manual fluida como respaldo para una máxima compatibilidad.</string>
+    <string name="behavior_earcon_description">Reproduce un sonido antes de que comience el habla. Esto puede ser útil si el habla repentina te resulta un poco molesta. También es útil si las lecturas parecen comenzar a mitad de frase.</string>
+    <string name="behavior_earcon_spinner_hint">No es raro que el dispositivo omita o no detecte ocasionalmente la señal acústica.</string>
+    <string name="behavior_earcon_title">Señal acústica</string>
+    <string name="behavior_earcon_preview">Señal acústica anterior</string>
+    <string name="behavior_earcon_preview_none">Selecciona un sonido acerca de prevenir una señal acústica.</string>
+    <string name="behavior_earcon_delay_disclaimer">Reproducir un sonido añadirá, naturalmente, un pequeño retraso (aprox. 1 s) antes de que comience la lectura.</string>
+    <string name="behavior_earcon_engine_warning">⚠️ Tu motor de conversión es posible que actualmente no admita sonidos personalizados de texto a voz. Si no escuchas ningún sonido, solicita al desarrollador de tu motor de voz que incluya la compatibilidad con sonidos ambientales.</string>
+    <string name="behavior_earcon_operation_failed">No se pudo completar esa acción. Inténtalo de nuevo.</string>
 </resources>
