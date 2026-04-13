@@ -8,7 +8,7 @@
     <string name="quick_settings_tile_disabled">Desactivado</string>
     <string name="quick_settings_tile_enabled_toast">SpeakThat activado desde los ajustes rápidos</string>
     <string name="quick_settings_tile_disabled_toast">SpeakThat desactivado desde los ajustes rápidos</string>
-    <string name="quick_settings_tile_error_toast">Error al activar SpeakThat</string>
+    <string name="quick_settings_tile_error_toast">Error al alternar SpeakThat</string>
     <!-- Permission Explanations for IzzyOnDroid/F-Droid -->
     <string name="permission_request_install_packages">Se usa para que el sistema de actualización automática instale nuevas versiones de las versiones de GitHub. Solo se utiliza cuando el usuario activa explícitamente las actualizaciones automáticas y la aplicación no se instaló desde Google Play Store.</string>
     <string name="permission_access_location">Requerido para las funciones de filtrado condicional de Bluetooth y WiFi. Se usa para detectar dispositivos Bluetooth y redes WiFi cercanos para reglas definidas por el usuario. No sigue la ubicación ni recopila datos.</string>
@@ -67,7 +67,7 @@
     </string-array>
     <!-- Behavior Settings Dialogs -->
     <string name="notification_behavior_dialog_title">Opciones de conducta de notificación</string>
-    <string name="notification_behavior_dialog_message">Elige cómo maneja SpeakThat las notificaciones múltiples: <b>🔄 Interrumpir</b> - Detiene la notificación actual y lee la nueva inmediatamente. Ideal para notificaciones urgentes. <b>📋 Cola</b> - Termina la notificación actual y, a continuación, lee las nuevas en orden. No se pierde nada. <b>⏭️ Saltar</b> - Ignora nuevas notificaciones mientras lees. Sencillo, pero puedes perder las importantes. <b>🧠 Inteligente (Recomendado)</b> - Interrumpe en apps propietarias y deja en cola a las demás. Un balance perfecto de lo urgente y lo complementario. El modo inteligente te permite elegir qué aplicaciones son lo suficientemente urgentes como para interrumpirlas (como llamadas o mensajes) mientras otras esperan su turno.</string>
+    <string name="notification_behavior_dialog_message">Elige cómo maneja SpeakThat las notificaciones múltiples: <b>Interrumpir</b> - Detiene la notificación actual y lee la nueva inmediatamente. Ideal para notificaciones urgentes. <b>Cola</b> - Termina la notificación actual y, a continuación, lee las nuevas en orden. No se pierde nada. <b>⏭Omitir</b> - Ignora nuevas notificaciones mientras lees. Sencillo, pero puedes perder las importantes. <b>Inteligente (Recomendado)</b> - Interrumpe en apps propietarias y deja en cola a las demás. Un balance perfecto de lo urgente y lo complementario. El modo inteligente te permite elegir qué aplicaciones son lo suficientemente urgentes como para interrumpirlas (como llamadas o mensajes) mientras otras esperan su turno.</string>
     <string name="custom_app_names_title">Nombres de apps personalizados</string>
     <string name="custom_app_names_description">Personaliza cómo se pronuncian las apps en las notificaciones</string>
     <string name="add_custom_app_name">Añadir nombre de app personalizado</string>
@@ -75,9 +75,9 @@
     <string name="custom_name_hint">Nombre personalizado (por ej., Twitter)</string>
     <string name="custom_app_names_example">Ejemplo: la app X se lee como Twitter</string>
     <string name="media_behavior_dialog_title">Opciones de conducta multimedia</string>
-    <string name="media_behavior_dialog_message">Elige cómo SpeakThat maneja las notificaciones mientras reproduce músicas/vídeos: <b>🎵 Ignorar</b> - Habla sobre el multimedia. Simple pero puede ser disruptiva. <b>⏸️ Pausar</b> - Pausa el multimedia mientras habla. Bueno para podcasts, pero interrumpe el flujo de música. <b>🔉 Audio bajo</b> - Reduce temporalmente el volumen multimedia para que pueda escuchar ambos. <b>🔇 Silenciar</b> - No habla mientras se reproduce el multimedia. Tranquilo, pero puede que pierdas importantes notificaciones. Bajo audio funciona como una radio para un coche. Cuando hablas, se atenúa la música y se vuelve a subir.</string>
+    <string name="media_behavior_dialog_message">Elige cómo SpeakThat maneja las notificaciones mientras reproduce músicas/vídeos: <b>Ignorar</b> - Habla sobre el multimedia. Simple pero puede ser disruptiva. <b>Pausar</b> - Pausa el multimedia mientras habla. Bueno para podcasts, pero interrumpe el flujo de música. <b>Audio bajo</b> - Reduce temporalmente el volumen multimedia para que pueda escuchar ambos. <b>Silenciar</b> - No habla mientras se reproduce el multimedia. Tranquilo, pero puede que pierdas importantes notificaciones. Bajo audio funciona como una radio para un coche. Cuando hablas, se atenúa la música y se vuelve a subir.</string>
     <string name="shake_to_stop_dialog_title">Función sacudir para detener</string>
-    <string name="shake_to_stop_dialog_message">Sacudir para detener te permite silenciar instantáneamente SpeakThat agitando tu dispositivo: <b>✨ Porqué resulta útil:</b> • Deja de recibir notificaciones bulliciosas en lugares tranquilos • Control rápido cuando tienes las manos ocupadas • Funciona incluso con la pantalla apagada • Sin necesidad de buscar botones <b>🎯 Cómo funciona:</b> • Sacude tu equipo con firmeza (como agitar los dados) • Las notificaciones actuales se detienen en seco • Se limpia la cola de notificaciones • Otras notificaciones trabajan con normalidad <b>⚙️ Personalización:</b> • Ajusta la sensibilidad a tus preferencias • Prueba tu fuerza de sacudida y mídela • Trabaja bien con personas serenas o nerviosas Esta función gusta especialmente a quienes reciben notificaciones durante reuniones, películas o mientras conducen.</string>
+    <string name="shake_to_stop_dialog_message">Sacudir para detener te permite silenciar instantáneamente SpeakThat agitando tu dispositivo: <b> Porqué resulta útil:</b> • Deja de recibir notificaciones bulliciosas en lugares tranquilos • Control rápido cuando tienes las manos ocupadas • Funciona incluso con la pantalla apagada • Sin necesidad de buscar botones <b>Cómo funciona:</b> • Sacude tu equipo con firmeza (como agitar los dados) • Las notificaciones actuales se detienen en seco • Se limpia la cola de notificaciones • Otras notificaciones trabajan con normalidad <b>Personalización:</b> • Ajusta la sensibilidad a tus preferencias • Prueba tu fuerza de sacudida y mídela • Trabaja bien con personas serenas o nerviosas Esta función gusta especialmente a quienes reciben notificaciones durante reuniones, películas o mientras conducen.</string>
     <string name="use_recommended">Uso Recomendado</string>
     <string name="got_it">Entendido</string>
     <!-- Persistent/Silent Notification Filtering -->
@@ -99,7 +99,7 @@
     <string name="system_notifications_desc">Notificaciones de aplicaciones del sistema (Android, servicios de Google)</string>
     <!-- Wave to Stop Feature -->
     <string name="wave_to_stop_dialog_title">Función ondular para detener</string>
-    <string name="wave_to_stop_dialog_message">Ondular para detener te permite silenciar instantáneamente SpeakThat agitando tu dispositivo: <b>✨ Porqué resulta útil:</b> • Perfecto para usuarios que no deseas sacudir sus dispositivos • Ideal para teléfonos en escritorios o soportes • Trabajan con una sola mano • No se necesita mover el dispositivo físicamente <b>🎯 Cómo funciona:</b> • Mueve la mano delante del dispositivo (como si fuera un gesto mágico) • Utiliza el sensor de proximidad para detectar el movimiento de la mano • Las notificaciones actuales se detienen inmediatamente • Las notificaciones en cola se borran • Las nuevas notificaciones funcionan con normalidad <b>⚙️ Personalización:</b> • Ajusta la sensibilidad a tu gusto • Prueba tu detección de ondulado y compruébalo • Trabaja bien con diferentes manos y distancias Esta función es especialmente útil para la accesibilidad, los usuarios de escritorio y cualquier persona que prefiera el control por gestos al movimiento físico.</string>
+    <string name="wave_to_stop_dialog_message">Wave to Stop te permite silenciar SpeakThat al instante cubriendo el sensor de proximidad (por ejemplo, agitando la mano cerca de la parte superior del dispositivo): <b> Por qué es útil:</b> • Perfecto para usuarios que no pueden agitar su dispositivo • Ideal para teléfonos en escritorios o soportes • Funciona con una mano • No se necesita mover el dispositivo físicamente • Alternativa accesible a la función de agitar <b>🎯 Cómo funciona:</b> • Utiliza el sensor de proximidad estándar de Android: el sensor se considera cubierto cuando la lectura está más cerca que el rango máximo del sensor y dentro de unos 5 cm • Puedes configurar cuánto tiempo debe permanecer cubierto el sensor (mantener la mano agitada) antes de que se active • Un tiempo de espera puede detener una lectura atascada para la seguridad de la batería • El modo bolsillo puede permitir que las lecturas continúen si el sensor ya estaba cubierto cuando comenzó la lectura; consulta la configuración de comportamiento para obtener más detalles <b>⚙️ Personalización:</b> • Duración de la función de mantener la mano agitada, tiempo de espera y modo bolsillo en la configuración de Comportamiento Esta función es especialmente útil para la accesibilidad, los usuarios de escritorio y cualquier persona que prefiera el control por gestos en lugar del movimiento físico.</string>
     <!-- About Page -->
     <string name="about">Acerca de</string>
     <string name="about_description_title">Sobre SpeakThat!</string>
@@ -118,8 +118,8 @@
     <string name="store_update_dialog_got_it">Entendido</string>
     <string name="app_description">SpeakThat! es un lector de notificaciones de Android de código abierto que las anuncia en voz alta mediante texto a voz. Es perfecto para el modo manos libres, para mejorar la accesibilidad y para mantenerse informado mientras se realizan varias tareas a la vez.</string>
     <string name="app_features">• Lectura de notificaciones en tiempo real\n• configuración de voz personalizable\n• Filtrado inteligente de notificaciones\n• Controles específicos por aplicación\n• Comportamiento consciente de medios\n• Seguimiento del historial de notificaciones\n• Opción de sacudir o hacer una onda para detener\n• Formato de habla personalizado\n• Reglas condicionales para lógica avanzada y cronometrada\n• Con funciones completas, sin conexión y libres de anuncios</string>
-    <string name="developer_info">Desarrollado con amor por Mitchi, un desarrollador independiente del Reino Unido con más de 12 años de experiencia probando y usando lectores de notificaciones todos los días.\n\nSpeakThat! fue inspirado por Touchless Notifications, originalmente desarrollado por DYNA Logix, y busca continuar el legado de lectores de notificaciones personalizables.\n\nEste proyecto fue acelerado por programación asistida por Inteligencia Artificial.</string>
-    <string name="license_info">Este proyecto es de código abierto y está disponible bajo la Licencia GPL-3.0.\n\nPuedes ver el texto completo de la licencia y el código fuente en GitHub. ¡Las contribuciones y comentarios son bienvenidos!</string>
+    <string name="developer_info">Desarrollado con ❤️ por Mitchi, un desarrollador independiente del Reino Unido con más de 12 años de experiencia probando y usando lectores de notificaciones todos los días.\n\nSpeakThat! fue inspirado por Touchless Notifications, originalmente desarrollado por DYNA Logix, y busca continuar el legado de lectores de notificaciones personalizables.\n\nEste proyecto fue acelerado por programación asistida por Inteligencia Artificial.</string>
+    <string name="license_info">SpeakThat es un software libre y de código abierto, publicado bajo la licencia GNU GPL v3.0, una licencia copyleft que garantiza que las versiones modificadas y redistribuidas sigan siendo gratuitas y se les atribuya correctamente.\n\nEsta licencia le permite descargar, modificar y redistribuir SpeakThat, siempre que las versiones redistribuidas o modificadas permanezcan bajo la misma licencia y conserven los avisos de derechos de autor originales.\n\nPuedes consultar el texto completo de la licencia y el código fuente en GitHub. ¡Se agradecen las contribuciones y los comentarios!\n\nSpeakThat! Copyright © 2025-2026 Mitchell Bell\nSPEAKTHAT es una marca registrada de Mitchell Bell</string>
     <string name="read_about_app">Leer Acerca de App</string>
     <string name="stop_reading">Parar lectura</string>
     <!--
@@ -132,7 +132,7 @@
     <string name="tts_features_intro">Las características principales incluyen:</string>
     <string name="tts_features">Lectura de notificaciones en tiempo real, configuración de voz personalizable, filtrado inteligente de notificaciones, controles específicos por aplicación, comportamiento consciente de medios, seguimiento del historial de notificaciones, opción de sacudir o hacer una onda para detener, formato de habla personalizado, soporte para modo oscuro y claro, reglas condicionales para lógica avanzada y cronometrada, y con funciones completas, sin conexión y libres de anuncios.</string>
     <string name="tts_developer">Desarrollado con amor por Mitchi, un desarrollador independiente del Reino Unido con más de 12 años de experiencia probando y usando lectores de notificaciones todos los días. SpeakThat fue inspirado por Touchless Notifications, originalmente desarrollado por DYNA Logix, y busca continuar el legado de lectores de notificaciones personalizables. Este proyecto fue acelerado por programación asistida por Inteligencia Artificial.</string>
-    <string name="tts_license">Este proyecto es de código abierto y está disponible bajo la Licencia GPL-3.0. Puedes ver el texto completo de la licencia y el código fuente en GitHub. ¡Las contribuciones y comentarios son bienvenidos!</string>
+    <string name="tts_license">SpeakThat es software libre y de código abierto, publicado bajo la licencia GNU GPL v3.0, una licencia copyleft que garantiza que las versiones modificadas y redistribuidas sigan siendo libres y debidamente atribuidas. Esta licencia le permite descargar, modificar y redistribuir SpeakThat, siempre que las versiones redistribuidas o modificadas mantengan la misma licencia y conserven los avisos de derechos de autor originales. Puede consultar el texto completo de la licencia y el código fuente en GitHub. ¡Se agradecen las contribuciones y los comentarios! SpeakThat es una obra protegida por derechos de autor de Mitchell Bell desde 2025 hasta 2026. SPEAKTHAT es una marca registrada de Mitchell Bell.</string>
     <string name="tts_thank_you">Gracias por usar SpeakThat!</string>
     <!-- Update System -->
     <string name="check_for_updates">Buscar actualizaciones</string>
@@ -202,15 +202,15 @@
     <string name="tts_about_features_intro">Las características principales incluyen:</string>
     <string name="tts_about_features">Lectura de notificaciones en tiempo real, configuración de voz personalizable, filtrado inteligente de notificaciones, controles específicos por aplicación, comportamiento consciente de medios, seguimiento del historial de notificaciones, opción de sacudir o hacer una onda para detener, formato de habla personalizado, soporte para modo oscuro y claro, reglas condicionales para lógica avanzada y cronometrada, y con funciones completas, sin conexión y libres de anuncios.</string>
     <string name="tts_about_developer">Desarrollado con amor por Mitchi, un desarrollador independiente del Reino Unido con más de 12 años de experiencia probando y usando lectores de notificaciones todos los días. SpeakThat fue inspirado por Touchless Notifications, originalmente desarrollado por DYNA Logix, y busca continuar el legado de lectores de notificaciones personalizables. Este proyecto fue acelerado por programación asistida por Inteligencia Artificial.</string>
-    <string name="tts_about_license">Este proyecto es de código abierto y está disponible bajo la Licencia GPL-3.0. Puedes ver el texto completo de la licencia y el código fuente en GitHub. ¡Las contribuciones y comentarios son bienvenidos!</string>
+    <string name="tts_about_license">SpeakThat es software libre y de código abierto, publicado bajo la licencia GNU GPL v3.0, una licencia copyleft que garantiza que las versiones modificadas y redistribuidas sigan siendo libres y debidamente atribuidas. Esta licencia le permite descargar, modificar y redistribuir SpeakThat, siempre que las versiones redistribuidas o modificadas mantengan la misma licencia y conserven los avisos de derechos de autor originales. Puede consultar el texto completo de la licencia y el código fuente en GitHub. ¡Se agradecen las contribuciones y los comentarios! SpeakThat es una obra protegida por derechos de autor de Mitchell Bell desde 2025 hasta 2026. SPEAKTHAT es una marca registrada de Mitchell Bell.</string>
     <string name="tts_about_thank_you">Gracias por usar SpeakThat!</string>
     <!-- Voice Settings Test -->
     <string name="tts_voice_test">Así es como sonarán tus notificaciones con esta configuración de voz.</string>
     <!-- Onboarding TTS -->
-    <string name="tts_onboarding_language_theme">Elige tu idioma y tema preferido para empezar con SpeakThat.</string>
-    <string name="tts_onboarding_welcome">Bienvenido a SpeakThat! Mantente conectado sin mirar fijamente tu pantalla. Tu teléfono leerá las notificaciones en voz alta para que puedas concentrarte en lo que importa.</string>
-    <string name="tts_onboarding_permission">SpeakThat necesita permiso para leer tus notificaciones en voz alta. Todo se mantiene en tu dispositivo y tú controlas qué se lee.</string>
-    <string name="tts_onboarding_privacy">Tu privacidad importa. Tú controlas exactamente qué se lee en voz alta. Agita tu teléfono para detener cualquier anuncio instantáneamente. Todo se mantiene en tu dispositivo.</string>
+    <string name="tts_onboarding_language_theme">Elige tu idioma preferido para empezar.</string>
+    <string name="tts_onboarding_welcome">¡Bienvenido a SpeakThat! Mantente conectado sin tener que mirar la pantalla. Tu teléfono leerá las notificaciones en voz alta para que puedas concentrarte en lo importante.</string>
+    <string name="tts_onboarding_permission">SpeakThat necesita acceso a tus notificaciones. La lectura de notificaciones no funcionará sin este permiso.</string>
+    <string name="tts_onboarding_privacy">Tu privacidad es importante. Tú controlas exactamente qué se lee en voz alta. El procesamiento de SpeakThat se realiza completamente en tu dispositivo. No se envía ningún dato a su desarrollador ni a terceros.</string>
     <string name="tts_onboarding_filters">Configuremos algunos filtros básicos de privacidad para comenzar. SpeakThat cuenta con un potente sistema de filtrado que te permite elegir qué se lee y qué no.</string>
     <string name="tts_onboarding_apps">Escribe el nombre de una aplicación de la que nunca quieres que lea notificaciones. Ejemplos comunes incluyen aplicaciones bancarias, médicas y de citas.</string>
     <string name="tts_onboarding_words">Escribe palabras o frases que nunca quieres que lea en las notificaciones. Ejemplos comunes incluyen contraseña, PIN, tarjeta de crédito y términos médicos.</string>
@@ -276,7 +276,7 @@
     <string name="wifi_compatibility_warning_create_anyway">Crear regla de todos modos</string>
     <string name="wifi_compatibility_warning_add_anyway">Añadir regla de todos modos</string>
     <string name="wifi_compatibility_warning_nevermind">Ignóralo</string>
-    <string name="wifi_compatibility_warning_open_github">Open GitHub</string>
+    <string name="wifi_compatibility_warning_open_github">Abrir GitHub</string>
     <string name="rule_trigger_multiple">se cumplen múltiples condiciones</string>
     <string name="rule_action_skip_notification">omite lectura de notificaciones</string>
     <string name="rule_action_enable_app_filter">activa filtro de apps para %1$s</string>
@@ -318,11 +318,11 @@
     <string name="dialog_title_advanced_voice_options">Opciones avanzadas de voz</string>
     <string name="dialog_title_audio_settings_help">Ayuda de ajustes de audio</string>
     <string name="dialog_title_advanced_voice_information">Información avanzada de voz</string>
-    <string name="dialog_title_format_test_results">🧪 Resultados de la prueba de formato</string>
+    <string name="dialog_title_format_test_results">Resultados de la prueba de formato</string>
     <string name="dialog_title_delay_before_readout">Retraso antes de la lectura</string>
     <string name="dialog_title_custom_app_names">Nombres de apps personalizados</string>
     <string name="dialog_title_notification_cooldown">Tiempo de reposo de notificación</string>
-    <string name="dialog_title_speech_formats_guide">🗣️ Formatos de voz - Guía completa</string>
+    <string name="dialog_title_speech_formats_guide">Formatos de habla: guía completa</string>
     <string name="dialog_title_honour_do_not_disturb">Considerar no molestar</string>
     <string name="dialog_title_honour_phone_calls">Considerar llamadas telefónicas</string>
     <string name="dialog_title_notification_deduplication">Deduplicación de notificación</string>
@@ -345,10 +345,10 @@
     <string name="dialog_title_delete_rule">Eliminar regla</string>
     <string name="dialog_title_invalid_rule_name">Nombre de regla no válido</string>
     <string name="dialog_title_invalid_rule">Regla no válida</string>
-    <string name="dialog_title_add_trigger">Añadir activador</string>
+    <string name="dialog_title_add_trigger">Agregar condición</string>
     <string name="dialog_title_add_action">Añadir acción</string>
     <string name="dialog_title_add_exception">Añadir excepción</string>
-    <string name="dialog_title_remove_trigger">Quitar activador</string>
+    <string name="dialog_title_remove_trigger">Quitar condición</string>
     <string name="dialog_title_remove_action">Eliminar acción</string>
     <string name="dialog_title_remove_exception">Eliminar excepción</string>
     <string name="dialog_title_coming_soon">Próximamente</string>
@@ -393,7 +393,7 @@
     <string name="dialog_message_invalid_rule_name">Introduce un nombre para esta regla.</string>
     <string name="dialog_message_invalid_rule">Por favor, corrige los siguientes problemas:\n\n%s</string>
     <string name="dialog_message_save_rule_failed">Error al aplicar la regla %s. Inténtalo de nuevo.</string>
-    <string name="dialog_message_remove_trigger">¿Estás seguro que deseas eliminar este activador?</string>
+    <string name="dialog_message_remove_trigger">¿Estás seguro que deseas retirar esta condición?</string>
     <string name="dialog_message_remove_action">¿Estás seguro que deseas eliminar esta acción?</string>
     <string name="dialog_message_remove_exception">¿Estás seguro que deseas eliminar esta excepción?</string>
     <string name="dialog_message_coming_soon">la configuración %s será implementada en la siguiente fase.</string>
@@ -404,7 +404,7 @@
     <string name="dialog_message_select_wifi_network">Elige la red WiFi para esta regla:</string>
     <!-- Language Change Dialog -->
     <string name="dialog_title_language_changed">Idioma cambiado</string>
-    <string name="dialog_message_language_changed">El idioma de la aplicación se ha cambiado de %1$s a %2$s.\n\n• Aplicar ahora: Actualiza esta pantalla inmediatamente\n• Reiniciar app: asegura que todas las pantallas y servicios usen el nuevo idioma\n\nPara obtener la mejor experiencia, recomendamos reiniciar la aplicación.</string>
+    <string name="dialog_message_language_changed">El idioma de la aplicación se ha cambiado de %1$s a %2$s.\n\n• Aplicar ahora: Actualiza esta pantalla inmediatamente\n• Reiniciar app: asegura que todas las pantallas y servicios usen el nuevo idioma\n\nPara obtener la mejor experiencia, recomiendo reiniciar la aplicación.</string>
     <string name="button_restart_app">Reiniciar App</string>
     <string name="button_apply_now">Aplicar ahora</string>
     <string name="toast_language_restarting">Reiniciando la app con el nuevo idioma...</string>
@@ -428,29 +428,25 @@
     <string name="button_cancel">Cancelar</string>
     <string name="button_ok">Aceptar</string>
     <string name="button_close">Cerrar</string>
-    <string name="button_clear">Limpiar</string>
+    <string name="button_clear">Vaciar</string>
     <string name="button_export_crash_logs">Exportar registros de errores</string>
-    <string name="button_clear_crash_logs">Limpiar registros de fallos</string>
+    <string name="button_clear_crash_logs">Vaciar bitácoras de cuelgues</string>
     <string name="button_force_test_crash">Forzar prueba de error</string>
-    <string name="button_clear_analytics">Borrar análisis</string>
+    <string name="button_clear_analytics">Vaciar análisis</string>
     <string name="button_export_report">Exportar informe</string>
     <string name="button_reset_cache">Reiniciar caché</string>
     <string name="button_re_detect">Redetectar</string>
     <!-- Layout Section Titles -->
     <string name="section_notification_behavior">Conducta de notificación</string>
     <string name="section_media_behavior">Conducta multimedia</string>
-    <string name="recommendation_smart_mode">
-La mayoría de usuarios deben usar: Modo inteligente
-</string>
-    <string name="recommendation_lower_audio">
-La mayoría de los usuarios deben usar: Pausar Audio
-</string>
+    <string name="recommendation_smart_mode">El Modo Inteligente está recomendado</string>
+    <string name="recommendation_lower_audio">El Sonido Más Bajo está recomendado</string>
     <!-- Behavior Settings Strings -->
     <string name="behavior_notification_description">Controla cómo se manejan las notificaciones cuando ya se está leyendo una</string>
     <string name="behavior_media_description">Controla cómo se manejan las notificaciones cuando se reproduce música o vídeos</string>
     <string name="behavior_interrupt_mode">Interrumpir (detener ahora, leer otro de inmediato)</string>
     <string name="behavior_queue_mode">Cola (terminar ahora, luego leer otro)</string>
-    <string name="behavior_skip_mode">Saltar (ignorar nuevas notificaciones durante la lectura)</string>
+    <string name="behavior_skip_mode">Omitir (ignorar notificaciones nuevas durante la lectura)</string>
     <string name="behavior_smart_mode">Inteligente (interrumpir aplicaciones prioritarias, en cola el resto)</string>
     <string name="behavior_priority_apps">⚡ Aplicaciones prioritarias</string>
     <string name="behavior_priority_apps_description">Estas aplicaciones interrumpirán la notificación actual. Todas las demás aplicaciones se pondrán en cola.</string>
@@ -458,20 +454,20 @@ La mayoría de los usuarios deben usar: Pausar Audio
     <string name="behavior_media_pause">Pausar - Pausar medios mientras hablas</string>
     <string name="behavior_media_lower">Audio bajo - Atenúa el volumen multimedia temporalmente</string>
     <string name="behavior_media_silence">Silenciar - No habla cuando los medios están reproduciendo</string>
-    <string name="behavior_ducking_volume">🔉 Atenuar volumen</string>
+    <string name="behavior_ducking_volume">Atenuar volumen</string>
     <string name="behavior_ducking_description">Establece cómo los medios silenciados se deben convertir en notificaciones</string>
     <string name="behavior_ducking_warning">⚠️ En algunos dispositivos, atenuar el volumen de los medios también puede bajar la voz de notificación. Si las notificaciones siguen siendo difíciles de oír, prueba el modo pausa o modifica tus ajustes TTS.</string>
     <string name="behavior_ducking_tip">Consejo: Valores más bajos hacen los medios silenciosos durante las notificaciones</string>
-    <string name="behavior_calls_title">📞 Considerar llamadas telefónicas</string>
+    <string name="behavior_calls_title">Considerar Llamadas Telefónicas</string>
     <string name="behavior_calls_description">Evitar lecturas de notificaciones cuando estás en una llamada</string>
     <string name="behavior_calls_recommendation">La mayoría de los usuarios deberían: Activar esta función</string>
     <string name="behavior_calls_checkbox">Considerar llamadas telefónicas</string>
-    <string name="behavior_calls_benefits">✨ Beneficios:\n\n• Evita interrupciones durante llamadas importantes\n• Respeta tu privacidad de conversación\n• Funciona con todo tipo de llamadas telefónicas\n• Detección automática del estado de las llamadas</string>
-    <string name="behavior_audio_title">🔇 Considerar modo audio</string>
+    <string name="behavior_calls_benefits">Beneficios:\n\n• Evita interrupciones durante llamadas importantes\n• Respeta tu privacidad de conversación\n• Funciona con todo tipo de llamadas telefónicas\n• Detección automática del estado de las llamadas</string>
+    <string name="behavior_audio_title">Considerar modo audio</string>
     <string name="behavior_audio_description">Sólo leer notificaciones cuando el dispositivo está en modo sonido (no silencioso o vibrante)</string>
     <string name="behavior_audio_recommendation">Recomendado: Activar esta función</string>
     <string name="behavior_audio_checkbox">Considerar modo audio (solo sonido)</string>
-    <string name="behavior_audio_benefits">✨ Beneficios:\n\n• Evita el audio no deseado cuando el teléfono está silenciado\n• Respeta la configuración de audio de su dispositivo\n• Funciona con modos de vibración y silencio\n• Asegura que las notificaciones se reproduzcan solo cuando pueda oírlas</string>
+    <string name="behavior_audio_benefits">Beneficios:\n\n• Evita el audio no deseado cuando el teléfono está silenciado\n• Respeta la configuración de audio de su dispositivo\n• Funciona con modos de vibración y silencio\n• Asegura que las notificaciones se reproduzcan solo cuando pueda oírlas</string>
     <string name="behavior_shake_current">Sacudido actual: 0.0</string>
     <string name="behavior_shake_threshold">Umbral: 12.0</string>
     <string name="behavior_timeout_display">Tiempo de espera: 30 segundos</string>
@@ -487,11 +483,11 @@ La mayoría de los usuarios deben usar: Pausar Audio
     <string name="behavior_delay_title">Retraso antes de la lectura</string>
     <string name="behavior_delay_description">Añade un breve retardo antes de que SpeakThat lea las notificaciones</string>
     <string name="behavior_delay_recommendation">La mayoría de usuarios deben usar: 2 segundos</string>
-    <string name="behavior_delay_none">Ninguno - Iniciar inmediatamente</string>
-    <string name="behavior_delay_1s">1 segundo - Pausa rápida</string>
-    <string name="behavior_delay_2s">2 segundos - Recomendado</string>
-    <string name="behavior_delay_3s">3 segundos - Tiempo extra para reaccionar</string>
-    <string name="behavior_delay_benefits">✨ Beneficios:\n\n• Evita la superposición con los sonidos de notificación\n• Te da tiempo de agitar\n• Menos estridente en entornos silenciosos\n• Perfecto para reuniones y espacios públicos</string>
+    <string name="behavior_delay_none">Ninguno (Iniciar inmediatamente)</string>
+    <string name="behavior_delay_1s">1 segundo</string>
+    <string name="behavior_delay_2s">2 segundos (Recomendado)</string>
+    <string name="behavior_delay_3s">3 segundos</string>
+    <string name="behavior_delay_benefits">Beneficios:\n\n• Evita la superposición con los sonidos de notificación\n• Te da tiempo de agitar\n• Menos estridente en entornos silenciosos\n• Perfecto para reuniones y espacios públicos</string>
     <string name="behavior_cooldown_title">Tiempo de reposo de notificación</string>
     <string name="behavior_cooldown_description">Evita que las aplicaciones tengan múltiples notificaciones leídas dentro de un periodo de tiempo especificado</string>
     <string name="behavior_cooldown_recommendation">Excelente para: aplicaciones que notifican spam</string>
@@ -501,7 +497,7 @@ La mayoría de los usuarios deben usar: Pausar Audio
     <string name="behavior_speech_preset">Formato preestablecido:</string>
     <string name="behavior_speech_custom">Formato personalizado:</string>
     <string name="behavior_speech_preview">Vista previa: Mensajes te notificó: Mitchi: He oído que estás usando SpeakThat!</string>
-    <string name="behavior_speech_placeholders">Marcadores comunes: {app}, {content}, {time}, {title}, {text}, {priority}, {category}</string>
+    <string name="behavior_speech_placeholders">Marcadores comunes: {app}, {content}, {time}, {title}, {text}, {bigtext}</string>
     <string name="button_start_test">Iniciar prueba</string>
     <string name="button_test">Probar</string>
     <string name="button_add">Añadir</string>
@@ -526,7 +522,7 @@ La mayoría de los usuarios deben usar: Pausar Audio
     <string name="voice_help_translate">Ayuda a traducir SpeakThat!</string>
     <string name="voice_help_translate_description">Toca para abrir la página de traducción en Weblate</string>
     <string name="voice_show_advanced">Mostrar opciones avanzadas de voz</string>
-    <string name="voice_advanced_label">⚙️ Avanzado</string>
+    <string name="voice_advanced_label">Avanzado</string>
     <string name="voice_tts_language_advanced">Idioma TTS (Avanzado)</string>
     <string name="voice_tts_language_description">Sobreescribe el idioma de las frases de la aplicación (como \'te notificó:\'). Deja como predeterminado a menos que quieras diferentes idiomas para las frases de interfaz de usuario y TTS.</string>
     <string name="voice_specific_voice_advanced">Voz específica (Avanzado)</string>
@@ -543,13 +539,13 @@ La mayoría de los usuarios deben usar: Pausar Audio
     <string name="arrow_right">›</string>
     <!-- Main Activity Strings -->
     <string name="main_version_placeholder">versión x.x.x</string>
-    <string name="main_author">por Mitchi</string>
+    <string name="main_author">Mitchi Bell</string>
     <string name="main_service_active">SpeakThat! activo</string>
     <string name="main_service_enable">Toca para activar la lectura de notificaciones</string>
     <string name="main_notification_permissions">Permisos de notificación:</string>
     <!-- Settings Activity Strings -->
     <string name="settings_general_title">Ajustes generales</string>
-    <string name="settings_general_description">Preferencias de apps, ajustes de tema</string>
+    <string name="settings_general_description">Opciones que afectan al servicio de SpeakThat</string>
     <string name="settings_voice_title">Ajustes de voz</string>
     <string name="settings_voice_description">Pronunciación de texto a voz y velocidad</string>
     <string name="settings_behavior_title">Ajustes de conducta</string>
@@ -564,8 +560,8 @@ La mayoría de los usuarios deben usar: Pausar Audio
     <string name="settings_rerun_onboarding_description">Ve la aplicación de nuevo</string>
     <string name="settings_support_title">Soporte &amp; Comentarios</string>
     <string name="settings_support_description">Obtén ayuda, reporta errores, solicita características</string>
-    <string name="settings_donate_title">Donar</string>
-    <string name="settings_donate_description">Ayuda al desarrollo y mantén la aplicación libre</string>
+    <string name="settings_donate_title">Decir Gracias</string>
+    <string name="settings_donate_description">Apoya el desarrollo y mantén la aplicación libre de anuncios</string>
     <!-- Critical Hardcoded Strings - Other -->
     <string name="unknown_device">Dispositivo desconocido</string>
     <string name="export_full_config_text">Copia de seguridad de configuración creada en %s</string>
@@ -584,13 +580,13 @@ La mayoría de los usuarios deben usar: Pausar Audio
     <string name="behavior_dnd_description">Respeta el modo No molestar de tu dispositivo y silencia las notificaciones cuando está activado</string>
     <string name="behavior_dnd_recommendation">La mayoría de los usuarios deberían: Activar esta función</string>
     <string name="behavior_dnd_switch_label">Considerar modo no molestar</string>
-    <string name="behavior_dnd_benefits">✨ Beneficios:\n\n• Respeta la configuración No molestar de tu dispositivo\n• Perfecto para reuniones, sueños y tiempo silencioso\n• Funciona con DND programado y activación manual\n• Conserva tu privacidad y enfoque cuando sea necesario</string>
+    <string name="behavior_dnd_benefits">Beneficios:\n\n• Respeta la configuración No molestar de tu dispositivo\n• Perfecto para reuniones, sueños y tiempo silencioso\n• Funciona con DND programado y activación manual\n• Conserva tu privacidad y enfoque cuando sea necesario</string>
     <!-- Behavior Settings - Phone Calls -->
     <string name="section_honor_phone_calls">Considerar llamadas telefónicas</string>
     <string name="behavior_phone_calls_description">Evita lecturas de notificaciones cuando estás en una llamada</string>
     <string name="behavior_phone_calls_recommendation">La mayoría de los usuarios deberían: Activar esta función</string>
     <string name="behavior_phone_calls_switch_label">Considerar llamadas telefónicas</string>
-    <string name="behavior_phone_calls_benefits">✨ Beneficios:\n\n• Evita interrupciones durante llamadas importantes\n• Respeta tu privacidad de conversación\n• Funciona con todo tipo de llamadas telefónicas\n• Detección automática del estado de las llamadas</string>
+    <string name="behavior_phone_calls_benefits">Beneficios:\n\n• Evita interrupciones durante llamadas importantes\n• Respeta tu privacidad de conversación\n• Funciona con todo tipo de llamadas telefónicas\n• Detección automática del estado de las llamadas</string>
     <!-- Behavior Settings - Notification Deduplication -->
     <string name="section_notification_deduplication">Deduplicación de notificación</string>
     <string name="behavior_deduplication_description">Evita que la misma notificación sea leída varias veces consecutivamente</string>
@@ -614,11 +610,11 @@ La mayoría de los usuarios deben usar: Pausar Audio
     <string name="behavior_shake_test_label">Prueba de sacudida</string>
     <string name="behavior_shake_test_description">Prueba la intensidad de tu sacudido y ve el umbral de activación</string>
     <!-- Behavior Settings - Wave to Stop -->
-    <string name="section_wave_to_stop">👋 Ondular para detener</string>
+    <string name="section_wave_to_stop">Ondular para detener</string>
     <string name="behavior_wave_description">Detiene las lecturas agitando la mano sobre el sensor de proximidad</string>
     <string name="behavior_wave_recommendation">Recomendado: Activar esta función</string>
     <string name="behavior_wave_switch_label">Activar ondular para detener</string>
-    <string name="behavior_wave_benefits">✨ Benefits:\n\n• Gesto silencioso para detener lecturas\n• Funciona en entornos silenciosos\n• No se requiere contacto físico\n• Control rápido y conveniente</string>
+    <string name="behavior_wave_benefits">Benefits:\n\n• Gesto silencioso para detener lecturas\n• Funciona en entornos silenciosos\n• No se requiere contacto físico\n• Control rápido y conveniente</string>
     <!-- Behavior Settings - Additional Labels -->
     <string name="label_calibrate">Calibrar</string>
     <string name="label_test_shake">Prueba de sacudido</string>
@@ -634,14 +630,12 @@ La mayoría de los usuarios deben usar: Pausar Audio
     <string name="voice_test_button">Prueba de voz</string>
     <!-- Filter Settings Strings -->
     <string name="filter_app_list_title">Filtrado de listas de aplicaciones</string>
-    <string name="filter_app_list_description">
-Controla qué aplicaciones pueden activar notificaciones
-</string>
+    <string name="filter_app_list_description">Controla cual aplicaciones puede activar lecturas</string>
     <string name="filter_no_filtering">Sin filtrado de aplicaciones</string>
     <string name="filter_whitelist">Lista blanca (sólo apps seleccionadas)</string>
     <string name="filter_blacklist">Lista negra (excluir apps seleccionadas)</string>
     <string name="filter_manage_apps">Gestionar Apps</string>
-    <string name="filter_app_list_button">📋 Lista de apps</string>
+    <string name="filter_app_list_button">Listado de app</string>
     <string name="filter_app_count">(0 apps)</string>
     <string name="filter_search_description">Busca a través de tus aplicaciones instaladas por nombre o paquete. Haz clic en una sugerencia para añadirla al instante. (Toca para más información)</string>
     <string name="filter_word_blacklist_title">Palabras prohibidas</string>
@@ -686,14 +680,10 @@ Bloquear = omitir por completo, Privar = anunciar en privado
     <!-- Exception Configuration -->
     <string name="exception_set_end_time">Fijar hora de finalización</string>
     <string name="exception_no_days_selected">Sin día seleccionado</string>
-    <string name="exception_bluetooth_devices_title">
-Elegir qué dispositivos Bluetooth deben activar esta excepción:
-</string>
+    <string name="exception_bluetooth_devices_title">Elegir cual dispositivos Bluetooth aplican esta excepción a:</string>
     <string name="exception_specific_devices">Dispositivos específicos (uno por línea):</string>
     <string name="exception_select_devices">Seleccionar Dispositivos</string>
-    <string name="exception_wifi_networks_title">
-Elegir qué dispositivos Bluetooth deben activar esta excepción:
-</string>
+    <string name="exception_wifi_networks_title">Elegir cuáles redes WiFi aplican esta excepción para:</string>
     <string name="exception_specific_networks">Redes específicas (una por línea):</string>
     <string name="exception_select_networks">Seleccionar Redes</string>
     <!-- Rules Activity -->
@@ -705,27 +695,21 @@ Elegir qué dispositivos Bluetooth deben activar esta excepción:
     <string name="rule_builder_logic_or">O</string>
     <string name="rule_builder_logic_xor">XOR</string>
     <string name="rule_builder_actions_title">Acciones</string>
-    <string name="rule_builder_actions_description">Qué sucede cuando se cumplen los activadores</string>
+    <string name="rule_builder_actions_description">Qué sucede cuando se cumplen las condiciones</string>
     <string name="rule_builder_exceptions_title">Excepciones</string>
-    <string name="rule_builder_exceptions_description">Condiciones que anulan los activadores (opcional)</string>
+    <string name="rule_builder_exceptions_description">Condiciones bajo las cuales esta regla no se aplicará (opcional)</string>
     <string name="rule_builder_save_rule">Guardar regla</string>
     <!-- Trigger Configuration -->
     <string name="trigger_set_button">Establecer</string>
     <string name="trigger_no_days_selected">Sin día seleccionado</string>
-    <string name="trigger_bluetooth_devices_title">
-Elegir qué dispositivos Bluetooth deben activar esta excepción:
-</string>
+    <string name="trigger_bluetooth_devices_title">Elegir cuales dispositivos Bluetooth aplican esta regla a:</string>
     <string name="trigger_any_bluetooth_device">Cualquier dispositivo Bluetooth</string>
-    <string name="trigger_any_bluetooth_description">
-Activar cuando cualquier dispositivo está conectado
-</string>
+    <string name="trigger_any_bluetooth_description">Aplica cuando cualquier dispositivo está conectado</string>
     <string name="trigger_specific_devices">Dispositivos específicos (uno por línea):</string>
     <string name="trigger_select_devices">Seleccionar Dispositivos</string>
-    <string name="trigger_wifi_networks_title">
-Elegir qué dispositivos Bluetooth deben activar esta regla:
-</string>
+    <string name="trigger_wifi_networks_title">Elegir cuáles redes WiFi aplica esta regla a:</string>
     <string name="trigger_any_wifi_network">Cualquier red WiFi</string>
-    <string name="trigger_any_wifi_description">Activar cuando se conecta a cualquier red</string>
+    <string name="trigger_any_wifi_description">Aplicar cuando se conecta a cualquier red</string>
     <string name="trigger_specific_networks">Redes específicas (una por línea):</string>
     <string name="trigger_select_networks">Seleccionar Redes</string>
     <!-- Wave Calibration -->
@@ -792,9 +776,7 @@ Elegir qué dispositivos Bluetooth deben activar esta regla:
     <string name="icon_refresh">🔄</string>
     <string name="support_include_logs">Incluir registros de depuración</string>
     <!-- Action Configuration -->
-    <string name="action_configure_voice_settings">
-Configurar los ajustes de voz a aplicar cuando se activa esta regla:
-</string>
+    <string name="action_configure_voice_settings">Configurar los ajustes de voz para aplicar cuando sea aplicada esta regla:</string>
     <!-- Behavior Settings -->
     <string name="behavior_speech_preview_example">Vista previa: Mensajes te notificó: Mitchi: He oído que estás usando SpeakThat!</string>
     <!-- Rules Activity -->
@@ -810,20 +792,20 @@ Configurar los ajustes de voz a aplicar cuando se activa esta regla:
     <string name="dialog_donate_patron">Conviértete en Patron</string>
     <string name="dialog_donate_patron_description">Soporte mensual con actualizaciones exclusivas</string>
     <!-- Development Settings -->
-    <string name="dev_debug_tools_title">🛠️ Herramientas de depuración</string>
+    <string name="dev_debug_tools_title">Herramientas de depuración</string>
     <string name="dev_debug_tools_description">Herramientas para depurar y probar la aplicación</string>
-    <string name="dev_notification_history">📋 Mostrar historial de notificaciones</string>
-    <string name="dev_battery_report">🔋 Informe de optimización de batería</string>
-    <string name="dev_repair_blacklist">🛠️ Reparar palabras prohibidas</string>
-    <string name="dev_background_monitor">🛰️ Monitor de proceso de fondo</string>
-    <string name="dev_installation_debug">🔍 Depurado de la fuente de instalación</string>
-    <string name="dev_test_rules">🧪 Sistema de reglas de prueba</string>
+    <string name="dev_notification_history">Mostrar historial de notificaciones</string>
+    <string name="dev_battery_report">Informe de optimización de batería</string>
+    <string name="dev_repair_blacklist">Reparar palabras prohibidas</string>
+    <string name="dev_background_monitor">Monitor de proceso en segundo plano</string>
+    <string name="dev_installation_debug">Depurado de la fuente de instalación</string>
+    <string name="dev_test_rules">Sistema de reglas de prueba</string>
     <!-- Notification History -->
     <string name="notification_history_title">Historial de notificaciones</string>
     <string name="notification_history_description">SpeakThat! registra sus 15 notificaciones más recientes tales que puede filtrarlas más tarde. Pulsa una notificación para filtrar fácilmente las que sean similares en el futuro.</string>
     <string name="notification_history_empty">Ninguna notificación para mostrar</string>
     <string name="notification_history_clear">Borrar historial</string>
-    <string name="notification_history_recent">📜 Notificaciones recientes</string>
+    <string name="notification_history_recent">Notificaciones recientes</string>
     <string name="notification_history_loading">Cargando historial de notificaciones…</string>
     <string name="notification_history_debug_info">Información de depuración</string>
     <string name="notification_history_debug_description">Esta pantalla muestra las notificaciones que SpeakThat! ha capturado con fines de depuración. Te ayuda a comprobar que la aplicación funciona correctamente y a ver exactamente qué notificaciones se están leyendo en voz alta.</string>
@@ -844,10 +826,10 @@ Configurar los ajustes de voz a aplicar cuando se activa esta regla:
     <string name="onboarding_skip">Saltar</string>
     <string name="onboarding_next">Siguiente</string>
     <!-- Language and Theme Onboarding -->
-    <string name="onboarding_language_theme_title">Idioma y tema</string>
-    <string name="onboarding_language_theme_description">Elige el idioma que debería utilizar. También puedes activar el modo oscuro si quieres.</string>
+    <string name="onboarding_language_theme_title">Idioma</string>
+    <string name="onboarding_language_theme_description">Elija cual idioma de SpeakThat! utilizaría.</string>
     <string name="onboarding_language_section_title">Idioma</string>
-    <string name="onboarding_language_help_title">¿No aparece tu idioma?</string>
+    <string name="onboarding_language_help_title">¿No está completo su idioma?</string>
     <string name="onboarding_language_help_description">Estoy trabajando todo lo que pueda para apoyar más idiomas. ¡Contribuye con traducciones en la página de Weblate si puedes!</string>
     <string name="onboarding_theme_section_title">Temas</string>
     <string name="onboarding_theme_description">Usar modo oscuro para esta app</string>
@@ -1285,7 +1267,7 @@ Vista en tiempo real de lo que está ocurriendo bajo el capó
     <string name="dev_enable_audio_ducking">Habilitar Reducción de Audio</string>
     <string name="dev_enable_audio_ducking_description">Rehabilitar el botón de radio Bajar Audio en la configuración de Comportamiento de Medios. Esta función ha sido temporalmente deshabilitada debido a problemas de compatibilidad de dispositivos.</string>
     <string name="audio_ducking_disabled_title">Reducción de Audio Temporalmente Deshabilitada</string>
-    <string name="audio_ducking_disabled_message">Debido a inconsistencias en cómo diferentes dispositivos manejan las solicitudes de Enfoque de Audio, la opción Bajar Audio ha sido temporalmente deshabilitada por defecto. Si puedes ayudar a que esta función funcione, por favor contribuye a este proyecto en GitHub. Puedes rehabilitar esta función para propósitos de desarrollo o experimentación yendo a Configuración de Desarrollo → Habilitar Reducción de Audio. Puede funcionar en algunos dispositivos, pero no puedo ofrecer soporte general para ello en este momento.</string>
+    <string name="audio_ducking_disabled_message">La función de bajar el volumen funciona de forma diferente en cada dispositivo. Algunos dispositivos podrían no responder correctamente a los cambios de volumen, lo que podría afectar al volumen de la síntesis de voz.\n\nPuedes activar esta función, pero ten en cuenta que podría no funcionar correctamente en todos los dispositivos.</string>
     <string name="audio_ducking_disabled_ok">Entendido</string>
     <string name="audio_ducking_disabled_enable">Habilitar Reducción de Audio</string>
     <string name="selftest_step1_rebinding">Permiso habilitado: reconectando el servicio de notificaciones...</string>
@@ -1317,7 +1299,7 @@ Vista en tiempo real de lo que está ocurriendo bajo el capó
     <string name="rules_mode_external_title">Automatización externa</string>
     <string name="rules_mode_external_description">Habilita intents para herramientas de automatización de terceros como MacroDroid o Tasker.</string>
     <string name="rules_mode_info_title">Modos de automatización</string>
-    <string name="rules_mode_info_description">SpeakThat solo puede usar una fuente de automatización a la vez.\n\nDesactivado – Mantiene la automatización apagada para que SpeakThat siga activo hasta que cambies el interruptor principal.\n\nReglas condicionales – Utiliza los disparadores integrados de SpeakThat! para dispositivos Bluetooth, horarios y filtros.\n\nAutomatización externa – Activa intents broadcast para herramientas como MacroDroid o Tasker que controlan SpeakThat directamente.</string>
+    <string name="rules_mode_info_description">SpeakThat solo puede usar una fuente de automatización a la vez.\n\nDesactivado – Mantiene la automatización apagada para que SpeakThat siga activo hasta que cambies el interruptor principal.\n\nReglas condicionales – Utiliza la lógica de automación para SpeakThat! para dispositivos Bluetooth, horarios y filtros (Recomendado).\n\nAutomatización externa – Activa intents broadcast para herramientas como MacroDroid o Tasker que controlan SpeakThat directamente.</string>
     <string name="rules_mode_info_content_description">Información del modo de automatización</string>
     <string name="rules_mode_off_empty_title">Automatización desactivada</string>
     <string name="rules_mode_off_empty_description">Selecciona «Reglas condicionales» para crear automatizaciones, o deja este modo para que SpeakThat permanezca siempre activo.</string>
@@ -1558,4 +1540,298 @@ Vista en tiempo real de lo que está ocurriendo bajo el capó
     <string name="behavior_earcon_delay_disclaimer">Reproducir un sonido añadirá, naturalmente, un pequeño retraso (aprox. 1 s) antes de que comience la lectura.</string>
     <string name="behavior_earcon_engine_warning">⚠️ Tu motor de conversión es posible que actualmente no admita sonidos personalizados de texto a voz. Si no escuchas ningún sonido, solicita al desarrollador de tu motor de voz que incluya la compatibilidad con sonidos ambientales.</string>
     <string name="behavior_earcon_operation_failed">No se pudo completar esa acción. Inténtalo de nuevo.</string>
+    <string name="behavior_speech_placeholder_ticker_html">• <b>{ticker}</b> - Texto de ticker heredado (solo en aplicaciones antiguas; a menudo vacío en las notificaciones modernas)</string>
+    <string name="behavior_speech_placeholder_ticker_note" formatted="false">- {ticker} permanece en blanco si la notificación no incluye texto ticker (la mayoría de las aplicaciones modernas dejan este campo vacío)</string>
+    <string name="behavior_speech_example_ticker_html">• <b>Ticker heredado:</b> {app} - {ticker} → Reproductor de música - Reproduciendo ahora: Synthwave Essentials</string>
+    <string name="main_copyright_holder">© 2025-2026 Mitchi Bell</string>
+    <string name="settings_summary_title">Ajustes Resumidos</string>
+    <string name="settings_summary_description">Ajustar los resúmenes de notificaciones de SpeakThat\'s</string>
+    <string name="settings_clock_title">Ajustes del Reloj</string>
+    <string name="settings_clock_description">Habilitar y personalizar los anuncios de horarios</string>
+    <string name="clock_settings_master_header">Reloj de SpeakThat!</string>
+    <string name="clock_settings_master_description">Anuncie la hora en el intervalo que usted elija. Respete los mismos filtros y el mismo comportamiento de las reglas condicionales que las lecturas de notificaciones.</string>
+    <string name="tip_speakthat_clock">¡Los anuncios de SpeakThat siguen las mismas reglas y filtros que todas las demás notificaciones!</string>
+    <string name="clock_settings_master_row_title">Habilitar Anuncios de Hora</string>
+    <string name="clock_settings_master_row_subtitle">Cuando está activada, la aplicación escucha cada minuto y emite un sonido en el intervalo que hayas elegido.</string>
+    <string name="clock_settings_interval_header">Intervalo de Anuncio</string>
+    <string name="clock_settings_interval_description">Con qué frecuencia se debe anunciar la hora cuando el reloj esté activado.</string>
+    <string name="clock_settings_interval_15_title">Cada 15 minutos</string>
+    <string name="clock_settings_interval_15_subtitle">A las :00, :15, :30 y :45 de cada hora.</string>
+    <string name="clock_settings_interval_30_title">Cada 30 minutos</string>
+    <string name="clock_settings_interval_30_subtitle">A las :00 y a las :30 de cada hora.</string>
+    <string name="clock_settings_interval_60_title">Cada hora</string>
+    <string name="clock_settings_interval_60_subtitle">Solo cada hora.</string>
+    <string name="clock_settings_interval_180_title">Cada 3 horas</string>
+    <string name="clock_settings_interval_180_subtitle">A las 3:00, 6:00, 9:00 y 12:00 en punto.</string>
+    <string name="clock_settings_template_title">Formato de voz</string>
+    <string name="clock_settings_template_desc">Utilice el marcador de posición {time} donde se debe indicar la hora actual. La hora se mostrará según la configuración regional y el formato de 12/24 horas de su sistema. También puede incluir {batt} para indicar el porcentaje de batería actual (0–100).</string>
+    <string name="clock_settings_template_hint">Introduzca el formato de su discurso</string>
+    <string name="clock_settings_precision_header">Sincronización de precisión</string>
+    <string name="clock_settings_precision_description">Habilita esta opción si notas que SpeakThat no reproduce algunos anuncios. Consume un poco más de batería.</string>
+    <string name="clock_settings_precision_row_title">Modo de alarma exacta</string>
+    <string name="clock_settings_precision_row_subtitle">Requiere permiso para planificar alarmas exactas en Android 12 y versiones posteriores.</string>
+    <string name="clock_settings_exact_alarm_permission_toast">Se requiere permiso exacto para la alarma para una sincronización precisa. Abra los ajustes para conceder permiso a SpeakThat.</string>
+    <string name="clock_settings_doze_disclaimer">Para ahorrar energía, Android puede retrasar ocasionalmente los anuncios de la hora uno o dos minutos cuando el teléfono está en reposo.</string>
+    <string name="summary_settings_back">Atrás</string>
+    <string name="summary_settings_master_toggle_title">Habilitar resúmenes</string>
+    <string name="summary_settings_master_toggle_subtitle">Control maestro para todos los activadores de resumen. Requiere permiso de superposición.</string>
+    <string name="summary_settings_master_toggle_row_subtitle">Cuando está desactivado, se bloquean los activadores de resumen programados y manuales.</string>
+    <string name="summary_settings_permission_title">Permiso de Superposición</string>
+    <string name="summary_settings_permission_subtitle">Necesario para exhibir tarjetas de resumen en la pantalla.</string>
+    <string name="summary_settings_permission_granted">Se concede permiso para superponer elementos.</string>
+    <string name="summary_settings_grant_permission">Otorgar Permiso de Superposición</string>
+    <string name="summary_settings_schedule_time">Planificador Diario</string>
+    <string name="summary_settings_schedule_subtitle">Planifique una lectura resumida al día a la hora que haya seleccionado.</string>
+    <string name="summary_settings_scheduler_toggle_title">Habilitar planificación diaria</string>
+    <string name="summary_settings_scheduler_toggle_subtitle">Almacena tus preferencias y se ejecuta solo cuando los resúmenes están habilitados globalmente.</string>
+    <string name="summary_settings_scheduler_run_time">Hora de ejecución</string>
+    <string name="summary_settings_default_time">08:00 AM</string>
+    <string name="summary_settings_order_title">Orden de notificación</string>
+    <string name="summary_settings_order_subtitle">Elija si los resúmenes leen las notificaciones de la más antigua a la más reciente o de la más reciente a la más antigua.</string>
+    <string name="summary_settings_order_spinner_label">Leer notificaciones</string>
+    <string name="summary_settings_order_oldest_first">Primero más anterior</string>
+    <string name="summary_settings_order_newest_first">Primero más nueva</string>
+    <string name="summary_settings_greeting_name">Nombre del saludo</string>
+    <string name="summary_settings_greeting_name_subtitle">Establece el nombre que SpeakThat utilizará al iniciar un resumen para leer las notificaciones activas.</string>
+    <string name="summary_settings_speech_pacing">Espaciado del habla</string>
+    <string name="summary_settings_speech_pacing_subtitle">Establece el hueco entre la lectura de una notificación y la siguiente durante los resúmenes.</string>
+    <string name="summary_settings_pacing_value">2 seg</string>
+    <string name="summary_settings_pacing_value_format">%1$d seg</string>
+    <string name="summary_settings_pacing_min">0s</string>
+    <string name="summary_settings_pacing_max">5s</string>
+    <string name="summary_trigger_blocked_globally">Los resúmenes están inhabilitados o no tienen permiso de superposición.</string>
+    <string name="summary_action_start_title">Iniciar resumen</string>
+    <string name="summary_quick_strings_source_hint">Opcional: se puede usar una ranura \"Extra\" para identificar la automatización en los registros de depuración. Establezca el nombre del parámetro en \"source\" y el valor en un identificador clave de su elección (por ejemplo, \"start-summary-when-charging\") para que pueda saber qué perfil activó el resumen.</string>
+    <string name="settings_compatibility_title">Ajustes de compatibilidad</string>
+    <string name="settings_compatibility_description">Soluciones para notificaciones comunes relacionados con el dispositivo</string>
+    <string name="compatibility_section_audio_routing">Enrutado del Sonido Android</string>
+    <string name="compatibility_section_ducking">Compatibilidad de Atenuación de Sonido</string>
+    <string name="compatibility_section_duplication">Soluciones Alternativas de Duplicación</string>
+    <string name="behavior_dismissal_memory_benefits">Beneficios:\n\n• Evita que se vuelvan a leer las notificaciones descartadas\n• Impide que se lean las notificaciones después de descartarlas\n• Duración de la memoria configurable (de 5 minutos a 1 hora)\n• Limpieza automática para ahorrar memoria y batería</string>
+    <string name="behavior_dismissal_memory_timeout_label">Duración de memoria</string>
+    <string name="behavior_dismissal_memory_timeout_description">Cuánto tiempo se deben recordar las notificaciones descartadas</string>
+    <string name="behavior_dismissal_memory_timeout_5min">5 minutos</string>
+    <string name="behavior_dismissal_memory_timeout_15min">15 minutos</string>
+    <string name="behavior_dismissal_memory_timeout_30min">30 minutos</string>
+    <string name="behavior_dismissal_memory_timeout_1hour">1 hora</string>
+    <string name="behavior_dismissal_memory_info_button">ⓘ️</string>
+    <string name="dialog_title_dismissal_memory">Memoria de expediente</string>
+    <string name="dialog_dismissal_memory_explanation">&lt;![CDATA[Dismissal Memory impide que las notificaciones se vuelvan a leer después de descartarlas:&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Qué hace:&lt;/b&gt;&lt;br/&gt;Cuando descartas una notificación, SpeakThat la recuerda durante un período configurable. Si el mismo contenido de notificación vuelve a aparecer durante este tiempo, no se leerá en voz alta.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Cuándo es útil:&lt;/b&gt;&lt;br/&gt;• &lt;b&gt;Notificaciones descartadas&lt;/b&gt;: evita que se vuelvan a leer después de deslizarlas.&lt;br/&gt;• &lt;b&gt;Actualizaciones de aplicaciones&lt;/b&gt;: algunas aplicaciones vuelven a publicar notificaciones después de las actualizaciones.&lt;br/&gt;• &lt;b&gt;Actualizaciones del sistema&lt;/b&gt;: Android puede volver a publicar notificaciones durante eventos del sistema.&lt;br/&gt;• &lt;b&gt;Re‐conexiones de red&lt;/b&gt;: las aplicaciones pueden volver a publicar notificaciones cuando se restablece la conectividad.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Cómo funciona:&lt;/b&gt;&lt;br/&gt;• Sigue las notificaciones descartadas por hash de contenido.&lt;br/&gt;• Duración de memoria configurable (de 5 minutos a 1 hora).&lt;br/&gt;• Limpieza automática para evitar el consumo excesivo de memoria.&lt;br/&gt;• Ahorro de batería con almacenamiento eficiente.&lt;br/&gt;• Registro detallado para la resolución de problemas.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Consejo:&lt;/b&gt; Habilite esta opción si experimenta que las notificaciones se vuelven a leer después de despido. ¡La mayoría de los usuarios se beneficiarán de esta función!</string>
+    <string name="test_settings_btn_tts">Prueba TTS</string>
+    <string name="test_settings_btn_shake">Prueba Aleatoria</string>
+    <string name="test_settings_btn_filters">Filtros de Prueba</string>
+    <string name="test_settings_btn_refresh">Refresco</string>
+    <string name="test_settings_btn_export">Exportar</string>
+    <string name="filter_word_list_title">Filtrado de listas de palabras</string>
+    <string name="filter_word_list_description">Filtra las notificaciones según palabras o frases</string>
+    <string name="filter_word_list_info">Bloquear = omitir por completo, Privado = anunciar en privado</string>
+    <string name="filter_no_word_filtering">Sin filtro de palabras</string>
+    <string name="filter_word_whitelist">Lista blanca</string>
+    <string name="filter_word_blacklist">Lista negra</string>
+    <string name="filter_word_list_header">Lista de palabras</string>
+    <string name="general_show_system_blocks">Bloqueos del sistema de bitácora en el historial</string>
+    <string name="general_show_system_blocks_description">Guarda los eventos del sistema en segundo plano (como la deduplicación) en el historial. Útil para la resolución de problemas.</string>
+    <string name="general_main_screen_history">Historial de la pantalla principal</string>
+    <string name="general_main_screen_history_description">Exhibe las notificaciones y los diagnósticos recientes en la pantalla de inicio de la aplicación.</string>
+    <string name="general_toast_notifications_title">Habilitar notificaciones emergentes</string>
+    <string name="general_toast_main_app">Alternar aplicación principal</string>
+    <string name="general_toast_main_app_description">Mostrar notificación emergente al alternar el interruptor principal en la aplicación</string>
+    <string name="general_toast_quick_settings">Mosaico de Ajustes rápidos</string>
+    <string name="general_toast_quick_settings_description">Mostrar notificación emergente al alternar mediante el mosaico de Ajustes rápidos</string>
+    <string name="general_toast_automation">Intenciones de automatización</string>
+    <string name="general_toast_automation_description">Mostrar notificación emergente al alternar a través de aplicaciones de automatización externas</string>
+    <string name="general_accessibility_permission">Permiso de accesibilidad</string>
+    <string name="selftest_error_0404_description">La notificación apareció en tu pantalla, pero el servicio NotificationListener no la recibió. Intenta alternar el permiso de notificaciones en los ajustes del sistema.</string>
+    <string name="general_accessibility_permission_description">Habilitar controles avanzados como accesos directos a los botones de volumen (totalmente opcional)</string>
+    <string name="accessibility_permission_denied">Permisos de accesibilidad denegados</string>
+    <string name="accessibility_permission_explanation_title">Permiso de Servicio de Accesibilidad</string>
+    <string name="accessibility_permission_open_settings">Abrir Ajustes de Accesibilidad</string>
+    <string name="accessibility_permission_cancel">Cancelar</string>
+    <string name="accessibility_service_name">Accesibilidad de SpeakThat</string>
+    <string name="behavior_press_to_stop_title">Presione para Detener</string>
+    <string name="behavior_press_to_stop_description">Detiene la notificación de lectura pulsando ambos botones del volumen simultáneamente. El control de volumen normal funciona aún. Requiere permisos de accesibilidad.</string>
+    <string name="behavior_enable_press_stop">Habilitar Presionar para Detener</string>
+    <string name="behavior_requires_accessibility_permission">Requiere permisos de accesibilidad</string>
+    <string name="press_to_stop_dialog_title">Presione para Detener</string>
+    <string name="accessibility_permission_required_title">Permisos de Accesibilidad Requeridos</string>
+    <string name="accessibility_permission_required_message">Presione Detener requiere el permiso de accesibilidad para detectar las presiones del botón del volumen. Habilítelo primero en los Ajustes Generales.</string>
+    <string name="open_accessibility_settings">Abrir Ajustes de Accesibilidad</string>
+    <string name="exception_bluetooth_connection_state_label">Estado de Conexión</string>
+    <string name="exception_bluetooth_connected">Conectado</string>
+    <string name="exception_bluetooth_disconnected">Desconectado</string>
+    <string name="exception_wired_headphones_connection_state_label">Estado de conexión</string>
+    <string name="exception_wired_headphones_connected">Conectado</string>
+    <string name="exception_wired_headphones_disconnected">Desconectado</string>
+    <string name="exception_wifi_connection_state_label">Estado de Conexión</string>
+    <string name="exception_wifi_connected">Conectado</string>
+    <string name="exception_wifi_disconnected">Desconectado</string>
+    <string name="trigger_bluetooth_connection_state_label">Estado de Conexión</string>
+    <string name="trigger_bluetooth_connected">Conectado</string>
+    <string name="trigger_bluetooth_disconnected">Desconectado</string>
+    <string name="trigger_wired_headphones_connection_state_label">Estado de Conexión</string>
+    <string name="trigger_wired_headphones_connected">Conectado</string>
+    <string name="trigger_wired_headphones_disconnected">Desconectado</string>
+    <string name="trigger_wifi_connection_state_label">Estado de Conexión</string>
+    <string name="trigger_wifi_connected">Conectado</string>
+    <string name="trigger_wifi_disconnected">Desconectado</string>
+    <string name="url_handling_read_full">Leer enlace completo</string>
+    <string name="url_handling_domain_only">Leer solo dominio</string>
+    <string name="url_handling_dont_read">No leer</string>
+    <string name="url_handling_example">Ejemplo: https://www.speakthat.app/subdirectory → speakthat.app</string>
+    <string name="onboarding_mute_button">Silenciar</string>
+    <string name="onboarding_back_button">Atrás</string>
+    <string name="onboarding_next_button">Siguiente</string>
+    <string name="onboarding_skip_button">Omitir</string>
+    <string name="onboarding_language_title">Idioma</string>
+    <string name="onboarding_language_icon_description">Icono de idioma</string>
+    <string name="onboarding_language_card_title">Idioma</string>
+    <string name="info_icon_description">Icono de información</string>
+    <string name="onboarding_welcome_title_new">Bienvenido a SpeakThat!</string>
+    <string name="onboarding_welcome_icon_description">Icono SpeakThat</string>
+    <string name="onboarding_privacy_title_new">Privado‐Primero</string>
+    <string name="onboarding_privacy_card1_bullet3">• en ciertos lugares</string>
+    <string name="onboarding_privacy_card1_bullet4">• entre ciertas veces</string>
+    <string name="onboarding_privacy_card1_conclusion">¡Y muchas más!</string>
+    <string name="onboarding_permission_title_new">Permisos Requeridos</string>
+    <string name="onboarding_permission_card_title">Concede acceso a SpeakThat a sus notificaciones</string>
+    <string name="onboarding_permission_open_settings">Abrir ajustes</string>
+    <string name="onboarding_system_check_icon_description">Icono estetoscopio</string>
+    <string name="onboarding_system_check_intro_card_title">Garantizar la fiabilidad</string>
+    <string name="onboarding_system_check_run_button">Ejecutar comprobación del sistema</string>
+    <string name="onboarding_system_check_testing_card_title">Probando…</string>
+    <string name="onboarding_system_check_testing_card_description">¡Esto no tardará mucho!</string>
+    <string name="onboarding_system_check_feedback_no">No, no lo hice</string>
+    <string name="onboarding_system_check_feedback_yes">Sí, lo hice</string>
+    <string name="onboarding_system_check_failure_permission_denied">Denegaste el permiso para recibir notificaciones.</string>
+    <string name="onboarding_system_check_failure_test_skipped">La prueba fue omitida.</string>
+    <string name="onboarding_system_check_retry">Reintentar</string>
+    <string name="accessibility_permission_request">Solicitud de Permisos de Accesibilidad</string>
+    <string name="accessibility_permission_granted">Permiso de accesibilidad concedido</string>
+    <string name="accessibility_permission_explanation_message">SpeakThat! utiliza la API AccessibilityService para ofrecer funciones de control opcionales, como pausar la lectura mediante botones físicos y una integración más fluida con aplicaciones multimedia. Este permiso permite que la aplicación detecte las pulsaciones de botones y las acciones de la interfaz de usuario, lo que te brinda más opciones para controlar la lectura. No se recopila, almacena ni comparte ningún dato personal o confidencial del usuario; todo el procesamiento se realiza íntegramente en tu dispositivo. Este permiso es totalmente opcional; SpeakThat! seguirá funcionando sin él.</string>
+    <string name="accessibility_service_description">Permite funciones de control avanzadas para SpeakThat, incluyendo accesos directos a los botones de volumen para pausar o detener la lectura de notificaciones. Este servicio es totalmente opcional y todo el procesamiento se realiza en tu dispositivo.</string>
+    <string name="press_to_stop_dialog_message">Presione ambos botones de volumen simultáneamente para detener la lectura de notificaciones.<br/><br/><b>Perfecto para control manos libres:</b><br/>• Funciona desde cualquier lugar del sistema<br/>• No es necesario mirar la pantalla<br/>• Rápido y confiable<br/>• El control de volumen normal sigue funcionando<br/><br/><b>⚠️ Requiere permiso de accesibilidad:</b><br/>Esta función necesita el permiso de accesibilidad para detectar las pulsaciones de los botones de volumen. Puede habilitarlo en Configuración general.<br/>Tenga en cuenta que esto solo funcionará cuando la pantalla esté encendida.</string>
+    <string name="exception_wired_headphones_description">La condición se cumplirá cuando los auriculares estén conectados a su dispositivo mediante un cable.</string>
+    <string name="trigger_wired_headphones_description">Condición será cumplida cuando los auriculares están conectados a tu dispositivo mediante un cable</string>
+    <string name="voice_stream_volume">Volumen de flujo</string>
+    <string name="voice_stream_volume_description">Controla el nivel de volumen para al flujo de sonido seleccionado. Esto afecta al volumen del dispositivo para este tipo de flujo.</string>
+    <string name="voice_speakerphone_option">Utiliza Speakerphone para Llamada de Voz</string>
+    <string name="voice_speakerphone_description">Dirige el audio de la llamada de voz al altavoz en lugar del auricular para obtener un volumen más alto</string>
+    <string name="url_handling_title">Manipulación de URL</string>
+    <string name="url_handling_description">Controla como los enlaces de web se leen en voz alta en las notificaciones</string>
+    <string name="url_handling_custom_text_title">Texto de Remplazo Personal</string>
+    <string name="url_handling_custom_text_description">Que decir en vez de las URL (se deja en blanco para omitirlo completamente)</string>
+    <string name="url_handling_custom_text_hint">p.ej., \'enlace de web\', \'enlace a sitio\', o dejarlo en blanco para omitir</string>
+    <string name="onboarding_language_subtitle">Elija cual idioma le gustaría que SpeakThat! lo utilice.</string>
+    <string name="onboarding_language_card_description">Pulsa la casilla de abajo para elegir qué idioma debe usar SpeakThat para su interfaz y voz.</string>
+    <string name="onboarding_language_info_title">¿Su idioma no está completo?</string>
+    <string name="onboarding_language_info_description">Recuerden que solo soy una persona y que las traducciones las realizan voluntarios muy amables. Todavía no todos los idiomas están completamente traducidos. ¡Pueden ayudar a traducir SpeakThat contribuyendo a su página de Weblate!</string>
+    <string name="onboarding_language_translate_button">Traducción de Ayuda de SpeackThat</string>
+    <string name="onboarding_welcome_subtitle">¡Mantente conectado sin mirar fijamente la pantalla!</string>
+    <string name="onboarding_welcome_card_title">¿Cómo funciona SpeakThat?</string>
+    <string name="onboarding_welcome_card_description">Cuando recibas una notificación, SpeakThat te la leerá mediante un motor de conversión de texto a voz.\n\nTodo el procesamiento se realiza completamente en tu dispositivo, y tú mantienes el control total sobre lo que se lee.</string>
+    <string name="onboarding_privacy_subtitle">Tu privacidad es la prioridad de SpeakThat. Descubre cómo lo garantiza.</string>
+    <string name="onboarding_privacy_icon_description">icono de escudo de privacidad</string>
+    <string name="onboarding_privacy_card1_title">¿Podrá leer las notificaciones confidenciales?</string>
+    <string name="onboarding_privacy_card1_description">SpeakThat te da control total sobre lo que se lee.\n\nPuedes crear filtros que impidan la lectura:</string>
+    <string name="onboarding_privacy_card1_bullet1">• notificaciones de aplicaciones específicas</string>
+    <string name="onboarding_privacy_card1_bullet2">• notificaciones que contienen palabras específicas</string>
+    <string name="onboarding_privacy_card1_bullet5">• sin un dispositivo Bluetooth específico conectado</string>
+    <string name="onboarding_privacy_card2_title">¿Qué datos recopila SpeakThat?</string>
+    <string name="onboarding_privacy_card2_description">¡Ninguno! Todo el procesamiento se realiza íntegramente en tu dispositivo y nunca se envía nada a servidores externos, centros de datos o modelos de IA, a menos que envíes explícitamente un informe de errores y aceptes incluir los datos de la aplicación.</string>
+    <string name="onboarding_privacy_policy_title">Ver la política de privacidad</string>
+    <string name="onboarding_privacy_policy_description">En el sitio web de SpeakThat encontrará información detallada y un ejemplo de informe de errores.</string>
+    <string name="onboarding_privacy_policy_button">Política de privacidad abierta</string>
+    <string name="onboarding_permission_subtitle">SpeakThat requiere acceso a las notificaciones para leer en voz alta las notificaciones entrantes.</string>
+    <string name="onboarding_permission_icon_description">Icono de campana de notificación</string>
+    <string name="onboarding_permission_card_description">SpeakThat no puede leer tus notificaciones si no las ve. Tendrás que abrir la configuración de tu dispositivo y permitir que SpeakThat acceda a tus notificaciones.</string>
+    <string name="onboarding_permission_bullet1">• Lee el contenido de la notificación para leerlo en voz alta.</string>
+    <string name="onboarding_permission_bullet2">• Aplica tus filtros personalizados para proteger tu privacidad.</string>
+    <string name="onboarding_permission_bullet3">• Te mantiene informado sin que tengas que mirar la pantalla.</string>
+    <string name="onboarding_permission_bullet4">• Procesa todo localmente en tu dispositivo.</string>
+    <string name="onboarding_permission_tip">Consejo: En la lista, toque \'SpeakThat\' para habilitarlo.</string>
+    <string name="onboarding_permission_granted">✓ ¡Permiso concedido! Puedes continuar.</string>
+    <string name="onboarding_permission_not_granted">Permiso aún no concedido</string>
+    <string name="tts_onboarding_language_new">Elige tu idioma preferido para empezar a usar SpeakThat.</string>
+    <string name="tts_onboarding_welcome_new">¡Bienvenido a SpeakThat! Mantente conectado sin tener que mirar la pantalla. Cuando recibas una notificación, SpeakThat te la leerá mediante un motor de conversión de texto a voz. Todo el procesamiento se realiza en tu dispositivo y tú tienes el control total de lo que se lee.</string>
+    <string name="tts_onboarding_privacy_new">Tu privacidad es la prioridad de SpeakThat. Tienes control total sobre lo que se lee. Puedes crear filtros para apps, palabras, lugares, horas y mucho más. Todo el procesamiento se realiza íntegramente en tu dispositivo y nunca se envía información a servidores externos, centros de datos ni modelos de IA, a menos que informes explícitamente de un error y aceptes incluir los datos de la app.</string>
+    <string name="tts_onboarding_permission_new">SpeakThat necesita acceso a las notificaciones para leerlas en voz alta. Para ello, abre la configuración de tu dispositivo y otorga a SpeakThat acceso a tus notificaciones. Pulsa el botón «Abrir configuración» para conceder el permiso. En la lista, pulsa «SpeakThat» para activarlo. Toda la información permanece en tu dispositivo y no se envía ningún dato a terceros.</string>
+    <string name="onboarding_system_check_title">Comprobación rápida del sistema</string>
+    <string name="onboarding_system_check_subheading">SpeakThat verificará rápidamente que está listo para ejecutarse en su dispositivo.</string>
+    <string name="onboarding_system_check_intro_card_description">SpeakThat enviará una notificación de prueba y la leerá en voz alta para asegurarse de que funciona correctamente en tu dispositivo.\n\nEsta es solo una comprobación rápida. Podrás elegir qué se leerá a continuación.</string>
+    <string name="onboarding_system_check_feedback_card_title">¿Escuchaste a SpeakThat leer la notificación?</string>
+    <string name="onboarding_system_check_failure_card_title">Casi llegamos</string>
+    <string name="onboarding_system_check_failure_card_description">SpeakThat no leyó la notificación de prueba.\n\n%1$s\n\nPuedes continuar con la configuración, pero es posible que SpeakThat aún no esté listo para funcionar.\n\nNo dudes en contactarme si necesitas ayuda para que la aplicación funcione.</string>
+    <string name="onboarding_system_check_failure_category_post_notifications">Permiso de notificación denegado</string>
+    <string name="onboarding_system_check_failure_category_notification_access">Se requiere acceso a las notificaciones</string>
+    <string name="onboarding_system_check_failure_category_master_switch">SpeakThat está apagado</string>
+    <string name="onboarding_system_check_failure_category_volume">Volumen demasiado bajo</string>
+    <string name="onboarding_system_check_failure_category_sound_mode">Bloqueado por el modo de sonido</string>
+    <string name="onboarding_system_check_failure_category_post_failed">No se pudo mostrar la notificación de prueba</string>
+    <string name="onboarding_system_check_failure_category_not_received">Notificación no recibida</string>
+    <string name="onboarding_system_check_failure_category_no_audio_heard">No se escucha ningún sonido</string>
+    <string name="onboarding_system_check_failure_category_dnd">Bloqueado a No Molestar</string>
+    <string name="onboarding_system_check_failure_category_rule">Bloqueado por una regla</string>
+    <string name="onboarding_system_check_failure_category_filter">Bloqueado por un filtro</string>
+    <string name="onboarding_system_check_failure_category_duplicate">Bloqueado por detección duplicada</string>
+    <string name="onboarding_system_check_failure_category_dismissal">Bloqueado por la memoria de despido</string>
+    <string name="onboarding_system_check_failure_category_tts">Problema de conversión de texto a voz</string>
+    <string name="onboarding_system_check_failure_category_test_interrupted">Prueba interrumpida</string>
+    <string name="onboarding_system_check_failure_category_unknown">Algo fue mal</string>
+    <string name="tts_onboarding_system_check">Comprobación rápida del sistema. SpeakThat verificará rápidamente que está listo para ejecutarse en tu dispositivo. Enviará una notificación de prueba y la leerá para asegurarse de que funciona correctamente. Esta es solo una comprobación rápida. Podrás elegir qué se leerá a continuación.</string>
+    <string name="onboarding_kill_noise_title">Mata el ruido</string>
+    <string name="onboarding_kill_noise_subheading">No es necesario leer todas las notificaciones en voz alta. Así que silenciemos las que son spam.</string>
+    <string name="onboarding_kill_noise_icon_description">Icono de ajustes</string>
+    <string name="onboarding_kill_noise_card_title">Filtrado de notificaciones</string>
+    <string name="onboarding_kill_noise_card_description">SpeakThat te ayuda a saltarte lo que no te interesa (como las actualizaciones en segundo plano y las notificaciones de progreso) para que solo escuches lo que te importa.\n\nSiempre tienes el control y puedes cambiar los filtros de SpeakThat fácilmente cuando quieras.</string>
+    <string name="onboarding_kill_noise_skip_button">Omite esto por ahora</string>
+    <string name="tts_onboarding_kill_noise">Elimina el ruido. No todas las notificaciones necesitan ser leídas en voz alta. SpeakThat te ayuda a saltarte lo aburrido, como las actualizaciones en segundo plano y las notificaciones de progreso, para que solo escuches lo que te importa. Siempre tienes el control y puedes cambiar los filtros de SpeakThat fácilmente cuando quieras.</string>
+    <string name="onboarding_select_apps_title">Seleccione Sus App</string>
+    <string name="onboarding_select_apps_subheading">Selecciona qué aplicaciones debe leer SpeakThat y cuáles no.</string>
+    <string name="onboarding_select_apps_icon_description">Icono de bloque</string>
+    <string name="onboarding_select_apps_card_title">¿Qué tan hablador debería ser SpeakThat?</string>
+    <string name="onboarding_select_apps_card_description">SpeakThat puede leer las notificaciones de las aplicaciones que selecciones o leer todas las demás.\n\nPuedes cambiar esta configuración cuando quieras.</string>
+    <string name="onboarding_select_apps_option_blacklist_title">Lea todo excepto lo seleccionado</string>
+    <string name="onboarding_select_apps_option_blacklist_description">Lee las notificaciones de todas las aplicaciones excepto las que yo elija</string>
+    <string name="onboarding_select_apps_option_whitelist_title">Lee solo lo seleccionado</string>
+    <string name="onboarding_select_apps_option_whitelist_description">Lee solo las notificaciones de las apps seleccionadas</string>
+    <string name="onboarding_select_apps_button">Seleccionar Apps</string>
+    <string name="onboarding_select_apps_count_placeholder">0 apps seleccionadas</string>
+    <string name="onboarding_select_apps_count">%d apps seleccionadas</string>
+    <string name="tts_onboarding_select_apps">Selecciona tus apps. Elige qué apps debe leer SpeakThat y cuáles no. SpeakThat puede leer las notificaciones de las apps que selecciones o leer todas excepto las de esas apps. Puedes cambiar esta configuración cuando quieras.</string>
+    <string name="onboarding_when_to_read_title">Cuándo leer</string>
+    <string name="onboarding_when_to_read_subheading">Asegurémonos de que SpeakThat no se lea en un momento inoportuno.</string>
+    <string name="onboarding_when_to_read_icon_description">Icono de reglas</string>
+    <string name="onboarding_when_to_read_card_title">¿Cuándo leería SpeakThat?</string>
+    <string name="onboarding_when_to_read_card_description">A veces, lo importante no es qué se lee, sino cuándo. Estos atajos ayudan a SpeakThat a permanecer en silencio en los momentos inoportunos y a hablar en los momentos adecuados.\n\nSon totalmente opcionales y se pueden modificar posteriormente.</string>
+    <string name="onboarding_template_headphones_title">Solo cuando los auriculares estén conectados</string>
+    <string name="onboarding_template_headphones_description">SpeakThat solo leerá cuando haya auriculares Bluetooth o con cable conectados.</string>
+    <string name="onboarding_template_screen_off_title">Solo cuando la pantalla está apagada</string>
+    <string name="onboarding_template_screen_off_description">Las notificaciones solo serán leídas cuando su pantalla esté apagada</string>
+    <string name="onboarding_template_time_schedule_title">No entre ciertos momentos</string>
+    <string name="onboarding_template_time_schedule_description">Establece horarios de silencio en los que SpeakThat deba permanecer en silencio</string>
+    <string name="onboarding_template_status_tap">Toca para configurar</string>
+    <string name="onboarding_template_status_configured">Configurado</string>
+    <string name="onboarding_template_bluetooth_no_devices">No se encontraron dispositivos Bluetooth emparejados. Primero empareje un dispositivo.</string>
+    <string name="onboarding_template_bluetooth_permission_needed">Se necesita el permiso de Bluetooth para detectar tus auriculares.</string>
+    <string name="onboarding_template_bluetooth_disabled">Bluetooth no está disponible o está apagado.</string>
+    <string name="onboarding_template_dialog_add_rule">Añadir Regla</string>
+    <string name="onboarding_template_dialog_cancel">Cancelar</string>
+    <string name="onboarding_template_dialog_configure_headphones">Seleccione sus auriculares Bluetooth</string>
+    <string name="onboarding_template_dialog_configure_schedule">Establece tus horas de tranquilidad</string>
+    <string name="onboarding_template_rule_added">Regla añadida: %s</string>
+    <string name="onboarding_template_rule_error">Error al añadir la regla. Inténtalo de nuevo.</string>
+    <string name="tts_onboarding_when_to_read">Cuándo leer. Asegurémonos de que SpeakThat no lea en momentos inoportunos. A veces, lo importante no es qué se lee, sino cuándo. Estos atajos ayudan a SpeakThat a permanecer en silencio en los momentos equivocados y a hablar en los momentos adecuados. Son totalmente opcionales y se pueden modificar posteriormente.</string>
+    <string name="onboarding_filter_words_title">Filtrar por palabras</string>
+    <string name="onboarding_filter_words_subheading">Opcionalmente, puede ajustar el filtrado seleccionando palabras y frases específicas.</string>
+    <string name="onboarding_filter_words_icon_description">Icono de filtro</string>
+    <string name="onboarding_filter_words_card_title">Filtrar por palabras específicas (Opcional)</string>
+    <string name="onboarding_filter_words_card_description">Puedes agregar a tu filtro de aplicación una lista de palabras que deseas que SpeakThat lea o no lea en las notificaciones que contengan.</string>
+    <string name="onboarding_filter_words_option_blacklist_title">Lea todo excepto lo seleccionado</string>
+    <string name="onboarding_filter_words_option_blacklist_description">Lee las notificaciones de todas las aplicaciones excepto las que yo elija</string>
+    <string name="onboarding_filter_words_option_whitelist_title">Lee solo lo seleccionado</string>
+    <string name="onboarding_filter_words_option_whitelist_description">Leer solo las notificaciones de las aplicaciones seleccionadas</string>
+    <string name="onboarding_filter_words_input_hint">Teclee una palabra…</string>
+    <string name="onboarding_filter_words_add_button">Añadir palabra</string>
+    <string name="tts_onboarding_filter_words">Filtra por palabras. Opcionalmente, puedes ajustar el filtrado seleccionando palabras y frases específicas. Puedes añadir palabras al filtro de tu aplicación especificando una lista de las que quieres que SpeakThat lea o no lea en las notificaciones.</string>
+    <string name="onboarding_all_set_title">¡Listo!</string>
 </resources>
