@@ -69,7 +69,7 @@
     <string name="notification_behavior_dialog_title">Benachrichtigungsverhalten Optionen</string>
     <string name="notification_behavior_dialog_message">Wähle aus, wie SpeakThat mit mehrfachen Benachrichtigung umgehen soll: <b>Unterbrechen</b> - Unterbricht das Vorlesen einer Benachrichtigung um eine neuere Benachrichtigung sofort vorzulesen. Für dringliche Benachrichtigungen geeignet. <b>Warteschlange</b> - Liest die laufende Benachrichtigung komplett vor und liest erst dann die Neueren der Reihe nach vor. Nichts wird verpasst. <b>⏭Überspringen</b> - Wird eine Benachrichtigung vorgelesen werden neu eintreffende Benachrichtigungen solange ignoriert. Einfach, aber Du könntest wichtige Infos verpassen. <b>Smart (Empfohlen)</b> - Priorisierte Apps dürfen sofort unterbrechen, andere nutzen den Modus Warteschlange. Perfektes Gleichgewicht von Dringlichkeit und Vollständigkeit. Der Smart-Modus erlaubt es Ihnen, selber Apps auszuwählen, die derart wichtig sind, dass sie unterbrechen dürfen (z.B. Anrufe, Textnachrichten) während andere Apps warten müssen.</string>
     <string name="custom_app_names_title">Benutzerdefinierte App-Namen</string>
-    <string name="custom_app_names_description">Passen Sie an, wie App-Namen in Benachrichtigungen ausgesprochen werden</string>
+    <string name="custom_app_names_description">Passe an, wie App-Namen in Benachrichtigungen ausgesprochen werden sollen</string>
     <string name="add_custom_app_name">Benutzerdefinierten App-Namen hinzufügen</string>
     <string name="app_package_hint">App-Paketname (z.B. com.twitter.android)</string>
     <string name="custom_name_hint">Benutzerdefinierter Name (z.B. Twitter)</string>
@@ -111,15 +111,15 @@
     <!-- Store Update Dialog -->
     <string name="store_update_dialog_title">Updates via App Store</string>
     <string name="store_update_dialog_message">Diese Version von SpeakThat! erhält Updates über Ihren App Store (F-Droid, Google Play Store, etc.).</string>
-    <string name="store_update_dialog_info">• Updates werden automatisch von Ihrem App Store verarbeitet\n• Sie erhalten Benachrichtigungen, wenn Updates verfügbar sind\n• Kein manueller Download oder Installation erforderlich</string>
-    <string name="store_update_dialog_help_title">Benötigen Sie die Auto-Update-Version?</string>
-    <string name="store_update_dialog_help_message">Wenn Sie automatische Updates direkt von GitHub wünschen, können Sie stattdessen die GitHub Version herunterladen. Diese Version ist identisch, enthält aber die Auto-Update-Funktion.</string>
+    <string name="store_update_dialog_info">• Updates werden automatisch von Ihrem App Store verarbeitet\n• Du erhältst Benachrichtigungen, wenn Updates verfügbar sind\n• Kein manueller Download oder Installation erforderlich</string>
+    <string name="store_update_dialog_help_title">Benötigst Du die Auto-Update-Version?</string>
+    <string name="store_update_dialog_help_message">Wenn Du automatische Updates direkt von GitHub wünschst, kannst Du stattdessen die GitHub Version herunterladen. Diese Version ist identisch, enthält aber die Auto-Update-Funktion.</string>
     <string name="store_update_dialog_visit_github">GitHub aufrufen</string>
     <string name="store_update_dialog_got_it">Verstanden</string>
     <string name="app_description">SpeakThat! ist ein Android-Benachrichtigungsvorleser, der Deine Benachrichtigungen mittels Text-zu-Sprache vorliest. Perfekt für eine freihändige Bedienung, Barrierefreiheit und um informiert zu bleiben, während Du andere Dinge tust.</string>
     <string name="app_features">• Benachrichtigung in Echtzeit vorlesen\n• Anpassbare Spracheinstellungen\n• Intelligente Benachrichtigungsfilter\n• App-spezifische Einstellungen\n• Berücksichtigung von Medienwiedergabe\n• Benachrichtigungsverlauf\n• Schütteln/Winken zum Stoppen\n• Benutzerdefinierte Spracheinstellungen\n• Definiere Regeln für fortgeschrittene Logik und Zeitpläne\n• Komplett werbefrei und funktioniert Offline</string>
     <string name="developer_info">Entwickelt mit ❤️ von Mitchi, einem Solo-Entwickler aus Großbritannien mit über 12 Jahren Erfahrung im Testen und täglichen Gebrauch von Benachrichtigungslesern.\n\nSpeakThat! wurde von Touchless Notifications inspiriert, ursprünglich entwickelt von DYNA Logix, und zielt darauf ab, das Erbe der anpassbaren Benachrichtigungsleser fortzuführen.\n\nDieses Projekt wurde durch KI-gestützte Programmierung beschleunigt.</string>
-    <string name="license_info">SpeakThat ist eine freie Open-Source Software welche unter der GNU GPL-3.0-Lizenz (eine Copyleft Lizenz, die dafür sorgt, dass veränderte und neu veröffentlichte Versionen weiterhin frei und korrekt lizensiert sein müssen) verfügbar ist.\n\nDiese Lizenz erlaubt Ihnen, SpeakThat herunterzuladen, zu modifizieren und weiterzuverbreiten, vorausgesetzt, dass alle weiterverbreiteten oder modifizierten Versionen unter derselben Lizenz bleiben und die ursprünglichen Urheberrechtshinweise beibehalten werden.\n\nDen vollständigen Lizenztext und den Quellcode können Sie auf GitHub einsehen. Beiträge und Feedback sind willkommen!\n\nSpeakThat! Copyright © 2025-2026 Mitchell Bell\nSPEAKTHAT ist eine eingetragene Marke von Mitchell Bell</string>
+    <string name="license_info">SpeakThat ist eine freie Open-Source Software welche unter der GNU GPL-3.0-Lizenz (eine Copyleft Lizenz, die dafür sorgt, dass veränderte und neu veröffentlichte Versionen weiterhin frei und korrekt lizensiert sein müssen) verfügbar ist.\n\nDiese Lizenz erlaubt Dir, SpeakThat herunterzuladen, zu modifizieren und weiterzuverbreiten, vorausgesetzt, dass alle weiterverbreiteten oder modifizierten Versionen unter derselben Lizenz bleiben und die ursprünglichen Urheberrechtshinweise beibehalten werden.\n\nDen vollständigen Lizenztext und den Quellcode kannst Du auf GitHub einsehen. Beiträge und Feedback sind willkommen!\n\nSpeakThat! Copyright © 2025-2026 Mitchell Bell\nSPEAKTHAT ist eine eingetragene Marke von Mitchell Bell</string>
     <string name="read_about_app">Über die App vorlesen</string>
     <string name="stop_reading">Vorlesen Beenden</string>
     <!--
@@ -128,11 +128,11 @@
 
     -->
     <string name="tts_app_intro">Willkommen bei SpeakThat!</string>
-    <string name="tts_description">SpeakThat ist ein Android-Benachrichtigungsvorleser, der Ihre Benachrichtigungen mittels Text-zu-Sprache vorliest. Perfekt zur freihändigen Bedienung, Barrierefreiheit und um informiert zu bleiben, während Sie andere Dinge tun.</string>
+    <string name="tts_description">SpeakThat ist ein Android-Benachrichtigungsvorleser, welcher Deine Benachrichtigungen mittels Text-zu-Sprache vorliest. Perfekt zur freihändigen Bedienung, Barrierefreiheit und um informiert zu bleiben, während Du andere Dinge tust.</string>
     <string name="tts_features_intro">Zu den wichtigsten Funktionen gehören:</string>
     <string name="tts_features">Lesen von Benachrichtigungen in Echtzeit, anpassbare Spracheinstellungen, intelligente Benachrichtigungsfilterung, app-spezifische Steuerelemente, medienbewusstes Verhalten, Nachverfolgung des Benachrichtigungsverlaufs, „Schütteln zum Stoppen“ und „Winken zum Stoppen“, benutzerdefinierte Sprachformatierung, Unterstützung für Dunkel- und Hellmodus, bedingte Regeln für erweiterte Logik und Zeitpläne sowie vollständig werbefreie Offline-Funktionalität.</string>
     <string name="tts_developer">Entwickelt mit Liebe von Mitchi, einem Solo-Entwickler aus Großbritannien mit über 12 Jahren Erfahrung beim täglichen Testen und Verwenden von Benachrichtigungsvorlesern. SpeakThat wurde von Touchless Notifications inspiriert, ursprünglich entwickelt von DYNA Logix, und zielt darauf ab, das Erbe anpassbarer Benachrichtigungsvorleser fortzuführen. Dieses Projekt wurde durch KI-gestützte Programmierung beschleunigt.</string>
-    <string name="tts_license">SpeakThat ist freie und quelloffene Software, veröffentlicht unter der GNU GPL v3.0, einer Copyleft‑Lizenz, die sicherstellt, dass veränderte und weiterverbreitete Versionen frei bleiben und korrekt lizensiert werden. Diese Lizenz erlaubt es Ihnen, SpeakThat herunterzuladen, zu verändern und weiterzuverbreiten, vorausgesetzt, dass alle weiterverbreiteten oder veränderten Versionen unter derselben Lizenz verbleiben und die ursprünglichen Copyright‑Hinweise beibehalten werden. Den vollständigen Lizenztext und den Quellcode können Sie auf GitHub einsehen. Beiträge und Feedback sind willkommen! SpeakThat ist das von 2025 bis 2026 urheberrechtlich geschützte Werk von Mitchell Bell. SPEAKTHAT ist eine eingetragene Marke von Mitchell Bell</string>
+    <string name="tts_license">SpeakThat ist freie und quelloffene Software, veröffentlicht unter der GNU GPL v3.0, einer Copyleft‑Lizenz, die sicherstellt, dass veränderte und weiterverbreitete Versionen frei bleiben und korrekt lizensiert werden. Diese Lizenz erlaubt es Dir, SpeakThat herunterzuladen, zu verändern und weiterzuverbreiten, vorausgesetzt, dass alle weiterverbreiteten oder veränderten Versionen unter derselben Lizenz verbleiben und die ursprünglichen Copyright‑Hinweise beibehalten werden. Den vollständigen Lizenztext und den Quellcode kannst Du auf GitHub einsehen. Beiträge und Feedback sind willkommen! SpeakThat ist das von 2025 bis 2026 urheberrechtlich geschützte Werk von Mitchell Bell. SPEAKTHAT ist eine eingetragene Marke von Mitchell Bell</string>
     <string name="tts_thank_you">Vielen Dank, dass Du SpeakThat benutzt!</string>
     <!-- Update System -->
     <string name="check_for_updates">Auf Updates prüfen</string>
@@ -202,7 +202,7 @@
     <string name="tts_about_features_intro">Hauptfunktionen sind:</string>
     <string name="tts_about_features">Benachrichtigung in Echtzeit vorlesen, anpassbare Spracheinstellungen, Intelligente Benachrichtigungsfilter, App-spezifische Einstellungen, berücksichtigung von Medienwiedergabe, Benachrichtigungsverlauf, Schütteln oder Winken zum Stoppen, benutzerdefinierte Spracheinstellungen, Dunkelmodus, definiere Regeln für fortgeschrittene Logik und Zeitpläne, komplett werbefrei und funktioniert Offline.</string>
     <string name="tts_about_developer">Entwickelt mit Liebe von Mitchi, einem Solo-Entwickler aus Großbritannien mit über 12 Jahren Erfahrung beim täglichen Testen und Verwenden von Benachrichtigungslesern. SpeakThat wurde von Touchless Notifications inspiriert, ursprünglich entwickelt von DYNA Logix, und zielt darauf ab, das Erbe anpassbarer Benachrichtigungsleser fortzuführen. Dieses Projekt wurde durch KI-gestützte Programmierung beschleunigt.</string>
-    <string name="tts_about_license">SpeakThat ist freie und quelloffene Software, veröffentlicht unter der GNU GPL v3.0, einer Copyleft‑Lizenz, die sicherstellt, dass veränderte und weiterverbreitete Versionen frei bleiben und korrekt lizensiert werden. Diese Lizenz erlaubt es Ihnen, SpeakThat herunterzuladen, zu verändern und weiterzuverbreiten, vorausgesetzt, dass alle weiterverbreiteten oder veränderten Versionen unter derselben Lizenz verbleiben und die ursprünglichen Copyright‑Hinweise beibehalten werden. Den vollständigen Lizenztext und den Quellcode können Sie auf GitHub einsehen. Beiträge und Feedback sind willkommen! SpeakThat ist das von 2025 bis 2026 urheberrechtlich geschützte Werk von Mitchell Bell. SPEAKTHAT ist eine eingetragene Marke von Mitchell Bell</string>
+    <string name="tts_about_license">SpeakThat ist freie und quelloffene Software, veröffentlicht unter der GNU GPL v3.0, einer Copyleft‑Lizenz, die sicherstellt, dass veränderte und weiterverbreitete Versionen frei bleiben und korrekt lizensiert werden. Diese Lizenz erlaubt es Dir, SpeakThat herunterzuladen, zu verändern und weiterzuverbreiten, vorausgesetzt, dass alle weiterverbreiteten oder veränderten Versionen unter derselben Lizenz verbleiben und die ursprünglichen Copyright‑Hinweise beibehalten werden. Den vollständigen Lizenztext und den Quellcode kannst Du auf GitHub einsehen. Beiträge und Feedback sind willkommen! SpeakThat ist das von 2025 bis 2026 urheberrechtlich geschützte Werk von Mitchell Bell. SPEAKTHAT ist eine eingetragene Marke von Mitchell Bell</string>
     <string name="tts_about_thank_you">Vielen Dank für die Nutzung von SpeakThat!</string>
     <!-- Voice Settings Test -->
     <string name="tts_voice_test">So werden Deine Benachrichtigungen mit diesen Stimmeinstellungen klingen.</string>
@@ -238,13 +238,13 @@
     <string name="tts_format_custom">BENUTZERDEFINIERT</string>
     <!-- Rule Builder Templates -->
     <string name="template_selection_title">Vorlage auswählen</string>
-    <string name="template_selection_description">Wählen Sie eine vorkonfigurierte Regelvorlage für einen schnellen Start oder erstellen Sie eine benutzerdefinierte Regel von Grund auf.</string>
+    <string name="template_selection_description">Wähle eine vorkonfigurierte Regelvorlage für einen schnellen Start oder erstelle eine benutzerdefinierte Regel von Grund auf.</string>
     <string name="create_custom_rule">Benutzerdefinierte Regel erstellen</string>
     <!-- Template Names -->
     <string name="template_headphones_only_name">Bluetooth-Kopfhörer</string>
     <string name="template_headphones_only_description">Wähle Deinen Bluetooth-Kopfhörer aus und Benachrichtigungen werden NUR vorgelesen, wenn sie mit Deinem Telefon verbunden sind</string>
     <string name="template_time_schedule_name">Ruhezeiten</string>
-    <string name="template_time_schedule_description">Wählen Sie zwei Zeitpunkte aus, zwischen denen SpeakThat still bleiben soll</string>
+    <string name="template_time_schedule_description">Wähle zwei Zeiten aus, zwischen denen SpeakThat still bleiben soll</string>
     <string name="template_screen_off_name">Nur bei ausgeschaltetem Bildschirm</string>
     <string name="template_screen_off_description">Benachrichtigungen werden nur gelesen, wenn Dein Bildschirm ausgeschaltet ist</string>
     <string name="template_home_network_name">Nur im WLAN zu Hause</string>
@@ -367,29 +367,29 @@
     <string name="dialog_title_app_filter_help">📱 App-Filter Hilfe</string>
     <string name="dialog_title_smart_media_filter">Intelligente Filter Medienbenachrichtigung</string>
     <!-- Critical Hardcoded Strings - Dialog Messages -->
-    <string name="dialog_message_theme_changed">Das Design wurde geändert. Um die App optimal zu nutzen, können Sie die App jetzt manuell neu starten.</string>
+    <string name="dialog_message_theme_changed">Das Design wurde geändert. Um die App optimal zu nutzen, kannst Du die App jetzt manuell neu starten.</string>
     <string name="dialog_message_export_successful">Vollständige Konfiguration exportiert nach:\n%s</string>
     <string name="dialog_message_export_successful_text">Konfiguration als Text exportiert (Dateierstellung fehlgeschlagen)</string>
     <string name="dialog_message_export_failed">Fehler beim Exportieren der Konfiguration: %s</string>
-    <string name="dialog_message_import_full_config">Dies wird Ihre aktuellen Einstellungen durch die importierte Konfiguration ersetzen.\n\nMöchten Sie fortfahren?</string>
+    <string name="dialog_message_import_full_config">Dies wird Deine aktuellen Einstellungen durch die importierte Konfiguration ersetzen.\n\nMöchtest Du fortfahren?</string>
     <string name="dialog_message_import_successful">%s</string>
     <string name="dialog_message_import_failed">%s</string>
     <string name="dialog_message_import_failed_read">Fehler beim Lesen der Datei: %s</string>
-    <string name="dialog_message_clear_all_data">Dies wird alle Einstellungen auf Standardwerte zurücksetzen und den Benachrichtigungsverlauf löschen.\n\nDiese Aktion kann nicht rückgängig gemacht werden.\n\nMöchten Sie fortfahren?</string>
+    <string name="dialog_message_clear_all_data">Dies wird alle Einstellungen auf die Standardwerte zurücksetzen und den Benachrichtigungsverlauf löschen.\n\nDiese Aktion kann nicht rückgängig gemacht werden.\n\nMöchtest Du fortfahren?</string>
     <string name="dialog_message_data_cleared">Alle Einstellungen wurden auf Standardwerte zurückgesetzt und der Benachrichtigungsverlauf wurde gelöscht.</string>
     <string name="dialog_message_clear_failed">Fehler beim Löschen der Daten: %s</string>
     <string name="dialog_message_advanced_voice_options">Diese Einstellungen sind für Nutzer gedacht, die genauere Anpassungen an der Stimme und dem Akzent vornehmen möchten.\n\n99% der Nutzer sollten einfach nur die Option Hauptsprache ändern.\n\nWenn Probleme auftauchen, kannst Du jederzeit die Standardwerte wiederherstellen.</string>
     <string name="dialog_message_bluetooth_not_available">Bluetooth ist auf diesem Gerät nicht verfügbar.</string>
     <string name="dialog_message_bluetooth_disabled">Bitte aktiviere Bluetooth, um Geräte auszuwählen.</string>
-    <string name="dialog_message_no_devices_found">Keine gekoppelten Bluetooth-Geräte gefunden. Bitte verbinden Sie einige Geräte zuerst.</string>
-    <string name="dialog_message_wifi_disabled">Bitte aktivieren Sie WLAN, um Netzwerke auszuwählen.</string>
-    <string name="dialog_message_wifi_networks">WLAN-Netzwerke können nicht automatisch erkannt werden. Bitte geben Sie pro Zeile manuell einen WLAN-Netzwerknamen (SSID) ein.\n\nHinweis: Sie können auch versuchen, den Dienst \'Standort\' zu aktivieren und die Berechtigung Standort freizugeben, um Netzwerke automatisch zu erkennen.</string>
-    <string name="dialog_message_no_networks_found">Keine WLAN-Netzwerke gefunden. Bitte verbinden Sie sich zuerst mit einem WLAN oder geben Sie manuell einen Netzwerknamen ein.</string>
-    <string name="dialog_message_enter_wifi_network">Geben Sie den Namen Ihres WLAN-Netzwerks ein:</string>
-    <string name="dialog_message_set_quiet_hours">Wählen Sie Zeiten und Wochentage, an denen keine Benachrichtigungen vorgelesen werden sollen:</string>
+    <string name="dialog_message_no_devices_found">Keine gekoppelten Bluetooth-Geräte gefunden. Bitte verbinde einige Geräte zuerst.</string>
+    <string name="dialog_message_wifi_disabled">Bitte aktiviere WLAN, um Netzwerke auszuwählen.</string>
+    <string name="dialog_message_wifi_networks">WLAN-Netzwerke können nicht automatisch erkannt werden. Bitte gib manuell pro Zeile einen WLAN-Netzwerknamen (SSID) ein.\n\nHinweis: Du kannst auch versuchen, den Dienst \'Standort\' zu aktivieren und die Berechtigung \'Standort freigeben\' zu erlauben, um Netzwerke automatisch erkennen zu können.</string>
+    <string name="dialog_message_no_networks_found">Keine WLAN-Netzwerke gefunden. Bitte verbinde Dich zuerst mit einem WLAN oder gib manuell einen Netzwerknamen ein.</string>
+    <string name="dialog_message_enter_wifi_network">Gib den Namen Deines WLAN-Netzwerks ein:</string>
+    <string name="dialog_message_set_quiet_hours">Wähle Zeiten und Wochentage, an denen keine Benachrichtigungen vorgelesen werden sollen:</string>
     <string name="dialog_message_rule_created">Deine Regel \'%s\' wurde erfolgreich erstellt.</string>
-    <string name="dialog_message_experimental_feature">Regeln sind experimentell. Wenn Probleme auftauchen, können Sie diese in den Einstellungen deaktivieren. Ihre vorhandenen Filter und Privatsphäre-Einstellungen werden immer respektiert.</string>
-    <string name="dialog_message_delete_rule">Sind Sie sicher, dass Sie die Regel \'%s \' löschen möchten?</string>
+    <string name="dialog_message_experimental_feature">Regeln sind experimentell. Wenn Probleme auftauchen, kannst Du diese in den Einstellungen deaktivieren. Deine vorhandenen Filter und Privatsphäre-Einstellungen werden immer respektiert.</string>
+    <string name="dialog_message_delete_rule">Bist Du sicher, dass Du die Regel \'%s \' löschen möchtest?</string>
     <string name="dialog_message_invalid_rule_name">Bitte einen Namen für diese Regel eingeben.</string>
     <string name="dialog_message_invalid_rule">Bitte folgende Probleme beheben:\n\n%s</string>
     <string name="dialog_message_save_rule_failed">Fehler bei der %s Regel. Bitte erneut versuchen.</string>
@@ -397,14 +397,14 @@
     <string name="dialog_message_remove_action">Diese Aktion wirklich löschen?</string>
     <string name="dialog_message_remove_exception">Diese Ausnahme wirklich entfernen?</string>
     <string name="dialog_message_coming_soon">%s Konfiguration wird in einer späteren Version implementiert.</string>
-    <string name="dialog_message_select_app">Geben Sie den App-Paketnamen ein (z.B. com.whatsapp):</string>
+    <string name="dialog_message_select_app">Gib den App-Paketnamen ein (z.B. com.whatsapp):</string>
     <string name="dialog_message_invalid_app_package">Bitte einen App-Paketnamen eingeben.</string>
     <string name="dialog_message_remove_device">%s aus der Liste löschen?</string>
     <string name="dialog_message_select_bluetooth_device">Bluetooth-Gerät für diese Regel auswählen:</string>
     <string name="dialog_message_select_wifi_network">WLAN-Netzwerk für diese Regel auswählen:</string>
     <!-- Language Change Dialog -->
     <string name="dialog_title_language_changed">Sprache geändert</string>
-    <string name="dialog_message_language_changed">Die App-Sprache wurde von %1$s auf %2$sgeändert.\n\n• Jetzt anwenden: Aktualisiere diesen Bildschirm sofort\n• Starte App neu: Alle Bildschirme und Dienste verwenden die neue Sprache\n\nFür die optimale Nutzung empfehle ich die App neu zu starten.</string>
+    <string name="dialog_message_language_changed">Die App-Sprache wurde von %1$s auf %2$s geändert.\n\n• Jetzt anwenden: Aktualisiere diesen Bildschirm sofort\n• Starte App neu: Alle Bildschirme und Dienste verwenden die neue Sprache\n\nFür die optimale Nutzung empfehle ich die App neu zu starten.</string>
     <string name="button_restart_app">App neustarten</string>
     <string name="button_apply_now">Jetzt anwenden</string>
     <string name="toast_language_restarting">App mit neuer Sprache neustarten...</string>
@@ -451,12 +451,12 @@
     <string name="behavior_priority_apps">⚡ Priorisierte Apps</string>
     <string name="behavior_priority_apps_description">Diese Apps unterbrechen die aktuelle Benachrichtigung. Alle anderen Apps werden in eine Warteschlange gestellt.</string>
     <string name="behavior_media_ignore">Ignorieren - Medien weiter abspielen</string>
-    <string name="behavior_media_pause">Pause - Medien bei Sprache pausieren</string>
+    <string name="behavior_media_pause">Pause - Medien beim Vorlesen pausieren</string>
     <string name="behavior_media_lower">Lautsärkeminimierung – Medienlautstärke vorübergehend verringern</string>
     <string name="behavior_media_silence">Stumm - Keine Sprachausgabe bei laufenden Medien</string>
     <string name="behavior_ducking_volume">Lautstärke minimieren</string>
     <string name="behavior_ducking_description">Festlegen, wie stark Medienlautstärke bei Benachrichtigung verringert werden soll</string>
-    <string name="behavior_ducking_warning">⚠️ Auf einigen Geräten kann die Verringerung der Medienlautstärke auch die Benachrichtigungsstimme leiser machen. Wenn Benachrichtigungen schlecht hörbar sind, nutzen Sie den Pause-Modus oder passen Sie Ihre TTS-Einstellungen an.</string>
+    <string name="behavior_ducking_warning">⚠️ Auf einigen Geräten kann die Verringerung der Medienlautstärke auch die Benachrichtigungsstimme leiser machen. Wenn Benachrichtigungen schlecht hörbar sind, nutze den Pause-Modus oder passe Deine TTS-Einstellungen an.</string>
     <string name="behavior_ducking_tip">Tipp: Niedrigere Werte machen Medien während der Benachrichtigung leiser</string>
     <string name="behavior_calls_title">Telefongespräch beachten</string>
     <string name="behavior_calls_description">Benachrichtigungen bei Anrufen nicht vorlesen</string>
@@ -517,19 +517,19 @@
     <string name="voice_tts_volume">TTS Lautstärke</string>
     <string name="voice_language_section">Sprache &amp; Stimme</string>
     <string name="voice_language_preset">Sprachvoreinstellung</string>
-    <string name="voice_language_preset_description">Wählen Sie Ihre Sprache. Dies legt sowohl die App-Schnittstelle als auch die TTS-Sprache fest, um eine optimale Nutzung zu erzielen.</string>
-    <string name="voice_preset_recommendation">Dies ist alles, was die meisten Benutzer brauchen. Verwenden Sie erweiterte Sprachoptionen unten, um individuelle Einstellungen anzupassen.</string>
+    <string name="voice_language_preset_description">Wählen Deine Sprache. Dies legt sowohl die Sprache der Oberfläche als auch die Sprache der Sprachausgabe fest, um eine optimale Nutzung zu erzielen.</string>
+    <string name="voice_preset_recommendation">Dies ist alles, was die meisten Benutzer brauchen. Verwende erweiterte Sprachoptionen unten, um individuelle Einstellungen anzupassen.</string>
     <string name="voice_help_translate">Hilf mit, SpeakThat! zu übersetzen!</string>
     <string name="voice_help_translate_description">Tippen um E-Mail (Übersetzung) zu versenden</string>
     <string name="voice_show_advanced">Erweiterte Sprachoptionen anzeigen</string>
     <string name="voice_advanced_label">Erweitert</string>
     <string name="voice_tts_language_advanced">TTS-Sprache (Erweitert)</string>
-    <string name="voice_tts_language_description">Sprache für App-Phrasen überschreiben (wie \'benachrichtigt Sie:\'). Voreinstellungen belassen, solange keine anderen Sprachen für UI- und TTS-Phrasen erwünscht sind.</string>
+    <string name="voice_tts_language_description">Sprache für App-Phrasen überschreiben (wie \'benachrichtigte Sie:\'). Voreinstellungen belassen, solange keine anderen Sprachen für UI- und TTS-Phrasen erwünscht sind.</string>
     <string name="voice_specific_voice_advanced">Spezifische Stimme (Erweitert)</string>
-    <string name="voice_specific_voice_description">Wählen Sie eine spezifische Sprach-Engine. Dies überschreibt die Spracheinstellung oben. Nur für fortgeschrittene Benutzer.</string>
+    <string name="voice_specific_voice_description">Wähle eine spezifische Sprachausgabe-Engine. Dies überschreibt die Spracheinstellung oben. Nur für fortgeschrittene Benutzer.</string>
     <string name="voice_tap_for_details">Für Details tippen</string>
-    <string name="voice_advanced_recommendation">Empfehlung: Probieren Sie zuerst die Spracheinstellung aus. Verwenden Sie spezifische Stimmen nur, wenn Sie eine bestimmte Sprach-Engine benötigen.\n\nSie können Ihre Einstellungen immer zurücksetzen, wenn Probleme auftauchen!</string>
-    <string name="voice_reset_warning">Sie können Ihre Einstellungen unten jederzeit zurücksetzen, wenn Probleme auftauchen!</string>
+    <string name="voice_advanced_recommendation">Empfehlung: Probiere zuerst die Spracheinstellung aus. Verwende spezifische Stimmen nur, wenn Du eine bestimmte Sprach-Engine benötigst.\n\nDu kannst Deine Einstellungen immer zurücksetzen, wenn Probleme auftauchen!</string>
+    <string name="voice_reset_warning">Du kannst Deine Einstellungen unten jederzeit zurücksetzen, wenn Probleme auftauchen!</string>
     <string name="label_0_1x">0,1x</string>
     <string name="label_3_0x">3,0 x</string>
     <string name="label_1_0x">1,0x</string>
@@ -595,7 +595,7 @@
     <string name="behavior_deduplication_benefits">Vorteile:\n\n• Verhindert nervendes Vorlesen doppelter Nachrichten\n• Spart Akku durch Vermeidung unnötiger Sprachausgabe\n• Funktioniert automatisch innerhalb 5-Sekunden-Fenster\n• Hilft bei Apps, die mehrfache Benachrichtigungen ausgeben</string>
     <!-- Behavior Settings - Dismissal Memory -->
     <string name="section_dismissal_memory">Verworfen-Speicher</string>
-    <string name="behavior_dismissal_memory_description">An verworfene Benachrichtigungen erinnern, um zu verhindern, dass sie erneut vorgelesen werden</string>
+    <string name="behavior_dismissal_memory_description">An entfernte Benachrichtigungen erinnern, um zu verhindern, dass sie erneut vorgelesen werden</string>
     <string name="behavior_dismissal_memory_recommendation">Aktivieren, wenn Benachrichtigungen nach dem Verwerfen wieder vorgelesen werden</string>
     <string name="behavior_dismissal_memory_switch_label">Verworfen-Speicher aktivieren</string>
     <string name="behavior_dismissal_memory_benefits">Vorteile:\n\n• Verhindert das erneute Vorlesen von entfernten Benachrichtigungen\n• Beendet das Vorlesen von Benachrichtigungen nach dem Entfernen\n• Speicherdauer einstellbar (5 Minuten bis 1 Stunde)\n• Automatische Bereinigung um Speicher und Akku zu schonen</string>
@@ -619,12 +619,12 @@
     <string name="behavior_shake_recommendation">Die meisten Nutzer sollten diese Funktion aktivieren</string>
     <string name="behavior_shake_switch_label">Schütteln zum Stoppen aktivieren</string>
     <string name="behavior_shake_intensity_label">Schüttelintensität</string>
-    <string name="behavior_shake_intensity_description">Passen Sie an, wie schwer Sie schütteln müssen, um Vorlesen zu stoppen</string>
+    <string name="behavior_shake_intensity_description">Passe an, wie stark Du schütteln musst, um das Vorlesen zu stoppen</string>
     <string name="behavior_shake_test_label">Schütteltest</string>
-    <string name="behavior_shake_test_description">Testen SIe ihre Schüttelintensität und sehen Sie den Triggerschwellenwert</string>
+    <string name="behavior_shake_test_description">Teste die Schüttelintensität und sieh den Triggerschwellenwert</string>
     <!-- Behavior Settings - Wave to Stop -->
     <string name="section_wave_to_stop">Winken zum Stoppen</string>
-    <string name="behavior_wave_description">Stoppe das Vorlesen, indem Sie ihre Hand über den Näherungssensor bewegen</string>
+    <string name="behavior_wave_description">Stoppe das Vorlesen, indem Du Deine Hand über den Näherungssensor bewegst</string>
     <string name="behavior_wave_recommendation">Empfohlen: Diese Funktion aktivieren</string>
     <string name="behavior_wave_switch_label">Winken zum Stoppen aktivieren</string>
     <string name="behavior_wave_benefits">Vorteile:\n\n• Lautlose Geste, um Vorlesen zu unterbrechen\n• Funktioniert in ruhigen Umgebungen\n• Kein physischer Kontakt erforderlich\n• Schnelle und bequeme Steuerung</string>
@@ -655,7 +655,7 @@
     <string name="filter_manage_apps">Apps verwalten</string>
     <string name="filter_app_list_button">App-Liste</string>
     <string name="filter_app_count">(0 Apps)</string>
-    <string name="filter_search_description">Durchsuchen Sie Ihre installierten Apps nach Namen oder Paket. Klicken Sie auf einen Vorschlag, um ihn sofort hinzuzufügen. (Tippen für weitere Informationen)</string>
+    <string name="filter_search_description">Durchsuche Deine installierten Apps nach Namen oder Paket. Klicke auf einen Vorschlag, um ihn sofort hinzuzufügen. (Tippen für weitere Informationen)</string>
     <string name="filter_word_blacklist_title">Wörter Blacklist</string>
     <string name="filter_word_blacklist_description">
 Benachrichtigungen mit bestimmten Wörtern blockieren oder privatisieren
@@ -694,7 +694,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="general_import_configuration_description">Einstellungen aus Datei laden</string>
     <string name="general_reset_settings">Alle Einstellungen zurücksetzen</string>
     <string name="general_verify_settings">Alle Einstellungen prüfen</string>
-    <string name="general_verify_settings_description">Führen Sie einen umfassenden Test durch, um zu überprüfen, ob alle Einstellungen funktionieren</string>
+    <string name="general_verify_settings_description">Führe einen umfassenden Test durch, um zu überprüfen, ob alle Einstellungen funktionieren</string>
     <!-- Exception Configuration -->
     <string name="exception_set_end_time">Endzeit einstellen</string>
     <string name="exception_no_days_selected">Keine Tage ausgewählt</string>
@@ -706,8 +706,8 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="exception_select_networks">Netzwerk auswählen</string>
     <!-- Rules Activity -->
     <string name="rules_no_rules_created">Keine Regeln erstellt</string>
-    <string name="rules_create_first_rule_description">Erstellen Sie Ihre erste Regel, um zu steuern, wann SpeakThat Benachrichtigungen basierend auf Ihrem Gerätestatus, Zeitangaben oder Verbindungen vorlesen soll.</string>
-    <string name="rules_create_first_rule_button">Erstellen Sie Ihre erste Regel</string>
+    <string name="rules_create_first_rule_description">Erstelle Deine erste Regel, um festzulegen, wann SpeakThat (basierend auf Deinem Gerätestatus, Zeitangaben oder Verbindungen) Benachrichtigungen vorlesen soll.</string>
+    <string name="rules_create_first_rule_button">Erstelle Deine erste Regel</string>
     <!-- Rule Builder -->
     <string name="rule_builder_logic_and">AND</string>
     <string name="rule_builder_logic_or">OR</string>
@@ -736,7 +736,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="wave_calibration_disable">Winken-zum-Stoppen ausschalten</string>
     <!-- Voice Settings - Audio Output -->
     <string name="voice_audio_output_settings">Audioausgabe-Einstellungen</string>
-    <string name="voice_audio_output_description">Konfigurieren Sie, wie Benachrichtigungen über das Audiosystem Ihres Geräts abgespielt werden sollen.</string>
+    <string name="voice_audio_output_description">Konfiguriere, wie Benachrichtigungen über das Audiosystem Deines Gerätes abgespielt werden sollen.</string>
     <string name="voice_audio_stream_type">Audio Streamtyp</string>
     <string name="voice_stream_volume">Stream Lautstärke</string>
     <string name="voice_stream_volume_description">Steuert die Lautstärke für den ausgewählten Audio-Stream. Dies beeinflusst die Lautstärke des Geräts für diesen Stream-Typ.</string>
@@ -749,22 +749,22 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="voice_preview_button">Vorschau</string>
     <string name="voice_test_settings">Stimmeinstellungen testen</string>
     <string name="voice_reset_defaults">Auf Standard zurücksetzen</string>
-    <string name="voice_preview_tip">Tipp: Verwenden Sie die Vorschau-Taste, um zu testen, wie Benachrichtigungen mit Ihren Einstellungen klingen. Alle Änderungen werden beim Einstellen automatisch gespeichert.</string>
+    <string name="voice_preview_tip">Tipp: Verwende die Vorschau-Taste, um zu testen, wie Benachrichtigungen mit Deinen Einstellungen klingen. Alle Änderungen werden beim Einstellen automatisch gespeichert.</string>
     <!-- Filter Settings -->
     <string name="filter_word_count">(0 Wörter)</string>
     <string name="filter_swap_description">Ersetze Wörter zur Zensur- oder Aussprache-Korrektur in Benachrichtigungen</string>
     <string name="filter_swap_count">(0 Ersetzungen)</string>
-    <string name="filter_swap_tip">Tipp: Verwenden Sie Kleinbuchstaben um Groß- und Kleinschreibung stets übereinstimmen zu lassen. Lassen Sie \'Ersetzen mit\' leer, um Wörter komplett zu entfernen.</string>
+    <string name="filter_swap_tip">Tipp: Verwende Kleinbuchstaben um Groß- und Kleinschreibung stets übereinstimmen zu lassen. Lass \'Ersetzen mit\' leer, um Wörter komplett zu entfernen.</string>
     <string name="filter_media_description">Eher für ältere Android-Versionen. Versucht, Benachrichtigungen der Medienwiedergabe, die als Standardbenachrichtigungen (Sitzungs-Extras, Fortschrittsanzeige oder Medienkategorie) angezeigt werden, zu erkennen und zu blockieren. Keine pro App Listen.</string>
     <string name="filter_media_enable">Aktiviere Smart-Media-Benachrichtigungsfilter</string>
     <string name="filter_media_apps_title">Gefilterte Medien-Apps:</string>
-    <string name="filter_media_apps_description">Apps, die automatisch nach Medienbenachrichtigungen gefiltert werden. Fügen Sie Medienanwendungen hinzu, die Sie ausfiltern möchten.</string>
+    <string name="filter_media_apps_description">Apps, die automatisch nach Medienbenachrichtigungen gefiltert werden. Füge Medienanwendungen hinzu, die Du ausfiltern möchtest.</string>
     <string name="filter_advanced_options">Erweiterte Einstellungen</string>
     <string name="filter_exception_apps_title">Ausnahmen Apps:</string>
     <string name="filter_exception_apps_description">Apps, bei denen keine Benachrichtigungen gefiltert werden sollen (z.B. YouTube für Antworten)</string>
     <string name="filter_important_keywords_title">Wichtige Schlüsselwörter:</string>
     <string name="filter_important_keywords_description">Wörter, die wichtige Benachrichtigungen anzeigen (wie \'Antwort\', \'Kommentar\')</string>
-    <string name="filter_media_info">Filtern Sie automatisch die Mediensteuerung unter Beibehaltung wichtiger Benachrichtigungen. (Tippen für mehr Infos)</string>
+    <string name="filter_media_info">Filter automatisch die Mediensteuerung unter Beibehaltung wichtiger Benachrichtigungen. (Tippen für mehr Infos)</string>
     <!-- Dialog Strings - Donate -->
     <string name="donate_coffee">☕</string>
     <string name="donate_theatre">🎭</string>
@@ -780,7 +780,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="filter_suggestion_smart_pattern">Intelligente Muster (empfohlen)</string>
     <string name="filter_suggestion_smart_preview">Vorschau: Update-Standort...</string>
     <string name="filter_suggestion_keywords">Nur Schlüsselwörter</string>
-    <string name="filter_suggestion_keywords_preview">Vorschau: Ort aktualisieren</string>
+    <string name="filter_suggestion_keywords_preview">Vorschau: Standort aktualisieren</string>
     <string name="filter_suggestion_exact_match">Genaue Text-Übereinstimmung</string>
     <string name="filter_suggestion_exact_preview">Vorschau: Aktualisiere Standort um 14:30 Uhr...</string>
     <string name="filter_suggestion_all_notifications">Alle Benachrichtigungen dieser App</string>
@@ -802,9 +802,9 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="exception_any_bluetooth_device">Jedes Bluetooth-Gerät</string>
     <string name="exception_any_wifi_network">Jedes WLAN-Netzwerk</string>
     <!-- Dialog Strings - Donate -->
-    <string name="dialog_donate_title">Unterstützen Sie SpeakThat!</string>
-    <string name="dialog_donate_message">Hey! Mitchi hier. Viel Arbeit steckt in SpeakThat! Ich befasse mich mit dem UI/UX-Design, Qualitätssicherungen und Testings, Projektmanagement, Distribution und Veröffentlichung, AppStore Konformitäten und Benutzerunterstützung, um nur einige Aufgaben zu nennen!\n\nWenn SpeakThat für Sie hilfreich war oder wenn Sie dafür bezahlt hätten, dann würde ich Sie bitten, zu überlegen ob Sie die weitere Entwicklung der App mit unterstützen können!\n\nJede Spende hält diese App völlig kostenfrei und als Open-Source für alle, die sie benötigen.\n\nIch danke Ihnen! ❤️</string>
-    <string name="dialog_donate_coffee">Kaufen Sie mir einen Kaffee</string>
+    <string name="dialog_donate_title">Unterstütze SpeakThat!</string>
+    <string name="dialog_donate_message">Hey! Mitchi hier. Viel Arbeit steckt in SpeakThat! Ich befasse mich mit dem UI/UX-Design, der Qualitätssicherungen und den Tests, dem Projektmanagement, der Distribution und Veröffentlichung, den AppStore-Konformitäten und dem Benutzersupport, um nur einige Aufgaben zu nennen!\n\nWenn SpeakThat für Dich hilfreich war oder wenn Du dafür bezahlt hättest, dann würde ich Dich bitten, Dir zu überlegen ob Du die weitere Entwicklung der App mit unterstützen wollen würdest!\n\nJede Spende hält diese App völlig kostenfrei und als Open-Source für alle, die sie benötigen.\n\nIch danke Dir! ❤️</string>
+    <string name="dialog_donate_coffee">Spendiere mir einen Kaffee</string>
     <string name="dialog_donate_coffee_description">Schnelle einmalige Spende über Ko-fi</string>
     <string name="dialog_donate_patron">Werde ein Patreon-Unterstützer</string>
     <string name="dialog_donate_patron_description">Monatlicher Support mit exklusiven Updates</string>
@@ -819,7 +819,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="dev_test_rules">Regelsystem testen</string>
     <!-- Notification History -->
     <string name="notification_history_title">Benachrichtigungsverlauf</string>
-    <string name="notification_history_description">SpeakThat! speichert deine 15 neuesten Benachrichtigungen, damit Du sie später filtern kannst. Tippe auf eine Benachrichtigung, um zukünftig einfach zu filtern.</string>
+    <string name="notification_history_description">SpeakThat! speichert Deine 15 neuesten Benachrichtigungen, damit Du sie später filtern kannst. Tippe auf eine Benachrichtigung, um zukünftig ähnliche Benachrichtigungen einfach herauszufiltern.</string>
     <string name="notification_history_empty">Keine Benachrichtigungen zum Anzeigen</string>
     <string name="notification_history_clear">Verlauf löschen</string>
     <string name="notification_history_recent">Letzte Benachrichtigungen</string>
@@ -836,7 +836,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="dialog_bluetooth_config_title">Bluetooth Konfiguration</string>
     <!-- Rules Activity -->
     <string name="rules_title">Regeln</string>
-    <string name="rules_description">Erstelle leistungsstarke Regeln zur Kontrolle, wann SpeakThat Benachrichtigungen basierend auf deinem Gerätestatus, Zeit und Verbindungen vorlesen soll.</string>
+    <string name="rules_description">Erstelle leistungsstarke Regeln um einzustellen, wann SpeakThat (basierend auf Gerätestatus, Zeiten und Verbindungen) Benachrichtigungen vorlesen soll.</string>
     <string name="rules_enable">Regeln aktivieren</string>
     <string name="rules_create_new">Neue Regel erstellen</string>
     <!-- Onboarding -->
@@ -848,28 +848,28 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="onboarding_language_theme_description">Wähle aus, welche Sprache verwendet werden soll.</string>
     <string name="onboarding_language_section_title">Sprache</string>
     <string name="onboarding_language_help_title">Ist Deine Sprache nicht aufgeführt?</string>
-    <string name="onboarding_language_help_description">Ich arbeite so hart wie möglich daran, weitere Sprachen zu unterstützen. Bitte tragen Sie Übersetzungen zur Crowdin-Seite bei, wenn Sie können!</string>
+    <string name="onboarding_language_help_description">Ich arbeite so hart wie möglich daran, weitere Sprachen zu unterstützen. Bitte trage mit eigenen Übersetzungen auf Weblate bei, wenn möglich!</string>
     <string name="onboarding_theme_section_title">Design</string>
     <string name="onboarding_theme_description">Dunkelmodus in dieser App verwenden</string>
     <string name="onboarding_theme_light">Heller Modus</string>
     <string name="onboarding_theme_dark">Dunkler Modus</string>
     <!-- Onboarding Page Titles and Descriptions -->
     <string name="onboarding_welcome_title">Willkommen bei SpeakThat!</string>
-    <string name="onboarding_welcome_description">Bleiben Sie in Verbindung, ohne auf Ihren Bildschirm zu schauen. Ihr Telefon liest die Benachrichtigungen vor, sodass Sie sich darauf konzentrieren können, was wirklich wichtig ist.</string>
+    <string name="onboarding_welcome_description">Bleibe in Kontakt, ohne auf Deinen Bildschirm schauen zu müssen. Dein Smartphone liest die Benachrichtigungen vor, sodass Du Dich darauf konzentrieren kannst, was wirklich wichtig ist.</string>
     <string name="onboarding_permission_title">Zugriff auch Benachrichtigungen erforderlich</string>
-    <string name="onboarding_permission_description">SpeakThat benötigt die Erlaubnis, Ihre Benachrichtigungen vorzulesen.\n\n🔒 Alles bleibt auf Ihrem Gerät\n📱 Es werden keine Daten an uns oder irgendjemand anders\n⚙️ Du kontrollierst, was gelesen wird:\n💬 Wir lesen nur vor, was Sie erlauben\n💡 Tipp: Tippe auf \"SpeakThat\" in der Liste um es zu aktivieren</string>
+    <string name="onboarding_permission_description">SpeakThat benötigt die Berechtigung Benachrichtigungen vorlesen zu dürfen.\n\n🔒 Alles bleibt auf Deinem Gerät\n📱 Es werden keine Daten an uns oder irgendjemand anderen gesendet\n⚙️ Du kontrollierst, was vorgelesen wird:\n💬 Wir lesen nur vor, was Du erlaubst\n💡 Tipp: Tippe in der Liste auf den Eintrag \"SpeakThat\" um es zu aktivieren</string>
     <string name="onboarding_privacy_title">Ihre Privatsphäre zählt</string>
-    <string name="onboarding_privacy_description">🔒 Sie kontrollieren genau, was vorgelesen wird\n\n📱 Schütteln Sie Ihr Telefon um Benachrichtigungen sofort zu beenden\n\n⚙️ Filtern Sie Apps, Worte und Benachrichtigungstypen\n\n🔐 Alles bleibt auf Ihrem Gerät</string>
+    <string name="onboarding_privacy_description">🔒 Du kontrollierst genau, was vorgelesen wird\n\n📱 Schüttel Dein Smartphone um Ansagen sofort zu unterbrechen\n\n⚙️ Filter Apps, Worte und Benachrichtigungstypen\n\n🔐 Alles bleibt auf Deinem Gerät</string>
     <string name="onboarding_filters_title">Grundlegende Filter einrichten</string>
-    <string name="onboarding_filters_description">SpeakThat verfügt über ein leistungsstarkes Filtersystem, mit dem Sie auswählen können, was gelesen wird und was nicht.\n\nLassen Sie uns ein paar grundlegende Privatsphäre-Filter einrichten, damit Sie loslegen können.</string>
+    <string name="onboarding_filters_description">SpeakThat verfügt über ein leistungsstarkes Filtersystem, mit dem Du auswählen kannst, was vorgelesen wird und was nicht.\n\nLass uns ein paar grundlegende Filter zur Privatsphäre einrichten, damit Du loslegen kannst.</string>
     <string name="onboarding_apps_title">Sensible Apps blockieren</string>
-    <string name="onboarding_apps_description">Geben Sie den Namen einer App ein, von der ich keine Benachrichtigungen vorlesen soll.\n\nHäufige Beispiele: Banking-Apps, medizinische Apps, Dating Apps</string>
+    <string name="onboarding_apps_description">Gib den Namen einer App ein, von der ich keine Benachrichtigungen vorlesen soll.\n\nHäufige Beispiele: Banking-Apps, medizinische Apps, Dating Apps</string>
     <string name="onboarding_words_title">Sensible Wörter blockieren</string>
-    <string name="onboarding_words_description">Geben Sie Wörter oder Phrasen ein, die wenn sie in Benachrichtigungen vorkommen, NIEMALS vorgelesen werden sollen!\n\ngebräuchliche Beispiele: Passwort, PIN, Kreditkarte, medizinische Begriffe</string>
+    <string name="onboarding_words_description">Gib Wörter oder ganze Phrasen ein, die NIEMALS vorgelesen werden sollen, wenn sie in einer Benachrichtigung vorkommen!\n\nHäufige Beispiele: ein Passwort, eine PIN, eine Kreditkarte, medizinische Begriffe</string>
     <string name="onboarding_rules_title">Smarte Regeln einrichten</string>
-    <string name="onboarding_rules_description">Richten Sie intelligente Regeln ein, die automatisch kontrollieren, wann Benachrichtigungen auf Grundlage Ihrer Situation vorgelesen werden sollen.\n\nZum Beispiel nur Benachrichtigungen vorlesen, wenn Kopfhörer verbunden sind, oder Benachrichtigungen überspringen, wenn der Bildschirm eingeschaltet ist.</string>
-    <string name="onboarding_complete_title">Sie sind bereit!</string>
-    <string name="onboarding_complete_description">SpeakThat hilft Ihnen dabei, in Verbindung zu bleiben, ohne Ihre Augen zu benutzen!\n\n💡 Sie können jederzeit weitere Filter in den App-Einstellungen hinzufügen.</string>
+    <string name="onboarding_rules_description">Richte intelligente Regeln ein, die Situationsabhängig automatisch kontrollieren, wann Benachrichtigungen vorgelesen werden sollen.\n\nZum Beispiel: Benachrichtigungen nur dann vorlesen, wenn Kopfhörer verbunden sind. Oder Benachrichtigungen überspringen, wenn der Bildschirm eingeschaltet ist.</string>
+    <string name="onboarding_complete_title">Du bist startklar!</string>
+    <string name="onboarding_complete_description">SpeakThat hilft Dir dabei, in Kontakt zu bleiben ohne Deine Augen benutzen zu müssen!\n\n💡 Du kannst jederzeit weitere Filter in den App-Einstellungen hinzufügen.</string>
     <!-- Trigger Configuration -->
     <string name="trigger_screen_state">Bildschirm Status</string>
     <string name="trigger_screen_choose">Wähle, wann diese Bedingung zutrifft</string>
@@ -885,9 +885,9 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="rule_builder_logic_label">Logik:</string>
     <!-- Exception Configuration -->
     <string name="exception_screen_state">Bildschirm Status</string>
-    <string name="exception_screen_choose">Wählen Sie, wann diese Ausnahme gelten soll:</string>
+    <string name="exception_screen_choose">Wähle, wann diese Ausnahme gelten soll:</string>
     <string name="exception_time_schedule">Zeitplan</string>
-    <string name="exception_time_choose">Wählen Sie, wann diese Ausnahme gelten soll:</string>
+    <string name="exception_time_choose">Wähle, wann diese Ausnahme gelten soll:</string>
     <!-- Action Configuration -->
     <string name="action_disable_speakthat">Skip this notification</string>
     <string name="action_disable_description">SpeakThat wird diese Benachrichtigung nicht vorlesen.</string>
@@ -934,13 +934,13 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="speech_placeholder_channel_desc">Notification channel ID</string>
     <string name="action_skip_notification_title">Skip this notification</string>
     <string name="action_enable_app_filter">App-Filter aktivieren</string>
-    <string name="action_enable_app_description">Wählen Sie die App für die Filterung aus:</string>
+    <string name="action_enable_app_description">Wähle, für welche App das Filtern gelten soll:</string>
     <string name="action_select_app">App auswählen</string>
     <string name="action_disable_app_filter">App-Filter deaktivieren</string>
-    <string name="action_disable_app_description">Wählen Sie die App aus, nach der die Filterung deaktiviert werden soll:</string>
+    <string name="action_disable_app_description">Wähle, für welche App das Filtern nicht gelten soll:</string>
     <!-- Wave Calibration -->
     <string name="wave_calibration_title">Winkgeste einrichten</string>
-    <string name="wave_calibration_description">Kalibrieren Sie Ihr Gerät um Winkgeste zu erkennen und Benachrichtigungen stumm zu schalten</string>
+    <string name="wave_calibration_description">Kalibrier Dein Gerät, um Winkgesten zu erkennen und so Benachrichtigungen stumm zu schalten</string>
     <string name="wave_calibration_ready">Bereit zur Kalibrierung der Winkgeste</string>
     <string name="wave_calibration_threshold">Grenzwert: 3,2cm (60% von 5,3cm)</string>
     <string name="wave_calibration_how_it_works">💡 So funktioniert es:</string>
@@ -948,19 +948,19 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="wave_calibration_start">Kalibrierung starten</string>
     <!-- Bluetooth Condition -->
     <string name="bluetooth_devices_title">Bluetoothgeräte</string>
-    <string name="bluetooth_devices_description">Wählen Sie Bluetooth-Geräte, die verbunden sein müssen, um Benachrichtigungen lesen zu können.</string>
+    <string name="bluetooth_devices_description">Wähle die Bluetooth-Geräte, die verbunden sein müssen, damit Benachrichtigungen vorgelesen werden.</string>
     <string name="bluetooth_selected_devices">Ausgewählte Geräte</string>
     <string name="bluetooth_add_device">Bluetooth-Gerät hinzufügen</string>
     <string name="bluetooth_how_it_works">So funktioniert es</string>
     <string name="bluetooth_instructions">• Benachrichtigungen werden nur vorgelesen, wenn mindestens ein ausgewähltes Gerät verbunden ist.\n\n• Wenn kein Gerät ausgewählt ist, werden alle Benachrichtigungen vorgelesen.\n\n• Das Gerät muss gekoppelt und verbunden sein (nicht nur erkannt)</string>
     <!-- Dialog Configuration Strings -->
     <string name="wifi_config_enter_name">WLAN-Netzwerkname eingeben:</string>
-    <string name="wifi_config_description">Geben Sie den genauen Namen Ihres WLAN-Netzwerks (SSID) ein. Der Name muss genau übereinstimmen, einschließlich Groß- und Kleinschreibung.</string>
+    <string name="wifi_config_description">Gib den genauen Namen Deines WLAN-Netzwerks (SSID) ein. Der Name muss exakt übereinstimmen, einschließlich Groß- und Kleinschreibung.</string>
     <string name="wifi_config_tip">💡 Tipp: Du findest deinen WLAN-Namen in den WLAN-Einstellungen deines Telefons</string>
     <string name="bluetooth_config_select">Bluetooth-Geräte auswählen:</string>
-    <string name="bluetooth_config_description">Wählen Sie die Geräte, die Sie für diese Regel verwenden möchten. Es werden nur gekoppelte Geräte angezeigt.</string>
+    <string name="bluetooth_config_description">Wähle die Geräte, die Du für diese Regel verwenden möchten. Es werden nur gekoppelte Geräte angezeigt.</string>
     <string name="time_schedule_set">Zeitplan festlegen:</string>
-    <string name="time_schedule_description">Wählen Sie, wann diese Regel aktiv sein soll.</string>
+    <string name="time_schedule_description">Wähle, wann diese Regel aktiv sein soll.</string>
     <string name="time_schedule_start">Startzeit:</string>
     <string name="time_schedule_end">Endzeit:</string>
     <string name="time_schedule_days">Wochentag:</string>
@@ -1041,7 +1041,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="item_custom_app_example_name">Twitter</string>
     <string name="item_onboarding_add_app">App hinzufügen</string>
     <string name="item_onboarding_add_word">Wort hinzufügen</string>
-    <string name="item_onboarding_choose_template">Wählen Sie eine Regelvorlage, um loszulegen:</string>
+    <string name="item_onboarding_choose_template">Wähle eine Regelvorlage, um loszulegen:</string>
     <string name="item_onboarding_notification_settings">Benachrichtigungseinstellungen öffnen</string>
     <!-- Final Item Strings -->
     <string name="dialog_notification_history_tap_info">Tippe auf \'Ähnliches filtern\' um intelligente Filter für wiederholende Benachrichtigungen zu erstellen</string>
@@ -1065,13 +1065,13 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="behavior_threshold_value">Grenzwert: 12.0</string>
     <string name="behavior_start_test">Test starten</string>
     <string name="behavior_timeout_settings">Timeout Einstellungen</string>
-    <string name="behavior_timeout_description">Legen Sie fest, wie lange man auf Gesten hört, bevor man automatisch stoppt (um Batterie zu sparen)</string>
+    <string name="behavior_timeout_description">Lege fest, wie lange eine Gesten andauern soll, bevor automatisch gestoppt wird (spart Akku)</string>
     <string name="behavior_timeout_5s">5s</string>
     <string name="behavior_timeout_5m">5m</string>
     <string name="behavior_timeout_current">Timeout: 30 Sekunden</string>
     <string name="behavior_disable_timeout">Timeout deaktivieren (nicht empfohlen)</string>
     <string name="behavior_wave_to_stop_title">Winken zum Stoppen</string>
-    <string name="behavior_wave_to_stop_description">Stoppen Sie das Vorlesen sofort, indem Sie ihre Hand vor dem Gerät bewegen</string>
+    <string name="behavior_wave_to_stop_description">Stoppe das Vorlesen sofort, indem Du Deine Hand vor dem Gerät bewegst</string>
     <string name="behavior_great_for">Hervorragend für: Benutzer &amp; Bedienungshilfen</string>
     <string name="behavior_enable_wave_stop">Winken zum Stoppen aktivieren</string>
     <string name="behavior_proximity_threshold">Näherungsschwelle</string>
@@ -1087,7 +1087,7 @@ Block = komplett überspringen, Privat = privat ankündigen
 
     -->
     <string name="behavior_audio_ducking_warning">Audio verringern funktioniert je nach Gerät und Android-Version unterschiedlich. Bei einigen Geräten werden bestimmte Apps oder Audio-Streams möglicherweise nicht richtig gedämpft.</string>
-    <string name="behavior_audio_ducking_tip">Wenn die Lautstärkeregelung nicht gut funktioniert: Probieren Sie verschiedene Audiostreams in den Spracheinstellungen aus („Sprachanruf“ oder „Benachrichtigung“ funktionieren oft am besten). Vermeiden Sie den Stream „Medien“, da dieser möglicherweise sowohl Ihre TTS als auch Ihre Musik lauter macht.</string>
+    <string name="behavior_audio_ducking_tip">Wenn die Lautstärkeregelung nicht so gut funktioniert: Probiere verschiedene Audiokanäle in den Spracheinstellungen aus („Sprachanruf“ oder „Benachrichtigung“ funktionieren oft am besten). Vermeide den Audiokanal „Medien“, da dieser möglicherweise sowohl Deine Sprachausgabe als auch Deine Musik lauter macht.</string>
     <string name="behavior_audio_ducking_system">Die App verwendet automatisch erweiterte automatische Lautstärkeregelung, sofern verfügbar, mit reibungsloser manueller Lautstärkeregelung als Backup für maximale Kompatibilität.</string>
     <string name="behavior_audio_ducking_hint">Tipp: Durch Verringern des Wertes wird die Medienlautstärke bei Benachrichtigungen reduziert</string>
     <!-- Wave Detection Settings -->
@@ -1102,7 +1102,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="behavior_wave_threshold_30">30%</string>
     <string name="behavior_wave_threshold_90">90%</string>
     <string name="behavior_wave_test_button">Wink-Test</string>
-    <string name="behavior_wave_test_description">Testen Sie Ihre Wink-Erkennung. Binäre Sensoren zeigen 0 (nah) oder max (fern) an.</string>
+    <string name="behavior_wave_test_description">Teste die Winkgesten-Erkennung. Sensoren zeigen 0 (nah) oder max (fern) an.</string>
     <string name="behavior_wave_sensor_info">Verschiedene Telefone funktionieren unterschiedlich – einige zeigen nur „nah“ oder „fern“ an, andere zeigen alles dazwischen an.\n \nEs ist normal, wenn diese Leiste nur die Extreme anzeigt!</string>
     <string name="behavior_wave_current_proximity">Aktuelle Nähe: 5,0 cm</string>
     <string name="behavior_wave_current_threshold">Grenzwert: 5,0 cm</string>
@@ -1132,9 +1132,9 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="rule_exception_not_wifi_network">WLAN-Netzwerk nicht in Reichweite: %1$s</string>
     <!-- Multi-Language Voice Warning -->
     <string name="specific_voice_warning">Mehrsprachige Einschränkung</string>
-    <string name="specific_voice_warning_description">SpeakThat unterstützt nur eine Stimme gleichzeitig. Wenn Sie Benachrichtigungen in mehreren Sprachen erhalten, klingen manche möglicherweise unverständlich.</string>
+    <string name="specific_voice_warning_description">SpeakThat unterstützt nur eine Stimme gleichzeitig. Wenn Du Benachrichtigungen in mehreren Sprachen erhältst, klingt manch vorgelesener Text möglicherweise merkwürdig.</string>
     <string name="specific_voice_warning_dialog_title">Mehrsprachige Sprachbeschränkung</string>
-    <string name="specific_voice_warning_dialog_message">SpeakThat unterstützt derzeit nur eine Stimme gleichzeitig. Das bedeutet:\n\n✅ Was gut funktioniert:\n• Benachrichtigungen in derselben Sprache wie die von Ihnen ausgewählte Stimme\n• Verwendungsszenarien in einer einzigen Sprache\n• Die gängigsten Benachrichtigungsmuster\n\n⚠️ Mögliche Probleme:\n• Benachrichtigungen in verschiedenen Sprachen können verzerrt klingen.\n• Inhalte in mehreren Sprachen können schwer verständlich sein.\n• Einige Zeichen oder Akzente werden möglicherweise nicht korrekt ausgesprochen.\n\n💡 Empfehlungen:\n• Wählen Sie eine Stimme, die Ihrer häufigsten Benachrichtigungssprache entspricht.\n• Erwägen Sie die Verwendung der Einstellung „Sprache &amp; Region“ anstelle von „Spezifische Stimme“.\n• Testen Sie mit Ihren tatsächlichen Benachrichtigungen, um die Verständlichkeit sicherzustellen.\n\n🔮 Zukünftige Pläne:\n• Die Unterstützung mehrerer Sprachen ist für zukünftige Updates geplant.\n• Automatische Spracherkennung und Sprachumschaltung.\n• Bessere Verarbeitung von Inhalten in mehreren Sprachen.\n\nDerzeit funktioniert die Einstellung „Sprache und Region“ für mehrsprachige Benutzer oft besser, da sie sich automatisch an verschiedene Inhaltstypen anpasst.</string>
+    <string name="specific_voice_warning_dialog_message">SpeakThat unterstützt derzeit nur eine Stimme gleichzeitig. Das bedeutet:\n\n✅ Was gut funktioniert:\n• Benachrichtigungen in derselben Sprache wie die der ausgewählten Stimme\n• Szenarien wo nur eine Sprache genutzt wird\n• Die gängigsten Benachrichtigungsmuster\n\n⚠️ Mögliche Probleme:\n• Benachrichtigungen in unterschiedlichen Sprachen können merkwürdig klingen.\n• Inhalte in mehreren Sprachen können schwer verständlich sein.\n• Einige Zeichen oder Akzente werden möglicherweise nicht korrekt ausgesprochen.\n\n💡 Empfehlungen:\n• Wähle eine Stimme, die Deiner häufigsten Benachrichtigungssprache entspricht.\n• Erwäge die Verwendung der Einstellung „Sprache &amp; Region“ anstelle von „Spezifische Stimme“.\n• Teste mit Deinen tatsächlichen Benachrichtigungen, um Verständlichkeit sicherzustellen.\n\n🔮 Zukünftige Pläne:\n• Die Unterstützung mehrerer Sprachen ist für zukünftige Updates geplant.\n• Automatische Spracherkennung und Sprachumschaltung.\n• Bessere Verarbeitung von Inhalten in mehreren Sprachen.\n\nDerzeit funktioniert die Einstellung „Sprache und Region“ für mehrsprachige Benutzer oft besser, da sie sich automatisch an verschiedene Inhaltstypen anpasst.</string>
     <string name="specific_voice_warning_dialog_got_it">Verstanden</string>
     <!-- Hint Strings -->
     <string name="hint_app_package_name">App-Paketname</string>
@@ -1152,10 +1152,10 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="hint_wifi_network_name">WLAN-Netzwerkname eingeben</string>
     <string name="hint_cooldown_time">Cooldown-Zeit</string>
     <string name="hint_search_for_app">Nach einer App suchen...</string>
-    <string name="hint_enter_word_to_block">Geben Sie ein zu blockendes Wort ein...</string>
+    <string name="hint_enter_word_to_block">Gib ein Wort zum blockieren ein...</string>
     <string name="hint_enter_format_placeholders">Format mit Platzhaltern eingeben</string>
     <!-- Development Settings Hardcoded Strings -->
-    <string name="dev_configure_logging">Konfigurieren Sie, was für das Debugging protokolliert werden soll</string>
+    <string name="dev_configure_logging">Stelle ein, was im Debug-Protokoll gespeichert werden soll</string>
     <string name="dev_verbose_logging">Ausführliche Protokollierung</string>
     <string name="dev_verbose_logging_description">Zeige detaillierte Debug-Informationen</string>
     <string name="dev_filter_logging">Protokollierung filtern</string>
@@ -1178,11 +1178,11 @@ Block = komplett überspringen, Privat = privat ankündigen
     <!-- GeneralSettingsActivity Hardcoded Strings -->
     <string name="storage_permission_required">Speicherberechtigung für den Export erforderlich</string>
     <string name="theme_changed_title">Design geändert</string>
-    <string name="theme_changed_message">Das Design wurde angewendet. Für die beste Erfahrung können Sie die App neu starten.</string>
+    <string name="theme_changed_message">Das Design wurde angewendet. Um evtl Probleme zu vermeiden, kannst Du die App neu starten.</string>
     <string name="restart_now">Jetzt Neustarten</string>
     <string name="later">Später</string>
     <string name="clear_all_data_title">Alle Daten löschen</string>
-    <string name="clear_all_data_message">Dies wird alle Einstellungen auf Standardwerte zurücksetzen und den Benachrichtigungsverlauf löschen.\n\nDiese Aktion kann nicht rückgängig gemacht werden.\n\nMöchten Sie fortfahren?</string>
+    <string name="clear_all_data_message">Dies wird alle Einstellungen auf die Standardwerte zurücksetzen und den Benachrichtigungsverlauf löschen.\n\nDiese Aktion kann nicht rückgängig gemacht werden.\n\nMöchtest Du fortfahren?</string>
     <string name="clear_all_data_button">Alle Daten löschen</string>
     <string name="export_failed">Export fehlgeschlagen: %s</string>
     <string name="configuration_exported_successfully">Konfiguration erfolgreich exportiert</string>
@@ -1262,7 +1262,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="main_master_switch_disabled">SpeakThat! ist deaktiviert – Benachrichtigungen werden nicht vorgelesen</string>
     <string name="main_notification_access_granted">SpeakThat hat Zugriff auf Benachrichtigungen</string>
     <string name="main_tts_init_failed">TTS Initialisierung fehlgeschlagen. Einige Funktionen funktionieren möglicherweise nicht.</string>
-    <string name="main_tts_not_ready">TTS nicht bereit. Bitte versuchen Sie es in einem Moment erneut.</string>
+    <string name="main_tts_not_ready">TTS nicht bereit. Bitte versuche es nach kurzer Zeit erneut.</string>
     <string name="main_tts_playback_failed">TTS Wiedergabe fehlgeschlagen</string>
     <string name="main_notification_permission_granted">Benachrichtigungsberechtigung erteilt</string>
     <string name="main_notification_permission_denied">Benachrichtigungsberechtigung verweigert - SpeakThat Benachrichtigungen werden möglicherweise nicht angezeigt</string>
@@ -1270,7 +1270,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="main_notification_content_tap_settings">SpeakThat! läuft und ist bereit Benachrichtigungen vorzulesen!</string>
     <!-- Review Reminder Strings -->
     <string name="review_reminder_title">Gefällt Ihnen SpeakThat?</string>
-    <string name="review_reminder_message">Wenn Sie SpeakThat hilfreich finden, überlegen Sie bitte eine Bewertung im Google Play Store zu hinterlassen. Ihr Feedback hilft anderen Benutzern die App zu entdecken und unterstützt die zukünftige Entwicklung.</string>
+    <string name="review_reminder_message">Wenn Du SpeakThat hilfreich findest, überdenke bitte eine Bewertung im Google Play Store zu hinterlassen. Dein Feedback hilft anderen Nutzern die App im Store zu entdecken und unterstützt die weitere Entwicklung.</string>
     <string name="review_reminder_rate_now">Jetzt bewerten</string>
     <string name="review_reminder_later">Vielleicht später</string>
     <string name="review_reminder_never">Nicht erneut fragen</string>
@@ -1278,14 +1278,14 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="tts_engine_system_default">Systemstandard</string>
     <string name="tts_engine_restart_required">SpeakThat muss neu gestartet werden, um die neue TTS-Engine anzuwenden. Jetzt neu starten?</string>
     <string name="tts_engine_restart_confirm">Neustarten</string>
-    <string name="tts_engine_failure_spoken">Übrigens, SpeakThat konnte die von Ihnen ausgewählte Text-to-Speech-Engine nicht verwenden. Bitte öffnen Sie die Spracheinstellungen, um eine andere Engine auszuwählen.</string>
+    <string name="tts_engine_failure_spoken">Übrigens, SpeakThat konnte die von Dir ausgewählte Text-to-Speech-Engine nicht verwenden. Bitte öffne die Spracheinstellungen, um eine andere Engine auszuwählen.</string>
     <string name="tts_engine_failure_title">TTS-Engine nicht verfügbar</string>
     <string name="tts_engine_failure_message">SpeakThat konnte die von Ihnen ausgewählte TTS-Engine nicht verwenden. Möglicherweise wurde sie deinstalliert. Es wird nun die Standard-Engine des Systems verwendet.</string>
     <string name="open_system_tts_settings">TTS Systemeinstellungen öffnen</string>
     <string name="tts_engine_info_title">TTS Engine Information</string>
     <string name="dialog_title_content_cap">Inhaltsbegrenzung</string>
     <string name="behavior_ducking_enhanced_warning">Die Funktion „Lautsärkeminimierung“ funktioniert je nach Gerät und Android-Version unterschiedlich. Bei einigen Geräten werden bestimmte Apps oder Audiostreams evtl nicht korrekt leiser gestellt.</string>
-    <string name="behavior_ducking_device_tip">Wenn die Lautstärkeverringerung nicht richtig funktioniert: Probieren Sie verschiedene Audiostreams in den Spracheinstellungen aus („Sprachanruf“ oder „Benachrichtigung“ funktionieren oft am besten). Vermeiden Sie den Stream „Medien“, da dieser möglicherweise sowohl Ihre TTS als auch Ihre Musik lauter macht.</string>
+    <string name="behavior_ducking_device_tip">Wenn die Lautstärkeverringerung nicht richtig funktioniert: Probiere verschiedene Audiostreams in den Spracheinstellungen aus („Sprachanruf“ oder „Benachrichtigung“ funktionieren oft am besten). Vermeide den Stream „Medien“, da dieser möglicherweise sowohl Deine Sprachausgabe als auch Deine Musik lauter macht.</string>
     <string name="behavior_ducking_fallback_tip">Die App verwendet automatische Lautstärkeregelung, sofern verfügbar, mit manueller Lautstärkeregelung als Backup für maximale Kompatibilität.</string>
     <string name="behavior_ducking_test_title">Teste Lautsärkeminimierung Kompabilität</string>
     <string name="behavior_ducking_test_message">Testen, ob Ihr Gerät Audiofokus-Anfragen ordnungsgemäß unterstützt...</string>
@@ -1295,40 +1295,40 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="behavior_ducking_test_success_title">Test abgeschlossen</string>
     <string name="behavior_ducking_test_warning_title">Test abgeschlossen</string>
     <string name="behavior_ducking_fallback_title">Ausweichstrategie</string>
-    <string name="behavior_ducking_fallback_description">Wählen Sie aus, was passieren soll, wenn der Audiofokus auf Ihrem Gerät fehlschlägt</string>
+    <string name="behavior_ducking_fallback_description">Wähle aus, was passieren soll, wenn der Audiofokus auf Deinem Gerät fehlschlägt</string>
     <string name="behavior_ducking_fallback_manual">Manuelle Lautstärkeregelung</string>
     <string name="behavior_ducking_fallback_pause">Medien pausieren</string>
     <string name="behavior_ducking_fallback_manual_desc">Manuelle Lautstärkeregelung verwenden (funktioniert möglicherweise nicht auf allen Geräten)</string>
     <string name="behavior_ducking_fallback_pause_desc">Medien vollständig pausieren, wenn der Audiofokus fehlschlägt (zuverlässiger)</string>
     <string name="audio_ducking_disabled_title">Lautsärkeminimierung Funktionalität</string>
-    <string name="audio_ducking_disabled_message">Die Funktion „Lautsärkeminimierung\" funktioniert auf verschiedenen Geräten unterschiedlich. Einige Geräte reagieren möglicherweise nicht richtig auf Lautstärkeänderungen, was sich auf die Lautstärke der Sprachausgabe auswirken kann.\n\nDu kannst diese Funktion dennoch aktivieren. Jedoch sei Dir bewusst, dass sie möglicherweise nicht auf allen Geräten konsistent funktioniert.</string>
+    <string name="audio_ducking_disabled_message">Die Funktion „Lautstärkeminimierung\" funktioniert auf verschiedenen Geräten unterschiedlich. Einige Geräte reagieren möglicherweise nicht richtig auf Lautstärkeänderungen, was sich auf die Lautstärke der Sprachausgabe auswirken kann.\n\nDu kannst diese Funktion dennoch aktivieren. Jedoch sei Dir bewusst, dass sie möglicherweise nicht auf allen Geräten konsistent funktioniert.</string>
     <string name="audio_ducking_disabled_enable">Lautsärkeminimierung aktivieren</string>
     <string name="audio_ducking_disabled_ok">Verstanden</string>
     <string name="behavior_content_cap_title">Inhaltsbegrenzung</string>
-    <string name="behavior_content_cap_description">Begrenzen Sie, wie viel von jeder Benachrichtigung vorgelesen wird</string>
-    <string name="behavior_content_cap_recommendation">Ideal für: Lange Benachrichtigungen, bei denen Sie nur den Anfang benötigen</string>
+    <string name="behavior_content_cap_description">Begrenze, wieviel von jeder Benachrichtigung vorgelesen wird</string>
+    <string name="behavior_content_cap_recommendation">Ideal für: Lange Benachrichtigungen, bei denen Du nur den Anfang benötigst</string>
     <string name="general_accessibility_permission">Barrierefreiheit Berechtigung</string>
     <string name="general_accessibility_permission_description">Erweiterte Steuerelemente wie Lautstärketasten-Shortcuts aktivieren (vollständig optional)</string>
     <string name="accessibility_permission_request">Barrierefreiheitsberechtigung anfordern</string>
     <string name="accessibility_permission_granted">Barrierefreiheitsberechtigung erteilt</string>
     <string name="accessibility_permission_denied">Barrierefreiheitsberechtigung abgelehnt</string>
     <string name="accessibility_permission_explanation_title">Berechtigung für Barrierefreiheitsdienste</string>
-    <string name="accessibility_permission_explanation_message">SpeakThat! nutzt die AccessibilityService-API, um optionale Steuerungsfunktionen wie das Anhalten der Sprachausgabe über Hardwaretasten und eine reibungslosere Integration mit Medien-Apps bereitzustellen. Diese Berechtigung ermöglicht es der App, Tastendrücke und Aktionen in der Benutzeroberfläche zu erkennen, sodass Sie mehr Möglichkeiten zur Steuerung der Sprachausgabe haben. Es werden keine persönlichen oder sensiblen Benutzerdaten erfasst, gespeichert oder weitergegeben – die gesamte Verarbeitung erfolgt ausschließlich auf Ihrem Gerät. Diese Berechtigung ist völlig optional; SpeakThat! funktioniert auch ohne sie.</string>
+    <string name="accessibility_permission_explanation_message">SpeakThat! nutzt die \'AccessibilityService-API\', um optionale Steuerungsfunktionen wie das Anhalten der Sprachausgabe über Hardwaretasten und eine reibungslosere Integration mit Medien-Apps bereitzustellen. Diese Berechtigung ermöglicht es der App, Tastendrücke und Aktionen auf der Benutzeroberfläche zu erkennen, sodass Du mehr Möglichkeiten zur Steuerung der Sprachausgabe hast. Es werden keine persönlichen oder sensiblen Benutzerdaten erfasst, gespeichert oder weitergegeben – die gesamte Verarbeitung erfolgt ausschließlich auf Deinem Gerät. Diese Berechtigung ist völlig optional; SpeakThat! funktioniert auch ohne sie.</string>
     <string name="accessibility_permission_open_settings">Barrierefreiheitseinstellungen öffnen</string>
     <string name="accessibility_permission_cancel">Abbrechen</string>
     <string name="accessibility_service_name">SpeakThat Barrierefreiheit</string>
     <string name="accessibility_service_description">Aktiviert erweiterte Steuerungsfunktionen für SpeakThat, darunter Lautstärketasten-Shortcuts zum Stoppen/Anhalten der Benachrichtigungsvorlesung. Dieser Dienst ist vollständig optional und die gesamte Verarbeitung erfolgt auf Ihrem Gerät.</string>
     <string name="behavior_press_to_stop_title">Drücken zum Stoppen</string>
-    <string name="behavior_press_to_stop_description">Beenden Sie das Vorlesen von Benachrichtigungen, indem Sie beide Lautstärketasten gleichzeitig drücken. Die normale Lautstärkeregelung funktioniert weiterhin. Erfordert eine Barrierefreiheitsberechtigung.</string>
+    <string name="behavior_press_to_stop_description">Beende das Vorlesen von Benachrichtigungen, indem Du beide seitlichen Lautstärketasten gleichzeitig drückst. Die normale Lautstärkeregelung funktioniert weiterhin. Erfordert eine Barrierefreiheitsberechtigung.</string>
     <string name="behavior_enable_press_stop">\"Drücken zum Stoppen\" aktivieren</string>
     <string name="behavior_requires_accessibility_permission">Erfordert Barrierefreiheitsberechtigung</string>
     <string name="press_to_stop_dialog_title">Drücken zum Stoppen</string>
-    <string name="press_to_stop_dialog_message">Drücke beide Lautstärketasten gleichzeitig, um das Vorlesen der Benachrichtigung zu beenden. <br/> <br/> <b>Perfekt für die Freisprechsteuerung:</b> <br/> • Funktioniert sytemweit <br/> • Du musst nicht auf den Bildschirm schauen <br/> • Schnell und zuverlässig <br/> • Die normale Lautstärkeregelung funktioniert weiterhin <br/> <br/> <b>⚠️ Erfordert Barrierefreiheitsberechtigung:</b> <br/> Um das Drücken der Lautstärketasten zu erkennen, benötigt diese Funktion eine Barrierefreiheitsberechtigung. Du kannst sie in den Einstellungen deines Gerätes zuteilen. <br/> Bitte beachte, dass dies nur bei aktiviertem Bildschirm funktioniert.</string>
+    <string name="press_to_stop_dialog_message">Drücke beide Lautstärketasten gleichzeitig, um das Vorlesen der Benachrichtigung zu beenden. <br/> <br/> <b>Perfekt für die Freisprechsteuerung:</b> <br/> • Funktioniert sytemweit <br/> • Du musst nicht auf den Bildschirm schauen <br/> • Schnell und zuverlässig <br/> • Die normale Lautstärkeregelung funktioniert weiterhin <br/> <br/> <b>⚠️ Erfordert Barrierefreiheitsberechtigung:</b> <br/> Um das Drücken der Lautstärketasten zu erkennen, benötigt diese Funktion eine Barrierefreiheitsberechtigung. Du kannst sie in den Einstellungen deines Gerätes zuteilen. <br/> Bitte beachte, dass dies nur bei eingeschaltetem Bildschirm funktioniert.</string>
     <string name="accessibility_permission_required_title">Barrierefreiheitsberechtigung erforderlich</string>
-    <string name="accessibility_permission_required_message">„Drücken zum Stoppen“ benötigt die Barrierefreiheitsberechtigung, um das Drücken der Lautstärketasten zu erkennen. Bitte aktivieren Sie diese zunächst in den allgemeinen Einstellungen.</string>
+    <string name="accessibility_permission_required_message">„Drücken zum Stoppen“ benötigt die Barrierefreiheitsberechtigung, um das Drücken der Lautstärketasten zu erkennen. Bitte aktiviere diese zunächst in den allgemeinen Einstellungen.</string>
     <string name="open_accessibility_settings">Barrierefreiheitseinstellungen öffnen</string>
     <string name="url_handling_title">URL-Verarbeitung</string>
-    <string name="url_handling_description">Steuern Sie, wie Weblinks in Benachrichtigungen vorgelesen werden</string>
+    <string name="url_handling_description">Steuere, wie Weblinks in Benachrichtigungen vorgelesen werden sollen</string>
     <string name="url_handling_read_full">Link vollständig lesen</string>
     <string name="url_handling_domain_only">Nur Domain lesen</string>
     <string name="url_handling_dont_read">Nicht vorlesen</string>
@@ -1349,16 +1349,16 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="content_cap_time_limit_value">%d Sekunden</string>
     <string name="content_cap_help_message"><![CDATA[Mit der Inhaltsbegrenzung kannst Du festlegen, wie viel von jeder Benachrichtigung vorgelesen wird:<br/><br/><b>Wortanzahl</b> – Nur die ersten N Wörter werden vorgelesen<br/>• Ideal für Bezahlungs-Benachrichtigungen, bei denen wichtige Informationen am Anfang stehen<br/>• Funktioniert zuverlässig in den meisten Sprachen<br/>• <b>Hinweis:</b> Zählt die Wörter im Titel und im Text<br/>• Beispiel: 50,00€ erhalten von Jan Schmidt für das Mittagessen → 50,00€ erhalten von Jan<br/><br/><b>Anzahl der Sätze</b> – Nur die ersten N vollständigen Sätze werden vorgelesen<br/>• Natürlicherer Satzumbruch als bei Begrenzung durch Wortanzahl<br/>• Verwendet intelligente Satzerkennung für internationale Sprachen<br/>• Behandelt Zeilenumbrüche in E-Mails korrekt<br/>• <b>Hinweis:</b> Titel ohne Satzendzeichen werden nicht als separate Sätze gezählt<br/>• Beispiel: Hallo! Wie geht es Dir heute? → Hallo!<br/><br/><b>Zeitlimit</b> – Beendet das Lesen nach N Sekunden<br/>• Universell – funktioniert mit allen Sprachen<br/>• Vorhersehbare Benachrichtigungsdauer<br/>• Ideal für konsistentes Timing<br/>• Beispiel: Hört nach 10 Sekunden auf, unabhängig von der Länge des Inhalts<br/><br/><b>Tipps:</b><br/>• Die Wortanzahl funktioniert für die meisten Nutzer am besten<br/>• 'Anzahl der Sätze' klingt natürlicher, aber möglicherweise weniger präzise<br/>• Das Zeitlimit ist universell und vorhersehbar<br/>• Alle Optionen funktionieren mit Deinen vorhandenen Sprachvorlagen<br/>• Kombiniere es mit „Schütteln zum Stoppen” für maximale Kontrolle]]></string>
     <string name="dev_disable_media_fallback">Deaktiviere Ausweichmethoden Medienverhalten</string>
-    <string name="dev_disable_media_fallback_description">Deaktiviere Ausweichmethoden Medienverhalten. Wenn eine Funktion nicht funktioniert, werden keine Alternativen ausprobiert. Hilft bei der Isolierung von Problemen. Hinweis: Wenn deaktiviert, wechselt der Lautstärkeminimierungs-Modus in den Pausieren-Modus sobald das Verringern der Lautstärke fehlschlägt. Wenn beides fehlschlägt, werden Benachrichtigungen weiterhin ohne Audiofokus vorgelesen.</string>
-    <string name="tts_init_failed_android15">Die TTS-Initialisierung ist unter Android 15 fehlgeschlagen. Dies kann an Systembeschränkungen liegen.</string>
-    <string name="tts_init_failed_service_unavailable">Der TTS-Dienst ist nicht verfügbar. Bitte überprüfen Sie Ihre TTS-Einstellungen.</string>
-    <string name="tts_init_failed_permissions">Die TTS-Initialisierung ist aufgrund fehlender Berechtigungen fehlgeschlagen. Bitte starten Sie die App neu.</string>
-    <string name="tts_init_failed_recovery_attempts">Die TTS-Wiederherstellung ist nach mehreren Versuchen fehlgeschlagen. Bitte starten Sie die App neu oder überprüfen Sie die TTS-Einstellungen.</string>
+    <string name="dev_disable_media_fallback_description">Deaktiviere die Ausweichmethoden zum Medienverhalten. Wenn eine Funktion nicht funktioniert, werden keine Alternativen ausprobiert. Hilft bei der Isolierung von Problemen. Hinweis: Wenn deaktiviert, wechselt der Lautstärkeminimierungs-Modus in den Pausieren-Modus sobald das Verringern der Lautstärke fehlschlägt. Wenn beides fehlschlägt, werden Benachrichtigungen weiterhin ohne Audiofokus vorgelesen.</string>
+    <string name="tts_init_failed_android15">Die TTS-Initialisierung auf Android 15 ist fehlgeschlagen. Dies kann an Einschränkungen des Systems liegen.</string>
+    <string name="tts_init_failed_service_unavailable">Der TTS-Dienst ist nicht verfügbar. Bitte überprüfe Deine TTS-Einstellungen.</string>
+    <string name="tts_init_failed_permissions">Die TTS-Initialisierung ist aufgrund fehlender Berechtigungen fehlgeschlagen. Bitte starte die App neu.</string>
+    <string name="tts_init_failed_recovery_attempts">Die TTS-Wiederherstellung ist nach mehreren Versuchen fehlgeschlagen. Bitte starte die App neu oder überprüfe die TTS-Einstellungen.</string>
     <string name="tts_init_failed_generic">Die TTS-Initialisierung ist fehlgeschlagen. Einige Funktionen funktionieren möglicherweise nicht ordnungsgemäß.</string>
     <string name="tts_recovery_in_progress">Versuche, TTS-Dienst wiederherzustellen...</string>
     <string name="tts_recovery_successful">Der TTS-Dienst läuft wieder!</string>
     <string name="tts_troubleshooting_title">TTS-Fehlerbehebung</string>
-    <string name="tts_troubleshooting_message">Wenn TTS weiterhin nicht funktioniert:\n\n1. Überprüfen Sie Einstellungen &gt; Barrierefreiheit &gt; Text-zu-Sprache-Ausgabe.\n2. Stellen Sie sicher, dass Google TTS installiert und als Standard festgelegt ist.\n3. Starten Sie die App neu.\n4. Starten Sie Ihr Gerät neu, wenn das Problem weiterhin besteht.</string>
+    <string name="tts_troubleshooting_message">Wenn die TTS-Sprachausgabe weiterhin nicht funktioniert:\n\n1. Überprüfe Einstellungen &gt; Barrierefreiheit &gt; Text-zu-Sprache-Ausgabe.\n2. Stelle sicher, dass die \'Google TTS-Sprachausgabe\' installiert und als Standard festgelegt ist.\n3. Starte die App neu.\n4. Starte das Smartphone neu, wenn das Problem weiterhin besteht.</string>
     <string name="quick_diagnostics">Schnelldiagnose</string>
     <string name="diagnostics_title">Schnelldiagnose</string>
     <string name="diagnostics_notification_access">Benachrichtigungszugriff</string>
@@ -1373,7 +1373,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="diagnostics_status_yes">J</string>
     <string name="diagnostics_status_no">N</string>
     <string name="diagnostics_copy_clipboard">In die Zwischenablage kopieren</string>
-    <string name="diagnostics_reinitialize_tts">TTS neu initialisieren</string>
+    <string name="diagnostics_reinitialize_tts">TTS wird neu initialisiert</string>
     <string name="diagnostics_clipboard_copied">Diagnosebericht in die Zwischenablage kopiert</string>
     <string name="diagnostics_tts_reinitialized">TTS neu initialisiert – Diagnosen werden erneut ausgeführt</string>
     <string name="diagnostics_notification_access_ok">Benachrichtigungszugriff ist aktiviert</string>
@@ -1555,10 +1555,10 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="general_toast_quick_settings_description">Toast anzeigen, wenn über die Kachel „Schnelleinstellungen“ umgeschaltet wird</string>
     <string name="voice_audio_usage_alarm">Alarm</string>
     <string name="voice_audio_usage_media_recommended">Medien (empfohlen)</string>
-    <string name="rules_mode_external_description">Intents für Automatisierungs-Apps wie MacroDroid oder Tasker aktivieren.</string>
+    <string name="rules_mode_external_description">\'Intents\' für Automatisierungs-Apps wie z.B. MacroDroid oder Tasker aktivieren.</string>
     <string name="rules_mode_off_empty_description">Wähle „Bedingte Regeln“, um Automatisierungen zu erstellen, oder lasse diesen Modus aktiv, damit SpeakThat dauerhaft eingeschaltet bleibt.</string>
     <string name="rules_mode_info_content_description">Informationen zum Automatisierungsmodus</string>
-    <string name="general_toast_automation_description">Toast anzeigen, wenn über externe Automatisierungs-Apps umgeschaltet wird</string>
+    <string name="general_toast_automation_description">Popup-Hinweis anzeigen, wenn über externe Automatisierungs-Apps umgeschaltet wird</string>
     <string name="rules_mode_off_title">Aus</string>
     <string name="rules_mode_info_title">Automatisierungsmodi</string>
     <string name="general_toast_main_app_description">Toast anzeigen, wenn der Hauptschalter in der App umgeschaltet wird</string>
@@ -1589,12 +1589,12 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="tts_onboarding_language_new">Um mit SpeakThat zu starten, wähle deine gewünschte Sprache aus.</string>
     <string name="tts_onboarding_welcome_new">Willkommen zu SpeakThat! Bleib in Kontakt, ohne auf dein Bildschirm zu schauen. Wenn du eine Benachrichtigung empfängst, wird SpeakThat diese mithilfe eines Text-zu-Sprache-Werkzeugs vorlesen. All dies geschieht komplett lokal auf deinem Gerät, und du bist in Kontrolle darüber, was vorgelesen wird.</string>
     <string name="tts_onboarding_privacy_new">Deine Privatsphäre ist SpeakThat\'s Priorität. Du hast die komplette Kontrolle darüber, was vorgelesen wird. Du kannst Filter für Apps, Worte, Orte, Zeiten und vieles mehr benutzen. All dies geschieht lokal auf deinem Gerät und wird niemals an externe Server, Datenfarmen oder AI-Modelle geschickt. Die einzige Ausnahme besteht darin, wenn du uns wissentlich mit App-Daten einen Fehlerbericht zusendest.</string>
-    <string name="tts_onboarding_permission_new">SpeakThat erfordert den Zugriff auf Benachrichtigungen, um sie vorlesen zu können. Du musst Deine Geräteeinstellungen öffnen, um SpeakThat den Zugriff zu gewähren. Drücke den \"Einstellungen öffnen\"-Button, um den Zugriff zu gewähren. Tippe in der Liste auf SpeakThat, um es zu aktivieren. Alle Daten verbleiben auf Deinem Gerät und verlassen dieses auch nicht.</string>
+    <string name="tts_onboarding_permission_new">SpeakThat erfordert den Zugriff auf Benachrichtigungen, um sie vorlesen zu können. Du musst Deine Geräteeinstellungen öffnen, um SpeakThat diesen Zugriff zu gewähren. Drücke den \"Einstellungen öffnen\"-Button, um diese Berechtigung zu erlauben. Tippe in der Liste auf den Eintrag SpeakThat, um dies zu aktivieren. Alle Daten verbleiben auf Deinem Gerät und verlassen dieses auch nicht.</string>
     <string name="onboarding_system_check_title">Kurzer Systemcheck</string>
     <string name="onboarding_system_check_subheading">SpeakThat wird schnell verifizieren, dass es bereit ist, auf deinem Gerät zu laufen.</string>
     <string name="onboarding_system_check_icon_description">Stetoskop-Symbol</string>
     <string name="onboarding_system_check_intro_card_title">Zuverlässigkeit sicherstellen</string>
-    <string name="onboarding_system_check_intro_card_description">SpeakThat wird eine Testbenachrichtigung verschicken und sie vorlesen, um sicherzustellen, dass alles funktioniert.\n\nDas ist ein kurzer Test. Du wirst in der Lage sein, auswählen, was vorgelesen wird.</string>
+    <string name="onboarding_system_check_intro_card_description">Um sicherzustellen, dass alles funktioniert wird SpeakThat eine Testbenachrichtigung absenden und vorlesen\n\nDies ist nur ein kurzer Test. Du hast die Möglichkeit auszuwählen was vorgelesen werden soll.</string>
     <string name="onboarding_system_check_run_button">Systemcheck ausführen</string>
     <string name="onboarding_system_check_testing_card_title">Prüfe...</string>
     <string name="onboarding_system_check_testing_card_description">Das wird nicht lang dauern!</string>
@@ -1605,7 +1605,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="onboarding_system_check_failure_card_description">SpeakThat hat die Testbenachrichtigung nicht vorgelesen.\n\n%1$s\n\nDu kannst die Einrichtigung fortsetzen, aber möglicherweise wird SpeakThat nicht einwandfrei funktionieren.\n\nKontaktiere mich, falls du Hilfe brauchst, die App zum Laufen zu bekommen.</string>
     <string name="onboarding_system_check_failure_permission_denied">Du hast die Zugriffsberechtigung auf Benachrichtigungen abgelehnt.</string>
     <string name="onboarding_system_check_failure_test_skipped">Der Check wurde übersprungen.</string>
-    <string name="tts_onboarding_system_check">Kurzer Systemcheck. SpeakThat wird schnell verifizieren, dass es auf deinem Gerät einwandfrei laufen kann. SpeakThat wird eine Testbenachrichtigung verschicken und sie vorlesen, um sicherzustellen, dass alles funktioniert. Es ist ein kurzer Test. Du wirst in der Lage sein, auswählen, was vorgelesen wird.</string>
+    <string name="tts_onboarding_system_check">Kurzer Systemcheck. SpeakThat wird schnell überprüfen, ob es auf deinem Gerät einwandfrei laufen kann. SpeakThat wird eine Testbenachrichtigung absenden und vorlesen, um sicherzustellen, dass alles funktioniert. Dies ist nur ein kurzer Test. Du hast die Möglichkeit auszuwählen was vorgelesen werden soll.</string>
     <string name="open_source_licenses">Open Source Lizenzen</string>
     <string name="update_banner_title">Update verfügbar: %1$s</string>
     <string name="update_banner_body">Neue Version verfügbar (%1$s). Zum öffnen des Updaters tippen.</string>
@@ -1747,7 +1747,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="trigger_wifi_connection_state_label">Verbindungsstatus</string>
     <string name="trigger_wifi_connected">Verbunden</string>
     <string name="trigger_wifi_disconnected">Getrennt</string>
-    <string name="rules_mode_info_description">SpeakThat kann momentan nur eine Automatisierungsquelle zugleich nutzen.\n\nAus - Automatisierung ausgeschaltet lassen, so dass SpeakThat aktiv bleibt bis Du den Hauptschalter manuell umschaltest.\n\nBedingte Regeln - Nutzt die eingebaute Automatisierungslogik für Bluetooth-Geräte, Zeitvorgaben und Filter (empfohlen).\n\nExterne Automatisierung - Aktiviere Broadcast-Intents für Automatisierungstools (z. B. MacroDroid, Tasker) um SpeakThat direkt zu steuern.</string>
+    <string name="rules_mode_info_description">SpeakThat kann momentan nur eine Automatisierungsquelle zugleich nutzen.\n\nAus - Automatisierung ausgeschaltet lassen, so dass SpeakThat aktiv bleibt bis Du den Hauptschalter manuell betätigst.\n\nBedingte Regeln - Nutzt die eingebaute Automatisierungslogik für Bluetooth-Geräte, Zeitvorgaben und Filter (empfohlen).\n\nExterne Automatisierung - Aktiviere \'Broadcast-Intents\' für Automatisierungstools (z. B. MacroDroid, Tasker) um SpeakThat direkt anzusteuern.</string>
     <string name="rules_mode_external_empty_title">Kontrolliert durch Automatisierung</string>
     <string name="rules_mode_external_empty_description">SpeakThat wartet auf Automatisierungsaufforderungen. Wechsel zurück zu den bedingten Regeln, um interne Automatisierungen zu bearbeiten.</string>
     <string name="onboarding_back_button">Zurück</string>
@@ -1780,7 +1780,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="onboarding_privacy_card1_conclusion">Und vieles mehr!</string>
     <string name="onboarding_privacy_card2_title">Welche Daten sammelt SpeakThat?</string>
     <string name="onboarding_privacy_card2_description">Keine! Sämtliche Verarbeitung erfolgt komplett auf Deinem Gerät und nichts wird an externe Server, Datenfarmen oder KI-Modelle gesendet, es sei denn Du sendest eigenständig einen Fehlerbericht und stimmst zu, dass Appdaten hinzugefügt werden dürfen.</string>
-    <string name="onboarding_permission_bullet1">• Greift auf Benachrichtigungsinhalt zu, um sie vorlesen zu können</string>
+    <string name="onboarding_permission_bullet1">• Greift auf Benachrichtigungsinhalte zu, um sie vorzulesen</string>
     <string name="onboarding_system_check_retry">Nochmal versuchen</string>
     <string name="onboarding_system_check_failure_category_post_notifications">Berechtigung für Benachrichtigungen abgelehnt</string>
     <string name="onboarding_system_check_failure_category_notification_access">Berechtigung für Benachrichtigungen benötigt</string>
@@ -1845,14 +1845,14 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="onboarding_filter_words_subheading">Optionale Feinabstimmung Deiner Filterung durch die Vorgabe bestimmter Wörter und Sätze.</string>
     <string name="onboarding_filter_words_icon_description">Filter Symbol</string>
     <string name="onboarding_filter_words_card_title">Filter mittels festgelegter Worte (optional)</string>
-    <string name="onboarding_filter_words_card_description">Du kannst Deinem Filter Worte hinzufügen, indem Du eine Liste von Wörtern angibst, die entweder vorgelesen oder nicht vorgelesen werden sollen, wenn sie in Benachrichtigungen vorkommen.</string>
+    <string name="onboarding_filter_words_card_description">Du kannst Deinem Filter Worte hinzufügen, indem Du eine Liste von Wörtern angibst, die entweder vorgelesen oder nicht vorgelesen werden sollen wenn sie in Benachrichtigungen auftauchen.</string>
     <string name="onboarding_filter_words_option_blacklist_title">Alles vorlesen außer ausgewählte</string>
     <string name="onboarding_filter_words_option_blacklist_description">Benachrichtigungen jeder App vorlesen außer den von mir ausgewählten</string>
     <string name="onboarding_filter_words_option_whitelist_title">Nur ausgewählte vorlesen</string>
     <string name="onboarding_filter_words_option_whitelist_description">Nur Benachrichtigungen ausgewählter Apps vorlesen</string>
     <string name="onboarding_filter_words_input_hint">Gib ein Wort ein…</string>
     <string name="onboarding_filter_words_add_button">Wort hinzufügen</string>
-    <string name="tts_onboarding_filter_words">Nach Worten filtern. Optionale Feinabstimmung Deiner Filterung durch die Vorgabe bestimmter Wörter und Sätze. Du kannst Deinem Filter Worte hinzufügen, indem Du eine Liste von Wörtern angibst, die entweder vorgelesen oder nicht vorgelesen werden sollen, wenn sie in Benachrichtigungen vorkommen.</string>
+    <string name="tts_onboarding_filter_words">Nach Worten filtern. Optionale Feinabstimmung Deiner Filter durch die Vorgabe bestimmter Wörter und Sätze. Du kannst Deinem Filter Worte hinzufügen, indem Du eine Liste von Wörtern angibst, die entweder vorgelesen oder nicht vorgelesen werden sollen wenn sie in Benachrichtigungen auftauchen.</string>
     <string name="onboarding_all_set_title">Alles eingestellt!</string>
     <string name="onboarding_all_set_icon_description">Feier Symbol</string>
     <string name="onboarding_all_set_card_title">Puh, alles fertig!</string>
@@ -1894,8 +1894,8 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="filter_sort_az">Sortiere A-Z</string>
     <string name="filter_sort_za">Sortiere Z-A</string>
     <string name="hint_word_to_list">Wort oder Satz zum hinzufügen</string>
-    <string name="dev_enable_legacy_ducking">Aktiviere veraltete Minimieren/Pausieren Hacks</string>
-    <string name="dev_enable_legacy_ducking_description">Erzwinge die experimentellen Minimierungsmethoden (Medienwiedergaben direkt pausieren und manuelle STREAM_MUSIC Lautstärkeänderungen). Hilft bei wiederspenstigen Apps wie PowerAmp. Kann aber Klingeltoneinstellungen behindern oder Apps verstummen lassen, sollte SpeakThis abstürzen.</string>
+    <string name="dev_enable_legacy_ducking">Aktiviere ältere Lautstärkeminimierung/Pausieren Hacks</string>
+    <string name="dev_enable_legacy_ducking_description">Erzwinge die experimentellen Lautstärkeminimierungsmethoden (die direkte Medienwiedergaben pausiert und die manuelle STREAM_MUSIC Lautstärke wird geändert). Hilft bei wiederspenstigeren Apps wie z.B. PowerAmp. Kann aber Klingeltoneinstellungen behindern oder Apps verstummen lassen, wenn SpeakThis mal abstürzen sollte.</string>
     <string name="notification_while_reading_enabled">Benachrichtigungen beim Vorlesen aktiviert</string>
     <string name="notification_permission_required">Berechtigung Benachrichtigungen erforderlich</string>
     <string name="permissions_required_title">Berechtigungen erforderlich</string>
@@ -1906,7 +1906,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="diagnostics_should_read_yes_conditional">Alle Überprüfungen bestanden - Benachrichtigungen sollten vorgelesen werden (Bedingte Regeln aktiv)</string>
     <string name="diagnostics_should_read_yes_external">Alle Überprüfungen bestanden - Benachrichtigungen werden durch externe Automatisierung gesteuert</string>
     <string name="listener_warning_title">Notification Listener braucht Aufmerksamkeit</string>
-    <string name="listener_warning_body_disconnected">Android trennte den Benachrichtigungsdienst vor %1$s. Tippe auf \'Erneut versuchen\', um den Dienst neu zu verbinden. Wenn dies öfter passiert, deaktiviere die Akkuoptimierung in den Allgemeinen Einstellungen.</string>
+    <string name="listener_warning_body_disconnected">Android trennte den Benachrichtigungsdienst vor %1$s. Tippe auf \'Erneut versuchen\', um den Dienst neu zu verbinden. Wenn dies öfter passiert, deaktiviere die Akkuoptimierung in den Allgemeinen Einstellungen des Smartphones.</string>
     <string name="listener_warning_body_stale">Der Benachrichtigungsdienst ist seit %1$s nicht verbunden. Tippe auf \'Erneut versuchen\', um den Dienst zu starten. Wenn das Problem weiterhin bestheen bleibt, überprüfe die Akkuoptimierung in Allgemeine Einstellungen.</string>
     <string name="listener_warning_time_unknown">kurzer Zeit</string>
     <string name="listener_warning_retry_in_progress">Verbindungsanfrage gesendet</string>
@@ -1971,7 +1971,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="selftest_error_0400_title">Benachrichtigung nicht erstellt</string>
     <string name="selftest_error_0400_description">Die Test-Benachrichtigung konnte nicht erstellt werden. Das ist wahrscheinlich ein Berechtigungsproblem. Bitte stelle sicher, dass die Genehmigung für POST_NOTIFICATIONs erteilt wurde.</string>
     <string name="selftest_error_0404_title">Dienst Empfängt Keine Benachrichtigungen</string>
-    <string name="selftest_error_0404_description">Die Benachrichtigung erschien auf dem Bildschirm, aber der NotificationListener Dienst hat sie nicht erhalten. Versuche, die Benachrichtigungsberechtigung in den Systemeinstellungen aus und anzuschalten.</string>
+    <string name="selftest_error_0404_description">Die Benachrichtigung erschien auf dem Bildschirm, aber der \'NotificationListener\' Dienst hat sie nicht erhalten. Versuche, die Benachrichtigungsberechtigung in den Systemeinstellungen aus- und wieder einzuschalten.</string>
     <string name="selftest_error_0410_title">Hauptschalter deaktiviert</string>
     <string name="selftest_error_0410_description">Der SpeakThat Hauptschalter ist deaktiviert. Bitte aktiviere ihn auf dem Hauptbildschirm, um Benachrichtigungen vorzulesen.</string>
     <string name="selftest_error_0411_title">Audiomodus blockiert</string>
@@ -1979,11 +1979,11 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="selftest_error_0412_title">Nicht stören aktiv</string>
     <string name="selftest_error_0412_description">Nicht stören Modus ist aktiv, und Du hast \"Beachte Nicht stören\" aktiviert. Meldungen werden in diesem Modus nicht gelesen. Du kannst \"Beachte Nicht stören\" in den Stimm-Einstellungen deaktivieren.</string>
     <string name="selftest_error_0413_title">Blockiert durch Regeln</string>
-    <string name="selftest_error_0413_description">Die Benachrichtigung wurde durch Dein Regelsystem gesperrt. Überprüfe Deine Regelkonfiguration, um sicherzustellen, dass sie nicht alle Benachrichtigungen blockieren.</string>
+    <string name="selftest_error_0413_description">Die Benachrichtigung wurde durch Dein Regelsystem gesperrt. Überprüfe Deine Regelkonfiguration, um sicherzustellen, dass sie nicht sämtliche Benachrichtigungen blockieren.</string>
     <string name="selftest_error_0414_title">Blockiert durch Filter</string>
     <string name="selftest_error_0414_description">Die Benachrichtigung wurde durchden Inhaltsfilter blockiert. Überprüfe den App-Filter, Wort-Filter oder andere Filtereinstellungen.</string>
     <string name="selftest_error_0415_title">TTS nicht initialisiert</string>
-    <string name="selftest_error_0415_description">Text-zu-Speech ist nicht initialisiert. Versuche, die App neu zu starten oder die TTS-Engine-Einstellungen zu überprüfen.</string>
+    <string name="selftest_error_0415_description">Text-zu-Speech ist nicht initialisiert. Versuche, die App neu zu starten oder die Einstellungen der TTS-Engine zu überprüfen.</string>
     <string name="selftest_error_0420_title">Unbekannter Blockierungsgrund</string>
     <string name="selftest_error_0420_description">Die Benachrichtigung wurde empfangen, aber aus einem unbekannten Grund nicht vorgelesen. Bitte exportiere die Debug-Protokolle und melde diesen Fehler.</string>
     <string name="selftest_error_0440_title">Fehler der Audioausgabe</string>
@@ -2082,7 +2082,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="loading_line_14">Nur noch eine Sekunde…</string>
     <string name="loading_line_15">Versuche alles zu verstehen…</string>
     <string name="loading_line_16">Einen Moment, bitte warten…</string>
-    <string name="loading_line_17">Analysiere menschliche Absicht…</string>
+    <string name="loading_line_17">Versuche Absicht des Menschen zu verstehen…</string>
     <string name="loading_line_18">Immer noch schneller als selber vorlesen…</string>
     <string name="loading_line_19">Ich mache es nun…</string>
     <string name="loading_line_20">Fast geschafft... vielleicht…</string>
@@ -2133,7 +2133,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="support_feature_q2_desc">Wenn Du einen Workaround oder eine alternative Art der Handhabung gefunden hast, beschreibe es hier.\n\nDies hilft mir zu erkennen, wie wichtig die Funktion ist und was Trade-offs Nutzer machen.</string>
     <string name="support_feature_q2_hint">Ich muss normalerweise…</string>
     <string name="support_feature_q3">Wie würdest Du die Idee umsetzen?</string>
-    <string name="support_feature_q3_desc">Wenn Du eine bestimmte Idee im Sinn hast, beschreibe bitte wie Du Dir vorstellst dass sie funktioniert.\n\nMach dir keine Sorgen um technische Details. Das ist nur, um Deine Erwartungen zu verstehen.</string>
+    <string name="support_feature_q3_desc">Wenn Du eine bestimmte Idee im Sinn hast, beschreibe bitte wie Du Dir vorstellst dass sie funktioniert.\n\nMach dir keine Sorgen um technische Details. Das wird nur benötigt um Deine Erwartungen zu verstehen.</string>
     <string name="support_feature_q3_hint">Ich würde mir vorstellen…</string>
     <string name="support_bug_title">Fehler Details</string>
     <string name="support_bug_q1">Wie hast Du den Fehler gefunden? (erforderlich)</string>
@@ -2155,7 +2155,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="support_submit">Einreichen</string>
     <string name="support_log_info">Alle Ereignisprotokolle wurden gespeichert. Sollen sie zusammen mit dieser E-Mail versendet werden?</string>
     <string name="support_log_message_bug">Alle aktuellen Ereignisprotokolle ([number] Einträge) werden an die E-Mail angeheftet. Dies ist für Fehlerberichte erforderlich.</string>
-    <string name="support_log_message_feature">Keine Ereignisprotokolle werden in dieser E-Mail gesendet, da sie für Feature-Anfragen nicht erforderlich sind.</string>
+    <string name="support_log_message_feature">Ereignisprotokolle werden in dieser E-Mail nicht mitgesendet, da sie für Feature-Anfragen nicht erforderlich sind.</string>
     <string name="support_validation_warning">Bitte beantworte alle Fragen!</string>
     <string name="support_send_via_email">Via E-Mail versenden</string>
     <string name="support_email_subject_feature">SpeakThat! Funktionsanfrage</string>
@@ -2180,5 +2180,5 @@ Block = komplett überspringen, Privat = privat ankündigen
         <item quantity="other">Du hast %d Benachrichtigungen.</item>
     </plurals>
     <string name="placeholder_string">Platzhalter. Vergiss nicht, diesen zu entfernen.</string>
-    <string name="fallback_timer_complete">Timer oder Wecker komplett</string>
+    <string name="fallback_timer_complete">Timer oder Wecker abgelaufen</string>
 </resources>
