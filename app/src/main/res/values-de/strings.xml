@@ -1780,7 +1780,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="onboarding_privacy_card1_conclusion">Und vieles mehr!</string>
     <string name="onboarding_privacy_card2_title">Welche Daten sammelt SpeakThat?</string>
     <string name="onboarding_privacy_card2_description">Keine! Sämtliche Verarbeitung erfolgt komplett auf Deinem Gerät und nichts wird an externe Server, Datenfarmen oder KI-Modelle gesendet, es sei denn Du sendest eigenständig einen Fehlerbericht und stimmst zu, dass Appdaten hinzugefügt werden dürfen.</string>
-    <string name="onboarding_permission_bullet1">• Lies Inhalt von Benachrichtigungen um ihn vorlesen zu können</string>
+    <string name="onboarding_permission_bullet1">• Greift auf Benachrichtigungsinhalt zu, um sie vorlesen zu können</string>
     <string name="onboarding_system_check_retry">Nochmal versuchen</string>
     <string name="onboarding_system_check_failure_category_post_notifications">Berechtigung für Benachrichtigungen abgelehnt</string>
     <string name="onboarding_system_check_failure_category_notification_access">Berechtigung für Benachrichtigungen benötigt</string>
