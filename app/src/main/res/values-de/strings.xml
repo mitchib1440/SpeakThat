@@ -20,8 +20,8 @@
     <string name="master_switch_battery_tip">💡 Wenn nicht benötigt, deaktivieren um Akku zu sparen</string>
     <string name="master_switch_battery_tip_no_emoji">Wenn nicht benötigt, deaktivieren um Akku zu sparen</string>
     <string name="open_settings">Berechtigungseinstellungen</string>
-    <string name="service_enabled">Benachrichtigungsvorleser: Aktiviert</string>
-    <string name="service_disabled">Benachrichtigungsvorleser: Deaktiviert</string>
+    <string name="service_enabled">Benachrichtigungen vorlesen: Aktiviert</string>
+    <string name="service_disabled">Benachrichtigungen vorlesen: Deaktiviert</string>
     <string name="show_history">Benachrichtigungsverlauf anzeigen</string>
     <string name="settings">SpeakThat! Einstellungen</string>
     <string name="no_notifications">Keine Benachrichtigungen vorhanden</string>
@@ -78,12 +78,12 @@
     <string name="media_behavior_dialog_message">Wähle, wie SpeakThat Benachrichtigungen behandeln soll, während Musik/Videos abgespielt werden: <b>Ignorieren</b> - Spricht während Medien abgespielt werden. Einfach, aber kann störend wirken. <b>Pausieren</b> - Pausiert Medien während des Sprechens. Gut für Podcasts, unterbricht aber den Musikfluss. <b>Lautsärkeminimierung </b> - Reduziert vorübergehend die Medienlautstärke, damit Du beides hören kannst. Erscheint am natürlichsten. <b>Still</b> - Während Medienwiedergabe keine Sprachausgabe. Ruhig, aber Du könntest wichtige Benachrichtigungen verpassen. Lautsärkeminimierung funktioniert wie beim Autoradio - es senkt die Musiklautstärke kurz und hebt sie dann wieder an. Perfekt für Musikliebhaber, die trotzdem noch Benachrichtigungen hören möchten.</string>
     <string name="shake_to_stop_dialog_title">Schütteln-zum-Stoppen Funktion</string>
     <string name="shake_to_stop_dialog_message">\'Schütteln zum stoppen\' lässt SpeakThat sofort verstummen, wenn das Gerät geschüttelt wird: <b>Warum ist das nützlich:</b> • Peinliche Benachrichtigungen an ruhigen Orten stoppen • Schnelle Kontrolle, wenn deine Hände beschäftigt sind • Funktioniert sogar, wenn der Bildschirm aus ist • Kein Suchen nach Tasten <b>So funktioniert es:</b> • Schüttle dein Gerät fest (wie ein Würfelbecher) • Die aktuelle Benachrichtigung stoppt sofort • Benachrichtigungen in Warteschlange werden gelöscht • Neue Benachrichtigungen funktionieren normal <b>Anpassen:</b> • Empfindlichkeit nach deinen Vorgaben einstellen • Schüttelstärke mittels Messung testen • Funktioniert gut bei sanften als auch kräftigen Schüttler Dieses Feature wird besonders von Menschen geschätzt, die während Meetings, Filmen oder beim Fahren Benachrichtigungen erhalten.</string>
-    <string name="use_recommended">Empfohlen verwenden</string>
+    <string name="use_recommended">Empfohlenes anwenden</string>
     <string name="got_it">Verstanden</string>
     <!-- Persistent/Silent Notification Filtering -->
     <string name="persistent_notification_filtering_title">Dauerhafte/Stumme Benachrichtigungsfilter</string>
     <string name="persistent_notification_filtering_description">Benachrichtigungen überspringen, die als dauerhaft (stetig angezeigt) oder stumm eingestellt sind (ohne Ton/Vibration)</string>
-    <string name="enable_persistent_filtering">Persistente/stille Benachrichtigungsfilterung aktivieren</string>
+    <string name="enable_persistent_filtering">Dauerhafte/Stille Benachrichtigungsfilterung aktivieren</string>
     <string name="persistent_filtering_help">💡 Dauerhafte Benachrichtigungen sind ständig aktiv (wie Musiksteuerung, Navigation, usw.) und stumme Benachrichtigungen haben keinen Sound/Vibration. Diese Einstellung hilft, unerwünschte Benachrichtigungen von Hintergrunddiensten zu reduzieren.</string>
     <!-- Individual Persistent Filtering Categories -->
     <string name="filter_persistent_notifications">Dauerhafte Benachrichtigungen filtern</string>
@@ -92,14 +92,14 @@
     <string name="filter_low_priority">Benachrichtigungen niedriger Priorität filtern</string>
     <string name="filter_system_notifications">Systembenachrichtigungen filtern</string>
     <!-- Category Descriptions -->
-    <string name="persistent_notifications_desc">Laufende Benachrichtigungen, die nicht automatisch schließen (Musiksteuerung, Navigation)</string>
+    <string name="persistent_notifications_desc">Laufende Benachrichtigungen, die sich nicht automatisch schließen (Musiksteuerung, Navigation)</string>
     <string name="silent_notifications_desc">Benachrichtigungen ohne Ton oder Vibration</string>
     <string name="foreground_services_desc">Benachrichtigungen laufender Hintergrunddienste</string>
     <string name="low_priority_desc">Benachrichtigungen mit minimaler oder niedriger Priorität</string>
     <string name="system_notifications_desc">Benachrichtigungen von System-Apps (Android, Google-Services)</string>
     <!-- Wave to Stop Feature -->
     <string name="wave_to_stop_dialog_title">Winken-zum-Stoppen Funktion</string>
-    <string name="wave_to_stop_dialog_message">Wenn Du den Näherungssensor bedeckst (z.B. indem Du nah vor der oberen Seite des Gerätes winkst), kannst Du SpeakThat sofort stummschalten, : <b>✨ Warum das hilfreich ist:</b> • Perfekt für Benutzer, die ihr Gerät nicht schütteln können • Ideal für Telefone auf Schreibtischen oder Halterungen • Mit einer Hand bedienbar • Keine physische Bewegung des Geräts erforderlich • Barrierefreie Alternative zum Schütteln <b>🎯 So funktioniert es:</b> • Nutzt den Näherungssensor: Der Sensor gilt als abgedeckt, wenn sich das Objekt näher als die maximale Reichweite des Sensors und innerhalb von ca. 5 cm befindet. • Du kannst festlegen, wie lange der Sensor abgedeckt bleiben muss (Handbewegung), bevor er ausgelöst wird. • Das Zeitlimit kann, zum Schutz des Akkus, fehlerhafte Messungen stoppen. • Im Taschenmodus können Messungen fortgesetzt werden, wenn der Sensor bereits verdeckt wurde. Aktuelle Benachrichtigungen werden sofort gestoppt • Benachrichtigungen in der Warteschlange werden gelöscht • Neue Benachrichtigungen funktionieren normal <b>⚙️ Anpassung:</b> • Die Dauer der Handbewegung, das Zeitlimit und der Taschenmodus können in den Verhaltenseinstellungen geändert werden. Diese Funktion ist besonders nützlich zur Barrierefreiheit, für Schreibtischarbeiter und alle, die Gestensteuerung gegenüber physischer Nutzung bevorzugen.</string>
+    <string name="wave_to_stop_dialog_message">Wenn Du den Näherungssensor bedeckst (z.B. indem Du nah vor der oberen Seite des Gerätes winkst), kannst Du SpeakThat sofort stummschalten, : <b> Warum das hilfreich ist:</b> • Perfekt für Benutzer, die ihr Gerät nicht schütteln können • Ideal für Telefone auf Schreibtischen oder Halterungen • Mit einer Hand bedienbar • Keine physische Bewegung des Geräts erforderlich • Barrierefreie Alternative zum Schütteln <b>🎯 So funktioniert es:</b> • Nutzt den Näherungssensor: Der Sensor gilt als abgedeckt, wenn sich das Objekt näher als die maximale Reichweite des Sensors und innerhalb von ca. 5 cm befindet. • Du kannst festlegen, wie lange der Sensor abgedeckt bleiben muss (Handbewegung), bevor er ausgelöst wird. • Das Zeitlimit kann, zum Schutz des Akkus, fehlerhafte Messungen stoppen. • Im Taschenmodus können Messungen fortgesetzt werden, wenn der Sensor bereits verdeckt wurde. Aktuelle Benachrichtigungen werden sofort gestoppt • Benachrichtigungen in der Warteschlange werden gelöscht • Neue Benachrichtigungen funktionieren normal <b>Anpassung:</b> • Die Dauer der Handbewegung, das Zeitlimit und der Taschenmodus können in den Verhaltenseinstellungen geändert werden. Diese Funktion ist besonders nützlich zur Barrierefreiheit, für Schreibtischarbeiter und alle, die Gestensteuerung gegenüber physischer Nutzung bevorzugen.</string>
     <!-- About Page -->
     <string name="about">Über</string>
     <string name="about_description_title">Über SpeakThat!</string>
@@ -133,7 +133,7 @@
     <string name="tts_features">Lesen von Benachrichtigungen in Echtzeit, anpassbare Spracheinstellungen, intelligente Benachrichtigungsfilterung, app-spezifische Steuerelemente, medienbewusstes Verhalten, Nachverfolgung des Benachrichtigungsverlaufs, „Schütteln zum Stoppen“ und „Winken zum Stoppen“, benutzerdefinierte Sprachformatierung, Unterstützung für Dunkel- und Hellmodus, bedingte Regeln für erweiterte Logik und Zeitpläne sowie vollständig werbefreie Offline-Funktionalität.</string>
     <string name="tts_developer">Entwickelt mit Liebe von Mitchi, einem Solo-Entwickler aus Großbritannien mit über 12 Jahren Erfahrung beim täglichen Testen und Verwenden von Benachrichtigungsvorlesern. SpeakThat wurde von Touchless Notifications inspiriert, ursprünglich entwickelt von DYNA Logix, und zielt darauf ab, das Erbe anpassbarer Benachrichtigungsvorleser fortzuführen. Dieses Projekt wurde durch KI-gestützte Programmierung beschleunigt.</string>
     <string name="tts_license">SpeakThat ist freie und quelloffene Software, veröffentlicht unter der GNU GPL v3.0, einer Copyleft‑Lizenz, die sicherstellt, dass veränderte und weiterverbreitete Versionen frei bleiben und korrekt lizensiert werden. Diese Lizenz erlaubt es Ihnen, SpeakThat herunterzuladen, zu verändern und weiterzuverbreiten, vorausgesetzt, dass alle weiterverbreiteten oder veränderten Versionen unter derselben Lizenz verbleiben und die ursprünglichen Copyright‑Hinweise beibehalten werden. Den vollständigen Lizenztext und den Quellcode können Sie auf GitHub einsehen. Beiträge und Feedback sind willkommen! SpeakThat ist das von 2025 bis 2026 urheberrechtlich geschützte Werk von Mitchell Bell. SPEAKTHAT ist eine eingetragene Marke von Mitchell Bell</string>
-    <string name="tts_thank_you">Vielen Dank, dass Sie SpeakThat nutzen!</string>
+    <string name="tts_thank_you">Vielen Dank, dass Du SpeakThat benutzt!</string>
     <!-- Update System -->
     <string name="check_for_updates">Auf Updates prüfen</string>
     <string name="update_checker">Update-Manager</string>
@@ -205,7 +205,7 @@
     <string name="tts_about_license">SpeakThat ist freie und quelloffene Software, veröffentlicht unter der GNU GPL v3.0, einer Copyleft‑Lizenz, die sicherstellt, dass veränderte und weiterverbreitete Versionen frei bleiben und korrekt lizensiert werden. Diese Lizenz erlaubt es Ihnen, SpeakThat herunterzuladen, zu verändern und weiterzuverbreiten, vorausgesetzt, dass alle weiterverbreiteten oder veränderten Versionen unter derselben Lizenz verbleiben und die ursprünglichen Copyright‑Hinweise beibehalten werden. Den vollständigen Lizenztext und den Quellcode können Sie auf GitHub einsehen. Beiträge und Feedback sind willkommen! SpeakThat ist das von 2025 bis 2026 urheberrechtlich geschützte Werk von Mitchell Bell. SPEAKTHAT ist eine eingetragene Marke von Mitchell Bell</string>
     <string name="tts_about_thank_you">Vielen Dank für die Nutzung von SpeakThat!</string>
     <!-- Voice Settings Test -->
-    <string name="tts_voice_test">So werden deine Benachrichtigungen mit diesen Stimmeinstellungen klingen.</string>
+    <string name="tts_voice_test">So werden Deine Benachrichtigungen mit diesen Stimmeinstellungen klingen.</string>
     <!-- Onboarding TTS -->
     <string name="tts_onboarding_language_theme">Wähle Deine bevorzugte Sprache um mit SpeakThat loszulegen.</string>
     <string name="tts_onboarding_welcome">Willkommen bei SpeakThat! Bleibe verbunden, ohne auf Deinen Bildschirm schauen zu müssen. Dein Telefon liest Benachrichtigungen vor, damit Du Dich auf das Wesentliche konzentrieren kannst.</string>
@@ -213,9 +213,9 @@
     <string name="tts_onboarding_privacy">Deine Privatsphäre ist wichtig. Du kontrollierst, was vorgelesen werden soll. SpeakThat verarbeitet alles komplett auf Deinem Gerät. Es werden keine Daten zum Entwickler oder jeglichen Dritten versendet.</string>
     <string name="tts_onboarding_filters">Lass uns einige grundlegende Datenschutzfilter einrichten. SpeakThat verfügt über ein leistungsstarkes Filtersystem, mit dem du wählen kannst, was vorgelesen wird und was nicht.</string>
     <string name="tts_onboarding_apps">Gib den Namen einer App ein, von der ich niemals Benachrichtigungen vorlesen soll. Häufige Beispiele sind Banking-Apps, medizinische Apps und Dating-Apps.</string>
-    <string name="tts_onboarding_words">Gib Wörter oder Sätze ein, die ich niemals in Benachrichtigungen vorlesen soll. Häufige Beispiele sind Passwort, PIN, Kreditkarte und medizinische Begriffe.</string>
-    <string name="tts_onboarding_rules">Richten Sie intelligente Regeln ein, die automatisch kontrollieren, ob Benachrichtigungen situationsbedingt vorgelesen werden sollen. Zum Beispiel Benachrichtigungen nur dann vorlesen, wenn ein Kopfhörer angeschlossen ist, oder Benachrichtigungen überspringen, wenn der Bildschirm angezeigt wird.</string>
-    <string name="tts_onboarding_complete">SpeakThat ist bereit, dir zu helfen, verbunden zu bleiben und dabei deine Augen frei zu halten! Du kannst jederzeit weitere Filter in den App-Einstellungen hinzufügen.</string>
+    <string name="tts_onboarding_words">Gib Wörter oder Sätze ein, die ich niemals in Benachrichtigungen vorlesen soll. Häufige Beispiele sind Passwörter, PINs, Kreditkarten und medizinische Begriffe.</string>
+    <string name="tts_onboarding_rules">Richte intelligente Regeln ein, die automatisch kontrollieren, ob Benachrichtigungen situationsbedingt vorgelesen werden sollen. Zum Beispiel Benachrichtigungen nur dann vorlesen, wenn ein Kopfhörer angeschlossen ist, oder Benachrichtigungen überspringen, wenn der Bildschirm angezeigt wird.</string>
+    <string name="tts_onboarding_complete">SpeakThat ist bereit, Dir zu helfen, verbunden zu bleiben und dabei deine Augen frei zu halten! Du kannst jederzeit weitere Filter in den App-Einstellungen hinzufügen.</string>
     <!-- Behavior Settings Speech Format Templates -->
     <string name="tts_behavior_default">Standardformat</string>
     <string name="tts_behavior_minimal">Minimales Format</string>
@@ -242,13 +242,13 @@
     <string name="create_custom_rule">Benutzerdefinierte Regel erstellen</string>
     <!-- Template Names -->
     <string name="template_headphones_only_name">Bluetooth-Kopfhörer</string>
-    <string name="template_headphones_only_description">Wählen Sie Ihre Bluetooth-Kopfhörer aus, und Benachrichtigungen werden NUR vorgelesen, wenn sie mit Ihrem Telefon verbunden sind</string>
+    <string name="template_headphones_only_description">Wähle Deinen Bluetooth-Kopfhörer aus und Benachrichtigungen werden NUR vorgelesen, wenn sie mit Deinem Telefon verbunden sind</string>
     <string name="template_time_schedule_name">Ruhezeiten</string>
     <string name="template_time_schedule_description">Wählen Sie zwei Zeitpunkte aus, zwischen denen SpeakThat still bleiben soll</string>
     <string name="template_screen_off_name">Nur bei ausgeschaltetem Bildschirm</string>
-    <string name="template_screen_off_description">Benachrichtigungen werden nur gelesen, wenn Ihr Bildschirm ausgeschaltet ist</string>
+    <string name="template_screen_off_description">Benachrichtigungen werden nur gelesen, wenn Dein Bildschirm ausgeschaltet ist</string>
     <string name="template_home_network_name">Nur im WLAN zu Hause</string>
-    <string name="template_home_network_description">Geben Sie Ihr WLAN-Heimnetzwerk ein, damit Benachrichtigungen nur gelesen werden, wenn Sie mit diesem verbunden sind</string>
+    <string name="template_home_network_description">Gib Dein WLAN-Heimnetzwerk ein, damit Benachrichtigungen nur gelesen werden, wenn Du mit diesem verbunden bist</string>
     <!-- Template Trigger Descriptions -->
     <string name="template_trigger_headphones_disconnected">Wenn Bluetooth-Kopfhörer getrennt sind</string>
     <string name="template_trigger_time_between">Zwischen 22:00 Uhr und 8:00 Uhr</string>
@@ -266,8 +266,8 @@
     <string name="rule_trigger_screen_on">Bildschirm eingeschaltet ist</string>
     <string name="rule_trigger_screen_off">Bildschirm ausgeschaltet ist</string>
     <string name="rule_trigger_time_between">Zeit zwischen %1$s und %2$s ist</string>
-    <string name="rule_trigger_wifi_connected">mit %1$s verbunden ist</string>
-    <string name="rule_trigger_wifi_disconnected">nicht mit %1$s verbunden ist</string>
+    <string name="rule_trigger_wifi_connected">mit %1$s verbunden</string>
+    <string name="rule_trigger_wifi_disconnected">nicht mit %1$s verbunden</string>
     <string name="rule_trigger_wifi_connected_android15">mit %1$s verbunden (Android 15+: beliebiges WLAN)</string>
     <string name="rule_trigger_wifi_disconnected_android15">nicht mit %1$s verbunden (Android 15+: beliebiges WLAN)</string>
     <!-- WiFi Compatibility Warning -->
@@ -1507,10 +1507,10 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="rule_exception_orientation_portrait">Screen is portrait</string>
     <string name="rule_exception_orientation_landscape">Screen is landscape</string>
     <string name="rule_error_invalid_orientation_mode">Orientation mode must be portrait or landscape</string>
-    <string name="rules_migration_banner_title">Rules migration notice</string>
-    <string name="rules_migration_banner_body_ok">Rules migrated: %1$d. Please review your rules for accuracy.</string>
-    <string name="rules_migration_banner_body_attention">Rules migrated: %1$d. Rules needing attention: %2$d. Please review your rules.</string>
-    <string name="rules_migration_banner_action">Review rules</string>
+    <string name="rules_migration_banner_title">Regeln Migration Notiz</string>
+    <string name="rules_migration_banner_body_ok">Regeln migriert: %1$d. Bitte prüfe Deine Regeln auf Richtigkeit.</string>
+    <string name="rules_migration_banner_body_attention">Regeln migriert: %1$d. Regeln benötigen Aufmerksamkeit: %2$d. Bitte prüfe Deine Regeln.</string>
+    <string name="rules_migration_banner_action">Regeln prüfen</string>
     <string name="rules_error_title">Error</string>
     <string name="rules_experimental_title">Experimental Feature</string>
     <string name="rules_experimental_message">Rules are experimental. If something feels off, you can turn them off in settings. Your existing filters and privacy settings are still respected.</string>
@@ -1615,7 +1615,7 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="update_notification_channel_name">SpeakThat Updates</string>
     <string name="update_notification_channel_description">Benachrichtigungen für neue SpeakThat-Versionen im GitHub-Build.</string>
     <string name="rule_trigger_wired_headphones_connected">Kabelgebundene Kopfhörer sind verbunden</string>
-    <string name="rule_trigger_wired_headphones_disconnected">Kabelgebundene Kopfhörer nicht verbunden</string>
+    <string name="rule_trigger_wired_headphones_disconnected">Kabelgebundene Kopfhörer sind nicht verbunden</string>
     <string name="background_location_disclosure_title">Standortfreigabe im Hintergrund</string>
     <string name="background_location_disclosure_message">SpeakThat muss das aktuelle WLAN-Netzwerk erkennen können, auch wenn die App in Hintergrund läuft.\n\nAndroid erlaubt so Apps den Namen Deines WLAN zu erkennen. SpeakThat nutzt diese Information nur für die bedingten Regeln - Standorte werden nie gesammelt oder weitergeleitet.\n\nBitte wähle gleich \"Immer zulassen\" für diese benötigte Standortberechtigung.</string>
     <string name="background_location_disclosure_accept">Fortfahren</string>
