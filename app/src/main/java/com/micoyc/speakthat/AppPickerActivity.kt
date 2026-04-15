@@ -78,6 +78,11 @@ class AppPickerActivity : AppCompatActivity(), AppFilterBottomSheetFragment.List
 
         binding.fabSave.setOnClickListener { returnSelection() }
 
+        binding.btnIncludeSystemApps.setOnClickListener {
+            showSystemApps = true
+            applyFilter()
+        }
+
         binding.searchInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -178,7 +183,7 @@ class AppPickerActivity : AppCompatActivity(), AppFilterBottomSheetFragment.List
                             selected = isSelected,
                             isPrivate = isPrivate,
                             isManual = false,
-                            isSystemApp = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
+                            isHeadlessSystemApp = ((appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0) && !isLaunchable
                         )
                     )
                 } catch (e: Exception) {
@@ -227,7 +232,7 @@ class AppPickerActivity : AppCompatActivity(), AppFilterBottomSheetFragment.List
             val matchesQuery = lower.isEmpty() ||
                 app.label.lowercase().contains(lower) ||
                 app.packageName.lowercase().contains(lower)
-            val matchesSystemApps = showSystemApps || !app.isSystemApp
+            val matchesSystemApps = showSystemApps || !app.isHeadlessSystemApp
             val matchesSelectedOnly = !showSelectedOnly || selectedPackages.contains(app.packageName)
             matchesQuery && matchesSystemApps && matchesSelectedOnly
         }
@@ -244,6 +249,17 @@ class AppPickerActivity : AppCompatActivity(), AppFilterBottomSheetFragment.List
         filteredApps.clear()
         filteredApps.addAll(sorted)
         adapter.updateData(filteredApps)
+
+        if (!isLoading) {
+            if (filteredApps.isEmpty()) {
+                binding.recyclerApps.visibility = View.GONE
+                binding.emptyStateContainer.visibility = View.VISIBLE
+                binding.btnIncludeSystemApps.visibility = if (showSystemApps) View.GONE else View.VISIBLE
+            } else {
+                binding.recyclerApps.visibility = View.VISIBLE
+                binding.emptyStateContainer.visibility = View.GONE
+            }
+        }
     }
 
     private fun getSelectedPackagesForFilter(): Set<String> {
@@ -278,6 +294,9 @@ class AppPickerActivity : AppCompatActivity(), AppFilterBottomSheetFragment.List
         isLoading = loading
         binding.loadingContainer.visibility = if (loading) View.VISIBLE else View.GONE
         binding.recyclerApps.visibility = if (loading) View.INVISIBLE else View.VISIBLE
+        if (loading) {
+            binding.emptyStateContainer.visibility = View.GONE
+        }
         
         // Set random loading text
         if (loading) {
@@ -368,7 +387,7 @@ class AppPickerActivity : AppCompatActivity(), AppFilterBottomSheetFragment.List
                         selected = true, // Automatically select when manually added
                         isPrivate = initialPrivateSet.contains(packageName),
                         isManual = true,
-                        isSystemApp = (appInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM) ?: 0) != 0
+                        isHeadlessSystemApp = ((appInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM) ?: 0) != 0) && (pm.getLaunchIntentForPackage(packageName) == null)
                     )
                     
                     allApps.add(newApp)
@@ -419,7 +438,7 @@ class AppPickerActivity : AppCompatActivity(), AppFilterBottomSheetFragment.List
         var selected: Boolean,
         var isPrivate: Boolean,
         val isManual: Boolean,
-        val isSystemApp: Boolean
+        val isHeadlessSystemApp: Boolean
     )
 
     companion object {

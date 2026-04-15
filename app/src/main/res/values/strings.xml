@@ -2577,4 +2577,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <!-- Shown when a clock/timer notification has no standard text but appears to be firing -->
     <string name="fallback_timer_complete">Timer or alarm complete</string>
 
+    <!-- App Picker Zero State -->
+    <string name="no_apps_found">No apps found</string>
+    <string name="include_system_apps">Include System Apps</string>
+
 </resources>
