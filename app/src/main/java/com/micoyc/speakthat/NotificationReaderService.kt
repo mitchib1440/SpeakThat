@@ -7358,7 +7358,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             samePrefixCount++
         }
 
-        if (samePrefixCount < 2) {
+        if (samePrefixCount < 1) {
             return fullText
         }
 
