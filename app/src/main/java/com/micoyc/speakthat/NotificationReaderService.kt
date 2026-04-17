@@ -70,6 +70,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var isCurrentlySpeaking = false
     private var isTemporaryVoiceOverrideActive = false
     private var currentSpeechText = ""
+    private var lastFullNotificationSpeechText: String? = null
     private var currentAppName = ""
     private var currentOriginalAppName = "" // Store original app name for statistics (before privacy modification)
     private var currentTtsText = ""
@@ -96,6 +97,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var contentCapTimeLimit = DEFAULT_CONTENT_CAP_TIME_LIMIT
     private var priorityApps: Set<String> = emptySet()
     private var notificationBehavior = "interrupt"
+    private var skipRepeatedNotificationPrefix = false
     private var mediaBehavior = "ignore"
     private var duckingVolume = 30
     private var duckingFallbackStrategy = "manual"
@@ -357,6 +359,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 // Behavior settings
         private const val KEY_NOTIFICATION_BEHAVIOR = "notification_behavior"
         private const val KEY_PRIORITY_APPS = "priority_apps"
+        private const val KEY_SKIP_REPEATED_NOTIFICATION_PREFIX = "skip_notification_repeated_prefix"
         
         // Media behavior settings
         private const val KEY_MEDIA_BEHAVIOR = "media_behavior"
@@ -3119,7 +3122,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Load behavior settings  
         notificationBehavior = sharedPreferences?.getString(KEY_NOTIFICATION_BEHAVIOR, "interrupt") ?: "interrupt"
         priorityApps = HashSet(sharedPreferences?.getStringSet(KEY_PRIORITY_APPS, HashSet()) ?: HashSet())
-        
+        skipRepeatedNotificationPrefix = sharedPreferences?.getBoolean(KEY_SKIP_REPEATED_NOTIFICATION_PREFIX, false) ?: false
+
         // Load media behavior settings
         mediaBehavior = sharedPreferences?.getString(KEY_MEDIA_BEHAVIOR, "ignore") ?: "ignore"
         duckingVolume = sharedPreferences?.getInt(KEY_DUCKING_VOLUME, 30) ?: 30
@@ -6213,10 +6217,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             formatSpeechText(appName, text, packageName, sbn, speechTemplateOverride)
         }
 
+        val collapsedSpeechText = collapseRepeatedNotificationPrefix(speechText)
+        lastFullNotificationSpeechText = speechText
         val tidySpeechText = if (tidySpeechRemoveEmojisEnabled) {
-            removeSpokenEmojis(speechText)
+            removeSpokenEmojis(collapsedSpeechText)
         } else {
-            speechText
+            collapsedSpeechText
         }
         
         // Determine which delay to use (conditional delay overrides global delay)
@@ -7032,6 +7038,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 priorityApps = HashSet(sharedPreferences?.getStringSet(KEY_PRIORITY_APPS, HashSet()) ?: HashSet())
                 Log.d(TAG, "Behavior settings updated - mode: $notificationBehavior, priority apps: ${priorityApps.size}")
             }
+            KEY_SKIP_REPEATED_NOTIFICATION_PREFIX -> {
+                // Reload repeated prefix skip setting
+                skipRepeatedNotificationPrefix = sharedPreferences?.getBoolean(KEY_SKIP_REPEATED_NOTIFICATION_PREFIX, false) ?: false
+                Log.d(TAG, "Skip repeated prefix notification setting updated: $skipRepeatedNotificationPrefix")
+                InAppLogger.log("Service", "Skip repeated prefix notification setting updated: $skipRepeatedNotificationPrefix")
+            }
             KEY_MEDIA_BEHAVIOR, KEY_DUCKING_VOLUME, KEY_DUCKING_FALLBACK_STRATEGY -> {
                 // Reload media behavior settings
                 mediaBehavior = sharedPreferences?.getString(KEY_MEDIA_BEHAVIOR, "ignore") ?: "ignore"
@@ -7324,6 +7336,34 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
         
         return processedTemplate.trim()
+    }
+
+    private fun collapseRepeatedNotificationPrefix(fullText: String): String {
+        if (!skipRepeatedNotificationPrefix) {
+            return fullText
+        }
+        val previousText = lastFullNotificationSpeechText?.trim() ?: return fullText
+        val currentText = fullText.trim()
+        if (previousText.isEmpty() || currentText.isEmpty()) {
+            return fullText
+        }
+
+        val previousWords = previousText.split("\\s+".toRegex())
+        val currentWords = currentText.split("\\s+".toRegex())
+        val commonWords = minOf(previousWords.size, currentWords.size)
+        var samePrefixCount = 0
+        while (samePrefixCount < commonWords &&
+            previousWords[samePrefixCount].equals(currentWords[samePrefixCount], ignoreCase = true)
+        ) {
+            samePrefixCount++
+        }
+
+        if (samePrefixCount < 2) {
+            return fullText
+        }
+
+        val trimmed = currentWords.subList(samePrefixCount, currentWords.size).joinToString(" ")
+        return if (trimmed.isBlank()) fullText else trimmed
     }
 
     /**

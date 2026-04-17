@@ -592,6 +592,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_queue_mode">Queue (finish current, then read new)</string>
     <string name="behavior_skip_mode">Skip (ignore new notifications while reading)</string>
     <string name="behavior_smart_mode">Smart (priority apps interrupt, others queue)</string>
+    <string name="behavior_skip_repeated_prefix_title">Skip repeated notification prefixes</string>
+    <string name="behavior_skip_repeated_prefix_description">When enabled, consecutive notifications with the same starting words will drop the repeated prefix and only speak the new text.</string>
     <string name="behavior_priority_apps">⚡ Priority Apps</string>
     <string name="behavior_priority_apps_description">These apps will interrupt the current notification. All other apps will queue.</string>
     <string name="behavior_media_ignore">Ignore - Continue as normal</string>
