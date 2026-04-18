@@ -21,8 +21,10 @@ public class BehaviorSettingsStore {
     public static final String KEY_PRIORITY_APPS = "priority_apps";
     public static final String KEY_SHAKE_TO_STOP_ENABLED = "shake_to_stop_enabled";
     public static final String KEY_SHAKE_THRESHOLD = "shake_threshold";
+    public static final String KEY_SHAKE_COUNT_TARGET = "shake_count_target";
     public static final String KEY_SHAKE_TIMEOUT_SECONDS = "shake_timeout_seconds";
     public static final String KEY_WAVE_TO_STOP_ENABLED = "wave_to_stop_enabled";
+    public static final String KEY_WAVE_COUNT_TARGET = "wave_count_target";
     public static final String KEY_WAVE_TIMEOUT_SECONDS = "wave_timeout_seconds";
     public static final String KEY_WAVE_HOLD_DURATION_MS = "wave_hold_duration_ms";
     public static final String KEY_PRESS_TO_STOP_ENABLED = "press_to_stop_enabled";

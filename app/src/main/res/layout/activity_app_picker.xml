@@ -61,6 +61,42 @@
                 android:nestedScrollingEnabled="true" />
 
             <LinearLayout
+                android:id="@+id/emptyStateContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/app_search_empty"
+                    android:contentDescription="@null"
+                    app:tint="@color/white_100" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/no_apps_found"
+                    android:textColor="@color/white_100"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnIncludeSystemApps"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/include_system_apps"
+                    android:textColor="@color/purple_200" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/loadingContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

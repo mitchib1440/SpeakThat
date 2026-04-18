@@ -479,11 +479,15 @@ data class Rule(
     }
     
     fun getSummary(): String {
-        val triggerSummary = if (triggers.isEmpty()) "No triggers" else "${triggers.size} trigger(s)"
-        val actionSummary = if (actions.isEmpty()) "No actions" else "${actions.size} action(s)"
-        val exceptionSummary = if (exceptions.isEmpty()) "No exceptions" else "${exceptions.size} exception(s)"
+        val conditionSummary = if (triggers.size == 1) "1 Condition" else "${triggers.size} Conditions"
+        val actionSummary = if (actions.size == 1) "1 Action" else "${actions.size} Actions"
         
-        return "$triggerSummary → $actionSummary (exceptions: $exceptionSummary)"
+        return if (exceptions.isEmpty()) {
+            "$conditionSummary • $actionSummary"
+        } else {
+            val exceptionSummary = if (exceptions.size == 1) "1 Exception" else "${exceptions.size} Exceptions"
+            "$conditionSummary • $actionSummary • $exceptionSummary"
+        }
     }
     
     /**
@@ -495,7 +499,7 @@ data class Rule(
         val actionDesc = getActionDescription(context)
         val exceptionDesc = getExceptionDescription(context)
         
-        return when {
+        val description = when {
             exceptions.isEmpty() -> {
                 context.getString(
                     com.micoyc.speakthat.R.string.rule_format_when_trigger_will_action,
@@ -523,19 +527,36 @@ data class Rule(
                 )
             }
         }
+        
+        return if (description.isNotEmpty()) {
+            description.replaceFirstChar { if (it.isLowerCase()) it.titlecase(java.util.Locale.getDefault()) else it.toString() }
+        } else {
+            description
+        }
+    }
+    
+    private fun formatConditionDescription(desc: String): String {
+        if (desc.isEmpty()) return desc
+        val properNouns = listOf("Bluetooth", "WiFi", "Wi-Fi")
+        for (noun in properNouns) {
+            if (desc.startsWith(noun, ignoreCase = true)) {
+                return desc
+            }
+        }
+        return desc.replaceFirstChar { it.lowercase(java.util.Locale.getDefault()) }
     }
     
     private fun getTriggerDescription(context: android.content.Context): String {
         if (triggers.isEmpty()) {
-            return context.getString(com.micoyc.speakthat.R.string.rule_trigger_multiple)
+            return formatConditionDescription(context.getString(com.micoyc.speakthat.R.string.rule_trigger_multiple))
         }
         
         if (triggers.size == 1) {
-            return getSingleTriggerDescription(context, triggers[0])
+            return formatConditionDescription(getSingleTriggerDescription(context, triggers[0]))
         }
         
         // Multiple triggers - combine with logic gate
-        val triggerDescriptions = triggers.map { getSingleTriggerDescription(context, it) }
+        val triggerDescriptions = triggers.map { formatConditionDescription(getSingleTriggerDescription(context, it)) }
         return combineDescriptions(context, triggerDescriptions, triggerLogic)
     }
     
@@ -639,7 +660,10 @@ data class Rule(
                 }
             }
             TriggerType.BLUETOOTH_DEVICE -> {
-                if (trigger.inverted) {
+                val connectionState = trigger.data["connection_state"] as? String ?: "connected"
+                val isDisconnected = connectionState == "disconnected" || trigger.inverted
+                
+                if (isDisconnected) {
                     context.getString(com.micoyc.speakthat.R.string.rule_trigger_bluetooth_disconnected)
                 } else {
                     context.getString(com.micoyc.speakthat.R.string.rule_trigger_bluetooth_connected)
@@ -704,24 +728,27 @@ data class Rule(
                     else -> emptySet<String>()
                 }
                 
+                val connectionState = trigger.data["connection_state"] as? String ?: "connected"
+                val isDisconnected = connectionState == "disconnected" || trigger.inverted
+                
                 if (networkSSIDs.isNotEmpty()) {
                     val hasBgLocation = com.micoyc.speakthat.utils.BackgroundLocationHelper.hasBackgroundLocationPermission(context)
                     if (hasBgLocation) {
                         val networkName = networkSSIDs.joinToString(", ")
-                        if (trigger.inverted) {
+                        if (isDisconnected) {
                             context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_disconnected_ssid, networkName)
                         } else {
                             context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_connected_ssid, networkName)
                         }
                     } else {
-                        if (trigger.inverted) {
+                        if (isDisconnected) {
                             context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_disconnected_no_bg_location)
                         } else {
                             context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_connected_no_bg_location)
                         }
                     }
                 } else {
-                    if (trigger.inverted) {
+                    if (isDisconnected) {
                         context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_disconnected, "any WiFi network")
                     } else {
                         context.getString(com.micoyc.speakthat.R.string.rule_trigger_wifi_connected, "any WiFi network")
@@ -785,11 +812,11 @@ data class Rule(
         }
         
         if (exceptions.size == 1) {
-            return getSingleExceptionDescription(context, exceptions[0])
+            return formatConditionDescription(getSingleExceptionDescription(context, exceptions[0]))
         }
         
         // Multiple exceptions - combine with logic gate
-        val exceptionDescriptions = exceptions.map { getSingleExceptionDescription(context, it) }
+        val exceptionDescriptions = exceptions.map { formatConditionDescription(getSingleExceptionDescription(context, it)) }
         return combineDescriptions(context, exceptionDescriptions, exceptionLogic)
     }
     
@@ -893,7 +920,10 @@ data class Rule(
                 }
             }
             ExceptionType.BLUETOOTH_DEVICE -> {
-                if (exception.inverted) {
+                val connectionState = exception.data["connection_state"] as? String ?: "connected"
+                val isDisconnected = connectionState == "disconnected" || exception.inverted
+                
+                if (isDisconnected) {
                     context.getString(com.micoyc.speakthat.R.string.rule_exception_bluetooth_disconnected)
                 } else {
                     context.getString(com.micoyc.speakthat.R.string.rule_exception_bluetooth_connected)
@@ -957,17 +987,21 @@ data class Rule(
                     is List<*> -> networkSSIDsData.filterIsInstance<String>().toSet()
                     else -> emptySet<String>()
                 }
+                
+                val connectionState = exception.data["connection_state"] as? String ?: "connected"
+                val isDisconnected = connectionState == "disconnected" || exception.inverted
+                
                 if (networkSSIDs.isNotEmpty()) {
                     val hasBgLocation = com.micoyc.speakthat.utils.BackgroundLocationHelper.hasBackgroundLocationPermission(context)
                     if (hasBgLocation) {
                         val networkName = networkSSIDs.joinToString(", ")
-                        if (exception.inverted) {
+                        if (isDisconnected) {
                             context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_disconnected, networkName)
                         } else {
                             context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_connected, networkName)
                         }
                     } else {
-                        if (exception.inverted) {
+                        if (isDisconnected) {
                             context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_disconnected_no_bg_location)
                         } else {
                             context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_connected_no_bg_location)
@@ -975,7 +1009,7 @@ data class Rule(
                     }
                 } else {
                     val networkName = "any WiFi network"
-                    if (exception.inverted) {
+                    if (isDisconnected) {
                         context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_disconnected, networkName)
                     } else {
                         context.getString(com.micoyc.speakthat.R.string.rule_exception_wifi_connected, networkName)
@@ -998,8 +1032,12 @@ data class Rule(
         if (validDescriptions.isEmpty()) return ""
         if (validDescriptions.size == 1) return validDescriptions[0]
         
-        val separator = context.getString(com.micoyc.speakthat.R.string.rule_logic_separator)
-        val finalSeparator = context.getString(com.micoyc.speakthat.R.string.rule_logic_final_separator)
+        val rawSeparator = context.getString(com.micoyc.speakthat.R.string.rule_logic_separator)
+        val rawFinalSeparator = context.getString(com.micoyc.speakthat.R.string.rule_logic_final_separator)
+        
+        // Ensure safe spacing
+        val separator = if (rawSeparator.endsWith(" ")) rawSeparator else "$rawSeparator "
+        val finalSeparator = if (rawFinalSeparator.endsWith(" ")) rawFinalSeparator else "$rawFinalSeparator "
         
         return when (logic) {
             LogicGate.AND -> {

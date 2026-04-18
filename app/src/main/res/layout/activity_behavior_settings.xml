@@ -891,6 +891,62 @@
 
                         </LinearLayout>
 
+                        <!-- Shake Count Section -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Required Shakes"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Number of shakes required to stop reading"
+                            android:textSize="14sp"
+                            android:textColor="@color/purple_card_text_secondary"
+                            android:layout_marginBottom="8dp" />
+
+                        <RadioGroup
+                            android:id="@+id/radioGroupShakeCount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="16dp">
+
+                            <RadioButton
+                                android:id="@+id/radioShake1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="1 Shake"
+                                app:buttonTint="@color/white_100"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:buttonTint="@color/white_100" />
+
+                            <RadioButton
+                                android:id="@+id/radioShake2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="2 Shakes"
+                                app:buttonTint="@color/white_100"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:buttonTint="@color/white_100" />
+
+                            <RadioButton
+                                android:id="@+id/radioShake3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="3 Shakes"
+                                app:buttonTint="@color/white_100"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:buttonTint="@color/white_100" />
+                        </RadioGroup>
+
                         <!-- Shake Meter Section -->
                         <TextView
                             android:layout_width="wrap_content"
@@ -940,21 +996,56 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
+                            android:gravity="center_vertical"
                             android:layout_marginBottom="16dp">
 
                             <TextView
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="@string/behavior_current_shake"
+                                android:text="Shakes: 0 of 1"
                                 android:textSize="12sp"
                                 android:textColor="@color/purple_card_text_secondary"
                                 android:id="@+id/textCurrentShake" />
 
-                            <TextView
+                            <LinearLayout
+                                android:id="@+id/shakeIndicatorDots"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:orientation="horizontal"
+                                android:gravity="center"
+                                android:layout_marginHorizontal="8dp">
+                                
+                                <ImageView
+                                    android:id="@+id/shakeDot1"
+                                    android:layout_width="12dp"
+                                    android:layout_height="12dp"
+                                    android:layout_marginHorizontal="4dp"
+                                    android:src="@drawable/shake_dot"
+                                    app:tint="@color/purple_300" />
+                                    
+                                <ImageView
+                                    android:id="@+id/shakeDot2"
+                                    android:layout_width="12dp"
+                                    android:layout_height="12dp"
+                                    android:layout_marginHorizontal="4dp"
+                                    android:src="@drawable/shake_dot"
+                                    app:tint="@color/purple_300"
+                                    android:visibility="gone" />
+                                    
+                                <ImageView
+                                    android:id="@+id/shakeDot3"
+                                    android:layout_width="12dp"
+                                    android:layout_height="12dp"
+                                    android:layout_marginHorizontal="4dp"
+                                    android:src="@drawable/shake_dot"
+                                    app:tint="@color/purple_300"
+                                    android:visibility="gone" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:text="@string/behavior_threshold_value"
                                 android:textSize="12sp"
                                 android:textColor="@color/white_100"
@@ -1122,7 +1213,7 @@
                             android:layout_height="24dp"
                             android:layout_marginEnd="16dp"
                             android:src="@drawable/ic_hand_gesture_24"
-                            android:tint="@color/white_100"
+                            app:tint="@color/white_100"
                             android:contentDescription="Wave to Stop" />
 
                         <TextView
@@ -1234,11 +1325,11 @@
                             android:background="@color/white_200"
                             android:layout_marginVertical="16dp" />
 
-                        <!-- Hold Duration Section -->
+                        <!-- Wave Count Section -->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/behavior_wave_hold_title"
+                            android:text="Required Waves"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/purple_card_text_primary"
@@ -1247,7 +1338,151 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/behavior_wave_hold_description"
+                            android:text="Number of waves required to stop reading"
+                            android:textSize="14sp"
+                            android:textColor="@color/purple_card_text_secondary"
+                            android:layout_marginBottom="8dp" />
+
+                        <RadioGroup
+                            android:id="@+id/radioGroupWaveCount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="16dp">
+
+                            <RadioButton
+                                android:id="@+id/radioWave1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="1 Wave"
+                                app:buttonTint="@color/white_100"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:buttonTint="@color/white_100" />
+
+                            <RadioButton
+                                android:id="@+id/radioWave2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="2 Waves"
+                                app:buttonTint="@color/white_100"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:buttonTint="@color/white_100" />
+
+                            <RadioButton
+                                android:id="@+id/radioWave3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="3 Waves"
+                                app:buttonTint="@color/white_100"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:buttonTint="@color/white_100" />
+                        </RadioGroup>
+
+                        <TextView
+                            android:id="@+id/textWaveMultiExplanation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Multi-wave ignores hold time. Just wave your hand back and forth."
+                            android:textSize="14sp"
+                            android:textColor="@color/purple_card_text_secondary"
+                            android:layout_marginBottom="16dp"
+                            android:visibility="gone" />
+
+                        <!-- Hold Duration Section -->
+                        <LinearLayout
+                            android:id="@+id/waveHoldSection"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/behavior_wave_hold_title"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:layout_marginBottom="8dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/behavior_wave_hold_description"
+                                android:textSize="14sp"
+                                android:textColor="@color/purple_card_text_secondary"
+                                android:layout_marginBottom="16dp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginBottom="16dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_wave_hold_0ms"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/purple_card_text_secondary" />
+
+                                <com.google.android.material.slider.Slider
+                                    android:id="@+id/sliderWaveHold"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_marginHorizontal="12dp"
+                                    android:valueFrom="0.0"
+                                    android:valueTo="500.0"
+                                    android:value="150.0"
+                                    android:stepSize="10.0"
+                                    app:thumbColor="@color/white_100"
+                                    app:trackColorActive="@color/white_100"
+                                    app:trackColorInactive="@color/white_200" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_wave_hold_500ms"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/purple_card_text_secondary" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginBottom="16dp">
+
+                                <TextView
+                                    android:id="@+id/textWaveHold"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/behavior_wave_hold_current_placeholder"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/purple_card_text_secondary" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Wave Test Section -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Wave Test"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Test your wave settings"
                             android:textSize="14sp"
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="16dp" />
@@ -1262,48 +1497,57 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/behavior_wave_hold_0ms"
-                                android:textSize="12sp"
-                                android:textColor="@color/purple_card_text_secondary" />
+                                android:text="Waves: 0 of 1"
+                                android:textSize="14sp"
+                                android:textColor="@color/purple_card_text_secondary"
+                                android:id="@+id/textCurrentWave" />
 
-                            <com.google.android.material.slider.Slider
-                                android:id="@+id/sliderWaveHold"
+                            <LinearLayout
+                                android:id="@+id/waveIndicatorDots"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:layout_marginHorizontal="12dp"
-                                android:valueFrom="0.0"
-                                android:valueTo="500.0"
-                                android:value="150.0"
-                                android:stepSize="10.0"
-                                app:thumbColor="@color/white_100"
-                                app:trackColorActive="@color/white_100"
-                                app:trackColorInactive="@color/white_200" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/behavior_wave_hold_500ms"
-                                android:textSize="12sp"
-                                android:textColor="@color/purple_card_text_secondary" />
+                                android:orientation="horizontal"
+                                android:gravity="center"
+                                android:layout_marginHorizontal="8dp">
+                                
+                                <ImageView
+                                    android:id="@+id/waveDot1"
+                                    android:layout_width="12dp"
+                                    android:layout_height="12dp"
+                                    android:layout_marginHorizontal="4dp"
+                                    android:src="@drawable/shake_dot"
+                                    app:tint="@color/purple_300" />
+                                    
+                                <ImageView
+                                    android:id="@+id/waveDot2"
+                                    android:layout_width="12dp"
+                                    android:layout_height="12dp"
+                                    android:layout_marginHorizontal="4dp"
+                                    android:src="@drawable/shake_dot"
+                                    app:tint="@color/purple_300"
+                                    android:visibility="gone" />
+                                    
+                                <ImageView
+                                    android:id="@+id/waveDot3"
+                                    android:layout_width="12dp"
+                                    android:layout_height="12dp"
+                                    android:layout_marginHorizontal="4dp"
+                                    android:src="@drawable/shake_dot"
+                                    app:tint="@color/purple_300"
+                                    android:visibility="gone" />
+                            </LinearLayout>
 
                         </LinearLayout>
 
-                        <LinearLayout
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnWaveTest"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="16dp">
-
-                            <TextView
-                                android:id="@+id/textWaveHold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/behavior_wave_hold_current_placeholder"
-                                android:textSize="14sp"
-                                android:textColor="@color/purple_card_text_secondary" />
-
-                        </LinearLayout>
+                            android:text="@string/behavior_start_test"
+                            android:backgroundTint="@color/white_100"
+                            android:textColor="@color/purple_base"
+                            android:layout_marginBottom="16dp" />
 
                         <!-- Timeout Section -->
                         <TextView
@@ -2327,6 +2571,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/content_cap_disabled"
+                            app:buttonTint="@color/white_100"
                             android:textColor="@color/purple_card_text_primary"
                             android:padding="12dp" />
 
@@ -2335,6 +2580,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/content_cap_words"
+                            app:buttonTint="@color/white_100"
                             android:textColor="@color/purple_card_text_primary"
                             android:padding="12dp" />
 
@@ -2343,6 +2589,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/content_cap_sentences"
+                            app:buttonTint="@color/white_100"
                             android:textColor="@color/purple_card_text_primary"
                             android:padding="12dp" />
 
@@ -2351,6 +2598,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/content_cap_time"
+                            app:buttonTint="@color/white_100"
                             android:textColor="@color/purple_card_text_primary"
                             android:padding="12dp" />
 

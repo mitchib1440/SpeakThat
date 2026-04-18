@@ -65,7 +65,7 @@
                         android:padding="8dp"
                         android:contentDescription="@string/rules_mode_info_content_description"
                         android:src="@drawable/info_24px"
-                        android:tint="@color/white_100" />
+                        app:tint="@color/white_100" />
                 </LinearLayout>
 
                 <RadioGroup
@@ -81,6 +81,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/rules_mode_off_title"
+                        app:buttonTint="@color/white_100"
                         android:textColor="@color/purple_card_text_primary"
                         android:textSize="16sp" />
 
@@ -100,6 +101,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/rules_mode_conditional_title"
+                        app:buttonTint="@color/white_100"
                         android:textColor="@color/purple_card_text_primary"
                         android:textSize="16sp" />
 
@@ -119,6 +121,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/rules_mode_external_title"
+                        app:buttonTint="@color/white_100"
                         android:textColor="@color/purple_card_text_primary"
                         android:textSize="16sp" />
 

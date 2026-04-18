@@ -22,6 +22,7 @@ import com.micoyc.speakthat.databinding.ActivityBehaviorSettingsBinding;
 import com.micoyc.speakthat.settings.BehaviorSettingsSection;
 import com.micoyc.speakthat.settings.BehaviorSettingsStore;
 import com.micoyc.speakthat.settings.managers.ShakeSensorManager;
+import com.micoyc.speakthat.settings.managers.WaveSensorManager;
 import android.text.Html;
 
 public class GestureSection implements BehaviorSettingsSection {
@@ -31,6 +32,7 @@ public class GestureSection implements BehaviorSettingsSection {
     private final BehaviorSettingsStore store;
 
     private final ShakeSensorManager shakeSensorManager;
+    private final WaveSensorManager waveSensorManager;
 
     private boolean isProgrammaticallySettingSwitch = false;
 
@@ -42,18 +44,146 @@ public class GestureSection implements BehaviorSettingsSection {
         this.activity = activity;
         this.binding = binding;
         this.store = store;
-        shakeSensorManager = new ShakeSensorManager(activity, (current, max) -> {
-            int progress = Math.round(Math.min(current, 25f));
-            binding.progressShakeMeter.setProgress(progress);
-            binding.textCurrentShake.setText(String.format("Current shake: %.1f", current));
+        shakeSensorManager = new ShakeSensorManager(activity, new ShakeSensorManager.Listener() {
+            @Override
+            public void onShakeValue(float current, float max) {
+                int progress = Math.round(Math.min(current, 25f));
+                binding.progressShakeMeter.setProgress(progress);
 
-            float threshold = binding.sliderShakeIntensity.getValue();
-            if (current >= threshold) {
-                binding.textCurrentShake.setTextColor(activity.getColor(android.R.color.holo_green_dark));
-            } else {
-                binding.textCurrentShake.setTextColor(activity.getColor(android.R.color.secondary_text_dark));
+                float threshold = binding.sliderShakeIntensity.getValue();
+                if (current >= threshold) {
+                    binding.textCurrentShake.setTextColor(activity.getColor(android.R.color.holo_green_dark));
+                } else {
+                    binding.textCurrentShake.setTextColor(activity.getColor(android.R.color.secondary_text_dark));
+                }
+            }
+
+            @Override
+            public void onValidShake(int currentCount, int targetCount) {
+                updateShakeTestUI(currentCount, targetCount);
+            }
+
+            @Override
+            public void onTargetReached() {
+                int target = getSelectedShakeCount();
+                updateShakeTestUI(target, target);
+                flashIndicatorDots(android.R.color.holo_green_light);
+                
+                // Reset after a brief delay
+                binding.getRoot().postDelayed(() -> {
+                    updateShakeTestUI(0, target);
+                }, 500);
+            }
+
+            @Override
+            public void onWindowExpired() {
+                flashIndicatorDots(android.R.color.holo_red_light);
+                
+                // Reset after a brief delay
+                binding.getRoot().postDelayed(() -> {
+                    updateShakeTestUI(0, getSelectedShakeCount());
+                }, 500);
             }
         });
+
+        waveSensorManager = new WaveSensorManager(activity, new WaveSensorManager.Listener() {
+            @Override
+            public void onValidWave(int currentCount, int targetCount) {
+                updateWaveTestUI(currentCount, targetCount);
+            }
+
+            @Override
+            public void onTargetReached() {
+                int target = getSelectedWaveCount();
+                updateWaveTestUI(target, target);
+                flashWaveIndicatorDots(android.R.color.holo_green_light);
+                
+                binding.getRoot().postDelayed(() -> {
+                    updateWaveTestUI(0, target);
+                }, 500);
+            }
+
+            @Override
+            public void onWindowExpired() {
+                flashWaveIndicatorDots(android.R.color.holo_red_light);
+                
+                binding.getRoot().postDelayed(() -> {
+                    updateWaveTestUI(0, getSelectedWaveCount());
+                }, 500);
+            }
+
+            @Override
+            public void onHoldScheduled(long holdDurationMs) {
+                // Visual feedback for hold scheduled
+                binding.waveDot1.setColorFilter(activity.getColor(R.color.white_100));
+            }
+
+            @Override
+            public void onHoldCancelled() {
+                // Visual feedback for hold cancelled
+                binding.waveDot1.setColorFilter(activity.getColor(R.color.purple_300));
+            }
+        });
+    }
+
+    private int getSelectedShakeCount() {
+        if (binding.radioShake3.isChecked()) return 3;
+        if (binding.radioShake2.isChecked()) return 2;
+        return 1;
+    }
+
+    private int getSelectedWaveCount() {
+        if (binding.radioWave3.isChecked()) return 3;
+        if (binding.radioWave2.isChecked()) return 2;
+        return 1;
+    }
+
+    private void updateShakeTestUI(int currentCount, int targetCount) {
+        binding.textCurrentShake.setText(String.format("Shakes: %d of %d", currentCount, targetCount));
+        
+        binding.shakeDot1.setVisibility(targetCount >= 1 ? View.VISIBLE : View.GONE);
+        binding.shakeDot2.setVisibility(targetCount >= 2 ? View.VISIBLE : View.GONE);
+        binding.shakeDot3.setVisibility(targetCount >= 3 ? View.VISIBLE : View.GONE);
+
+        int activeColor = activity.getColor(R.color.white_100);
+        int inactiveColor = activity.getColor(R.color.purple_300);
+
+        binding.shakeDot1.setColorFilter(currentCount >= 1 ? activeColor : inactiveColor);
+        binding.shakeDot2.setColorFilter(currentCount >= 2 ? activeColor : inactiveColor);
+        binding.shakeDot3.setColorFilter(currentCount >= 3 ? activeColor : inactiveColor);
+    }
+
+    private void flashIndicatorDots(int colorResId) {
+        int color = activity.getColor(colorResId);
+        int targetCount = getSelectedShakeCount();
+        
+        if (targetCount >= 1) binding.shakeDot1.setColorFilter(color);
+        if (targetCount >= 2) binding.shakeDot2.setColorFilter(color);
+        if (targetCount >= 3) binding.shakeDot3.setColorFilter(color);
+    }
+
+    private void updateWaveTestUI(int currentCount, int targetCount) {
+        binding.textCurrentWave.setText(String.format("Waves: %d of %d", currentCount, targetCount));
+        
+        binding.waveDot1.setVisibility(targetCount >= 1 ? View.VISIBLE : View.GONE);
+        binding.waveDot2.setVisibility(targetCount >= 2 ? View.VISIBLE : View.GONE);
+        binding.waveDot3.setVisibility(targetCount >= 3 ? View.VISIBLE : View.GONE);
+
+        int activeColor = activity.getColor(R.color.white_100);
+        int inactiveColor = activity.getColor(R.color.purple_300);
+
+        binding.waveDot1.setColorFilter(currentCount >= 1 ? activeColor : inactiveColor);
+        binding.waveDot2.setColorFilter(currentCount >= 2 ? activeColor : inactiveColor);
+        binding.waveDot3.setColorFilter(currentCount >= 3 ? activeColor : inactiveColor);
+    }
+
+    private void flashWaveIndicatorDots(int colorResId) {
+        int color = activity.getColor(colorResId);
+        int targetCount = getSelectedWaveCount();
+        
+        if (targetCount >= 1) binding.waveDot1.setColorFilter(color);
+        if (targetCount >= 2) binding.waveDot2.setColorFilter(color);
+        if (targetCount >= 3) binding.waveDot3.setColorFilter(color);
     }
 
     @Override
@@ -78,6 +208,7 @@ public class GestureSection implements BehaviorSettingsSection {
                     updateThresholdMarker(value);
                     updateThresholdText(value);
                     saveShakeThreshold(value);
+                    shakeSensorManager.setThreshold(value);
                 }
             }
         });
@@ -93,6 +224,29 @@ public class GestureSection implements BehaviorSettingsSection {
         binding.switchWaveToStop.setOnCheckedChangeListener((buttonView, isChecked) -> {
             binding.waveSettingsSection.setVisibility(isChecked ? View.VISIBLE : View.GONE);
             saveWaveToStopEnabled(isChecked);
+
+            if (!isChecked && waveSensorManager.isTesting()) {
+                stopWaveTest();
+            }
+        });
+
+        binding.radioGroupWaveCount.setOnCheckedChangeListener((group, checkedId) -> {
+            int count = 1;
+            if (checkedId == R.id.radioWave2) count = 2;
+            else if (checkedId == R.id.radioWave3) count = 3;
+            
+            saveWaveCountTarget(count);
+            updateWaveUI(count);
+            waveSensorManager.setTargetCount(count);
+            updateWaveTestUI(0, count);
+        });
+
+        binding.btnWaveTest.setOnClickListener(v -> {
+            if (waveSensorManager.isTesting()) {
+                stopWaveTest();
+            } else {
+                startWaveTest();
+            }
         });
 
         binding.sliderWaveHold.setValueFrom(0f);
@@ -106,6 +260,7 @@ public class GestureSection implements BehaviorSettingsSection {
                 int holdMs = Math.round(value);
                 updateWaveHoldDisplay(holdMs);
                 saveWaveHoldDurationMs(holdMs);
+                waveSensorManager.setWaveHoldDurationMs(holdMs);
             }
         });
 
@@ -180,6 +335,36 @@ public class GestureSection implements BehaviorSettingsSection {
         binding.switchPocketMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             savePocketModeEnabled(isChecked);
         });
+
+        binding.radioGroupShakeCount.setOnCheckedChangeListener((group, checkedId) -> {
+            int count = 1;
+            if (checkedId == R.id.radioShake2) count = 2;
+            else if (checkedId == R.id.radioShake3) count = 3;
+            
+            saveShakeCountTarget(count);
+            shakeSensorManager.setTargetCount(count);
+            updateShakeTestUI(0, count);
+        });
+    }
+
+    private void saveShakeCountTarget(int count) {
+        if (store.isInitializing()) return;
+        store.prefs().edit().putInt(BehaviorSettingsStore.KEY_SHAKE_COUNT_TARGET, count).apply();
+    }
+
+    private void saveWaveCountTarget(int count) {
+        if (store.isInitializing()) return;
+        store.prefs().edit().putInt(BehaviorSettingsStore.KEY_WAVE_COUNT_TARGET, count).apply();
+    }
+
+    private void updateWaveUI(int count) {
+        if (count > 1) {
+            binding.waveHoldSection.setVisibility(View.GONE);
+            binding.textWaveMultiExplanation.setVisibility(View.VISIBLE);
+        } else {
+            binding.waveHoldSection.setVisibility(View.VISIBLE);
+            binding.textWaveMultiExplanation.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -192,6 +377,18 @@ public class GestureSection implements BehaviorSettingsSection {
         binding.sliderShakeIntensity.setValue(shakeThreshold);
         updateThresholdMarker(shakeThreshold);
         updateThresholdText(shakeThreshold);
+        shakeSensorManager.setThreshold(shakeThreshold);
+
+        int shakeCountTarget = store.prefs().getInt(BehaviorSettingsStore.KEY_SHAKE_COUNT_TARGET, 1);
+        if (shakeCountTarget == 3) {
+            binding.radioShake3.setChecked(true);
+        } else if (shakeCountTarget == 2) {
+            binding.radioShake2.setChecked(true);
+        } else {
+            binding.radioShake1.setChecked(true);
+        }
+        shakeSensorManager.setTargetCount(shakeCountTarget);
+        updateShakeTestUI(0, shakeCountTarget);
 
         int shakeTimeoutSeconds = store.prefs().getInt(BehaviorSettingsStore.KEY_SHAKE_TIMEOUT_SECONDS, 30);
         if (shakeTimeoutSeconds == 0) {
@@ -210,6 +407,18 @@ public class GestureSection implements BehaviorSettingsSection {
         boolean waveEnabled = store.prefs().getBoolean(BehaviorSettingsStore.KEY_WAVE_TO_STOP_ENABLED, false);
         binding.switchWaveToStop.setChecked(waveEnabled);
         binding.waveSettingsSection.setVisibility(waveEnabled ? View.VISIBLE : View.GONE);
+
+        int waveCountTarget = store.prefs().getInt(BehaviorSettingsStore.KEY_WAVE_COUNT_TARGET, 1);
+        if (waveCountTarget == 3) {
+            binding.radioWave3.setChecked(true);
+        } else if (waveCountTarget == 2) {
+            binding.radioWave2.setChecked(true);
+        } else {
+            binding.radioWave1.setChecked(true);
+        }
+        updateWaveUI(waveCountTarget);
+        waveSensorManager.setTargetCount(waveCountTarget);
+        updateWaveTestUI(0, waveCountTarget);
 
         int waveTimeoutSeconds = store.prefs().getInt(BehaviorSettingsStore.KEY_WAVE_TIMEOUT_SECONDS, 30);
         if (waveTimeoutSeconds == 0) {
@@ -235,6 +444,7 @@ public class GestureSection implements BehaviorSettingsSection {
         }
         binding.sliderWaveHold.setValue(waveHoldMs);
         updateWaveHoldDisplay(waveHoldMs);
+        waveSensorManager.setWaveHoldDurationMs(waveHoldMs);
 
         boolean pressEnabled = store.prefs().getBoolean(BehaviorSettingsStore.KEY_PRESS_TO_STOP_ENABLED, false);
         boolean hasAccessibilityPermission = isAccessibilityServiceEnabled();
@@ -254,13 +464,31 @@ public class GestureSection implements BehaviorSettingsSection {
     @Override
     public void release() {
         shakeSensorManager.stop();
+        waveSensorManager.stop();
+    }
+
+    private void startWaveTest() {
+        if (waveSensorManager.start()) {
+            binding.btnWaveTest.setText("Stop Test");
+            updateWaveTestUI(0, getSelectedWaveCount());
+        } else {
+            Toast.makeText(activity, "Proximity sensor not available on this device", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void stopWaveTest() {
+        if (waveSensorManager.isTesting()) {
+            waveSensorManager.stop();
+            binding.btnWaveTest.setText("Start Test");
+            updateWaveTestUI(0, getSelectedWaveCount());
+        }
     }
 
     private void startShakeTest() {
         if (shakeSensorManager.start()) {
             binding.btnShakeTest.setText("Stop Test");
             binding.progressShakeMeter.setProgress(0);
-            binding.textCurrentShake.setText("Current shake: 0.0");
+            updateShakeTestUI(0, getSelectedShakeCount());
         } else {
             Toast.makeText(activity, "Accelerometer not available on this device", Toast.LENGTH_SHORT).show();
         }
@@ -278,6 +506,7 @@ public class GestureSection implements BehaviorSettingsSection {
                     Toast.LENGTH_SHORT
                 ).show();
             }
+            updateShakeTestUI(0, getSelectedShakeCount());
         }
     }
 
