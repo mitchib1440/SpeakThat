@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SpeakThat!</string>
-    <string name="service_name">Lector de Notificaciones SpeakThat!</string>
+    <string name="service_name">Lector de notificaciones SpeakThat!</string>
     <!-- Quick Settings Tile -->
     <string name="quick_settings_tile_label">SpeakThat!</string>
     <string name="quick_settings_tile_enabled">Activado</string>
@@ -1641,7 +1641,7 @@ Bloquear = omitir por completo, Privar = anunciar en privado
     <string name="behavior_enable_press_stop">Habilitar Presionar para Detener</string>
     <string name="behavior_requires_accessibility_permission">Requiere permisos de accesibilidad</string>
     <string name="press_to_stop_dialog_title">Presione para Detener</string>
-    <string name="accessibility_permission_required_title">Permiso de Accesibilidad Requerido</string>
+    <string name="accessibility_permission_required_title">Permiso de Accesibilidad requerido para la opción del Botón del Volumen</string>
     <string name="accessibility_permission_required_message">Presione Detener requiere el permiso de accesibilidad para detectar las presiones del botón del volumen. Habilítelo primero en los Ajustes Generales.</string>
     <string name="open_accessibility_settings">Abrir Ajustes de Accesibilidad</string>
     <string name="exception_bluetooth_connection_state_label">Estado de Conexión</string>
@@ -2184,4 +2184,6 @@ Bloquear = omitir por completo, Privar = anunciar en privado
     </plurals>
     <string name="placeholder_string">Cadena de texto de marcador de posición. No olvides eliminarla.</string>
     <string name="fallback_timer_complete">Cronómetro o alarma completados</string>
+    <string name="no_apps_found">Ninguna apps encontrada</string>
+    <string name="include_system_apps">Incluir Apps del sistema</string>
 </resources>
