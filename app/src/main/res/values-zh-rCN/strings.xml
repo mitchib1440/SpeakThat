@@ -12,7 +12,7 @@
     <string name="permission_description">SpeakThat! needs access to your notifications to read them aloud. This permission is required for the app to function.</string>
     <string name="master_switch_battery_tip">ðŸ’¡ Turn off when not needed to save battery</string>
     <string name="master_switch_battery_tip_no_emoji">Turn off when not needed to save battery</string>
-    <string name="open_settings">Permission Settings</string>
+    <string name="open_settings">权限设置</string>
     <string name="service_enabled">Notification Reader: Enabled</string>
     <string name="service_disabled">Notification Reader: Disabled</string>
     <string name="show_history">Show Notification History</string>
@@ -685,4 +685,5 @@ This feature is especially loved by people who get notifications during meetings
     <string name="tidy_speech_remove_emojis_description">从朗读通知中移除表情符号和其他符号</string>
     <string name="quick_settings_tile_enabled">启用</string>
     <string name="quick_settings_tile_disabled">禁用</string>
+    <string name="quick_settings_tile_label">SpeakThat!</string>
 </resources>
