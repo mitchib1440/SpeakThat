@@ -70,6 +70,7 @@ public class NotificationBehaviorSection implements BehaviorSettingsSection {
             }
         );
 
+        // repeated prefix skipping by robomwm
         switchSkipRepeatedNotificationPrefixes = binding.switchSkipRepeatedNotificationPrefixes;
         switchSkipRepeatedNotificationPrefixes.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (store.isInitializing()) {
