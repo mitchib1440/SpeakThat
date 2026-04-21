@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.micoyc.speakthat.AppPickerActivity;
 import com.micoyc.speakthat.PriorityAppAdapter;
@@ -37,7 +38,7 @@ public class NotificationBehaviorSection implements BehaviorSettingsSection {
     private final List<String> priorityAppsList = new ArrayList<>();
     private PriorityAppAdapter priorityAppAdapter;
     private ActivityResultLauncher<Intent> priorityAppPickerLauncher;
-    private SwitchMaterial switchSkipRepeatedNotificationPrefixes;
+    private MaterialSwitch switchSkipRepeatedNotificationPrefixes;
 
     public NotificationBehaviorSection(
         AppCompatActivity activity,

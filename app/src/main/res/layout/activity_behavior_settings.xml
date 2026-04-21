@@ -2509,8 +2509,8 @@
                             android:layout_height="24dp"
                             android:layout_marginEnd="16dp"
                             android:src="@drawable/ic_forum_24"
-                            android:tint="@color/white_100"
-                            android:contentDescription="Speech Format" />
+                            android:contentDescription="Speech Format"
+                            app:tint="@color/white_100" />
 
                         <TextView
                             android:layout_width="wrap_content"
