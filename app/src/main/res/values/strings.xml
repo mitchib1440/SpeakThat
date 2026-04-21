@@ -592,8 +592,9 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_queue_mode">Queue (finish current, then read new)</string>
     <string name="behavior_skip_mode">Skip (ignore new notifications while reading)</string>
     <string name="behavior_smart_mode">Smart (priority apps interrupt, others queue)</string>
-    <string name="behavior_skip_repeated_prefix_title">Skip repeated notification prefixes</string>
-    <string name="behavior_skip_repeated_prefix_description">When enabled, consecutive notifications with the same starting words will drop the repeated prefix and only speak the new text.</string>
+    <string name="behavior_skip_repeated_prefix_label">Skip repeated notification prefixes</string>
+    <string name="behavior_skip_repeated_prefix_description">When enabled, consecutive notifications with the same starting words (such as contact or group names) will drop the repeated prefix and only speak the changing text.</string>
+    <string name="behavior_skip_repeated_prefix_tip">Recommended for group chats</string>
     <string name="behavior_priority_apps">⚡ Priority Apps</string>
     <string name="behavior_priority_apps_description">These apps will interrupt the current notification. All other apps will queue.</string>
     <string name="behavior_media_ignore">Ignore - Continue as normal</string>
@@ -1790,6 +1791,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="behavior_accessibility_description">Settings to improve accessibility and ease of use</string>
     <string name="behavior_advanced_features_title">Advanced Features</string>
     <string name="behavior_advanced_features_description">Experimental and power user features</string>
+    <string name="behavior_skip_repeated_prefix_title">Skip Repeated Prefix</string>
 
     <!-- Wave/Shake Sensor Strings -->
     <string name="behavior_current_shake">Current shake: 0.0</string>
