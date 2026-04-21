@@ -2479,7 +2479,8 @@
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
-            <!-- Speech Template Section -->
+            
+            <!-- Skip Repeated Prefix section (pr #112, issue #58) -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -2490,8 +2491,6 @@
 
                 app:strokeWidth="0dp">
 
-
-                <!-- Skip Repeated Prefix section (pr #112, issue #58) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

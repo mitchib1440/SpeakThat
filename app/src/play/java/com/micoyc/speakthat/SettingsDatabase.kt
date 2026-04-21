@@ -177,6 +177,17 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "skip_repeated_prefix",
+                title = context.getString(R.string.behavior_skip_repeated_prefix_title),
+                description = context.getString(R.string.behavior_skip_repeated_prefix_description),
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("skip", "repeated", "prefix", "notification", "consecutive", "group", "chat", "contact"),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "honour_do_not_disturb",
                 title = "Honour Do Not Disturb",
                 description = "Respect device Do Not Disturb settings",
