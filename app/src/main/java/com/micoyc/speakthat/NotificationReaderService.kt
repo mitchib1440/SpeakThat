@@ -80,6 +80,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private val audioManager by lazy { getSystemService(AUDIO_SERVICE) as AudioManager }
     private val cachedPackageManager by lazy { packageManager }
     
+    private val scoAudioManager = com.micoyc.speakthat.utils.ScoAudioManager()
+    
     // Filter settings (loaded once and cached)
     private var appListMode = "none"
     private var appList: Set<String> = emptySet()
@@ -6623,6 +6625,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         unregisterShakeListener()
 
                         android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                            scoAudioManager.cleanupSco(this@NotificationReaderService, audioManager)
                             cleanupMediaBehavior()
                         }, 250)
 
@@ -6678,6 +6681,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 }
 
                 android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                    scoAudioManager.cleanupSco(this@NotificationReaderService, audioManager)
                     cleanupMediaBehavior()
                 }, 250)
                 processNotificationQueue()
@@ -6713,6 +6717,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 attemptTtsRecovery("Utterance error: $utteranceId")
 
                 android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                    scoAudioManager.cleanupSco(this@NotificationReaderService, audioManager)
                     cleanupMediaBehavior()
                 }, 1000)
                 processNotificationQueue()
@@ -6720,6 +6725,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
             override fun onStop(utteranceId: String?, interrupted: Boolean) {
                 Log.d(TAG, "TTS utterance stopped (interrupted=$interrupted): $utteranceId")
+                scoAudioManager.cleanupSco(this@NotificationReaderService, audioManager)
                 releaseSpeechWakeLock()
             }
         }
@@ -6758,6 +6764,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             unregisterShakeListener()
             stopForegroundService()
             android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                scoAudioManager.cleanupSco(this@NotificationReaderService, audioManager)
                 cleanupMediaBehavior()
             }, 250)
             processNotificationQueue()
@@ -6821,34 +6828,36 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         }
 
-        val speakResult = SpeakThatTtsManager.speak(
-            context = this,
-            text = finalSpeechText,
-            queueMode = speakQueueMode,
-            params = volumeParams,
-            utteranceId = "notification_utterance",
-            callback = notificationCallback
-        )
-        
-        Log.d(TAG, "=== DUCKING DEBUG: TTS.speak() returned: $speakResult ===")
-        InAppLogger.log("Service", "=== DUCKING DEBUG: TTS.speak() returned: $speakResult ===")
-        
-        // Start monitoring TTS volume during focus changes
-        monitorTtsVolumeDuringFocusChanges()
-        
-        // Ensure TTS volume is ready for any app focus changes
-        ensureTtsVolumeOnAppBackground()
-        
-        // Check if speak() failed
-        if (speakResult == TextToSpeech.ERROR) {
-            Log.e(TAG, "TTS.speak() returned ERROR - attempting recovery")
-            InAppLogger.logError("Service", "TTS.speak() returned ERROR - attempting recovery")
-            attemptTtsRecovery("speak() returned ERROR")
-            isCurrentlySpeaking = false
-            unregisterShakeListener()
-            restoreGlobalVoiceSettingsIfNeeded("speak() error")
-            releaseSpeechWakeLock()
-            return
+        scoAudioManager.requestScoAndPlay(this, audioManager) {
+            val speakResult = SpeakThatTtsManager.speak(
+                context = this,
+                text = finalSpeechText,
+                queueMode = speakQueueMode,
+                params = volumeParams,
+                utteranceId = "notification_utterance",
+                callback = notificationCallback
+            )
+            
+            Log.d(TAG, "=== DUCKING DEBUG: TTS.speak() returned: $speakResult ===")
+            InAppLogger.log("Service", "=== DUCKING DEBUG: TTS.speak() returned: $speakResult ===")
+            
+            // Start monitoring TTS volume during focus changes
+            monitorTtsVolumeDuringFocusChanges()
+            
+            // Ensure TTS volume is ready for any app focus changes
+            ensureTtsVolumeOnAppBackground()
+            
+            // Check if speak() failed
+            if (speakResult == TextToSpeech.ERROR) {
+                Log.e(TAG, "TTS.speak() returned ERROR - attempting recovery")
+                InAppLogger.logError("Service", "TTS.speak() returned ERROR - attempting recovery")
+                attemptTtsRecovery("speak() returned ERROR")
+                isCurrentlySpeaking = false
+                unregisterShakeListener()
+                restoreGlobalVoiceSettingsIfNeeded("speak() error")
+                releaseSpeechWakeLock()
+                return@requestScoAndPlay
+            }
         }
     }
 
