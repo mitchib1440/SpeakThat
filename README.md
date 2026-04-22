@@ -1,7 +1,5 @@
 [<img width="1500" height="429" alt="SpeakThat! Header" src="https://github.com/user-attachments/assets/f7acb89c-9c81-406f-9e7f-dad3e01ffce0" />](https://speakthat.app)
-
----
-
+[<img width="1536" height="32" alt="ai-accelerated-projectpng" src="https://github.com/user-attachments/assets/0c68e69a-6198-4e97-b3ad-0205067092c8" />](https://github.com/mitchib1440/SpeakThat/wiki/SpeakThat%21-%26-AI-Usage)
 [<img width="1500" height="153" alt="Frame 6327" src="https://github.com/user-attachments/assets/f333b8b0-fe29-481e-b24a-df845e22cc0e" />
 ](https://github.com/mitchib1440/SpeakThat/wiki)
 
