@@ -70,6 +70,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private static final String KEY_URL_HANDLING_MODE = "url_handling_mode";
     private static final String KEY_URL_REPLACEMENT_TEXT = "url_replacement_text";
     private static final String KEY_TIDY_SPEECH_REMOVE_EMOJIS = "tidy_speech_remove_emojis";
+    private static final String KEY_FILTER_EMPTY_TEXT = "filter_empty_text";
     private static final String DEFAULT_URL_HANDLING_MODE = "domain_only";
     private static final String DEFAULT_URL_REPLACEMENT_TEXT = "";
     private static final String KEY_DEFAULTS_INITIALIZED = "defaults_initialized";
@@ -339,6 +340,11 @@ public class FilterSettingsActivity extends AppCompatActivity {
         binding.switchRemoveEmojis.setOnCheckedChangeListener((buttonView, isChecked) -> {
             saveTidySpeechRemoveEmojis(isChecked);
         });
+
+        // Set up filter empty text switch
+        binding.switchFilterEmptyText.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveFilterEmptyText(isChecked);
+        });
     }
 
     private void setupAppListRecycler() {
@@ -480,6 +486,9 @@ public class FilterSettingsActivity extends AppCompatActivity {
         // Load tidy speech settings
         boolean removeEmojis = sharedPreferences.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false); // Default to disabled
         binding.switchRemoveEmojis.setChecked(removeEmojis);
+        
+        boolean filterEmptyText = sharedPreferences.getBoolean(KEY_FILTER_EMPTY_TEXT, false); // Default to disabled
+        binding.switchFilterEmptyText.setChecked(filterEmptyText);
         
         // Load persistent/silent notification filtering setting
         boolean isPersistentFilteringEnabled = sharedPreferences.getBoolean(KEY_PERSISTENT_FILTERING_ENABLED, true); // Default to enabled
@@ -882,6 +891,16 @@ public class FilterSettingsActivity extends AppCompatActivity {
         }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, enabled);
+        editor.apply();
+    }
+
+    private void saveFilterEmptyText(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_FILTER_EMPTY_TEXT, enabled);
         editor.apply();
     }
 

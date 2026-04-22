@@ -93,6 +93,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var urlHandlingMode = DEFAULT_URL_HANDLING_MODE
     private var urlReplacementText = DEFAULT_URL_REPLACEMENT_TEXT
     private var tidySpeechRemoveEmojisEnabled = false
+    private var filterEmptyTextEnabled = false
     private var contentCapMode = DEFAULT_CONTENT_CAP_MODE
     private var contentCapWordCount = DEFAULT_CONTENT_CAP_WORD_COUNT
     private var contentCapSentenceCount = DEFAULT_CONTENT_CAP_SENTENCE_COUNT
@@ -406,6 +407,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val KEY_URL_HANDLING_MODE = "url_handling_mode"
         private const val KEY_URL_REPLACEMENT_TEXT = "url_replacement_text"
         private const val KEY_TIDY_SPEECH_REMOVE_EMOJIS = "tidy_speech_remove_emojis"
+        private const val KEY_FILTER_EMPTY_TEXT = "filter_empty_text"
         private const val DEFAULT_URL_HANDLING_MODE = "domain_only"
         private const val DEFAULT_URL_REPLACEMENT_TEXT = ""
         
@@ -3115,7 +3117,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
         // Load tidy speech settings
         tidySpeechRemoveEmojisEnabled = sharedPreferences?.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false) ?: false
-        Log.d(TAG, "Loaded tidy speech settings: removeEmojis=$tidySpeechRemoveEmojisEnabled")
+        filterEmptyTextEnabled = sharedPreferences?.getBoolean(KEY_FILTER_EMPTY_TEXT, false) ?: false
+        Log.d(TAG, "Loaded tidy speech settings: removeEmojis=$tidySpeechRemoveEmojisEnabled, filterEmptyText=$filterEmptyTextEnabled")
         
         // Load Content Cap settings
         contentCapMode = sharedPreferences?.getString(KEY_CONTENT_CAP_MODE, DEFAULT_CONTENT_CAP_MODE) ?: DEFAULT_CONTENT_CAP_MODE
@@ -6771,6 +6774,27 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             return
         }
 
+        if (speechText.trim().isBlank()) {
+            Log.d(TAG, "JIT global suppression (No speakable text remaining) — skipping earcon/delay/speak; advancing queue")
+            InAppLogger.log("JIT suppression", "Aborted readout: No speakable text remaining")
+            try {
+                SpeakThatTtsManager.stop()
+            } catch (e: Exception) {
+                Log.e(TAG, "TTS stop during JIT suppression", e)
+            }
+            isCurrentlySpeaking = false
+            restoreGlobalVoiceSettingsIfNeeded("JIT global suppression: No speakable text remaining")
+            releaseSpeechWakeLock()
+            unregisterShakeListener()
+            stopForegroundService()
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                scoAudioManager.cleanupSco(this@NotificationReaderService, audioManager)
+                cleanupMediaBehavior()
+            }, 250)
+            processNotificationQueue()
+            return
+        }
+
         registerEarcons()
 
         val useEarcon = shouldQueueEarconBeforeSpeech()
@@ -7154,6 +7178,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 Log.d(TAG, "Tidy speech setting updated: removeEmojis=$tidySpeechRemoveEmojisEnabled")
                 InAppLogger.log("Service", "Tidy speech setting updated: removeEmojis=$tidySpeechRemoveEmojisEnabled")
             }
+            KEY_FILTER_EMPTY_TEXT -> {
+                filterEmptyTextEnabled = sharedPreferences?.getBoolean(KEY_FILTER_EMPTY_TEXT, false) ?: false
+                Log.d(TAG, "Filter empty text setting updated: filterEmptyText=$filterEmptyTextEnabled")
+                InAppLogger.log("Service", "Filter empty text setting updated: filterEmptyText=$filterEmptyTextEnabled")
+            }
             KEY_SHAKE_TO_STOP_ENABLED,
             KEY_SHAKE_THRESHOLD,
             KEY_SHAKE_TIMEOUT_SECONDS,
@@ -7398,6 +7427,48 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Handle template localization + varied/custom modes
         val templateToUse = resolveSpeechTemplateForPlayback(speechTemplateOverride)
+        
+        if (filterEmptyTextEnabled) {
+            val payloadPlaceholders = listOf("{text}", "{title}", "{content}", "{bigtext}", "{summary}", "{ticker}", "{info}")
+            val hasPayloadPlaceholder = payloadPlaceholders.any { templateToUse.contains(it) }
+            
+            if (hasPayloadPlaceholder) {
+                var isAllPayloadEmpty = true
+                if (templateToUse.contains("{text}")) {
+                    val evalText = if (tidySpeechRemoveEmojisEnabled) removeSpokenEmojis(notificationText) else notificationText
+                    if (evalText.isNotBlank()) isAllPayloadEmpty = false
+                }
+                if (templateToUse.contains("{title}")) {
+                    val evalText = if (tidySpeechRemoveEmojisEnabled) removeSpokenEmojis(title) else title
+                    if (evalText.isNotBlank()) isAllPayloadEmpty = false
+                }
+                if (templateToUse.contains("{content}")) {
+                    val evalText = if (tidySpeechRemoveEmojisEnabled) removeSpokenEmojis(text) else text
+                    if (evalText.isNotBlank()) isAllPayloadEmpty = false
+                }
+                if (templateToUse.contains("{bigtext}")) {
+                    val evalText = if (tidySpeechRemoveEmojisEnabled) removeSpokenEmojis(bigText) else bigText
+                    if (evalText.isNotBlank()) isAllPayloadEmpty = false
+                }
+                if (templateToUse.contains("{summary}")) {
+                    val evalText = if (tidySpeechRemoveEmojisEnabled) removeSpokenEmojis(summaryText) else summaryText
+                    if (evalText.isNotBlank()) isAllPayloadEmpty = false
+                }
+                if (templateToUse.contains("{ticker}")) {
+                    val evalText = if (tidySpeechRemoveEmojisEnabled) removeSpokenEmojis(tickerText) else tickerText
+                    if (evalText.isNotBlank()) isAllPayloadEmpty = false
+                }
+                if (templateToUse.contains("{info}")) {
+                    val evalText = if (tidySpeechRemoveEmojisEnabled) removeSpokenEmojis(infoText) else infoText
+                    if (evalText.isNotBlank()) isAllPayloadEmpty = false
+                }
+                
+                if (isAllPayloadEmpty) {
+                    Log.d(TAG, "Filter empty text: All payload variables are blank after evaluation. Aborting wrapper generation.")
+                    return ""
+                }
+            }
+        }
         
         // Process the template with all available placeholders
         var processedTemplate = templateToUse

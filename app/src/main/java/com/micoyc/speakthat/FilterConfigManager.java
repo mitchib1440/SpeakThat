@@ -38,6 +38,7 @@ public class FilterConfigManager {
     private static final String KEY_URL_HANDLING_MODE = "url_handling_mode";
     private static final String KEY_URL_REPLACEMENT_TEXT = "url_replacement_text";
     private static final String KEY_TIDY_SPEECH_REMOVE_EMOJIS = "tidy_speech_remove_emojis";
+    private static final String KEY_FILTER_EMPTY_TEXT = "filter_empty_text";
 
     private static float roundToTwoDecimalPlaces(float value) {
         return Math.round(value * 100.0f) / 100.0f;
@@ -54,6 +55,7 @@ public class FilterConfigManager {
         public String urlHandlingMode;
         public String urlReplacementText;
         public boolean tidySpeechRemoveEmojis;
+        public boolean filterEmptyText;
         public boolean mediaFilteringEnabled;
         // Persistent/silent filtering settings
         public boolean persistentFilteringEnabled;
@@ -76,6 +78,7 @@ public class FilterConfigManager {
             this.urlHandlingMode = "domain_only";
             this.urlReplacementText = "";
             this.tidySpeechRemoveEmojis = false;
+            this.filterEmptyText = false;
             this.mediaFilteringEnabled = false;
             // Persistent/silent filtering defaults
             this.persistentFilteringEnabled = false;
@@ -294,6 +297,7 @@ public class FilterConfigManager {
         config.urlHandlingMode = prefs.getString(KEY_URL_HANDLING_MODE, "domain_only");
         config.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
         config.tidySpeechRemoveEmojis = prefs.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false);
+        config.filterEmptyText = prefs.getBoolean(KEY_FILTER_EMPTY_TEXT, false);
         config.mediaFilteringEnabled = prefs.getBoolean("media_filtering_enabled", true);
         
         // Create JSON structure
@@ -319,6 +323,7 @@ public class FilterConfigManager {
         filters.put("urlHandlingMode", config.urlHandlingMode);
         filters.put("urlReplacementText", config.urlReplacementText);
         filters.put("tidySpeechRemoveEmojis", config.tidySpeechRemoveEmojis);
+        filters.put("filterEmptyText", config.filterEmptyText);
         filters.put("mediaFilteringEnabled", config.mediaFilteringEnabled);
         json.put("filters", filters);
         
@@ -356,6 +361,7 @@ public class FilterConfigManager {
         config.filters.urlHandlingMode = prefs.getString(KEY_URL_HANDLING_MODE, "domain_only");
         config.filters.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
         config.filters.tidySpeechRemoveEmojis = prefs.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false);
+        config.filters.filterEmptyText = prefs.getBoolean(KEY_FILTER_EMPTY_TEXT, false);
         
         config.filters.mediaFilteringEnabled = prefs.getBoolean("media_filtering_enabled", false);
         
@@ -679,6 +685,11 @@ public class FilterConfigManager {
                 filtersImported++;
             }
 
+            if (filters.has("filterEmptyText")) {
+                editor.putBoolean(KEY_FILTER_EMPTY_TEXT, filters.getBoolean("filterEmptyText"));
+                filtersImported++;
+            }
+
             if (filters.has("mediaFilteringEnabled")) {
                 editor.putBoolean("media_filtering_enabled", filters.getBoolean("mediaFilteringEnabled"));
                 filtersImported++;
@@ -794,6 +805,11 @@ public class FilterConfigManager {
 
                 if (filters.has("tidySpeechRemoveEmojis")) {
                     mainEditor.putBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, filters.getBoolean("tidySpeechRemoveEmojis"));
+                    totalImported++;
+                }
+
+                if (filters.has("filterEmptyText")) {
+                    mainEditor.putBoolean(KEY_FILTER_EMPTY_TEXT, filters.getBoolean("filterEmptyText"));
                     totalImported++;
                 }
                 

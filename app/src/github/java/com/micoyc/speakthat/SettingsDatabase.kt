@@ -388,6 +388,17 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "filter_empty_text",
+                title = context.getString(R.string.filter_empty_text_title),
+                description = context.getString(R.string.filter_empty_text_description),
+                category = "filter",
+                categoryTitle = context.getString(R.string.title_filter_settings),
+                categoryIcon = "🔍",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("filter", "empty", "text", "blank", "hollow", "nothing", "speech", "spoken"),
+                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "url_handling",
                 title = "URL Handling",
                 description = "Control how web links are read aloud in notifications",
