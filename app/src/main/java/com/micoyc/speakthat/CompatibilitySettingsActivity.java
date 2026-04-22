@@ -7,15 +7,28 @@
 
 package com.micoyc.speakthat;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.micoyc.speakthat.databinding.ActivityCompatibilitySettingsBinding;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class CompatibilitySettingsActivity extends AppCompatActivity {
     private ActivityCompatibilitySettingsBinding binding;
@@ -38,10 +51,13 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
     private static final String KEY_DISMISSAL_MEMORY_ENABLED = "dismissal_memory_enabled";
     private static final String KEY_DISMISSAL_MEMORY_TIMEOUT = "dismissal_memory_timeout";
     private static final String KEY_MEDIA_FILTERING_ENABLED = "media_filtering_enabled";
+    private static final String KEY_SCO_DEVICES = "sco_devices";
 
     private static final int DEFAULT_AUDIO_USAGE = 0;
     private static final int DEFAULT_CONTENT_TYPE = 0;
     private static final int VOICE_CALL_INDEX = 3;
+
+    private ActivityResultLauncher<String[]> bluetoothPermissionLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +69,24 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
         binding = ActivityCompatibilitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        bluetoothPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestMultiplePermissions(),
+            result -> {
+                boolean allGranted = true;
+                for (Boolean granted : result.values()) {
+                    if (!granted) {
+                        allGranted = false;
+                        break;
+                    }
+                }
+                if (allGranted) {
+                    showScoDeviceSelectionDialog();
+                } else {
+                    Toast.makeText(this, "Bluetooth permissions are required to select devices.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        );
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(R.string.settings_compatibility_title);
@@ -62,6 +96,7 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
 
         isLoadingSettings = true;
         setupAudioRouting();
+        setupScoDeviceSelection();
         setupDuckingCompatibility();
         setupSmartMediaNotificationFilter();
         setupDuplicationWorkarounds();
@@ -146,6 +181,86 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
         if (isLoadingSettings) return;
         voicePrefs.edit().putInt(key, value).apply();
         InAppLogger.log("CompatibilitySettings", key + " saved: " + value);
+    }
+
+    // ========== Card 1.5: Bluetooth SCO Device Selection ==========
+
+    private void setupScoDeviceSelection() {
+        binding.btnScoDeviceSelection.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) {
+                    showScoDeviceSelectionDialog();
+                } else {
+                    bluetoothPermissionLauncher.launch(new String[]{Manifest.permission.BLUETOOTH_CONNECT});
+                }
+            } else {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED) {
+                    showScoDeviceSelectionDialog();
+                } else {
+                    bluetoothPermissionLauncher.launch(new String[]{Manifest.permission.BLUETOOTH});
+                }
+            }
+        });
+    }
+
+    private void showScoDeviceSelectionDialog() {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter == null) {
+            Toast.makeText(this, "Bluetooth is not supported on this device.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? Manifest.permission.BLUETOOTH_CONNECT : Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Missing Bluetooth permissions.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Set<BluetoothDevice> bondedDevices = bluetoothAdapter.getBondedDevices();
+        if (bondedDevices == null || bondedDevices.isEmpty()) {
+            Toast.makeText(this, "No paired Bluetooth devices found.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        List<BluetoothDevice> deviceList = new ArrayList<>(bondedDevices);
+        String[] deviceNames = new String[deviceList.size()];
+        boolean[] checkedItems = new boolean[deviceList.size()];
+        
+        Set<String> savedMacAddresses = voicePrefs.getStringSet(KEY_SCO_DEVICES, new HashSet<>());
+
+        for (int i = 0; i < deviceList.size(); i++) {
+            BluetoothDevice device = deviceList.get(i);
+            String name = device.getName();
+            deviceNames[i] = (name != null && !name.isEmpty()) ? name : device.getAddress();
+            checkedItems[i] = savedMacAddresses.contains(device.getAddress());
+        }
+
+        new MaterialAlertDialogBuilder(this)
+            .setTitle("Select Bluetooth Devices")
+            .setMultiChoiceItems(deviceNames, checkedItems, (dialog, which, isChecked) -> {
+                checkedItems[which] = isChecked;
+            })
+            .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                Set<String> selectedMacAddresses = new HashSet<>();
+                for (int i = 0; i < deviceList.size(); i++) {
+                    if (checkedItems[i]) {
+                        selectedMacAddresses.add(deviceList.get(i).getAddress());
+                    }
+                }
+                voicePrefs.edit().putStringSet(KEY_SCO_DEVICES, selectedMacAddresses).apply();
+                updateScoDevicesSummary();
+                InAppLogger.log("CompatibilitySettings", "Saved " + selectedMacAddresses.size() + " SCO devices.");
+            })
+            .setNegativeButton(android.R.string.cancel, null)
+            .show();
+    }
+
+    private void updateScoDevicesSummary() {
+        Set<String> savedMacAddresses = voicePrefs.getStringSet(KEY_SCO_DEVICES, new HashSet<>());
+        if (savedMacAddresses.isEmpty()) {
+            binding.txtScoDevicesSummary.setText("None");
+        } else {
+            binding.txtScoDevicesSummary.setText(savedMacAddresses.size() + " device(s) selected");
+        }
     }
 
     // ========== Card 2: Ducking Compatibility ==========
@@ -245,6 +360,9 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
         updateSpeakerphoneVisibility(audioUsage);
 
         binding.dontUseSpeakerSwitch.setChecked(mainPrefs.getBoolean(KEY_DONT_USE_SPEAKER, false));
+
+        // SCO Devices
+        updateScoDevicesSummary();
 
         // Ducking Compatibility
         binding.switchDisableMediaFallback.setChecked(mainPrefs.getBoolean(KEY_DISABLE_MEDIA_FALLBACK, false));

@@ -125,6 +125,28 @@ object BluetoothConnectionHelper {
         }
     }
 
+    @JvmStatic
+    fun isCurrentDeviceConfiguredForSco(context: Context): Boolean {
+        val prefs = context.getSharedPreferences("VoiceSettings", Context.MODE_PRIVATE)
+        val scoDevices = prefs.getStringSet("sco_devices", emptySet()) ?: emptySet()
+        
+        if (scoDevices.isEmpty()) {
+            return false
+        }
+
+        val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager ?: return false
+        val activeRoutes = getBluetoothOutputRoutes(audioManager, TAG)
+        
+        for (route in activeRoutes) {
+            if (scoDevices.contains(route.address)) {
+                InAppLogger.logDebug(TAG, "Active route ${route.address} is configured for SCO.")
+                return true
+            }
+        }
+        
+        return false
+    }
+
     private fun getProfilesForDetection(): List<Int> {
         val profiles = mutableListOf(
             BluetoothProfile.A2DP,
