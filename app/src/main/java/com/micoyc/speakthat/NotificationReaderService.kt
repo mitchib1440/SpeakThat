@@ -1421,11 +1421,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 InAppLogger.logSystemEvent("Gmail notification", "ID: ${sbn.id}, Content: '${notificationText.take(50)}...'")
             }
                 
+            val isDeduplicationEnabled = sharedPreferences?.getBoolean("notification_deduplication", true) ?: true
+
             // Group child deduplication: when Android regroups notifications (e.g. a new
             // email arrives and the existing ones get bundled), onNotificationPosted fires
             // again for every child in the group. The 30-second dedup window will have
             // expired by then, so we keep a longer-lived map keyed on content.
-            if (!isSelfTest && notificationText.isNotEmpty()) {
+            if (isDeduplicationEnabled && !isSelfTest && notificationText.isNotEmpty()) {
                 val groupContentKey = generateContentKey(packageName, notificationText)
                 val now = System.currentTimeMillis()
                     
@@ -1465,7 +1467,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 
             // Check for duplicate notifications (only if deduplication is enabled)
             // Skip deduplication for SelfTest notifications
-            val isDeduplicationEnabled = sharedPreferences?.getBoolean("notification_deduplication", true) ?: true
             if (isSelfTest) {
                 Log.d(TAG, "SelfTest notification - bypassing deduplication")
                 InAppLogger.log("SelfTest", "Deduplication bypassed for test notification")
@@ -7164,11 +7165,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 // Handle notification while reading setting change
                 val isNotificationWhileReadingEnabled = sharedPreferences?.getBoolean(KEY_NOTIFICATION_WHILE_READING, false) ?: false
                 Log.d(TAG, "Notification while reading setting updated: $isNotificationWhileReadingEnabled")
-                
+
                 // If TTS is currently speaking, update the notification immediately
                 if (isCurrentlySpeaking) {
                     Log.d(TAG, "TTS is currently speaking, updating notification to reflect new preference")
-                    promoteToForegroundService()
+                    if (isNotificationWhileReadingEnabled) {
+                        promoteToForegroundService()
+                    } else {
+                        stopForegroundService()
+                    }
                 }
             }
             "enable_legacy_ducking" -> {
@@ -7526,7 +7531,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         try {
             // Check if notification while reading is enabled
             val showNotificationWhileReading = sharedPreferences?.getBoolean(KEY_NOTIFICATION_WHILE_READING, false) ?: false
-            
+
+            if (!showNotificationWhileReading) {
+                Log.d(TAG, "Notification while reading is disabled, skipping foreground promotion")
+                return
+            }
+
             // Create foreground notification (detailed or minimal based on preference)
             val foregroundNotification = createForegroundNotification(
                 appName = currentAppName, 
