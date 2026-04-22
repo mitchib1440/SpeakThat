@@ -2595,6 +2595,46 @@
 
                     </LinearLayout>
 
+                    <!-- Prefix Memory Timeout Section -->
+                    <LinearLayout
+                        android:id="@+id/layoutPrefixMemoryTimeout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_advanced_voice_section"
+                        android:padding="16dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/behavior_prefix_memory_timeout_label"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:id="@+id/tvPrefixMemoryTimeoutValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="60 seconds"
+                            android:textSize="16sp"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:layout_marginBottom="8dp" />
+
+                        <com.google.android.material.slider.Slider
+                            android:id="@+id/sliderPrefixMemoryTimeout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:valueFrom="5"
+                            android:valueTo="500"
+                            android:stepSize="1"
+                            android:value="60" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>

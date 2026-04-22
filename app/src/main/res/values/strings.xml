@@ -1792,6 +1792,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="behavior_advanced_features_title">Advanced Features</string>
     <string name="behavior_advanced_features_description">Experimental and power user features</string>
     <string name="behavior_skip_repeated_prefix_title">Skip Repeated Prefix</string>
+    <string name="behavior_prefix_memory_timeout_label">Prefix Memory Timeout</string>
+    <string name="behavior_prefix_memory_timeout_value">%d seconds</string>
 
     <!-- Wave/Shake Sensor Strings -->
     <string name="behavior_current_shake">Current shake: 0.0</string>

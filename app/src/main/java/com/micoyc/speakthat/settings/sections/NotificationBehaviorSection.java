@@ -80,6 +80,22 @@ public class NotificationBehaviorSection implements BehaviorSettingsSection {
                 BehaviorSettingsStore.KEY_SKIP_REPEATED_NOTIFICATION_PREFIX,
                 isChecked
             ).apply();
+            binding.layoutPrefixMemoryTimeout.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        });
+
+        binding.sliderPrefixMemoryTimeout.addOnChangeListener((slider, value, fromUser) -> {
+            if (fromUser) {
+                int timeout = (int) value;
+                binding.tvPrefixMemoryTimeoutValue.setText(
+                    activity.getString(R.string.behavior_prefix_memory_timeout_value, timeout)
+                );
+                if (!store.isInitializing()) {
+                    store.prefs().edit().putInt(
+                        BehaviorSettingsStore.KEY_PREFIX_MEMORY_TIMEOUT,
+                        timeout
+                    ).apply();
+                }
+            }
         });
 
         binding.behaviorModeGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -140,6 +156,16 @@ public class NotificationBehaviorSection implements BehaviorSettingsSection {
             BehaviorSettingsStore.DEFAULT_SKIP_REPEATED_NOTIFICATION_PREFIX
         );
         switchSkipRepeatedNotificationPrefixes.setChecked(skipRepeatedPrefix);
+        binding.layoutPrefixMemoryTimeout.setVisibility(skipRepeatedPrefix ? View.VISIBLE : View.GONE);
+
+        int prefixMemoryTimeout = store.prefs().getInt(
+            BehaviorSettingsStore.KEY_PREFIX_MEMORY_TIMEOUT,
+            BehaviorSettingsStore.DEFAULT_PREFIX_MEMORY_TIMEOUT
+        );
+        binding.sliderPrefixMemoryTimeout.setValue(prefixMemoryTimeout);
+        binding.tvPrefixMemoryTimeoutValue.setText(
+            activity.getString(R.string.behavior_prefix_memory_timeout_value, prefixMemoryTimeout)
+        );
     }
 
     @Override
