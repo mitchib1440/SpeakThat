@@ -98,6 +98,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var priorityApps: Set<String> = emptySet()
     private var notificationBehavior = "interrupt"
     private var skipRepeatedNotificationPrefix = false
+    private var prefixMemoryTimeoutSeconds: Int = 60
+    private var lastPrefixTimestamp: Long = 0L
     private var mediaBehavior = "ignore"
     private var duckingVolume = 30
     private var duckingFallbackStrategy = "manual"
@@ -360,6 +362,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val KEY_NOTIFICATION_BEHAVIOR = "notification_behavior"
         private const val KEY_PRIORITY_APPS = "priority_apps"
         private const val KEY_SKIP_REPEATED_NOTIFICATION_PREFIX = "skip_notification_repeated_prefix"
+        private const val KEY_PREFIX_MEMORY_TIMEOUT = "prefix_memory_timeout_seconds"
         
         // Media behavior settings
         private const val KEY_MEDIA_BEHAVIOR = "media_behavior"
@@ -3124,6 +3127,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         notificationBehavior = sharedPreferences?.getString(KEY_NOTIFICATION_BEHAVIOR, "interrupt") ?: "interrupt"
         priorityApps = HashSet(sharedPreferences?.getStringSet(KEY_PRIORITY_APPS, HashSet()) ?: HashSet())
         skipRepeatedNotificationPrefix = sharedPreferences?.getBoolean(KEY_SKIP_REPEATED_NOTIFICATION_PREFIX, false) ?: false
+        prefixMemoryTimeoutSeconds = sharedPreferences?.getInt(KEY_PREFIX_MEMORY_TIMEOUT, 60) ?: 60
 
         // Load media behavior settings
         mediaBehavior = sharedPreferences?.getString(KEY_MEDIA_BEHAVIOR, "ignore") ?: "ignore"
@@ -6304,13 +6308,74 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             InAppLogger.log("Service", "Added TTS engine failure warning to speech")
         }
         
-        // Check TTS health before attempting to speak
+        // Check if TTS health before attempting to speak
         if (!checkTtsHealth()) {
             Log.e(TAG, "TTS health check failed - cannot speak")
             InAppLogger.logError("Service", "TTS health check failed - cannot speak")
             restoreGlobalVoiceSettingsIfNeeded("tts health check failed")
             releaseSpeechWakeLock()
             return
+        }
+        
+        // Don't Use Speaker check
+        val mainPrefs = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE)
+        if (mainPrefs.getBoolean("dont_use_speaker", false)) {
+            try {
+                val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+                val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4)
+                val contentTypeIndex = voicePrefs.getInt("content_type", 0)
+                
+                val ttsUsage = when (ttsUsageIndex) {
+                    0 -> android.media.AudioAttributes.USAGE_MEDIA
+                    1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
+                    2 -> android.media.AudioAttributes.USAGE_ALARM
+                    3 -> android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION
+                    4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+                    else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+                }
+                
+                val contentType = when (contentTypeIndex) {
+                    0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                    1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                    2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                    3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                    else -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                }
+                
+                val audioAttributes = android.media.AudioAttributes.Builder()
+                    .setUsage(ttsUsage)
+                    .setContentType(contentType)
+                    .build()
+                
+                val audioFormat = android.media.AudioFormat.Builder()
+                    .setEncoding(android.media.AudioFormat.ENCODING_PCM_16BIT)
+                    .setSampleRate(44100)
+                    .setChannelMask(android.media.AudioFormat.CHANNEL_OUT_MONO)
+                    .build()
+                
+                val audioTrack = android.media.AudioTrack.Builder()
+                    .setAudioAttributes(audioAttributes)
+                    .setAudioFormat(audioFormat)
+                    .setBufferSizeInBytes(android.media.AudioTrack.getMinBufferSize(44100, android.media.AudioFormat.CHANNEL_OUT_MONO, android.media.AudioFormat.ENCODING_PCM_16BIT))
+                    .setTransferMode(android.media.AudioTrack.MODE_STREAM)
+                    .build()
+                
+                val routedDevice = audioTrack.routedDevice
+                val isSpeaker = routedDevice?.type == android.media.AudioDeviceInfo.TYPE_BUILTIN_SPEAKER
+                
+                audioTrack.release()
+                
+                if (isSpeaker) {
+                    Log.d(TAG, "Don't Use Speaker enabled and audio routed to built-in speaker. Aborting readout.")
+                    InAppLogger.log("Service", "Don't Use Speaker enabled and audio routed to built-in speaker. Aborting readout.")
+                    restoreGlobalVoiceSettingsIfNeeded("don't use speaker")
+                    releaseSpeechWakeLock()
+                    return
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error checking audio routing for Don't Use Speaker", e)
+                InAppLogger.logError("Service", "Error checking audio routing for Don't Use Speaker: ${e.message}")
+            }
         }
         
         isCurrentlySpeaking = true
@@ -7045,6 +7110,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 Log.d(TAG, "Skip repeated prefix notification setting updated: $skipRepeatedNotificationPrefix")
                 InAppLogger.log("Service", "Skip repeated prefix notification setting updated: $skipRepeatedNotificationPrefix")
             }
+            KEY_PREFIX_MEMORY_TIMEOUT -> {
+                prefixMemoryTimeoutSeconds = sharedPreferences?.getInt(KEY_PREFIX_MEMORY_TIMEOUT, 60) ?: 60
+                Log.d(TAG, "Prefix memory timeout setting updated: $prefixMemoryTimeoutSeconds")
+                InAppLogger.log("Service", "Prefix memory timeout setting updated: $prefixMemoryTimeoutSeconds")
+            }
             KEY_MEDIA_BEHAVIOR, KEY_DUCKING_VOLUME, KEY_DUCKING_FALLBACK_STRATEGY -> {
                 // Reload media behavior settings
                 mediaBehavior = sharedPreferences?.getString(KEY_MEDIA_BEHAVIOR, "ignore") ?: "ignore"
@@ -7347,6 +7417,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (!skipRepeatedNotificationPrefix) {
             return fullText
         }
+        
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastPrefixTimestamp > prefixMemoryTimeoutSeconds * 1000L) {
+            lastFullNotificationSpeechText = null
+        }
+        lastPrefixTimestamp = currentTime
+
         val previousText = lastFullNotificationSpeechText?.trim() ?: return fullText
         val currentText = fullText.trim()
         if (previousText.isEmpty() || currentText.isEmpty()) {

@@ -685,6 +685,17 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "dont_use_speaker",
+                title = "Don't Use Speaker",
+                description = "Abort the readout if speech will be routed through device speakers",
+                category = "compatibility",
+                categoryTitle = "Compatibility Settings",
+                categoryIcon = "🔧",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("speaker", "audio", "output", "abort", "prevent", "privacy", "quiet"),
+                navigationAction = { context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "disable_media_fallback",
                 title = "Disable Media Fallback",
                 description = "Disable media playback fallback mechanisms",

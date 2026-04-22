@@ -163,6 +163,7 @@ public class FilterConfigManager {
         public boolean persistentNotification; // Add persistent notification setting
         public boolean notificationWhileReading; // Add notification while reading setting
         public boolean skipRepeatedNotificationPrefix;
+        public int prefixMemoryTimeoutSeconds;
         public boolean waveToStopEnabled;
         public int waveTimeoutSeconds;
         public long waveHoldDurationMs; // Wave hold duration in milliseconds
@@ -179,6 +180,7 @@ public class FilterConfigManager {
         public int dismissalMemoryTimeout;
         public boolean disableMediaFallback;
         public boolean enableLegacyDucking;
+        public boolean dontUseSpeaker; // NEW
         public String earconMode;
         
         public BehaviorConfig() {
@@ -199,6 +201,7 @@ public class FilterConfigManager {
             this.persistentNotification = false; // Default to false
             this.notificationWhileReading = false; // Default to false
             this.skipRepeatedNotificationPrefix = false; // Default to false
+            this.prefixMemoryTimeoutSeconds = 60; // Default to 60 seconds
             this.waveToStopEnabled = false;
             this.waveTimeoutSeconds = 30;
             this.waveHoldDurationMs = 150; // Default wave hold duration
@@ -215,6 +218,7 @@ public class FilterConfigManager {
             this.dismissalMemoryTimeout = 15;
             this.disableMediaFallback = false;
             this.enableLegacyDucking = false;
+            this.dontUseSpeaker = false; // NEW
             this.earconMode = BehaviorSettingsStore.EARCON_NONE;
         }
     }
@@ -402,6 +406,7 @@ public class FilterConfigManager {
         config.behavior.persistentNotification = prefs.getBoolean("persistent_notification", false); // Add persistent notification
         config.behavior.notificationWhileReading = prefs.getBoolean("notification_while_reading", false); // Add notification while reading
         config.behavior.skipRepeatedNotificationPrefix = prefs.getBoolean("skip_notification_repeated_prefix", false);
+        config.behavior.prefixMemoryTimeoutSeconds = prefs.getInt("prefix_memory_timeout_seconds", 60);
         config.behavior.waveToStopEnabled = prefs.getBoolean("wave_to_stop_enabled", false);
         config.behavior.waveTimeoutSeconds = prefs.getInt("wave_timeout_seconds", 30);
         config.behavior.waveHoldDurationMs = prefs.getInt("wave_hold_duration_ms", 150); // Read as int, auto-converts to long
@@ -418,6 +423,7 @@ public class FilterConfigManager {
         config.behavior.dismissalMemoryTimeout = prefs.getInt("dismissal_memory_timeout", 15);
         config.behavior.disableMediaFallback = prefs.getBoolean("disable_media_fallback", false);
         config.behavior.enableLegacyDucking = prefs.getBoolean("enable_legacy_ducking", false);
+        config.behavior.dontUseSpeaker = prefs.getBoolean("dont_use_speaker", false); // NEW
         
         // Load general settings
         config.general.darkMode = prefs.getBoolean("dark_mode", true);
@@ -508,6 +514,7 @@ public class FilterConfigManager {
         behavior.put("persistentNotification", config.behavior.persistentNotification); // Add persistent notification
         behavior.put("notificationWhileReading", config.behavior.notificationWhileReading); // Add notification while reading
         behavior.put("skipRepeatedNotificationPrefix", config.behavior.skipRepeatedNotificationPrefix);
+        behavior.put("prefixMemoryTimeoutSeconds", config.behavior.prefixMemoryTimeoutSeconds);
         behavior.put("waveToStopEnabled", config.behavior.waveToStopEnabled);
         behavior.put("waveTimeoutSeconds", config.behavior.waveTimeoutSeconds);
         behavior.put("waveHoldDurationMs", (int) config.behavior.waveHoldDurationMs); // Cast long to int for JSON
@@ -524,6 +531,7 @@ public class FilterConfigManager {
         behavior.put("dismissalMemoryTimeout", config.behavior.dismissalMemoryTimeout);
         behavior.put("disableMediaFallback", config.behavior.disableMediaFallback);
         behavior.put("enableLegacyDucking", config.behavior.enableLegacyDucking);
+        behavior.put("dontUseSpeaker", config.behavior.dontUseSpeaker); // NEW
         json.put("behavior", behavior);
         
         // General settings
@@ -1037,6 +1045,16 @@ public class FilterConfigManager {
                     mainEditor.putBoolean("skip_notification_repeated_prefix", behavior.getBoolean("skipRepeatedNotificationPrefix"));
                     totalImported++;
                 }
+
+                if (behavior.has("prefixMemoryTimeoutSeconds")) {
+                    int timeout = behavior.getInt("prefixMemoryTimeoutSeconds");
+                    if (timeout < 5 || timeout > 500) {
+                        timeout = 60;
+                        InAppLogger.log("FilterConfig", "Invalid prefix memory timeout imported, reset to 60 seconds");
+                    }
+                    mainEditor.putInt("prefix_memory_timeout_seconds", timeout);
+                    totalImported++;
+                }
                 
                 if (behavior.has("waveToStopEnabled")) {
                     mainEditor.putBoolean("wave_to_stop_enabled", behavior.getBoolean("waveToStopEnabled"));
@@ -1132,6 +1150,11 @@ public class FilterConfigManager {
                 
                 if (behavior.has("enableLegacyDucking")) {
                     mainEditor.putBoolean("enable_legacy_ducking", behavior.getBoolean("enableLegacyDucking"));
+                    totalImported++;
+                }
+
+                if (behavior.has("dontUseSpeaker")) {
+                    mainEditor.putBoolean("dont_use_speaker", behavior.getBoolean("dontUseSpeaker"));
                     totalImported++;
                 }
             }

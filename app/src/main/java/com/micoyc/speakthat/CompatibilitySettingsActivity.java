@@ -30,6 +30,7 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
     private static final String KEY_AUDIO_USAGE = "audio_usage";
     private static final String KEY_CONTENT_TYPE = "content_type";
     private static final String KEY_SPEAKERPHONE_ENABLED = "speakerphone_enabled";
+    private static final String KEY_DONT_USE_SPEAKER = "dont_use_speaker";
     private static final String KEY_DISABLE_MEDIA_FALLBACK = "disable_media_fallback";
     private static final String KEY_ENABLE_LEGACY_DUCKING = "enable_legacy_ducking";
     private static final String KEY_DUCKING_FALLBACK_STRATEGY = "ducking_fallback_strategy";
@@ -123,6 +124,13 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
             if (!isLoadingSettings) {
                 voicePrefs.edit().putBoolean(KEY_SPEAKERPHONE_ENABLED, isChecked).apply();
                 InAppLogger.log("CompatibilitySettings", "Speakerphone " + (isChecked ? "enabled" : "disabled"));
+            }
+        });
+
+        binding.dontUseSpeakerSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!isLoadingSettings) {
+                mainPrefs.edit().putBoolean(KEY_DONT_USE_SPEAKER, isChecked).apply();
+                InAppLogger.log("CompatibilitySettings", "Don't Use Speaker " + (isChecked ? "enabled" : "disabled"));
             }
         });
 
@@ -235,6 +243,8 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
 
         binding.speakerphoneSwitch.setChecked(voicePrefs.getBoolean(KEY_SPEAKERPHONE_ENABLED, false));
         updateSpeakerphoneVisibility(audioUsage);
+
+        binding.dontUseSpeakerSwitch.setChecked(mainPrefs.getBoolean(KEY_DONT_USE_SPEAKER, false));
 
         // Ducking Compatibility
         binding.switchDisableMediaFallback.setChecked(mainPrefs.getBoolean(KEY_DISABLE_MEDIA_FALLBACK, false));
