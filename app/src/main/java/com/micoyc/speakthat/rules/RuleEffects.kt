@@ -26,6 +26,12 @@ sealed class Effect {
     data class SetMediaBehavior(val mode: MediaBehavior) : Effect()
     data class SetGestureEnabled(val gesture: Gesture, val enabled: Boolean) : Effect()
     data class SetMasterSwitch(val enabled: Boolean) : Effect()
+    data class OverrideContentCap(
+        val mode: String,
+        val wordCount: Int,
+        val sentenceCount: Int,
+        val timeLimit: Int
+    ) : Effect()
 }
 
 data class EvaluationOutcome(

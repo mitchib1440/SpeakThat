@@ -579,7 +579,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val sbn: StatusBarNotification? = null,
         val originalAppName: String? = null, // Original app name for statistics (before privacy modification)
         val speechTemplateOverride: SpeechTemplateOverride? = null,
-        val voiceOverride: VoiceOverride? = null
+        val voiceOverride: VoiceOverride? = null,
+        val contentCapOverride: ContentCapOverride? = null
     )
     
     override fun onCreate() {
@@ -1739,7 +1740,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         filterResult.conditionalDelaySeconds,
                         sbn,
                         filterResult.speechTemplateOverride,
-                        filterResult.voiceOverride
+                        filterResult.voiceOverride,
+                        filterResult.contentCapOverride
                     )
                 } else {
                     // Always log the full blocking reason with details
@@ -3184,7 +3186,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val reason: String = "",
         val conditionalDelaySeconds: Int = -1, // -1 means no conditional delay
         val speechTemplateOverride: SpeechTemplateOverride? = null,
-        val voiceOverride: VoiceOverride? = null
+        val voiceOverride: VoiceOverride? = null,
+        val contentCapOverride: ContentCapOverride? = null
     )
 
     data class SpeechTemplateOverride(
@@ -3195,6 +3198,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     data class VoiceOverride(
         val language: String,
         val voiceName: String? = null
+    )
+
+    data class ContentCapOverride(
+        val mode: String,
+        val wordCount: Int,
+        val sentenceCount: Int,
+        val timeLimit: Int
     )
     
     /**
@@ -3286,11 +3296,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             .filterIsInstance<com.micoyc.speakthat.rules.Effect.OverrideTtsVoice>()
             .lastOrNull()
             ?.let { VoiceOverride(language = it.language, voiceName = it.voiceName) }
+        val contentCapEffect = effects
+            .filterIsInstance<com.micoyc.speakthat.rules.Effect.OverrideContentCap>()
+            .lastOrNull()
+        val contentCapOverride = contentCapEffect?.let {
+            ContentCapOverride(it.mode, it.wordCount, it.sentenceCount, it.timeLimit)
+        }
 
         val effectiveOverridePrivate = overridePrivate || isSystemEvent
 
         // 6. Apply word filtering and replacements (optionally overriding private mode)
-        val wordFilterResult = applyWordFiltering(text, appName, packageName, effectiveOverridePrivate)
+        val wordFilterResult = applyWordFiltering(text, appName, packageName, effectiveOverridePrivate, contentCapOverride)
         if (!wordFilterResult.shouldSpeak) {
             return wordFilterResult
         }
@@ -3322,7 +3338,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             processedText = processedText,
             reason = "Passed all filters",
             speechTemplateOverride = effectiveSpeechTemplateOverride,
-            voiceOverride = voiceOverride
+            voiceOverride = voiceOverride,
+            contentCapOverride = contentCapOverride
         )
     }
     
@@ -3424,7 +3441,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         text: String,
         appName: String,
         packageName: String = "",
-        overridePrivate: Boolean = false
+        overridePrivate: Boolean = false,
+        contentCapOverride: ContentCapOverride? = null
     ): FilterResult {
         var processedText = text
         
@@ -3556,16 +3574,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         // 5. Apply Content Cap (only for non-private notifications)
+        val effectiveContentCapMode = contentCapOverride?.mode ?: contentCapMode
+        val effectiveWordCount = contentCapOverride?.wordCount ?: contentCapWordCount
+        val effectiveSentenceCount = contentCapOverride?.sentenceCount ?: contentCapSentenceCount
+        val effectiveTimeLimit = contentCapOverride?.timeLimit ?: contentCapTimeLimit
+
         if (InAppLogger.verboseMode) {
-            Log.d(TAG, "=== CONTENT CAP DEBUG: About to check content cap - mode=$contentCapMode ===")
-            InAppLogger.logFilter("=== CONTENT CAP CHECK: mode=$contentCapMode ===")
+            Log.d(TAG, "=== CONTENT CAP DEBUG: About to check content cap - mode=$effectiveContentCapMode ===")
+            InAppLogger.logFilter("=== CONTENT CAP CHECK: mode=$effectiveContentCapMode ===")
         }
-        if (contentCapMode != "disabled") {
+        if (effectiveContentCapMode != "disabled") {
             if (InAppLogger.verboseMode) {
                 Log.d(TAG, "=== CONTENT CAP DEBUG: Content cap IS enabled, calling applyContentCap() ===")
-                InAppLogger.logFilter("Content cap ENABLED ($contentCapMode) - calling applyContentCap()")
+                InAppLogger.logFilter("Content cap ENABLED ($effectiveContentCapMode) - calling applyContentCap()")
             }
-            processedText = applyContentCap(processedText)
+            processedText = applyContentCap(processedText, effectiveContentCapMode, effectiveWordCount, effectiveSentenceCount, effectiveTimeLimit)
             if (InAppLogger.verboseMode) {
                 InAppLogger.logFilter("Content cap processing completed")
             }
@@ -3677,13 +3700,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * Apply Content Cap to limit notification length
      * Supports word count, sentence count, and time limit modes
      */
-    private fun applyContentCap(text: String): String {
+    private fun applyContentCap(
+        text: String,
+        mode: String = this.contentCapMode,
+        wordCount: Int = this.contentCapWordCount,
+        sentenceCount: Int = this.contentCapSentenceCount,
+        timeLimit: Int = this.contentCapTimeLimit
+    ): String {
         // Only log detailed content cap info in verbose mode to reduce noise
         if (InAppLogger.verboseMode) {
             Log.d(TAG, "=== CONTENT CAP DEBUG: applyContentCap() called ===")
             InAppLogger.log("Service", "=== APPLY CONTENT CAP CALLED ===")
-            Log.d(TAG, "Content Cap mode: $contentCapMode, wordCount: $contentCapWordCount, sentenceCount: $contentCapSentenceCount")
-            InAppLogger.log("Service", "Content Cap settings: mode=$contentCapMode, words=$contentCapWordCount, sentences=$contentCapSentenceCount")
+            Log.d(TAG, "Content Cap mode: $mode, wordCount: $wordCount, sentenceCount: $sentenceCount")
+            InAppLogger.log("Service", "Content Cap settings: mode=$mode, words=$wordCount, sentences=$sentenceCount")
             Log.d(TAG, "Input text: '$text'")
             InAppLogger.log("Service", "Input text length: ${text.length} chars")
         }
@@ -3696,7 +3725,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         // Early return for disabled mode - zero processing overhead
-        if (contentCapMode == "disabled") {
+        if (mode == "disabled") {
             if (InAppLogger.verboseMode) {
                 Log.d(TAG, "Content Cap disabled, returning original text")
                 InAppLogger.log("Service", "Content Cap: Mode is disabled, skipping")
@@ -3705,20 +3734,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         val originalLength = text.length
-        val result = when (contentCapMode) {
+        val result = when (mode) {
             "words" -> {
                 if (InAppLogger.verboseMode) {
                     Log.d(TAG, "Applying word cap...")
                     InAppLogger.log("Service", "Applying WORD cap...")
                 }
-                applyWordCap(text)
+                applyWordCap(text, wordCount)
             }
             "sentences" -> {
                 if (InAppLogger.verboseMode) {
                     Log.d(TAG, "Applying sentence cap...")
                     InAppLogger.log("Service", "Applying SENTENCE cap...")
                 }
-                applySentenceCap(text)
+                applySentenceCap(text, sentenceCount)
             }
             "time" -> {
                 if (InAppLogger.verboseMode) {
@@ -3727,7 +3756,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 text // Time cap is handled in TTS layer, not text processing
             }
             else -> {
-                Log.w(TAG, "Unknown content cap mode: $contentCapMode, returning original text")
+                Log.w(TAG, "Unknown content cap mode: $mode, returning original text")
                 text
             }
         }
@@ -3737,8 +3766,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Log content cap application (only when changes are made or in verbose mode)
         if (safeResult != text) {
-            Log.d(TAG, "Content Cap applied (mode=$contentCapMode): Original=${originalLength} chars, Capped=${safeResult.length} chars")
-            InAppLogger.log("Service", "Content Cap applied (mode=$contentCapMode): ${originalLength} chars → ${safeResult.length} chars")
+            Log.d(TAG, "Content Cap applied (mode=$mode): Original=${originalLength} chars, Capped=${safeResult.length} chars")
+            InAppLogger.log("Service", "Content Cap applied (mode=$mode): ${originalLength} chars → ${safeResult.length} chars")
         } else if (InAppLogger.verboseMode) {
             Log.d(TAG, "Content Cap: No change needed (text within limit)")
         }
@@ -3753,18 +3782,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * Apply word count limit
      * Splits text by whitespace and takes first N words
      */
-    private fun applyWordCap(text: String): String {
+    private fun applyWordCap(text: String, wordCount: Int): String {
         val words = text.split("\\s+".toRegex())
         
         // If text has fewer words than limit, return original
-        if (words.size <= contentCapWordCount) {
-            Log.d(TAG, "Word cap: Text has ${words.size} words, limit is $contentCapWordCount - no cap needed")
+        if (words.size <= wordCount) {
+            Log.d(TAG, "Word cap: Text has ${words.size} words, limit is $wordCount - no cap needed")
             return text
         }
         
-        val cappedText = words.take(contentCapWordCount).joinToString(" ")
-        Log.d(TAG, "Word cap applied: ${words.size} words → $contentCapWordCount words")
-        InAppLogger.log("Service", "Word cap applied: ${words.size} words → $contentCapWordCount words")
+        val cappedText = words.take(wordCount).joinToString(" ")
+        Log.d(TAG, "Word cap applied: ${words.size} words → $wordCount words")
+        InAppLogger.log("Service", "Word cap applied: ${words.size} words → $wordCount words")
         
         return cappedText
     }
@@ -3773,11 +3802,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * Apply sentence count limit
      * Uses BreakIterator for proper international sentence detection
      */
-    private fun applySentenceCap(text: String): String {
+    private fun applySentenceCap(text: String, sentenceCountLimit: Int): String {
         try {
             InAppLogger.log("Service", "=== SENTENCE CAP START ===")
             InAppLogger.log("Service", "Text to cap: ${text.take(100)}... (${text.length} chars)")
-            InAppLogger.log("Service", "Sentence limit: $contentCapSentenceCount")
+            InAppLogger.log("Service", "Sentence limit: $sentenceCountLimit")
             
             // Use BreakIterator for proper sentence boundary detection
             // This handles international punctuation and line breaks correctly
@@ -3789,7 +3818,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             var start = iterator.first()
             
             InAppLogger.log("Service", "Starting sentence detection loop...")
-            while (start != java.text.BreakIterator.DONE && sentenceCount < contentCapSentenceCount) {
+            while (start != java.text.BreakIterator.DONE && sentenceCount < sentenceCountLimit) {
                 val end = iterator.next()
                 InAppLogger.log("Service", "Loop iteration: sentenceCount=$sentenceCount, start=$start, end=$end")
                 if (end == java.text.BreakIterator.DONE) {
@@ -3806,9 +3835,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             InAppLogger.log("Service", "Loop complete: sentenceCount=$sentenceCount, endIndex=$endIndex, textLength=${text.length}")
             
             // If text has fewer sentences than limit, return original
-            if (sentenceCount <= contentCapSentenceCount && endIndex >= text.length) {
-                Log.d(TAG, "Sentence cap: Text has $sentenceCount sentences, limit is $contentCapSentenceCount - no cap needed")
-                InAppLogger.log("Service", "Sentence cap: NO CAP NEEDED - Text has $sentenceCount sentences (limit: $contentCapSentenceCount)")
+            if (sentenceCount <= sentenceCountLimit && endIndex >= text.length) {
+                Log.d(TAG, "Sentence cap: Text has $sentenceCount sentences, limit is $sentenceCountLimit - no cap needed")
+                InAppLogger.log("Service", "Sentence cap: NO CAP NEEDED - Text has $sentenceCount sentences (limit: $sentenceCountLimit)")
                 return text
             }
             
@@ -6085,7 +6114,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         conditionalDelaySeconds: Int = -1,
         sbn: StatusBarNotification? = null,
         speechTemplateOverride: SpeechTemplateOverride? = null,
-        voiceOverride: VoiceOverride? = null
+        voiceOverride: VoiceOverride? = null,
+        contentCapOverride: ContentCapOverride? = null
     ) {
         val isPriorityApp = priorityApps.contains(packageName)
         
@@ -6099,7 +6129,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             sbn = sbn,
             originalAppName = originalAppName,
             speechTemplateOverride = speechTemplateOverride,
-            voiceOverride = voiceOverride
+            voiceOverride = voiceOverride,
+            contentCapOverride = contentCapOverride
         )
         
         Log.d(TAG, "Handling notification behavior - Mode: $notificationBehavior, App: $appName, Currently speaking: $isCurrentlySpeaking, Queue size: ${notificationQueue.size}")
@@ -6121,7 +6152,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         when (notificationBehavior) {
             "interrupt" -> {
                 Log.d(TAG, "INTERRUPT mode: Speaking immediately and interrupting any current speech")
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride)
             }
             "queue" -> {
                 Log.d(TAG, "QUEUE mode: Adding to queue")
@@ -6132,7 +6163,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "skip" -> {
                 if (!isCurrentlySpeaking) {
                     Log.d(TAG, "SKIP mode: Not currently speaking, will speak now")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride)
                 } else {
                     Log.d(TAG, "SKIP mode: Currently speaking, skipping notification from $appName")
                     // Track filter reason
@@ -6146,7 +6177,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "smart" -> {
                 if (isPriorityApp) {
                     Log.d(TAG, "SMART mode: Priority app $appName - interrupting")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride)
                 } else {
                     Log.d(TAG, "SMART mode: Regular app $appName - adding to queue")
                     notificationQueue.add(queuedNotification)
@@ -6155,7 +6186,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             else -> {
                 Log.d(TAG, "UNKNOWN mode '$notificationBehavior': Defaulting to interrupt")
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride)
             }
         }
     }
@@ -6178,6 +6209,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 queuedNotification.originalAppName,
                 queuedNotification.speechTemplateOverride,
                 queuedNotification.voiceOverride,
+                queuedNotification.contentCapOverride,
                 ttsFlushIncoming = false
             )
         } else if (isCurrentlySpeaking) {
@@ -6195,6 +6227,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         originalAppName: String? = null,
         speechTemplateOverride: SpeechTemplateOverride? = null,
         voiceOverride: VoiceOverride? = null,
+        contentCapOverride: ContentCapOverride? = null,
         ttsFlushIncoming: Boolean = true
     ) {
         if (!isTtsInitialized || textToSpeech == null) {
@@ -6221,7 +6254,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                             text.startsWith("Du hast eine private Benachrichtigung von")) {
             text // Private messages already include the app name, so don't add prefix
         } else {
-            formatSpeechText(appName, text, packageName, sbn, speechTemplateOverride)
+            formatSpeechText(appName, text, packageName, sbn, speechTemplateOverride, contentCapOverride)
         }
 
         val collapsedSpeechText = collapseRepeatedNotificationPrefix(speechText)
@@ -7335,7 +7368,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         text: String,
         packageName: String,
         sbn: StatusBarNotification?,
-        speechTemplateOverride: SpeechTemplateOverride? = null
+        speechTemplateOverride: SpeechTemplateOverride? = null,
+        contentCapOverride: ContentCapOverride? = null
     ): String {
         // Extract notification components from StatusBarNotification if available
         // IMPORTANT: Apply Content Cap to all extracted fields to ensure consistent capping behavior
@@ -7360,12 +7394,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Apply Content Cap to all notification text fields to ensure consistent behavior
         // This ensures Content Cap works regardless of which template placeholders are used
-        val title = if (contentCapMode != "disabled" && urlProcessedTitle.isNotEmpty()) applyContentCap(urlProcessedTitle) else urlProcessedTitle
-        val notificationText = if (contentCapMode != "disabled" && urlProcessedNotificationText.isNotEmpty()) applyContentCap(urlProcessedNotificationText) else urlProcessedNotificationText
-        val bigText = if (contentCapMode != "disabled" && urlProcessedBigText.isNotEmpty()) applyContentCap(urlProcessedBigText) else urlProcessedBigText
-        val summaryText = if (contentCapMode != "disabled" && urlProcessedSummaryText.isNotEmpty()) applyContentCap(urlProcessedSummaryText) else urlProcessedSummaryText
-        val infoText = if (contentCapMode != "disabled" && urlProcessedInfoText.isNotEmpty()) applyContentCap(urlProcessedInfoText) else urlProcessedInfoText
-        val tickerText = if (contentCapMode != "disabled" && urlProcessedTickerText.isNotEmpty()) applyContentCap(urlProcessedTickerText) else urlProcessedTickerText
+        val effectiveContentCapMode = contentCapOverride?.mode ?: contentCapMode
+        val effectiveWordCount = contentCapOverride?.wordCount ?: contentCapWordCount
+        val effectiveSentenceCount = contentCapOverride?.sentenceCount ?: contentCapSentenceCount
+        val effectiveTimeLimit = contentCapOverride?.timeLimit ?: contentCapTimeLimit
+
+        val title = if (effectiveContentCapMode != "disabled" && urlProcessedTitle.isNotEmpty()) applyContentCap(urlProcessedTitle, effectiveContentCapMode, effectiveWordCount, effectiveSentenceCount, effectiveTimeLimit) else urlProcessedTitle
+        val notificationText = if (effectiveContentCapMode != "disabled" && urlProcessedNotificationText.isNotEmpty()) applyContentCap(urlProcessedNotificationText, effectiveContentCapMode, effectiveWordCount, effectiveSentenceCount, effectiveTimeLimit) else urlProcessedNotificationText
+        val bigText = if (effectiveContentCapMode != "disabled" && urlProcessedBigText.isNotEmpty()) applyContentCap(urlProcessedBigText, effectiveContentCapMode, effectiveWordCount, effectiveSentenceCount, effectiveTimeLimit) else urlProcessedBigText
+        val summaryText = if (effectiveContentCapMode != "disabled" && urlProcessedSummaryText.isNotEmpty()) applyContentCap(urlProcessedSummaryText, effectiveContentCapMode, effectiveWordCount, effectiveSentenceCount, effectiveTimeLimit) else urlProcessedSummaryText
+        val infoText = if (effectiveContentCapMode != "disabled" && urlProcessedInfoText.isNotEmpty()) applyContentCap(urlProcessedInfoText, effectiveContentCapMode, effectiveWordCount, effectiveSentenceCount, effectiveTimeLimit) else urlProcessedInfoText
+        val tickerText = if (effectiveContentCapMode != "disabled" && urlProcessedTickerText.isNotEmpty()) applyContentCap(urlProcessedTickerText, effectiveContentCapMode, effectiveWordCount, effectiveSentenceCount, effectiveTimeLimit) else urlProcessedTickerText
         
         // Get current time and date
         val time = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())

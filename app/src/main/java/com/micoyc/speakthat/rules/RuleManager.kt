@@ -365,6 +365,13 @@ class RuleManager(private val context: Context) {
                     val enabled = action.data["enabled"] as? Boolean ?: false
                     Effect.SetMasterSwitch(enabled)
                 }
+                ActionType.OVERRIDE_CONTENT_CAP -> {
+                    val mode = action.data["mode"] as? String ?: "disabled"
+                    val wordCount = (action.data["word_count"] as? Number)?.toInt() ?: 10
+                    val sentenceCount = (action.data["sentence_count"] as? Number)?.toInt() ?: 2
+                    val timeLimit = (action.data["time_limit"] as? Number)?.toInt() ?: 10
+                    Effect.OverrideContentCap(mode, wordCount, sentenceCount, timeLimit)
+                }
             }
         }
     }
@@ -408,6 +415,11 @@ class RuleManager(private val context: Context) {
         if (gestureUpdates.isNotEmpty()) {
             val lastByGesture = gestureUpdates.associateBy { it.gesture }.values
             aggregated.addAll(lastByGesture)
+        }
+
+        val contentCapOverride = effects.filterIsInstance<Effect.OverrideContentCap>().lastOrNull()
+        if (contentCapOverride != null) {
+            aggregated.add(contentCapOverride)
         }
 
         return aggregated
@@ -791,6 +803,12 @@ class RuleManager(private val context: Context) {
             ActionType.SET_MASTER_SWITCH -> {
                 if (action.data["enabled"] !is Boolean) {
                     errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_master_switch))
+                }
+            }
+            ActionType.OVERRIDE_CONTENT_CAP -> {
+                val mode = action.data["mode"] as? String
+                if (mode !in setOf("disabled", "words", "sentences", "time")) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_content_cap_mode))
                 }
             }
             ActionType.SKIP_NOTIFICATION,

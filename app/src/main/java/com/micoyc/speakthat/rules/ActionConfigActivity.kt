@@ -106,6 +106,8 @@ class ActionConfigActivity : AppCompatActivity() {
             setupForcePrivateUI()
         } else if (actionType == ActionType.OVERRIDE_PRIVATE) {
             setupOverridePrivateUI()
+        } else if (actionType == ActionType.OVERRIDE_CONTENT_CAP) {
+            setupOverrideContentCapUI()
         } else {
             InAppLogger.logError("ActionConfigActivity", "Unknown action type: $actionType")
             finish()
@@ -287,6 +289,37 @@ class ActionConfigActivity : AppCompatActivity() {
         binding.textOverridePrivateInfo.text = getString(R.string.action_override_private_description)
     }
 
+    private fun setupOverrideContentCapUI() {
+        binding.cardOverrideContentCap.visibility = View.VISIBLE
+        
+        binding.contentCapModeGroup.setOnCheckedChangeListener { _, checkedId ->
+            binding.contentCapWordSection.visibility = View.GONE
+            binding.contentCapSentenceSection.visibility = View.GONE
+            binding.contentCapTimeSection.visibility = View.GONE
+
+            when (checkedId) {
+                R.id.radioContentCapWords -> binding.contentCapWordSection.visibility = View.VISIBLE
+                R.id.radioContentCapSentences -> binding.contentCapSentenceSection.visibility = View.VISIBLE
+                R.id.radioContentCapTime -> binding.contentCapTimeSection.visibility = View.VISIBLE
+            }
+        }
+
+        binding.sliderContentCapWordCount.addOnChangeListener { _, value, _ ->
+            binding.tvContentCapWordCountValue.text = getString(R.string.content_cap_word_count_value, value.toInt())
+        }
+
+        binding.sliderContentCapSentenceCount.addOnChangeListener { _, value, _ ->
+            binding.tvContentCapSentenceCountValue.text = getString(R.string.content_cap_sentence_count_value, value.toInt())
+        }
+
+        binding.sliderContentCapTimeLimit.addOnChangeListener { _, value, _ ->
+            binding.tvContentCapTimeLimitValue.text = getString(R.string.content_cap_time_limit_value, value.toInt())
+        }
+
+        // Default to disabled
+        binding.radioContentCapDisabled.isChecked = true
+    }
+
     private fun setupPlaceholderList() {
         val placeholders = listOf(
             PlaceholderItem(R.string.speech_placeholder_app_label, R.string.speech_placeholder_app_desc),
@@ -398,6 +431,22 @@ class ActionConfigActivity : AppCompatActivity() {
                 pendingOverrideVoiceSelection = savedVoiceName
                 ensureVoiceOverrideTts()
             }
+        } else if (actionType == ActionType.OVERRIDE_CONTENT_CAP) {
+            val mode = originalAction?.data?.get("mode") as? String ?: "disabled"
+            val wordCount = (originalAction?.data?.get("word_count") as? Number)?.toInt() ?: 6
+            val sentenceCount = (originalAction?.data?.get("sentence_count") as? Number)?.toInt() ?: 1
+            val timeLimit = (originalAction?.data?.get("time_limit") as? Number)?.toInt() ?: 10
+
+            when (mode) {
+                "words" -> binding.radioContentCapWords.isChecked = true
+                "sentences" -> binding.radioContentCapSentences.isChecked = true
+                "time" -> binding.radioContentCapTime.isChecked = true
+                else -> binding.radioContentCapDisabled.isChecked = true
+            }
+
+            binding.sliderContentCapWordCount.value = wordCount.toFloat()
+            binding.sliderContentCapSentenceCount.value = sentenceCount.toFloat()
+            binding.sliderContentCapTimeLimit.value = timeLimit.toFloat()
         }
     }
 
@@ -407,6 +456,7 @@ class ActionConfigActivity : AppCompatActivity() {
             ActionType.OVERRIDE_VOICE -> createOverrideTtsVoiceAction()
             ActionType.FORCE_PRIVATE -> createForcePrivateAction()
             ActionType.OVERRIDE_PRIVATE -> createOverridePrivateAction()
+            ActionType.OVERRIDE_CONTENT_CAP -> createOverrideContentCapAction()
             else -> createSkipNotificationAction()
         }
 
@@ -533,6 +583,42 @@ class ActionConfigActivity : AppCompatActivity() {
                 type = ActionType.OVERRIDE_PRIVATE,
                 description = description,
                 data = emptyMap()
+            )
+        }
+    }
+
+    private fun createOverrideContentCapAction(): Action {
+        val mode = when {
+            binding.radioContentCapWords.isChecked -> "words"
+            binding.radioContentCapSentences.isChecked -> "sentences"
+            binding.radioContentCapTime.isChecked -> "time"
+            else -> "disabled"
+        }
+        
+        val wordCount = binding.sliderContentCapWordCount.value.toInt()
+        val sentenceCount = binding.sliderContentCapSentenceCount.value.toInt()
+        val timeLimit = binding.sliderContentCapTimeLimit.value.toInt()
+
+        val data = mapOf(
+            "mode" to mode,
+            "word_count" to wordCount,
+            "sentence_count" to sentenceCount,
+            "time_limit" to timeLimit
+        )
+
+        val description = getString(R.string.action_override_content_cap_title)
+
+        return if (isEditing && originalAction != null) {
+            originalAction!!.copy(
+                type = ActionType.OVERRIDE_CONTENT_CAP,
+                description = description,
+                data = data
+            )
+        } else {
+            Action(
+                type = ActionType.OVERRIDE_CONTENT_CAP,
+                description = description,
+                data = data
             )
         }
     }

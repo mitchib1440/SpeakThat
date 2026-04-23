@@ -93,6 +93,14 @@ class ActionExecutor(private val context: Context) {
                     message = "Skip notification handled by rule pipeline"
                 )
             }
+            ActionType.OVERRIDE_CONTENT_CAP -> {
+                ActionExecutionResult(
+                    actionId = action.id,
+                    actionType = action.type,
+                    success = true,
+                    message = "Override content cap handled by rule pipeline"
+                )
+            }
             ActionType.SET_MASTER_SWITCH -> executeSetMasterSwitch(action)
         }
     }

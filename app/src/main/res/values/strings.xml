@@ -1813,6 +1813,10 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="behavior_proximity_threshold">Proximity Threshold</string>
 
     <!-- Content Cap Feature Strings -->
+    <string name="action_override_content_cap_title">Override Content Cap</string>
+    <string name="action_override_content_cap_description">Enable or disable content cap for this notification</string>
+    <string name="rule_action_override_content_cap">override content cap</string>
+    <string name="rule_error_invalid_content_cap_mode">Invalid content cap mode</string>
     <string name="content_cap_mode_label">Content Cap Mode:</string>
     <string name="content_cap_disabled">Disabled - Read full notification</string>
     <string name="content_cap_words">Word count limit</string>

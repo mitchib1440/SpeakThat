@@ -454,6 +454,7 @@ class RuleBuilderActivity : AppCompatActivity() {
             getString(R.string.action_override_tts_voice_title),
             getString(R.string.action_force_private_title),
             getString(R.string.action_override_private_title),
+            getString(R.string.action_override_content_cap_title),
             getString(R.string.action_skip_notification_title)
         )
         
@@ -465,7 +466,8 @@ class RuleBuilderActivity : AppCompatActivity() {
                     1 -> addOverrideVoiceAction()
                     2 -> addForcePrivateAction()
                     3 -> addOverridePrivateAction()
-                    4 -> addSkipNotificationAction()
+                    4 -> addOverrideContentCapAction()
+                    5 -> addSkipNotificationAction()
                 }
             }
             .show()
@@ -595,6 +597,10 @@ class RuleBuilderActivity : AppCompatActivity() {
 
     private fun addOverridePrivateAction() {
         launchActionConfig(ActionType.OVERRIDE_PRIVATE, null)
+    }
+
+    private fun addOverrideContentCapAction() {
+        launchActionConfig(ActionType.OVERRIDE_CONTENT_CAP, null)
     }
     
     private fun launchActionConfig(actionType: ActionType, existingAction: Action?) {

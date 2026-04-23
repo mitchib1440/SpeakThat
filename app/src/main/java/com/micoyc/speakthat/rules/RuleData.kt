@@ -285,6 +285,7 @@ enum class ActionType(val displayName: String, val description: String) {
     OVERRIDE_PRIVATE("Override private", "Read the entire notification, even if it would normally be private"),
     SKIP_NOTIFICATION("Skip this notification", "Don't read this notification aloud"),
     SET_MASTER_SWITCH("Set master switch", "Enable or disable SpeakThat globally"),
+    OVERRIDE_CONTENT_CAP("Override Content Cap", "Enable or disable content cap for this notification"),
     DISABLE_SPEAKTHAT("Legacy: Skip this notification", "Legacy action migrated to Skip this notification");
     
     companion object {
@@ -775,6 +776,9 @@ data class Rule(
             }
             ActionType.SET_MASTER_SWITCH -> {
                 context.getString(com.micoyc.speakthat.R.string.rule_action_master_switch)
+            }
+            ActionType.OVERRIDE_CONTENT_CAP -> {
+                context.getString(com.micoyc.speakthat.R.string.rule_action_override_content_cap)
             }
         }
     }
