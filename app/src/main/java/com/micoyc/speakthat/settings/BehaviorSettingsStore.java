@@ -19,6 +19,7 @@ public class BehaviorSettingsStore {
     public static final String KEY_DARK_MODE = "dark_mode";
     public static final String KEY_NOTIFICATION_BEHAVIOR = "notification_behavior";
     public static final String KEY_PRIORITY_APPS = "priority_apps";
+    public static final String KEY_SKIP_REPEATED_NOTIFICATION_PREFIX = "skip_notification_repeated_prefix";
     public static final String KEY_SHAKE_TO_STOP_ENABLED = "shake_to_stop_enabled";
     public static final String KEY_SHAKE_THRESHOLD = "shake_threshold";
     public static final String KEY_SHAKE_COUNT_TARGET = "shake_count_target";
@@ -84,6 +85,7 @@ public class BehaviorSettingsStore {
     public static final boolean DEFAULT_HONOUR_SILENT_MODE = true;
     public static final boolean DEFAULT_HONOUR_VIBRATE_MODE = true;
     public static final boolean DEFAULT_NOTIFICATION_DEDUPLICATION = false;
+    public static final boolean DEFAULT_SKIP_REPEATED_NOTIFICATION_PREFIX = false;
     public static final boolean DEFAULT_DISMISSAL_MEMORY_ENABLED = true;
     public static final int DEFAULT_DISMISSAL_MEMORY_TIMEOUT = 15;
     public static final int DEFAULT_WAVE_HOLD_DURATION_MS = 150;

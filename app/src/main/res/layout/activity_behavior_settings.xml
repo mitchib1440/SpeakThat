@@ -74,6 +74,23 @@
                         android:textColor="@color/purple_card_text_secondary"
                         android:layout_marginBottom="8dp" />
 
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switchSkipRepeatedNotificationPrefixes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/behavior_skip_repeated_prefix_title"
+                        android:textColor="@color/purple_card_text_primary"
+                        android:layout_marginBottom="4dp"
+                        app:useMaterialThemeColors="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/behavior_skip_repeated_prefix_description"
+                        android:textSize="14sp"
+                        android:textColor="@color/purple_card_text_secondary"
+                        android:layout_marginBottom="16dp" />
+
                     <!-- Recommendation Box -->
                     <LinearLayout
                         android:layout_width="match_parent"

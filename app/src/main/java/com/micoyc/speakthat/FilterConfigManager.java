@@ -162,6 +162,7 @@ public class FilterConfigManager {
         public boolean honourAudioMode; // Legacy combined audio mode flag
         public boolean persistentNotification; // Add persistent notification setting
         public boolean notificationWhileReading; // Add notification while reading setting
+        public boolean skipRepeatedNotificationPrefix;
         public boolean waveToStopEnabled;
         public int waveTimeoutSeconds;
         public long waveHoldDurationMs; // Wave hold duration in milliseconds
@@ -197,6 +198,7 @@ public class FilterConfigManager {
             this.honourAudioMode = true; // Legacy: keep for backwards compatibility
             this.persistentNotification = false; // Default to false
             this.notificationWhileReading = false; // Default to false
+            this.skipRepeatedNotificationPrefix = false; // Default to false
             this.waveToStopEnabled = false;
             this.waveTimeoutSeconds = 30;
             this.waveHoldDurationMs = 150; // Default wave hold duration
@@ -399,6 +401,7 @@ public class FilterConfigManager {
         config.behavior.honourAudioMode = legacyHonourAudioMode;
         config.behavior.persistentNotification = prefs.getBoolean("persistent_notification", false); // Add persistent notification
         config.behavior.notificationWhileReading = prefs.getBoolean("notification_while_reading", false); // Add notification while reading
+        config.behavior.skipRepeatedNotificationPrefix = prefs.getBoolean("skip_notification_repeated_prefix", false);
         config.behavior.waveToStopEnabled = prefs.getBoolean("wave_to_stop_enabled", false);
         config.behavior.waveTimeoutSeconds = prefs.getInt("wave_timeout_seconds", 30);
         config.behavior.waveHoldDurationMs = prefs.getInt("wave_hold_duration_ms", 150); // Read as int, auto-converts to long
@@ -504,6 +507,7 @@ public class FilterConfigManager {
         behavior.put("honourAudioMode", config.behavior.honourAudioMode); // Legacy combined flag
         behavior.put("persistentNotification", config.behavior.persistentNotification); // Add persistent notification
         behavior.put("notificationWhileReading", config.behavior.notificationWhileReading); // Add notification while reading
+        behavior.put("skipRepeatedNotificationPrefix", config.behavior.skipRepeatedNotificationPrefix);
         behavior.put("waveToStopEnabled", config.behavior.waveToStopEnabled);
         behavior.put("waveTimeoutSeconds", config.behavior.waveTimeoutSeconds);
         behavior.put("waveHoldDurationMs", (int) config.behavior.waveHoldDurationMs); // Cast long to int for JSON
@@ -1026,6 +1030,11 @@ public class FilterConfigManager {
                 
                 if (behavior.has("notificationWhileReading")) {
                     mainEditor.putBoolean("notification_while_reading", behavior.getBoolean("notificationWhileReading"));
+                    totalImported++;
+                }
+
+                if (behavior.has("skipRepeatedNotificationPrefix")) {
+                    mainEditor.putBoolean("skip_notification_repeated_prefix", behavior.getBoolean("skipRepeatedNotificationPrefix"));
                     totalImported++;
                 }
                 

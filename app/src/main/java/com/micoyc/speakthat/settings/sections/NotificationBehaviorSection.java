@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.micoyc.speakthat.AppPickerActivity;
 import com.micoyc.speakthat.PriorityAppAdapter;
 import com.micoyc.speakthat.R;
@@ -36,6 +37,7 @@ public class NotificationBehaviorSection implements BehaviorSettingsSection {
     private final List<String> priorityAppsList = new ArrayList<>();
     private PriorityAppAdapter priorityAppAdapter;
     private ActivityResultLauncher<Intent> priorityAppPickerLauncher;
+    private SwitchMaterial switchSkipRepeatedNotificationPrefixes;
 
     public NotificationBehaviorSection(
         AppCompatActivity activity,
@@ -66,6 +68,17 @@ public class NotificationBehaviorSection implements BehaviorSettingsSection {
                 }
             }
         );
+
+        switchSkipRepeatedNotificationPrefixes = binding.switchSkipRepeatedNotificationPrefixes;
+        switchSkipRepeatedNotificationPrefixes.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (store.isInitializing()) {
+                return;
+            }
+            store.prefs().edit().putBoolean(
+                BehaviorSettingsStore.KEY_SKIP_REPEATED_NOTIFICATION_PREFIX,
+                isChecked
+            ).apply();
+        });
 
         binding.behaviorModeGroup.setOnCheckedChangeListener((group, checkedId) -> {
             String mode = "interrupt";
@@ -119,6 +132,12 @@ public class NotificationBehaviorSection implements BehaviorSettingsSection {
         priorityAppsList.addAll(priorityApps);
         priorityAppAdapter.notifyDataSetChanged();
         updatePriorityAppsSummary();
+
+        boolean skipRepeatedPrefix = store.prefs().getBoolean(
+            BehaviorSettingsStore.KEY_SKIP_REPEATED_NOTIFICATION_PREFIX,
+            BehaviorSettingsStore.DEFAULT_SKIP_REPEATED_NOTIFICATION_PREFIX
+        );
+        switchSkipRepeatedNotificationPrefixes.setChecked(skipRepeatedPrefix);
     }
 
     @Override
