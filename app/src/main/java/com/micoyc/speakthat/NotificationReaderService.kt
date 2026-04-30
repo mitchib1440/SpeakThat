@@ -1126,7 +1126,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 filterResult.conditionalDelaySeconds,
                 null,
                 filterResult.speechTemplateOverride,
-                filterResult.voiceOverride
+                filterResult.voiceOverride,
+                filterResult.contentCapOverride,
+                filterResult.processedBlocks
             )
         }
     }
@@ -1202,7 +1204,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     conditionalDelaySeconds = -1,
                     sbn = null,
                     speechTemplateOverride = filterResult.speechTemplateOverride,
-                    voiceOverride = filterResult.voiceOverride
+                    voiceOverride = filterResult.voiceOverride,
+                    contentCapOverride = filterResult.contentCapOverride,
+                    processedBlocks = filterResult.processedBlocks
                 )
             } else {
                 Log.d(TAG, "TEST_FILTERS: notification blocked by filters - ${filterResult.reason}")
@@ -1744,7 +1748,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         sbn,
                         filterResult.speechTemplateOverride,
                         filterResult.voiceOverride,
-                        filterResult.contentCapOverride
+                        filterResult.contentCapOverride,
+                        filterResult.processedBlocks
                     )
                 } else {
                     // Always log the full blocking reason with details
@@ -3230,7 +3235,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val conditionalDelaySeconds: Int = -1, // -1 means no conditional delay
         val speechTemplateOverride: SpeechTemplateOverride? = null,
         val voiceOverride: VoiceOverride? = null,
-        val contentCapOverride: ContentCapOverride? = null
+        val contentCapOverride: ContentCapOverride? = null,
+        val processedBlocks: Map<String, String>? = null
     )
 
     data class SpeechTemplateOverride(
@@ -3385,6 +3391,40 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             InAppLogger.logFilter("Rule effect: force private")
             val privateText = getLocalizedTemplate("private_notification", appName, "")
             finalProcessedBlocks.keys.forEach { finalProcessedBlocks[it] = privateText }
+            
+            // If forced private, override the template so it just reads the private text without the '{app} notified you:' wrapper
+            val forcePrivateTemplateOverride = SpeechTemplateOverride("{content}", null)
+            val compiledText = formatSpeechText(
+                appName = appName,
+                processedBlocks = finalProcessedBlocks,
+                packageName = packageName,
+                sbn = sbn,
+                speechTemplateOverride = forcePrivateTemplateOverride
+            )
+            
+            // Apply Content Cap to final string
+            val effectiveContentCapMode = contentCapOverride?.mode ?: contentCapMode
+            val effectiveWordCount = contentCapOverride?.wordCount ?: contentCapWordCount
+            val effectiveSentenceCount = contentCapOverride?.sentenceCount ?: contentCapSentenceCount
+            val effectiveTimeLimit = contentCapOverride?.timeLimit ?: contentCapTimeLimit
+            
+            val cappedCompiledText = applyContentCap(
+                compiledText, 
+                effectiveContentCapMode, 
+                effectiveWordCount, 
+                effectiveSentenceCount, 
+                effectiveTimeLimit
+            )
+            
+            return FilterResult(
+                shouldSpeak = true,
+                processedText = cappedCompiledText,
+                reason = "Passed all filters (Forced Private)",
+                speechTemplateOverride = forcePrivateTemplateOverride,
+                voiceOverride = voiceOverride,
+                contentCapOverride = contentCapOverride,
+                processedBlocks = finalProcessedBlocks
+            )
         } else if (overridePrivate) {
             InAppLogger.logFilter("Rule effect: override private")
         }
@@ -3400,12 +3440,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             return FilterResult(false, "", "Empty text")
         }
 
+        val finalSpeechTemplateOverride = meatGrinderResult.speechTemplateOverride ?: effectiveSpeechTemplateOverride
+
         val compiledText = formatSpeechText(
             appName = appName,
             processedBlocks = finalProcessedBlocks,
             packageName = packageName,
             sbn = sbn,
-            speechTemplateOverride = effectiveSpeechTemplateOverride
+            speechTemplateOverride = finalSpeechTemplateOverride
         )
         
         // Apply Content Cap to final string
@@ -3426,9 +3468,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             shouldSpeak = true,
             processedText = cappedCompiledText, // We store the final compiled text in processedText
             reason = "Passed all filters",
-            speechTemplateOverride = effectiveSpeechTemplateOverride,
+            speechTemplateOverride = finalSpeechTemplateOverride,
             voiceOverride = voiceOverride,
-            contentCapOverride = contentCapOverride
+            contentCapOverride = contentCapOverride,
+            processedBlocks = finalProcessedBlocks
         )
     }
     
@@ -3540,7 +3583,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "App '$appName' is in private mode - entire notification made private (SECURITY: bypassing all other filters)")
             InAppLogger.logFilter("Made notification private due to app privacy setting (SECURITY: bypassing all other filters)")
             blocks.keys.forEach { processedBlocks[it] = privateText }
-            return Pair(FilterResult(true, privateText, "App-level privacy applied"), processedBlocks)
+            return Pair(FilterResult(
+                true, privateText, "App-level privacy applied", 
+                speechTemplateOverride = SpeechTemplateOverride("{content}", null)
+            ), processedBlocks)
         }
 
         // ESCALATION CHECK: Check for private words across all blocks
@@ -3552,7 +3598,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         Log.d(TAG, "Private word '$privateWord' detected - entire notification made private")
                         InAppLogger.logFilter("Made notification private due to word: $privateWord")
                         blocks.keys.forEach { processedBlocks[it] = privateText }
-                        return Pair(FilterResult(true, privateText, "Private word detected"), processedBlocks)
+                        return Pair(FilterResult(
+                            true, privateText, "Private word detected",
+                            speechTemplateOverride = SpeechTemplateOverride("{content}", null)
+                        ), processedBlocks)
                     }
                 }
             }
@@ -6263,21 +6312,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             pendingReadoutRunnable = null
         }
         
-        // Format: "AppName notified you: notification content" (unless it's already a private message)
-        val speechText = if (text.startsWith("You received a private notification from") || 
-                            text.startsWith("Hai ricevuto una notifica privata da") ||
-                            text.startsWith("Du hast eine private Benachrichtigung von")) {
-            text // Private messages already include the app name, so don't add prefix
-        } else {
-            val safeBlocks = processedBlocks ?: mapOf("content" to text)
-            formatSpeechText(
-                appName, 
-                safeBlocks, 
-                packageName, 
-                sbn, 
-                speechTemplateOverride
-            )
-        }
+        // The text is already fully processed and compiled by the applyFilters pipeline.
+        // We just need to read it out!
+        val speechText = text
 
         val collapsedSpeechText = collapseRepeatedNotificationPrefix(speechText)
         lastFullNotificationSpeechText = speechText
