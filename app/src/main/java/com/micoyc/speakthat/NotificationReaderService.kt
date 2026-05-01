@@ -485,13 +485,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         ): SummaryFilterBridgeResult {
             val instance = activeServiceInstance ?: return SummaryFilterBridgeResult(
                 shouldInclude = true,
-                processedText = fallbackText,
+                processedText = "$appName notified you: $fallbackText",
                 reason = "listener_unavailable"
             )
             if (!listenerConnectedForBridge) {
                 return SummaryFilterBridgeResult(
                     shouldInclude = true,
-                    processedText = fallbackText,
+                    processedText = "$appName notified you: $fallbackText",
                     reason = "listener_disconnected"
                 )
             }

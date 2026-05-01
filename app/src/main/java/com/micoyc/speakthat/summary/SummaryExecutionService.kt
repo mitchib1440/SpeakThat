@@ -616,15 +616,9 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
     private fun buildItemSpeechText(item: SummaryItem): String {
         val relativeTime = formatRelativeTimeForSpeech(item.postTimeMillis)
         val actualTime = DateFormat.getTimeFormat(this).format(Date(item.postTimeMillis))
-        val isPrivate = item.senderText.equals("Private Notification", ignoreCase = true) ||
-            item.messageText.contains("private notification", ignoreCase = true)
 
-        return if (isPrivate) {
-            // Avoid app-name duplication for private-mode notifications.
-            "$relativeTime, at $actualTime, ${item.messageText}"
-        } else {
-            "$relativeTime, at $actualTime, ${item.appName} notified you: ${item.senderText}. ${item.messageText}"
-        }
+        // item.messageText is already fully compiled by applyFilters, including the template and Content Cap.
+        return "$relativeTime, at $actualTime, ${item.messageText}"
     }
 
     private fun formatRelativeTimeForSpeech(postTimeMillis: Long): String {
