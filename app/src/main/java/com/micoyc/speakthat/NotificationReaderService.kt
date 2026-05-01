@@ -6391,6 +6391,28 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         applyVoiceSettings()
         if (voiceOverride != null && applyTemporaryVoiceOverride(voiceOverride)) {
             isTemporaryVoiceOverrideActive = true
+        } else {
+            val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+            if (voicePrefs.getBoolean("auto_detect_language", false) && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                val detectedLanguageTag = com.micoyc.speakthat.utils.LanguageDetectorUtil.detectLanguage(this, speechText)
+
+                if (detectedLanguageTag != null) {
+                    // THE ACCENT FIX: Get the base language of the globally selected TTS voice (e.g., "en" from "en-GB")
+                    val currentBaseLanguage = textToSpeech?.language?.language ?: ""
+
+                    // Only apply the override if the text is a completely DIFFERENT language.
+                    if (!detectedLanguageTag.equals(currentBaseLanguage, ignoreCase = true)) {
+                        val autoVoiceOverride = VoiceOverride(language = detectedLanguageTag, voiceName = "")
+                        if (applyTemporaryVoiceOverride(autoVoiceOverride)) {
+                            isTemporaryVoiceOverrideActive = true
+                            InAppLogger.log("Service", "Auto-detected $detectedLanguageTag, applied temporary override")
+                        }
+                    } else {
+                        // If the text is English and your global voice is UK English, do nothing!
+                        InAppLogger.log("Service", "Auto-detected language matches global base language. Preserving specific voice/accent.")
+                    }
+                }
+            }
         }
         
         // Add engine failure warning if needed
