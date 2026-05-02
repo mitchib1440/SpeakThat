@@ -56,6 +56,7 @@ import com.micoyc.speakthat.NotificationReaderService
 import com.micoyc.speakthat.R
 import com.micoyc.speakthat.VoiceSettingsActivity
 import com.micoyc.speakthat.tts.SpeakThatTtsManager
+import com.micoyc.speakthat.utils.TtsLanguageHelper
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Date
@@ -181,6 +182,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         buildItemsJob?.cancel()
         mainHandler.removeCallbacksAndMessages(null)
         unregisterComponentCallbacks(this)
+        restoreGlobalVoiceOnSharedTts()
         stopAndReleaseTextToSpeech()
         abandonAudioFocusIfHeld()
         serviceScope.cancel()
@@ -456,6 +458,18 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         }
     }
 
+    private fun prepareTtsForSummaryUtterance(tts: TextToSpeech, utteranceText: String) {
+        SpeakThatTtsManager.applyVoiceSettings(this)
+        val prefs = getSharedPreferences(TtsLanguageHelper.PREFS_VOICE_SETTINGS, MODE_PRIVATE)
+        TtsLanguageHelper.tryApplyAutoDetectLanguage(this, prefs, tts, utteranceText)
+    }
+
+    private fun restoreGlobalVoiceOnSharedTts() {
+        val tts = SpeakThatTtsManager.getTextToSpeech() ?: return
+        val prefs = getSharedPreferences(TtsLanguageHelper.PREFS_VOICE_SETTINGS, MODE_PRIVATE)
+        VoiceSettingsActivity.applyVoiceSettings(tts, prefs)
+    }
+
     private fun enqueueSpeech(
         text: String,
         queueMode: Int,
@@ -464,7 +478,8 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         index: Int,
         sessionId: Int
     ) {
-        if (textToSpeech == null) return
+        val tts = textToSpeech ?: return
+        prepareTtsForSummaryUtterance(tts, text)
         utteranceTypeMap[utteranceId] = type
         utteranceIndexMap[utteranceId] = index
         utteranceSessionMap[utteranceId] = sessionId
@@ -557,6 +572,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         } catch (e: Exception) {
             InAppLogger.logError(TAG, "Failed to stop TTS during shutdown: ${e.message}")
         }
+        restoreGlobalVoiceOnSharedTts()
         abandonAudioFocusIfHeld()
         stopSelf()
     }

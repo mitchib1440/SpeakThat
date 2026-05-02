@@ -42,6 +42,7 @@ import com.micoyc.speakthat.GlobalReadoutSuppression
 import com.micoyc.speakthat.settings.BehaviorSettingsActivity
 import com.micoyc.speakthat.settings.BehaviorSettingsStore
 import com.micoyc.speakthat.tts.SpeakThatTtsManager
+import com.micoyc.speakthat.utils.TtsLanguageHelper
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -6389,32 +6390,40 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "=== DUCKING DEBUG: Refreshing voice settings before speech execution ===")
         InAppLogger.log("Service", "=== DUCKING DEBUG: Refreshing voice settings before speech execution ===")
         applyVoiceSettings()
+        val voiceSettingsPrefs = getSharedPreferences(TtsLanguageHelper.PREFS_VOICE_SETTINGS, MODE_PRIVATE)
         if (voiceOverride != null && applyTemporaryVoiceOverride(voiceOverride)) {
             isTemporaryVoiceOverrideActive = true
+            Log.d(
+                TAG,
+                "[AutoLangDebug] ruleVoiceOverrideActive=true skipping auto path textLen=${speechText.length} preview=${speechText.take(160)}"
+            )
         } else {
-            val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-            if (voicePrefs.getBoolean("auto_detect_language", false) && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                val detectedLanguageTag = com.micoyc.speakthat.utils.LanguageDetectorUtil.detectLanguage(this, speechText)
-
-                if (detectedLanguageTag != null) {
-                    // THE ACCENT FIX 2.0: Read directly from SharedPreferences instead of the TTS engine
-                    val globalLangPref = voicePrefs.getString("language", "en_US") ?: "en_US"
-
-                    // Extract just the first two letters (e.g., "en" from "en_GB" or "en-US")
-                    val globalBaseLang = globalLangPref.split("_", "-")[0].lowercase()
-                    val detectedBaseLang = detectedLanguageTag.split("_", "-")[0].lowercase()
-
-                    // Only apply the override if the base languages are completely different
-                    if (detectedBaseLang != globalBaseLang) {
-                        val autoVoiceOverride = VoiceOverride(language = detectedLanguageTag, voiceName = "")
-                        if (applyTemporaryVoiceOverride(autoVoiceOverride)) {
-                            isTemporaryVoiceOverrideActive = true
-                            InAppLogger.log("Service", "Auto-detected $detectedLanguageTag, applied temporary override")
-                        }
-                    } else {
-                        InAppLogger.log("Service", "Auto-detected language ($detectedBaseLang) matches global base language ($globalBaseLang). Preserving specific accent.")
-                    }
-                }
+            val autoResult = TtsLanguageHelper.tryApplyAutoDetectLanguage(
+                this,
+                voiceSettingsPrefs,
+                textToSpeech,
+                speechText
+            )
+            val globalLangPref = voiceSettingsPrefs.getString(TtsLanguageHelper.KEY_LANGUAGE, "en_US") ?: "en_US"
+            val globalBaseForLog = globalLangPref.split("_", "-").firstOrNull()?.lowercase().orEmpty()
+            val detectedBaseForLog = autoResult.topDetectedTag?.split("_", "-")?.firstOrNull()?.lowercase().orEmpty()
+            Log.d(
+                TAG,
+                "[AutoLangDebug] autoDetectToggle=${autoResult.autoDetectEnabled} skippedLowApi=${autoResult.skippedLowApi} " +
+                    "rejectedClassifier=${autoResult.rejectedClassifier} acceptedForAuto=${autoResult.acceptedForAutoDetect} " +
+                    "accentPreservationSkipped=${autoResult.accentPreservationSkipped} overrideApplied=${autoResult.overrideApplied} " +
+                    "topTag=${autoResult.topDetectedTag} confidence=${autoResult.topConfidence} " +
+                    "globalBase=$globalBaseForLog detectedBase=$detectedBaseForLog " +
+                    "textLen=${speechText.length} preview=${speechText.take(160)}"
+            )
+            if (autoResult.overrideApplied) {
+                isTemporaryVoiceOverrideActive = true
+                InAppLogger.log("Service", "Auto-detected ${autoResult.effectiveDetectedTag}, applied temporary override")
+            } else if (autoResult.accentPreservationSkipped) {
+                InAppLogger.log(
+                    "Service",
+                    "Auto-detected language ($detectedBaseForLog) matches global base language ($globalBaseForLog). Preserving specific accent."
+                )
             }
         }
         
@@ -6440,9 +6449,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val mainPrefs = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE)
         if (mainPrefs.getBoolean("dont_use_speaker", false)) {
             try {
-                val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-                val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4)
-                val contentTypeIndex = voicePrefs.getInt("content_type", 0)
+                val ttsUsageIndex = voiceSettingsPrefs.getInt("audio_usage", 4)
+                val contentTypeIndex = voiceSettingsPrefs.getInt("content_type", 0)
                 
                 val ttsUsage = when (ttsUsageIndex) {
                     0 -> android.media.AudioAttributes.USAGE_MEDIA
@@ -6529,10 +6537,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         registerShakeListener()
         
         // Create volume bundle with proper volume parameters
-        val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-        val ttsVolume = minOf(1.0f, voicePrefs.getFloat("tts_volume", 1.0f))
-        val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
-        val speakerphoneEnabled = voicePrefs.getBoolean("speakerphone_enabled", false)
+        val ttsVolume = minOf(1.0f, voiceSettingsPrefs.getFloat("tts_volume", 1.0f))
+        val ttsUsageIndex = voiceSettingsPrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
+        val speakerphoneEnabled = voiceSettingsPrefs.getBoolean("speakerphone_enabled", false)
         val ttsUsage = when (ttsUsageIndex) {
             0 -> android.media.AudioAttributes.USAGE_MEDIA
             1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
