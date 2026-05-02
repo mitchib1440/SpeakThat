@@ -6397,19 +6397,22 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 val detectedLanguageTag = com.micoyc.speakthat.utils.LanguageDetectorUtil.detectLanguage(this, speechText)
 
                 if (detectedLanguageTag != null) {
-                    // THE ACCENT FIX: Get the base language of the globally selected TTS voice (e.g., "en" from "en-GB")
-                    val currentBaseLanguage = textToSpeech?.language?.language ?: ""
+                    // THE ACCENT FIX 2.0: Read directly from SharedPreferences instead of the TTS engine
+                    val globalLangPref = voicePrefs.getString("language", "en_US") ?: "en_US"
 
-                    // Only apply the override if the text is a completely DIFFERENT language.
-                    if (!detectedLanguageTag.equals(currentBaseLanguage, ignoreCase = true)) {
+                    // Extract just the first two letters (e.g., "en" from "en_GB" or "en-US")
+                    val globalBaseLang = globalLangPref.split("_", "-")[0].lowercase()
+                    val detectedBaseLang = detectedLanguageTag.split("_", "-")[0].lowercase()
+
+                    // Only apply the override if the base languages are completely different
+                    if (detectedBaseLang != globalBaseLang) {
                         val autoVoiceOverride = VoiceOverride(language = detectedLanguageTag, voiceName = "")
                         if (applyTemporaryVoiceOverride(autoVoiceOverride)) {
                             isTemporaryVoiceOverrideActive = true
                             InAppLogger.log("Service", "Auto-detected $detectedLanguageTag, applied temporary override")
                         }
                     } else {
-                        // If the text is English and your global voice is UK English, do nothing!
-                        InAppLogger.log("Service", "Auto-detected language matches global base language. Preserving specific voice/accent.")
+                        InAppLogger.log("Service", "Auto-detected language ($detectedBaseLang) matches global base language ($globalBaseLang). Preserving specific accent.")
                     }
                 }
             }
