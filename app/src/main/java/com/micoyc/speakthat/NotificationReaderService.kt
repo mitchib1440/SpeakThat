@@ -557,6 +557,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 false // Default to enabled if error
             }
         }
+
+        /**
+         * True while the notification listener is playing a notification readout (including earcon / delay before speech).
+         * Activities share [SpeakThatTtsManager]; they should avoid calling [SpeakThatTtsManager.stop] during an active
+         * readout so utterance callbacks can tear down sensors, wake lock, and queue state.
+         */
+        @JvmStatic
+        fun isNotificationReadoutActive(): Boolean {
+            return activeServiceInstance?.isCurrentlySpeaking == true
+        }
         
         // Pre-compiled regex for URL detection (includes http/https/www URLs, bare domains with TLD, IP addresses, and IPv6)
         private val URL_PATTERN = Regex("""(?i)(?:https?://[^\s]+|www\.[^\s]+|(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.(?:[a-zA-Z]{2,}|[0-9]+)|\[[0-9a-fA-F:]+\])(?::[0-9]+)?(?:/[^\s]*)?)""")
@@ -724,7 +734,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     override fun onDestroy() {
         super.onDestroy()
         listenerConnectedForBridge = false
-        activeServiceInstance = null
         
         Log.d(TAG, "NotificationReaderService being destroyed")
         InAppLogger.log("Service", "NotificationReaderService being destroyed")
@@ -742,11 +751,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Cancel any pending batch operations
             batchHandler.removeCallbacks(batchRunnable)
             
-            // Stop any ongoing TTS
-            if (isCurrentlySpeaking) {
+            val readoutWasActive = isCurrentlySpeaking
+            if (readoutWasActive) {
                 SpeakThatTtsManager.stop()
-                isCurrentlySpeaking = false
             }
+            if (isCurrentlySpeaking) {
+                applyReadoutInterruptionTeardown(
+                    "service destroy",
+                    null,
+                    countInterrupted = true,
+                    resumeQueue = false
+                )
+            }
+            unregisterShakeListener()
             restoreGlobalVoiceSettingsIfNeeded("service destroy")
             
             // Clean up enhanced ducking if active
@@ -816,10 +833,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             Log.d(TAG, "NotificationReaderService cleanup completed")
             InAppLogger.log("Service", "Service cleanup completed")
-            
+            activeServiceInstance = null
         } catch (e: Exception) {
             Log.e(TAG, "Error during service cleanup", e)
             InAppLogger.logError("Service", "Error during service cleanup: " + e.message)
+            activeServiceInstance = null
         }
     }
     
@@ -4480,6 +4498,74 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "Speech safety timeout cancelled ($reason)")
         }
     }
+
+    /**
+     * Full teardown when a readout is cut short (external [SpeakThatTtsManager.stop], focus loss paths that skip
+     * [TextToSpeech.UtteranceProgressListener.onDone], service destroy, etc.). Releases sensors, wake lock, and foreground
+     * promotion used during speech, then resumes the queue.
+     */
+    private fun applyReadoutInterruptionTeardown(
+        reason: String,
+        utteranceId: String?,
+        countInterrupted: Boolean,
+        resumeQueue: Boolean = true
+    ) {
+        if (countInterrupted) {
+            try {
+                StatisticsManager.getInstance(this).incrementReadoutsInterrupted()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error tracking readout interruption", e)
+            }
+        }
+
+        scoAudioManager.cleanupSco(this, audioManager)
+        releaseSpeechWakeLock()
+        isCurrentlySpeaking = false
+        cancelSpeechSafetyTimeout("interrupted:$reason")
+
+        contentCapTimerRunnable?.let { runnable ->
+            delayHandler?.removeCallbacks(runnable)
+            contentCapTimerRunnable = null
+        }
+
+        currentSpeechText = ""
+        currentAppName = ""
+        currentOriginalAppName = ""
+        currentTtsText = ""
+
+        stopForegroundService()
+        unregisterShakeListener()
+
+        try {
+            if (isSpeakerphoneEnabled(audioManager)) {
+                setSpeakerphoneEnabled(audioManager, false)
+                InAppLogger.log("Service", "Speakerphone disabled after interrupted readout ($reason)")
+            }
+        } catch (e: Exception) {
+            InAppLogger.logError("Service", "Failed to disable speakerphone: ${e.message}")
+        }
+
+        restoreGlobalVoiceSettingsIfNeeded("readout interrupted: $reason")
+        val utteranceSuffix = utteranceId?.let { " utterance=$it" } ?: ""
+        Log.d(TAG, "Readout interrupted ($reason)$utteranceSuffix")
+        InAppLogger.logTTSEvent("TTS interrupted", "$reason$utteranceSuffix")
+
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+            scoAudioManager.cleanupSco(this@NotificationReaderService, audioManager)
+            cleanupMediaBehavior()
+        }, 250)
+
+        if (resumeQueue) {
+            processNotificationQueue()
+        }
+    }
+
+    private fun finalizeInterruptedReadout(reason: String, utteranceId: String? = null) {
+        if (!isCurrentlySpeaking) {
+            return
+        }
+        applyReadoutInterruptionTeardown(reason, utteranceId, countInterrupted = true, resumeQueue = true)
+    }
     
     // Call this when settings change
     fun refreshAllSettings() {
@@ -6827,8 +6913,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
             override fun onStop(utteranceId: String?, interrupted: Boolean) {
                 Log.d(TAG, "TTS utterance stopped (interrupted=$interrupted): $utteranceId")
-                scoAudioManager.cleanupSco(this@NotificationReaderService, audioManager)
-                releaseSpeechWakeLock()
+                finalizeInterruptedReadout("tts utterance onStop", utteranceId)
             }
         }
 
@@ -6848,6 +6933,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
             override fun onStop(utteranceId: String?, interrupted: Boolean) {
                 InAppLogger.logTTSEvent("Earcon stopped", "mode=$earconMode interrupted=$interrupted")
+                if (interrupted) {
+                    finalizeInterruptedReadout("earcon utterance onStop", utteranceId)
+                }
             }
         }
 

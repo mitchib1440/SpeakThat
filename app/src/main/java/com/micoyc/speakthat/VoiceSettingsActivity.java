@@ -2423,7 +2423,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
     @Override
     protected void onDestroy() {
-        if (textToSpeech != null) {
+        if (textToSpeech != null && !NotificationReaderService.isNotificationReadoutActive()) {
             SpeakThatTtsManager.stop();
         }
         super.onDestroy();

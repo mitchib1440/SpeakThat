@@ -319,8 +319,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         updatePrefs?.unregisterOnSharedPreferenceChangeListener(updatePrefsListener)
         migrationPrefs?.unregisterOnSharedPreferenceChangeListener(migrationPrefsListener)
         
-        // Clean up TTS
-        SpeakThatTtsManager.stop()
+        // Do not stop shared TTS during an active notification readout (same engine); service will tear down on utterance onStop.
+        if (!NotificationReaderService.isNotificationReadoutActive()) {
+            SpeakThatTtsManager.stop()
+        }
         
         // Clean up sensors
         sensorManager?.unregisterListener(this)

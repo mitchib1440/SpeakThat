@@ -158,8 +158,10 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     
     override fun onPause() {
         super.onPause()
-        // Stop TTS when leaving the activity
-        SpeakThatTtsManager.stop()
+        // Stop TTS when leaving the activity (but not during an active notification readout on the shared engine)
+        if (!NotificationReaderService.isNotificationReadoutActive()) {
+            SpeakThatTtsManager.stop()
+        }
     }
     
     private fun initializeTextToSpeech() {
@@ -604,7 +606,9 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     
     override fun onDestroy() {
         super.onDestroy()
-        SpeakThatTtsManager.stop()
+        if (!NotificationReaderService.isNotificationReadoutActive()) {
+            SpeakThatTtsManager.stop()
+        }
         
         // Unregister voice settings listener
         voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
