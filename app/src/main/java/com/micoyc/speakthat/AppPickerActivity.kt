@@ -191,6 +191,20 @@ class AppPickerActivity : AppCompatActivity(), AppFilterBottomSheetFragment.List
                 }
             }
 
+            // Synthetic internal target (not a real installed package); replace any PM collision, then sort with real apps.
+            selectableApps.removeAll { it.packageName == INTERNAL_CLOCK_PACKAGE }
+            selectableApps.add(
+                SelectableApp(
+                    label = applicationContext.getString(R.string.app_picker_internal_clock_label),
+                    packageName = INTERNAL_CLOCK_PACKAGE,
+                    icon = null,
+                    selected = selectedSet.contains(INTERNAL_CLOCK_PACKAGE),
+                    isPrivate = initialPrivateSet.contains(INTERNAL_CLOCK_PACKAGE),
+                    isManual = false,
+                    isHeadlessSystemApp = false
+                )
+            )
+
             selectableApps.sortBy { it.label.lowercase() }
 
             mainHandler.post {
@@ -442,6 +456,9 @@ class AppPickerActivity : AppCompatActivity(), AppFilterBottomSheetFragment.List
     )
 
     companion object {
+        /** Virtual package for SpeakThat Clock; shown in app pickers like an installed app. */
+        const val INTERNAL_CLOCK_PACKAGE = "com.micoyc.speakthat.internal.clock"
+
         private const val PREFS_NAME = "SpeakThatPrefs"
         private const val KEY_DARK_MODE = "dark_mode"
         private const val KEY_APP_LIST = "app_list"

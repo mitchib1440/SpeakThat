@@ -34,7 +34,12 @@ class AppPickerAdapter(
         holder.appName.text = item.label
         holder.packageName.text = item.packageName
 
-        val iconDrawable = item.icon ?: ContextCompat.getDrawable(holder.itemView.context, R.drawable.ic_icon_not_found_32)
+        val ctx = holder.itemView.context
+        val iconDrawable = when (item.packageName) {
+            AppPickerActivity.INTERNAL_CLOCK_PACKAGE ->
+                ContextCompat.getDrawable(ctx, R.drawable.ic_speakthat_clock)
+            else -> item.icon ?: ContextCompat.getDrawable(ctx, R.drawable.ic_icon_not_found_32)
+        }
         holder.appIcon.setImageDrawable(iconDrawable)
 
         holder.selectCheck.setOnCheckedChangeListener(null)
