@@ -2593,5 +2593,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <!-- App Picker Zero State -->
     <string name="no_apps_found">No apps found</string>
     <string name="include_system_apps">Include System Apps</string>
+    <string name="auto_language_title">Auto-Language</string>
+    <string name="auto_language_description">Automatically switches the TTS language to match the notification text (Android 10+).</string>
 
 </resources>
