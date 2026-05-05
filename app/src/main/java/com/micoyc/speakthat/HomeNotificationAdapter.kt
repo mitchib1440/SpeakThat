@@ -68,7 +68,7 @@ class HomeNotificationAdapter(
         if (icon != null) {
             holder.imageAppIcon.setImageDrawable(icon)
         } else {
-            holder.imageAppIcon.setImageResource(R.drawable.speakthaticon)
+            holder.imageAppIcon.setImageResource(R.drawable.ic_icon_not_found_32)
         }
 
         holder.itemView.setOnClickListener { onItemClick(notification) }
@@ -160,6 +160,10 @@ class HomeNotificationAdapter(
     }
 
     private fun loadAppIcon(context: android.content.Context, packageName: String): Drawable? {
+        if (packageName == AppPickerActivity.INTERNAL_CLOCK_PACKAGE) {
+            return context.getDrawable(R.drawable.ic_speakthat_clock)
+        }
+
         return try {
             context.packageManager.getApplicationIcon(packageName)
         } catch (e: Exception) {
