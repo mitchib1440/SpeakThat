@@ -147,6 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
+                    app:buttonTint="@color/white_100"
                     android:focusable="false"
                     android:checked="true" />
 
@@ -194,6 +195,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
+                    app:buttonTint="@color/white_100"
                     android:focusable="false" />
 
                 <LinearLayout
@@ -240,6 +242,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
+                    app:buttonTint="@color/white_100"
                     android:focusable="false" />
 
                 <LinearLayout
@@ -335,6 +338,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
+                    android:buttonTint="@color/white_100"
                     android:focusable="false" />
 
                 <LinearLayout
@@ -388,8 +392,8 @@
             android:layout_height="56dp"
             android:text="@string/filter_sheet_create_button"
             android:textSize="16sp"
-            android:backgroundTint="@color/purple_200"
-            android:textColor="@color/white_100"
+            android:backgroundTint="@color/white_100"
+            android:textColor="@color/black_100"
             app:cornerRadius="12dp" />
 
     </LinearLayout>
