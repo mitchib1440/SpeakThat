@@ -596,12 +596,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_skip_repeated_prefix_label">Skip repeated notification prefixes</string>
     <string name="behavior_skip_repeated_prefix_description">When enabled, consecutive notifications with the same starting words (such as contact or group names) will drop the repeated prefix and only speak the changing text.</string>
     <string name="behavior_skip_repeated_prefix_tip">Recommended for group chats</string>
-    <string name="behavior_priority_apps">⚡ Priority Apps</string>
+    <string name="behavior_priority_apps">Priority Apps</string>
     <string name="behavior_priority_apps_description">These apps will interrupt the current notification. All other apps will queue.</string>
-    <string name="behavior_media_ignore">Ignore - Continue as normal</string>
-    <string name="behavior_media_pause">Pause - Pause media while speaking</string>
-    <string name="behavior_media_lower">Lower Audio - Duck media volume temporarily</string>
-    <string name="behavior_media_silence">Silence - Don\'t speak while media is playing</string>
+    <string name="behavior_media_ignore">Ignore (continue as normal)</string>
+    <string name="behavior_media_pause">Pause (pause media while speaking)</string>
+    <string name="behavior_media_lower">Lower Audio (duck media volume temporarily)</string>
+    <string name="behavior_media_silence">Silence (Don\'t speak while media is playing)</string>
     <string name="behavior_ducking_volume">Ducking Volume</string>
     <string name="behavior_ducking_description">Set how quiet media should become during notifications</string>
     <string name="behavior_ducking_warning">⚠️ On some devices, lowering media volume may also lower the notification voice. If notifications are still hard to hear, try Pause mode or adjust your TTS settings.</string>
