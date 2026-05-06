@@ -49,6 +49,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private static final String KEY_TTS_LANGUAGE = "tts_language";
     private static final String KEY_SPEAKERPHONE_ENABLED = "speakerphone_enabled";
     private static final String KEY_TTS_ENGINE = "tts_engine_package";
+    private static final String KEY_AUTO_DETECT_LANGUAGE = "auto_detect_language";
 
 
     // Default values
@@ -92,6 +93,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private ImageView btnVoiceInfo;
     private ImageView btnTtsEngineInfo;
     private MaterialSwitch switchAdvancedVoice;
+    private MaterialSwitch switchAutoDetectLanguage;
+    private LinearLayout containerAutoDetectLanguage;
     private LinearLayout layoutAdvancedVoiceSection;
     
 
@@ -144,6 +147,15 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         layoutAdvancedVoiceSection.setVisibility(showAdvanced ? View.VISIBLE : View.GONE);
         setupAdvancedSwitch();
         
+        // Restore auto detect language switch state
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            boolean autoDetectLanguage = sharedPreferences.getBoolean(KEY_AUTO_DETECT_LANGUAGE, false);
+            switchAutoDetectLanguage.setChecked(autoDetectLanguage);
+            setupAutoDetectLanguageSwitch();
+        } else {
+            containerAutoDetectLanguage.setVisibility(View.GONE);
+        }
+        
         // Migrate to new preset system if needed
         LanguagePresetManager.migrateToPresetSystem(this);
         
@@ -178,6 +190,8 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         btnVoiceInfo = findViewById(R.id.btnVoiceInfo);
         btnTtsEngineInfo = findViewById(R.id.btnTtsEngineInfo);
         switchAdvancedVoice = findViewById(R.id.switchAdvancedVoice);
+        switchAutoDetectLanguage = findViewById(R.id.switchAutoDetectLanguage);
+        containerAutoDetectLanguage = findViewById(R.id.containerAutoDetectLanguage);
         layoutAdvancedVoiceSection = findViewById(R.id.layoutAdvancedVoiceSection);
         
         // Initialize AudioManager
@@ -1019,6 +1033,13 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         });
     }
 
+    private void setupAutoDetectLanguageSwitch() {
+        switchAutoDetectLanguage.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean(KEY_AUTO_DETECT_LANGUAGE, isChecked).apply();
+            InAppLogger.log("VoiceSettings", "Auto-detect language set to: " + isChecked);
+        });
+    }
+
     /**
      * Update the preset spinner behavior when advanced mode is enabled/disabled
      */
@@ -1186,6 +1207,12 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         boolean showAdvanced = sharedPreferences.getBoolean(KEY_SHOW_ADVANCED, false);
         switchAdvancedVoice.setChecked(showAdvanced);
         layoutAdvancedVoiceSection.setVisibility(showAdvanced ? View.VISIBLE : View.GONE);
+        
+        // Load auto detect language switch state
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            boolean autoDetectLanguage = sharedPreferences.getBoolean(KEY_AUTO_DETECT_LANGUAGE, false);
+            switchAutoDetectLanguage.setChecked(autoDetectLanguage);
+        }
         
         // Update preset spinner behavior based on advanced mode state
         updatePresetSpinnerForAdvancedMode(showAdvanced);
@@ -2396,7 +2423,7 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
 
     @Override
     protected void onDestroy() {
-        if (textToSpeech != null) {
+        if (textToSpeech != null && !NotificationReaderService.isNotificationReadoutActive()) {
             SpeakThatTtsManager.stop();
         }
         super.onDestroy();

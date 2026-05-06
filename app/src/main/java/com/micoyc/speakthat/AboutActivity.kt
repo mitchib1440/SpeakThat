@@ -405,7 +405,9 @@ class AboutActivity : AppCompatActivity() {
         super.onDestroy()
         // Unregister voice settings listener
         voiceSettingsPrefs?.unregisterOnSharedPreferenceChangeListener(voiceSettingsListener)
-        SpeakThatTtsManager.stop()
+        if (!NotificationReaderService.isNotificationReadoutActive()) {
+            SpeakThatTtsManager.stop()
+        }
     }
     
     override fun onSupportNavigateUp(): Boolean {

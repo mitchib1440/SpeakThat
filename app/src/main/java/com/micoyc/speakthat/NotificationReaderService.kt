@@ -1,3 +1,10 @@
+/*
+ * SpeakThat! is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed.
+ * This license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices.
+ * SpeakThat! Copyright © Mitchell Bell
+ * SPEAKTHAT is a registered UK trademark of Mitchell Bell
+ */
+
 package com.micoyc.speakthat
 
 import android.app.AlarmManager
@@ -42,6 +49,7 @@ import com.micoyc.speakthat.GlobalReadoutSuppression
 import com.micoyc.speakthat.settings.BehaviorSettingsActivity
 import com.micoyc.speakthat.settings.BehaviorSettingsStore
 import com.micoyc.speakthat.tts.SpeakThatTtsManager
+import com.micoyc.speakthat.utils.TtsLanguageHelper
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -485,13 +493,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         ): SummaryFilterBridgeResult {
             val instance = activeServiceInstance ?: return SummaryFilterBridgeResult(
                 shouldInclude = true,
-                processedText = fallbackText,
+                processedText = "$appName notified you: $fallbackText",
                 reason = "listener_unavailable"
             )
             if (!listenerConnectedForBridge) {
                 return SummaryFilterBridgeResult(
                     shouldInclude = true,
-                    processedText = fallbackText,
+                    processedText = "$appName notified you: $fallbackText",
                     reason = "listener_disconnected"
                 )
             }
@@ -513,7 +521,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 )
                 SummaryFilterBridgeResult(
                     shouldInclude = result.shouldSpeak,
-                    processedText = result.processedText,
+                    processedText = result.processedText ?: text,
                     reason = result.reason
                 )
             } catch (e: Exception) {
@@ -556,6 +564,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 false // Default to enabled if error
             }
         }
+
+        /**
+         * True while the notification listener is playing a notification readout (including earcon / delay before speech).
+         * Activities share [SpeakThatTtsManager]; they should avoid calling [SpeakThatTtsManager.stop] during an active
+         * readout so utterance callbacks can tear down sensors, wake lock, and queue state.
+         */
+        @JvmStatic
+        fun isNotificationReadoutActive(): Boolean {
+            return activeServiceInstance?.isCurrentlySpeaking == true
+        }
         
         // Pre-compiled regex for URL detection (includes http/https/www URLs, bare domains with TLD, IP addresses, and IPv6)
         private val URL_PATTERN = Regex("""(?i)(?:https?://[^\s]+|www\.[^\s]+|(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.(?:[a-zA-Z]{2,}|[0-9]+)|\[[0-9a-fA-F:]+\])(?::[0-9]+)?(?:/[^\s]*)?)""")
@@ -576,14 +594,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     
     data class QueuedNotification(
         val appName: String,
-        val text: String,
+        val text: String, // Kept for legacy queue compatibility, though blocks are now used
         val isPriority: Boolean = false,
         val conditionalDelaySeconds: Int = -1,
         val sbn: StatusBarNotification? = null,
         val originalAppName: String? = null, // Original app name for statistics (before privacy modification)
         val speechTemplateOverride: SpeechTemplateOverride? = null,
         val voiceOverride: VoiceOverride? = null,
-        val contentCapOverride: ContentCapOverride? = null
+        val contentCapOverride: ContentCapOverride? = null,
+        val processedBlocks: Map<String, String>? = null // Support the new architecture
     )
     
     override fun onCreate() {
@@ -722,7 +741,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     override fun onDestroy() {
         super.onDestroy()
         listenerConnectedForBridge = false
-        activeServiceInstance = null
         
         Log.d(TAG, "NotificationReaderService being destroyed")
         InAppLogger.log("Service", "NotificationReaderService being destroyed")
@@ -740,11 +758,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Cancel any pending batch operations
             batchHandler.removeCallbacks(batchRunnable)
             
-            // Stop any ongoing TTS
-            if (isCurrentlySpeaking) {
+            val readoutWasActive = isCurrentlySpeaking
+            if (readoutWasActive) {
                 SpeakThatTtsManager.stop()
-                isCurrentlySpeaking = false
             }
+            if (isCurrentlySpeaking) {
+                applyReadoutInterruptionTeardown(
+                    "service destroy",
+                    null,
+                    countInterrupted = true,
+                    resumeQueue = false
+                )
+            }
+            unregisterShakeListener()
             restoreGlobalVoiceSettingsIfNeeded("service destroy")
             
             // Clean up enhanced ducking if active
@@ -814,10 +840,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             Log.d(TAG, "NotificationReaderService cleanup completed")
             InAppLogger.log("Service", "Service cleanup completed")
-            
+            activeServiceInstance = null
         } catch (e: Exception) {
             Log.e(TAG, "Error during service cleanup", e)
             InAppLogger.logError("Service", "Error during service cleanup: " + e.message)
+            activeServiceInstance = null
         }
     }
     
@@ -1125,7 +1152,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 filterResult.conditionalDelaySeconds,
                 null,
                 filterResult.speechTemplateOverride,
-                filterResult.voiceOverride
+                filterResult.voiceOverride,
+                filterResult.contentCapOverride,
+                filterResult.processedBlocks
             )
         }
     }
@@ -1201,7 +1230,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     conditionalDelaySeconds = -1,
                     sbn = null,
                     speechTemplateOverride = filterResult.speechTemplateOverride,
-                    voiceOverride = filterResult.voiceOverride
+                    voiceOverride = filterResult.voiceOverride,
+                    contentCapOverride = filterResult.contentCapOverride,
+                    processedBlocks = filterResult.processedBlocks
                 )
             } else {
                 Log.d(TAG, "TEST_FILTERS: notification blocked by filters - ${filterResult.reason}")
@@ -1743,7 +1774,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         sbn,
                         filterResult.speechTemplateOverride,
                         filterResult.voiceOverride,
-                        filterResult.contentCapOverride
+                        filterResult.contentCapOverride,
+                        filterResult.processedBlocks
                     )
                 } else {
                     // Always log the full blocking reason with details
@@ -3229,7 +3261,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val conditionalDelaySeconds: Int = -1, // -1 means no conditional delay
         val speechTemplateOverride: SpeechTemplateOverride? = null,
         val voiceOverride: VoiceOverride? = null,
-        val contentCapOverride: ContentCapOverride? = null
+        val contentCapOverride: ContentCapOverride? = null,
+        val processedBlocks: Map<String, String>? = null
     )
 
     data class SpeechTemplateOverride(
@@ -3347,16 +3380,77 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
         val effectiveOverridePrivate = overridePrivate || isSystemEvent
 
-        // 6. Apply word filtering and replacements (optionally overriding private mode)
-        val wordFilterResult = applyWordFiltering(text, appName, packageName, effectiveOverridePrivate, contentCapOverride)
-        if (!wordFilterResult.shouldSpeak) {
-            return wordFilterResult
+        val effectiveSpeechTemplateOverride = if (isSystemEvent && speechTemplateOverride == null) {
+            InAppLogger.logFilter("System event: speech template override to content-only (no app wrapper)")
+            SpeechTemplateOverride("{content}", null)
+        } else {
+            speechTemplateOverride
         }
 
-        var processedText = wordFilterResult.processedText
+        val templateToUse = resolveSpeechTemplateForPlayback(effectiveSpeechTemplateOverride)
+        val requiredBlocks = getRequiredContentBlocks(templateToUse)
+        
+        val extractedBlocks = if (sbn != null && sbn.notification != null) {
+            extractRequestedContentBlocks(sbn.notification, packageName, requiredBlocks)
+        } else {
+            val fallbackMap = mutableMapOf<String, String>()
+            if (requiredBlocks.contains("content")) fallbackMap["content"] = text
+            if (requiredBlocks.contains("text")) fallbackMap["text"] = text
+            if (requiredBlocks.contains("title")) fallbackMap["title"] = ""
+            fallbackMap
+        }
+
+        val (meatGrinderResult, processedBlocks) = processContentBlocks(
+            blocks = extractedBlocks,
+            appName = appName,
+            packageName = packageName,
+            overridePrivate = effectiveOverridePrivate
+        )
+
+        if (!meatGrinderResult.shouldSpeak) {
+            return meatGrinderResult
+        }
+
+        var finalProcessedBlocks = processedBlocks.toMutableMap()
+
         if (forcePrivate) {
             InAppLogger.logFilter("Rule effect: force private")
-            processedText = getLocalizedTemplate("private_notification", appName, "")
+            val privateText = getLocalizedTemplate("private_notification", appName, "")
+            finalProcessedBlocks.keys.forEach { finalProcessedBlocks[it] = privateText }
+            
+            // If forced private, override the template so it just reads the private text without the '{app} notified you:' wrapper
+            val forcePrivateTemplateOverride = SpeechTemplateOverride("{content}", null)
+            val compiledText = formatSpeechText(
+                appName = appName,
+                processedBlocks = finalProcessedBlocks,
+                packageName = packageName,
+                sbn = sbn,
+                speechTemplateOverride = forcePrivateTemplateOverride
+            )
+            
+            // Apply Content Cap to final string
+            val effectiveContentCapMode = contentCapOverride?.mode ?: contentCapMode
+            val effectiveWordCount = contentCapOverride?.wordCount ?: contentCapWordCount
+            val effectiveSentenceCount = contentCapOverride?.sentenceCount ?: contentCapSentenceCount
+            val effectiveTimeLimit = contentCapOverride?.timeLimit ?: contentCapTimeLimit
+            
+            val cappedCompiledText = applyContentCap(
+                compiledText, 
+                effectiveContentCapMode, 
+                effectiveWordCount, 
+                effectiveSentenceCount, 
+                effectiveTimeLimit
+            )
+            
+            return FilterResult(
+                shouldSpeak = true,
+                processedText = cappedCompiledText,
+                reason = "Passed all filters (Forced Private)",
+                speechTemplateOverride = forcePrivateTemplateOverride,
+                voiceOverride = voiceOverride,
+                contentCapOverride = contentCapOverride,
+                processedBlocks = finalProcessedBlocks
+            )
         } else if (overridePrivate) {
             InAppLogger.logFilter("Rule effect: override private")
         }
@@ -3368,20 +3462,42 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             InAppLogger.logFilter("Rule effect: override TTS voice")
         }
 
-        val effectiveSpeechTemplateOverride = if (isSystemEvent && speechTemplateOverride == null) {
-            InAppLogger.logFilter("System event: speech template override to content-only (no app wrapper)")
-            SpeechTemplateOverride("{content}", null)
-        } else {
-            speechTemplateOverride
+        if (checkEmptyBlocks(finalProcessedBlocks, requiredBlocks.isNotEmpty())) {
+            return FilterResult(false, "", "Empty text")
         }
+
+        val finalSpeechTemplateOverride = meatGrinderResult.speechTemplateOverride ?: effectiveSpeechTemplateOverride
+
+        val compiledText = formatSpeechText(
+            appName = appName,
+            processedBlocks = finalProcessedBlocks,
+            packageName = packageName,
+            sbn = sbn,
+            speechTemplateOverride = finalSpeechTemplateOverride
+        )
+        
+        // Apply Content Cap to final string
+        val effectiveContentCapMode = contentCapOverride?.mode ?: contentCapMode
+        val effectiveWordCount = contentCapOverride?.wordCount ?: contentCapWordCount
+        val effectiveSentenceCount = contentCapOverride?.sentenceCount ?: contentCapSentenceCount
+        val effectiveTimeLimit = contentCapOverride?.timeLimit ?: contentCapTimeLimit
+        
+        val cappedCompiledText = applyContentCap(
+            compiledText, 
+            effectiveContentCapMode, 
+            effectiveWordCount, 
+            effectiveSentenceCount, 
+            effectiveTimeLimit
+        )
 
         return FilterResult(
             shouldSpeak = true,
-            processedText = processedText,
+            processedText = cappedCompiledText, // We store the final compiled text in processedText
             reason = "Passed all filters",
-            speechTemplateOverride = effectiveSpeechTemplateOverride,
+            speechTemplateOverride = finalSpeechTemplateOverride,
             voiceOverride = voiceOverride,
-            contentCapOverride = contentCapOverride
+            contentCapOverride = contentCapOverride,
+            processedBlocks = finalProcessedBlocks
         )
     }
     
@@ -3479,183 +3595,139 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         return sb.toString()
     }
 
-    private fun applyWordFiltering(
-        text: String,
+    private fun processContentBlocks(
+        blocks: Map<String, String>,
         appName: String,
         packageName: String = "",
-        overridePrivate: Boolean = false,
-        contentCapOverride: ContentCapOverride? = null
-    ): FilterResult {
-        var processedText = text
+        overridePrivate: Boolean = false
+    ): Pair<FilterResult, Map<String, String>> {
+        val processedBlocks = mutableMapOf<String, String>()
         
         // SECURITY: Check if this app is in private mode FIRST (highest priority)
-        // This ensures private apps are never processed for word filtering that might reveal content
         if (!overridePrivate && packageName.isNotEmpty() && privateApps.contains(packageName)) {
-            processedText = getLocalizedTemplate("private_notification", appName, "")
+            val privateText = getLocalizedTemplate("private_notification", appName, "")
             Log.d(TAG, "App '$appName' is in private mode - entire notification made private (SECURITY: bypassing all other filters)")
             InAppLogger.logFilter("Made notification private due to app privacy setting (SECURITY: bypassing all other filters)")
-            return FilterResult(true, processedText, "App-level privacy applied")
+            blocks.keys.forEach { processedBlocks[it] = privateText }
+            return Pair(FilterResult(
+                true, privateText, "App-level privacy applied", 
+                speechTemplateOverride = SpeechTemplateOverride("{content}", null)
+            ), processedBlocks)
         }
-        
-        // Note: Even if no word filters are configured, we still need to apply URL handling and Content Cap
-        // So we can't early return here anymore
-        
-        // 1. Apply word list filtering based on mode (none/whitelist/blacklist)
-        when (wordListMode) {
-            "none" -> {
-                // No word filtering - skip blocked words check entirely
-                Log.d(TAG, "Word list filtering disabled (mode: none)")
-            }
-            "blacklist" -> {
-                // BLACKLIST MODE: Block notifications containing these words
-                for (blockedWord in blockedWords) {
-                    if (matchesWordFilter(processedText, blockedWord)) {
-                        // Track filter reason
-                        try {
-                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_WORD_FILTERS)
-                        } catch (e: Exception) {
-                            Log.e(TAG, "Error tracking word filter", e)
-                        }
-                        Log.d(TAG, "Notification blocked by blacklist word: $blockedWord")
-                        return FilterResult(false, "", "Blocked by blacklist word: $blockedWord")
-                    }
-                }
-            }
-            "whitelist" -> {
-                // WHITELIST MODE: Only allow notifications containing these words
-                if (blockedWords.isNotEmpty()) {
-                    var foundMatchingWord = false
-                    for (allowedWord in blockedWords) {
-                        if (matchesWordFilter(processedText, allowedWord)) {
-                            foundMatchingWord = true
-                            Log.d(TAG, "Notification allowed by whitelist word: $allowedWord")
-                            break
-                        }
-                    }
-                    
-                    if (!foundMatchingWord) {
-                        // No matching word found - block the notification
-                        try {
-                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_WORD_FILTERS)
-                        } catch (e: Exception) {
-                            Log.e(TAG, "Error tracking word filter", e)
-                        }
-                        Log.d(TAG, "Notification blocked - no whitelist word found")
-                        return FilterResult(false, "", "Blocked - no whitelist word match")
-                    }
-                }
-            }
-        }
-        
-        // 2. Check for private words and replace entire notification with [PRIVATE]
-        // This works independently of the word list mode - private words ALWAYS make notifications private
-        if (!overridePrivate) {
-            for (privateWord in privateWords) {
-                if (matchesWordFilter(processedText, privateWord)) {
-                    // When any private word is detected, replace the entire notification text with a private message
-                    // This ensures complete privacy - no partial content is revealed
-                    processedText = getLocalizedTemplate("private_notification", appName, "")
-                    
-                    // Always log private word detection for debugging
-                    Log.d(TAG, "Private word '$privateWord' detected - entire notification made private")
-                    InAppLogger.logFilter("Made notification private due to word: $privateWord")
-                    break // Exit loop since entire text is now private
-                }
-            }
-        }
-        
-        // 3. Apply word swaps (only for non-private notifications and only if there are replacements)
-        val wordSwapStartText = processedText
-        var wordSwapChangesMade = false
-        val appliedReplacements = mutableListOf<String>()
-        
-        if (wordReplacements.isNotEmpty()) {
-            Log.d(TAG, "Word replacements available: ${wordReplacements.size} items")
-            for (rule in wordReplacements) {
-                val from = rule.from
-                val to = rule.to
-                val originalText = processedText
-                processedText = processedText.replace(from, to, ignoreCase = true)
-                if (originalText != processedText) {
-                    Log.d(TAG, "Word replacement applied: '$from' -> '$to'")
-                    wordSwapChangesMade = true
-                    appliedReplacements.add("'$from' -> '$to'")
-                } else {
-                    Log.d(TAG, "Word replacement not found: '$from' in text: '$processedText'")
-                    logWordSwapMissDiagnostics(from, processedText)
-                }
-            }
-        }
-        
-        // Log summary to InAppLogger
-        if (wordSwapChangesMade) {
-            val changesSummary = appliedReplacements.joinToString(", ")
-            InAppLogger.logFilter("Word swaps applied: $changesSummary | Before: '$wordSwapStartText' | After: '$processedText'")
-        } else if (wordReplacements.isNotEmpty()) {
-            InAppLogger.logFilter("No word swaps applied (${wordReplacements.size} rules checked) | Text unchanged: '$processedText'")
-        }
-        
-        // Only log detailed filter processing in verbose mode
-        if (InAppLogger.verboseMode) {
-            Log.d(TAG, "=== FILTERING DEBUG: Word replacement section completed, about to start URL handling ===")
-            InAppLogger.logFilter("=== WORD REPLACEMENT COMPLETE - Starting URL/Content Cap processing ===")
-        }
-        
-        // 4. Apply URL handling (only for non-private notifications)
-        if (urlHandlingMode != "read_full") {
-            if (InAppLogger.verboseMode) {
-                Log.d(TAG, "=== URL HANDLING DEBUG: About to apply URL handling ===")
-                InAppLogger.logFilter("URL handling mode: $urlHandlingMode - applying URL processing")
-            }
-            processedText = applyUrlHandling(processedText)
-        } else {
-            if (InAppLogger.verboseMode) {
-                Log.d(TAG, "=== URL HANDLING DEBUG: URL handling disabled (read_full mode) ===")
-                InAppLogger.logFilter("URL handling: read_full mode - skipping")
-            }
-        }
-        
-        // 5. Apply Content Cap (only for non-private notifications)
-        val effectiveContentCapMode = contentCapOverride?.mode ?: contentCapMode
-        val effectiveWordCount = contentCapOverride?.wordCount ?: contentCapWordCount
-        val effectiveSentenceCount = contentCapOverride?.sentenceCount ?: contentCapSentenceCount
-        val effectiveTimeLimit = contentCapOverride?.timeLimit ?: contentCapTimeLimit
 
-        if (InAppLogger.verboseMode) {
-            Log.d(TAG, "=== CONTENT CAP DEBUG: About to check content cap - mode=$effectiveContentCapMode ===")
-            InAppLogger.logFilter("=== CONTENT CAP CHECK: mode=$effectiveContentCapMode ===")
-        }
-        if (effectiveContentCapMode != "disabled") {
-            if (InAppLogger.verboseMode) {
-                Log.d(TAG, "=== CONTENT CAP DEBUG: Content cap IS enabled, calling applyContentCap() ===")
-                InAppLogger.logFilter("Content cap ENABLED ($effectiveContentCapMode) - calling applyContentCap()")
-            }
-            processedText = applyContentCap(processedText, effectiveContentCapMode, effectiveWordCount, effectiveSentenceCount, effectiveTimeLimit)
-            if (InAppLogger.verboseMode) {
-                InAppLogger.logFilter("Content cap processing completed")
-            }
-        } else {
-            if (InAppLogger.verboseMode) {
-                Log.d(TAG, "=== CONTENT CAP DEBUG: Content cap is disabled, skipping ===")
-                InAppLogger.logFilter("Content cap DISABLED - skipping")
+        // ESCALATION CHECK: Check for private words across all blocks
+        if (!overridePrivate) {
+            for ((_, text) in blocks) {
+                for (privateWord in privateWords) {
+                    if (matchesWordFilter(text, privateWord)) {
+                        val privateText = getLocalizedTemplate("private_notification", appName, "")
+                        Log.d(TAG, "Private word '$privateWord' detected - entire notification made private")
+                        InAppLogger.logFilter("Made notification private due to word: $privateWord")
+                        blocks.keys.forEach { processedBlocks[it] = privateText }
+                        return Pair(FilterResult(
+                            true, privateText, "Private word detected",
+                            speechTemplateOverride = SpeechTemplateOverride("{content}", null)
+                        ), processedBlocks)
+                    }
+                }
             }
         }
-        
-        val evalText = if (tidySpeechRemoveEmojisEnabled) removeSpokenEmojis(processedText) else processedText
-        if (isEffectivelyEmpty(evalText)) {
-            if (filterEmptyTextEnabled) {
-                return FilterResult(false, processedText, "Empty text")
-            } else {
-                // User allows empty text, but we clear the payload so leftover punctuation
-                // (like an orphaned colon) doesn't pollute the speech template.
-                processedText = ""
+
+        var foundWhitelistMatch = false
+        val requiresWhitelist = wordListMode == "whitelist" && blockedWords.isNotEmpty()
+
+        for ((key, originalText) in blocks) {
+            var text = originalText
+
+            // BLACKLIST CHECK
+            if (wordListMode == "blacklist") {
+                for (blockedWord in blockedWords) {
+                    if (matchesWordFilter(text, blockedWord)) {
+                        try {
+                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_WORD_FILTERS)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error tracking word filter", e)
+                        }
+                        Log.d(TAG, "Notification blocked by blacklist word: $blockedWord in block: $key")
+                        return Pair(FilterResult(false, "", "Blocked by blacklist word: $blockedWord"), emptyMap())
+                    }
+                }
             }
+
+            // WHITELIST CHECK (Aggregate)
+            if (requiresWhitelist && !foundWhitelistMatch) {
+                for (allowedWord in blockedWords) {
+                    if (matchesWordFilter(text, allowedWord)) {
+                        foundWhitelistMatch = true
+                        Log.d(TAG, "Notification allowed by whitelist word: $allowedWord in block: $key")
+                        break
+                    }
+                }
+            }
+
+            // WORD SWAPS
+            val wordSwapStartText = text
+            var wordSwapChangesMade = false
+            val appliedReplacements = mutableListOf<String>()
+            
+            if (wordReplacements.isNotEmpty()) {
+                for (rule in wordReplacements) {
+                    val from = rule.from
+                    val to = rule.to
+                    val tempText = text
+                    text = text.replace(from, to, ignoreCase = true)
+                    if (tempText != text) {
+                        wordSwapChangesMade = true
+                        appliedReplacements.add("'$from' -> '$to'")
+                    } else if (InAppLogger.verboseMode) {
+                        logWordSwapMissDiagnostics(from, text)
+                    }
+                }
+            }
+            
+            if (wordSwapChangesMade) {
+                val changesSummary = appliedReplacements.joinToString(", ")
+                InAppLogger.logFilter("Word swaps applied on block '$key': $changesSummary | Before: '$wordSwapStartText' | After: '$text'")
+            }
+
+            // URL HANDLING
+            if (urlHandlingMode != "read_full") {
+                text = applyUrlHandling(text)
+            }
+
+            // TIDY SPEECH
+            if (tidySpeechRemoveEmojisEnabled) {
+                text = removeSpokenEmojis(text)
+            }
+
+            processedBlocks[key] = text
         }
-        
-        if (InAppLogger.verboseMode) {
-            InAppLogger.logFilter("=== WORD FILTERING COMPLETE - returning filtered text ===")
+
+        // Final Whitelist Validation
+        if (requiresWhitelist && !foundWhitelistMatch) {
+            try {
+                StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_WORD_FILTERS)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error tracking word filter", e)
+            }
+            Log.d(TAG, "Notification blocked - no whitelist word found across any block")
+            return Pair(FilterResult(false, "", "Blocked - no whitelist word match"), emptyMap())
         }
-        return FilterResult(true, processedText, "Word filtering applied")
+
+        return Pair(FilterResult(true, "", "Passed all filters"), processedBlocks)
+    }
+
+    private fun checkEmptyBlocks(blocks: Map<String, String>, requireContentBlocks: Boolean): Boolean {
+        if (!filterEmptyTextEnabled) return false
+        if (!requireContentBlocks || blocks.isEmpty()) return false
+
+        val allEmpty = blocks.values.all { isEffectivelyEmpty(it) }
+        if (allEmpty) {
+            Log.d(TAG, "All requested content blocks are effectively empty. Aborting readout.")
+            InAppLogger.logFilter("Notification blocked: All content blocks evaluate to empty text.")
+            return true
+        }
+        return false
     }
     
     
@@ -4433,6 +4505,74 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "Speech safety timeout cancelled ($reason)")
         }
     }
+
+    /**
+     * Full teardown when a readout is cut short (external [SpeakThatTtsManager.stop], focus loss paths that skip
+     * [TextToSpeech.UtteranceProgressListener.onDone], service destroy, etc.). Releases sensors, wake lock, and foreground
+     * promotion used during speech, then resumes the queue.
+     */
+    private fun applyReadoutInterruptionTeardown(
+        reason: String,
+        utteranceId: String?,
+        countInterrupted: Boolean,
+        resumeQueue: Boolean = true
+    ) {
+        if (countInterrupted) {
+            try {
+                StatisticsManager.getInstance(this).incrementReadoutsInterrupted()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error tracking readout interruption", e)
+            }
+        }
+
+        scoAudioManager.cleanupSco(this, audioManager)
+        releaseSpeechWakeLock()
+        isCurrentlySpeaking = false
+        cancelSpeechSafetyTimeout("interrupted:$reason")
+
+        contentCapTimerRunnable?.let { runnable ->
+            delayHandler?.removeCallbacks(runnable)
+            contentCapTimerRunnable = null
+        }
+
+        currentSpeechText = ""
+        currentAppName = ""
+        currentOriginalAppName = ""
+        currentTtsText = ""
+
+        stopForegroundService()
+        unregisterShakeListener()
+
+        try {
+            if (isSpeakerphoneEnabled(audioManager)) {
+                setSpeakerphoneEnabled(audioManager, false)
+                InAppLogger.log("Service", "Speakerphone disabled after interrupted readout ($reason)")
+            }
+        } catch (e: Exception) {
+            InAppLogger.logError("Service", "Failed to disable speakerphone: ${e.message}")
+        }
+
+        restoreGlobalVoiceSettingsIfNeeded("readout interrupted: $reason")
+        val utteranceSuffix = utteranceId?.let { " utterance=$it" } ?: ""
+        Log.d(TAG, "Readout interrupted ($reason)$utteranceSuffix")
+        InAppLogger.logTTSEvent("TTS interrupted", "$reason$utteranceSuffix")
+
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+            scoAudioManager.cleanupSco(this@NotificationReaderService, audioManager)
+            cleanupMediaBehavior()
+        }, 250)
+
+        if (resumeQueue) {
+            processNotificationQueue()
+        }
+    }
+
+    private fun finalizeInterruptedReadout(reason: String, utteranceId: String? = null) {
+        if (!isCurrentlySpeaking) {
+            return
+        }
+        applyReadoutInterruptionTeardown(reason, utteranceId, countInterrupted = true, resumeQueue = true)
+    }
     
     // Call this when settings change
     fun refreshAllSettings() {
@@ -4887,6 +5027,98 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     false
                 }
             }
+        }
+    }
+
+    /**
+     * Prepares MODE_IN_COMMUNICATION, voice-call audio focus, and speakerphone routing before TTS,
+     * then invokes [onReady] on the main thread after a short settle delay. When speakerphone is not
+     * requested or "Don't Use Speaker" overrides the pref, [onReady] is posted immediately.
+     */
+    private fun prepareVoiceCallSpeakerRoutingIfNeeded(
+        ttsUsage: Int,
+        effectiveSpeakerphone: Boolean,
+        onReady: () -> Unit
+    ) {
+        val mainHandler = android.os.Handler(android.os.Looper.getMainLooper())
+        if (ttsUsage != android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION || !effectiveSpeakerphone) {
+            mainHandler.post { onReady() }
+            return
+        }
+        mainHandler.post {
+            try {
+                val currentAudioMode = audioManager.mode
+                InAppLogger.log(
+                    "Service",
+                    "VOICE_CALL+speaker prep: speaker=${isSpeakerphoneEnabled(audioManager)} mode=$currentAudioMode"
+                )
+
+                if (audioFocusRequest != null) {
+                    InAppLogger.log("Service", "Releasing existing audio focus before VOICE_CALL speaker routing")
+                    releaseAudioFocus()
+                }
+
+                if (enhancedDuckingFocusRequest != null) {
+                    InAppLogger.log("Service", "Releasing enhanced ducking focus before VOICE_CALL speaker routing")
+                    try {
+                        audioManager.abandonAudioFocusRequest(enhancedDuckingFocusRequest!!)
+                        enhancedDuckingFocusRequest = null
+                        isUsingEnhancedDucking = false
+                    } catch (e: Exception) {
+                        InAppLogger.logError("Service", "Failed to release enhanced ducking audio focus: ${e.message}")
+                    }
+                }
+
+                if (originalAudioMode == -1) {
+                    originalAudioMode = currentAudioMode
+                    InAppLogger.log("Service", "Stored original audio mode: $originalAudioMode")
+                }
+
+                audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
+                InAppLogger.log("Service", "Set MODE_IN_COMMUNICATION for VOICE_CALL speaker routing")
+            } catch (e: Exception) {
+                InAppLogger.logError("Service", "prepareVoiceCallSpeakerRouting: ${e.message}")
+            }
+
+            mainHandler.postDelayed({
+                try {
+                    val focusGranted = requestAudioFocusForVoiceCall()
+                    if (focusGranted) {
+                        InAppLogger.log("Service", "Audio focus ready for VOICE_CALL speaker routing")
+                    } else {
+                        InAppLogger.log("Service", "Audio focus not fully granted for VOICE_CALL; still enabling speakerphone")
+                    }
+                    setSpeakerphoneEnabled(audioManager, true)
+                    if (!focusGranted) {
+                        try {
+                            audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
+                        } catch (_: Exception) {
+                        }
+                        mainHandler.postDelayed({
+                            setSpeakerphoneEnabled(audioManager, true)
+                        }, 80L)
+                    }
+                } catch (e: Exception) {
+                    InAppLogger.logError("Service", "VOICE_CALL speaker routing (focus/speaker): ${e.message}")
+                }
+                mainHandler.postDelayed({
+                    try {
+                        if (!isSpeakerphoneEnabled(audioManager) &&
+                            checkSelfPermission(android.Manifest.permission.MODIFY_AUDIO_SETTINGS) ==
+                            PackageManager.PERMISSION_GRANTED
+                        ) {
+                            setSpeakerphoneEnabled(audioManager, true)
+                            InAppLogger.log(
+                                "Service",
+                                "Retry speakerphone before TTS: now ${isSpeakerphoneEnabled(audioManager)}"
+                            )
+                        }
+                    } catch (e: Exception) {
+                        InAppLogger.logError("Service", "Speakerphone retry: ${e.message}")
+                    }
+                    onReady()
+                }, 220L)
+            }, 120L)
         }
     }
     
@@ -6129,7 +6361,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         sbn: StatusBarNotification? = null,
         speechTemplateOverride: SpeechTemplateOverride? = null,
         voiceOverride: VoiceOverride? = null,
-        contentCapOverride: ContentCapOverride? = null
+        contentCapOverride: ContentCapOverride? = null,
+        processedBlocks: Map<String, String>? = null
     ) {
         val isPriorityApp = priorityApps.contains(packageName)
         
@@ -6144,7 +6377,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             originalAppName = originalAppName,
             speechTemplateOverride = speechTemplateOverride,
             voiceOverride = voiceOverride,
-            contentCapOverride = contentCapOverride
+            contentCapOverride = contentCapOverride,
+            processedBlocks = processedBlocks
         )
         
         Log.d(TAG, "Handling notification behavior - Mode: $notificationBehavior, App: $appName, Currently speaking: $isCurrentlySpeaking, Queue size: ${notificationQueue.size}")
@@ -6166,7 +6400,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         when (notificationBehavior) {
             "interrupt" -> {
                 Log.d(TAG, "INTERRUPT mode: Speaking immediately and interrupting any current speech")
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks)
             }
             "queue" -> {
                 Log.d(TAG, "QUEUE mode: Adding to queue")
@@ -6177,7 +6411,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "skip" -> {
                 if (!isCurrentlySpeaking) {
                     Log.d(TAG, "SKIP mode: Not currently speaking, will speak now")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks)
                 } else {
                     Log.d(TAG, "SKIP mode: Currently speaking, skipping notification from $appName")
                     // Track filter reason
@@ -6191,7 +6425,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "smart" -> {
                 if (isPriorityApp) {
                     Log.d(TAG, "SMART mode: Priority app $appName - interrupting")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks)
                 } else {
                     Log.d(TAG, "SMART mode: Regular app $appName - adding to queue")
                     notificationQueue.add(queuedNotification)
@@ -6200,7 +6434,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             else -> {
                 Log.d(TAG, "UNKNOWN mode '$notificationBehavior': Defaulting to interrupt")
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks)
             }
         }
     }
@@ -6224,6 +6458,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 queuedNotification.speechTemplateOverride,
                 queuedNotification.voiceOverride,
                 queuedNotification.contentCapOverride,
+                queuedNotification.processedBlocks,
                 ttsFlushIncoming = false
             )
         } else if (isCurrentlySpeaking) {
@@ -6242,6 +6477,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         speechTemplateOverride: SpeechTemplateOverride? = null,
         voiceOverride: VoiceOverride? = null,
         contentCapOverride: ContentCapOverride? = null,
+        processedBlocks: Map<String, String>? = null,
         ttsFlushIncoming: Boolean = true
     ) {
         if (!isTtsInitialized || textToSpeech == null) {
@@ -6262,14 +6498,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             pendingReadoutRunnable = null
         }
         
-        // Format: "AppName notified you: notification content" (unless it's already a private message)
-        val speechText = if (text.startsWith("You received a private notification from") || 
-                            text.startsWith("Hai ricevuto una notifica privata da") ||
-                            text.startsWith("Du hast eine private Benachrichtigung von")) {
-            text // Private messages already include the app name, so don't add prefix
-        } else {
-            formatSpeechText(appName, text, packageName, sbn, speechTemplateOverride, contentCapOverride)
-        }
+        // The text is already fully processed and compiled by the applyFilters pipeline.
+        // We just need to read it out!
+        val speechText = text
 
         val collapsedSpeechText = collapseRepeatedNotificationPrefix(speechText)
         lastFullNotificationSpeechText = speechText
@@ -6344,8 +6575,41 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         Log.d(TAG, "=== DUCKING DEBUG: Refreshing voice settings before speech execution ===")
         InAppLogger.log("Service", "=== DUCKING DEBUG: Refreshing voice settings before speech execution ===")
         applyVoiceSettings()
+        val voiceSettingsPrefs = getSharedPreferences(TtsLanguageHelper.PREFS_VOICE_SETTINGS, MODE_PRIVATE)
         if (voiceOverride != null && applyTemporaryVoiceOverride(voiceOverride)) {
             isTemporaryVoiceOverrideActive = true
+            Log.d(
+                TAG,
+                "[AutoLangDebug] ruleVoiceOverrideActive=true skipping auto path textLen=${speechText.length} preview=${speechText.take(160)}"
+            )
+        } else {
+            val autoResult = TtsLanguageHelper.tryApplyAutoDetectLanguage(
+                this,
+                voiceSettingsPrefs,
+                textToSpeech,
+                speechText
+            )
+            val globalLangPref = voiceSettingsPrefs.getString(TtsLanguageHelper.KEY_LANGUAGE, "en_US") ?: "en_US"
+            val globalBaseForLog = globalLangPref.split("_", "-").firstOrNull()?.lowercase().orEmpty()
+            val detectedBaseForLog = autoResult.topDetectedTag?.split("_", "-")?.firstOrNull()?.lowercase().orEmpty()
+            Log.d(
+                TAG,
+                "[AutoLangDebug] autoDetectToggle=${autoResult.autoDetectEnabled} skippedLowApi=${autoResult.skippedLowApi} " +
+                    "rejectedClassifier=${autoResult.rejectedClassifier} acceptedForAuto=${autoResult.acceptedForAutoDetect} " +
+                    "accentPreservationSkipped=${autoResult.accentPreservationSkipped} overrideApplied=${autoResult.overrideApplied} " +
+                    "topTag=${autoResult.topDetectedTag} confidence=${autoResult.topConfidence} " +
+                    "globalBase=$globalBaseForLog detectedBase=$detectedBaseForLog " +
+                    "textLen=${speechText.length} preview=${speechText.take(160)}"
+            )
+            if (autoResult.overrideApplied) {
+                isTemporaryVoiceOverrideActive = true
+                InAppLogger.log("Service", "Auto-detected ${autoResult.effectiveDetectedTag}, applied temporary override")
+            } else if (autoResult.accentPreservationSkipped) {
+                InAppLogger.log(
+                    "Service",
+                    "Auto-detected language ($detectedBaseForLog) matches global base language ($globalBaseForLog). Preserving specific accent."
+                )
+            }
         }
         
         // Add engine failure warning if needed
@@ -6370,9 +6634,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val mainPrefs = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE)
         if (mainPrefs.getBoolean("dont_use_speaker", false)) {
             try {
-                val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-                val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4)
-                val contentTypeIndex = voicePrefs.getInt("content_type", 0)
+                val ttsUsageIndex = voiceSettingsPrefs.getInt("audio_usage", 4)
+                val contentTypeIndex = voiceSettingsPrefs.getInt("content_type", 0)
                 
                 val ttsUsage = when (ttsUsageIndex) {
                     0 -> android.media.AudioAttributes.USAGE_MEDIA
@@ -6459,10 +6722,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         registerShakeListener()
         
         // Create volume bundle with proper volume parameters
-        val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-        val ttsVolume = minOf(1.0f, voicePrefs.getFloat("tts_volume", 1.0f))
-        val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
-        val speakerphoneEnabled = voicePrefs.getBoolean("speakerphone_enabled", false)
+        val ttsVolume = minOf(1.0f, voiceSettingsPrefs.getFloat("tts_volume", 1.0f))
+        val ttsUsageIndex = voiceSettingsPrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
+        val speakerphoneEnabled = voiceSettingsPrefs.getBoolean("speakerphone_enabled", false)
+        val dontUseSpeakerForVoice = mainPrefs.getBoolean("dont_use_speaker", false)
+        val effectiveSpeakerphone = speakerphoneEnabled && !dontUseSpeakerForVoice
+        if (speakerphoneEnabled && dontUseSpeakerForVoice) {
+            InAppLogger.log(
+                "Service",
+                "Speakerphone pref set but Don't Use Speaker takes priority — routing will not force speakerphone"
+            )
+        }
         val ttsUsage = when (ttsUsageIndex) {
             0 -> android.media.AudioAttributes.USAGE_MEDIA
             1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
@@ -6472,8 +6742,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
         }
         
-        Log.d(TAG, "=== DUCKING DEBUG: TTS settings for speech - Volume: ${ttsVolume * 100}%, Usage index: $ttsUsageIndex, Usage constant: $ttsUsage, Speakerphone: $speakerphoneEnabled ===")
-        InAppLogger.log("Service", "=== DUCKING DEBUG: TTS settings for speech - Volume: ${ttsVolume * 100}%, Usage index: $ttsUsageIndex, Usage constant: $ttsUsage, Speakerphone: $speakerphoneEnabled ===")
+        Log.d(
+            TAG,
+            "=== DUCKING DEBUG: TTS settings for speech - Volume: ${ttsVolume * 100}%, Usage index: $ttsUsageIndex, " +
+                "Usage constant: $ttsUsage, speakerPref=$speakerphoneEnabled, dontUseSpeaker=$dontUseSpeakerForVoice, " +
+                "effectiveSpeakerphone=$effectiveSpeakerphone ==="
+        )
+        InAppLogger.log(
+            "Service",
+            "=== DUCKING DEBUG: TTS settings for speech - Volume: ${ttsVolume * 100}%, Usage index: $ttsUsageIndex, " +
+                "Usage: $ttsUsage, speakerPref=$speakerphoneEnabled, dontUseSpeaker=$dontUseSpeakerForVoice, " +
+                "effectiveSpeakerphone=$effectiveSpeakerphone ==="
+        )
         
         // Check if TTS volume compensation is active
         if (ttsVolumeCompensationActive) {
@@ -6484,118 +6764,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             InAppLogger.log("Service", "=== DUCKING DEBUG: TTS volume compensation is NOT ACTIVE ===")
         }
         
-        // Handle speakerphone routing for VOICE_CALL stream
-        if (ttsUsage == android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION && speakerphoneEnabled) {
-            try {
-                // Log current speakerphone state and audio mode
-                val currentSpeakerphoneState = isSpeakerphoneEnabled(audioManager)
-                val currentAudioMode = audioManager.mode
-                InAppLogger.log("Service", "Current speakerphone state: $currentSpeakerphoneState, audio mode: $currentAudioMode")
-                
-                // Check if we already have an audio focus request that might conflict
-                if (audioFocusRequest != null) {
-                    InAppLogger.log("Service", "Warning: Existing audio focus request detected - releasing it to avoid conflicts with VOICE_CALL audio focus")
-                    // Release existing audio focus to avoid conflicts
-                    releaseAudioFocus()
-                }
-                
-                // Also check for enhanced ducking focus requests that might conflict
-                if (enhancedDuckingFocusRequest != null) {
-                    InAppLogger.log("Service", "Warning: Enhanced ducking audio focus request detected - releasing it to avoid conflicts with VOICE_CALL audio focus")
-                    try {
-                        audioManager.abandonAudioFocusRequest(enhancedDuckingFocusRequest!!)
-                        enhancedDuckingFocusRequest = null
-                        isUsingEnhancedDucking = false
-                    } catch (e: Exception) {
-                        InAppLogger.logError("Service", "Failed to release enhanced ducking audio focus: ${e.message}")
-                    }
-                }
-                
-                // Store original audio mode for restoration
-                if (originalAudioMode == -1) {
-                    originalAudioMode = currentAudioMode
-                    InAppLogger.log("Service", "Stored original audio mode: $originalAudioMode")
-                }
-                
-                // Set audio mode to MODE_IN_COMMUNICATION for proper VOICE_CALL handling
-                audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
-                InAppLogger.log("Service", "Set audio mode to MODE_IN_COMMUNICATION for VOICE_CALL stream")
-                
-                // Add a longer delay before requesting audio focus to ensure audio mode is fully set
-                android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                    // Request audio focus with VOICE_COMMUNICATION usage to match TTS
-                    val focusGranted = requestAudioFocusForVoiceCall()
-                    if (focusGranted) {
-                        InAppLogger.log("Service", "Audio focus granted for VOICE_CALL, enabling speakerphone")
-                    } else {
-                        InAppLogger.log("Service", "Audio focus not granted for VOICE_CALL, but attempting speakerphone anyway")
-                    }
-                    
-                    // Enable speakerphone with proper error handling
-                    InAppLogger.log("Service", "Attempting to enable speakerphone...")
-                    setSpeakerphoneEnabled(audioManager, true)
-                    InAppLogger.log("Service", "Called audioManager.isSpeakerphoneOn = true")
-                    
-                    // If audio focus failed, try an alternative approach for some devices
-                    if (!focusGranted) {
-                        InAppLogger.log("Service", "Audio focus failed - trying alternative speakerphone approach")
-                        // Some devices allow speakerphone control without audio focus
-                        // Try setting audio mode again and speakerphone
-                        try {
-                            audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
-                            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                                setSpeakerphoneEnabled(audioManager, true)
-                                InAppLogger.log("Service", "Alternative speakerphone attempt completed")
-                            }, 100) // Increased delay from 50ms to 100ms
-                        } catch (e: Exception) {
-                            InAppLogger.logError("Service", "Alternative speakerphone approach failed: ${e.message}")
-                        }
-                    }
-                    
-                    // Check immediate state
-                    val immediateState = isSpeakerphoneEnabled(audioManager)
-                    InAppLogger.log("Service", "Immediate speakerphone state after setting: $immediateState")
-                    
-                    // Add a longer delay to allow speakerphone state to take effect
-                    android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                        // Verify speakerphone was actually enabled
-                        val delayedState = isSpeakerphoneEnabled(audioManager)
-                        InAppLogger.log("Service", "Speakerphone state after 200ms delay: $delayedState")
-                        
-                        if (delayedState) {
-                            InAppLogger.log("Service", "Speakerphone successfully enabled for VOICE_CALL stream")
-                        } else {
-                            InAppLogger.logError("Service", "Speakerphone was not enabled despite successful call")
-                            // Try to understand why - check if we have the right permissions
-                            try {
-                                val hasModifyAudioSettings = checkSelfPermission(android.Manifest.permission.MODIFY_AUDIO_SETTINGS) == android.content.pm.PackageManager.PERMISSION_GRANTED
-                                InAppLogger.log("Service", "MODIFY_AUDIO_SETTINGS permission: $hasModifyAudioSettings")
-                                
-                                // Try one more time with a different approach
-                                if (!hasModifyAudioSettings) {
-                                    InAppLogger.logError("Service", "Missing MODIFY_AUDIO_SETTINGS permission - speakerphone may not work")
-                                } else {
-                                    InAppLogger.log("Service", "Permission granted but speakerphone still not working - trying final attempt")
-                                    // Try setting speakerphone again with a longer delay
-                                    android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                                        setSpeakerphoneEnabled(audioManager, true)
-                                        val finalState = isSpeakerphoneEnabled(audioManager)
-                                        InAppLogger.log("Service", "Final speakerphone attempt result: $finalState")
-                                    }, 300) // 300ms delay for final attempt
-                                }
-                            } catch (e: Exception) {
-                                InAppLogger.logError("Service", "Failed to check MODIFY_AUDIO_SETTINGS permission: ${e.message}")
-                            }
-                        }
-                    }, 200) // Increased delay from 100ms to 200ms
-                }, 200) // 200ms delay before requesting audio focus to ensure audio mode is fully set
-            } catch (e: Exception) {
-                InAppLogger.logError("Service", "Failed to enable speakerphone: ${e.message}")
-            }
-        }
-        
         // Log TTS settings for debugging
-        InAppLogger.log("Service", "TTS settings - Volume: ${ttsVolume * 100}%, Usage: $ttsUsage, Speakerphone: $speakerphoneEnabled")
+        InAppLogger.log(
+            "Service",
+            "TTS settings - Volume: ${ttsVolume * 100}%, Usage: $ttsUsage, speakerPref=$speakerphoneEnabled, effectiveSpeakerphone=$effectiveSpeakerphone"
+        )
         
         val volumeParams = VoiceSettingsActivity.createVolumeBundle(ttsVolume, ttsUsage, speakerphoneEnabled)
         
@@ -6750,8 +6923,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
             override fun onStop(utteranceId: String?, interrupted: Boolean) {
                 Log.d(TAG, "TTS utterance stopped (interrupted=$interrupted): $utteranceId")
-                scoAudioManager.cleanupSco(this@NotificationReaderService, audioManager)
-                releaseSpeechWakeLock()
+                finalizeInterruptedReadout("tts utterance onStop", utteranceId)
             }
         }
 
@@ -6771,6 +6943,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
             override fun onStop(utteranceId: String?, interrupted: Boolean) {
                 InAppLogger.logTTSEvent("Earcon stopped", "mode=$earconMode interrupted=$interrupted")
+                if (interrupted) {
+                    finalizeInterruptedReadout("earcon utterance onStop", utteranceId)
+                }
             }
         }
 
@@ -6817,92 +6992,94 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             return
         }
 
-        registerEarcons()
+        prepareVoiceCallSpeakerRoutingIfNeeded(ttsUsage, effectiveSpeakerphone) {
+            registerEarcons()
 
-        val useEarcon = shouldQueueEarconBeforeSpeech()
-        Log.d(TAG, "=== DUCKING DEBUG: Calling TTS (earcon=$useEarcon, delayMs=$delayMs, flush=$ttsFlushIncoming) with volume: ${ttsVolume * 100}% ===")
-        InAppLogger.log("Service", "=== DUCKING DEBUG: Calling TTS (earcon=$useEarcon, delayMs=$delayMs, flush=$ttsFlushIncoming) with volume: ${ttsVolume * 100}% ===")
+            val useEarcon = shouldQueueEarconBeforeSpeech()
+            Log.d(TAG, "=== DUCKING DEBUG: Calling TTS (earcon=$useEarcon, delayMs=$delayMs, flush=$ttsFlushIncoming) with volume: ${ttsVolume * 100}% ===")
+            InAppLogger.log("Service", "=== DUCKING DEBUG: Calling TTS (earcon=$useEarcon, delayMs=$delayMs, flush=$ttsFlushIncoming) with volume: ${ttsVolume * 100}% ===")
 
-        var speakQueueMode = when {
-            !ttsFlushIncoming -> TextToSpeech.QUEUE_ADD
-            delayMs > 0L -> TextToSpeech.QUEUE_ADD
-            else -> TextToSpeech.QUEUE_FLUSH
-        }
-        if (delayMs > 0L) {
-            val silentMs = delayMs.coerceIn(1L, Long.MAX_VALUE)
-            val silentResult = SpeakThatTtsManager.playSilentUtterance(
-                durationMs = silentMs,
-                queueMode = TextToSpeech.QUEUE_ADD,
-                utteranceId = UTTERANCE_ID_READOUT_DELAY
-            )
-            if (silentResult != TextToSpeech.SUCCESS) {
-                Log.w(TAG, "playSilentUtterance returned $silentResult")
-                InAppLogger.logWarning("Service", "playSilentUtterance failed: $silentResult")
+            var speakQueueMode = when {
+                !ttsFlushIncoming -> TextToSpeech.QUEUE_ADD
+                delayMs > 0L -> TextToSpeech.QUEUE_ADD
+                else -> TextToSpeech.QUEUE_FLUSH
             }
-            speakQueueMode = TextToSpeech.QUEUE_ADD
-        }
+            if (delayMs > 0L) {
+                val silentMs = delayMs.coerceIn(1L, Long.MAX_VALUE)
+                val silentResult = SpeakThatTtsManager.playSilentUtterance(
+                    durationMs = silentMs,
+                    queueMode = TextToSpeech.QUEUE_ADD,
+                    utteranceId = UTTERANCE_ID_READOUT_DELAY
+                )
+                if (silentResult != TextToSpeech.SUCCESS) {
+                    Log.w(TAG, "playSilentUtterance returned $silentResult")
+                    InAppLogger.logWarning("Service", "playSilentUtterance failed: $silentResult")
+                }
+                speakQueueMode = TextToSpeech.QUEUE_ADD
+            }
 
-        if (useEarcon) {
-            val earconRes = earconRawRes(earconMode)
-            val earconLabel = earconRes?.let { resources.getResourceEntryName(it) } ?: "none"
-            InAppLogger.logTTSEvent(
-                "Earcon play requested",
-                "mode=$earconMode resource=$earconLabel queue=QUEUE_ADD"
-            )
-            val earconResult = SpeakThatTtsManager.playEarcon(
-                context = this,
-                earcon = EARCON_PRE_CUE,
-                queueMode = TextToSpeech.QUEUE_ADD,
-                params = volumeParams,
-                utteranceId = UTTERANCE_ID_EARCON,
-                callback = earconCallback
-            )
-            InAppLogger.logTTSEvent(
-                "Earcon play result",
-                "result=$earconResult mode=$earconMode resource=$earconLabel"
-            )
-            speakQueueMode = if (earconResult == TextToSpeech.SUCCESS) {
-                TextToSpeech.QUEUE_ADD
-            } else {
-                Log.w(TAG, "playEarcon returned $earconResult, falling back to FLUSH/ADD speak")
-                InAppLogger.logWarning("Service", "playEarcon failed, choosing speak queue mode from flush/delay")
-                when {
-                    !ttsFlushIncoming -> TextToSpeech.QUEUE_ADD
-                    delayMs > 0L -> TextToSpeech.QUEUE_ADD
-                    else -> TextToSpeech.QUEUE_FLUSH
+            if (useEarcon) {
+                val earconRes = earconRawRes(earconMode)
+                val earconLabel = earconRes?.let { resources.getResourceEntryName(it) } ?: "none"
+                InAppLogger.logTTSEvent(
+                    "Earcon play requested",
+                    "mode=$earconMode resource=$earconLabel queue=QUEUE_ADD"
+                )
+                val earconResult = SpeakThatTtsManager.playEarcon(
+                    context = this,
+                    earcon = EARCON_PRE_CUE,
+                    queueMode = TextToSpeech.QUEUE_ADD,
+                    params = volumeParams,
+                    utteranceId = UTTERANCE_ID_EARCON,
+                    callback = earconCallback
+                )
+                InAppLogger.logTTSEvent(
+                    "Earcon play result",
+                    "result=$earconResult mode=$earconMode resource=$earconLabel"
+                )
+                speakQueueMode = if (earconResult == TextToSpeech.SUCCESS) {
+                    TextToSpeech.QUEUE_ADD
+                } else {
+                    Log.w(TAG, "playEarcon returned $earconResult, falling back to FLUSH/ADD speak")
+                    InAppLogger.logWarning("Service", "playEarcon failed, choosing speak queue mode from flush/delay")
+                    when {
+                        !ttsFlushIncoming -> TextToSpeech.QUEUE_ADD
+                        delayMs > 0L -> TextToSpeech.QUEUE_ADD
+                        else -> TextToSpeech.QUEUE_FLUSH
+                    }
                 }
             }
-        }
 
-        scoAudioManager.requestScoAndPlay(this, audioManager) {
-            val speakResult = SpeakThatTtsManager.speak(
-                context = this,
-                text = finalSpeechText,
-                queueMode = speakQueueMode,
-                params = volumeParams,
-                utteranceId = "notification_utterance",
-                callback = notificationCallback
-            )
-            
-            Log.d(TAG, "=== DUCKING DEBUG: TTS.speak() returned: $speakResult ===")
-            InAppLogger.log("Service", "=== DUCKING DEBUG: TTS.speak() returned: $speakResult ===")
-            
-            // Start monitoring TTS volume during focus changes
-            monitorTtsVolumeDuringFocusChanges()
-            
-            // Ensure TTS volume is ready for any app focus changes
-            ensureTtsVolumeOnAppBackground()
-            
-            // Check if speak() failed
-            if (speakResult == TextToSpeech.ERROR) {
-                Log.e(TAG, "TTS.speak() returned ERROR - attempting recovery")
-                InAppLogger.logError("Service", "TTS.speak() returned ERROR - attempting recovery")
-                attemptTtsRecovery("speak() returned ERROR")
-                isCurrentlySpeaking = false
-                unregisterShakeListener()
-                restoreGlobalVoiceSettingsIfNeeded("speak() error")
-                releaseSpeechWakeLock()
-                return@requestScoAndPlay
+            scoAudioManager.requestScoAndPlay(this, audioManager) {
+                val speakResult = SpeakThatTtsManager.speak(
+                    context = this,
+                    text = finalSpeechText,
+                    queueMode = speakQueueMode,
+                    params = volumeParams,
+                    utteranceId = "notification_utterance",
+                    callback = notificationCallback
+                )
+
+                Log.d(TAG, "=== DUCKING DEBUG: TTS.speak() returned: $speakResult ===")
+                InAppLogger.log("Service", "=== DUCKING DEBUG: TTS.speak() returned: $speakResult ===")
+
+                // Start monitoring TTS volume during focus changes
+                monitorTtsVolumeDuringFocusChanges()
+
+                // Ensure TTS volume is ready for any app focus changes
+                ensureTtsVolumeOnAppBackground()
+
+                // Check if speak() failed
+                if (speakResult == TextToSpeech.ERROR) {
+                    Log.e(TAG, "TTS.speak() returned ERROR - attempting recovery")
+                    InAppLogger.logError("Service", "TTS.speak() returned ERROR - attempting recovery")
+                    attemptTtsRecovery("speak() returned ERROR")
+                    isCurrentlySpeaking = false
+                    unregisterShakeListener()
+                    restoreGlobalVoiceSettingsIfNeeded("speak() error")
+                    releaseSpeechWakeLock()
+                    return@requestScoAndPlay
+                }
             }
         }
     }
@@ -7398,47 +7575,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      */
     private fun formatSpeechText(
         appName: String,
-        text: String,
+        processedBlocks: Map<String, String>,
         packageName: String,
         sbn: StatusBarNotification?,
-        speechTemplateOverride: SpeechTemplateOverride? = null,
-        contentCapOverride: ContentCapOverride? = null
+        speechTemplateOverride: SpeechTemplateOverride? = null
     ): String {
-        // Extract notification components from StatusBarNotification if available
-        // IMPORTANT: Apply Content Cap to all extracted fields to ensure consistent capping behavior
-        // regardless of which template placeholders the user chooses to use
-        val rawTitle = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
-        val rawNotificationText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
-        val rawBigText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
-        val rawSummaryText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString() ?: ""
-        val rawInfoText = sbn?.notification?.extras?.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString() ?: ""
-        val rawTickerText = sbn?.notification?.tickerText?.toString() ?: ""
-        
-        // Apply URL handling to all notification text fields so URLs are processed
-        // regardless of which template placeholders the user chooses to use.
-        // Note: {content} (the 'text' param) is already URL-processed by applyWordFiltering(),
-        // but these fields are extracted fresh from the notification extras.
-        val urlProcessedTitle = if (rawTitle.isNotEmpty()) applyUrlHandling(rawTitle) else rawTitle
-        val urlProcessedNotificationText = if (rawNotificationText.isNotEmpty()) applyUrlHandling(rawNotificationText) else rawNotificationText
-        val urlProcessedBigText = if (rawBigText.isNotEmpty()) applyUrlHandling(rawBigText) else rawBigText
-        val urlProcessedSummaryText = if (rawSummaryText.isNotEmpty()) applyUrlHandling(rawSummaryText) else rawSummaryText
-        val urlProcessedInfoText = if (rawInfoText.isNotEmpty()) applyUrlHandling(rawInfoText) else rawInfoText
-        val urlProcessedTickerText = if (rawTickerText.isNotEmpty()) applyUrlHandling(rawTickerText) else rawTickerText
-        
-        // Apply Content Cap to all notification text fields to ensure consistent behavior
-        // This ensures Content Cap works regardless of which template placeholders are used
-        val effectiveContentCapMode = contentCapOverride?.mode ?: contentCapMode
-        val effectiveWordCount = contentCapOverride?.wordCount ?: contentCapWordCount
-        val effectiveSentenceCount = contentCapOverride?.sentenceCount ?: contentCapSentenceCount
-        val effectiveTimeLimit = contentCapOverride?.timeLimit ?: contentCapTimeLimit
-
-        val title = if (effectiveContentCapMode != "disabled" && urlProcessedTitle.isNotEmpty()) applyContentCap(urlProcessedTitle, effectiveContentCapMode, effectiveWordCount, effectiveSentenceCount, effectiveTimeLimit) else urlProcessedTitle
-        val notificationText = if (effectiveContentCapMode != "disabled" && urlProcessedNotificationText.isNotEmpty()) applyContentCap(urlProcessedNotificationText, effectiveContentCapMode, effectiveWordCount, effectiveSentenceCount, effectiveTimeLimit) else urlProcessedNotificationText
-        val bigText = if (effectiveContentCapMode != "disabled" && urlProcessedBigText.isNotEmpty()) applyContentCap(urlProcessedBigText, effectiveContentCapMode, effectiveWordCount, effectiveSentenceCount, effectiveTimeLimit) else urlProcessedBigText
-        val summaryText = if (effectiveContentCapMode != "disabled" && urlProcessedSummaryText.isNotEmpty()) applyContentCap(urlProcessedSummaryText, effectiveContentCapMode, effectiveWordCount, effectiveSentenceCount, effectiveTimeLimit) else urlProcessedSummaryText
-        val infoText = if (effectiveContentCapMode != "disabled" && urlProcessedInfoText.isNotEmpty()) applyContentCap(urlProcessedInfoText, effectiveContentCapMode, effectiveWordCount, effectiveSentenceCount, effectiveTimeLimit) else urlProcessedInfoText
-        val tickerText = if (effectiveContentCapMode != "disabled" && urlProcessedTickerText.isNotEmpty()) applyContentCap(urlProcessedTickerText, effectiveContentCapMode, effectiveWordCount, effectiveSentenceCount, effectiveTimeLimit) else urlProcessedTickerText
-        
         // Get current time and date
         val time = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
         val date = SimpleDateFormat("MMM dd", Locale.getDefault()).format(Date())
@@ -7475,13 +7616,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         var processedTemplate = templateToUse
             .replace("{app}", appDisplayName)
             .replace("{package}", packageName)
-            .replace("{content}", text)
-            .replace("{title}", title)
-            .replace("{text}", notificationText)
-            .replace("{bigtext}", bigText)
-            .replace("{summary}", summaryText)
-            .replace("{info}", infoText)
-            .replace("{ticker}", tickerText)
+            .replace("{content}", processedBlocks["content"] ?: "")
+            .replace("{title}", processedBlocks["title"] ?: "")
+            .replace("{text}", processedBlocks["text"] ?: "")
+            .replace("{bigtext}", processedBlocks["bigtext"] ?: "")
+            .replace("{summary}", processedBlocks["summary"] ?: "")
+            .replace("{info}", processedBlocks["info"] ?: "")
+            .replace("{ticker}", processedBlocks["ticker"] ?: "")
             .replace("{time}", time)
             .replace("{date}", date)
             .replace("{timestamp}", timestamp)
@@ -7526,7 +7667,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
 
         val trimmed = currentWords.subList(samePrefixCount, currentWords.size).joinToString(" ")
-        return if (trimmed.isBlank()) fullText else trimmed
+        return trimmed // Changed from: if (trimmed.isBlank()) fullText else trimmed
     }
 
     /**
@@ -7594,6 +7735,69 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             speechTemplate == SpeechTemplateConstants.TEMPLATE_KEY_VARIED || speechTemplate == "VARIED" -> getLocalizedVariedFormatsImproved().random()
             else -> speechTemplate
         }
+    }
+    
+    private fun getRequiredContentBlocks(template: String): Set<String> {
+        val requiredBlocks = mutableSetOf<String>()
+        if (template.contains("{content}")) requiredBlocks.add("content")
+        if (template.contains("{text}")) requiredBlocks.add("text")
+        if (template.contains("{title}")) requiredBlocks.add("title")
+        if (template.contains("{bigtext}")) requiredBlocks.add("bigtext")
+        if (template.contains("{summary}")) requiredBlocks.add("summary")
+        if (template.contains("{info}")) requiredBlocks.add("info")
+        if (template.contains("{ticker}")) requiredBlocks.add("ticker")
+        return requiredBlocks
+    }
+    
+    private fun extractRequestedContentBlocks(
+        notification: Notification,
+        packageNameForLog: String,
+        requiredBlocks: Set<String>
+    ): Map<String, String> {
+        val extractedBlocks = mutableMapOf<String, String>()
+        val safePackageName = packageNameForLog
+        
+        try {
+            val extras = notification.extras
+            val rawTitle = extras?.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
+            val rawText = extras?.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
+            val rawBigText = extras?.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
+            val rawSummaryText = extras?.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString() ?: ""
+            val rawInfoText = extras?.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString() ?: ""
+            val rawTickerText = notification.tickerText?.toString() ?: ""
+            
+            if (requiredBlocks.contains("title")) extractedBlocks["title"] = rawTitle
+            if (requiredBlocks.contains("text")) extractedBlocks["text"] = rawText
+            if (requiredBlocks.contains("bigtext")) extractedBlocks["bigtext"] = rawBigText
+            if (requiredBlocks.contains("summary")) extractedBlocks["summary"] = rawSummaryText
+            if (requiredBlocks.contains("info")) extractedBlocks["info"] = rawInfoText
+            if (requiredBlocks.contains("ticker")) extractedBlocks["ticker"] = rawTickerText
+            
+            // Handle composite {content} block explicitly by using original logic
+            if (requiredBlocks.contains("content")) {
+                extractedBlocks["content"] = extractNotificationText(notification, safePackageName)
+            }
+        } catch (e: Exception) {
+            val fallbackMessage = "Failed to unparcel extras for $safePackageName - using fallback"
+            Log.w(TAG, "$fallbackMessage (${e.javaClass.simpleName}: ${e.message})", e)
+            InAppLogger.logWarning("Development", fallbackMessage)
+            
+            val tickerFallback = try {
+                notification.tickerText?.toString()?.trim().orEmpty()
+            } catch (tickerException: Exception) {
+                Log.w(TAG, "tickerText fallback failed for $safePackageName", tickerException)
+                InAppLogger.logWarning("Development", "tickerText fallback failed for $safePackageName - returning empty text")
+                ""
+            }
+            
+            // Populate all required blocks with the fallback if parsing fails
+            requiredBlocks.forEach { block ->
+                val fallbackToUse = maybeBlankClockFiringFallback(tickerFallback, notification, safePackageName)
+                extractedBlocks[block] = fallbackToUse
+            }
+        }
+        
+        return extractedBlocks
     }
 
     /**

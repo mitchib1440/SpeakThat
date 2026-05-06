@@ -64,6 +64,7 @@ import com.micoyc.speakthat.rules.migration.RuleMigrationManager
 import com.micoyc.speakthat.summary.SummaryConstants
 import com.micoyc.speakthat.summary.SummarySettingsGate
 import com.micoyc.speakthat.tts.SpeakThatTtsManager
+import com.micoyc.speakthat.utils.TtsLanguageHelper
 import org.woheller69.freeDroidWarn.FreeDroidWarn
 import java.text.NumberFormat
 
@@ -318,8 +319,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         updatePrefs?.unregisterOnSharedPreferenceChangeListener(updatePrefsListener)
         migrationPrefs?.unregisterOnSharedPreferenceChangeListener(migrationPrefsListener)
         
-        // Clean up TTS
-        SpeakThatTtsManager.stop()
+        // Do not stop shared TTS during an active notification readout (same engine); service will tear down on utterance onStop.
+        if (!NotificationReaderService.isNotificationReadoutActive()) {
+            SpeakThatTtsManager.stop()
+        }
         
         // Clean up sensors
         sensorManager?.unregisterListener(this)
@@ -1085,10 +1088,16 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         if (isTtsInitialized && SpeakThatTtsManager.getTextToSpeech() != null) {
             // Register shake listener for this TTS session
             startShakeListening()
-            
+
+            SpeakThatTtsManager.applyVoiceSettings(this)
+            val voiceSettingsPrefs = getSharedPreferences(TtsLanguageHelper.PREFS_VOICE_SETTINGS, MODE_PRIVATE)
+            val ttsEngine = SpeakThatTtsManager.getTextToSpeech()
+            val autoDetectResult =
+                TtsLanguageHelper.tryApplyAutoDetectLanguage(this, voiceSettingsPrefs, ttsEngine, text)
+            val overrideApplied = autoDetectResult.overrideApplied
+
             // CRITICAL: Apply audio attributes to TTS instance before creating volume bundle
             // This ensures the audio usage matches what we pass to createVolumeBundle
-            val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
             val ttsVolume = minOf(1.0f, voiceSettingsPrefs.getFloat("tts_volume", 1.0f))
             val ttsUsageIndex = voiceSettingsPrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
             val contentTypeIndex = voiceSettingsPrefs.getInt("content_type", 0) // Default to SPEECH
@@ -1136,21 +1145,33 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
 
                     override fun onDone(utteranceId: String?) {
                         stopShakeListening()
+                        if (overrideApplied) {
+                            SpeakThatTtsManager.applyVoiceSettings(this@MainActivity)
+                        }
                         InAppLogger.logTTSEvent("MainActivity TTS completed", "Easter egg finished")
                     }
 
                     override fun onError(utteranceId: String?) {
                         stopShakeListening()
+                        if (overrideApplied) {
+                            SpeakThatTtsManager.applyVoiceSettings(this@MainActivity)
+                        }
                         InAppLogger.logTTSEvent("MainActivity TTS error", "Easter egg failed")
                         Log.e(TAG, "TTS error during easter egg playback")
                     }
 
                     override fun onStop(utteranceId: String?, interrupted: Boolean) {
                         stopShakeListening()
+                        if (overrideApplied) {
+                            SpeakThatTtsManager.applyVoiceSettings(this@MainActivity)
+                        }
                     }
                 }
             )
             if (result == TextToSpeech.ERROR) {
+                if (overrideApplied) {
+                    SpeakThatTtsManager.applyVoiceSettings(this)
+                }
                 Log.e(TAG, "TTS speak() returned ERROR")
                 InAppLogger.logError("MainActivity", "TTS speak() failed")
                 Toast.makeText(this, getString(R.string.main_tts_playback_failed), Toast.LENGTH_SHORT).show()

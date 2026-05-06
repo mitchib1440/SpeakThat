@@ -35,6 +35,8 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
     private SharedPreferences mainPrefs;
     private SharedPreferences voicePrefs;
     private boolean isLoadingSettings = false;
+    /** Suppress mutual-exclusion logic while programmatically syncing the two switches. */
+    private boolean suppressSpeakerDontUseListeners = false;
 
     private static final String MAIN_PREFS_NAME = "SpeakThatPrefs";
     private static final String VOICE_PREFS_NAME = "VoiceSettings";
@@ -133,6 +135,9 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
             public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
                 saveToVoicePrefs(KEY_AUDIO_USAGE, position);
                 updateSpeakerphoneVisibility(position);
+                if (!isLoadingSettings) {
+                    refreshSpeakerDontUseMutualExclusionUi();
+                }
             }
             @Override
             public void onNothingSelected(android.widget.AdapterView<?> parent) {}
@@ -156,17 +161,33 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
         });
 
         binding.speakerphoneSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (!isLoadingSettings) {
-                voicePrefs.edit().putBoolean(KEY_SPEAKERPHONE_ENABLED, isChecked).apply();
-                InAppLogger.log("CompatibilitySettings", "Speakerphone " + (isChecked ? "enabled" : "disabled"));
+            if (suppressSpeakerDontUseListeners || isLoadingSettings) {
+                return;
             }
+            voicePrefs.edit().putBoolean(KEY_SPEAKERPHONE_ENABLED, isChecked).apply();
+            if (isChecked) {
+                suppressSpeakerDontUseListeners = true;
+                mainPrefs.edit().putBoolean(KEY_DONT_USE_SPEAKER, false).apply();
+                binding.dontUseSpeakerSwitch.setChecked(false);
+                suppressSpeakerDontUseListeners = false;
+            }
+            refreshSpeakerDontUseMutualExclusionUi();
+            InAppLogger.log("CompatibilitySettings", "Speakerphone " + (isChecked ? "enabled" : "disabled"));
         });
 
         binding.dontUseSpeakerSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (!isLoadingSettings) {
-                mainPrefs.edit().putBoolean(KEY_DONT_USE_SPEAKER, isChecked).apply();
-                InAppLogger.log("CompatibilitySettings", "Don't Use Speaker " + (isChecked ? "enabled" : "disabled"));
+            if (suppressSpeakerDontUseListeners || isLoadingSettings) {
+                return;
             }
+            mainPrefs.edit().putBoolean(KEY_DONT_USE_SPEAKER, isChecked).apply();
+            if (isChecked) {
+                suppressSpeakerDontUseListeners = true;
+                voicePrefs.edit().putBoolean(KEY_SPEAKERPHONE_ENABLED, false).apply();
+                binding.speakerphoneSwitch.setChecked(false);
+                suppressSpeakerDontUseListeners = false;
+            }
+            refreshSpeakerDontUseMutualExclusionUi();
+            InAppLogger.log("CompatibilitySettings", "Don't Use Speaker " + (isChecked ? "enabled" : "disabled"));
         });
 
         binding.btnAudioHelp.setOnClickListener(v -> showAudioHelpDialog());
@@ -175,6 +196,48 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
     private void updateSpeakerphoneVisibility(int audioUsageIndex) {
         binding.speakerphoneOptionLayout.setVisibility(
             audioUsageIndex == VOICE_CALL_INDEX ? View.VISIBLE : View.GONE);
+    }
+
+    /**
+     * If both speakerphone and don't-use-speaker were ever true (e.g. legacy import),
+     * "Don't Use Speaker" wins: clear speakerphone in VoiceSettings prefs.
+     */
+    private void resolveSpeakerDontUsePreferenceConflict() {
+        boolean speaker = voicePrefs.getBoolean(KEY_SPEAKERPHONE_ENABLED, false);
+        boolean dont = mainPrefs.getBoolean(KEY_DONT_USE_SPEAKER, false);
+        if (speaker && dont) {
+            voicePrefs.edit().putBoolean(KEY_SPEAKERPHONE_ENABLED, false).apply();
+            InAppLogger.log("CompatibilitySettings",
+                "Resolved conflict: Don't Use Speaker takes priority; cleared speakerphone_enabled");
+        }
+    }
+
+    /**
+     * When Voice Call stream is selected: only one of the two switches can be on; the other is disabled.
+     * When another stream is selected, the speakerphone row is hidden and both prefs-driven switches
+     * remain interactable where shown (Don't Use Speaker is independent of stream).
+     */
+    private void refreshSpeakerDontUseMutualExclusionUi() {
+        int audioUsage = voicePrefs.getInt(KEY_AUDIO_USAGE, DEFAULT_AUDIO_USAGE);
+        boolean voiceCallRow = (audioUsage == VOICE_CALL_INDEX);
+        boolean dont = binding.dontUseSpeakerSwitch.isChecked();
+        boolean speaker = binding.speakerphoneSwitch.isChecked();
+
+        if (!voiceCallRow) {
+            binding.dontUseSpeakerSwitch.setEnabled(true);
+            binding.speakerphoneSwitch.setEnabled(true);
+            return;
+        }
+        if (dont) {
+            binding.dontUseSpeakerSwitch.setEnabled(true);
+            binding.speakerphoneSwitch.setEnabled(false);
+        } else if (speaker) {
+            binding.dontUseSpeakerSwitch.setEnabled(false);
+            binding.speakerphoneSwitch.setEnabled(true);
+        } else {
+            binding.dontUseSpeakerSwitch.setEnabled(true);
+            binding.speakerphoneSwitch.setEnabled(true);
+        }
     }
 
     private void saveToVoicePrefs(String key, int value) {
@@ -341,6 +404,8 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
     // ========== Load Settings ==========
 
     private void loadSettings() {
+        resolveSpeakerDontUsePreferenceConflict();
+
         // Audio Routing
         int audioUsage = voicePrefs.getInt(KEY_AUDIO_USAGE, DEFAULT_AUDIO_USAGE);
         if (binding.audioUsageSpinner.getAdapter() != null && audioUsage < binding.audioUsageSpinner.getAdapter().getCount()) {
@@ -356,10 +421,13 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
             binding.contentTypeSpinner.setSelection(DEFAULT_CONTENT_TYPE);
         }
 
+        suppressSpeakerDontUseListeners = true;
         binding.speakerphoneSwitch.setChecked(voicePrefs.getBoolean(KEY_SPEAKERPHONE_ENABLED, false));
-        updateSpeakerphoneVisibility(audioUsage);
-
         binding.dontUseSpeakerSwitch.setChecked(mainPrefs.getBoolean(KEY_DONT_USE_SPEAKER, false));
+        suppressSpeakerDontUseListeners = false;
+
+        updateSpeakerphoneVisibility(audioUsage);
+        refreshSpeakerDontUseMutualExclusionUi();
 
         // SCO Devices
         updateScoDevicesSummary();

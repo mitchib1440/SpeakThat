@@ -1,3 +1,10 @@
+/*
+ * SpeakThat! is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed.
+ * This license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices.
+ * SpeakThat! Copyright © Mitchell Bell
+ * SPEAKTHAT is a registered UK trademark of Mitchell Bell
+ */
+
 package com.micoyc.speakthat.summary
 
 import android.app.Notification
@@ -49,6 +56,7 @@ import com.micoyc.speakthat.NotificationReaderService
 import com.micoyc.speakthat.R
 import com.micoyc.speakthat.VoiceSettingsActivity
 import com.micoyc.speakthat.tts.SpeakThatTtsManager
+import com.micoyc.speakthat.utils.TtsLanguageHelper
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Date
@@ -174,6 +182,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         buildItemsJob?.cancel()
         mainHandler.removeCallbacksAndMessages(null)
         unregisterComponentCallbacks(this)
+        restoreGlobalVoiceOnSharedTts()
         stopAndReleaseTextToSpeech()
         abandonAudioFocusIfHeld()
         serviceScope.cancel()
@@ -449,6 +458,18 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         }
     }
 
+    private fun prepareTtsForSummaryUtterance(tts: TextToSpeech, utteranceText: String) {
+        SpeakThatTtsManager.applyVoiceSettings(this)
+        val prefs = getSharedPreferences(TtsLanguageHelper.PREFS_VOICE_SETTINGS, MODE_PRIVATE)
+        TtsLanguageHelper.tryApplyAutoDetectLanguage(this, prefs, tts, utteranceText)
+    }
+
+    private fun restoreGlobalVoiceOnSharedTts() {
+        val tts = SpeakThatTtsManager.getTextToSpeech() ?: return
+        val prefs = getSharedPreferences(TtsLanguageHelper.PREFS_VOICE_SETTINGS, MODE_PRIVATE)
+        VoiceSettingsActivity.applyVoiceSettings(tts, prefs)
+    }
+
     private fun enqueueSpeech(
         text: String,
         queueMode: Int,
@@ -457,7 +478,8 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         index: Int,
         sessionId: Int
     ) {
-        if (textToSpeech == null) return
+        val tts = textToSpeech ?: return
+        prepareTtsForSummaryUtterance(tts, text)
         utteranceTypeMap[utteranceId] = type
         utteranceIndexMap[utteranceId] = index
         utteranceSessionMap[utteranceId] = sessionId
@@ -550,6 +572,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         } catch (e: Exception) {
             InAppLogger.logError(TAG, "Failed to stop TTS during shutdown: ${e.message}")
         }
+        restoreGlobalVoiceOnSharedTts()
         abandonAudioFocusIfHeld()
         stopSelf()
     }
@@ -616,15 +639,9 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
     private fun buildItemSpeechText(item: SummaryItem): String {
         val relativeTime = formatRelativeTimeForSpeech(item.postTimeMillis)
         val actualTime = DateFormat.getTimeFormat(this).format(Date(item.postTimeMillis))
-        val isPrivate = item.senderText.equals("Private Notification", ignoreCase = true) ||
-            item.messageText.contains("private notification", ignoreCase = true)
 
-        return if (isPrivate) {
-            // Avoid app-name duplication for private-mode notifications.
-            "$relativeTime, at $actualTime, ${item.messageText}"
-        } else {
-            "$relativeTime, at $actualTime, ${item.appName} notified you: ${item.senderText}. ${item.messageText}"
-        }
+        // item.messageText is already fully compiled by applyFilters, including the template and Content Cap.
+        return "$relativeTime, at $actualTime, ${item.messageText}"
     }
 
     private fun formatRelativeTimeForSpeech(postTimeMillis: Long): String {

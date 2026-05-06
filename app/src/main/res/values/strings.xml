@@ -505,6 +505,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="dialog_error_package_exists">This package is already in the list</string>
     <string name="dialog_success_package_added">Package added successfully</string>
     <string name="app_picker_manual_placeholder">Manual app</string>
+    <string name="app_picker_internal_clock_label">SpeakThat Clock</string>
 
     <!-- Critical Hardcoded Strings - Dialog Messages -->
     <string name="dialog_message_theme_changed">The theme has been changed. For the best experience, you may want to restart the app manually.</string>
@@ -2593,5 +2594,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <!-- App Picker Zero State -->
     <string name="no_apps_found">No apps found</string>
     <string name="include_system_apps">Include System Apps</string>
+    <string name="auto_language_title">Auto-Language</string>
+    <string name="auto_language_description">Automatically switches the TTS language to match the notification text (Android 10+).</string>
 
 </resources>
