@@ -127,7 +127,7 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment() {
         if (icon != null) {
             appIcon.setImageDrawable(icon)
         } else {
-            appIcon.setImageResource(R.drawable.speakthaticon)
+            appIcon.setImageResource(R.drawable.ic_icon_not_found_32)
         }
 
         val appOptionTitle: TextView = view.findViewById(R.id.textAppOptionTitle)
@@ -402,7 +402,12 @@ class FilterBottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
+    // Use custom icon for SpeakThat Clock events
     private fun loadAppIcon(context: Context, pkg: String): Drawable? {
+        if (pkg == AppPickerActivity.INTERNAL_CLOCK_PACKAGE) {
+            return context.getDrawable(R.drawable.ic_speakthat_clock)
+        }
+
         return try {
             context.packageManager.getApplicationIcon(pkg)
         } catch (e: Exception) {
