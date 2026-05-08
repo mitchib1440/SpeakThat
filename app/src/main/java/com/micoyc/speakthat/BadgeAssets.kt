@@ -67,11 +67,23 @@ object BadgeAssets {
     }
 
     @JvmStatic
-    fun drawableForSelection(selection: String?, badgeCount: Int): Int {
+    fun drawableForSelection(selection: String?, badgeCount: Int, festiveEnabled: Boolean = false): Int {
         val sanitized = ensureValidSelection(selection, badgeCount)
-        if (sanitized == KEY_DEFAULT) return R.drawable.logo_speakthat
-        val tier = badgeTiers.firstOrNull { it.key == sanitized }
-        return tier?.drawableRes ?: R.drawable.logo_speakthat
+        if (sanitized == KEY_DEFAULT) {
+            return if (festiveEnabled) R.drawable.logo_speakthat_festive else R.drawable.logo_speakthat
+        }
+
+        return when (sanitized) {
+            "bronze" -> if (festiveEnabled) R.drawable.bronze_festive else R.drawable.bronze
+            "silver" -> if (festiveEnabled) R.drawable.silver_festive else R.drawable.silver
+            "gold" -> if (festiveEnabled) R.drawable.gold_festive else R.drawable.gold
+            "emerald" -> if (festiveEnabled) R.drawable.emerald_festive else R.drawable.emerald
+            "sapphire" -> if (festiveEnabled) R.drawable.sapphire_festive else R.drawable.sapphire
+            "amber" -> if (festiveEnabled) R.drawable.amber_festive else R.drawable.amber
+            "amethyst" -> if (festiveEnabled) R.drawable.amethyst_festive else R.drawable.amethyst
+            "ruby" -> if (festiveEnabled) R.drawable.ruby_festive else R.drawable.ruby
+            else -> if (festiveEnabled) R.drawable.logo_speakthat_festive else R.drawable.logo_speakthat
+        }
     }
 }
 

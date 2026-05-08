@@ -29,6 +29,7 @@ import com.micoyc.speakthat.BadgeAssets;
 import com.micoyc.speakthat.permissions.PermissionCatalog;
 import com.micoyc.speakthat.permissions.PermissionSyncManager;
 import com.micoyc.speakthat.permissions.PermissionSyncSession;
+import com.micoyc.speakthat.utils.SeasonalModeHelper;
 import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -86,11 +87,29 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         // Initialize activity result launchers
         initializeActivityResultLaunchers();
 
+        setupSeasonalMode();
         setupPerformanceSettings();
         setupToastNotifications();
         setupBadgeSelector();
         setupAccessibilityPermission();
         setupDataManagement();
+    }
+
+    private void setupSeasonalMode() {
+        if (!SeasonalModeHelper.isDecember()) {
+            binding.cardSeasonalMode.setVisibility(View.GONE);
+            return;
+        }
+
+        binding.cardSeasonalMode.setVisibility(View.VISIBLE);
+        boolean festiveEnabled = sharedPreferences.getBoolean(
+            SeasonalModeHelper.PREF_ENABLE_FESTIVE_MODE,
+            SeasonalModeHelper.PREF_DEFAULT_ENABLE_FESTIVE_MODE
+        );
+        binding.switchFestiveMode.setChecked(festiveEnabled);
+        binding.switchFestiveMode.setOnCheckedChangeListener((buttonView, isChecked) ->
+            sharedPreferences.edit().putBoolean(SeasonalModeHelper.PREF_ENABLE_FESTIVE_MODE, isChecked).apply()
+        );
     }
 
     private void applySavedTheme() {

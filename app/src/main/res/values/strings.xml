@@ -993,6 +993,9 @@ Block = completely ignore, Private = speak privately
     <string name="general_theme_title">Theme</string>
     <string name="general_dark_mode">Dark Mode</string>
     <string name="general_dark_mode_description">Enable dark mode for this app</string>
+    <string name="general_seasonal_title">Seasonal</string>
+    <string name="general_festive_mode">Festive Mode</string>
+    <string name="general_festive_mode_description">Overlay a festive hat on the home logo during December</string>
     <string name="general_app_behavior_title">App Behaviour &amp; Performance</string>
     <string name="general_auto_start">Auto-start on Boot</string>
     <string name="general_auto_start_description">Automatically start the notification service when device boots</string>

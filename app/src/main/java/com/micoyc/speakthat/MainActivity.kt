@@ -64,6 +64,7 @@ import com.micoyc.speakthat.rules.migration.RuleMigrationManager
 import com.micoyc.speakthat.summary.SummaryConstants
 import com.micoyc.speakthat.summary.SummarySettingsGate
 import com.micoyc.speakthat.tts.SpeakThatTtsManager
+import com.micoyc.speakthat.utils.SeasonalModeHelper
 import com.micoyc.speakthat.utils.TtsLanguageHelper
 import org.woheller69.freeDroidWarn.FreeDroidWarn
 import java.text.NumberFormat
@@ -162,7 +163,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
      * Listen for badge selection changes (Play flavor only) so the logo updates immediately.
      */
     private val badgeSelectionListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key == BadgeAssets.PREF_BADGE_SELECTION) {
+        if (key == BadgeAssets.PREF_BADGE_SELECTION || key == SeasonalModeHelper.PREF_ENABLE_FESTIVE_MODE) {
             updateBadgeLogo()
         }
     }
@@ -388,10 +389,13 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
 
     private fun updateBadgeLogo() {
         if (!::binding.isInitialized) return
+        val festiveEnabled = SeasonalModeHelper.isFestiveEnabled(this)
 
         // Only Play builds surface badges; others keep the default logo.
         if (BuildConfig.DISTRIBUTION_CHANNEL != "play") {
-            binding.logoSpeakThat.setImageResource(R.drawable.logo_speakthat)
+            binding.logoSpeakThat.setImageResource(
+                if (festiveEnabled) R.drawable.logo_speakthat_festive else R.drawable.logo_speakthat
+            )
             return
         }
 
@@ -400,7 +404,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             BadgeAssets.PREF_BADGE_SELECTION,
             BadgeAssets.KEY_DEFAULT
         )
-        val drawableRes = BadgeAssets.drawableForSelection(selection, badgeCount)
+        val drawableRes = BadgeAssets.drawableForSelection(selection, badgeCount, festiveEnabled)
         binding.logoSpeakThat.setImageResource(drawableRes)
     }
     
