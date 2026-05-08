@@ -3397,6 +3397,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             if (requiredBlocks.contains("content")) fallbackMap["content"] = text
             if (requiredBlocks.contains("text")) fallbackMap["text"] = text
             if (requiredBlocks.contains("title")) fallbackMap["title"] = ""
+            if (requiredBlocks.contains("subtext")) fallbackMap["subtext"] = ""
             fallbackMap
         }
 
@@ -4023,6 +4024,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             packageName = packageName,
             title = extras?.getCharSequence(Notification.EXTRA_TITLE),
             text = extras?.getCharSequence(Notification.EXTRA_TEXT) ?: fallbackText,
+            subText = extras?.getCharSequence(Notification.EXTRA_SUB_TEXT),
             bigText = extras?.getCharSequence(Notification.EXTRA_BIG_TEXT),
             ticker = notification?.tickerText,
             category = notification?.category,
@@ -7619,6 +7621,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             .replace("{content}", processedBlocks["content"] ?: "")
             .replace("{title}", processedBlocks["title"] ?: "")
             .replace("{text}", processedBlocks["text"] ?: "")
+            .replace("{subtext}", processedBlocks["subtext"] ?: "")
             .replace("{bigtext}", processedBlocks["bigtext"] ?: "")
             .replace("{summary}", processedBlocks["summary"] ?: "")
             .replace("{info}", processedBlocks["info"] ?: "")
@@ -7743,6 +7746,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (template.contains("{text}")) requiredBlocks.add("text")
         if (template.contains("{title}")) requiredBlocks.add("title")
         if (template.contains("{bigtext}")) requiredBlocks.add("bigtext")
+        if (template.contains("{subtext}")) requiredBlocks.add("subtext")
         if (template.contains("{summary}")) requiredBlocks.add("summary")
         if (template.contains("{info}")) requiredBlocks.add("info")
         if (template.contains("{ticker}")) requiredBlocks.add("ticker")
@@ -7762,12 +7766,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             val rawTitle = extras?.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
             val rawText = extras?.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
             val rawBigText = extras?.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
+            val rawSubText = extras?.getCharSequence(Notification.EXTRA_SUB_TEXT)?.toString() ?: ""
             val rawSummaryText = extras?.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString() ?: ""
             val rawInfoText = extras?.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString() ?: ""
             val rawTickerText = notification.tickerText?.toString() ?: ""
             
             if (requiredBlocks.contains("title")) extractedBlocks["title"] = rawTitle
             if (requiredBlocks.contains("text")) extractedBlocks["text"] = rawText
+            if (requiredBlocks.contains("subtext")) extractedBlocks["subtext"] = rawSubText
             if (requiredBlocks.contains("bigtext")) extractedBlocks["bigtext"] = rawBigText
             if (requiredBlocks.contains("summary")) extractedBlocks["summary"] = rawSummaryText
             if (requiredBlocks.contains("info")) extractedBlocks["info"] = rawInfoText

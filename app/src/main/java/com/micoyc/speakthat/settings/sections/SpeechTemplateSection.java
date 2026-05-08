@@ -246,6 +246,7 @@ public class SpeechTemplateSection implements BehaviorSettingsSection {
             "• <b>{title}</b> - Notification title only (e.g., \"Mitchi\" for Messages)<br>" +
             "• <b>{text}</b> - Notification text only (e.g., \"I heard you're using SpeakThat!\" for Messages)<br>" +
             "• <b>{bigtext}</b> - Big text content (expanded notification)<br>" +
+            "• <b>{subtext}</b> - Sub-text line under the title (inbox-style notifications; often empty)<br>" +
             "• <b>{summary}</b> - Summary text (e.g., \"1 new message\")<br>" +
             "• <b>{info}</b> - Info text (additional details)<br>" +
             activity.getString(R.string.behavior_speech_placeholder_ticker_html) + "<br><br>" +

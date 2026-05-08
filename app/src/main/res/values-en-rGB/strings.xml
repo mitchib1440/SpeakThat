@@ -993,6 +993,9 @@ Block = completely ignore, Private = speak privately
     <string name="general_theme_title">Theme</string>
     <string name="general_dark_mode">Dark Mode</string>
     <string name="general_dark_mode_description">Enable dark mode for this app</string>
+    <string name="general_seasonal_title">Seasonal</string>
+    <string name="general_festive_mode">Festive Mode</string>
+    <string name="general_festive_mode_description">Overlay a festive hat on the home logo during December</string>
     <string name="general_app_behavior_title">App Behaviour &amp; Performance</string>
     <string name="general_auto_start">Auto-start on Boot</string>
     <string name="general_auto_start_description">Automatically start the notification service when device boots</string>
@@ -1606,6 +1609,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="speech_placeholder_text_desc">Notification text only</string>
     <string name="speech_placeholder_bigtext_label">{bigtext}</string>
     <string name="speech_placeholder_bigtext_desc">Big text content (expanded notification)</string>
+    <string name="speech_placeholder_subtext_label">{subtext}</string>
+    <string name="speech_placeholder_subtext_desc">Sub-text line (shown under title in inbox-style layouts; empty if omitted by the app)</string>
     <string name="speech_placeholder_summary_label">{summary}</string>
     <string name="speech_placeholder_summary_desc">Summary text (e.g., "1 new message")</string>
     <string name="speech_placeholder_info_label">{info}</string>

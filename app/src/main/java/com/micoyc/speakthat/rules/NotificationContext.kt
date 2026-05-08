@@ -17,6 +17,7 @@ data class NotificationContext(
     val packageName: String,
     val title: CharSequence?,
     val text: CharSequence?,
+    val subText: CharSequence?,
     val bigText: CharSequence?,
     val ticker: CharSequence?,
     val category: String?,

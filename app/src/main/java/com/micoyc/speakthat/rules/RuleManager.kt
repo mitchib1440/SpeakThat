@@ -861,6 +861,7 @@ class RuleManager(private val context: Context) {
         var result = notificationContext.packageName.hashCode()
         result = 31 * result + (notificationContext.title?.hashCode() ?: 0)
         result = 31 * result + (notificationContext.text?.hashCode() ?: 0)
+        result = 31 * result + (notificationContext.subText?.hashCode() ?: 0)
         result = 31 * result + (notificationContext.bigText?.hashCode() ?: 0)
         result = 31 * result + (notificationContext.ticker?.hashCode() ?: 0)
         result = 31 * result + (notificationContext.category?.hashCode() ?: 0)

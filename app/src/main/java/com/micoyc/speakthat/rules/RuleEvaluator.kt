@@ -1475,6 +1475,7 @@ class RuleEvaluator(private val context: Context) {
         val parts = listOf(
             notificationContext.title,
             notificationContext.text,
+            notificationContext.subText,
             notificationContext.bigText,
             notificationContext.ticker
         )

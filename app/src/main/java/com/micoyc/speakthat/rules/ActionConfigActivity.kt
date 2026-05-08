@@ -328,6 +328,7 @@ class ActionConfigActivity : AppCompatActivity() {
             PlaceholderItem(R.string.speech_placeholder_title_label, R.string.speech_placeholder_title_desc),
             PlaceholderItem(R.string.speech_placeholder_text_label, R.string.speech_placeholder_text_desc),
             PlaceholderItem(R.string.speech_placeholder_bigtext_label, R.string.speech_placeholder_bigtext_desc),
+            PlaceholderItem(R.string.speech_placeholder_subtext_label, R.string.speech_placeholder_subtext_desc),
             PlaceholderItem(R.string.speech_placeholder_summary_label, R.string.speech_placeholder_summary_desc),
             PlaceholderItem(R.string.speech_placeholder_info_label, R.string.speech_placeholder_info_desc),
             PlaceholderItem(R.string.speech_placeholder_ticker_label, R.string.speech_placeholder_ticker_desc),

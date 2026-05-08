@@ -1609,6 +1609,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="speech_placeholder_text_desc">Notification text only</string>
     <string name="speech_placeholder_bigtext_label">{bigtext}</string>
     <string name="speech_placeholder_bigtext_desc">Big text content (expanded notification)</string>
+    <string name="speech_placeholder_subtext_label">{subtext}</string>
+    <string name="speech_placeholder_subtext_desc">Sub-text line (shown under title in inbox-style layouts; empty if omitted by the app)</string>
     <string name="speech_placeholder_summary_label">{summary}</string>
     <string name="speech_placeholder_summary_desc">Summary text (e.g., "1 new message")</string>
     <string name="speech_placeholder_info_label">{info}</string>
