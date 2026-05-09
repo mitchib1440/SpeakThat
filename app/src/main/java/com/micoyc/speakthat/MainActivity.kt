@@ -387,6 +387,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
 
     }
 
+    // Update dashboard logo to version with Santa hat if Festive Mode is allowed
+    // Santa hat image sourced from https://www.publicdomainpictures.net/en/view-image.php?image=543963&picture=santa-hat-isolated
     private fun updateBadgeLogo() {
         if (!::binding.isInitialized) return
         val festiveEnabled = SeasonalModeHelper.isFestiveEnabled(this)
