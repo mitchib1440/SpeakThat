@@ -101,6 +101,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var urlHandlingMode = DEFAULT_URL_HANDLING_MODE
     private var urlReplacementText = DEFAULT_URL_REPLACEMENT_TEXT
     private var tidySpeechRemoveEmojisEnabled = false
+    private var emojiExceptionsList: List<String> = emptyList()
     private var filterEmptyTextEnabled = false
     private var contentCapMode = DEFAULT_CONTENT_CAP_MODE
     private var contentCapWordCount = DEFAULT_CONTENT_CAP_WORD_COUNT
@@ -409,6 +410,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val KEY_URL_HANDLING_MODE = "url_handling_mode"
         private const val KEY_URL_REPLACEMENT_TEXT = "url_replacement_text"
         private const val KEY_TIDY_SPEECH_REMOVE_EMOJIS = "tidy_speech_remove_emojis"
+        private const val KEY_PREF_EMOJI_EXCEPTIONS = "pref_emoji_exceptions"
         private const val KEY_FILTER_EMPTY_TEXT = "filter_empty_text"
         private const val DEFAULT_URL_HANDLING_MODE = "domain_only"
         private const val DEFAULT_URL_REPLACEMENT_TEXT = ""
@@ -3190,6 +3192,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
         // Load tidy speech settings
         tidySpeechRemoveEmojisEnabled = sharedPreferences?.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false) ?: false
+        val emojiExceptionsRaw = sharedPreferences?.getString(KEY_PREF_EMOJI_EXCEPTIONS, "") ?: ""
+        emojiExceptionsList = emojiExceptionsRaw.split(",")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
         filterEmptyTextEnabled = sharedPreferences?.getBoolean(KEY_FILTER_EMPTY_TEXT, false) ?: false
         Log.d(TAG, "Loaded tidy speech settings: removeEmojis=$tidySpeechRemoveEmojisEnabled, filterEmptyText=$filterEmptyTextEnabled")
         
@@ -3345,6 +3351,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val notificationContext = buildNotificationContext(packageName, text, sbn)
         val outcome = evaluateRuleEffects(notificationContext)
         val effects = outcome?.effects.orEmpty()
+        
+        val emojiOverride = effects.filterIsInstance<com.micoyc.speakthat.rules.Effect.OverrideEmojiRemoval>().lastOrNull()
+        if (emojiOverride != null) {
+            notificationContext.shouldKeepEmojis = true
+        }
 
         if (effects.any { it is com.micoyc.speakthat.rules.Effect.SkipNotification }) {
             val blockingRules = ruleManager.getBlockingRuleNames(notificationContext)
@@ -3405,7 +3416,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             blocks = extractedBlocks,
             appName = appName,
             packageName = packageName,
-            overridePrivate = effectiveOverridePrivate
+            overridePrivate = effectiveOverridePrivate,
+            shouldKeepEmojis = notificationContext.shouldKeepEmojis
         )
 
         if (!meatGrinderResult.shouldSpeak) {
@@ -3600,7 +3612,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         blocks: Map<String, String>,
         appName: String,
         packageName: String = "",
-        overridePrivate: Boolean = false
+        overridePrivate: Boolean = false,
+        shouldKeepEmojis: Boolean = false
     ): Pair<FilterResult, Map<String, String>> {
         val processedBlocks = mutableMapOf<String, String>()
         
@@ -3697,8 +3710,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
 
             // TIDY SPEECH
-            if (tidySpeechRemoveEmojisEnabled) {
-                text = removeSpokenEmojis(text)
+            if (tidySpeechRemoveEmojisEnabled && !shouldKeepEmojis) {
+                var keepEmojis = false
+                for (keyword in emojiExceptionsList) {
+                    if (text.contains(keyword, ignoreCase = true)) {
+                        keepEmojis = true
+                        break
+                    }
+                }
+                if (!keepEmojis) {
+                    text = removeSpokenEmojis(text)
+                }
+            } else if (tidySpeechRemoveEmojisEnabled && shouldKeepEmojis) {
+                InAppLogger.logFilter("Emojis kept due to Rule Engine action")
             }
 
             processedBlocks[key] = text

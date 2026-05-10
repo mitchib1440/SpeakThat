@@ -24,5 +24,6 @@ data class NotificationContext(
     val channelId: String?,
     val isOngoing: Boolean,
     val postTime: Long,
-    val extras: Bundle? = null
+    val extras: Bundle? = null,
+    var shouldKeepEmojis: Boolean = false
 )

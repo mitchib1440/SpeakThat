@@ -361,6 +361,7 @@ class RuleManager(private val context: Context) {
                 ActionType.OVERRIDE_PRIVATE -> Effect.OverridePrivate
                 ActionType.SKIP_NOTIFICATION -> Effect.SkipNotification
                 ActionType.DISABLE_SPEAKTHAT -> Effect.SkipNotification
+                ActionType.OVERRIDE_EMOJI_REMOVAL -> Effect.OverrideEmojiRemoval
                 ActionType.SET_MASTER_SWITCH -> {
                     val enabled = action.data["enabled"] as? Boolean ?: false
                     Effect.SetMasterSwitch(enabled)
@@ -420,6 +421,11 @@ class RuleManager(private val context: Context) {
         val contentCapOverride = effects.filterIsInstance<Effect.OverrideContentCap>().lastOrNull()
         if (contentCapOverride != null) {
             aggregated.add(contentCapOverride)
+        }
+
+        val emojiOverride = effects.filterIsInstance<Effect.OverrideEmojiRemoval>().lastOrNull()
+        if (emojiOverride != null) {
+            aggregated.add(emojiOverride)
         }
 
         return aggregated
@@ -810,6 +816,9 @@ class RuleManager(private val context: Context) {
                 if (mode !in setOf("disabled", "words", "sentences", "time")) {
                     errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_content_cap_mode))
                 }
+            }
+            ActionType.OVERRIDE_EMOJI_REMOVAL -> {
+                // No additional data required
             }
             ActionType.SKIP_NOTIFICATION,
             ActionType.DISABLE_SPEAKTHAT -> {

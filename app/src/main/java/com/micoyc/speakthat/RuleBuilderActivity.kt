@@ -454,6 +454,7 @@ class RuleBuilderActivity : AppCompatActivity() {
             getString(R.string.action_override_tts_voice_title),
             getString(R.string.action_force_private_title),
             getString(R.string.action_override_private_title),
+            getString(R.string.action_override_emoji_removal_title),
             getString(R.string.action_override_content_cap_title),
             getString(R.string.action_skip_notification_title)
         )
@@ -466,8 +467,9 @@ class RuleBuilderActivity : AppCompatActivity() {
                     1 -> addOverrideVoiceAction()
                     2 -> addForcePrivateAction()
                     3 -> addOverridePrivateAction()
-                    4 -> addOverrideContentCapAction()
-                    5 -> addSkipNotificationAction()
+                    4 -> addOverrideEmojiRemovalAction()
+                    5 -> addOverrideContentCapAction()
+                    6 -> addSkipNotificationAction()
                 }
             }
             .show()
@@ -597,6 +599,10 @@ class RuleBuilderActivity : AppCompatActivity() {
 
     private fun addOverridePrivateAction() {
         launchActionConfig(ActionType.OVERRIDE_PRIVATE, null)
+    }
+
+    private fun addOverrideEmojiRemovalAction() {
+        launchActionConfig(ActionType.OVERRIDE_EMOJI_REMOVAL, null)
     }
 
     private fun addOverrideContentCapAction() {

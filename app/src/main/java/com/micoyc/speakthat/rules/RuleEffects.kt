@@ -32,6 +32,7 @@ sealed class Effect {
         val sentenceCount: Int,
         val timeLimit: Int
     ) : Effect()
+    data object OverrideEmojiRemoval : Effect()
 }
 
 data class EvaluationOutcome(
