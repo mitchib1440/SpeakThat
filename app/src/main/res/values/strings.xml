@@ -1975,6 +1975,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="tts_troubleshooting_message">If TTS continues to fail:\n\n1. Check Settings > Accessibility > Text-to-Speech Output\n2. Ensure Google TTS is installed and set as default\n3. Restart the app\n4. Restart your device if the problem persists</string>
 
     <!-- GeneralSettingsActivity Hardcoded Strings -->
+    <string name="style_title">Style</string>
     <string name="storage_permission_required">Storage permission required for export</string>
     <string name="theme_changed_title">Theme Changed</string>
     <string name="theme_changed_message">The theme has been applied. For the best experience, you may want to restart the app.</string>
