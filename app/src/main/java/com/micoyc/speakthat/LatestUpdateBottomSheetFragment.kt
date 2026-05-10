@@ -52,8 +52,9 @@ class LatestUpdateBottomSheetFragment : BottomSheetDialogFragment() {
             layoutChangelogContent.addView(itemTextView)
 
             // Subpoints
-            if (item.subpoints.isNotEmpty()) {
-                for (subpoint in item.subpoints) {
+            val safeSubpoints = item.subpoints ?: emptyList()
+            if (safeSubpoints.isNotEmpty()) {
+                for (subpoint in safeSubpoints) {
                     val subpointView = TextView(context).apply {
                         text = "• $subpoint"
                         textSize = 14f

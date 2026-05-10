@@ -2,20 +2,29 @@
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
     <external-files-path 
         name="exports" 
-        path="exports/" />
+        path="exports" />
     <external-files-path 
         name="logs" 
-        path="logs/" />
+        path="logs" />
+    <external-files-path
+        name="external_files"
+        path="." />
+    <external-path
+        name="external_fallback"
+        path="." />
     <files-path 
         name="internal-exports" 
-        path="exports/" />
+        path="exports" />
     <files-path 
         name="internal-logs" 
-        path="logs/" />
+        path="logs" />
+    <files-path
+        name="internal_files"
+        path="." />
     <cache-path 
         name="cache" 
         path="." />
     <cache-path
         name="earcons"
-        path="earcons/" />
+        path="earcons" />
 </paths>

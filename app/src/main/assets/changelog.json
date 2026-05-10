@@ -1,9 +1,24 @@
 [
   {
-    "text": "Main feature or fix description here.",
+    "text": "Fixed the Material You icon not working."
+  },
+  {
+    "text": "Fixed SpeakThat's main screen logo's inconsistent spacing.",
     "subpoints": [
-      "Optional sub-details here",
-      "Another detail"
+      "The gap between Bugdroid's head and the text was slightly too big. Not a big deal at all but this one really annoyed me lol"
+    ]
+  },
+  {
+    "text": "Added Exclusion Text to Emoji Removal.",
+    "subpoints": [
+      "You can add text under the Emoji Removal option to specify when you would like emojis to remain in the text.",
+      "This is especially useful for when someone reacts to your message. Just type “reacted”, into the text box"
+    ]
+  },
+  {
+    "text": "Added Keep Emojis to Conditional Rules.",
+    "subpoints": [
+      "Similar in function to the exclusion text mentioned above, but baked into the Conditional Rules engine for even finer control."
     ]
   }
 ]
