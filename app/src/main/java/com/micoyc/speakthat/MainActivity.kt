@@ -405,7 +405,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             BadgeAssets.PREF_BADGE_SELECTION,
             BadgeAssets.KEY_DEFAULT
         )
-        val drawableRes = BadgeAssets.drawableForSelection(selection, badgeCount, festiveEnabled)
+        val drawableRes = BadgeAssets.drawableForSelection(selection, this, festiveEnabled)
         binding.logoSpeakThat.setImageResource(drawableRes)
     }
     

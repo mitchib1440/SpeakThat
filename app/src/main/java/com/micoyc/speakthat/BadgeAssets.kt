@@ -11,7 +11,6 @@ import android.content.Context
 
 /**
  * Badge asset helpers shared across flavors.
- * Only the Play build will surface badge counts, but other flavors safely fall back.
  */
 object BadgeAssets {
     const val PREF_BADGE_SELECTION: String = "badge_selection"
@@ -20,70 +19,74 @@ object BadgeAssets {
     private const val PLAY_BADGE_PREFS = "play_donations"
     private const val PLAY_BADGE_KEY = "badge_count"
 
-    data class BadgeTier(
+    enum class BadgeTier(
         val key: String,
-        val threshold: Int,
-        val drawableRes: Int
-    )
-
-    // Ordered highest threshold first so the "best" tier is found quickly.
-    private val badgeTiers = listOf(
-        BadgeTier(key = "ruby", threshold = 50, drawableRes = R.drawable.ruby),
-        BadgeTier(key = "amethyst", threshold = 40, drawableRes = R.drawable.amethyst),
-        BadgeTier(key = "amber", threshold = 30, drawableRes = R.drawable.amber),
-        BadgeTier(key = "sapphire", threshold = 20, drawableRes = R.drawable.sapphire),
-        BadgeTier(key = "emerald", threshold = 10, drawableRes = R.drawable.emerald),
-        BadgeTier(key = "gold", threshold = 5, drawableRes = R.drawable.gold),
-        BadgeTier(key = "silver", threshold = 2, drawableRes = R.drawable.silver),
-        BadgeTier(key = "bronze", threshold = 1, drawableRes = R.drawable.bronze)
-    )
+        val requiredDonations: Int,
+        val requiredReads: Int,
+        val drawableRes: Int,
+        val festiveDrawableRes: Int? = null
+    ) {
+        DIAMOND("diamond", 60, 25000, R.drawable.diamond),
+        RUBY("ruby", 50, 20000, R.drawable.ruby, R.drawable.ruby_festive),
+        AMETHYST("amethyst", 40, 15000, R.drawable.amethyst, R.drawable.amethyst_festive),
+        AMBER("amber", 30, 12500, R.drawable.amber, R.drawable.amber_festive),
+        JET("jet", 25, 10000, R.drawable.jet),
+        SAPPHIRE("sapphire", 20, 7500, R.drawable.sapphire, R.drawable.sapphire_festive),
+        CITRINE("citrine", 17, 5000, R.drawable.citrine),
+        AQUAMARINE("aquamarine", 14, 3500, R.drawable.aquamarine),
+        EMERALD("emerald", 10, 2000, R.drawable.emerald, R.drawable.emerald_festive),
+        JADE("jade", 7, 1000, R.drawable.jade),
+        GOLD("gold", 5, 400, R.drawable.gold, R.drawable.gold_festive),
+        PEARL("pearl", 4, 150, R.drawable.pearl),
+        ROSE_QUARTZ("rose_quartz", 3, 50, R.drawable.rose_quartz),
+        SILVER("silver", 2, 10, R.drawable.silver, R.drawable.silver_festive),
+        BRONZE("bronze", 1, 1, R.drawable.bronze, R.drawable.bronze_festive),
+        DEFAULT(KEY_DEFAULT, 0, 0, R.drawable.logo_speakthat, R.drawable.logo_speakthat_festive)
+    }
 
     /**
-     * Read the Play badge count from PlayDonationStore prefs. Non-Play builds return 0.
+     * Read the Play badge count from PlayDonationStore prefs.
      */
     @JvmStatic
     fun getPlayBadgeCount(context: Context): Int {
-        if (BuildConfig.DISTRIBUTION_CHANNEL != "play") return 0
         val prefs = context.getSharedPreferences(PLAY_BADGE_PREFS, Context.MODE_PRIVATE)
         return prefs.getInt(PLAY_BADGE_KEY, 0)
     }
 
     @JvmStatic
-    fun unlockedBadges(badgeCount: Int): List<BadgeTier> =
-        badgeTiers.filter { badgeCount >= it.threshold }
-
-    @JvmStatic
-    fun bestUnlocked(badgeCount: Int): BadgeTier? =
-        unlockedBadges(badgeCount).maxByOrNull { it.threshold }
-
-    @JvmStatic
-    fun ensureValidSelection(selection: String?, badgeCount: Int): String {
-        if (selection.isNullOrEmpty() || selection == KEY_DEFAULT) return KEY_DEFAULT
-        return if (unlockedBadges(badgeCount).any { it.key == selection }) {
-            selection
-        } else {
-            bestUnlocked(badgeCount)?.key ?: KEY_DEFAULT
+    fun getUnlockedBadges(context: Context): List<BadgeTier> {
+        val userReads = StatisticsManager.getInstance(context).getNotificationsRead()
+        val userDonations = getPlayBadgeCount(context)
+        
+        return BadgeTier.values().filter { 
+            userDonations >= it.requiredDonations || userReads >= it.requiredReads 
         }
     }
 
     @JvmStatic
-    fun drawableForSelection(selection: String?, badgeCount: Int, festiveEnabled: Boolean = false): Int {
-        val sanitized = ensureValidSelection(selection, badgeCount)
-        if (sanitized == KEY_DEFAULT) {
-            return if (festiveEnabled) R.drawable.logo_speakthat_festive else R.drawable.logo_speakthat
-        }
+    fun bestUnlocked(context: Context): BadgeTier? =
+        getUnlockedBadges(context).firstOrNull() // Since enum is ordered highest to lowest
 
-        return when (sanitized) {
-            "bronze" -> if (festiveEnabled) R.drawable.bronze_festive else R.drawable.bronze
-            "silver" -> if (festiveEnabled) R.drawable.silver_festive else R.drawable.silver
-            "gold" -> if (festiveEnabled) R.drawable.gold_festive else R.drawable.gold
-            "emerald" -> if (festiveEnabled) R.drawable.emerald_festive else R.drawable.emerald
-            "sapphire" -> if (festiveEnabled) R.drawable.sapphire_festive else R.drawable.sapphire
-            "amber" -> if (festiveEnabled) R.drawable.amber_festive else R.drawable.amber
-            "amethyst" -> if (festiveEnabled) R.drawable.amethyst_festive else R.drawable.amethyst
-            "ruby" -> if (festiveEnabled) R.drawable.ruby_festive else R.drawable.ruby
-            else -> if (festiveEnabled) R.drawable.logo_speakthat_festive else R.drawable.logo_speakthat
+    @JvmStatic
+    fun ensureValidSelection(selection: String?, context: Context): String {
+        if (selection.isNullOrEmpty() || selection == KEY_DEFAULT) return KEY_DEFAULT
+        val unlocked = getUnlockedBadges(context)
+        return if (unlocked.any { it.key == selection }) {
+            selection
+        } else {
+            bestUnlocked(context)?.key ?: KEY_DEFAULT
+        }
+    }
+
+    @JvmStatic
+    fun drawableForSelection(selection: String?, context: Context, festiveEnabled: Boolean = false): Int {
+        val sanitized = ensureValidSelection(selection, context)
+        val tier = BadgeTier.values().firstOrNull { it.key == sanitized } ?: BadgeTier.DEFAULT
+        
+        return if (festiveEnabled) {
+            tier.festiveDrawableRes ?: tier.drawableRes
+        } else {
+            tier.drawableRes
         }
     }
 }
-

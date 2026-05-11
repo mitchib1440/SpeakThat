@@ -381,8 +381,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     }
 
     private void showBadgeSelectionDialog() {
-        int badgeCount = BadgeAssets.getPlayBadgeCount(this);
-        java.util.List<BadgeOption> options = getBadgeOptions(badgeCount);
+        java.util.List<BadgeOption> options = getBadgeOptions();
         String currentSelection = sharedPreferences.getString(getString(R.string.prefs_badge_selection), BadgeAssets.KEY_DEFAULT);
 
         int checkedIndex = 0;
@@ -413,26 +412,25 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     }
 
     private void renderBadgeSelection() {
-        int badgeCount = BadgeAssets.getPlayBadgeCount(this);
+        boolean hasBadges = BadgeAssets.getUnlockedBadges(this).size() > 1;
         if (binding.cardBadgeSettings != null) {
-            binding.cardBadgeSettings.setVisibility(badgeCount > 0 ? View.VISIBLE : View.GONE);
+            binding.cardBadgeSettings.setVisibility(hasBadges ? View.VISIBLE : View.GONE);
         }
         String storedSelection = sharedPreferences.getString(getString(R.string.prefs_badge_selection), BadgeAssets.KEY_DEFAULT);
-        String resolvedSelection = BadgeAssets.ensureValidSelection(storedSelection, badgeCount);
+        String resolvedSelection = BadgeAssets.ensureValidSelection(storedSelection, this);
 
         if (!resolvedSelection.equals(storedSelection)) {
             sharedPreferences.edit().putString(getString(R.string.prefs_badge_selection), resolvedSelection).apply();
         }
 
-        if (binding.textBadgeSelectionValue != null && badgeCount > 0) {
+        if (binding.textBadgeSelectionValue != null && hasBadges) {
             binding.textBadgeSelectionValue.setText(getBadgeLabel(resolvedSelection));
         }
     }
 
-    private java.util.List<BadgeOption> getBadgeOptions(int badgeCount) {
+    private java.util.List<BadgeOption> getBadgeOptions() {
         java.util.ArrayList<BadgeOption> options = new java.util.ArrayList<>();
-        options.add(new BadgeOption(BadgeAssets.KEY_DEFAULT, getString(R.string.badge_option_default)));
-        for (BadgeAssets.BadgeTier tier : BadgeAssets.unlockedBadges(badgeCount)) {
+        for (BadgeAssets.BadgeTier tier : BadgeAssets.getUnlockedBadges(this)) {
             options.add(new BadgeOption(tier.getKey(), getBadgeLabel(tier.getKey())));
         }
         return options;
@@ -440,22 +438,36 @@ public class GeneralSettingsActivity extends AppCompatActivity {
 
     private String getBadgeLabel(String key) {
         switch (key) {
-            case "bronze":
-                return getString(R.string.badge_option_bronze);
-            case "silver":
-                return getString(R.string.badge_option_silver);
-            case "gold":
-                return getString(R.string.badge_option_gold);
-            case "emerald":
-                return getString(R.string.badge_option_emerald);
-            case "sapphire":
-                return getString(R.string.badge_option_sapphire);
-            case "amber":
-                return getString(R.string.badge_option_amber);
-            case "amethyst":
-                return getString(R.string.badge_option_amethyst);
+            case "diamond":
+                return getString(R.string.badge_option_diamond);
             case "ruby":
                 return getString(R.string.badge_option_ruby);
+            case "amethyst":
+                return getString(R.string.badge_option_amethyst);
+            case "amber":
+                return getString(R.string.badge_option_amber);
+            case "jet":
+                return getString(R.string.badge_option_jet);
+            case "sapphire":
+                return getString(R.string.badge_option_sapphire);
+            case "citrine":
+                return getString(R.string.badge_option_citrine);
+            case "aquamarine":
+                return getString(R.string.badge_option_aquamarine);
+            case "emerald":
+                return getString(R.string.badge_option_emerald);
+            case "jade":
+                return getString(R.string.badge_option_jade);
+            case "gold":
+                return getString(R.string.badge_option_gold);
+            case "pearl":
+                return getString(R.string.badge_option_pearl);
+            case "rose_quartz":
+                return getString(R.string.badge_option_rose_quartz);
+            case "silver":
+                return getString(R.string.badge_option_silver);
+            case "bronze":
+                return getString(R.string.badge_option_bronze);
             default:
                 return getString(R.string.badge_option_default);
         }

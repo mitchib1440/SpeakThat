@@ -574,8 +574,8 @@ public class FilterConfigManager {
         int badgeCount = donationPrefs.getInt("badge_count", 0);
         if (badgeCount > 0) {
             JSONObject playDonations = new JSONObject();
-            playDonations.put("badgeCount", badgeCount);
-            json.put("playDonations", playDonations);
+            playDonations.put("badge_count", badgeCount);
+            json.put("play_donations", playDonations);
         }
 
         if (includeRules) {
@@ -1255,10 +1255,10 @@ public class FilterConfigManager {
             }
 
             // Import Play donation badge count (if present)
-            if (json.has("playDonations")) {
-                JSONObject playDonations = json.getJSONObject("playDonations");
-                if (playDonations.has("badgeCount")) {
-                    int importedBadgeCount = playDonations.getInt("badgeCount");
+            if (json.has("play_donations") || json.has("playDonations")) {
+                JSONObject playDonations = json.has("play_donations") ? json.getJSONObject("play_donations") : json.getJSONObject("playDonations");
+                if (playDonations.has("badge_count") || playDonations.has("badgeCount")) {
+                    int importedBadgeCount = playDonations.has("badge_count") ? playDonations.getInt("badge_count") : playDonations.getInt("badgeCount");
                     if (importedBadgeCount >= 0) {
                         SharedPreferences.Editor donationEditor = context.getSharedPreferences("play_donations", Context.MODE_PRIVATE).edit();
                         donationEditor.putInt("badge_count", importedBadgeCount);
