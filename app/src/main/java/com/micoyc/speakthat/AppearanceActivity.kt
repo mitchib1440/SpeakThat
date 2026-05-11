@@ -44,9 +44,11 @@ class AppearanceActivity : AppCompatActivity() {
         val totalReads = StatisticsManager.getInstance(this).getNotificationsRead()
         textTotalReads.text = "$totalReads Notifications Read"
 
+        val unlockedTiers = BadgeAssets.getUnlockedBadges(this)
+
         // Find next locked badge
         val allTiers = BadgeAssets.BadgeTier.values().toList()
-        val nextLockedTier = allTiers.reversed().firstOrNull { it.requiredReads > totalReads }
+        val nextLockedTier = allTiers.reversed().firstOrNull { !unlockedTiers.contains(it) }
 
         if (nextLockedTier != null) {
             progressNextBadge.max = nextLockedTier.requiredReads
@@ -58,7 +60,6 @@ class AppearanceActivity : AppCompatActivity() {
             textNextBadgeThreshold.text = "All badges unlocked!"
         }
 
-        val unlockedTiers = BadgeAssets.getUnlockedBadges(this)
         val currentSelection = sharedPreferences.getString(BadgeAssets.PREF_BADGE_SELECTION, BadgeAssets.KEY_DEFAULT) ?: BadgeAssets.KEY_DEFAULT
         val validSelection = BadgeAssets.ensureValidSelection(currentSelection, this)
         

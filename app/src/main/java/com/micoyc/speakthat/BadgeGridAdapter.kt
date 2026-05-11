@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class BadgeGridAdapter(
@@ -43,12 +44,23 @@ class BadgeGridAdapter(
         
         holder.imageBadge.setImageResource(drawableRes)
 
+        // Set badge name
+        val context = holder.itemView.context
+        val stringResId = context.resources.getIdentifier("badge_option_${tier.key}", "string", context.packageName)
+        if (stringResId != 0) {
+            holder.textBadgeName.setText(stringResId)
+        } else {
+            holder.textBadgeName.text = tier.key // Fallback
+        }
+
         if (isUnlocked) {
             holder.imageBadge.colorFilter = null
             holder.imageLockOverlay.visibility = View.GONE
+            holder.textBadgeName.alpha = 1.0f
         } else {
             holder.imageBadge.colorFilter = grayscaleFilter
             holder.imageLockOverlay.visibility = View.VISIBLE
+            holder.textBadgeName.alpha = 0.5f
         }
 
         holder.viewSelectionBorder.visibility = if (isSelected) View.VISIBLE else View.GONE
@@ -64,5 +76,6 @@ class BadgeGridAdapter(
         val imageBadge: ImageView = itemView.findViewById(R.id.imageBadge)
         val imageLockOverlay: ImageView = itemView.findViewById(R.id.imageLockOverlay)
         val viewSelectionBorder: View = itemView.findViewById(R.id.viewSelectionBorder)
+        val textBadgeName: TextView = itemView.findViewById(R.id.textBadgeName)
     }
 }
