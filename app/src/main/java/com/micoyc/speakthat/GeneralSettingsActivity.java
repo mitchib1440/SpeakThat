@@ -442,11 +442,66 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     }
 
     private void setupBadgeSelector() {
+        renderBadgeSelection();
         if (binding.rowBadgeSelector != null) {
             binding.rowBadgeSelector.setOnClickListener(v -> {
                 Intent intent = new Intent(this, AppearanceActivity.class);
                 startActivity(intent);
             });
+        }
+    }
+
+    private void renderBadgeSelection() {
+        boolean hasBadges = BadgeAssets.getUnlockedBadges(this).size() > 1;
+        if (binding.cardBadgeSettings != null) {
+            binding.cardBadgeSettings.setVisibility(hasBadges ? android.view.View.VISIBLE : android.view.View.GONE);
+        }
+        String storedSelection = sharedPreferences.getString(getString(R.string.prefs_badge_selection), BadgeAssets.KEY_DEFAULT);
+        String resolvedSelection = BadgeAssets.ensureValidSelection(storedSelection, this);
+
+        if (!resolvedSelection.equals(storedSelection)) {
+            sharedPreferences.edit().putString(getString(R.string.prefs_badge_selection), resolvedSelection).apply();
+        }
+
+        if (binding.textBadgeSelectionValue != null && hasBadges) {
+            binding.textBadgeSelectionValue.setText(getBadgeLabel(resolvedSelection));
+        }
+    }
+
+    private String getBadgeLabel(String key) {
+        switch (key) {
+            case "diamond":
+                return getString(R.string.badge_option_diamond);
+            case "ruby":
+                return getString(R.string.badge_option_ruby);
+            case "amethyst":
+                return getString(R.string.badge_option_amethyst);
+            case "amber":
+                return getString(R.string.badge_option_amber);
+            case "jet":
+                return getString(R.string.badge_option_jet);
+            case "sapphire":
+                return getString(R.string.badge_option_sapphire);
+            case "citrine":
+                return getString(R.string.badge_option_citrine);
+            case "aquamarine":
+                return getString(R.string.badge_option_aquamarine);
+            case "emerald":
+                return getString(R.string.badge_option_emerald);
+            case "jade":
+                return getString(R.string.badge_option_jade);
+            case "gold":
+                return getString(R.string.badge_option_gold);
+            case "pearl":
+                return getString(R.string.badge_option_pearl);
+            case "rose_quartz":
+                return getString(R.string.badge_option_rose_quartz);
+            case "silver":
+                return getString(R.string.badge_option_silver);
+            case "bronze":
+                return getString(R.string.badge_option_bronze);
+            default:
+                return getString(R.string.badge_option_default);
         }
     }
 
@@ -481,6 +536,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         syncBatteryOptimizationState();
+        renderBadgeSelection();
         if (permissionSyncSession != null) {
             permissionSyncSession.onResume();
             if (permissionSyncSession.isFinished()) {

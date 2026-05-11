@@ -392,15 +392,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         if (!::binding.isInitialized) return
         val festiveEnabled = SeasonalModeHelper.isFestiveEnabled(this)
 
-        // Only Play builds surface badges; others keep the default logo.
-        if (BuildConfig.DISTRIBUTION_CHANNEL != "play") {
-            binding.logoSpeakThat.setImageResource(
-                if (festiveEnabled) R.drawable.logo_speakthat_festive else R.drawable.logo_speakthat
-            )
-            return
-        }
-
-        val badgeCount = BadgeAssets.getPlayBadgeCount(this)
         val selection = sharedPreferences?.getString(
             BadgeAssets.PREF_BADGE_SELECTION,
             BadgeAssets.KEY_DEFAULT
