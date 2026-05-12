@@ -2096,4 +2096,7 @@ Bloque=ignore totalement, Privée=annonce de façon privée
     <string name="rule_action_override_content_cap">surcharge la limite de contenu</string>
     <string name="rule_error_invalid_content_cap_mode">Mode de limitation du contenu invalide</string>
     <string name="support_select_email_app">Sélectionnez votre application de courriel depuis le menu</string>
+    <string name="app_picker_internal_clock_label">Horloge SpeakThat</string>
+    <string name="auto_language_title">Auto-Langage</string>
+    <string name="auto_language_description">Commute automatiquement le langage de synthèse pour correspondre à celui du texte de notification (Android 10+).</string>
 </resources>
