@@ -97,15 +97,7 @@ Kies hoe SpeakThat! meldingen uitspreekt wanneer muziek of video word afgespeeld
 - Spreek niet terwijl je media speelt. Rustig, maar je mist misschien belangrijke meldingen. Lager Audiovolume werkt als een autoradio - het zet de muziek zachter als Speakthat! spreekt en zet het daarna terug.
 </string>
     <string name="shake_to_stop_dialog_title">Schudden om te Stoppen Functie</string>
-    <string name="shake_to_stop_dialog_message">
-Schudden om te Stoppen stopt de uitspraak meteen wanneer je jouw apparaat schudt.
-<b>✨ Waarom werkt dit:</b>
-• Stopt gênante meldingen op rustige plaatsen • Snelle controle als je met iets bezig bent • Werkt ook als het scherm uit staat • Geen gezoek naar de juiste toets
-<b>🎯 Hoe werkt dit:</b>
-• Schudt je apparaat stevig (zoals een dobbelsteen) • De huidige melding stopt meteen • Aankomende meldingen worden verwijdert • Nieuwe meldingen werken gewoon
-<b>⚙️ Aanpassingen:</b>
-• Pas de gevoeligheid aan naar jouw voorkeur • Test jouw schudkracht met de meter • Werkt goed voor zowel zachte- als harde schudders. Deze mogelijkheid word gewaardeerd door mensen die in een vergadering zitten, in de bioscoop, of onderweg zijn.
-</string>
+    <string name="shake_to_stop_dialog_message">Schudden om te Stoppen stopt de uitspraak meteen wanneer je jouw apparaat schudt. <b>✨ Waarom werkt dit:</b> • Stopt gênante meldingen op rustige plaatsen • Snelle controle als je met iets bezig bent • Werkt ook als het scherm uit staat • Geen gezoek naar de juiste toets <b>🎯 Hoe werkt dit:</b> • Schudt je apparaat stevig (zoals een dobbelsteen) • De huidige melding stopt meteen • Aankomende meldingen worden verwijdert • Nieuwe meldingen werken gewoon <b>⚙️ Aanpassingen:</b> • Pas de gevoeligheid aan naar jouw voorkeur • Test jouw schudkracht met de meter • Werkt goed voor zowel zachte- als harde schudders. Deze mogelijkheid word gewaardeerd door mensen die in een vergadering zitten, in de bioscoop, of onderweg zijn.</string>
     <string name="use_recommended">Aanbevolen gebruiken</string>
     <string name="got_it">Begrepen</string>
     <!-- Persistent/Silent Notification Filtering -->
