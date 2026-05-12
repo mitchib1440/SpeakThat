@@ -456,11 +456,11 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         if (binding.cardBadgeSettings != null) {
             binding.cardBadgeSettings.setVisibility(hasBadges ? android.view.View.VISIBLE : android.view.View.GONE);
         }
-        String storedSelection = sharedPreferences.getString(getString(R.string.prefs_badge_selection), BadgeAssets.KEY_DEFAULT);
+        String storedSelection = sharedPreferences.getString(BadgeAssets.PREF_BADGE_SELECTION, BadgeAssets.KEY_DEFAULT);
         String resolvedSelection = BadgeAssets.ensureValidSelection(storedSelection, this);
 
         if (!resolvedSelection.equals(storedSelection)) {
-            sharedPreferences.edit().putString(getString(R.string.prefs_badge_selection), resolvedSelection).apply();
+            sharedPreferences.edit().putString(BadgeAssets.PREF_BADGE_SELECTION, resolvedSelection).apply();
         }
 
         if (binding.textBadgeSelectionValue != null && hasBadges) {
