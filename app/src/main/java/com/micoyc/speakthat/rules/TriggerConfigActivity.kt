@@ -53,7 +53,7 @@ class TriggerConfigActivity : AppCompatActivity() {
         
         // Set up action bar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Configure Trigger"
+        supportActionBar?.title = "Configure Condition"
         
         // Get intent data
         triggerType = intent.getSerializableExtraCompat(EXTRA_TRIGGER_TYPE)
