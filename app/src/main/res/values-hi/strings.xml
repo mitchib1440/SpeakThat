@@ -85,26 +85,7 @@ Smart mode lets you choose which apps are urgent enough to interrupt (like calls
 
 Lower Audio works like a car radio - it ducks the music down when speaking, then brings it back up. Perfect for music lovers who still want notifications.</string>
     <string name="shake_to_stop_dialog_title">Shake to Stop Feature</string>
-    <string name="shake_to_stop_dialog_message">Shake to Stop lets you instantly silence SpeakThat by shaking your device:
-
-<b>âœ¨ Why it\'s helpful:</b>
-â€¢ Stop embarrassing notifications in quiet places
-â€¢ Quick control when your hands are busy
-â€¢ Works even when screen is off
-â€¢ No fumbling for buttons
-
-<b>ðŸŽ¯ How it works:</b>
-â€¢ Shake your device firmly (like a dice shake)
-â€¢ Current notification stops immediately
-â€¢ Queued notifications are cleared
-â€¢ New notifications work normally
-
-<b>âš™ï¸ Customization:</b>
-â€¢ Adjust sensitivity for your preference
-â€¢ Test your shake strength with the meter
-â€¢ Works great for both gentle and vigorous shakers
-
-This feature is especially loved by people who get notifications during meetings, movies, or while driving.</string>
+    <string name="shake_to_stop_dialog_message">Shake to Stop lets you instantly silence SpeakThat by shaking your device: <b>âœ¨ Why it\'s helpful:</b> â€¢ Stop embarrassing notifications in quiet places â€¢ Quick control when your hands are busy â€¢ Works even when screen is off â€¢ No fumbling for buttons <b>ðŸŽ¯ How it works:</b> â€¢ Shake your device firmly (like a dice shake) â€¢ Current notification stops immediately â€¢ Queued notifications are cleared â€¢ New notifications work normally <b>âš™ï¸ Customization:</b> â€¢ Adjust sensitivity for your preference â€¢ Test your shake strength with the meter â€¢ Works great for both gentle and vigorous shakers This feature is especially loved by people who get notifications during meetings, movies, or while driving.</string>
     <string name="use_recommended">Use Recommended</string>
     <string name="got_it">Got it</string>
     <!-- Persistent/Silent Notification Filtering -->
