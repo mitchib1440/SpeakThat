@@ -1,0 +1,18 @@
+[
+  {
+    "text": "Fixed this thing."
+  },
+  {
+    "text": "Added this other thing.",
+    "subpoints": [
+      "Fun fact about that other thing, it's actually just here because I'm a complete and total tit."
+    ]
+  },
+  {
+    "text": "Improved this final thing.",
+    "subpoints": [
+      "Oh look, this thing has two subpoints. How very snazzy.",
+      "If you need to quote anything put them inside “these special quotes” so the parser doesn't throw a hissy fit."
+    ]
+  }
+]

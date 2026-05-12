@@ -123,6 +123,7 @@ public class SpeechTemplateManager {
             .replace("{title}", "**Mitchi**")
             .replace("{text}", "**I heard you're using SpeakThat! Did it just speak that?**")
             .replace("{bigtext}", "**Mitchi: I heard you're using SpeakThat! Did it just speak that?**")
+            .replace("{subtext}", "**Work chat**")
             .replace("{summary}", "**1 new message**")
             .replace("{info}", "**Tap to view**")
             .replace("{ticker}", "**Legacy ticker text**")
@@ -188,6 +189,15 @@ public class SpeechTemplateManager {
             "YouTube"
         };
 
+        String[] testSubTexts = {
+            "Work chat",
+            "Inbox",
+            "Notifications",
+            "Alerts",
+            "Battery",
+            "Subscriptions"
+        };
+
         StringBuilder testResults = new StringBuilder();
         if (isVariedMode) {
             testResults.append("Your format: <b>Varied (Random selection)</b><br><br>");
@@ -210,6 +220,7 @@ public class SpeechTemplateManager {
                 .replace("{title}", testTitles[i])
                 .replace("{text}", testTexts[i])
                 .replace("{bigtext}", testContents[i])
+                .replace("{subtext}", testSubTexts[i])
                 .replace("{summary}", "1 new notification")
                 .replace("{info}", "Tap to view")
                 .replace("{time}", "14:40")

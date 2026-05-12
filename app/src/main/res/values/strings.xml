@@ -84,7 +84,7 @@
 Smart mode lets you choose which apps are urgent enough to interrupt (like calls, messages) while other apps wait their turn.</string>
 
     <string name="custom_app_names_title">Custom App Names</string>
-    <string name="custom_app_names_description">Customize how app names are spoken in notifications</string>
+    <string name="custom_app_names_description">Customise how app names are spoken in notifications</string>
     <string name="add_custom_app_name">Add Custom App Name</string>
     <string name="app_package_hint">App package name (e.g., com.twitter.android)</string>
     <string name="custom_name_hint">Custom name (e.g., Twitter)</string>
@@ -118,7 +118,7 @@ Lower Audio works like a car radio - it ducks the music down when speaking, then
 • Queued notifications are cleared
 • New notifications work normally
 
-<b>Customization:</b>
+<b>Customisation:</b>
 • Adjust sensitivity for your preference
 • Test your shake strength with the meter
 • Works great for both gentle and vigorous shakers
@@ -165,7 +165,7 @@ This feature is especially loved by people who get notifications during meetings
 • A timeout can still stop a stuck readout for battery safety
 • Pocket mode can allow readouts to continue if the sensor was already covered when the readout started—see behaviour settings for details
 
-<b>⚙️ Customization:</b>
+<b>⚙️ Customisation:</b>
 • Wave hold duration, timeout, and pocket mode in Behaviour settings
 
 This feature is especially useful for accessibility, desk users, and anyone who prefers gesture control over physical movement.</string>
@@ -200,7 +200,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="update_notification_channel_name">SpeakThat Updates</string>
     <string name="update_notification_channel_description">Alerts for new SpeakThat versions in the GitHub build.</string>
     <string name="app_description">SpeakThat! is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
-    <string name="app_features">• Real-time notification reading\n• Customizable voice settings\n• Smart notification filtering\n• App-specific controls\n• Media-aware behaviour\n• Notification history\n• Shake/Wave to stop\n• Custom speech formatting\n• Conditional rules for advanced logic and schedules\n• Fully ad-free and offline functionality</string>
+    <string name="app_features">• Real-time notification reading\n• Customisable voice settings\n• Smart notification filtering\n• App-specific controls\n• Media-aware behaviour\n• Notification history\n• Shake/Wave to stop\n• Custom speech formatting\n• Conditional rules for advanced logic and schedules\n• Fully ad-free and offline functionality</string>
     <string name="developer_info">Developed with ❤️ by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day.\n\nSpeakThat! was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers.\n\nThis project was accelerated by AI-assisted programming.</string>
     <string name="license_info">SpeakThat is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed.\n\nThis license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices.\n\nYou can view the full license text and source code on GitHub. Contributions and feedback are welcome!\n\nSpeakThat! Copyright © 2025-2026 Mitchell Bell\nSPEAKTHAT is a registered trademark of Mitchell Bell</string>
 
@@ -211,7 +211,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_app_intro">Welcome to SpeakThat!</string>
     <string name="tts_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
     <string name="tts_features_intro">Key features include:</string>
-    <string name="tts_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behaviour, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and fully ad-free, offline functionality.</string>
+    <string name="tts_features">Real-time notification reading, customisable voice settings, smart notification filtering, app-specific controls, media-aware behaviour, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and fully ad-free, offline functionality.</string>
     <string name="tts_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
     <string name="tts_license">SpeakThat is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed. This license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices. You can view the full license text and source code on GitHub. Contributions and feedback are welcome! SpeakThat is the 2025 to 2026 copyright-protected work of Mitchell Bell. SPEAKTHAT is a registered trademark of Mitchell Bell</string>
     <string name="tts_thank_you">Thank you for using SpeakThat!</string>
@@ -258,8 +258,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="update_weekly">Weekly (recommended)</string>
     <string name="update_monthly">Monthly</string>
 
-    <!-- TTS Template Strings (for improved localization) -->
-    <!-- These are complete sentence templates with placeholders for proper localization -->
+    <!-- TTS Template Strings (for improved localisation) -->
+    <!-- These are complete sentence templates with placeholders for proper localisation -->
     <string name="tts_template_notified_you">{app} notified you: {content}</string>
     <string name="tts_template_reported">{app} reported: {content}</string>
     <string name="tts_template_saying">Notification from {app}, saying {content}</string>
@@ -281,7 +281,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_about_intro">Welcome to SpeakThat!</string>
     <string name="tts_about_description">SpeakThat is an open-source Android Notification Reader that announces your notifications aloud using text-to-speech. Perfect for hands-free operation, accessibility, and staying informed while multitasking.</string>
     <string name="tts_about_features_intro">Key features include:</string>
-    <string name="tts_about_features">Real-time notification reading, customizable voice settings, smart notification filtering, app-specific controls, media-aware behaviour, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and full ad-free, offline functionality.</string>
+    <string name="tts_about_features">Real-time notification reading, customisable voice settings, smart notification filtering, app-specific controls, media-aware behaviour, notification history tracking, Shake to Stop and Wave to Stop, custom speech formatting, dark mode and light mode support, conditional rules for advanced logic and schedules, and full ad-free, offline functionality.</string>
     <string name="tts_about_developer">Developed with love by Mitchi, a solo developer from the UK with over 12 years of experience testing and using notification readers every day. SpeakThat was inspired by Touchless Notifications, originally developed by DYNA Logix, and aims to carry forth the legacy of customisable notification readers. This project was accelerated by Artificial Intelligence assisted programming.</string>
     <string name="tts_about_license">SpeakThat is free and open-source software, released under the GNU GPL v3.0, a copyleft license that ensures modified and redistributed versions remain free and properly attributed. This license allows you to download, modify, and redistribute SpeakThat, provided that any redistributed or modified versions remain under the same license and retain the original copyright notices. You can view the full license text and source code on GitHub. Contributions and feedback are welcome! SpeakThat is the 2025 to 2026 copyright-protected work of Mitchell Bell. SPEAKTHAT is a registered trademark of Mitchell Bell</string>
     <string name="tts_about_thank_you">Thank you for using SpeakThat!</string>
@@ -596,12 +596,12 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_skip_repeated_prefix_label">Skip repeated notification prefixes</string>
     <string name="behavior_skip_repeated_prefix_description">When enabled, consecutive notifications with the same starting words (such as contact or group names) will drop the repeated prefix and only speak the changing text.</string>
     <string name="behavior_skip_repeated_prefix_tip">Recommended for group chats</string>
-    <string name="behavior_priority_apps">⚡ Priority Apps</string>
+    <string name="behavior_priority_apps">Priority Apps</string>
     <string name="behavior_priority_apps_description">These apps will interrupt the current notification. All other apps will queue.</string>
-    <string name="behavior_media_ignore">Ignore - Continue as normal</string>
-    <string name="behavior_media_pause">Pause - Pause media while speaking</string>
-    <string name="behavior_media_lower">Lower Audio - Duck media volume temporarily</string>
-    <string name="behavior_media_silence">Silence - Don\'t speak while media is playing</string>
+    <string name="behavior_media_ignore">Ignore (continue as normal)</string>
+    <string name="behavior_media_pause">Pause (pause media while speaking)</string>
+    <string name="behavior_media_lower">Lower Audio (duck media volume temporarily)</string>
+    <string name="behavior_media_silence">Silence (Don\'t speak while media is playing)</string>
     <string name="behavior_ducking_volume">Ducking Volume</string>
     <string name="behavior_ducking_description">Set how quiet media should become during notifications</string>
     <string name="behavior_ducking_warning">⚠️ On some devices, lowering media volume may also lower the notification voice. If notifications are still hard to hear, try Pause mode or adjust your TTS settings.</string>
@@ -657,7 +657,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_wave_pocket_description">Allow readouts to continue when sensor is already covered (like in your pocket), but still stop when you cover it after the readout starts</string>
     <string name="behavior_wave_pocket_checkbox">Allow readouts when sensor covered</string>
     <string name="behavior_custom_apps_title">Custom App Names</string>
-    <string name="behavior_custom_apps_description">Customize how app names are spoken in notifications</string>
+    <string name="behavior_custom_apps_description">Customise how app names are spoken in notifications</string>
     <string name="behavior_custom_apps_example">Example: X app reads as Twitter</string>
     <string name="behavior_custom_apps_add">Add Custom App Name</string>
     <string name="behavior_delay_title">Delay Before Readout</string>
@@ -709,8 +709,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_content_cap_description">Limit how much of each notification gets read aloud</string>
     <string name="behavior_content_cap_recommendation">Great for: Long notifications where you only need the beginning</string>
     <string name="behavior_speech_title">Speech Format</string>
-    <string name="behavior_speech_description">Customize how notifications are spoken aloud using placeholders</string>
-    <string name="behavior_speech_recommendation">Customize your notification experience</string>
+    <string name="behavior_speech_description">Customise how notifications are spoken aloud using placeholders</string>
+    <string name="behavior_speech_recommendation">Customise your notification experience</string>
     <string name="behavior_speech_preset">Format Preset:</string>
     <string name="behavior_speech_custom">Custom Format:</string>
     <string name="behavior_speech_preview">Preview: Messages notified you: Mitchi: I heard you\'re using SpeakThat!</string>
@@ -739,7 +739,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="voice_language_section">Language &amp; Voice</string>
     <string name="voice_language_preset">Language Preset</string>
     <string name="voice_language_preset_description">Choose your language. This sets both the app interface and text-to-speech language at once for the best experience.</string>
-    <string name="voice_preset_recommendation">This is all most users need. Use Advanced Voice Options below to customize individual settings.</string>
+    <string name="voice_preset_recommendation">This is all most users need. Use Advanced Voice Options below to customise individual settings.</string>
     <string name="voice_help_translate">Help Translate SpeakThat!</string>
     <string name="voice_help_translate_description">Tap to open the Weblate translation page</string>
     <string name="voice_show_advanced">Show Advanced Voice Options</string>
@@ -976,6 +976,9 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tidy_speech_description">Refine speech by removing non-verbal characters, such as emojis, from spoken notifications</string>
     <string name="tidy_speech_remove_emojis_title">Remove emojis</string>
     <string name="tidy_speech_remove_emojis_description">Remove emojis and other symbols from spoken notifications</string>
+    <string name="tidy_speech_force_lowercase_title">Force lowercase</string>
+    <string name="tidy_speech_force_lowercase_description">Convert all text to lowercase before reading to prevent the TTS engine from spelling out capitalised words</string>
+    <string name="emoji_exceptions_hint">Keep emojis if text contains (comma separated):</string>
     <string name="filter_empty_text_title">Filter empty text</string>
     <string name="filter_empty_text_description">Prevent SpeakThat from reading out notifications that contain no text</string>
     <string name="filter_word_list_header">Word List</string>
@@ -993,11 +996,14 @@ Block = completely ignore, Private = speak privately
     <string name="general_theme_title">Theme</string>
     <string name="general_dark_mode">Dark Mode</string>
     <string name="general_dark_mode_description">Enable dark mode for this app</string>
+    <string name="general_seasonal_title">Seasonal</string>
+    <string name="general_festive_mode">Festive Mode</string>
+    <string name="general_festive_mode_description">Overlay a festive hat on the home logo during December</string>
     <string name="general_app_behavior_title">App Behaviour &amp; Performance</string>
     <string name="general_auto_start">Auto-start on Boot</string>
     <string name="general_auto_start_description">Automatically start the notification service when device boots</string>
-    <string name="general_battery_optimization">Battery Optimization Exemption</string>
-    <string name="general_battery_optimization_description">Exclude app from battery optimization for better reliability</string>
+    <string name="general_battery_optimization">Battery Optimisation Exemption</string>
+    <string name="general_battery_optimization_description">Exclude app from battery optimisation for better reliability</string>
     <string name="general_service_restart_policy">Service Restart Policy</string>
     <string name="general_service_restart_description">When should the notification service automatically restart?</string>
     <string name="general_never_restart">Never restart automatically</string>
@@ -1225,7 +1231,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="dev_debug_tools_title">Debug Tools</string>
     <string name="dev_debug_tools_description">Tools for debugging and testing the app</string>
     <string name="dev_notification_history">Show Notification History</string>
-    <string name="dev_battery_report">Battery Optimization Report</string>
+    <string name="dev_battery_report">Battery Optimisation Report</string>
     <string name="dev_repair_blacklist">Repair Word Blacklist</string>
     <string name="dev_background_monitor">Background Process Monitor</string>
     <string name="dev_installation_debug">Installation Source Debug</string>
@@ -1606,6 +1612,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="speech_placeholder_text_desc">Notification text only</string>
     <string name="speech_placeholder_bigtext_label">{bigtext}</string>
     <string name="speech_placeholder_bigtext_desc">Big text content (expanded notification)</string>
+    <string name="speech_placeholder_subtext_label">{subtext}</string>
+    <string name="speech_placeholder_subtext_desc">Sub-text line (shown under title in inbox-style layouts; empty if omitted by the app)</string>
     <string name="speech_placeholder_summary_label">{summary}</string>
     <string name="speech_placeholder_summary_desc">Summary text (e.g., "1 new message")</string>
     <string name="speech_placeholder_info_label">{info}</string>
@@ -1786,7 +1794,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <!-- Behaviour Settings Additional Strings -->
     <string name="behavior_notification_filtering_title">Notification Filtering</string>
     <string name="behavior_notification_filtering_description">Advanced options for filtering and processing notifications</string>
-    <string name="behavior_battery_optimization_title">Battery Optimization</string>
+    <string name="behavior_battery_optimization_title">Battery Optimisation</string>
     <string name="behavior_battery_optimization_description">Manage power consumption and performance settings</string>
     <string name="behavior_emergency_mode_title">Emergency Mode</string>
     <string name="behavior_emergency_mode_description">Emergency override settings for critical notifications</string>
@@ -1819,6 +1827,9 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="action_override_content_cap_title">Override Content Cap</string>
     <string name="action_override_content_cap_description">Enable or disable content cap for this notification</string>
     <string name="rule_action_override_content_cap">override content cap</string>
+    <string name="action_override_emoji_removal_title">Keep Emojis</string>
+    <string name="action_override_emoji_removal_description">Do not strip emojis from this notification</string>
+    <string name="rule_action_override_emoji_removal">keep emojis</string>
     <string name="rule_error_invalid_content_cap_mode">Invalid content cap mode</string>
     <string name="content_cap_mode_label">Content Cap Mode:</string>
     <string name="content_cap_disabled">Disabled - Read full notification</string>
@@ -1952,20 +1963,21 @@ This permission is completely optional; SpeakThat! will still function without i
 
     <!-- AboutActivity Hardcoded Strings -->
     <string name="tts_error_occurred">TTS error occurred</string>
-    <string name="tts_initialization_failed">TTS initialization failed</string>
+    <string name="tts_initialization_failed">TTS initialisation failed</string>
 
     <!-- Enhanced TTS Error Messages for Android 15+ -->
-    <string name="tts_init_failed_android15">TTS initialization failed on Android 15. This may be due to system restrictions.</string>
+    <string name="tts_init_failed_android15">TTS initialisation failed on Android 15. This may be due to system restrictions.</string>
     <string name="tts_init_failed_service_unavailable">TTS service is not available. Please check your TTS settings.</string>
-    <string name="tts_init_failed_permissions">TTS initialization failed due to missing permissions. Please restart the app.</string>
+    <string name="tts_init_failed_permissions">TTS initialisation failed due to missing permissions. Please restart the app.</string>
     <string name="tts_init_failed_recovery_attempts">TTS recovery failed after multiple attempts. Please restart the app or check TTS settings.</string>
-    <string name="tts_init_failed_generic">TTS initialization failed. Some features may not work properly.</string>
+    <string name="tts_init_failed_generic">TTS initialisation failed. Some features may not work properly.</string>
     <string name="tts_recovery_in_progress">Attempting to recover TTS service...</string>
     <string name="tts_recovery_successful">TTS service recovered successfully!</string>
     <string name="tts_troubleshooting_title">TTS Troubleshooting</string>
     <string name="tts_troubleshooting_message">If TTS continues to fail:\n\n1. Check Settings > Accessibility > Text-to-Speech Output\n2. Ensure Google TTS is installed and set as default\n3. Restart the app\n4. Restart your device if the problem persists</string>
 
     <!-- GeneralSettingsActivity Hardcoded Strings -->
+    <string name="style_title">Style</string>
     <string name="storage_permission_required">Storage permission required for export</string>
     <string name="theme_changed_title">Theme Changed</string>
     <string name="theme_changed_message">The theme has been applied. For the best experience, you may want to restart the app.</string>
@@ -2055,7 +2067,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="main_master_switch_enabled">SpeakThat! will read notifications when active</string>
     <string name="main_master_switch_disabled">SpeakThat! is disabled - notifications will not be read</string>
     <string name="main_notification_access_granted">SpeakThat! has notification access</string>
-    <string name="main_tts_init_failed">TTS initialization failed. Some features may not work.</string>
+    <string name="main_tts_init_failed">TTS initialisation failed. Some features may not work.</string>
     <string name="main_tts_not_ready">TTS not ready. Please try again in a moment.</string>
     <string name="main_tts_playback_failed">TTS playback failed</string>
     <string name="main_notification_permission_granted">Notification permission granted</string>
@@ -2075,7 +2087,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="quick_diagnostics">Quick Diagnostics</string>
     <string name="diagnostics_title">Quick Diagnostics</string>
     <string name="diagnostics_notification_access">Notification Access</string>
-    <string name="diagnostics_tts_initialization">TTS Initialization</string>
+    <string name="diagnostics_tts_initialization">TTS Initialisation</string>
     <string name="diagnostics_tts_language">TTS Language</string>
     <string name="diagnostics_output_stream">Output Stream</string>
     <string name="diagnostics_should_read">Should Read Notifications</string>
@@ -2086,13 +2098,13 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="diagnostics_status_yes">Y</string>
     <string name="diagnostics_status_no">N</string>
     <string name="diagnostics_copy_clipboard">Copy to Clipboard</string>
-    <string name="diagnostics_reinitialize_tts">Reinitialize TTS</string>
+    <string name="diagnostics_reinitialize_tts">Reinitialise TTS</string>
     <string name="diagnostics_clipboard_copied">Diagnostic report copied to clipboard</string>
-    <string name="diagnostics_tts_reinitialized">TTS reinitialized - running diagnostics again</string>
+    <string name="diagnostics_tts_reinitialized">TTS reinitialised - running diagnostics again</string>
     <string name="diagnostics_notification_access_ok">Notification access is enabled</string>
     <string name="diagnostics_notification_access_err">Notification access is disabled</string>
-    <string name="diagnostics_tts_init_ok">TTS is initialized and ready</string>
-    <string name="diagnostics_tts_init_err">TTS initialization failed</string>
+    <string name="diagnostics_tts_init_ok">TTS is initialised and ready</string>
+    <string name="diagnostics_tts_init_err">TTS initialisation failed</string>
     <string name="diagnostics_tts_init_dash">TTS instance is null</string>
     <string name="diagnostics_tts_language_ok">TTS language is available</string>
     <string name="diagnostics_tts_language_err">TTS language is not supported</string>
@@ -2111,8 +2123,8 @@ This permission is completely optional; SpeakThat! will still function without i
 
     <!-- Listener Health -->
     <string name="listener_warning_title">Notification listener needs attention</string>
-    <string name="listener_warning_body_disconnected">Android disconnected the notification service %1$s ago. Tap Retry to ask the system to reconnect. If this keeps happening, disable battery optimization in General Settings.</string>
-    <string name="listener_warning_body_stale">Notification service hasn\'t connected in %1$s. Tap Retry to wake it up, then review battery optimization in General Settings if the issue persists.</string>
+    <string name="listener_warning_body_disconnected">Android disconnected the notification service %1$s ago. Tap Retry to ask the system to reconnect. If this keeps happening, disable battery optimisation in General Settings.</string>
+    <string name="listener_warning_body_stale">Notification service hasn\'t connected in %1$s. Tap Retry to wake it up, then review battery optimisation in General Settings if the issue persists.</string>
     <string name="listener_warning_time_unknown">recently</string>
     <string name="listener_warning_retry_in_progress">Rebind request sent</string>
     <string name="listener_warning_retry_denied">Wait a moment before trying again</string>
@@ -2154,9 +2166,9 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="selftest_step3_pass">Enabled</string>
     <string name="selftest_step3_fail">Disabled - please enable the master switch</string>
 
-    <string name="selftest_step4_title">TTS Initialization</string>
+    <string name="selftest_step4_title">TTS Initialisation</string>
     <string name="selftest_step4_pass">TTS ready</string>
-    <string name="selftest_step4_fail">TTS initialization failed</string>
+    <string name="selftest_step4_fail">TTS initialisation failed</string>
 
     <string name="selftest_step5_title">Volume Check</string>
     <string name="selftest_step5_pass">Volume at %d%%</string>
@@ -2210,8 +2222,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="selftest_error_0414_title">Blocked by Filtering</string>
     <string name="selftest_error_0414_description">The notification was blocked by content filtering. Check your app filters, word filters, or other filtering settings.</string>
 
-    <string name="selftest_error_0415_title">TTS Not Initialized</string>
-    <string name="selftest_error_0415_description">Text-to-Speech is not initialized. Try restarting the app or checking your TTS engine settings.</string>
+    <string name="selftest_error_0415_title">TTS Not Initialised</string>
+    <string name="selftest_error_0415_description">Text-to-Speech is not initialised. Try restarting the app or checking your TTS engine settings.</string>
 
     <string name="selftest_error_0420_title">Unknown Blocking Reason</string>
     <string name="selftest_error_0420_description">The notification was received but not read for an unknown reason. Please export the debug logs and report this issue.</string>
@@ -2229,7 +2241,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="selftest_error_0443_description">Text-to-Speech completed successfully, but you didn\'t hear it. Check your volume settings, audio output device (Bluetooth headphones, USB audio, etc.), audio routing, or try a different audio stream type in Voice Settings.</string>
 
     <string name="selftest_error_0444_title">TTS Never Started</string>
-    <string name="selftest_error_0444_description">The notification was received and passed all filters, but Text-to-Speech never started speaking. This may indicate a TTS initialization issue, audio stream problem, or the TTS engine is not responding. Check your TTS engine settings, try restarting the app, or select a different TTS engine in Voice Settings.</string>
+    <string name="selftest_error_0444_description">The notification was received and passed all filters, but Text-to-Speech never started speaking. This may indicate a TTS initialisation issue, audio stream problem, or the TTS engine is not responding. Check your TTS engine settings, try restarting the app, or select a different TTS engine in Voice Settings.</string>
 
     <string name="selftest_error_unknown_title">Unknown Error</string>
     <string name="selftest_error_unknown_description">An unexpected error occurred during the test.</string>
@@ -2262,7 +2274,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="filter_sheet_app_title">Everything from %s</string>
     <string name="filter_sheet_app_description">Never read out another notification from this app</string>
     <string name="filter_sheet_preview_title">Filter preview</string>
-    <string name="filter_sheet_preview_description">SpeakThat will silence messages that look like this:</string>
+    <string name="filter_sheet_preview_description">SpeakThat will filter messages that look like this:</string>
     <string name="filter_sheet_private_title">Private mode</string>
     <string name="filter_sheet_private_description">Read app name but not contents</string>
     <string name="filter_sheet_create_button">Create Filter</string>
@@ -2596,5 +2608,25 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="include_system_apps">Include System Apps</string>
     <string name="auto_language_title">Auto-Language</string>
     <string name="auto_language_description">Automatically switches the TTS language to match the notification text (Android 10+).</string>
+
+    <string name="badge_selector_title">Logo style</string>
+    <string name="badge_selector_description">Pick which logo to show on the home screen.</string>
+    <string name="badge_selector_dialog_title">Choose a logo style</string>
+    <string name="badge_option_default">Default logo</string>
+    <string name="badge_option_bronze">Bronze</string>
+    <string name="badge_option_silver">Silver</string>
+    <string name="badge_option_rose_quartz">Rose Quartz</string>
+    <string name="badge_option_pearl">Pearl</string>
+    <string name="badge_option_gold">Gold</string>
+    <string name="badge_option_jade">Jade</string>
+    <string name="badge_option_emerald">Emerald</string>
+    <string name="badge_option_aquamarine">Aquamarine</string>
+    <string name="badge_option_citrine">Citrine</string>
+    <string name="badge_option_sapphire">Sapphire</string>
+    <string name="badge_option_jet">Jet</string>
+    <string name="badge_option_amber">Amber</string>
+    <string name="badge_option_amethyst">Amethyst</string>
+    <string name="badge_option_ruby">Ruby</string>
+    <string name="badge_option_diamond">Diamond</string>
 
 </resources>

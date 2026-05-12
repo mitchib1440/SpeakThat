@@ -17,6 +17,7 @@ import android.media.AudioDeviceInfo
 import android.media.AudioManager
 import android.location.LocationManager
 import com.micoyc.speakthat.utils.BluetoothConnectionHelper
+import java.util.Locale
 
 /**
  * Rule evaluation engine
@@ -690,7 +691,8 @@ class RuleEvaluator(private val context: Context) {
             val success = if (caseSensitive) {
                 haystack.contains(phrase)
             } else {
-                haystack.lowercase().contains(phrase.lowercase())
+                val locale = Locale.getDefault()
+                haystack.lowercase(locale).contains(phrase.lowercase(locale))
             }
 
             return EvaluationResult(
@@ -1475,6 +1477,7 @@ class RuleEvaluator(private val context: Context) {
         val parts = listOf(
             notificationContext.title,
             notificationContext.text,
+            notificationContext.subText,
             notificationContext.bigText,
             notificationContext.ticker
         )

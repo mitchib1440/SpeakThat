@@ -1,0 +1,46 @@
+[
+  {
+    "text": "Fixed the Material You icon not working.",
+    "subpoints": [
+      "I'm not sure how long this one was broken for but it's all good now!"
+    ]
+  },
+  {
+    "text": "Fixed SpeakThat's main screen logo's inconsistent spacing.",
+    "subpoints": [
+      "The gap between Bugdroid's head and the text was slightly too big. Not a big deal at all but this one really annoyed me lol"
+    ]
+  },
+  {
+    "text": "Added Exclusion Text to Emoji Removal.",
+    "subpoints": [
+      "You can add text under the Emoji Removal option to specify when you would like emojis to remain in the text.",
+      "This is especially useful for when someone reacts to your message. Just type “reacted”, into the text box"
+    ]
+  },
+  {
+    "text": "Added Keep Emojis to Conditional Rules.",
+    "subpoints": [
+      "Similar in function to the exclusion text mentioned above, but baked into the Conditional Rules engine for even finer control."
+    ]
+  },
+  {
+    "text": "Added Force Lowercase to Tidy Speech.",
+    "subpoints": [
+      "This happens at the very end of the pipeline right before the text is sent to your voice engine."
+    ]
+  },
+  {
+    "text": "Added Force Lowercase to Tidy Speech.",
+    "subpoints": [
+      "This happens at the very end of the pipeline right before the text is sent to your voice engine."
+    ]
+  },
+  {
+    "text": "Added customisable main screen logo.",
+    "subpoints": [
+      "A purely cosmetic option, you can now unlock home screen logos in various colours based on how many notifications SpeakThat has read.",
+      "This used to be an exclusive to the paying donators on the Google Play Store, but they and everyone else now has a way to unlock this customisation for free!"
+    ]
+  }
+]

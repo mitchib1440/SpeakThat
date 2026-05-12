@@ -14,21 +14,22 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.view.View;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.micoyc.speakthat.databinding.ActivityGeneralSettingsBinding;
-import com.micoyc.speakthat.BadgeAssets;
 import com.micoyc.speakthat.permissions.PermissionCatalog;
 import com.micoyc.speakthat.permissions.PermissionSyncManager;
 import com.micoyc.speakthat.permissions.PermissionSyncSession;
+import com.micoyc.speakthat.utils.SeasonalModeHelper;
 import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -36,6 +37,7 @@ import java.util.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,10 +46,6 @@ import com.micoyc.speakthat.rules.Rule;
 import com.micoyc.speakthat.rules.RuleConfigManager;
 import com.micoyc.speakthat.rules.RuleConfigManager.RulePermissionType;
 
-/**
- * Play flavor: mirrors Store behavior (no updater; same settings).
- * Cloned from store source set to keep resources/IDs consistent.
- */
 public class GeneralSettingsActivity extends AppCompatActivity {
     private ActivityGeneralSettingsBinding binding;
     private SharedPreferences sharedPreferences;
@@ -67,30 +65,58 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
         // Initialize SharedPreferences FIRST
         sharedPreferences = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE);
-
+        
         // Apply saved theme after SharedPreferences is initialized
         applySavedTheme();
-
+        
         binding = ActivityGeneralSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        
         // Set title and enable back navigation in app bar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(getString(R.string.title_general_settings));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
+        
         // Initialize activity result launchers
         initializeActivityResultLaunchers();
-
+        
+        setupSeasonalMode();
         setupPerformanceSettings();
         setupToastNotifications();
-        setupBadgeSelector();
         setupAccessibilityPermission();
+        
+        if (BuildConfig.FLAVOR.equals("github")) {
+            binding.cardUpdateSettings.setVisibility(android.view.View.VISIBLE);
+            setupAutoUpdateSettings();
+        } else {
+            binding.cardUpdateSettings.setVisibility(android.view.View.GONE);
+        }
+        
+        binding.cardBadgeSettings.setVisibility(android.view.View.VISIBLE);
+        setupBadgeSelector();
+        
         setupDataManagement();
+    }
+
+    private void setupSeasonalMode() {
+        if (!SeasonalModeHelper.isDecember()) {
+            binding.cardSeasonalMode.setVisibility(android.view.View.GONE);
+            return;
+        }
+
+        binding.cardSeasonalMode.setVisibility(android.view.View.VISIBLE);
+        boolean festiveEnabled = sharedPreferences.getBoolean(
+            SeasonalModeHelper.PREF_ENABLE_FESTIVE_MODE,
+            SeasonalModeHelper.PREF_DEFAULT_ENABLE_FESTIVE_MODE
+        );
+        binding.switchFestiveMode.setChecked(festiveEnabled);
+        binding.switchFestiveMode.setOnCheckedChangeListener((buttonView, isChecked) ->
+            sharedPreferences.edit().putBoolean(SeasonalModeHelper.PREF_ENABLE_FESTIVE_MODE, isChecked).apply()
+        );
     }
 
     private void applySavedTheme() {
@@ -111,7 +137,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 if (isGranted) {
                     promptExportIncludeRules();
                 } else {
-                    Toast.makeText(this, getString(R.string.storage_permission_required), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Storage permission required for export", Toast.LENGTH_LONG).show();
                 }
             }
         );
@@ -149,7 +175,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
 
         // Persistent Notification Toggle
         MaterialSwitch persistentNotificationSwitch = binding.switchPersistentNotification;
-        boolean persistentNotificationEnabled = sharedPreferences.getBoolean(getString(R.string.prefs_persistent_notification), false);
+        boolean persistentNotificationEnabled = sharedPreferences.getBoolean("persistent_notification", false);
         persistentNotificationSwitch.setChecked(persistentNotificationEnabled);
 
         persistentNotificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -165,12 +191,12 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                     }
                 }
             }
-            sharedPreferences.edit().putBoolean(getString(R.string.prefs_persistent_notification), isChecked).apply();
+            sharedPreferences.edit().putBoolean("persistent_notification", isChecked).apply();
         });
 
         // Notification While Reading Toggle
         MaterialSwitch notificationWhileReadingSwitch = binding.switchNotificationWhileReading;
-        boolean notificationWhileReadingEnabled = sharedPreferences.getBoolean(getString(R.string.prefs_notification_while_reading), false);
+        boolean notificationWhileReadingEnabled = sharedPreferences.getBoolean("notification_while_reading", false);
         notificationWhileReadingSwitch.setChecked(notificationWhileReadingEnabled);
 
         notificationWhileReadingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -186,7 +212,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                     }
                 }
             }
-            sharedPreferences.edit().putBoolean(getString(R.string.prefs_notification_while_reading), isChecked).apply();
+            sharedPreferences.edit().putBoolean("notification_while_reading", isChecked).apply();
         });
 
         // Main Screen History Toggle
@@ -215,11 +241,11 @@ public class GeneralSettingsActivity extends AppCompatActivity {
 
         // Auto-Start Toggle
         MaterialSwitch autoStartSwitch = binding.switchAutoStart;
-        boolean autoStartEnabled = sharedPreferences.getBoolean(getString(R.string.prefs_auto_start_enabled), true);
+        boolean autoStartEnabled = sharedPreferences.getBoolean("auto_start_enabled", true);
         autoStartSwitch.setChecked(autoStartEnabled);
 
         autoStartSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            sharedPreferences.edit().putBoolean(getString(R.string.prefs_auto_start_enabled), isChecked).apply();
+            sharedPreferences.edit().putBoolean("auto_start_enabled", isChecked).apply();
         });
 
         // Battery Optimization Toggle
@@ -233,7 +259,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             if (isChecked) {
                 requestBatteryOptimizationExemption();
             } else {
-                sharedPreferences.edit().putBoolean(getString(R.string.prefs_battery_optimization_enabled), false).apply();
+                sharedPreferences.edit().putBoolean("battery_optimization_enabled", false).apply();
             }
         });
 
@@ -272,20 +298,6 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         });
     }
 
-    private void setupBadgeSelector() {
-        if (!"play".equals(BuildConfig.DISTRIBUTION_CHANNEL)) {
-            if (binding.cardBadgeSettings != null) {
-                binding.cardBadgeSettings.setVisibility(View.GONE);
-            }
-            return;
-        }
-
-        renderBadgeSelection();
-        if (binding.rowBadgeSelector != null) {
-            binding.rowBadgeSelector.setOnClickListener(v -> showBadgeSelectionDialog());
-        }
-    }
-
     private void setupToastNotifications() {
         // Main App Toggle Toast
         MaterialSwitch toastMainAppSwitch = binding.switchToastMainApp;
@@ -315,150 +327,85 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         });
     }
 
-    private void setupDataManagement() {
-        // Export Configuration
-        binding.exportConfigButton.setOnClickListener(v -> {
-            performExportWithPermissionCheck();
+    private void setupAutoUpdateSettings() {
+        // Auto-Update Toggle - Default to ON (true)
+        MaterialSwitch autoUpdateSwitch = binding.switchAutoUpdate;
+        boolean autoUpdateEnabled = sharedPreferences.getBoolean("auto_update_enabled", true);
+        autoUpdateSwitch.setChecked(autoUpdateEnabled);
+
+        autoUpdateSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean("auto_update_enabled", isChecked).apply();
+            com.micoyc.speakthat.UpdateFeature.onAutoUpdatePreferenceChanged(this);
         });
 
-        // Import Configuration
-        binding.importConfigButton.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType(getString(R.string.export_mime_type));
-            filePickerLauncher.launch(intent);
-        });
+        // Update Check Frequency - Default to Weekly
+        String updateFrequency = sharedPreferences.getString("update_check_frequency", "weekly");
+        if ("never".equals(updateFrequency)) {
+            updateFrequency = "weekly";
+            sharedPreferences.edit().putString("update_check_frequency", "weekly").apply();
+        }
+        switch (updateFrequency) {
+            case "daily":
+                binding.radioUpdateDaily.setChecked(true);
+                break;
+            case "weekly":
+                binding.radioUpdateWeekly.setChecked(true);
+                break;
+            case "monthly":
+                binding.radioUpdateMonthly.setChecked(true);
+                break;
+            default:
+                // Default to weekly if no value is set
+                binding.radioUpdateWeekly.setChecked(true);
+                sharedPreferences.edit().putString("update_check_frequency", "weekly").apply();
+                break;
+        }
 
-        // Clear All Data
-        binding.clearDataButton.setOnClickListener(v -> {
-            new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.clear_all_data_title))
-                .setMessage(getString(R.string.clear_all_data_message))
-                .setPositiveButton(getString(R.string.clear_all_data_button), (dialog, which) -> {
-                    clearAllData();
-                })
-                .setNegativeButton(getString(R.string.cancel), null)
-                .show();
+        binding.radioGroupUpdateFrequency.setOnCheckedChangeListener((group, checkedId) -> {
+            String frequency;
+            if (checkedId == R.id.radioUpdateDaily) {
+                frequency = "daily";
+            } else if (checkedId == R.id.radioUpdateWeekly) {
+                frequency = "weekly";
+            } else if (checkedId == R.id.radioUpdateMonthly) {
+                frequency = "monthly";
+            } else {
+                frequency = "weekly"; // Default fallback
+            }
+            sharedPreferences.edit().putString("update_check_frequency", frequency).apply();
+            com.micoyc.speakthat.UpdateFeature.onAutoUpdatePreferenceChanged(this);
         });
     }
 
-    /**
-     * Set up the accessibility permission button
-     */
     private void setupAccessibilityPermission() {
+        // Accessibility Permission Button
+        // Using findViewById instead of binding due to binding generation issue
         android.view.View accessibilityButton = findViewById(R.id.buttonAccessibilityPermission);
-
         if (accessibilityButton != null) {
             accessibilityButton.setOnClickListener(v -> {
-                boolean isEnabled = isAccessibilityServiceEnabled();
-
-                if (isEnabled) {
+                // Check if accessibility service is already enabled
+                if (isAccessibilityServiceEnabled()) {
+                    // Already enabled - show success message
                     Toast.makeText(this, getString(R.string.accessibility_permission_granted), Toast.LENGTH_SHORT).show();
                 } else {
+                    // Not enabled - show explanation and guide user to settings
                     showAccessibilityPermissionDialog();
                 }
             });
         }
     }
-
-    private void showBadgeSelectionDialog() {
-        int badgeCount = BadgeAssets.getPlayBadgeCount(this);
-        java.util.List<BadgeOption> options = getBadgeOptions(badgeCount);
-        String currentSelection = sharedPreferences.getString(getString(R.string.prefs_badge_selection), BadgeAssets.KEY_DEFAULT);
-
-        int checkedIndex = 0;
-        for (int i = 0; i < options.size(); i++) {
-            if (options.get(i).key.equals(currentSelection)) {
-                checkedIndex = i;
-                break;
-            }
-        }
-
-        CharSequence[] labels = new CharSequence[options.size()];
-        for (int i = 0; i < options.size(); i++) {
-            labels[i] = options.get(i).label;
-        }
-
-        final int[] selectedIndex = {checkedIndex};
-
-        new AlertDialog.Builder(this)
-            .setTitle(getString(R.string.badge_selector_dialog_title))
-            .setSingleChoiceItems(labels, checkedIndex, (dialog, which) -> selectedIndex[0] = which)
-            .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                BadgeOption chosen = options.get(selectedIndex[0]);
-                sharedPreferences.edit().putString(getString(R.string.prefs_badge_selection), chosen.key).apply();
-                renderBadgeSelection();
-            })
-            .setNegativeButton(android.R.string.cancel, null)
-            .show();
-    }
-
-    private void renderBadgeSelection() {
-        int badgeCount = BadgeAssets.getPlayBadgeCount(this);
-        if (binding.cardBadgeSettings != null) {
-            binding.cardBadgeSettings.setVisibility(badgeCount > 0 ? View.VISIBLE : View.GONE);
-        }
-        String storedSelection = sharedPreferences.getString(getString(R.string.prefs_badge_selection), BadgeAssets.KEY_DEFAULT);
-        String resolvedSelection = BadgeAssets.ensureValidSelection(storedSelection, badgeCount);
-
-        if (!resolvedSelection.equals(storedSelection)) {
-            sharedPreferences.edit().putString(getString(R.string.prefs_badge_selection), resolvedSelection).apply();
-        }
-
-        if (binding.textBadgeSelectionValue != null && badgeCount > 0) {
-            binding.textBadgeSelectionValue.setText(getBadgeLabel(resolvedSelection));
-        }
-    }
-
-    private java.util.List<BadgeOption> getBadgeOptions(int badgeCount) {
-        java.util.ArrayList<BadgeOption> options = new java.util.ArrayList<>();
-        options.add(new BadgeOption(BadgeAssets.KEY_DEFAULT, getString(R.string.badge_option_default)));
-        for (BadgeAssets.BadgeTier tier : BadgeAssets.unlockedBadges(badgeCount)) {
-            options.add(new BadgeOption(tier.getKey(), getBadgeLabel(tier.getKey())));
-        }
-        return options;
-    }
-
-    private String getBadgeLabel(String key) {
-        switch (key) {
-            case "bronze":
-                return getString(R.string.badge_option_bronze);
-            case "silver":
-                return getString(R.string.badge_option_silver);
-            case "gold":
-                return getString(R.string.badge_option_gold);
-            case "emerald":
-                return getString(R.string.badge_option_emerald);
-            case "sapphire":
-                return getString(R.string.badge_option_sapphire);
-            case "amber":
-                return getString(R.string.badge_option_amber);
-            case "amethyst":
-                return getString(R.string.badge_option_amethyst);
-            case "ruby":
-                return getString(R.string.badge_option_ruby);
-            default:
-                return getString(R.string.badge_option_default);
-        }
-    }
-
-    private static class BadgeOption {
-        final String key;
-        final String label;
-
-        BadgeOption(String key, String label) {
-            this.key = key;
-            this.label = label;
-        }
-    }
     
+    /**
+     * Check if the accessibility service is enabled
+     * Similar to how notification listener permission is checked
+     */
     private boolean isAccessibilityServiceEnabled() {
         String packageName = getPackageName();
         String serviceName = packageName + "/com.micoyc.speakthat.SpeakThatAccessibilityService";
-
-        String enabledServices = android.provider.Settings.Secure.getString(getContentResolver(),
-                android.provider.Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
-
+        
+        String enabledServices = android.provider.Settings.Secure.getString(getContentResolver(), 
+            android.provider.Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+        
         if (enabledServices != null && !enabledServices.isEmpty()) {
             String[] services = enabledServices.split(":");
             for (String service : services) {
@@ -470,16 +417,21 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         return false;
     }
     
+    /**
+     * Show dialog explaining accessibility permission and guide user to enable it
+     */
     private void showAccessibilityPermissionDialog() {
         new AlertDialog.Builder(this)
             .setTitle(getString(R.string.accessibility_permission_explanation_title))
             .setMessage(getString(R.string.accessibility_permission_explanation_message))
             .setPositiveButton(getString(R.string.accessibility_permission_open_settings), (dialog, which) -> {
+                // Try to open the specific accessibility service settings first
                 try {
                     Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
                     startActivity(intent);
                     Toast.makeText(this, "Please find 'SpeakThat Accessibility' in the list and enable it", Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
+                    // Fallback to general accessibility settings
                     Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
                     startActivity(intent);
                     Toast.makeText(this, getString(R.string.accessibility_permission_request), Toast.LENGTH_LONG).show();
@@ -489,10 +441,102 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             .show();
     }
 
+    private void setupBadgeSelector() {
+        renderBadgeSelection();
+        if (binding.rowBadgeSelector != null) {
+            binding.rowBadgeSelector.setOnClickListener(v -> {
+                Intent intent = new Intent(this, AppearanceActivity.class);
+                startActivity(intent);
+            });
+        }
+    }
+
+    private void renderBadgeSelection() {
+        boolean hasBadges = BadgeAssets.getUnlockedBadges(this).size() > 1;
+        if (binding.cardBadgeSettings != null) {
+            binding.cardBadgeSettings.setVisibility(hasBadges ? android.view.View.VISIBLE : android.view.View.GONE);
+        }
+        String storedSelection = sharedPreferences.getString(BadgeAssets.PREF_BADGE_SELECTION, BadgeAssets.KEY_DEFAULT);
+        String resolvedSelection = BadgeAssets.ensureValidSelection(storedSelection, this);
+
+        if (!resolvedSelection.equals(storedSelection)) {
+            sharedPreferences.edit().putString(BadgeAssets.PREF_BADGE_SELECTION, resolvedSelection).apply();
+        }
+
+        if (binding.textBadgeSelectionValue != null && hasBadges) {
+            binding.textBadgeSelectionValue.setText(getBadgeLabel(resolvedSelection));
+        }
+    }
+
+    private String getBadgeLabel(String key) {
+        switch (key) {
+            case "diamond":
+                return getString(R.string.badge_option_diamond);
+            case "ruby":
+                return getString(R.string.badge_option_ruby);
+            case "amethyst":
+                return getString(R.string.badge_option_amethyst);
+            case "amber":
+                return getString(R.string.badge_option_amber);
+            case "jet":
+                return getString(R.string.badge_option_jet);
+            case "sapphire":
+                return getString(R.string.badge_option_sapphire);
+            case "citrine":
+                return getString(R.string.badge_option_citrine);
+            case "aquamarine":
+                return getString(R.string.badge_option_aquamarine);
+            case "emerald":
+                return getString(R.string.badge_option_emerald);
+            case "jade":
+                return getString(R.string.badge_option_jade);
+            case "gold":
+                return getString(R.string.badge_option_gold);
+            case "pearl":
+                return getString(R.string.badge_option_pearl);
+            case "rose_quartz":
+                return getString(R.string.badge_option_rose_quartz);
+            case "silver":
+                return getString(R.string.badge_option_silver);
+            case "bronze":
+                return getString(R.string.badge_option_bronze);
+            default:
+                return getString(R.string.badge_option_default);
+        }
+    }
+
+    private void setupDataManagement() {
+        // Export Configuration
+        binding.exportConfigButton.setOnClickListener(v -> {
+            performExportWithPermissionCheck();
+        });
+
+        // Import Configuration
+        binding.importConfigButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("application/json");
+            filePickerLauncher.launch(intent);
+        });
+
+        // Clear All Data
+        binding.clearDataButton.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                .setTitle("Clear All Data")
+                .setMessage("This will reset all settings to defaults and clear notification history.\n\nThis action cannot be undone.\n\nDo you want to continue?")
+                .setPositiveButton("Clear All Data", (dialog, which) -> {
+                    clearAllData();
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+        });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         syncBatteryOptimizationState();
+        renderBadgeSelection();
         if (permissionSyncSession != null) {
             permissionSyncSession.onResume();
             if (permissionSyncSession.isFinished()) {
@@ -508,57 +552,48 @@ public class GeneralSettingsActivity extends AppCompatActivity {
 
     private void performExport() {
         try {
+            // Generate export data
             String exportData = FilterConfigManager.exportFullConfiguration(this, includeRulesInExport);
-            String timestamp = new SimpleDateFormat(getString(R.string.date_format_export), Locale.getDefault()).format(new Date());
-            String filename = String.format(getString(R.string.export_filename_format), timestamp);
             
+            // Create filename with timestamp
+            String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault()).format(new Date());
+            String filename = "SpeakThat_Config_" + timestamp + ".json";
+            
+            // Launch file saver
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType(getString(R.string.export_mime_type));
+            intent.setType("application/json");
             intent.putExtra(Intent.EXTRA_TITLE, filename);
             fileSaverLauncher.launch(intent);
             
-            cachedExportData = exportData;
         } catch (JSONException e) {
-            Toast.makeText(this, String.format(getString(R.string.export_failed), e.getMessage()), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Export failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-
-    private void performExportWithPermissionCheck() {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.Q) {
-            if (!checkStoragePermission()) {
-                requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                return;
-            }
-        }
-        promptExportIncludeRules();
-    }
-
-    private String cachedExportData;
 
     private void exportToUri(Uri uri) {
-        if (cachedExportData == null) {
-            Toast.makeText(this, getString(R.string.export_failed), Toast.LENGTH_SHORT).show();
-            return;
-        }
-        
         try {
+            // Generate export data
+            String exportData = FilterConfigManager.exportFullConfiguration(this, includeRulesInExport);
+            
+            // Write to file using ContentResolver
             try (java.io.OutputStream outputStream = getContentResolver().openOutputStream(uri)) {
-                if (outputStream != null) {
-                    outputStream.write(cachedExportData.getBytes(getString(R.string.export_charset)));
-                    outputStream.flush();
-                    Toast.makeText(this, getString(R.string.configuration_exported_successfully), Toast.LENGTH_LONG).show();
-                } else {
-                    throw new IOException(getString(R.string.error_unable_to_open_output_stream));
+                if (outputStream == null) {
+                    throw new IOException("Unable to open output stream for URI");
                 }
+                outputStream.write(exportData.getBytes("UTF-8"));
             }
+            
+            Toast.makeText(this, "Configuration exported successfully", Toast.LENGTH_LONG).show();
+            
         } catch (Exception e) {
-            Toast.makeText(this, String.format(getString(R.string.export_failed), e.getMessage()), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Export failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
     private void importFromUri(Uri uri) {
         try {
+            // Read file content
             StringBuilder content = new StringBuilder();
             try (BufferedReader reader = new BufferedReader(new FileReader(getFileFromUri(uri)))) {
                 String line;
@@ -567,11 +602,12 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                 }
             }
             
+            // Import configuration
             String importedJson = content.toString();
             FilterConfigManager.ImportResult result = FilterConfigManager.importFullConfiguration(this, importedJson);
             
             if (result.success) {
-                Toast.makeText(this, String.format(getString(R.string.configuration_imported_successfully), result.message), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Configuration imported successfully: " + result.message, Toast.LENGTH_LONG).show();
                 permissionSyncSession = PermissionSyncManager.startSync(
                     this,
                     true,
@@ -582,22 +618,25 @@ public class GeneralSettingsActivity extends AppCompatActivity {
                     }
                 );
             } else {
-                Toast.makeText(this, String.format(getString(R.string.import_failed), result.message), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Import failed: " + result.message, Toast.LENGTH_LONG).show();
             }
             
         } catch (Exception e) {
-            Toast.makeText(this, String.format(getString(R.string.import_failed), e.getMessage()), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Import failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
     private File getFileFromUri(Uri uri) throws IOException {
+        // Use ContentResolver to get input stream from URI
         try (java.io.InputStream inputStream = getContentResolver().openInputStream(uri)) {
             if (inputStream == null) {
-                throw new IOException(getString(R.string.error_unable_to_open_input_stream));
+                throw new IOException("Unable to open input stream from URI");
             }
             
-            File tempFile = File.createTempFile(getString(R.string.import_temp_filename), ".json", getCacheDir());
+            // Create a temporary file
+            File tempFile = File.createTempFile("speakthat_import", ".json", getCacheDir());
             
+            // Copy content to temp file
             try (java.io.FileOutputStream outputStream = new java.io.FileOutputStream(tempFile)) {
                 byte[] buffer = new byte[1024];
                 int bytesRead;
@@ -612,30 +651,53 @@ public class GeneralSettingsActivity extends AppCompatActivity {
 
     private void clearAllData() {
         try {
-            SharedPreferences.Editor mainEditor = getSharedPreferences(getString(R.string.prefs_speakthat), MODE_PRIVATE).edit();
+            // Clear main preferences
+            SharedPreferences.Editor mainEditor = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE).edit();
             mainEditor.clear();
             mainEditor.apply();
             
-            SharedPreferences.Editor voiceEditor = getSharedPreferences(getString(R.string.prefs_voice_settings), MODE_PRIVATE).edit();
+            // Clear voice settings
+            SharedPreferences.Editor voiceEditor = getSharedPreferences("VoiceSettings", MODE_PRIVATE).edit();
             voiceEditor.clear();
             voiceEditor.apply();
             
-            SharedPreferences.Editor historyEditor = getSharedPreferences(getString(R.string.prefs_notification_history), MODE_PRIVATE).edit();
+            // Clear notification history
+            SharedPreferences.Editor historyEditor = getSharedPreferences("NotificationHistory", MODE_PRIVATE).edit();
             historyEditor.clear();
             historyEditor.apply();
             
-            Toast.makeText(this, getString(R.string.all_data_cleared_successfully), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "All data cleared successfully", Toast.LENGTH_LONG).show();
+            
+            // Refresh the activity to show default settings
             recreate();
             
         } catch (Exception e) {
-            Toast.makeText(this, String.format(getString(R.string.failed_to_clear_data), e.getMessage()), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Failed to clear data: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
+
+
+    private void performExportWithPermissionCheck() {
+        // For Android 11+ (API 30+), we don't need WRITE_EXTERNAL_STORAGE for app-specific files
+        // The ACTION_CREATE_DOCUMENT intent will handle the file creation
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            // Android 11+ - no permission needed for document creation
+            promptExportIncludeRules();
+        } else {
+            // Android 10 and below - check for storage permission
+            if (checkStoragePermission()) {
+                promptExportIncludeRules();
+            } else {
+                requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+        }
+    }
+    
     private void syncBatteryOptimizationState() {
         boolean exempt = isBatteryOptimizationExempt();
         updateBatteryOptimizationSwitch(exempt);
-        sharedPreferences.edit().putBoolean(getString(R.string.prefs_battery_optimization_enabled), exempt).apply();
+        sharedPreferences.edit().putBoolean("battery_optimization_enabled", exempt).apply();
     }
 
     private void updateBatteryOptimizationSwitch(boolean isChecked) {
@@ -654,13 +716,13 @@ public class GeneralSettingsActivity extends AppCompatActivity {
 
     private void requestBatteryOptimizationExemption() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            sharedPreferences.edit().putBoolean(getString(R.string.prefs_battery_optimization_enabled), true).apply();
+            sharedPreferences.edit().putBoolean("battery_optimization_enabled", true).apply();
             updateBatteryOptimizationSwitch(true);
             return;
         }
 
         if (isBatteryOptimizationExempt()) {
-            sharedPreferences.edit().putBoolean(getString(R.string.prefs_battery_optimization_enabled), true).apply();
+            sharedPreferences.edit().putBoolean("battery_optimization_enabled", true).apply();
             updateBatteryOptimizationSwitch(true);
             return;
         }
@@ -687,25 +749,23 @@ public class GeneralSettingsActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         
-        if (requestCode == 1001 || requestCode == 1002) {
+        if (requestCode == 1001 || requestCode == 1002) { // Notification permission requests
             if (grantResults.length > 0 && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                // Permission granted - enable the setting
                 if (requestCode == 1001) {
+                    // Persistent notification
                     binding.switchPersistentNotification.setChecked(true);
-                    sharedPreferences.edit().putBoolean(getString(R.string.prefs_persistent_notification), true).apply();
-                    Toast.makeText(this, getString(R.string.persistent_notification_enabled), Toast.LENGTH_SHORT).show();
+                    sharedPreferences.edit().putBoolean("persistent_notification", true).apply();
+                    Toast.makeText(this, "Persistent notification enabled", Toast.LENGTH_SHORT).show();
                 } else if (requestCode == 1002) {
+                    // Reading notification
                     binding.switchNotificationWhileReading.setChecked(true);
-                    sharedPreferences.edit().putBoolean(getString(R.string.prefs_notification_while_reading), true).apply();
-                    Toast.makeText(this, getString(R.string.notification_while_reading_enabled), Toast.LENGTH_SHORT).show();
+                    sharedPreferences.edit().putBoolean("notification_while_reading", true).apply();
+                    Toast.makeText(this, "Reading notification enabled", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(this, getString(R.string.notification_permission_required), Toast.LENGTH_SHORT).show();
-            }
-        } else if (requestCode == 2001) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                promptExportIncludeRules();
-            } else {
-                Toast.makeText(this, getString(R.string.storage_permission_required), Toast.LENGTH_LONG).show();
+                // Permission denied
+                Toast.makeText(this, "Notification permission denied - feature will not work", Toast.LENGTH_LONG).show();
             }
         } else if (requestCode == REQUEST_RULES_IMPORT_PERMISSIONS) {
             handleRulesImportPermissionsResult();
@@ -843,6 +903,4 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         finish();
         return true;
     }
-}
-
-
+} 

@@ -152,6 +152,11 @@
             android:exported="false" />
 
         <activity
+            android:name=".AppearanceActivity"
+            android:exported="false"
+            android:parentActivityName=".GeneralSettingsActivity" />
+
+        <activity
             android:name=".settings.BehaviorSettingsActivity"
             android:exported="false" />
 

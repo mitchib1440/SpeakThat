@@ -64,6 +64,7 @@ import com.micoyc.speakthat.rules.migration.RuleMigrationManager
 import com.micoyc.speakthat.summary.SummaryConstants
 import com.micoyc.speakthat.summary.SummarySettingsGate
 import com.micoyc.speakthat.tts.SpeakThatTtsManager
+import com.micoyc.speakthat.utils.SeasonalModeHelper
 import com.micoyc.speakthat.utils.TtsLanguageHelper
 import org.woheller69.freeDroidWarn.FreeDroidWarn
 import java.text.NumberFormat
@@ -162,7 +163,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
      * Listen for badge selection changes (Play flavor only) so the logo updates immediately.
      */
     private val badgeSelectionListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key == BadgeAssets.PREF_BADGE_SELECTION) {
+        if (key == BadgeAssets.PREF_BADGE_SELECTION || key == SeasonalModeHelper.PREF_ENABLE_FESTIVE_MODE) {
             updateBadgeLogo()
         }
     }
@@ -193,7 +194,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         private const val REQUEST_NOTIFICATION_PERMISSION = 1001
         private const val LOW_BATTERY_THRESHOLD = 20
         private const val FULL_BATTERY_PERCENT = 99
-        private const val LATEST_UPDATE_ASSET = "latest_update.txt"
         // TRANSLATION BANNER - REMOVE WHEN NO LONGER NEEDED
     
         @JvmField
@@ -386,21 +386,17 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
 
     }
 
+    // Update dashboard logo to version with Santa hat if Festive Mode is allowed
+    // Santa hat image sourced from https://www.publicdomainpictures.net/en/view-image.php?image=543963&picture=santa-hat-isolated
     private fun updateBadgeLogo() {
         if (!::binding.isInitialized) return
+        val festiveEnabled = SeasonalModeHelper.isFestiveEnabled(this)
 
-        // Only Play builds surface badges; others keep the default logo.
-        if (BuildConfig.DISTRIBUTION_CHANNEL != "play") {
-            binding.logoSpeakThat.setImageResource(R.drawable.logo_speakthat)
-            return
-        }
-
-        val badgeCount = BadgeAssets.getPlayBadgeCount(this)
         val selection = sharedPreferences?.getString(
             BadgeAssets.PREF_BADGE_SELECTION,
             BadgeAssets.KEY_DEFAULT
         )
-        val drawableRes = BadgeAssets.drawableForSelection(selection, badgeCount)
+        val drawableRes = BadgeAssets.drawableForSelection(selection, this, festiveEnabled)
         binding.logoSpeakThat.setImageResource(drawableRes)
     }
     
@@ -417,16 +413,14 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             startActivity(Intent(this, SettingsActivity::class.java))
         }
         
-        // Latest updates long-press to show full text
-        binding.cardLatestUpdates.setOnLongClickListener {
-            InAppLogger.logUserAction("Latest updates card long-pressed")
-            showLatestUpdateDialog()
-            true
+        // Latest updates tap to show changelog bottom sheet
+        binding.cardLatestUpdates.setOnClickListener {
+            InAppLogger.logUserAction("Latest updates card tapped")
+            showLatestUpdateBottomSheet()
         }
-        binding.textLatestUpdateMarquee.setOnLongClickListener {
-            InAppLogger.logUserAction("Latest updates marquee long-pressed")
-            showLatestUpdateDialog()
-            true
+        binding.textLatestUpdateMarquee.setOnClickListener {
+            InAppLogger.logUserAction("Latest updates marquee tapped")
+            showLatestUpdateBottomSheet()
         }
         
         // Master switch functionality
@@ -800,21 +794,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private fun loadLatestUpdateMarquee() {
         val fallbackText = getString(R.string.latest_update_fallback)
-        
-        val latestLine = try {
-            assets.open(LATEST_UPDATE_ASSET).bufferedReader().useLines { lines ->
-                lines.firstOrNull { line ->
-                    val trimmed = line.trim()
-                    trimmed.isNotEmpty() && !trimmed.startsWith("#")
-                }?.trim()
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Error loading latest update marquee from assets", e)
-            InAppLogger.logError("MainActivity", "Failed to load latest update marquee: ${e.message}")
-            null
-        }
-        
-        val displayText = latestLine ?: fallbackText
+        val displayText = com.micoyc.speakthat.utils.ChangelogUtils.getTickerString(this)
+            .takeIf { it.isNotBlank() } ?: fallbackText
+            
         binding.textLatestUpdateMarquee.text = displayText
         // Required for marquee to auto-scroll
         binding.textLatestUpdateMarquee.isSelected = true
@@ -826,40 +808,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         binding.textLatestTitle.text = "$appName v$versionName"
     }
 
-    private fun showLatestUpdateDialog() {
-        val latestText = binding.textLatestUpdateMarquee.text?.toString()
-            ?.takeIf { it.isNotBlank() }
-            ?: getString(R.string.latest_update_fallback)
-
-        val paddingPx = (24 * resources.displayMetrics.density).roundToInt()
-        val messageView = TextView(this).apply {
-            text = latestText
-            setTextColor(binding.textLatestUpdateMarquee.currentTextColor)
-            setTextSize(TypedValue.COMPLEX_UNIT_PX, binding.textLatestUpdateMarquee.textSize)
-            setLineSpacing(0f, 1.1f)
-            setPadding(paddingPx, paddingPx, paddingPx, paddingPx)
-        }
-
-        val scrollView = ScrollView(this).apply {
-            isFillViewport = true
-            overScrollMode = ScrollView.OVER_SCROLL_IF_CONTENT_SCROLLS
-            addView(
-                messageView,
-                ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-            )
-        }
-
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.latest_update_dialog_title))
-            .setView(scrollView)
-            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
-                InAppLogger.logUserAction("Latest update dialog dismissed")
-                dialog.dismiss()
-            }
-            .show()
+    private fun showLatestUpdateBottomSheet() {
+        LatestUpdateBottomSheetFragment().show(supportFragmentManager, "LatestUpdateBottomSheet")
     }
     
     override fun onInit(status: Int) {

@@ -649,6 +649,7 @@ class RuleSystemTest(private val context: Context) {
             packageName = "com.micoyc.speakthat.test",
             title = "Test title",
             text = "Test text",
+            subText = null,
             bigText = null,
             ticker = null,
             category = null,

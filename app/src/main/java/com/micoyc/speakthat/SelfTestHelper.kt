@@ -90,6 +90,7 @@ class SelfTestHelper(private val context: Context) {
             extras.putCharSequence(Notification.EXTRA_BIG_TEXT, "This is a test notification from SpeakThat. If you can hear this message, your notification reading is working correctly and the test has passed.")
             extras.putCharSequence(Notification.EXTRA_SUMMARY_TEXT, "SelfTest")
             extras.putCharSequence(Notification.EXTRA_INFO_TEXT, "Test in progress")
+            extras.putCharSequence(Notification.EXTRA_SUB_TEXT, "Sub-text line (self-test)")
             builder.setExtras(extras)
             
             // Set deprecated ticker text for users with custom formats that still reference it

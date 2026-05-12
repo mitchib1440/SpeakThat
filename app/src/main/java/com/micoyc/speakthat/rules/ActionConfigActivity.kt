@@ -106,6 +106,8 @@ class ActionConfigActivity : AppCompatActivity() {
             setupForcePrivateUI()
         } else if (actionType == ActionType.OVERRIDE_PRIVATE) {
             setupOverridePrivateUI()
+        } else if (actionType == ActionType.OVERRIDE_EMOJI_REMOVAL) {
+            setupOverrideEmojiRemovalUI()
         } else if (actionType == ActionType.OVERRIDE_CONTENT_CAP) {
             setupOverrideContentCapUI()
         } else {
@@ -289,6 +291,11 @@ class ActionConfigActivity : AppCompatActivity() {
         binding.textOverridePrivateInfo.text = getString(R.string.action_override_private_description)
     }
 
+    private fun setupOverrideEmojiRemovalUI() {
+        binding.cardOverrideEmojiRemoval.visibility = View.VISIBLE
+        binding.textOverrideEmojiRemovalInfo.text = getString(R.string.action_override_emoji_removal_description)
+    }
+
     private fun setupOverrideContentCapUI() {
         binding.cardOverrideContentCap.visibility = View.VISIBLE
         
@@ -328,6 +335,7 @@ class ActionConfigActivity : AppCompatActivity() {
             PlaceholderItem(R.string.speech_placeholder_title_label, R.string.speech_placeholder_title_desc),
             PlaceholderItem(R.string.speech_placeholder_text_label, R.string.speech_placeholder_text_desc),
             PlaceholderItem(R.string.speech_placeholder_bigtext_label, R.string.speech_placeholder_bigtext_desc),
+            PlaceholderItem(R.string.speech_placeholder_subtext_label, R.string.speech_placeholder_subtext_desc),
             PlaceholderItem(R.string.speech_placeholder_summary_label, R.string.speech_placeholder_summary_desc),
             PlaceholderItem(R.string.speech_placeholder_info_label, R.string.speech_placeholder_info_desc),
             PlaceholderItem(R.string.speech_placeholder_ticker_label, R.string.speech_placeholder_ticker_desc),
@@ -456,6 +464,7 @@ class ActionConfigActivity : AppCompatActivity() {
             ActionType.OVERRIDE_VOICE -> createOverrideTtsVoiceAction()
             ActionType.FORCE_PRIVATE -> createForcePrivateAction()
             ActionType.OVERRIDE_PRIVATE -> createOverridePrivateAction()
+            ActionType.OVERRIDE_EMOJI_REMOVAL -> createOverrideEmojiRemovalAction()
             ActionType.OVERRIDE_CONTENT_CAP -> createOverrideContentCapAction()
             else -> createSkipNotificationAction()
         }
@@ -581,6 +590,24 @@ class ActionConfigActivity : AppCompatActivity() {
         } else {
             Action(
                 type = ActionType.OVERRIDE_PRIVATE,
+                description = description,
+                data = emptyMap()
+            )
+        }
+    }
+
+    private fun createOverrideEmojiRemovalAction(): Action {
+        val description = getString(R.string.action_override_emoji_removal_title)
+
+        return if (isEditing && originalAction != null) {
+            originalAction!!.copy(
+                type = ActionType.OVERRIDE_EMOJI_REMOVAL,
+                description = description,
+                data = emptyMap()
+            )
+        } else {
+            Action(
+                type = ActionType.OVERRIDE_EMOJI_REMOVAL,
                 description = description,
                 data = emptyMap()
             )

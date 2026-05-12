@@ -17,11 +17,13 @@ data class NotificationContext(
     val packageName: String,
     val title: CharSequence?,
     val text: CharSequence?,
+    val subText: CharSequence?,
     val bigText: CharSequence?,
     val ticker: CharSequence?,
     val category: String?,
     val channelId: String?,
     val isOngoing: Boolean,
     val postTime: Long,
-    val extras: Bundle? = null
+    val extras: Bundle? = null,
+    var shouldKeepEmojis: Boolean = false
 )

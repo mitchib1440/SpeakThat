@@ -382,6 +382,17 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "tidy_speech_emoji_exceptions",
+                title = "Emoji Exceptions",
+                description = "Keep emojis if text contains specific keywords",
+                category = "filter",
+                categoryTitle = context.getString(R.string.title_filter_settings),
+                categoryIcon = "🔍",
+                settingType = SettingType.BUTTON,
+                searchKeywords = listOf("emoji", "exceptions", "keep", "bypass", "filter", "words", "ignore"),
+                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "filter_empty_text",
                 title = context.getString(R.string.filter_empty_text_title),
                 description = context.getString(R.string.filter_empty_text_description),

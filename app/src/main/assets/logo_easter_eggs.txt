@@ -464,7 +464,7 @@ SpeakThat! If SpeakThat speaks that, speak that it should speak this instead. If
 SpeakThat! You wanna know why I'm so cool? I live in the notification shade!
 SpeakThat! Knowing how to perform some basic emergency medical procedures can save someone's life! If you don't know any, it's time to learn!
 SpeakThat! Going to war against en-shittification!
-SpeakThat! Listen to Louis Rossmann!
+SpeakThat! Listens to Louis Rossmann!
 SpeakThat! We're making history! You can view it on the main screen!
 SpeakThat! We will be making history. Dinging, buzzing, notification history, but history nonetheless.
 SpeakThat! More ergonomic than the Magic Mouse!
@@ -476,3 +476,59 @@ SpeakThat! Delivering your daily scheduled Summary. Because doomscrolling before
 SpeakThat! Summaries feature an OLED-black background. I’m saving your battery and your retinas simultaneously. You're welcome.
 SpeakThat! I see you swiping back and forth on the Summary overlay just to watch my buttery smooth transitions. I don't blame you.
 SpeakThat! Compiling your daily Summary... filtering out the spam... masking your private messages... Wow, you really owe me a raise.
+SpeakThat! My code is largely AI generated. This is your cue to start running for the hills!
+SpeakThat! Such AI, very slop, much wow!
+SpeakThat! My UI is pretty because otherwise you'd see I'm made of slop!
+SpeakThat! A testament to Vibe-coding... Especially the broken bits!
+SpeakThat! Human-written wiki, human-crafted graphics, AI-generated code! Two out of three ain't bad!
+SpeakThat! This line plays twice! SpeakThat! This line plays twice!
+SpeakThat! Couldn't exist without AI, but still makes fun of it anyway!
+SpeakThat! More intelligent than Apple Intelligence!
+SpeakThat! To get voiced notifications on Apple devices, you have to enable Apple Intelligence. But even once you do, you still don't get more control than deciding what apps get announced! That's right, I'm objectively more intelligent than Apple Intelligence!
+SpeakThat! A feature that should really be built into every phone, but for some reason isn't. That's where I come in!
+SpeakThat! Hasn't been durability tested by Whistlin' Diesel!
+SpeakThat! My developer only knows three other people who use Android. Only his Mum uses SpeakThat! Thank you, Sandra!
+SpeakThat! My American UI uses British grammar! Makes a nice change!
+SpeakThat! Hey, that's not a bug! It's a feature!
+SpeakThat! An exercise in free speech!
+SpeakThat! Exists to spite similar apps that charge a subscription!
+SpeakThat! Doesn't hide its sloppy code!
+SpeakThat! This line was added on the Tuesday, the twelfth of May, 2026, at 35 minutes paste 8 in the evening. What were you doing at that time?
+SpeakThat! Failure is an option. If things are not failing, you are not innovating enough. - Elon Musk
+SpeakThat! Don't give up on your dreams, or your dreams will give up on you. - John Wooden
+SpeakThat! Quiet people have the loudest minds. - Stephen King
+SpeakThat! Life is a gift. Never forget to enjoy and bask in every moment you are in. - Celestine Chua
+SpeakThat! I have never in my life learned anything from any man who agreed with me. - Dudley Field Malone
+SpeakThat! If you do not change direction, you may end up where you are heading. - Lao Tzu
+SpeakThat! If we have no peace, it is because we have forgotten that we belong to each other. - Mother Teresa
+SpeakThat! Darkness cannot drive out darkness; only light can do that. Hate cannot drive out hate; only love can do that. - Martin Luther King Junior
+SpeakThat! The score never interested me, only the game. - Mae West
+SpeakThat! Patience expands your options. If you insist on immediate gratification, your choices are severely limited. - Ralph Marston
+SpeakThat! When you consider things like the stars, our affairs don't seem to matter very much, do they? - Virginia Woolf
+SpeakThat! Failure is not fatal, but failure to change might be. - John Wooden
+SpeakThat! Don't try to be young. Just open your mind. Stay interested in stuff. - Betty White
+SpeakThat! Success is getting what you want. Happiness is wanting what you get. - Dale Carnegie
+SpeakThat! Get mad, then get over it. - Colin Powell
+SpeakThat! You can't let your failures define you. You have to let your failures teach you. - Barack Obama
+SpeakThat! The first rule of business; treat others like they want to treat you. - Charles Dickens
+SpeakThat! You need a plan to build a house. To build a life, it is even more important to have a plan or goal. - Zig Ziglar
+SpeakThat! The secret of change is to focus all your energy not on fighting the old, but on building the new. - Dan Millman
+SpeakThat! There are two primary choices in life: to accept conditions as they exist, or accept the responsibility for changing them. - Denis Waitley
+SpeakThat! No one ever said life was fair. Just Eventful. - Carol Burnett
+SpeakThat! The less you open your heart to others, the more your heart suffers. - Deepak Chopra
+SpeakThat! Successful people ask better questions, and as a result, they get better answers. - Tony Robbins
+SpeakThat! We don't stop playing because we grow old; we grow old because we stop playing. - George Bernard Shaw
+SpeakThat! It is hard to fail, but it is worse never to have tried to succeed. - Theodore Roosevelt
+SpeakThat! When it hurts, observe. Life is trying to teach you something. - Anita Krizzan
+SpeakThat! Life may be full of pain but that's not an excuse to give up. - Arnold Schwarzenegger
+SpeakThat! Go and do the things you can't. That is how you get to do them. - Pablo Picasso
+SpeakThat! You are not only responsible for what you say, but also for what you do not say. - Martin Luther
+SpeakThat! The more we value things, the less we value ourselves. - Bruce Lee
+SpeakThat! A journey of a thousand miles must begin with a single step. - Lao Tzu
+SpeakThat! Life is ours to be spent, not saved. - D H Lawrence
+SpeakThat! Either get busy living or get busy dying. - Stephen King
+SpeakThat! Instead of worrying about what you cannot control, shift your energy to what you can create. - Roy T Bennet
+SpeakThat! Sometimes all you can do is hope that tomorrow is a better day! - Gawr Gura
+SpeakThat! Your tools don't define you - your work does. If people can tell you poured heart and soul into something, the tool you used doesn't matter. - Mitchi Bell
+SpeakThat! If you keep the past around you forever, nostalgia becomes meaningless. - Mitchi Bell
+SpeakThat! You can't throw a life ring to someone when you're not on solid ground yourself. - S Rust

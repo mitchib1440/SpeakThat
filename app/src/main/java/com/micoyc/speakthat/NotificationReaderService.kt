@@ -101,6 +101,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var urlHandlingMode = DEFAULT_URL_HANDLING_MODE
     private var urlReplacementText = DEFAULT_URL_REPLACEMENT_TEXT
     private var tidySpeechRemoveEmojisEnabled = false
+    private var tidySpeechForceLowercaseEnabled = false
+    private var emojiExceptionsList: List<String> = emptyList()
     private var filterEmptyTextEnabled = false
     private var contentCapMode = DEFAULT_CONTENT_CAP_MODE
     private var contentCapWordCount = DEFAULT_CONTENT_CAP_WORD_COUNT
@@ -409,6 +411,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val KEY_URL_HANDLING_MODE = "url_handling_mode"
         private const val KEY_URL_REPLACEMENT_TEXT = "url_replacement_text"
         private const val KEY_TIDY_SPEECH_REMOVE_EMOJIS = "tidy_speech_remove_emojis"
+        private const val KEY_TIDY_SPEECH_FORCE_LOWERCASE = "tidy_speech_force_lowercase"
+        private const val KEY_PREF_EMOJI_EXCEPTIONS = "pref_emoji_exceptions"
         private const val KEY_FILTER_EMPTY_TEXT = "filter_empty_text"
         private const val DEFAULT_URL_HANDLING_MODE = "domain_only"
         private const val DEFAULT_URL_REPLACEMENT_TEXT = ""
@@ -3190,6 +3194,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
         // Load tidy speech settings
         tidySpeechRemoveEmojisEnabled = sharedPreferences?.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false) ?: false
+        tidySpeechForceLowercaseEnabled = sharedPreferences?.getBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, false) ?: false
+        val emojiExceptionsRaw = sharedPreferences?.getString(KEY_PREF_EMOJI_EXCEPTIONS, "") ?: ""
+        emojiExceptionsList = emojiExceptionsRaw.split(",")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
         filterEmptyTextEnabled = sharedPreferences?.getBoolean(KEY_FILTER_EMPTY_TEXT, false) ?: false
         Log.d(TAG, "Loaded tidy speech settings: removeEmojis=$tidySpeechRemoveEmojisEnabled, filterEmptyText=$filterEmptyTextEnabled")
         
@@ -3345,6 +3354,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val notificationContext = buildNotificationContext(packageName, text, sbn)
         val outcome = evaluateRuleEffects(notificationContext)
         val effects = outcome?.effects.orEmpty()
+        
+        val emojiOverride = effects.filterIsInstance<com.micoyc.speakthat.rules.Effect.OverrideEmojiRemoval>().lastOrNull()
+        if (emojiOverride != null) {
+            notificationContext.shouldKeepEmojis = true
+        }
 
         if (effects.any { it is com.micoyc.speakthat.rules.Effect.SkipNotification }) {
             val blockingRules = ruleManager.getBlockingRuleNames(notificationContext)
@@ -3397,6 +3411,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             if (requiredBlocks.contains("content")) fallbackMap["content"] = text
             if (requiredBlocks.contains("text")) fallbackMap["text"] = text
             if (requiredBlocks.contains("title")) fallbackMap["title"] = ""
+            if (requiredBlocks.contains("subtext")) fallbackMap["subtext"] = ""
             fallbackMap
         }
 
@@ -3404,7 +3419,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             blocks = extractedBlocks,
             appName = appName,
             packageName = packageName,
-            overridePrivate = effectiveOverridePrivate
+            overridePrivate = effectiveOverridePrivate,
+            shouldKeepEmojis = notificationContext.shouldKeepEmojis
         )
 
         if (!meatGrinderResult.shouldSpeak) {
@@ -3434,13 +3450,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             val effectiveSentenceCount = contentCapOverride?.sentenceCount ?: contentCapSentenceCount
             val effectiveTimeLimit = contentCapOverride?.timeLimit ?: contentCapTimeLimit
             
-            val cappedCompiledText = applyContentCap(
+            var cappedCompiledText = applyContentCap(
                 compiledText, 
                 effectiveContentCapMode, 
                 effectiveWordCount, 
                 effectiveSentenceCount, 
                 effectiveTimeLimit
             )
+            
+            if (tidySpeechForceLowercaseEnabled) {
+                cappedCompiledText = cappedCompiledText.lowercase()
+                InAppLogger.logFilter("Force lowercase applied to final text")
+            }
             
             return FilterResult(
                 shouldSpeak = true,
@@ -3482,14 +3503,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val effectiveSentenceCount = contentCapOverride?.sentenceCount ?: contentCapSentenceCount
         val effectiveTimeLimit = contentCapOverride?.timeLimit ?: contentCapTimeLimit
         
-        val cappedCompiledText = applyContentCap(
+        var cappedCompiledText = applyContentCap(
             compiledText, 
             effectiveContentCapMode, 
             effectiveWordCount, 
             effectiveSentenceCount, 
             effectiveTimeLimit
         )
-
+        
+        if (tidySpeechForceLowercaseEnabled) {
+            cappedCompiledText = cappedCompiledText.lowercase()
+            InAppLogger.logFilter("Force lowercase applied to final text")
+        }
+        
         return FilterResult(
             shouldSpeak = true,
             processedText = cappedCompiledText, // We store the final compiled text in processedText
@@ -3599,7 +3625,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         blocks: Map<String, String>,
         appName: String,
         packageName: String = "",
-        overridePrivate: Boolean = false
+        overridePrivate: Boolean = false,
+        shouldKeepEmojis: Boolean = false
     ): Pair<FilterResult, Map<String, String>> {
         val processedBlocks = mutableMapOf<String, String>()
         
@@ -3696,8 +3723,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
 
             // TIDY SPEECH
-            if (tidySpeechRemoveEmojisEnabled) {
-                text = removeSpokenEmojis(text)
+            if (tidySpeechRemoveEmojisEnabled && !shouldKeepEmojis) {
+                var keepEmojis = false
+                for (keyword in emojiExceptionsList) {
+                    if (text.contains(keyword, ignoreCase = true)) {
+                        keepEmojis = true
+                        break
+                    }
+                }
+                if (!keepEmojis) {
+                    text = removeSpokenEmojis(text)
+                }
+            } else if (tidySpeechRemoveEmojisEnabled && shouldKeepEmojis) {
+                InAppLogger.logFilter("Emojis kept due to Rule Engine action")
             }
 
             processedBlocks[key] = text
@@ -4023,6 +4061,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             packageName = packageName,
             title = extras?.getCharSequence(Notification.EXTRA_TITLE),
             text = extras?.getCharSequence(Notification.EXTRA_TEXT) ?: fallbackText,
+            subText = extras?.getCharSequence(Notification.EXTRA_SUB_TEXT),
             bigText = extras?.getCharSequence(Notification.EXTRA_BIG_TEXT),
             ticker = notification?.tickerText,
             category = notification?.category,
@@ -7377,6 +7416,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 Log.d(TAG, "Tidy speech setting updated: removeEmojis=$tidySpeechRemoveEmojisEnabled")
                 InAppLogger.log("Service", "Tidy speech setting updated: removeEmojis=$tidySpeechRemoveEmojisEnabled")
             }
+            KEY_TIDY_SPEECH_FORCE_LOWERCASE -> {
+                tidySpeechForceLowercaseEnabled = sharedPreferences?.getBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, false) ?: false
+                Log.d(TAG, "Tidy speech setting updated: forceLowercase=$tidySpeechForceLowercaseEnabled")
+                InAppLogger.log("Service", "Tidy speech setting updated: forceLowercase=$tidySpeechForceLowercaseEnabled")
+            }
             KEY_FILTER_EMPTY_TEXT -> {
                 filterEmptyTextEnabled = sharedPreferences?.getBoolean(KEY_FILTER_EMPTY_TEXT, false) ?: false
                 Log.d(TAG, "Filter empty text setting updated: filterEmptyText=$filterEmptyTextEnabled")
@@ -7619,6 +7663,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             .replace("{content}", processedBlocks["content"] ?: "")
             .replace("{title}", processedBlocks["title"] ?: "")
             .replace("{text}", processedBlocks["text"] ?: "")
+            .replace("{subtext}", processedBlocks["subtext"] ?: "")
             .replace("{bigtext}", processedBlocks["bigtext"] ?: "")
             .replace("{summary}", processedBlocks["summary"] ?: "")
             .replace("{info}", processedBlocks["info"] ?: "")
@@ -7743,6 +7788,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (template.contains("{text}")) requiredBlocks.add("text")
         if (template.contains("{title}")) requiredBlocks.add("title")
         if (template.contains("{bigtext}")) requiredBlocks.add("bigtext")
+        if (template.contains("{subtext}")) requiredBlocks.add("subtext")
         if (template.contains("{summary}")) requiredBlocks.add("summary")
         if (template.contains("{info}")) requiredBlocks.add("info")
         if (template.contains("{ticker}")) requiredBlocks.add("ticker")
@@ -7762,12 +7808,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             val rawTitle = extras?.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
             val rawText = extras?.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
             val rawBigText = extras?.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
+            val rawSubText = extras?.getCharSequence(Notification.EXTRA_SUB_TEXT)?.toString() ?: ""
             val rawSummaryText = extras?.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString() ?: ""
             val rawInfoText = extras?.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString() ?: ""
             val rawTickerText = notification.tickerText?.toString() ?: ""
             
             if (requiredBlocks.contains("title")) extractedBlocks["title"] = rawTitle
             if (requiredBlocks.contains("text")) extractedBlocks["text"] = rawText
+            if (requiredBlocks.contains("subtext")) extractedBlocks["subtext"] = rawSubText
             if (requiredBlocks.contains("bigtext")) extractedBlocks["bigtext"] = rawBigText
             if (requiredBlocks.contains("summary")) extractedBlocks["summary"] = rawSummaryText
             if (requiredBlocks.contains("info")) extractedBlocks["info"] = rawInfoText

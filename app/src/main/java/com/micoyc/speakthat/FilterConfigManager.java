@@ -38,6 +38,8 @@ public class FilterConfigManager {
     private static final String KEY_URL_HANDLING_MODE = "url_handling_mode";
     private static final String KEY_URL_REPLACEMENT_TEXT = "url_replacement_text";
     private static final String KEY_TIDY_SPEECH_REMOVE_EMOJIS = "tidy_speech_remove_emojis";
+    private static final String KEY_TIDY_SPEECH_FORCE_LOWERCASE = "tidy_speech_force_lowercase";
+    private static final String KEY_PREF_EMOJI_EXCEPTIONS = "pref_emoji_exceptions";
     private static final String KEY_FILTER_EMPTY_TEXT = "filter_empty_text";
 
     private static float roundToTwoDecimalPlaces(float value) {
@@ -55,6 +57,8 @@ public class FilterConfigManager {
         public String urlHandlingMode;
         public String urlReplacementText;
         public boolean tidySpeechRemoveEmojis;
+        public boolean tidySpeechForceLowercase;
+        public String emojiExceptions;
         public boolean filterEmptyText;
         public boolean mediaFilteringEnabled;
         // Persistent/silent filtering settings
@@ -78,6 +82,8 @@ public class FilterConfigManager {
             this.urlHandlingMode = "domain_only";
             this.urlReplacementText = "";
             this.tidySpeechRemoveEmojis = false;
+            this.tidySpeechForceLowercase = false;
+            this.emojiExceptions = "";
             this.filterEmptyText = false;
             this.mediaFilteringEnabled = false;
             // Persistent/silent filtering defaults
@@ -297,6 +303,8 @@ public class FilterConfigManager {
         config.urlHandlingMode = prefs.getString(KEY_URL_HANDLING_MODE, "domain_only");
         config.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
         config.tidySpeechRemoveEmojis = prefs.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false);
+        config.tidySpeechForceLowercase = prefs.getBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, false);
+        config.emojiExceptions = prefs.getString(KEY_PREF_EMOJI_EXCEPTIONS, "");
         config.filterEmptyText = prefs.getBoolean(KEY_FILTER_EMPTY_TEXT, false);
         config.mediaFilteringEnabled = prefs.getBoolean("media_filtering_enabled", true);
         
@@ -323,6 +331,8 @@ public class FilterConfigManager {
         filters.put("urlHandlingMode", config.urlHandlingMode);
         filters.put("urlReplacementText", config.urlReplacementText);
         filters.put("tidySpeechRemoveEmojis", config.tidySpeechRemoveEmojis);
+        filters.put("tidySpeechForceLowercase", config.tidySpeechForceLowercase);
+        filters.put("emojiExceptions", config.emojiExceptions);
         filters.put("filterEmptyText", config.filterEmptyText);
         filters.put("mediaFilteringEnabled", config.mediaFilteringEnabled);
         json.put("filters", filters);
@@ -361,6 +371,8 @@ public class FilterConfigManager {
         config.filters.urlHandlingMode = prefs.getString(KEY_URL_HANDLING_MODE, "domain_only");
         config.filters.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
         config.filters.tidySpeechRemoveEmojis = prefs.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false);
+        config.filters.tidySpeechForceLowercase = prefs.getBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, false);
+        config.filters.emojiExceptions = prefs.getString(KEY_PREF_EMOJI_EXCEPTIONS, "");
         config.filters.filterEmptyText = prefs.getBoolean(KEY_FILTER_EMPTY_TEXT, false);
         
         config.filters.mediaFilteringEnabled = prefs.getBoolean("media_filtering_enabled", false);
@@ -473,6 +485,7 @@ public class FilterConfigManager {
         filters.put("urlHandlingMode", config.filters.urlHandlingMode);
         filters.put("urlReplacementText", config.filters.urlReplacementText);
         filters.put("tidySpeechRemoveEmojis", config.filters.tidySpeechRemoveEmojis);
+        filters.put("emojiExceptions", config.filters.emojiExceptions);
         filters.put("mediaFilteringEnabled", config.filters.mediaFilteringEnabled);
         // Persistent/silent filtering settings
         filters.put("persistentFilteringEnabled", config.filters.persistentFilteringEnabled);
@@ -567,8 +580,8 @@ public class FilterConfigManager {
         int badgeCount = donationPrefs.getInt("badge_count", 0);
         if (badgeCount > 0) {
             JSONObject playDonations = new JSONObject();
-            playDonations.put("badgeCount", badgeCount);
-            json.put("playDonations", playDonations);
+            playDonations.put("badge_count", badgeCount);
+            json.put("play_donations", playDonations);
         }
 
         if (includeRules) {
@@ -682,6 +695,16 @@ public class FilterConfigManager {
 
             if (filters.has("tidySpeechRemoveEmojis")) {
                 editor.putBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, filters.getBoolean("tidySpeechRemoveEmojis"));
+                filtersImported++;
+            }
+
+            if (filters.has("tidySpeechForceLowercase")) {
+                editor.putBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, filters.getBoolean("tidySpeechForceLowercase"));
+                filtersImported++;
+            }
+
+            if (filters.has("emojiExceptions")) {
+                editor.putString(KEY_PREF_EMOJI_EXCEPTIONS, filters.getString("emojiExceptions"));
                 filtersImported++;
             }
 
@@ -805,6 +828,16 @@ public class FilterConfigManager {
 
                 if (filters.has("tidySpeechRemoveEmojis")) {
                     mainEditor.putBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, filters.getBoolean("tidySpeechRemoveEmojis"));
+                    totalImported++;
+                }
+
+                if (filters.has("tidySpeechForceLowercase")) {
+                    mainEditor.putBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, filters.getBoolean("tidySpeechForceLowercase"));
+                    totalImported++;
+                }
+
+                if (filters.has("emojiExceptions")) {
+                    mainEditor.putString(KEY_PREF_EMOJI_EXCEPTIONS, filters.getString("emojiExceptions"));
                     totalImported++;
                 }
 
@@ -1238,10 +1271,10 @@ public class FilterConfigManager {
             }
 
             // Import Play donation badge count (if present)
-            if (json.has("playDonations")) {
-                JSONObject playDonations = json.getJSONObject("playDonations");
-                if (playDonations.has("badgeCount")) {
-                    int importedBadgeCount = playDonations.getInt("badgeCount");
+            if (json.has("play_donations") || json.has("playDonations")) {
+                JSONObject playDonations = json.has("play_donations") ? json.getJSONObject("play_donations") : json.getJSONObject("playDonations");
+                if (playDonations.has("badge_count") || playDonations.has("badgeCount")) {
+                    int importedBadgeCount = playDonations.has("badge_count") ? playDonations.getInt("badge_count") : playDonations.getInt("badgeCount");
                     if (importedBadgeCount >= 0) {
                         SharedPreferences.Editor donationEditor = context.getSharedPreferences("play_donations", Context.MODE_PRIVATE).edit();
                         donationEditor.putInt("badge_count", importedBadgeCount);
