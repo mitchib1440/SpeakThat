@@ -70,6 +70,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private static final String KEY_URL_HANDLING_MODE = "url_handling_mode";
     private static final String KEY_URL_REPLACEMENT_TEXT = "url_replacement_text";
     private static final String KEY_TIDY_SPEECH_REMOVE_EMOJIS = "tidy_speech_remove_emojis";
+    private static final String KEY_TIDY_SPEECH_FORCE_LOWERCASE = "tidy_speech_force_lowercase";
     private static final String KEY_PREF_EMOJI_EXCEPTIONS = "pref_emoji_exceptions";
     private static final String KEY_FILTER_EMPTY_TEXT = "filter_empty_text";
     private static final String DEFAULT_URL_HANDLING_MODE = "domain_only";
@@ -343,6 +344,11 @@ public class FilterSettingsActivity extends AppCompatActivity {
             saveTidySpeechRemoveEmojis(isChecked);
         });
 
+        // Set up force lowercase switch
+        binding.switchForceLowercase.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveTidySpeechForceLowercase(isChecked);
+        });
+
         // Set up emoji exceptions text field
         binding.editEmojiExceptions.addTextChangedListener(new android.text.TextWatcher() {
             @Override
@@ -502,6 +508,9 @@ public class FilterSettingsActivity extends AppCompatActivity {
         // Load tidy speech settings
         boolean removeEmojis = sharedPreferences.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false); // Default to disabled
         binding.switchRemoveEmojis.setChecked(removeEmojis);
+        
+        boolean forceLowercase = sharedPreferences.getBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, false); // Default to disabled
+        binding.switchForceLowercase.setChecked(forceLowercase);
         
         emojiExceptionsText = sharedPreferences.getString(KEY_PREF_EMOJI_EXCEPTIONS, "");
         binding.editEmojiExceptions.setText(emojiExceptionsText);
@@ -910,6 +919,16 @@ public class FilterSettingsActivity extends AppCompatActivity {
         }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, enabled);
+        editor.apply();
+    }
+
+    private void saveTidySpeechForceLowercase(boolean enabled) {
+        // Skip saving during initialization to prevent activity recreation loop
+        if (isLoadingSettings) {
+            return;
+        }
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, enabled);
         editor.apply();
     }
 

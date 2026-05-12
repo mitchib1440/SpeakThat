@@ -101,6 +101,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var urlHandlingMode = DEFAULT_URL_HANDLING_MODE
     private var urlReplacementText = DEFAULT_URL_REPLACEMENT_TEXT
     private var tidySpeechRemoveEmojisEnabled = false
+    private var tidySpeechForceLowercaseEnabled = false
     private var emojiExceptionsList: List<String> = emptyList()
     private var filterEmptyTextEnabled = false
     private var contentCapMode = DEFAULT_CONTENT_CAP_MODE
@@ -410,6 +411,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val KEY_URL_HANDLING_MODE = "url_handling_mode"
         private const val KEY_URL_REPLACEMENT_TEXT = "url_replacement_text"
         private const val KEY_TIDY_SPEECH_REMOVE_EMOJIS = "tidy_speech_remove_emojis"
+        private const val KEY_TIDY_SPEECH_FORCE_LOWERCASE = "tidy_speech_force_lowercase"
         private const val KEY_PREF_EMOJI_EXCEPTIONS = "pref_emoji_exceptions"
         private const val KEY_FILTER_EMPTY_TEXT = "filter_empty_text"
         private const val DEFAULT_URL_HANDLING_MODE = "domain_only"
@@ -3192,6 +3194,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
         // Load tidy speech settings
         tidySpeechRemoveEmojisEnabled = sharedPreferences?.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false) ?: false
+        tidySpeechForceLowercaseEnabled = sharedPreferences?.getBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, false) ?: false
         val emojiExceptionsRaw = sharedPreferences?.getString(KEY_PREF_EMOJI_EXCEPTIONS, "") ?: ""
         emojiExceptionsList = emojiExceptionsRaw.split(",")
             .map { it.trim() }
@@ -3447,13 +3450,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             val effectiveSentenceCount = contentCapOverride?.sentenceCount ?: contentCapSentenceCount
             val effectiveTimeLimit = contentCapOverride?.timeLimit ?: contentCapTimeLimit
             
-            val cappedCompiledText = applyContentCap(
+            var cappedCompiledText = applyContentCap(
                 compiledText, 
                 effectiveContentCapMode, 
                 effectiveWordCount, 
                 effectiveSentenceCount, 
                 effectiveTimeLimit
             )
+            
+            if (tidySpeechForceLowercaseEnabled) {
+                cappedCompiledText = cappedCompiledText.lowercase()
+                InAppLogger.logFilter("Force lowercase applied to final text")
+            }
             
             return FilterResult(
                 shouldSpeak = true,
@@ -3495,14 +3503,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val effectiveSentenceCount = contentCapOverride?.sentenceCount ?: contentCapSentenceCount
         val effectiveTimeLimit = contentCapOverride?.timeLimit ?: contentCapTimeLimit
         
-        val cappedCompiledText = applyContentCap(
+        var cappedCompiledText = applyContentCap(
             compiledText, 
             effectiveContentCapMode, 
             effectiveWordCount, 
             effectiveSentenceCount, 
             effectiveTimeLimit
         )
-
+        
+        if (tidySpeechForceLowercaseEnabled) {
+            cappedCompiledText = cappedCompiledText.lowercase()
+            InAppLogger.logFilter("Force lowercase applied to final text")
+        }
+        
         return FilterResult(
             shouldSpeak = true,
             processedText = cappedCompiledText, // We store the final compiled text in processedText
@@ -7402,6 +7415,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 tidySpeechRemoveEmojisEnabled = sharedPreferences?.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false) ?: false
                 Log.d(TAG, "Tidy speech setting updated: removeEmojis=$tidySpeechRemoveEmojisEnabled")
                 InAppLogger.log("Service", "Tidy speech setting updated: removeEmojis=$tidySpeechRemoveEmojisEnabled")
+            }
+            KEY_TIDY_SPEECH_FORCE_LOWERCASE -> {
+                tidySpeechForceLowercaseEnabled = sharedPreferences?.getBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, false) ?: false
+                Log.d(TAG, "Tidy speech setting updated: forceLowercase=$tidySpeechForceLowercaseEnabled")
+                InAppLogger.log("Service", "Tidy speech setting updated: forceLowercase=$tidySpeechForceLowercaseEnabled")
             }
             KEY_FILTER_EMPTY_TEXT -> {
                 filterEmptyTextEnabled = sharedPreferences?.getBoolean(KEY_FILTER_EMPTY_TEXT, false) ?: false

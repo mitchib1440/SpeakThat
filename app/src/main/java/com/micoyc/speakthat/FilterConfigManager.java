@@ -38,6 +38,7 @@ public class FilterConfigManager {
     private static final String KEY_URL_HANDLING_MODE = "url_handling_mode";
     private static final String KEY_URL_REPLACEMENT_TEXT = "url_replacement_text";
     private static final String KEY_TIDY_SPEECH_REMOVE_EMOJIS = "tidy_speech_remove_emojis";
+    private static final String KEY_TIDY_SPEECH_FORCE_LOWERCASE = "tidy_speech_force_lowercase";
     private static final String KEY_PREF_EMOJI_EXCEPTIONS = "pref_emoji_exceptions";
     private static final String KEY_FILTER_EMPTY_TEXT = "filter_empty_text";
 
@@ -56,6 +57,7 @@ public class FilterConfigManager {
         public String urlHandlingMode;
         public String urlReplacementText;
         public boolean tidySpeechRemoveEmojis;
+        public boolean tidySpeechForceLowercase;
         public String emojiExceptions;
         public boolean filterEmptyText;
         public boolean mediaFilteringEnabled;
@@ -80,6 +82,7 @@ public class FilterConfigManager {
             this.urlHandlingMode = "domain_only";
             this.urlReplacementText = "";
             this.tidySpeechRemoveEmojis = false;
+            this.tidySpeechForceLowercase = false;
             this.emojiExceptions = "";
             this.filterEmptyText = false;
             this.mediaFilteringEnabled = false;
@@ -300,6 +303,7 @@ public class FilterConfigManager {
         config.urlHandlingMode = prefs.getString(KEY_URL_HANDLING_MODE, "domain_only");
         config.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
         config.tidySpeechRemoveEmojis = prefs.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false);
+        config.tidySpeechForceLowercase = prefs.getBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, false);
         config.emojiExceptions = prefs.getString(KEY_PREF_EMOJI_EXCEPTIONS, "");
         config.filterEmptyText = prefs.getBoolean(KEY_FILTER_EMPTY_TEXT, false);
         config.mediaFilteringEnabled = prefs.getBoolean("media_filtering_enabled", true);
@@ -327,6 +331,7 @@ public class FilterConfigManager {
         filters.put("urlHandlingMode", config.urlHandlingMode);
         filters.put("urlReplacementText", config.urlReplacementText);
         filters.put("tidySpeechRemoveEmojis", config.tidySpeechRemoveEmojis);
+        filters.put("tidySpeechForceLowercase", config.tidySpeechForceLowercase);
         filters.put("emojiExceptions", config.emojiExceptions);
         filters.put("filterEmptyText", config.filterEmptyText);
         filters.put("mediaFilteringEnabled", config.mediaFilteringEnabled);
@@ -366,6 +371,7 @@ public class FilterConfigManager {
         config.filters.urlHandlingMode = prefs.getString(KEY_URL_HANDLING_MODE, "domain_only");
         config.filters.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
         config.filters.tidySpeechRemoveEmojis = prefs.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false);
+        config.filters.tidySpeechForceLowercase = prefs.getBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, false);
         config.filters.emojiExceptions = prefs.getString(KEY_PREF_EMOJI_EXCEPTIONS, "");
         config.filters.filterEmptyText = prefs.getBoolean(KEY_FILTER_EMPTY_TEXT, false);
         
@@ -692,6 +698,11 @@ public class FilterConfigManager {
                 filtersImported++;
             }
 
+            if (filters.has("tidySpeechForceLowercase")) {
+                editor.putBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, filters.getBoolean("tidySpeechForceLowercase"));
+                filtersImported++;
+            }
+
             if (filters.has("emojiExceptions")) {
                 editor.putString(KEY_PREF_EMOJI_EXCEPTIONS, filters.getString("emojiExceptions"));
                 filtersImported++;
@@ -817,6 +828,11 @@ public class FilterConfigManager {
 
                 if (filters.has("tidySpeechRemoveEmojis")) {
                     mainEditor.putBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, filters.getBoolean("tidySpeechRemoveEmojis"));
+                    totalImported++;
+                }
+
+                if (filters.has("tidySpeechForceLowercase")) {
+                    mainEditor.putBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, filters.getBoolean("tidySpeechForceLowercase"));
                     totalImported++;
                 }
 
