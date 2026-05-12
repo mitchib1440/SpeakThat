@@ -2272,7 +2272,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="filter_sheet_app_title">Everything from %s</string>
     <string name="filter_sheet_app_description">Never read out another notification from this app</string>
     <string name="filter_sheet_preview_title">Filter preview</string>
-    <string name="filter_sheet_preview_description">SpeakThat will silence messages that look like this:</string>
+    <string name="filter_sheet_preview_description">SpeakThat will filter messages that look like this:</string>
     <string name="filter_sheet_private_title">Private mode</string>
     <string name="filter_sheet_private_description">Read app name but not contents</string>
     <string name="filter_sheet_create_button">Create Filter</string>
@@ -2606,5 +2606,25 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="include_system_apps">Include System Apps</string>
     <string name="auto_language_title">Auto-Language</string>
     <string name="auto_language_description">Automatically switches the TTS language to match the notification text (Android 10+).</string>
+
+    <string name="badge_selector_title">Logo style</string>
+    <string name="badge_selector_description">Pick which logo to show on the home screen.</string>
+    <string name="badge_selector_dialog_title">Choose a logo style</string>
+    <string name="badge_option_default">Default logo</string>
+    <string name="badge_option_bronze">Bronze</string>
+    <string name="badge_option_silver">Silver</string>
+    <string name="badge_option_rose_quartz">Rose Quartz</string>
+    <string name="badge_option_pearl">Pearl</string>
+    <string name="badge_option_gold">Gold</string>
+    <string name="badge_option_jade">Jade</string>
+    <string name="badge_option_emerald">Emerald</string>
+    <string name="badge_option_aquamarine">Aquamarine</string>
+    <string name="badge_option_citrine">Citrine</string>
+    <string name="badge_option_sapphire">Sapphire</string>
+    <string name="badge_option_jet">Jet</string>
+    <string name="badge_option_amber">Amber</string>
+    <string name="badge_option_amethyst">Amethyst</string>
+    <string name="badge_option_ruby">Ruby</string>
+    <string name="badge_option_diamond">Diamond</string>
 
 </resources>
