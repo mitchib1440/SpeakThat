@@ -7680,8 +7680,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         return processedTemplate.trim()
     }
 
+    // Skip Repeated Notification Prefix added by RoboMWM
     private fun collapseRepeatedNotificationPrefix(fullText: String): String {
         if (!skipRepeatedNotificationPrefix) {
+            return fullText
+        }
+
+        // Exception for private notifications: they should never have their prefix stripped
+        // as they all share the exact same prefix ("You received a private notification from...")
+        val privateTemplate = getLocalizedTtsString(R.string.tts_template_private_notification)
+        val privateParts = privateTemplate.split("{app}").filter { it.isNotBlank() }
+        if (privateParts.isNotEmpty() && privateParts.all { fullText.contains(it.trim(), ignoreCase = true) }) {
             return fullText
         }
         
