@@ -77,7 +77,7 @@
     <string name="media_behavior_dialog_title">Opciones de conducta multimedia</string>
     <string name="media_behavior_dialog_message">Elige cómo SpeakThat maneja las notificaciones mientras reproduce músicas/vídeos: <b>Ignorar</b> - Habla sobre el multimedia. Simple pero puede ser disruptiva. <b>Pausar</b> - Pausa el multimedia mientras habla. Bueno para podcasts, pero interrumpe el flujo de música. <b>Audio bajo</b> - Reduce temporalmente el volumen multimedia para que pueda escuchar ambos. <b>Silenciar</b> - No habla mientras se reproduce el multimedia. Tranquilo, pero puede que pierdas importantes notificaciones. Bajo audio funciona como una radio para un coche. Cuando hablas, se atenúa la música y se vuelve a subir.</string>
     <string name="shake_to_stop_dialog_title">Función sacudir para detener</string>
-    <string name="shake_to_stop_dialog_message">Sacudir para detener te permite silenciar instantáneamente SpeakThat agitando tu dispositivo: <b>Porqué resulta útil:</b> • Deja de recibir notificaciones bulliciosas en lugares tranquilos • Control rápido cuando tienes las manos ocupadas • Funciona incluso con la pantalla apagada • Sin necesidad de buscar botones <b>Cómo funciona:</b> • Sacude tu equipo con firmeza (como agitar los dados) • Las notificaciones actuales se detienen en seco • Se limpia la cola de notificaciones • Otras notificaciones trabajan con normalidad <b>Personalización:</b> • Ajusta la sensibilidad a tus preferencias • Prueba tu fuerza de sacudida y mídela • Trabaja bien con personas serenas o nerviosas Esta función gusta especialmente a quienes reciben notificaciones durante reuniones, películas o mientras conducen.</string>
+    <string name="shake_to_stop_dialog_message">Sacudir para detener te permite silenciar instantáneamente SpeakThat agitando tu dispositivo: <b>Porqué resulta útil:</b> • Deja de recibir notificaciones bulliciosas en lugares tranquilos • Control rápido cuando tienes las manos ocupadas • Funciona incluso con la pantalla apagada • Sin necesidad de buscar botones <b>Cómo funciona:</b> • Sacude tu equipo con firmeza (como agitar los dados) • Las notificaciones actuales se detienen en seco • Se limpia la cola de notificaciones • Otras notificaciones trabajan con normalidad <b>Personalización:</b> • Ajusta la sensibilidad a tus preferencias • Prueba tu fuerza de sacudida y mídela • Trabaja bien con personas serenas o nerviosas • Esta función gusta especialmente a quienes reciben notificaciones durante reuniones, películas o mientras conducen.</string>
     <string name="use_recommended">Uso Recomendado</string>
     <string name="got_it">Entendido</string>
     <!-- Persistent/Silent Notification Filtering -->
@@ -448,12 +448,12 @@
     <string name="behavior_queue_mode">Cola (terminar ahora, luego leer otro)</string>
     <string name="behavior_skip_mode">Omitir (ignorar notificaciones nuevas durante la lectura)</string>
     <string name="behavior_smart_mode">Inteligente (interrumpir aplicaciones prioritarias, en cola el resto)</string>
-    <string name="behavior_priority_apps">⚡ Aplicaciones prioritarias</string>
+    <string name="behavior_priority_apps">Aplicaciones prioritarias</string>
     <string name="behavior_priority_apps_description">Estas aplicaciones interrumpirán la notificación actual. Todas las demás aplicaciones se pondrán en cola.</string>
-    <string name="behavior_media_ignore">Ignorar - Continuar como normal</string>
-    <string name="behavior_media_pause">Pausar - Pausar medios mientras hablas</string>
-    <string name="behavior_media_lower">Audio bajo - Atenúa el volumen multimedia temporalmente</string>
-    <string name="behavior_media_silence">Silenciar - No habla cuando los medios están reproduciendo</string>
+    <string name="behavior_media_ignore">Ignorar (continuar como normal)</string>
+    <string name="behavior_media_pause">Pausar (pausar medios mientras hablas)</string>
+    <string name="behavior_media_lower">Audio bajo (atenúa el volumen multimedia temporalmente)</string>
+    <string name="behavior_media_silence">Silenciar (no habla cuando los medios están reproduciendo)</string>
     <string name="behavior_ducking_volume">Atenuar volumen</string>
     <string name="behavior_ducking_description">Establece cómo los medios silenciados se deben convertir en notificaciones</string>
     <string name="behavior_ducking_warning">⚠️ En algunos dispositivos, atenuar el volumen de los medios también puede bajar la voz de notificación. Si las notificaciones siguen siendo difíciles de oír, prueba el modo pausa o modifica tus ajustes SaV.</string>
@@ -1156,7 +1156,7 @@ Bloquear = omitir por completo, Privar = anunciar en privado
     <string name="dev_starting_log_display">Iniciando exhibición de bitácora…\nLas bitácoras aparecerán aquí\n</string>
     <!-- AboutActivity Hardcoded Strings -->
     <string name="tts_error_occurred">Ocurrió un error TaV</string>
-    <string name="tts_initialization_failed">Falló la inicialización TaV</string>
+    <string name="tts_initialization_failed">Inicialización de TaV incorrecta</string>
     <!-- GeneralSettingsActivity Hardcoded Strings -->
     <string name="storage_permission_required">Permiso de almacenamiento requerido para exportar</string>
     <string name="theme_changed_title">Tema cambiado</string>
@@ -1881,7 +1881,7 @@ Bloquear = omitir por completo, Privar = anunciar en privado
     <string name="dev_disable_media_fallback_description">Desactiva los métodos de reserva para el comportamiento multimedia. Si una función no funciona, no intentará alternativas. Esto ayuda a aislar problemas. Nota: Cuando está desactivado, el modo de atenuación pasará al modo de pausa si la atenuación falla. Si ambos fallan, las notificaciones se leerán igualmente sin el foco de audio.</string>
     <string name="dev_enable_legacy_ducking">Habilitar trucos heredados de Agachar/Pausa</string>
     <string name="dev_enable_legacy_ducking_description">Fuerza los métodos experimentales de atenuación (pausas directas en la sesión multimedia y cambios manuales del volumen de STREAM_MUSIC). Esto ayuda a aplicaciones problemáticas como PowerAmp, pero puede interferir con la configuración del timbre o dejar las aplicaciones silenciadas si SpeakThat falla.</string>
-    <string name="tts_init_failed_android15">Inicialización incorrecta de TTS en Android 15. Esto puede deberse a restricciones del sistema.</string>
+    <string name="tts_init_failed_android15">Inicialización incorrecta de TaV en Android 15. Esto puede deberse a restricciones del sistema.</string>
     <string name="tts_init_failed_service_unavailable">Servicio TaV no disponible. Comprueba sus ajustes de sistema de texto a voz (TaV).</string>
     <string name="tts_init_failed_permissions">Inicialización incorrecta de TaV debido a ausencia de permisos. Reinicie la app.</string>
     <string name="tts_init_failed_recovery_attempts">La recuperación de la función de texto a voz (TaV) falló tras varios intentos. Reinicie la aplicación o revise los ajustes de TaV.</string>
@@ -1915,7 +1915,7 @@ Bloquear = omitir por completo, Privar = anunciar en privado
     <string name="diagnostics_status_yes">S</string>
     <string name="diagnostics_status_no">N</string>
     <string name="diagnostics_copy_clipboard">Copiar al portapapeles</string>
-    <string name="diagnostics_reinitialize_tts">Reiniciar síntesis de voz</string>
+    <string name="diagnostics_reinitialize_tts">Reiniciar TaV</string>
     <string name="diagnostics_clipboard_copied">Informe de diagnóstico copiado al portapapeles</string>
     <string name="diagnostics_tts_reinitialized">TaV reinicializado – ejecute diagnósticos de nuevo</string>
     <string name="diagnostics_notification_access_ok">El acceso de notificación está habilitado</string>
@@ -1999,7 +1999,7 @@ Bloquear = omitir por completo, Privar = anunciar en privado
     <string name="selftest_error_0414_title">Bloqueado por filtro</string>
     <string name="selftest_error_0414_description">Esta notificación fue bloqueada por filtro de contenido. Compruebe sus filtros de la app, filtro de palabras, u otros ajustes de filtro.</string>
     <string name="selftest_error_0415_title">TaV no inicializado</string>
-    <string name="selftest_error_0415_description">Text-to-Speech no está inicializado. Pruebe restablecer la app o compruebe sus ajustes del motor SdV.</string>
+    <string name="selftest_error_0415_description">Text-to-Speech no está inicializado. Pruebe restablecer la app o compruebe sus ajustes del motor TaV.</string>
     <string name="selftest_error_0420_title">Razón de bloqueo desconocido</string>
     <string name="selftest_error_0420_description">La notificación fue recibida pero no se leyó por una razón desconocida. Exporte las bitácoras de depuración y reporte este resultado.</string>
     <string name="selftest_error_0440_title">Resultado de salida de sonido</string>
@@ -2033,7 +2033,7 @@ Bloquear = omitir por completo, Privar = anunciar en privado
     <string name="filter_sheet_app_title">Todo desde %s</string>
     <string name="filter_sheet_app_description">Nunca lee fuera de otra notificación desde esta app</string>
     <string name="filter_sheet_preview_title">Vista previa de filtro</string>
-    <string name="filter_sheet_preview_description">SpeakThat silenciará mensajes que parezcan como esto:</string>
+    <string name="filter_sheet_preview_description">SpeakThat filtrará mensajes que parezcan como esto:</string>
     <string name="filter_sheet_private_title">Modo privado</string>
     <string name="filter_sheet_private_description">Lee el nombre de la app pero no el contenido</string>
     <string name="filter_sheet_create_button">Crear filtro</string>
@@ -2186,4 +2186,51 @@ Bloquear = omitir por completo, Privar = anunciar en privado
     <string name="fallback_timer_complete">Cronómetro o alarma completados</string>
     <string name="no_apps_found">Ninguna apps encontrada</string>
     <string name="include_system_apps">Incluir Apps del sistema</string>
+    <string name="app_picker_internal_clock_label">Reloj SpeakThat</string>
+    <string name="behavior_skip_repeated_prefix_label">Omitir prefijos de notificación repetidos</string>
+    <string name="behavior_skip_repeated_prefix_description">Cuando está activada, las notificaciones consecutivas con las mismas palabras iniciales (como nombres de contactos o grupos) omitirán el prefijo repetido y solo reproducirán el texto que cambia.</string>
+    <string name="behavior_skip_repeated_prefix_tip">Recomendado para chats grupales</string>
+    <string name="tidy_speech_force_lowercase_title">Forzar minúsculas</string>
+    <string name="tidy_speech_force_lowercase_description">Convierte todo el texto a minúsculas antes de leer para prevenir el motor TTS desde deletreo de palabras capitulinas</string>
+    <string name="emoji_exceptions_hint">Conservar emojis si el texto contiene (separados por coma):</string>
+    <string name="filter_empty_text_title">Filtro de texto vacío</string>
+    <string name="filter_empty_text_description">Previene de SpeakThat desde lectura externa a notificaciones que no contengan ningún texto</string>
+    <string name="general_seasonal_title">Por sesión</string>
+    <string name="general_festive_mode">Modo Festivo</string>
+    <string name="general_festive_mode_description">Cubrir un sombrero festivo en el logo hogar durante diciembre</string>
+    <string name="speech_placeholder_subtext_label">{subtext}</string>
+    <string name="speech_placeholder_subtext_desc">Línea sub-textural (mostrado bajo título en disposición de bandeja de entrada; vacío si omitido por la app)</string>
+    <string name="behavior_skip_repeated_prefix_title">Omitir prefijo repetido</string>
+    <string name="behavior_prefix_memory_timeout_label">Prefijo de vencimiento de memoria</string>
+    <string name="behavior_prefix_memory_timeout_value">%d segundos</string>
+    <string name="action_override_content_cap_title">Anular límite de contenido</string>
+    <string name="action_override_content_cap_description">Habilitar o inhabilitar el límite de contenido para esta notificación</string>
+    <string name="rule_action_override_content_cap">límite de contenido de anulación</string>
+    <string name="action_override_emoji_removal_title">Conservar emojis</string>
+    <string name="action_override_emoji_removal_description">No recortar los emojis desde esta notificación</string>
+    <string name="rule_action_override_emoji_removal">conservar emojis</string>
+    <string name="rule_error_invalid_content_cap_mode">Modo de límite de contenido no válido</string>
+    <string name="style_title">Estilo</string>
+    <string name="support_select_email_app">Seleccione su app de correo-e desde el menú</string>
+    <string name="auto_language_title">Auto‐Idioma</string>
+    <string name="auto_language_description">Cambia automáticamente el idioma TaV para coincidir el texto de notificación (Android 10+).</string>
+    <string name="badge_selector_title">Estilo logotipo</string>
+    <string name="badge_selector_description">Tome cual logotipo a mostrar en la pantalla de inicio.</string>
+    <string name="badge_selector_dialog_title">Elija un estilo de logotipo</string>
+    <string name="badge_option_default">Logotipo por defecto</string>
+    <string name="badge_option_bronze">Bronce</string>
+    <string name="badge_option_silver">Plata</string>
+    <string name="badge_option_rose_quartz">Cuarzo rosa</string>
+    <string name="badge_option_pearl">Perla</string>
+    <string name="badge_option_gold">Oro</string>
+    <string name="badge_option_jade">Jade</string>
+    <string name="badge_option_emerald">Esmeralda</string>
+    <string name="badge_option_aquamarine">Aguamarina</string>
+    <string name="badge_option_citrine">Citrino</string>
+    <string name="badge_option_sapphire">Zafiro</string>
+    <string name="badge_option_jet">Azabache</string>
+    <string name="badge_option_amber">Ámbar</string>
+    <string name="badge_option_amethyst">Amatista</string>
+    <string name="badge_option_ruby">Rubí</string>
+    <string name="badge_option_diamond">Diamante</string>
 </resources>
