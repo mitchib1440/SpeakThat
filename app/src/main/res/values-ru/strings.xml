@@ -1123,7 +1123,6 @@
     <string name="rules_no_rules_created">Ни одно Правило не создано</string>
     <string name="rules_create_first_rule_description">Создайте свое первое правило на основе состояния вашего устройства, времени или подключений, чтобы контролировать, когда SpeakThat будет читать уведомления.</string>
     <string name="rules_create_first_rule_button">Создайте Своё Первое Правило</string>
-    <string name="rule_builder_logic_and"></string>
     <string name="rule_builder_actions_title">Действия</string>
     <string name="rule_builder_actions_description">Что происходит, когда условия выполнены</string>
     <string name="rule_builder_exceptions_title">Исключения</string>
