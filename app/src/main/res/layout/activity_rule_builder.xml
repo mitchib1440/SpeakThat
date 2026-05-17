@@ -41,8 +41,8 @@
                         android:layout_height="24dp"
                         android:layout_marginEnd="12dp"
                         android:src="@drawable/lightbulb_2_24px"
-                        android:tint="@color/white_100"
-                        android:contentDescription="Info icon" />
+                        android:contentDescription="Info icon"
+                        app:tint="@color/white_100" />
 
                     <TextView
                         android:layout_width="0dp"

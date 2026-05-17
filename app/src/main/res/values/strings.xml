@@ -1127,6 +1127,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="wave_calibration_disable">Turn Wave-to-Stop Off</string>
 
     <!-- Voice Settings - Audio Output -->
+    <string name="speech_engine_disclaimer">SpeakThat was primarily designed to work with Android\'s default speech engine. All features are tested with "Speech Recognition &amp; Synthesis" by Google, which most devices use. Third-party engines are supported but may be incompatible with some features.</string>
     <string name="voice_audio_output_settings">Audio Output Settings</string>
     <string name="voice_audio_output_description">Configure how notifications are played through your device\'s audio system.</string>
     <string name="voice_audio_stream_type">Audio Stream Type</string>
