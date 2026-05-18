@@ -980,7 +980,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tidy_speech_force_lowercase_description">Convert all text to lowercase before reading to prevent the TTS engine from spelling out capitalised words</string>
     <string name="emoji_exceptions_hint">Keep emojis if text contains (comma separated):</string>
     <string name="filter_empty_text_title">Filter empty text</string>
-    <string name="filter_empty_text_description">Prevent SpeakThat from reading out notifications that contain no text</string>
+    <string name="filter_empty_text_description">Don\'t read the notification if the text is empty after emoji removal</string>
     <string name="filter_word_list_header">Word List</string>
     <string name="filter_word_blacklist_title">Palabras prohibidas</string>
     <string name="filter_word_blacklist_description">
@@ -1121,11 +1121,6 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="trigger_specific_networks">Specific Networks (one per line):</string>
     <string name="trigger_select_networks">Select Networks</string>
 
-    <!-- Wave Calibration -->
-    <string name="wave_calibration_recalibrate">Recalibrate</string>
-    <string name="wave_calibration_save_settings">This Works! Save Settings</string>
-    <string name="wave_calibration_disable">Turn Wave-to-Stop Off</string>
-
     <!-- Voice Settings - Audio Output -->
     <string name="speech_engine_disclaimer">SpeakThat was primarily designed to work with Android\'s default speech engine. All features are tested with "Speech Recognition &amp; Synthesis" by Google, which most devices use. Third-party engines are supported but may be incompatible with some features.</string>
     <string name="voice_audio_output_settings">Audio Output Settings</string>
@@ -1154,6 +1149,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="filter_swap_description">Swap words in notifications for censoring or pronunciation fixes</string>
     <string name="filter_swap_count">(0 swaps)</string>
     <string name="filter_swap_tip">Tip: Use lowercase for case-insensitive matching. Leave \'Swap with\' empty to remove words entirely.</string>
+    <string name="filter_emoji_removal_exeption_hint">reacted</string>
 
     <!-- URL Handling -->
     <string name="url_handling_title">URL Handling</string>

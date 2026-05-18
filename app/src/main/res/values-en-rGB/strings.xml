@@ -980,7 +980,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tidy_speech_force_lowercase_description">Convert all text to lowercase before reading to prevent the TTS engine from spelling out capitalised words</string>
     <string name="emoji_exceptions_hint">Keep emojis if text contains (comma separated):</string>
     <string name="filter_empty_text_title">Filter empty text</string>
-    <string name="filter_empty_text_description">Prevent SpeakThat from reading out notifications that contain no text</string>
+    <string name="filter_empty_text_description">Don\'t read the notification if the text is empty after emoji removal</string>
     <string name="filter_word_list_header">Word List</string>
     <string name="filter_word_blacklist_title">Palabras prohibidas</string>
     <string name="filter_word_blacklist_description">

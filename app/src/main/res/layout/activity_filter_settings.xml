@@ -829,39 +829,122 @@
 
                     </LinearLayout>
 
+                    <!-- Advanced Emoji Removal Section (initially hidden) -->
                     <LinearLayout
-                        android:id="@+id/emojiExceptionsSection"
+                        android:id="@+id/layoutEmojiRemovalSection"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingVertical="8dp">
+                        android:background="@drawable/bg_advanced_voice_section"
+                        android:padding="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="8dp"
+                        android:visibility="gone">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/emoji_exceptions_hint"
-                            android:textSize="12sp"
-                            android:textColor="@color/purple_card_text_secondary"
-                            android:layout_marginBottom="8dp" />
-
-                        <com.google.android.material.textfield.TextInputLayout
+                        <!-- Advanced Label and Divider -->
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/WhiteHintTextInputLayout"
-                            app:boxBackgroundMode="outline"
-                            app:boxStrokeColor="@color/white_100"
-                            app:hintTextColor="@color/white_100"
-                            app:placeholderTextColor="@color/white_100">
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="16dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/tidy_speech_remove_emojis_title"
+                                android:textStyle="bold"
+                                android:textColor="@color/white_100"
+                                android:textSize="16sp"
+                                android:layout_marginEnd="8dp" />
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:layout_weight="1"
+                                android:background="@color/white_100" />
+                        </LinearLayout>
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/editEmojiExceptions"
+                        <LinearLayout
+                            android:id="@+id/emojiExceptionsSection"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingVertical="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/emoji_exceptions_hint"
+                                android:textSize="12sp"
+                                android:textColor="@color/purple_card_text_secondary"
+                                android:layout_marginBottom="8dp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint=""
-                                android:inputType="text"
-                                android:textColor="@color/purple_card_text_primary"
-                                android:textColorHint="@color/white_100" />
-                        </com.google.android.material.textfield.TextInputLayout>
+                                style="@style/WhiteHintTextInputLayout"
+                                app:boxBackgroundMode="outline"
+                                app:boxStrokeColor="@color/white_100"
+                                app:boxStrokeWidth="1dp"
+                                app:hintTextColor="@color/white_100"
+                                app:placeholderTextColor="@color/white_100">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/editEmojiExceptions"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/filter_emoji_removal_exeption_hint"
+                                    android:inputType="text"
+                                    android:textColor="@color/purple_card_text_primary"
+                                    android:textColorHint="@color/white_300" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="12dp">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/filter_empty_text_title"
+                                    android:textSize="16sp"
+                                    android:textColor="@color/purple_card_text_primary"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/filter_empty_text_description"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/purple_card_text_secondary"
+                                    android:layout_marginTop="4dp" />
+
+                            </LinearLayout>
+
+                            <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/switchFilterEmptyText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:thumbTint="@color/switch_thumb_color"
+                                android:trackTint="@color/switch_track_color"
+                                app:thumbTint="@color/switch_thumb_color"
+                                app:trackTint="@color/switch_track_color"
+                                android:paddingLeft="12dp"/>
+
+
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -898,49 +981,6 @@
 
                         <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switchForceLowercase"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:thumbTint="@color/switch_thumb_color"
-                            android:trackTint="@color/switch_track_color"
-                            app:thumbTint="@color/switch_thumb_color"
-                            app:trackTint="@color/switch_track_color"
-                            android:paddingLeft="12dp"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingVertical="12dp">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/filter_empty_text_title"
-                                android:textSize="16sp"
-                                android:textColor="@color/purple_card_text_primary"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/filter_empty_text_description"
-                                android:textSize="14sp"
-                                android:textColor="@color/purple_card_text_secondary"
-                                android:layout_marginTop="4dp" />
-
-                        </LinearLayout>
-
-                        <com.google.android.material.materialswitch.MaterialSwitch
-                            android:id="@+id/switchFilterEmptyText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:thumbTint="@color/switch_thumb_color"
