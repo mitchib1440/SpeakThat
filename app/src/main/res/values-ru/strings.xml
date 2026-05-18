@@ -55,15 +55,7 @@
     </string-array>
     <!-- Behavior Settings Dialogs -->
     <string name="notification_behavior_dialog_title">Notification Behavior Options</string>
-    <string name="notification_behavior_dialog_message">Choose how SpeakThat handles multiple notifications:
-<b>🔄 Interrupt</b>
-- Stops current notification and reads new one immediately. Best for urgent notifications.
-<b>📋 Queue</b>
-- Finishes current notification, then reads new ones in order. Nothing gets missed.
-<b>⏭️ Skip</b>
-- Ignores new notifications while reading. Simple but you might miss important ones.
-<b>🧠 Smart (Recommended)</b>
-- Priority apps interrupt, others queue. Perfect balance of urgency and completeness. Smart mode lets you choose which apps are urgent enough to interrupt (like calls, messages) while other apps wait their turn.</string>
+    <string name="notification_behavior_dialog_message">Выберите, как SpeakThat будет обрабатывать несколько уведомлений: <b>Прерывание</b> — Останавливать текущее уведомление и немедленно зачитывает новое. Лучше всего подходит для срочных уведомлений. <b>Очередь</b> — Заканчивать текущее уведомление, затем зачитывает новые по порядку. Ничего не пропустишь. <b>⏭Пропустить</b> — Игнорировать новые уведомления во время чтения. Просто, но вы можете пропустить важные уведомления. <b>Умный (рекомендуется)</b> — Приложения с приоритетом прерывают, остальные ставятся в очередь. Идеальный баланс между срочностью и полнотой. В интеллектуальном режиме вы можете выбрать, какие приложения являются достаточно срочными, чтобы прерывать их (например, звонки, сообщения), в то время как другие приложения ждут своей очереди.</string>
     <string name="custom_app_names_title">Custom App Names</string>
     <string name="custom_app_names_description">Настройте как будут произноситься названия приложений в уведомлениях</string>
     <string name="add_custom_app_name">Add Custom App Name</string>
@@ -715,7 +707,7 @@
     <string name="behavior_ducking_volume">Громкость приглушения</string>
     <string name="quick_settings_tile_disabled_toast">SpeakThat выключен через Быстрые Настройки</string>
     <string name="dialog_title_honour_phone_calls">Учитывать телефонные звонки</string>
-    <string name="tts_engine_failure_spoken">Кстати, SpeakThat не смог использовать выбранный движок TTS (текст-в-речь). Пожалуйста откройте Голосовые Параметры чтобы выбрать другой.</string>
+    <string name="tts_engine_failure_spoken">SpeakThat не смог использовать выбранный движок TTS (текст-в-речь). Пожалуйста, откройте Настройки Озвучивания, чтобы выбрать другой.</string>
     <string name="behavior_ducking_test_button">Тестировать приглушение</string>
     <string name="wifi_compatibility_warning_title">Примечание о совместимости WiFi</string>
     <string name="behavior_ducking_test_success">✅ Ваше устройство хорошо поддерживает приглушение звука!</string>
@@ -1204,4 +1196,80 @@
     <string name="donate_privacy">🔒 Конфиденциальность: Все пожертвования обрабатываются соответствующими платформами. Я не собираю и не храню платежную информацию.</string>
     <string name="donate_friendly_message">Вы также можете отправить дружеское электронное письмо, приятное сообщение всегда делает мой день лучше! :)</string>
     <string name="filter_suggestion_smart_pattern">Умный шаблон (рекомендуется)</string>
+    <string name="donate_github_sponsors">GitHub Sponsors</string>
+    <string name="filter_suggestion_keywords">Только ключевые слова</string>
+    <string name="filter_suggestion_exact_match">Точное совпадение текста</string>
+    <string name="filter_suggestion_all_notifications">Все уведомления от этого приложения</string>
+    <string name="filter_suggestion_action">Действие:</string>
+    <string name="filter_suggestion_block_completely">Заблокировать полностью</string>
+    <string name="filter_suggestion_make_private">Сделать приватным</string>
+    <string name="filter_suggestion_create_filter">Создать Фильтр</string>
+    <string name="behavior_speech_preview_example">Предпросмотр: Сообщения уведомляет вас: Митчи: Я слышал, что вы используете SpeakThat!</string>
+    <string name="rules_wrench_icon">Правила</string>
+    <string name="exception_any_bluetooth_device">Любое Устройство Bluetooth</string>
+    <string name="exception_any_wifi_network">Любая сеть WiFi</string>
+    <string name="icon_refresh">🔄</string>
+    <string name="dialog_donate_title">Поддержать SpeakThat!</string>
+    <string name="dialog_donate_message">Привет! Это Митчи. В создание SpeakThat вкладывается много сил! Я занимаюсь дизайном UI/UX, обеспечением качества и тестированием, управлением проектами, распространением и публикацией, соблюдением требований магазинов приложений и поддержкой пользователей, и это лишь часть моих обязанностей!\n\nЕсли SpeakThat был вам полезен, или вы бы заплатили за него, пожалуйста, подумайте о поддержке его разработки!\n\nКаждое пожертвование позволяет сохранить это приложение полностью бесплатным и с открытым исходным кодом для всех, кто в нем нуждается.\n\nСпасибо! ❤️</string>
+    <string name="dialog_donate_coffee">Купить мне кофе</string>
+    <string name="dialog_donate_coffee_description">Быстрое разовое пожертвование через Ko-fi</string>
+    <string name="dialog_donate_patron_description">Ежемесячная поддержка с эксклюзивными обновлениями</string>
+    <string name="dev_debug_tools_title">Инструменты Отладки</string>
+    <string name="dev_debug_tools_description">Инструменты для отладки и тестирования приложения</string>
+    <string name="dev_notification_history">Показать Историю Уведомлений</string>
+    <string name="dev_battery_report">Отчёт по Оптимизации Батареи</string>
+    <string name="dev_repair_blacklist">Починить Чёрный список Слов</string>
+    <string name="dev_background_monitor">Монитор Фоновых Процессов</string>
+    <string name="dev_installation_debug">Отладка Источника Установки</string>
+    <string name="dev_test_rules">Тест Системы Правил</string>
+    <string name="notification_history_empty">Нет уведомлений для отображения</string>
+    <string name="notification_history_clear">Очистить Историю</string>
+    <string name="notification_history_recent">Недавние Уведомления</string>
+    <string name="notification_history_loading">Загружается история уведомлений...</string>
+    <string name="notification_history_debug_info">Информация Отладки</string>
+    <string name="notification_history_debug_description">На этом экране отображаются уведомления, которые SpeakThat! зафиксировал для целей отладки. Это поможет вам убедиться, что приложение работает правильно, и точно узнать, какие уведомления читаются вслух.</string>
+    <string name="dialog_filter_suggestion_title">Фильтровать Похожие Уведомления</string>
+    <string name="dialog_filter_suggestion_original">Исходное уведомление:</string>
+    <string name="dialog_filter_suggestion_sample">Пример текста уведомления</string>
+    <string name="dialog_filter_suggestion_choose">Выберите тип фильтра:</string>
+    <string name="dialog_wifi_config_title">Настройка WiFi</string>
+    <string name="dialog_time_schedule_title">Настройка Расписания</string>
+    <string name="dialog_bluetooth_config_title">Настройка Bluetooth</string>
+    <string name="rules_title">Правила</string>
+    <string name="rules_description">Создавайте эффективные правила, чтобы контролировать, когда SpeakThat читает уведомления, в зависимости от состояния вашего устройства, времени и подключений.</string>
+    <string name="rules_enable">Включить Правила</string>
+    <string name="rules_create_new">Создать Новое Правило</string>
+    <string name="onboarding_skip">Пропустить</string>
+    <string name="onboarding_mute_button">Отключить звук</string>
+    <string name="onboarding_back_button">Назад</string>
+    <string name="onboarding_next">Далее</string>
+    <string name="onboarding_next_button">Далее</string>
+    <string name="onboarding_skip_button">Пропустить</string>
+    <string name="onboarding_language_theme_title">Язык</string>
+    <string name="onboarding_language_theme_description">Выберите язык, который должен использовать SpeakThat.</string>
+    <string name="onboarding_language_section_title">Язык</string>
+    <string name="onboarding_language_help_title">Ваш язык имеет неполный перевод?</string>
+    <string name="onboarding_language_help_description">Я делаю все возможное, чтобы обеспечить поддержку большего количества языков. Пожалуйста, добавьте переводы на странице Weblate, если можете!</string>
+    <string name="onboarding_theme_section_title">Тема</string>
+    <string name="onboarding_theme_description">Использовать тёмную тему в этом приложении</string>
+    <string name="onboarding_theme_light">Светлая Тема</string>
+    <string name="onboarding_theme_dark">Тёмная Тема</string>
+    <string name="onboarding_welcome_title">Добро пожаловать в SpeakThat!</string>
+    <string name="onboarding_welcome_description">Оставайтесь на связи, не глядя на экран. Ваш телефон будет зачитывать уведомления вслух, чтобы вы могли сосредоточиться на важном.</string>
+    <string name="onboarding_permission_title">Требуется Разрешение на Уведомления</string>
+    <string name="onboarding_permission_description">SpeakThat требуется разрешение, чтобы читать ваши уведомления вслух.\n\n🔒 Вся информация остается на вашем устройстве\n📱 Никакие данные не отправляются ни нам, ни кому-либо еще\n⚙️ Вы контролируете, что будет прочитано\n💬 Мы читаем только то, что вы разрешаете\n💡 Подсказка: в списке нажмите «SpeakThat», чтобы включить</string>
+    <string name="onboarding_privacy_title">Ваша Конфиденциальность Важна</string>
+    <string name="onboarding_privacy_description">🔒 Вы полностью контролируете, что будет зачитано вслух\n\n📱 Встряхните телефон, чтобы мгновенно остановить любое сообщение\n\n⚙️ Фильтруйте приложения, слова и типы уведомлений\n\n🔐 Вся информация остается на вашем устройстве</string>
+    <string name="onboarding_filters_title">Давайте Настроим Основные Фильтры</string>
+    <string name="onboarding_filters_description">SpeakThat оснащен мощной системой фильтрации, которая позволяет ВАМ выбирать, что будет прочитано, а что нет.\n\nДля начала давайте настроим несколько основных фильтров конфиденциальности.</string>
+    <string name="onboarding_apps_title">Блокировка Приватных Приложений</string>
+    <string name="onboarding_apps_description">Введите название приложения, уведомления из которого НИКОГДА не долженв читаться вслух.\n\nТипичные примеры: банковские приложения, медицинские приложения, приложения для знакомств</string>
+    <string name="onboarding_words_title">Блокировать Приватные Слова</string>
+    <string name="onboarding_words_description">­Введите слова или фразы, которые НИКОГДА не должны содержаться в уведомлениях, которые читаются вслух!\n\nТипичные примеры: пароль, PIN-код, кредитная карта, медицинские термины</string>
+    <string name="onboarding_rules_title">Настройте Умные Правила</string>
+    <string name="onboarding_rules_description">Настройте умные правила, которые автоматически определяют, когда читать уведомления, исходя из вашей ситуации.\n\nНапример, читать уведомления только при подключённых наушниках или пропускать уведомления, когда экран включён.</string>
+    <string name="onboarding_complete_title">Всё Готово!</string>
+    <string name="onboarding_complete_description">SpeakThat поможет вам оставаться на связи, не отвлекая ваших глаз!\n\n💡 Вы можете добавить больше фильтров в любое время в настройках приложения.</string>
+    <string name="onboarding_language_title">Язык</string>
+    <string name="onboarding_language_subtitle">Выберите язык, который вы хотите использовать в SpeakThat!</string>
 </resources>
