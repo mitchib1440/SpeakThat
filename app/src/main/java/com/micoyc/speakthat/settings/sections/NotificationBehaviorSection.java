@@ -117,6 +117,7 @@ public class NotificationBehaviorSection implements BehaviorSettingsSection {
 
         setupPriorityAppsRecycler();
         binding.btnManagePriorityApps.setOnClickListener(v -> openPriorityAppPicker());
+        binding.priorityAppsHeader.setOnClickListener(v -> togglePriorityApps());
         binding.btnNotificationBehaviorInfo.setOnClickListener(v -> showNotificationBehaviorDialog());
     }
 
@@ -193,6 +194,18 @@ public class NotificationBehaviorSection implements BehaviorSettingsSection {
         priorityAppPickerLauncher.launch(intent);
     }
 
+    private void togglePriorityApps() {
+        boolean isVisible = binding.priorityAppsContent.getVisibility() == View.VISIBLE;
+
+        if (isVisible) {
+            binding.priorityAppsContent.setVisibility(View.GONE);
+            binding.iconPriorityApps.setImageResource(android.R.drawable.arrow_down_float);
+        } else {
+            binding.priorityAppsContent.setVisibility(View.VISIBLE);
+            binding.iconPriorityApps.setImageResource(android.R.drawable.arrow_up_float);
+        }
+    }
+
     private void updatePriorityAppsSummary() {
         binding.txtPriorityAppsCount.setText("(" + priorityAppsList.size() + " apps)");
     }
@@ -260,6 +273,7 @@ public class NotificationBehaviorSection implements BehaviorSettingsSection {
 
         priorityAppAdapter.notifyDataSetChanged();
         savePriorityApps();
+        updatePriorityAppsSummary();
         Toast.makeText(
             activity,
             "Added common priority apps. You can remove or add more as needed.",
