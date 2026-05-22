@@ -1304,7 +1304,6 @@
     <string name="onboarding_permission_subtitle">SpeakThat требуется доступ к уведомлениям, чтобы читать вслух входящие уведомления.</string>
     <string name="onboarding_permission_card_title">Предоставьте SpeakThat доступ к вашим уведомлениям</string>
     <string name="onboarding_permission_card_description">SpeakThat не может прочитать ваши уведомления, если не видит их. Вам нужно будет открыть настройки устройства и разрешить SpeakThat доступ к вашим уведомлениям.</string>
-    <string name="onboarding_permission_bullet1"></string>
     <string name="onboarding_permission_tip">Подсказка: в списке нажмите «SpeakThat», чтобы включить</string>
     <string name="onboarding_permission_open_settings">Открыть Настройки</string>
     <string name="onboarding_permission_granted">✓ Разрешение предоставлено! Вы можете продолжить.</string>
