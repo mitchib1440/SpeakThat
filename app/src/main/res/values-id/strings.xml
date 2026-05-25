@@ -65,7 +65,7 @@
     <string name="media_behavior_dialog_title">Opsi Perilaku Media</string>
     <string name="media_behavior_dialog_message">Pilih cara SpeakThat menangani notifikasi saat musik/video diputar: <b>Abaikan</b> - Berbicara di atas media Anda. Sederhana namun dapat mengganggu. <b>Jeda</b> - Menjeda media sepenuhnya saat berbicara. Baik untuk podcast, tetapi mengganggu alur musik. <b>Turunkan Audio</b> - Mengurangi volume media sementara agar Anda dapat mendengar keduanya. <b>Senyap</b> - Tidak berbicara saat media diputar. Tenang namun Anda mungkin melewatkan notifikasi penting. Turunkan Audio bekerja seperti radio mobil - volume musik diturunkan saat berbicara, lalu dinaikkan kembali.</string>
     <string name="shake_to_stop_dialog_title">Fitur Kocok untuk Berhenti</string>
-    <string name="shake_to_stop_dialog_message">Kocok untuk Berhenti memungkinkan Anda langsung membisukan SpeakThat dengan mengocok perangkat: <b>Mengapa berguna:</b> • Menghentikan notifikasi memalukan di tempat sunyi • Kontrol cepat saat tangan Anda sibuk • Berfungsi bahkan saat layar mati • Tidak perlu mencari tombol <b>Cara kerjanya:</b> • Kocok perangkat Anda dengan kuat (seperti mengocok dadu) • Notifikasi saat ini langsung berhenti • Notifikasi dalam antrean dihapus • Notifikasi baru tetap berfungsi normal <b>Kustomisasi:</b> • Sesuaikan sensitivitas sesuai preferensi • Uji kekuatan kocokan Anda dengan meteran • Cocok untuk pengguna yang mengocok pelan maupun kencang Fitur ini sangat disukai oleh orang-orang yang mendapat notifikasi saat rapat, menonton film, atau berkendara.</string>
+    <string name="shake_to_stop_dialog_message">Shake to Stop memungkinkan Anda langsung membisukan SpeakThat dengan menggoyangkan perangkat Anda: <b>Mengapa ini berguna:</b> • Menghentikan notifikasi yang memalukan di tempat sunyi • Kontrol cepat saat tangan Anda sedang sibuk • Tetap berfungsi bahkan saat layar mati • Tidak perlu repot mencari tombol <b>Cara kerjanya:</b> - Goyangkan perangkat Anda dengan mantap (seperti menggoyangkan dadu) • Notifikasi yang sedang dibacakan langsung berhenti • Notifikasi yang masuk antrean akan dihapus • Notifikasi baru tetap berfungsi normal <b>Kustomisasi:</b> • Sesuaikan sensitivitas sesuai preferensi Anda - Uji kekuatan goyangan Anda dengan meteran • Berfungsi sangat baik baik untuk penggoyang lembut maupun kuat Fitur ini sangat disukai oleh orang-orang yang menerima notifikasi saat rapat, menonton film, atau saat mengemudi.</string>
     <string name="use_recommended">Gunakan yang Direkomendasikan</string>
     <string name="got_it">Mengerti</string>
     <!-- Persistent/Silent Notification Filtering -->
@@ -87,7 +87,7 @@
     <string name="system_notifications_desc">Notifikasi dari aplikasi sistem (Android, layanan Google)</string>
     <!-- Wave to Stop Feature -->
     <string name="wave_to_stop_dialog_title">Fitur Lambaikan untuk Berhenti</string>
-    <string name="wave_to_stop_dialog_message">Lambaikan untuk Berhenti memungkinkan Anda langsung membisukan SpeakThat dengan menutupi sensor jarak (misalnya dengan melambaikan tangan dekat bagian atas perangkat): <b>Mengapa berguna:</b> • Sempurna untuk pengguna yang tidak dapat mengocok perangkat • Cocok untuk ponsel di meja atau dudukan • Berfungsi dengan satu tangan • Tidak perlu menggerakkan perangkat secara fisik • Alternatif ramah aksesibilitas pengganti kocok <b>🎯 Cara kerjanya:</b> • Menggunakan sensor jarak Android standar: sensor dianggap tertutup ketika pembacaan lebih dekat dari jangkauan maksimum sensor dan dalam jarak sekitar 5 cm • Anda dapat mengatur berapa lama sensor harus tetap tertutup (tahan lambai) sebelum terpicu • Batas waktu masih dapat menghentikan pembacaan yang macet demi keamanan baterai • Mode saku dapat memungkinkan pembacaan berlanjut jika sensor sudah tertutup saat pembacaan dimulai—lihat pengaturan perilaku untuk detailnya <b>⚙️ Kustomisasi:</b> • Durasi tahan lambai, batas waktu, dan mode saku di pengaturan Perilaku Fitur ini sangat berguna untuk aksesibilitas, pengguna meja, dan siapa saja yang lebih suka kontrol gestur daripada gerakan fisik.</string>
+    <string name="wave_to_stop_dialog_message">Wave to Stop memungkinkan Anda langsung membisukan SpeakThat dengan menutupi sensor kedekatan (misalnya dengan melambaikan tangan dekat bagian atas perangkat): <b> Mengapa ini berguna:</b> • Sempurna untuk pengguna yang tidak dapat menggoyangkan perangkat mereka • Sangat cocok untuk ponsel di meja atau dudukan • Dapat digunakan dengan satu tangan • Tidak memerlukan pergerakan fisik perangkat • Alternatif yang ramah aksesibilitas untuk fitur goyang <b>🎯 Cara kerjanya:</b> - Menggunakan sensor kedekatan Android standar: sensor dianggap tertutup saat pembacaan lebih dekat daripada jangkauan maksimum sensor dan dalam kisaran sekitar 5 cm • Anda dapat mengatur berapa lama sensor harus tetap tertutup (tahan lambaian) sebelum fitur terpicu • Batas waktu tetap dapat menghentikan pembacaan yang macet demi keamanan baterai • Mode saku dapat mengizinkan pembacaan terus berlanjut jika sensor sudah tertutup saat pembacaan dimulai—lihat pengaturan perilaku untuk detailnya <b>⚙️ Kustomisasi:</b> • Durasi tahan lambaian, batas waktu, dan mode saku di pengaturan Perilaku Fitur ini sangat berguna untuk aksesibilitas, pengguna meja, dan siapa pun yang lebih menyukai kontrol gestur daripada gerakan fisik.</string>
     <!-- About Page -->
     <string name="about">Tentang</string>
     <string name="about_description_title">Tentang SpeakThat!</string>
@@ -105,7 +105,7 @@
     <string name="store_update_dialog_visit_github">Kunjungi GitHub</string>
     <string name="store_update_dialog_got_it">Mengerti</string>
     <string name="app_description">SpeakThat! adalah Pembaca Notifikasi Android sumber terbuka yang mengumumkan notifikasi Anda dengan keras menggunakan text-to-speech. Sempurna untuk operasi bebas genggam, aksesibilitas, dan tetap terinformasi saat multitasking.</string>
-    <string name="app_features">• Pembacaan notifikasi secara real-time\n• Pengaturan suara yang dapat dikustomisasi\n• Pemfilteran notifikasi cerdas\n• Kontrol per aplikasi\n• Perilaku sadar media\n• Riwayat notifikasi\n• Kocok/Lambaikan untuk berhenti\n• Format ucapan kustom\n• Aturan kondisional untuk logika lanjutan dan jadwal\n• Fungsionalitas sepenuhnya bebas iklan dan offline</string>
+    <string name="app_features">• Pembacaan notifikasi secara real-time\n• Pengaturan suara yang dapat disesuaikan\n• Penyaringan notifikasi cerdas\n• Kontrol khusus per aplikasi\n• Perilaku yang sadar media\n• Riwayat notifikasi\n• Goyang/Lambaikan untuk berhenti\n• Pemformatan ucapan kustom\n• Aturan bersyarat untuk logika lanjutan dan jadwal\n• Sepenuhnya bebas iklan dan berfungsi offline</string>
     <string name="developer_info">Dikembangkan dengan ❤️ oleh Mitchi, seorang pengembang solo dari Inggris dengan pengalaman lebih dari 12 tahun dalam menguji dan menggunakan pembaca notifikasi setiap hari.\n\nSpeakThat! terinspirasi oleh Touchless Notifications, yang awalnya dikembangkan oleh DYNA Logix, dan bertujuan untuk meneruskan warisan pembaca notifikasi yang dapat dikustomisasi.\n\nProyek ini dipercepat oleh pemrograman berbantuan AI.</string>
     <string name="license_info">SpeakThat adalah perangkat lunak gratis dan sumber terbuka, dirilis di bawah GNU GPL v3.0, lisensi copyleft yang memastikan versi yang dimodifikasi dan didistribusikan ulang tetap gratis dan dikaitkan dengan benar.\n\nLisensi ini memungkinkan Anda mengunduh, memodifikasi, dan mendistribusikan ulang SpeakThat, asalkan versi yang didistribusikan ulang atau dimodifikasi tetap menggunakan lisensi yang sama dan mempertahankan pemberitahuan hak cipta asli.\n\nAnda dapat melihat teks lisensi lengkap dan kode sumber di GitHub. Kontribusi dan masukan sangat disambut!\n\nSpeakThat! Hak Cipta © 2025-2026 Mitchell Bell\nSPEAKTHAT adalah merek dagang terdaftar milik Mitchell Bell</string>
     <string name="read_about_app">Baca Tentang Aplikasi</string>
@@ -114,7 +114,7 @@
     <string name="tts_app_intro">Selamat datang di SpeakThat!</string>
     <string name="tts_description">SpeakThat adalah Pembaca Notifikasi Android sumber terbuka yang mengumumkan notifikasi Anda dengan keras menggunakan text-to-speech. Sempurna untuk operasi bebas genggam, aksesibilitas, dan tetap terinformasi saat multitasking.</string>
     <string name="tts_features_intro">Fitur utama meliputi:</string>
-    <string name="tts_features">Pembacaan notifikasi secara real-time, pengaturan suara yang dapat dikustomisasi, pemfilteran notifikasi cerdas, kontrol per aplikasi, perilaku sadar media, pelacakan riwayat notifikasi, Kocok untuk Berhenti dan Lambaikan untuk Berhenti, format ucapan kustom, dukungan mode gelap dan mode terang, aturan kondisional untuk logika lanjutan dan jadwal, serta fungsionalitas sepenuhnya bebas iklan dan offline.</string>
+    <string name="tts_features">Pembacaan notifikasi secara real-time, pengaturan suara yang dapat disesuaikan, penyaringan notifikasi cerdas, kontrol khusus per aplikasi, perilaku yang sadar media, pelacakan riwayat notifikasi, Shake to Stop dan Wave to Stop, pemformatan ucapan kustom, dukungan mode gelap dan mode terang, aturan bersyarat untuk logika lanjutan dan jadwal, serta sepenuhnya bebas iklan dan berfungsi offline.</string>
     <string name="tts_developer">Dikembangkan dengan penuh kasih oleh Mitchi, seorang pengembang solo dari Inggris dengan pengalaman lebih dari 12 tahun dalam menguji dan menggunakan pembaca notifikasi setiap hari. SpeakThat terinspirasi oleh Touchless Notifications, yang awalnya dikembangkan oleh DYNA Logix, dan bertujuan untuk meneruskan warisan pembaca notifikasi yang dapat dikustomisasi. Proyek ini dipercepat oleh pemrograman berbantuan Kecerdasan Buatan.</string>
     <string name="tts_license">SpeakThat adalah perangkat lunak gratis dan sumber terbuka, dirilis di bawah GNU GPL v3.0, lisensi copyleft yang memastikan versi yang dimodifikasi dan didistribusikan ulang tetap gratis dan dikaitkan dengan benar. Lisensi ini memungkinkan Anda mengunduh, memodifikasi, dan mendistribusikan ulang SpeakThat, asalkan versi yang didistribusikan ulang atau dimodifikasi tetap menggunakan lisensi yang sama dan mempertahankan pemberitahuan hak cipta asli. Anda dapat melihat teks lisensi lengkap dan kode sumber di GitHub. Kontribusi dan masukan sangat disambut! SpeakThat adalah karya yang dilindungi hak cipta tahun 2025 hingga 2026 milik Mitchell Bell. SPEAKTHAT adalah merek dagang terdaftar milik Mitchell Bell</string>
     <string name="tts_thank_you">Terima kasih telah menggunakan SpeakThat!</string>
@@ -176,7 +176,7 @@
     <string name="tts_about_intro">Selamat datang di SpeakThat!</string>
     <string name="tts_about_description">SpeakThat adalah Pembaca Notifikasi Android sumber terbuka yang mengumumkan notifikasi Anda dengan keras menggunakan text-to-speech. Sempurna untuk operasi bebas genggam, aksesibilitas, dan tetap terinformasi saat multitasking.</string>
     <string name="tts_about_features_intro">Fitur utama meliputi:</string>
-    <string name="tts_about_features">Pembacaan notifikasi secara real-time, pengaturan suara yang dapat dikustomisasi, pemfilteran notifikasi cerdas, kontrol per aplikasi, perilaku sadar media, pelacakan riwayat notifikasi, Kocok untuk Berhenti dan Lambaikan untuk Berhenti, format ucapan kustom, dukungan mode gelap dan mode terang, aturan kondisional untuk logika lanjutan dan jadwal, serta fungsionalitas sepenuhnya bebas iklan dan offline.</string>
+    <string name="tts_about_features">Pembacaan notifikasi secara real-time, pengaturan suara yang dapat disesuaikan, penyaringan notifikasi cerdas, kontrol khusus per aplikasi, perilaku yang sadar media, pelacakan riwayat notifikasi, Shake to Stop dan Wave to Stop, pemformatan ucapan kustom, dukungan mode gelap dan mode terang, aturan bersyarat untuk logika lanjutan dan jadwal, serta fungsi penuh bebas iklan dan offline.</string>
     <string name="tts_about_developer">Dikembangkan dengan penuh kasih oleh Mitchi, seorang pengembang solo dari Inggris dengan pengalaman lebih dari 12 tahun dalam menguji dan menggunakan pembaca notifikasi setiap hari. SpeakThat terinspirasi oleh Touchless Notifications, yang awalnya dikembangkan oleh DYNA Logix, dan bertujuan untuk meneruskan warisan pembaca notifikasi yang dapat dikustomisasi. Proyek ini dipercepat oleh pemrograman berbantuan Kecerdasan Buatan.</string>
     <string name="tts_about_license">SpeakThat adalah perangkat lunak gratis dan sumber terbuka, dirilis di bawah GNU GPL v3.0, lisensi copyleft yang memastikan versi yang dimodifikasi dan didistribusikan ulang tetap gratis dan dikaitkan dengan benar. Lisensi ini memungkinkan Anda mengunduh, memodifikasi, dan mendistribusikan ulang SpeakThat, asalkan versi yang didistribusikan ulang atau dimodifikasi tetap menggunakan lisensi yang sama dan mempertahankan pemberitahuan hak cipta asli. Anda dapat melihat teks lisensi lengkap dan kode sumber di GitHub. Kontribusi dan masukan sangat disambut! SpeakThat adalah karya yang dilindungi hak cipta tahun 2025 hingga 2026 milik Mitchell Bell. SPEAKTHAT adalah merek dagang terdaftar milik Mitchell Bell</string>
     <string name="tts_about_thank_you">Terima kasih telah menggunakan SpeakThat!</string>
@@ -404,8 +404,8 @@
     <string name="selftest_step1_rebinding">Izin diaktifkan - menyambung ulang pendengar notifikasi...</string>
     <string name="selftest_step9_rebinding">Pendengar terputus - mencoba ulang secara otomatis...</string>
     <string name="listener_warning_title">Pendengar notifikasi memerlukan perhatian</string>
-    <string name="listener_warning_body_disconnected">Android memutus layanan notifikasi %1$s yang lalu. Ketuk Coba Lagi untuk meminta sistem menyambung kembali. Jika ini terus terjadi, nonaktifkan optimasi baterai di Pengaturan Umum.</string>
-    <string name="listener_warning_body_stale">Layanan notifikasi belum terhubung selama %1$s. Ketuk Coba Lagi untuk membangunkannya, lalu tinjau optimasi baterai di Pengaturan Umum jika masalah berlanjut.</string>
+    <string name="listener_warning_body_disconnected">Android memutuskan layanan notifikasi %1$s yang lalu. Ketuk Coba Lagi untuk meminta sistem menyambungkannya kembali. Jika ini terus terjadi, nonaktifkan optimasi baterai di Pengaturan Umum.</string>
+    <string name="listener_warning_body_stale">Layanan notifikasi belum terhubung selama %1$s. Ketuk Coba Lagi untuk mengaktifkannya, lalu periksa optimasi baterai di Pengaturan Umum jika masalah tetap berlanjut.</string>
     <string name="listener_warning_time_unknown">baru saja</string>
     <string name="listener_warning_retry_in_progress">Permintaan pengikatan ulang terkirim</string>
     <string name="listener_warning_retry_denied">Tunggu sebentar sebelum mencoba lagi</string>
@@ -758,12 +758,12 @@
     <string name="behavior_skip_repeated_prefix_label">Lewati awalan notifikasi yang berulang</string>
     <string name="behavior_skip_repeated_prefix_description">Jika diaktifkan, notifikasi berurutan dengan kata-kata pembuka yang sama (seperti nama kontak atau grup) akan membuang awalan yang berulang dan hanya mengucapkan teks yang berubah.</string>
     <string name="behavior_skip_repeated_prefix_tip">Direkomendasikan untuk obrolan grup</string>
-    <string name="behavior_priority_apps">⚡ Aplikasi Prioritas</string>
+    <string name="behavior_priority_apps">Aplikasi Prioritas</string>
     <string name="behavior_priority_apps_description">Aplikasi-aplikasi ini akan menginterupsi notifikasi yang sedang dibacakan. Semua aplikasi lainnya akan mengantri.</string>
-    <string name="behavior_media_ignore">Abaikan - Lanjutkan seperti biasa</string>
-    <string name="behavior_media_pause">Jeda - Jeda media saat berbicara</string>
-    <string name="behavior_media_lower">Turunkan Audio - Turunkan volume media sementara</string>
-    <string name="behavior_media_silence">Senyap - Jangan berbicara saat media sedang diputar</string>
+    <string name="behavior_media_ignore">Abaikan (lanjutkan seperti biasa)</string>
+    <string name="behavior_media_pause">Jeda (jeda media saat berbicara)</string>
+    <string name="behavior_media_lower">Kecilkan Audio (turunkan volume media sementara)</string>
+    <string name="behavior_media_silence">Senyap (Jangan berbicara saat media sedang diputar)</string>
     <string name="behavior_ducking_volume">Volume Peredaman</string>
     <string name="behavior_ducking_description">Atur seberapa pelan media saat ada notifikasi</string>
     <string name="behavior_ducking_warning">⚠️ Di beberapa perangkat, menurunkan volume media juga dapat menurunkan suara notifikasi. Jika notifikasi masih sulit didengar, coba mode Jeda atau sesuaikan pengaturan TTS Anda.</string>
@@ -833,7 +833,7 @@
     <string name="behavior_content_cap_description">Batasi seberapa banyak setiap notifikasi yang dibacakan dengan keras</string>
     <string name="behavior_content_cap_recommendation">Cocok untuk: Notifikasi panjang yang hanya perlu bagian awalnya</string>
     <string name="behavior_speech_title">Format Ucapan</string>
-    <string name="behavior_speech_description">Sesuaikan cara notifikasi diucapkan menggunakan placeholder</string>
+    <string name="behavior_speech_description">Sesuaikan cara notifikasi diucapkan dengan placeholder</string>
     <string name="behavior_speech_recommendation">Sesuaikan pengalaman notifikasi Anda</string>
     <string name="behavior_speech_preset">Preset Format:</string>
     <string name="behavior_speech_custom">Format Kustom:</string>
@@ -861,7 +861,7 @@
     <string name="voice_language_section">Bahasa &amp; Suara</string>
     <string name="voice_language_preset">Preset Bahasa</string>
     <string name="voice_language_preset_description">Pilih bahasa Anda. Ini mengatur antarmuka aplikasi dan bahasa text-to-speech sekaligus untuk pengalaman terbaik.</string>
-    <string name="voice_preset_recommendation">Ini sudah cukup bagi sebagian besar pengguna. Gunakan Opsi Suara Lanjutan di bawah untuk menyesuaikan pengaturan individual.</string>
+    <string name="voice_preset_recommendation">Ini sudah mencakup semua yang dibutuhkan sebagian besar pengguna. Gunakan Opsi Suara Lanjutan di bawah untuk menyesuaikan pengaturan individual.</string>
     <string name="voice_help_translate">Bantu Terjemahkan SpeakThat!</string>
     <string name="voice_help_translate_description">Ketuk untuk membuka halaman terjemahan Weblate</string>
     <string name="voice_show_advanced">Tampilkan Opsi Suara Lanjutan</string>
@@ -1709,9 +1709,9 @@
     <string name="tts_initialization_failed">Inisialisasi TTS gagal</string>
     <string name="tts_init_failed_android15">Inisialisasi TTS gagal di Android 15. Ini mungkin disebabkan oleh pembatasan sistem.</string>
     <string name="tts_init_failed_service_unavailable">Layanan TTS tidak tersedia. Harap periksa pengaturan TTS Anda.</string>
-    <string name="tts_init_failed_permissions">Inisialisasi TTS gagal karena izin yang kurang. Harap mulai ulang aplikasi.</string>
+    <string name="tts_init_failed_permissions">Inisialisasi TTS gagal karena izin yang diperlukan tidak ada. Harap mulai ulang aplikasi.</string>
     <string name="tts_init_failed_recovery_attempts">Pemulihan TTS gagal setelah beberapa percobaan. Harap mulai ulang aplikasi atau periksa pengaturan TTS.</string>
-    <string name="tts_init_failed_generic">Inisialisasi TTS gagal. Beberapa fitur mungkin tidak berfungsi dengan benar.</string>
+    <string name="tts_init_failed_generic">Inisialisasi TTS gagal. Beberapa fitur mungkin tidak berfungsi dengan semestinya.</string>
     <string name="tts_recovery_in_progress">Mencoba memulihkan layanan TTS...</string>
     <string name="tts_recovery_successful">Layanan TTS berhasil dipulihkan!</string>
     <string name="tts_troubleshooting_title">Pemecahan Masalah TTS</string>
@@ -1801,10 +1801,10 @@
     <string name="diagnostics_copy_clipboard">Salin ke Papan Klip</string>
     <string name="diagnostics_reinitialize_tts">Inisialisasi Ulang TTS</string>
     <string name="diagnostics_clipboard_copied">Laporan diagnostik disalin ke papan klip</string>
-    <string name="diagnostics_tts_reinitialized">TTS diinisialisasi ulang - menjalankan diagnostik lagi</string>
+    <string name="diagnostics_tts_reinitialized">TTS berhasil diinisialisasi ulang - diagnostik dijalankan kembali</string>
     <string name="diagnostics_notification_access_ok">Akses notifikasi diaktifkan</string>
     <string name="diagnostics_notification_access_err">Akses notifikasi dinonaktifkan</string>
-    <string name="diagnostics_tts_init_ok">TTS diinisialisasi dan siap</string>
+    <string name="diagnostics_tts_init_ok">TTS telah diinisialisasi dan siap digunakan</string>
     <string name="diagnostics_tts_init_err">Inisialisasi TTS gagal</string>
     <string name="diagnostics_tts_init_dash">Instance TTS adalah null</string>
     <string name="diagnostics_tts_language_ok">Bahasa TTS tersedia</string>
@@ -1876,8 +1876,8 @@
     <string name="selftest_error_0413_description">Notifikasi diblokir oleh sistem aturan Anda. Periksa konfigurasi aturan Anda untuk memastikan tidak memblokir semua notifikasi.</string>
     <string name="selftest_error_0414_title">Diblokir oleh Pemfilteran</string>
     <string name="selftest_error_0414_description">Notifikasi diblokir oleh pemfilteran konten. Periksa filter aplikasi, filter kata, atau pengaturan pemfilteran lainnya.</string>
-    <string name="selftest_error_0415_title">TTS Tidak Diinisialisasi</string>
-    <string name="selftest_error_0415_description">Text-to-Speech tidak diinisialisasi. Coba mulai ulang aplikasi atau periksa pengaturan mesin TTS Anda.</string>
+    <string name="selftest_error_0415_title">TTS Belum Diinisialisasi</string>
+    <string name="selftest_error_0415_description">Text-to-Speech belum diinisialisasi. Coba mulai ulang aplikasi atau periksa pengaturan mesin TTS Anda.</string>
     <string name="selftest_error_0420_title">Alasan Pemblokiran Tidak Diketahui</string>
     <string name="selftest_error_0420_description">Notifikasi diterima tetapi tidak dibacakan karena alasan yang tidak diketahui. Harap ekspor log debug dan laporkan masalah ini.</string>
     <string name="selftest_error_0440_title">Masalah Keluaran Audio</string>
@@ -1889,7 +1889,7 @@
     <string name="selftest_error_0443_title">TTS Selesai Tetapi Tidak Terdengar</string>
     <string name="selftest_error_0443_description">Text-to-Speech selesai dengan sukses, tetapi Anda tidak mendengarnya. Periksa pengaturan volume, perangkat keluaran audio (headphone Bluetooth, audio USB, dll.), perutean audio, atau coba jenis aliran audio yang berbeda di Pengaturan Suara.</string>
     <string name="selftest_error_0444_title">TTS Tidak Pernah Dimulai</string>
-    <string name="selftest_error_0444_description">Notifikasi diterima dan lolos semua filter, tetapi Text-to-Speech tidak pernah mulai berbicara. Ini mungkin menunjukkan masalah inisialisasi TTS, masalah aliran audio, atau mesin TTS tidak merespons. Periksa pengaturan mesin TTS, coba mulai ulang aplikasi, atau pilih mesin TTS yang berbeda di Pengaturan Suara.</string>
+    <string name="selftest_error_0444_description">Notifikasi telah diterima dan lolos semua filter, tetapi Text-to-Speech tidak pernah mulai berbicara. Ini mungkin menandakan masalah inisialisasi TTS, masalah aliran audio, atau mesin TTS tidak merespons. Periksa pengaturan mesin TTS Anda, coba mulai ulang aplikasi, atau pilih mesin TTS lain di Pengaturan Suara.</string>
     <string name="selftest_error_unknown_title">Kesalahan Tidak Diketahui</string>
     <string name="selftest_error_unknown_description">Terjadi kesalahan tak terduga selama uji.</string>
     <string name="selftest_question_notification_appeared">Apakah Anda melihat notifikasi uji muncul di layar Anda?</string>
@@ -1913,7 +1913,7 @@
     <string name="filter_sheet_app_title">Semua dari %s</string>
     <string name="filter_sheet_app_description">Jangan pernah membacakan notifikasi lain dari aplikasi ini</string>
     <string name="filter_sheet_preview_title">Pratinjau filter</string>
-    <string name="filter_sheet_preview_description">SpeakThat akan membisukan pesan yang terlihat seperti ini:</string>
+    <string name="filter_sheet_preview_description">SpeakThat akan memfilter pesan yang tampak seperti ini:</string>
     <string name="filter_sheet_private_title">Mode pribadi</string>
     <string name="filter_sheet_private_description">Baca nama aplikasi tetapi bukan isinya</string>
     <string name="filter_sheet_create_button">Buat Filter</string>
@@ -2078,4 +2078,38 @@
     <string name="fallback_timer_complete">Timer atau alarm selesai</string>
     <string name="no_apps_found">Tidak ada aplikasi yang ditemukan</string>
     <string name="include_system_apps">Sertakan Aplikasi Sistem</string>
+    <string name="app_picker_internal_clock_label">Jam SpeakThat</string>
+    <string name="tidy_speech_force_lowercase_title">Paksa huruf kecil</string>
+    <string name="tidy_speech_force_lowercase_description">Ubah semua teks menjadi huruf kecil sebelum dibacakan untuk mencegah mesin TTS mengeja kata-kata berhuruf kapital</string>
+    <string name="emoji_exceptions_hint">Pertahankan emoji jika teks berisi (dipisahkan koma):</string>
+    <string name="general_seasonal_title">Musiman</string>
+    <string name="general_festive_mode">Mode Meriah</string>
+    <string name="general_festive_mode_description">Tambahkan topi meriah pada logo beranda selama bulan Desember</string>
+    <string name="speech_placeholder_subtext_label">{subtext}</string>
+    <string name="speech_placeholder_subtext_desc">Baris subteks (ditampilkan di bawah judul dalam tata letak gaya kotak masuk; kosong jika dihilangkan oleh aplikasi)</string>
+    <string name="action_override_emoji_removal_title">Pertahankan Emoji</string>
+    <string name="action_override_emoji_removal_description">Jangan hapus emoji dari notifikasi ini</string>
+    <string name="rule_action_override_emoji_removal">pertahankan emoji</string>
+    <string name="style_title">Gaya</string>
+    <string name="auto_language_title">Bahasa Otomatis</string>
+    <string name="auto_language_description">Secara otomatis mengganti bahasa TTS agar sesuai dengan teks notifikasi (Android 10+).</string>
+    <string name="badge_selector_title">Gaya logo</string>
+    <string name="badge_selector_description">Pilih logo yang akan ditampilkan di layar beranda.</string>
+    <string name="badge_selector_dialog_title">Pilih gaya logo</string>
+    <string name="badge_option_default">Logo default</string>
+    <string name="badge_option_bronze">Perunggu</string>
+    <string name="badge_option_silver">Perak</string>
+    <string name="badge_option_rose_quartz">Rose Quartz</string>
+    <string name="badge_option_pearl">Mutiara</string>
+    <string name="badge_option_gold">Emas</string>
+    <string name="badge_option_jade">Giok</string>
+    <string name="badge_option_emerald">Zamrud</string>
+    <string name="badge_option_aquamarine">Akuamarin</string>
+    <string name="badge_option_citrine">Citrine</string>
+    <string name="badge_option_sapphire">Safir</string>
+    <string name="badge_option_jet">Jet</string>
+    <string name="badge_option_amber">Amber</string>
+    <string name="badge_option_amethyst">Amethyst</string>
+    <string name="badge_option_ruby">Ruby</string>
+    <string name="badge_option_diamond">Berlian</string>
 </resources>
