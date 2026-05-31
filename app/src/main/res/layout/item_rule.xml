@@ -51,6 +51,16 @@
                     android:textColor="@color/purple_card_text_secondary"
                     android:layout_marginTop="2dp" />
 
+                <TextView
+                    android:id="@+id/textRulePaused"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Paused until HH:mm"
+                    android:textSize="14sp"
+                    android:textColor="@color/orange_200"
+                    android:layout_marginTop="2dp"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
             <com.google.android.material.materialswitch.MaterialSwitch

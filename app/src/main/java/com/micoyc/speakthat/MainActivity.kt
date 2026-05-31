@@ -114,39 +114,17 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
      * This ensures the main app's UI stays in sync even when the app is in the background
      */
     private val masterSwitchListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key == KEY_MASTER_SWITCH_ENABLED) {
+        if (key == KEY_MASTER_SWITCH_ENABLED || key == "master_snoozed_until") {
             // Check if we need to update the UI
             val currentState = isMasterSwitchEnabled(this)
-            val switchState = binding.switchMasterControl.isChecked
             
-            if (currentState != switchState) {
-                Log.d(TAG, "MainActivity: Detected master switch change via SharedPreferences - current: $currentState, switch: $switchState")
-                
-                // Update UI on main thread
-                runOnUiThread {
-                    // Temporarily remove listener to prevent infinite loop
-                    binding.switchMasterControl.setOnCheckedChangeListener(null)
-                    
-                    // Update switch to match current state
-                    binding.switchMasterControl.isChecked = currentState
-                    
-                    // Update status text
-                    if (currentState) {
-                        binding.textMasterSwitchStatus.text = getString(R.string.main_master_switch_enabled)
-                        binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.purple_200))
-                    } else {
-                        binding.textMasterSwitchStatus.text = getString(R.string.main_master_switch_disabled)
-                        binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.red_200))
-                    }
-                    
-                    // Restore listener
-                    binding.switchMasterControl.setOnCheckedChangeListener { _, isChecked ->
-                        handleMasterSwitchToggle(isChecked)
-                    }
-                    
-                    Log.d(TAG, "MainActivity: UI synced via SharedPreferences listener")
-                    InAppLogger.log("QuickSettingsSync", "MainActivity UI synced via SharedPreferences: $currentState")
-                }
+            Log.d(TAG, "MainActivity: Detected master switch change via SharedPreferences")
+            
+            // Update UI on main thread
+            runOnUiThread {
+                updateServiceStatus()
+                Log.d(TAG, "MainActivity: UI synced via SharedPreferences listener")
+                InAppLogger.log("QuickSettingsSync", "MainActivity UI synced via SharedPreferences: $currentState")
             }
         }
     }
@@ -203,7 +181,14 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
          */
         fun isMasterSwitchEnabled(context: android.content.Context): Boolean {
             val prefs = context.getSharedPreferences(PREFS_NAME, android.content.Context.MODE_PRIVATE)
-            return prefs.getBoolean(KEY_MASTER_SWITCH_ENABLED, true) // Default to enabled
+            val isEnabled = prefs.getBoolean(KEY_MASTER_SWITCH_ENABLED, true) // Default to enabled
+            if (!isEnabled) return false
+            
+            val snoozedUntil = prefs.getLong("master_snoozed_until", 0L)
+            if (System.currentTimeMillis() < snoozedUntil) {
+                return false
+            }
+            return true
         }
     }
     
@@ -467,16 +452,32 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     private fun updateServiceStatus() {
         val isEnabled = isNotificationServiceEnabled()
         val isMasterEnabled = sharedPreferences?.getBoolean(KEY_MASTER_SWITCH_ENABLED, true) ?: true
+        val snoozedUntil = sharedPreferences?.getLong("master_snoozed_until", 0L) ?: 0L
+        val isSnoozed = System.currentTimeMillis() < snoozedUntil
         
         // Update master switch state
         binding.switchMasterControl.setOnCheckedChangeListener(null) // Prevent infinite loop
-        binding.switchMasterControl.isChecked = isMasterEnabled
+        binding.switchMasterControl.isChecked = isMasterEnabled && !isSnoozed
+        
+        if (isSnoozed) {
+            binding.switchMasterControl.trackTintList = android.content.res.ColorStateList.valueOf(
+                ContextCompat.getColor(this, R.color.switch_track_color)
+            )
+        } else {
+            binding.switchMasterControl.trackTintList = ContextCompat.getColorStateList(this, R.color.switch_track_color)
+        }
+        
         binding.switchMasterControl.setOnCheckedChangeListener { _, isChecked ->
             handleMasterSwitchToggle(isChecked)
         }
         
         // Update master switch status text
-        if (isMasterEnabled) {
+        if (isSnoozed) {
+            val dateFormat = java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault())
+            val timeString = dateFormat.format(java.util.Date(snoozedUntil))
+            binding.textMasterSwitchStatus.text = "Paused until $timeString"
+            binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this, R.color.orange_300))
+        } else if (isMasterEnabled) {
             binding.textMasterSwitchStatus.text = getString(R.string.main_master_switch_enabled)
             binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this, R.color.purple_card_text_secondary))
         } else {

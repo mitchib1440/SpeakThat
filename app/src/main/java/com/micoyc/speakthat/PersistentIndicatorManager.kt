@@ -68,7 +68,26 @@ object PersistentIndicatorManager {
 
         val title = context.getString(R.string.main_notification_title_active)
         val content = context.getString(R.string.main_notification_content_tap_settings)
-        val actionLabel = context.getString(R.string.main_notification_action_open_app)
+
+        // Create intent for pausing master switch
+        val pauseMasterIntent = Intent(context, PauseOptionsActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra("EXTRA_MODE", "MASTER")
+        }
+        val pauseMasterPendingIntent = PendingIntent.getActivity(
+            context, 1, pauseMasterIntent, 
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        
+        // Create intent for pausing rules
+        val pauseRulesIntent = Intent(context, PauseOptionsActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra("EXTRA_MODE", "RULES")
+        }
+        val pauseRulesPendingIntent = PendingIntent.getActivity(
+            context, 2, pauseRulesIntent, 
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
 
         val notification = NotificationCompat.Builder(context, SpeakThatNotificationChannel.CHANNEL_ID)
             .setContentTitle(title)
@@ -80,7 +99,8 @@ object PersistentIndicatorManager {
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setContentIntent(openAppPendingIntent)
             .setVisibility(NotificationCompat.VISIBILITY_SECRET)
-            .addAction(R.drawable.speakthaticon, actionLabel, openAppPendingIntent)
+            .addAction(R.drawable.speakthaticon, "Pause", pauseMasterPendingIntent)
+            .addAction(R.drawable.speakthaticon, "Pause Rules", pauseRulesPendingIntent)
             .build()
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {

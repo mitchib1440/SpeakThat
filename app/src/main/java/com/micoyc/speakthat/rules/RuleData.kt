@@ -456,7 +456,8 @@ data class Rule(
     val triggerLogic: LogicGate = LogicGate.AND,
     val exceptionLogic: LogicGate = LogicGate.AND,
     val createdAt: Long = System.currentTimeMillis(),
-    val modifiedAt: Long = System.currentTimeMillis()
+    val modifiedAt: Long = System.currentTimeMillis(),
+    var snoozedUntil: Long? = null
 ) {
     companion object {
         private fun generateId(): String = "rule_${System.currentTimeMillis()}_${(0..999).random()}"

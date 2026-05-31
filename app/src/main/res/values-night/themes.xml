@@ -32,6 +32,16 @@
         <item name="windowNoTitle">true</item>
     </style>
     
+    <!-- Transparent Theme for Dialog Activities -->
+    <style name="Theme.SpeakThat.Transparent" parent="Theme.SpeakThat.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+    
     <!-- Custom TextInputLayout style with forced white hint text -->
     <style name="WhiteHintTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textColorHint">@color/white_100</item>

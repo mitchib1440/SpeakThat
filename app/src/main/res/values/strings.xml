@@ -2625,5 +2625,10 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="badge_option_amethyst">Amethyst</string>
     <string name="badge_option_ruby">Ruby</string>
     <string name="badge_option_diamond">Diamond</string>
+    <string name="activity_pause_options_until_next_hour">Until next hour</string>
+    <string name="activity_pause_options_for_one_hour">For an hour</string>
+    <string name="activity_pause_options_indefinitely">Until you turn it back on</string>
+    <string name="activity_pause_options_title">Pause SpeakThat!</string>
+    <string name="activity_pause_options_description">Duration:</string>
 
 </resources>

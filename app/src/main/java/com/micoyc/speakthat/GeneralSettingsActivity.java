@@ -325,6 +325,15 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         toastAutomationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             sharedPreferences.edit().putBoolean(com.micoyc.speakthat.MasterSwitchController.KEY_TOAST_AUTOMATION, isChecked).apply();
         });
+
+        // Notification Action Toast
+        MaterialSwitch toastNotificationActionSwitch = binding.switchToastNotificationAction;
+        boolean toastNotificationActionEnabled = sharedPreferences.getBoolean("toast_notification_action_enabled", true);
+        toastNotificationActionSwitch.setChecked(toastNotificationActionEnabled);
+
+        toastNotificationActionSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean("toast_notification_action_enabled", isChecked).apply();
+        });
     }
 
     private void setupAutoUpdateSettings() {
