@@ -1644,6 +1644,9 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="wave_calibration_how_it_works">💡 How it works:</string>
     <string name="wave_calibration_instructions">• Move your hand closer and farther from the sensor for 8 seconds\n• I\'ll record sensor readings every 50ms\n• Need at least 20 readings for calibration\n• Set threshold to 60% of maximum distance detected</string>
     <string name="wave_calibration_start">Start Calibration</string>
+    <string name="wave_calibration_recalibrate">Recalibrate</string>
+    <string name="wave_calibration_save_settings">This Works! Save Settings</string>
+    <string name="wave_calibration_disable">Turn Wave-to-Stop Off</string>
 
 
 

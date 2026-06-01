@@ -292,7 +292,46 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         stopShakeListening()
         InAppLogger.logAppLifecycle("MainActivity paused")
     }
-    
+
+    // ============================================
+    // check to see if this is the Play edition and if there are any unsupported rules as of v1.8.5
+    private fun checkPlayStoreRuleCompatibility() {
+        // 1. Check if this is the Play Store build
+        if (com.micoyc.speakthat.BuildConfig.HAS_ACCESSIBILITY) {
+            return // Feature is supported, do nothing
+        }
+
+        // 2. Check if the warning was already dismissed
+        val prefs = getSharedPreferences("SpeakThatPrefs", Context.MODE_PRIVATE)
+        if (prefs.getBoolean("PLAY_FOREGROUND_WARNING_SEEN", false)) {
+            return // User already dismissed it
+        }
+
+        // 3. Check if any rules contain the unsupported condition
+        val ruleManager = com.micoyc.speakthat.rules.RuleManager(this)
+        val rules = ruleManager.getAllRules() 
+        val hasConflictingRule = rules.any { it.requiresAccessibilityService() }
+
+        // 4. Show the warning if needed
+        if (hasConflictingRule) {
+            val warningCard = findViewById<android.view.View>(R.id.cardPlayStoreWarning)
+            val dismissButton = findViewById<android.view.View>(R.id.buttonDismissPlayStoreWarning)
+            
+            warningCard?.visibility = android.view.View.VISIBLE
+            
+            dismissButton?.setOnClickListener {
+                warningCard?.visibility = android.view.View.GONE
+                prefs.edit().putBoolean("PLAY_FOREGROUND_WARNING_SEEN", true).apply()
+            }
+            
+            // Clicking the card itself takes them to the rules screen
+            warningCard?.setOnClickListener {
+                startActivity(Intent(this, com.micoyc.speakthat.RulesActivity::class.java))
+            }
+        }
+    }
+    // ============================================
+
     override fun onDestroy() {
         super.onDestroy()
         // Unregister voice settings listener
@@ -337,6 +376,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Update statistics display
         updateStatisticsDisplay()
         updateBadgeLogo()
+        
+        checkPlayStoreRuleCompatibility()
 
         val showHistory = sharedPreferences?.getBoolean("show_history_on_main", true) ?: true
         binding.cardNotificationHistory.visibility = if (showHistory) View.VISIBLE else View.GONE

@@ -473,7 +473,16 @@ data class Rule(
             }
         }
     }
-    
+
+    // ============================================================================
+    // required check for new google play requirement, can be removed much further on.
+    fun requiresAccessibilityService(): Boolean {
+        val hasForegroundTrigger = triggers.any { it.type == TriggerType.FOREGROUND_APP }
+        val hasForegroundException = exceptions.any { it.type == ExceptionType.FOREGROUND_APP }
+        return hasForegroundTrigger || hasForegroundException
+    }
+    // ============================================================================
+
     fun getLogMessage(): String {
         return "Rule[$id]: '$name' - ${if (enabled) "ENABLED" else "DISABLED"} - " +
                "${triggers.size} triggers (${triggerLogic.displayName}), " +
