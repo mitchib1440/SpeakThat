@@ -205,86 +205,70 @@
                             android:textColor="@color/purple_card_text_secondary"
                             android:layout_marginBottom="16dp" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="12dp"
-                            android:gravity="center_vertical">
-
-                            <TextView
-                                android:id="@+id/txtPriorityAppsCount"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:textColor="@color/purple_card_text_primary"
-                                android:textStyle="bold"
-                                android:textSize="16sp"
-                                android:text="@string/filter_app_count" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btnManagePriorityApps"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/filter_manage_apps"
-                                android:backgroundTint="@color/white_100"
-                                android:textColor="@color/purple_base" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="12dp"
-                            android:visibility="gone">
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginEnd="8dp"
-                                app:boxBackgroundMode="outline"
-                                app:boxStrokeColor="@color/white_100"
-                                app:hintTextColor="@color/purple_card_text_secondary">
-
-                                <AutoCompleteTextView
-                                    android:id="@+id/editPriorityApp"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:minHeight="56dp"
-                                    android:hint="@string/hint_search_apps_or_package"
-                                    android:inputType="text"
-                                    android:completionThreshold="1"
-                                    android:dropDownHeight="200dp"
-                                    android:textSize="16sp"
-                                    android:textColor="@color/purple_card_text_primary"
-                                    android:textColorHint="@color/purple_card_text_secondary"
-                                    android:paddingStart="16dp"
-                                    android:paddingEnd="16dp"
-                                    android:paddingTop="16dp"
-                                    android:paddingBottom="16dp" />
-
-                            </com.google.android.material.textfield.TextInputLayout>
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btnAddPriorityApp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/button_add"
-                                android:backgroundTint="@color/white_100"
-                                android:textColor="@color/purple_base" />
-
-                        </LinearLayout>
-
-                        <!-- Priority Apps List -->
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerPriorityApps"
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnManagePriorityApps"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
-                            android:nestedScrollingEnabled="false"
-                            android:visibility="gone" />
+                            android:text="@string/filter_manage_apps"
+                            style="@style/PrimaryButton" />
+
+                        <!-- Priority Apps List Header (Collapsible) -->
+                        <LinearLayout
+                            android:id="@+id/priorityAppsHeader"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:padding="8dp"
+                            android:layout_marginBottom="8dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/filter_app_list_button"
+                                android:textStyle="bold"
+                                android:textSize="16sp"
+                                android:textColor="@color/purple_card_text_primary" />
+
+                            <TextView
+                                android:id="@+id/txtPriorityAppsCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/filter_app_count"
+                                android:textSize="12sp"
+                                android:textColor="@color/purple_card_text_secondary"
+                                android:layout_marginEnd="8dp" />
+
+                            <ImageView
+                                android:id="@+id/iconPriorityApps"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@android:drawable/arrow_up_float"
+                                android:contentDescription="Toggle priority app list" />
+
+                        </LinearLayout>
+
+                        <!-- Priority Apps List Content -->
+                        <LinearLayout
+                            android:id="@+id/priorityAppsContent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="visible">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/recyclerPriorityApps"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:nestedScrollingEnabled="false" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -1720,6 +1704,8 @@
 
             <!-- Press to Stop Section -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/pressToStopCard"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -1747,8 +1733,8 @@
                             android:layout_height="24dp"
                             android:layout_marginEnd="16dp"
                             android:src="@drawable/ic_mobile_hand_24"
-                            android:tint="@color/white_100"
-                            android:contentDescription="Press to Stop" />
+                            android:contentDescription="Press to Stop"
+                            app:tint="@color/white_100" />
 
                         <TextView
                             android:layout_width="wrap_content"

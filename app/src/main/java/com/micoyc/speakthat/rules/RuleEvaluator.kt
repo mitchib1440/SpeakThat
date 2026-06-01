@@ -114,6 +114,24 @@ class RuleEvaluator(private val context: Context) {
             )
         }
         
+        // Skip snoozed rules
+        val snoozedUntil = rule.snoozedUntil
+        if (snoozedUntil != null && System.currentTimeMillis() < snoozedUntil) {
+            InAppLogger.logDebug(TAG, "Rule '${rule.name}' is temporarily paused until $snoozedUntil, skipping evaluation")
+            return RuleEvaluationResult(
+                ruleId = rule.id,
+                ruleName = rule.name,
+                triggersMet = false,
+                exceptionsMet = false,
+                shouldExecute = false,
+                triggerResults = emptyList(),
+                exceptionResults = emptyList(),
+                rawTriggerResults = emptyList(),
+                rawExceptionResults = emptyList(),
+                message = "Rule is temporarily paused"
+            )
+        }
+        
         // Evaluate triggers
         val triggerEvaluation = evaluateTriggers(rule.triggers, rule.triggerLogic, notificationContext)
         val triggerResults = triggerEvaluation.gatedResults

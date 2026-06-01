@@ -177,6 +177,10 @@ class TriggerConfigActivity : AppCompatActivity() {
     }
 
     private fun setupForegroundAppUI() {
+        if (!com.micoyc.speakthat.BuildConfig.HAS_ACCESSIBILITY) {
+            binding.cardForegroundApp.visibility = View.GONE
+            return
+        }
         binding.cardForegroundApp.visibility = View.VISIBLE
         binding.textForegroundAppDescription.text = getString(R.string.trigger_foreground_app_description)
         binding.btnManageForegroundApps.setOnClickListener {

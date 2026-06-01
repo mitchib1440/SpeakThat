@@ -27,6 +27,7 @@ class RulesAdapter(
     class RuleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textRuleName: TextView = view.findViewById(R.id.textRuleName)
         val textRuleSummary: TextView = view.findViewById(R.id.textRuleSummary)
+        val textRulePaused: TextView = view.findViewById(R.id.textRulePaused)
         val textRuleDescription: TextView = view.findViewById(R.id.textRuleDescription)
         val switchEnabled: com.google.android.material.materialswitch.MaterialSwitch = view.findViewById(R.id.switchRuleEnabled)
         val buttonDelete: MaterialButton = view.findViewById(R.id.buttonDeleteRule)
@@ -50,12 +51,36 @@ class RulesAdapter(
         // Temporarily remove listener to prevent recursive calls
         holder.switchEnabled.setOnCheckedChangeListener(null)
         
+        val snoozedUntil = rule.snoozedUntil
+        val isSnoozed = snoozedUntil != null && System.currentTimeMillis() < snoozedUntil
+        
         // Set enabled state
-        holder.switchEnabled.isChecked = rule.enabled
+        holder.switchEnabled.isChecked = rule.enabled && !isSnoozed
+        
+        if (isSnoozed) {
+            holder.switchEnabled.trackTintList = android.content.res.ColorStateList.valueOf(
+                androidx.core.content.ContextCompat.getColor(holder.itemView.context, R.color.orange_200)
+            )
+            holder.textRulePaused.visibility = View.VISIBLE
+            val dateFormat = java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault())
+            val timeString = dateFormat.format(java.util.Date(snoozedUntil!!))
+            holder.textRulePaused.text = "⏸ Paused until $timeString"
+        } else {
+            holder.switchEnabled.trackTintList = androidx.core.content.ContextCompat.getColorStateList(
+                holder.itemView.context, R.color.switch_track_color
+            )
+            holder.textRulePaused.visibility = View.GONE
+        }
         
         // Set up click listeners
         holder.switchEnabled.setOnCheckedChangeListener { _, isChecked ->
-            onToggleRule(rule, isChecked)
+            if (isChecked && isSnoozed) {
+                // Clear snooze when explicitly enabled
+                rule.snoozedUntil = null
+                onToggleRule(rule, true)
+            } else {
+                onToggleRule(rule, isChecked)
+            }
         }
         
         // Set up delete button click listener

@@ -325,6 +325,15 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         toastAutomationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             sharedPreferences.edit().putBoolean(com.micoyc.speakthat.MasterSwitchController.KEY_TOAST_AUTOMATION, isChecked).apply();
         });
+
+        // Notification Action Toast
+        MaterialSwitch toastNotificationActionSwitch = binding.switchToastNotificationAction;
+        boolean toastNotificationActionEnabled = sharedPreferences.getBoolean("toast_notification_action_enabled", true);
+        toastNotificationActionSwitch.setChecked(toastNotificationActionEnabled);
+
+        toastNotificationActionSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean("toast_notification_action_enabled", isChecked).apply();
+        });
     }
 
     private void setupAutoUpdateSettings() {
@@ -381,6 +390,12 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         // Accessibility Permission Button
         // Using findViewById instead of binding due to binding generation issue
         android.view.View accessibilityButton = findViewById(R.id.buttonAccessibilityPermission);
+        if (!com.micoyc.speakthat.BuildConfig.HAS_ACCESSIBILITY) {
+            if (accessibilityButton != null) {
+                accessibilityButton.setVisibility(android.view.View.GONE);
+            }
+            return;
+        }
         if (accessibilityButton != null) {
             accessibilityButton.setOnClickListener(v -> {
                 // Check if accessibility service is already enabled
@@ -400,6 +415,9 @@ public class GeneralSettingsActivity extends AppCompatActivity {
      * Similar to how notification listener permission is checked
      */
     private boolean isAccessibilityServiceEnabled() {
+        if (!com.micoyc.speakthat.BuildConfig.HAS_ACCESSIBILITY) {
+            return false;
+        }
         String packageName = getPackageName();
         String serviceName = packageName + "/com.micoyc.speakthat.SpeakThatAccessibilityService";
         

@@ -41,7 +41,10 @@ object MasterSwitchController {
     fun setEnabled(context: Context, enabled: Boolean, source: String? = null): Boolean {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val previous = prefs.getBoolean(KEY_MASTER_SWITCH_ENABLED, true)
-        if (previous == enabled) {
+        val snoozedUntil = prefs.getLong("master_snoozed_until", 0L)
+        val isSnoozed = System.currentTimeMillis() < snoozedUntil
+        
+        if (previous == enabled && (!enabled || !isSnoozed)) {
             InAppLogger.logDebug(
                 "MasterSwitch",
                 "Ignoring request from ${source ?: "unknown"}; already ${if (enabled) "enabled" else "disabled"}"
@@ -49,7 +52,12 @@ object MasterSwitchController {
             return false
         }
 
-        prefs.edit().putBoolean(KEY_MASTER_SWITCH_ENABLED, enabled).apply()
+        val editor = prefs.edit()
+        editor.putBoolean(KEY_MASTER_SWITCH_ENABLED, enabled)
+        if (enabled) {
+            editor.putLong("master_snoozed_until", 0L) // Clear snooze when explicitly enabled
+        }
+        editor.apply()
         manageNotifications(context, enabled, prefs)
 
         InAppLogger.logSettingsChange("Master Switch", previous.toString(), enabled.toString())
@@ -122,6 +130,26 @@ object MasterSwitchController {
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
 
+                // Create intent for pausing master switch
+                val pauseMasterIntent = Intent(context, PauseOptionsActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    putExtra("EXTRA_MODE", "MASTER")
+                }
+                val pauseMasterPendingIntent = PendingIntent.getActivity(
+                    context, 1, pauseMasterIntent, 
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+                
+                // Create intent for pausing rules
+                val pauseRulesIntent = Intent(context, PauseOptionsActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    putExtra("EXTRA_MODE", "RULES")
+                }
+                val pauseRulesPendingIntent = PendingIntent.getActivity(
+                    context, 2, pauseRulesIntent, 
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+
                 val notification = NotificationCompat.Builder(context, CHANNEL_ID)
                     .setContentTitle(context.getString(R.string.main_notification_title_active))
                     .setContentText(context.getString(R.string.main_notification_content_tap_settings))
@@ -130,7 +158,8 @@ object MasterSwitchController {
                     .setSilent(true)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setContentIntent(pendingIntent)
-                    .addAction(R.drawable.speakthaticon, "Open SpeakThat!", pendingIntent)
+                    .addAction(R.drawable.speakthaticon, "Pause", pauseMasterPendingIntent)
+                    .addAction(R.drawable.speakthaticon, "Pause Rules", pauseRulesPendingIntent)
                     .build()
 
                 notificationManager.notify(NOTIFICATION_ID_PERSISTENT, notification)

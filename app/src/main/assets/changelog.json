@@ -1,46 +1,46 @@
 [
   {
-    "text": "Fixed the Material You icon not working.",
+    "text": "Added Temporary Pause options.",
     "subpoints": [
-      "I'm not sure how long this one was broken for but it's all good now!"
+      "When the persistent notification is enabled in General Settings, it has two new action buttons that allow you to pause SpeakThat or its rules temporarily!"
     ]
   },
   {
-    "text": "Fixed SpeakThat's main screen logo's inconsistent spacing.",
+    "text": "Advanced Voice Options section has been improved and consolidated.",
     "subpoints": [
-      "The gap between Bugdroid's head and the text was slightly too big. Not a big deal at all but this one really annoyed me lol"
+      "Now allows selection of specific voices and engines rather than it all being split up. Language Preset still works the same."
     ]
   },
   {
-    "text": "Added Exclusion Text to Emoji Removal.",
+    "text": "Skip Repeated Prefix no longer applies to Private Mode.",
     "subpoints": [
-      "You can add text under the Emoji Removal option to specify when you would like emojis to remain in the text.",
-      "This is especially useful for when someone reacts to your message. Just type “reacted”, into the text box"
+      "Previously, if two consecutive private notifications were read, but one had a different app, only the app name would be read. This has been fixed now."
     ]
   },
   {
-    "text": "Added Keep Emojis to Conditional Rules.",
+    "text": "Accessibility Service has been removed from the Play Store edition.",
     "subpoints": [
-      "Similar in function to the exclusion text mentioned above, but baked into the Conditional Rules engine for even finer control."
+      "Google has been throwing a hissy fit over this lately and they want me to clutter the home screen of the app with a legal disclosure. Sod that.",
+      "If any of the accessibility features were important to you, you just need to export your settings and re-download the app from outside the Play Store. See the website for details!",
+      "www.speakthat.app"
     ]
   },
   {
-    "text": "Added Force Lowercase to Tidy Speech.",
+    "text": "Filter Empty Text is now part of the Remove Emojis tool.",
     "subpoints": [
-      "This happens at the very end of the pipeline right before the text is sent to your voice engine."
+      "Ultimately this feature exists to ensure that notifications that would just announce an emoji will not be read when emoji removal is enabled."
     ]
   },
   {
-    "text": "Added Force Lowercase to Tidy Speech.",
+    "text": "Priority Apps now appear as an App List under Notification Behaviour.",
     "subpoints": [
-      "This happens at the very end of the pipeline right before the text is sent to your voice engine."
+      "You previously needed to press the Manage Apps button to view the currently selected Priority Apps. Not any more!."
     ]
   },
   {
-    "text": "Added customisable main screen logo.",
+    "text": "Minor UI polish.",
     "subpoints": [
-      "A purely cosmetic option, you can now unlock home screen logos in various colours based on how many notifications SpeakThat has read.",
-      "This used to be an exclusive to the paying donators on the Google Play Store, but they and everyone else now has a way to unlock this customisation for free!"
+      "Filter settings spacing has been more clearly defined as it was inconsistent with the rest of the app."
     ]
   }
 ]

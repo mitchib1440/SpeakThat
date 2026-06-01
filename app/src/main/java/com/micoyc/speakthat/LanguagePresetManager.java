@@ -376,6 +376,10 @@ public class LanguagePresetManager {
             InAppLogger.log(TAG, "Preset applied - set specific voice: " + preset.defaultVoice);
         }
         
+        // Clear TTS engine to reset to system default
+        editor.remove("tts_engine_package");
+        InAppLogger.log(TAG, "Preset applied - cleared TTS engine, letting system choose");
+        
         editor.apply();
         
         // Save the preset itself
@@ -429,7 +433,7 @@ public class LanguagePresetManager {
     /**
      * Apply UI language change immediately to the current activity
      */
-    private static void applyUILanguageChange(Context context, String uiLocale) {
+    public static void applyUILanguageChange(Context context, String uiLocale) {
         try {
             Locale targetLocale = parseLocaleString(uiLocale);
             

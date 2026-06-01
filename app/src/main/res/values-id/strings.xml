@@ -1042,7 +1042,7 @@
     <string name="filter_word_whitelist">Daftar putih</string>
     <string name="filter_word_blacklist">Daftar hitam</string>
     <string name="filter_empty_text_title">Filter teks kosong</string>
-    <string name="filter_empty_text_description">Cegah SpeakThat membacakan notifikasi yang tidak mengandung teks</string>
+    <string name="filter_empty_text_description">Jangan bacakan notifikasi jika teks kosong setelah penghapusan emoji</string>
     <string name="filter_word_list_header">Daftar Kata</string>
     <string name="filter_word_blacklist_title">Palabras prohibidas</string>
     <string name="filter_word_blacklist_description">Blokir atau jadikan pribadi notifikasi yang mengandung kata tertentu</string>

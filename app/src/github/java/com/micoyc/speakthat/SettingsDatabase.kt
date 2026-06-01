@@ -278,25 +278,59 @@ object SettingsDatabase {
             ),
             SettingsItem(
                 id = "voice_selection",
-                title = "Voice Selection",
+                title = "Specific Voice",
                 description = "Choose which voice to use for speech",
                 category = "voice",
                 categoryTitle = "Voice Settings",
                 categoryIcon = "🎙️",
                 settingType = SettingType.SPINNER,
-                searchKeywords = listOf("voice", "selection", "choose", "tts", "speaker", "person"),
-                navigationAction = { context.startActivity(Intent(context, VoiceSettingsActivity::class.java)) }
+                searchKeywords = listOf("voice", "selection", "choose", "tts", "speaker", "person", "specific"),
+                navigationAction = { 
+                    val intent = Intent(context, VoiceSettingsActivity::class.java)
+                    intent.putExtra("expand_advanced", true)
+                    context.startActivity(intent)
+                }
             ),
             SettingsItem(
                 id = "language",
-                title = "Language",
+                title = "Language Preset",
                 description = "Choose the language for speech",
                 category = "voice",
                 categoryTitle = "Voice Settings",
                 categoryIcon = "🎙️",
                 settingType = SettingType.SPINNER,
-                searchKeywords = listOf("language", "locale", "speech", "voice", "tts"),
+                searchKeywords = listOf("language", "locale", "speech", "voice", "tts", "preset"),
                 navigationAction = { context.startActivity(Intent(context, VoiceSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "ui_language",
+                title = "UI Language",
+                description = "Choose the language for the app interface",
+                category = "voice",
+                categoryTitle = "Voice Settings",
+                categoryIcon = "🎙️",
+                settingType = SettingType.SPINNER,
+                searchKeywords = listOf("language", "locale", "ui", "interface", "app"),
+                navigationAction = { 
+                    val intent = Intent(context, VoiceSettingsActivity::class.java)
+                    intent.putExtra("expand_advanced", true)
+                    context.startActivity(intent)
+                }
+            ),
+            SettingsItem(
+                id = "tts_language",
+                title = "TTS Language",
+                description = "Choose the language for the TTS engine",
+                category = "voice",
+                categoryTitle = "Voice Settings",
+                categoryIcon = "🎙️",
+                settingType = SettingType.SPINNER,
+                searchKeywords = listOf("language", "locale", "tts", "engine", "speech"),
+                navigationAction = { 
+                    val intent = Intent(context, VoiceSettingsActivity::class.java)
+                    intent.putExtra("expand_advanced", true)
+                    context.startActivity(intent)
+                }
             ),
             SettingsItem(
                 id = "preview_voice",
@@ -318,7 +352,11 @@ object SettingsDatabase {
                 categoryIcon = "🎙️",
                 settingType = SettingType.SPINNER,
                 searchKeywords = listOf("engine", "tts", "voice", "speech", "google", "samsung", "text to speech"),
-                navigationAction = { context.startActivity(Intent(context, VoiceSettingsActivity::class.java)) }
+                navigationAction = { 
+                    val intent = Intent(context, VoiceSettingsActivity::class.java)
+                    intent.putExtra("expand_advanced", true)
+                    context.startActivity(intent)
+                }
             ),
             SettingsItem(
                 id = "tts_volume",

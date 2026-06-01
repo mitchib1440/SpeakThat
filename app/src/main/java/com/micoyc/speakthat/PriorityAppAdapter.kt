@@ -8,10 +8,12 @@
 package com.micoyc.speakthat
 
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.micoyc.speakthat.settings.BehaviorSettingsActivity
@@ -31,8 +33,11 @@ class PriorityAppAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val packageName = items[position]
+        val context = holder.itemView.context
 
-        holder.textAppName.text = resolveAppName(holder.itemView.context, packageName)
+        holder.textAppName.text = resolveAppName(context, packageName)
+        holder.textPackageName.text = packageName
+        bindAppIcon(context, packageName, holder.imageAppIcon)
 
         // Set up remove button listener with null safety
         holder.buttonRemove.setOnClickListener {
@@ -46,7 +51,9 @@ class PriorityAppAdapter(
     override fun getItemCount(): Int = items.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val imageAppIcon: ImageView = itemView.findViewById(R.id.imageAppIcon)
         val textAppName: TextView = itemView.findViewById(R.id.textAppName)
+        val textPackageName: TextView = itemView.findViewById(R.id.textPackageName)
         val buttonRemove: ImageButton = itemView.findViewById(R.id.buttonRemove)
     }
 
@@ -70,5 +77,17 @@ class PriorityAppAdapter(
 
         appNameCache[packageName] = displayName
         return displayName
+    }
+
+    private fun bindAppIcon(context: android.content.Context, packageName: String, imageView: ImageView) {
+        val pm = context.packageManager
+        try {
+            val icon: Drawable = pm.getApplicationIcon(packageName)
+            imageView.setImageDrawable(icon)
+        } catch (_: PackageManager.NameNotFoundException) {
+            imageView.setImageResource(R.drawable.ic_icon_not_found_32)
+        } catch (_: RuntimeException) {
+            imageView.setImageResource(R.drawable.ic_icon_not_found_32)
+        }
     }
 }

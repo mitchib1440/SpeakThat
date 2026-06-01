@@ -341,6 +341,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
 
         // Set up tidy speech switch
         binding.switchRemoveEmojis.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateEmojiRemovalSectionVisibility(isChecked);
             saveTidySpeechRemoveEmojis(isChecked);
         });
 
@@ -508,6 +509,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         // Load tidy speech settings
         boolean removeEmojis = sharedPreferences.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false); // Default to disabled
         binding.switchRemoveEmojis.setChecked(removeEmojis);
+        updateEmojiRemovalSectionVisibility(removeEmojis);
         
         boolean forceLowercase = sharedPreferences.getBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, false); // Default to disabled
         binding.switchForceLowercase.setChecked(forceLowercase);
@@ -1084,6 +1086,12 @@ public class FilterSettingsActivity extends AppCompatActivity {
             binding.blacklistContent.setVisibility(View.VISIBLE);
             binding.iconBlacklist.setImageResource(android.R.drawable.arrow_up_float);
         }
+    }
+
+    private void updateEmojiRemovalSectionVisibility(boolean removeEmojisEnabled) {
+        binding.layoutEmojiRemovalSection.setVisibility(
+            removeEmojisEnabled ? View.VISIBLE : View.GONE
+        );
     }
 
     private void toggleReplacement() {

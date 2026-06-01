@@ -2087,7 +2087,7 @@ Bloque=ignore totalement, Privée=annonce de façon privée
     <string name="behavior_skip_repeated_prefix_description">Quand activé, les notifications consécutives débutant par les mêmes mots (comme des noms de contact ou de groupe) supprimerons le préfixe répété et ne liront que le texte changeant.</string>
     <string name="behavior_skip_repeated_prefix_tip">Recommandé pour les discussions de groupe</string>
     <string name="filter_empty_text_title">Filtrer les textes vides</string>
-    <string name="filter_empty_text_description">Empêche SpeakThat de lire les notifications qui ne contiennent pas de texte</string>
+    <string name="filter_empty_text_description">Ne pas lire la notification si le texte est vide après suppression des emojis</string>
     <string name="behavior_skip_repeated_prefix_title">Sauter le préfixe répété</string>
     <string name="behavior_prefix_memory_timeout_label">Durée de mémorisation de préfixe</string>
     <string name="behavior_prefix_memory_timeout_value">%d secondes</string>

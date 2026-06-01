@@ -3483,8 +3483,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             InAppLogger.logFilter("Rule effect: override TTS voice")
         }
 
-        if (checkEmptyBlocks(finalProcessedBlocks, requiredBlocks.isNotEmpty())) {
-            return FilterResult(false, "", "Empty text")
+        if (shouldFilterEmojiEmptyText(sbn, text, notificationContext.shouldKeepEmojis)) {
+            return FilterResult(false, "", "Empty text after emoji removal")
         }
 
         val finalSpeechTemplateOverride = meatGrinderResult.speechTemplateOverride ?: effectiveSpeechTemplateOverride
@@ -3723,20 +3723,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
 
             // TIDY SPEECH
-            if (tidySpeechRemoveEmojisEnabled && !shouldKeepEmojis) {
-                var keepEmojis = false
-                for (keyword in emojiExceptionsList) {
-                    if (text.contains(keyword, ignoreCase = true)) {
-                        keepEmojis = true
-                        break
-                    }
-                }
-                if (!keepEmojis) {
-                    text = removeSpokenEmojis(text)
-                }
-            } else if (tidySpeechRemoveEmojisEnabled && shouldKeepEmojis) {
+            if (tidySpeechRemoveEmojisEnabled && shouldKeepEmojis) {
                 InAppLogger.logFilter("Emojis kept due to Rule Engine action")
             }
+            text = applyEmojiRemovalIfEnabled(text, shouldKeepEmojis)
 
             processedBlocks[key] = text
         }
@@ -3755,14 +3745,51 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         return Pair(FilterResult(true, "", "Passed all filters"), processedBlocks)
     }
 
-    private fun checkEmptyBlocks(blocks: Map<String, String>, requireContentBlocks: Boolean): Boolean {
-        if (!filterEmptyTextEnabled) return false
-        if (!requireContentBlocks || blocks.isEmpty()) return false
+    private fun applyEmojiRemovalIfEnabled(text: String, shouldKeepEmojis: Boolean): String {
+        if (!tidySpeechRemoveEmojisEnabled || shouldKeepEmojis) return text
+        for (keyword in emojiExceptionsList) {
+            if (text.contains(keyword, ignoreCase = true)) return text
+        }
+        return removeSpokenEmojis(text)
+    }
 
-        val allEmpty = blocks.values.all { isEffectivelyEmpty(it) }
-        if (allEmpty) {
-            Log.d(TAG, "All requested content blocks are effectively empty. Aborting readout.")
-            InAppLogger.logFilter("Notification blocked: All content blocks evaluate to empty text.")
+    private fun shouldFilterEmojiEmptyText(
+        sbn: StatusBarNotification?,
+        fallbackText: String,
+        shouldKeepEmojis: Boolean
+    ): Boolean {
+        if (!tidySpeechRemoveEmojisEnabled || !filterEmptyTextEnabled) return false
+
+        val rawText: String
+        val rawBigText: String
+        if (sbn?.notification != null) {
+            val extras = sbn.notification.extras
+            rawText = extras?.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
+            rawBigText = extras?.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
+        } else {
+            rawText = fallbackText
+            rawBigText = ""
+        }
+
+        val fieldsWithContent = listOf(
+            "text" to rawText,
+            "bigtext" to rawBigText
+        ).filter { (_, value) -> value.isNotBlank() }
+
+        if (fieldsWithContent.isEmpty()) return false
+
+        val allEmptyAfterEmojiRemoval = fieldsWithContent.all { (fieldName, rawValue) ->
+            val afterRemoval = applyEmojiRemovalIfEnabled(rawValue, shouldKeepEmojis)
+            val empty = isEffectivelyEmpty(afterRemoval)
+            if (empty) {
+                Log.d(TAG, "Field '$fieldName' is effectively empty after emoji removal")
+            }
+            empty
+        }
+
+        if (allEmptyAfterEmojiRemoval) {
+            Log.d(TAG, "text/bigtext fields empty after emoji removal. Aborting readout.")
+            InAppLogger.logFilter("Notification blocked: text/bigtext empty after emoji removal")
             return true
         }
         return false
@@ -7680,8 +7707,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         return processedTemplate.trim()
     }
 
+    // Skip Repeated Notification Prefix added by RoboMWM
     private fun collapseRepeatedNotificationPrefix(fullText: String): String {
         if (!skipRepeatedNotificationPrefix) {
+            return fullText
+        }
+
+        // Exception for private notifications: they should never have their prefix stripped
+        // as they all share the exact same prefix ("You received a private notification from...")
+        val privateTemplate = getLocalizedTtsString(R.string.tts_template_private_notification)
+        val privateParts = privateTemplate.split("{app}").filter { it.isNotBlank() }
+        if (privateParts.isNotEmpty() && privateParts.all { fullText.contains(it.trim(), ignoreCase = true) }) {
             return fullText
         }
         

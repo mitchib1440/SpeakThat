@@ -412,12 +412,18 @@ class RuleBuilderActivity : AppCompatActivity() {
     }
     
     private fun showTriggerMenu() {
-        val triggerOptions = arrayOf(
+        val triggerOptionsList = mutableListOf(
             getString(R.string.trigger_battery_percentage_title),
             getString(R.string.trigger_charging_status_title),
             getString(R.string.trigger_notification_contains_title),
-            getString(R.string.trigger_notification_from_title),
-            getString(R.string.trigger_foreground_app_title),
+            getString(R.string.trigger_notification_from_title)
+        )
+        
+        if (com.micoyc.speakthat.BuildConfig.HAS_ACCESSIBILITY && AccessibilityUtils.isAccessibilityServiceEnabled(this)) {
+            triggerOptionsList.add(getString(R.string.trigger_foreground_app_title))
+        }
+        
+        triggerOptionsList.addAll(listOf(
             getString(R.string.trigger_device_unlocked_title),
             getString(R.string.trigger_screen_orientation_title),
             getString(R.string.trigger_bluetooth_device_connected),
@@ -425,24 +431,27 @@ class RuleBuilderActivity : AppCompatActivity() {
             getString(R.string.trigger_screen_state_title),
             getString(R.string.trigger_time_schedule_title),
             getString(R.string.trigger_wifi_network_connected)
-        )
+        ))
+        
+        val triggerOptions = triggerOptionsList.toTypedArray()
         
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.dialog_title_add_trigger))
             .setItems(triggerOptions) { _, which ->
-                when (which) {
-                    0 -> addBatteryPercentageTrigger()
-                    1 -> addChargingStatusTrigger()
-                    2 -> addNotificationContainsTrigger()
-                    3 -> addNotificationFromTrigger()
-                    4 -> addForegroundAppTrigger()
-                    5 -> addDeviceUnlockedTrigger()
-                    6 -> addScreenOrientationTrigger()
-                    7 -> addBluetoothTrigger()
-                    8 -> addWiredHeadphonesTrigger()
-                    9 -> addScreenStateTrigger()
-                    10 -> addTimeScheduleTrigger()
-                    11 -> addWifiNetworkTrigger()
+                val selectedOption = triggerOptions[which]
+                when (selectedOption) {
+                    getString(R.string.trigger_battery_percentage_title) -> addBatteryPercentageTrigger()
+                    getString(R.string.trigger_charging_status_title) -> addChargingStatusTrigger()
+                    getString(R.string.trigger_notification_contains_title) -> addNotificationContainsTrigger()
+                    getString(R.string.trigger_notification_from_title) -> addNotificationFromTrigger()
+                    getString(R.string.trigger_foreground_app_title) -> addForegroundAppTrigger()
+                    getString(R.string.trigger_device_unlocked_title) -> addDeviceUnlockedTrigger()
+                    getString(R.string.trigger_screen_orientation_title) -> addScreenOrientationTrigger()
+                    getString(R.string.trigger_bluetooth_device_connected) -> addBluetoothTrigger()
+                    getString(R.string.item_trigger_wired_headphones) -> addWiredHeadphonesTrigger()
+                    getString(R.string.trigger_screen_state_title) -> addScreenStateTrigger()
+                    getString(R.string.trigger_time_schedule_title) -> addTimeScheduleTrigger()
+                    getString(R.string.trigger_wifi_network_connected) -> addWifiNetworkTrigger()
                 }
             }
             .show()
@@ -476,12 +485,18 @@ class RuleBuilderActivity : AppCompatActivity() {
     }
     
     private fun showExceptionMenu() {
-        val exceptionOptions = arrayOf(
+        val exceptionOptionsList = mutableListOf(
             getString(R.string.trigger_battery_percentage_title),
             getString(R.string.trigger_charging_status_title),
             getString(R.string.trigger_notification_contains_title),
-            getString(R.string.trigger_notification_from_title),
-            getString(R.string.trigger_foreground_app_title),
+            getString(R.string.trigger_notification_from_title)
+        )
+        
+        if (com.micoyc.speakthat.BuildConfig.HAS_ACCESSIBILITY && AccessibilityUtils.isAccessibilityServiceEnabled(this)) {
+            exceptionOptionsList.add(getString(R.string.trigger_foreground_app_title))
+        }
+        
+        exceptionOptionsList.addAll(listOf(
             getString(R.string.trigger_device_unlocked_title),
             getString(R.string.trigger_screen_orientation_title),
             getString(R.string.trigger_bluetooth_device_connected),
@@ -489,24 +504,27 @@ class RuleBuilderActivity : AppCompatActivity() {
             getString(R.string.trigger_screen_state_title),
             getString(R.string.trigger_time_schedule_title),
             getString(R.string.trigger_wifi_network_connected)
-        )
+        ))
+        
+        val exceptionOptions = exceptionOptionsList.toTypedArray()
         
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.dialog_title_add_exception))
             .setItems(exceptionOptions) { _, which ->
-                when (which) {
-                    0 -> addBatteryPercentageException()
-                    1 -> addChargingStatusException()
-                    2 -> addNotificationContainsException()
-                    3 -> addNotificationFromException()
-                    4 -> addForegroundAppException()
-                    5 -> addDeviceUnlockedException()
-                    6 -> addScreenOrientationException()
-                    7 -> addBluetoothException()
-                    8 -> addWiredHeadphonesException()
-                    9 -> addScreenStateException()
-                    10 -> addTimeScheduleException()
-                    11 -> addWifiNetworkException()
+                val selectedOption = exceptionOptions[which]
+                when (selectedOption) {
+                    getString(R.string.trigger_battery_percentage_title) -> addBatteryPercentageException()
+                    getString(R.string.trigger_charging_status_title) -> addChargingStatusException()
+                    getString(R.string.trigger_notification_contains_title) -> addNotificationContainsException()
+                    getString(R.string.trigger_notification_from_title) -> addNotificationFromException()
+                    getString(R.string.trigger_foreground_app_title) -> addForegroundAppException()
+                    getString(R.string.trigger_device_unlocked_title) -> addDeviceUnlockedException()
+                    getString(R.string.trigger_screen_orientation_title) -> addScreenOrientationException()
+                    getString(R.string.trigger_bluetooth_device_connected) -> addBluetoothException()
+                    getString(R.string.item_trigger_wired_headphones) -> addWiredHeadphonesException()
+                    getString(R.string.trigger_screen_state_title) -> addScreenStateException()
+                    getString(R.string.trigger_time_schedule_title) -> addTimeScheduleException()
+                    getString(R.string.trigger_wifi_network_connected) -> addWifiNetworkException()
                 }
             }
             .show()

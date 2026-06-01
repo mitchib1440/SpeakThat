@@ -51,6 +51,70 @@
             android:textAlignment="viewEnd"
             android:textSize="10sp"/>
 
+        <!-- Play Store Unsupported Condition Warning -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardPlayStoreWarning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:strokeColor="@color/purple_200"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:background="@drawable/gradient_card_subtle_right">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/warning_24px"
+                    app:tint="@color/text_warning"
+                    android:contentDescription="Warning" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Unsupported Rule Condition"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/white_100" />
+
+                    <TextView
+                        android:id="@+id/textPlayStoreWarning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="You have a rule using 'Foreground App' which is not supported in the Play Store version. Please update your rules."
+                        android:textSize="14sp"
+                        android:textColor="@color/purple_card_text_secondary"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/buttonDismissPlayStoreWarning"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/close_24px"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Dismiss"
+                    app:tint="@color/purple_card_text_secondary" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardUpdateBanner"
             android:layout_width="match_parent"

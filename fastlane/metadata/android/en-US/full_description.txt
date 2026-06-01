@@ -7,7 +7,7 @@ of what gets read, when it gets read, how it sounds, and when it stays completel
 </p>
 
 <p>
-No ads. No subscriptions. No tracking. Just speech.
+No ads. No subscriptions. Just speech.
 </p>
 
 <p><b>Why SpeakThat!?</b></p>
@@ -17,6 +17,7 @@ No ads. No subscriptions. No tracking. Just speech.
 <li><b>Entirely local</b> - all processing happens on your device, with no external servers and no AI</li>
 <li><b>Private by design</b> - optional Private Mode can announce the app name without reading notification content</li>
 <li><b>Modern Material design</b> - powerful features without a cluttered or confusing interface</li>
+<li><b>Additional Features</b> - Regular time announcements, daily notification summaries, and filtering performance insights</li>
 </ul>
 
 <p><b>Powerful control over what gets read</b></p>
@@ -76,7 +77,7 @@ No ads. No subscriptions. No tracking. Just speech.
 
 <p>
 SpeakThat! never sends your data anywhere unless <em>you</em> explicitly choose to submit
-a bug report - and even then, it’s optional. What happens on your phone stays on your phone.
+a bug report. What happens on your phone stays on your phone.
 </p>
 
 <p>
@@ -89,5 +90,9 @@ and anyone who wants a healthier relationship with notifications.
 <p>
 SpeakThat! is continuously improved based on real user feedback. It’s built by someone
 who genuinely uses it every day - which means features exist because they’re useful,
-not because they look good in a marketing screenshot.
+not because they look good in a marketing screenshot or to inflate some statistic.
 </p>
+
+<p>
+<b>Stay safe, stay connected, and let your phone do the talking!</b>
+<p>

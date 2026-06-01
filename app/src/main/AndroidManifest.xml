@@ -249,6 +249,13 @@
             android:exported="false"
             android:parentActivityName=".AboutActivity" />
 
+        <!-- Pause Options Activity -->
+        <activity
+            android:name=".PauseOptionsActivity"
+            android:theme="@style/Theme.SpeakThat.Transparent"
+            android:excludeFromRecents="true"
+            android:taskAffinity="" />
+
         <!-- About Libraries Activity -->
         <activity
             android:name="com.mikepenz.aboutlibraries.ui.LibsActivity"
