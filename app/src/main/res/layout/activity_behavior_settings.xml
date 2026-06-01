@@ -1704,7 +1704,7 @@
 
             <!-- Press to Stop Section -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/PressToStopCard"
+                android:id="@+id/pressToStopCard"
                 android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
