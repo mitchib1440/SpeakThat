@@ -457,6 +457,12 @@ public class GestureSection implements BehaviorSettingsSection {
         binding.switchPressToStop.setChecked(pressEnabled);
         binding.switchPressToStop.setEnabled(hasAccessibilityPermission);
 
+        if (!com.micoyc.speakthat.BuildConfig.HAS_ACCESSIBILITY) {
+            // ((View) binding.switchPressToStop.getParent()).setVisibility(View.GONE);
+            // ((View) binding.PressToStopCard.getParent()).setVisibility(View.GONE);
+            binding.PressToStopCard.setVisibility(android.view.View.GONE);
+        }
+
         boolean pocketModeEnabled = store.prefs().getBoolean(BehaviorSettingsStore.KEY_POCKET_MODE_ENABLED, false);
         binding.switchPocketMode.setChecked(pocketModeEnabled);
     }
@@ -785,6 +791,9 @@ public class GestureSection implements BehaviorSettingsSection {
     }
 
     private boolean isAccessibilityServiceEnabled() {
+        if (!com.micoyc.speakthat.BuildConfig.HAS_ACCESSIBILITY) {
+            return false;
+        }
         String packageName = activity.getPackageName();
         String serviceName = packageName + "/com.micoyc.speakthat.SpeakThatAccessibilityService";
 

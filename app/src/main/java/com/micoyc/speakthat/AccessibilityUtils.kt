@@ -37,6 +37,10 @@ object AccessibilityUtils {
      * @return true if the accessibility service is enabled, false otherwise
      */
     fun isAccessibilityServiceEnabled(context: Context): Boolean {
+        if (!com.micoyc.speakthat.BuildConfig.HAS_ACCESSIBILITY) {
+            return false
+        }
+        
         val packageName = context.packageName
         val serviceName = "$packageName/com.micoyc.speakthat.SpeakThatAccessibilityService"
         

@@ -477,6 +477,9 @@ public class TestSettingsActivity extends AppCompatActivity {
      * @return true if the accessibility service is enabled, false otherwise
      */
     private boolean isAccessibilityServiceEnabled() {
+        if (!com.micoyc.speakthat.BuildConfig.HAS_ACCESSIBILITY) {
+            return false;
+        }
         String packageName = getPackageName();
         String serviceName = packageName + "/com.micoyc.speakthat.SpeakThatAccessibilityService";
         

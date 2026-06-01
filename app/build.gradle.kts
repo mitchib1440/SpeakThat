@@ -36,6 +36,7 @@ android {
             // Build config fields for GitHub variant
             buildConfigField("boolean", "ENABLE_AUTO_UPDATER", "true")
             buildConfigField("String", "DISTRIBUTION_CHANNEL", "\"github\"")
+            buildConfigField("boolean", "HAS_ACCESSIBILITY", "true")
         }
         
         create("store") {
@@ -47,6 +48,7 @@ android {
             // Build config fields for store variant
             buildConfigField("boolean", "ENABLE_AUTO_UPDATER", "false")
             buildConfigField("String", "DISTRIBUTION_CHANNEL", "\"store\"")
+            buildConfigField("boolean", "HAS_ACCESSIBILITY", "true")
         }
         
         create("play") {
@@ -54,6 +56,7 @@ android {
             // Matches the store flavor behavior; no updater for Play distribution
             buildConfigField("boolean", "ENABLE_AUTO_UPDATER", "false")
             buildConfigField("String", "DISTRIBUTION_CHANNEL", "\"play\"")
+            buildConfigField("boolean", "HAS_ACCESSIBILITY", "false")
         }
     }
 

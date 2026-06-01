@@ -1704,6 +1704,8 @@
 
             <!-- Press to Stop Section -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/PressToStopCard"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -1731,8 +1733,8 @@
                             android:layout_height="24dp"
                             android:layout_marginEnd="16dp"
                             android:src="@drawable/ic_mobile_hand_24"
-                            android:tint="@color/white_100"
-                            android:contentDescription="Press to Stop" />
+                            android:contentDescription="Press to Stop"
+                            app:tint="@color/white_100" />
 
                         <TextView
                             android:layout_width="wrap_content"

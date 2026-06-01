@@ -390,6 +390,12 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         // Accessibility Permission Button
         // Using findViewById instead of binding due to binding generation issue
         android.view.View accessibilityButton = findViewById(R.id.buttonAccessibilityPermission);
+        if (!com.micoyc.speakthat.BuildConfig.HAS_ACCESSIBILITY) {
+            if (accessibilityButton != null) {
+                accessibilityButton.setVisibility(android.view.View.GONE);
+            }
+            return;
+        }
         if (accessibilityButton != null) {
             accessibilityButton.setOnClickListener(v -> {
                 // Check if accessibility service is already enabled
@@ -409,6 +415,9 @@ public class GeneralSettingsActivity extends AppCompatActivity {
      * Similar to how notification listener permission is checked
      */
     private boolean isAccessibilityServiceEnabled() {
+        if (!com.micoyc.speakthat.BuildConfig.HAS_ACCESSIBILITY) {
+            return false;
+        }
         String packageName = getPackageName();
         String serviceName = packageName + "/com.micoyc.speakthat.SpeakThatAccessibilityService";
         
