@@ -95,4 +95,4 @@ not because they look good in a marketing screenshot or to inflate some statisti
 
 <p>
 <b>Stay safe, stay connected, and let your phone do the talking!</b>
-<p>
+</p>
