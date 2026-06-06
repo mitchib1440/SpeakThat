@@ -77,11 +77,11 @@
     <string name="enable_persistent_filtering">Activer le filtrage des notifications persistantes ou silencieuses</string>
     <string name="persistent_filtering_help">Les notifications permanentes sont changeantes (comme les contrôles musicaux, la navigation, etc ...) et les notifications silencieuses n\'ont ni son, ni vibration. Cette option aide à réduire le spam des services d\'arrière-plan.</string>
     <!-- Individual Persistent Filtering Categories -->
-    <string name="filter_persistent_notifications">Filtrer les notifications persistantes</string>
-    <string name="filter_silent_notifications">Filtrer les notifications silencieuses</string>
-    <string name="filter_foreground_services">Filtrer les notifications des services d\'avant plan</string>
-    <string name="filter_low_priority">Filtrer les notifications de basse priorité</string>
-    <string name="filter_system_notifications">Filtrage des notifications système</string>
+    <string name="filter_persistent_notifications">Filtrer les persistantes</string>
+    <string name="filter_silent_notifications">Filtrer les silencieuses</string>
+    <string name="filter_foreground_services">Filtrer les services d\'avant plan</string>
+    <string name="filter_low_priority">Filtrer les basses priorités</string>
+    <string name="filter_system_notifications">Filtrage les systèmes</string>
     <!-- Category Descriptions -->
     <string name="persistent_notifications_desc">Notifications actives qui ne disparaissent pas d\'elles-mêmes (contrôles musical, navigation)</string>
     <string name="silent_notifications_desc">Notifications sans son ou vibration</string>
@@ -2130,4 +2130,11 @@ Bloque=ignore totalement, Privée=annonce de façon privée
     <string name="badge_option_amethyst">Améthyste</string>
     <string name="badge_option_ruby">Rubis</string>
     <string name="badge_option_diamond">Diamant</string>
+    <string name="speech_engine_disclaimer">SpeakThat a été à l\'origine conçu pour fonctionner avec le moteur de synthèse vocale par défaut de Android. Toutes les fonctionnalités sont testées avec Speech Recognition &amp; Synthesis de Google, qui est utilisé sur la plupart des appareils. Les moteurs tiers sont supportés mais peuvent être incompatibles avec certaines fonctions.</string>
+    <string name="filter_emoji_removal_exeption_hint">réagi</string>
+    <string name="activity_pause_options_until_next_hour">Jusqu\'à la prochaine heure</string>
+    <string name="activity_pause_options_for_one_hour">Pour une heure</string>
+    <string name="activity_pause_options_indefinitely">Jusqu\'à ce que vous le réactiviez</string>
+    <string name="activity_pause_options_title">Suspendre SpeakThat!</string>
+    <string name="activity_pause_options_description">Durée :</string>
 </resources>
