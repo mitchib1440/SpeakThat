@@ -2,17 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Store variant: Internet permission kept for network voice downloads -->
-    <!-- All other permissions from main manifest are inherited automatically -->
-    
-    <!-- Note: INTERNET permission is now included for network voice downloads -->
-    <!-- This allows users to download network voices when selected -->
-    <!-- 
+    <!-- Store variant: no outbound network access from the app itself -->
+    <uses-permission android:name="android.permission.INTERNET" tools:node="remove" />
+
+    <!--
     Store variant permission policy:
-    - INTERNET: Kept for network voice downloads (legitimate TTS feature)
+    - INTERNET: Removed (privacy-first distribution for F-Droid and similar stores)
     - No auto-updater: Updates handled by app stores
     - No online icons: Uses local fallback icons only
-    - No network libraries: Excludes OkHttp and Coil
+    - Network TTS voices: Handled by the system TTS engine, not this app
     -->
 
 </manifest> 

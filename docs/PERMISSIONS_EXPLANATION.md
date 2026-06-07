@@ -25,11 +25,13 @@ This document explains why SpeakThat requires each permission, making it easier 
 ## Internet and Network Permissions
 
 ### `INTERNET`
-- **Purpose**: Network voice downloads
-- **Usage**: Downloading TTS voices from Google's servers when users select network voices
-- **Why needed**: Android TTS engine requires internet access to download network voices
-- **User control**: User chooses which voices to use (local vs network)
-- **Privacy note**: Only used for legitimate TTS voice downloads, not tracking or analytics
+- **Purpose**: Distribution-specific features that require outbound network access
+- **Usage (GitHub variant)**: Checking for and downloading app updates; loading app icons from the Simple Icons CDN as a fallback
+- **Usage (Play variant)**: Google Play Billing for optional in-app donations
+- **Not included in Store variant**: The store build removes this permission for privacy-focused distribution (F-Droid, etc.)
+- **User control**: Auto-updates and donations are optional; users choose whether to use them
+- **Privacy note**: The app never transmits notification content or user data over the network
+- **TTS network voices**: Downloaded by the system TTS engine (e.g. Google TTS), not by SpeakThat — no app `INTERNET` permission is required for that feature
 
 ### `ACCESS_WIFI_STATE` and `ACCESS_NETWORK_STATE`
 - **Purpose**: WiFi-based conditional filtering
@@ -113,7 +115,7 @@ This document explains why SpeakThat requires each permission, making it easier 
 - No notification data is ever transmitted to external servers
 - Location data (if used) stays on device
 - Bluetooth scanning only detects paired devices
-- Internet access is only used for legitimate TTS voice downloads
+- The Store variant declares no `INTERNET` permission; GitHub and Play variants use it only for the features listed above
 
 ### User Control
 - Users have full control over which notifications are read
@@ -122,11 +124,11 @@ This document explains why SpeakThat requires each permission, making it easier 
 - Service can be completely disabled at any time
 
 ### Store Variant Differences
-The Store variant (for F-Droid, Play Store, etc.) has additional privacy measures:
-- No auto-updater (updates handled by stores)
+The Store variant (for F-Droid and similar open-source stores) has additional privacy measures:
+- No `INTERNET` permission (the app makes no outbound network requests)
+- No auto-updater (updates handled by the store)
 - No online app icons (uses local fallback icons only)
-- No network libraries (excludes OkHttp and Coil)
-- Internet permission only used for TTS voice downloads
+- Coil image loading is stubbed to local fallbacks only
 
 ## Compliance
 
