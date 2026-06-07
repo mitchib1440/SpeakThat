@@ -86,11 +86,11 @@
     <string name="enable_persistent_filtering">Activar filtrado de notificaciones persistente/silencioso</string>
     <string name="persistent_filtering_help">Las notificaciones persistentes (como los controles de música, navegación, etc.) están en curso y las notificaciones silenciosas no emiten sonido/vibración. Esta opción ayuda a reducir el spam de notificaciones de servicios en segundo plano.</string>
     <!-- Individual Persistent Filtering Categories -->
-    <string name="filter_persistent_notifications">Filtrar notificaciones persistentes</string>
-    <string name="filter_silent_notifications">Notificaciones de filtro en silencio</string>
-    <string name="filter_foreground_services">Filtrar notificaciones de servicio de primer plano</string>
-    <string name="filter_low_priority">Filtrar notificaciones de prioridad baja</string>
-    <string name="filter_system_notifications">Filtrar notificaciones del sistema</string>
+    <string name="filter_persistent_notifications">Filtro persistente</string>
+    <string name="filter_silent_notifications">Filtro en silencio</string>
+    <string name="filter_foreground_services">Filtrar servicios en primer plano</string>
+    <string name="filter_low_priority">Filtrar a prioridad baja</string>
+    <string name="filter_system_notifications">Sistema de filtro</string>
     <!-- Category Descriptions -->
     <string name="persistent_notifications_desc">Notificaciones en curso no descartables automáticamente (controles de música, navegación)</string>
     <string name="silent_notifications_desc">Notificaciones sin sonido ni vibración</string>
@@ -2194,7 +2194,7 @@ Bloquear = omitir por completo, Privar = anunciar en privado
     <string name="tidy_speech_force_lowercase_description">Convierte todo el texto a minúsculas antes de leer para prevenir el motor TTS desde deletreo de palabras capitulinas</string>
     <string name="emoji_exceptions_hint">Conservar emojis si el texto contiene (separados por coma):</string>
     <string name="filter_empty_text_title">Filtro de texto vacío</string>
-    <string name="filter_empty_text_description">Previene de SpeakThat desde lectura externa a notificaciones que no contengan ningún texto</string>
+    <string name="filter_empty_text_description">No leer la notificación si el texto está vacío tras la eliminación de emoji</string>
     <string name="general_seasonal_title">Por sesión</string>
     <string name="general_festive_mode">Modo Festivo</string>
     <string name="general_festive_mode_description">Cubrir un sombrero festivo en el logo hogar durante diciembre</string>
@@ -2233,4 +2233,11 @@ Bloquear = omitir por completo, Privar = anunciar en privado
     <string name="badge_option_amethyst">Amatista</string>
     <string name="badge_option_ruby">Rubí</string>
     <string name="badge_option_diamond">Diamante</string>
+    <string name="filter_emoji_removal_exeption_hint">reaccionado</string>
+    <string name="activity_pause_options_until_next_hour">Hasta la hora siguiente</string>
+    <string name="activity_pause_options_for_one_hour">Por una hora</string>
+    <string name="activity_pause_options_indefinitely">Hasta que vuelva a encenderlo</string>
+    <string name="activity_pause_options_title">Pausar SpeakThat!</string>
+    <string name="activity_pause_options_description">Duración:</string>
+    <string name="speech_engine_disclaimer">SpeakThat se diseñó principalmente para funcionar con el motor de voz predeterminado de Android. Todas las funciones se prueban con el sistema de reconocimiento y síntesis de voz de Google, que utilizan la mayoría de los dispositivos. Se admiten motores de terceros, pero pueden ser incompatibles con algunas funciones.</string>
 </resources>
