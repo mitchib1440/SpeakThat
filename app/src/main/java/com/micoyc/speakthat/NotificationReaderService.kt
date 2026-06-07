@@ -49,6 +49,7 @@ import com.micoyc.speakthat.GlobalReadoutSuppression
 import com.micoyc.speakthat.settings.BehaviorSettingsActivity
 import com.micoyc.speakthat.settings.BehaviorSettingsStore
 import com.micoyc.speakthat.tts.SpeakThatTtsManager
+import com.micoyc.speakthat.tts.SpeechCoordinator
 import com.micoyc.speakthat.utils.TtsLanguageHelper
 import java.io.File
 import java.io.IOException
@@ -570,13 +571,22 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
 
         /**
-         * True while the notification listener is playing a notification readout (including earcon / delay before speech).
+         * True while the notification listener is playing a notification readout (including earcon / delay before speech),
+         * or while a summary session owns the shared TTS engine.
          * Activities share [SpeakThatTtsManager]; they should avoid calling [SpeakThatTtsManager.stop] during an active
          * readout so utterance callbacks can tear down sensors, wake lock, and queue state.
          */
         @JvmStatic
         fun isNotificationReadoutActive(): Boolean {
-            return activeServiceInstance?.isCurrentlySpeaking == true
+            return activeServiceInstance?.isCurrentlySpeaking == true || SpeechCoordinator.isSummaryActive()
+        }
+
+        /**
+         * Called when [SummaryExecutionService] finishes so deferred notification readouts can resume.
+         */
+        @JvmStatic
+        fun onSummarySessionEnded(context: Context) {
+            activeServiceInstance?.resumeDeferredReadoutsAfterSummary()
         }
         
         // Pre-compiled regex for URL detection (includes http/https/www URLs, bare domains with TLD, IP addresses, and IPv6)
@@ -4662,8 +4672,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
         if (!isMusicActive) return true
 
-        if (isCurrentlySpeaking) {
-            Log.d(TAG, "Media detected while TTS is speaking - assuming it is our own playback, continuing")
+        if (isCurrentlySpeaking || SpeechCoordinator.isSummaryActive()) {
+            Log.d(TAG, "Media detected while SpeakThat TTS is active - assuming it is our own playback, continuing")
             InAppLogger.log("MediaBehavior", "Ignoring media detection because SpeakThat is already speaking")
             return true
         }
@@ -6449,6 +6459,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         Log.d(TAG, "Handling notification behavior - Mode: $notificationBehavior, App: $appName, Currently speaking: $isCurrentlySpeaking, Queue size: ${notificationQueue.size}")
         InAppLogger.logNotification("Processing notification from $appName (mode: $notificationBehavior, speaking: $isCurrentlySpeaking)")
+
+        if (SpeechCoordinator.isSummaryActive()) {
+            deferNotificationForActiveSummary(queuedNotification)
+            return
+        }
         
         // Check media behavior first, now with sbn for strict filtering
         if (!handleMediaBehavior(appName, text, sbn)) {
@@ -6505,7 +6520,31 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
 
+    private fun deferNotificationForActiveSummary(queuedNotification: QueuedNotification) {
+        notificationQueue.add(queuedNotification)
+        Log.d(
+            TAG,
+            "Summary active - deferred notification from ${queuedNotification.appName}. Queue size: ${notificationQueue.size}"
+        )
+        InAppLogger.logNotification(
+            "Deferred ${queuedNotification.appName} readout until summary completes (queue=${notificationQueue.size})"
+        )
+    }
+
+    private fun resumeDeferredReadoutsAfterSummary() {
+        if (notificationQueue.isEmpty()) {
+            return
+        }
+        Log.d(TAG, "Summary ended - resuming ${notificationQueue.size} deferred notification(s)")
+        InAppLogger.log("Service", "Summary ended - resuming ${notificationQueue.size} deferred notification(s)")
+        processNotificationQueue()
+    }
+
     private fun processNotificationQueue() {
+        if (SpeechCoordinator.isSummaryActive()) {
+            Log.d(TAG, "Queue processing deferred - summary is active (size=${notificationQueue.size})")
+            return
+        }
         if (!MainActivity.isMasterSwitchEnabled(this)) {
             Log.d(TAG, "Queue processing skipped - master switch disabled (size=${notificationQueue.size})")
             InAppLogger.log("Service", "Queue processing skipped - master switch disabled")
@@ -6610,6 +6649,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         delayMs: Long = 0L,
         ttsFlushIncoming: Boolean = true
     ) {
+        if (SpeechCoordinator.isSummaryActive()) {
+            Log.d(TAG, "Summary active - refusing notification speech at executeSpeech")
+            InAppLogger.log("Service", "Summary active - notification speech blocked at executeSpeech")
+            releaseSpeechWakeLock()
+            return
+        }
+
         acquireSpeechWakeLock(delayMs)
         Log.d(TAG, "=== DUCKING DEBUG: executeSpeech called with text: ${speechText.take(50)}... ===")
         InAppLogger.log("Service", "=== DUCKING DEBUG: executeSpeech called with text: ${speechText.take(50)}... ===")
