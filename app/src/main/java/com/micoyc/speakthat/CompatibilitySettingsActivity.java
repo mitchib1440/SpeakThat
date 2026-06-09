@@ -50,6 +50,7 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
     private static final String KEY_ENABLE_LEGACY_DUCKING = "enable_legacy_ducking";
     private static final String KEY_DUCKING_FALLBACK_STRATEGY = "ducking_fallback_strategy";
     private static final String KEY_NOTIFICATION_DEDUPLICATION = "notification_deduplication";
+    private static final String KEY_DISABLE_TEXT_BASED_DEDUPLICATION = "disable_text_based_deduplication";
     private static final String KEY_DISMISSAL_MEMORY_ENABLED = "dismissal_memory_enabled";
     private static final String KEY_DISMISSAL_MEMORY_TIMEOUT = "dismissal_memory_timeout";
     private static final String KEY_MEDIA_FILTERING_ENABLED = "media_filtering_enabled";
@@ -377,6 +378,13 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
             }
         });
 
+        binding.switchDisableTextBasedDeduplication.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!isLoadingSettings) {
+                mainPrefs.edit().putBoolean(KEY_DISABLE_TEXT_BASED_DEDUPLICATION, isChecked).apply();
+                InAppLogger.log("CompatibilitySettings", "Text-based deduplication " + (isChecked ? "disabled" : "enabled"));
+            }
+        });
+
         binding.btnDeduplicationInfo.setOnClickListener(v -> showDeduplicationDialog());
 
         binding.switchDismissalMemory.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -448,6 +456,9 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
         // Duplication Workarounds
         boolean deduplicationEnabled = mainPrefs.getBoolean(KEY_NOTIFICATION_DEDUPLICATION, false);
         binding.switchNotificationDeduplication.setChecked(deduplicationEnabled);
+
+        boolean disableTextBasedDeduplication = mainPrefs.getBoolean(KEY_DISABLE_TEXT_BASED_DEDUPLICATION, false);
+        binding.switchDisableTextBasedDeduplication.setChecked(disableTextBasedDeduplication);
 
         boolean dismissalMemoryEnabled = mainPrefs.getBoolean(KEY_DISMISSAL_MEMORY_ENABLED, true);
         binding.switchDismissalMemory.setChecked(dismissalMemoryEnabled);
