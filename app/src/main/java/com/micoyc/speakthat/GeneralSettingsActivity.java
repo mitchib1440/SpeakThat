@@ -556,8 +556,9 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         syncBatteryOptimizationState();
         renderBadgeSelection();
         if (permissionSyncSession != null) {
-            permissionSyncSession.onResume();
-            if (permissionSyncSession.isFinished()) {
+            PermissionSyncSession session = permissionSyncSession;
+            session.onResume();
+            if (session.isFinished()) {
                 permissionSyncSession = null;
             }
         }
@@ -790,8 +791,9 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         }
 
         if (permissionSyncSession != null) {
-            permissionSyncSession.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            if (permissionSyncSession.isFinished()) {
+            PermissionSyncSession session = permissionSyncSession;
+            session.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            if (session.isFinished()) {
                 permissionSyncSession = null;
             }
         }
