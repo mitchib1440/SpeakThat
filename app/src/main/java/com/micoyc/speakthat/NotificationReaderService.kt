@@ -1476,12 +1476,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
                 
             val isDeduplicationEnabled = sharedPreferences?.getBoolean("notification_deduplication", true) ?: true
+            val disableTextBasedDeduplication = sharedPreferences?.getBoolean("disable_text_based_deduplication", false) ?: false
 
             // Group child deduplication: when Android regroups notifications (e.g. a new
             // email arrives and the existing ones get bundled), onNotificationPosted fires
             // again for every child in the group. The 30-second dedup window will have
             // expired by then, so we keep a longer-lived map keyed on content.
-            if (isDeduplicationEnabled && !isSelfTest && notificationText.isNotEmpty()) {
+            if (isDeduplicationEnabled && !isSelfTest && !disableTextBasedDeduplication && notificationText.isNotEmpty()) {
                 val groupContentKey = generateContentKey(packageName, notificationText)
                 val now = System.currentTimeMillis()
                     
@@ -1526,7 +1527,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 InAppLogger.log("SelfTest", "Deduplication bypassed for test notification")
             }
             if (isDeduplicationEnabled && !isSelfTest) {
-                val notificationKey = generateNotificationKey(packageName, sbn.id, notificationText)
+                val notificationKey = generateNotificationKey(packageName, sbn.id, notificationText, disableTextBasedDeduplication)
                 val currentTime = System.currentTimeMillis()
                     
                 // Clean up old entries from deduplication map
@@ -1574,33 +1575,36 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     
                 // Enhanced content-based deduplication for all apps (not just problematic ones)
                 // This helps catch notification updates that might have slightly different content
-                val contentKey = generateContentKey(packageName, notificationText)
-                val lastContentTime = recentNotificationKeys[contentKey]
-                if (lastContentTime != null && currentTime - lastContentTime < DEDUPLICATION_WINDOW_MS) {
-                    val timeSinceLastContent = currentTime - lastContentTime
-                    Log.d(TAG, "Content-based duplicate detected from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
-                    InAppLogger.logFilter("Content-based duplicate from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
-                    // Track filter reason
-                    try {
-                        StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_DEDUPLICATION)
-                    } catch (e: Exception) {
-                        Log.e(TAG, "Error tracking deduplication filter", e)
+                var contentKey: String? = null
+                if (!disableTextBasedDeduplication) {
+                    contentKey = generateContentKey(packageName, notificationText)
+                    val lastContentTime = recentNotificationKeys[contentKey]
+                    if (lastContentTime != null && currentTime - lastContentTime < DEDUPLICATION_WINDOW_MS) {
+                        val timeSinceLastContent = currentTime - lastContentTime
+                        Log.d(TAG, "Content-based duplicate detected from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
+                        InAppLogger.logFilter("Content-based duplicate from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
+                        // Track filter reason
+                        try {
+                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_DEDUPLICATION)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error tracking deduplication filter", e)
+                        }
+                        if (showSystemBlocks) {
+                            val sysTitle = sbn.notification.extras?.getCharSequence(
+                                android.app.Notification.EXTRA_TITLE
+                            )?.toString() ?: ""
+                            addToHistory(
+                                appName = appName,
+                                packageName = packageName,
+                                title = sysTitle,
+                                text = notificationText,
+                                wasRead = false,
+                                spokenText = null,
+                                blockedReason = "System: Blocked as duplicate"
+                            )
+                        }
+                        return
                     }
-                    if (showSystemBlocks) {
-                        val sysTitle = sbn.notification.extras?.getCharSequence(
-                            android.app.Notification.EXTRA_TITLE
-                        )?.toString() ?: ""
-                        addToHistory(
-                            appName = appName,
-                            packageName = packageName,
-                            title = sysTitle,
-                            text = notificationText,
-                            wasRead = false,
-                            spokenText = null,
-                            blockedReason = "System: Blocked as duplicate"
-                        )
-                    }
-                    return
                 }
                     
                 // Special handling for Gmail: use a more lenient deduplication approach
@@ -1641,7 +1645,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     
                 // Only add to recent keys if we're actually going to process this notification
                 // This prevents race conditions in batch processing
-                recentNotificationKeys[contentKey] = currentTime
+                if (contentKey != null) {
+                    recentNotificationKeys[contentKey] = currentTime
+                }
                     
                 // Additional app-specific deduplication for known problematic apps
                 if (isProblematicApp(packageName)) {
@@ -2613,7 +2619,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * Uses package name, notification ID, and content hash to identify duplicates
      * Removed timestamp to better handle notification updates
      */
-    private fun generateNotificationKey(packageName: String, notificationId: Int, content: String): String {
+    private fun generateNotificationKey(packageName: String, notificationId: Int, content: String, disableTextBasedDeduplication: Boolean = false): String {
+        if (disableTextBasedDeduplication) {
+            return "${packageName}_${notificationId}"
+        }
+        
         // Create a more robust hash of the content using SHA-256
         val contentHash = try {
             val digest = java.security.MessageDigest.getInstance("SHA-256")
