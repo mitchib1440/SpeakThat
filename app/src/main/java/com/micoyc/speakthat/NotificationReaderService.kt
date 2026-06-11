@@ -49,6 +49,7 @@ import com.micoyc.speakthat.GlobalReadoutSuppression
 import com.micoyc.speakthat.settings.BehaviorSettingsActivity
 import com.micoyc.speakthat.settings.BehaviorSettingsStore
 import com.micoyc.speakthat.tts.SpeakThatTtsManager
+import com.micoyc.speakthat.tts.SpeechCoordinator
 import com.micoyc.speakthat.utils.TtsLanguageHelper
 import java.io.File
 import java.io.IOException
@@ -236,7 +237,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private val recentNotificationKeys = HashMap<String, Long>() // notificationKey -> timestamp
     
     // Group child deduplication - prevent re-reading old notifications when Android regroups them
-    private val groupChildDeduplicationMap = HashMap<String, Long>() // contentKey -> timestamp
+    // Map stores contentKey -> Pair(processedTime, postTime)
+    private val groupChildDeduplicationMap = HashMap<String, Pair<Long, Long>>()
     
     // Dismissal memory tracking - prevent re-reading dismissed notifications
     private val dismissedNotificationKeys = HashMap<String, Long>() // contentHash -> dismissal timestamp
@@ -570,13 +572,22 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
 
         /**
-         * True while the notification listener is playing a notification readout (including earcon / delay before speech).
+         * True while the notification listener is playing a notification readout (including earcon / delay before speech),
+         * or while a summary session owns the shared TTS engine.
          * Activities share [SpeakThatTtsManager]; they should avoid calling [SpeakThatTtsManager.stop] during an active
          * readout so utterance callbacks can tear down sensors, wake lock, and queue state.
          */
         @JvmStatic
         fun isNotificationReadoutActive(): Boolean {
-            return activeServiceInstance?.isCurrentlySpeaking == true
+            return activeServiceInstance?.isCurrentlySpeaking == true || SpeechCoordinator.isSummaryActive()
+        }
+
+        /**
+         * Called when [SummaryExecutionService] finishes so deferred notification readouts can resume.
+         */
+        @JvmStatic
+        fun onSummarySessionEnded(context: Context) {
+            activeServiceInstance?.resumeDeferredReadoutsAfterSummary()
         }
         
         // Pre-compiled regex for URL detection (includes http/https/www URLs, bare domains with TLD, IP addresses, and IPv6)
@@ -1466,6 +1477,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
                 
             val isDeduplicationEnabled = sharedPreferences?.getBoolean("notification_deduplication", true) ?: true
+            val includeNotificationTimestamps = sharedPreferences?.getBoolean("include_notification_timestamps", false) ?: false
 
             // Group child deduplication: when Android regroups notifications (e.g. a new
             // email arrives and the existing ones get bundled), onNotificationPosted fires
@@ -1474,39 +1486,50 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             if (isDeduplicationEnabled && !isSelfTest && notificationText.isNotEmpty()) {
                 val groupContentKey = generateContentKey(packageName, notificationText)
                 val now = System.currentTimeMillis()
+                val currentPostTime = sbn.postTime
                     
                 if (notification.group != null) {
-                    val lastSeen = groupChildDeduplicationMap[groupContentKey]
-                    if (lastSeen != null && now - lastSeen < GROUP_CHILD_DEDUP_WINDOW_MS) {
-                        Log.d(TAG, "Skipping re-posted group child notification from $packageName (already processed ${now - lastSeen}ms ago)")
-                        InAppLogger.logFilter("Skipped re-posted group child from $packageName (${now - lastSeen}ms ago)")
-                        try {
-                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_GROUP_CHILD_REPOST)
-                        } catch (e: Exception) {
-                            Log.e(TAG, "Error tracking group child repost filter", e)
+                    val lastSeenData = groupChildDeduplicationMap[groupContentKey]
+                    if (lastSeenData != null) {
+                        val lastProcessedTime = lastSeenData.first
+                        val lastPostTime = lastSeenData.second
+                        
+                        if (now - lastProcessedTime < GROUP_CHILD_DEDUP_WINDOW_MS) {
+                            // If the switch is ON, we use postTime to distinguish identical messages
+                            if (includeNotificationTimestamps && currentPostTime > lastPostTime) {
+                                Log.d(TAG, "Group child has new postTime ($currentPostTime > $lastPostTime) - processing as new despite identical content")
+                            } else {
+                                Log.d(TAG, "Skipping re-posted group child notification from $packageName (already processed ${now - lastProcessedTime}ms ago)")
+                                InAppLogger.logFilter("Skipped re-posted group child from $packageName (${now - lastProcessedTime}ms ago)")
+                                try {
+                                    StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_GROUP_CHILD_REPOST)
+                                } catch (e: Exception) {
+                                    Log.e(TAG, "Error tracking group child repost filter", e)
+                                }
+                                if (showSystemBlocks) {
+                                    val sysTitle = sbn.notification.extras?.getCharSequence(
+                                        android.app.Notification.EXTRA_TITLE
+                                    )?.toString() ?: ""
+                                    addToHistory(
+                                        appName = appName,
+                                        packageName = packageName,
+                                        title = sysTitle,
+                                        text = notificationText,
+                                        wasRead = false,
+                                        spokenText = null,
+                                        blockedReason = "System: Blocked group child repost"
+                                    )
+                                }
+                                return
+                            }
                         }
-                        if (showSystemBlocks) {
-                            val sysTitle = sbn.notification.extras?.getCharSequence(
-                                android.app.Notification.EXTRA_TITLE
-                            )?.toString() ?: ""
-                            addToHistory(
-                                appName = appName,
-                                packageName = packageName,
-                                title = sysTitle,
-                                text = notificationText,
-                                wasRead = false,
-                                spokenText = null,
-                                blockedReason = "System: Blocked group child repost"
-                            )
-                        }
-                        return
                     }
                 }
                     
                 if (groupChildDeduplicationMap.size > MAX_GROUP_DEDUP_ENTRIES) {
-                    groupChildDeduplicationMap.entries.removeIf { (_, ts) -> now - ts > GROUP_CHILD_DEDUP_WINDOW_MS }
+                    groupChildDeduplicationMap.entries.removeIf { (_, data) -> now - data.first > GROUP_CHILD_DEDUP_WINDOW_MS }
                 }
-                groupChildDeduplicationMap[groupContentKey] = now
+                groupChildDeduplicationMap[groupContentKey] = Pair(now, currentPostTime)
             }
                 
             // Check for duplicate notifications (only if deduplication is enabled)
@@ -1564,34 +1587,35 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     
                 // Enhanced content-based deduplication for all apps (not just problematic ones)
                 // This helps catch notification updates that might have slightly different content
-                val contentKey = generateContentKey(packageName, notificationText)
+                var contentKey: String? = null
+                contentKey = generateContentKey(packageName, notificationText)
                 val lastContentTime = recentNotificationKeys[contentKey]
                 if (lastContentTime != null && currentTime - lastContentTime < DEDUPLICATION_WINDOW_MS) {
-                    val timeSinceLastContent = currentTime - lastContentTime
-                    Log.d(TAG, "Content-based duplicate detected from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
-                    InAppLogger.logFilter("Content-based duplicate from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
-                    // Track filter reason
-                    try {
-                        StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_DEDUPLICATION)
-                    } catch (e: Exception) {
-                        Log.e(TAG, "Error tracking deduplication filter", e)
+                        val timeSinceLastContent = currentTime - lastContentTime
+                        Log.d(TAG, "Content-based duplicate detected from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
+                        InAppLogger.logFilter("Content-based duplicate from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
+                        // Track filter reason
+                        try {
+                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_DEDUPLICATION)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error tracking deduplication filter", e)
+                        }
+                        if (showSystemBlocks) {
+                            val sysTitle = sbn.notification.extras?.getCharSequence(
+                                android.app.Notification.EXTRA_TITLE
+                            )?.toString() ?: ""
+                            addToHistory(
+                                appName = appName,
+                                packageName = packageName,
+                                title = sysTitle,
+                                text = notificationText,
+                                wasRead = false,
+                                spokenText = null,
+                                blockedReason = "System: Blocked as duplicate"
+                            )
+                        }
+                        return
                     }
-                    if (showSystemBlocks) {
-                        val sysTitle = sbn.notification.extras?.getCharSequence(
-                            android.app.Notification.EXTRA_TITLE
-                        )?.toString() ?: ""
-                        addToHistory(
-                            appName = appName,
-                            packageName = packageName,
-                            title = sysTitle,
-                            text = notificationText,
-                            wasRead = false,
-                            spokenText = null,
-                            blockedReason = "System: Blocked as duplicate"
-                        )
-                    }
-                    return
-                }
                     
                 // Special handling for Gmail: use a more lenient deduplication approach
                 // Gmail updates notifications rather than creating new ones, so we need to be more careful
@@ -1631,7 +1655,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     
                 // Only add to recent keys if we're actually going to process this notification
                 // This prevents race conditions in batch processing
-                recentNotificationKeys[contentKey] = currentTime
+                if (contentKey != null) {
+                    recentNotificationKeys[contentKey] = currentTime
+                }
                     
                 // Additional app-specific deduplication for known problematic apps
                 if (isProblematicApp(packageName)) {
@@ -4662,8 +4688,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
         if (!isMusicActive) return true
 
-        if (isCurrentlySpeaking) {
-            Log.d(TAG, "Media detected while TTS is speaking - assuming it is our own playback, continuing")
+        if (isCurrentlySpeaking || SpeechCoordinator.isSummaryActive()) {
+            Log.d(TAG, "Media detected while SpeakThat TTS is active - assuming it is our own playback, continuing")
             InAppLogger.log("MediaBehavior", "Ignoring media detection because SpeakThat is already speaking")
             return true
         }
@@ -6449,6 +6475,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         Log.d(TAG, "Handling notification behavior - Mode: $notificationBehavior, App: $appName, Currently speaking: $isCurrentlySpeaking, Queue size: ${notificationQueue.size}")
         InAppLogger.logNotification("Processing notification from $appName (mode: $notificationBehavior, speaking: $isCurrentlySpeaking)")
+
+        if (SpeechCoordinator.isSummaryActive()) {
+            deferNotificationForActiveSummary(queuedNotification)
+            return
+        }
         
         // Check media behavior first, now with sbn for strict filtering
         if (!handleMediaBehavior(appName, text, sbn)) {
@@ -6505,7 +6536,31 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
 
+    private fun deferNotificationForActiveSummary(queuedNotification: QueuedNotification) {
+        notificationQueue.add(queuedNotification)
+        Log.d(
+            TAG,
+            "Summary active - deferred notification from ${queuedNotification.appName}. Queue size: ${notificationQueue.size}"
+        )
+        InAppLogger.logNotification(
+            "Deferred ${queuedNotification.appName} readout until summary completes (queue=${notificationQueue.size})"
+        )
+    }
+
+    private fun resumeDeferredReadoutsAfterSummary() {
+        if (notificationQueue.isEmpty()) {
+            return
+        }
+        Log.d(TAG, "Summary ended - resuming ${notificationQueue.size} deferred notification(s)")
+        InAppLogger.log("Service", "Summary ended - resuming ${notificationQueue.size} deferred notification(s)")
+        processNotificationQueue()
+    }
+
     private fun processNotificationQueue() {
+        if (SpeechCoordinator.isSummaryActive()) {
+            Log.d(TAG, "Queue processing deferred - summary is active (size=${notificationQueue.size})")
+            return
+        }
         if (!MainActivity.isMasterSwitchEnabled(this)) {
             Log.d(TAG, "Queue processing skipped - master switch disabled (size=${notificationQueue.size})")
             InAppLogger.log("Service", "Queue processing skipped - master switch disabled")
@@ -6610,6 +6665,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         delayMs: Long = 0L,
         ttsFlushIncoming: Boolean = true
     ) {
+        if (SpeechCoordinator.isSummaryActive()) {
+            Log.d(TAG, "Summary active - refusing notification speech at executeSpeech")
+            InAppLogger.log("Service", "Summary active - notification speech blocked at executeSpeech")
+            releaseSpeechWakeLock()
+            return
+        }
+
         acquireSpeechWakeLock(delayMs)
         Log.d(TAG, "=== DUCKING DEBUG: executeSpeech called with text: ${speechText.take(50)}... ===")
         InAppLogger.log("Service", "=== DUCKING DEBUG: executeSpeech called with text: ${speechText.take(50)}... ===")

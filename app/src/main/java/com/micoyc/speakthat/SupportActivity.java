@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -443,32 +442,41 @@ public class SupportActivity extends AppCompatActivity {
             }
             
             // Create email intent
+            // ... [Previous code building bodyBuilder, referenceNumber, fileUri] ...
+
             String recipient = "micoycbusiness@gmail.com";
-            
-            Intent selectorIntent = new Intent(Intent.ACTION_SENDTO);
-            selectorIntent.setData(Uri.parse("mailto:"));
-            
+
             Intent emailIntent = new Intent(Intent.ACTION_SEND);
+// "message/rfc822" strongly hints to Android to only show email clients
+            emailIntent.setType("message/rfc822");
             emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{recipient});
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject + " - Ref: " + referenceNumber);
             emailIntent.putExtra(Intent.EXTRA_TEXT, bodyBuilder.toString());
-            
+
             if (fileUri != null) {
                 emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
                 emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
-            
-            emailIntent.setSelector(selectorIntent); // This forces email apps only
-            
+
+// NOTE: Removed setSelector entirely.
+
             try {
-                startActivity(Intent.createChooser(emailIntent, "Send Support Email"));
-                InAppLogger.logUserAction("Support email opened", 
-                    "Type: " + currentType + ", Logs: " + includeLogs + ", Ref: " + referenceNumber);
-                finish(); // Close the activity after opening email
+                Intent chooser = Intent.createChooser(emailIntent, "Send Support Email");
+
+                chooser.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                startActivity(chooser);
+
+                startActivity(chooser);
+                InAppLogger.logUserAction("Support email opened",
+                        "Type: " + currentType + ", Logs: " + includeLogs + ", Ref: " + referenceNumber);
+
+                // NOTE: Removed finish(); to prevent the chooser dialog from collapsing.
+
             } catch (Exception e) {
-                Toast.makeText(this, 
-                    "No email app found. Please install an email app to send support requests.", 
-                    Toast.LENGTH_LONG).show();
+                Toast.makeText(this,
+                        "No email app found. Please install an email app to send support requests.",
+                        Toast.LENGTH_LONG).show();
                 InAppLogger.logError("Support", "No email app available: " + e.getMessage());
             }
             
@@ -479,7 +487,7 @@ public class SupportActivity extends AppCompatActivity {
     }
     
     private String generateReferenceNumber() {
-        // Format: ST + DDMMYYmmhh (e.g., ST0602261242)
+        // Format: ST + DDMMYYhhmm (e.g., ST0602261242)
         SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyHHmm", Locale.US);
         String timestamp = sdf.format(new Date());
         return "ST" + timestamp;

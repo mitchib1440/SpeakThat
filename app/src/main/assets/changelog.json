@@ -1,46 +1,32 @@
 [
   {
-    "text": "Added Temporary Pause options.",
+    "text": "Added Speech Coordinator.",
     "subpoints": [
-      "When the persistent notification is enabled in General Settings, it has two new action buttons that allow you to pause SpeakThat or its rules temporarily!"
+      "This only allows one speech to take place at a time to fix an issue with incoming notifications during a summary."
     ]
   },
   {
-    "text": "Advanced Voice Options section has been improved and consolidated.",
+    "text": "Network permission has been removed from the Store variant.",
     "subpoints": [
-      "Now allows selection of specific voices and engines rather than it all being split up. Language Preset still works the same."
+      "This remains for the other two variants. GitHub requires the ability to check for and download updates, and the Google Play variant requires internet to use the Google Billing system."
     ]
   },
   {
-    "text": "Skip Repeated Prefix no longer applies to Private Mode.",
+    "text": "Fixed crash when importing settings with pending permissions.",
     "subpoints": [
-      "Previously, if two consecutive private notifications were read, but one had a different app, only the app name would be read. This has been fixed now."
+      "This usually occurred when importing settings that require a permission to be granted. Pressing either option would cause the app to crash."
     ]
   },
   {
-    "text": "Accessibility Service has been removed from the Play Store edition.",
+    "text": "Support email picker no longer tries to search for email apps.",
     "subpoints": [
-      "Google has been throwing a hissy fit over this lately and they want me to clutter the home screen of the app with a legal disclosure. Sod that.",
-      "If any of the accessibility features were important to you, you just need to export your settings and re-download the app from outside the Play Store. See the website for details!",
-      "www.speakthat.app"
+      "This caused some problems with deGoogled phones. It now uses a more universal solution."
     ]
   },
   {
-    "text": "Filter Empty Text is now part of the Remove Emojis tool.",
+    "text": "Added “Include Notification Timestamps” to Compatibility Settings.",
     "subpoints": [
-      "Ultimately this feature exists to ensure that notifications that would just announce an emoji will not be read when emoji removal is enabled."
-    ]
-  },
-  {
-    "text": "Priority Apps now appear as an App List under Notification Behaviour.",
-    "subpoints": [
-      "You previously needed to press the Manage Apps button to view the currently selected Priority Apps. Not any more!."
-    ]
-  },
-  {
-    "text": "Minor UI polish.",
-    "subpoints": [
-      "Filter settings spacing has been more clearly defined as it was inconsistent with the rest of the app."
+      "Can help with accuracy if you find the deduplication system is not playing nicely."
     ]
   }
 ]

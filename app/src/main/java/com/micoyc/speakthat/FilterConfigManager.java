@@ -185,6 +185,7 @@ public class FilterConfigManager {
         public int contentCapSentenceCount;
         public int contentCapTimeLimit;
         public boolean notificationDeduplication;
+        public boolean includeNotificationTimestamps;
         public boolean dismissalMemoryEnabled;
         public int dismissalMemoryTimeout;
         public boolean disableMediaFallback;
@@ -223,6 +224,7 @@ public class FilterConfigManager {
             this.contentCapSentenceCount = 1;
             this.contentCapTimeLimit = 10;
             this.notificationDeduplication = false;
+            this.includeNotificationTimestamps = false;
             this.dismissalMemoryEnabled = true;
             this.dismissalMemoryTimeout = 15;
             this.disableMediaFallback = false;
@@ -437,6 +439,7 @@ public class FilterConfigManager {
         config.behavior.contentCapSentenceCount = prefs.getInt("content_cap_sentence_count", 1);
         config.behavior.contentCapTimeLimit = prefs.getInt("content_cap_time_limit", 10);
         config.behavior.notificationDeduplication = prefs.getBoolean("notification_deduplication", false);
+        config.behavior.includeNotificationTimestamps = prefs.getBoolean("include_notification_timestamps", false);
         config.behavior.dismissalMemoryEnabled = prefs.getBoolean("dismissal_memory_enabled", true);
         config.behavior.dismissalMemoryTimeout = prefs.getInt("dismissal_memory_timeout", 15);
         config.behavior.disableMediaFallback = prefs.getBoolean("disable_media_fallback", false);
@@ -546,6 +549,7 @@ public class FilterConfigManager {
         behavior.put("contentCapSentenceCount", config.behavior.contentCapSentenceCount);
         behavior.put("contentCapTimeLimit", config.behavior.contentCapTimeLimit);
         behavior.put("notificationDeduplication", config.behavior.notificationDeduplication);
+        behavior.put("includeNotificationTimestamps", config.behavior.includeNotificationTimestamps);
         behavior.put("dismissalMemoryEnabled", config.behavior.dismissalMemoryEnabled);
         behavior.put("dismissalMemoryTimeout", config.behavior.dismissalMemoryTimeout);
         behavior.put("disableMediaFallback", config.behavior.disableMediaFallback);
@@ -1174,6 +1178,11 @@ public class FilterConfigManager {
                 
                 if (behavior.has("notificationDeduplication")) {
                     mainEditor.putBoolean("notification_deduplication", behavior.getBoolean("notificationDeduplication"));
+                    totalImported++;
+                }
+
+                if (behavior.has("includeNotificationTimestamps")) {
+                    mainEditor.putBoolean("include_notification_timestamps", behavior.getBoolean("includeNotificationTimestamps"));
                     totalImported++;
                 }
                 

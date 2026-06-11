@@ -56,6 +56,7 @@ import com.micoyc.speakthat.NotificationReaderService
 import com.micoyc.speakthat.R
 import com.micoyc.speakthat.VoiceSettingsActivity
 import com.micoyc.speakthat.tts.SpeakThatTtsManager
+import com.micoyc.speakthat.tts.SpeechCoordinator
 import com.micoyc.speakthat.utils.TtsLanguageHelper
 import java.io.File
 import java.io.FileOutputStream
@@ -156,18 +157,21 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
             }
         }
         val source = intent?.getStringExtra(SummaryConstants.EXTRA_TRIGGER_SOURCE) ?: "unknown"
+        SpeechCoordinator.setSummaryActive(true)
 
         val notification = buildForegroundNotification(source)
         startForegroundCompat(notification)
 
         if (!canDrawOverlaysCompat()) {
             InAppLogger.logWarning(TAG, "Overlay permission missing; stopping summary execution safely")
+            releaseSummarySpeechLock()
             stopSelfResult(startId)
             return START_NOT_STICKY
         }
 
         val overlayAdded = ensureOverlayAttached()
         if (!overlayAdded) {
+            releaseSummarySpeechLock()
             stopSelfResult(startId)
             return START_NOT_STICKY
         }
@@ -184,6 +188,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         unregisterComponentCallbacks(this)
         restoreGlobalVoiceOnSharedTts()
         stopAndReleaseTextToSpeech()
+        releaseSummarySpeechLock()
         abandonAudioFocusIfHeld()
         serviceScope.cancel()
         removeOverlayIfAttached()
@@ -288,7 +293,24 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
             }
 
             override fun onStop(utteranceIdFromCallback: String?, interrupted: Boolean) {
-                // No-op for summary queue control.
+                if (!interrupted || isServiceStopping) {
+                    return
+                }
+                val resolvedId = utteranceIdFromCallback ?: utteranceId
+                val session = utteranceSessionMap[resolvedId] ?: return
+                if (session != currentSpeechSession || isUserSwiping) {
+                    return
+                }
+                mainHandler.post {
+                    if (isServiceStopping || session != currentSpeechSession || isUserSwiping) {
+                        return@post
+                    }
+                    InAppLogger.logWarning(
+                        TAG,
+                        "Summary TTS interrupted externally; restarting from index $currentIndex"
+                    )
+                    startSummarySpeechFromCurrentIndex(triggeredBySwipe = false)
+                }
             }
         }
     }
@@ -559,6 +581,14 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         }
     }
 
+    private fun releaseSummarySpeechLock() {
+        if (!SpeechCoordinator.isSummaryActive()) {
+            return
+        }
+        SpeechCoordinator.setSummaryActive(false)
+        NotificationReaderService.onSummarySessionEnded(this)
+    }
+
     private fun requestGracefulStop(reason: String) {
         if (isServiceStopping) {
             return
@@ -574,6 +604,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         }
         restoreGlobalVoiceOnSharedTts()
         abandonAudioFocusIfHeld()
+        releaseSummarySpeechLock()
         stopSelf()
     }
 
