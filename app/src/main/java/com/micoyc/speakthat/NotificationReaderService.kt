@@ -237,7 +237,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private val recentNotificationKeys = HashMap<String, Long>() // notificationKey -> timestamp
     
     // Group child deduplication - prevent re-reading old notifications when Android regroups them
-    private val groupChildDeduplicationMap = HashMap<String, Long>() // contentKey -> timestamp
+    // Map stores contentKey -> Pair(processedTime, postTime)
+    private val groupChildDeduplicationMap = HashMap<String, Pair<Long, Long>>()
     
     // Dismissal memory tracking - prevent re-reading dismissed notifications
     private val dismissedNotificationKeys = HashMap<String, Long>() // contentHash -> dismissal timestamp
@@ -1476,48 +1477,59 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
                 
             val isDeduplicationEnabled = sharedPreferences?.getBoolean("notification_deduplication", true) ?: true
-            val disableTextBasedDeduplication = sharedPreferences?.getBoolean("disable_text_based_deduplication", false) ?: false
+            val includeNotificationTimestamps = sharedPreferences?.getBoolean("include_notification_timestamps", false) ?: false
 
             // Group child deduplication: when Android regroups notifications (e.g. a new
             // email arrives and the existing ones get bundled), onNotificationPosted fires
             // again for every child in the group. The 30-second dedup window will have
             // expired by then, so we keep a longer-lived map keyed on content.
-            if (isDeduplicationEnabled && !isSelfTest && !disableTextBasedDeduplication && notificationText.isNotEmpty()) {
+            if (isDeduplicationEnabled && !isSelfTest && notificationText.isNotEmpty()) {
                 val groupContentKey = generateContentKey(packageName, notificationText)
                 val now = System.currentTimeMillis()
+                val currentPostTime = sbn.postTime
                     
                 if (notification.group != null) {
-                    val lastSeen = groupChildDeduplicationMap[groupContentKey]
-                    if (lastSeen != null && now - lastSeen < GROUP_CHILD_DEDUP_WINDOW_MS) {
-                        Log.d(TAG, "Skipping re-posted group child notification from $packageName (already processed ${now - lastSeen}ms ago)")
-                        InAppLogger.logFilter("Skipped re-posted group child from $packageName (${now - lastSeen}ms ago)")
-                        try {
-                            StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_GROUP_CHILD_REPOST)
-                        } catch (e: Exception) {
-                            Log.e(TAG, "Error tracking group child repost filter", e)
+                    val lastSeenData = groupChildDeduplicationMap[groupContentKey]
+                    if (lastSeenData != null) {
+                        val lastProcessedTime = lastSeenData.first
+                        val lastPostTime = lastSeenData.second
+                        
+                        if (now - lastProcessedTime < GROUP_CHILD_DEDUP_WINDOW_MS) {
+                            // If the switch is ON, we use postTime to distinguish identical messages
+                            if (includeNotificationTimestamps && currentPostTime > lastPostTime) {
+                                Log.d(TAG, "Group child has new postTime ($currentPostTime > $lastPostTime) - processing as new despite identical content")
+                            } else {
+                                Log.d(TAG, "Skipping re-posted group child notification from $packageName (already processed ${now - lastProcessedTime}ms ago)")
+                                InAppLogger.logFilter("Skipped re-posted group child from $packageName (${now - lastProcessedTime}ms ago)")
+                                try {
+                                    StatisticsManager.getInstance(this).incrementFilterReason(StatisticsManager.FILTER_GROUP_CHILD_REPOST)
+                                } catch (e: Exception) {
+                                    Log.e(TAG, "Error tracking group child repost filter", e)
+                                }
+                                if (showSystemBlocks) {
+                                    val sysTitle = sbn.notification.extras?.getCharSequence(
+                                        android.app.Notification.EXTRA_TITLE
+                                    )?.toString() ?: ""
+                                    addToHistory(
+                                        appName = appName,
+                                        packageName = packageName,
+                                        title = sysTitle,
+                                        text = notificationText,
+                                        wasRead = false,
+                                        spokenText = null,
+                                        blockedReason = "System: Blocked group child repost"
+                                    )
+                                }
+                                return
+                            }
                         }
-                        if (showSystemBlocks) {
-                            val sysTitle = sbn.notification.extras?.getCharSequence(
-                                android.app.Notification.EXTRA_TITLE
-                            )?.toString() ?: ""
-                            addToHistory(
-                                appName = appName,
-                                packageName = packageName,
-                                title = sysTitle,
-                                text = notificationText,
-                                wasRead = false,
-                                spokenText = null,
-                                blockedReason = "System: Blocked group child repost"
-                            )
-                        }
-                        return
                     }
                 }
                     
                 if (groupChildDeduplicationMap.size > MAX_GROUP_DEDUP_ENTRIES) {
-                    groupChildDeduplicationMap.entries.removeIf { (_, ts) -> now - ts > GROUP_CHILD_DEDUP_WINDOW_MS }
+                    groupChildDeduplicationMap.entries.removeIf { (_, data) -> now - data.first > GROUP_CHILD_DEDUP_WINDOW_MS }
                 }
-                groupChildDeduplicationMap[groupContentKey] = now
+                groupChildDeduplicationMap[groupContentKey] = Pair(now, currentPostTime)
             }
                 
             // Check for duplicate notifications (only if deduplication is enabled)
@@ -1527,7 +1539,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 InAppLogger.log("SelfTest", "Deduplication bypassed for test notification")
             }
             if (isDeduplicationEnabled && !isSelfTest) {
-                val notificationKey = generateNotificationKey(packageName, sbn.id, notificationText, disableTextBasedDeduplication)
+                val notificationKey = generateNotificationKey(packageName, sbn.id, notificationText)
                 val currentTime = System.currentTimeMillis()
                     
                 // Clean up old entries from deduplication map
@@ -1576,10 +1588,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 // Enhanced content-based deduplication for all apps (not just problematic ones)
                 // This helps catch notification updates that might have slightly different content
                 var contentKey: String? = null
-                if (!disableTextBasedDeduplication) {
-                    contentKey = generateContentKey(packageName, notificationText)
-                    val lastContentTime = recentNotificationKeys[contentKey]
-                    if (lastContentTime != null && currentTime - lastContentTime < DEDUPLICATION_WINDOW_MS) {
+                contentKey = generateContentKey(packageName, notificationText)
+                val lastContentTime = recentNotificationKeys[contentKey]
+                if (lastContentTime != null && currentTime - lastContentTime < DEDUPLICATION_WINDOW_MS) {
                         val timeSinceLastContent = currentTime - lastContentTime
                         Log.d(TAG, "Content-based duplicate detected from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
                         InAppLogger.logFilter("Content-based duplicate from $appName - skipping (processed ${timeSinceLastContent}ms ago)")
@@ -1605,7 +1616,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         }
                         return
                     }
-                }
                     
                 // Special handling for Gmail: use a more lenient deduplication approach
                 // Gmail updates notifications rather than creating new ones, so we need to be more careful
@@ -2619,11 +2629,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * Uses package name, notification ID, and content hash to identify duplicates
      * Removed timestamp to better handle notification updates
      */
-    private fun generateNotificationKey(packageName: String, notificationId: Int, content: String, disableTextBasedDeduplication: Boolean = false): String {
-        if (disableTextBasedDeduplication) {
-            return "${packageName}_${notificationId}"
-        }
-        
+    private fun generateNotificationKey(packageName: String, notificationId: Int, content: String): String {
         // Create a more robust hash of the content using SHA-256
         val contentHash = try {
             val digest = java.security.MessageDigest.getInstance("SHA-256")
