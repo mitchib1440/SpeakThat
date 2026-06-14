@@ -2137,4 +2137,6 @@ Bloque=ignore totalement, Privée=annonce de façon privée
     <string name="activity_pause_options_indefinitely">Jusqu\'à ce que vous le réactiviez</string>
     <string name="activity_pause_options_title">Suspendre SpeakThat!</string>
     <string name="activity_pause_options_description">Durée :</string>
+    <string name="behavior_include_notification_timestamps_label">Inclure les dates de notification</string>
+    <string name="behavior_include_notification_timestamps_desc">Utilise les dates de notification pour différencier les messages identiques dans les discussions de groupe.</string>
 </resources>
