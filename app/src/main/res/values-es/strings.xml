@@ -2240,4 +2240,6 @@ Bloquear = omitir por completo, Privar = anunciar en privado
     <string name="activity_pause_options_title">Pausar SpeakThat!</string>
     <string name="activity_pause_options_description">Duración:</string>
     <string name="speech_engine_disclaimer">SpeakThat se diseñó principalmente para funcionar con el motor de voz predeterminado de Android. Todas las funciones se prueban con el sistema de reconocimiento y síntesis de voz de Google, que utilizan la mayoría de los dispositivos. Se admiten motores de terceros, pero pueden ser incompatibles con algunas funciones.</string>
+    <string name="behavior_include_notification_timestamps_label">Incluye sello horario de notificación</string>
+    <string name="behavior_include_notification_timestamps_desc">Un sello horario de notificación para distinguir entre mensajes idénticos en charlas en grupo.</string>
 </resources>
