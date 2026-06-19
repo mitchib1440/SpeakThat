@@ -75,10 +75,10 @@
     <string name="persistent_filtering_help">Notifikasi persisten bersifat berkelanjutan (seperti kontrol musik, navigasi, dll.) dan notifikasi senyap tidak memiliki suara/getaran. Opsi ini membantu mengurangi spam notifikasi dari layanan latar belakang.</string>
     <!-- Individual Persistent Filtering Categories -->
     <string name="filter_persistent_notifications">Filter notifikasi persisten</string>
-    <string name="filter_silent_notifications">Filter notifikasi senyap</string>
-    <string name="filter_foreground_services">Filter notifikasi layanan latar depan</string>
-    <string name="filter_low_priority">Filter notifikasi prioritas rendah</string>
-    <string name="filter_system_notifications">Filter notifikasi sistem</string>
+    <string name="filter_silent_notifications">Filter senyap</string>
+    <string name="filter_foreground_services">Filter layanan latar depan</string>
+    <string name="filter_low_priority">Filter prioritas rendah</string>
+    <string name="filter_system_notifications">Filter sistem</string>
     <!-- Category Descriptions -->
     <string name="persistent_notifications_desc">Notifikasi berkelanjutan yang tidak otomatis hilang (kontrol musik, navigasi)</string>
     <string name="silent_notifications_desc">Notifikasi tanpa suara atau getaran</string>
@@ -2112,4 +2112,13 @@
     <string name="badge_option_amethyst">Amethyst</string>
     <string name="badge_option_ruby">Ruby</string>
     <string name="badge_option_diamond">Berlian</string>
+    <string name="behavior_include_notification_timestamps_label">Sertakan stempel waktu notifikasi</string>
+    <string name="behavior_include_notification_timestamps_desc">Gunakan stempel waktu notifikasi untuk membedakan pesan yang identik di chat grup.</string>
+    <string name="speech_engine_disclaimer">SpeakThat terutama dirancang untuk bekerja dengan mesin ucapan bawaan Android. Semua fitur diuji dengan Speech Recognition &amp; Synthesis by Google, yang digunakan oleh sebagian besar perangkat. Mesin pihak ketiga didukung, tetapi mungkin tidak kompatibel dengan beberapa fitur.</string>
+    <string name="filter_emoji_removal_exeption_hint">bereaksi</string>
+    <string name="activity_pause_options_until_next_hour">Sampai jam berikutnya</string>
+    <string name="activity_pause_options_for_one_hour">Selama satu jam</string>
+    <string name="activity_pause_options_indefinitely">Sampai Anda menyalakannya kembali</string>
+    <string name="activity_pause_options_title">Jeda SpeakThat!</string>
+    <string name="activity_pause_options_description">Durasi:</string>
 </resources>
