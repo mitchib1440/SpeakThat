@@ -1,3 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="service_name">SpeakThat! Leitor de Notificação</string>
+    <string name="app_name">SpeakThat!</string>
+    <string name="quick_settings_tile_label">SpeakThat!</string>
+    <string name="quick_settings_tile_enabled">Habilitado</string>
+    <string name="quick_settings_tile_disabled">Desabilitado</string>
+    <string name="quick_settings_tile_enabled_toast">O SpeakThat foi ativado através das Configurações Rápidas</string>
+    <string name="quick_settings_tile_disabled_toast">O SpeakThat foi desativado através das Configurações Rápidas</string>
 </resources>
