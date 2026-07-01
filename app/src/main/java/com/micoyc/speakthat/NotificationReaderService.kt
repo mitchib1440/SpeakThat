@@ -617,7 +617,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val speechTemplateOverride: SpeechTemplateOverride? = null,
         val voiceOverride: VoiceOverride? = null,
         val contentCapOverride: ContentCapOverride? = null,
-        val processedBlocks: Map<String, String>? = null // Support the new architecture
+        val processedBlocks: Map<String, String>? = null, // Support the new architecture
+        val shouldKeepEmojis: Boolean = false
     )
     
     override fun onCreate() {
@@ -1247,7 +1248,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     speechTemplateOverride = filterResult.speechTemplateOverride,
                     voiceOverride = filterResult.voiceOverride,
                     contentCapOverride = filterResult.contentCapOverride,
-                    processedBlocks = filterResult.processedBlocks
+                    processedBlocks = filterResult.processedBlocks,
+                    shouldKeepEmojis = filterResult.shouldKeepEmojis
                 )
             } else {
                 Log.d(TAG, "TEST_FILTERS: notification blocked by filters - ${filterResult.reason}")
@@ -3297,7 +3299,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val speechTemplateOverride: SpeechTemplateOverride? = null,
         val voiceOverride: VoiceOverride? = null,
         val contentCapOverride: ContentCapOverride? = null,
-        val processedBlocks: Map<String, String>? = null
+        val processedBlocks: Map<String, String>? = null,
+        val shouldKeepEmojis: Boolean = false
     )
 
     data class SpeechTemplateOverride(
@@ -3496,7 +3499,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 speechTemplateOverride = forcePrivateTemplateOverride,
                 voiceOverride = voiceOverride,
                 contentCapOverride = contentCapOverride,
-                processedBlocks = finalProcessedBlocks
+                processedBlocks = finalProcessedBlocks,
+                shouldKeepEmojis = notificationContext.shouldKeepEmojis
             )
         } else if (overridePrivate) {
             InAppLogger.logFilter("Rule effect: override private")
@@ -3549,7 +3553,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             speechTemplateOverride = finalSpeechTemplateOverride,
             voiceOverride = voiceOverride,
             contentCapOverride = contentCapOverride,
-            processedBlocks = finalProcessedBlocks
+            processedBlocks = finalProcessedBlocks,
+            shouldKeepEmojis = notificationContext.shouldKeepEmojis
         )
     }
     
@@ -3748,12 +3753,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 text = applyUrlHandling(text)
             }
 
-            // TIDY SPEECH
-            if (tidySpeechRemoveEmojisEnabled && shouldKeepEmojis) {
-                InAppLogger.logFilter("Emojis kept due to Rule Engine action")
-            }
-            text = applyEmojiRemovalIfEnabled(text, shouldKeepEmojis)
-
             processedBlocks[key] = text
         }
 
@@ -3772,9 +3771,16 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
 
     private fun applyEmojiRemovalIfEnabled(text: String, shouldKeepEmojis: Boolean): String {
-        if (!tidySpeechRemoveEmojisEnabled || shouldKeepEmojis) return text
+        if (!tidySpeechRemoveEmojisEnabled) return text
+        if (shouldKeepEmojis) {
+            InAppLogger.logFilter("Emojis kept due to Rule Engine action")
+            return text
+        }
         for (keyword in emojiExceptionsList) {
-            if (text.contains(keyword, ignoreCase = true)) return text
+            if (text.contains(keyword, ignoreCase = true)) {
+                InAppLogger.logFilter("Emojis kept due to exception word: $keyword")
+                return text
+            }
         }
         return removeSpokenEmojis(text)
     }
@@ -6454,7 +6460,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         speechTemplateOverride: SpeechTemplateOverride? = null,
         voiceOverride: VoiceOverride? = null,
         contentCapOverride: ContentCapOverride? = null,
-        processedBlocks: Map<String, String>? = null
+        processedBlocks: Map<String, String>? = null,
+        shouldKeepEmojis: Boolean = false
     ) {
         val isPriorityApp = priorityApps.contains(packageName)
         
@@ -6470,7 +6477,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             speechTemplateOverride = speechTemplateOverride,
             voiceOverride = voiceOverride,
             contentCapOverride = contentCapOverride,
-            processedBlocks = processedBlocks
+            processedBlocks = processedBlocks,
+            shouldKeepEmojis = shouldKeepEmojis
         )
         
         Log.d(TAG, "Handling notification behavior - Mode: $notificationBehavior, App: $appName, Currently speaking: $isCurrentlySpeaking, Queue size: ${notificationQueue.size}")
@@ -6497,7 +6505,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         when (notificationBehavior) {
             "interrupt" -> {
                 Log.d(TAG, "INTERRUPT mode: Speaking immediately and interrupting any current speech")
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis)
             }
             "queue" -> {
                 Log.d(TAG, "QUEUE mode: Adding to queue")
@@ -6508,7 +6516,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "skip" -> {
                 if (!isCurrentlySpeaking) {
                     Log.d(TAG, "SKIP mode: Not currently speaking, will speak now")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis)
                 } else {
                     Log.d(TAG, "SKIP mode: Currently speaking, skipping notification from $appName")
                     // Track filter reason
@@ -6522,7 +6530,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "smart" -> {
                 if (isPriorityApp) {
                     Log.d(TAG, "SMART mode: Priority app $appName - interrupting")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis)
                 } else {
                     Log.d(TAG, "SMART mode: Regular app $appName - adding to queue")
                     notificationQueue.add(queuedNotification)
@@ -6531,7 +6539,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             else -> {
                 Log.d(TAG, "UNKNOWN mode '$notificationBehavior': Defaulting to interrupt")
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis)
             }
         }
     }
@@ -6580,7 +6588,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 queuedNotification.voiceOverride,
                 queuedNotification.contentCapOverride,
                 queuedNotification.processedBlocks,
-                ttsFlushIncoming = false
+                ttsFlushIncoming = false,
+                shouldKeepEmojis = queuedNotification.shouldKeepEmojis
             )
         } else if (isCurrentlySpeaking) {
             Log.d(TAG, "Still speaking, queue will be processed when current speech finishes")
@@ -6599,7 +6608,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         voiceOverride: VoiceOverride? = null,
         contentCapOverride: ContentCapOverride? = null,
         processedBlocks: Map<String, String>? = null,
-        ttsFlushIncoming: Boolean = true
+        ttsFlushIncoming: Boolean = true,
+        shouldKeepEmojis: Boolean = false
     ) {
         if (!isTtsInitialized || textToSpeech == null) {
             Log.w(TAG, "TTS not initialized, cannot speak notification")
@@ -6625,11 +6635,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
         val collapsedSpeechText = collapseRepeatedNotificationPrefix(speechText)
         lastFullNotificationSpeechText = speechText
-        val tidySpeechText = if (tidySpeechRemoveEmojisEnabled) {
-            removeSpokenEmojis(collapsedSpeechText)
-        } else {
-            collapsedSpeechText
-        }
+        val tidySpeechText = applyEmojiRemovalIfEnabled(collapsedSpeechText, shouldKeepEmojis)
         
         // Determine which delay to use (conditional delay overrides global delay)
         val effectiveDelay = if (conditionalDelaySeconds > 0) {
@@ -7485,7 +7491,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             KEY_APP_LIST_MODE, KEY_APP_LIST, KEY_APP_PRIVATE_FLAGS, 
             KEY_WORD_LIST_MODE, KEY_WORD_BLACKLIST, KEY_WORD_BLACKLIST_PRIVATE, KEY_WORD_REPLACEMENTS,
-            KEY_URL_HANDLING_MODE, KEY_URL_REPLACEMENT_TEXT -> {
+            KEY_URL_HANDLING_MODE, KEY_URL_REPLACEMENT_TEXT,
+            KEY_PREF_EMOJI_EXCEPTIONS, KEY_FILTER_EMPTY_TEXT -> {
                 // Reload filter settings
                 loadFilterSettings()
                 Log.d(TAG, "Filter settings updated")
