@@ -2372,4 +2372,6 @@ OfficeNetwork</string>
     <string name="activity_pause_options_indefinitely">Until you turn it back on</string>
     <string name="activity_pause_options_title">Pause SpeakThat!</string>
     <string name="activity_pause_options_description">Duration:</string>
+    <string name="behavior_include_notification_timestamps_label">Include notification timestamps</string>
+    <string name="behavior_include_notification_timestamps_desc">Use notification timestamps to distinguish between identical messages in group chats.</string>
 </resources>
