@@ -55,17 +55,7 @@
     </string-array>
     <!-- Behavior Settings Dialogs -->
     <string name="notification_behavior_dialog_title">Notification Behavior Options</string>
-    <string name="notification_behavior_dialog_message">Choose how SpeakThat handles multiple notifications:
-
-<b>ðŸ”„ Interrupt</b> - Stops current notification and reads new one immediately. Best for urgent notifications.
-
-<b>ðŸ“‹ Queue</b> - Finishes current notification, then reads new ones in order. Nothing gets missed.
-
-<b>â­ï¸ Skip</b> - Ignores new notifications while reading. Simple but you might miss important ones.
-
-<b>ðŸ§  Smart (Recommended)</b> - Priority apps interrupt, others queue. Perfect balance of urgency and completeness.
-
-Smart mode lets you choose which apps are urgent enough to interrupt (like calls, messages) while other apps wait their turn.</string>
+    <string name="notification_behavior_dialog_message">Wybierz sposób, w jaki SpeakThat obsługuje wiele powiadomień: <b>Przerwij</b> – Zatrzymuje bieżące powiadomienie i natychmiast odczytuje nowe. Najlepsze dla pilnych powiadomień. <b>Kolejka</b> – Kończy bieżące powiadomienie, a następnie odczytuje nowe w kolejności. Nic nie zostanie pominięte. <b>⏭Pomiń</b> – Ignoruje nowe powiadomienia podczas odczytywania. Proste, ale możesz przegapić ważne. <b>Inteligentny (zalecany)</b> – Aplikacje priorytetowe przerywają, inne oczekują w kolejce. Idealny balans między pilnością a kompletnością. Tryb inteligentny pozwala wybrać aplikacje na tyle pilne, aby przerwać (np. połączenia, wiadomości), podczas gdy inne czekają na swoją kolej.</string>
     <string name="custom_app_names_title">Custom App Names</string>
     <string name="custom_app_names_description">Customize how app names are spoken in notifications</string>
     <string name="add_custom_app_name">Add Custom App Name</string>
