@@ -2636,4 +2636,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="activity_pause_options_title">Pause SpeakThat!</string>
     <string name="activity_pause_options_description">Duration:</string>
 
+    <string name="summary_settings_visual_mode_title">Visual Mode</string>
+    <string name="summary_settings_visual_mode_subtitle">Show summary cards on screen</string>
+    <string name="summary_settings_audio_only_subtitle">Audio-only mode enabled. No overlay permission required.</string>
 </resources>
