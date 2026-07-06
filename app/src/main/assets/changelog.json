@@ -16,5 +16,17 @@
     "subpoints": [
       "The icon used to display as SpeakThat's wordmark with bugdroid but became the correct icon after being pressed. This error has been corrected."
     ]
+  },
+  {
+    "text": "Added homescreen widget.",
+    "subpoints": [
+      "It's small and simple, but gets the job done!"
+    ]
+  },
+  {
+    "text": "Auto Language is now included in configuration backups.",
+    "subpoints": [
+      "This switch was not included for some reason. That's been fixed now."
+    ]
   }
 ]
