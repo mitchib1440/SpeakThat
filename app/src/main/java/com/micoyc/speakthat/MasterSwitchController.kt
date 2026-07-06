@@ -90,7 +90,7 @@ object MasterSwitchController {
                         if (enabled) {
                             context.getString(R.string.master_switch_enabled_toast)
                         } else {
-                            context.getString(R.string.master_switch_disabled_toast.........)
+                            context.getString(R.string.master_switch_disabled_toast)
                         },
                         Toast.LENGTH_SHORT
                     ).show()
