@@ -81,7 +81,27 @@ object MasterSwitchController {
                     ).show()
                 }
             }
+        } else if (source == "SmallWidget") {
+            val showToast = prefs.getBoolean(KEY_TOAST_MAIN_APP, true)
+            if (showToast) {
+                Handler(Looper.getMainLooper()).post {
+                    Toast.makeText(
+                        context,
+                        if (enabled) {
+                            context.getString(R.string.master_switch_enabled_toast)
+                        } else {
+                            context.getString(R.string.master_switch_disabled_toast.........)
+                        },
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
+
+        // Notify widgets of state change
+        val widgetIntent = Intent("com.micoyc.speakthat.widgets.ACTION_STATE_CHANGED")
+        widgetIntent.setPackage(context.packageName)
+        context.sendBroadcast(widgetIntent)
 
         return true
     }

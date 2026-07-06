@@ -360,7 +360,20 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-
+        <!-- Widgets -->
+        <receiver
+            android:name=".widgets.SpeakThatSmallWidgetProvider"
+            android:exported="true"
+            android:label="SpeakThat! Toggle (Small)">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.micoyc.speakthat.widgets.ACTION_TOGGLE_MASTER_SMALL" />
+                <action android:name="com.micoyc.speakthat.widgets.ACTION_STATE_CHANGED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_small_info" />
+        </receiver>
 
     </application>
 
