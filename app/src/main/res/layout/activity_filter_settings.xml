@@ -839,7 +839,7 @@
                         android:padding="16dp"
                         android:layout_marginBottom="16dp"
                         android:layout_marginTop="8dp"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <!-- Advanced Label and Divider -->
                         <LinearLayout
@@ -851,7 +851,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/tidy_speech_remove_emojis_title"
+                                android:text="@string/filter_remove_emojis_advanced"
                                 android:textStyle="bold"
                                 android:textColor="@color/white_100"
                                 android:textSize="16sp"
@@ -892,8 +892,8 @@
                                     android:id="@+id/editEmojiExceptions"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="@string/filter_emoji_removal_exeption_hint"
                                     android:inputType="text"
+                                    android:text="@string/filter_emoji_removal_exeption_hint"
                                     android:textColor="@color/purple_card_text_primary"
                                     android:textColorHint="@color/white_300" />
 

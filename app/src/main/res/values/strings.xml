@@ -36,6 +36,7 @@
     <string name="no_search_results">No matching settings found</string>
 
     <!-- Filter Settings -->
+    <string name="filter_remove_emojis_advanced">Emoji Removal Exceptions</string>
     <string-array name="blacklist_types">
         <item>Block</item>
         <item>Private</item>
