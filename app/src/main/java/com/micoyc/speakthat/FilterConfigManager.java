@@ -135,7 +135,8 @@ public class FilterConfigManager {
         public int contentType;
         public String ttsEngine;         // TTS engine package name
         public boolean speakerphoneEnabled; // Force speakerphone output
-        
+        public boolean autoDetectLanguage;
+
         public VoiceConfig() {
             this.speechRate = 1.0f;
             this.pitch = 1.0f;
@@ -150,6 +151,7 @@ public class FilterConfigManager {
             this.contentType = 0;
             this.ttsEngine = "";             // Empty means use system default
             this.speakerphoneEnabled = false; // Default to false
+            this.autoDetectLanguage = false;
         }
     }
     
@@ -401,7 +403,8 @@ public class FilterConfigManager {
         config.voice.contentType = voicePrefs.getInt("content_type", 0);
         config.voice.ttsEngine = voicePrefs.getString("tts_engine_package", "");
         config.voice.speakerphoneEnabled = voicePrefs.getBoolean("speakerphone_enabled", false);
-        
+        config.voice.autoDetectLanguage = voicePrefs.getBoolean("auto_detect_language", false);
+
         // Load behavior settings
         config.behavior.notificationBehavior = prefs.getString("notification_behavior", "interrupt");
         config.behavior.priorityApps = new HashSet<>(prefs.getStringSet("priority_apps", new HashSet<>()));
@@ -514,6 +517,7 @@ public class FilterConfigManager {
         voice.put("contentType", config.voice.contentType);
         voice.put("ttsEngine", config.voice.ttsEngine);
         voice.put("speakerphoneEnabled", config.voice.speakerphoneEnabled);
+        voice.put("autoDetectLanguage", config.voice.autoDetectLanguage);
         json.put("voice", voice);
         
         // Behavior settings
@@ -985,6 +989,11 @@ public class FilterConfigManager {
                 
                 if (voice.has("speakerphoneEnabled")) {
                     voiceEditor.putBoolean("speakerphone_enabled", voice.getBoolean("speakerphoneEnabled"));
+                    totalImported++;
+                }
+
+                if (voice.has("autoDetectLanguage")) {
+                    voiceEditor.putBoolean("auto_detect_language", voice.getBoolean("autoDetectLanguage"));
                     totalImported++;
                 }
             }
