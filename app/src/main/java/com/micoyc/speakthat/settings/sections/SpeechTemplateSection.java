@@ -251,9 +251,9 @@ public class SpeechTemplateSection implements BehaviorSettingsSection {
             "• <b>{info}</b> - Info text (additional details)<br>" +
             activity.getString(R.string.behavior_speech_placeholder_ticker_html) + "<br><br>" +
             "<b>Time & Date:</b><br>" +
-            "• <b>{time}</b> - Current time in HH:mm format (e.g., \"14:30\")<br>" +
-            "• <b>{date}</b> - Current date in MMM dd format (e.g., \"Dec 15\")<br>" +
-            "• <b>{timestamp}</b> - Full timestamp (e.g., \"14:30 Dec 15\")<br><br>" +
+            "• <b>{time}</b> - Current time (e.g., \"14:30\" or \"2:30 PM\" based on system settings)<br>" +
+            "• <b>{date}</b> - Current date (e.g., \"December 15\")<br>" +
+            "• <b>{timestamp}</b> - Full timestamp (e.g., \"14:30 December 15\" or \"2:30 PM December 15\")<br><br>" +
             "<b>Notification Metadata:</b><br>" +
             "• <b>{priority}</b> - Priority level (Min, Low, Default, High, Max)<br>" +
             "• <b>{category}</b> - Notification category (Message, Call, etc.)<br>" +
@@ -277,8 +277,8 @@ public class SpeechTemplateSection implements BehaviorSettingsSection {
             "• <b>Formal:</b> \"Notification from {app}: {content}\" → \"Notification from Gmail: New email from John Smith: Meeting tomorrow at 3 PM\"<br>" +
             "• <b>Casual:</b> \"{app} says: {content}\" → \"Weather says: Weather Alert: Heavy rain expected in 2 hours\"<br><br>" +
             "<b>Time-Aware:</b><br>" +
-            "• <b>Time Stamp:</b> \"{app} at {time}: {content}\" → \"Twitter at 14:30: @mitchib1440: Just released a new app update!\"<br>" +
-            "• <b>Full Context:</b> \"{app} ({time}): {content}\" → \"Messages (14:30): Mitchi: I heard you're using SpeakThat!\"<br><br>" +
+            "• <b>Time Stamp:</b> \"{app} at {time}: {content}\" → \"Twitter at 2:30 PM: @mitchib1440: Just released a new app update!\"<br>" +
+            "• <b>Full Context:</b> \"{app} ({time}): {content}\" → \"Messages (2:30 PM): Mitchi: I heard you're using SpeakThat!\"<br><br>" +
             "<b>Legacy / Compatibility:</b><br>" +
             activity.getString(R.string.behavior_speech_example_ticker_html) + "<br><br>" +
             "<b>Advanced Examples:</b><br>" +

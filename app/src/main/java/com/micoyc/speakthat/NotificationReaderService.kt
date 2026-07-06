@@ -7721,9 +7721,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         speechTemplateOverride: SpeechTemplateOverride? = null
     ): String {
         // Get current time and date
-        val time = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
-        val date = SimpleDateFormat("MMM dd", Locale.getDefault()).format(Date())
-        val timestamp = SimpleDateFormat("HH:mm MMM dd", Locale.getDefault()).format(Date())
+        val time = android.text.format.DateFormat.getTimeFormat(this).format(Date())
+        val date = SimpleDateFormat("MMMM dd", Locale.getDefault()).format(Date())
+        val timestamp = "$time $date"
         
         // Handle app name with custom names and privacy settings
         val appDisplayName = when {
