@@ -193,6 +193,8 @@ public class FilterConfigManager {
         public boolean disableMediaFallback;
         public boolean enableLegacyDucking;
         public boolean dontUseSpeaker; // NEW
+        public boolean androidAutoDisableSpeakThat;
+        public boolean androidAutoDisableSco;
         public String earconMode;
         
         public BehaviorConfig() {
@@ -232,6 +234,8 @@ public class FilterConfigManager {
             this.disableMediaFallback = false;
             this.enableLegacyDucking = false;
             this.dontUseSpeaker = false; // NEW
+            this.androidAutoDisableSpeakThat = true;
+            this.androidAutoDisableSco = true;
             this.earconMode = BehaviorSettingsStore.EARCON_NONE;
         }
     }
@@ -448,6 +452,8 @@ public class FilterConfigManager {
         config.behavior.disableMediaFallback = prefs.getBoolean("disable_media_fallback", false);
         config.behavior.enableLegacyDucking = prefs.getBoolean("enable_legacy_ducking", false);
         config.behavior.dontUseSpeaker = prefs.getBoolean("dont_use_speaker", false); // NEW
+        config.behavior.androidAutoDisableSpeakThat = prefs.getBoolean("android_auto_disable_speakthat", true);
+        config.behavior.androidAutoDisableSco = prefs.getBoolean("android_auto_disable_sco", true);
         
         // Load general settings
         config.general.darkMode = prefs.getBoolean("dark_mode", true);
@@ -559,6 +565,8 @@ public class FilterConfigManager {
         behavior.put("disableMediaFallback", config.behavior.disableMediaFallback);
         behavior.put("enableLegacyDucking", config.behavior.enableLegacyDucking);
         behavior.put("dontUseSpeaker", config.behavior.dontUseSpeaker); // NEW
+        behavior.put("androidAutoDisableSpeakThat", config.behavior.androidAutoDisableSpeakThat);
+        behavior.put("androidAutoDisableSco", config.behavior.androidAutoDisableSco);
         json.put("behavior", behavior);
         
         // General settings
@@ -1222,6 +1230,16 @@ public class FilterConfigManager {
 
                 if (behavior.has("dontUseSpeaker")) {
                     mainEditor.putBoolean("dont_use_speaker", behavior.getBoolean("dontUseSpeaker"));
+                    totalImported++;
+                }
+
+                if (behavior.has("androidAutoDisableSpeakThat")) {
+                    mainEditor.putBoolean("android_auto_disable_speakthat", behavior.getBoolean("androidAutoDisableSpeakThat"));
+                    totalImported++;
+                }
+
+                if (behavior.has("androidAutoDisableSco")) {
+                    mainEditor.putBoolean("android_auto_disable_sco", behavior.getBoolean("androidAutoDisableSco"));
                     totalImported++;
                 }
             }
