@@ -140,6 +140,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.media:media:1.6.0")
+    implementation("androidx.car.app:app:1.4.0")
 }
 
 aboutLibraries {

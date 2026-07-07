@@ -1054,6 +1054,14 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="accessibility_service_name">SpeakThat Accessibility</string>
     <string name="accessibility_service_description">Enables advanced control features for SpeakThat including volume button shortcuts to stop/pause notification reading. This service is completely optional and all processing stays on your device.</string>
 
+    <!-- Android Auto Strings -->
+    <string name="behavior_android_auto_title">Android Auto</string>
+    <string name="behavior_android_auto_description">Manage behavior when connected to a car display</string>
+    <string name="behavior_disable_speakthat_auto">Disable SpeakThat for Android Auto</string>
+    <string name="behavior_disable_speakthat_auto_desc">Prioritise Android Auto\'s native notification reader when connected</string>
+    <string name="behavior_disable_sco_auto">Disable Bluetooth SCO</string>
+    <string name="behavior_disable_sco_auto_desc">Prevents SpeakThat from forcing a phone call connection when Android Auto is running</string>
+
     <!-- Press to Stop Strings -->
     <string name="behavior_press_to_stop_title">Press to Stop</string>
     <string name="behavior_press_to_stop_description">Stop notification reading by pressing both volume buttons simultaneously. Normal volume control still works. Requires accessibility permission.</string>

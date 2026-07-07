@@ -621,12 +621,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val shouldKeepEmojis: Boolean = false
     )
     
+    private lateinit var androidAutoHelper: com.micoyc.speakthat.utils.AndroidAutoHelper
+
     override fun onCreate() {
         super.onCreate()
         activeServiceInstance = this
         listenerConnectedForBridge = false
         Log.d(TAG, "NotificationReaderService created")
         InAppLogger.log("Service", "NotificationReaderService started")
+
+        androidAutoHelper = com.micoyc.speakthat.utils.AndroidAutoHelper(this)
+        androidAutoHelper.initialize()
         
         // Clear deduplication caches on service start to prevent stale entries
         recentNotificationKeys.clear()
@@ -762,6 +767,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         InAppLogger.log("Service", "NotificationReaderService being destroyed")
         
         try {
+            androidAutoHelper.cleanup()
             processingChannel.close()
             processingSupervisorJob.cancel()
 
@@ -1329,7 +1335,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
-    private fun processPostedNotificationPipeline(sbn: StatusBarNotification, rankingMap: RankingMap? = null) {
+    private suspend fun processPostedNotificationPipeline(sbn: StatusBarNotification, rankingMap: RankingMap? = null) {
         try {
             val notification = sbn.notification
             val packageName = sbn.packageName
@@ -1349,6 +1355,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     } catch (e: Exception) {
                         Log.e(TAG, "Error tracking self-package filter", e)
                     }
+                    return
+                }
+            }
+                
+            // Mitigate Android Auto startup race condition
+            kotlinx.coroutines.delay(500)
+            
+            if (androidAutoHelper.isConnected()) {
+                val disableSpeakThat = sharedPreferences?.getBoolean("android_auto_disable_speakthat", true) ?: true
+                if (disableSpeakThat) {
+                    Log.d(TAG, "Android Auto connected and Disable SpeakThat is true - skipping notification")
+                    InAppLogger.log("AndroidAuto", "Notification ignored due to Android Auto connection")
                     return
                 }
             }
@@ -7184,7 +7202,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 }
             }
 
-            scoAudioManager.requestScoAndPlay(this, audioManager) {
+            val playAction = {
                 val speakResult = SpeakThatTtsManager.speak(
                     context = this,
                     text = finalSpeechText,
@@ -7212,7 +7230,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     unregisterShakeListener()
                     restoreGlobalVoiceSettingsIfNeeded("speak() error")
                     releaseSpeechWakeLock()
-                    return@requestScoAndPlay
+                }
+            }
+
+            val disableScoForAuto = sharedPreferences?.getBoolean("android_auto_disable_sco", true) ?: true
+            if (androidAutoHelper.isConnected() && disableScoForAuto) {
+                Log.d(TAG, "Android Auto connected and Disable SCO is true - bypassing SCO")
+                InAppLogger.log("AndroidAuto", "Bypassing Bluetooth SCO for Android Auto")
+                
+                // Ensure we have audio focus to duck the car's music
+                requestSpeechAudioFocus(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
+                
+                playAction()
+            } else {
+                scoAudioManager.requestScoAndPlay(this, audioManager) {
+                    playAction()
                 }
             }
         }

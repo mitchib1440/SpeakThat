@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import com.micoyc.speakthat.InAppLogger;
 import com.micoyc.speakthat.databinding.ActivityBehaviorSettingsBinding;
+import com.micoyc.speakthat.settings.sections.AndroidAutoSection;
 import com.micoyc.speakthat.settings.sections.ContentCapSection;
 import com.micoyc.speakthat.settings.sections.CooldownSection;
 import com.micoyc.speakthat.settings.sections.CustomAppNamesSection;
@@ -140,6 +141,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
         DelaySection delaySection = new DelaySection(this, binding, store);
         earconSection = new EarconSection(this, binding, store);
         ContentCapSection contentCapSection = new ContentCapSection(this, binding, store);
+        AndroidAutoSection androidAutoSection = new AndroidAutoSection(this, binding, store);
         CustomAppNamesSection customAppNamesSection =
             new CustomAppNamesSection(this, binding, store);
         cooldownSection = new CooldownSection(this, binding, store);
@@ -153,6 +155,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
         sections.add(delaySection);
         sections.add(earconSection);
         sections.add(contentCapSection);
+        sections.add(androidAutoSection);
         sections.add(customAppNamesSection);
         sections.add(cooldownSection);
         sections.add(respectModesSection);
