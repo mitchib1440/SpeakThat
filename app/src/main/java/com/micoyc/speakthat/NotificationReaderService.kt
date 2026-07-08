@@ -7802,22 +7802,53 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             return fullText
         }
 
-        val previousWords = previousText.split("\\s+".toRegex())
-        val currentWords = currentText.split("\\s+".toRegex())
-        val commonWords = minOf(previousWords.size, currentWords.size)
-        var samePrefixCount = 0
-        while (samePrefixCount < commonWords &&
-            previousWords[samePrefixCount].equals(currentWords[samePrefixCount], ignoreCase = true)
-        ) {
-            samePrefixCount++
-        }
+        // 1. Find the Longest Common Prefix (Extremely battery-friendly, no regex)
+        val commonPrefix = previousText.commonPrefixWith(currentText, ignoreCase = true)
+        val prefixLen = commonPrefix.length
 
-        if (samePrefixCount < 1) {
+        // If there's no common prefix at all, just return the full text
+        if (prefixLen == 0) return fullText
+
+        // 2. Prevent "Fractured Words"
+        // If we matched "Battery at 9" from "90%" and "95%", we need to snap back to "Battery at "
+        // We check if the next character in either string is part of the same word.
+        val prevNextChar = previousText.getOrNull(prefixLen)
+        val currNextChar = currentText.getOrNull(prefixLen)
+
+        val isFractured = commonPrefix.last().isLetterOrDigit() &&
+                ((prevNextChar != null && prevNextChar.isLetterOrDigit()) ||
+                 (currNextChar != null && currNextChar.isLetterOrDigit()))
+
+        // 3. Determine the safe cutoff index
+        val safeCutoffIndex = if (isFractured) {
+            // Snap back to the last whitespace to keep the word intact
+            val lastSpaceIndex = commonPrefix.lastIndexOfAny(charArrayOf(' ', '\n', '\t'))
+            if (lastSpaceIndex != -1) lastSpaceIndex + 1 else 0
+        } else {
+            prefixLen
+        }
+        
+        // If the safe cutoff index is 0, it means the very first word was fractured,
+        // so there is no valid common prefix to skip.
+        if (safeCutoffIndex == 0) {
             return fullText
         }
 
-        val trimmed = currentWords.subList(samePrefixCount, currentWords.size).joinToString(" ")
-        return trimmed // Changed from: if (trimmed.isBlank()) fullText else trimmed
+        // 4. Extract the remaining text from the new notification
+        val remainingText = currentText.substring(safeCutoffIndex)
+
+        // 5. Clean up lingering punctuation at the start so TTS doesn't say "comma one task"
+        // We drop leading spaces and common separating punctuation, but keep symbols like '$' or '('
+        val finalTrimmed = remainingText.dropWhile { 
+            it.isWhitespace() || it == ',' || it == ':' || it == ';' || it == '-' || it == '.' 
+        }.trim()
+        
+        // If the remaining text is empty (the notifications were identical), return the full text
+        if (finalTrimmed.isEmpty()) {
+            return fullText
+        }
+        
+        return finalTrimmed
     }
 
     /**
