@@ -523,7 +523,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     text = text,
                     sbn = sbn,
                     isSelfTest = false,
-                    rankingMap = null
+                    rankingMap = null,
+                    isSummary = true
                 )
                 SummaryFilterBridgeResult(
                     shouldInclude = result.shouldSpeak,
@@ -3177,7 +3178,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
-    private fun checkCooldown(packageName: String, isSystemEvent: Boolean = false): FilterResult {
+    private fun checkCooldown(packageName: String, isSystemEvent: Boolean = false, isSummary: Boolean = false): FilterResult {
+        if (isSummary) {
+            return FilterResult(true, "", "Summary bypass - skipping cooldown")
+        }
         if (isSystemEvent) {
             Log.d(TAG, "System event bypass - skipping cooldown for $packageName")
             return FilterResult(true, "", "System event bypassed cooldown")
@@ -3368,7 +3372,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         sbn: StatusBarNotification? = null,
         isSelfTest: Boolean = false,
         isSystemEvent: Boolean = false,
-        rankingMap: RankingMap? = null
+        rankingMap: RankingMap? = null,
+        isSummary: Boolean = false
     ): FilterResult {
         // 1. Check app filtering
         val appFilterResult = checkAppFilter(packageName, isSelfTest, isSystemEvent)
@@ -3376,7 +3381,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             return appFilterResult
         }
         // 2. Check cooldown
-        val cooldownResult = checkCooldown(packageName, isSystemEvent)
+        val cooldownResult = checkCooldown(packageName, isSystemEvent, isSummary)
         if (!cooldownResult.shouldSpeak) {
             return cooldownResult
         }
@@ -3407,7 +3412,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             notificationContext.shouldKeepEmojis = true
         }
 
-        if (effects.any { it is com.micoyc.speakthat.rules.Effect.SkipNotification }) {
+        if (!isSummary && effects.any { it is com.micoyc.speakthat.rules.Effect.SkipNotification }) {
             val blockingRules = ruleManager.getBlockingRuleNames(notificationContext)
             val reason = "Rules blocking: ${blockingRules.joinToString(", ")}"
             InAppLogger.logFilter("Rules blocked notification: $reason")
