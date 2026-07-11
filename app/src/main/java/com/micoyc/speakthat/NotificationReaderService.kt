@@ -1368,6 +1368,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (disableSpeakThat) {
                     Log.d(TAG, "Android Auto connected and Disable SpeakThat is true - skipping notification")
                     InAppLogger.log("AndroidAuto", "Notification ignored due to Android Auto connection")
+                    
+                    val title = notification.extras?.getCharSequence(android.app.Notification.EXTRA_TITLE)?.toString() ?: ""
+                    val appName = getAppName(packageName)
+                    val text = extractNotificationText(notification = notification, packageNameForLog = packageName)
+                    
+                    addToHistory(
+                        appName = appName,
+                        packageName = packageName,
+                        title = title,
+                        text = text,
+                        wasRead = false,
+                        spokenText = null,
+                        blockedReason = "Silenced by: Android Auto"
+                    )
                     return
                 }
             }
