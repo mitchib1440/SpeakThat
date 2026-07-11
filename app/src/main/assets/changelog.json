@@ -24,9 +24,44 @@
     ]
   },
   {
+    "text": "Fixed {time} and {date} placeholders.",
+    "subpoints": [
+      "Thanks to ForgeSource for reporting this issue. {time} used to only work in 24-hour mode, and {date} used abbreviated months which were sometiems mispronounced."
+    ]
+  },
+  {
+    "text": "Added a few options for Android Auto.",
+    "subpoints": [
+      "Android Auto users have a few options inside Behaviour Settings. This gives more control over how audio routing is done when connected to a vehicle."
+    ]
+  },
+  {
+    "text": "Skip Repeated Prefix no longer fractures sentences.",
+    "subpoints": [
+      "Skipping would occasionally cut off parts of a word (such as the difference between 90% and 95%), the 9 would be cut off for the second readout. This is fixed now."
+    ]
+  },
+  {
     "text": "Auto Language is now included in configuration backups.",
     "subpoints": [
       "This switch was not included for some reason. That's been fixed now."
+    ]
+  },
+  {
+    "text": "Summaries are no longer blocked by Conditional Rules.",
+    "subpoints": [
+      "This was especially problematic for manually activated summaries, where the 'Only When Screen Off' rule would prevent it from starting."
+    ]
+  },
+  {
+    "text": "Updated several translations from Weblate.",
+    "subpoints": [
+      "Russian",
+      "Spanish",
+      "French",
+      "Indonesian",
+      "Portuguese (Brazil)",
+      "Romanian"
     ]
   }
 ]
