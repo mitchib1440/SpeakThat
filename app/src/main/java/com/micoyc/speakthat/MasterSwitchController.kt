@@ -103,6 +103,9 @@ object MasterSwitchController {
         widgetIntent.setPackage(context.packageName)
         context.sendBroadcast(widgetIntent)
 
+        // Request Quick Settings tile update to keep it in sync
+        SpeakThatTileService.requestTileUpdate(context)
+
         return true
     }
 

@@ -540,6 +540,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Always show "Permission Settings" for consistent button sizing
         binding.buttonEnablePermission.text = getString(R.string.open_settings)
 
+        // Keep Quick Settings tile in sync
+        SpeakThatTileService.requestTileUpdate(this)
     }
     
     private fun setupNotificationHistoryCard() {
