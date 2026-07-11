@@ -54,6 +54,12 @@
     ]
   },
   {
+    "text": "Conditional Rules now show a confirmation dialog when you have unsaved changes.",
+    "subpoints": [
+      "Another UX bug that wasn't obvious to me but was pointed out in a bug report. Exiting a config screen without saving changes just discarded your modifications. Now it asks you explicitly what you want to do."
+    ]
+  },
+  {
     "text": "Updated several translations from Weblate.",
     "subpoints": [
       "Russian",
