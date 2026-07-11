@@ -42,12 +42,6 @@ public class AndroidAutoSection implements BehaviorSettingsSection {
             store.prefs().edit().putBoolean("android_auto_disable_sco", isChecked).apply();
             InAppLogger.log("BehaviorSettings", "Android Auto Disable SCO changed to: " + isChecked);
         });
-
-        binding.switchUseNavigationAudioAuto.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (store.isInitializing()) return;
-            store.prefs().edit().putBoolean("android_auto_use_navigation_audio", isChecked).apply();
-            InAppLogger.log("BehaviorSettings", "Android Auto Use Navigation Audio changed to: " + isChecked);
-        });
     }
 
     @Override
@@ -57,9 +51,6 @@ public class AndroidAutoSection implements BehaviorSettingsSection {
 
         boolean disableSco = store.prefs().getBoolean("android_auto_disable_sco", true);
         binding.switchDisableScoAuto.setChecked(disableSco);
-
-        boolean useNavigationAudio = store.prefs().getBoolean("android_auto_use_navigation_audio", false);
-        binding.switchUseNavigationAudioAuto.setChecked(useNavigationAudio);
     }
 
     @Override

@@ -2648,6 +2648,4 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="summary_settings_visual_mode_title">Visual Mode</string>
     <string name="summary_settings_visual_mode_subtitle">Show summary cards on screen</string>
     <string name="summary_settings_audio_only_subtitle">Audio-only mode enabled. No overlay permission required.</string>
-    <string name="behavior_use_navigation_audio_auto">Use Navigation Audio Stream</string>
-    <string name="behavior_use_navigation_audio_auto_desc">Route audio as navigation guidance when connected to Android Auto for louder speech</string>
 </resources>

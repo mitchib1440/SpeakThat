@@ -4825,7 +4825,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         }
                     }
                 } else {
-                    InAppLogger.log("MediaBehavior", "Audio focus granted for duck mode (usage=${resolveTtsAttributes().first})")
+                    InAppLogger.log("MediaBehavior", "Audio focus granted for duck mode (usage=${resolveTtsUsage()})")
                 }
                 true
             }
@@ -5008,20 +5008,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
 
     
-    private fun resolveTtsAttributes(): Pair<Int, Int> {
-        val voicePrefs = voiceSettingsPrefs ?: getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-        val usageIndex = voicePrefs.getInt("audio_usage", DEFAULT_TTS_USAGE_INDEX)
-        val contentIndex = voicePrefs.getInt("content_type", 0)
-
-        val useNavAudio = sharedPreferences?.getBoolean("android_auto_use_navigation_audio", false) ?: false
-        if (useNavAudio && androidAutoHelper.isConnected()) {
-            return Pair(
-                android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE,
-                android.media.AudioAttributes.CONTENT_TYPE_SPEECH
-            )
-        }
-
-        val usage = when (usageIndex) {
+    private fun resolveTtsUsage(): Int {
+        val prefs = voiceSettingsPrefs ?: getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+        val index = prefs?.getInt("audio_usage", DEFAULT_TTS_USAGE_INDEX) ?: DEFAULT_TTS_USAGE_INDEX
+        return when (index) {
             0 -> android.media.AudioAttributes.USAGE_MEDIA
             1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
             2 -> android.media.AudioAttributes.USAGE_ALARM
@@ -5029,43 +5019,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
             else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
         }
-
-        val content = when (contentIndex) {
-            0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
-            1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
-            2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
-            3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
-            else -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
-        }
-
-        return Pair(usage, content)
     }
 
     private fun requestSpeechAudioFocus(focusGain: Int): Boolean {
-        val (baseUsage, baseContent) = resolveTtsAttributes()
-        val useNavAudio = sharedPreferences?.getBoolean("android_auto_use_navigation_audio", false) ?: false
-        val isNavOverrideActive = useNavAudio && androidAutoHelper.isConnected()
-
-        val usage: Int
-        val contentType: Int
-        if (isNavOverrideActive) {
-            usage = baseUsage
-            contentType = baseContent
-        } else {
-            val enhanced = AccessibilityUtils.getEnhancedAudioAttributes(
-                this,
-                baseUsage,
-                baseContent
-            )
-            usage = enhanced.first
-            contentType = enhanced.second
-        }
-
-        val actualFocusGain = if (isNavOverrideActive) {
-            android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
-        } else {
-            focusGain
-        }
+        val baseUsage = resolveTtsUsage()
+        val (usage, contentType) = AccessibilityUtils.getEnhancedAudioAttributes(
+            this,
+            baseUsage,
+            android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+        )
 
         return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             val attributes = android.media.AudioAttributes.Builder()
@@ -5073,7 +5035,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 .setContentType(contentType)
                 .build()
 
-            audioFocusRequest = android.media.AudioFocusRequest.Builder(actualFocusGain)
+            audioFocusRequest = android.media.AudioFocusRequest.Builder(focusGain)
                 .setAudioAttributes(attributes)
                 .setOnAudioFocusChangeListener { handleAudioFocusChange(it) }
                 .setAcceptsDelayedFocusGain(false)
@@ -5081,10 +5043,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 .build()
 
             val result = audioManager.requestAudioFocus(audioFocusRequest!!)
-            Log.d(TAG, "Audio focus request result (gain=$actualFocusGain, usage=$usage): $result")
+            Log.d(TAG, "Audio focus request result (gain=$focusGain, usage=$usage): $result")
             result == android.media.AudioManager.AUDIOFOCUS_REQUEST_GRANTED
         } else {
-            val legacyGain = if (actualFocusGain == android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK) {
+            val legacyGain = if (focusGain == android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK) {
                 android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
             } else {
                 android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT
@@ -5337,9 +5299,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Get current TTS settings
             val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
             val ttsVolume = minOf(1.0f, voicePrefs.getFloat("tts_volume", 1.0f))
+            val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
             val speakerphoneEnabled = voicePrefs.getBoolean("speakerphone_enabled", false)
             
-            val ttsUsage = resolveTtsAttributes().first
+            val ttsUsage = when (ttsUsageIndex) {
+                0 -> android.media.AudioAttributes.USAGE_MEDIA
+                1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
+                2 -> android.media.AudioAttributes.USAGE_ALARM
+                3 -> android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION
+                4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+                else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+            }
             
             // Re-apply audio attributes to TTS instance
             // CRITICAL: Always use CONTENT_TYPE_SPEECH to prevent TTS from being ducked
@@ -5469,20 +5439,27 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             
             // Get TTS settings for diagnostics
             val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+            val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
             val duckingVolume = if (targetPercentOverride in 0..100) {
                 targetPercentOverride
             } else {
                 voicePrefs.getInt("ducking_volume", 50) // Default to 50%
             }
             
-            val ttsUsage = resolveTtsAttributes().first
-            
-            Log.d(TAG, "=== DUCKING DEBUG: Manual ducking settings - Current volume: $currentVolume, Max volume: $maxVolume, Ducking volume: $duckingVolume%, TTS usage: $ttsUsage ===")
-            InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Manual ducking settings - Current: $currentVolume, Max: $maxVolume, Ducking: $duckingVolume%, TTS usage: $ttsUsage ===")
+            Log.d(TAG, "=== DUCKING DEBUG: Manual ducking settings - Current volume: $currentVolume, Max volume: $maxVolume, Ducking volume: $duckingVolume%, TTS usage index: $ttsUsageIndex ===")
+            InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Manual ducking settings - Current: $currentVolume, Max: $maxVolume, Ducking: $duckingVolume%, TTS usage index: $ttsUsageIndex ===")
+            val ttsUsage = when (ttsUsageIndex) {
+                0 -> android.media.AudioAttributes.USAGE_MEDIA
+                1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
+                2 -> android.media.AudioAttributes.USAGE_ALARM
+                3 -> android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION
+                4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+                else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+            }
             
             // Enhanced diagnostics for ducking issues
-            Log.d(TAG, "=== DUCKING DEBUG: Manual ducking diagnostics - TTS usage constant: $ttsUsage ===")
-            InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Manual ducking diagnostics - TTS usage constant: $ttsUsage, Media volume: $currentVolume/$maxVolume ===")
+            Log.d(TAG, "=== DUCKING DEBUG: Manual ducking diagnostics - TTS usage index: $ttsUsageIndex, TTS usage constant: $ttsUsage ===")
+            InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Manual ducking diagnostics - TTS usage index: $ttsUsageIndex, TTS usage constant: $ttsUsage, Media volume: $currentVolume/$maxVolume ===")
             // Store original volume for restoration
             if (originalMusicVolume == -1) {
                 originalMusicVolume = currentVolume
@@ -5587,7 +5564,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // TRICK: Try ducking only if the music stream is actually being used for media
             // and if TTS is not using the same stream
             val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-            val ttsUsage = resolveTtsAttributes().first
+            val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4)
+            val ttsUsage = when (ttsUsageIndex) {
+                0 -> android.media.AudioAttributes.USAGE_MEDIA
+                1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
+                2 -> android.media.AudioAttributes.USAGE_ALARM
+                3 -> android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION
+                4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+                else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+            }
             
             // If TTS is using NOTIFICATION or ALARM stream, we can safely duck MUSIC stream
             if (ttsUsage == android.media.AudioAttributes.USAGE_NOTIFICATION || 
@@ -5722,9 +5707,17 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 
                 // Get current TTS settings
                 val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+                val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4)
                 val speakerphoneEnabled = voicePrefs.getBoolean("speakerphone_enabled", false)
                 
-                val (ttsUsage, ttsContentType) = resolveTtsAttributes()
+                val ttsUsage = when (ttsUsageIndex) {
+                    0 -> android.media.AudioAttributes.USAGE_MEDIA
+                    1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
+                    2 -> android.media.AudioAttributes.USAGE_ALARM
+                    3 -> android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION
+                    4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+                    else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+                }
                 
                 // Restore original TTS volume
                 val volumeParams = VoiceSettingsActivity.createVolumeBundle(originalTtsVolume, ttsUsage, speakerphoneEnabled)
@@ -5733,7 +5726,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (isCurrentlySpeaking && textToSpeech != null) {
                     val audioAttributes = android.media.AudioAttributes.Builder()
                         .setUsage(ttsUsage)
-                        .setContentType(ttsContentType)
+                        .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
                         .build()
                     
                     textToSpeech?.setAudioAttributes(audioAttributes)
@@ -5764,13 +5757,22 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         try {
             // Get TTS audio attributes from voice settings
             val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-            val (fallbackTtsUsage, fallbackTtsContent) = resolveTtsAttributes()
+            val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4)
+            
+            val fallbackTtsUsage = when (ttsUsageIndex) {
+                0 -> android.media.AudioAttributes.USAGE_MEDIA
+                1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
+                2 -> android.media.AudioAttributes.USAGE_ALARM
+                3 -> android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION
+                4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+                else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+            }
             
             // ACCESSIBILITY ENHANCEMENT: Use enhanced audio attributes when accessibility permission is available
             val (ttsUsage, ttsContent) = AccessibilityUtils.getEnhancedAudioAttributes(
                 this, 
                 fallbackTtsUsage, 
-                fallbackTtsContent
+                android.media.AudioAttributes.CONTENT_TYPE_SPEECH
             )
             
             Log.d(TAG, "Trying alternative ducking focus with TTS usage: $ttsUsage")
@@ -5980,15 +5982,23 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         try {
             // Get TTS audio attributes from voice settings
             val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+            val ttsUsageIndex = voicePrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
             
             // Convert index to actual usage constant (matching VoiceSettingsActivity)
-            val (fallbackTtsUsage, fallbackTtsContent) = resolveTtsAttributes()
+            val fallbackTtsUsage = when (ttsUsageIndex) {
+                0 -> android.media.AudioAttributes.USAGE_MEDIA
+                1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
+                2 -> android.media.AudioAttributes.USAGE_ALARM
+                3 -> android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION
+                4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+                else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE // Safe fallback
+            }
             
             // ACCESSIBILITY ENHANCEMENT: Use enhanced audio attributes when accessibility permission is available
             val (ttsUsage, ttsContent) = AccessibilityUtils.getEnhancedAudioAttributes(
                 this, 
                 fallbackTtsUsage, 
-                fallbackTtsContent
+                android.media.AudioAttributes.CONTENT_TYPE_SPEECH
             )
             
             if (AccessibilityUtils.shouldUseEnhancedAudioControl(this)) {
@@ -5999,8 +6009,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Standard ducking - Usage: $ttsUsage ===")
             }
             
-            Log.d(TAG, "=== DUCKING DEBUG: Enhanced ducking - usage constant: $ttsUsage ===")
-            InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Enhanced ducking - TTS usage: $ttsUsage ===")
+            Log.d(TAG, "=== DUCKING DEBUG: Enhanced ducking - TTS usage index: $ttsUsageIndex -> usage constant: $ttsUsage ===")
+            InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: Enhanced ducking - TTS usage: $ttsUsage (index: $ttsUsageIndex) ===")
             
             // Create audio attributes for our TTS
             val ttsAudioAttributes = android.media.AudioAttributes.Builder()
@@ -6795,7 +6805,25 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val mainPrefs = getSharedPreferences("SpeakThatPrefs", MODE_PRIVATE)
         if (mainPrefs.getBoolean("dont_use_speaker", false)) {
             try {
-                val (ttsUsage, contentType) = resolveTtsAttributes()
+                val ttsUsageIndex = voiceSettingsPrefs.getInt("audio_usage", 4)
+                val contentTypeIndex = voiceSettingsPrefs.getInt("content_type", 0)
+                
+                val ttsUsage = when (ttsUsageIndex) {
+                    0 -> android.media.AudioAttributes.USAGE_MEDIA
+                    1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
+                    2 -> android.media.AudioAttributes.USAGE_ALARM
+                    3 -> android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION
+                    4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+                    else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+                }
+                
+                val contentType = when (contentTypeIndex) {
+                    0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                    1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                    2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                    3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                    else -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                }
                 
                 val audioAttributes = android.media.AudioAttributes.Builder()
                     .setUsage(ttsUsage)
@@ -6866,6 +6894,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Create volume bundle with proper volume parameters
         val ttsVolume = minOf(1.0f, voiceSettingsPrefs.getFloat("tts_volume", 1.0f))
+        val ttsUsageIndex = voiceSettingsPrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
         val speakerphoneEnabled = voiceSettingsPrefs.getBoolean("speakerphone_enabled", false)
         val dontUseSpeakerForVoice = mainPrefs.getBoolean("dont_use_speaker", false)
         val effectiveSpeakerphone = speakerphoneEnabled && !dontUseSpeakerForVoice
@@ -6875,17 +6904,24 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 "Speakerphone pref set but Don't Use Speaker takes priority — routing will not force speakerphone"
             )
         }
-        val ttsUsage = resolveTtsAttributes().first
+        val ttsUsage = when (ttsUsageIndex) {
+            0 -> android.media.AudioAttributes.USAGE_MEDIA
+            1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
+            2 -> android.media.AudioAttributes.USAGE_ALARM
+            3 -> android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION
+            4 -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+            else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
+        }
         
         Log.d(
             TAG,
-            "=== DUCKING DEBUG: TTS settings for speech - Volume: ${ttsVolume * 100}%, " +
+            "=== DUCKING DEBUG: TTS settings for speech - Volume: ${ttsVolume * 100}%, Usage index: $ttsUsageIndex, " +
                 "Usage constant: $ttsUsage, speakerPref=$speakerphoneEnabled, dontUseSpeaker=$dontUseSpeakerForVoice, " +
                 "effectiveSpeakerphone=$effectiveSpeakerphone ==="
         )
         InAppLogger.log(
             "Service",
-            "=== DUCKING DEBUG: TTS settings for speech - Volume: ${ttsVolume * 100}%, " +
+            "=== DUCKING DEBUG: TTS settings for speech - Volume: ${ttsVolume * 100}%, Usage index: $ttsUsageIndex, " +
                 "Usage: $ttsUsage, speakerPref=$speakerphoneEnabled, dontUseSpeaker=$dontUseSpeakerForVoice, " +
                 "effectiveSpeakerphone=$effectiveSpeakerphone ==="
         )
