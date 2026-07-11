@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -45,6 +46,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
     private val selectedNotificationFromApps = mutableListOf<String>()
     private lateinit var notificationFromPickerLauncher: ActivityResultLauncher<Intent>
     private var awaitingBackgroundLocation = false
+    private var initialException: Exception? = null
 
     companion object {
         const val EXTRA_EXCEPTION_TYPE = "exception_type"
@@ -79,6 +81,17 @@ class ExceptionConfigActivity : AppCompatActivity() {
         setupNotificationFromPickerLauncher()
         setupUI()
         loadCurrentValues()
+        initialException = getCurrentException()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (hasUnsavedChanges()) {
+                    showUnsavedChangesDialog()
+                } else {
+                    finish()
+                }
+            }
+        })
     }
 
     private fun applySavedTheme() {
@@ -911,8 +924,8 @@ class ExceptionConfigActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveException() {
-        val exception = when (exceptionType) {
+    private fun getCurrentException(): Exception? {
+        return when (exceptionType) {
             ExceptionType.BATTERY_PERCENTAGE -> createBatteryPercentageException()
             ExceptionType.CHARGING_STATUS -> createChargingStatusException()
             ExceptionType.DEVICE_UNLOCKED -> createDeviceUnlockedException()
@@ -924,27 +937,42 @@ class ExceptionConfigActivity : AppCompatActivity() {
             ExceptionType.TIME_SCHEDULE -> createTimeScheduleException()
             ExceptionType.BLUETOOTH_DEVICE -> createBluetoothException()
             ExceptionType.WIRED_HEADPHONES -> createWiredHeadphonesException()
-            ExceptionType.WIFI_NETWORK -> {
-                val wifiException = createWifiException()
-                
-                // Check if this is a WiFi exception with specific networks
-                val networkSSIDs = (wifiException.data["network_ssids"] as? Collection<*>)
-                    ?.mapNotNull { it as? String }
-                    ?.toSet()
-                if (networkSSIDs?.isNotEmpty() == true) {
-                    val canResolve = WifiCapabilityChecker.canResolveWifiSSID(this)
-                    if (!canResolve) {
-                        // Warn only when SSID resolution isn’t possible on this device/context
-                        showWifiCompatibilityWarningBeforeSave(wifiException)
-                        return
-                    } else {
-                        InAppLogger.logDebug("ExceptionConfigActivity", "WiFi SSID resolution available; skipping compatibility warning.")
-                    }
+            ExceptionType.WIFI_NETWORK -> createWifiException()
+            else -> null
+        }
+    }
+
+    private fun hasUnsavedChanges(): Boolean {
+        return getCurrentException() != initialException
+    }
+
+    private fun showUnsavedChangesDialog() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.unsaved_changes_title)
+            .setMessage(R.string.unsaved_changes_message)
+            .setPositiveButton(R.string.button_save) { _, _ -> saveException() }
+            .setNegativeButton(R.string.discard) { _, _ -> finish() }
+            .setNeutralButton(R.string.button_cancel, null)
+            .show()
+    }
+
+    private fun saveException() {
+        val exception = getCurrentException() ?: return
+        
+        if (exceptionType == ExceptionType.WIFI_NETWORK) {
+            val networkSSIDs = (exception.data["network_ssids"] as? Collection<*>)
+                ?.mapNotNull { it as? String }
+                ?.toSet()
+            if (networkSSIDs?.isNotEmpty() == true) {
+                val canResolve = WifiCapabilityChecker.canResolveWifiSSID(this)
+                if (!canResolve) {
+                    // Warn only when SSID resolution isn’t possible on this device/context
+                    showWifiCompatibilityWarningBeforeSave(exception)
+                    return
+                } else {
+                    InAppLogger.logDebug("ExceptionConfigActivity", "WiFi SSID resolution available; skipping compatibility warning.")
                 }
-                
-                wifiException
             }
-            else -> return
         }
         
         // Create a new intent for the result to avoid modifying the original intent
@@ -1580,8 +1608,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        @Suppress("DEPRECATION")
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 } 

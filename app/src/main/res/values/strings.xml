@@ -570,6 +570,9 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="button_remove">Remove</string>
     <string name="button_save">Save</string>
     <string name="button_cancel">Cancel</string>
+    <string name="unsaved_changes_title">Are you sure?</string>
+    <string name="unsaved_changes_message">You have unsaved changes. Would you like to save them?</string>
+    <string name="discard">Discard</string>
     <string name="button_ok">OK</string>
     <string name="button_close">Close</string>
     <string name="button_clear">Clear</string>
