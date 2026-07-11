@@ -8,35 +8,63 @@
 package com.micoyc.speakthat.utils
 
 import android.content.Context
+import android.database.ContentObserver
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
-import androidx.car.app.connection.CarConnection
-import androidx.lifecycle.Observer
 import com.micoyc.speakthat.InAppLogger
 
 class AndroidAutoHelper(private val context: Context) {
 
     private var isConnectedToAndroidAuto = false
-    private var connectionObserver: Observer<Int>? = null
-    private val carConnection = CarConnection(context)
+    private var connectionObserver: ContentObserver? = null
+
+    companion object {
+        private const val ANDROID_AUTO_CONNECTION_URI = "content://com.google.android.projection.gearhead.carconnection.provider/connection_state"
+    }
 
     fun initialize() {
-        // Must be called on the main thread to avoid IllegalStateException from LiveData
-        Handler(Looper.getMainLooper()).post {
-            try {
-                connectionObserver = Observer { connectionType ->
-                    val wasConnected = isConnectedToAndroidAuto
-                    isConnectedToAndroidAuto = (connectionType == CarConnection.CONNECTION_TYPE_PROJECTION)
-                    if (wasConnected != isConnectedToAndroidAuto) {
-                        InAppLogger.log("AndroidAutoHelper", "Android Auto connection state changed: $isConnectedToAndroidAuto")
+        val uri = Uri.parse(ANDROID_AUTO_CONNECTION_URI)
+        val handler = Handler(Looper.getMainLooper())
+
+        connectionObserver = object : ContentObserver(handler) {
+            override fun onChange(selfChange: Boolean) {
+                super.onChange(selfChange)
+                checkConnectionState()
+            }
+        }
+
+        try {
+            connectionObserver?.let {
+                context.contentResolver.registerContentObserver(uri, true, it)
+            }
+            // Initial check
+            checkConnectionState()
+        } catch (e: Exception) {
+            InAppLogger.logError("AndroidAutoHelper", "Failed to initialize Android Auto observer: ${e.message}")
+        }
+    }
+
+    private fun checkConnectionState() {
+        val uri = Uri.parse(ANDROID_AUTO_CONNECTION_URI)
+        try {
+            val cursor = context.contentResolver.query(uri, null, null, null, null)
+            cursor?.use {
+                if (it.moveToFirst()) {
+                    val connectionStateIndex = it.getColumnIndex("CarConnectionState")
+                    if (connectionStateIndex != -1) {
+                        val connectionState = it.getInt(connectionStateIndex)
+                        // CarConnection.CONNECTION_TYPE_PROJECTION is 1
+                        val wasConnected = isConnectedToAndroidAuto
+                        isConnectedToAndroidAuto = (connectionState == 1)
+                        if (wasConnected != isConnectedToAndroidAuto) {
+                            InAppLogger.log("AndroidAutoHelper", "Android Auto connection state changed: $isConnectedToAndroidAuto")
+                        }
                     }
                 }
-                connectionObserver?.let {
-                    carConnection.type.observeForever(it)
-                }
-            } catch (e: Exception) {
-                InAppLogger.logError("AndroidAutoHelper", "Failed to initialize Android Auto observer: ${e.message}")
             }
+        } catch (e: Exception) {
+            InAppLogger.logError("AndroidAutoHelper", "Failed to query Android Auto connection state: ${e.message}")
         }
     }
 
@@ -45,15 +73,13 @@ class AndroidAutoHelper(private val context: Context) {
     }
 
     fun cleanup() {
-        Handler(Looper.getMainLooper()).post {
-            try {
-                connectionObserver?.let {
-                    carConnection.type.removeObserver(it)
-                }
-                connectionObserver = null
-            } catch (e: Exception) {
-                InAppLogger.logError("AndroidAutoHelper", "Failed to cleanup Android Auto observer: ${e.message}")
+        try {
+            connectionObserver?.let {
+                context.contentResolver.unregisterContentObserver(it)
             }
+            connectionObserver = null
+        } catch (e: Exception) {
+            InAppLogger.logError("AndroidAutoHelper", "Failed to cleanup Android Auto observer: ${e.message}")
         }
     }
 }

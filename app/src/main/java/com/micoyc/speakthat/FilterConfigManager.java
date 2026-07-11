@@ -195,6 +195,7 @@ public class FilterConfigManager {
         public boolean dontUseSpeaker; // NEW
         public boolean androidAutoDisableSpeakThat;
         public boolean androidAutoDisableSco;
+        public boolean androidAutoUseNavigationAudio;
         public String earconMode;
         
         public BehaviorConfig() {
@@ -236,6 +237,7 @@ public class FilterConfigManager {
             this.dontUseSpeaker = false; // NEW
             this.androidAutoDisableSpeakThat = true;
             this.androidAutoDisableSco = true;
+            this.androidAutoUseNavigationAudio = false;
             this.earconMode = BehaviorSettingsStore.EARCON_NONE;
         }
     }
@@ -454,6 +456,7 @@ public class FilterConfigManager {
         config.behavior.dontUseSpeaker = prefs.getBoolean("dont_use_speaker", false); // NEW
         config.behavior.androidAutoDisableSpeakThat = prefs.getBoolean("android_auto_disable_speakthat", true);
         config.behavior.androidAutoDisableSco = prefs.getBoolean("android_auto_disable_sco", true);
+        config.behavior.androidAutoUseNavigationAudio = prefs.getBoolean("android_auto_use_navigation_audio", false);
         
         // Load general settings
         config.general.darkMode = prefs.getBoolean("dark_mode", true);
@@ -567,6 +570,7 @@ public class FilterConfigManager {
         behavior.put("dontUseSpeaker", config.behavior.dontUseSpeaker); // NEW
         behavior.put("androidAutoDisableSpeakThat", config.behavior.androidAutoDisableSpeakThat);
         behavior.put("androidAutoDisableSco", config.behavior.androidAutoDisableSco);
+        behavior.put("androidAutoUseNavigationAudio", config.behavior.androidAutoUseNavigationAudio);
         json.put("behavior", behavior);
         
         // General settings
@@ -1240,6 +1244,11 @@ public class FilterConfigManager {
 
                 if (behavior.has("androidAutoDisableSco")) {
                     mainEditor.putBoolean("android_auto_disable_sco", behavior.getBoolean("androidAutoDisableSco"));
+                    totalImported++;
+                }
+
+                if (behavior.has("androidAutoUseNavigationAudio")) {
+                    mainEditor.putBoolean("android_auto_use_navigation_audio", behavior.getBoolean("androidAutoUseNavigationAudio"));
                     totalImported++;
                 }
             }

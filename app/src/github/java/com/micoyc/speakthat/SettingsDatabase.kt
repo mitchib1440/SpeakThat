@@ -187,6 +187,17 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "android_auto_use_navigation_audio",
+                title = "Use Navigation Audio Stream",
+                description = "Route audio as navigation guidance when connected to Android Auto for louder speech",
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("android", "auto", "car", "vehicle", "navigation", "audio", "stream", "guidance", "loud", "volume", "projecting"),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "custom_app_names",
                 title = "Custom App Names",
                 description = "Customize how app names are spoken",
