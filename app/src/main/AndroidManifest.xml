@@ -208,7 +208,8 @@
         <activity
             android:name=".AppPickerActivity"
             android:exported="false"
-            android:parentActivityName=".SettingsActivity" />
+            android:parentActivityName=".SettingsActivity"
+            android:windowSoftInputMode="adjustResize" />
 
 
 

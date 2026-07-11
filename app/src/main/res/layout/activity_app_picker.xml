@@ -4,16 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?attr/colorBackground">
-
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/appPickerToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
-        app:menu="@menu/menu_app_picker" />
+    android:background="?attr/colorBackground"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"

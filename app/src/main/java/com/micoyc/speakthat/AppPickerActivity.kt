@@ -26,6 +26,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -47,6 +48,7 @@ class AppPickerActivity : AppCompatActivity(), AppFilterBottomSheetFragment.List
 
     private var allowPrivate = false
     private var initialPrivateSet: Set<String> = emptySet()
+    private var initialSelectionSet: Set<String> = emptySet()
     private var isLoading = false
     private var showSystemApps = false
     private var showSelectedOnly = false
@@ -63,14 +65,11 @@ class AppPickerActivity : AppCompatActivity(), AppFilterBottomSheetFragment.List
         allowPrivate = intent.getBooleanExtra(EXTRA_ALLOW_PRIVATE, false)
         initialPrivateSet = intent.getStringArrayListExtra(EXTRA_PRIVATE_PACKAGES)?.toSet() ?: emptySet()
         val initialSelection = intent.getStringArrayListExtra(EXTRA_SELECTED_PACKAGES) ?: arrayListOf()
+        initialSelectionSet = initialSelection.toSet()
         val title = intent.getStringExtra(EXTRA_TITLE) ?: getString(R.string.filter_manage_apps)
 
-        val toolbar = binding.appPickerToolbar
-        toolbar.title = title
-        toolbar.setNavigationOnClickListener {
-            setResult(RESULT_CANCELED)
-            finish()
-        }
+        supportActionBar?.title = title
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         adapter = AppPickerAdapter(filteredApps, allowPrivate, ::onSelectionChanged)
         binding.recyclerApps.layoutManager = LinearLayoutManager(this)
@@ -99,6 +98,17 @@ class AppPickerActivity : AppCompatActivity(), AppFilterBottomSheetFragment.List
 
         setLoading(true)
         loadInstalledApps(initialSelection)
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (hasUnsavedChanges()) {
+                    showUnsavedChangesDialog()
+                } else {
+                    setResult(RESULT_CANCELED)
+                    finish()
+                }
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -440,9 +450,35 @@ class AppPickerActivity : AppCompatActivity(), AppFilterBottomSheetFragment.List
         finish()
     }
 
+    private fun hasUnsavedChanges(): Boolean {
+        val currentSelectionSet = allApps.filter { it.selected }.map { it.packageName }.toSet()
+        val currentPrivateSet = allApps.filter { it.selected && it.isPrivate }.map { it.packageName }.toSet()
+        
+        return currentSelectionSet != initialSelectionSet || 
+               (allowPrivate && currentPrivateSet != initialPrivateSet)
+    }
+
+    private fun showUnsavedChangesDialog() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.unsaved_changes_title)
+            .setMessage(R.string.unsaved_changes_message)
+            .setPositiveButton(R.string.button_save) { _, _ -> returnSelection() }
+            .setNegativeButton(R.string.discard) { _, _ -> 
+                setResult(RESULT_CANCELED)
+                finish() 
+            }
+            .setNeutralButton(R.string.button_cancel, null)
+            .show()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         executor.shutdown()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
     }
 
     data class SelectableApp(
