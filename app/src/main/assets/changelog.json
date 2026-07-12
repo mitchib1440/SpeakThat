@@ -18,6 +18,18 @@
     ]
   },
   {
+    "text": "Quick Settings Tile now remains in sync.",
+    "subpoints": [
+      "The tile used to display the wrong state if you toggled SpeakThat from somewhere else. This has been fixed."
+    ]
+  },
+  {
+    "text": "Fixed an issue with the App Picker's save button being hidden under your keyboard.",
+    "subpoints": [
+      "Particularly frustrating if you were typing in the search bar and then trying to save changes, you previously needed to collapse your keyboard first. Not any more!."
+    ]
+  },
+  {
     "text": "Added homescreen widget.",
     "subpoints": [
       "It's small and simple, but gets the job done!"
@@ -67,7 +79,8 @@
       "French",
       "Indonesian",
       "Portuguese (Brazil)",
-      "Romanian"
+      "Romanian",
+      "Polish"
     ]
   }
 ]
