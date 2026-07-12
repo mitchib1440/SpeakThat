@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_small_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <!-- The color behind the cutout (white when active, grey when inactive) -->
+        <ImageView
+            android:id="@+id/widget_small_icon_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/widget_circle_white_vector"
+            android:scaleType="fitCenter" />
+
+        <!-- The foreground with the cutout and gradient -->
+        <ImageView
+            android:id="@+id/widget_small_icon_fg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/speakthaticonwidgetforeground"
+            android:scaleType="fitCenter"
+            android:elevation="4dp" />
+    </FrameLayout>
+</FrameLayout>

@@ -1,32 +1,73 @@
 [
   {
-    "text": "Added Speech Coordinator.",
+    "text": "Summaries can now be audio-only.",
     "subpoints": [
-      "This only allows one speech to take place at a time to fix an issue with incoming notifications during a summary."
+      "The overlay permission is no longer required for Summaries. Summaries playing in audio-only mode will appear as media sessions in your notification shade."
     ]
   },
   {
-    "text": "Network permission has been removed from the Store variant.",
+    "text": "Emoji Removal Exception has been fixed.",
     "subpoints": [
-      "This remains for the other two variants. GitHub requires the ability to check for and download updates, and the Google Play variant requires internet to use the Google Billing system."
+      "Exception words to negate emoji removal for certain notifications now work as intended."
     ]
   },
   {
-    "text": "Fixed crash when importing settings with pending permissions.",
+    "text": "Quick Settings Tile displaying the wrong icon initially has been fixed.",
     "subpoints": [
-      "This usually occurred when importing settings that require a permission to be granted. Pressing either option would cause the app to crash."
+      "The icon used to display as SpeakThat's wordmark with bugdroid but became the correct icon after being pressed. This error has been corrected."
     ]
   },
   {
-    "text": "Support email picker no longer tries to search for email apps.",
+    "text": "Added homescreen widget.",
     "subpoints": [
-      "This caused some problems with deGoogled phones. It now uses a more universal solution."
+      "It's small and simple, but gets the job done!"
     ]
   },
   {
-    "text": "Added “Include Notification Timestamps” to Compatibility Settings.",
+    "text": "Fixed {time} and {date} placeholders.",
     "subpoints": [
-      "Can help with accuracy if you find the deduplication system is not playing nicely."
+      "Thanks to ForgeSource for reporting this issue. {time} used to only work in 24-hour mode, and {date} used abbreviated months which were sometiems mispronounced."
+    ]
+  },
+  {
+    "text": "Added a few options for Android Auto.",
+    "subpoints": [
+      "Android Auto users have a few options inside Behaviour Settings. This gives more control over how audio routing is done when connected to a vehicle."
+    ]
+  },
+  {
+    "text": "Skip Repeated Prefix no longer fractures sentences.",
+    "subpoints": [
+      "Skipping would occasionally cut off parts of a word (such as the difference between 90% and 95%), the 9 would be cut off for the second readout. This is fixed now."
+    ]
+  },
+  {
+    "text": "Auto Language is now included in configuration backups.",
+    "subpoints": [
+      "This switch was not included for some reason. That's been fixed now."
+    ]
+  },
+  {
+    "text": "Summaries are no longer blocked by Conditional Rules.",
+    "subpoints": [
+      "This was especially problematic for manually activated summaries, where the 'Only When Screen Off' rule would prevent it from starting."
+    ]
+  },
+  {
+    "text": "Conditional Rules now show a confirmation dialog when you have unsaved changes.",
+    "subpoints": [
+      "Another UX bug that wasn't obvious to me but was pointed out in a bug report. Exiting a config screen without saving changes just discarded your modifications. Now it asks you explicitly what you want to do."
+    ]
+  },
+  {
+    "text": "Updated several translations from Weblate.",
+    "subpoints": [
+      "Russian",
+      "Spanish",
+      "French",
+      "Indonesian",
+      "Portuguese (Brazil)",
+      "Romanian"
     ]
   }
 ]

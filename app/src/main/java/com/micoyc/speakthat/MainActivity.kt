@@ -492,20 +492,35 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
     
     private fun updateServiceStatus() {
         val isEnabled = isNotificationServiceEnabled()
-        val isMasterEnabled = sharedPreferences?.getBoolean(KEY_MASTER_SWITCH_ENABLED, true) ?: true
+        var isMasterEnabled = sharedPreferences?.getBoolean(KEY_MASTER_SWITCH_ENABLED, true) ?: true
         val snoozedUntil = sharedPreferences?.getLong("master_snoozed_until", 0L) ?: 0L
         val isSnoozed = System.currentTimeMillis() < snoozedUntil
         
+        // If permission is missing but master switch is internally on, reconcile it to off
+        if (!isEnabled && isMasterEnabled) {
+            MasterSwitchController.setEnabled(this, false, "PermissionMissingReconcile")
+            isMasterEnabled = false
+        }
+        
         // Update master switch state
         binding.switchMasterControl.setOnCheckedChangeListener(null) // Prevent infinite loop
-        binding.switchMasterControl.isChecked = isMasterEnabled && !isSnoozed
         
-        if (isSnoozed) {
-            binding.switchMasterControl.trackTintList = android.content.res.ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.switch_track_color)
-            )
-        } else {
+        // Lock the switch if permission is not granted
+        binding.switchMasterControl.isEnabled = isEnabled
+        
+        if (!isEnabled) {
+            binding.switchMasterControl.isChecked = false
             binding.switchMasterControl.trackTintList = ContextCompat.getColorStateList(this, R.color.switch_track_color)
+        } else {
+            binding.switchMasterControl.isChecked = isMasterEnabled && !isSnoozed
+            
+            if (isSnoozed) {
+                binding.switchMasterControl.trackTintList = android.content.res.ColorStateList.valueOf(
+                    ContextCompat.getColor(this, R.color.switch_track_color)
+                )
+            } else {
+                binding.switchMasterControl.trackTintList = ContextCompat.getColorStateList(this, R.color.switch_track_color)
+            }
         }
         
         binding.switchMasterControl.setOnCheckedChangeListener { _, isChecked ->
@@ -513,7 +528,10 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         }
         
         // Update master switch status text
-        if (isSnoozed) {
+        if (!isEnabled) {
+            binding.textMasterSwitchStatus.text = getString(R.string.permission_needed)
+            binding.textMasterSwitchStatus.setTextColor(ContextCompat.getColor(this, R.color.orange_300))
+        } else if (isSnoozed) {
             val dateFormat = java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault())
             val timeString = dateFormat.format(java.util.Date(snoozedUntil))
             binding.textMasterSwitchStatus.text = "Paused until $timeString"
@@ -540,6 +558,8 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         // Always show "Permission Settings" for consistent button sizing
         binding.buttonEnablePermission.text = getString(R.string.open_settings)
 
+        // Keep Quick Settings tile in sync
+        SpeakThatTileService.requestTileUpdate(this)
     }
     
     private fun setupNotificationHistoryCard() {

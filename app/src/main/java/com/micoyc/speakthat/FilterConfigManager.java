@@ -135,7 +135,8 @@ public class FilterConfigManager {
         public int contentType;
         public String ttsEngine;         // TTS engine package name
         public boolean speakerphoneEnabled; // Force speakerphone output
-        
+        public boolean autoDetectLanguage;
+
         public VoiceConfig() {
             this.speechRate = 1.0f;
             this.pitch = 1.0f;
@@ -150,6 +151,7 @@ public class FilterConfigManager {
             this.contentType = 0;
             this.ttsEngine = "";             // Empty means use system default
             this.speakerphoneEnabled = false; // Default to false
+            this.autoDetectLanguage = false;
         }
     }
     
@@ -191,6 +193,8 @@ public class FilterConfigManager {
         public boolean disableMediaFallback;
         public boolean enableLegacyDucking;
         public boolean dontUseSpeaker; // NEW
+        public boolean androidAutoDisableSpeakThat;
+        public boolean androidAutoDisableSco;
         public String earconMode;
         
         public BehaviorConfig() {
@@ -230,6 +234,8 @@ public class FilterConfigManager {
             this.disableMediaFallback = false;
             this.enableLegacyDucking = false;
             this.dontUseSpeaker = false; // NEW
+            this.androidAutoDisableSpeakThat = true;
+            this.androidAutoDisableSco = true;
             this.earconMode = BehaviorSettingsStore.EARCON_NONE;
         }
     }
@@ -401,7 +407,8 @@ public class FilterConfigManager {
         config.voice.contentType = voicePrefs.getInt("content_type", 0);
         config.voice.ttsEngine = voicePrefs.getString("tts_engine_package", "");
         config.voice.speakerphoneEnabled = voicePrefs.getBoolean("speakerphone_enabled", false);
-        
+        config.voice.autoDetectLanguage = voicePrefs.getBoolean("auto_detect_language", false);
+
         // Load behavior settings
         config.behavior.notificationBehavior = prefs.getString("notification_behavior", "interrupt");
         config.behavior.priorityApps = new HashSet<>(prefs.getStringSet("priority_apps", new HashSet<>()));
@@ -445,6 +452,8 @@ public class FilterConfigManager {
         config.behavior.disableMediaFallback = prefs.getBoolean("disable_media_fallback", false);
         config.behavior.enableLegacyDucking = prefs.getBoolean("enable_legacy_ducking", false);
         config.behavior.dontUseSpeaker = prefs.getBoolean("dont_use_speaker", false); // NEW
+        config.behavior.androidAutoDisableSpeakThat = prefs.getBoolean("android_auto_disable_speakthat", true);
+        config.behavior.androidAutoDisableSco = prefs.getBoolean("android_auto_disable_sco", true);
         
         // Load general settings
         config.general.darkMode = prefs.getBoolean("dark_mode", true);
@@ -514,6 +523,7 @@ public class FilterConfigManager {
         voice.put("contentType", config.voice.contentType);
         voice.put("ttsEngine", config.voice.ttsEngine);
         voice.put("speakerphoneEnabled", config.voice.speakerphoneEnabled);
+        voice.put("autoDetectLanguage", config.voice.autoDetectLanguage);
         json.put("voice", voice);
         
         // Behavior settings
@@ -555,6 +565,8 @@ public class FilterConfigManager {
         behavior.put("disableMediaFallback", config.behavior.disableMediaFallback);
         behavior.put("enableLegacyDucking", config.behavior.enableLegacyDucking);
         behavior.put("dontUseSpeaker", config.behavior.dontUseSpeaker); // NEW
+        behavior.put("androidAutoDisableSpeakThat", config.behavior.androidAutoDisableSpeakThat);
+        behavior.put("androidAutoDisableSco", config.behavior.androidAutoDisableSco);
         json.put("behavior", behavior);
         
         // General settings
@@ -987,6 +999,11 @@ public class FilterConfigManager {
                     voiceEditor.putBoolean("speakerphone_enabled", voice.getBoolean("speakerphoneEnabled"));
                     totalImported++;
                 }
+
+                if (voice.has("autoDetectLanguage")) {
+                    voiceEditor.putBoolean("auto_detect_language", voice.getBoolean("autoDetectLanguage"));
+                    totalImported++;
+                }
             }
             
             // Import behavior settings (if present)
@@ -1213,6 +1230,16 @@ public class FilterConfigManager {
 
                 if (behavior.has("dontUseSpeaker")) {
                     mainEditor.putBoolean("dont_use_speaker", behavior.getBoolean("dontUseSpeaker"));
+                    totalImported++;
+                }
+
+                if (behavior.has("androidAutoDisableSpeakThat")) {
+                    mainEditor.putBoolean("android_auto_disable_speakthat", behavior.getBoolean("androidAutoDisableSpeakThat"));
+                    totalImported++;
+                }
+
+                if (behavior.has("androidAutoDisableSco")) {
+                    mainEditor.putBoolean("android_auto_disable_sco", behavior.getBoolean("androidAutoDisableSco"));
                     totalImported++;
                 }
             }

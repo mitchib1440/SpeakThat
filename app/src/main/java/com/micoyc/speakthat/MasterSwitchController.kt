@@ -44,6 +44,33 @@ object MasterSwitchController {
         val snoozedUntil = prefs.getLong("master_snoozed_until", 0L)
         val isSnoozed = System.currentTimeMillis() < snoozedUntil
         
+        if (enabled && !NotificationListenerRecovery.isNotificationAccessGranted(context)) {
+            InAppLogger.logDebug(
+                "MasterSwitch",
+                "Refusing to enable master switch from ${source ?: "unknown"}; missing notification access permission"
+            )
+            
+            // Show feedback so the user understands why the toggle failed
+            if (source != "PermissionMissingReconcile") {
+                Handler(Looper.getMainLooper()).post {
+                    Toast.makeText(context, context.getString(R.string.permission_needed), Toast.LENGTH_SHORT).show()
+                }
+            }
+            
+            // Re-sync widgets and tile since they might have optimistically updated
+            val widgetIntent = Intent("com.micoyc.speakthat.widgets.ACTION_STATE_CHANGED")
+            widgetIntent.setPackage(context.packageName)
+            context.sendBroadcast(widgetIntent)
+            SpeakThatTileService.requestTileUpdate(context)
+            
+            // Ensure the preference stays false
+            val editor = prefs.edit()
+            editor.putBoolean(KEY_MASTER_SWITCH_ENABLED, false)
+            editor.apply()
+            
+            return false
+        }
+        
         if (previous == enabled && (!enabled || !isSnoozed)) {
             InAppLogger.logDebug(
                 "MasterSwitch",
@@ -81,7 +108,30 @@ object MasterSwitchController {
                     ).show()
                 }
             }
+        } else if (source == "SmallWidget") {
+            val showToast = prefs.getBoolean(KEY_TOAST_MAIN_APP, true)
+            if (showToast) {
+                Handler(Looper.getMainLooper()).post {
+                    Toast.makeText(
+                        context,
+                        if (enabled) {
+                            context.getString(R.string.master_switch_enabled_toast)
+                        } else {
+                            context.getString(R.string.master_switch_disabled_toast)
+                        },
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
+
+        // Notify widgets of state change
+        val widgetIntent = Intent("com.micoyc.speakthat.widgets.ACTION_STATE_CHANGED")
+        widgetIntent.setPackage(context.packageName)
+        context.sendBroadcast(widgetIntent)
+
+        // Request Quick Settings tile update to keep it in sync
+        SpeakThatTileService.requestTileUpdate(context)
 
         return true
     }

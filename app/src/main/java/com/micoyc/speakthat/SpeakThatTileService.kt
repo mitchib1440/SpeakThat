@@ -39,6 +39,39 @@ class SpeakThatTileService : TileService() {
     
     companion object {
         private const val TAG = "SpeakThatTileService"
+
+        /**
+         * Requests the system to put the tile in the listening state so it can update its appearance.
+         */
+        fun requestTileUpdate(context: Context) {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    val componentName = android.content.ComponentName(context, SpeakThatTileService::class.java)
+                    requestListeningState(context, componentName)
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error requesting tile update", e)
+            }
+        }
+        
+        /**
+         * Checks if the app has notification listener permissions
+         */
+        fun isNotificationServiceEnabled(context: Context): Boolean {
+            val packageName = context.packageName
+            val flat = android.provider.Settings.Secure.getString(context.contentResolver, "enabled_notification_listeners")
+            if (!android.text.TextUtils.isEmpty(flat)) {
+                val names = flat.split(":").toTypedArray()
+                for (name in names) {
+                    val componentName = android.content.ComponentName.unflattenFromString(name)
+                    val nameMatch = android.text.TextUtils.equals(packageName, componentName?.packageName)
+                    if (nameMatch) {
+                        return true
+                    }
+                }
+            }
+            return false
+        }
     }
     
     override fun onCreate() {
@@ -114,11 +147,15 @@ class SpeakThatTileService : TileService() {
         try {
             val qsTile = qsTile ?: return
             
+            val hasPermission = isNotificationServiceEnabled(this)
+            
             // Get current master switch state
             val isMasterEnabled = MainActivity.isMasterSwitchEnabled(this)
             
             // Update tile state
-            qsTile.state = if (isMasterEnabled) {
+            qsTile.state = if (!hasPermission) {
+                Tile.STATE_UNAVAILABLE
+            } else if (isMasterEnabled) {
                 Tile.STATE_ACTIVE
             } else {
                 Tile.STATE_INACTIVE
@@ -129,7 +166,9 @@ class SpeakThatTileService : TileService() {
             
             // Update tile subtitle to show current status (API 29+)
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                qsTile.subtitle = if (isMasterEnabled) {
+                qsTile.subtitle = if (!hasPermission) {
+                    getString(R.string.permission_needed)
+                } else if (isMasterEnabled) {
                     getString(R.string.quick_settings_tile_enabled)
                 } else {
                     getString(R.string.quick_settings_tile_disabled)
@@ -145,7 +184,7 @@ class SpeakThatTileService : TileService() {
             // Update the tile
             qsTile.updateTile()
             
-            Log.d(TAG, "Quick Settings tile updated - Master switch: $isMasterEnabled")
+            Log.d(TAG, "Quick Settings tile updated - Master switch: $isMasterEnabled, Permission: $hasPermission")
             
         } catch (e: Exception) {
             Log.e(TAG, "Error updating Quick Settings tile state", e)

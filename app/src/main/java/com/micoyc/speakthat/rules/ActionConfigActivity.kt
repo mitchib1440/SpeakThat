@@ -17,6 +17,8 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
@@ -42,6 +44,7 @@ class ActionConfigActivity : AppCompatActivity() {
     private var overrideVoiceOptions: List<OverrideVoiceOption> = emptyList()
     private var voiceOverrideTts: TextToSpeech? = null
     private var pendingOverrideVoiceSelection: String? = null
+    private var initialAction: Action? = null
 
     companion object {
         const val EXTRA_ACTION_TYPE = "action_type"
@@ -71,6 +74,17 @@ class ActionConfigActivity : AppCompatActivity() {
 
         setupUI()
         loadCurrentValues()
+        initialAction = getCurrentAction()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (hasUnsavedChanges()) {
+                    showUnsavedChangesDialog()
+                } else {
+                    finish()
+                }
+            }
+        })
     }
 
     private fun applySavedTheme() {
@@ -458,8 +472,8 @@ class ActionConfigActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveAction() {
-        val action = when (actionType) {
+    private fun getCurrentAction(): Action {
+        return when (actionType) {
             ActionType.APPLY_CUSTOM_SPEECH_FORMAT -> createCustomSpeechFormatAction()
             ActionType.OVERRIDE_VOICE -> createOverrideTtsVoiceAction()
             ActionType.FORCE_PRIVATE -> createForcePrivateAction()
@@ -468,6 +482,24 @@ class ActionConfigActivity : AppCompatActivity() {
             ActionType.OVERRIDE_CONTENT_CAP -> createOverrideContentCapAction()
             else -> createSkipNotificationAction()
         }
+    }
+
+    private fun hasUnsavedChanges(): Boolean {
+        return getCurrentAction() != initialAction
+    }
+
+    private fun showUnsavedChangesDialog() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.unsaved_changes_title)
+            .setMessage(R.string.unsaved_changes_message)
+            .setPositiveButton(R.string.button_save) { _, _ -> saveAction() }
+            .setNegativeButton(R.string.discard) { _, _ -> finish() }
+            .setNeutralButton(R.string.button_cancel, null)
+            .show()
+    }
+
+    private fun saveAction() {
+        val action = getCurrentAction()
 
         val resultIntent = android.content.Intent().apply {
             putExtra(RESULT_ACTION, action.toJson())
@@ -651,8 +683,7 @@ class ActionConfigActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        @Suppress("DEPRECATION")
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 

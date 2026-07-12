@@ -40,6 +40,7 @@ class SummarySettingsActivity : AppCompatActivity() {
 
     private lateinit var globalSummarySwitch: SwitchCompat
     private lateinit var schedulerSwitch: SwitchCompat
+    private lateinit var visualModeSwitch: SwitchCompat
     private lateinit var overlayPermissionButton: MaterialButton
     private lateinit var overlayPermissionStatus: TextView
     private lateinit var scheduleTimeRow: LinearLayout
@@ -78,6 +79,7 @@ class SummarySettingsActivity : AppCompatActivity() {
     private fun bindViews() {
         globalSummarySwitch = findViewById(R.id.switchEnableSummary)
         schedulerSwitch = findViewById(R.id.switchEnableScheduler)
+        visualModeSwitch = findViewById(R.id.switchVisualMode)
         overlayPermissionButton = findViewById(R.id.btnGrantOverlayPermission)
         overlayPermissionStatus = findViewById(R.id.tvOverlayPermissionStatus)
         scheduleTimeRow = findViewById(R.id.rowScheduleTime)
@@ -111,6 +113,10 @@ class SummarySettingsActivity : AppCompatActivity() {
         setSwitchCheckedSilently(
             schedulerSwitch,
             prefs.getBoolean(SummaryConstants.KEY_SCHEDULER_ENABLED, false)
+        )
+        setSwitchCheckedSilently(
+            visualModeSwitch,
+            !prefs.getBoolean("audio_only_summary_enabled", false)
         )
         refreshOverlayPermissionUi()
     }
@@ -172,6 +178,14 @@ class SummarySettingsActivity : AppCompatActivity() {
             } else {
                 SummaryScheduler.cancel(this)
             }
+            refreshOverlayPermissionUi()
+        }
+
+        visualModeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isApplyingUiState) {
+                return@setOnCheckedChangeListener
+            }
+            prefs.edit().putBoolean("audio_only_summary_enabled", !isChecked).apply()
             refreshOverlayPermissionUi()
         }
 
@@ -251,28 +265,36 @@ class SummarySettingsActivity : AppCompatActivity() {
     }
 
     private fun refreshOverlayPermissionUi() {
+        val isVisualMode = !prefs.getBoolean("audio_only_summary_enabled", false)
         val granted = SummarySettingsGate.isOverlayPermissionGranted(this)
-        if (!granted) {
+        
+        if (isVisualMode && !granted) {
             prefs.edit().putBoolean(SummaryConstants.KEY_GLOBAL_ENABLED, false).apply()
             SummaryScheduler.cancel(this)
         }
 
         val globalEnabled = prefs.getBoolean(SummaryConstants.KEY_GLOBAL_ENABLED, false)
         val schedulerEnabled = prefs.getBoolean(SummaryConstants.KEY_SCHEDULER_ENABLED, false)
-        val schedulerControlsEnabled = granted && globalEnabled
+        val schedulerControlsEnabled = (!isVisualMode || granted) && globalEnabled
 
         setSwitchCheckedSilently(globalSummarySwitch, globalEnabled)
         setSwitchCheckedSilently(schedulerSwitch, schedulerEnabled)
+        setSwitchCheckedSilently(visualModeSwitch, isVisualMode)
 
-        overlayPermissionButton.visibility = if (granted) android.view.View.GONE else android.view.View.VISIBLE
-        overlayPermissionStatus.text = if (granted) {
-            getString(R.string.summary_settings_permission_granted)
+        if (isVisualMode) {
+            overlayPermissionButton.visibility = if (granted) android.view.View.GONE else android.view.View.VISIBLE
+            overlayPermissionStatus.text = if (granted) {
+                getString(R.string.summary_settings_permission_granted)
+            } else {
+                getString(R.string.summary_settings_permission_subtitle)
+            }
         } else {
-            getString(R.string.summary_settings_permission_subtitle)
+            overlayPermissionButton.visibility = android.view.View.GONE
+            overlayPermissionStatus.text = getString(R.string.summary_settings_audio_only_subtitle)
         }
 
-        globalSummarySwitch.isEnabled = granted
-        globalSummarySwitch.alpha = if (granted) 1f else 0.45f
+        globalSummarySwitch.isEnabled = !isVisualMode || granted
+        globalSummarySwitch.alpha = if (!isVisualMode || granted) 1f else 0.45f
 
         schedulerSwitch.isEnabled = schedulerControlsEnabled
         schedulerSwitch.alpha = if (schedulerControlsEnabled) 1f else 0.45f

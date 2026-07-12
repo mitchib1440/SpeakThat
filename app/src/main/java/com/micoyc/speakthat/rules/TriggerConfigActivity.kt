@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -42,6 +43,7 @@ class TriggerConfigActivity : AppCompatActivity() {
     private val selectedNotificationFromApps = mutableListOf<String>()
     private lateinit var notificationFromPickerLauncher: ActivityResultLauncher<Intent>
     private var awaitingBackgroundLocation = false
+    private var initialTrigger: Trigger? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +70,17 @@ class TriggerConfigActivity : AppCompatActivity() {
         setupNotificationFromPickerLauncher()
         setupUI()
         loadCurrentValues()
+        initialTrigger = getCurrentTrigger()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (hasUnsavedChanges()) {
+                    showUnsavedChangesDialog()
+                } else {
+                    finish()
+                }
+            }
+        })
     }
     
     private fun applySavedTheme() {
@@ -998,8 +1011,8 @@ class TriggerConfigActivity : AppCompatActivity() {
         }
     }
     
-    private fun saveTrigger() {
-        val trigger = when (triggerType) {
+    private fun getCurrentTrigger(): Trigger? {
+        return when (triggerType) {
             TriggerType.BATTERY_PERCENTAGE -> createBatteryPercentageTrigger()
             TriggerType.CHARGING_STATUS -> createChargingStatusTrigger()
             TriggerType.DEVICE_UNLOCKED -> createDeviceUnlockedTrigger()
@@ -1011,27 +1024,42 @@ class TriggerConfigActivity : AppCompatActivity() {
             TriggerType.TIME_SCHEDULE -> createTimeScheduleTrigger()
             TriggerType.BLUETOOTH_DEVICE -> createBluetoothTrigger()
             TriggerType.WIRED_HEADPHONES -> createWiredHeadphonesTrigger()
-            TriggerType.WIFI_NETWORK -> {
-                val wifiTrigger = createWifiTrigger()
-                
-                // Check if this is a WiFi trigger with specific networks
-                val networkSSIDs = (wifiTrigger.data["network_ssids"] as? Collection<*>)
-                    ?.mapNotNull { it as? String }
-                    ?.toSet()
-                if (networkSSIDs?.isNotEmpty() == true) {
-                    val canResolve = WifiCapabilityChecker.canResolveWifiSSID(this)
-                    if (!canResolve) {
-                        // Warn only when SSID resolution isn’t possible on this device/context
-                        showWifiCompatibilityWarningBeforeSave(wifiTrigger)
-                        return
-                    } else {
-                        InAppLogger.logDebug("TriggerConfigActivity", "WiFi SSID resolution available; skipping compatibility warning.")
-                    }
+            TriggerType.WIFI_NETWORK -> createWifiTrigger()
+            else -> null
+        }
+    }
+
+    private fun hasUnsavedChanges(): Boolean {
+        return getCurrentTrigger() != initialTrigger
+    }
+
+    private fun showUnsavedChangesDialog() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.unsaved_changes_title)
+            .setMessage(R.string.unsaved_changes_message)
+            .setPositiveButton(R.string.button_save) { _, _ -> saveTrigger() }
+            .setNegativeButton(R.string.discard) { _, _ -> finish() }
+            .setNeutralButton(R.string.button_cancel, null)
+            .show()
+    }
+
+    private fun saveTrigger() {
+        val trigger = getCurrentTrigger() ?: return
+        
+        if (triggerType == TriggerType.WIFI_NETWORK) {
+            val networkSSIDs = (trigger.data["network_ssids"] as? Collection<*>)
+                ?.mapNotNull { it as? String }
+                ?.toSet()
+            if (networkSSIDs?.isNotEmpty() == true) {
+                val canResolve = WifiCapabilityChecker.canResolveWifiSSID(this)
+                if (!canResolve) {
+                    // Warn only when SSID resolution isn’t possible on this device/context
+                    showWifiCompatibilityWarningBeforeSave(trigger)
+                    return
+                } else {
+                    InAppLogger.logDebug("TriggerConfigActivity", "WiFi SSID resolution available; skipping compatibility warning.")
                 }
-                
-                wifiTrigger
             }
-            else -> return
         }
         
         // Create a new intent for the result to avoid modifying the original intent
@@ -1647,8 +1675,7 @@ class TriggerConfigActivity : AppCompatActivity() {
     }
     
     override fun onSupportNavigateUp(): Boolean {
-        @Suppress("DEPRECATION")
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 } 

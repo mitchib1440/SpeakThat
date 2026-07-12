@@ -36,6 +36,7 @@
     <string name="no_search_results">No matching settings found</string>
 
     <!-- Filter Settings -->
+    <string name="filter_remove_emojis_advanced">Emoji Removal Exceptions</string>
     <string-array name="blacklist_types">
         <item>Block</item>
         <item>Private</item>
@@ -569,6 +570,9 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="button_remove">Remove</string>
     <string name="button_save">Save</string>
     <string name="button_cancel">Cancel</string>
+    <string name="unsaved_changes_title">Are you sure?</string>
+    <string name="unsaved_changes_message">You have unsaved changes. Would you like to save them?</string>
+    <string name="discard">Discard</string>
     <string name="button_ok">OK</string>
     <string name="button_close">Close</string>
     <string name="button_clear">Clear</string>
@@ -1053,6 +1057,14 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="accessibility_service_name">SpeakThat Accessibility</string>
     <string name="accessibility_service_description">Enables advanced control features for SpeakThat including volume button shortcuts to stop/pause notification reading. This service is completely optional and all processing stays on your device.</string>
 
+    <!-- Android Auto Strings -->
+    <string name="behavior_android_auto_title">Android Auto</string>
+    <string name="behavior_android_auto_description">Manage behavior when connected to a car display</string>
+    <string name="behavior_disable_speakthat_auto">Disable SpeakThat for Android Auto</string>
+    <string name="behavior_disable_speakthat_auto_desc">Prioritise Android Auto\'s native notification reader when connected</string>
+    <string name="behavior_disable_sco_auto">Disable Bluetooth SCO</string>
+    <string name="behavior_disable_sco_auto_desc">Prevents SpeakThat from forcing a phone call connection when Android Auto is running</string>
+
     <!-- Press to Stop Strings -->
     <string name="behavior_press_to_stop_title">Press to Stop</string>
     <string name="behavior_press_to_stop_description">Stop notification reading by pressing both volume buttons simultaneously. Normal volume control still works. Requires accessibility permission.</string>
@@ -1322,7 +1334,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="rules_quick_strings_receiver_value" translatable="false">com.micoyc.speakthat.automation.AutomationBroadcastReceiver</string>
     <string name="rules_quick_strings_package_value" translatable="false">com.micoyc.speakthat</string>
     <string name="rules_quick_strings_flags_title" translatable="false">Recommended flags &amp; extras</string>
-    <string name="rules_quick_strings_flags_description" translatable="false">Enable the flag \"INCLUDE_STOPPED_PACKAGES\\" so intents still reach SpeakThat! after reboot, and use the flag \"RECEIVER_FOREGROUND\" if your automation app supports it for faster delivery.</string>
+    <string name="rules_quick_strings_flags_description" translatable="false">Enable the flag \"INCLUDE_STOPPED_PACKAGES\" so intents still reach SpeakThat! after reboot, and use the flag \"RECEIVER_FOREGROUND\" if your automation app supports it for faster delivery.</string>
     <string name="rules_quick_strings_source_hint" translatable="false">Optional: an \"Extra\" slot can be used to identify the automation in debug logs. Set the parameter name to \"source\", and the value to a key identifier of your choosing (e.g. \"enable-speakthat-when-i-get-home\") so you can tell which profile toggled the master switch.</string>
     <string name="master_switch_enabled_toast" translatable="false">SpeakThat enabled - notifications will be read</string>
     <string name="master_switch_disabled_toast" translatable="false">SpeakThat disabled - notifications will be silent</string>
@@ -2636,4 +2648,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="activity_pause_options_title">Pause SpeakThat!</string>
     <string name="activity_pause_options_description">Duration:</string>
 
+    <string name="summary_settings_visual_mode_title">Visual Mode</string>
+    <string name="summary_settings_visual_mode_subtitle">Show summary cards on screen</string>
+    <string name="summary_settings_audio_only_subtitle">Audio-only mode enabled. No overlay permission required.</string>
 </resources>

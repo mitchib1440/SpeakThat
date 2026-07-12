@@ -165,6 +165,28 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "android_auto_disable_speakthat",
+                title = "Disable SpeakThat for Android Auto",
+                description = "Prioritise Android Auto's native notification reader when connected",
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("android", "auto", "car", "vehicle", "disable", "speakthat", "native", "reader", "projecting"),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "android_auto_disable_sco",
+                title = "Disable Bluetooth SCO",
+                description = "Prevents SpeakThat from forcing a phone call connection when Android Auto is running",
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("android", "auto", "car", "vehicle", "disable", "sco", "bluetooth", "phone", "call", "connection", "projecting"),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "custom_app_names",
                 title = "Custom App Names",
                 description = "Customize how app names are spoken",

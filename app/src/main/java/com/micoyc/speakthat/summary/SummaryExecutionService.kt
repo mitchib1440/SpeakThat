@@ -129,6 +129,9 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
     private var buildItemsJob: Job? = null
     private var lastOrientation: Int = Configuration.ORIENTATION_UNDEFINED
 
+    private var isAudioOnlySummaryEnabled = false
+    private var mediaSession: android.support.v4.media.session.MediaSessionCompat? = null
+
     override fun onCreate() {
         super.onCreate()
         registerComponentCallbacks(this)
@@ -141,6 +144,40 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         ensureNotificationChannel()
         ensureCacheDirExists()
         initializeTextToSpeech()
+
+        mediaSession = android.support.v4.media.session.MediaSessionCompat(this, "SpeakThatSummarySession").apply {
+            setFlags(android.support.v4.media.session.MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or android.support.v4.media.session.MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS)
+
+            val stateBuilder = android.support.v4.media.session.PlaybackStateCompat.Builder()
+                .setActions(
+                    android.support.v4.media.session.PlaybackStateCompat.ACTION_PLAY or 
+                    android.support.v4.media.session.PlaybackStateCompat.ACTION_PAUSE or 
+                    android.support.v4.media.session.PlaybackStateCompat.ACTION_STOP or 
+                    android.support.v4.media.session.PlaybackStateCompat.ACTION_SKIP_TO_NEXT
+                )
+                .setState(android.support.v4.media.session.PlaybackStateCompat.STATE_BUFFERING, android.support.v4.media.session.PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1.0f)
+            setPlaybackState(stateBuilder.build())
+
+            setCallback(object : android.support.v4.media.session.MediaSessionCompat.Callback() {
+                override fun onPause() {
+                    requestGracefulStop("media_session_pause")
+                }
+                override fun onStop() {
+                    requestGracefulStop("media_session_stop")
+                }
+                override fun onSkipToNext() {
+                    try {
+                        SpeakThatTtsManager.stop()
+                    } catch (e: Exception) {
+                        InAppLogger.logError(TAG, "Failed to stop TTS on skip: ${e.message}")
+                    }
+                    currentIndex++
+                    startSummarySpeechFromCurrentIndex(triggeredBySwipe = false)
+                }
+            })
+            isActive = true
+        }
+
         InAppLogger.log(TAG, "SummaryExecutionService created")
     }
 
@@ -159,14 +196,28 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         val source = intent?.getStringExtra(SummaryConstants.EXTRA_TRIGGER_SOURCE) ?: "unknown"
         SpeechCoordinator.setSummaryActive(true)
 
+        isAudioOnlySummaryEnabled = getSummarySettingsPrefs().getBoolean("audio_only_summary_enabled", false)
+
         val notification = buildForegroundNotification(source)
         startForegroundCompat(notification)
 
-        if (!canDrawOverlaysCompat()) {
-            InAppLogger.logWarning(TAG, "Overlay permission missing; stopping summary execution safely")
-            releaseSummarySpeechLock()
-            stopSelfResult(startId)
-            return START_NOT_STICKY
+        updateMediaSessionState(android.support.v4.media.session.PlaybackStateCompat.STATE_BUFFERING)
+
+        if (isAudioOnlySummaryEnabled) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && 
+                androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                InAppLogger.logWarning(TAG, "POST_NOTIFICATIONS permission missing; stopping summary execution safely")
+                releaseSummarySpeechLock()
+                stopSelfResult(startId)
+                return START_NOT_STICKY
+            }
+        } else {
+            if (!canDrawOverlaysCompat()) {
+                InAppLogger.logWarning(TAG, "Overlay permission missing; stopping summary execution safely")
+                releaseSummarySpeechLock()
+                stopSelfResult(startId)
+                return START_NOT_STICKY
+            }
         }
 
         val overlayAdded = ensureOverlayAttached()
@@ -193,6 +244,7 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         serviceScope.cancel()
         removeOverlayIfAttached()
         clearSummaryCache()
+        mediaSession?.release()
         super.onDestroy()
         stopForegroundCompat()
         InAppLogger.log(TAG, "SummaryExecutionService destroyed")
@@ -278,21 +330,39 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         VoiceSettingsActivity.applyVoiceSettings(tts, prefs)
     }
 
+    private fun updateMediaSessionState(state: Int) {
+        mediaSession?.let {
+            val stateBuilder = android.support.v4.media.session.PlaybackStateCompat.Builder()
+                .setActions(
+                    android.support.v4.media.session.PlaybackStateCompat.ACTION_PLAY or 
+                    android.support.v4.media.session.PlaybackStateCompat.ACTION_PAUSE or 
+                    android.support.v4.media.session.PlaybackStateCompat.ACTION_STOP or 
+                    android.support.v4.media.session.PlaybackStateCompat.ACTION_SKIP_TO_NEXT
+                )
+                .setState(state, android.support.v4.media.session.PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1.0f)
+            it.setPlaybackState(stateBuilder.build())
+        }
+    }
+
     private fun summaryCallbackFor(utteranceId: String): SpeakThatTtsManager.TtsCallback {
         return object : SpeakThatTtsManager.TtsCallback {
             override fun onStart(utteranceIdFromCallback: String?) {
+                updateMediaSessionState(android.support.v4.media.session.PlaybackStateCompat.STATE_PLAYING)
                 handleUtteranceStart(utteranceIdFromCallback ?: utteranceId)
             }
 
             override fun onDone(utteranceIdFromCallback: String?) {
+                updateMediaSessionState(android.support.v4.media.session.PlaybackStateCompat.STATE_PAUSED)
                 handleUtteranceDone(utteranceIdFromCallback ?: utteranceId)
             }
 
             override fun onError(utteranceIdFromCallback: String?) {
+                updateMediaSessionState(android.support.v4.media.session.PlaybackStateCompat.STATE_PAUSED)
                 handleUtteranceError(utteranceIdFromCallback ?: utteranceId)
             }
 
             override fun onStop(utteranceIdFromCallback: String?, interrupted: Boolean) {
+                updateMediaSessionState(android.support.v4.media.session.PlaybackStateCompat.STATE_PAUSED)
                 if (!interrupted || isServiceStopping) {
                     return
                 }
@@ -597,6 +667,8 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
         pendingQueueStart = false
         InAppLogger.log(TAG, "Stopping summary execution: $reason")
 
+        updateMediaSessionState(android.support.v4.media.session.PlaybackStateCompat.STATE_STOPPED)
+
         try {
             SpeakThatTtsManager.stop()
         } catch (e: Exception) {
@@ -804,6 +876,10 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        val mediaStyle = androidx.media.app.NotificationCompat.MediaStyle()
+            .setMediaSession(mediaSession?.sessionToken)
+            .setShowActionsInCompactView(0, 1)
+
         return NotificationCompat.Builder(this, SummaryConstants.NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.speakthaticon)
             .setContentTitle(getString(R.string.app_name))
@@ -823,10 +899,15 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
                 getString(R.string.summary_service_action_skip),
                 skipCurrentPendingIntent
             )
+            .setStyle(mediaStyle)
             .build()
     }
 
     private fun ensureOverlayAttached(): Boolean {
+        if (isAudioOnlySummaryEnabled) {
+            return true
+        }
+
         if (overlayView != null) {
             return true
         }
