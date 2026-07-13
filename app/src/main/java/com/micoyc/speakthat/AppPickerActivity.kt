@@ -101,7 +101,10 @@ class AppPickerActivity : AppCompatActivity(), AppFilterBottomSheetFragment.List
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (hasUnsavedChanges()) {
+                if (isLoading) {
+                    setResult(RESULT_CANCELED)
+                    finish()
+                } else if (hasUnsavedChanges()) {
                     showUnsavedChangesDialog()
                 } else {
                     setResult(RESULT_CANCELED)
