@@ -7,14 +7,14 @@
     android:gravity="center_vertical">
 
     <!-- Status Icon -->
-    <TextView
-        android:id="@+id/textStepIcon"
+    <ImageView
+        android:id="@+id/imgStepIcon"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:text="⏳"
-        android:layout_marginEnd="12dp"/>
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/ic_hourglass_24"
+        app:tint="@color/white_100"
+        xmlns:app="http://schemas.android.com/apk/res-auto"/>
 
     <!-- Step Content -->
     <LinearLayout
@@ -29,14 +29,14 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="?android:attr/textColorPrimary"/>
+            android:textColor="@color/white_100"/>
 
         <TextView
             android:id="@+id/textStepDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="@color/purple_card_text_secondary"
             android:visibility="gone"/>
 
     </LinearLayout>

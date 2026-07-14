@@ -113,25 +113,40 @@ class SelfTestActivity : AppCompatActivity() {
         }
     }
     
+    enum class StepStatus {
+        WAITING, SUCCESS, ERROR, WARNING, QUESTION
+    }
+
     private fun initializeSteps() {
         // Initialize all step views
-        setStepStatus(binding.step1.root, "⏳", getString(R.string.selftest_step1_title), "")
-        setStepStatus(binding.step2.root, "⏳", getString(R.string.selftest_step2_title), "")
-        setStepStatus(binding.step3.root, "⏳", getString(R.string.selftest_step3_title), "")
-        setStepStatus(binding.step4.root, "⏳", getString(R.string.selftest_step4_title), "")
-        setStepStatus(binding.step5.root, "⏳", getString(R.string.selftest_step5_title), "")
-        setStepStatus(binding.step6.root, "⏳", getString(R.string.selftest_step6_title), "")
-        setStepStatus(binding.step7.root, "⏳", getString(R.string.selftest_step7_title), "")
-        setStepStatus(binding.step8.root, "⏳", getString(R.string.selftest_step8_title), "")
-        setStepStatus(binding.step9.root, "⏳", getString(R.string.selftest_step9_title), "")
+        setStepStatus(binding.step1.root, StepStatus.WAITING, getString(R.string.selftest_step1_title), "")
+        setStepStatus(binding.step2.root, StepStatus.WAITING, getString(R.string.selftest_step2_title), "")
+        setStepStatus(binding.step3.root, StepStatus.WAITING, getString(R.string.selftest_step3_title), "")
+        setStepStatus(binding.step4.root, StepStatus.WAITING, getString(R.string.selftest_step4_title), "")
+        setStepStatus(binding.step5.root, StepStatus.WAITING, getString(R.string.selftest_step5_title), "")
+        setStepStatus(binding.step6.root, StepStatus.WAITING, getString(R.string.selftest_step6_title), "")
+        setStepStatus(binding.step7.root, StepStatus.WAITING, getString(R.string.selftest_step7_title), "")
+        setStepStatus(binding.step8.root, StepStatus.WAITING, getString(R.string.selftest_step8_title), "")
+        setStepStatus(binding.step9.root, StepStatus.WAITING, getString(R.string.selftest_step9_title), "")
     }
     
-    private fun setStepStatus(stepView: View, icon: String, title: String, detail: String) {
-        val iconView = stepView.findViewById<TextView>(R.id.textStepIcon)
+    private fun setStepStatus(stepView: View, status: StepStatus, title: String, detail: String) {
+        val iconView = stepView.findViewById<android.widget.ImageView>(R.id.imgStepIcon)
         val titleView = stepView.findViewById<TextView>(R.id.textStepTitle)
         val detailView = stepView.findViewById<TextView>(R.id.textStepDetail)
         
-        iconView?.text = icon
+        iconView?.let {
+            val (iconRes, colorRes) = when (status) {
+                StepStatus.WAITING -> R.drawable.ic_hourglass_24 to R.color.white_300
+                StepStatus.SUCCESS -> R.drawable.check_circle_24px to R.color.green_300
+                StepStatus.ERROR -> R.drawable.cancel_24px to R.color.red_300
+                StepStatus.WARNING -> R.drawable.warning_24px to R.color.yellow_300
+                StepStatus.QUESTION -> R.drawable.help_24px to R.color.blue_300
+            }
+            it.setImageResource(iconRes)
+            it.setColorFilter(ContextCompat.getColor(this, colorRes))
+        }
+        
         titleView?.text = title
         detailView?.text = detail
         detailView?.visibility = if (detail.isEmpty()) View.GONE else View.VISIBLE
@@ -165,8 +180,8 @@ class SelfTestActivity : AppCompatActivity() {
     
     private fun startSelfTest() {
         // Reset UI
-        binding.layoutSteps.visibility = View.VISIBLE
-        binding.layoutResults.visibility = View.GONE
+        binding.cardSteps.visibility = View.VISIBLE
+        binding.cardResults.visibility = View.GONE
         binding.layoutLoading.visibility = View.GONE
         listenerRecoveryAttempts = 0
         currentStep = 0
@@ -196,7 +211,7 @@ class SelfTestActivity : AppCompatActivity() {
         val isEnabled = isNotificationServiceEnabled()
         if (isEnabled) {
             if (!isListenerConnectionHealthy()) {
-                setStepStatus(binding.step1.root, "⏳", getString(R.string.selftest_step1_title), getString(R.string.selftest_step1_rebinding))
+                setStepStatus(binding.step1.root, StepStatus.WAITING, getString(R.string.selftest_step1_title), getString(R.string.selftest_step1_rebinding))
                 val scheduled = scheduleListenerRecovery("selftest_step1") {
                     checkNotificationListenerPermission()
                 }
@@ -206,11 +221,11 @@ class SelfTestActivity : AppCompatActivity() {
                 InAppLogger.log("SelfTest", "Step 1: Listener recovery not scheduled (limit reached)")
             }
 
-            setStepStatus(binding.step1.root, "✓", getString(R.string.selftest_step1_title), getString(R.string.selftest_step1_pass))
+            setStepStatus(binding.step1.root, StepStatus.SUCCESS, getString(R.string.selftest_step1_title), getString(R.string.selftest_step1_pass))
             InAppLogger.log("SelfTest", "Step 1: PASS - NotificationListener enabled")
             handler.postDelayed({ checkPostNotificationsPermission() }, 300)
         } else {
-            setStepStatus(binding.step1.root, "✗", getString(R.string.selftest_step1_title), getString(R.string.selftest_step1_fail))
+            setStepStatus(binding.step1.root, StepStatus.ERROR, getString(R.string.selftest_step1_title), getString(R.string.selftest_step1_fail))
             InAppLogger.log("SelfTest", "Step 1: FAIL - NotificationListener not enabled")
             showError(404, getString(R.string.selftest_error_0404_title), getString(R.string.selftest_error_0404_description))
         }
@@ -269,17 +284,17 @@ class SelfTestActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) 
                 == PackageManager.PERMISSION_GRANTED) {
-                setStepStatus(binding.step2.root, "✓", getString(R.string.selftest_step2_title), getString(R.string.selftest_step2_pass))
+                setStepStatus(binding.step2.root, StepStatus.SUCCESS, getString(R.string.selftest_step2_title), getString(R.string.selftest_step2_pass))
                 InAppLogger.log("SelfTest", "Step 2: PASS - POST_NOTIFICATIONS granted")
                 handler.postDelayed({ checkMasterSwitch() }, 300)
             } else {
-                setStepStatus(binding.step2.root, "⏳", getString(R.string.selftest_step2_title), getString(R.string.selftest_step2_requesting))
+                setStepStatus(binding.step2.root, StepStatus.WAITING, getString(R.string.selftest_step2_title), getString(R.string.selftest_step2_requesting))
                 InAppLogger.log("SelfTest", "Step 2: Requesting POST_NOTIFICATIONS permission")
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQUEST_POST_NOTIFICATIONS)
             }
         } else {
             // Not needed on older Android versions
-            setStepStatus(binding.step2.root, "✓", getString(R.string.selftest_step2_title), getString(R.string.selftest_step2_not_needed))
+            setStepStatus(binding.step2.root, StepStatus.SUCCESS, getString(R.string.selftest_step2_title), getString(R.string.selftest_step2_not_needed))
             InAppLogger.log("SelfTest", "Step 2: SKIP - POST_NOTIFICATIONS not required on Android < 13")
             handler.postDelayed({ checkMasterSwitch() }, 300)
         }
@@ -290,11 +305,11 @@ class SelfTestActivity : AppCompatActivity() {
         
         if (requestCode == REQUEST_POST_NOTIFICATIONS) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                setStepStatus(binding.step2.root, "✓", getString(R.string.selftest_step2_title), getString(R.string.selftest_step2_pass))
+                setStepStatus(binding.step2.root, StepStatus.SUCCESS, getString(R.string.selftest_step2_title), getString(R.string.selftest_step2_pass))
                 InAppLogger.log("SelfTest", "Step 2: PASS - POST_NOTIFICATIONS granted")
                 handler.postDelayed({ checkMasterSwitch() }, 300)
             } else {
-                setStepStatus(binding.step2.root, "✗", getString(R.string.selftest_step2_title), getString(R.string.selftest_step2_fail))
+                setStepStatus(binding.step2.root, StepStatus.ERROR, getString(R.string.selftest_step2_title), getString(R.string.selftest_step2_fail))
                 InAppLogger.log("SelfTest", "Step 2: FAIL - POST_NOTIFICATIONS denied")
                 showError(400, getString(R.string.selftest_error_0400_title), getString(R.string.selftest_error_0400_description))
             }
@@ -308,11 +323,11 @@ class SelfTestActivity : AppCompatActivity() {
         
         val isEnabled = sharedPreferences?.getBoolean(KEY_MASTER_SWITCH_ENABLED, true) ?: true
         if (isEnabled) {
-            setStepStatus(binding.step3.root, "✓", getString(R.string.selftest_step3_title), getString(R.string.selftest_step3_pass))
+            setStepStatus(binding.step3.root, StepStatus.SUCCESS, getString(R.string.selftest_step3_title), getString(R.string.selftest_step3_pass))
             InAppLogger.log("SelfTest", "Step 3: PASS - Master switch enabled")
             handler.postDelayed({ checkTtsInitialization() }, 300)
         } else {
-            setStepStatus(binding.step3.root, "✗", getString(R.string.selftest_step3_title), getString(R.string.selftest_step3_fail))
+            setStepStatus(binding.step3.root, StepStatus.ERROR, getString(R.string.selftest_step3_title), getString(R.string.selftest_step3_fail))
             InAppLogger.log("SelfTest", "Step 3: FAIL - Master switch disabled")
             showError(410, getString(R.string.selftest_error_0410_title), getString(R.string.selftest_error_0410_description))
         }
@@ -327,12 +342,12 @@ class SelfTestActivity : AppCompatActivity() {
         var testTts: TextToSpeech? = null
         testTts = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
-                setStepStatus(binding.step4.root, "✓", getString(R.string.selftest_step4_title), getString(R.string.selftest_step4_pass))
+                setStepStatus(binding.step4.root, StepStatus.SUCCESS, getString(R.string.selftest_step4_title), getString(R.string.selftest_step4_pass))
                 InAppLogger.log("SelfTest", "Step 4: PASS - TTS initialized")
                 testTts?.shutdown()
                 handler.postDelayed({ checkVolume() }, 300)
             } else {
-                setStepStatus(binding.step4.root, "✗", getString(R.string.selftest_step4_title), getString(R.string.selftest_step4_fail))
+                setStepStatus(binding.step4.root, StepStatus.ERROR, getString(R.string.selftest_step4_title), getString(R.string.selftest_step4_fail))
                 InAppLogger.log("SelfTest", "Step 4: FAIL - TTS initialization failed")
                 testTts?.shutdown()
                 showError(415, getString(R.string.selftest_error_0415_title), getString(R.string.selftest_error_0415_description))
@@ -359,12 +374,12 @@ class SelfTestActivity : AppCompatActivity() {
         
         if (currentVolume > 0) {
             val percentage = (currentVolume.toFloat() / maxVolume * 100).toInt()
-            setStepStatus(binding.step5.root, "✓", getString(R.string.selftest_step5_title), 
+            setStepStatus(binding.step5.root, StepStatus.SUCCESS, getString(R.string.selftest_step5_title), 
                 getString(R.string.selftest_step5_pass, percentage))
             InAppLogger.log("SelfTest", "Step 5: PASS - $streamName volume at $percentage% ($currentVolume/$maxVolume)")
             handler.postDelayed({ checkAudioMode() }, 300)
         } else {
-            setStepStatus(binding.step5.root, "✗", getString(R.string.selftest_step5_title), getString(R.string.selftest_step5_fail))
+            setStepStatus(binding.step5.root, StepStatus.ERROR, getString(R.string.selftest_step5_title), getString(R.string.selftest_step5_fail))
             InAppLogger.log("SelfTest", "Step 5: FAIL - $streamName volume is 0")
             showError(441, getString(R.string.selftest_error_0441_title), getString(R.string.selftest_error_0441_description, streamName))
         }
@@ -425,12 +440,12 @@ class SelfTestActivity : AppCompatActivity() {
         val blockedByVibrate = ringerMode == AudioManager.RINGER_MODE_VIBRATE && honorVibrate
 
         if (!(blockedBySilent || blockedByVibrate)) {
-            setStepStatus(binding.step6.root, "✓", getString(R.string.selftest_step6_title), 
+            setStepStatus(binding.step6.root, StepStatus.SUCCESS, getString(R.string.selftest_step6_title), 
                 getString(R.string.selftest_step6_pass, modeName))
             InAppLogger.log("SelfTest", "Step 6: PASS - Audio mode: $modeName (silent=$honorSilent, vibrate=$honorVibrate, legacy=$legacyHonor, hasSplit=${hasSilent && hasVibrate})")
             handler.postDelayed({ checkRules() }, 300)
         } else {
-            setStepStatus(binding.step6.root, "✗", getString(R.string.selftest_step6_title), 
+            setStepStatus(binding.step6.root, StepStatus.ERROR, getString(R.string.selftest_step6_title), 
                 getString(R.string.selftest_step6_fail, modeName))
             InAppLogger.log("SelfTest", "Step 6: FAIL - Audio mode blocked: $modeName")
             showError(411, getString(R.string.selftest_error_0411_title), getString(R.string.selftest_error_0411_description))
@@ -446,7 +461,7 @@ class SelfTestActivity : AppCompatActivity() {
             AutomationMode.OFF -> {
                 setStepStatus(
                     binding.step7.root,
-                    "✓",
+                    StepStatus.SUCCESS,
                     getString(R.string.selftest_step7_title),
                     getString(R.string.selftest_step7_pass_disabled)
                 )
@@ -455,7 +470,7 @@ class SelfTestActivity : AppCompatActivity() {
             AutomationMode.CONDITIONAL_RULES -> {
                 setStepStatus(
                     binding.step7.root,
-                    "⚠",
+                    StepStatus.WARNING,
                     getString(R.string.selftest_step7_title),
                     getString(R.string.selftest_step7_warning)
                 )
@@ -464,7 +479,7 @@ class SelfTestActivity : AppCompatActivity() {
             AutomationMode.EXTERNAL_AUTOMATION -> {
                 setStepStatus(
                     binding.step7.root,
-                    "⚠",
+                    StepStatus.WARNING,
                     getString(R.string.selftest_step7_title),
                     getString(R.string.selftest_step7_external)
                 )
@@ -480,15 +495,15 @@ class SelfTestActivity : AppCompatActivity() {
         currentStep = 8
         InAppLogger.log("SelfTest", "Step 8: Posting test notification")
         
-        setStepStatus(binding.step8.root, "⏳", getString(R.string.selftest_step8_title), getString(R.string.selftest_step8_posting))
+        setStepStatus(binding.step8.root, StepStatus.WAITING, getString(R.string.selftest_step8_title), getString(R.string.selftest_step8_posting))
         
         val posted = selfTestHelper.postTestNotification()
         if (posted) {
-            setStepStatus(binding.step8.root, "✓", getString(R.string.selftest_step8_title), getString(R.string.selftest_step8_posted))
+            setStepStatus(binding.step8.root, StepStatus.SUCCESS, getString(R.string.selftest_step8_title), getString(R.string.selftest_step8_posted))
             InAppLogger.log("SelfTest", "Step 8: Test notification posted")
             handler.postDelayed({ monitorLogs() }, 500)
         } else {
-            setStepStatus(binding.step8.root, "✗", getString(R.string.selftest_step8_title), getString(R.string.selftest_step8_fail))
+            setStepStatus(binding.step8.root, StepStatus.ERROR, getString(R.string.selftest_step8_title), getString(R.string.selftest_step8_fail))
             InAppLogger.log("SelfTest", "Step 8: FAIL - Could not post notification")
             showError(400, getString(R.string.selftest_error_0400_title), getString(R.string.selftest_error_0400_description))
         }
@@ -499,7 +514,7 @@ class SelfTestActivity : AppCompatActivity() {
         currentStep = 9
         InAppLogger.log("SelfTest", "Step 9: Monitoring logs for test notification")
         
-        setStepStatus(binding.step9.root, "⏳", getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_monitoring))
+        setStepStatus(binding.step9.root, StepStatus.WAITING, getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_monitoring))
         
         // Show loading indicator
         binding.layoutLoading.visibility = View.VISIBLE
@@ -525,24 +540,24 @@ class SelfTestActivity : AppCompatActivity() {
                 }
 
                 if (recoveryScheduled) {
-                    setStepStatus(binding.step9.root, "⏳", getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_rebinding))
+                    setStepStatus(binding.step9.root, StepStatus.WAITING, getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_rebinding))
                     InAppLogger.log("SelfTest", "Result: Notification not received - auto recovery scheduled")
                 } else {
                     // Don't show checkmark/cross yet - waiting for user feedback
-                    setStepStatus(binding.step9.root, "❓", getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_not_received))
+                    setStepStatus(binding.step9.root, StepStatus.QUESTION, getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_not_received))
                     InAppLogger.log("SelfTest", "Result: Notification not received by service")
                     askUserIfNotificationAppeared()
                 }
             }
             SelfTestHelper.TestStatus.RECEIVED_NOT_READ -> {
                 // This is a definitive failure - show immediately
-                setStepStatus(binding.step9.root, "✗", getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_received_not_read))
+                setStepStatus(binding.step9.root, StepStatus.ERROR, getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_received_not_read))
                 InAppLogger.log("SelfTest", "Result: Notification received but not read - ${result.blockingReason}")
                 showErrorForBlockingReason(result.blockingReason)
             }
             SelfTestHelper.TestStatus.READ_SUCCESSFULLY -> {
                 // Don't show checkmark/cross yet - waiting for user feedback
-                setStepStatus(binding.step9.root, "❓", getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_success))
+                setStepStatus(binding.step9.root, StepStatus.QUESTION, getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_success))
                 InAppLogger.log("SelfTest", "Result: Notification read successfully")
                 askUserIfHeardNotification()
             }
@@ -554,12 +569,12 @@ class SelfTestActivity : AppCompatActivity() {
             getString(R.string.selftest_question_notification_appeared),
             yesCallback = {
                 // User saw notification but service didn't receive it - this is a failure
-                setStepStatus(binding.step9.root, "✗", getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_not_received))
+                setStepStatus(binding.step9.root, StepStatus.ERROR, getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_not_received))
                 showError(404, getString(R.string.selftest_error_0404_title), getString(R.string.selftest_error_0404_description))
             },
             noCallback = {
                 // Notification was never posted - this is also a failure
-                setStepStatus(binding.step9.root, "✗", getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_not_received))
+                setStepStatus(binding.step9.root, StepStatus.ERROR, getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_not_received))
                 showError(400, getString(R.string.selftest_error_0400_title), getString(R.string.selftest_error_0400_description))
             }
         )
@@ -570,12 +585,12 @@ class SelfTestActivity : AppCompatActivity() {
             getString(R.string.selftest_question_heard_notification),
             yesCallback = {
                 // Success! Now we can show the checkmark
-                setStepStatus(binding.step9.root, "✓", getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_success))
+                setStepStatus(binding.step9.root, StepStatus.SUCCESS, getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_success))
                 showSuccess()
             },
             noCallback = {
                 // TTS worked but user didn't hear it - this is a failure
-                setStepStatus(binding.step9.root, "✗", getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_success))
+                setStepStatus(binding.step9.root, StepStatus.ERROR, getString(R.string.selftest_step9_title), getString(R.string.selftest_step9_success))
                 showError(443, getString(R.string.selftest_error_0443_title), getString(R.string.selftest_error_0443_description))
             }
         )
@@ -584,11 +599,11 @@ class SelfTestActivity : AppCompatActivity() {
     private fun showUserFeedbackQuestion(question: String, yesCallback: () -> Unit, noCallback: () -> Unit) {
         waitingForUserFeedback = true
         
-        binding.layoutSteps.visibility = View.GONE
-        binding.layoutResults.visibility = View.VISIBLE
+        binding.cardSteps.visibility = View.GONE
+        binding.cardResults.visibility = View.VISIBLE
         
         // Hide the result status elements - we don't know the outcome yet!
-        binding.textResultIcon.visibility = View.GONE
+        binding.imgResultIcon.visibility = View.GONE
         binding.textErrorCode.visibility = View.GONE
         binding.textResultTitle.visibility = View.GONE
         binding.textResultDescription.visibility = View.GONE
@@ -601,7 +616,7 @@ class SelfTestActivity : AppCompatActivity() {
         binding.buttonYes.setOnClickListener {
             waitingForUserFeedback = false
             // Re-show the result elements before calling the callback
-            binding.textResultIcon.visibility = View.VISIBLE
+            binding.imgResultIcon.visibility = View.VISIBLE
             binding.textErrorCode.visibility = View.VISIBLE
             binding.textResultTitle.visibility = View.VISIBLE
             binding.textResultDescription.visibility = View.VISIBLE
@@ -611,7 +626,7 @@ class SelfTestActivity : AppCompatActivity() {
         binding.buttonNo.setOnClickListener {
             waitingForUserFeedback = false
             // Re-show the result elements before calling the callback
-            binding.textResultIcon.visibility = View.VISIBLE
+            binding.imgResultIcon.visibility = View.VISIBLE
             binding.textErrorCode.visibility = View.VISIBLE
             binding.textResultTitle.visibility = View.VISIBLE
             binding.textResultDescription.visibility = View.VISIBLE
@@ -672,12 +687,13 @@ class SelfTestActivity : AppCompatActivity() {
     private fun showSuccess() {
         InAppLogger.log("SelfTest", "=== SELFTEST COMPLETED SUCCESSFULLY ===")
         
-        binding.layoutSteps.visibility = View.GONE
-        binding.layoutResults.visibility = View.VISIBLE
+        binding.cardSteps.visibility = View.GONE
+        binding.cardResults.visibility = View.VISIBLE
         binding.layoutUserFeedback.visibility = View.GONE
         binding.layoutActionButtons.visibility = View.VISIBLE
         
-        binding.textResultIcon.text = "✅"
+        binding.imgResultIcon.setImageResource(R.drawable.ic_celebrate_24)
+        binding.imgResultIcon.setColorFilter(ContextCompat.getColor(this, R.color.white_100))
         binding.textErrorCode.text = getString(R.string.selftest_error_code, "0000")
         binding.textErrorCode.visibility = View.VISIBLE
         binding.textResultTitle.text = getString(R.string.selftest_success_title)
@@ -690,12 +706,13 @@ class SelfTestActivity : AppCompatActivity() {
         
         InAppLogger.log("SelfTest", "=== SELFTEST FAILED: Error $code - $title ===")
         
-        binding.layoutSteps.visibility = View.GONE
-        binding.layoutResults.visibility = View.VISIBLE
+        binding.cardSteps.visibility = View.GONE
+        binding.cardResults.visibility = View.VISIBLE
         binding.layoutUserFeedback.visibility = View.GONE
         binding.layoutActionButtons.visibility = View.VISIBLE
         
-        binding.textResultIcon.text = "❌"
+        binding.imgResultIcon.setImageResource(R.drawable.cancel_24px)
+        binding.imgResultIcon.setColorFilter(ContextCompat.getColor(this, R.color.white_100))
         binding.textErrorCode.text = getString(R.string.selftest_error_code, code.toString().padStart(4, '0'))
         binding.textErrorCode.visibility = View.VISIBLE
         binding.textResultTitle.text = title
