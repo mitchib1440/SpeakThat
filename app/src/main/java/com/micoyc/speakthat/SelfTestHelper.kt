@@ -178,12 +178,16 @@ class SelfTestHelper(private val context: Context) {
                         return
                     }
                     receivedNotification && !passedFiltering -> {
-                        // Received but blocked by filtering
-                        InAppLogger.log("SelfTest", "Test notification received but blocked by filtering")
-                        val reason = findBlockingReason(logsText)
-                        monitoringCallback?.invoke(TestResult(TestStatus.RECEIVED_NOT_READ, reason))
-                        monitoringCallback = null
-                        return
+                        // Received marker can appear well before filtering finishes (rules, word-swap,
+                        // content caps, etc.). Do NOT treat "not yet filtered" as blocked — only fail
+                        // after the initial timeout if the passed-filtering marker never appears.
+                        if (elapsed >= timeoutMs) {
+                            InAppLogger.log("SelfTest", "Test notification received but blocked by filtering after ${timeoutMs}ms")
+                            val reason = findBlockingReason(logsText)
+                            monitoringCallback?.invoke(TestResult(TestStatus.RECEIVED_NOT_READ, reason))
+                            monitoringCallback = null
+                            return
+                        }
                     }
                     speaking && timeSinceSpeaking != null && timeSinceSpeaking >= extendedTimeoutMs -> {
                         // Speaking started but didn't complete within extended timeout
