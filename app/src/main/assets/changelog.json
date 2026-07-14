@@ -10,5 +10,11 @@
     "subpoints": [
       "As it has been out of date for a while, I changed the backgrounds, colours, and emojis to represent SpeakThat's current styling."
     ]
+  },
+  {
+    "text": "Confirmation dialog no longer shows when exiting the app list while it's loading.",
+    "subpoints": [
+      "The new confirmation dialog ended up being too good. Exiting the App List screen before the list had loaded caused the confirmation dialog to be displayed. Pressing Save would delete the entire selection. This has now been patched thanks to a contribution from chrisriv10."
+    ]
   }
 ]
