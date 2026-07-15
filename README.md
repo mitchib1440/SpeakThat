@@ -101,7 +101,7 @@ As I mentioned in the overview, SpeakThat was mostly inspired by Touchless Notif
 
 SpeakThat uses many icons from the [Material Icons](https://fonts.google.com/icons) library. These are available under the Apache 2.0 license, and make SpeakThat look much more professional than it has any right to be! So a huge thank you to the Material design teams.
 
-I should also thank the people making improvements in AI-assisted programming. SpeakThat simply couldn’t exist in its current form without this technology. I’ve personally been using [Cursor](https://cursor.com/) for my use. It's far from flawless and we've nearly fallen out several times, but they have improved their software massively since I started using it.
+I should also thank the people making improvements in AI-assisted programming. SpeakThat simply couldn’t exist in its current form without this technology.
 
 Thanks also to the [Android](https://www.android.com/) development teams for making an operating system capable of working for everyone. Your work is greatly underappreciated!
 
