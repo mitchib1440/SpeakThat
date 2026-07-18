@@ -64,7 +64,7 @@ And so after a few failed versions, I'm pleased to introduce SpeakThat! The noti
 * **No Ads, No Tracking, Just Speech**
   * Fully open-source under the GPL-3.0 License for total transparency.
   * Free to download here on GitHub (includes a built-in self-updater!).
-  * Available on the Google Play Store, Droid-ify, Neo-Store, or anywhere else supporting the [IzzyOnDroid](https://apt.izzysoft.de/fdroid/index/apk/com.micoyc.speakthat) repo!
+  * Available on the Google Play Store, F-Droid, Droid-ify, Neo-Store, or anywhere supporting the [IzzyOnDroid](https://apt.izzysoft.de/fdroid/index/apk/com.micoyc.speakthat) repo!
 
 ---
 
