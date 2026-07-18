@@ -23,7 +23,10 @@
 # [FULL_BATT] = Only shows if battery level is 99% or higher
 # [CHARGE_ONLY] = Only shows if the device is currently charging
 
-SpeakThat! Over 4000 downloads on Google Play!
+SpeakThat! Over 5000 downloads on Google Play!
+SpeakThat! Over 5000 downloads on GitHub!
+SpeakThat! Over 20000 downloads on IzzyOnDroid!
+SpeakThat! 30000 downloads and counting!
 SpeakThat! Did you know I have excellent volume control? Unlike my cousin, Siri, who sometimes whispers.
 SpeakThat! I'm not just reading notifications, I'm performing them! This is my audition for Broadway.
 SpeakThat! Fun fact: I can say supercalifragilisticexpialidocious perfectly. Want to hear it again? Supercalifragilisticexpialidocious supercalifragilisticexpialidocious supercalifragilisticexpialidocious!
@@ -526,8 +529,8 @@ SpeakThat! You are not only responsible for what you say, but also for what you 
 SpeakThat! The more we value things, the less we value ourselves. - Bruce Lee
 SpeakThat! A journey of a thousand miles must begin with a single step. - Lao Tzu
 SpeakThat! Life is ours to be spent, not saved. - D H Lawrence
-SpeakThat! Either get busy living or get busy dying. - Stephen King
-SpeakThat! Instead of worrying about what you cannot control, shift your energy to what you can create. - Roy T Bennet
+SpeakThat! Either get busy living or get busy dying. - Stephen King [LOW_BATT]
+SpeakThat! Instead of worrying about what you cannot control, shift your energy to what you can create. - Roy T Bennet [CHARGE_ONLY]
 SpeakThat! Sometimes all you can do is hope that tomorrow is a better day! - Gawr Gura
 SpeakThat! Your tools don't define you - your work does. If people can tell you poured heart and soul into something, the tool you used doesn't matter. - Mitchi Bell
 SpeakThat! If you keep the past around you forever, nostalgia becomes meaningless. - Mitchi Bell
@@ -543,3 +546,4 @@ SpeakThat! Never came on a physical disk, but still more consumer-friendly than 
 SpeakThat! Free to play for the win!
 SpeakThat! Microslop would hate it!
 SpeakThat! Giving your Friend a voice since 2025!
+SpeakThat! My official birthday is on the 1st of July 2025!
