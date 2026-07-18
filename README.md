@@ -8,6 +8,7 @@ SpeakThat (styled as “**_SpeakThat!_**”) is an open-source Android applicati
 [![IzzyOnDroid](https://img.shields.io/badge/IzzyOnDroid-Available-green?logo=android)](https://apt.izzysoft.de/fdroid/index/apk/com.micoyc.speakthat)
 [![IzzyOnDroid Yearly Downloads](https://img.shields.io/badge/dynamic/json?url=https://dlstats.izzyondroid.org/iod-stats-collector/stats/basic/yearly/rolling.json&query=$.['com.micoyc.speakthat']&label=IzzyOnDroid%20yearly%20downloads)](https://apt.izzysoft.de/packages/com.micoyc.speakthat)
 [<img src="https://shields.rbtlog.dev/simple/com.micoyc.speakthat" alt="RB shield">](https://shields.rbtlog.dev/com.micoyc.speakthat)
+[![GitHub Downloads](https://img.shields.io/github/downloads/mitchib1440/speakthat/total?style=flat&logo=github&label=GitHub%20downloads)](https://github.com/mitchib1440/SpeakThat/releases)
 [<img src="https://img.shields.io/badge/SpeakThat!-Google_Play-blue?logo=googleplay" alt="RB shield">](https://play.google.com/store/apps/details?id=com.micoyc.speakthat)
 [![License](https://img.shields.io/badge/License-GPL--3.0-green.svg)](LICENSE)
 [![Weblate](https://hosted.weblate.org/widgets/speakthat/-/svg-badge.svg)](https://speakthat.app/translate)
