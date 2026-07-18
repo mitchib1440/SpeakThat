@@ -2139,4 +2139,17 @@ Bloque=ignore totalement, Privée=annonce de façon privée
     <string name="activity_pause_options_description">Durée :</string>
     <string name="behavior_include_notification_timestamps_label">Inclure les dates de notification</string>
     <string name="behavior_include_notification_timestamps_desc">Utilise les dates de notification pour différencier les messages identiques dans les discussions de groupe.</string>
+    <string name="filter_remove_emojis_advanced">Exceptions à la suppression des émoticônes</string>
+    <string name="unsaved_changes_title">Êtes-vous certain ?</string>
+    <string name="unsaved_changes_message">Vous avez des changements non sauvegardés. Voulez-vous les sauvegarder ?</string>
+    <string name="discard">Supprimer</string>
+    <string name="behavior_android_auto_title">Android Auto</string>
+    <string name="behavior_android_auto_description">Gère le comportement lors de la connexion à l\'affichage d\'une voiture</string>
+    <string name="behavior_disable_speakthat_auto">Couper SpeakThat pour Android Auto</string>
+    <string name="behavior_disable_speakthat_auto_desc">Priorise le lecteur de notifications intégré de Android Auto si connecté</string>
+    <string name="behavior_disable_sco_auto">Désactiver le Bluetooth SCO</string>
+    <string name="behavior_disable_sco_auto_desc">Empêche SpeakThat de forcer un appel téléphonique quand Android Auto est en fonction</string>
+    <string name="summary_settings_visual_mode_title">Mode visuel</string>
+    <string name="summary_settings_visual_mode_subtitle">Montrer les cartes de résumé à l\'écran</string>
+    <string name="summary_settings_audio_only_subtitle">Mode audio seule activé. Aucune permission de superposition requise.</string>
 </resources>
