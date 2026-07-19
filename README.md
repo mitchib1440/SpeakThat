@@ -1,15 +1,9 @@
 <div align="center">
 
-[<img width="1500" height="429" alt="SpeakThat! Header" src="https://github.com/user-attachments/assets/f7acb89c-9c81-406f-9e7f-dad3e01ffce0" />](https://speakthat.app)
-[<img width="1536" height="32" alt="slop code warning" src="https://github.com/user-attachments/assets/81552e96-fd08-42e2-aa00-841b514752f8" />](https://github.com/mitchib1440/SpeakThat/wiki/SpeakThat%21-%26-AI-Usage)
-[<img width="1500" height="153" alt="Frame 6327" src="https://github.com/user-attachments/assets/f333b8b0-fe29-481e-b24a-df845e22cc0e" />
+[<img width="1500" height="429" alt="SpeakThat! Header" src="https://github.com/mitchib1440/SpeakThat/blob/486cdfc5c94f7553fa57bcc0adafeff0061ba900/.github/trans_banner.png" />](https://speakthat.app)
+[<img width="1536" height="32" alt="slop code warning" src="https://github.com/mitchib1440/SpeakThat/blob/486cdfc5c94f7553fa57bcc0adafeff0061ba900/.github/slopcode_banner.png" />](https://github.com/mitchib1440/SpeakThat/wiki/SpeakThat%21-%26-AI-Usage)
+[<img width="1500" height="153" alt="Frame 6327" src="https://github.com/mitchib1440/SpeakThat/blob/486cdfc5c94f7553fa57bcc0adafeff0061ba900/.github/wiki_warning.png" />
 ](https://github.com/mitchib1440/SpeakThat/wiki)
-
-</div>
-
-SpeakThat (styled as “**_SpeakThat!_**”) is an open-source Android application that reads incoming notifications out loud using Android’s text-to-speech (TTS) engine. It was designed to continue the legacy of older notification reading applications, mainly Touchless Notifications developed by [DYNA Logix](https://dynalogix.eu/) in the mid-2010s. SpeakThat differs from other notification readers in its customization and user interface. Some notifications contain information that you would rather not be made public. SpeakThat allows you to control exactly what gets read out, and when. You can decide what apps get their notifications read out, set up words that prevent readouts, enable private mode for certain notifications, add cooldown periods to prevent spam, and just about anything else you could want. While plenty of notification readers feature adverts or in-app purchases, SpeakThat offers all of its features for free. No ads, no paying for extra readouts, and absolutely no subscriptions. SpeakThat is open-source under the GPL-3.0 license, giving you permission to use it, modify it, and share it provided any derivatives are under the same license and its original copyright holder is attributed.
-
-<div align="center">
 
 [![IzzyOnDroid](https://img.shields.io/badge/IzzyOnDroid-Available-green?logo=android)](https://apt.izzysoft.de/fdroid/index/apk/com.micoyc.speakthat)
 [![IzzyOnDroid Yearly Downloads](https://img.shields.io/badge/dynamic/json?url=https://dlstats.izzyondroid.org/iod-stats-collector/stats/basic/yearly/rolling.json&query=$.['com.micoyc.speakthat']&label=IzzyOnDroid%20yearly%20downloads)](https://apt.izzysoft.de/packages/com.micoyc.speakthat)
@@ -20,8 +14,12 @@ SpeakThat (styled as “**_SpeakThat!_**”) is an open-source Android applicati
 [![Weblate](https://hosted.weblate.org/widgets/speakthat/-/svg-badge.svg)](https://speakthat.app/translate)
 [<img src="https://img.shields.io/badge/SpeakThat!-Official_Website-purple" alt="RB shield">](https://speakthat.app)
 
+
 </div>
 
+SpeakThat (styled as “**_SpeakThat!_**”) is an open-source Android application that reads incoming notifications out loud using Android’s text-to-speech (TTS) engine. It was designed to continue the legacy of older notification reading applications, mainly Touchless Notifications developed by [DYNA Logix](https://dynalogix.eu/) in the mid-2010s. SpeakThat differs from other notification readers in its customization and user interface. Some notifications contain information that you would rather not be made public. SpeakThat allows you to control exactly what gets read out, and when. You can decide what apps get their notifications read out, set up words that prevent readouts, enable private mode for certain notifications, add cooldown periods to prevent spam, and just about anything else you could want. While plenty of notification readers feature adverts or in-app purchases, SpeakThat offers all of its features for free. No ads, no paying for extra readouts, and absolutely no subscriptions. SpeakThat is open-source under the GPL-3.0 license, giving you permission to use it, modify it, and share it provided any derivatives are under the same license and its original copyright holder is attributed.
+
+---
 
 ## The Journey to get here!
 
@@ -35,14 +33,15 @@ Fast forward to 2025 and it's quite clear that Touchless Notifications was desig
 So, I decided to make my own. I had this idea for a while but coding is not an easy thing to get into. But with the help of AI-assisted coding, it becomes a very feasible dream.
 And so after a few failed versions, I'm pleased to introduce SpeakThat! The notification reader making use of my now 12+ years of user testing in this field!
 
----
-<div align="center">
 
-<img width="3618" height="1245" alt="Frame 6331" src="https://github.com/user-attachments/assets/49696c3e-6d9c-48f5-aa39-7e2720421d4c" />
-
-</div>
 
 ## Features
+
+<div align="center">
+
+[<img width="3618" height="1245" alt="Features" src="https://github.com/mitchib1440/SpeakThat/blob/a78962fd8e7b2dadab8c37e8733ca4a88394d228/.github/features_banner.png" />](https://speakthat.app)
+
+</div>
 
 * **Privacy-First By Design**
   * Absolutely nothing leaves your device unless you explicitly export a debug log.
