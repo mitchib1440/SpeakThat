@@ -1,8 +1,8 @@
 <div align="center">
 
-[<img width="1500" height="429" alt="SpeakThat! Header" src="https://github.com/mitchib1440/SpeakThat/blob/486cdfc5c94f7553fa57bcc0adafeff0061ba900/.github/trans_banner.png" />](https://speakthat.app)
-[<img width="1536" height="32" alt="slop code warning" src="https://github.com/mitchib1440/SpeakThat/blob/486cdfc5c94f7553fa57bcc0adafeff0061ba900/.github/slopcode_banner.png" />](https://github.com/mitchib1440/SpeakThat/wiki/SpeakThat%21-%26-AI-Usage)
-[<img width="1500" height="153" alt="Frame 6327" src="https://github.com/mitchib1440/SpeakThat/blob/486cdfc5c94f7553fa57bcc0adafeff0061ba900/.github/wiki_warning.png" />
+[<img width="1500" height="429" alt="SpeakThat! Header" src=".github/trans_banner.png" />](https://speakthat.app)
+[<img width="1536" height="32" alt="slop code warning" src=".github/slopcode_banner.png" />](https://github.com/mitchib1440/SpeakThat/wiki/SpeakThat%21-%26-AI-Usage)
+[<img width="1500" height="153" alt="Frame 6327" src=".github/wiki_warning.png" />
 ](https://github.com/mitchib1440/SpeakThat/wiki)
 
 [![IzzyOnDroid](https://img.shields.io/badge/IzzyOnDroid-Available-green?logo=android)](https://apt.izzysoft.de/fdroid/index/apk/com.micoyc.speakthat)
@@ -39,7 +39,7 @@ And so after a few failed versions, I'm pleased to introduce SpeakThat! The noti
 
 <div align="center">
 
-[<img width="3618" height="1245" alt="Features" src="https://github.com/mitchib1440/SpeakThat/blob/a78962fd8e7b2dadab8c37e8733ca4a88394d228/.github/features_banner.png" />](https://speakthat.app)
+[<img width="3618" height="1245" alt="Features" src=".github/features_banner.png" />](https://speakthat.app)
 
 </div>
 
