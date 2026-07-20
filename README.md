@@ -1,18 +1,37 @@
 <div align="center">
 
-[<img width="1500" height="429" alt="SpeakThat! Header" src=".github/trans_banner.png" />](https://speakthat.app)
-[<img width="1536" height="32" alt="slop code warning" src=".github/slopcode_banner.png" />](https://github.com/mitchib1440/SpeakThat/wiki/SpeakThat%21-%26-AI-Usage)
-[<img width="1500" height="153" alt="Frame 6327" src=".github/wiki_warning.png" />
-](https://github.com/mitchib1440/SpeakThat/wiki)
-
-[![IzzyOnDroid](https://img.shields.io/badge/IzzyOnDroid-Available-green?logo=android)](https://apt.izzysoft.de/fdroid/index/apk/com.micoyc.speakthat)
-[![IzzyOnDroid Yearly Downloads](https://img.shields.io/badge/dynamic/json?url=https://dlstats.izzyondroid.org/iod-stats-collector/stats/basic/yearly/rolling.json&query=$.['com.micoyc.speakthat']&label=IzzyOnDroid%20yearly%20downloads)](https://apt.izzysoft.de/packages/com.micoyc.speakthat)
-[<img src="https://shields.rbtlog.dev/simple/com.micoyc.speakthat" alt="RB shield">](https://shields.rbtlog.dev/com.micoyc.speakthat)
-[![GitHub Downloads](https://img.shields.io/github/downloads/mitchib1440/speakthat/total?style=flat&logo=github&label=GitHub%20downloads)](https://github.com/mitchib1440/SpeakThat/releases)\
-[<img src="https://img.shields.io/badge/SpeakThat!-Google_Play-blue?logo=googleplay" alt="RB shield">](https://play.google.com/store/apps/details?id=com.micoyc.speakthat)
-[![License](https://img.shields.io/badge/License-GPL--3.0-green.svg)](LICENSE)
-[![Weblate](https://hosted.weblate.org/widgets/speakthat/-/svg-badge.svg)](https://speakthat.app/translate)
-[<img src="https://img.shields.io/badge/SpeakThat!-Official_Website-purple" alt="RB shield">](https://speakthat.app)
+  <a href="https://speakthat.app" target="_blank">
+    <picture>
+      <!-- This image shows up in Dark Mode -->
+      <source media="(prefers-color-scheme: dark)" srcset=".github/trans_banner_dark.png">
+      <!-- This image shows up in Light Mode -->
+      <source media="(prefers-color-scheme: light)" srcset=".github/trans_banner_light.png">
+      <!-- Fallback image just in case -->
+      <img alt="SpeakThat features list" src=".github/trans_banner.png">
+    </picture>
+  </a>
+  
+  [<img width="1536" height="32" alt="slop code warning" src=".github/slopcode_banner.png" />](https://github.com/mitchib1440/SpeakThat/wiki/SpeakThat%21-%26-AI-Usage)
+  
+  <a href="https://github.com/mitchib1440/SpeakThat/wiki" target="_blank">
+    <picture>
+      <!-- This image shows up in Dark Mode -->
+      <source media="(prefers-color-scheme: dark)" srcset=".github/wiki_warning_dark.png">
+      <!-- This image shows up in Light Mode -->
+      <source media="(prefers-color-scheme: light)" srcset=".github/wiki_warning_light.png">
+      <!-- Fallback image just in case -->
+      <img alt="SpeakThat features list" src=".github/wiki_warning.png">
+    </picture>
+  </a>
+  
+  [![IzzyOnDroid](https://img.shields.io/badge/IzzyOnDroid-Available-green?logo=android)](https://apt.izzysoft.de/fdroid/index/apk/com.micoyc.speakthat)
+  [![IzzyOnDroid Yearly Downloads](https://img.shields.io/badge/dynamic/json?url=https://dlstats.izzyondroid.org/iod-stats-collector/stats/basic/yearly/rolling.json&query=$.['com.micoyc.speakthat']&label=IzzyOnDroid%20yearly%20downloads)](https://apt.izzysoft.de/packages/com.micoyc.speakthat)
+  [<img src="https://shields.rbtlog.dev/simple/com.micoyc.speakthat" alt="RB shield">](https://shields.rbtlog.dev/com.micoyc.speakthat)
+  [![GitHub Downloads](https://img.shields.io/github/downloads/mitchib1440/speakthat/total?style=flat&logo=github&label=GitHub%20downloads)](https://github.com/mitchib1440/SpeakThat/releases)\
+  [<img src="https://img.shields.io/badge/SpeakThat!-Google_Play-blue?logo=googleplay" alt="RB shield">](https://play.google.com/store/apps/details?id=com.micoyc.speakthat)
+  [![License](https://img.shields.io/badge/License-GPL--3.0-green.svg)](LICENSE)
+  [![Weblate](https://hosted.weblate.org/widgets/speakthat/-/svg-badge.svg)](https://speakthat.app/translate)
+  [<img src="https://img.shields.io/badge/SpeakThat!-Official_Website-purple" alt="RB shield">](https://speakthat.app)
 
 
 </div>
@@ -39,7 +58,16 @@ And so after a few failed versions, I'm pleased to introduce SpeakThat! The noti
 
 <div align="center">
 
-[<img width="3618" height="1245" alt="Features" src=".github/features_banner.png" />](https://speakthat.app)
+  <a href="https://github.com/mitchib1440/SpeakThat" target="_blank">
+    <picture>
+      <!-- This image shows up in Dark Mode -->
+      <source media="(prefers-color-scheme: dark)" srcset=".github/features_banner_dark.png">
+      <!-- This image shows up in Light Mode -->
+      <source media="(prefers-color-scheme: light)" srcset=".github/features_banner_light.png">
+      <!-- Fallback image just in case -->
+      <img alt="SpeakThat features list" src=".github/wiki_warning.png">
+    </picture>
+  </a>
 
 </div>
 
