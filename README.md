@@ -24,15 +24,17 @@
     </picture>
   </a>
   
-  [![IzzyOnDroid](https://img.shields.io/badge/IzzyOnDroid-Available-green?logo=android)](https://apt.izzysoft.de/fdroid/index/apk/com.micoyc.speakthat)
-  [![IzzyOnDroid Yearly Downloads](https://img.shields.io/badge/dynamic/json?url=https://dlstats.izzyondroid.org/iod-stats-collector/stats/basic/yearly/rolling.json&query=$.['com.micoyc.speakthat']&label=IzzyOnDroid%20yearly%20downloads)](https://apt.izzysoft.de/packages/com.micoyc.speakthat)
+  <!-- Misc stuff :P -->
   [<img src="https://shields.rbtlog.dev/simple/com.micoyc.speakthat" alt="RB shield">](https://shields.rbtlog.dev/com.micoyc.speakthat)
-  [![GitHub Downloads](https://img.shields.io/github/downloads/mitchib1440/speakthat/total?style=flat&logo=github&label=GitHub%20downloads)](https://github.com/mitchib1440/SpeakThat/releases)\
-  [<img src="https://img.shields.io/badge/SpeakThat!-Google_Play-blue?logo=googleplay" alt="RB shield">](https://play.google.com/store/apps/details?id=com.micoyc.speakthat)
-  [![License](https://img.shields.io/badge/License-GPL--3.0-green.svg)](LICENSE)
+  [![License](https://img.shields.io/badge/License-GPL--3.0-4EC820.svg)](LICENSE)
   [![Weblate](https://hosted.weblate.org/widgets/speakthat/-/svg-badge.svg)](https://speakthat.app/translate)
-  [<img src="https://img.shields.io/badge/SpeakThat!-Official_Website-purple" alt="RB shield">](https://speakthat.app)
-
+  [![GitHub Stars](https://img.shields.io/github/stars/mitchib1440/speakthat?style=flat&label=GitHub%20Stars)](https://github.com/mitchib1440/SpeakThat)
+  [![F-Droid Version](https://img.shields.io/f-droid/v/com.micoyc.speakthat)](https://f-droid.org/en/packages/com.micoyc.speakthat/)
+  
+  <!-- Installs and downloads -->
+  [![IzzyOnDroid Yearly Downloads](https://img.shields.io/badge/dynamic/json?url=https://dlstats.izzyondroid.org/iod-stats-collector/stats/basic/yearly/rolling.json&query=$.['com.micoyc.speakthat']&label=IzzyOnDroid%20yearly%20downloads&color=purple&logo=android&logoColor=white)](https://apt.izzysoft.de/packages/com.micoyc.speakthat)
+  [![GitHub Downloads](https://img.shields.io/github/downloads/mitchib1440/speakthat/total?style=flat&logo=github&label=GitHub%20downloads&color=purple)](https://github.com/mitchib1440/SpeakThat/releases)
+  [![Play Store Installs](https://img.shields.io/endpoint?url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.micoyc.speakthat%26gl%3DGB%26hl%3Den%26l%3DGoogle%2520Play%2520installs%26m%3D%24totalinstalls&style=flat&logo=google-play&label=Google%20Play%20installs&color=purple)](https://play.google.com/store/apps/details?id=com.micoyc.speakthat)
 
 </div>
 
