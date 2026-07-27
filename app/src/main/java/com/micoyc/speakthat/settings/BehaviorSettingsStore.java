@@ -30,6 +30,9 @@ public class BehaviorSettingsStore {
     public static final String KEY_WAVE_TIMEOUT_SECONDS = "wave_timeout_seconds";
     public static final String KEY_WAVE_HOLD_DURATION_MS = "wave_hold_duration_ms";
     public static final String KEY_PRESS_TO_STOP_ENABLED = "press_to_stop_enabled";
+    public static final String KEY_SWIPE_TO_STOP = "pref_swip_to_stop";
+    public static final String KEY_STOP_ON_DISMISSAL_WATCH_EXCEPTION = "pref_stop_on_dismissal_watch_exception";
+    public static final String KEY_STOP_ON_DISMISSAL_AUTO_CANCEL = "pref_stop_on_dismissal_auto_cancel";
     public static final String KEY_POCKET_MODE_ENABLED = "pocket_mode_enabled";
     public static final String KEY_MEDIA_BEHAVIOR = "media_behavior";
     public static final String KEY_DUCKING_VOLUME = "ducking_volume";

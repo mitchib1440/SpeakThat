@@ -165,6 +165,39 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "swipe_to_stop",
+                title = context.getString(R.string.behavior_swipe_to_stop_title),
+                description = context.getString(R.string.behavior_swipe_to_stop_description),
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("swipe", "stop", "dismiss", "clear", "cancel"),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "swipe_to_stop_watch_exception",
+                title = context.getString(R.string.behavior_swipe_to_stop_watch_exception_title),
+                description = context.getString(R.string.behavior_swipe_to_stop_watch_exception_description),
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("watch", "smartwatch", "wearable", "dismiss", "exception", "keep reading"),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "swipe_to_stop_auto_cancel",
+                title = context.getString(R.string.behavior_swipe_to_stop_auto_cancel_title),
+                description = context.getString(R.string.behavior_swipe_to_stop_auto_cancel_description),
+                category = "behavior",
+                categoryTitle = "Behavior Settings",
+                categoryIcon = "🔔",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("auto-cancel", "auto cancel", "app cancel", "sync", "background", "stop"),
+                navigationAction = { context.startActivity(Intent(context, BehaviorSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "android_auto_disable_speakthat",
                 title = "Disable SpeakThat for Android Auto",
                 description = "Prioritise Android Auto's native notification reader when connected",

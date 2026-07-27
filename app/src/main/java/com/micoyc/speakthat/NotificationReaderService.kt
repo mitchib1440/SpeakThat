@@ -83,6 +83,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var currentAppName = ""
     private var currentOriginalAppName = "" // Store original app name for statistics (before privacy modification)
     private var currentTtsText = ""
+    private var currentSbnKey: String? = null
     private var shouldShowEngineFailureWarning = false
     
     // Cached system services for performance
@@ -1901,8 +1902,63 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
+    override fun onNotificationRemoved(sbn: StatusBarNotification, rankingMap: RankingMap, reason: Int) {
+        super.onNotificationRemoved(sbn, rankingMap, reason)
+        
+        // Handle TTS cancellation if the dismissed notification is currently being read
+        if (sbn.key == currentSbnKey) {
+            val swipeToStopEnabled = sharedPreferences?.getBoolean("pref_swip_to_stop", true) ?: true
+            if (swipeToStopEnabled) {
+                val watchException = sharedPreferences?.getBoolean("pref_stop_on_dismissal_watch_exception", false) ?: false
+                val autoCancelEnabled = sharedPreferences?.getBoolean("pref_stop_on_dismissal_auto_cancel", false) ?: false
+                
+                var shouldStop = false
+                var stopReasonStr = ""
+                
+                when (reason) {
+                    REASON_CANCEL, REASON_CLICK, REASON_CANCEL_ALL, REASON_GROUP_SUMMARY_CANCELED -> {
+                        // Always counts as a user dismissal
+                        shouldStop = true
+                        stopReasonStr = "user dismissal (reason=$reason)"
+                    }
+                    REASON_LISTENER_CANCEL, REASON_LISTENER_CANCEL_ALL -> {
+                        // Smartwatch/companion dismissal
+                        if (!watchException) {
+                            shouldStop = true
+                            stopReasonStr = "watch/companion dismissal (reason=$reason)"
+                        } else {
+                            Log.d(TAG, "Ignoring watch dismissal due to watch exception preference")
+                        }
+                    }
+                    REASON_APP_CANCEL -> {
+                        // Auto-cancel
+                        if (autoCancelEnabled) {
+                            shouldStop = true
+                            stopReasonStr = "app auto-cancel (reason=$reason)"
+                        } else {
+                            Log.d(TAG, "Ignoring app auto-cancel due to preference")
+                        }
+                    }
+                }
+                
+                if (shouldStop) {
+                    InAppLogger.log("Service", "Stopping readout due to notification dismissal: $stopReasonStr")
+                    Log.d(TAG, "Stopping readout due to notification dismissal: $stopReasonStr")
+                    stopCurrentSpeech()
+                }
+            }
+        }
+        
+        // Forward to the legacy method to handle dismissal memory tracking
+        handleNotificationRemovedLegacy(sbn)
+    }
+
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
         super.onNotificationRemoved(sbn)
+        handleNotificationRemovedLegacy(sbn)
+    }
+
+    private fun handleNotificationRemovedLegacy(sbn: StatusBarNotification) {
         
         try {
             // Skip our own notifications
@@ -4509,7 +4565,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         currentAppName = ""
         currentOriginalAppName = ""
         currentTtsText = ""
-        
+        currentSbnKey = null
         // Unregister shake listener since we're no longer speaking
         unregisterShakeListener()
         
@@ -4573,6 +4629,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         currentAppName = ""
         currentOriginalAppName = ""
         currentTtsText = ""
+        currentSbnKey = null
         unregisterShakeListener()
 
         cancelSpeechSafetyTimeout("stopCurrentSpeech")
@@ -4674,7 +4731,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         currentAppName = ""
         currentOriginalAppName = ""
         currentTtsText = ""
-
+        currentSbnKey = null
         stopForegroundService()
         unregisterShakeListener()
 
@@ -6695,7 +6752,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             originalAppName,
             voiceOverride,
             delayMs = delayMs,
-            ttsFlushIncoming = ttsFlushIncoming
+            ttsFlushIncoming = ttsFlushIncoming,
+            sbn = sbn
         )
     }
     
@@ -6706,7 +6764,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         originalAppName: String? = null,
         voiceOverride: VoiceOverride? = null,
         delayMs: Long = 0L,
-        ttsFlushIncoming: Boolean = true
+        ttsFlushIncoming: Boolean = true,
+        sbn: StatusBarNotification? = null
     ) {
         if (SpeechCoordinator.isSummaryActive()) {
             Log.d(TAG, "Summary active - refusing notification speech at executeSpeech")
@@ -6862,6 +6921,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
         
         isCurrentlySpeaking = true
+        currentSbnKey = sbn?.key
         
         // Set the current app name and text for the reading notification
         currentAppName = appName
@@ -6987,6 +7047,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         releaseSpeechWakeLock()
 
                         isCurrentlySpeaking = false
+                        currentSbnKey = null
                         contentCapTimerRunnable = null
                         cancelSpeechSafetyTimeout("content cap")
                         restoreGlobalVoiceSettingsIfNeeded("content cap stop")
@@ -7013,6 +7074,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 InAppLogger.log("Service", "=== DUCKING DEBUG: TTS utterance COMPLETED: $utteranceId ===")
                 releaseSpeechWakeLock()
                 isCurrentlySpeaking = false
+                currentSbnKey = null
                 cancelSpeechSafetyTimeout("utterance_done")
 
                 contentCapTimerRunnable?.let { runnable ->
@@ -7060,6 +7122,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 Log.e(TAG, "TTS utterance error: $utteranceId")
                 releaseSpeechWakeLock()
                 isCurrentlySpeaking = false
+                currentSbnKey = null
                 cancelSpeechSafetyTimeout("utterance_error")
 
                 contentCapTimerRunnable?.let { runnable ->
@@ -7130,6 +7193,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 Log.e(TAG, "TTS stop during JIT suppression", e)
             }
             isCurrentlySpeaking = false
+            currentSbnKey = null
             restoreGlobalVoiceSettingsIfNeeded("JIT global suppression: $jitSuppressReason")
             releaseSpeechWakeLock()
             unregisterShakeListener()
@@ -7151,6 +7215,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 Log.e(TAG, "TTS stop during JIT suppression", e)
             }
             isCurrentlySpeaking = false
+            currentSbnKey = null
             restoreGlobalVoiceSettingsIfNeeded("JIT global suppression: No speakable text remaining")
             releaseSpeechWakeLock()
             unregisterShakeListener()
@@ -7246,6 +7311,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     InAppLogger.logError("Service", "TTS.speak() returned ERROR - attempting recovery")
                     attemptTtsRecovery("speak() returned ERROR")
                     isCurrentlySpeaking = false
+                    currentSbnKey = null
                     unregisterShakeListener()
                     restoreGlobalVoiceSettingsIfNeeded("speak() error")
                     releaseSpeechWakeLock()
@@ -8320,7 +8386,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             currentSpeechText = ""
             currentAppName = ""
             currentTtsText = ""
-            
+        currentSbnKey = null
             // Clear notification queue
             notificationQueue.clear()
             

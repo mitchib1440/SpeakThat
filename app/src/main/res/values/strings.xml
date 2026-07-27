@@ -1833,6 +1833,14 @@ This permission is completely optional; SpeakThat! will still function without i
 
     <string name="behavior_wave_to_stop_title">Wave to Stop</string>
     <string name="behavior_wave_to_stop_description">Stop readouts instantly by waving your hand in front of the device</string>
+    
+    <!-- Swipe to Stop Feature Strings -->
+    <string name="behavior_swipe_to_stop_title">Swipe to Stop</string>
+    <string name="behavior_swipe_to_stop_description">Cancels the readout early if you dismiss the notification.</string>
+    <string name="behavior_swipe_to_stop_watch_exception_title">Keep reading if dismissed from a watch</string>
+    <string name="behavior_swipe_to_stop_watch_exception_description">Allows you to clear the notification from your smartwatch screen without interrupting the phone\'s audio readout.</string>
+    <string name="behavior_swipe_to_stop_auto_cancel_title">Stop if the app auto-cancels the notification</string>
+    <string name="behavior_swipe_to_stop_auto_cancel_description">Silences SpeakThat if the app that sent the notification automatically removes it (e.g., background syncs or automated systems).</string>
     <string name="behavior_great_for">Great for: Desk users &amp; accessibility</string>
     <string name="behavior_enable_wave_stop">Enable wave to stop</string>
     <string name="behavior_proximity_threshold">Proximity Threshold</string>

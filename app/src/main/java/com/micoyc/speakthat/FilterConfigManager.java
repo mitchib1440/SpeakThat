@@ -176,6 +176,9 @@ public class FilterConfigManager {
         public boolean skipRepeatedNotificationPrefix;
         public int prefixMemoryTimeoutSeconds;
         public boolean waveToStopEnabled;
+        public boolean swipeToStopEnabled;
+        public boolean stopOnDismissalWatchException;
+        public boolean stopOnDismissalAutoCancel;
         public int waveTimeoutSeconds;
         public long waveHoldDurationMs; // Wave hold duration in milliseconds
         public boolean pocketModeEnabled;
@@ -435,6 +438,9 @@ public class FilterConfigManager {
         config.behavior.skipRepeatedNotificationPrefix = prefs.getBoolean("skip_notification_repeated_prefix", false);
         config.behavior.prefixMemoryTimeoutSeconds = prefs.getInt("prefix_memory_timeout_seconds", 60);
         config.behavior.waveToStopEnabled = prefs.getBoolean("wave_to_stop_enabled", false);
+        config.behavior.swipeToStopEnabled = prefs.getBoolean("pref_swip_to_stop", true);
+        config.behavior.stopOnDismissalWatchException = prefs.getBoolean("pref_stop_on_dismissal_watch_exception", false);
+        config.behavior.stopOnDismissalAutoCancel = prefs.getBoolean("pref_stop_on_dismissal_auto_cancel", false);
         config.behavior.waveTimeoutSeconds = prefs.getInt("wave_timeout_seconds", 30);
         config.behavior.waveHoldDurationMs = prefs.getInt("wave_hold_duration_ms", 150); // Read as int, auto-converts to long
         config.behavior.pocketModeEnabled = prefs.getBoolean("pocket_mode_enabled", false);
@@ -548,6 +554,9 @@ public class FilterConfigManager {
         behavior.put("skipRepeatedNotificationPrefix", config.behavior.skipRepeatedNotificationPrefix);
         behavior.put("prefixMemoryTimeoutSeconds", config.behavior.prefixMemoryTimeoutSeconds);
         behavior.put("waveToStopEnabled", config.behavior.waveToStopEnabled);
+        behavior.put("swipeToStopEnabled", config.behavior.swipeToStopEnabled);
+        behavior.put("stopOnDismissalWatchException", config.behavior.stopOnDismissalWatchException);
+        behavior.put("stopOnDismissalAutoCancel", config.behavior.stopOnDismissalAutoCancel);
         behavior.put("waveTimeoutSeconds", config.behavior.waveTimeoutSeconds);
         behavior.put("waveHoldDurationMs", (int) config.behavior.waveHoldDurationMs); // Cast long to int for JSON
         behavior.put("pocketModeEnabled", config.behavior.pocketModeEnabled);
@@ -1128,6 +1137,21 @@ public class FilterConfigManager {
                 
                 if (behavior.has("waveToStopEnabled")) {
                     mainEditor.putBoolean("wave_to_stop_enabled", behavior.getBoolean("waveToStopEnabled"));
+                    totalImported++;
+                }
+
+                if (behavior.has("swipeToStopEnabled")) {
+                    mainEditor.putBoolean("pref_swip_to_stop", behavior.getBoolean("swipeToStopEnabled"));
+                    totalImported++;
+                }
+
+                if (behavior.has("stopOnDismissalWatchException")) {
+                    mainEditor.putBoolean("pref_stop_on_dismissal_watch_exception", behavior.getBoolean("stopOnDismissalWatchException"));
+                    totalImported++;
+                }
+
+                if (behavior.has("stopOnDismissalAutoCancel")) {
+                    mainEditor.putBoolean("pref_stop_on_dismissal_auto_cancel", behavior.getBoolean("stopOnDismissalAutoCancel"));
                     totalImported++;
                 }
                 

@@ -276,6 +276,19 @@ public class GestureSection implements BehaviorSettingsSection {
             savePressToStopEnabled(isChecked);
         });
 
+        binding.switchSwipeToStop.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            binding.swipeToStopSubOptions.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_SWIPE_TO_STOP, isChecked).apply();
+        });
+
+        binding.switchWatchException.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_STOP_ON_DISMISSAL_WATCH_EXCEPTION, isChecked).apply();
+        });
+
+        binding.switchAutoCancel.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            store.prefs().edit().putBoolean(BehaviorSettingsStore.KEY_STOP_ON_DISMISSAL_AUTO_CANCEL, isChecked).apply();
+        });
+
         binding.sliderShakeTimeout.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
             public void onValueChange(Slider slider, float value, boolean fromUser) {
@@ -463,6 +476,16 @@ public class GestureSection implements BehaviorSettingsSection {
 
         boolean pocketModeEnabled = store.prefs().getBoolean(BehaviorSettingsStore.KEY_POCKET_MODE_ENABLED, false);
         binding.switchPocketMode.setChecked(pocketModeEnabled);
+
+        boolean swipeToStopEnabled = store.prefs().getBoolean(BehaviorSettingsStore.KEY_SWIPE_TO_STOP, true);
+        binding.switchSwipeToStop.setChecked(swipeToStopEnabled);
+        binding.swipeToStopSubOptions.setVisibility(swipeToStopEnabled ? View.VISIBLE : View.GONE);
+
+        boolean watchExceptionEnabled = store.prefs().getBoolean(BehaviorSettingsStore.KEY_STOP_ON_DISMISSAL_WATCH_EXCEPTION, false);
+        binding.switchWatchException.setChecked(watchExceptionEnabled);
+
+        boolean autoCancelEnabled = store.prefs().getBoolean(BehaviorSettingsStore.KEY_STOP_ON_DISMISSAL_AUTO_CANCEL, false);
+        binding.switchAutoCancel.setChecked(autoCancelEnabled);
     }
 
     @Override
