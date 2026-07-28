@@ -1944,7 +1944,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 if (shouldStop) {
                     InAppLogger.log("Service", "Stopping readout due to notification dismissal: $stopReasonStr")
                     Log.d(TAG, "Stopping readout due to notification dismissal: $stopReasonStr")
-                    stopCurrentSpeech()
+                    stopSpeaking("notification dismissal")
                 }
             }
         }
@@ -4545,30 +4545,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
     
     private fun stopSpeaking(triggerType: String = "unknown") {
-        // Track interruption if currently speaking
-        val wasSpeaking = isCurrentlySpeaking
-        if (wasSpeaking) {
-            try {
-                StatisticsManager.getInstance(this).incrementReadoutsInterrupted()
-            } catch (e: Exception) {
-                Log.e(TAG, "Error tracking readout interruption", e)
-            }
-        }
-        
-        textToSpeech?.stop()
-        releaseSpeechWakeLock()
-        isCurrentlySpeaking = false
-        restoreGlobalVoiceSettingsIfNeeded("manual stop")
-        
-        // Clear current notification variables
-        currentSpeechText = ""
-        currentAppName = ""
-        currentOriginalAppName = ""
-        currentTtsText = ""
-        currentSbnKey = null
-        // Unregister shake listener since we're no longer speaking
-        unregisterShakeListener()
-        
         // Clear any queued notifications since user wants to stop
         notificationQueue.clear()
         
@@ -4579,27 +4555,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "Cancelled pending delayed readout due to $triggerType")
         }
 
-        cancelSpeechSafetyTimeout("stopSpeaking:$triggerType")
+        textToSpeech?.stop()
         
-        // Disable speakerphone if it was enabled
-        try {
-            if (isSpeakerphoneEnabled(audioManager)) {
-                setSpeakerphoneEnabled(audioManager, false)
-                InAppLogger.log("Service", "Speakerphone disabled after stopping speech")
-            }
-        } catch (e: Exception) {
-            InAppLogger.logError("Service", "Failed to disable speakerphone: ${e.message}")
-        }
-        
-        // Clean up media behavior effects
-        cleanupMediaBehavior()
-        
-        // Reading notification is now integrated into foreground notification
-        // hideReadingNotification()
-        
-        // CRITICAL: Stop foreground service when TTS is manually stopped
-        // This ensures the foreground service notification is properly removed
-        stopForegroundService()
+        // Use the centralized teardown method to ensure SCO and media are properly cleaned up
+        applyReadoutInterruptionTeardown("stopSpeaking:$triggerType", null, countInterrupted = true, resumeQueue = false)
         
         Log.d(TAG, "TTS stopped due to $triggerType")
         InAppLogger.logTTSEvent("TTS stopped by $triggerType", "User interrupted speech")
@@ -4610,38 +4569,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      * Used internally by audio focus handlers.
      */
     private fun stopCurrentSpeech() {
-        // Track interruption if currently speaking
-        val wasSpeaking = isCurrentlySpeaking
-        if (wasSpeaking) {
-            try {
-                StatisticsManager.getInstance(this).incrementReadoutsInterrupted()
-            } catch (e: Exception) {
-                Log.e(TAG, "Error tracking readout interruption", e)
-            }
-        }
-        
         textToSpeech?.stop()
-        isCurrentlySpeaking = false
-        restoreGlobalVoiceSettingsIfNeeded("audio focus stop")
         
-        // Clear current notification variables
-        currentSpeechText = ""
-        currentAppName = ""
-        currentOriginalAppName = ""
-        currentTtsText = ""
-        currentSbnKey = null
-        unregisterShakeListener()
-
-        cancelSpeechSafetyTimeout("stopCurrentSpeech")
-        
-        // CRITICAL: Stop foreground service when TTS is interrupted
-        stopForegroundService()
-        
-        // Clean up media behavior effects
-        cleanupMediaBehavior()
-        
-        // Reading notification is now integrated into foreground notification
-        // hideReadingNotification()
+        // Use the centralized teardown method to ensure SCO and media are properly cleaned up
+        // We do NOT resume the queue here because this is used when audio focus is permanently lost
+        applyReadoutInterruptionTeardown("audio focus stop", null, countInterrupted = true, resumeQueue = false)
         
         Log.d(TAG, "Current TTS speech stopped by audio focus change")
         InAppLogger.logTTSEvent("TTS stopped by audio focus", "Focus loss interrupted speech")
@@ -8380,25 +8312,14 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      */
     private fun stopTts() {
         try {
-            // Stop current TTS
-            textToSpeech?.stop()
-            isCurrentlySpeaking = false
-            currentSpeechText = ""
-            currentAppName = ""
-            currentTtsText = ""
-        currentSbnKey = null
             // Clear notification queue
             notificationQueue.clear()
             
-            // Reading notification is now integrated into foreground notification
-            // hideReadingNotification()
+            // Stop current TTS
+            textToSpeech?.stop()
             
-            // CRITICAL: Clean up media behavior effects (resume paused media)
-            cleanupMediaBehavior()
-            
-            // CRITICAL: Stop foreground service when TTS is manually stopped
-            // This ensures the foreground service notification is properly removed
-            stopForegroundService()
+            // Use the centralized teardown method to ensure SCO and media are properly cleaned up
+            applyReadoutInterruptionTeardown("notification action", null, countInterrupted = true, resumeQueue = false)
             
             Log.d(TAG, "TTS stopped via notification action")
             InAppLogger.log("Notifications", "TTS stopped via notification action")
