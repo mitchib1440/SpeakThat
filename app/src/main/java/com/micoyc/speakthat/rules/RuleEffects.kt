@@ -33,6 +33,7 @@ sealed class Effect {
         val timeLimit: Int
     ) : Effect()
     data object OverrideEmojiRemoval : Effect()
+    data object OverrideSeparateDigits : Effect()
 }
 
 data class EvaluationOutcome(

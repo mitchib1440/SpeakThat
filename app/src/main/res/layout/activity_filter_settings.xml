@@ -765,8 +765,8 @@
                             android:layout_height="24dp"
                             android:layout_marginEnd="16dp"
                             android:src="@drawable/ic_tidy_24"
-                            android:tint="@color/white_100"
-                            android:contentDescription="@string/tidy_speech_title" />
+                            android:contentDescription="@string/tidy_speech_title"
+                            app:tint="@color/white_100" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -988,6 +988,101 @@
                             app:thumbTint="@color/switch_thumb_color"
                             app:trackTint="@color/switch_track_color"
                             android:paddingLeft="12dp"/>
+
+                    </LinearLayout>
+
+                    <!-- Separate Digits Section -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/tidy_speech_separate_digits_title"
+                                android:textSize="16sp"
+                                android:textColor="@color/purple_card_text_primary"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/tidy_speech_separate_digits_description"
+                                android:textSize="14sp"
+                                android:textColor="@color/purple_card_text_secondary"
+                                android:layout_marginTop="4dp" />
+
+                        </LinearLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switchSeparateDigits"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumbTint="@color/switch_thumb_color"
+                            android:trackTint="@color/switch_track_color"
+                            app:thumbTint="@color/switch_thumb_color"
+                            app:trackTint="@color/switch_track_color"
+                            android:paddingLeft="12dp"/>
+
+                    </LinearLayout>
+
+                    <!-- Separate Digits Submenu -->
+                    <LinearLayout
+                        android:id="@+id/layoutSeparateDigitsSubmenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/bg_advanced_voice_section"
+                        android:padding="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tidy_speech_separate_digits_threshold_title"
+                            android:textSize="14sp"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="8dp" />
+
+                        <com.google.android.material.slider.Slider
+                            android:id="@+id/sliderDigitThreshold"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:valueFrom="2.0"
+                            android:valueTo="20.0"
+                            android:stepSize="1.0"
+                            android:value="5.0"
+                            app:labelBehavior="withinBounds" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tidy_speech_separate_digits_separator_title"
+                            android:textSize="14sp"
+                            android:textColor="@color/purple_card_text_primary"
+                            android:textStyle="bold"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="8dp" />
+
+                        <Spinner
+                            android:id="@+id/spinnerSeparatorType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="48dp"
+                            android:background="@drawable/spinner_background"
+                            android:padding="12dp" />
 
                     </LinearLayout>
 

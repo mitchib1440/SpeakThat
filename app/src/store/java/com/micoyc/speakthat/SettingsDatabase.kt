@@ -475,6 +475,39 @@ object SettingsDatabase {
                 navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
             ),
             SettingsItem(
+                id = "tidy_speech_separate_digits",
+                title = context.getString(R.string.tidy_speech_separate_digits_title),
+                description = context.getString(R.string.tidy_speech_separate_digits_description),
+                category = "filter",
+                categoryTitle = context.getString(R.string.title_filter_settings),
+                categoryIcon = "🧹",
+                settingType = SettingType.SWITCH,
+                searchKeywords = listOf("separate", "digits", "numbers", "long", "read", "tts", "split"),
+                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "tidy_speech_separate_digits_threshold",
+                title = context.getString(R.string.tidy_speech_separate_digits_threshold_title),
+                description = context.getString(R.string.tidy_speech_separate_digits_description),
+                category = "filter",
+                categoryTitle = context.getString(R.string.title_filter_settings),
+                categoryIcon = "🧹",
+                settingType = SettingType.SEEK_BAR,
+                searchKeywords = listOf("separate", "digits", "numbers", "threshold", "minimum", "length"),
+                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
+                id = "tidy_speech_separate_digits_separator",
+                title = context.getString(R.string.tidy_speech_separate_digits_separator_title),
+                description = context.getString(R.string.tidy_speech_separate_digits_description),
+                category = "filter",
+                categoryTitle = context.getString(R.string.title_filter_settings),
+                categoryIcon = "🧹",
+                settingType = SettingType.SPINNER,
+                searchKeywords = listOf("separate", "digits", "numbers", "separator", "space", "comma", "period"),
+                navigationAction = { context.startActivity(Intent(context, FilterSettingsActivity::class.java)) }
+            ),
+            SettingsItem(
                 id = "tidy_speech_emoji_exceptions",
                 title = "Emoji Exceptions",
                 description = "Keep emojis if text contains specific keywords",

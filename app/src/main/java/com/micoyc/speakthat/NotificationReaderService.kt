@@ -104,6 +104,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var urlReplacementText = DEFAULT_URL_REPLACEMENT_TEXT
     private var tidySpeechRemoveEmojisEnabled = false
     private var tidySpeechForceLowercaseEnabled = false
+    private var separateDigitsEnabled = false
+    private var digitThreshold = 5
+    private var separatorType = "Space"
     private var emojiExceptionsList: List<String> = emptyList()
     private var filterEmptyTextEnabled = false
     private var contentCapMode = DEFAULT_CONTENT_CAP_MODE
@@ -415,6 +418,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         private const val KEY_URL_REPLACEMENT_TEXT = "url_replacement_text"
         private const val KEY_TIDY_SPEECH_REMOVE_EMOJIS = "tidy_speech_remove_emojis"
         private const val KEY_TIDY_SPEECH_FORCE_LOWERCASE = "tidy_speech_force_lowercase"
+        private const val KEY_SEPARATE_DIGITS_ENABLED = "separate_digits_enabled"
+        private const val KEY_DIGIT_THRESHOLD = "digit_threshold"
+        private const val KEY_SEPARATOR_TYPE = "separator_type"
         private const val KEY_PREF_EMOJI_EXCEPTIONS = "pref_emoji_exceptions"
         private const val KEY_FILTER_EMPTY_TEXT = "filter_empty_text"
         private const val DEFAULT_URL_HANDLING_MODE = "domain_only"
@@ -620,7 +626,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val voiceOverride: VoiceOverride? = null,
         val contentCapOverride: ContentCapOverride? = null,
         val processedBlocks: Map<String, String>? = null, // Support the new architecture
-        val shouldKeepEmojis: Boolean = false
+        val shouldKeepEmojis: Boolean = false,
+        val shouldKeepDigits: Boolean = false
     )
     
     private lateinit var androidAutoHelper: com.micoyc.speakthat.utils.AndroidAutoHelper
@@ -3315,6 +3322,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         // Load tidy speech settings
         tidySpeechRemoveEmojisEnabled = sharedPreferences?.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false) ?: false
         tidySpeechForceLowercaseEnabled = sharedPreferences?.getBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, false) ?: false
+        separateDigitsEnabled = sharedPreferences?.getBoolean(KEY_SEPARATE_DIGITS_ENABLED, false) ?: false
+        digitThreshold = sharedPreferences?.getInt(KEY_DIGIT_THRESHOLD, 5) ?: 5
+        separatorType = sharedPreferences?.getString(KEY_SEPARATOR_TYPE, "Space") ?: "Space"
         val emojiExceptionsRaw = sharedPreferences?.getString(KEY_PREF_EMOJI_EXCEPTIONS, "") ?: ""
         emojiExceptionsList = emojiExceptionsRaw.split(",")
             .map { it.trim() }
@@ -3392,7 +3402,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val voiceOverride: VoiceOverride? = null,
         val contentCapOverride: ContentCapOverride? = null,
         val processedBlocks: Map<String, String>? = null,
-        val shouldKeepEmojis: Boolean = false
+        val shouldKeepEmojis: Boolean = false,
+        val shouldKeepDigits: Boolean = false
     )
 
     data class SpeechTemplateOverride(
@@ -3480,6 +3491,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val emojiOverride = effects.filterIsInstance<com.micoyc.speakthat.rules.Effect.OverrideEmojiRemoval>().lastOrNull()
         if (emojiOverride != null) {
             notificationContext.shouldKeepEmojis = true
+        }
+
+        val separateDigitsOverride = effects.filterIsInstance<com.micoyc.speakthat.rules.Effect.OverrideSeparateDigits>().lastOrNull()
+        if (separateDigitsOverride != null) {
+            notificationContext.shouldKeepDigits = true
         }
 
         if (!isSummary && effects.any { it is com.micoyc.speakthat.rules.Effect.SkipNotification }) {
@@ -3884,6 +3900,30 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
         }
         return removeSpokenEmojis(text)
+    }
+
+    private fun applySeparateDigitsIfEnabled(text: String, shouldKeepDigits: Boolean): String {
+        if (!separateDigitsEnabled) return text
+        if (shouldKeepDigits) {
+            InAppLogger.logFilter("Digits kept together due to Rule Engine action")
+            return text
+        }
+
+        val separatorStr = when (separatorType) {
+            "Comma" -> ", "
+            "Period" -> ". "
+            else -> " "
+        }
+
+        // Regex to find contiguous blocks of digits meeting the threshold
+        val regex = Regex("\\d{$digitThreshold,}")
+        return regex.replace(text) { matchResult ->
+            val numberStr = matchResult.value
+            val separated = numberStr.toCharArray().joinToString(separatorStr)
+            Log.d(TAG, "Separated digits: $numberStr -> $separated")
+            InAppLogger.logFilter("Separated digits: $numberStr -> $separated")
+            separated
+        }
     }
 
     private fun shouldFilterEmojiEmptyText(
@@ -6539,7 +6579,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         when (notificationBehavior) {
             "interrupt" -> {
                 Log.d(TAG, "INTERRUPT mode: Speaking immediately and interrupting any current speech")
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis, queuedNotification.shouldKeepDigits)
             }
             "queue" -> {
                 Log.d(TAG, "QUEUE mode: Adding to queue")
@@ -6550,7 +6590,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "skip" -> {
                 if (!isCurrentlySpeaking) {
                     Log.d(TAG, "SKIP mode: Not currently speaking, will speak now")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis, queuedNotification.shouldKeepDigits)
                 } else {
                     Log.d(TAG, "SKIP mode: Currently speaking, skipping notification from $appName")
                     // Track filter reason
@@ -6564,7 +6604,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "smart" -> {
                 if (isPriorityApp) {
                     Log.d(TAG, "SMART mode: Priority app $appName - interrupting")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis, queuedNotification.shouldKeepDigits)
                 } else {
                     Log.d(TAG, "SMART mode: Regular app $appName - adding to queue")
                     notificationQueue.add(queuedNotification)
@@ -6573,7 +6613,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             else -> {
                 Log.d(TAG, "UNKNOWN mode '$notificationBehavior': Defaulting to interrupt")
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis, queuedNotification.shouldKeepDigits)
             }
         }
     }
@@ -6623,7 +6663,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 queuedNotification.contentCapOverride,
                 queuedNotification.processedBlocks,
                 ttsFlushIncoming = false,
-                shouldKeepEmojis = queuedNotification.shouldKeepEmojis
+                shouldKeepEmojis = queuedNotification.shouldKeepEmojis,
+                shouldKeepDigits = queuedNotification.shouldKeepDigits
             )
         } else if (isCurrentlySpeaking) {
             Log.d(TAG, "Still speaking, queue will be processed when current speech finishes")
@@ -6643,7 +6684,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         contentCapOverride: ContentCapOverride? = null,
         processedBlocks: Map<String, String>? = null,
         ttsFlushIncoming: Boolean = true,
-        shouldKeepEmojis: Boolean = false
+        shouldKeepEmojis: Boolean = false,
+        shouldKeepDigits: Boolean = false
     ) {
         if (!isTtsInitialized || textToSpeech == null) {
             Log.w(TAG, "TTS not initialized, cannot speak notification")
@@ -6669,7 +6711,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
         val collapsedSpeechText = collapseRepeatedNotificationPrefix(speechText)
         lastFullNotificationSpeechText = speechText
-        val tidySpeechText = applyEmojiRemovalIfEnabled(collapsedSpeechText, shouldKeepEmojis)
+        var tidySpeechText = applyEmojiRemovalIfEnabled(collapsedSpeechText, shouldKeepEmojis)
+        tidySpeechText = applySeparateDigitsIfEnabled(tidySpeechText, shouldKeepDigits)
         
         // Determine which delay to use (conditional delay overrides global delay)
         val effectiveDelay = if (conditionalDelaySeconds > 0) {
@@ -7579,6 +7622,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 tidySpeechForceLowercaseEnabled = sharedPreferences?.getBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, false) ?: false
                 Log.d(TAG, "Tidy speech setting updated: forceLowercase=$tidySpeechForceLowercaseEnabled")
                 InAppLogger.log("Service", "Tidy speech setting updated: forceLowercase=$tidySpeechForceLowercaseEnabled")
+            }
+            KEY_SEPARATE_DIGITS_ENABLED -> {
+                separateDigitsEnabled = sharedPreferences?.getBoolean(KEY_SEPARATE_DIGITS_ENABLED, false) ?: false
+                Log.d(TAG, "Separate digits setting updated: enabled=$separateDigitsEnabled")
+                InAppLogger.log("Service", "Separate digits setting updated: enabled=$separateDigitsEnabled")
+            }
+            KEY_DIGIT_THRESHOLD -> {
+                digitThreshold = sharedPreferences?.getInt(KEY_DIGIT_THRESHOLD, 5) ?: 5
+                Log.d(TAG, "Separate digits threshold updated: $digitThreshold")
+                InAppLogger.log("Service", "Separate digits threshold updated: $digitThreshold")
+            }
+            KEY_SEPARATOR_TYPE -> {
+                separatorType = sharedPreferences?.getString(KEY_SEPARATOR_TYPE, "Space") ?: "Space"
+                Log.d(TAG, "Separate digits separator updated: $separatorType")
+                InAppLogger.log("Service", "Separate digits separator updated: $separatorType")
             }
             KEY_FILTER_EMPTY_TEXT -> {
                 filterEmptyTextEnabled = sharedPreferences?.getBoolean(KEY_FILTER_EMPTY_TEXT, false) ?: false

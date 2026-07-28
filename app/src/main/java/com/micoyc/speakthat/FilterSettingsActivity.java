@@ -71,6 +71,9 @@ public class FilterSettingsActivity extends AppCompatActivity {
     private static final String KEY_URL_REPLACEMENT_TEXT = "url_replacement_text";
     private static final String KEY_TIDY_SPEECH_REMOVE_EMOJIS = "tidy_speech_remove_emojis";
     private static final String KEY_TIDY_SPEECH_FORCE_LOWERCASE = "tidy_speech_force_lowercase";
+    private static final String KEY_SEPARATE_DIGITS_ENABLED = "separate_digits_enabled";
+    private static final String KEY_DIGIT_THRESHOLD = "digit_threshold";
+    private static final String KEY_SEPARATOR_TYPE = "separator_type";
     private static final String KEY_PREF_EMOJI_EXCEPTIONS = "pref_emoji_exceptions";
     private static final String KEY_FILTER_EMPTY_TEXT = "filter_empty_text";
     private static final String DEFAULT_URL_HANDLING_MODE = "domain_only";
@@ -350,6 +353,38 @@ public class FilterSettingsActivity extends AppCompatActivity {
             saveTidySpeechForceLowercase(isChecked);
         });
 
+        // Set up separate digits switch
+        binding.switchSeparateDigits.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            binding.layoutSeparateDigitsSubmenu.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            saveSeparateDigitsEnabled(isChecked);
+        });
+        
+        binding.sliderDigitThreshold.addOnChangeListener((slider, value, fromUser) -> {
+            if (fromUser) {
+                saveDigitThreshold((int) value);
+            }
+        });
+        
+        // Setup separator spinner
+        android.widget.ArrayAdapter<CharSequence> adapter = android.widget.ArrayAdapter.createFromResource(this,
+                R.array.separator_types, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerSeparatorType.setAdapter(adapter);
+        binding.spinnerSeparatorType.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                if (!isLoadingSettings) {
+                    String[] types = {"Space", "Comma", "Period"};
+                    if (position >= 0 && position < types.length) {
+                        saveSeparatorType(types[position]);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
+        });
+
         // Set up emoji exceptions text field
         binding.editEmojiExceptions.addTextChangedListener(new android.text.TextWatcher() {
             @Override
@@ -513,6 +548,19 @@ public class FilterSettingsActivity extends AppCompatActivity {
         
         boolean forceLowercase = sharedPreferences.getBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, false); // Default to disabled
         binding.switchForceLowercase.setChecked(forceLowercase);
+        
+        boolean separateDigits = sharedPreferences.getBoolean(KEY_SEPARATE_DIGITS_ENABLED, false);
+        binding.switchSeparateDigits.setChecked(separateDigits);
+        binding.layoutSeparateDigitsSubmenu.setVisibility(separateDigits ? View.VISIBLE : View.GONE);
+        
+        int digitThreshold = sharedPreferences.getInt(KEY_DIGIT_THRESHOLD, 5);
+        binding.sliderDigitThreshold.setValue(digitThreshold);
+        
+        String separatorType = sharedPreferences.getString(KEY_SEPARATOR_TYPE, "Space");
+        int spinnerPos = 0;
+        if ("Comma".equals(separatorType)) spinnerPos = 1;
+        else if ("Period".equals(separatorType)) spinnerPos = 2;
+        binding.spinnerSeparatorType.setSelection(spinnerPos);
         
         emojiExceptionsText = sharedPreferences.getString(KEY_PREF_EMOJI_EXCEPTIONS, "");
         binding.editEmojiExceptions.setText(emojiExceptionsText);
@@ -932,6 +980,21 @@ public class FilterSettingsActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, enabled);
         editor.apply();
+    }
+
+    private void saveSeparateDigitsEnabled(boolean enabled) {
+        if (isLoadingSettings) return;
+        sharedPreferences.edit().putBoolean(KEY_SEPARATE_DIGITS_ENABLED, enabled).apply();
+    }
+    
+    private void saveDigitThreshold(int threshold) {
+        if (isLoadingSettings) return;
+        sharedPreferences.edit().putInt(KEY_DIGIT_THRESHOLD, threshold).apply();
+    }
+    
+    private void saveSeparatorType(String type) {
+        if (isLoadingSettings) return;
+        sharedPreferences.edit().putString(KEY_SEPARATOR_TYPE, type).apply();
     }
 
     private void saveEmojiExceptionsText(String text) {

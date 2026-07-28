@@ -984,6 +984,13 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tidy_speech_remove_emojis_description">Remove emojis and other symbols from spoken notifications</string>
     <string name="tidy_speech_force_lowercase_title">Force lowercase</string>
     <string name="tidy_speech_force_lowercase_description">Convert all text to lowercase before reading to prevent the TTS engine from spelling out capitalised words</string>
+    <string name="tidy_speech_separate_digits_title">Separate digits</string>
+    <string name="tidy_speech_separate_digits_description">Separate long numbers to prevent the TTS engine from reading them as a single large value</string>
+    <string name="tidy_speech_separate_digits_threshold_title">Minimum digits</string>
+    <string name="tidy_speech_separate_digits_separator_title">Separator</string>
+    <string name="separator_space">Space</string>
+    <string name="separator_comma">Comma</string>
+    <string name="separator_period">Period</string>
     <string name="emoji_exceptions_hint">Keep emojis if text contains (comma separated):</string>
     <string name="filter_empty_text_title">Filter empty text</string>
     <string name="filter_empty_text_description">Don\'t read the notification if the text is empty after emoji removal</string>
@@ -1848,6 +1855,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <!-- Content Cap Feature Strings -->
     <string name="action_override_content_cap_title">Override Content Cap</string>
     <string name="action_override_content_cap_description">Enable or disable content cap for this notification</string>
+    <string name="action_override_separate_digits_title">Keep Digits Together</string>
+    <string name="action_override_separate_digits_description">Do not separate long numbers for this notification</string>
     <string name="rule_action_override_content_cap">override content cap</string>
     <string name="action_override_emoji_removal_title">Keep Emojis</string>
     <string name="action_override_emoji_removal_description">Do not strip emojis from this notification</string>

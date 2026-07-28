@@ -122,6 +122,8 @@ class ActionConfigActivity : AppCompatActivity() {
             setupOverridePrivateUI()
         } else if (actionType == ActionType.OVERRIDE_EMOJI_REMOVAL) {
             setupOverrideEmojiRemovalUI()
+        } else if (actionType == ActionType.OVERRIDE_SEPARATE_DIGITS) {
+            setupOverrideSeparateDigitsUI()
         } else if (actionType == ActionType.OVERRIDE_CONTENT_CAP) {
             setupOverrideContentCapUI()
         } else {
@@ -310,6 +312,11 @@ class ActionConfigActivity : AppCompatActivity() {
         binding.textOverrideEmojiRemovalInfo.text = getString(R.string.action_override_emoji_removal_description)
     }
 
+    private fun setupOverrideSeparateDigitsUI() {
+        binding.cardOverrideSeparateDigits.visibility = View.VISIBLE
+        binding.textOverrideSeparateDigitsInfo.text = getString(R.string.action_override_separate_digits_description)
+    }
+
     private fun setupOverrideContentCapUI() {
         binding.cardOverrideContentCap.visibility = View.VISIBLE
         
@@ -479,6 +486,7 @@ class ActionConfigActivity : AppCompatActivity() {
             ActionType.FORCE_PRIVATE -> createForcePrivateAction()
             ActionType.OVERRIDE_PRIVATE -> createOverridePrivateAction()
             ActionType.OVERRIDE_EMOJI_REMOVAL -> createOverrideEmojiRemovalAction()
+            ActionType.OVERRIDE_SEPARATE_DIGITS -> createOverrideSeparateDigitsAction()
             ActionType.OVERRIDE_CONTENT_CAP -> createOverrideContentCapAction()
             else -> createSkipNotificationAction()
         }
@@ -640,6 +648,24 @@ class ActionConfigActivity : AppCompatActivity() {
         } else {
             Action(
                 type = ActionType.OVERRIDE_EMOJI_REMOVAL,
+                description = description,
+                data = emptyMap()
+            )
+        }
+    }
+
+    private fun createOverrideSeparateDigitsAction(): Action {
+        val description = getString(R.string.action_override_separate_digits_title)
+
+        return if (isEditing && originalAction != null) {
+            originalAction!!.copy(
+                type = ActionType.OVERRIDE_SEPARATE_DIGITS,
+                description = description,
+                data = emptyMap()
+            )
+        } else {
+            Action(
+                type = ActionType.OVERRIDE_SEPARATE_DIGITS,
                 description = description,
                 data = emptyMap()
             )

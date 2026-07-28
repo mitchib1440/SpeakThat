@@ -362,6 +362,7 @@ class RuleManager(private val context: Context) {
                 ActionType.SKIP_NOTIFICATION -> Effect.SkipNotification
                 ActionType.DISABLE_SPEAKTHAT -> Effect.SkipNotification
                 ActionType.OVERRIDE_EMOJI_REMOVAL -> Effect.OverrideEmojiRemoval
+                ActionType.OVERRIDE_SEPARATE_DIGITS -> Effect.OverrideSeparateDigits
                 ActionType.SET_MASTER_SWITCH -> {
                     val enabled = action.data["enabled"] as? Boolean ?: false
                     Effect.SetMasterSwitch(enabled)
@@ -426,6 +427,11 @@ class RuleManager(private val context: Context) {
         val emojiOverride = effects.filterIsInstance<Effect.OverrideEmojiRemoval>().lastOrNull()
         if (emojiOverride != null) {
             aggregated.add(emojiOverride)
+        }
+
+        val separateDigitsOverride = effects.filterIsInstance<Effect.OverrideSeparateDigits>().lastOrNull()
+        if (separateDigitsOverride != null) {
+            aggregated.add(separateDigitsOverride)
         }
 
         return aggregated
@@ -818,6 +824,9 @@ class RuleManager(private val context: Context) {
                 }
             }
             ActionType.OVERRIDE_EMOJI_REMOVAL -> {
+                // No additional data required
+            }
+            ActionType.OVERRIDE_SEPARATE_DIGITS -> {
                 // No additional data required
             }
             ActionType.SKIP_NOTIFICATION,

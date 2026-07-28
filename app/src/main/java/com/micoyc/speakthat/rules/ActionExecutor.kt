@@ -101,6 +101,14 @@ class ActionExecutor(private val context: Context) {
                     message = "Override emoji removal handled by rule pipeline"
                 )
             }
+            ActionType.OVERRIDE_SEPARATE_DIGITS -> {
+                ActionExecutionResult(
+                    actionId = action.id,
+                    actionType = action.type,
+                    success = true,
+                    message = "Override separate digits handled by rule pipeline"
+                )
+            }
             ActionType.OVERRIDE_CONTENT_CAP -> {
                 ActionExecutionResult(
                     actionId = action.id,

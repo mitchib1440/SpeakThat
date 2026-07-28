@@ -39,6 +39,9 @@ public class FilterConfigManager {
     private static final String KEY_URL_REPLACEMENT_TEXT = "url_replacement_text";
     private static final String KEY_TIDY_SPEECH_REMOVE_EMOJIS = "tidy_speech_remove_emojis";
     private static final String KEY_TIDY_SPEECH_FORCE_LOWERCASE = "tidy_speech_force_lowercase";
+    private static final String KEY_SEPARATE_DIGITS_ENABLED = "separate_digits_enabled";
+    private static final String KEY_DIGIT_THRESHOLD = "digit_threshold";
+    private static final String KEY_SEPARATOR_TYPE = "separator_type";
     private static final String KEY_PREF_EMOJI_EXCEPTIONS = "pref_emoji_exceptions";
     private static final String KEY_FILTER_EMPTY_TEXT = "filter_empty_text";
 
@@ -58,6 +61,9 @@ public class FilterConfigManager {
         public String urlReplacementText;
         public boolean tidySpeechRemoveEmojis;
         public boolean tidySpeechForceLowercase;
+        public boolean separateDigitsEnabled;
+        public int digitThreshold;
+        public String separatorType;
         public String emojiExceptions;
         public boolean filterEmptyText;
         public boolean mediaFilteringEnabled;
@@ -83,6 +89,9 @@ public class FilterConfigManager {
             this.urlReplacementText = "";
             this.tidySpeechRemoveEmojis = false;
             this.tidySpeechForceLowercase = false;
+            this.separateDigitsEnabled = false;
+            this.digitThreshold = 5;
+            this.separatorType = "Space";
             this.emojiExceptions = "";
             this.filterEmptyText = false;
             this.mediaFilteringEnabled = false;
@@ -315,6 +324,9 @@ public class FilterConfigManager {
         config.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
         config.tidySpeechRemoveEmojis = prefs.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false);
         config.tidySpeechForceLowercase = prefs.getBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, false);
+        config.separateDigitsEnabled = prefs.getBoolean(KEY_SEPARATE_DIGITS_ENABLED, false);
+        config.digitThreshold = prefs.getInt(KEY_DIGIT_THRESHOLD, 5);
+        config.separatorType = prefs.getString(KEY_SEPARATOR_TYPE, "Space");
         config.emojiExceptions = prefs.getString(KEY_PREF_EMOJI_EXCEPTIONS, "");
         config.filterEmptyText = prefs.getBoolean(KEY_FILTER_EMPTY_TEXT, false);
         config.mediaFilteringEnabled = prefs.getBoolean("media_filtering_enabled", true);
@@ -343,6 +355,9 @@ public class FilterConfigManager {
         filters.put("urlReplacementText", config.urlReplacementText);
         filters.put("tidySpeechRemoveEmojis", config.tidySpeechRemoveEmojis);
         filters.put("tidySpeechForceLowercase", config.tidySpeechForceLowercase);
+        filters.put("separateDigitsEnabled", config.separateDigitsEnabled);
+        filters.put("digitThreshold", config.digitThreshold);
+        filters.put("separatorType", config.separatorType);
         filters.put("emojiExceptions", config.emojiExceptions);
         filters.put("filterEmptyText", config.filterEmptyText);
         filters.put("mediaFilteringEnabled", config.mediaFilteringEnabled);
@@ -383,6 +398,9 @@ public class FilterConfigManager {
         config.filters.urlReplacementText = prefs.getString(KEY_URL_REPLACEMENT_TEXT, "");
         config.filters.tidySpeechRemoveEmojis = prefs.getBoolean(KEY_TIDY_SPEECH_REMOVE_EMOJIS, false);
         config.filters.tidySpeechForceLowercase = prefs.getBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, false);
+        config.filters.separateDigitsEnabled = prefs.getBoolean(KEY_SEPARATE_DIGITS_ENABLED, false);
+        config.filters.digitThreshold = prefs.getInt(KEY_DIGIT_THRESHOLD, 5);
+        config.filters.separatorType = prefs.getString(KEY_SEPARATOR_TYPE, "Space");
         config.filters.emojiExceptions = prefs.getString(KEY_PREF_EMOJI_EXCEPTIONS, "");
         config.filters.filterEmptyText = prefs.getBoolean(KEY_FILTER_EMPTY_TEXT, false);
         
@@ -503,6 +521,10 @@ public class FilterConfigManager {
         filters.put("urlHandlingMode", config.filters.urlHandlingMode);
         filters.put("urlReplacementText", config.filters.urlReplacementText);
         filters.put("tidySpeechRemoveEmojis", config.filters.tidySpeechRemoveEmojis);
+        filters.put("tidySpeechForceLowercase", config.filters.tidySpeechForceLowercase);
+        filters.put("separateDigitsEnabled", config.filters.separateDigitsEnabled);
+        filters.put("digitThreshold", config.filters.digitThreshold);
+        filters.put("separatorType", config.filters.separatorType);
         filters.put("emojiExceptions", config.filters.emojiExceptions);
         filters.put("mediaFilteringEnabled", config.filters.mediaFilteringEnabled);
         // Persistent/silent filtering settings
@@ -728,6 +750,21 @@ public class FilterConfigManager {
                 filtersImported++;
             }
 
+            if (filters.has("separateDigitsEnabled")) {
+                editor.putBoolean(KEY_SEPARATE_DIGITS_ENABLED, filters.getBoolean("separateDigitsEnabled"));
+                filtersImported++;
+            }
+
+            if (filters.has("digitThreshold")) {
+                editor.putInt(KEY_DIGIT_THRESHOLD, filters.getInt("digitThreshold"));
+                filtersImported++;
+            }
+
+            if (filters.has("separatorType")) {
+                editor.putString(KEY_SEPARATOR_TYPE, filters.getString("separatorType"));
+                filtersImported++;
+            }
+
             if (filters.has("emojiExceptions")) {
                 editor.putString(KEY_PREF_EMOJI_EXCEPTIONS, filters.getString("emojiExceptions"));
                 filtersImported++;
@@ -858,6 +895,21 @@ public class FilterConfigManager {
 
                 if (filters.has("tidySpeechForceLowercase")) {
                     mainEditor.putBoolean(KEY_TIDY_SPEECH_FORCE_LOWERCASE, filters.getBoolean("tidySpeechForceLowercase"));
+                    totalImported++;
+                }
+
+                if (filters.has("separateDigitsEnabled")) {
+                    mainEditor.putBoolean(KEY_SEPARATE_DIGITS_ENABLED, filters.getBoolean("separateDigitsEnabled"));
+                    totalImported++;
+                }
+
+                if (filters.has("digitThreshold")) {
+                    mainEditor.putInt(KEY_DIGIT_THRESHOLD, filters.getInt("digitThreshold"));
+                    totalImported++;
+                }
+
+                if (filters.has("separatorType")) {
+                    mainEditor.putString(KEY_SEPARATOR_TYPE, filters.getString("separatorType"));
                     totalImported++;
                 }
 

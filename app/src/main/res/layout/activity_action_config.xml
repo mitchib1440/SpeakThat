@@ -396,6 +396,45 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Override Separate Digits -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardOverrideSeparateDigits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="@drawable/gradient_card_subtle_right">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/action_override_separate_digits_title"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/purple_card_text_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:id="@+id/textOverrideSeparateDigitsInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/action_override_separate_digits_description"
+                        android:textSize="14sp"
+                        android:textColor="@color/purple_card_text_secondary" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- Override Content Cap -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardOverrideContentCap"

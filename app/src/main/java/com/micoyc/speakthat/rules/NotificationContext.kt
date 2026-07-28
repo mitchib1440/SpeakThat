@@ -25,5 +25,6 @@ data class NotificationContext(
     val isOngoing: Boolean,
     val postTime: Long,
     val extras: Bundle? = null,
-    var shouldKeepEmojis: Boolean = false
+    var shouldKeepEmojis: Boolean = false,
+    var shouldKeepDigits: Boolean = false
 )
