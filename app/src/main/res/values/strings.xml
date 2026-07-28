@@ -2668,4 +2668,5 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="summary_settings_visual_mode_title">Visual Mode</string>
     <string name="summary_settings_visual_mode_subtitle">Show summary cards on screen</string>
     <string name="summary_settings_audio_only_subtitle">Audio-only mode enabled. No overlay permission required.</string>
+    <string name="tidy_speech_separate_digits_threshold_description">Set the minimum required number of consecutive digits for separation to be applied.</string>
 </resources>

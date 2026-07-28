@@ -2174,8 +2174,8 @@
                             android:layout_height="24dp"
                             android:layout_marginEnd="16dp"
                             android:src="@drawable/ic_twitter"
-                            android:tint="@color/white_100"
-                            android:contentDescription="Custom App Names" />
+                            android:contentDescription="Custom App Names"
+                            app:tint="@color/white_100" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -2935,7 +2935,10 @@
                             android:valueFrom="1"
                             android:valueTo="200"
                             android:stepSize="1"
-                            android:value="6" />
+                            android:value="6"
+                            app:thumbColor="@color/white_100"
+                            app:trackColorActive="@color/white_100"
+                            app:trackColorInactive="@color/white_200" />
 
                     </LinearLayout>
 
@@ -2975,7 +2978,10 @@
                             android:valueFrom="1"
                             android:valueTo="50"
                             android:stepSize="1"
-                            android:value="1" />
+                            android:value="1"
+                            app:thumbColor="@color/white_100"
+                            app:trackColorActive="@color/white_100"
+                            app:trackColorInactive="@color/white_200" />
 
                     </LinearLayout>
 
@@ -3015,7 +3021,10 @@
                             android:valueFrom="3"
                             android:valueTo="300"
                             android:stepSize="1"
-                            android:value="10" />
+                            android:value="10"
+                            app:thumbColor="@color/white_100"
+                            app:trackColorActive="@color/white_100"
+                            app:trackColorInactive="@color/white_200" />
 
                     </LinearLayout>
 
@@ -3174,7 +3183,10 @@
                             android:valueFrom="5"
                             android:valueTo="500"
                             android:stepSize="1"
-                            android:value="60" />
+                            android:value="60"
+                            app:thumbColor="@color/white_100"
+                            app:trackColorActive="@color/white_100"
+                            app:trackColorInactive="@color/white_200" />
 
                     </LinearLayout>
 

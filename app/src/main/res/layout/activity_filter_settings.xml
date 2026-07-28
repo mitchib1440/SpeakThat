@@ -1056,6 +1056,14 @@
                             android:textStyle="bold"
                             android:layout_marginBottom="8dp" />
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tidy_speech_separate_digits_threshold_description"
+                            android:textSize="12sp"
+                            android:textColor="@color/purple_card_text_secondary"
+                            android:textStyle="normal" />
+
                         <com.google.android.material.slider.Slider
                             android:id="@+id/sliderDigitThreshold"
                             android:layout_width="match_parent"
@@ -1064,7 +1072,10 @@
                             android:valueTo="20.0"
                             android:stepSize="1.0"
                             android:value="5.0"
-                            app:labelBehavior="withinBounds" />
+                            app:labelBehavior="withinBounds"
+                            app:thumbColor="@color/white_100"
+                            app:trackColorActive="@color/white_100"
+                            app:trackColorInactive="@color/white_200" />
 
                         <TextView
                             android:layout_width="wrap_content"
