@@ -169,9 +169,10 @@ class SelfTestHelper(private val context: Context) {
                     }
                     speaking && !ttsCompleted && (logsText.contains("TTS stopped by shake", ignoreCase = true) 
                         || logsText.contains("TTS stopped by wave", ignoreCase = true)
-                        || logsText.contains("TTS stopped by press", ignoreCase = true)) -> {
+                        || logsText.contains("TTS stopped by press", ignoreCase = true)
+                        || logsText.contains("TTS stopped by Content Cap", ignoreCase = true)) -> {
                         // User explicitly cancelled TTS before completion - treat as special case, not a failure
-                        InAppLogger.log("SelfTest", "Test interrupted by user action (TTS was stopped before completion)")
+                        InAppLogger.log("SelfTest", "Test interrupted by user action or limit (TTS was stopped before completion)")
                         val reason = findBlockingReason(logsText)
                         monitoringCallback?.invoke(TestResult(TestStatus.RECEIVED_NOT_READ, reason))
                         monitoringCallback = null
@@ -255,6 +256,8 @@ class SelfTestHelper(private val context: Context) {
                 "Test interrupted: You stopped TTS using Wave to Stop"
             logsText.contains("TTS stopped by press", ignoreCase = true) -> 
                 "Test interrupted: You stopped TTS using Press to Stop"
+            logsText.contains("TTS stopped by Content Cap", ignoreCase = true) -> 
+                "Test interrupted: Notification reading was stopped by Content Cap (Time Limit)"
                 
             // Check for deduplication
             logsText.contains("Duplicate notification", ignoreCase = true) && logsText.contains("skipping", ignoreCase = true) -> 

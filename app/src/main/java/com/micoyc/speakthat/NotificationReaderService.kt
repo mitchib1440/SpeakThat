@@ -3572,7 +3572,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             val effectiveSentenceCount = contentCapOverride?.sentenceCount ?: contentCapSentenceCount
             val effectiveTimeLimit = contentCapOverride?.timeLimit ?: contentCapTimeLimit
             
-            var cappedCompiledText = applyContentCap(
+            if (isSelfTest && effectiveContentCapMode != "disabled") {
+                InAppLogger.log("SelfTest", "Bypassing Content Cap for SelfTest notification")
+            }
+            
+            var cappedCompiledText = if (isSelfTest) compiledText else applyContentCap(
                 compiledText, 
                 effectiveContentCapMode, 
                 effectiveWordCount, 
@@ -3626,7 +3630,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val effectiveSentenceCount = contentCapOverride?.sentenceCount ?: contentCapSentenceCount
         val effectiveTimeLimit = contentCapOverride?.timeLimit ?: contentCapTimeLimit
         
-        var cappedCompiledText = applyContentCap(
+        if (isSelfTest && effectiveContentCapMode != "disabled") {
+            InAppLogger.log("SelfTest", "Bypassing Content Cap for SelfTest notification")
+        }
+        
+        var cappedCompiledText = if (isSelfTest) compiledText else applyContentCap(
             compiledText, 
             effectiveContentCapMode, 
             effectiveWordCount, 
@@ -6961,7 +6969,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 Log.d(TAG, "=== DUCKING DEBUG: TTS started - Music volume: $currentVolume/$maxVolume ===")
                 InAppLogger.log("Service", "=== DUCKING DEBUG: TTS started - Music volume: $currentVolume/$maxVolume ===")
 
-                if (contentCapMode == "time" && contentCapTimeLimit > 0) {
+                val isSelfTest = sbn?.notification?.extras?.getBoolean(SelfTestHelper.EXTRA_IS_SELFTEST, false) ?: false
+                if (isSelfTest && contentCapMode == "time" && contentCapTimeLimit > 0) {
+                    Log.d(TAG, "SelfTest bypass - skipping Content Cap time limit")
+                    InAppLogger.log("SelfTest", "Bypassing Content Cap time limit for SelfTest notification")
+                }
+                
+                if (!isSelfTest && contentCapMode == "time" && contentCapTimeLimit > 0) {
                     contentCapTimerRunnable = Runnable {
                         Log.d(TAG, "Content Cap time limit reached (${contentCapTimeLimit}s) - stopping TTS")
                         InAppLogger.log("Service", "Content Cap time limit reached (${contentCapTimeLimit}s) - stopping TTS")
