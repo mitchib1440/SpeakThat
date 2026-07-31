@@ -1878,6 +1878,17 @@ This permission is completely optional; SpeakThat! will still function without i
     <!-- Major Missing Section Titles -->
     <string name="behavior_custom_app_names_title">Custom App Names</string>
     <string name="dev_logging_configuration_title">Logging Configuration</string>
+    <string name="dev_broadcast_to_stop_title" translatable="false">Broadcast to Stop</string>
+    <string name="dev_broadcast_to_stop_description" translatable="false">Receive broadcast intents from other apps to abort readouts.</string>
+    <string name="dev_broadcast_to_stop_enable" translatable="false">Enable Broadcast to Stop</string>
+    <string name="dev_broadcast_to_stop_note" translatable="false">Tap a row to copy the value. Send an explicit broadcast with the secret extra while SpeakThat is reading.</string>
+    <string name="dev_broadcast_to_stop_action_label" translatable="false">Action</string>
+    <string name="dev_broadcast_to_stop_package_label" translatable="false">Package name</string>
+    <string name="dev_broadcast_to_stop_extra_label" translatable="false">Secret extra name</string>
+    <string name="dev_broadcast_to_stop_secret_label" translatable="false">Secret value</string>
+    <string name="dev_broadcast_to_stop_regenerate" translatable="false">Regenerate secret</string>
+    <string name="dev_broadcast_to_stop_copied" translatable="false">%1$s copied to clipboard</string>
+    <string name="dev_broadcast_to_stop_secret_regenerated" translatable="false">Secret regenerated</string>
     <string name="filter_word_swap_title">Word Swap</string>
     <string name="filter_word_swaps_header">Word Swaps</string>
     <string name="voice_language_preset_title">Language Preset</string>

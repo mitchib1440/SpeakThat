@@ -322,6 +322,8 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
             InAppLogger.setLogSystemEvents(isChecked);
             InAppLogger.log("Development", "System event logging " + (isChecked ? "enabled" : "disabled"));
         });
+
+        setupBroadcastToStopCard();
         
         // Set up deprecated features - Theme toggle
         binding.switchDeprecatedTheme.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -852,6 +854,67 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         binding.switchLogUserActions.setChecked(logUserActions);
         binding.switchLogSystemEvents.setChecked(logSystemEvents);
         binding.switchDeprecatedTheme.setChecked(isDarkMode);
+
+        boolean broadcastToStopEnabled = BroadcastToStop.isEnabled(this);
+        binding.switchBroadcastToStop.setChecked(broadcastToStopEnabled);
+        updateBroadcastToStopUi(broadcastToStopEnabled);
+    }
+
+    private void setupBroadcastToStopCard() {
+        binding.textBroadcastActionValue.setText(BroadcastToStop.ACTION_ABORT_READING);
+        binding.textBroadcastPackageValue.setText(BroadcastToStop.PACKAGE_NAME);
+        binding.textBroadcastExtraValue.setText(BroadcastToStop.EXTRA_SECRET);
+
+        binding.switchBroadcastToStop.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isLoadingSettings) {
+                return;
+            }
+            if (isChecked) {
+                BroadcastToStop.ensureSecret(this);
+            }
+            BroadcastToStop.setEnabled(this, isChecked);
+            updateBroadcastToStopUi(isChecked);
+            InAppLogger.log("Development", "Broadcast to Stop " + (isChecked ? "enabled" : "disabled"));
+        });
+
+        binding.rowBroadcastAction.setOnClickListener(v ->
+                copyBroadcastValue(binding.textBroadcastActionValue.getText().toString(),
+                        R.string.dev_broadcast_to_stop_action_label));
+        binding.rowBroadcastPackage.setOnClickListener(v ->
+                copyBroadcastValue(binding.textBroadcastPackageValue.getText().toString(),
+                        R.string.dev_broadcast_to_stop_package_label));
+        binding.rowBroadcastExtra.setOnClickListener(v ->
+                copyBroadcastValue(binding.textBroadcastExtraValue.getText().toString(),
+                        R.string.dev_broadcast_to_stop_extra_label));
+        binding.rowBroadcastSecret.setOnClickListener(v ->
+                copyBroadcastValue(binding.textBroadcastSecretValue.getText().toString(),
+                        R.string.dev_broadcast_to_stop_secret_label));
+
+        binding.btnRegenerateBroadcastSecret.setOnClickListener(v -> {
+            String secret = BroadcastToStop.generateSecret();
+            BroadcastToStop.setSecret(this, secret);
+            binding.textBroadcastSecretValue.setText(secret);
+            Toast.makeText(this, R.string.dev_broadcast_to_stop_secret_regenerated, Toast.LENGTH_SHORT).show();
+            InAppLogger.log("Development", "Broadcast to Stop secret regenerated");
+        });
+    }
+
+    private void updateBroadcastToStopUi(boolean enabled) {
+        binding.layoutBroadcastToStopDetails.setVisibility(enabled ? View.VISIBLE : View.GONE);
+        if (enabled) {
+            binding.textBroadcastSecretValue.setText(BroadcastToStop.ensureSecret(this));
+        }
+    }
+
+    private void copyBroadcastValue(String value, int labelRes) {
+        android.content.ClipboardManager clipboard =
+                (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        clipboard.setPrimaryClip(android.content.ClipData.newPlainText("SpeakThat broadcast", value));
+        Toast.makeText(
+                this,
+                getString(R.string.dev_broadcast_to_stop_copied, getString(labelRes)),
+                Toast.LENGTH_SHORT
+        ).show();
     }
 
     private void showNotificationHistory() {

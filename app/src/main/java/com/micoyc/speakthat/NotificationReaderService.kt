@@ -149,6 +149,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var lastWaveDebugLogTime = 0L
     private var waveNoEventRunnable: Runnable? = null
     private var pendingWaveTriggerRunnable: Runnable? = null
+
+    // Broadcast to Stop (DIY external abort while reading)
+    private var isBroadcastToStopReceiverRegistered = false
     
     // Media behavior settings
     private var originalMusicVolume = -1 // Store original volume for restoration
@@ -840,6 +843,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             // Unregister broadcast receivers
             unregisterAccessibilityBroadcastReceiver()
             unregisterTestFiltersBroadcastReceiver()
+            unregisterBroadcastToStopReceiver()
             cancelSpeakThatClockAlarm()
             unregisterClockAlarmReceiver()
             unregisterClockReceiver()
@@ -933,6 +937,49 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "Test filters broadcast receiver unregistered")
         } catch (e: Exception) {
             Log.e(TAG, "Error unregistering test filters broadcast receiver", e)
+        }
+    }
+
+    private fun registerBroadcastToStopReceiver() {
+        if (isBroadcastToStopReceiverRegistered) {
+            return
+        }
+        if (!BroadcastToStop.isEnabled(this)) {
+            return
+        }
+        val secret = BroadcastToStop.getSecret(this)
+        if (secret.isEmpty()) {
+            Log.d(TAG, "Broadcast to Stop enabled but secret missing - not registering")
+            return
+        }
+        try {
+            val filter = android.content.IntentFilter(BroadcastToStop.ACTION_ABORT_READING)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                registerReceiver(broadcastToStopReceiver, filter, Context.RECEIVER_EXPORTED)
+            } else {
+                registerReceiver(broadcastToStopReceiver, filter)
+            }
+            isBroadcastToStopReceiverRegistered = true
+            Log.d(TAG, "Broadcast to Stop receiver registered (TTS active)")
+            InAppLogger.logSystemEvent("Broadcast to Stop listening", "TTS playback active")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error registering Broadcast to Stop receiver", e)
+            InAppLogger.logError("Service", "Error registering Broadcast to Stop receiver: ${e.message}")
+        }
+    }
+
+    private fun unregisterBroadcastToStopReceiver() {
+        if (!isBroadcastToStopReceiverRegistered) {
+            return
+        }
+        try {
+            unregisterReceiver(broadcastToStopReceiver)
+            Log.d(TAG, "Broadcast to Stop receiver unregistered")
+            InAppLogger.logSystemEvent("Broadcast to Stop stopped", "TTS playback finished")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error unregistering Broadcast to Stop receiver", e)
+        } finally {
+            isBroadcastToStopReceiverRegistered = false
         }
     }
 
@@ -1243,6 +1290,32 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     Log.d(TAG, "Unknown accessibility broadcast action: ${intent?.action}")
                 }
             }
+        }
+    }
+
+    private val broadcastToStopReceiver = object : android.content.BroadcastReceiver() {
+        override fun onReceive(context: android.content.Context?, intent: android.content.Intent?) {
+            if (intent?.action != BroadcastToStop.ACTION_ABORT_READING) {
+                return
+            }
+            if (!isCurrentlySpeaking) {
+                Log.d(TAG, "Broadcast to Stop ignored - not currently speaking")
+                return
+            }
+            if (!BroadcastToStop.isEnabled(this@NotificationReaderService)) {
+                Log.d(TAG, "Broadcast to Stop ignored - feature disabled")
+                return
+            }
+            val expectedSecret = BroadcastToStop.getSecret(this@NotificationReaderService)
+            val providedSecret = intent.getStringExtra(BroadcastToStop.EXTRA_SECRET)
+            if (!BroadcastToStop.secretsMatch(expectedSecret, providedSecret)) {
+                Log.d(TAG, "Broadcast to Stop ignored - missing or invalid secret")
+                InAppLogger.log("Service", "Broadcast to Stop rejected - invalid secret")
+                return
+            }
+            Log.d(TAG, "Broadcast to Stop accepted - aborting readout")
+            InAppLogger.log("Service", "Broadcast to Stop accepted - aborting readout")
+            stopSpeaking("broadcast")
         }
     }
 
@@ -3203,6 +3276,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         waveNoEventRunnable = null
         pendingWaveTriggerRunnable?.let { sensorTimeoutHandler?.removeCallbacks(it) }
         pendingWaveTriggerRunnable = null
+
+        // Sensor timeout can call this while TTS is still active; only drop the DIY
+        // abort receiver when the readout itself has ended.
+        if (!isCurrentlySpeaking) {
+            unregisterBroadcastToStopReceiver()
+        }
         
         // Log sensor state for debugging
         Log.d(TAG, "Sensor unregistration complete - shake enabled: $isShakeToStopEnabled, wave enabled: $isWaveToStopEnabled")
@@ -6934,6 +7013,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Register shake listener now that we're about to speak
         registerShakeListener()
+        registerBroadcastToStopReceiver()
         
         // Create volume bundle with proper volume parameters
         val ttsVolume = minOf(1.0f, voiceSettingsPrefs.getFloat("tts_volume", 1.0f))
