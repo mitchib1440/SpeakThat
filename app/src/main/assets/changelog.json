@@ -39,6 +39,12 @@
     ]
   },
   {
+    "text": "Fixed Advanced Voice Options showing uninstalled voices.",
+    "subpoints": [
+      "The spinner for selecting a specific voice previously displayed voices that weren't installed on the device. This has been corrected.."
+    ]
+  },
+  {
     "text": "Updated several translations.",
     "subpoints": [
       "German",
