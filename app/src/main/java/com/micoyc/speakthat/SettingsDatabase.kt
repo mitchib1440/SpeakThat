@@ -889,6 +889,17 @@ object SettingsDatabase {
                 searchKeywordsRes = R.string.search_keywords_dismissal_memory_timeout,
                 navigationAction = { context, id -> context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
             ),
+            SettingsItem(
+                id = "broadcast_to_stop",
+                titleRes = R.string.search_title_broadcast_to_stop,
+                descriptionRes = R.string.search_desc_broadcast_to_stop,
+                category = "development",
+                categoryTitleRes = R.string.search_cat_development,
+                categoryIconRes = R.drawable.ic_bugdroid_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_broadcast_to_stop,
+                navigationAction = { context, id -> context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
 
             // Re-run Onboarding
             SettingsItem(

@@ -41,7 +41,7 @@
     <string name="search_keywords_media_behavior">media, music, video, playback, pause, lower, ignore, silence</string>
     <string name="search_title_earcon">Earcon</string>
     <string name="search_desc_earcon">Play a short sound before readouts start</string>
-    <string name="search_keywords_earcon">earcon, pre-speech, pre speech, cue, click, sound, audio, jarring, notification, readout, tts, before speak, soft click, custom sound</string>
+    <string name="search_keywords_earcon">earcon, pre-speech, pre speech, cue, click, sound, audio, jarring, notification, readout, tts, before speak, soft click, custom sound, pop</string>
     <string name="search_title_shake_to_stop">Shake to Stop</string>
     <string name="search_desc_shake_to_stop">Stop notifications by shaking your device</string>
     <string name="search_keywords_shake_to_stop">shake, stop, gesture, motion, silence, quick</string>
@@ -112,9 +112,9 @@
     <string name="search_title_word_filtering">Word Filtering</string>
     <string name="search_desc_word_filtering">Filter out specific words from notifications</string>
     <string name="search_keywords_word_filtering">word, filter, blacklist, block, censor, hide</string>
-    <string name="search_title_word_replacements">Word Replacements</string>
+    <string name="search_title_word_replacements">Word Swap</string>
     <string name="search_desc_word_replacements">Replace words in notifications with alternatives</string>
-    <string name="search_keywords_word_replacements">word, replacement, replace, substitute, change, alias</string>
+    <string name="search_keywords_word_replacements">word, replacement, replace, substitute, change, alias, swap</string>
     <string name="search_keywords_tidy_speech_section">tidy, speech, clean, cleanup, emoji, emojis, symbol, symbols, nonverbal, non-verbal</string>
     <string name="search_keywords_tidy_speech_remove_emojis">remove, emoji, emojis, symbol, symbols, speech, spoken, nonverbal, non-verbal</string>
     <string name="search_keywords_tidy_speech_separate_digits">separate, digits, numbers, long, read, tts, split</string>
@@ -226,4 +226,7 @@
     <string name="search_title_re_run_onboarding">Re-run Onboarding</string>
     <string name="search_desc_re_run_onboarding">See the app introduction again</string>
     <string name="search_keywords_re_run_onboarding">onboarding, tutorial, introduction, guide, help, learn</string>
+    <string name="search_title_broadcast_to_stop">Broadcast to Stop</string>
+    <string name="search_desc_broadcast_to_stop">Receive broadcast intents from other apps to abort readouts.</string>
+    <string name="search_keywords_broadcast_to_stop">intent, broadcast, stop, abort, cancel, advanced, automation</string>
 </resources>

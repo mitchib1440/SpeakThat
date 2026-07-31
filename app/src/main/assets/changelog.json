@@ -3,13 +3,46 @@
     "text": "Added Swipe to Stop.",
     "subpoints": [
       "Cancel readouts early by dismissing the notification.",
-      "This works very well for smartwatches, allowing you to dismiss the notification from your wrist."
+      "This works very well for smartwatches, allowing you to cancel the readout from your wrist.",
+      "Find this in Behaviour Settings."
     ]
   },
   {
-    "text": "Placeholder title.",
+    "text": "Added Separate Digits.",
     "subpoints": [
-      "Placeholder subpoint."
+      "Space consecutive digits out to prevent them being read as one long number.",
+      "You can also decide what character is used as a separator. Use a space for a short pause, a comma for a medium pause, or a full-stop for a long pause.",
+      "Find this in Filter Settings underneath the Tidy Speech section."
+    ]
+  },
+  {
+    "text": "Added Broadcast to Stop.",
+    "subpoints": [
+      "Allows you to stop readouts using a broadcast intent from a third-party app.",
+      "A key is required for this, so SpeakThat will generate one for you, which you must enter as an additional value in your automation app.",
+      "Find this in Development Settings."
+    ]
+  },
+  {
+    "text": "Settings Search has been massively improved.",
+    "subpoints": [
+      "A complete overhaul of the settings search has taken place. Search results look good, work consistently, and even allow for small typos.",
+      "If you find any settings that were missed, please report them on the GitHub page. Once I'm done crying, I'll add them to the search index.",
+      "Find this in SpeakThat! Settings."
+    ]
+  },
+  {
+    "text": "Fixed SelfTest not recognising Content Cap.",
+    "subpoints": [
+      "Running SelfTest with Content Cap set to a short timed duration so that the test notification doesn't finish caused the SelfTest to hang until it hit its 60-second limit. This has been fixed.",
+      "Thanks to ForgeSource for the bug report!"
+    ]
+  },
+  {
+    "text": "Updated several translations.",
+    "subpoints": [
+      "German",
+      "French"
     ]
   }
 ]
