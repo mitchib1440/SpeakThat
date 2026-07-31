@@ -103,6 +103,7 @@ object SettingsHighlightHelper {
         "log_notifications" to R.id.switchLogNotifications,
         "log_user_actions" to R.id.switchLogUserActions,
         "log_system_events" to R.id.switchLogSystemEvents,
+        "broadcast_to_stop" to R.id.switchBroadcastToStop,
         "test_notifications" to R.id.btnTestSettings,
         "view_logs" to R.id.btnRefreshLogs,
         "clear_logs" to R.id.btnClearLogs,

@@ -898,7 +898,7 @@ object SettingsDatabase {
                 categoryIconRes = R.drawable.ic_bugdroid_24,
                 settingType = SettingType.SWITCH,
                 searchKeywordsRes = R.string.search_keywords_broadcast_to_stop,
-                navigationAction = { context, id -> context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+                navigationAction = { context, id -> context.startActivity(Intent(context, DevelopmentSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
             ),
 
             // Re-run Onboarding
