@@ -443,11 +443,22 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
     private void setupVoicesAndLanguages() {
         if (!isTtsReady) return;
 
-        // Get available voices
+        // Get available voices (skip ones that still need to be downloaded)
         Set<Voice> voices = textToSpeech.getVoices();
         if (voices != null) {
             availableVoices.clear();
-            availableVoices.addAll(voices);
+            int skippedNotInstalled = 0;
+            for (Voice voice : voices) {
+                if (isVoiceNotInstalled(voice)) {
+                    skippedNotInstalled++;
+                    continue;
+                }
+                availableVoices.add(voice);
+            }
+            if (skippedNotInstalled > 0) {
+                InAppLogger.log("VoiceSettings", "Skipped " + skippedNotInstalled
+                    + " voice(s) marked KEY_FEATURE_NOT_INSTALLED");
+            }
         }
 
         // Get available languages
@@ -1740,6 +1751,15 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
             && target.getCountry().equalsIgnoreCase(candidate.getCountry());
     }
 
+    /** True when the TTS engine reports this voice still needs a download before it can be used. */
+    private static boolean isVoiceNotInstalled(Voice voice) {
+        if (voice == null) {
+            return true;
+        }
+        Set<String> features = voice.getFeatures();
+        return features != null && features.contains(TextToSpeech.Engine.KEY_FEATURE_NOT_INSTALLED);
+    }
+
     private static void tryApplyLocaleMatchedVoice(TextToSpeech tts, Locale targetLocale, String reason) {
         if (tts == null || targetLocale == null) {
             return;
@@ -1755,6 +1775,9 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         Voice languageAny = null;
 
         for (Voice voice : voices) {
+            if (isVoiceNotInstalled(voice)) {
+                continue;
+            }
             Locale voiceLocale = voice.getLocale();
             if (voiceLocale == null || voiceLocale.getLanguage() == null) {
                 continue;
