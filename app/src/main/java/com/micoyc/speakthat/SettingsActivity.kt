@@ -15,10 +15,11 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.materialswitch.MaterialSwitch
 import com.micoyc.speakthat.databinding.ActivitySettingsBinding
 import com.micoyc.speakthat.donations.DonationManager
 import com.micoyc.speakthat.donations.DonationManagerProvider
@@ -32,6 +33,8 @@ class SettingsActivity : AppCompatActivity() {
     private val settingsCategories = mutableListOf<SettingsCategory>()
     private val allSettings = mutableListOf<SettingsItem>()
     private val donationManager: DonationManager by lazy { DonationManagerProvider.get(this) }
+    private val searchHandler = Handler(Looper.getMainLooper())
+    private var pendingSearch: Runnable? = null
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,15 +79,12 @@ class SettingsActivity : AppCompatActivity() {
     }
     
     private fun setupSearchFunctionality() {
-        // Setup RecyclerView for search results
         searchAdapter = SearchResultsAdapter(emptyList()) { settingsItem ->
-            // Hide search results and execute the settings item action
             binding.searchResultsRecyclerView.visibility = View.GONE
             binding.settingsScrollView.visibility = View.VISIBLE
             binding.searchEditText.setText("")
-            
-            // Execute the settings item action
-            settingsItem.navigationAction()
+            binding.searchProgressBar.visibility = View.GONE
+            settingsItem.navigationAction(this, settingsItem.id)
         }
         
         binding.searchResultsRecyclerView.apply {
@@ -92,14 +92,36 @@ class SettingsActivity : AppCompatActivity() {
             adapter = searchAdapter
         }
         
-        // Setup search text watcher
         binding.searchEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                performSearch(s?.toString() ?: "")
+                scheduleSearch(s?.toString() ?: "")
             }
         })
+    }
+
+    private fun scheduleSearch(query: String) {
+        pendingSearch?.let { searchHandler.removeCallbacks(it) }
+        if (query.isBlank()) {
+            binding.searchProgressBar.visibility = View.GONE
+            binding.searchResultsRecyclerView.visibility = View.GONE
+            binding.settingsScrollView.visibility = View.VISIBLE
+            return
+        }
+
+        binding.searchProgressBar.visibility = View.VISIBLE
+        val runnable = Runnable {
+            performSearch(query)
+            binding.searchProgressBar.visibility = View.GONE
+        }
+        pendingSearch = runnable
+        searchHandler.postDelayed(runnable, 300)
+    }
+
+    override fun onDestroy() {
+        pendingSearch?.let { searchHandler.removeCallbacks(it) }
+        super.onDestroy()
     }
     
     private fun setupSettingsCategories() {
@@ -176,33 +198,21 @@ class SettingsActivity : AppCompatActivity() {
     }
     
     private fun setupAllSettings() {
-        // Load all individual settings from the database
         allSettings.clear()
         allSettings.addAll(SettingsDatabase.getAllSettings(this))
     }
     
     private fun performSearch(query: String) {
         if (query.isBlank()) {
-            // Show all settings when search is empty
             binding.searchResultsRecyclerView.visibility = View.GONE
             binding.settingsScrollView.visibility = View.VISIBLE
             return
         }
-        
-        val filteredResults = allSettings.filter { settingsItem ->
-            val searchText = query.lowercase()
-            
-            // Search in title, description, category title, and keywords
-            settingsItem.title.lowercase().contains(searchText) ||
-            settingsItem.description.lowercase().contains(searchText) ||
-            settingsItem.categoryTitle.lowercase().contains(searchText) ||
-            settingsItem.searchKeywords.any { keyword -> 
-                keyword.lowercase().contains(searchText) 
-            }
-        }
-        
-        if (filteredResults.isNotEmpty()) {
-            searchAdapter.updateResults(filteredResults)
+
+        val groups = SettingsSearchEngine.search(this, query, allSettings)
+
+        if (groups.isNotEmpty()) {
+            searchAdapter.updateResults(groups)
             binding.searchResultsRecyclerView.visibility = View.VISIBLE
             binding.settingsScrollView.visibility = View.GONE
         } else {
@@ -212,8 +222,6 @@ class SettingsActivity : AppCompatActivity() {
     }
     
     private fun setupClickListeners() {
-        // The click listeners are now handled through the settingsCategories list
-        // but we keep the original setup for backward compatibility
         binding.cardGeneralSettings.setOnClickListener {
             startActivity(Intent(this, GeneralSettingsActivity::class.java))
         }
@@ -359,7 +367,4 @@ class SettingsActivity : AppCompatActivity() {
             InAppLogger.logError("Donate", "Failed to copy Bitcoin address: ${e.message}")
         }
     }
-    
-    
-
-} 
+}

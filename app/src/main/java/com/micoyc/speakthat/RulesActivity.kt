@@ -92,6 +92,7 @@ class RulesActivity : AppCompatActivity() {
 
         // Hide loading after initialization
         setLoading(false)
+        SettingsHighlightHelper.handleScrollToSetting(this)
     }
 
     private fun setLoading(loading: Boolean) {

@@ -170,11 +170,14 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 saveAdvancedVoiceEnabled(true);
                 updatePresetSpinnerForAdvancedMode(true);
             }
-            // Scroll to the advanced section
-            voiceSettingsScrollView.post(() -> {
-                voiceSettingsScrollView.smoothScrollTo(0, layoutAdvancedVoiceSection.getTop());
-            });
+            // Scroll to the advanced section unless a specific setting scroll was requested
+            if (!getIntent().hasExtra(SettingsHighlightHelper.EXTRA_SCROLL_TO_SETTING)) {
+                voiceSettingsScrollView.post(() -> {
+                    voiceSettingsScrollView.smoothScrollTo(0, layoutAdvancedVoiceSection.getTop());
+                });
+            }
         }
+        SettingsHighlightHelper.handleScrollToSetting(this);
     }
 
     private void applySavedTheme(SharedPreferences prefs) {

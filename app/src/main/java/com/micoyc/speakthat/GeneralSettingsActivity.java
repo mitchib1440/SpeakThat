@@ -100,6 +100,7 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         setupBadgeSelector();
         
         setupDataManagement();
+        SettingsHighlightHelper.handleScrollToSetting(this);
     }
 
     private void setupSeasonalMode() {

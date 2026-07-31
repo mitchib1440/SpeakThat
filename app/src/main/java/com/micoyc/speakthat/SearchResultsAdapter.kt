@@ -10,42 +10,50 @@ package com.micoyc.speakthat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class SearchResultsAdapter(
-    private var searchResults: List<SettingsItem>,
+    private var groups: List<SettingsSearchEngine.SearchCategoryGroup>,
     private val onItemClick: (SettingsItem) -> Unit
-) : RecyclerView.Adapter<SearchResultsAdapter.SearchResultViewHolder>() {
+) : RecyclerView.Adapter<SearchResultsAdapter.CategoryViewHolder>() {
 
-    class SearchResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val categoryIcon: TextView = itemView.findViewById(R.id.searchResultIcon)
-        val title: TextView = itemView.findViewById(R.id.searchResultTitle)
-        val description: TextView = itemView.findViewById(R.id.searchResultDescription)
+    class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val icon: ImageView = itemView.findViewById(R.id.searchCategoryIcon)
+        val title: TextView = itemView.findViewById(R.id.searchCategoryTitle)
+        val itemsContainer: LinearLayout = itemView.findViewById(R.id.searchCategoryItems)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_search_result, parent, false)
-        return SearchResultViewHolder(view)
+            .inflate(R.layout.item_search_category_card, parent, false)
+        return CategoryViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: SearchResultViewHolder, position: Int) {
-        val result = searchResults[position]
-        
-        holder.categoryIcon.text = result.categoryIcon
-        holder.title.text = result.title
-        holder.description.text = "${result.description} (${result.categoryTitle})"
-        
-        holder.itemView.setOnClickListener {
-            onItemClick(result)
+    override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
+        val group = groups[position]
+        val context = holder.itemView.context
+
+        holder.icon.setImageResource(group.categoryIconRes)
+        holder.title.setText(group.categoryTitleRes)
+        holder.itemsContainer.removeAllViews()
+
+        val inflater = LayoutInflater.from(context)
+        group.items.forEach { item ->
+            val row = inflater.inflate(R.layout.item_search_result, holder.itemsContainer, false)
+            row.findViewById<TextView>(R.id.searchResultTitle).setText(item.titleRes)
+            row.findViewById<TextView>(R.id.searchResultDescription).setText(item.descriptionRes)
+            row.setOnClickListener { onItemClick(item) }
+            holder.itemsContainer.addView(row)
         }
     }
 
-    override fun getItemCount(): Int = searchResults.size
+    override fun getItemCount(): Int = groups.size
 
-    fun updateResults(newResults: List<SettingsItem>) {
-        searchResults = newResults
+    fun updateResults(newGroups: List<SettingsSearchEngine.SearchCategoryGroup>) {
+        groups = newGroups
         notifyDataSetChanged()
     }
-} 
+}

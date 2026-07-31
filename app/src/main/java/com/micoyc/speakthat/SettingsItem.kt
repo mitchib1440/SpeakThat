@@ -9,14 +9,15 @@ package com.micoyc.speakthat
 
 data class SettingsItem(
     val id: String,
-    val title: String,
-    val description: String,
+    @androidx.annotation.StringRes val titleRes: Int,
+    @androidx.annotation.StringRes val descriptionRes: Int,
     val category: String,
-    val categoryTitle: String,
-    val categoryIcon: String,
+    @androidx.annotation.StringRes val categoryTitleRes: Int,
+    @androidx.annotation.DrawableRes val categoryIconRes: Int,
     val settingType: SettingType,
-    val searchKeywords: List<String> = emptyList(),
-    val navigationAction: () -> Unit
+    @androidx.annotation.StringRes val searchKeywordsRes: Int? = null,
+    val supportedFlavors: List<String> = listOf("github", "store", "play"),
+    val navigationAction: (android.content.Context, String) -> Unit
 )
 
 enum class SettingType {

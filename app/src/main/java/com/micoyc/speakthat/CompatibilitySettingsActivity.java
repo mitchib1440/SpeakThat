@@ -105,6 +105,7 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
         setupDuplicationWorkarounds();
         loadSettings();
         isLoadingSettings = false;
+        SettingsHighlightHelper.handleScrollToSetting(this);
     }
 
     private void applySavedTheme() {

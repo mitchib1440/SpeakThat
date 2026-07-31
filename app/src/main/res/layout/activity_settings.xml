@@ -17,11 +17,9 @@
         android:padding="16dp"
         android:background="?attr/colorSurface">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/searchInputLayout"
@@ -45,7 +43,18 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
+            <ProgressBar
+                android:id="@+id/searchProgressBar"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="16dp"
+                android:indeterminate="true"
+                android:visibility="gone"
+                android:indeterminateTint="@color/purple_200" />
+
+        </FrameLayout>
 
         <!-- Search Results Container -->
         <androidx.recyclerview.widget.RecyclerView
@@ -54,8 +63,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:visibility="gone"
-            android:background="@drawable/search_results_background"
-            android:padding="8dp" />
+            android:clipToPadding="false"
+            android:paddingBottom="8dp" />
 
     </LinearLayout>
 

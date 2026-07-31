@@ -163,6 +163,7 @@ public class FilterSettingsActivity extends AppCompatActivity {
         setLoading(false);
 
         handleIntentExtras();
+        SettingsHighlightHelper.handleScrollToSetting(this);
 
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
         repairBlacklistReceiver = new android.content.BroadcastReceiver() {

@@ -103,7 +103,9 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         
         // Hide loading after initialization
         setLoading(false);
-        
+
+        SettingsHighlightHelper.handleScrollToSetting(this);
+
         // Don't start log updates in onCreate - wait for onResume
     }
 

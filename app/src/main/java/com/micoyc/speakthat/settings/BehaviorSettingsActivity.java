@@ -14,6 +14,7 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import com.micoyc.speakthat.InAppLogger;
+import com.micoyc.speakthat.SettingsHighlightHelper;
 import com.micoyc.speakthat.databinding.ActivityBehaviorSettingsBinding;
 import com.micoyc.speakthat.settings.sections.AndroidAutoSection;
 import com.micoyc.speakthat.settings.sections.ContentCapSection;
@@ -92,6 +93,7 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
 
         // Hide loading after sections are loaded
         setLoading(false);
+        SettingsHighlightHelper.handleScrollToSetting(this);
     }
 
     private void setLoading(boolean loading) {

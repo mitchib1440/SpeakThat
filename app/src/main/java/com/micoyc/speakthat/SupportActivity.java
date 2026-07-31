@@ -89,6 +89,7 @@ public class SupportActivity extends AppCompatActivity {
         updateLogInfo();
         
         InAppLogger.logUserAction("Support screen opened", "");
+        SettingsHighlightHelper.handleScrollToSetting(this);
     }
     
     private void applySavedTheme(SharedPreferences prefs) {
