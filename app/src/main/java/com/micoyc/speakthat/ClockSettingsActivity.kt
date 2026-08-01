@@ -47,6 +47,7 @@ class ClockSettingsActivity : AppCompatActivity() {
 
         loadState()
         setupInteractions()
+        SettingsHighlightHelper.handleScrollToSetting(this)
     }
 
     override fun onSupportNavigateUp(): Boolean {

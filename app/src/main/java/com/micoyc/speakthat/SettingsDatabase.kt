@@ -10,6 +10,7 @@ package com.micoyc.speakthat
 import android.content.Intent
 import com.micoyc.speakthat.settings.BehaviorSettingsActivity
 import com.micoyc.speakthat.CompatibilitySettingsActivity
+import com.micoyc.speakthat.summary.SummarySettingsActivity
 
 object SettingsDatabase {
     
@@ -263,6 +264,72 @@ object SettingsDatabase {
                 navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
             ),
             SettingsItem(
+                id = "delay_before_readout",
+                titleRes = R.string.search_title_delay_before_readout,
+                descriptionRes = R.string.search_desc_delay_before_readout,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.CARD,
+                searchKeywordsRes = R.string.search_keywords_delay_before_readout,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "notification_cooldown",
+                titleRes = R.string.search_title_notification_cooldown,
+                descriptionRes = R.string.search_desc_notification_cooldown,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.CARD,
+                searchKeywordsRes = R.string.search_keywords_notification_cooldown,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "content_cap_section",
+                titleRes = R.string.search_title_content_cap_section,
+                descriptionRes = R.string.search_desc_content_cap_section,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.CARD,
+                searchKeywordsRes = R.string.search_keywords_content_cap_section,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "content_cap_word_count",
+                titleRes = R.string.search_title_content_cap_word_count,
+                descriptionRes = R.string.search_desc_content_cap_word_count,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.SEEK_BAR,
+                searchKeywordsRes = R.string.search_keywords_content_cap_word_count,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "content_cap_sentence_count",
+                titleRes = R.string.search_title_content_cap_sentence_count,
+                descriptionRes = R.string.search_desc_content_cap_sentence_count,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.SEEK_BAR,
+                searchKeywordsRes = R.string.search_keywords_content_cap_sentence_count,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "content_cap_time_limit",
+                titleRes = R.string.search_title_content_cap_time_limit,
+                descriptionRes = R.string.search_desc_content_cap_time_limit,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.SEEK_BAR,
+                searchKeywordsRes = R.string.search_keywords_content_cap_time_limit,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
                 id = "shake_to_stop",
                 titleRes = R.string.search_title_shake_to_stop,
                 descriptionRes = R.string.search_desc_shake_to_stop,
@@ -274,6 +341,50 @@ object SettingsDatabase {
                 navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
             ),
             SettingsItem(
+                id = "shake_intensity",
+                titleRes = R.string.search_title_shake_intensity,
+                descriptionRes = R.string.search_desc_shake_intensity,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.SEEK_BAR,
+                searchKeywordsRes = R.string.search_keywords_shake_intensity,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "required_shakes",
+                titleRes = R.string.search_title_required_shakes,
+                descriptionRes = R.string.search_desc_required_shakes,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.RADIO_GROUP,
+                searchKeywordsRes = R.string.search_keywords_required_shakes,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "shake_timeout",
+                titleRes = R.string.search_title_shake_timeout,
+                descriptionRes = R.string.search_desc_shake_timeout,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.SEEK_BAR,
+                searchKeywordsRes = R.string.search_keywords_shake_timeout,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "shake_disable_timeout",
+                titleRes = R.string.search_title_shake_disable_timeout,
+                descriptionRes = R.string.search_desc_shake_disable_timeout,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_shake_disable_timeout,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
                 id = "wave_to_stop",
                 titleRes = R.string.search_title_wave_to_stop,
                 descriptionRes = R.string.search_desc_wave_to_stop,
@@ -282,6 +393,85 @@ object SettingsDatabase {
                 categoryIconRes = R.drawable.ic_notification_settings_24,
                 settingType = SettingType.SWITCH,
                 searchKeywordsRes = R.string.search_keywords_wave_to_stop,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "required_waves",
+                titleRes = R.string.search_title_required_waves,
+                descriptionRes = R.string.search_desc_required_waves,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.RADIO_GROUP,
+                searchKeywordsRes = R.string.search_keywords_required_waves,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "wave_hold_time",
+                titleRes = R.string.search_title_wave_hold_time,
+                descriptionRes = R.string.search_desc_wave_hold_time,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.SEEK_BAR,
+                searchKeywordsRes = R.string.search_keywords_wave_hold_time,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "wave_timeout",
+                titleRes = R.string.search_title_wave_timeout,
+                descriptionRes = R.string.search_desc_wave_timeout,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.SEEK_BAR,
+                searchKeywordsRes = R.string.search_keywords_wave_timeout,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "wave_disable_timeout",
+                titleRes = R.string.search_title_wave_disable_timeout,
+                descriptionRes = R.string.search_desc_wave_disable_timeout,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_wave_disable_timeout,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "pocket_mode",
+                titleRes = R.string.search_title_pocket_mode,
+                descriptionRes = R.string.search_desc_pocket_mode,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_pocket_mode,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "press_to_stop_section",
+                titleRes = R.string.search_title_press_to_stop_section,
+                descriptionRes = R.string.search_desc_press_to_stop_section,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.CARD,
+                searchKeywordsRes = R.string.search_keywords_press_to_stop_section,
+                supportedFlavors = listOf("github", "store"),
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "press_to_stop",
+                titleRes = R.string.search_title_press_to_stop,
+                descriptionRes = R.string.search_desc_press_to_stop,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_press_to_stop,
+                supportedFlavors = listOf("github", "store"),
                 navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
             ),
             SettingsItem(
@@ -373,6 +563,17 @@ object SettingsDatabase {
                 navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
             ),
             SettingsItem(
+                id = "prefix_memory_timeout",
+                titleRes = R.string.search_title_prefix_memory_timeout,
+                descriptionRes = R.string.search_desc_prefix_memory_timeout,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.SEEK_BAR,
+                searchKeywordsRes = R.string.search_keywords_prefix_memory_timeout,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
                 id = "honour_do_not_disturb",
                 titleRes = R.string.search_title_honour_do_not_disturb,
                 descriptionRes = R.string.search_desc_honour_do_not_disturb,
@@ -392,6 +593,28 @@ object SettingsDatabase {
                 categoryIconRes = R.drawable.ic_notification_settings_24,
                 settingType = SettingType.SWITCH,
                 searchKeywordsRes = R.string.search_keywords_honour_audio_mode,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "honour_silent_mode",
+                titleRes = R.string.search_title_honour_silent_mode,
+                descriptionRes = R.string.search_desc_honour_silent_mode,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_honour_silent_mode,
+                navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "honour_vibrate_mode",
+                titleRes = R.string.search_title_honour_vibrate_mode,
+                descriptionRes = R.string.search_desc_honour_vibrate_mode,
+                category = "behavior",
+                categoryTitleRes = R.string.search_cat_behavior,
+                categoryIconRes = R.drawable.ic_notification_settings_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_honour_vibrate_mode,
                 navigationAction = { context, id -> context.startActivity(Intent(context, BehaviorSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
             ),
             SettingsItem(
@@ -496,6 +719,17 @@ object SettingsDatabase {
                 navigationAction = { context, id -> val intent = Intent(context, VoiceSettingsActivity::class.java); intent.putExtra("expand_advanced", true); intent.putExtra("SCROLL_TO_SETTING", id); context.startActivity(intent) }
             ),
             SettingsItem(
+                id = "auto_language",
+                titleRes = R.string.search_title_auto_language,
+                descriptionRes = R.string.search_desc_auto_language,
+                category = "voice",
+                categoryTitleRes = R.string.search_cat_voice,
+                categoryIconRes = R.drawable.ic_voice_selection_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_auto_language,
+                navigationAction = { context, id -> context.startActivity(Intent(context, VoiceSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
                 id = "preview_voice",
                 titleRes = R.string.search_title_preview_voice,
                 descriptionRes = R.string.search_desc_preview_voice,
@@ -552,6 +786,28 @@ object SettingsDatabase {
                 navigationAction = { context, id -> context.startActivity(Intent(context, FilterSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
             ),
             SettingsItem(
+                id = "word_whitelist",
+                titleRes = R.string.search_title_word_whitelist,
+                descriptionRes = R.string.search_desc_word_whitelist,
+                category = "filter",
+                categoryTitleRes = R.string.title_filter_settings,
+                categoryIconRes = R.drawable.ic_filter_list_24,
+                settingType = SettingType.RADIO_GROUP,
+                searchKeywordsRes = R.string.search_keywords_word_whitelist,
+                navigationAction = { context, id -> context.startActivity(Intent(context, FilterSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "word_blacklist",
+                titleRes = R.string.search_title_word_blacklist,
+                descriptionRes = R.string.search_desc_word_blacklist,
+                category = "filter",
+                categoryTitleRes = R.string.title_filter_settings,
+                categoryIconRes = R.drawable.ic_filter_list_24,
+                settingType = SettingType.RADIO_GROUP,
+                searchKeywordsRes = R.string.search_keywords_word_blacklist,
+                navigationAction = { context, id -> context.startActivity(Intent(context, FilterSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
                 id = "word_replacements",
                 titleRes = R.string.search_title_word_replacements,
                 descriptionRes = R.string.search_desc_word_replacements,
@@ -582,6 +838,17 @@ object SettingsDatabase {
                 categoryIconRes = R.drawable.ic_filter_list_24,
                 settingType = SettingType.SWITCH,
                 searchKeywordsRes = R.string.search_keywords_tidy_speech_remove_emojis,
+                navigationAction = { context, id -> context.startActivity(Intent(context, FilterSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "tidy_speech_force_lowercase",
+                titleRes = R.string.search_title_tidy_speech_force_lowercase,
+                descriptionRes = R.string.search_desc_tidy_speech_force_lowercase,
+                category = "filter",
+                categoryTitleRes = R.string.title_filter_settings,
+                categoryIconRes = R.drawable.ic_filter_list_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_tidy_speech_force_lowercase,
                 navigationAction = { context, id -> context.startActivity(Intent(context, FilterSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
             ),
             SettingsItem(
@@ -748,6 +1015,175 @@ object SettingsDatabase {
                 settingType = SettingType.BUTTON,
                 searchKeywordsRes = R.string.search_keywords_import_filter_config,
                 navigationAction = { context, id -> context.startActivity(Intent(context, FilterSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+
+            // Summary Settings
+            SettingsItem(
+                id = "enable_summaries",
+                titleRes = R.string.search_title_enable_summaries,
+                descriptionRes = R.string.search_desc_enable_summaries,
+                category = "summary",
+                categoryTitleRes = R.string.search_cat_summary,
+                categoryIconRes = R.drawable.ic_slideshow_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_enable_summaries,
+                navigationAction = { context, id -> context.startActivity(Intent(context, SummarySettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "summary_visual_mode",
+                titleRes = R.string.search_title_summary_visual_mode,
+                descriptionRes = R.string.search_desc_summary_visual_mode,
+                category = "summary",
+                categoryTitleRes = R.string.search_cat_summary,
+                categoryIconRes = R.drawable.ic_slideshow_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_summary_visual_mode,
+                navigationAction = { context, id -> context.startActivity(Intent(context, SummarySettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "summary_notification_order",
+                titleRes = R.string.search_title_summary_notification_order,
+                descriptionRes = R.string.search_desc_summary_notification_order,
+                category = "summary",
+                categoryTitleRes = R.string.search_cat_summary,
+                categoryIconRes = R.drawable.ic_slideshow_24,
+                settingType = SettingType.CARD,
+                searchKeywordsRes = R.string.search_keywords_summary_notification_order,
+                navigationAction = { context, id -> context.startActivity(Intent(context, SummarySettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "summary_enable_scheduler",
+                titleRes = R.string.search_title_summary_enable_scheduler,
+                descriptionRes = R.string.search_desc_summary_enable_scheduler,
+                category = "summary",
+                categoryTitleRes = R.string.search_cat_summary,
+                categoryIconRes = R.drawable.ic_slideshow_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_summary_enable_scheduler,
+                navigationAction = { context, id -> context.startActivity(Intent(context, SummarySettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "summary_run_time",
+                titleRes = R.string.search_title_summary_run_time,
+                descriptionRes = R.string.search_desc_summary_run_time,
+                category = "summary",
+                categoryTitleRes = R.string.search_cat_summary,
+                categoryIconRes = R.drawable.ic_slideshow_24,
+                settingType = SettingType.BUTTON,
+                searchKeywordsRes = R.string.search_keywords_summary_run_time,
+                navigationAction = { context, id -> context.startActivity(Intent(context, SummarySettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "summary_greeting_name",
+                titleRes = R.string.search_title_summary_greeting_name,
+                descriptionRes = R.string.search_desc_summary_greeting_name,
+                category = "summary",
+                categoryTitleRes = R.string.search_cat_summary,
+                categoryIconRes = R.drawable.ic_slideshow_24,
+                settingType = SettingType.CARD,
+                searchKeywordsRes = R.string.search_keywords_summary_greeting_name,
+                navigationAction = { context, id -> context.startActivity(Intent(context, SummarySettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "summary_speech_pacing",
+                titleRes = R.string.search_title_summary_speech_pacing,
+                descriptionRes = R.string.search_desc_summary_speech_pacing,
+                category = "summary",
+                categoryTitleRes = R.string.search_cat_summary,
+                categoryIconRes = R.drawable.ic_slideshow_24,
+                settingType = SettingType.CARD,
+                searchKeywordsRes = R.string.search_keywords_summary_speech_pacing,
+                navigationAction = { context, id -> context.startActivity(Intent(context, SummarySettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "summary_automation_intents",
+                titleRes = R.string.search_title_summary_automation_intents,
+                descriptionRes = R.string.search_desc_summary_automation_intents,
+                category = "summary",
+                categoryTitleRes = R.string.search_cat_summary,
+                categoryIconRes = R.drawable.ic_slideshow_24,
+                settingType = SettingType.CARD,
+                searchKeywordsRes = R.string.search_keywords_summary_automation_intents,
+                navigationAction = { context, id -> context.startActivity(Intent(context, SummarySettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+
+            // Clock Settings
+            SettingsItem(
+                id = "enable_time_announcements",
+                titleRes = R.string.search_title_enable_time_announcements,
+                descriptionRes = R.string.search_desc_enable_time_announcements,
+                category = "clock",
+                categoryTitleRes = R.string.search_cat_clock,
+                categoryIconRes = R.drawable.ic_alarm_clock_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_enable_time_announcements,
+                navigationAction = { context, id -> context.startActivity(Intent(context, ClockSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "clock_interval_15",
+                titleRes = R.string.search_title_clock_interval_15,
+                descriptionRes = R.string.search_desc_clock_interval_15,
+                category = "clock",
+                categoryTitleRes = R.string.search_cat_clock,
+                categoryIconRes = R.drawable.ic_alarm_clock_24,
+                settingType = SettingType.RADIO_GROUP,
+                searchKeywordsRes = R.string.search_keywords_clock_interval_15,
+                navigationAction = { context, id -> context.startActivity(Intent(context, ClockSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "clock_interval_30",
+                titleRes = R.string.search_title_clock_interval_30,
+                descriptionRes = R.string.search_desc_clock_interval_30,
+                category = "clock",
+                categoryTitleRes = R.string.search_cat_clock,
+                categoryIconRes = R.drawable.ic_alarm_clock_24,
+                settingType = SettingType.RADIO_GROUP,
+                searchKeywordsRes = R.string.search_keywords_clock_interval_30,
+                navigationAction = { context, id -> context.startActivity(Intent(context, ClockSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "clock_interval_60",
+                titleRes = R.string.search_title_clock_interval_60,
+                descriptionRes = R.string.search_desc_clock_interval_60,
+                category = "clock",
+                categoryTitleRes = R.string.search_cat_clock,
+                categoryIconRes = R.drawable.ic_alarm_clock_24,
+                settingType = SettingType.RADIO_GROUP,
+                searchKeywordsRes = R.string.search_keywords_clock_interval_60,
+                navigationAction = { context, id -> context.startActivity(Intent(context, ClockSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "clock_interval_180",
+                titleRes = R.string.search_title_clock_interval_180,
+                descriptionRes = R.string.search_desc_clock_interval_180,
+                category = "clock",
+                categoryTitleRes = R.string.search_cat_clock,
+                categoryIconRes = R.drawable.ic_alarm_clock_24,
+                settingType = SettingType.RADIO_GROUP,
+                searchKeywordsRes = R.string.search_keywords_clock_interval_180,
+                navigationAction = { context, id -> context.startActivity(Intent(context, ClockSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "clock_speech_format",
+                titleRes = R.string.search_title_clock_speech_format,
+                descriptionRes = R.string.search_desc_clock_speech_format,
+                category = "clock",
+                categoryTitleRes = R.string.search_cat_clock,
+                categoryIconRes = R.drawable.ic_alarm_clock_24,
+                settingType = SettingType.CARD,
+                searchKeywordsRes = R.string.search_keywords_clock_speech_format,
+                navigationAction = { context, id -> context.startActivity(Intent(context, ClockSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "clock_exact_alarm",
+                titleRes = R.string.search_title_clock_exact_alarm,
+                descriptionRes = R.string.search_desc_clock_exact_alarm,
+                category = "clock",
+                categoryTitleRes = R.string.search_cat_clock,
+                categoryIconRes = R.drawable.ic_alarm_clock_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_clock_exact_alarm,
+                navigationAction = { context, id -> context.startActivity(Intent(context, ClockSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
             ),
 
             // Conditional Rules
@@ -989,6 +1425,17 @@ object SettingsDatabase {
                 navigationAction = { context, id -> context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
             ),
             SettingsItem(
+                id = "include_notification_timestamps",
+                titleRes = R.string.search_title_include_notification_timestamps,
+                descriptionRes = R.string.search_desc_include_notification_timestamps,
+                category = "compatibility",
+                categoryTitleRes = R.string.search_cat_compatibility,
+                categoryIconRes = R.drawable.ic_framebug_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_include_notification_timestamps,
+                navigationAction = { context, id -> context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
                 id = "dismissal_memory",
                 titleRes = R.string.search_title_dismissal_memory,
                 descriptionRes = R.string.search_desc_dismissal_memory,
@@ -1006,8 +1453,19 @@ object SettingsDatabase {
                 category = "compatibility",
                 categoryTitleRes = R.string.search_cat_compatibility,
                 categoryIconRes = R.drawable.ic_framebug_24,
-                settingType = SettingType.SEEK_BAR,
+                settingType = SettingType.RADIO_GROUP,
                 searchKeywordsRes = R.string.search_keywords_dismissal_memory_timeout,
+                navigationAction = { context, id -> context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "bluetooth_phone_call_simulation",
+                titleRes = R.string.search_title_bluetooth_phone_call_simulation,
+                descriptionRes = R.string.search_desc_bluetooth_phone_call_simulation,
+                category = "compatibility",
+                categoryTitleRes = R.string.search_cat_compatibility,
+                categoryIconRes = R.drawable.ic_framebug_24,
+                settingType = SettingType.CARD,
+                searchKeywordsRes = R.string.search_keywords_bluetooth_phone_call_simulation,
                 navigationAction = { context, id -> context.startActivity(Intent(context, CompatibilitySettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
             ),
             SettingsItem(

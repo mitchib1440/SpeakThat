@@ -2323,6 +2323,7 @@
 
             <!-- Delay Before Readout Section -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardDelayBeforeReadout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -2591,6 +2592,7 @@
 
             <!-- Cooldown Settings Section -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardNotificationCooldown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -2747,6 +2749,7 @@
 
             <!-- Content Cap Section -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardContentCap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"

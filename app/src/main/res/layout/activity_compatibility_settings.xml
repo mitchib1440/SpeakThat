@@ -284,6 +284,7 @@
                 <!-- Card 1.5: Bluetooth SCO Device Selection     -->
                 <!-- ============================================ -->
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardBluetoothPhoneCallSimulation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
