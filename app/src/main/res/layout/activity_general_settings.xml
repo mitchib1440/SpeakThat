@@ -597,6 +597,7 @@
 
             <!-- Notification History Card -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardNotificationHistory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -729,6 +730,7 @@
 
             <!-- Toast Notifications Card -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardToastNotifications"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
