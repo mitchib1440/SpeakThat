@@ -3333,23 +3333,25 @@
                         android:layout_marginBottom="12dp"
                         app:boxBackgroundMode="outline"
                         app:boxStrokeColor="@color/white_100"
-                        app:hintTextColor="@color/purple_card_text_secondary">
+                        app:hintTextColor="@color/white_100">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editCustomSpeechTemplate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:minHeight="56dp"
                             android:hint="@string/hint_enter_format_placeholders"
                             android:inputType="textMultiLine"
                             android:maxLines="3"
-                            android:textSize="16sp"
-                            android:textColor="@color/purple_card_text_primary"
-                            android:textColorHint="@color/purple_card_text_secondary"
+                            android:minHeight="56dp"
                             android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
                             android:paddingTop="16dp"
-                            android:paddingBottom="16dp" />
+                            android:paddingEnd="16dp"
+                            android:paddingBottom="16dp"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/purple_card_text_secondary"
+                            android:textColorLink="@color/white_100"
+                            android:textCursorDrawable="@null"
+                            android:textSize="16sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
