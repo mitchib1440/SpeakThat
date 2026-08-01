@@ -2,7 +2,7 @@
 <resources>
     <!-- Settings Search index strings -->
     <string name="search_cat_general">General Settings</string>
-    <string name="search_cat_behavior">Behavior Settings</string>
+    <string name="search_cat_behavior">Behaviour Settings</string>
     <string name="search_cat_voice">Voice Settings</string>
     <string name="search_cat_conditional">Conditional Rules</string>
     <string name="search_cat_development">Development Settings</string>
@@ -33,10 +33,10 @@
     <string name="search_title_clear_data">Clear All Data</string>
     <string name="search_desc_clear_data">Reset all settings and data to defaults</string>
     <string name="search_keywords_clear_data">clear, reset, data, defaults, factory, wipe</string>
-    <string name="search_title_notification_behavior">Notification Behavior</string>
+    <string name="search_title_notification_behavior">Notification Behaviour</string>
     <string name="search_desc_notification_behavior">Choose how to handle multiple notifications</string>
-    <string name="search_keywords_notification_behavior">notification, behavior, interrupt, queue, skip, smart, multiple</string>
-    <string name="search_title_media_behavior">Media Behavior</string>
+    <string name="search_keywords_notification_behavior">notification, behaviour, interrupt, queue, skip, smart, multiple</string>
+    <string name="search_title_media_behavior">Media Behaviour</string>
     <string name="search_desc_media_behavior">Choose how to handle notifications during media playback</string>
     <string name="search_keywords_media_behavior">media, music, video, playback, pause, lower, ignore, silence</string>
     <string name="search_title_earcon">Earcon</string>
@@ -209,7 +209,7 @@
     <string name="search_desc_disable_media_fallback">Disable media playback fallback mechanisms</string>
     <string name="search_keywords_disable_media_fallback">disable, media, fallback, audio, ducking, compatibility</string>
     <string name="search_title_enable_legacy_ducking">Enable Legacy Ducking</string>
-    <string name="search_desc_enable_legacy_ducking">Use legacy audio ducking behavior</string>
+    <string name="search_desc_enable_legacy_ducking">Use legacy audio ducking behaviour</string>
     <string name="search_keywords_enable_legacy_ducking">legacy, ducking, audio, volume, old, compatibility</string>
     <string name="search_title_ducking_fallback_strategy">Ducking Fallback Strategy</string>
     <string name="search_desc_ducking_fallback_strategy">Choose what happens when audio ducking fails</string>
