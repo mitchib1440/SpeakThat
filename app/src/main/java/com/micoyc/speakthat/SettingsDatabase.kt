@@ -106,6 +106,127 @@ object SettingsDatabase {
                 searchKeywordsRes = R.string.search_keywords_clear_data,
                 navigationAction = { context, id -> context.startActivity(Intent(context, GeneralSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
             ),
+            SettingsItem(
+                id = "style_section",
+                titleRes = R.string.search_title_style_section,
+                descriptionRes = R.string.search_desc_style_section,
+                category = "general",
+                categoryTitleRes = R.string.search_cat_general,
+                categoryIconRes = R.drawable.ic_mobile_gear_24,
+                settingType = SettingType.CARD,
+                searchKeywordsRes = R.string.search_keywords_style_section,
+                navigationAction = { context, id -> context.startActivity(Intent(context, GeneralSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "logo_style",
+                titleRes = R.string.search_title_logo_style,
+                descriptionRes = R.string.search_desc_logo_style,
+                category = "general",
+                categoryTitleRes = R.string.search_cat_general,
+                categoryIconRes = R.drawable.ic_mobile_gear_24,
+                settingType = SettingType.BUTTON,
+                searchKeywordsRes = R.string.search_keywords_logo_style,
+                navigationAction = { context, id -> context.startActivity(Intent(context, GeneralSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "accessibility_permission",
+                titleRes = R.string.search_title_accessibility_permission,
+                descriptionRes = R.string.search_desc_accessibility_permission,
+                category = "general",
+                categoryTitleRes = R.string.search_cat_general,
+                categoryIconRes = R.drawable.ic_mobile_gear_24,
+                settingType = SettingType.BUTTON,
+                searchKeywordsRes = R.string.search_keywords_accessibility_permission,
+                navigationAction = { context, id -> context.startActivity(Intent(context, GeneralSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "notification_history_section",
+                titleRes = R.string.search_title_notification_history_section,
+                descriptionRes = R.string.search_desc_notification_history_section,
+                category = "general",
+                categoryTitleRes = R.string.search_cat_general,
+                categoryIconRes = R.drawable.ic_mobile_gear_24,
+                settingType = SettingType.CARD,
+                searchKeywordsRes = R.string.search_keywords_notification_history_section,
+                navigationAction = { context, id -> context.startActivity(Intent(context, GeneralSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "main_screen_history",
+                titleRes = R.string.search_title_main_screen_history,
+                descriptionRes = R.string.search_desc_main_screen_history,
+                category = "general",
+                categoryTitleRes = R.string.search_cat_general,
+                categoryIconRes = R.drawable.ic_mobile_gear_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_main_screen_history,
+                navigationAction = { context, id -> context.startActivity(Intent(context, GeneralSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "log_system_blocks",
+                titleRes = R.string.search_title_log_system_blocks,
+                descriptionRes = R.string.search_desc_log_system_blocks,
+                category = "general",
+                categoryTitleRes = R.string.search_cat_general,
+                categoryIconRes = R.drawable.ic_mobile_gear_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_log_system_blocks,
+                navigationAction = { context, id -> context.startActivity(Intent(context, GeneralSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "toast_notifications_section",
+                titleRes = R.string.search_title_toast_notifications_section,
+                descriptionRes = R.string.search_desc_toast_notifications_section,
+                category = "general",
+                categoryTitleRes = R.string.search_cat_general,
+                categoryIconRes = R.drawable.ic_mobile_gear_24,
+                settingType = SettingType.CARD,
+                searchKeywordsRes = R.string.search_keywords_toast_notifications_section,
+                navigationAction = { context, id -> context.startActivity(Intent(context, GeneralSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "toast_main_app",
+                titleRes = R.string.search_title_toast_main_app,
+                descriptionRes = R.string.search_desc_toast_main_app,
+                category = "general",
+                categoryTitleRes = R.string.search_cat_general,
+                categoryIconRes = R.drawable.ic_mobile_gear_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_toast_main_app,
+                navigationAction = { context, id -> context.startActivity(Intent(context, GeneralSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "toast_quick_settings",
+                titleRes = R.string.search_title_toast_quick_settings,
+                descriptionRes = R.string.search_desc_toast_quick_settings,
+                category = "general",
+                categoryTitleRes = R.string.search_cat_general,
+                categoryIconRes = R.drawable.ic_mobile_gear_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_toast_quick_settings,
+                navigationAction = { context, id -> context.startActivity(Intent(context, GeneralSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "toast_automation",
+                titleRes = R.string.search_title_toast_automation,
+                descriptionRes = R.string.search_desc_toast_automation,
+                category = "general",
+                categoryTitleRes = R.string.search_cat_general,
+                categoryIconRes = R.drawable.ic_mobile_gear_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_toast_automation,
+                navigationAction = { context, id -> context.startActivity(Intent(context, GeneralSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
+            SettingsItem(
+                id = "toast_notification_action",
+                titleRes = R.string.search_title_toast_notification_action,
+                descriptionRes = R.string.search_desc_toast_notification_action,
+                category = "general",
+                categoryTitleRes = R.string.search_cat_general,
+                categoryIconRes = R.drawable.ic_mobile_gear_24,
+                settingType = SettingType.SWITCH,
+                searchKeywordsRes = R.string.search_keywords_toast_notification_action,
+                navigationAction = { context, id -> context.startActivity(Intent(context, GeneralSettingsActivity::class.java).putExtra("SCROLL_TO_SETTING", id)) }
+            ),
 
             // Behavior Settings
             SettingsItem(
