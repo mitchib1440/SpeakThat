@@ -19,6 +19,8 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import com.micoyc.speakthat.StatsSnapshot;
+import com.micoyc.speakthat.automation.AutomationMode;
+import com.micoyc.speakthat.automation.AutomationModeManager;
 import com.micoyc.speakthat.rules.RuleConfigManager;
 import com.micoyc.speakthat.settings.BehaviorSettingsStore;
 
@@ -259,6 +261,7 @@ public class FilterConfigManager {
         @Deprecated
         public boolean aggressiveBackgroundProcessing; // Deprecated: No longer used in UI, kept for backwards compatibility
         public String serviceRestartPolicy;
+        public String automationMode;
         
         public GeneralConfig() {
             this.darkMode = true;
@@ -266,6 +269,7 @@ public class FilterConfigManager {
             this.batteryOptimizationDisabled = false;
             this.aggressiveBackgroundProcessing = false;
             this.serviceRestartPolicy = "crash";
+            this.automationMode = AutomationMode.OFF.getPrefValue();
         }
     }
 
@@ -485,6 +489,7 @@ public class FilterConfigManager {
         config.general.batteryOptimizationDisabled = prefs.getBoolean("battery_optimization_disabled", false);
         config.general.aggressiveBackgroundProcessing = prefs.getBoolean("aggressive_background_processing", false);
         config.general.serviceRestartPolicy = prefs.getString("service_restart_policy", "crash");
+        config.general.automationMode = new AutomationModeManager(context).getMode().getPrefValue();
 
         // Load statistics from main prefs
         StatsSnapshot statsSnapshot = StatisticsManager.Companion.exportSnapshot(context);
@@ -607,6 +612,7 @@ public class FilterConfigManager {
         general.put("batteryOptimizationDisabled", config.general.batteryOptimizationDisabled);
         general.put("aggressiveBackgroundProcessing", config.general.aggressiveBackgroundProcessing);
         general.put("serviceRestartPolicy", config.general.serviceRestartPolicy);
+        general.put("automationMode", config.general.automationMode);
         json.put("general", general);
 
         // Statistics
@@ -825,6 +831,7 @@ public class FilterConfigManager {
             SharedPreferences.Editor voiceEditor = context.getSharedPreferences("VoiceSettings", Context.MODE_PRIVATE).edit();
             
             int totalImported = 0;
+            String importedAutomationMode = null;
             
             // Import filter settings (if present)
             if (json.has("filters")) {
@@ -1348,6 +1355,12 @@ public class FilterConfigManager {
                     mainEditor.putString("service_restart_policy", general.getString("serviceRestartPolicy"));
                     totalImported++;
                 }
+
+                // Applied via AutomationModeManager after prefs commit so receiver/master toggle stay in sync
+                if (general.has("automationMode")) {
+                    importedAutomationMode = general.getString("automationMode");
+                    totalImported++;
+                }
             }
 
             // Import statistics (if present) - overwrites current stats
@@ -1400,6 +1413,11 @@ public class FilterConfigManager {
             // Apply all changes
             mainEditor.apply();
             voiceEditor.apply();
+
+            if (importedAutomationMode != null) {
+                new AutomationModeManager(context).setMode(AutomationMode.fromPrefValue(importedAutomationMode));
+                InAppLogger.log("FilterConfig", "Imported automation mode: " + importedAutomationMode);
+            }
             
             // Handle legacy import preset migration
             processLegacyImportPresets(context);

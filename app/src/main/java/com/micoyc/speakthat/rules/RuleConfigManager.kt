@@ -13,6 +13,8 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.micoyc.speakthat.BuildConfig
 import com.micoyc.speakthat.InAppLogger
+import com.micoyc.speakthat.automation.AutomationMode
+import com.micoyc.speakthat.automation.AutomationModeManager
 import org.json.JSONArray
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -81,6 +83,11 @@ object RuleConfigManager {
         return try {
             val ruleManager = RuleManager(context)
             ruleManager.saveRules(rules)
+            // Match template/rule creation: importing rules should activate Conditional Rules mode
+            if (rules.isNotEmpty()) {
+                AutomationModeManager(context).setMode(AutomationMode.CONDITIONAL_RULES)
+                InAppLogger.log(TAG, "Enabled Conditional Rules mode after importing rules")
+            }
             InAppLogger.log(TAG, "Imported ${rules.size} rules (skipped $skippedCount)")
             RuleImportResult(
                 success = true,

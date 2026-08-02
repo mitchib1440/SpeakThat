@@ -500,7 +500,7 @@ class RulesActivity : AppCompatActivity() {
                 .setMessage(message)
                 .setPositiveButton(R.string.button_ok, null)
                 .show()
-            updateUI(currentMode)
+            updateUI(automationModeManager.getMode())
         } else {
             showErrorDialog(getString(R.string.rules_import_failed, result.message))
         }
