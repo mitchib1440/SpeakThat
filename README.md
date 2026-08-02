@@ -137,7 +137,7 @@ Notification readers are fundamentally a privacy risk because they take informat
 
 ## Acknowledgements
 
-As I mentioned in the overview, SpeakThat was mostly inspired by Touchless Notifications by [DYNA Logix](https://dynalogix.eu/). Without his original app, I may have never fallen in love with notification readers and SpeakThat would simply not exist. Thank you ever so much for creating something truly ahead of its time. And I’m sorry it received such unfair punishment from Google!
+As I mentioned in the overview, SpeakThat was mostly inspired by Touchless Notifications by [DYNA Logix](https://dynalogix.eu/). Without his original app, I may have never fallen in love with notification readers and SpeakThat would simply not exist. Thank you ever so much for creating something truly ahead of its time. And I’m sorry it received such unfair punishment from Google! He appears to have started a 3D-printing channel and is doing well for himself! [You can view his channel here](https://www.youtube.com/@gerGoPrint3D), and I highly recommend subscribing if you are interested in 3D printing!
 
 SpeakThat uses many icons from the [Material Icons](https://fonts.google.com/icons) library. These are available under the Apache 2.0 license, and make SpeakThat look much more professional than it has any right to be! So a huge thank you to the Material design teams.
 
