@@ -4,6 +4,12 @@ plugins {
     id("com.mikepenz.aboutlibraries.plugin")
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+    }
+}
+
 android {
     namespace = "com.micoyc.speakthat"
     compileSdk = 36
@@ -80,9 +86,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
+
                 buildFeatures {
                 viewBinding = true
                 buildConfig = true  // Enable BuildConfig generation
@@ -130,7 +134,7 @@ dependencies {
     // For background work (optional, for future enhancements)
     implementation("androidx.work:work-runtime-ktx:2.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
-    implementation("com.github.woheller69:FreeDroidWarn:V1.+")
+    implementation("com.github.woheller69:FreeDroidWarn:V1.13")
 
     // Play-only: Google Play Billing for donation flow (quantity support requires 6.2+)
     add("playImplementation", "com.android.billingclient:billing-ktx:8.1.0")
