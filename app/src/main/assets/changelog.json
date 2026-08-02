@@ -11,7 +11,7 @@
     "text": "Added Swipe to Stop.",
     "subpoints": [
       "Cancel readouts early by dismissing the notification.",
-      "This works very well for smartwatches, allowing you to cancel the readout from your wrist.",
+      "This works very well for smartwatches, allowing you to discreetly cancel readouts from your wrist.",
       "Find this in Behaviour Settings."
     ]
   },
@@ -55,7 +55,7 @@
   {
     "text": "Fixed Advanced Voice Options showing uninstalled voices.",
     "subpoints": [
-      "The spinner for selecting a specific voice previously displayed voices that weren't installed on the device. This has been corrected.."
+      "The spinner for selecting a specific voice previously displayed voices that weren't installed on the device. This has been corrected."
     ]
   },
   {
