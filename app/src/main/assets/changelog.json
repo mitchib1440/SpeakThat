@@ -1,5 +1,13 @@
 [
   {
+    "text": "Settings Search has been massively improved.",
+    "subpoints": [
+      "A complete overhaul of the settings search has taken place. Search results look good, work consistently, and even allow for small typos.",
+      "If you find any settings that were missed, please report them on the GitHub page. Once I'm done crying, I'll add them to the search database.",
+      "Find this in SpeakThat! Settings."
+    ]
+  },
+  {
     "text": "Added Swipe to Stop.",
     "subpoints": [
       "Cancel readouts early by dismissing the notification.",
@@ -24,18 +32,24 @@
     ]
   },
   {
-    "text": "Settings Search has been massively improved.",
-    "subpoints": [
-      "A complete overhaul of the settings search has taken place. Search results look good, work consistently, and even allow for small typos.",
-      "If you find any settings that were missed, please report them on the GitHub page. Once I'm done crying, I'll add them to the search database.",
-      "Find this in SpeakThat! Settings."
-    ]
-  },
-  {
     "text": "Fixed SelfTest not recognising Content Cap.",
     "subpoints": [
       "Running SelfTest with Content Cap set to a short timed duration so that the test notification doesn't finish caused the SelfTest to hang until it hit its 60-second limit. This has been fixed.",
       "Thanks to ForgeSource for the bug report!"
+    ]
+  },
+  {
+    "text": "Fixed Conditional Rules not being selected after importing a configuration that uses them.",
+    "subpoints": [
+      "When importing a configuration file with Conditional Rules, they now get re-enabled by default rather than you needing to manually turn it back on.",
+      "Took me long enough to get this one patched out, honestly..."
+    ]
+  },
+  {
+    "text": "Fixed Auto-Language not being enabled during settings import.",
+    "subpoints": [
+      "I'm not sure why this option wasn't included when importing a setting configuration, but it is now.",
+      "Shesh, how many things are missed when importing a configuration? If you find anymore, do let me know. You'll be credited for the fix lol"
     ]
   },
   {
