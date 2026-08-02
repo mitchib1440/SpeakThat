@@ -20,6 +20,7 @@ enum class AutomationMode(val prefValue: String) {
     EXTERNAL_AUTOMATION("external_automation");
 
     companion object {
+        @JvmStatic
         fun fromPrefValue(value: String?): AutomationMode {
             return entries.firstOrNull { it.prefValue == value } ?: OFF
         }
