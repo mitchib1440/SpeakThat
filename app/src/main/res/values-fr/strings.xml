@@ -2152,4 +2152,20 @@ Bloque=ignore totalement, Privée=annonce de façon privée
     <string name="summary_settings_visual_mode_title">Mode visuel</string>
     <string name="summary_settings_visual_mode_subtitle">Montrer les cartes de résumé à l\'écran</string>
     <string name="summary_settings_audio_only_subtitle">Mode audio seule activé. Aucune permission de superposition requise.</string>
+    <string name="tidy_speech_separate_digits_title">Chiffres séparés</string>
+    <string name="tidy_speech_separate_digits_description">Sépare les grands nombres pour empêcher la synthèse de les lire comme de grandes valeurs</string>
+    <string name="tidy_speech_separate_digits_threshold_title">Minimum de chiffres</string>
+    <string name="tidy_speech_separate_digits_separator_title">Séparateur</string>
+    <string name="separator_space">Espace</string>
+    <string name="separator_comma">Virgule</string>
+    <string name="separator_period">Point</string>
+    <string name="behavior_swipe_to_stop_title">Balayer pour stopper</string>
+    <string name="behavior_swipe_to_stop_description">Annule la lecture si vous effacez la notification. Vous pouvez aussi utiliser ceci pour discrètement stopper la lecture depuis votre montre connectée.</string>
+    <string name="behavior_swipe_to_stop_watch_exception_title">Continuer à lire si effacé depuis une montre</string>
+    <string name="behavior_swipe_to_stop_watch_exception_description">Vous autorise à effacer la notification depuis l\'écran de votre montre connectée sans interrompre la lecture audio de votre téléphone.</string>
+    <string name="behavior_swipe_to_stop_auto_cancel_title">Stoppe si l\'application auto annule la notification</string>
+    <string name="behavior_swipe_to_stop_auto_cancel_description">Fait taire SpeakThat si l\'application qui a envoyé la notification la supprime automatiquement (par ex. synchronisation automatique ou système automatisé).</string>
+    <string name="action_override_separate_digits_title">Garder les chiffres groupés</string>
+    <string name="action_override_separate_digits_description">Ne pas séparer les grands nombres pour cette notification</string>
+    <string name="tidy_speech_separate_digits_threshold_description">Règle le nombre minimum de chiffres consécutifs requis pour appliquer la séparation.</string>
 </resources>

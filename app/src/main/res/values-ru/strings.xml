@@ -1724,4 +1724,8 @@
     <string name="rule_error_invalid_wired_headphones_state">Состояние соединения должно быть «подключено» или «отключено»</string>
     <string name="rule_action_use_voice_call">Использовать голосовой вызов для маршрутизации аудио</string>
     <string name="rule_action_override_tts_voice">Переопределить голос TTS</string>
+    <string name="unsaved_changes_title">Вы уверены?</string>
+    <string name="unsaved_changes_message">У вас есть несохраненные изменения. Хотите ли вы сохранить их?</string>
+    <string name="discard">Отменить</string>
+    <string name="separator_period">Период</string>
 </resources>
