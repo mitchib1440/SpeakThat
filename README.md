@@ -35,6 +35,7 @@
   [![IzzyOnDroid Yearly Downloads](https://img.shields.io/badge/dynamic/json?url=https://dlstats.izzyondroid.org/iod-stats-collector/stats/basic/yearly/rolling.json&query=$.['com.micoyc.speakthat']&label=IzzyOnDroid%20yearly%20downloads&color=purple&logo=android&logoColor=white)](https://apt.izzysoft.de/packages/com.micoyc.speakthat)
   [![GitHub Downloads](https://img.shields.io/github/downloads/mitchib1440/speakthat/total?style=flat&logo=github&label=GitHub%20downloads&color=purple)](https://github.com/mitchib1440/SpeakThat/releases)
   [![Play Store Installs](https://img.shields.io/endpoint?url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.micoyc.speakthat%26gl%3DGB%26hl%3Den%26l%3DGoogle%2520Play%2520installs%26m%3D%24totalinstalls&style=flat&logo=google-play&label=Google%20Play%20installs&color=purple)](https://play.google.com/store/apps/details?id=com.micoyc.speakthat)
+  ![F-Droid Downloads (all time)](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fkitswas%2Ffdroid-metrics-dashboard%2Fraw%2Frefs%2Fheads%2Fmain%2Fprocessed%2Ftotal%2Fcom.micoyc.speakthat.json&query=%24.total_downloads&logo=fdroid&label=F-Droid%20Downloads&color=purple)
 
 </div>
 
