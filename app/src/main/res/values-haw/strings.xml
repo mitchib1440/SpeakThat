@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ʻŌlelo Mai!</string>
-    <string name="service_name">‘Ōlelo Mai! Heluhulu ho‘olaha</string>
-    <string name="quick_settings_tile_label">‘Ōlelo Mai!</string>
+    <string name="app_name">SpeakThat!</string>
+    <string name="service_name">SpeakThat! Heluhulu ho‘olaha</string>
+    <string name="quick_settings_tile_label">SpeakThat!</string>
     <string name="quick_settings_tile_enabled">Ua hoʻā ʻia</string>
     <string name="quick_settings_tile_disabled">Pāpālua</string>
-    <string name="quick_settings_tile_enabled_toast">Ua hoʻā ʻia ʻo ʻŌlelo Mai ma o nā hoʻonohonoho wikiwiki</string>
-    <string name="quick_settings_tile_disabled_toast">Ua hoʻopau ʻia ʻo ʻŌlelo Mai ma o nā hoʻonohonoho wikiwiki</string>
-    <string name="quick_settings_tile_error_toast">He hewa i ka hoʻololi ʻana i ka ʻŌlelo Mai</string>
+    <string name="quick_settings_tile_enabled_toast">Ua hoʻā ʻia ʻo SpeakThat ma o nā hoʻonohonoho wikiwiki</string>
+    <string name="quick_settings_tile_disabled_toast">Ua hoʻopau ʻia ʻo SpeakThat i ma o nā hoʻonohonoho wikiwiki</string>
+    <string name="quick_settings_tile_error_toast">He hewa i ka hoʻololi ʻana i ka SpeakThat</string>
     <string name="permission_request_install_packages">Hoʻohana ʻia no ka ʻōnaehana hoʻohou ponoʻī e hoʻokomo i nā mana hou mai nā hoʻokuʻu ʻana o GitHub. Hoʻohana wale ʻia ke hiki i ka mea hoʻohana ke hoʻā pololei i nā hoʻohou ponoʻī a ʻaʻole i hoʻokomo ʻia ka polokalamu mai ka Google Play Store.</string>
 </resources>
