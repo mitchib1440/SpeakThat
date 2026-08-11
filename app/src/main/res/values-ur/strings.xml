@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">اسپیک دیٹ!</string>
-    <string name="service_name">اسپیک دیٹ! نوٹیفکیشن ریڈر</string>
-    <string name="quick_settings_tile_label">اسپیک دیٹ!</string>
+    <string name="app_name">SpeakThat!</string>
+    <string name="service_name">SpeakThat! نوٹیفکیشن ریڈر</string>
+    <string name="quick_settings_tile_label">SpeakThat!</string>
     <string name="quick_settings_tile_enabled">فعال ہو چکا</string>
     <string name="quick_settings_tile_disabled">غیر فعال ہو چکا</string>
     <string name="quick_settings_tile_enabled_toast">اسپیک دیٹ مختصر سیتنگز کے ذریعہ فعال ہو چکا</string>
