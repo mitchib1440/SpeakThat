@@ -1238,7 +1238,7 @@ Bloque=ignore totalement, Privée=annonce de façon privée
     <string name="url_handling_read_full">Lire tout le lien</string>
     <string name="url_handling_domain_only">Lire uniquement le domaine</string>
     <string name="url_handling_dont_read">Ne pas lire</string>
-    <string name="url_handling_example">Exemple : https://www.speakthat.app/subdirectory → speakthat.app</string>
+    <string name="url_handling_example">Exemple : https://www.speakthat.app/subdirectory → speakthat.app</string>
     <string name="url_handling_custom_text_title">Remplacement de texte personnalisé</string>
     <string name="url_handling_custom_text_description">Quoi dire à la place des URL (laissez vide pour tout omettre)</string>
     <string name="url_handling_custom_text_hint">par exemple, \"lien web\", \"lien vers un site\", ou laissé vide pour omettre</string>
