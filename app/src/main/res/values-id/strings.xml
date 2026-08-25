@@ -74,7 +74,7 @@
     <string name="enable_persistent_filtering">Aktifkan pemfilteran notifikasi persisten/senyap</string>
     <string name="persistent_filtering_help">Notifikasi persisten bersifat berkelanjutan (seperti kontrol musik, navigasi, dll.) dan notifikasi senyap tidak memiliki suara/getaran. Opsi ini membantu mengurangi spam notifikasi dari layanan latar belakang.</string>
     <!-- Individual Persistent Filtering Categories -->
-    <string name="filter_persistent_notifications">Filter notifikasi persisten</string>
+    <string name="filter_persistent_notifications">Filter tetap</string>
     <string name="filter_silent_notifications">Filter senyap</string>
     <string name="filter_foreground_services">Filter layanan latar depan</string>
     <string name="filter_low_priority">Filter prioritas rendah</string>
@@ -2121,4 +2121,33 @@
     <string name="activity_pause_options_indefinitely">Sampai Anda menyalakannya kembali</string>
     <string name="activity_pause_options_title">Jeda SpeakThat!</string>
     <string name="activity_pause_options_description">Durasi:</string>
+    <string name="filter_remove_emojis_advanced">Pengecualian Penghapusan Emoji</string>
+    <string name="unsaved_changes_title">Apakah Anda yakin?</string>
+    <string name="unsaved_changes_message">Anda memiliki perubahan yang belum disimpan. Apakah Anda ingin menyimpannya?</string>
+    <string name="discard">Buang</string>
+    <string name="tidy_speech_separate_digits_title">Pisahkan digit</string>
+    <string name="tidy_speech_separate_digits_description">Pisahkan angka panjang agar mesin TTS tidak membacanya sebagai satu nilai besar</string>
+    <string name="tidy_speech_separate_digits_threshold_title">Jumlah digit minimum</string>
+    <string name="tidy_speech_separate_digits_separator_title">Pemisah</string>
+    <string name="separator_space">Spasi</string>
+    <string name="separator_comma">Koma</string>
+    <string name="separator_period">Titik</string>
+    <string name="behavior_android_auto_title">Android Auto</string>
+    <string name="behavior_android_auto_description">Kelola perilaku saat terhubung ke layar mobil</string>
+    <string name="behavior_disable_speakthat_auto">Nonaktifkan SpeakThat untuk Android Auto</string>
+    <string name="behavior_disable_speakthat_auto_desc">Prioritaskan pembaca notifikasi bawaan Android Auto saat terhubung</string>
+    <string name="behavior_disable_sco_auto">Nonaktifkan Bluetooth SCO</string>
+    <string name="behavior_disable_sco_auto_desc">Mencegah SpeakThat memaksa koneksi panggilan telepon saat Android Auto sedang berjalan</string>
+    <string name="behavior_swipe_to_stop_title">Geser untuk Menghentikan</string>
+    <string name="behavior_swipe_to_stop_description">Membatalkan pembacaan lebih awal jika Anda menutup notifikasi. Fitur ini juga dapat digunakan untuk menghentikan pembacaan secara diam-diam dari smartwatch.</string>
+    <string name="behavior_swipe_to_stop_watch_exception_title">Lanjutkan membaca jika ditutup dari jam tangan</string>
+    <string name="behavior_swipe_to_stop_watch_exception_description">Memungkinkan Anda menghapus notifikasi dari layar smartwatch tanpa mengganggu pembacaan audio di ponsel.</string>
+    <string name="behavior_swipe_to_stop_auto_cancel_title">Hentikan jika aplikasi membatalkan notifikasi secara otomatis</string>
+    <string name="behavior_swipe_to_stop_auto_cancel_description">Membisukan SpeakThat jika aplikasi yang mengirim notifikasi menghapusnya secara otomatis (misalnya sinkronisasi latar belakang atau sistem otomatis).</string>
+    <string name="action_override_separate_digits_title">Pertahankan Digit Tetap Bersama</string>
+    <string name="action_override_separate_digits_description">Jangan pisahkan angka panjang untuk notifikasi ini</string>
+    <string name="summary_settings_visual_mode_title">Mode Visual</string>
+    <string name="summary_settings_visual_mode_subtitle">Tampilkan kartu ringkasan di layar</string>
+    <string name="summary_settings_audio_only_subtitle">Mode audio saja diaktifkan. Tidak diperlukan izin overlay.</string>
+    <string name="tidy_speech_separate_digits_threshold_description">Atur jumlah minimum digit berurutan yang diperlukan agar pemisahan diterapkan.</string>
 </resources>
