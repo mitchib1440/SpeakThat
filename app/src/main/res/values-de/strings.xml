@@ -2252,4 +2252,9 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="summary_settings_visual_mode_title">Visueller Modus</string>
     <string name="summary_settings_visual_mode_subtitle">Übersichtskarten auf dem Bildschirm anzeigen</string>
     <string name="summary_settings_audio_only_subtitle">Nur-Audio-Modus aktiviert. Keine Overlay-Berechtigung erforderlich.</string>
+    <string name="tidy_speech_separate_digits_threshold_title">Mindestanzahl an Ziffern</string>
+    <string name="tidy_speech_separate_digits_title">Ziffern trennen</string>
+    <string name="tidy_speech_separate_digits_separator_title">Trennzeichen</string>
+    <string name="separator_space">Raum</string>
+    <string name="separator_comma">Komma</string>
 </resources>
