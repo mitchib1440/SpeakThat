@@ -2257,4 +2257,6 @@ Block = komplett überspringen, Privat = privat ankündigen
     <string name="tidy_speech_separate_digits_separator_title">Trennzeichen</string>
     <string name="separator_space">Raum</string>
     <string name="separator_comma">Komma</string>
+    <string name="tidy_speech_separate_digits_description">Trenne lange Zahlen, damit die Sprachausgabe sie nicht als einen einzelnen großen Wert vorliest</string>
+    <string name="separator_period">Punkt</string>
 </resources>
