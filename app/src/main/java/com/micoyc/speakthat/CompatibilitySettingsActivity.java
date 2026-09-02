@@ -57,7 +57,7 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
     private static final String KEY_SCO_DEVICES = "sco_devices";
 
     private static final int DEFAULT_AUDIO_USAGE = 0;
-    private static final int DEFAULT_CONTENT_TYPE = 0;
+    private static final int DEFAULT_CONTENT_TYPE = 1;
     private static final int VOICE_CALL_INDEX = 3;
 
     private ActivityResultLauncher<String[]> bluetoothPermissionLauncher;
@@ -146,7 +146,7 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
         });
 
         String[] contentTypeOptions = {
-            "Speech (Default)", "Music", "Notification Sound", "Sonification"
+            "Speech", "Music", "Notification Sound", "Sonification"
         };
         ArrayAdapter<String> contentTypeAdapter = new ArrayAdapter<>(this,
             android.R.layout.simple_spinner_item, contentTypeOptions);
@@ -486,7 +486,7 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
                 "• Assistance: Uses navigation volume so speech stays audible even when ringer is muted\n\n" +
                 "\uD83C\uDFB5 Content Type\n" +
                 "Tells the system how to optimize audio processing:\n\n" +
-                "• Speech: Optimized for voice clarity (recommended)\n" +
+                "• Speech: Optimized for voice clarity\n" +
                 "• Music: Optimized for music playback\n" +
                 "• Notification Sound: For short notification sounds\n" +
                 "• Sonification: For UI sounds and alerts\n\n" +
