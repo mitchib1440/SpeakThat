@@ -223,10 +223,19 @@ class AboutActivity : AppCompatActivity() {
         if (SpeakThatTtsManager.getTextToSpeech() == null) {
             SpeakThatTtsManager.initIfNeeded(this, false) { status ->
                 if (status == TextToSpeech.SUCCESS) {
+                    val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+                    val contentTypeIndex = voiceSettingsPrefs?.getInt("content_type", 1) ?: 1 // Default to MUSIC
+                    val userContentType = when (contentTypeIndex) {
+                        0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                        1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                        2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                        3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                        else -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                    }
                     SpeakThatTtsManager.setAudioAttributes(
                         android.media.AudioAttributes.Builder()
                             .setUsage(android.media.AudioAttributes.USAGE_ASSISTANT)
-                            .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                            .setContentType(userContentType)
                             .build()
                     )
                     applyVoiceSettings()
@@ -249,7 +258,7 @@ class AboutActivity : AppCompatActivity() {
         // This ensures the audio usage matches what we pass to createVolumeBundle
         val ttsVolume = minOf(1.0f, voiceSettingsPrefs?.getFloat("tts_volume", 1.0f) ?: 1.0f)
         val ttsUsageIndex = voiceSettingsPrefs?.getInt("audio_usage", 4) ?: 4 // Default to ASSISTANT index
-        val contentTypeIndex = voiceSettingsPrefs?.getInt("content_type", 0) ?: 0 // Default to SPEECH
+        val contentTypeIndex = voiceSettingsPrefs?.getInt("content_type", 1) ?: 1 // Default to MUSIC
         val speakerphoneEnabled = voiceSettingsPrefs?.getBoolean("speakerphone_enabled", false) ?: false
         
         val ttsUsage = when (ttsUsageIndex) {
@@ -266,7 +275,7 @@ class AboutActivity : AppCompatActivity() {
             1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
             2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
             3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
-            else -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+            else -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
         }
         
         // Apply audio attributes to TTS instance
@@ -347,10 +356,19 @@ class AboutActivity : AppCompatActivity() {
 
         SpeakThatTtsManager.initIfNeeded(this, true) { status ->
             if (status == TextToSpeech.SUCCESS) {
+                val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+                val contentTypeIndex = voiceSettingsPrefs?.getInt("content_type", 1) ?: 1 // Default to MUSIC
+                val userContentType = when (contentTypeIndex) {
+                    0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                    1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                    2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                    3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                    else -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                }
                 SpeakThatTtsManager.setAudioAttributes(
                     android.media.AudioAttributes.Builder()
                         .setUsage(android.media.AudioAttributes.USAGE_ASSISTANT)
-                        .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                        .setContentType(userContentType)
                         .build()
                 )
                 applyVoiceSettings()

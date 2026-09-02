@@ -316,17 +316,25 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
     }
 
     private fun configureTextToSpeech(tts: TextToSpeech) {
+        val prefs: SharedPreferences = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
         try {
+            val contentTypeIndex = prefs.getInt("content_type", 1) // Default to MUSIC
+            val userContentType = when (contentTypeIndex) {
+                0 -> AudioAttributes.CONTENT_TYPE_SPEECH
+                1 -> AudioAttributes.CONTENT_TYPE_MUSIC
+                2 -> AudioAttributes.CONTENT_TYPE_SONIFICATION
+                3 -> AudioAttributes.CONTENT_TYPE_SONIFICATION
+                else -> AudioAttributes.CONTENT_TYPE_MUSIC
+            }
             val attrs = AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_ASSISTANCE_ACCESSIBILITY)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                .setContentType(userContentType)
                 .build()
             tts.setAudioAttributes(attrs)
         } catch (e: Exception) {
             InAppLogger.logError(TAG, "Failed to set TTS audio attributes: ${e.message}")
         }
 
-        val prefs: SharedPreferences = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
         VoiceSettingsActivity.applyVoiceSettings(tts, prefs)
     }
 
@@ -596,9 +604,18 @@ class SummaryExecutionService : Service(), TextToSpeech.OnInitListener, Componen
 
         val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (audioFocusRequest == null) {
+                val prefs: SharedPreferences = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+                val contentTypeIndex = prefs.getInt("content_type", 1) // Default to MUSIC
+                val userContentType = when (contentTypeIndex) {
+                    0 -> AudioAttributes.CONTENT_TYPE_SPEECH
+                    1 -> AudioAttributes.CONTENT_TYPE_MUSIC
+                    2 -> AudioAttributes.CONTENT_TYPE_SONIFICATION
+                    3 -> AudioAttributes.CONTENT_TYPE_SONIFICATION
+                    else -> AudioAttributes.CONTENT_TYPE_MUSIC
+                }
                 val attrs = AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_ASSISTANCE_ACCESSIBILITY)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .setContentType(userContentType)
                     .build()
                 audioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
                     .setAudioAttributes(attrs)

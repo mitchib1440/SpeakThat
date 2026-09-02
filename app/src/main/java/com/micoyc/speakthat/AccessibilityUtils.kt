@@ -80,7 +80,7 @@ object AccessibilityUtils {
             // Use accessibility-specific audio attributes for better system integration
             Pair(
                 android.media.AudioAttributes.USAGE_ASSISTANCE_ACCESSIBILITY,
-                android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                fallbackContent
             )
         } else {
             // Use fallback attributes when accessibility is not available

@@ -1112,7 +1112,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             // This ensures the audio usage matches what we pass to createVolumeBundle
             val ttsVolume = minOf(1.0f, voiceSettingsPrefs.getFloat("tts_volume", 1.0f))
             val ttsUsageIndex = voiceSettingsPrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
-            val contentTypeIndex = voiceSettingsPrefs.getInt("content_type", 0) // Default to SPEECH
+            val contentTypeIndex = voiceSettingsPrefs.getInt("content_type", 1) // Default to MUSIC
             val speakerphoneEnabled = voiceSettingsPrefs.getBoolean("speakerphone_enabled", false)
             
             val ttsUsage = when (ttsUsageIndex) {
@@ -1129,7 +1129,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
                 2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
                 3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
-                else -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                else -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
             }
             
             // Apply audio attributes to TTS instance
@@ -1650,7 +1650,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         return try {
             val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
             val ttsUsageIndex = voiceSettingsPrefs.getInt("audio_usage", 4) // Default to ASSISTANT
-            val contentTypeIndex = voiceSettingsPrefs.getInt("content_type", 0) // Default to SPEECH
+            val contentTypeIndex = voiceSettingsPrefs.getInt("content_type", 1) // Default to MUSIC
             
             val ttsUsage = when (ttsUsageIndex) {
                 0 -> android.media.AudioAttributes.USAGE_MEDIA
@@ -1666,7 +1666,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
                 1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
                 2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
                 3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
-                else -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                else -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
             }
             
             // Test if we can create audio attributes

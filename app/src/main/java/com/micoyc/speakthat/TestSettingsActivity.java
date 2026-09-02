@@ -231,7 +231,7 @@ public class TestSettingsActivity extends AppCompatActivity {
             String voiceName = voicePrefs.getString("voice_name", "");
             String language = voicePrefs.getString("language", "en_US");
             int audioUsage = voicePrefs.getInt("audio_usage", 0);
-            int contentType = voicePrefs.getInt("content_type", 0);
+            int contentType = voicePrefs.getInt("content_type", 1);
             boolean ttsEnabled = voicePrefs.getBoolean("tts_enabled", true);
             int volume = voicePrefs.getInt("volume", 100);
             boolean duckingEnabled = voicePrefs.getBoolean("ducking_enabled", true);

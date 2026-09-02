@@ -2674,10 +2674,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 
                 // Set audio stream to assistant usage to avoid triggering media detection
                 try {
+                    val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+                    val contentTypeIndex = voicePrefs.getInt("content_type", 1) // Default to MUSIC
+                    val userContentType = when (contentTypeIndex) {
+                        0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                        1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                        2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                        3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                        else -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                    }
+                    
                     SpeakThatTtsManager.setAudioAttributes(
                         android.media.AudioAttributes.Builder()
                             .setUsage(android.media.AudioAttributes.USAGE_ASSISTANT)
-                            .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                            .setContentType(userContentType)
                             .build()
                     )
                     Log.d(TAG, "Audio attributes set successfully")
@@ -4960,7 +4970,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
     private fun requestPauseAudioFocus(): Boolean {
         val usage = android.media.AudioAttributes.USAGE_MEDIA
-        val contentType = android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+        val voiceSettingsPrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+        val contentTypeIndex = voiceSettingsPrefs.getInt("content_type", 1) // Default to MUSIC
+        val contentType = when (contentTypeIndex) {
+            0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+            1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+            2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+            3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+            else -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+        }
 
         return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             val attributes = android.media.AudioAttributes.Builder()
@@ -5143,10 +5161,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
     private fun requestSpeechAudioFocus(focusGain: Int): Boolean {
         val baseUsage = resolveTtsUsage()
+        val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+        val contentTypeIndex = voicePrefs.getInt("content_type", 1) // Default to MUSIC
+        val userContentType = when (contentTypeIndex) {
+            0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+            1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+            2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+            3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+            else -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+        }
+        
         val (usage, contentType) = AccessibilityUtils.getEnhancedAudioAttributes(
             this,
             baseUsage,
-            android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+            userContentType
         )
 
         return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -5218,13 +5246,23 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
      */
     
     private fun requestAudioFocusForVoiceCall(): Boolean {
+        val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+        val contentTypeIndex = voicePrefs.getInt("content_type", 1) // Default to MUSIC
+        val userContentType = when (contentTypeIndex) {
+            0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+            1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+            2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+            3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+            else -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+        }
+
         return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             // Use AudioFocusRequest for API 26+ with VOICE_COMMUNICATION usage
             audioFocusRequest = android.media.AudioFocusRequest.Builder(android.media.AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
                 .setAudioAttributes(
                     android.media.AudioAttributes.Builder()
                         .setUsage(android.media.AudioAttributes.USAGE_VOICE_COMMUNICATION)
-                        .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                        .setContentType(userContentType)
                         .build()
                 )
                 .setOnAudioFocusChangeListener { focusChange ->
@@ -5436,10 +5474,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             
             // Re-apply audio attributes to TTS instance
-            // CRITICAL: Always use CONTENT_TYPE_SPEECH to prevent TTS from being ducked
+            // Use the user's content type preference
+            val contentTypeIndex = voicePrefs.getInt("content_type", 1) // Default to MUSIC
+            val contentType = when (contentTypeIndex) {
+                0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                else -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+            }
+            
             val audioAttributes = android.media.AudioAttributes.Builder()
                 .setUsage(ttsUsage)
-                .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                .setContentType(contentType)
                 .build()
             
             textToSpeech?.setAudioAttributes(audioAttributes)
@@ -5791,9 +5838,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     InAppLogger.log("MediaBehavior", "=== DUCKING DEBUG: TTS is currently speaking - re-applying compensated volume ===")
                     
                     // Re-apply audio attributes with compensated volume
+                    val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+                    val contentTypeIndex = voicePrefs.getInt("content_type", 1) // Default to MUSIC
+                    val userContentType = when (contentTypeIndex) {
+                        0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                        1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                        2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                        3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                        else -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                    }
                     val audioAttributes = android.media.AudioAttributes.Builder()
                         .setUsage(ttsUsage)
-                        .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                        .setContentType(userContentType)
                         .build()
                     
                     textToSpeech?.setAudioAttributes(audioAttributes)
@@ -5892,11 +5948,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE
             }
             
+            val contentTypeIndex = voicePrefs.getInt("content_type", 1) // Default to MUSIC
+            val userContentType = when (contentTypeIndex) {
+                0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                else -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+            }
+            
             // ACCESSIBILITY ENHANCEMENT: Use enhanced audio attributes when accessibility permission is available
             val (ttsUsage, ttsContent) = AccessibilityUtils.getEnhancedAudioAttributes(
                 this, 
                 fallbackTtsUsage, 
-                android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                userContentType
             )
             
             Log.d(TAG, "Trying alternative ducking focus with TTS usage: $ttsUsage")
@@ -6118,11 +6183,20 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 else -> android.media.AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE // Safe fallback
             }
             
+            val contentTypeIndex = voicePrefs.getInt("content_type", 1) // Default to MUSIC
+            val userContentType = when (contentTypeIndex) {
+                0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                else -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+            }
+            
             // ACCESSIBILITY ENHANCEMENT: Use enhanced audio attributes when accessibility permission is available
             val (ttsUsage, ttsContent) = AccessibilityUtils.getEnhancedAudioAttributes(
                 this, 
                 fallbackTtsUsage, 
-                android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                userContentType
             )
             
             if (AccessibilityUtils.shouldUseEnhancedAudioControl(this)) {
@@ -6937,7 +7011,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (mainPrefs.getBoolean("dont_use_speaker", false)) {
             try {
                 val ttsUsageIndex = voiceSettingsPrefs.getInt("audio_usage", 4)
-                val contentTypeIndex = voiceSettingsPrefs.getInt("content_type", 0)
+                val contentTypeIndex = voiceSettingsPrefs.getInt("content_type", 1)
                 
                 val ttsUsage = when (ttsUsageIndex) {
                     0 -> android.media.AudioAttributes.USAGE_MEDIA
@@ -6953,7 +7027,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
                     2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
                     3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
-                    else -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                    else -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
                 }
                 
                 val audioAttributes = android.media.AudioAttributes.Builder()

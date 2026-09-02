@@ -429,7 +429,7 @@ public class FilterConfigManager {
         config.voice.isCustomPreset = voicePrefs.getBoolean("is_custom_preset", false);  // NEW
         config.voice.advancedEnabled = voicePrefs.getBoolean("show_advanced_voice", false); // NEW
         config.voice.audioUsage = voicePrefs.getInt("audio_usage", 0);
-        config.voice.contentType = voicePrefs.getInt("content_type", 0);
+        config.voice.contentType = voicePrefs.getInt("content_type", 1);
         config.voice.ttsEngine = voicePrefs.getString("tts_engine_package", "");
         config.voice.speakerphoneEnabled = voicePrefs.getBoolean("speakerphone_enabled", false);
         config.voice.autoDetectLanguage = voicePrefs.getBoolean("auto_detect_language", false);
