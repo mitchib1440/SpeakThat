@@ -6813,6 +6813,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             text,
             originalAppName,
             voiceOverride,
+            contentCapOverride,
             delayMs = delayMs,
             ttsFlushIncoming = ttsFlushIncoming,
             sbn = sbn
@@ -6825,6 +6826,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         originalText: String,
         originalAppName: String? = null,
         voiceOverride: VoiceOverride? = null,
+        contentCapOverride: ContentCapOverride? = null,
         delayMs: Long = 0L,
         ttsFlushIncoming: Boolean = true,
         sbn: StatusBarNotification? = null
@@ -7092,16 +7094,19 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 Log.d(TAG, "=== DUCKING DEBUG: TTS started - Music volume: $currentVolume/$maxVolume ===")
                 InAppLogger.log("Service", "=== DUCKING DEBUG: TTS started - Music volume: $currentVolume/$maxVolume ===")
 
+                val effectiveContentCapMode = contentCapOverride?.mode ?: contentCapMode
+                val effectiveTimeLimit = contentCapOverride?.timeLimit ?: contentCapTimeLimit
+
                 val isSelfTest = sbn?.notification?.extras?.getBoolean(SelfTestHelper.EXTRA_IS_SELFTEST, false) ?: false
-                if (isSelfTest && contentCapMode == "time" && contentCapTimeLimit > 0) {
+                if (isSelfTest && effectiveContentCapMode == "time" && effectiveTimeLimit > 0) {
                     Log.d(TAG, "SelfTest bypass - skipping Content Cap time limit")
                     InAppLogger.log("SelfTest", "Bypassing Content Cap time limit for SelfTest notification")
                 }
                 
-                if (!isSelfTest && contentCapMode == "time" && contentCapTimeLimit > 0) {
+                if (!isSelfTest && effectiveContentCapMode == "time" && effectiveTimeLimit > 0) {
                     contentCapTimerRunnable = Runnable {
-                        Log.d(TAG, "Content Cap time limit reached (${contentCapTimeLimit}s) - stopping TTS")
-                        InAppLogger.log("Service", "Content Cap time limit reached (${contentCapTimeLimit}s) - stopping TTS")
+                        Log.d(TAG, "Content Cap time limit reached (${effectiveTimeLimit}s) - stopping TTS")
+                        InAppLogger.log("Service", "Content Cap time limit reached (${effectiveTimeLimit}s) - stopping TTS")
 
                         val wasSpeaking = isCurrentlySpeaking
                         if (wasSpeaking) {
@@ -7130,11 +7135,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
                         resumeQueueAfterSpeechEnd("content cap")
                         Log.d(TAG, "Content Cap cleanup completed")
-                        InAppLogger.logTTSEvent("TTS stopped by Content Cap", "Time limit: ${contentCapTimeLimit}s")
+                        InAppLogger.logTTSEvent("TTS stopped by Content Cap", "Time limit: ${effectiveTimeLimit}s")
                     }
-                    delayHandler?.postDelayed(contentCapTimerRunnable!!, (contentCapTimeLimit * 1000).toLong())
-                    Log.d(TAG, "Content Cap timer started: ${contentCapTimeLimit}s")
-                    InAppLogger.log("Service", "Content Cap timer started: ${contentCapTimeLimit}s")
+                    delayHandler?.postDelayed(contentCapTimerRunnable!!, (effectiveTimeLimit * 1000).toLong())
+                    Log.d(TAG, "Content Cap timer started: ${effectiveTimeLimit}s")
+                    InAppLogger.log("Service", "Content Cap timer started: ${effectiveTimeLimit}s")
                 }
             }
 
