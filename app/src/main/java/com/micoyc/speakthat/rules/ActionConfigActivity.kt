@@ -126,6 +126,8 @@ class ActionConfigActivity : AppCompatActivity() {
             setupOverrideSeparateDigitsUI()
         } else if (actionType == ActionType.OVERRIDE_CONTENT_CAP) {
             setupOverrideContentCapUI()
+        } else if (actionType == ActionType.OVERRIDE_AUDIO_STREAM) {
+            setupOverrideAudioStreamUI()
         } else {
             InAppLogger.logError("ActionConfigActivity", "Unknown action type: $actionType")
             finish()
@@ -422,6 +424,26 @@ class ActionConfigActivity : AppCompatActivity() {
         edit.setSelection(newText.length)
     }
 
+    private fun setupOverrideAudioStreamUI() {
+        binding.cardOverrideAudioStream.visibility = View.VISIBLE
+        
+        val audioUsageOptions = arrayOf(
+            getString(com.micoyc.speakthat.R.string.voice_audio_usage_media_recommended),
+            getString(com.micoyc.speakthat.R.string.voice_audio_usage_notification),
+            getString(com.micoyc.speakthat.R.string.voice_audio_usage_alarm),
+            getString(com.micoyc.speakthat.R.string.voice_audio_usage_voice_call),
+            getString(com.micoyc.speakthat.R.string.voice_audio_usage_assistance)
+        )
+        
+        val adapter = android.widget.ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            audioUsageOptions
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerAudioStream.adapter = adapter
+    }
+
     private fun dpToPx(value: Int): Int {
         return (value * resources.displayMetrics.density).toInt()
     }
@@ -476,6 +498,11 @@ class ActionConfigActivity : AppCompatActivity() {
             binding.sliderContentCapWordCount.value = wordCount.toFloat()
             binding.sliderContentCapSentenceCount.value = sentenceCount.toFloat()
             binding.sliderContentCapTimeLimit.value = timeLimit.toFloat()
+        } else if (actionType == ActionType.OVERRIDE_AUDIO_STREAM) {
+            val audioUsageIndex = (originalAction?.data?.get("audio_usage_index") as? Number)?.toInt() ?: 4
+            if (audioUsageIndex in 0..4) {
+                binding.spinnerAudioStream.setSelection(audioUsageIndex)
+            }
         }
     }
 
@@ -488,6 +515,7 @@ class ActionConfigActivity : AppCompatActivity() {
             ActionType.OVERRIDE_EMOJI_REMOVAL -> createOverrideEmojiRemovalAction()
             ActionType.OVERRIDE_SEPARATE_DIGITS -> createOverrideSeparateDigitsAction()
             ActionType.OVERRIDE_CONTENT_CAP -> createOverrideContentCapAction()
+            ActionType.OVERRIDE_AUDIO_STREAM -> createOverrideAudioStreamAction()
             else -> createSkipNotificationAction()
         }
     }
@@ -702,6 +730,31 @@ class ActionConfigActivity : AppCompatActivity() {
         } else {
             Action(
                 type = ActionType.OVERRIDE_CONTENT_CAP,
+                description = description,
+                data = data
+            )
+        }
+    }
+
+    private fun createOverrideAudioStreamAction(): Action {
+        val audioUsageIndex = binding.spinnerAudioStream.selectedItemPosition
+        
+        val data = mapOf(
+            "audio_usage_index" to audioUsageIndex
+        )
+
+        val streamName = binding.spinnerAudioStream.selectedItem?.toString() ?: ""
+        val description = "${getString(com.micoyc.speakthat.R.string.action_override_audio_stream_title)}: $streamName"
+
+        return if (isEditing && originalAction != null) {
+            originalAction!!.copy(
+                type = ActionType.OVERRIDE_AUDIO_STREAM,
+                description = description,
+                data = data
+            )
+        } else {
+            Action(
+                type = ActionType.OVERRIDE_AUDIO_STREAM,
                 description = description,
                 data = data
             )

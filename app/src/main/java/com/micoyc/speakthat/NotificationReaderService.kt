@@ -631,7 +631,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val contentCapOverride: ContentCapOverride? = null,
         val processedBlocks: Map<String, String>? = null, // Support the new architecture
         val shouldKeepEmojis: Boolean = false,
-        val shouldKeepDigits: Boolean = false
+        val shouldKeepDigits: Boolean = false,
+        val audioStreamOverride: Int? = null
     )
     
     private lateinit var androidAutoHelper: com.micoyc.speakthat.utils.AndroidAutoHelper
@@ -3493,7 +3494,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val contentCapOverride: ContentCapOverride? = null,
         val processedBlocks: Map<String, String>? = null,
         val shouldKeepEmojis: Boolean = false,
-        val shouldKeepDigits: Boolean = false
+        val shouldKeepDigits: Boolean = false,
+        val audioStreamOverride: Int? = null
     )
 
     data class SpeechTemplateOverride(
@@ -3619,6 +3621,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val contentCapOverride = contentCapEffect?.let {
             ContentCapOverride(it.mode, it.wordCount, it.sentenceCount, it.timeLimit)
         }
+        val audioStreamOverride = effects
+            .filterIsInstance<com.micoyc.speakthat.rules.Effect.OverrideAudioStream>()
+            .lastOrNull()
+            ?.audioUsageIndex
 
         val effectiveOverridePrivate = overridePrivate || isSystemEvent
 
@@ -3703,7 +3709,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 voiceOverride = voiceOverride,
                 contentCapOverride = contentCapOverride,
                 processedBlocks = finalProcessedBlocks,
-                shouldKeepEmojis = notificationContext.shouldKeepEmojis
+                shouldKeepEmojis = notificationContext.shouldKeepEmojis,
+                shouldKeepDigits = notificationContext.shouldKeepDigits,
+                audioStreamOverride = audioStreamOverride
             )
         } else if (overridePrivate) {
             InAppLogger.logFilter("Rule effect: override private")
@@ -3761,7 +3769,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             voiceOverride = voiceOverride,
             contentCapOverride = contentCapOverride,
             processedBlocks = finalProcessedBlocks,
-            shouldKeepEmojis = notificationContext.shouldKeepEmojis
+            shouldKeepEmojis = notificationContext.shouldKeepEmojis,
+            shouldKeepDigits = notificationContext.shouldKeepDigits,
+            audioStreamOverride = audioStreamOverride
         )
     }
     
@@ -5146,9 +5156,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     }
 
     
-    private fun resolveTtsUsage(): Int {
-        val prefs = voiceSettingsPrefs ?: getSharedPreferences("VoiceSettings", MODE_PRIVATE)
-        val index = prefs?.getInt("audio_usage", DEFAULT_TTS_USAGE_INDEX) ?: DEFAULT_TTS_USAGE_INDEX
+    private fun resolveTtsUsage(audioStreamOverride: Int? = null): Int {
+        val index = audioStreamOverride ?: run {
+            val prefs = voiceSettingsPrefs ?: getSharedPreferences("VoiceSettings", MODE_PRIVATE)
+            prefs?.getInt("audio_usage", DEFAULT_TTS_USAGE_INDEX) ?: DEFAULT_TTS_USAGE_INDEX
+        }
         return when (index) {
             0 -> android.media.AudioAttributes.USAGE_MEDIA
             1 -> android.media.AudioAttributes.USAGE_NOTIFICATION
@@ -5159,8 +5171,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
 
-    private fun requestSpeechAudioFocus(focusGain: Int): Boolean {
-        val baseUsage = resolveTtsUsage()
+    private fun requestSpeechAudioFocus(focusGain: Int, audioStreamOverride: Int? = null): Boolean {
+        val baseUsage = resolveTtsUsage(audioStreamOverride)
         val voicePrefs = getSharedPreferences("VoiceSettings", MODE_PRIVATE)
         val contentTypeIndex = voicePrefs.getInt("content_type", 1) // Default to MUSIC
         val userContentType = when (contentTypeIndex) {
@@ -6696,7 +6708,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         voiceOverride: VoiceOverride? = null,
         contentCapOverride: ContentCapOverride? = null,
         processedBlocks: Map<String, String>? = null,
-        shouldKeepEmojis: Boolean = false
+        shouldKeepEmojis: Boolean = false,
+        shouldKeepDigits: Boolean = false,
+        audioStreamOverride: Int? = null
     ) {
         val isPriorityApp = priorityApps.contains(packageName)
         
@@ -6713,7 +6727,9 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             voiceOverride = voiceOverride,
             contentCapOverride = contentCapOverride,
             processedBlocks = processedBlocks,
-            shouldKeepEmojis = shouldKeepEmojis
+            shouldKeepEmojis = shouldKeepEmojis,
+            shouldKeepDigits = shouldKeepDigits,
+            audioStreamOverride = audioStreamOverride
         )
         
         Log.d(TAG, "Handling notification behavior - Mode: $notificationBehavior, App: $appName, Currently speaking: ${isCurrentlySpeaking.get()}, Queue size: ${notificationQueue.size}")
@@ -6740,7 +6756,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         when (notificationBehavior) {
             "interrupt" -> {
                 Log.d(TAG, "INTERRUPT mode: Speaking immediately and interrupting any current speech")
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis, queuedNotification.shouldKeepDigits)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis, queuedNotification.shouldKeepDigits, queuedNotification.audioStreamOverride)
             }
             "queue" -> {
                 Log.d(TAG, "QUEUE mode: Adding to queue")
@@ -6751,7 +6767,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "skip" -> {
                 if (!isCurrentlySpeaking.get()) {
                     Log.d(TAG, "SKIP mode: Not currently speaking, will speak now")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis, queuedNotification.shouldKeepDigits)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis, queuedNotification.shouldKeepDigits, queuedNotification.audioStreamOverride)
                 } else {
                     Log.d(TAG, "SKIP mode: Currently speaking, skipping notification from $appName")
                     // Track filter reason
@@ -6765,7 +6781,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             "smart" -> {
                 if (isPriorityApp) {
                     Log.d(TAG, "SMART mode: Priority app $appName - interrupting")
-                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis, queuedNotification.shouldKeepDigits)
+                    speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis, queuedNotification.shouldKeepDigits, queuedNotification.audioStreamOverride)
                 } else {
                     Log.d(TAG, "SMART mode: Regular app $appName - adding to queue")
                     notificationQueue.add(queuedNotification)
@@ -6774,7 +6790,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             else -> {
                 Log.d(TAG, "UNKNOWN mode '$notificationBehavior': Defaulting to interrupt")
-                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis, queuedNotification.shouldKeepDigits)
+                speakNotificationImmediate(appName, text, conditionalDelaySeconds, sbn, originalAppName, speechTemplateOverride, voiceOverride, queuedNotification.contentCapOverride, queuedNotification.processedBlocks, true, queuedNotification.shouldKeepEmojis, queuedNotification.shouldKeepDigits, queuedNotification.audioStreamOverride)
             }
         }
     }
@@ -6825,7 +6841,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 queuedNotification.processedBlocks,
                 ttsFlushIncoming = false,
                 shouldKeepEmojis = queuedNotification.shouldKeepEmojis,
-                shouldKeepDigits = queuedNotification.shouldKeepDigits
+                shouldKeepDigits = queuedNotification.shouldKeepDigits,
+                audioStreamOverride = queuedNotification.audioStreamOverride
             )
         } else if (isCurrentlySpeaking.get()) {
             Log.d(TAG, "Still speaking, queue will be processed when current speech finishes")
@@ -6846,7 +6863,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         processedBlocks: Map<String, String>? = null,
         ttsFlushIncoming: Boolean = true,
         shouldKeepEmojis: Boolean = false,
-        shouldKeepDigits: Boolean = false
+        shouldKeepDigits: Boolean = false,
+        audioStreamOverride: Int? = null
     ) {
         if (!isTtsInitialized || textToSpeech == null) {
             Log.w(TAG, "TTS not initialized, cannot speak notification")
@@ -6898,7 +6916,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             contentCapOverride,
             delayMs = delayMs,
             ttsFlushIncoming = ttsFlushIncoming,
-            sbn = sbn
+            sbn = sbn,
+            audioStreamOverride = audioStreamOverride
         )
     }
     
@@ -6911,7 +6930,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         contentCapOverride: ContentCapOverride? = null,
         delayMs: Long = 0L,
         ttsFlushIncoming: Boolean = true,
-        sbn: StatusBarNotification? = null
+        sbn: StatusBarNotification? = null,
+        audioStreamOverride: Int? = null
     ) {
         if (SpeechCoordinator.isSummaryActive()) {
             Log.d(TAG, "Summary active - refusing notification speech at executeSpeech")
@@ -7101,7 +7121,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         
         // Create volume bundle with proper volume parameters
         val ttsVolume = minOf(1.0f, voiceSettingsPrefs.getFloat("tts_volume", 1.0f))
-        val ttsUsageIndex = voiceSettingsPrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
+        val ttsUsageIndex = audioStreamOverride ?: voiceSettingsPrefs.getInt("audio_usage", 4) // Default to ASSISTANT index
         val speakerphoneEnabled = voiceSettingsPrefs.getBoolean("speakerphone_enabled", false)
         val dontUseSpeakerForVoice = mainPrefs.getBoolean("dont_use_speaker", false)
         val effectiveSpeakerphone = speakerphoneEnabled && !dontUseSpeakerForVoice
@@ -7149,6 +7169,29 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         )
         
         val volumeParams = VoiceSettingsActivity.createVolumeBundle(ttsVolume, ttsUsage, speakerphoneEnabled)
+        
+        // If audio stream is overridden, we need to update the TTS AudioAttributes directly before speaking
+        if (audioStreamOverride != null) {
+            val tts = SpeakThatTtsManager.getTextToSpeech()
+            if (tts != null) {
+                val contentTypeIndex = voiceSettingsPrefs.getInt("content_type", 1)
+                val ttsContentType = when (contentTypeIndex) {
+                    0 -> android.media.AudioAttributes.CONTENT_TYPE_SPEECH
+                    1 -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                    2 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                    3 -> android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION
+                    else -> android.media.AudioAttributes.CONTENT_TYPE_MUSIC
+                }
+                
+                val audioAttributes = android.media.AudioAttributes.Builder()
+                    .setUsage(ttsUsage)
+                    .setContentType(ttsContentType)
+                    .build()
+                    
+                tts.setAudioAttributes(audioAttributes)
+                InAppLogger.log("Service", "Applied overridden audio attributes - Usage: $ttsUsage, Content: $ttsContentType")
+            }
+        }
         
         Log.d(TAG, "=== DUCKING DEBUG: Created volume bundle for TTS.speak() ===")
         InAppLogger.log("Service", "=== DUCKING DEBUG: Created volume bundle for TTS.speak() ===")
@@ -7480,11 +7523,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 InAppLogger.log("AndroidAuto", "Bypassing Bluetooth SCO for Android Auto")
                 
                 // Ensure we have audio focus to duck the car's music
-                requestSpeechAudioFocus(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
+                requestSpeechAudioFocus(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK, audioStreamOverride)
                 
                 playAction()
             } else {
-                scoAudioManager.requestScoAndPlay(this, audioManager) {
+                scoAudioManager.requestScoAndPlay(this, audioManager, audioStreamOverride) {
                     playAction()
                 }
             }

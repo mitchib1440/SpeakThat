@@ -1854,6 +1854,7 @@ This permission is completely optional; SpeakThat! will still function without i
 
     <!-- Content Cap Feature Strings -->
     <string name="action_override_content_cap_title">Override Content Cap</string>
+    <string name="action_override_audio_stream_title">Override Audio Stream</string>
     <string name="action_override_content_cap_description">Enable or disable content cap for this notification</string>
     <string name="action_override_separate_digits_title">Keep Digits Together</string>
     <string name="action_override_separate_digits_description">Do not separate long numbers for this notification</string>
@@ -1862,6 +1863,8 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="action_override_emoji_removal_description">Do not strip emojis from this notification</string>
     <string name="rule_action_override_emoji_removal">keep emojis</string>
     <string name="rule_error_invalid_content_cap_mode">Invalid content cap mode</string>
+    <string name="rule_error_invalid_audio_stream">Invalid audio stream selection</string>
+    <string name="rule_audio_stream_volume_note">Note: This will use the volume slider associated with the selected stream.</string>
     <string name="content_cap_mode_label">Content Cap Mode:</string>
     <string name="content_cap_disabled">Disabled - Read full notification</string>
     <string name="content_cap_words">Word count limit</string>
@@ -2390,6 +2393,7 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="rule_action_force_private">Force private mode</string>
     <string name="rule_action_override_private">Override private mode</string>
     <string name="rule_action_use_voice_call">Use voice call audio routing</string>
+    <string name="rule_action_override_audio_stream">Override audio stream</string>
 
     <!-- Rule validation: battery/charging -->
     <string name="rule_error_invalid_battery_mode">Battery mode must be above or below</string>

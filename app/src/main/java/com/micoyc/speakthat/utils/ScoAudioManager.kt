@@ -24,8 +24,8 @@ class ScoAudioManager {
     private var timeoutRunnable: Runnable? = null
     private val handler = Handler(Looper.getMainLooper())
 
-    fun requestScoAndPlay(context: Context, audioManager: AudioManager, onReadyToSpeak: () -> Unit) {
-        if (!BluetoothConnectionHelper.isCurrentDeviceConfiguredForSco(context)) {
+    fun requestScoAndPlay(context: Context, audioManager: AudioManager, audioStreamOverride: Int? = null, onReadyToSpeak: () -> Unit) {
+        if (!BluetoothConnectionHelper.isCurrentDeviceConfiguredForSco(context, audioStreamOverride)) {
             onReadyToSpeak()
             return
         }

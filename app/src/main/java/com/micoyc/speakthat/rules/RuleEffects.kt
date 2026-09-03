@@ -34,6 +34,7 @@ sealed class Effect {
     ) : Effect()
     data object OverrideEmojiRemoval : Effect()
     data object OverrideSeparateDigits : Effect()
+    data class OverrideAudioStream(val audioUsageIndex: Int) : Effect()
 }
 
 data class EvaluationOutcome(

@@ -117,6 +117,14 @@ class ActionExecutor(private val context: Context) {
                     message = "Override content cap handled by rule pipeline"
                 )
             }
+            ActionType.OVERRIDE_AUDIO_STREAM -> {
+                ActionExecutionResult(
+                    actionId = action.id,
+                    actionType = action.type,
+                    success = true,
+                    message = "Override audio stream handled by rule pipeline"
+                )
+            }
             ActionType.SET_MASTER_SWITCH -> executeSetMasterSwitch(action)
         }
     }

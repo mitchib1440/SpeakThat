@@ -126,11 +126,17 @@ object BluetoothConnectionHelper {
     }
 
     @JvmStatic
-    fun isCurrentDeviceConfiguredForSco(context: Context): Boolean {
+    fun isCurrentDeviceConfiguredForSco(context: Context, audioStreamOverride: Int? = null): Boolean {
         val prefs = context.getSharedPreferences("VoiceSettings", Context.MODE_PRIVATE)
         val scoDevices = prefs.getStringSet("sco_devices", emptySet()) ?: emptySet()
         
         if (scoDevices.isEmpty()) {
+            return false
+        }
+
+        // If the audio stream is overridden to Voice Call (3), we must use SCO
+        val ttsUsageIndex = audioStreamOverride ?: prefs.getInt("audio_usage", 4)
+        if (ttsUsageIndex != 3) {
             return false
         }
 
