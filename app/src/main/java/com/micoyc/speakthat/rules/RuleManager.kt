@@ -378,6 +378,26 @@ class RuleManager(private val context: Context) {
                     val audioUsageIndex = (action.data["audio_usage_index"] as? Number)?.toInt() ?: 4
                     Effect.OverrideAudioStream(audioUsageIndex)
                 }
+                ActionType.APPLY_WORD_SWAPS -> {
+                    val replaceGlobal = action.data["replace_global"] as? Boolean ?: false
+                    val swapsJson = action.data["swaps_json"] as? String ?: "[]"
+                    val swaps = try {
+                        val jsonArray = org.json.JSONArray(swapsJson)
+                        val list = mutableListOf<Pair<String, String>>()
+                        for (i in 0 until jsonArray.length()) {
+                            val obj = jsonArray.getJSONObject(i)
+                            val from = obj.optString("from", "")
+                            val to = obj.optString("to", "")
+                            if (from.isNotEmpty()) {
+                                list.add(Pair(from, to))
+                            }
+                        }
+                        list
+                    } catch (e: kotlin.Exception) {
+                        emptyList()
+                    }
+                    Effect.ApplyWordSwaps(swaps, replaceGlobal)
+                }
             }
         }
     }
@@ -441,6 +461,11 @@ class RuleManager(private val context: Context) {
         val audioStreamOverride = effects.filterIsInstance<Effect.OverrideAudioStream>().lastOrNull()
         if (audioStreamOverride != null) {
             aggregated.add(audioStreamOverride)
+        }
+
+        val applyWordSwaps = effects.filterIsInstance<Effect.ApplyWordSwaps>().lastOrNull()
+        if (applyWordSwaps != null) {
+            aggregated.add(applyWordSwaps)
         }
 
         return aggregated
@@ -842,6 +867,16 @@ class RuleManager(private val context: Context) {
                 val audioUsageIndex = (action.data["audio_usage_index"] as? Number)?.toInt()
                 if (audioUsageIndex == null || audioUsageIndex < 0 || audioUsageIndex > 4) {
                     errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_audio_stream))
+                }
+            }
+            ActionType.APPLY_WORD_SWAPS -> {
+                val swapsJson = action.data["swaps_json"] as? String
+                if (swapsJson != null) {
+                    try {
+                        org.json.JSONArray(swapsJson)
+                    } catch (e: kotlin.Exception) {
+                        errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_word_swaps))
+                    }
                 }
             }
             ActionType.SKIP_NOTIFICATION,

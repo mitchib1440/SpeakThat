@@ -466,6 +466,7 @@ class RuleBuilderActivity : AppCompatActivity() {
             getString(R.string.action_override_emoji_removal_title),
             getString(R.string.action_override_content_cap_title),
             getString(R.string.action_override_audio_stream_title),
+            getString(R.string.rule_action_apply_word_swaps),
             getString(R.string.action_skip_notification_title)
         )
         
@@ -480,7 +481,8 @@ class RuleBuilderActivity : AppCompatActivity() {
                     4 -> addOverrideEmojiRemovalAction()
                     5 -> addOverrideContentCapAction()
                     6 -> addOverrideAudioStreamAction()
-                    7 -> addSkipNotificationAction()
+                    7 -> addApplyWordSwapsAction()
+                    8 -> addSkipNotificationAction()
                 }
             }
             .show()
@@ -631,6 +633,10 @@ class RuleBuilderActivity : AppCompatActivity() {
 
     private fun addOverrideAudioStreamAction() {
         launchActionConfig(ActionType.OVERRIDE_AUDIO_STREAM, null)
+    }
+
+    private fun addApplyWordSwapsAction() {
+        launchActionConfig(ActionType.APPLY_WORD_SWAPS, null)
     }
     
     private fun launchActionConfig(actionType: ActionType, existingAction: Action?) {

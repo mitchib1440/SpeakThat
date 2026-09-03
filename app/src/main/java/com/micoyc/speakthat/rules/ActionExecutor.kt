@@ -125,6 +125,14 @@ class ActionExecutor(private val context: Context) {
                     message = "Override audio stream handled by rule pipeline"
                 )
             }
+            ActionType.APPLY_WORD_SWAPS -> {
+                ActionExecutionResult(
+                    actionId = action.id,
+                    actionType = action.type,
+                    success = true,
+                    message = "Apply word swaps handled by rule pipeline"
+                )
+            }
             ActionType.SET_MASTER_SWITCH -> executeSetMasterSwitch(action)
         }
     }

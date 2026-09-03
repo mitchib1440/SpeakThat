@@ -632,7 +632,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val processedBlocks: Map<String, String>? = null, // Support the new architecture
         val shouldKeepEmojis: Boolean = false,
         val shouldKeepDigits: Boolean = false,
-        val audioStreamOverride: Int? = null
+        val audioStreamOverride: Int? = null,
+        val wordSwapOverride: WordSwapOverride? = null
     )
     
     private lateinit var androidAutoHelper: com.micoyc.speakthat.utils.AndroidAutoHelper
@@ -3495,7 +3496,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val processedBlocks: Map<String, String>? = null,
         val shouldKeepEmojis: Boolean = false,
         val shouldKeepDigits: Boolean = false,
-        val audioStreamOverride: Int? = null
+        val audioStreamOverride: Int? = null,
+        val wordSwapOverride: WordSwapOverride? = null
     )
 
     data class SpeechTemplateOverride(
@@ -3513,6 +3515,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val wordCount: Int,
         val sentenceCount: Int,
         val timeLimit: Int
+    )
+
+    data class WordSwapOverride(
+        val swaps: List<Pair<String, String>>,
+        val replaceGlobal: Boolean
     )
     
     /**
@@ -3625,6 +3632,12 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             .filterIsInstance<com.micoyc.speakthat.rules.Effect.OverrideAudioStream>()
             .lastOrNull()
             ?.audioUsageIndex
+        val wordSwapEffect = effects
+            .filterIsInstance<com.micoyc.speakthat.rules.Effect.ApplyWordSwaps>()
+            .lastOrNull()
+        val wordSwapOverride = wordSwapEffect?.let {
+            WordSwapOverride(it.swaps, it.replaceGlobal)
+        }
 
         val effectiveOverridePrivate = overridePrivate || isSystemEvent
 
@@ -3654,7 +3667,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             appName = appName,
             packageName = packageName,
             overridePrivate = effectiveOverridePrivate,
-            shouldKeepEmojis = notificationContext.shouldKeepEmojis
+            shouldKeepEmojis = notificationContext.shouldKeepEmojis,
+            wordSwapOverride = wordSwapOverride
         )
 
         if (!meatGrinderResult.shouldSpeak) {
@@ -3711,7 +3725,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 processedBlocks = finalProcessedBlocks,
                 shouldKeepEmojis = notificationContext.shouldKeepEmojis,
                 shouldKeepDigits = notificationContext.shouldKeepDigits,
-                audioStreamOverride = audioStreamOverride
+                audioStreamOverride = audioStreamOverride,
+                wordSwapOverride = wordSwapOverride
             )
         } else if (overridePrivate) {
             InAppLogger.logFilter("Rule effect: override private")
@@ -3771,7 +3786,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             processedBlocks = finalProcessedBlocks,
             shouldKeepEmojis = notificationContext.shouldKeepEmojis,
             shouldKeepDigits = notificationContext.shouldKeepDigits,
-            audioStreamOverride = audioStreamOverride
+            audioStreamOverride = audioStreamOverride,
+            wordSwapOverride = wordSwapOverride
         )
     }
     
@@ -3874,7 +3890,8 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         appName: String,
         packageName: String = "",
         overridePrivate: Boolean = false,
-        shouldKeepEmojis: Boolean = false
+        shouldKeepEmojis: Boolean = false,
+        wordSwapOverride: WordSwapOverride? = null
     ): Pair<FilterResult, Map<String, String>> {
         val processedBlocks = mutableMapOf<String, String>()
         
@@ -3945,8 +3962,18 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             var wordSwapChangesMade = false
             val appliedReplacements = mutableListOf<String>()
             
-            if (wordReplacements.isNotEmpty()) {
-                for (rule in wordReplacements) {
+            val activeWordReplacements = mutableListOf<WordSwapRule>()
+            if (wordSwapOverride != null) {
+                activeWordReplacements.addAll(wordSwapOverride.swaps.map { WordSwapRule(it.first, it.second) })
+                if (!wordSwapOverride.replaceGlobal) {
+                    activeWordReplacements.addAll(wordReplacements)
+                }
+            } else {
+                activeWordReplacements.addAll(wordReplacements)
+            }
+            
+            if (activeWordReplacements.isNotEmpty()) {
+                for (rule in activeWordReplacements) {
                     val from = rule.from
                     val to = rule.to
                     val tempText = text
