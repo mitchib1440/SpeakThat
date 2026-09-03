@@ -2394,6 +2394,10 @@ This permission is completely optional; SpeakThat! will still function without i
     <string name="rule_action_override_private">Override private mode</string>
     <string name="rule_action_use_voice_call">Use voice call audio routing</string>
     <string name="rule_action_override_audio_stream">Override audio stream</string>
+    <string name="rule_action_apply_word_swaps">Apply word swaps</string>
+    <string name="rule_action_replace_global_swaps">Disable global word swaps for this notification</string>
+    <string name="rule_error_invalid_word_swaps">Invalid word swaps configuration</string>
+    <string name="button_add_word_swap">Add Word Swap</string>
 
     <!-- Rule validation: battery/charging -->
     <string name="rule_error_invalid_battery_mode">Battery mode must be above or below</string>

@@ -289,6 +289,7 @@ enum class ActionType(val displayName: String, val description: String) {
     OVERRIDE_EMOJI_REMOVAL("Keep Emojis", "Do not strip emojis from this notification"),
     OVERRIDE_SEPARATE_DIGITS("Keep Digits Together", "Do not separate long numbers for this notification"),
     OVERRIDE_AUDIO_STREAM("Override Audio Stream", "Route speech through a different audio channel such as Alarm or Voice Call"),
+    APPLY_WORD_SWAPS("Apply Word Swaps", "Apply specific word replacements for this notification"),
     DISABLE_SPEAKTHAT("Legacy: Skip this notification", "Legacy action migrated to Skip this notification");
     
     companion object {
@@ -828,6 +829,9 @@ data class Rule(
             }
             ActionType.OVERRIDE_AUDIO_STREAM -> {
                 context.getString(com.micoyc.speakthat.R.string.rule_action_override_audio_stream)
+            }
+            ActionType.APPLY_WORD_SWAPS -> {
+                context.getString(com.micoyc.speakthat.R.string.rule_action_apply_word_swaps)
             }
         }
     }

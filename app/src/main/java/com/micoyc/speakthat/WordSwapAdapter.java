@@ -44,14 +44,13 @@ public class WordSwapAdapter extends RecyclerView.Adapter<WordSwapAdapter.ViewHo
         holder.textFrom.setText(item.from);
         holder.textTo.setText(item.to);
         
-        // Make the swap text clickable for editing
+        // Make the entire row clickable for editing
         View.OnClickListener editClickListener = v -> {
             if (editListener != null) {
                 editListener.onAction(holder.getAdapterPosition());
             }
         };
-        holder.textFrom.setOnClickListener(editClickListener);
-        holder.textTo.setOnClickListener(editClickListener);
+        holder.itemView.setOnClickListener(editClickListener);
         
         // Set up remove button listener
         holder.buttonRemove.setOnClickListener(v -> {
