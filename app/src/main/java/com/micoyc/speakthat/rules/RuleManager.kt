@@ -374,6 +374,10 @@ class RuleManager(private val context: Context) {
                     val timeLimit = (action.data["time_limit"] as? Number)?.toInt() ?: 10
                     Effect.OverrideContentCap(mode, wordCount, sentenceCount, timeLimit)
                 }
+                ActionType.OVERRIDE_AUDIO_STREAM -> {
+                    val audioUsageIndex = (action.data["audio_usage_index"] as? Number)?.toInt() ?: 4
+                    Effect.OverrideAudioStream(audioUsageIndex)
+                }
             }
         }
     }
@@ -432,6 +436,11 @@ class RuleManager(private val context: Context) {
         val separateDigitsOverride = effects.filterIsInstance<Effect.OverrideSeparateDigits>().lastOrNull()
         if (separateDigitsOverride != null) {
             aggregated.add(separateDigitsOverride)
+        }
+
+        val audioStreamOverride = effects.filterIsInstance<Effect.OverrideAudioStream>().lastOrNull()
+        if (audioStreamOverride != null) {
+            aggregated.add(audioStreamOverride)
         }
 
         return aggregated
@@ -828,6 +837,12 @@ class RuleManager(private val context: Context) {
             }
             ActionType.OVERRIDE_SEPARATE_DIGITS -> {
                 // No additional data required
+            }
+            ActionType.OVERRIDE_AUDIO_STREAM -> {
+                val audioUsageIndex = (action.data["audio_usage_index"] as? Number)?.toInt()
+                if (audioUsageIndex == null || audioUsageIndex < 0 || audioUsageIndex > 4) {
+                    errors.add(context.getString(com.micoyc.speakthat.R.string.rule_error_invalid_audio_stream))
+                }
             }
             ActionType.SKIP_NOTIFICATION,
             ActionType.DISABLE_SPEAKTHAT -> {
