@@ -2913,6 +2913,34 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         val safePackageName = packageNameForLog ?: "unknown"
         return try {
             val extras = notification.extras
+            
+            // Smart Message Extraction (prevents reading entire conversation history)
+            val smartExtractionEnabled = sharedPreferences?.getBoolean("smart_message_extraction", true) ?: true
+            if (smartExtractionEnabled && extras != null) {
+                val template = extras.getString(Notification.EXTRA_TEMPLATE)
+                
+                if (template == "android.app.Notification\$MessagingStyle") {
+                    val messages = extras.getParcelableArray(Notification.EXTRA_MESSAGES)
+                    if (messages != null && messages.isNotEmpty()) {
+                        val lastMessage = messages.last() as? android.os.Bundle
+                        val lastMessageText = lastMessage?.getCharSequence("text")?.toString()
+                        if (!lastMessageText.isNullOrBlank()) {
+                            Log.d(TAG, "Smart Extraction: Extracted last message from MessagingStyle")
+                            return maybeBlankClockFiringFallback(lastMessageText, notification, packageNameForLog)
+                        }
+                    }
+                } else if (template == "android.app.Notification\$InboxStyle") {
+                    val lines = extras.getCharSequenceArray(Notification.EXTRA_TEXT_LINES)
+                    if (lines != null && lines.isNotEmpty()) {
+                        val lastLine = lines.last()?.toString()
+                        if (!lastLine.isNullOrBlank()) {
+                            Log.d(TAG, "Smart Extraction: Extracted last line from InboxStyle")
+                            return maybeBlankClockFiringFallback(lastLine, notification, packageNameForLog)
+                        }
+                    }
+                }
+            }
+
             val title = extras?.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
             val text = extras?.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
             val bigText = extras?.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
