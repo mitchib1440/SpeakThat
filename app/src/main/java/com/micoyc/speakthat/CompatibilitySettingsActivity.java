@@ -51,6 +51,7 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
     private static final String KEY_DUCKING_FALLBACK_STRATEGY = "ducking_fallback_strategy";
     private static final String KEY_NOTIFICATION_DEDUPLICATION = "notification_deduplication";
     private static final String KEY_INCLUDE_NOTIFICATION_TIMESTAMPS = "include_notification_timestamps";
+    private static final String KEY_SMART_MESSAGE_EXTRACTION = "smart_message_extraction";
     private static final String KEY_DISMISSAL_MEMORY_ENABLED = "dismissal_memory_enabled";
     private static final String KEY_DISMISSAL_MEMORY_TIMEOUT = "dismissal_memory_timeout";
     private static final String KEY_MEDIA_FILTERING_ENABLED = "media_filtering_enabled";
@@ -386,6 +387,13 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
             }
         });
 
+        binding.switchSmartMessageExtraction.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!isLoadingSettings) {
+                mainPrefs.edit().putBoolean(KEY_SMART_MESSAGE_EXTRACTION, isChecked).apply();
+                InAppLogger.log("CompatibilitySettings", "Smart message extraction " + (isChecked ? "enabled" : "disabled"));
+            }
+        });
+
         binding.btnDeduplicationInfo.setOnClickListener(v -> showDeduplicationDialog());
 
         binding.switchDismissalMemory.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -460,6 +468,9 @@ public class CompatibilitySettingsActivity extends AppCompatActivity {
 
         boolean includeNotificationTimestamps = mainPrefs.getBoolean(KEY_INCLUDE_NOTIFICATION_TIMESTAMPS, false);
         binding.switchIncludeNotificationTimestamps.setChecked(includeNotificationTimestamps);
+
+        boolean smartMessageExtraction = mainPrefs.getBoolean(KEY_SMART_MESSAGE_EXTRACTION, true);
+        binding.switchSmartMessageExtraction.setChecked(smartMessageExtraction);
 
         boolean dismissalMemoryEnabled = mainPrefs.getBoolean(KEY_DISMISSAL_MEMORY_ENABLED, true);
         binding.switchDismissalMemory.setChecked(dismissalMemoryEnabled);

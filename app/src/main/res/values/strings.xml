@@ -898,6 +898,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="behavior_deduplication_benefits">Benefits:\n\n• Prevents annoying duplicate readouts\n• Saves battery by avoiding unnecessary TTS\n• Works automatically with 30-second window\n• Helps with apps that post multiple notifications</string>
     <string name="behavior_include_notification_timestamps_label">Include notification timestamps</string>
     <string name="behavior_include_notification_timestamps_desc">Use notification timestamps to distinguish between identical messages in group chats.</string>
+    <string name="behavior_smart_message_extraction_label">Smart message extraction</string>
+    <string name="behavior_smart_message_extraction_desc">Prevents reading the entire conversation history when receiving grouped messages.</string>
 
     <!-- Behaviour Settings - Dismissal Memory -->
     <string name="section_dismissal_memory">Dismissal Memory</string>
