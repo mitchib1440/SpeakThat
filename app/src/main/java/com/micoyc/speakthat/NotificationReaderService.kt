@@ -1235,7 +1235,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                 filterResult.speechTemplateOverride,
                 filterResult.voiceOverride,
                 filterResult.contentCapOverride,
-                filterResult.processedBlocks
+                filterResult.processedBlocks,
+                filterResult.shouldKeepEmojis,
+                filterResult.shouldKeepDigits,
+                filterResult.audioStreamOverride
             )
         }
     }
@@ -1924,7 +1927,10 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         filterResult.speechTemplateOverride,
                         filterResult.voiceOverride,
                         filterResult.contentCapOverride,
-                        filterResult.processedBlocks
+                        filterResult.processedBlocks,
+                        filterResult.shouldKeepEmojis,
+                        filterResult.shouldKeepDigits,
+                        filterResult.audioStreamOverride
                     )
                 } else {
                     // Always log the full blocking reason with details
