@@ -17,9 +17,10 @@ android {
     defaultConfig {
         applicationId = "com.micoyc.speakthat"
         minSdk = 24
+        // I'm currently sticking with targetSdk 36, as I do not have a modern Android device to test with.
         targetSdk = 36
         versionCode = 61
-        versionName = "1.9.0"
+        versionName = "1.9.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
