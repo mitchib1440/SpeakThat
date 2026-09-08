@@ -12,7 +12,7 @@ kotlin {
 
 android {
     namespace = "com.micoyc.speakthat"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.micoyc.speakthat"
@@ -121,19 +121,19 @@ dependencies {
     implementation(libs.androidx.viewpager2)
     implementation(libs.androidx.recyclerview)
     implementation(libs.gson)
-    implementation("androidx.lifecycle:lifecycle-process:2.8.4")
+    implementation("androidx.lifecycle:lifecycle-process:2.11.0")
     implementation("com.mikepenz:aboutlibraries:10.10.0")
     
     // Coil for image loading - only used in GitHub variant for online icons
-    implementation("io.coil-kt:coil:2.4.0")
-    implementation("io.coil-kt:coil-svg:2.4.0")
+    implementation("io.coil-kt:coil:2.7.0")
+    implementation("io.coil-kt:coil-svg:2.7.0")
     
     // For network requests (update system) - only used in GitHub variant
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:okhttp:5.5.0")
     
     // For background work (optional, for future enhancements)
-    implementation("androidx.work:work-runtime-ktx:2.9.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
+    implementation("androidx.work:work-runtime-ktx:2.11.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
     implementation("com.github.woheller69:FreeDroidWarn:V1.13")
 
     // Play-only: Google Play Billing for donation flow (quantity support requires 6.2+)
@@ -142,9 +142,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation("com.github.bumptech.glide:glide:4.16.0")
-    implementation("androidx.media:media:1.6.0")
-    implementation("androidx.car.app:app:1.4.0")
+    implementation("com.github.bumptech.glide:glide:5.0.9")
+    implementation("androidx.media:media:1.8.0")
+    implementation("androidx.car.app:app:1.7.0")
 }
 
 aboutLibraries {
