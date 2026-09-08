@@ -122,6 +122,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.gson)
     implementation("androidx.lifecycle:lifecycle-process:2.11.0")
+    implementation("androidx.localbroadcastmanager:localbroadcastmanager:1.1.0")
     implementation("com.mikepenz:aboutlibraries:10.10.0")
     
     // Coil for image loading - only used in GitHub variant for online icons
