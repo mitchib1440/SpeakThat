@@ -1031,6 +1031,8 @@ Block = completely ignore, Private = speak privately
     <string name="general_notification_while_reading_description">Show a notification when TTS is actively reading</string>
     <string name="general_show_system_blocks">Log system blocks in history</string>
     <string name="general_show_system_blocks_description">Saves background system events (like deduplication) to the history list. Helpful for troubleshooting.</string>
+    <string name="general_hide_filtered_notifications">Hide filtered notifications</string>
+    <string name="general_hide_filtered_notifications_description">Only show notifications read by SpeakThat, and hide any that were skipped</string>
     <string name="general_main_screen_history">Main Screen History</string>
     <string name="general_main_screen_history_description">Display recent notifications and diagnostics on the app\'s home screen.</string>
     <string name="general_toast_notifications_title">Enable Toast Notifications</string>

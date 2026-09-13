@@ -3066,6 +3066,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         isSystemEvent: Boolean = false
     ) {
         try {
+            val hideFiltered = sharedPreferences?.getBoolean("hide_filtered_notifications", false) ?: false
+            if (hideFiltered && !wasRead) {
+                return
+            }
+            
             val timestamp = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", java.util.Locale.getDefault()).format(java.util.Date())
             val notificationData = NotificationData(
                 appName, packageName, title, text, timestamp, wasRead, spokenText, blockedReason, isSystemEvent
