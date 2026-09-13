@@ -240,6 +240,15 @@ public class GeneralSettingsActivity extends AppCompatActivity {
             sharedPreferences.edit().putBoolean("show_system_blocks_history", isChecked).apply();
         });
 
+        // Hide Filtered Notifications Toggle
+        MaterialSwitch hideFilteredSwitch = binding.switchHideFilteredNotifications;
+        boolean hideFilteredEnabled = sharedPreferences.getBoolean("hide_filtered_notifications", false);
+        hideFilteredSwitch.setChecked(hideFilteredEnabled);
+
+        hideFilteredSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean("hide_filtered_notifications", isChecked).apply();
+        });
+
         // Auto-Start Toggle
         MaterialSwitch autoStartSwitch = binding.switchAutoStart;
         boolean autoStartEnabled = sharedPreferences.getBoolean("auto_start_enabled", true);
