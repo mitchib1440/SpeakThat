@@ -39,6 +39,12 @@
 
 </div>
 
+> [!NOTE]  
+> SpeakThat currently targets Android 16 as I do not have an Android 17 device to test with and cannot guarantee its functionality.
+> **This does NOT mean Android 17 is unsupported**, it just means I haven't personally verified it. Community help testing and reporting bugs is greatly appreciated!
+
+---
+
 SpeakThat (styled as “**_SpeakThat!_**”) is an open-source Android application that reads incoming notifications out loud using Android’s text-to-speech (TTS) engine. It was designed to continue the legacy of older notification reading applications, mainly Touchless Notifications developed by [DYNA Logix](https://dynalogix.eu/) in the mid-2010s. SpeakThat differs from other notification readers in its customization and user interface. Some notifications contain information that you would rather not be made public. SpeakThat allows you to control exactly what gets read out, and when. You can decide what apps get their notifications read out, set up words that prevent readouts, enable private mode for certain notifications, add cooldown periods to prevent spam, and just about anything else you could want. While plenty of notification readers feature adverts or in-app purchases, SpeakThat offers all of its features for free. No ads, no paying for extra readouts, and absolutely no subscriptions. SpeakThat is open-source under the GPL-3.0 license, giving you permission to use it, modify it, and share it provided any derivatives are under the same license and its original copyright holder is attributed.
 
 ---
