@@ -148,7 +148,9 @@ class OnboardingActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         val savedPage = savedInstanceState.getInt("current_page", 0)
         val savedMuted = savedInstanceState.getBoolean("is_muted", false)
         
-        binding.viewPager.setCurrentItem(savedPage, false)
+        binding.viewPager.post {
+            binding.viewPager.setCurrentItem(savedPage, false)
+        }
         InAppLogger.log(TAG, "Restored onboarding page position: $savedPage")
         
         // Restore mute state

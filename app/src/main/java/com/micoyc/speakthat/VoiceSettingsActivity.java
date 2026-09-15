@@ -2018,12 +2018,20 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
                 targetLocale = Locale.getDefault();
             }
             
-            int langResult = tts.setLanguage(targetLocale);
-            languageApplied = (langResult == TextToSpeech.LANG_AVAILABLE || langResult == TextToSpeech.LANG_COUNTRY_AVAILABLE || langResult == TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE);
-            InAppLogger.log("VoiceSettings", "Language set to: " + targetLocale.toString() + " (result: " + langResult + ", success: " + languageApplied + ")");
-            if (languageApplied) {
-                tryApplyLocaleMatchedVoice(tts, targetLocale, "Service/applyVoiceSettings");
-            }
+            final Locale finalTargetLocale = targetLocale;
+            new Thread(() -> {
+                try {
+                    int langResult = tts.setLanguage(finalTargetLocale);
+                    boolean isApplied = (langResult == TextToSpeech.LANG_AVAILABLE || langResult == TextToSpeech.LANG_COUNTRY_AVAILABLE || langResult == TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE);
+                    InAppLogger.log("VoiceSettings", "Language set to: " + finalTargetLocale.toString() + " (result: " + langResult + ", success: " + isApplied + ")");
+                    if (isApplied) {
+                        tryApplyLocaleMatchedVoice(tts, finalTargetLocale, "Service/applyVoiceSettings");
+                    }
+                } catch (Exception e) {
+                    InAppLogger.log("VoiceSettings", "Error setting language: " + e.getMessage());
+                }
+            }).start();
+            languageApplied = true; // Assume true for the rest of the flow, since it's async
         } else {
             InAppLogger.log("VoiceSettings", "Skipping language setting - specific voice will override it");
         }
@@ -2033,52 +2041,55 @@ public class VoiceSettingsActivity extends AppCompatActivity implements TextToSp
         // This is the core of the voice override feature
         boolean voiceApplied = false;
         if (!voiceName.isEmpty()) {
-            Set<Voice> voices = tts.getVoices();
-            if (voices != null) {
-                // Enhanced logging for voice debugging
-                InAppLogger.log("VoiceSettings", "Attempting to set voice: " + voiceName);
-                InAppLogger.log("VoiceSettings", "Total available voices: " + voices.size());
-                
-                // CRITICAL: Try to find and set the exact voice
-                // This will override any language setting that was applied earlier
-                for (Voice voice : voices) {
-                    if (voice.getName().equals(voiceName)) {
-                        int voiceResult = tts.setVoice(voice);
-                        voiceApplied = (voiceResult == TextToSpeech.SUCCESS);
-                        InAppLogger.log("VoiceSettings", "Specific voice applied: " + voiceName + " (result: " + voiceResult + ", success: " + voiceApplied + ")");
-                        break;
-                    }
-                }
-                
-                if (!voiceApplied) {
-                    InAppLogger.log("VoiceSettings", "Specific voice not found: " + voiceName + " (available voices: " + voices.size() + ")");
-                    
-                    // Extract language from voice name for intelligent fallback
-                    // This allows us to find any voice with the same language
-                    String fallbackLanguage = extractLanguageFromVoiceName(voiceName);
-                    if (fallbackLanguage != null) {
-                        InAppLogger.log("VoiceSettings", "Attempting language fallback for: " + fallbackLanguage);
+            new Thread(() -> {
+                try {
+                    Set<Voice> voices = tts.getVoices();
+                    if (voices != null) {
+                        // Enhanced logging for voice debugging
+                        InAppLogger.log("VoiceSettings", "Attempting to set voice: " + voiceName);
+                        InAppLogger.log("VoiceSettings", "Total available voices: " + voices.size());
                         
-                        // CRITICAL: Try to find any voice with the same language
-                        // This ensures users still get a voice in their preferred language
+                        // CRITICAL: Try to find and set the exact voice
+                        // This will override any language setting that was applied earlier
+                        boolean isApplied = false;
                         for (Voice voice : voices) {
-                            if (voice.getLocale() != null && voice.getLocale().getLanguage().equals(fallbackLanguage)) {
-                                int fallbackResult = tts.setVoice(voice);
-                                if (fallbackResult == TextToSpeech.SUCCESS) {
-                                    InAppLogger.log("VoiceSettings", "Language fallback voice applied: " + voice.getName() + " (Language: " + fallbackLanguage + ")");
-                                    voiceApplied = true;
-                                    break;
+                            if (voice.getName().equals(voiceName)) {
+                                int voiceResult = tts.setVoice(voice);
+                                isApplied = (voiceResult == TextToSpeech.SUCCESS);
+                                InAppLogger.log("VoiceSettings", "Specific voice applied: " + voiceName + " (result: " + voiceResult + ", success: " + isApplied + ")");
+                                break;
+                            }
+                        }
+                        
+                        if (!isApplied) {
+                            InAppLogger.log("VoiceSettings", "Specific voice not found: " + voiceName + " (available voices: " + voices.size() + ")");
+                            
+                            // Extract language from voice name for intelligent fallback
+                            // This allows us to find any voice with the same language
+                            String fallbackLanguage = extractLanguageFromVoiceName(voiceName);
+                            if (fallbackLanguage != null) {
+                                InAppLogger.log("VoiceSettings", "Attempting language fallback for: " + fallbackLanguage);
+                                
+                                // CRITICAL: Try to find any voice with the same language
+                                // This ensures users still get a voice in their preferred language
+                                for (Voice voice : voices) {
+                                    if (voice.getLocale() != null && voice.getLocale().getLanguage().equals(fallbackLanguage)) {
+                                        int fallbackResult = tts.setVoice(voice);
+                                        if (fallbackResult == TextToSpeech.SUCCESS) {
+                                            InAppLogger.log("VoiceSettings", "Language fallback voice applied: " + voice.getName() + " (Language: " + fallbackLanguage + ")");
+                                            isApplied = true;
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                         }
-                        if (!voiceApplied) {
-                            InAppLogger.log("VoiceSettings", "No fallback voice found for language: " + fallbackLanguage);
-                        }
                     }
+                } catch (Exception e) {
+                    InAppLogger.log("VoiceSettings", "Error setting voice: " + e.getMessage());
                 }
-            } else {
-                InAppLogger.log("VoiceSettings", "No voices available from TTS engine");
-            }
+            }).start();
+            voiceApplied = true; // Assume true for the rest of the flow, since it's async
         }
         
         // CRITICAL: Log the final result of voice settings application
