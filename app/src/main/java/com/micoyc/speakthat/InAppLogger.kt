@@ -179,35 +179,38 @@ object InAppLogger {
     
     private fun savePersistentLogs() {
         appContext?.let { context ->
-            try {
-                val logsDir = File(context.filesDir, "logs")
-                if (!logsDir.exists()) {
-                    logsDir.mkdirs()
+            Thread {
+                try {
+                    val logsDir = File(context.filesDir, "logs")
+                    if (!logsDir.exists()) {
+                        logsDir.mkdirs()
+                    }
+                    
+                    val persistentFile = File(logsDir, PERSISTENT_LOG_FILENAME)
+                    
+                    // Check file size and truncate if too large
+                    if (persistentFile.exists() && persistentFile.length() > MAX_PERSISTENT_LOG_SIZE) {
+                        // Keep only the last 50% of the file
+                        val content = persistentFile.readText()
+                        val lines = content.lines()
+                        val keepLines = lines.takeLast(lines.size / 2)
+                        persistentFile.writeText(keepLines.joinToString("\n"))
+                    }
+                    
+                    val writer = FileWriter(persistentFile, true) // Append mode
+                    
+                    // Write new logs (create a copy to avoid concurrent modification)
+                    val logsCopy = logs.toList()
+                    logsCopy.forEach { logEntry ->
+                        writer.write("${logEntry}\n")
+                    }
+                    
+                    writer.close()
+                    
+                } catch (e: IOException) {
+                    Log.e("SpeakThat_PersistentLogs", "Failed to save persistent logs", e)
                 }
-                
-                val persistentFile = File(logsDir, PERSISTENT_LOG_FILENAME)
-                
-                // Check file size and truncate if too large
-                if (persistentFile.exists() && persistentFile.length() > MAX_PERSISTENT_LOG_SIZE) {
-                    // Keep only the last 50% of the file
-                    val content = persistentFile.readText()
-                    val lines = content.lines()
-                    val keepLines = lines.takeLast(lines.size / 2)
-                    persistentFile.writeText(keepLines.joinToString("\n"))
-                }
-                
-                val writer = FileWriter(persistentFile, true) // Append mode
-                
-                // Write new logs
-                logs.forEach { logEntry ->
-                    writer.write("${logEntry}\n")
-                }
-                
-                writer.close()
-                
-            } catch (e: IOException) {
-                Log.e("SpeakThat_PersistentLogs", "Failed to save persistent logs", e)
-            }
+            }.start()
             Unit // Explicit return value for let block
         }
     }
