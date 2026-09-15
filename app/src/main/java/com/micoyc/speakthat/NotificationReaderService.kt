@@ -5309,8 +5309,13 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
     private fun releaseSpeechWakeLock() {
         synchronized(wakeLockSync) {
-            if (speechWakeLock?.isHeld == true) {
-                speechWakeLock?.release()
+            try {
+                if (speechWakeLock?.isHeld == true) {
+                    speechWakeLock?.release()
+                }
+            } catch (e: RuntimeException) {
+                Log.e(TAG, "Error releasing speech wake lock", e)
+                InAppLogger.log("Service", "Error releasing speech wake lock: ${e.message}")
             }
         }
     }
