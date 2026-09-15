@@ -124,8 +124,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     private var delayBeforeReadout = 0
     private var earconMode: String = BehaviorSettingsStore.DEFAULT_EARCON_MODE
     private var lastEarconStartMs: Long? = null
-    private var grantedEarconUri: Uri? = null
-    private var grantedEarconEnginePackage: String? = null
     private var isPersistentFilteringEnabled = true
     private var legacyDuckingEnabled = false
     
@@ -819,7 +817,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             }
             
             // Shutdown TTS
-            clearEarconUriGrant()
             SpeakThatTtsManager.shutdown()
             textToSpeech = null
             
@@ -7638,141 +7635,24 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             return
         }
         if (earconMode == BehaviorSettingsStore.EARCON_NONE) {
-            clearEarconUriGrant()
             return
         }
         val rawId = earconRawRes(earconMode)
         if (rawId == null) {
-            clearEarconUriGrant()
             Log.w(TAG, "Unknown earcon mode: $earconMode")
             InAppLogger.logWarning("Service", "Unknown earcon mode: $earconMode")
             return
         }
         val label = resources.getResourceEntryName(rawId)
-        val cachedEarconFile = copyEarconRawToCache(rawId) ?: return
-        val contentUri = try {
-            FileProvider.getUriForFile(
-                this,
-                "$packageName.fileprovider",
-                cachedEarconFile
-            )
-        } catch (e: IllegalArgumentException) {
-            Log.e(TAG, "Failed to build earcon URI for ${cachedEarconFile.absolutePath}", e)
-            InAppLogger.logError("Service", "Earcon URI creation failed: ${e.message}")
-            return
-        }
-        grantEarconReadPermission(tts, contentUri, label)
-        val result = SpeakThatTtsManager.addEarcon(EARCON_PRE_CUE, contentUri)
+        val result = SpeakThatTtsManager.addEarcon(EARCON_PRE_CUE, packageName, rawId)
         if (result != TextToSpeech.SUCCESS) {
             Log.w(TAG, "addEarcon ($label) returned $result")
             InAppLogger.logWarning("Service", "addEarcon ($label) returned $result")
         } else {
             InAppLogger.logTTSEvent(
                 "Earcon registered",
-                "mode=$earconMode resource=$label uri=$contentUri result=$result"
+                "mode=$earconMode resource=$label result=$result"
             )
-        }
-    }
-
-    private fun copyEarconRawToCache(rawId: Int): File? {
-        val entryName = try {
-            resources.getResourceEntryName(rawId)
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to resolve earcon resource entry for id=$rawId", e)
-            InAppLogger.logError("Service", "Earcon entry resolution failed: ${e.message}")
-            return null
-        }
-        val extension = resolveRawResourceExtension(rawId)
-        val earconDir = File(cacheDir, EARCON_CACHE_DIR)
-        if (!earconDir.exists() && !earconDir.mkdirs()) {
-            Log.e(TAG, "Failed to create earcon cache directory: ${earconDir.absolutePath}")
-            InAppLogger.logError("Service", "Failed to create earcon cache directory")
-            return null
-        }
-        val cachedFile = File(earconDir, "$entryName.$extension")
-        val shouldRewrite = !cachedFile.exists() || cachedFile.length() <= 0L
-        if (!shouldRewrite) {
-            return cachedFile
-        }
-
-        return try {
-            resources.openRawResource(rawId).use { input ->
-                cachedFile.outputStream().use { output ->
-                    input.copyTo(output)
-                }
-            }
-            cachedFile
-        } catch (e: IOException) {
-            Log.e(TAG, "Failed to cache earcon resource $entryName", e)
-            InAppLogger.logError("Service", "Failed to cache earcon resource $entryName: ${e.message}")
-            null
-        }
-    }
-
-    private fun resolveRawResourceExtension(rawId: Int): String {
-        return try {
-            val typedValue = TypedValue()
-            resources.getValue(rawId, typedValue, true)
-            val sourcePath = typedValue.string?.toString().orEmpty()
-            sourcePath.substringAfterLast('.', "").ifBlank { "dat" }
-        } catch (_: Exception) {
-            "dat"
-        }
-    }
-
-    private fun grantEarconReadPermission(tts: TextToSpeech, contentUri: Uri, earconLabel: String) {
-        val enginePackage = resolveActiveTtsEnginePackage(tts)
-        if (enginePackage.isNullOrBlank()) {
-            Log.w(TAG, "Skipping URI grant for earcon $earconLabel because active TTS engine package is unknown")
-            InAppLogger.logWarning("Service", "Skipping earcon URI grant; active TTS engine package unknown")
-            return
-        }
-
-        val previousUri = grantedEarconUri
-        val previousEngine = grantedEarconEnginePackage
-        if (previousUri != null && (previousUri != contentUri || previousEngine != enginePackage)) {
-            try {
-                revokeUriPermission(previousUri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            } catch (_: Exception) {
-                // Best-effort cleanup. New grant still proceeds below.
-            }
-        }
-
-        try {
-            grantUriPermission(enginePackage, contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            grantedEarconUri = contentUri
-            grantedEarconEnginePackage = enginePackage
-            InAppLogger.logTTSEvent(
-                "Earcon URI granted",
-                "engine=$enginePackage uri=$contentUri label=$earconLabel"
-            )
-        } catch (e: SecurityException) {
-            Log.e(TAG, "Failed granting URI permission for engine $enginePackage", e)
-            InAppLogger.logError("Service", "Earcon URI grant failed for $enginePackage: ${e.message}")
-        }
-    }
-
-    private fun resolveActiveTtsEnginePackage(tts: TextToSpeech): String? {
-        val selectedEngine = voiceSettingsPrefs?.getString(KEY_TTS_ENGINE_PACKAGE, "")?.trim().orEmpty()
-        if (selectedEngine.isNotEmpty()) {
-            return selectedEngine
-        }
-        val defaultEngine = tts.defaultEngine?.trim().orEmpty()
-        if (defaultEngine.isNotEmpty()) {
-            return defaultEngine
-        }
-        return null
-    }
-
-    private fun clearEarconUriGrant() {
-        val uri = grantedEarconUri ?: return
-        try {
-            revokeUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        } catch (_: Exception) {
-            // Ignore cleanup failures during shutdown/reset.
-        } finally {
-            grantedEarconUri = null
-            grantedEarconEnginePackage = null
         }
     }
 

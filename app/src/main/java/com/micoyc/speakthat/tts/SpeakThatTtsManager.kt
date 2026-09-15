@@ -202,9 +202,9 @@ object SpeakThatTtsManager {
     }
 
     @JvmStatic
-    fun addEarcon(earcon: String, earconUri: android.net.Uri): Int {
+    fun addEarcon(earcon: String, packageName: String, resourceId: Int): Int {
         val engine = tts ?: return TextToSpeech.ERROR
-        return engine.addEarcon(earcon, earconUri)
+        return engine.addEarcon(earcon, packageName, resourceId)
     }
 
     private fun handleEngineInitResult(status: Int) {
