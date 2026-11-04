@@ -1731,4 +1731,11 @@
     <string name="filter_remove_emojis_advanced">Исключения из удаления эмодзи</string>
     <string name="behavior_include_notification_timestamps_label">Включить отметки времени уведомлений</string>
     <string name="behavior_include_notification_timestamps_desc">Используйте отметки времени уведомлений, чтобы отличать одинаковые сообщения в групповых чатах.</string>
+    <string name="separator_space">Пробел</string>
+    <string name="onboarding_permission_bullet2">• Применяйте пользовательские фильтры для защиты конфиденциальности</string>
+    <string name="onboarding_permission_bullet3">• Получайте информацию, не глядя на экран</string>
+    <string name="onboarding_permission_bullet4">• Обрабатывайте все данные локально на своем устройстве</string>
+    <string name="behavior_swipe_to_stop_description">Прерывает воспроизведение, если вы отклоняете уведомление. Эту функцию также можно использовать, чтобы незаметно остановить воспроизведение текста на умных часах.</string>
+    <string name="behavior_swipe_to_stop_watch_exception_title">Продолжить чтение, если удалено на часах</string>
+    <string name="behavior_swipe_to_stop_watch_exception_description">Позволяет удалить уведомление с экрана смарт-часов, не прерывая воспроизведение звука на телефоне.</string>
 </resources>
