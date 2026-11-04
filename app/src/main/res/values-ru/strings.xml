@@ -1738,4 +1738,5 @@
     <string name="behavior_swipe_to_stop_description">Прерывает воспроизведение, если вы отклоняете уведомление. Эту функцию также можно использовать, чтобы незаметно остановить воспроизведение текста на умных часах.</string>
     <string name="behavior_swipe_to_stop_watch_exception_title">Продолжить чтение, если удалено на часах</string>
     <string name="behavior_swipe_to_stop_watch_exception_description">Позволяет удалить уведомление с экрана смарт-часов, не прерывая воспроизведение звука на телефоне.</string>
+    <string name="onboarding_welcome_icon_description">Иконка SpeakThat</string>
 </resources>
