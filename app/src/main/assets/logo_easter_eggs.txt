@@ -23,10 +23,12 @@
 # [FULL_BATT] = Only shows if battery level is 99% or higher
 # [CHARGE_ONLY] = Only shows if the device is currently charging
 
-SpeakThat! Over 5000 downloads on Google Play!
-SpeakThat! Over 5000 downloads on GitHub!
+SpeakThat! Works on Android 17, but legally can't advertise it yet!
+SpeakThat! Over 7000 downloads on Google Play!
+SpeakThat! Over 7000 downloads on GitHub!
 SpeakThat! Over 20000 downloads on IzzyOnDroid!
-SpeakThat! 30000 downloads and counting!
+SpeakThat! Over 3000 downloads on F-Droid!
+SpeakThat! 36000 downloads and counting!
 SpeakThat! Did you know I have excellent volume control? Unlike my cousin, Siri, who sometimes whispers.
 SpeakThat! I'm not just reading notifications, I'm performing them! This is my audition for Broadway.
 SpeakThat! Fun fact: I can say supercalifragilisticexpialidocious perfectly. Want to hear it again? Supercalifragilisticexpialidocious supercalifragilisticexpialidocious supercalifragilisticexpialidocious!
@@ -496,7 +498,7 @@ SpeakThat! Hey, that's not a bug! It's a feature!
 SpeakThat! An exercise in free speech!
 SpeakThat! Exists to spite similar apps that charge a subscription!
 SpeakThat! Doesn't hide its sloppy code!
-SpeakThat! This line was added on the Tuesday, the twelfth of May, 2026, at 35 minutes paste 8 in the evening. What were you doing at that time?
+SpeakThat! This line was added on the Tuesday, the twelfth of May, 2026, at 35 minutes past 8 in the evening. What were you doing at that time?
 SpeakThat! Failure is an option. If things are not failing, you are not innovating enough. - Elon Musk
 SpeakThat! Don't give up on your dreams, or your dreams will give up on you. - John Wooden
 SpeakThat! Quiet people have the loudest minds. - Stephen King
@@ -550,3 +552,7 @@ SpeakThat! My official birthday is on the 1st of July 2025!
 Taphkaset! It's an anagram!
 SpeakThat! The best nine-letter word!
 SpeakThat! Worth 18 points in Countdown!
+SpeakThat! Stronger than the iPhone Duo!
+SpeakThat! You must never do a tango with an eskimo!
+SpeakThat! Wears a Santa hat in December!
+SpeakThat! Functional on the Steam Frame!

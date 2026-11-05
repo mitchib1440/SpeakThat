@@ -1,68 +1,62 @@
 [
   {
-    "text": "Settings Search has been massively improved.",
+    "text": "Default Content Type updated to Music.",
     "subpoints": [
-      "A complete overhaul of the settings search has taken place. Search results look good, work consistently, and even allow for small typos.",
-      "If you find any settings that were missed, please report them on the GitHub page. Once I'm done crying, I'll add them to the search database.",
-      "Find this in SpeakThat! Settings."
+      "Content Type has been set to Music by default as per GitHub issues 151 and 152. Music makes the most sense for this type of audio."
     ]
   },
   {
-    "text": "Added Swipe to Stop.",
+    "text": "Conditional Rules has a couple of new features!",
     "subpoints": [
-      "Cancel readouts early by dismissing the notification.",
-      "This works very well for smartwatches, allowing you to discreetly cancel readouts from your wrist.",
-      "Find this in Behaviour Settings."
+      "Override Audio Stream has been added, allowing the stream type to be dynamically changed based on your notification.",
+      "Word Swap has also been added. This works the same way as the one in Filter Settings, but can now be applied on a per-notification basis."
     ]
   },
   {
-    "text": "Added Separate Digits.",
+    "text": "Grouped notifications may be read more consistently now.",
     "subpoints": [
-      "Space consecutive digits out to prevent them being read as one long number.",
-      "You can also decide what character is used as a separator. Use a space for a short pause, a comma for a medium pause, or a full-stop for a long pause.",
-      "Find this in Filter Settings underneath the Tidy Speech section."
+      "SpeakThat uses a few new tricks to work out what the new notification is, and filter out the existing ones."
     ]
   },
   {
-    "text": "Added Broadcast to Stop.",
+    "text": "Added the option to hide filtered notifications from the history.",
     "subpoints": [
-      "Allows you to stop readouts using a broadcast intent from a third-party app.",
-      "A key is required for this, so SpeakThat will generate one for you, which you must enter as an additional value in your automation app.",
-      "Find this in Development Settings."
+      "Helpful if you filter an awful lot of notifications!"
     ]
   },
   {
-    "text": "Fixed SelfTest not recognising Content Cap.",
+    "text": "Override Content Cap (Conditional Rules) now works more reliably.",
     "subpoints": [
-      "Running SelfTest with Content Cap set to a short timed duration so that the test notification doesn't finish caused the SelfTest to hang until it hit its 60-second limit. This has been fixed.",
-      "Thanks to ForgeSource for the bug report!"
+      "I realised some of its logic wasn't actually hooked up properly. Serves me right for vibecoding."
     ]
   },
   {
-    "text": "Fixed Conditional Rules not being selected after importing a configuration that uses them.",
+    "text": "Fixed an issue with Private Mode.",
     "subpoints": [
-      "When importing a configuration file with Conditional Rules, they now get re-enabled by default rather than you needing to manually turn it back on.",
-      "Took me long enough to get this one patched out, honestly..."
+      "Private Mode now works correctly if your speech template doesn't use the Content placeholder."
     ]
   },
   {
-    "text": "Fixed Auto-Language not being enabled during settings import.",
+    "text": "Fixed several crashes.",
     "subpoints": [
-      "I'm not sure why this option wasn't included when importing a setting configuration, but it is now.",
-      "Shesh, how many things are missed when importing a configuration? If you find anymore, do let me know. You'll be credited for the fix lol"
-    ]
-  },
-  {
-    "text": "Fixed Advanced Voice Options showing uninstalled voices.",
-    "subpoints": [
-      "The spinner for selecting a specific voice previously displayed voices that weren't installed on the device. This has been corrected."
+      "Fixed a time-of-check to time-of-use race condition between SpeakThat and your TTS engine when both tried to tear the speech down at the same time.",
+      "Fixed a crash when SpeakThat was unable to release the speech WakeLock, which now has a try/catch block.",
+      "Fixed a crash when earcons being attempted on Android versions that weren't able to support its methods.",
+      "Voice settings being unable to set the language specified by the user."
     ]
   },
   {
     "text": "Updated several translations.",
     "subpoints": [
       "German",
-      "French"
+      "French",
+      "Russian",
+      "Bengali",
+      "Hawaiian",
+      "Urdu",
+      "Indonesian",
+      "Ukrainian",
+      "Serbian"
     ]
   }
 ]
