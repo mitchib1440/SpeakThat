@@ -3717,6 +3717,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             InAppLogger.logFilter("Rule effect: force private")
             val privateText = getLocalizedTemplate("private_notification", appName, "")
             finalProcessedBlocks.keys.forEach { finalProcessedBlocks[it] = privateText }
+            finalProcessedBlocks["content"] = privateText
             
             // If forced private, override the template so it just reads the private text without the '{app} notified you:' wrapper
             val forcePrivateTemplateOverride = SpeechTemplateOverride("{content}", null)
@@ -3810,6 +3811,11 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         if (tidySpeechForceLowercaseEnabled) {
             cappedCompiledText = cappedCompiledText.lowercase()
             InAppLogger.logFilter("Force lowercase applied to final text")
+        }
+
+        if (cappedCompiledText.isBlank()) {
+            InAppLogger.logFilter("Final speech text is empty after processing - not speaking")
+            return FilterResult(false, "", "Empty text after processing")
         }
         
         return FilterResult(
@@ -3937,6 +3943,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
             Log.d(TAG, "App '$appName' is in private mode - entire notification made private (SECURITY: bypassing all other filters)")
             InAppLogger.logFilter("Made notification private due to app privacy setting (SECURITY: bypassing all other filters)")
             blocks.keys.forEach { processedBlocks[it] = privateText }
+            processedBlocks["content"] = privateText
             return Pair(FilterResult(
                 true, privateText, "App-level privacy applied", 
                 speechTemplateOverride = SpeechTemplateOverride("{content}", null)
@@ -3952,6 +3959,7 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                         Log.d(TAG, "Private word '$privateWord' detected - entire notification made private")
                         InAppLogger.logFilter("Made notification private due to word: $privateWord")
                         blocks.keys.forEach { processedBlocks[it] = privateText }
+                        processedBlocks["content"] = privateText
                         return Pair(FilterResult(
                             true, privateText, "Private word detected",
                             speechTemplateOverride = SpeechTemplateOverride("{content}", null)
