@@ -275,7 +275,7 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="tts_template_new_update_from">New update from {app}: {content}</string>
     <string name="tts_template_notification_from">Notification from {app}: {content}</string>
     <string name="tts_template_says">{app} says: {content}</string>
-    <string name="tts_template_private_notification">You received a private notification from {app}</string>
+    <string name="tts_template_private_notification">You received a notification from {app}</string>
 
     <!-- TTS Context Templates - Complete sentences for different app contexts -->
     <!-- About Page TTS -->
