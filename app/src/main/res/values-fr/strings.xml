@@ -747,8 +747,8 @@ Bloque=ignore totalement, Privée=annonce de façon privée
     <string name="voice_stream_volume">Volume du flux</string>
     <string name="voice_stream_volume_description">Contrôle le niveau du volume du flux audio sélectionné. Ceci affecte le volume de l\'appareil pour ce type de flux.</string>
     <string name="voice_content_type">Type de contenu</string>
-    <string name="voice_content_type_description">Indique au système le type de l\'audio. Parole est recommandé pour les notifications.</string>
-    <string name="voice_audio_recommendation">Recommandé : Notification + Parole</string>
+    <string name="voice_content_type_description">Indique au système le type de l\'audio. Musique est recommandé pour les notifications.</string>
+    <string name="voice_audio_recommendation">Recommandé : Notification + Musique</string>
     <string name="voice_speakerphone_option">Utiliser le haut parleur du téléphone pour les appels vocaux</string>
     <string name="voice_speakerphone_description">Route l\'audio des appels vocaux vers le haut parleur au lieu de l\'écouteur pour un volume plus fort</string>
     <string name="voice_preview_actions">Aperçu et actions</string>
@@ -2168,4 +2168,16 @@ Bloque=ignore totalement, Privée=annonce de façon privée
     <string name="action_override_separate_digits_title">Garder les chiffres groupés</string>
     <string name="action_override_separate_digits_description">Ne pas séparer les grands nombres pour cette notification</string>
     <string name="tidy_speech_separate_digits_threshold_description">Règle le nombre minimum de chiffres consécutifs requis pour appliquer la séparation.</string>
+    <string name="behavior_smart_message_extraction_label">Extraction intelligente de message</string>
+    <string name="behavior_smart_message_extraction_desc">Évite de lire tout le fil de conversation sur réception de messages groupés.</string>
+    <string name="general_hide_filtered_notifications">Cacher les notifications filtrées</string>
+    <string name="general_hide_filtered_notifications_description">Ne montre que les notifications lues par SpeakThat et cache celle sautées</string>
+    <string name="action_override_audio_stream_title">Redéfinir le flux audio</string>
+    <string name="rule_error_invalid_audio_stream">Sélection du flux audio invalide</string>
+    <string name="rule_audio_stream_volume_note">Note : ceci utilisera le volume associé au flux sélectionné.</string>
+    <string name="rule_action_override_audio_stream">Redéfinir le flux audio</string>
+    <string name="rule_action_apply_word_swaps">Appliquer les substitutions de mots</string>
+    <string name="rule_action_replace_global_swaps">Désactive les substitutions de mots globales pour cette notification</string>
+    <string name="rule_error_invalid_word_swaps">Configuration de substitutions de mots invalide</string>
+    <string name="button_add_word_swap">Ajouter une substitution de mot</string>
 </resources>
