@@ -795,7 +795,13 @@ class RuleBuilderActivity : AppCompatActivity() {
     private fun requestWifiPermissions() {
         if (!BackgroundLocationHelper.hasForegroundLocationPermission(this) ||
             !BackgroundLocationHelper.hasNearbyWifiPermission(this)) {
-            requestPermissions(BackgroundLocationHelper.getForegroundWifiPermissions(), REQUEST_WIFI_PERMISSIONS)
+            BackgroundLocationHelper.requestForegroundWifiPermissionsWithDisclosure(
+                this, REQUEST_WIFI_PERMISSIONS,
+                onDeclined = {
+                    clearPendingWifiState()
+                    InAppLogger.logFilter("Location disclosure declined; WiFi condition not added.")
+                }
+            )
             return
         }
         requestBackgroundLocationStep()

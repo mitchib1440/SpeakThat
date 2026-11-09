@@ -1,5 +1,29 @@
 [
   {
+    "text": "Prominent Disclosure for Location has been updated.",
+    "subpoints": [
+      "Google didn't like the order my location disclosure usage was displayed in even though it's been fine for all of this year already. So this is a hotfix to correct it."
+    ]
+  },
+  {
+    "text": "Fixed a Out of Memory crash.",
+    "subpoints": [
+      "Rapid notifications would cause SpeakThat's in-built logger to fill its debug file, allowing it to surpass SpeakThat's maximum allowed capacity. This has now been fixed."
+    ]
+  },
+  {
+    "text": "Private Mode has a new structure.",
+    "subpoints": [
+      "The word 'private' has been removed from private mode speech. I realised it actually is less inconspicuous to omit it entirely, but feedback is welcome on ths."
+    ]
+  },
+  {
+    "text": "The following changes are from SpeakThat! v1.9.1.",
+    "subpoints": [
+      "I'm doing it this way as most people on the Google Play Store won't be on the latest version. So a hotfix is required."
+    ]
+  },
+  {
     "text": "Default Content Type updated to Music.",
     "subpoints": [
       "Content Type has been set to Music by default as per GitHub issues 151 and 152. Music makes the most sense for this type of audio."

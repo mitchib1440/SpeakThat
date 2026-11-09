@@ -93,6 +93,50 @@ object BackgroundLocationHelper {
     }
 
     // ------------------------------------------------------------------
+    // Disclosure dialog (Step 0 – before ANY location permission prompt)
+    // ------------------------------------------------------------------
+
+    /**
+     * Google-Play-compliant prominent disclosure. Must be shown immediately before the
+     * first runtime location permission request (the foreground location prompt).
+     */
+    fun showLocationDisclosure(
+        activity: Activity,
+        onAccepted: () -> Unit,
+        onDeclined: () -> Unit
+    ) {
+        AlertDialog.Builder(activity)
+            .setTitle(activity.getString(R.string.location_disclosure_title))
+            .setMessage(activity.getString(R.string.location_disclosure_message))
+            .setPositiveButton(activity.getString(R.string.background_location_disclosure_accept)) { _, _ ->
+                onAccepted()
+            }
+            .setNegativeButton(activity.getString(R.string.cancel)) { _, _ ->
+                onDeclined()
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    /**
+     * Shows [showLocationDisclosure] and, if accepted, requests the foreground WiFi/location
+     * permissions with the system dialog.
+     */
+    fun requestForegroundWifiPermissionsWithDisclosure(
+        activity: Activity,
+        requestCode: Int,
+        onDeclined: () -> Unit
+    ) {
+        showLocationDisclosure(
+            activity,
+            onAccepted = {
+                activity.requestPermissions(getForegroundWifiPermissions(), requestCode)
+            },
+            onDeclined = onDeclined
+        )
+    }
+
+    // ------------------------------------------------------------------
     // Disclosure dialog (Step 2 – before opening Settings)
     // ------------------------------------------------------------------
 

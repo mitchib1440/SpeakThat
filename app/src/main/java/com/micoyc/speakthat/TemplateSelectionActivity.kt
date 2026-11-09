@@ -500,7 +500,13 @@ class TemplateSelectionActivity : AppCompatActivity() {
     private fun requestWifiPermissions() {
         if (!BackgroundLocationHelper.hasForegroundLocationPermission(this) ||
             !BackgroundLocationHelper.hasNearbyWifiPermission(this)) {
-            requestPermissions(BackgroundLocationHelper.getForegroundWifiPermissions(), REQUEST_WIFI_PERMISSIONS)
+            BackgroundLocationHelper.requestForegroundWifiPermissionsWithDisclosure(
+                this, REQUEST_WIFI_PERMISSIONS,
+                onDeclined = {
+                    pendingWifiTemplate = null
+                    InAppLogger.logFilter("Location disclosure declined in TemplateSelection.")
+                }
+            )
             return
         }
         requestBackgroundLocationForWifi()
