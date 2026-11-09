@@ -388,6 +388,8 @@ This feature is especially useful for accessibility, desk users, and anyone who 
     <string name="wifi_compatibility_warning_open_github">Open GitHub</string>
 
     <!-- Background Location Disclosure (Google Play compliance) -->
+    <string name="location_disclosure_title">Location Data Access</string>
+    <string name="location_disclosure_message">SpeakThat collects location data to detect which WiFi network your device is connected to. Android treats WiFi network names as location data, so SpeakThat needs location permission to read them.\n\nThis includes access in the background, even when the app is closed or not in use, so your WiFi-based rules can work automatically.\n\nThis data is used only to check your WiFi conditional rules. It is processed on your device and is never shared, sold or transmitted. SpeakThat does not track your movements or store a location history.\n\nAfter you tap Continue, Android will ask you to allow location access.</string>
     <string name="background_location_disclosure_title">Background Location Access</string>
     <string name="background_location_disclosure_message">SpeakThat needs to detect which WiFi network your device is connected to, even when the app is running in the background.\n\nThis is how Android allows apps to read WiFi network names. SpeakThat uses this information only to apply your conditional rules — it never collects or transmits your location.\n\nOn the next screen, please select \"Allow all the time\" for location access.</string>
     <string name="background_location_disclosure_accept">Continue</string>

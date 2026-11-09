@@ -180,6 +180,18 @@ class PermissionSyncSession internal constructor(
                 append(label)
                 append('\n')
             }
+            // Prominent disclosure: must be shown right before any location permission prompt.
+            if (plan.runtimePermissionsToRequest.any {
+                    it == Manifest.permission.ACCESS_FINE_LOCATION ||
+                        it == Manifest.permission.ACCESS_COARSE_LOCATION ||
+                        it == Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                }
+            ) {
+                append("\n\n")
+                append(activity.getString(R.string.location_disclosure_title))
+                append(":\n")
+                append(activity.getString(R.string.location_disclosure_message))
+            }
         }.trimEnd()
 
         AlertDialog.Builder(activity)
