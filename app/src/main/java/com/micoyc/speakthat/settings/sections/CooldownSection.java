@@ -15,8 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.micoyc.speakthat.AppInfo;
-import com.micoyc.speakthat.AppListData;
-import com.micoyc.speakthat.AppListManager;
 import com.micoyc.speakthat.CooldownAppAdapter;
 import com.micoyc.speakthat.InAppLogger;
 import com.micoyc.speakthat.LazyAppSearchAdapter;
@@ -128,42 +126,13 @@ public class CooldownSection implements BehaviorSettingsSection {
             addCooldownAppFromSelection(selectedApp);
             return;
         } catch (PackageManager.NameNotFoundException e) {
-            Log.d("BehaviorSettings", "App not found in device, trying JSON app list");
-        }
-
-        AppListData appData = findAppByNameOrPackage(appName);
-        if (appData == null) {
-            Log.d("BehaviorSettings", "App not found for: '" + appName + "'");
+            Log.d("BehaviorSettings", "App not found on device: '" + appName + "'");
             Toast.makeText(
                 activity,
-                "App not found. Please check the app name or package.",
+                "App not installed or not visible. Pick it from the suggestions or enter an exact package name.",
                 Toast.LENGTH_SHORT
             ).show();
-            return;
         }
-
-        Log.d("BehaviorSettings", "Found app: " + appData.displayName + " (" + appData.packageName + ")");
-
-        for (CooldownAppAdapter.CooldownAppItem item : cooldownAppsList) {
-            if (item.packageName.equals(appData.packageName)) {
-                Log.d("BehaviorSettings", "App already in cooldown list: " + appData.packageName);
-                Toast.makeText(activity, "App already in cooldown list", Toast.LENGTH_SHORT).show();
-                return;
-            }
-        }
-
-        CooldownAppAdapter.CooldownAppItem item = new CooldownAppAdapter.CooldownAppItem(
-            appData.packageName,
-            appData.displayName,
-            appData.iconSlug,
-            1
-        );
-        cooldownAppsList.add(item);
-        cooldownAppAdapter.notifyDataSetChanged();
-        binding.editCooldownApp.setText("");
-
-        Log.d("BehaviorSettings", "Added app to cooldown list: " + appData.displayName);
-        saveCooldownApps();
     }
 
     private void removeCooldownApp(int position) {
@@ -224,58 +193,6 @@ public class CooldownSection implements BehaviorSettingsSection {
         }
     }
 
-    private AppListData findAppByNameOrPackage(String query) {
-        List<AppListData> appList = AppListManager.INSTANCE.loadAppList(activity);
-        if (appList == null) {
-            Log.e("BehaviorSettings", "App list is null");
-            return null;
-        }
-
-        String lowerQuery = query.toLowerCase().trim();
-        Log.d("BehaviorSettings", "Searching for app: '" + query + "' (lowercase: '" + lowerQuery + "')");
-        Log.d("BehaviorSettings", "App list size: " + appList.size());
-
-        for (AppListData app : appList) {
-            if (app.displayName.toLowerCase().equals(lowerQuery) ||
-                app.packageName.toLowerCase().equals(lowerQuery)) {
-                Log.d("BehaviorSettings", "Found exact match: " + app.displayName + " (" + app.packageName + ")");
-                return app;
-            }
-        }
-
-        for (AppListData app : appList) {
-            if (app.displayName.toLowerCase().contains(lowerQuery) ||
-                app.packageName.toLowerCase().contains(lowerQuery) ||
-                (app.aliases != null && app.aliases.stream().anyMatch(alias -> alias.toLowerCase().contains(lowerQuery)))) {
-                Log.d("BehaviorSettings", "Found partial match: " + app.displayName + " (" + app.packageName + ")");
-                return app;
-            }
-        }
-
-        String[] queryWords = lowerQuery.split("\\s+");
-        for (AppListData app : appList) {
-            String displayNameLower = app.displayName.toLowerCase();
-            String packageNameLower = app.packageName.toLowerCase();
-
-            boolean matches = false;
-            for (String word : queryWords) {
-                if (displayNameLower.contains(word) || packageNameLower.contains(word) ||
-                    (app.aliases != null && app.aliases.stream().anyMatch(alias -> alias.toLowerCase().contains(word)))) {
-                    matches = true;
-                    break;
-                }
-            }
-
-            if (matches) {
-                Log.d("BehaviorSettings", "Found word match: " + app.displayName + " (" + app.packageName + ")");
-                return app;
-            }
-        }
-
-        Log.d("BehaviorSettings", "No app found for query: '" + query + "'");
-        return null;
-    }
-
     private void addCooldownAppFromSelection(AppInfo selectedApp) {
         Log.d("BehaviorSettings", "Adding cooldown app from selection: " + selectedApp.appName + " (" + selectedApp.packageName + ")");
 
@@ -303,37 +220,6 @@ public class CooldownSection implements BehaviorSettingsSection {
             "Added " + selectedApp.appName + " to cooldown list",
             Toast.LENGTH_SHORT
         ).show();
-    }
-
-    public void testAppListFunctionality() {
-        Log.d("BehaviorSettings", "=== Testing App List Functionality ===");
-
-        List<AppListData> appList = AppListManager.INSTANCE.loadAppList(activity);
-        if (appList == null) {
-            Log.e("BehaviorSettings", "TEST FAILED: App list is null");
-            return;
-        }
-
-        Log.d("BehaviorSettings", "TEST PASSED: App list loaded with " + appList.size() + " apps");
-
-        String[] testQueries = {"whatsapp", "facebook", "youtube", "gmail", "chrome"};
-
-        for (String query : testQueries) {
-            AppListData found = findAppByNameOrPackage(query);
-            if (found != null) {
-                Log.d("BehaviorSettings", "TEST PASSED: Found '" + query + "' -> " + found.displayName);
-            } else {
-                Log.e("BehaviorSettings", "TEST FAILED: Could not find '" + query + "'");
-            }
-        }
-
-        Log.d("BehaviorSettings", "First 5 apps in list:");
-        for (int i = 0; i < Math.min(5, appList.size()); i++) {
-            AppListData app = appList.get(i);
-            Log.d("BehaviorSettings", "  " + (i + 1) + ". " + app.displayName + " (" + app.packageName + ")");
-        }
-
-        Log.d("BehaviorSettings", "=== App List Test Complete ===");
     }
 
     private void showCooldownDialog() {

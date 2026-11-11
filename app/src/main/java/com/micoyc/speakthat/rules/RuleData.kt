@@ -10,7 +10,7 @@ package com.micoyc.speakthat.rules
 import android.content.Context
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
-import com.micoyc.speakthat.AppListManager
+import com.micoyc.speakthat.AppNameResolver
 import com.micoyc.speakthat.InAppLogger
 import java.lang.reflect.Type
 import kotlin.math.abs
@@ -643,7 +643,7 @@ data class Rule(
                 }
                 val description = if (packages.size == 1) {
                     val packageName = packages.first()
-                    val appName = AppListManager.findAppByPackage(context, packageName)?.displayName ?: packageName
+                    val appName = AppNameResolver.resolveOrPackage(context, packageName)
                     context.getString(com.micoyc.speakthat.R.string.rule_trigger_notification_from_single, appName)
                 } else {
                     context.getString(com.micoyc.speakthat.R.string.rule_trigger_notification_from_multiple, packages.size)
@@ -663,7 +663,7 @@ data class Rule(
                 }
                 val description = if (packages.size == 1) {
                     val packageName = packages.first()
-                    val appName = AppListManager.findAppByPackage(context, packageName)?.displayName ?: packageName
+                    val appName = AppNameResolver.resolveOrPackage(context, packageName)
                     context.getString(com.micoyc.speakthat.R.string.rule_trigger_foreground_app_single, appName)
                 } else {
                     context.getString(com.micoyc.speakthat.R.string.rule_trigger_foreground_app_multiple, packages.size)
@@ -918,7 +918,7 @@ data class Rule(
                 }
                 val description = if (packages.size == 1) {
                     val packageName = packages.first()
-                    val appName = AppListManager.findAppByPackage(context, packageName)?.displayName ?: packageName
+                    val appName = AppNameResolver.resolveOrPackage(context, packageName)
                     context.getString(com.micoyc.speakthat.R.string.rule_exception_notification_from_single, appName)
                 } else {
                     context.getString(com.micoyc.speakthat.R.string.rule_exception_notification_from_multiple, packages.size)
@@ -938,7 +938,7 @@ data class Rule(
                 }
                 val description = if (packages.size == 1) {
                     val packageName = packages.first()
-                    val appName = AppListManager.findAppByPackage(context, packageName)?.displayName ?: packageName
+                    val appName = AppNameResolver.resolveOrPackage(context, packageName)
                     context.getString(com.micoyc.speakthat.R.string.rule_exception_foreground_app_single, appName)
                 } else {
                     context.getString(com.micoyc.speakthat.R.string.rule_exception_foreground_app_multiple, packages.size)

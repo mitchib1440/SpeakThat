@@ -20,7 +20,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.micoyc.speakthat.AccessibilityUtils
-import com.micoyc.speakthat.AppListManager
+import com.micoyc.speakthat.AppNameResolver
 import com.micoyc.speakthat.AppPickerActivity
 import com.micoyc.speakthat.InAppLogger
 import com.micoyc.speakthat.R
@@ -1108,7 +1108,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
         val inverted = binding.switchInvertNotificationFrom.isChecked
         val description = if (selectedPackages.size == 1) {
             val packageName = selectedPackages.first()
-            val appName = AppListManager.findAppByPackage(this, packageName)?.displayName ?: packageName
+            val appName = AppNameResolver.resolveOrPackage(this, packageName)
             getString(R.string.rule_exception_notification_from_single, appName)
         } else {
             getString(R.string.rule_exception_notification_from_multiple, selectedPackages.size)
@@ -1137,7 +1137,7 @@ class ExceptionConfigActivity : AppCompatActivity() {
         val inverted = binding.switchInvertForegroundApp.isChecked
         val description = if (selectedPackages.size == 1) {
             val packageName = selectedPackages.first()
-            val appName = AppListManager.findAppByPackage(this, packageName)?.displayName ?: packageName
+            val appName = AppNameResolver.resolveOrPackage(this, packageName)
             getString(R.string.rule_exception_foreground_app_single, appName)
         } else {
             getString(R.string.rule_exception_foreground_app_multiple, selectedPackages.size)

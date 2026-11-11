@@ -50,14 +50,7 @@ public class CooldownAppAdapter extends RecyclerView.Adapter<CooldownAppAdapter.
         public Drawable icon; // Actual app icon from device
         public int cooldownSeconds;
 
-        // Constructor for JSON app list (with iconSlug)
-        public CooldownAppItem(String packageName, String displayName, String iconSlug, int cooldownSeconds) {
-            this.packageName = packageName;
-            this.displayName = displayName;
-            this.iconSlug = iconSlug;
-            this.icon = null;
-            this.cooldownSeconds = cooldownSeconds;
-        }
+        // iconSlug is only kept for entries saved by older versions; new entries never set it.
 
         // Constructor for device apps (with actual icon)
         public CooldownAppItem(String packageName, String displayName, Drawable icon, int cooldownSeconds) {

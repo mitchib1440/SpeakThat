@@ -87,10 +87,6 @@ public class BehaviorSettingsActivity extends AppCompatActivity {
         // Mark initialization complete - sections can now save preferences without causing loops
         store.setInitializationComplete();
 
-        if (cooldownSection != null) {
-            cooldownSection.testAppListFunctionality();
-        }
-
         // Hide loading after sections are loaded
         setLoading(false);
         SettingsHighlightHelper.handleScrollToSetting(this);

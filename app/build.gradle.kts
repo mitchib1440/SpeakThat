@@ -19,8 +19,8 @@ android {
         minSdk = 24
         // I'm currently sticking with targetSdk 36, as I do not have a modern Android device to test with.
         targetSdk = 36
-        versionCode = 63
-        versionName = "1.9.2"
+        versionCode = 64
+        versionName = "1.9.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

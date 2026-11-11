@@ -7,7 +7,6 @@
 
 package com.micoyc.speakthat;
 
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -128,20 +127,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
             return appNameCache.get(packageName);
         }
 
-        String displayName = packageName;
-        PackageManager pm = context.getPackageManager();
-        try {
-            ApplicationInfo appInfo = pm.getApplicationInfo(packageName, 0);
-            CharSequence label = pm.getApplicationLabel(appInfo);
-            if (label != null && label.length() > 0) {
-                displayName = label.toString();
-            }
-        } catch (PackageManager.NameNotFoundException ignored) {
-            AppListData appData = AppListManager.INSTANCE.findAppByPackage(context, packageName);
-            if (appData != null && appData.displayName != null && !appData.displayName.isEmpty()) {
-                displayName = appData.displayName;
-            }
-        }
+        String displayName = AppNameResolver.resolveOrPackage(context, packageName);
 
         appNameCache.put(packageName, displayName);
         return displayName;

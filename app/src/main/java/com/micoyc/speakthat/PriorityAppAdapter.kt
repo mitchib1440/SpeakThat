@@ -60,20 +60,7 @@ class PriorityAppAdapter(
     private fun resolveAppName(context: android.content.Context, packageName: String): String {
         appNameCache[packageName]?.let { return it }
 
-        var displayName = packageName
-        val pm = context.packageManager
-        try {
-            val appInfo = pm.getApplicationInfo(packageName, 0)
-            val label = pm.getApplicationLabel(appInfo)?.toString()
-            if (!label.isNullOrBlank()) {
-                displayName = label
-            }
-        } catch (_: PackageManager.NameNotFoundException) {
-            val appData = AppListManager.findAppByPackage(context, packageName)
-            if (appData != null && !appData.displayName.isNullOrBlank()) {
-                displayName = appData.displayName
-            }
-        }
+        val displayName = AppNameResolver.resolveOrPackage(context, packageName)
 
         appNameCache[packageName] = displayName
         return displayName
