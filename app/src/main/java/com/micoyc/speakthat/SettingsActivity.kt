@@ -8,21 +8,15 @@
 package com.micoyc.speakthat
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import android.os.Handler
 import android.os.Looper
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.micoyc.speakthat.databinding.ActivitySettingsBinding
-import com.micoyc.speakthat.donations.DonationManager
-import com.micoyc.speakthat.donations.DonationManagerProvider
 import com.micoyc.speakthat.settings.BehaviorSettingsActivity
 import com.micoyc.speakthat.summary.SummarySettingsActivity
 
@@ -32,7 +26,6 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var searchAdapter: SearchResultsAdapter
     private val settingsCategories = mutableListOf<SettingsCategory>()
     private val allSettings = mutableListOf<SettingsItem>()
-    private val donationManager: DonationManager by lazy { DonationManagerProvider.get(this) }
     private val searchHandler = Handler(Looper.getMainLooper())
     private var pendingSearch: Runnable? = null
     
@@ -262,9 +255,8 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent(this, SupportActivity::class.java))
         }
         
-        binding.cardDonate.setOnClickListener {
-            donationManager.showDonate(this) { showDonateDialog() }
-        }
+        // Donations removed in this personal build
+        binding.cardDonate.visibility = View.GONE
         
         binding.cardReRunOnboarding.setOnClickListener {
             InAppLogger.logUserAction("Re-run onboarding selected")
@@ -292,79 +284,6 @@ class SettingsActivity : AppCompatActivity() {
                 android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
                 android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             )
-        }
-    }
-    
-    private fun showDonateDialog() {
-        InAppLogger.logUserAction("Donate dialog opened")
-        
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_donate, null)
-        val dialog = AlertDialog.Builder(this)
-            .setView(dialogView)
-            .create()
-        
-        // Get UI elements
-        val cardKoFi = dialogView.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardKoFi)
-        val cardPatreon = dialogView.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardPatreon)
-        val cardGitHub = dialogView.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardGitHub)
-        val cardBitcoin = dialogView.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardBitcoin)
-        val btnCancel = dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnCancel)
-        
-        // Set up click listeners
-        cardKoFi.setOnClickListener {
-            InAppLogger.logUserAction("Ko-fi donation selected")
-            dialog.dismiss()
-            openUrl("https://ko-fi.com/mitchib1440")
-        }
-        
-        cardPatreon.setOnClickListener {
-            InAppLogger.logUserAction("Patreon donation selected")
-            dialog.dismiss()
-            openUrl("https://www.patreon.com/c/mitchib1440")
-        }
-        
-        cardGitHub.setOnClickListener {
-            InAppLogger.logUserAction("GitHub Sponsors donation selected")
-            dialog.dismiss()
-            openUrl("https://github.com/sponsors/mitchib1440")
-        }
-        
-        cardBitcoin.setOnClickListener {
-            InAppLogger.logUserAction("Bitcoin donation selected")
-            dialog.dismiss()
-            copyBitcoinAddress()
-        }
-        
-        btnCancel.setOnClickListener {
-            InAppLogger.logUserAction("Donate dialog cancelled")
-            dialog.dismiss()
-        }
-        
-        dialog.show()
-    }
-    
-    private fun openUrl(url: String) {
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            startActivity(intent)
-            InAppLogger.logUserAction("External link opened", "URL: $url")
-        } catch (e: Exception) {
-            Toast.makeText(this, "Unable to open link: ${e.message}", Toast.LENGTH_SHORT).show()
-            InAppLogger.logError("Donate", "Failed to open URL: ${e.message}")
-        }
-    }
-    
-    private fun copyBitcoinAddress() {
-        try {
-            val clipboard = getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
-            val clip = android.content.ClipData.newPlainText("Bitcoin Address", "38ACvcbhsyaF5K4kRdxCFwPcKZNafUv8sq")
-            clipboard.setPrimaryClip(clip)
-            
-            Toast.makeText(this, "Bitcoin address copied to clipboard", Toast.LENGTH_LONG).show()
-            InAppLogger.logUserAction("Bitcoin address copied to clipboard")
-        } catch (e: Exception) {
-            Toast.makeText(this, "Failed to copy address: ${e.message}", Toast.LENGTH_SHORT).show()
-            InAppLogger.logError("Donate", "Failed to copy Bitcoin address: ${e.message}")
         }
     }
 }

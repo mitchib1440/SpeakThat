@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat
 import com.micoyc.speakthat.MainActivity
 import com.micoyc.speakthat.NotificationReaderService
 import com.micoyc.speakthat.R
-import com.micoyc.speakthat.UpdateFeature
 import com.micoyc.speakthat.settings.BehaviorSettingsStore
 import com.micoyc.speakthat.summary.SummaryConstants
 import com.micoyc.speakthat.summary.SummaryScheduler
@@ -65,7 +64,8 @@ object PermissionCatalog {
         val clockPrecisionModeEnabled =
             mainPrefs.getBoolean(NotificationReaderService.PREF_SPEAKTHAT_CLOCK_PRECISION_MODE, false) && clockEnabled
 
-        val updaterEnabled = UpdateFeature.isEnabled() && mainPrefs.getBoolean("auto_update_enabled", true)
+        // Updater removed in this personal build
+        val updaterEnabled = false
 
         return CoreFeatureState(
             honourPhoneCallsEnabled = honourPhoneCallsEnabled,
@@ -244,8 +244,6 @@ object PermissionCatalog {
             prefs.edit()
                 .putBoolean("auto_update_enabled", false)
                 .apply()
-            // Lets the flavor-specific UpdateFeature reconcile WorkManager jobs.
-            UpdateFeature.onAutoUpdatePreferenceChanged(context)
             disabledUpdater = true
         }
 

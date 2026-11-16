@@ -374,8 +374,8 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
         // Add Background Process Monitor button
         binding.btnBackgroundMonitor.setOnClickListener(v -> showBackgroundProcessMonitor());
         
-        // Add Installation Source Debug button
-        binding.btnInstallationSourceDebug.setOnClickListener(v -> showInstallationSourceDebug());
+        // Installation source debug relied on the removed updater
+        binding.btnInstallationSourceDebug.setVisibility(android.view.View.GONE);
         
         // Add Rule System Test button
         binding.btnRuleSystemTest.setOnClickListener(v -> testRuleSystem());
@@ -1562,53 +1562,6 @@ public class DevelopmentSettingsActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void showInstallationSourceDebug() {
-        try {
-            UpdateManager updateManager = UpdateManager.Companion.getInstance(this);
-            java.util.Map<String, Object> details = updateManager.getInstallationSourceDetails();
-            boolean isGooglePlay = updateManager.isInstalledFromGooglePlay();
-            
-            StringBuilder message = new StringBuilder();
-            message.append("=== INSTALLATION SOURCE DEBUG ===\n");
-            message.append("Currently detected as Google Play: ").append(isGooglePlay).append("\n\n");
-            message.append("Detailed Information:\n");
-            
-            for (java.util.Map.Entry<String, Object> entry : details.entrySet()) {
-                message.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
-            }
-            
-            message.append("\n=== DEBUG OPTIONS ===\n");
-            message.append("• Use 'Reset Cache' to clear cached result\n");
-            message.append("• Use 'Re-detect' to force fresh detection\n");
-            
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Installation Source Debug")
-                    .setMessage(message.toString())
-                    .setPositiveButton(R.string.button_reset_cache, (dialog, which) -> {
-                        updateManager.resetGooglePlayDetectionCache();
-                        Toast.makeText(this, "Cache reset. Re-run detection to see changes.", Toast.LENGTH_LONG).show();
-                        InAppLogger.logUserAction("Installation source cache reset toast shown", "");
-                    })
-                    .setNegativeButton(R.string.button_re_detect, (dialog, which) -> {
-                        updateManager.resetGooglePlayDetectionCache();
-                        // Force a fresh detection
-                        boolean newResult = updateManager.isInstalledFromGooglePlay();
-                        Toast.makeText(this, "Re-detection complete. Result: " + newResult, Toast.LENGTH_LONG).show();
-                        InAppLogger.logUserAction("Installation source re-detection complete toast shown: " + newResult, "");
-                        // Show the updated debug info
-                        showInstallationSourceDebug();
-                    })
-                    .setNeutralButton(R.string.button_ok, null)
-                    .show();
-                    
-            InAppLogger.log("Development", "Installation source debug dialog shown");
-            
-        } catch (Exception e) {
-            Toast.makeText(this, "Error showing debug info: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            InAppLogger.logError("Development", "Error showing installation source debug: " + e.getMessage());
-        }
-    }
-    
     private void testRuleSystem() {
         InAppLogger.log("Development", "Starting rule system test (no pre-made rules)...");
         

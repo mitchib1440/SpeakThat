@@ -1780,7 +1780,15 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
                     
                 // Additional app-specific deduplication for known problematic apps
                 if (isProblematicApp(packageName)) {
-                    val appSpecificKey = "app_${packageName}_${sbn.id}"
+                    // Chat apps (e.g. WhatsApp) reuse one notification ID per conversation, so an
+                    // ID-only key drops every new message that arrives within the dedup window.
+                    // Include the newest message's timestamp: re-posts keep it, new messages change it.
+                    val latestMessageTime = getLatestMessagingStyleTime(notification)
+                    val appSpecificKey = if (latestMessageTime != null) {
+                        "app_${packageName}_${sbn.id}_$latestMessageTime"
+                    } else {
+                        "app_${packageName}_${sbn.id}"
+                    }
                     val lastAppSpecificTime = recentNotificationKeys[appSpecificKey]
                     if (lastAppSpecificTime != null && currentTime - lastAppSpecificTime < DEDUPLICATION_WINDOW_MS) {
                         val timeSinceLastAppSpecific = currentTime - lastAppSpecificTime
@@ -2894,6 +2902,21 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
     /**
      * Check if an app is known to have problematic duplicate notifications
      */
+    /**
+     * Returns the timestamp of the newest message in a MessagingStyle notification,
+     * or null when the notification is not MessagingStyle or carries no message time.
+     */
+    private fun getLatestMessagingStyleTime(notification: Notification): Long? {
+        val extras = notification.extras ?: return null
+        if (extras.getString(Notification.EXTRA_TEMPLATE) != "android.app.Notification\$MessagingStyle") {
+            return null
+        }
+        val messages = extras.getParcelableArray(Notification.EXTRA_MESSAGES) ?: return null
+        val lastMessage = messages.lastOrNull() as? android.os.Bundle ?: return null
+        val time = lastMessage.getLong("time", 0L)
+        return if (time > 0L) time else null
+    }
+
     private fun isProblematicApp(packageName: String): Boolean {
         return packageName == "com.google.android.gm" || // Gmail
                packageName == "com.google.android.apps.messaging" || // Messages
@@ -7377,7 +7400,6 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
 
                 InAppLogger.logTTSEvent("TTS completed", "Utterance finished")
                 restoreGlobalVoiceSettingsIfNeeded("utterance done")
-                trackNotificationReadForReview()
 
                 try {
                     val appNameForStats = if (currentOriginalAppName.isNotEmpty()) currentOriginalAppName else currentAppName
@@ -8571,19 +8593,4 @@ class NotificationReaderService : NotificationListenerService(), TextToSpeech.On
         }
     }
     
-    /**
-     * Track notification read for review reminder
-     */
-    private fun trackNotificationReadForReview() {
-        try {
-            // Track notification read directly using ReviewReminderManager
-            val reviewManager = ReviewReminderManager.getInstance(this)
-            reviewManager.incrementNotificationsRead()
-            
-            Log.d(TAG, "Notification read tracked for review reminder")
-        } catch (e: Exception) {
-            Log.d(TAG, "Could not track notification read for review reminder: ${e.message}")
-        }
-    }
-
 }

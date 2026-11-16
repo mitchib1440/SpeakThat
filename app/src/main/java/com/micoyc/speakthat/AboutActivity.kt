@@ -94,10 +94,8 @@ class AboutActivity : AppCompatActivity() {
             }
         }
         
-        // Add update check button
-        binding.buttonCheckUpdates.setOnClickListener {
-            UpdateFeature.startUpdateActivity(this, forceCheck = true)
-        }
+        // Updater removed in this personal build
+        binding.buttonCheckUpdates.visibility = android.view.View.GONE
         binding.buttonOssLicenses.setOnClickListener {
             val intent = Intent(this@AboutActivity, com.mikepenz.aboutlibraries.ui.LibsActivity::class.java)
             startActivity(intent)

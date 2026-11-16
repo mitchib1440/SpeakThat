@@ -89,12 +89,8 @@ public class GeneralSettingsActivity extends AppCompatActivity {
         setupToastNotifications();
         setupAccessibilityPermission();
         
-        if (BuildConfig.FLAVOR.equals("github")) {
-            binding.cardUpdateSettings.setVisibility(android.view.View.VISIBLE);
-            setupAutoUpdateSettings();
-        } else {
-            binding.cardUpdateSettings.setVisibility(android.view.View.GONE);
-        }
+        // Updater removed in this personal build
+        binding.cardUpdateSettings.setVisibility(android.view.View.GONE);
         
         binding.cardBadgeSettings.setVisibility(android.view.View.VISIBLE);
         setupBadgeSelector();
@@ -343,56 +339,6 @@ public class GeneralSettingsActivity extends AppCompatActivity {
 
         toastNotificationActionSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             sharedPreferences.edit().putBoolean("toast_notification_action_enabled", isChecked).apply();
-        });
-    }
-
-    private void setupAutoUpdateSettings() {
-        // Auto-Update Toggle - Default to ON (true)
-        MaterialSwitch autoUpdateSwitch = binding.switchAutoUpdate;
-        boolean autoUpdateEnabled = sharedPreferences.getBoolean("auto_update_enabled", true);
-        autoUpdateSwitch.setChecked(autoUpdateEnabled);
-
-        autoUpdateSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            sharedPreferences.edit().putBoolean("auto_update_enabled", isChecked).apply();
-            com.micoyc.speakthat.UpdateFeature.onAutoUpdatePreferenceChanged(this);
-        });
-
-        // Update Check Frequency - Default to Weekly
-        String updateFrequency = sharedPreferences.getString("update_check_frequency", "weekly");
-        if ("never".equals(updateFrequency)) {
-            updateFrequency = "weekly";
-            sharedPreferences.edit().putString("update_check_frequency", "weekly").apply();
-        }
-        switch (updateFrequency) {
-            case "daily":
-                binding.radioUpdateDaily.setChecked(true);
-                break;
-            case "weekly":
-                binding.radioUpdateWeekly.setChecked(true);
-                break;
-            case "monthly":
-                binding.radioUpdateMonthly.setChecked(true);
-                break;
-            default:
-                // Default to weekly if no value is set
-                binding.radioUpdateWeekly.setChecked(true);
-                sharedPreferences.edit().putString("update_check_frequency", "weekly").apply();
-                break;
-        }
-
-        binding.radioGroupUpdateFrequency.setOnCheckedChangeListener((group, checkedId) -> {
-            String frequency;
-            if (checkedId == R.id.radioUpdateDaily) {
-                frequency = "daily";
-            } else if (checkedId == R.id.radioUpdateWeekly) {
-                frequency = "weekly";
-            } else if (checkedId == R.id.radioUpdateMonthly) {
-                frequency = "monthly";
-            } else {
-                frequency = "weekly"; // Default fallback
-            }
-            sharedPreferences.edit().putString("update_check_frequency", frequency).apply();
-            com.micoyc.speakthat.UpdateFeature.onAutoUpdatePreferenceChanged(this);
         });
     }
 

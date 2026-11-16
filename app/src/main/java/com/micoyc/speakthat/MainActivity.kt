@@ -66,7 +66,6 @@ import com.micoyc.speakthat.summary.SummarySettingsGate
 import com.micoyc.speakthat.tts.SpeakThatTtsManager
 import com.micoyc.speakthat.utils.SeasonalModeHelper
 import com.micoyc.speakthat.utils.TtsLanguageHelper
-import org.woheller69.freeDroidWarn.FreeDroidWarn
 import java.text.NumberFormat
 
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEventListener {
@@ -204,8 +203,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
             return
         }
 
-        FreeDroidWarn.showWarningOnUpgrade(this, BuildConfig.VERSION_CODE)
-        
         // Initialize crash-persistent logging first
         InAppLogger.initialize(this)
         
@@ -271,16 +268,9 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         updateServiceStatus()
         renderUpdateBannerFromCache()
         renderRulesMigrationBannerFromCache()
-        
-        // Check for updates automatically (if enabled)
-        Log.d(TAG, "About to check for updates automatically")
-        checkForUpdatesIfEnabled()
-        
+
         // Check for crash logs and notify user if available
         checkForCrashLogs()
-        
-        // Initialize review reminder and track app session
-        initializeReviewReminder()
     }
     
 
@@ -366,10 +356,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         loadWaveSettings()
         // Don't start shake/wave listening here - only during TTS playback
         InAppLogger.logAppLifecycle("MainActivity resumed")
-        
-        // Check for updates automatically when returning to app (if enabled)
-        Log.d(TAG, "About to check for updates on resume")
-        checkForUpdatesIfEnabled()
+
         renderUpdateBannerFromCache()
         renderRulesMigrationBannerFromCache()
         
@@ -1845,88 +1832,11 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         val message: String
     )
 
-    /**
-     * Check for updates automatically if enabled in settings
-     * This runs silently in the background without user interaction
-     */
-    private fun checkForUpdatesIfEnabled() {
-        Log.d(TAG, "checkForUpdatesIfEnabled() called")
-        
-        // Use the wrapper to handle conditional update checking
-        UpdateFeature.checkForUpdatesIfEnabled(this)
-    }
-    
-    /**
-     * Show update notification to user
-     */
-    private fun showUpdateNotification(updateInfo: UpdateManager.UpdateInfo) {
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.update_available, updateInfo.versionName))
-            .setMessage(getString(R.string.update_info, 
-                updateInfo.versionName,
-                formatFileSize(updateInfo.fileSize),
-                updateInfo.releaseDate
-            ))
-            .setPositiveButton(getString(R.string.download_update)) { _, _ ->
-                InAppLogger.logUserAction("Update dialog - download update button clicked")
-                // Start update activity using wrapper
-                UpdateFeature.startUpdateActivity(this, forceCheck = true)
-            }
-            .setNegativeButton(getString(R.string.cancel)) { _, _ ->
-                InAppLogger.logUserAction("Update dialog - cancel button clicked")
-            }
-            .setNeutralButton(getString(R.string.view_release_notes)) { _, _ ->
-                InAppLogger.logUserAction("Update dialog - view release notes button clicked")
-                // Show release notes
-                AlertDialog.Builder(this)
-                    .setTitle(getString(R.string.release_notes))
-                    .setMessage(updateInfo.releaseNotes.ifEmpty { getString(R.string.no_release_notes) })
-                    .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                        InAppLogger.logUserAction("Release notes dialog dismissed")
-                    }
-                    .show()
-            }
-            .show()
-    }
-
+    // Updater removed in this personal build: the update banner always stays hidden.
     private fun renderUpdateBannerFromCache() {
-        if (!BuildConfig.ENABLE_AUTO_UPDATER || BuildConfig.DISTRIBUTION_CHANNEL != "github") {
-            hideUpdateBanner()
-            return
-        }
-
-        if (!::binding.isInitialized) return
-
-        val prefs = sharedPreferences ?: run {
-            hideUpdateBanner()
-            return
-        }
-
-        val autoUpdateEnabled = prefs.getBoolean("auto_update_enabled", true)
-        if (!autoUpdateEnabled) {
-            hideUpdateBanner()
-            return
-        }
-
-        val cached = UpdateFeature.getCachedUpdateInfo(this) ?: run {
-            hideUpdateBanner()
-            return
-        }
-
-        val updateManager = UpdateManager.getInstance(this)
-        if (!updateManager.isNewerThanInstalled(cached.versionName)) {
-            hideUpdateBanner()
-            return
-        }
-
-        binding.cardUpdateBanner.visibility = View.VISIBLE
-        binding.textUpdateBannerTitle.text = getString(R.string.update_banner_title, cached.versionName)
-        val sizeText = formatFileSize(cached.fileSize)
-        binding.textUpdateBannerSubtitle.text = getString(R.string.update_banner_body, sizeText)
-        binding.buttonUpdateBanner.setOnClickListener {
-            UpdateFeature.startUpdateActivity(this, forceCheck = true)
-        }
+        hideUpdateBanner()
     }
+
 
     private fun hideUpdateBanner() {
         if (::binding.isInitialized) {
@@ -2271,31 +2181,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener, SensorEve
         }
     }
     
-    /**
-     * Initialize review reminder and track app session
-     */
-    private fun initializeReviewReminder() {
-        val reviewManager = ReviewReminderManager.getInstance(this)
-        
-        // Track this app session
-        reviewManager.incrementAppSession()
-        
-        // Check if we should show the reminder (with a small delay to avoid showing immediately)
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (reviewManager.shouldShowReminder()) {
-                reviewManager.showReminderDialog(this@MainActivity)
-            }
-        }, 2000) // 2 second delay to let the app settle
-    }
-    
-    /**
-     * Track notification read for review reminder
-     * This should be called when a notification is successfully read aloud
-     */
-    fun trackNotificationRead() {
-        val reviewManager = ReviewReminderManager.getInstance(this)
-        reviewManager.incrementNotificationsRead()
-    }
 
     /**
      * Show TTS Engine Failure Dialog

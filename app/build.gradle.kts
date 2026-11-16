@@ -31,39 +31,15 @@ android {
         )
     }
 
-    // Add product flavors for different distribution channels
+    // Personal fork: only the offline "store" variant is kept.
+    // The GitHub (auto-updater, online icons) and Play (billing) variants were removed.
+    // The store manifest strips the INTERNET permission, so the app cannot reach the network.
     flavorDimensions += "distribution"
     productFlavors {
-        create("github") {
-            dimension = "distribution"
-            // Removed applicationIdSuffix to maintain compatibility with existing installs
-            // Keep version name clean for backwards compatibility
-            // versionNameSuffix = "-github"  // Removed to maintain clean version names
-            
-            // Build config fields for GitHub variant
-            buildConfigField("boolean", "ENABLE_AUTO_UPDATER", "true")
-            buildConfigField("String", "DISTRIBUTION_CHANNEL", "\"github\"")
-            buildConfigField("boolean", "HAS_ACCESSIBILITY", "true")
-        }
-        
         create("store") {
             dimension = "distribution"
-            // Removed applicationIdSuffix to maintain compatibility with existing installs
-            // Keep version name clean for backwards compatibility
-            // versionNameSuffix = "-store"  // Removed to maintain clean version names
-            
-            // Build config fields for store variant
-            buildConfigField("boolean", "ENABLE_AUTO_UPDATER", "false")
             buildConfigField("String", "DISTRIBUTION_CHANNEL", "\"store\"")
             buildConfigField("boolean", "HAS_ACCESSIBILITY", "true")
-        }
-        
-        create("play") {
-            dimension = "distribution"
-            // Matches the store flavor behavior; no updater for Play distribution
-            buildConfigField("boolean", "ENABLE_AUTO_UPDATER", "false")
-            buildConfigField("String", "DISTRIBUTION_CHANNEL", "\"play\"")
-            buildConfigField("boolean", "HAS_ACCESSIBILITY", "false")
         }
     }
 
@@ -99,15 +75,8 @@ android {
     applicationVariants.all {
         outputs.all {
             if (this is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
-                val flavor = productFlavors[0].name
                 val versionName = defaultConfig.versionName
-                
-                outputFileName = when (flavor) {
-                    "store" -> "SpeakThat-NoUpdater-v${versionName}.apk"
-                    "play" -> "SpeakThat-NoUpdater-v${versionName}.apk"
-                    "github" -> "SpeakThat-v${versionName}.apk"
-                    else -> "SpeakThat-${flavor}-v${versionName}.apk"
-                }
+                outputFileName = "SpeakThat-Offline-v${versionName}-${buildType.name}.apk"
             }
         }
     }
@@ -125,26 +94,14 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-process:2.11.0")
     implementation("androidx.localbroadcastmanager:localbroadcastmanager:1.1.0")
     implementation("com.mikepenz:aboutlibraries:10.10.0")
-    
-    // Coil for image loading - only used in GitHub variant for online icons
-    implementation("io.coil-kt:coil:2.7.0")
-    implementation("io.coil-kt:coil-svg:2.7.0")
-    
-    // For network requests (update system) - only used in GitHub variant
-    implementation("com.squareup.okhttp3:okhttp:5.5.0")
-    
-    // For background work (optional, for future enhancements)
+
+    // Background work (service restart policy)
     implementation("androidx.work:work-runtime-ktx:2.11.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
-    implementation("com.github.woheller69:FreeDroidWarn:V1.13")
-
-    // Play-only: Google Play Billing for donation flow (quantity support requires 6.2+)
-    add("playImplementation", "com.android.billingclient:billing-ktx:8.1.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation("com.github.bumptech.glide:glide:5.0.9")
     implementation("androidx.media:media:1.8.0")
     implementation("androidx.car.app:app:1.7.0")
 }

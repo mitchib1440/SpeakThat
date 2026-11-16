@@ -79,8 +79,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
 
-    <!-- GitHub: auto-updater and online app icons. Play: Google Play Billing donations. Store removes this. -->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- No INTERNET permission: this personal build never touches the network.
+         Text-to-speech engines (e.g. Google TTS) use their own network access if needed. -->
 
     <!-- Permission to detect phone calls for Honour Phone Calls feature -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -244,11 +244,6 @@
             android:exported="false"
             android:parentActivityName=".MainActivity" />
 
-        <!-- Update Activity -->
-        <activity
-            android:name=".UpdateActivity"
-            android:exported="false"
-            android:parentActivityName=".AboutActivity" />
 
         <!-- Pause Options Activity -->
         <activity
